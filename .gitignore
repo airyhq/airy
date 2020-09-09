@@ -1,0 +1,30 @@
+.terraform
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfstate.*.backup
+.iml
+
+
+# Editors and IDE's
+.idea/
+.code/
+.vscode/
+.ijwb/
+
+# Emacs backup files
+.\#*
+
+dist/
+bazel-*
+
+# Generated file for live markdown preview
+docs/api.html
+
+.DS_Store
+
+# Node packages
+node_modules/
+yarn-error.log
+package-lock.json
+

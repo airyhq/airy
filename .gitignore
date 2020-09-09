@@ -12,6 +12,8 @@
 .vscode/
 .ijwb/
 
+!.ijwb/.bazelproject
+
 # Emacs backup files
 .\#*
 

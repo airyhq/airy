@@ -33,7 +33,7 @@ nodejs_binary(
         # This is a little trick we need to do in order to run prettier in the workspace root
         # The check_prettier.sh executable can not be used in other executable rules
         "--node_options=--require=$$(rlocation $(rootpath chdir.js))",
-        "--check '**/*.{css,scss,ts,tsx}'",
+        "--check '**/*.{css,scss,ts,tsx,js}'",
     ],
 )
 

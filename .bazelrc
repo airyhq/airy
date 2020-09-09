@@ -1,0 +1,6 @@
+# Make compilation fast, by keeping a few copies of the compilers
+# running as daemons, and cache SourceFile AST's to reduce parse time.
+build --strategy=TypeScriptCompile=worker
+
+# Output test erros by default
+test --test_output=errors

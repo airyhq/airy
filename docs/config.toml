@@ -1,0 +1,41 @@
+baseURL = "https://docs.airy.co/"
+languageCode = "en-us"
+title = "Airy core docs"
+
+theme = "hugo-geekdoc"
+
+pygmentsUseClasses = true
+pygmentsCodeFences = true
+
+disablePathToLower = true
+enableGitInfo = true
+
+
+[markup]
+  [markup.goldmark.renderer]
+    # Needed for mermaid shortcode
+    unsafe = true
+  [markup.tableOfContents]
+    startLevel = 1
+    endLevel = 9
+
+
+[params]
+    geekdocToC = 3
+
+    # (Optional, default static/brand.svg) Set the path to a logo for the Geekdoc
+    # relative to your 'static/' folder.
+    geekdocLogo = "logo.png"
+
+    # (Optional, default false) Render menu from data file im 'data/menu/main.yaml'.
+    geekdocMenuBundle = false
+
+    # (Optional, default none) Set source repository location
+    # Used for 'Edit this page' links
+    # You can also specify this parameter per page in front matter.
+    geekdocRepo = 'https://github.com/airyhq/core'
+
+    # (Optional, default none) Enable "Edit this page" links. Requires 'GeekdocRepo' param
+    # and path must point to 'content' directory of repo.
+    # You can also specify this parameter per page in front matter.
+    geekdocEditPath = 'edit/master/docs/content'

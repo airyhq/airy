@@ -1,3 +1,7 @@
+---
+title: Kafka
+---
+
 # Kafka
 
 - [Topic naming conventions](#topic-naming-conventions)

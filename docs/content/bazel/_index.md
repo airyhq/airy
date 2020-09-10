@@ -1,3 +1,7 @@
+---
+title: Bazel
+---
+
 # Bazel
 
 [bazel](https://bazel.build/) is the build tool of choice to build and test the Airy Core Platform.

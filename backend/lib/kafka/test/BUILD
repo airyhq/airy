@@ -1,0 +1,38 @@
+load("@rules_java//java:defs.bzl", "java_library")
+
+java_library(
+    name = "kafka-test",
+    srcs = glob(["src/main/java/co/airy/kafka/test/**/*.java"]),
+    visibility = ["//visibility:public"],
+    exports = [
+        "//apps/lib/kafka/core:kafka-core",
+        "@maven//:org_apache_kafka_kafka_2_12",
+        "@maven//:org_apache_kafka_kafka_clients_test",
+        "@maven//:org_springframework_boot_spring_boot_starter_test",
+        "@maven//:org_springframework_boot_spring_boot_test",
+        "@maven//:org_springframework_boot_spring_boot_test_autoconfigure",
+        "@maven//:org_springframework_spring_test",
+    ],
+    deps = [
+        "//:jackson",
+        "//:kafka_streams",
+        "//:lombok",
+        "//apps/lib/kafka/core:kafka-core",
+        "//apps/lib/kafka/schema:kafka-schema",
+        "//apps/lib/log",
+        "@maven//:javax_servlet_javax_servlet_api",
+        "@maven//:javax_validation_validation_api",
+        "@maven//:org_apache_curator_curator_test",
+        "@maven//:org_apache_kafka_kafka_2_12",
+        "@maven//:org_apache_kafka_kafka_clients_test",
+        "@maven//:org_eclipse_jetty_jetty_server",
+        "@maven//:org_junit_jupiter_junit_jupiter",
+        "@maven//:org_junit_jupiter_junit_jupiter_api",
+        "@maven//:org_mockito_mockito_core",
+        "@maven//:org_springframework_boot_spring_boot_starter_test",
+        "@maven//:org_springframework_boot_spring_boot_test",
+        "@maven//:org_springframework_boot_spring_boot_test_autoconfigure",
+        "@maven//:org_springframework_spring_core",
+        "@maven//:org_springframework_spring_test",
+    ],
+)

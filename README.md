@@ -12,7 +12,7 @@ that allows its user to process messaging data from a variety sources (like face
   - An "inbox" UI to manage incoming messages (the UI is connected to the core platform via websocket server so the incoming data appears in a near-realtime manner)
   - An "admin" UI to manage channels of communcation, webhook integrations, and teams for the inbox UI.
 - An API, also used by the UI modules, to manage the data sets the platform handles.
-- A webhook integration server that allows its users to programmatically participate into conversations by sending messages (the webhook integrations exposes messages events so users can "listen" to those events and react programatically.)
+- A webhook integration server that allows its users to programmatically participate in conversations by sending messages (the webhook integrations exposes messages events so users can "listen" to those events and react programmatically.)
 
 Being a monorepository, the whole codebase of the abovementioned projects is in the same repository. Here is a quick overview of how the repository is organised:
 

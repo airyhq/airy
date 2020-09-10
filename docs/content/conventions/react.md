@@ -1,4 +1,6 @@
-# React
+---
+title: React
+---
 
 - [React at Airy](#react-at-airy)
   - [Folder structure](#folder-structure)

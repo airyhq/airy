@@ -2,8 +2,6 @@
 title: Kafka
 ---
 
-# Kafka
-
 - [Topic naming conventions](#topic-naming-conventions)
 - [Compression](#compression)
   - [Message compression](#message-compression)

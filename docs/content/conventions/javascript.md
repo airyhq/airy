@@ -2,8 +2,6 @@
 title: Javascript
 ---
 
-# JavaScript at Airy
-
 - [JavaScript at Airy](#javascript-at-airy)
   - [Dependency Management](#dependency-management)
   - [Linting and codestyle](#linting-and-codestyle)

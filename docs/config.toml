@@ -38,4 +38,4 @@ enableGitInfo = true
     # (Optional, default none) Enable "Edit this page" links. Requires 'GeekdocRepo' param
     # and path must point to 'content' directory of repo.
     # You can also specify this parameter per page in front matter.
-    geekdocEditPath = 'edit/master/docs/content'
+    geekdocEditPath = 'edit/main/docs/content'

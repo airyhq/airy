@@ -1,5 +1,13 @@
-# Airy docs
+# Airy Core Platform Documentation
 
-This directory contains the [hugo](https://gohugo.io/) site that serves the docs for [docs.airy.co](https://docs.airy.co)
+The goal of this project is to provide high-level overviews and conventions of
+the building blocks that compose the Airy Core Platform.
 
-Documentation is stored in Markdown files in the `content/` folder. If you want to make changes to the theme, you have to run `npm run build` in `themes/hugo-geekdoc` before committing so that Netlify has the static assets needed to build the page.
+## Table of contents
+
+- [API](/docs/api.md)
+- [Bazel](/docs/bazel.md)
+- [Kafka](/docs/kafka.md)
+- Conventions
+  - [JavaScript](/docs/conventions/javascript.md)
+  - [React](/docs/conventions/react.md)

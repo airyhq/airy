@@ -10,9 +10,6 @@ exampleSite/public/
 
 # auto-generated files
 layouts/partials/icons-svg-symbols.html
-static/main.*
-static/favicon/
-static/fonts/GeekdocIcons.*
 resources/_gen/
 
 # testing

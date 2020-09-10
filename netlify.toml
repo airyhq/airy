@@ -1,3 +1,9 @@
 [build]
-publish = "docs/public"
-command = "cd docs && hugo --gc --minify"
+base = "docs/"
+publish = "public/"
+command = "hugo --minify"
+
+
+[context.production.environment]
+HUGO_VERSION = "0.74.3"
+HUGO_ENV = "production"

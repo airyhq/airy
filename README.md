@@ -38,6 +38,7 @@ If you wish to learn more about a specific project, please refer to the
     - [Test without mocking](#test-without-mocking)
   - [Running the Airy Core Platform in production](#running-the-airy-core-platform-in-production)
   - [How to contribute](#how-to-contribute)
+- [How to contribute](#how-to-contribute-1)
   - [Code of Conduct](#code-of-conduct)
 
 ## How do I run the Airy Core Platform locally?
@@ -64,4 +65,21 @@ ease.
 
 ## How to contribute
 
+# How to contribute
+
+We welcome (and love) every form of contribution! Good entry points to the project are:
+
+- Our [contributing guidelines](/CONTRIBUTING.md)
+- Our [developers' manual](/docs/developers-manual.md)
+- Issues with the tag
+  [gardening](https://github.com/airyhq/core/issues?q=is%3Aissue+is%3Aopen+label%3Agardening)
+- Issues with the tag [good first
+  patch](https://github.com/airyhq/core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+patch%22)
+
+If you're still not sure where to start, please open a [new
+issue](https://github.com/airyhq/core/issues/new) and we'll gladly
+help you get started.
+
 ## Code of Conduct
+
+To ensure a safe experience and a welcoming community, the Airy Core Platform project adheres to the [contributor convenant](https://www.contributor-covenant.org/) [code of conduct](/code_of_conduct.md).

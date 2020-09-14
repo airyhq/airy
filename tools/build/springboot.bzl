@@ -152,30 +152,6 @@ def springboot(name, main_class, deps, srcs, resources = []):
         outs = ["app_springboot.jar"],
     )
 
-    container_image(
-        name = "image",
-        base = "//docker/application:base_image",
-        files = [":genjar"],
-        cmd = [
-            "java",
-            "-XshowSettings:vm",
-            "-XX:MaxRAMPercentage=70",
-            "-XX:-UseCompressedOops",
-            "-jar",
-            "app_springboot.jar",
-            "-Dsun.net.inetaddr.ttl=0",
-        ],
-    )
-
-    container_push(
-        image = ":image",
-        name = "publish-prod",
-        format = "Docker",
-        registry = "947726454442.dkr.ecr.us-east-1.amazonaws.com",
-        repository = name,
-        tag = "latest",
-    )
-
     # MASTER RULE: Create the composite rule that will aggregate the outputs of the subrules
     _springboot_rule(
         name = name,
@@ -192,7 +168,7 @@ def springboot(name, main_class, deps, srcs, resources = []):
 # Add in the standard Spring Boot dependencies so that app devs don't
 # need to explicitly state them every time in the BUILD file.
 def _add_default_deps(deps):
-    _safe_add(deps, "//apps/lib/log:log")
+    _safe_add(deps, "//backend/lib/log:log")
     _safe_add(deps, "@maven//:javax_servlet_javax_servlet_api")
     _safe_add(deps, "@maven//:javax_validation_validation_api")
 

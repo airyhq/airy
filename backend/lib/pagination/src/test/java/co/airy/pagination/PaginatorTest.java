@@ -1,4 +1,4 @@
-package backend.lib.pagination.src.test.java.co.airy.pagination;
+package co.airy.pagination;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

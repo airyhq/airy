@@ -1,4 +1,4 @@
-package backend.lib.spring.kafka.streams.src.main.java.co.airy.spring.kafka.streams;
+package co.airy.spring.kafka.streams;
 
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.kafka.streams.MetadataService;

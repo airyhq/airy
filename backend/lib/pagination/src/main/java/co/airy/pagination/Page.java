@@ -1,4 +1,4 @@
-package backend.lib.pagination.src.main.java.co.airy.pagination;
+package co.airy.pagination;
 
 import java.util.ArrayList;
 import java.util.List;

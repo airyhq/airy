@@ -1,4 +1,4 @@
-package backend.lib.spring.web.src.main.java.co.airy.spring.web.auth.interceptors;
+package co.airy.spring.web.auth.interceptors;
 
 import co.airy.log.AiryLoggerFactory;
 import org.apache.logging.log4j.ThreadContext;

@@ -1,4 +1,4 @@
-package backend.lib.spring.kafka.core.src.main.java.co.airy.spring.kafka.core;
+package co.airy.spring.kafka.core;
 
 import co.airy.kafka.core.KafkaConsumerWrapper;
 import co.airy.kafka.core.serializer.KafkaHybridSerializer;

@@ -1,4 +1,4 @@
-package backend.lib.kafka.core.src.main.java.co.airy.kafka.core.deserializer;
+package co.airy.kafka.core.deserializer;
 
 import co.airy.kafka.core.serdes.HybridObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;

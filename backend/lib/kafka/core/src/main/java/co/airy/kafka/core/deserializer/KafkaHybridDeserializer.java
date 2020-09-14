@@ -1,4 +1,4 @@
-package backend.lib.kafka.core.src.main.java.co.airy.kafka.core.deserializer;
+package co.airy.kafka.core.deserializer;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.streams.serdes.avro.AiryConfigurationUtils;

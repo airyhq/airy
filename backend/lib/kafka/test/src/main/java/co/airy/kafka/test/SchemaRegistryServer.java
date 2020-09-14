@@ -1,4 +1,4 @@
-package backend.lib.kafka.test.src.main.java.co.airy.kafka.test;
+package co.airy.kafka.test;
 
 import io.confluent.kafka.schemaregistry.avro.AvroCompatibilityLevel;
 import io.confluent.kafka.schemaregistry.rest.SchemaRegistryConfig;

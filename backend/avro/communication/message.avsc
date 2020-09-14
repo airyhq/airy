@@ -1,0 +1,15 @@
+{
+  "namespace": "co.airy.avro.communication",
+  "name": "Message",
+  "type": "record",
+  "fields": [
+//    TODO discuss
+    {"name": "id", "type": "string"},
+    {"name": "headers", "type": ["null", {"type": "map", "values": "string"}], "default": null},
+    {"name": "senderId", "type": "string"},
+    {"name": "senderOrigin", "type": "string"},
+    {"name": "conversationId", "type": "string"},
+    {"name": "content", "type": "string"},
+    {"name": "sentAt", "type": "long", "logicalType": "timestamp-millis"}
+  ]
+}

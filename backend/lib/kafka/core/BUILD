@@ -14,7 +14,7 @@ java_library(
         "//:jackson",
         "//:kafka_core",
         "//:lombok",
-        "//apps/lib/log",
+        "//backend/lib/log",
         "@maven//:com_fasterxml_jackson_module_jackson_module_afterburner",
         "@maven//:org_javatuples_javatuples",
     ],

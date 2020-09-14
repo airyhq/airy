@@ -1,4 +1,4 @@
-package backend.lib.kafka.connect.src.main.java.co.airy.kafka.connect.transforms;
+package co.airy.kafka.connect.transforms;
 
 import org.apache.kafka.common.cache.Cache;
 import org.apache.kafka.common.cache.LRUCache;

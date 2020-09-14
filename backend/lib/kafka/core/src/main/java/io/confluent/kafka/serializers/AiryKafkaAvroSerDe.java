@@ -1,4 +1,4 @@
-package backend.lib.kafka.core.src.main.java.io.confluent.kafka.serializers;
+package io.confluent.kafka.serializers;
 
 import static io.confluent.kafka.serializers.AbstractKafkaAvroSerDe.MAGIC_BYTE;
 

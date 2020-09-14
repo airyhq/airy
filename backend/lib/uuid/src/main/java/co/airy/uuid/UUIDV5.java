@@ -1,4 +1,4 @@
-package backend.lib.uuid.src.main.java.co.airy.uuid;
+package co.airy.uuid;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

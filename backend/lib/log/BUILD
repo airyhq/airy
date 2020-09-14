@@ -11,7 +11,6 @@ java_library(
     ],
     deps = [
         "//:jackson",
-        "//apps/lib/kafka/schema:ops-application-logs",
         "@maven//:org_apache_kafka_kafka_clients",
         "@maven//:org_apache_logging_log4j_log4j_api",
         "@maven//:org_apache_logging_log4j_log4j_core",

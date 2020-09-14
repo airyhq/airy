@@ -1,5 +1,5 @@
 
-package backend.lib.spring.web.src.main.java.co.airy.spring.web.filters;
+package co.airy.spring.web.filters;
 
 import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;

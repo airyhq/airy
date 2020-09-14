@@ -1,4 +1,4 @@
-package backend.lib.spring.web.src.main.java.co.airy.spring.web.filters;
+package co.airy.spring.web.filters;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package backend.lib.kafka.test.src.main.java.co.airy.kafka.test;
+package co.airy.kafka.test;
 
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServerStartable;

@@ -5,12 +5,12 @@ java_library(
     srcs = glob(["src/main/java/co/airy/spring/kafka/streams/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//apps/lib/kafka/streams:kafka-streams",
-        "//apps/lib/spring/core:spring-core",
+        "//backend/lib/kafka/streams:kafka-streams",
+        "//backend/lib/spring/core:spring-core",
     ],
     deps = [
-        "//apps/lib/kafka/core:kafka-core",
-        "//apps/lib/kafka/streams:kafka-streams",
-        "//apps/lib/spring/core:spring-core",
+        "//backend/lib/kafka/core:kafka-core",
+        "//backend/lib/kafka/streams:kafka-streams",
+        "//backend/lib/spring/core:spring-core",
     ],
 )

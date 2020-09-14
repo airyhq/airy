@@ -16,7 +16,7 @@ such, the avro schemas folder is the right place.
 
 ## Message
 
-Messages consist of two sets of data; header and body. Header data is primarily used by our streaming apps and is described by [message-container.avsc](../avro-schemas/communication/message-container.avsc), body data for now is only used for representation and defined by [message.avsc](../avro-schemas/communication/message-content.avsc)
+Messages consist of two sets of data; header and body. Header data is primarily used by our streaming apps and is described by [message-container.avsc](../avro/communication/message-container.avsc), body data for now is only used for representation and defined by [message.avsc](../avro/communication/message-content.avsc)
 
 ### Message Container
 

@@ -1,10 +1,10 @@
 load("@rules_java//java:defs.bzl", "java_library")
 
 lib_deps = [
-    "//apps/lib/kafka/schema:kafka-schema",
-    "//apps/lib/kafka/core:kafka-core",
+    "//backend/lib/kafka/schema:kafka-schema",
+    "//backend/lib/kafka/core:kafka-core",
     "//:kafka_streams",
-    "//apps/lib/log:log",
+    "//backend/lib/log:log",
     "//:lombok",
     "@maven//:org_javatuples_javatuples",
     "@maven//:org_rocksdb_rocksdbjni",
@@ -32,8 +32,8 @@ load("//tools/build:junit5.bzl", "junit5")
         resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":kafka-streams",
-            "//apps/lib/spring/kafka/streams:spring-kafka-streams",
-            "//apps/lib/kafka/test:kafka-test",
+            "//backend/lib/spring/kafka/streams:spring-kafka-streams",
+            "//backend/lib/kafka/test:kafka-test",
         ] + lib_deps,
     )
     for file in glob(["src/test/java/**/*IntegrationTest.java"])

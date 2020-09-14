@@ -1,4 +1,4 @@
-package backend.lib.spring.core.src.main.java.co.airy.spring.core;
+package co.airy.spring.core;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

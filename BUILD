@@ -10,6 +10,14 @@ alias(
     actual = "//tools/code-format:fix",
 )
 
+load("@io_bazel_rules_docker//container:container.bzl", "container_image")
+
+container_image(
+    name = "base_image",
+    base = "@java_base//image",
+    visibility = ["//visibility:public"],
+)
+
 java_library(
     name = "kafka_core",
     visibility = [

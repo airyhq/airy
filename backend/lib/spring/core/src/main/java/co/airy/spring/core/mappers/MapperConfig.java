@@ -1,4 +1,4 @@
-package backend.lib.spring.core.src.main.java.co.airy.spring.core.mappers;
+package co.airy.spring.core.mappers;
 
 
 import com.fasterxml.jackson.databind.DeserializationFeature;

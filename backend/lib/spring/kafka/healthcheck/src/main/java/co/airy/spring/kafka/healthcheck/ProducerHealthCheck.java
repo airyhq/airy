@@ -1,4 +1,4 @@
-package backend.lib.spring.kafka.healthcheck.src.main.java.co.airy.spring.kafka.healthcheck;
+package co.airy.spring.kafka.healthcheck;
 
 import co.airy.avro.ops.HealthCheck;
 import co.airy.kafka.schema.ops.OpsApplicationHealth;

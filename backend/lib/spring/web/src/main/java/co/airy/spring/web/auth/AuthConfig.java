@@ -1,4 +1,4 @@
-package backend.lib.spring.web.src.main.java.co.airy.spring.web.auth;
+package co.airy.spring.web.auth;
 
 import co.airy.spring.web.auth.interceptors.HeadersExtractorInterceptorAdapter;
 import co.airy.spring.web.auth.interceptors.JwtAuthHandlerInterceptorAdapter;

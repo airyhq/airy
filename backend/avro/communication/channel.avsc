@@ -1,0 +1,15 @@
+{
+  "namespace": "co.airy.avro.communication",
+  "name": "Channel",
+  "type": "record",
+  "fields": [
+    {"name": "id", "type": "string"},
+    {"name": "name", "type": "string"},
+    {"name": "source", "type": "string"},
+    {"name": "organizationId", "type": "string"},
+    {"name": "externalChannelId", "type": "string"},
+    {"name": "token", "type": ["null", "string"]},
+    {"name": "connectionState", "type": {"name": "ChannelConnectionState", "type": "enum", "symbols": ["CONNECTED", "DISCONNECTED"]}},
+    {"name": "imageUrl", "type": ["null", "string"], "default":  null}
+  ]
+}

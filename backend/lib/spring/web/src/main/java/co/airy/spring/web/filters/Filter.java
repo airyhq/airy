@@ -1,4 +1,4 @@
-package backend.lib.spring.web.src.main.java.co.airy.spring.web.filters;
+package co.airy.spring.web.filters;
 
 public interface Filter<T, K> {
 

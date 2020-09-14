@@ -1,4 +1,4 @@
-package backend.lib.kafka.test.src.main.java.co.airy.kafka.test.junit;
+package co.airy.kafka.test.junit;
 
 import co.airy.kafka.test.KafkaTestCluster;
 import lombok.extern.slf4j.Slf4j;

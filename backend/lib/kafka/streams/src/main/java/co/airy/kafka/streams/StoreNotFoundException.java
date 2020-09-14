@@ -1,4 +1,4 @@
-package backend.lib.kafka.streams.src.main.java.co.airy.kafka.streams;
+package co.airy.kafka.streams;
 
 public class StoreNotFoundException extends RuntimeException {
 

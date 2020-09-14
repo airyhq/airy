@@ -5,7 +5,7 @@ java_library(
     srcs = glob(["src/main/java/co/airy/spring/core/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//apps/lib/log",
+        "//backend/lib/log",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
         "@maven//:com_github_ben_manes_caffeine_caffeine",
         "@maven//:io_opentracing_opentracing_api",
@@ -18,7 +18,7 @@ java_library(
     ],
     deps = [
         "//:jackson",
-        "//apps/lib/log",
+        "//backend/lib/log",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
         "@maven//:com_github_ben_manes_caffeine_caffeine",
         "@maven//:io_opentracing_opentracing_api",

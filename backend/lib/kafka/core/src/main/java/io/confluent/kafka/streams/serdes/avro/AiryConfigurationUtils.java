@@ -1,4 +1,4 @@
-package backend.lib.kafka.core.src.main.java.io.confluent.kafka.streams.serdes.avro;
+package io.confluent.kafka.streams.serdes.avro;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package backend.lib.kafka.test.src.main.java.co.airy.kafka.test;
+package co.airy.kafka.test;
 
 import co.airy.kafka.core.deserializer.KafkaHybridDeserializer;
 import co.airy.kafka.core.serializer.KafkaHybridSerializer;

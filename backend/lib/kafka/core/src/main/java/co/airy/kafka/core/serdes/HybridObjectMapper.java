@@ -1,4 +1,4 @@
-package backend.lib.kafka.core.src.main.java.co.airy.kafka.core.serdes;
+package co.airy.kafka.core.serdes;
 
 import co.airy.kafka.core.serializer.AvroGenericArraySerializer;
 import com.fasterxml.jackson.annotation.JsonCreator;

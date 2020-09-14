@@ -1,4 +1,4 @@
-package backend.lib.kafka.streams.src.main.java.co.airy.kafka.streams.processor;
+package co.airy.kafka.streams.processor;
 
 import co.airy.kafka.schema.Topic;
 import org.apache.avro.Schema;

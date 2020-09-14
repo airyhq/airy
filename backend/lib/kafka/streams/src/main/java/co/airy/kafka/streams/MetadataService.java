@@ -1,4 +1,4 @@
-package backend.lib.kafka.streams.src.main.java.co.airy.kafka.streams;
+package co.airy.kafka.streams;
 
 import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.streams.state.StreamsMetadata;

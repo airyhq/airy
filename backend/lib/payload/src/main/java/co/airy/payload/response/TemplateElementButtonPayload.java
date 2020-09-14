@@ -1,4 +1,4 @@
-package backend.lib.payload.src.main.java.co.airy.payload.response;
+package co.airy.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

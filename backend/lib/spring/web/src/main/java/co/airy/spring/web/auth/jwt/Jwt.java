@@ -1,4 +1,4 @@
-package backend.lib.spring.web.src.main.java.co.airy.spring.web.auth.jwt;
+package co.airy.spring.web.auth.jwt;
 
 import co.airy.spring.web.auth.AuthenticationException;
 import io.jsonwebtoken.Claims;

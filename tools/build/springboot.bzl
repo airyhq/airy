@@ -152,6 +152,21 @@ def springboot(name, main_class, deps, srcs, resources = []):
         outs = ["app_springboot.jar"],
     )
 
+    container_image(
+        name = "image",
+        base = "//:base_image",
+        files = [":genjar"],
+        cmd = [
+            "java",
+            "-XshowSettings:vm",
+            "-XX:MaxRAMPercentage=70",
+            "-XX:-UseCompressedOops",
+            "-jar",
+            "app_springboot.jar",
+            "-Dsun.net.inetaddr.ttl=0",
+        ],
+    )
+
     # MASTER RULE: Create the composite rule that will aggregate the outputs of the subrules
     _springboot_rule(
         name = name,

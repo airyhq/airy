@@ -25,21 +25,3 @@ load("//tools/build:junit5.bzl", "junit5")
     )
     for file in glob(["src/test/java/**/*Test.java"])
 ]
-
-load("@io_bazel_rules_docker//container:container.bzl", "container_image")
-
-container_image(
-    name = "image",
-    base = "//:base_image",
-    files = [":genjar"],
-    cmd = [
-        "java",
-        "-XshowSettings:vm",
-        "-XX:MaxRAMPercentage=70",
-        "-XX:-UseCompressedOops",
-        "-jar",
-        "app_springboot.jar",
-        "-Dsun.net.inetaddr.ttl=0",
-    ],
-)
-

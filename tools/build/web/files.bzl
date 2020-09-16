@@ -9,7 +9,7 @@ def _copy_filegroup_impl(ctx):
     for f in all_input_files:
         path = f.path.replace(build_path, "")
         out = ctx.actions.declare_file(path)
-        all_outputs += [out]
+        all_outputs.append(out)
         ctx.actions.run_shell(
             outputs = [out],
             inputs = depset([f]),

@@ -1,5 +1,5 @@
 load("@rules_java//java:defs.bzl", "java_binary")
-load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_push")
+load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 # Spring Boot Executable JAR Layout specification
 # reverse engineered from the Spring Boot maven plugin
 # /
@@ -137,7 +137,7 @@ def springboot(name, main_class, deps, srcs, resources = []):
 
     # SUBRULE 4: INVOKE THE BASH SCRIPT THAT DOES THE PACKAGING
     # The resolved input_file_paths array is made available as the $(SRCS) token in the cmd string.
-    # Skylark will convert the logical input_file_paths into real file system paths when surfaced in $(SRCS)
+    # Starlark will convert the logical input_file_paths into real file system paths when surfaced in $(SRCS)
     #  cmd format (see springboot_pkg.sh)
     #    param1: boot application classname (the @SpringBootApplication class)
     #    param2: executable jar output filename to write to

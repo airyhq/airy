@@ -91,7 +91,7 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
 
                                 return messagingList.stream().map(messaging -> {
                                     try {
-                                        return KeyValue.pair(entry.getId(), Pair.with(messageParser.getSourceContactId(messaging), messaging.toString()));
+                                        return KeyValue.pair(entry.getId(), Pair.with(messageParser.getSourceConversationId(messaging), messaging.toString()));
                                     } catch (Exception e) {
                                         log.warn("Skipping facebook error for record " + entry.toString(), e);
                                         return null;
@@ -103,11 +103,11 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                 })
                 .join(channelsTable, Pair::add)
                 .map((facebookId, triplet) -> {
-                    final String sourceContactId = triplet.getValue0();
+                    final String sourceConversationId = triplet.getValue0();
                     final String payload = triplet.getValue1();
                     final Channel channel = triplet.getValue2();
 
-                    final String conversationId = UUIDV5.fromNamespaceAndName(channel.getId(), sourceContactId).toString();
+                    final String conversationId = UUIDV5.fromNamespaceAndName(channel.getId(), sourceConversationId).toString();
                     final String messageId = UUIDV5.fromNamespaceAndName(channel.getId(), payload).toString();
 
                     try {
@@ -158,7 +158,7 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                                             .setId(conversationId)
                                             .setChannelId(channelId)
                                             .setCreatedAt(message.getSentAt())
-                                            .setSourceContactId(message.getSenderId()) // Facebook messages are always started by a contact
+                                            .setSourceConversationId(message.getSenderId()) // Facebook messages are always started by a contact
                                             .setLocale(null)
                                             .build();
 

@@ -1,8 +1,8 @@
-app_deps = [
-
-]
-
 load("//tools/build:springboot.bzl", "springboot")
+load("//tools/build:junit5.bzl", "junit5")
+
+app_deps = [
+]
 
 springboot(
     name = "core",
@@ -10,8 +10,6 @@ springboot(
     main_class = "co.airy.core.Main",
     deps = app_deps,
 )
-
-load("//tools/build:junit5.bzl", "junit5")
 
 [
     junit5(

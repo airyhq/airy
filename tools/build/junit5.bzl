@@ -12,13 +12,16 @@ def junit5(file, size = "small", deps = [], data = [], resources = []):
     ]
     for dep in deps:
         all_deps.append(dep)
+
     java_test(
+        # Remove src/test/java/ prefix and java suffix
         name = file[14:-5].replace("/", "."),
         main_class = "org.junit.platform.console.ConsoleLauncher",
         use_testrunner = False,
         size = size,
         args = [
             "--select-class %s" % file[14:-5].replace("/", "."),
+            "--fail-if-no-tests",
         ],
         srcs = [
             "%s" % file,

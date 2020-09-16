@@ -1,3 +1,6 @@
+load("//tools/build:springboot.bzl", "springboot")
+load("//tools/build:junit5.bzl", "junit5")
+
 app_deps = [
     "//backend/avro/communication:channel",
     "//backend/avro/communication:message",
@@ -16,16 +19,12 @@ app_deps = [
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
 ]
 
-load("//tools/build:springboot.bzl", "springboot")
-
 springboot(
     name = "messages-upserter",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,
 )
-
-load("//tools/build:junit5.bzl", "junit5")
 
 [
     junit5(

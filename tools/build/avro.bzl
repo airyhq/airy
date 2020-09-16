@@ -31,7 +31,7 @@ def _impl(ctx):
         "mkdir -p {gen_dir}".format(gen_dir = gen_dir),
         _new_generator_command(ctx, " ".join(src_dirs), gen_dir),
         # forcing a timestamp for deterministic artifacts
-        "find {gen_dir} -exec touch -t 198001010000 {{}} \;".format(
+        "find {gen_dir} -exec touch -t 198001010000 {{}} \\;".format(
             gen_dir = gen_dir,
         ),
         "{jar} cMf {output} -C {gen_dir} .".format(

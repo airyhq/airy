@@ -1,4 +1,5 @@
 load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
+load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 alias(
     name = "check",
@@ -9,8 +10,6 @@ alias(
     name = "fix",
     actual = "//tools/code-format:fix",
 )
-
-load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 container_image(
     name = "base_image",

@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Mount bazel cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: "/home/runner/.cache/bazel"
           key: bazel
@@ -23,15 +23,15 @@ jobs:
           mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
           chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
 
-# TODO uncomment once there are tests
-#      - name: Test
-#        run: |
-#          "${GITHUB_WORKSPACE}/bin/bazel" test //...
+      - name: Build
+        run: |
+          "${GITHUB_WORKSPACE}/bin/bazel" build //...
 
       - name: Lint
         run: |
           "${GITHUB_WORKSPACE}/bin/bazel" run //:check
 
-      - name: Build
+      - name: Test
         run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" build //...
+          "${GITHUB_WORKSPACE}/bin/bazel" test //...
+

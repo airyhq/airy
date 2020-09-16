@@ -155,7 +155,7 @@ class MessagesUpserterIntegrationTest {
         messages.forEach(m -> log.info("conversation id {}", m.getConversationId()));
 
         Map<String, String> conversationIdToSourceContact = conversations.stream()
-                .collect(toMap(Conversation::getSourceContactId, Conversation::getId));
+                .collect(toMap(Conversation::getSourceConversationId, Conversation::getId));
 
         messagesPerContact.forEach((conversationId, expectedCount) -> {
             assertEquals(messages.stream().filter(m -> m.getConversationId().equals(conversationId)).count(), expectedCount.longValue());

@@ -1,4 +1,5 @@
 load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/build:junit5.bzl", "junit5")
 
 lib_deps = [
     "//backend/lib/kafka/schema:kafka-schema",
@@ -22,8 +23,6 @@ java_library(
     ],
     deps = lib_deps,
 )
-
-load("//tools/build:junit5.bzl", "junit5")
 
 [
     junit5(

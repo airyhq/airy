@@ -1,4 +1,3 @@
-load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/build:avro.bzl", "avro_java_library")
 
 avro_java_library(

@@ -18,7 +18,7 @@ public class MessageParser {
     @Value("${facebook.app-id}")
     private String facebookAppId;
 
-    String getSourceContactId(final JsonNode webhookMessaging) throws NullPointerException {
+    String getSourceConversationId(final JsonNode webhookMessaging) throws NullPointerException {
         final JsonNode message = webhookMessaging.get("message");
 
         boolean isEcho = message != null && message.get("is_echo") != null && message.get("is_echo").asBoolean();
@@ -44,7 +44,7 @@ public class MessageParser {
 
         if (!isEcho) {
             senderType = SenderType.SOURCE_CONTACT;
-            senderId = getSourceContactId(webhookMessaging);
+            senderId = getSourceConversationId(webhookMessaging);
         } else if (appId != null && !appId.equals(this.facebookAppId)) {
             senderType = SenderType.SOURCE_USER;
             senderId = appId;

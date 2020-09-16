@@ -129,9 +129,13 @@ public class TestHelper {
         return records.stream().map(ConsumerRecord::value).collect(toList());
     }
 
+    public <T, S> void produceRecord(ProducerRecord<T, S> record) throws ExecutionException, InterruptedException {
+        producer.send(record).get();
+    }
+
     public <T, S> void produceRecords(List<ProducerRecord<T, S>> records) throws ExecutionException, InterruptedException {
         for (ProducerRecord<T, S> record : records) {
-            producer.send(record).get();
+            produceRecord(record);
         }
     }
 

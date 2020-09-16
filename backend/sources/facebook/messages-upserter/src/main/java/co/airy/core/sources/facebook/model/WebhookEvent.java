@@ -1,4 +1,4 @@
-package co.airy.sources.facebook.model;
+package co.airy.core.sources.facebook.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

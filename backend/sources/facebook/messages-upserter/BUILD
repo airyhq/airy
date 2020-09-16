@@ -3,7 +3,6 @@ app_deps = [
     "//backend/avro/communication:message",
     "//backend/avro/communication:conversation",
     "//backend/avro/communication:conversation-state",
-    "//backend/sources/facebook/avro:facebook-transformed-event-key",
     "//backend/lib/uuid",
     "//backend/lib/payload",
     "//backend/lib/kafka/schema:kafka-schema",
@@ -25,3 +24,18 @@ springboot(
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,
 )
+
+load("//tools/build:junit5.bzl", "junit5")
+
+[
+    junit5(
+        size = "medium",
+        file = file,
+        resources = glob(["src/test/resources/**/*"]),
+        deps = [
+            ":app",
+            "//backend/lib/kafka/test:kafka-test",
+        ] + app_deps,
+    )
+    for file in glob(["src/test/java/**/*IntegrationTest.java"])
+]

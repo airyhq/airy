@@ -1,9 +1,0 @@
-{
-  "namespace": "co.airy.sources.avro.facebook",
-  "name": "FacebookTransformedEventKey",
-  "type": "record",
-  "fields": [
-    {"name": "channelId", "type": "string"},
-    {"name": "sourceContactId", "type": "string"}
-  ]
-}

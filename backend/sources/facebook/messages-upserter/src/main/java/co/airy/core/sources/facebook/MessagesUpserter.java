@@ -1,6 +1,7 @@
-package co.airy.sources.facebook;
+package co.airy.core.sources.facebook;
 
 import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Conversation;
 import co.airy.avro.communication.ConversationState;
 import co.airy.avro.communication.Message;
@@ -12,7 +13,7 @@ import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.payload.headers.SenderType;
-import co.airy.sources.facebook.model.WebhookEvent;
+import co.airy.core.sources.facebook.model.WebhookEvent;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -22,10 +23,10 @@ import lombok.NoArgsConstructor;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.Named;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
@@ -35,6 +36,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import co.airy.uuid.UUIDV5;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -58,12 +60,15 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
     @Autowired
     private MessageParser messageParser;
 
+    private final String appId = "sources.facebook.MessagesUpserter";
+
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
         KTable<String, Channel> channelsTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
                 .groupBy((k, v) -> v.getExternalChannelId())
-                .reduce((aggValue, newValue) -> newValue);
+                .reduce((aggValue, newValue) -> newValue)
+                .filter((externalChannelId, channel) -> channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
         builder.<String, String>stream(new SourceFacebookEvents().name())
                 .flatMap((key, event) -> {
@@ -131,7 +136,7 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                                 .message(null)
                                 .offset(0L)
                                 .build()
-                        , (aggKey, message, aggregate) -> {
+                        ,(aggKey, message, aggregate) -> {
                             final long newOffset = aggregate.getOffset() + 1;
                             message.setOffset(newOffset);
 
@@ -142,10 +147,9 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                         })
                 .toStream()
                 .foreach(
-                        (transformedEventKey, aggregationDTO) -> {
+                        (conversationId, aggregationDTO) -> {
                             final Message message = aggregationDTO.getMessage();
                             final long offset = message.getOffset();
-                            final String conversationId = message.getConversationId();
                             final String channelId = message.getChannelId();
 
                             try {
@@ -172,17 +176,18 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                             } catch (Exception e) {
                                 log.error("Failed to upsert message and/or conversation {}", message, e);
                             }
-                        },
-                        Named.as("transformedEventsAggregateToStreamForEach"));
+                        });
+
+        streams.start(builder.build(), appId);
     }
 
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    private static class ConversationAggregationDTO {
-        private Long offset;
-        private Message message;
+    static class ConversationAggregationDTO implements Serializable {
+        Long offset;
+        Message message;
     }
 
     @Override
@@ -191,6 +196,19 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
     }
 
     @Override
-    public void destroy() throws Exception {
+    public void destroy() {
+        if (streams != null) {
+            streams.close();
+        }
+    }
+
+
+    /**
+     * Visible For Testing
+     *
+     * @return The state of the kafka stream
+     */
+    KafkaStreams.State getStreamState() {
+        return streams.state();
     }
 }

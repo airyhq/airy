@@ -1,4 +1,4 @@
-package co.airy.sources.facebook;
+package co.airy.core.sources.facebook;
 
 import co.airy.avro.communication.Message;
 import co.airy.payload.headers.SenderType;

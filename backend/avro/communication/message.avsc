@@ -46,6 +46,15 @@
       "name": "sentAt",
       "type": "long",
       "logicalType": "timestamp-millis"
+    },
+    {
+      "name": "updatedAt",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null,
+      "logicalType": "timestamp-millis"
     }
   ]
 }

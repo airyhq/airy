@@ -23,9 +23,6 @@ public class ChannelPayload {
     private String source;
 
     @JsonInclude(NON_NULL)
-    private String organizationId;
-
-    @JsonInclude(NON_NULL)
     private String externalChannelId;
 
     @JsonInclude(NON_NULL)

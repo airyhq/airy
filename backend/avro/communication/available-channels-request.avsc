@@ -4,7 +4,6 @@
   "type": "record",
   "fields": [
     {"name": "id", "type": "string"},
-    {"name": "organizationId", "type": "string"},
     {"name": "token", "type": ["null", "string"]}
   ]
 }

@@ -75,10 +75,6 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
                 ThreadContext.put("appId", sanitizedHeaders.get("app_id"));
 
                 JsonNode jsonPayload = objectMapper.readValue(payload, JsonNode.class);
-
-                if (jsonPayload != null) {
-                    ThreadContext.put("organizationId", jsonPayload.get("organization_id").asText());
-                }
             }
         } catch (Exception ignored) {
         }

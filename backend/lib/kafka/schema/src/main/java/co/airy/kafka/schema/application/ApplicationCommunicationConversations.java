@@ -4,10 +4,10 @@ import co.airy.kafka.schema.ApplicationCommunication;
 
 import java.util.Map;
 
-public class ApplicationCommunicationConversationsV2 extends ApplicationCommunication {
+public class ApplicationCommunicationConversations extends ApplicationCommunication {
     @Override
     public String dataset() {
-        return "conversations-v2";
+        return "conversations";
     }
 
     @Override

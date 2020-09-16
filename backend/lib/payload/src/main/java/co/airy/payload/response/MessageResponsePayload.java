@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import co.airy.log.AiryLoggerFactory;
-import org.slf4j.Logger;
 
 import java.io.Serializable;
 import java.util.List;

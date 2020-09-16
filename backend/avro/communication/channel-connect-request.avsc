@@ -4,7 +4,6 @@
   "type": "record",
   "fields": [
     {"name": "id", "type": "string"},
-    {"name": "organizationId", "type": "string"},
     {"name": "externalChannelId", "type": ["null", "string"]},
     {"name": "token", "type": ["null", "string"]},
     {"name": "action", "type": {"name": "ChannelConnectAction", "type": "enum", "symbols": ["Connect", "Disconnect"]}},

@@ -26,57 +26,38 @@ Header data contains information that is important for downstream processing tel
 
     The following key/values need to be implemented by sources
 
-    - `SOURCE_MESSAGE_TYPE` string
+    - `SOURCE` string source that ingested the message `FACEBOOK`, `GOOGLE`, `SMS_TWILIO` etc.
 
-        One of:
+    Optional headers:
 
-        - `MESSAGE` default
-        - `POSTBACK` message triggered in response to an automation template
-        - `QUICK_REPLY` special Facebook type of postback that carries contact information
-        - `ECHO` e.g. Facebook sends an echo back for every message we send
-        - `REQUEST_LIVE_AGENT` message is an event indicating that user wants to talk to a human agent
-
-    - `SENT_VIA` string
-
-        One of:
-
-        - `AppUser` message sent by user but not via Airy (e.g. via Facebook page messaging)
-        - `Bot` message sent by a bot we operate
-        - `Postback` analogous to `SOURCE_MESSAGE_TYPE == POSTBACK`
-        - `SourceContact` message sent by contact
-        - `SourceContact` message sent by user of one of our clients
-
-    - `SOURCE_TYPE` string source that ingested the message `FACEBOOK`, `GOOGLE`, `SMS_TWILIO` etc.
-
-    Optional headers that are in use right now
-
-    - `CONTAINS_ATTACHMENT` boolean used to indicate the presence of a Facebook `attachment_id`
     - `TRIGGER_TYPE` string generic postback payload for the airy automation platform
 
 
 - `id` uuid
 
-message id for deduplication and joining body data
+Message id for deduplication and joining body data
 
-- `senderOrigin` string
+- `senderType` string
 
-What type of actor inserted the message. Possible values: `CONTACT`, `USER` or `AIRY` for test generated messages.
+What type of actor inserted the message. One of:
+
+    - `SOURCE_CONTACT` messagesent by a contact to the user source
+    - `SOURCE_USER` sent to the source by the user but not via app
+    - `APP_USER` sent to source via app
 
 - `senderId` string
 
-Identifier of the sending actor. Set to `channelId` for `senderOrigin == "USER"` and `conversationId` for `senderOrigin == "CONTACT"`.
+Identifies the participant that sent the message. Interpretation is based on the value of `senderType` like so:
 
-- `conversationId` string
+| senderType     | senderId                                            |
+|----------------|-----------------------------------------------------|
+| SOURCE_CONTACT | source contact id (e.g. Facebook page scoped id)    |
+| APP_USER       | app channel id                                      |
+| SOURCE_USER    | source dependent (e.g. Facebook third party app id) |
 
-- `preview` record
 
-    - `displayText` string
+- `conversationId` uuid
 
-        Full text for text messages. Otherwise, source specific description of the attachment type.
-
-    - `contentType` string
-
-        One of `text`, `postback`, `template`, `image`, `video`, `audio` or `file`
 
 ## Contact
 

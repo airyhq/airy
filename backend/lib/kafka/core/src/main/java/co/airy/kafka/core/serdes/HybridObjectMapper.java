@@ -10,8 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.cfg.MutableConfigOverride;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import org.javatuples.Decade;
 import org.javatuples.Ennead;
@@ -25,13 +26,15 @@ import org.javatuples.Triplet;
 import org.javatuples.Tuple;
 
 import java.util.List;
+import java.util.Map;
 
 public class HybridObjectMapper extends ObjectMapper {
 
     public HybridObjectMapper() {
-        enableDefaultTyping(DefaultTyping.NON_FINAL);
+        activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.EVERYTHING);
 
-        configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+        // making use of the suggested alternative to this deprecated  api requires massive changes which might not even
+        // be compatible with the way KafkaStreams gets passed an object mapper.
         configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
 
         setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -40,7 +43,9 @@ public class HybridObjectMapper extends ObjectMapper {
         addMixIn(org.apache.avro.specific.SpecificData.class, IgnoreAvro.class);
 
         configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+
+        final MutableConfigOverride maoConfigOverride = configOverride(Map.class);
+        maoConfigOverride.setInclude(JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL));
 
         addMixIn(Pair.class, TuplesMixIn.class);
         addMixIn(Tuple.class, TuplesMixIn.class);
@@ -53,21 +58,18 @@ public class HybridObjectMapper extends ObjectMapper {
         addMixIn(Ennead.class, TuplesMixIn.class);
         addMixIn(Decade.class, TuplesMixIn.class);
 
-        addMixIn(Long.class, WriteTypeInfoMixIn.class);
         addMixIn(List.class, GenericDataArrayMixIn.class);
 
         registerModule(new AfterburnerModule());
     }
 
-
-    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_ARRAY)
-    private abstract static class WriteTypeInfoMixIn {}
-
     @JsonSerialize(using = AvroGenericArraySerializer.class)
-    private abstract static class GenericDataArrayMixIn {}
+    private abstract static class GenericDataArrayMixIn {
+    }
 
     @JsonIgnoreType
-    private static class IgnoreAvro {}
+    private static class IgnoreAvro {
+    }
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_ARRAY)
     @JsonIgnoreProperties("size")

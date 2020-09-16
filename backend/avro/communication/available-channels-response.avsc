@@ -4,7 +4,6 @@
   "type": "record",
   "fields": [
     {"name": "id", "type": "string"},
-    {"name": "organizationId", "type": "string"},
     {"name": "source", "type": "string"},
     {
       "name": "availableChannels",

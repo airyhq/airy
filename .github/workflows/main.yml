@@ -10,11 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-#      - name: Mount bazel cache
-#        uses: actions/cache@v2
-#        with:
-#          path: "/home/runner/.cache/bazel"
-#          key: bazel
+      - uses: joschi/setup-jdk@v2
+        with:
+          java-version: '11'
+          architecture: 'x64'
+
+      - name: Mount bazel cache
+        uses: actions/cache@v2
+        with:
+          path: "/home/runner/.cache/bazel"
+          key: bazel
 
       - name: Install bazelisk
         run: |

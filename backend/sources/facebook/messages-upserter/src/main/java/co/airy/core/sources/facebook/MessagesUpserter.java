@@ -3,10 +3,8 @@ package co.airy.core.sources.facebook;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Conversation;
-import co.airy.avro.communication.ConversationState;
 import co.airy.avro.communication.Message;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationConversationStates;
 import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
@@ -66,9 +64,9 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
         final StreamsBuilder builder = new StreamsBuilder();
 
         KTable<String, Channel> channelsTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
-                .groupBy((k, v) -> v.getExternalChannelId())
+                .groupBy((k, v) -> v.getSourceChannelId())
                 .reduce((aggValue, newValue) -> newValue)
-                .filter((externalChannelId, channel) -> channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
+                .filter((sourceChannelId, channel) -> channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
         builder.<String, String>stream(new SourceFacebookEvents().name())
                 .flatMap((key, event) -> {
@@ -162,13 +160,7 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                                             .setLocale(null)
                                             .build();
 
-                                    final ConversationState conversationState = ConversationState.newBuilder()
-                                            .setState("OPEN")
-                                            .setCreatedAt(message.getSentAt())
-                                            .build();
-
                                     producer.send(new ProducerRecord<>(new ApplicationCommunicationConversations().name(), conversationId, conversation)).get();
-                                    producer.send(new ProducerRecord<>(new ApplicationCommunicationConversationStates().name(), conversationId, conversationState)).get();
                                 }
 
                                 producer.send(new ProducerRecord<>(new ApplicationCommunicationMessages().name(), message.getId(), message)).get();

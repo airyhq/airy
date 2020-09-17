@@ -1,5 +1,6 @@
 package co.airy.payload.headers;
 
+// Refer to docs/data-model.md
 public enum SenderType {
     SOURCE_CONTACT("SOURCE_CONTACT"),
     SOURCE_USER("SOURCE_USER"),

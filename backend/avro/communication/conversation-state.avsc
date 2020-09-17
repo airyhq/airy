@@ -1,9 +1,0 @@
-{
-  "namespace": "co.airy.avro.communication",
-  "name": "ConversationState",
-  "type": "record",
-  "fields": [
-    {"name": "createdAt", "type": "long", "logicalType": "timestamp-millis"},
-    {"name": "state", "type": "string"}
-  ]
-}

@@ -5,7 +5,6 @@ app_deps = [
     "//backend/avro/communication:channel",
     "//backend/avro/communication:message",
     "//backend/avro/communication:conversation",
-    "//backend/avro/communication:conversation-state",
     "//backend/lib/uuid",
     "//backend/lib/payload",
     "//backend/lib/kafka/schema:kafka-schema",
@@ -14,7 +13,6 @@ app_deps = [
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/kafka/schema:application-communication-conversations",
-    "//backend/lib/kafka/schema:application-communication-conversation-states",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
 ]

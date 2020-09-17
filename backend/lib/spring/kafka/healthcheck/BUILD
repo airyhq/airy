@@ -5,15 +5,14 @@ avro_java_library(
     srcs = ["healtcheck.avsc"],
 )
 
-# TODO decide what to do with healthcheck
-# java_library(
-#     name = "healthcheck",
-#     srcs = glob(["**/*.java"]),
-#     visibility = ["//visibility:public"],
-#     deps = [
-#         ":healthcheck_schema",
-#         "//backend/lib/kafka/core:kafka-core",
-#         "//backend/lib/kafka/schema:ops-application-health",
-#         "//backend/lib/spring/core:spring-core",
-#     ],
-# )
+java_library(
+    name = "healthcheck",
+    srcs = glob(["**/*.java"]),
+    visibility = ["//visibility:public"],
+    deps = [
+        ":healthcheck_schema",
+        "//backend/lib/kafka/core:kafka-core",
+        "//backend/lib/kafka/schema:ops-application-health",
+        "//backend/lib/spring/core:spring-core",
+    ],
+)

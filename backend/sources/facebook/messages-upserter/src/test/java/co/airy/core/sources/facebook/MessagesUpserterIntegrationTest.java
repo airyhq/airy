@@ -6,7 +6,6 @@ import co.airy.avro.communication.Conversation;
 import co.airy.avro.communication.Message;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationConversationStates;
 import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
@@ -42,7 +41,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Slf4j
 @SpringBootTest(properties = {
         "kafka.cleanup=true",
         "kafka.commit-interval-ms=100",
@@ -59,7 +57,6 @@ class MessagesUpserterIntegrationTest {
     private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final Topic applicationCommunicationConversations = new ApplicationCommunicationConversations();
-    private static final Topic applicationCommunicationConversationStates = new ApplicationCommunicationConversationStates();
 
     @Autowired
     private MessagesUpserter worker;
@@ -72,8 +69,7 @@ class MessagesUpserterIntegrationTest {
                 sourceFacebookEvents,
                 applicationCommunicationChannels,
                 applicationCommunicationMessages,
-                applicationCommunicationConversations,
-                applicationCommunicationConversationStates
+                applicationCommunicationConversations
         );
 
         testHelper.beforeAll();
@@ -114,7 +110,7 @@ class MessagesUpserterIntegrationTest {
             testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                     .setId(channelId)
                     .setConnectionState(ChannelConnectionState.CONNECTED)
-                    .setExternalChannelId(pageId)
+                    .setSourceChannelId(pageId)
                     .setName("fb-page-a")
                     .setSource("FACEBOOK")
                     .setToken("")
@@ -140,6 +136,7 @@ class MessagesUpserterIntegrationTest {
         // somewhat close to reality
         Collections.shuffle(facebookMessageRecords);
 
+        // Wait for the channels table to catch up
         TimeUnit.SECONDS.sleep(5);
 
         testHelper.produceRecords(facebookMessageRecords);
@@ -152,10 +149,6 @@ class MessagesUpserterIntegrationTest {
 
         List<Message> messages = testHelper.consumeValues(totalMessages, applicationCommunicationMessages.name());
         assertThat(messages, hasSize(totalMessages));
-        messages.forEach(m -> log.info("conversation id {}", m.getConversationId()));
-
-        Map<String, String> conversationIdToSourceContact = conversations.stream()
-                .collect(toMap(Conversation::getSourceConversationId, Conversation::getId));
 
         messagesPerContact.forEach((conversationId, expectedCount) -> {
             assertEquals(messages.stream().filter(m -> m.getConversationId().equals(conversationId)).count(), expectedCount.longValue());

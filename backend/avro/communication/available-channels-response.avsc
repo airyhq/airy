@@ -13,7 +13,7 @@
           "type": "record",
           "name": "AvailableChannel",
           "fields": [
-            {"name": "externalChannelId", "type": "string"},
+            {"name": "sourceChannelId", "type": "string"},
             {"name": "name", "type": "string"},
             {"name": "url", "type": ["null", "string"]},
             {"name": "connected", "type": "boolean"}

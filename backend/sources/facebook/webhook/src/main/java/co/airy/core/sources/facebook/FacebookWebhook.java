@@ -1,6 +1,7 @@
 package co.airy.core.sources.facebook;
 
 import co.airy.kafka.schema.source.SourceFacebookEvents;
+import co.airy.spring.kafka.healthcheck.ProducerHealthCheck;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -16,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +27,7 @@ import java.util.UUID;
 @RestController
 public class FacebookWebhook implements ApplicationListener<ApplicationReadyEvent>, DisposableBean {
 
-    private String sourceFacebookEvents = new SourceFacebookEvents().name();
+    private final String sourceFacebookEvents = new SourceFacebookEvents().name();
 
     @Value("${kafka.brokers}")
     private String brokers;
@@ -44,6 +44,15 @@ public class FacebookWebhook implements ApplicationListener<ApplicationReadyEven
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
         producer = new KafkaProducer<>(props);
+    }
+
+    @Autowired
+    private ProducerHealthCheck producerHealthCheck;
+
+    @GetMapping("/health")
+    ResponseEntity<Void> health() throws Exception {
+        producerHealthCheck.sendHealthCheck();
+        return ResponseEntity.ok().build();
     }
 
     // https://developers.facebook.com/docs/graph-api/webhooks/getting-started

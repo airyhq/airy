@@ -23,7 +23,7 @@ public class ChannelPayload {
     private String source;
 
     @JsonInclude(NON_NULL)
-    private String externalChannelId;
+    private String sourceChannelId;
 
     @JsonInclude(NON_NULL)
     private String imageUrl;

@@ -25,7 +25,3 @@ avro_java_library(
 avro_java_library(
     name = "message",
 )
-
-avro_java_library(
-    name = "conversation-state",
-)

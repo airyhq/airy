@@ -43,7 +43,6 @@ maven_install(
         "com.github.ben-manes.caffeine:caffeine:2.8.0",
         "com.github.spullara.mustache.java:compiler:0.9.6",
         "com.jayway.jsonpath:json-path:2.4.0",
-        "com.mandrillapp.wrapper.lutung:lutung:0.0.8",
         "io.confluent:kafka-avro-serializer:5.4.1",
         "io.confluent:kafka-schema-registry-client:5.4.1",
         "io.confluent:kafka-schema-registry:5.4.1",

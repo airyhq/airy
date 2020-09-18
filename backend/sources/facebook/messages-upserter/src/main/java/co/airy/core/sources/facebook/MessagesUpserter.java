@@ -4,13 +4,13 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Conversation;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.payload.headers.SenderType;
 import co.airy.core.sources.facebook.model.WebhookEvent;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -111,7 +111,7 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                     try {
                         final Message.Builder messageBuilder = messageParser.parse(payload);
 
-                        final String senderId = SenderType.APP_USER.toString().equals(messageBuilder.getSenderType()) ? channel.getId() : messageBuilder.getSenderId();
+                        final String senderId = SenderType.APP_USER.equals(messageBuilder.getSenderType()) ? channel.getId() : messageBuilder.getSenderId();
 
                         return KeyValue.pair(
                                 conversationId,

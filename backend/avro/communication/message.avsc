@@ -20,7 +20,15 @@
     },
     {
       "name": "senderType",
-      "type": "string"
+      "type": {
+        "name": "SenderType",
+        "type": "enum",
+        "symbols": [
+          "SOURCE_CONTACT",
+          "SOURCE_USER",
+          "APP_USER"
+        ]
+      }
     },
     {
       "name": "senderId",

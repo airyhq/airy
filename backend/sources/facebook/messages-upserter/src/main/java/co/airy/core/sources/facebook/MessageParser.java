@@ -1,7 +1,7 @@
 package co.airy.core.sources.facebook;
 
 import co.airy.avro.communication.Message;
-import co.airy.payload.headers.SenderType;
+import co.airy.avro.communication.SenderType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,7 +72,7 @@ public class MessageParser {
 
         return Message.newBuilder()
                 .setContent(payload)
-                .setSenderType(senderType.getType())
+                .setSenderType(senderType)
                 .setSenderId(senderId)
                 .setHeaders(headers)
                 .setSentAt(webhookMessaging.get("timestamp").asLong());

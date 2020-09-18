@@ -7,7 +7,6 @@ java_library(
     exports = [
         "//backend/lib/log",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
-        "@maven//:com_github_ben_manes_caffeine_caffeine",
         "@maven//:javax_validation_validation_api",
         "@maven//:org_springframework_retry_spring_retry",
         "@maven//:org_springframework_spring_aop",
@@ -18,7 +17,6 @@ java_library(
         "//:jackson",
         "//backend/lib/log",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
-        "@maven//:com_github_ben_manes_caffeine_caffeine",
         "@maven//:javax_servlet_javax_servlet_api",
         "@maven//:javax_validation_validation_api",
         "@maven//:javax_xml_bind_jaxb_api",

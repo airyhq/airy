@@ -6,4 +6,4 @@ build --strategy=TypeScriptCompile=worker
 build --java_toolchain=@bazel_tools//tools/jdk:toolchain_java11 --host_java_toolchain=@bazel_tools//tools/jdk:toolchain_java11
 
 # Output test errors by default
-test --test_output=streamed
+test --test_output=errors

@@ -32,12 +32,16 @@ public class MessageParser {
         final JsonNode webhookMessaging = objectMapper.readTree(payload);
 
         final JsonNode message = webhookMessaging.get("message");
+        final JsonNode postbackNode = webhookMessaging.get("postback");
+
+        if (message == null && postbackNode == null) {
+            throw new NotAMessageException();
+        }
 
         final boolean isEcho = message != null && message.get("is_echo") != null && message.get("is_echo").asBoolean();
         final String appId = (message != null && message.get("app_id") != null && !message.get("app_id").isNull()) ? message.get("app_id").asText() : null;
 
 
-        final boolean isPostback = webhookMessaging.get("postback") != null;
 
         SenderType senderType;
         String senderId = null;
@@ -52,17 +56,16 @@ public class MessageParser {
             senderType = SenderType.APP_USER;
         }
 
-        final JsonNode postbackNode = webhookMessaging.get("postback");
 
         final Map<String, String> headers = new HashMap<>();
 
         headers.put("SOURCE", "FACEBOOK");
 
-        if (isPostback) {
+        if (postbackNode != null) {
             if (postbackNode.get("payload") != null) {
                 headers.put("POSTBACK_PAYLOAD", postbackNode.get("payload").textValue());
             } else {
-                headers.put("TRIGGER_TYPE", "__EMPTY_TRIGGER__");
+                headers.put("POSTBACK_PAYLOAD", "__EMPTY_TRIGGER__");
             }
         }
 

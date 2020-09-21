@@ -9,6 +9,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
+import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -54,6 +55,7 @@ class MessagesUpserterIntegrationTest {
     private static TestHelper testHelper;
 
     private static final Topic sourceFacebookEvents = new SourceFacebookEvents();
+    private static final Topic sourceFacebookTransformedEvents = new SourceFacebookTransformedEvents();
     private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final Topic applicationCommunicationConversations = new ApplicationCommunicationConversations();
@@ -67,6 +69,7 @@ class MessagesUpserterIntegrationTest {
     static void beforeAll() throws Exception {
         testHelper = new TestHelper(sharedKafkaTestResource,
                 sourceFacebookEvents,
+                sourceFacebookTransformedEvents,
                 applicationCommunicationChannels,
                 applicationCommunicationMessages,
                 applicationCommunicationConversations

@@ -9,6 +9,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
+import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.core.sources.facebook.model.WebhookEvent;
@@ -50,7 +51,6 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
 
     @Autowired
     private ObjectMapper mapper;
-
 
     @Autowired
     private KafkaProducer<String, SpecificRecordBase> producer;
@@ -100,6 +100,7 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                             .collect(toList());
                 })
                 .join(channelsTable, Pair::add)
+                .through(new SourceFacebookTransformedEvents().name())
                 .map((facebookId, triplet) -> {
                     final String sourceConversationId = triplet.getValue0();
                     final String payload = triplet.getValue1();
@@ -123,8 +124,11 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                                         .setConversationId(conversationId)
                                         .build()
                         );
+                    } catch (NotAMessageException e) {
+                        // This way we filter out conversation events
+                        return KeyValue.pair("skip", null);
                     } catch (Exception e) {
-                        log.warn("Skipping facebook error for record " + triplet, e);
+                        log.warn("skip facebook record for error" + triplet, e);
                         return KeyValue.pair("skip", null);
                     }
                 })

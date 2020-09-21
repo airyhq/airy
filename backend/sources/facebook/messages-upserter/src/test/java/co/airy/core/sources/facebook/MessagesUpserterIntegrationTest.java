@@ -2,11 +2,9 @@ package co.airy.core.sources.facebook;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.Conversation;
 import co.airy.avro.communication.Message;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
@@ -14,7 +12,6 @@ import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.uuid.UUIDV5;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -36,7 +33,6 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.stream.Collectors.toMap;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -58,7 +54,6 @@ class MessagesUpserterIntegrationTest {
     private static final Topic sourceFacebookTransformedEvents = new SourceFacebookTransformedEvents();
     private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
-    private static final Topic applicationCommunicationConversations = new ApplicationCommunicationConversations();
 
     @Autowired
     private MessagesUpserter worker;
@@ -71,8 +66,7 @@ class MessagesUpserterIntegrationTest {
                 sourceFacebookEvents,
                 sourceFacebookTransformedEvents,
                 applicationCommunicationChannels,
-                applicationCommunicationMessages,
-                applicationCommunicationConversations
+                applicationCommunicationMessages
         );
 
         testHelper.beforeAll();
@@ -143,12 +137,6 @@ class MessagesUpserterIntegrationTest {
         TimeUnit.SECONDS.sleep(5);
 
         testHelper.produceRecords(facebookMessageRecords);
-
-        List<Conversation> conversations = testHelper.consumeValues(pageIds.size() * usersPerPage,
-                applicationCommunicationConversations.name());
-
-        assertThat(conversations, hasSize(pageIds.size() * usersPerPage));
-        assertEquals(conversations.stream().map(Conversation::getChannelId).distinct().count(), pageIds.size());
 
         List<Message> messages = testHelper.consumeValues(totalMessages, applicationCommunicationMessages.name());
         assertThat(messages, hasSize(totalMessages));

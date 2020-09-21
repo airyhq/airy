@@ -3,10 +3,6 @@ load("//tools/build:avro.bzl", "avro_java_library")
 package(default_visibility = ["//visibility:public"])
 
 avro_java_library(
-    name = "conversation",
-)
-
-avro_java_library(
     name = "channel-connect-request",
 )
 

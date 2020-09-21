@@ -2,11 +2,9 @@ package co.airy.core.sources.facebook;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.Conversation;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
@@ -138,7 +136,7 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                                 .message(null)
                                 .offset(0L)
                                 .build()
-                        ,(aggKey, message, aggregate) -> {
+                        , (aggKey, message, aggregate) -> {
                             final long newOffset = aggregate.getOffset() + 1;
                             message.setOffset(newOffset);
 
@@ -151,24 +149,9 @@ public class MessagesUpserter implements DisposableBean, ApplicationListener<App
                 .foreach(
                         (conversationId, aggregationDTO) -> {
                             final Message message = aggregationDTO.getMessage();
-                            final long offset = message.getOffset();
-                            final String channelId = message.getChannelId();
 
                             try {
-                                if (offset == 1) {
-                                    final Conversation conversation = Conversation.newBuilder()
-                                            .setId(conversationId)
-                                            .setChannelId(channelId)
-                                            .setCreatedAt(message.getSentAt())
-                                            .setSourceConversationId(message.getSenderId()) // Facebook messages are always started by a contact
-                                            .setLocale(null)
-                                            .build();
-
-                                    producer.send(new ProducerRecord<>(new ApplicationCommunicationConversations().name(), conversationId, conversation)).get();
-                                }
-
                                 producer.send(new ProducerRecord<>(new ApplicationCommunicationMessages().name(), message.getId(), message)).get();
-
                             } catch (Exception e) {
                                 log.error("Failed to upsert message and/or conversation {}", message, e);
                             }

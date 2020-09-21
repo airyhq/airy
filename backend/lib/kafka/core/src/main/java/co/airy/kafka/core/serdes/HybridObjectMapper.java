@@ -33,10 +33,6 @@ public class HybridObjectMapper extends ObjectMapper {
     public HybridObjectMapper() {
         activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.EVERYTHING);
 
-        // making use of the suggested alternative to this deprecated  api requires massive changes which might not even
-        // be compatible with the way KafkaStreams gets passed an object mapper.
-        configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
-
         setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         addMixIn(org.apache.avro.Schema.class, IgnoreAvro.class);

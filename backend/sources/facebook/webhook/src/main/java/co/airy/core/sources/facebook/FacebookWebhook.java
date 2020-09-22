@@ -32,6 +32,9 @@ public class FacebookWebhook implements ApplicationListener<ApplicationReadyEven
     @Value("${kafka.brokers}")
     private String brokers;
 
+    @Value("${facebook.webhook-secret}")
+    private String webhookSecret;
+
     private Producer<String, String> producer;
 
     private void setup() {
@@ -58,7 +61,7 @@ public class FacebookWebhook implements ApplicationListener<ApplicationReadyEven
     // https://developers.facebook.com/docs/graph-api/webhooks/getting-started
     @GetMapping("/facebook")
     int verify(@RequestParam(value = "hub.challenge") int challenge, @RequestParam(value = "hub.verify_token") String verifyToken) {
-        if (!verifyToken.equals("ThisIsFineAndTheAnswerIsFortyTwo")) {
+        if (!verifyToken.equals(this.webhookSecret)) {
             return 0;
         }
 

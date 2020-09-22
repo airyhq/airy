@@ -24,10 +24,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
+@SpringBootTest(
+        properties = {
+                "facebook.webhook-secret=trustno1"
+        },
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-class FacebookWebhookIntegrationTest {
+class FacebookWebhookTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
@@ -48,8 +52,8 @@ class FacebookWebhookIntegrationTest {
     @Test
     void returns200() throws Exception {
         mvc.perform(post("/facebook")
-            .content("whatever"))
-            .andExpect(status().isOk());
+                .content("whatever"))
+                .andExpect(status().isOk());
 
         List<String> records = testHelper.consumeValues(1, sourceFacebookEvents.name());
 

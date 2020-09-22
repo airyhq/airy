@@ -1,26 +1,21 @@
 package co.airy.uuid;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.UUID;
 
 /**
- * Unfortunately Java does not have a UUID v5 implementation
+ * Unfortunately the Java standard library does not provide a UUID v5 implementation
  * This implementation is taken out from https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java/
  * Reference: https://www.baeldung.com/java-uuid
  */
 public class UUIDV5 {
     public static UUID fromNamespaceAndName(String namespace, String name) {
-        try {
-            String source = namespace + name;
-            byte[] bytes = source.getBytes("UTF-8");
-            UUID uuid = type5UUIDFromBytes(bytes);
-            return uuid;
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Could not encode bytes");
-        }
+        String source = namespace + name;
+        byte[] bytes = source.getBytes(StandardCharsets.UTF_8);
+        return type5UUIDFromBytes(bytes);
     }
 
     public static UUID type5UUIDFromBytes(byte[] name) {

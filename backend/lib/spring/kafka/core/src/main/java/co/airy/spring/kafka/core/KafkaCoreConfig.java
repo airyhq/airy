@@ -15,7 +15,6 @@ import java.util.Properties;
 
 @Configuration
 public class KafkaCoreConfig {
-
     @Bean
     @Lazy
     @Scope("prototype")

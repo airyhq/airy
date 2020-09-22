@@ -20,8 +20,6 @@ public class MessageResponsePayload implements Serializable {
 
     public String metadata;
 
-    public List<AttachmentPayload> attachments;
-
     public long offset;
 
     public ContactResponsePayload sender;
@@ -29,6 +27,4 @@ public class MessageResponsePayload implements Serializable {
     public String alignment;
 
     public String sentAt;
-
-    public MessagePreviewPayload preview;
 }

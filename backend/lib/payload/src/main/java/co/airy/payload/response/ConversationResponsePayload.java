@@ -17,7 +17,6 @@ public class ConversationResponsePayload implements Serializable {
     private String state;
     private String createdAt;
     private ChannelPayload channel;
-    private ChannelPayload source;
     private ContactResponsePayload contact;
     private MessageResponsePayload message;
     private Long unreadMessageCount;

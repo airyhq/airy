@@ -16,7 +16,7 @@ app_deps = [
 ]
 
 springboot(
-    name = "messages-upserter",
+    name = "events-router",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,

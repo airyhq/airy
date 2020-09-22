@@ -25,8 +25,5 @@ public class ContactResponsePayload implements Serializable {
     public String lastName;
 
     public Map<String, String> info;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Set<ContactTagResponsePayload> tags;
 }
 

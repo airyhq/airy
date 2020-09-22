@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         "facebook.app-id=12345"
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
-class MessagesUpserterIntegrationTest {
+class EventsRouterTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
@@ -56,7 +56,7 @@ class MessagesUpserterIntegrationTest {
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
 
     @Autowired
-    private MessagesUpserter worker;
+    private EventsRouter worker;
 
     private static boolean streamInitialized = false;
 

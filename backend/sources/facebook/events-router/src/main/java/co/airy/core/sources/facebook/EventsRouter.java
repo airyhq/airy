@@ -41,8 +41,8 @@ import java.util.Objects;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class MessagesUpserter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
-    private static final Logger log = AiryLoggerFactory.getLogger(MessagesUpserter.class);
+public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
+    private static final Logger log = AiryLoggerFactory.getLogger(EventsRouter.class);
 
     @Autowired
     private KafkaStreamsWrapper streams;

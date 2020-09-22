@@ -68,21 +68,21 @@ public class KafkaStreamsConfig {
     @Lazy
     public KafkaStreamsWrapper airyKafkaStreams(@Value("${kafka.brokers}") final String brokers, @Value("${kafka.schema-registry-url}") final String schemaRegistryUrl) {
         return new KafkaStreamsWrapper(brokers, schemaRegistryUrl)
-            .withCommitIntervalInMs(commitIntervalMs)
-            .withSuppressIntervalInMs(suppressIntervalMs)
-            .withThreadCount(streamsThreadCount)
-            .withAppServerHost(rpcHost)
-            .withAppServerPort(rpcPort)
-            .withCleanup(cleanup)
-            .withCacheMaxBytes(cacheMaxBytes)
-            .withSessionTimeoutMs(sessionTimeoutMs)
-            .withHeartbeatIntervalMs(heartbeatIntervalMs)
-            .withPollMs(pollMs)
-            .withMaxPollRecords(maxPollRecords)
-            .withMaxRequestSize(maxRequestSize)
-            .withFetchMaxBytes(fetchMaxBytes)
-            .withBufferMemory(bufferMemory)
-            .withBufferedRecordsPerPartition(bufferedRecordsPerPartition);
+                .withCommitIntervalInMs(commitIntervalMs)
+                .withSuppressIntervalInMs(suppressIntervalMs)
+                .withThreadCount(streamsThreadCount)
+                .withAppServerHost(rpcHost)
+                .withAppServerPort(rpcPort)
+                .withCleanup(cleanup)
+                .withCacheMaxBytes(cacheMaxBytes)
+                .withSessionTimeoutMs(sessionTimeoutMs)
+                .withHeartbeatIntervalMs(heartbeatIntervalMs)
+                .withPollMs(pollMs)
+                .withMaxPollRecords(maxPollRecords)
+                .withMaxRequestSize(maxRequestSize)
+                .withFetchMaxBytes(fetchMaxBytes)
+                .withBufferMemory(bufferMemory)
+                .withBufferedRecordsPerPartition(bufferedRecordsPerPartition);
     }
 
     @Bean
@@ -93,11 +93,10 @@ public class KafkaStreamsConfig {
 
     @Bean
     public <K, V> TransformerSupplier<K, V, KeyValue<K, Pair<V, Map<String, String>>>> headerExtractorTransformerSupplier() {
-
-        return new TransformerSupplier<K, V, KeyValue<K, Pair<V, Map<String, String>>>>() {
+        return new TransformerSupplier<>() {
             @Override
             public Transformer<K, V, KeyValue<K, Pair<V, Map<String, String>>>> get() {
-                return new Transformer<K, V, KeyValue<K, Pair<V, Map<String, String>>>>() {
+                return new Transformer<>() {
 
                     private ProcessorContext context;
 
@@ -111,7 +110,7 @@ public class KafkaStreamsConfig {
                         final Map<String, String> headers = new HashMap<>();
 
                         context.headers().forEach(
-                            header -> headers.put(header.key(), new String(header.value()))
+                                header -> headers.put(header.key(), new String(header.value()))
                         );
 
                         return KeyValue.pair(k, Pair.with(v, headers));
@@ -134,10 +133,10 @@ public class KafkaStreamsConfig {
     @Qualifier("timestampExtractor")
     public <K, V> TransformerSupplier<K, V, KeyValue<K, Pair<V, Long>>> timestampExtractorTransformerSupplier() {
 
-        return new TransformerSupplier<K, V, KeyValue<K, Pair<V, Long>>>() {
+        return new TransformerSupplier<>() {
             @Override
             public Transformer<K, V, KeyValue<K, Pair<V, Long>>> get() {
-                return new Transformer<K, V, KeyValue<K, Pair<V, Long>>>() {
+                return new Transformer<>() {
 
                     private ProcessorContext context;
 
@@ -153,7 +152,6 @@ public class KafkaStreamsConfig {
 
                     @Override
                     public void close() {
-
                     }
                 };
             }

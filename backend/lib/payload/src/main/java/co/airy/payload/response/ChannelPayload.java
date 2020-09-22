@@ -13,7 +13,6 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @AllArgsConstructor
 @Data
 public class ChannelPayload {
-
     private String id;
 
     @JsonInclude(NON_NULL)

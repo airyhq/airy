@@ -12,7 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 public class ConversationResponsePayload implements Serializable {
-
     private String id;
     private String state;
     private String createdAt;
@@ -20,5 +19,4 @@ public class ConversationResponsePayload implements Serializable {
     private ContactResponsePayload contact;
     private MessageResponsePayload message;
     private Long unreadMessageCount;
-
 }

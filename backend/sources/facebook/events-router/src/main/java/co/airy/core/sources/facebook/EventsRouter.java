@@ -4,13 +4,14 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
+import co.airy.core.sources.facebook.model.WebhookEvent;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.core.sources.facebook.model.WebhookEvent;
+import co.airy.uuid.UUIDV5;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import co.airy.uuid.UUIDV5;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -56,7 +56,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     @Autowired
     private MessageParser messageParser;
 
-    private final String appId = "sources.facebook.MessagesUpserter";
+    private final String appId = "sources.facebook.EventsRouter";
 
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
@@ -149,11 +149,10 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                 .foreach(
                         (conversationId, aggregationDTO) -> {
                             final Message message = aggregationDTO.getMessage();
-
                             try {
                                 producer.send(new ProducerRecord<>(new ApplicationCommunicationMessages().name(), message.getId(), message)).get();
                             } catch (Exception e) {
-                                log.error("Failed to upsert message and/or conversation {}", message, e);
+                                log.error("Failed to produce message {}", message, e);
                             }
                         });
 
@@ -181,12 +180,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
         }
     }
 
-
-    /**
-     * Visible For Testing
-     *
-     * @return The state of the kafka stream
-     */
+    // visible for testing
     KafkaStreams.State getStreamState() {
         return streams.state();
     }

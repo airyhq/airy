@@ -15,7 +15,7 @@ public class CorsFilterConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*"); //TODO restrict to airy
+        config.addAllowedOrigin("*"); //TODO should come from env
         config.addAllowedHeader("*");
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");

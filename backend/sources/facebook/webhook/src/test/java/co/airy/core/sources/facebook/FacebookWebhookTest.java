@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(
         properties = {
-                "facebook.webhook-secret=trustno1"
+                "facebook.webhook-secret=theansweris42"
         },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @AutoConfigureMockMvc
@@ -37,7 +37,7 @@ class FacebookWebhookTest {
 
     private static TestHelper testHelper;
 
-    private static Topic sourceFacebookEvents = new SourceFacebookEvents();
+    private static final Topic sourceFacebookEvents = new SourceFacebookEvents();
 
     @Autowired
     private MockMvc mvc;

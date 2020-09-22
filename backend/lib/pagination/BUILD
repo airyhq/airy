@@ -2,7 +2,7 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/build:junit5.bzl", "junit5")
 
 java_library(
-    name = "pagination-core",
+    name = "pagination",
     srcs = glob(["src/main/java/co/airy/pagination/**/*.java"]),
     visibility = ["//visibility:public"],
 )
@@ -12,7 +12,7 @@ java_library(
         file = file,
         resources = glob(["src/test/resources/**/*"]),
         deps = [
-            ":pagination-core",
+            ":pagination",
         ],
     )
     for file in glob(["src/test/java/**/*Test.java"])

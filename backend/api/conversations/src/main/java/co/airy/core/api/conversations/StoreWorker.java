@@ -50,7 +50,7 @@ public class StoreWorker implements ApplicationListener<ApplicationStartedEvent>
         final KTable<String, Map<String, String>> metadataTable = builder.<String, MetadataAction>stream(new ApplicationCommunicationMetadata().name())
                 .groupByKey()
                 .aggregate(HashMap::new, (conversationId, metadataAction, aggregate) -> {
-                    if(metadataAction.getActionType().equals(MetadataActionType.SET)) {
+                    if (metadataAction.getActionType().equals(MetadataActionType.SET)) {
                         aggregate.put(metadataAction.getKey(), metadataAction.getValue());
                     } else {
                         aggregate.remove(metadataAction.getKey());
@@ -77,7 +77,13 @@ public class StoreWorker implements ApplicationListener<ApplicationStartedEvent>
 
                             aggregate.getParticipants().add(participant);
                             aggregate.setLastOffset(lastOffset);
+                            aggregate.setConversationId(message.getConversationId());
                             aggregate.setChannelId(message.getChannelId());
+
+                            if (aggregate.getCreatedAt() == null) {
+                                // Set this only once for the sent time of the first message
+                                aggregate.setCreatedAt(message.getSentAt());
+                            }
 
                             return aggregate;
                         })

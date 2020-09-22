@@ -19,9 +19,11 @@ import java.util.Map;
 public class Conversation implements Serializable {
     HashSet<Participant> participants;
     Long lastOffset;
+    Long createdAt;
 
     String displayName;
     String channelId;
+    String conversationId;
     Long unreadMessageCount;
 
     Message lastMessage;

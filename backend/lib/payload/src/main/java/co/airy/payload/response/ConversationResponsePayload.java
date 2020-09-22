@@ -14,7 +14,6 @@ import java.io.Serializable;
 public class ConversationResponsePayload implements Serializable {
 
     private String id;
-    private String state;
     private String createdAt;
     private ChannelPayload channel;
     private ContactResponsePayload contact;

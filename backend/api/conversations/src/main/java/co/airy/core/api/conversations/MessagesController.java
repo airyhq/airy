@@ -69,7 +69,7 @@ public class MessagesController {
         }
 
         return MessageListResponsePayload.builder()
-                .data(messages.stream().map(MessageMapper::fromMessage).collect(Collectors.toList()))
+                .data(messages.stream().map(Mapper::fromMessage).collect(Collectors.toList()))
                 .responseMetadata(MessageListResponsePayload.ResponseMetadata.builder()
                         .nextCursor(lowerOffset > 0 ? lowerOffset : null) // don't return if we've reached the end
                         .previousCursor(cursor)

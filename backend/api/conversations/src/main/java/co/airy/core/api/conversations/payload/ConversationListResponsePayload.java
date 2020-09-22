@@ -2,12 +2,14 @@ package co.airy.core.api.conversations.payload;
 
 import co.airy.payload.response.ConversationResponsePayload;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConversationListResponsePayload {
@@ -15,6 +17,7 @@ public class ConversationListResponsePayload {
     private ResponseMetadata responseMetadata;
 
     @Data
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ResponseMetadata {
@@ -22,6 +25,5 @@ public class ConversationListResponsePayload {
         private String nextCursor;
         private long filteredTotal;
         private long total; //total conversation count
-        private long badgeUnreadCount; //total unread conversation count
     }
 }

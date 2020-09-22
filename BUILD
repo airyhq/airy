@@ -1,4 +1,5 @@
 load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
+load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 alias(
     name = "check",
@@ -8,6 +9,12 @@ alias(
 alias(
     name = "fix",
     actual = "//tools/code-format:fix",
+)
+
+container_image(
+    name = "base_image",
+    base = "@java_base//image",
+    visibility = ["//visibility:public"],
 )
 
 java_library(

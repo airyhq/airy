@@ -1,0 +1,12 @@
+{
+  "namespace": "co.airy.avro.communication",
+  "name": "MetadataAction",
+  "type": "record",
+  "fields": [
+    {"name": "conversationId", "type": "string"},
+    {"name": "key", "type": "string"},
+    {"name": "value", "type": "string"},
+    {"name": "actionType", "type": {"name": "MetadataActionType", "type": "enum", "symbols": ["SET", "REMOVE"]}},
+    {"name": "timestamp", "type": "long", "logicalType": "timestamp-millis"}
+  ]
+}

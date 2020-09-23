@@ -7,9 +7,10 @@ public class MetadataKeys {
 
     public static class SOURCE {
         public static class CONTACT {
-            public static final String firstName = "source.contact.first_name";
-            public static final String lastName = "source.contact.last_name";
-            public static final String avatarUrl = "source.contact.avatar_url";
+            public static final String FIRST_NAME = "source.contact.first_name";
+            public static final String LAST_NAME = "source.contact.last_name";
+            public static final String AVATAR_URL = "source.contact.avatar_url";
         }
     }
 }
+

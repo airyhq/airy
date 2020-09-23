@@ -27,11 +27,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.IntStream;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
 import static co.airy.core.api.conversations.util.ConversationGenerator.CreateConversation;
-import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -101,7 +99,7 @@ class ConversationsFilterTest {
             CreateConversation.builder()
                     .metadata(
                             Map.of(
-                                    MetadataKeys.SOURCE.CONTACT.firstName, firstNameToFind
+                                    MetadataKeys.SOURCE.CONTACT.FIRST_NAME, firstNameToFind
                             ))
                     .conversationId(UUID.randomUUID().toString())
                     .lastOffset(1L)

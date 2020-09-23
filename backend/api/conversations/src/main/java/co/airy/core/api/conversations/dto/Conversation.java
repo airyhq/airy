@@ -3,7 +3,6 @@ package co.airy.core.api.conversations.dto;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataKeys;
-import co.airy.avro.communication.SenderType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,8 +31,8 @@ public class Conversation implements Serializable {
             return null;
         }
 
-        return String.format("%s %s", this.metadata.get(MetadataKeys.SOURCE.CONTACT.firstName),
-                this.metadata.get(MetadataKeys.SOURCE.CONTACT.lastName)
+        return String.format("%s %s", this.metadata.get(MetadataKeys.SOURCE.CONTACT.FIRST_NAME),
+                this.metadata.get(MetadataKeys.SOURCE.CONTACT.LAST_NAME)
         );
     }
 

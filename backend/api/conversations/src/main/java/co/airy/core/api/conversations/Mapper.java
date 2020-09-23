@@ -1,6 +1,7 @@
 package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.MetadataKeys;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.payload.response.ChannelPayload;
@@ -10,6 +11,7 @@ import co.airy.payload.response.MessageResponsePayload;
 
 import java.util.Map;
 
+import static co.airy.avro.communication.MetadataMapper.filterPrefix;
 import static co.airy.payload.format.DateFormat.ISO_FROM_MILLIS;
 
 public class Mapper {
@@ -46,10 +48,10 @@ public class Mapper {
                 .createdAt(ISO_FROM_MILLIS(conversation.getCreatedAt()))
                 .contact(
                         ContactResponsePayload.builder()
-                                .avatarUrl(metadata.get("source.contact.avatar"))
-                                .firstName(metadata.get("source.contact.first_name"))
-                                .lastName(metadata.get("source.contact.last_name"))
-                                // TODO map info
+                                .avatarUrl(metadata.get(MetadataKeys.SOURCE.CONTACT.AVATAR_URL))
+                                .firstName(metadata.get(MetadataKeys.SOURCE.CONTACT.FIRST_NAME))
+                                .lastName(metadata.get(MetadataKeys.SOURCE.CONTACT.LAST_NAME))
+                                .info(filterPrefix(metadata, "user.contact-info"))
                                 .build()
                 )
                 .message(fromMessage(conversation.getLastMessage()))

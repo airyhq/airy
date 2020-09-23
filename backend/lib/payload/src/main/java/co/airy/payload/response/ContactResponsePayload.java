@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Map;
 
 @Builder
 @NoArgsConstructor
@@ -17,5 +18,7 @@ public class ContactResponsePayload implements Serializable {
     public String firstName;
 
     public String lastName;
+
+    public Map<String, String> info;
 }
 

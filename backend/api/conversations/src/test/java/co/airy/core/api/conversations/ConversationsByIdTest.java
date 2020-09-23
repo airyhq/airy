@@ -25,11 +25,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -41,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-class ConversationsListTest {
+class ConversationsByIdTest {
 
 
     @RegisterExtension
@@ -80,18 +82,7 @@ class ConversationsListTest {
     }
 
     @Test
-    void returnsEmptyResponse() throws Exception {
-        testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations")
-                        .headers(buildHeaders())
-                        .content("{}"))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(0))), "Conversations list is not empty"
-        );
-    }
-
-    @Test
-    void listsAllConversations() throws Exception {
+    void getConversationById() throws Exception {
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId("channel-id")
@@ -102,24 +93,22 @@ class ConversationsListTest {
 
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
 
-        int expectedConversationCount = 5;
+        final String conversationId = UUID.randomUUID().toString();
 
-        final List<ConversationGenerator.CreateConversation> conversations = IntStream.range(0, expectedConversationCount)
-                .mapToObj((index) -> ConversationGenerator.CreateConversation.builder()
+        testHelper.produceRecords(getConversationRecords(
+                ConversationGenerator.CreateConversation.builder()
                         .channel(channel)
                         .lastOffset(1L)
-                        .conversationId("conversation-" + index)
-                        .build())
-                .collect(toList());
-
-        testHelper.produceRecords(getConversationRecords(conversations));
+                        .conversationId(conversationId)
+                        .build()
+        ));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations")
+                () -> mvc.perform(post("/conversations.by_id")
                         .headers(buildHeaders())
-                        .content("{}"))
+                        .content("{\"conversation_id\":\"" + conversationId + "\"}"))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(expectedConversationCount))), "Conversations list is missing records"
+                        .andExpect(jsonPath("$.id", is(conversationId))), "Conversations list is missing records"
         );
     }
 

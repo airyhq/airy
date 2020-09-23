@@ -23,17 +23,17 @@ import java.util.stream.Collectors;
 public class MessagesController {
 
     @Autowired
-    StoreWorker worker;
+    Stores stores;
 
-    @PostMapping("/messages")
-    ResponseEntity<MessageListResponsePayload> messageList(@RequestBody @Valid MessageListRequestPayload messageListRequestPayload) {
-        final String conversationId = messageListRequestPayload.getConversationId();
+    @PostMapping("/conversations.history")
+    ResponseEntity<MessageListResponsePayload> messageHistory(@RequestBody @Valid MessageListRequestPayload messageListRequestPayload) {
+        final String conversationId = messageListRequestPayload.getConversationId().toString();
         final Long pageSize = Optional.ofNullable(messageListRequestPayload.getPageSize()).orElse(20L);
 
         Long cursor = messageListRequestPayload.getCursor();
 
         if (cursor == null) {
-            ReadOnlyKeyValueStore<String, Conversation> store = worker.getConversationsStore();
+            ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
             Conversation conversation = store.get(conversationId);
 
             if (conversation == null) {
@@ -53,7 +53,7 @@ public class MessagesController {
     }
 
     private MessageListResponsePayload fetchMessages(String conversationId, Long pageSize, Long cursor) {
-        final ReadOnlyKeyValueStore<String, Message> store = worker.getMessagesStore();
+        final ReadOnlyKeyValueStore<String, Message> store = stores.getMessagesStore();
 
         final long lowerOffset = Math.max(cursor - pageSize, 0);
 
@@ -63,10 +63,7 @@ public class MessagesController {
         final KeyValueIterator<String, Message> iterator = store.range(lowerKey, upperKey);
 
         List<Message> messages = new ArrayList<>();
-        while (iterator.hasNext()) {
-            KeyValue<String, Message> entry = iterator.next();
-            messages.add(entry.value);
-        }
+        iterator.forEachRemaining((entry) -> messages.add(entry.value));
 
         return MessageListResponsePayload.builder()
                 .data(messages.stream().map(Mapper::fromMessage).collect(Collectors.toList()))

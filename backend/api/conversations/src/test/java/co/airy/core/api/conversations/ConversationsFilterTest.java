@@ -95,7 +95,7 @@ class ConversationsFilterTest {
             .setSourceChannelId("special-external-channel-id")
             .build();
 
-    private final String conversationIdToFind = "conversation-id";
+    private final String conversationIdToFind = UUID.randomUUID().toString();
 
     private final List<CreateConversation> conversations = List.of(
             CreateConversation.builder()
@@ -149,6 +149,19 @@ class ConversationsFilterTest {
     }
 
     @Test
+    void returnAll() throws Exception {
+        testHelper.waitForCondition(
+                () -> mvc.perform(post("/conversations.list")
+                        .headers(buildHeaders())
+                        .content("{}}"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data", hasSize(conversations.size())))
+                        .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
+                "Expected one conversation returned"
+        );
+    }
+
+    @Test
     void filterOutConversationForConversationId() throws Exception {
         String payload = "{\"filter\": {\"conversation_ids\": [\"" + conversationIdToFind + "\"]}}";
 
@@ -172,7 +185,7 @@ class ConversationsFilterTest {
 
     private void checkNoConversationReturned(String payload) throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations")
+                () -> mvc.perform(post("/conversations.list")
                         .headers(buildHeaders())
                         .content(payload))
                         .andExpect(status().isOk())
@@ -183,7 +196,7 @@ class ConversationsFilterTest {
 
     private void checkOneConversationExists(String payload) throws InterruptedException {
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations")
+                () -> mvc.perform(post("/conversations.list")
                         .headers(buildHeaders())
                         .content(payload))
                         .andExpect(status().isOk())

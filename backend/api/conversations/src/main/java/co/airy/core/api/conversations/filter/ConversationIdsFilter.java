@@ -4,18 +4,18 @@ import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.core.api.conversations.payload.QueryFilterPayload;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class ConversationIdsFilter implements Filter<Conversation> {
     @Override
     public boolean filter(Conversation conversation, QueryFilterPayload filterPayload) {
-        final List<String> conversationIds = filterPayload.getConversationIds();
-
-        if (conversationIds == null) {
+        if (filterPayload.getConversationIds() == null) {
             return true;
         }
 
-        return conversationIds.contains(conversation.getId());
+        return filterPayload.getConversationIds().stream().map(UUID::toString).collect(Collectors.toList())
+                .contains(conversation.getId());
     }
 }

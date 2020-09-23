@@ -90,8 +90,8 @@ public class MessagesTest {
 
     @Test
     void messageListOk() throws Exception {
-        String conversationId = UUID.randomUUID().toString();
-        String channelId = "channelId";
+        final String conversationId = UUID.randomUUID().toString();
+        final String channelId = "channelId";
 
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
@@ -110,12 +110,12 @@ public class MessagesTest {
         String requestPayload = "{\"conversation_id\":\"" + conversationId + "\"}";
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/messages")
+                () -> mvc.perform(post("/conversations.history")
                         .headers(buildHeaders())
                         .content(requestPayload))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(messageCount))),
-                "/messages endpoint error"
+                "/conversations.history endpoint error"
         );
     }
 

@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class QueryFilterPayload {
-    private List<String> conversationIds;
+    private List<UUID> conversationIds;
 
     private List<String> channelIds;
 

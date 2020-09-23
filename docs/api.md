@@ -9,7 +9,6 @@ compose our API.
     - [List conversations](#list-conversations)
     - [Conversation by id](#conversation-by-id)
     - [Mark all conversations as read](#mark-all-conversations-as-read)
-  - [Messages](#messages)
     - [Messages of a conversation](#messages-of-a-conversation)
     - [Send a message](#send-a-message)
   - [Channels](#channels)
@@ -46,7 +45,7 @@ information.
 
 #### List conversations
 
-`POST /conversations`
+`POST /conversations.list`
 
 This is a [paginated](#pagination) endpoint.
 
@@ -105,7 +104,7 @@ Example Response:
 
 #### Conversation by id
 
-`POST /conversation`
+`POST /conversations.by_id`
 
 Example body:
 
@@ -158,7 +157,7 @@ information.
 
 #### Messages of a conversation
 
-`POST /messages`
+`POST /conversations.history`
 
 This is a [paginated](#pagination) endpoint.
 
@@ -209,7 +208,7 @@ Example Response:
 
 #### Send a message
 
-`POST /send-message`
+`POST /conversations.send`
 
 Returns the id that the message will be persisted with in the backend. Combined with the websocket [queue for message upserts](websocket.md#userqueueairymessageupsert) (/user/queue/airy/message/upsert) you can use this id to verify that a message has been delivered.
 

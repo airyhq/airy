@@ -2,6 +2,7 @@ package co.airy.core.api.conversations;
 
 import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.core.api.conversations.filter.Filter;
+import co.airy.core.api.conversations.payload.ConversationByIdRequestPayload;
 import co.airy.core.api.conversations.payload.ConversationListRequestPayload;
 import co.airy.core.api.conversations.payload.ConversationListResponsePayload;
 import co.airy.core.api.conversations.payload.QueryFilterPayload;
@@ -27,12 +28,12 @@ import static java.util.Comparator.comparing;
 public class ConversationsController {
 
     @Autowired
-    StoreWorker worker;
+    Stores stores;
 
     @Autowired
     private List<Filter<Conversation>> conversationFilters;
 
-    @PostMapping("/conversations")
+    @PostMapping("/conversations.list")
     ResponseEntity<ConversationListResponsePayload> conversationList(@RequestBody @Valid ConversationListRequestPayload requestPayload) {
         List<Conversation> conversations = fetchAllConversations();
 
@@ -74,16 +75,28 @@ public class ConversationsController {
         );
     }
 
+
+    @PostMapping("/conversations.by_id")
+    ResponseEntity conversationList(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+
+        final Conversation conversation = store.get(requestPayload.getConversationId().toString());
+
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(Mapper.fromConversation(conversation));
+    }
+
+
     private List<Conversation> fetchAllConversations() {
-        final ReadOnlyKeyValueStore<String, Conversation> store = worker.getConversationsStore();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
 
         final KeyValueIterator<String, Conversation> iterator = store.all();
 
         List<Conversation> conversations = new ArrayList<>();
-        while (iterator.hasNext()) {
-            final Conversation conversation = iterator.next().value;
-            conversations.add(conversation);
-        }
+        iterator.forEachRemaining(kv -> conversations.add(kv.value));
 
         return conversations;
     }

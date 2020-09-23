@@ -30,7 +30,7 @@ import java.util.Map;
 
 @Component
 @RestController
-public class StoreWorker implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
 
     private static final String appId = "api.ConversationsController";
 

@@ -12,12 +12,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 public class ConversationResponsePayload implements Serializable {
-
     private String id;
     private String createdAt;
     private ChannelPayload channel;
     private ContactResponsePayload contact;
     private MessageResponsePayload message;
     private Long unreadMessageCount;
-
 }

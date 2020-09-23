@@ -17,25 +17,24 @@ public class ProducerHealthCheck {
 
     private final OpsApplicationHealth opsApplicationHealth = new OpsApplicationHealth();
 
-    private void sendHealthCheck(String app) throws Exception {
-        producer.send(
-            new ProducerRecord<>(opsApplicationHealth.name(), null,
-                HealthCheck.newBuilder()
-                    .setApp(app)
-                    .setTime(Instant.now().toEpochMilli())
-                    .build()
-            )
-        ).get();
-    }
-
-    private final String SERVICE_NAME_ENV = "DD_SERVICE_NAME";
-
     public void sendHealthCheck() throws Exception {
-        final String serviceName = System.getenv(SERVICE_NAME_ENV);
+        final String serviceName = System.getenv("SERVICE_NAME");
         if (serviceName == null) {
-            throw new IllegalStateException(String.format("Env variable %s not set", SERVICE_NAME_ENV));
+            throw new IllegalStateException("SERVICE_NAME not set");
         }
 
         sendHealthCheck(serviceName);
+    }
+
+
+    private void sendHealthCheck(String app) throws Exception {
+        producer.send(
+                new ProducerRecord<>(opsApplicationHealth.name(), null,
+                        HealthCheck.newBuilder()
+                                .setApp(app)
+                                .setTime(Instant.now().toEpochMilli())
+                                .build()
+                )
+        ).get();
     }
 }

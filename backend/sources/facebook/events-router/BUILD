@@ -32,5 +32,5 @@ springboot(
             "//backend/lib/kafka/test:kafka-test",
         ] + app_deps,
     )
-    for file in glob(["src/test/java/**/*IntegrationTest.java"])
+    for file in glob(["src/test/java/**/*Test.java"])
 ]

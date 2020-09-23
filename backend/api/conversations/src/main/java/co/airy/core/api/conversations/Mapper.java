@@ -42,7 +42,7 @@ public class Mapper {
                                 .name(conversation.getChannel().getName())
                                 .build()
                 )
-                .id(conversation.getConversationId())
+                .id(conversation.getId())
                 .createdAt(ISO_FROM_MILLIS(conversation.getCreatedAt()))
                 .contact(
                         ContactResponsePayload.builder()
@@ -52,7 +52,6 @@ public class Mapper {
                                 // TODO map info
                                 .build()
                 )
-                .unreadMessageCount(conversation.getUnreadMessageCount())
                 .message(fromMessage(conversation.getLastMessage()))
                 .build();
     }

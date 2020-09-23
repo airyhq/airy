@@ -2,17 +2,13 @@ package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.Message;
-import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
+import co.airy.core.api.conversations.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,15 +24,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
+import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-public class ConversationsMessagesTest {
+class ConversationsListTest {
 
 
     @RegisterExtension
@@ -58,9 +50,6 @@ public class ConversationsMessagesTest {
 
     @Autowired
     private MockMvc mvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
@@ -91,49 +80,46 @@ public class ConversationsMessagesTest {
     }
 
     @Test
-    void messageListOk() throws Exception {
-        String conversationId = UUID.randomUUID().toString();
-        String channelId = "channelId";
+    void returnsEmptyResponse() throws Exception {
+        testHelper.waitForCondition(
+                () -> mvc.perform(post("/conversations")
+                        .headers(buildHeaders())
+                        .content("{}"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data", hasSize(0))), "Conversations list is not empty"
+        );
+    }
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
+    @Test
+    void listsAllConversations() throws Exception {
+        final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId(channelId)
+                .setId("channel-id")
                 .setName("channel-name")
                 .setSource("FACEBOOK")
                 .setSourceChannelId("ps-id")
-                .build()
-        ));
+                .build();
 
-        List<ProducerRecord<String, Message>> records = new ArrayList<>();
+        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
 
-        int messageCount = 10;
+        int expectedConversationCount = 5;
 
-        LongStream.range(0, messageCount).forEach(nextIndex -> {
-            final String messageId = UUID.randomUUID().toString();
-            records.add(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, Message.newBuilder()
-                    .setId(messageId)
-                    .setOffset(nextIndex)
-                    .setSentAt(System.currentTimeMillis() + nextIndex)
-                    .setSenderId("source conversation id")
-                    .setSenderType(SenderType.SOURCE_CONTACT)
-                    .setConversationId(conversationId)
-                    .setHeaders(Map.of("SOURCE", "FACEBOOK"))
-                    .setChannelId(channelId)
-                    .setContent("{\"text\":\"hello world\"}")
-                    .build()));
-        });
+        final List<ConversationGenerator.CreateConversation> conversations = IntStream.range(0, expectedConversationCount)
+                .mapToObj((index) -> ConversationGenerator.CreateConversation.builder()
+                        .channel(channel)
+                        .lastOffset(1L)
+                        .conversationId("conversation-" + index)
+                        .build())
+                .collect(toList());
 
-        testHelper.produceRecords(records);
-
-        String requestPayload = "{\"conversation_id\":\"" + conversationId + "\"}";
+        testHelper.produceRecords(getConversationRecords(conversations));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/messages")
+                () -> mvc.perform(post("/conversations")
                         .headers(buildHeaders())
-                        .content(requestPayload))
+                        .content("{}"))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(messageCount))),
-                "/messages endpoint error"
+                        .andExpect(jsonPath("$.data", hasSize(expectedConversationCount))), "Conversations list is missing records"
         );
     }
 

@@ -56,12 +56,8 @@ Example body:
 {
   "filter": {
     "conversation_ids": ["uuid"],
-    "external_channel_ids": ["facebook page id"],
     "channel_ids": ["channel-42"],
-    "tags": ["contact_id"],
-    "display_names": ["Grace Hopper"],
-    "min_unread_message_count": 24,
-    "max_unread_message_count": 42
+    "display_names": ["Grace Hopper"]
   },
   "cursor": "next-page-uuid",
   "page_size": 2

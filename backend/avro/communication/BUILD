@@ -25,7 +25,7 @@ avro_java_library(
 
 java_library(
     name = "metadata-action",
-    srcs = ["metadata-action/src/main/java/co/airy/avro/communication/MetadataMapper.java"],
+    srcs = glob(["metadata-action/src/main/**/*.java"]),
     exports = [":metadata-action-avro"],
     deps = [":metadata-action-avro"],
 )

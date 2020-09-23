@@ -16,6 +16,6 @@ public class ConversationIdsFilter implements Filter<Conversation> {
             return true;
         }
 
-        return conversationIds.contains(conversation.getConversationId());
+        return conversationIds.contains(conversation.getId());
     }
 }

@@ -17,8 +17,5 @@ public class QueryFilterPayload {
     private List<String> channelIds;
 
     private List<String> displayNames;
-
-    private Integer minUnreadMessageCount;
-    private Integer maxUnreadMessageCount;
 }
 

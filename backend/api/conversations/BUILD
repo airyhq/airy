@@ -22,6 +22,12 @@ springboot(
     deps = app_deps,
 )
 
+java_library(
+    name = "test-util",
+    srcs = glob(["src/test/java/co/airy/core/api/conversations/util/**/*.java"]),
+    deps = [":app"] + app_deps,
+)
+
 [
     junit5(
         size = "medium",
@@ -29,6 +35,7 @@ springboot(
         resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
+            ":test-util",
             "//backend/lib/kafka/test:kafka-test",
         ] + app_deps,
     )

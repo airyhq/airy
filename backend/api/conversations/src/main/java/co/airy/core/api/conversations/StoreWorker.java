@@ -11,6 +11,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.Initializer;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 @Component
@@ -64,25 +64,18 @@ public class StoreWorker implements ApplicationListener<ApplicationStartedEvent>
                 .reduce((v1, v2) -> v2, Materialized.as(MESSAGES_STORE));
 
         messageStream.groupBy((messageId, message) -> message.getConversationId())
-                .aggregate(() -> Conversation.builder()
-                                .participants(new HashSet<>())
-                                .lastOffset(0L)
-                                .build(),
+                .aggregate(Conversation::new,
                         (conversationId, message, aggregate) -> {
-                            final String senderId = message.getSenderId();
-                            final SenderType senderType = message.getSenderType();
-                            final Conversation.Participant participant = new Conversation.Participant(senderId, senderType);
+                            if (aggregate.getLastMessage() == null) {
+                                aggregate = Conversation.builder()
+                                        .lastMessage(message)
+                                        .createdAt(message.getSentAt()) // Set this only once for the sent time of the first message
+                                        .build();
+                            }
 
-                            final Long lastOffset = message.getOffset() > aggregate.getLastOffset() ? message.getOffset() : aggregate.getLastOffset();
-
-                            aggregate.getParticipants().add(participant);
-                            aggregate.setLastOffset(lastOffset);
-                            aggregate.setConversationId(message.getConversationId());
-                            aggregate.setChannelId(message.getChannelId());
-
-                            if (aggregate.getCreatedAt() == null) {
-                                // Set this only once for the sent time of the first message
-                                aggregate.setCreatedAt(message.getSentAt());
+                            // equals because messages can be updated
+                            if (message.getOffset() >= aggregate.getLastOffset()) {
+                                aggregate.setLastMessage(message);
                             }
 
                             return aggregate;
@@ -128,7 +121,7 @@ public class StoreWorker implements ApplicationListener<ApplicationStartedEvent>
         getConversationsStore();
         getMessagesStore();
 
-        //If no exception was thrown by one of the above calls, this service is healthy
+        // If no exception was thrown by one of the above calls, this service is healthy
         return ResponseEntity.ok().build();
     }
 }

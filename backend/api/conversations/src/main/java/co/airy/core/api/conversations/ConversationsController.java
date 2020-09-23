@@ -50,7 +50,7 @@ public class ConversationsController {
 
         final int filteredTotal = conversations.size();
 
-        final Paginator<Conversation> paginator = new Paginator<>(conversations, Conversation::getConversationId)
+        final Paginator<Conversation> paginator = new Paginator<>(conversations, Conversation::getId)
                 .from(requestPayload.getCursor()).perPage(requestPayload.getPageSize());
 
         final Page<Conversation> page = paginator.page();

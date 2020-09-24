@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvroGenericArraySerializer extends JsonSerializer<List> {
+public class AvroGenericArraySerializer extends JsonSerializer<List<Object>> {
     @Override
     public void serialize(List array, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         for (Object obj : array) {
@@ -21,7 +21,7 @@ public class AvroGenericArraySerializer extends JsonSerializer<List> {
 
     @Override
     public void serializeWithType(List value, JsonGenerator gen, SerializerProvider serializers, TypeSerializer typeSer) throws IOException {
-        final ArrayList copy = new ArrayList(value);
+        final ArrayList<Object> copy = new ArrayList<Object>(value);
         WritableTypeId typeId = typeSer.typeId(copy, JsonToken.START_ARRAY);
         typeSer.writeTypePrefix(gen, typeId);
         serialize(value, gen, serializers); // call your customized serialize method

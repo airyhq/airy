@@ -59,5 +59,4 @@ public class KafkaConsumerWrapper<K, V> {
     public void wakeup() {
         consumer.wakeup();
     }
-
 }

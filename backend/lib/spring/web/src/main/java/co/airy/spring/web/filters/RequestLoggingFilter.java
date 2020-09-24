@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 @Component
 public class RequestLoggingFilter extends OncePerRequestFilter {
     private static final Logger log = AiryLoggerFactory.getLogger(RequestLoggingFilter.class);

@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 public class KafkaStreamsWrapper {
     private static final Logger log = AiryLoggerFactory.getLogger(KafkaStreamsWrapper.class);
 
-    private HealthCheckRunner healthCheckRunnerThread;
+    private final HealthCheckRunner healthCheckRunnerThread;
 
     private final String brokers;
     private final String schemaRegistryUrl;
@@ -54,7 +54,6 @@ public class KafkaStreamsWrapper {
     private String defaultValueSerde = KafkaHybridSerde.class.getName();
     private boolean excludeInternalTopics = true;
 
-
     private long bufferMemory;
 
     private String host;
@@ -62,102 +61,87 @@ public class KafkaStreamsWrapper {
 
     private KafkaStreams streams;
 
-    private boolean testMode;
+    private final boolean testMode;
 
     public KafkaStreamsWrapper(final String brokers, final String schemaRegistryUrl) {
         this.brokers = brokers;
         this.schemaRegistryUrl = schemaRegistryUrl;
-        testMode =  System.getenv("TEST_TARGET") != null;
+        testMode = System.getenv("TEST_TARGET") != null;
         healthCheckRunnerThread = new HealthCheckRunner(testMode);
     }
 
     public KafkaStreamsWrapper withCommitIntervalInMs(final long commitIntervalInMs) {
         this.commitIntervalInMs = commitIntervalInMs;
-
         return this;
     }
 
     public KafkaStreamsWrapper withSuppressIntervalInMs(final long suppressIntervalInMs) {
         this.suppressIntervalInMs = suppressIntervalInMs;
-
         return this;
     }
 
     public KafkaStreamsWrapper withThreadCount(final int threadCount) {
         this.threadCount = threadCount;
-
         return this;
     }
 
     public KafkaStreamsWrapper withAppServerHost(final String host) {
         this.host = host;
-
         return this;
     }
 
     public KafkaStreamsWrapper withAppServerPort(final int port) {
         this.port = port;
-
         return this;
     }
 
     public KafkaStreamsWrapper withCleanup(final boolean cleanup) {
         this.cleanup = cleanup;
-
         return this;
     }
 
     public KafkaStreamsWrapper withCacheMaxBytes(final long cacheMaxBytes) {
         this.cacheMaxBytes = cacheMaxBytes;
-
         return this;
     }
 
     public KafkaStreamsWrapper withSessionTimeoutMs(int sessionTimeoutMs) {
         this.sessionTimeoutMs = sessionTimeoutMs;
-
         return this;
     }
 
     public KafkaStreamsWrapper withHeartbeatIntervalMs(int heartbeatIntervalMs) {
         this.heartbeatIntervalMs = heartbeatIntervalMs;
-
         return this;
     }
 
     public KafkaStreamsWrapper withPollMs(int pollMs) {
         this.pollMs = pollMs;
-
         return this;
     }
 
     public KafkaStreamsWrapper withMaxRequestSize(int maxRequestSize) {
         this.maxRequestSize = maxRequestSize;
-
         return this;
     }
 
     public KafkaStreamsWrapper withFetchMaxBytes(int fetchMaxBytes) {
         this.fetchMaxBytes = fetchMaxBytes;
-
         return this;
     }
 
-    public KafkaStreamsWrapper withBufferMemory(final long bufferMemory) {
+    public KafkaStreamsWrapper withBufferMemory(long bufferMemory) {
         this.bufferMemory = bufferMemory;
-
         return this;
     }
 
     public KafkaStreamsWrapper withMaxPollRecords(int maxPollRecords) {
         this.maxPollRecords = maxPollRecords;
-
         return this;
     }
 
     public KafkaStreamsWrapper withBufferedRecordsPerPartition(int bufferedRecordsPerPartition) {
         this.bufferedRecordsPerPartition = bufferedRecordsPerPartition;
-
         return this;
     }
 
@@ -177,7 +161,7 @@ public class KafkaStreamsWrapper {
         return suppressIntervalInMs;
     }
 
-    public KafkaStreamsWrapper withExcludeInternalTopics(boolean excludeInternalTopicsConfig ) {
+    public KafkaStreamsWrapper withExcludeInternalTopics(boolean excludeInternalTopicsConfig) {
         this.excludeInternalTopics = excludeInternalTopicsConfig;
         return this;
     }
@@ -363,7 +347,8 @@ public class KafkaStreamsWrapper {
             if (serverSocket != null) {
                 try {
                     serverSocket.close();
-                } catch (IOException ignored) {
+                } catch (Exception e) {
+                    log.error("Failed to close socket!", e);
                 }
             }
         }

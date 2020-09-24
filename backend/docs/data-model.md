@@ -22,11 +22,12 @@ Header data contains information that is important for downstream processing tel
 
     The following key/values need to be implemented by sources
 
-    - `SOURCE` string source that ingested the message `FACEBOOK`, `GOOGLE`, `SMS_TWILIO` etc.
+    - `source` string source that ingested the message `FACEBOOK`, `GOOGLE`, `SMS_TWILIO` etc.
 
     Optional headers:
 
-    - `TRIGGER_TYPE` string generic postback payload for the airy automation platform
+    - `postback.payload` string postback payloads used for source automations
+    - `postback.referral` string facebook specific referral identifier 
 
 
 - `id` uuid

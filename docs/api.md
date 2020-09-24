@@ -157,7 +157,7 @@ information.
 
 #### Messages of a conversation
 
-`POST /conversations.history`
+`POST /conversations.messages-list`
 
 This is a [paginated](#pagination) endpoint.
 

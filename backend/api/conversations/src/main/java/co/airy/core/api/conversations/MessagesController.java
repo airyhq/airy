@@ -25,8 +25,8 @@ public class MessagesController {
     @Autowired
     Stores stores;
 
-    @PostMapping("/conversations.history")
-    ResponseEntity<MessageListResponsePayload> messageHistory(@RequestBody @Valid MessageListRequestPayload messageListRequestPayload) {
+    @PostMapping("/conversations.messages-list")
+    ResponseEntity<MessageListResponsePayload> messageList(@RequestBody @Valid MessageListRequestPayload messageListRequestPayload) {
         final String conversationId = messageListRequestPayload.getConversationId().toString();
         final Long pageSize = Optional.ofNullable(messageListRequestPayload.getPageSize()).orElse(20L);
 

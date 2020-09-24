@@ -110,12 +110,12 @@ public class MessagesTest {
         String requestPayload = "{\"conversation_id\":\"" + conversationId + "\"}";
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.history")
+                () -> mvc.perform(post("/conversations.messages-list")
                         .headers(buildHeaders())
                         .content(requestPayload))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(messageCount))),
-                "/conversations.history endpoint error"
+                "/conversations.messages-list endpoint error"
         );
     }
 

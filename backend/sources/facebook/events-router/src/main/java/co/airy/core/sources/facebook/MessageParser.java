@@ -56,7 +56,7 @@ public class MessageParser {
 
         final Map<String, String> headers = new HashMap<>();
 
-        headers.put("SOURCE", "FACEBOOK");
+        headers.put("source", "FACEBOOK");
         if (postbackNode != null) {
             if (postbackNode.get("payload") != null) {
                 headers.put("postback.payload", postbackNode.get("payload").textValue());

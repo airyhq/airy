@@ -77,7 +77,7 @@ public class ConversationsController {
 
 
     @PostMapping("/conversations.by_id")
-    ResponseEntity conversationList(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
+    ResponseEntity conversationById(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
 
         final Conversation conversation = store.get(requestPayload.getConversationId().toString());

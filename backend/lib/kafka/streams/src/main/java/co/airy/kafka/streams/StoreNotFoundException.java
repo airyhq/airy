@@ -7,5 +7,4 @@ public class StoreNotFoundException extends RuntimeException {
     public StoreNotFoundException(final String storeName) {
         super(String.format(ERROR_MESSAGE, storeName));
     }
-
 }

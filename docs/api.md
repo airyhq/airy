@@ -9,7 +9,6 @@ compose our API.
     - [List conversations](#list-conversations)
     - [Conversation by id](#conversation-by-id)
     - [Mark all conversations as read](#mark-all-conversations-as-read)
-  - [Messages](#messages)
     - [Messages of a conversation](#messages-of-a-conversation)
     - [Send a message](#send-a-message)
   - [Channels](#channels)
@@ -46,7 +45,7 @@ information.
 
 #### List conversations
 
-`POST /conversations`
+`POST /conversations.list`
 
 This is a [paginated](#pagination) endpoint.
 
@@ -56,12 +55,8 @@ Example body:
 {
   "filter": {
     "conversation_ids": ["uuid"],
-    "external_channel_ids": ["facebook page id"],
     "channel_ids": ["channel-42"],
-    "tags": ["contact_id"],
-    "display_names": ["Grace Hopper"],
-    "min_unread_message_count": 24,
-    "max_unread_message_count": 42
+    "display_names": ["Grace Hopper"]
   },
   "cursor": "next-page-uuid",
   "page_size": 2
@@ -109,7 +104,7 @@ Example Response:
 
 #### Conversation by id
 
-`POST /conversation`
+`POST /conversations.by_id`
 
 Example body:
 
@@ -162,7 +157,7 @@ information.
 
 #### Messages of a conversation
 
-`POST /messages`
+`POST /conversations.messages-list`
 
 This is a [paginated](#pagination) endpoint.
 
@@ -213,7 +208,7 @@ Example Response:
 
 #### Send a message
 
-`POST /send-message`
+`POST /conversations.send`
 
 Returns the id that the message will be persisted with in the backend. Combined with the websocket [queue for message upserts](websocket.md#userqueueairymessageupsert) (/user/queue/airy/message/upsert) you can use this id to verify that a message has been delivered.
 

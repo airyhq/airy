@@ -56,18 +56,18 @@ public class MessageParser {
 
         final Map<String, String> headers = new HashMap<>();
 
-        headers.put("SOURCE", "FACEBOOK");
+        headers.put("source", "FACEBOOK");
         if (postbackNode != null) {
             if (postbackNode.get("payload") != null) {
-                headers.put("POSTBACK_PAYLOAD", postbackNode.get("payload").textValue());
+                headers.put("postback.payload", postbackNode.get("payload").textValue());
             } else {
-                headers.put("POSTBACK_PAYLOAD", "__EMPTY_TRIGGER__");
+                headers.put("postback.payload", "__empty_postback__");
             }
         }
 
         Optional.ofNullable(postbackNode)
                 .map(node -> node.get("referral"))
-                .ifPresent(referralNode -> headers.put("POSTBACK_REFERRAL", referralNode.toString()));
+                .ifPresent(referralNode -> headers.put("postback.referral", referralNode.toString()));
 
         return Message.newBuilder()
                 .setContent(payload)

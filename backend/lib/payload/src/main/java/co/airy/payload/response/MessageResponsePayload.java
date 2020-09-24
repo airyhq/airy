@@ -7,16 +7,14 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class MessageResponsePayload implements Serializable {
     public String id;
-    public String text;
-    public String metadata;
+    public String content;
     public long offset;
-    public ContactResponsePayload sender;
     public String alignment;
     public String sentAt;
 }

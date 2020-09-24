@@ -1,4 +1,5 @@
 load("//tools/build:springboot.bzl", "springboot")
+load("//tools/build:junit5.bzl", "junit5")
 
 app_deps = [
     "//backend/lib/kafka/schema:kafka-schema",
@@ -13,8 +14,6 @@ springboot(
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,
 )
-
-load("//tools/build:junit5.bzl", "junit5")
 
 [
     junit5(

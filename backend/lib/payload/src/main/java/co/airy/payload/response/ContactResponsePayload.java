@@ -13,9 +13,6 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class ContactResponsePayload implements Serializable {
-
-    public String id;
-
     public String avatarUrl;
 
     public String firstName;

@@ -23,15 +23,15 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class KafkaTestCluster implements AutoCloseable {
-    private Clock clock = Clock.systemUTC();
+    private final Clock clock = Clock.systemUTC();
 
-    private ZookeeperTestServer zkTestServer = new ZookeeperTestServer();
+    private final ZookeeperTestServer zkTestServer = new ZookeeperTestServer();
 
-    private int numberOfBrokers;
+    private final int numberOfBrokers;
 
-    private Properties overrideBrokerProperties = new Properties();
+    private final Properties overrideBrokerProperties = new Properties();
 
-    private List<KafkaTestServer> brokers = new ArrayList<>();
+    private final List<KafkaTestServer> brokers = new ArrayList<>();
 
     public KafkaTestCluster(int numberOfBrokers, Properties overrideBrokerProperties) {
         this.numberOfBrokers = numberOfBrokers;
@@ -101,9 +101,9 @@ public class KafkaTestCluster implements AutoCloseable {
                 if (nodes.size() > numberOfBrokersReady) {
                     numberOfBrokersReady = nodes.size();
                     log.info(
-                        "Found {} of {} brokers ready, continuing to wait for cluster to start.",
-                        numberOfBrokersReady,
-                        nodes.size()
+                            "Found {} of {} brokers ready, continuing to wait for cluster to start.",
+                            numberOfBrokersReady,
+                            nodes.size()
                     );
                 }
 

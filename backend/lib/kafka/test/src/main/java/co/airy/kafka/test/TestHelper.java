@@ -4,7 +4,7 @@ import co.airy.kafka.core.deserializer.KafkaHybridDeserializer;
 import co.airy.kafka.core.serializer.KafkaHybridSerializer;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import lombok.Data;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -13,13 +13,11 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.test.TestUtils;
-import org.mockito.Mockito;
 import org.springframework.util.SocketUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -28,21 +26,15 @@ import java.util.concurrent.ExecutionException;
 import static java.util.stream.Collectors.toList;
 
 public class TestHelper {
-    private SchemaRegistryServer schemaRegistryServer;
-    private SharedKafkaTestResource sharedKafkaTestResource;
-    private List<Topic> topics;
+    private final SchemaRegistryServer schemaRegistryServer;
+    private final SharedKafkaTestResource sharedKafkaTestResource;
+    private final List<Topic> topics;
     private static final long MAX_WAIT_MS = 30_000;
-    private static String DEFAULT_ERROR = "Error";
 
     private final String consumerId = UUID.randomUUID().toString();
 
     private KafkaConsumer consumer;
-    private List<ConsumerRecord> buffer = new ArrayList<>();
-
     private KafkaProducer producer;
-
-    public TestHelper() {
-    }
 
     public TestHelper(SharedKafkaTestResource sharedKafkaTestResource, Topic... topics) {
         this.topics = Arrays.asList(topics);
@@ -55,16 +47,13 @@ public class TestHelper {
         System.setProperty("kafka.brokers", sharedKafkaTestResource.getKafkaConnectString());
         System.setProperty("kafka.schema-registry-url", schemaRegistryServer.getUrl());
         for (Topic topic : topics) {
-            Topic mock = Mockito.mock(topic.getClass());
             String topicName = topic.name();
             sharedKafkaTestResource.createTopic(topicName, 1, (short) 1);
-
-            Mockito.when(mock.name()).thenReturn(topicName + "whatever");
         }
 
         Properties consumerConfig = TestUtils.consumerConfig(sharedKafkaTestResource.getKafkaConnectString(), KafkaHybridDeserializer.class, KafkaHybridDeserializer.class);
-        consumerConfig.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryServer.getUrl());
-        consumerConfig.put("specific.avro.reader", true);
+        consumerConfig.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryServer.getUrl());
+        consumerConfig.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
         consumerConfig.put(ConsumerConfig.GROUP_ID_CONFIG, consumerId);
 
         consumer = new KafkaConsumer<>(consumerConfig);
@@ -72,7 +61,7 @@ public class TestHelper {
         consumer.subscribe(topics.stream().map(Topic::name).collect(toList()));
 
         Properties producerConfig = TestUtils.producerConfig(sharedKafkaTestResource.getKafkaConnectString(), KafkaHybridSerializer.class, KafkaHybridSerializer.class);
-        producerConfig.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryServer.getUrl());
+        producerConfig.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryServer.getUrl());
 
         producer = new KafkaProducer<>(producerConfig);
     }
@@ -90,31 +79,14 @@ public class TestHelper {
 
         final List<String> topicNames = List.of(topics);
 
-        if (buffer.size() > 0) {
-            final Iterator<ConsumerRecord> iterator = buffer.iterator();
-            while (recordsInTopic.size() < expected && iterator.hasNext()) {
-                ConsumerRecord consumerRecord = iterator.next();
-                if (topicNames.contains(consumerRecord.topic()) && (key == null || key.equals(consumerRecord.key()))) {
-                    recordsInTopic.add(consumerRecord);
-                }
-            }
-            buffer.removeAll(recordsInTopic);
-
-            if (recordsInTopic.size() == expected) {
-                return recordsInTopic;
-            }
-        }
 
         //try
         int retries = 0;
-        ConsumerRecords<K, V> records;
         do {
-            records = consumer.poll(Duration.ofSeconds(1));
+            ConsumerRecords<K, V> records = consumer.poll(Duration.ofSeconds(1));
             records.iterator().forEachRemaining(record -> {
                 if (topicNames.contains(record.topic()) && (key == null || key.equals(record.key())) && recordsInTopic.size() < expected) {
                     recordsInTopic.add(record);
-                } else {
-                    buffer.add(record);
                 }
             });
             consumer.commitAsync();
@@ -139,41 +111,21 @@ public class TestHelper {
         }
     }
 
-    public String getSchemaRegistryServerUrl() {
-        return schemaRegistryServer.getUrl();
-    }
-
-    public void waitForCondition(RunnableTest runnableTest) throws InterruptedException {
-        _waitForCondition(runnableTest, MAX_WAIT_MS, DEFAULT_ERROR);
-    }
-
-    public void waitForCondition(RunnableTest runnableTest, long maxWaitMs) throws InterruptedException {
-        _waitForCondition(runnableTest, maxWaitMs, DEFAULT_ERROR);
-    }
-
     public void waitForCondition(RunnableTest runnableTest, String conditionDetails) throws InterruptedException {
-        _waitForCondition(runnableTest, MAX_WAIT_MS, conditionDetails);
-    }
-
-    public void waitForCondition(RunnableTest runnableTest, long maxWaitMs, String conditionDetails) throws InterruptedException {
-        _waitForCondition(runnableTest, maxWaitMs, conditionDetails);
-    }
-
-    private void _waitForCondition(RunnableTest runnableTest, long maxWaitMs, String conditionDetails) throws InterruptedException {
         ThrowableContainer container = new ThrowableContainer();
 
         TestUtils.waitForCondition(
-            () -> {
-                try {
-                    runnableTest.test();
-                    return true;
-                } catch (Throwable throwable) {
-                    container.setThrowable(new Exception(conditionDetails + ". Original exception:\n" + throwable.getMessage(), throwable));
-                }
-                return false;
-            },
-            maxWaitMs,
-            () -> container.getThrowable().toString()
+                () -> {
+                    try {
+                        runnableTest.test();
+                        return true;
+                    } catch (Throwable throwable) {
+                        container.setThrowable(new Exception(conditionDetails + ". Original exception:\n" + throwable.getMessage(), throwable));
+                    }
+                    return false;
+                },
+                TestHelper.MAX_WAIT_MS,
+                () -> container.getThrowable().toString()
         );
     }
 

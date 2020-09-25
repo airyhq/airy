@@ -12,7 +12,7 @@ import java.util.Properties;
 public class SharedKafkaTestResource implements BeforeAllCallback, AfterAllCallback {
     private KafkaTestCluster kafkaTestCluster;
 
-    private Properties brokerProperties = new Properties();
+    private final Properties brokerProperties = new Properties();
 
     public SharedKafkaTestResource() {
         this(new Properties());

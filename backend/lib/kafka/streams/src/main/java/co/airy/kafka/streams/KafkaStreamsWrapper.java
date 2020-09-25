@@ -188,8 +188,7 @@ public class KafkaStreamsWrapper {
         healthCheckRunnerThread.stopRunning();
 
         if (testMode) {
-            log.error("closing streams with 10 second timeout");
-            streams.close(Duration.ofSeconds(10));
+            streams.close(Duration.ofMillis(1));
         } else {
             streams.close();
         }

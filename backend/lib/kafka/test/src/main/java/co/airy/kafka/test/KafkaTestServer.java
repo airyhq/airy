@@ -19,9 +19,9 @@ public class KafkaTestServer implements AutoCloseable {
 
     private boolean isManagingZookeeper = true;
 
-    private Properties overrideBrokerProperties = new Properties();
+    private final Properties overrideBrokerProperties = new Properties();
 
-    private List<String> listenersConnectString = new ArrayList<>();
+    private final List<String> listenersConnectString = new ArrayList<>();
 
     private KafkaTestServer(Properties overrideBrokerProperties) throws IllegalArgumentException {
         if (overrideBrokerProperties == null) {

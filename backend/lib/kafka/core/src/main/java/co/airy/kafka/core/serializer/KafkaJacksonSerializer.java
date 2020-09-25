@@ -6,29 +6,17 @@ import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Serializer;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Map;
 
-import static co.airy.kafka.core.serdes.KafkaHybridSerde.MAGIC_BYTE;
+import static co.airy.kafka.core.serdes.KafkaHybridSerde.AIRY_MAGIC_BYTE;
 
 public class KafkaJacksonSerializer implements Serializer<Object> {
 
     private static final ObjectMapper OBJECT_MAPPER = new HybridObjectMapper();
 
-    KafkaJacksonSerializer() {}
-
-    /**
-     * here we can configure the object mapper for best performance
-     *
-     * @param configs configs
-     * @param isKey isKey
-     */
-    @Override
-    public void configure(Map<String, ?> configs, boolean isKey) {}
-
     @Override
     public byte[] serialize(String topic, Object data) throws SerializationException {
         try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            out.write(MAGIC_BYTE);
+            out.write(AIRY_MAGIC_BYTE);
             OBJECT_MAPPER.writeValue(out, data);
 
             return out.toByteArray();
@@ -36,7 +24,4 @@ public class KafkaJacksonSerializer implements Serializer<Object> {
             throw new SerializationException(e);
         }
     }
-
-    @Override
-    public void close() {}
 }

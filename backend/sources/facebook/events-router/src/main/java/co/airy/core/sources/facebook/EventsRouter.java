@@ -51,7 +51,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     private ObjectMapper mapper;
 
     @Autowired
-    private KafkaProducer<String, SpecificRecordBase> producer;
+    private KafkaProducer<String, Message> producer;
 
     @Autowired
     private MessageParser messageParser;

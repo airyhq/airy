@@ -5,10 +5,10 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 
 public class Paginator<T> {
-    private List<T> list;
+    private final List<T> list;
     private Integer perPage = 10;
     private String cursor;
-    private Function<T, String> id;
+    private final Function<T, String> id;
 
     public Paginator(List<T> list, Function<T, String> id) {
         this.list = list;

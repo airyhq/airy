@@ -12,10 +12,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PaginatorTest {
-    private static List<Thing> things = new ArrayList<>();
+    private static final List<Thing> things = new ArrayList<>();
 
     @BeforeAll
     static void beforeAll() {
@@ -40,7 +41,7 @@ class PaginatorTest {
         Page<Thing> page = paginator.page();
 
         assertThat(page.getData(), hasSize(10));
-        assertThat(page.getPreviousCursor(), isEmptyOrNullString());
+        assertThat(page.getPreviousCursor(), emptyOrNullString());
         assertThat(page.getNextCursor(), is("11"));
     }
 
@@ -52,7 +53,7 @@ class PaginatorTest {
 
         assertThat(page.getData(), hasSize(4));
         assertThat(page.getPreviousCursor(), is("20"));
-        assertThat(page.getNextCursor(), isEmptyOrNullString());
+        assertThat(page.getNextCursor(), emptyOrNullString());
     }
 
     @Test
@@ -86,10 +87,8 @@ class PaginatorTest {
 
     @Test
     void canHandleNonExistingCursor() {
-        assertThrows(NoSuchElementException.class, () -> {
-                new Paginator<>(things, Thing::getId).perPage(10).from("101").page();
-            }
-        );
+        assertThrows(NoSuchElementException.class,
+                () -> new Paginator<>(things, Thing::getId).perPage(10).from("101").page());
     }
 
     @Test
@@ -99,8 +98,8 @@ class PaginatorTest {
         Page<Thing> page = paginator.page();
 
         assertThat(page.getData(), hasSize(33));
-        assertThat(page.getPreviousCursor(), isEmptyOrNullString());
-        assertThat(page.getNextCursor(), isEmptyOrNullString());
+        assertThat(page.getPreviousCursor(), emptyOrNullString());
+        assertThat(page.getNextCursor(), emptyOrNullString());
     }
 
     @Test
@@ -110,8 +109,8 @@ class PaginatorTest {
         Page<Thing> page = paginator.page();
 
         assertThat(page.getData(), hasSize(0));
-        assertThat(page.getPreviousCursor(), isEmptyOrNullString());
-        assertThat(page.getNextCursor(), isEmptyOrNullString());
+        assertThat(page.getPreviousCursor(), emptyOrNullString());
+        assertThat(page.getNextCursor(), emptyOrNullString());
     }
 
     @Test
@@ -121,7 +120,7 @@ class PaginatorTest {
         Page<Thing> page = paginator.page();
 
         assertThat(page.getData(), hasSize(10));
-        assertThat(page.getPreviousCursor(), isEmptyOrNullString());
+        assertThat(page.getPreviousCursor(), emptyOrNullString());
         assertThat(page.getNextCursor(), is("11"));
     }
 
@@ -132,7 +131,7 @@ class PaginatorTest {
         Page<Thing> page = paginator.page();
 
         assertThat(page.getData(), hasSize(10));
-        assertThat(page.getPreviousCursor(), isEmptyOrNullString());
+        assertThat(page.getPreviousCursor(), emptyOrNullString());
         assertThat(page.getNextCursor(), is("11"));
     }
 
@@ -143,7 +142,7 @@ class PaginatorTest {
         Page<Thing> page = paginator.page();
 
         assertThat(page.getData(), hasSize(10));
-        assertThat(page.getPreviousCursor(), isEmptyOrNullString());
+        assertThat(page.getPreviousCursor(), emptyOrNullString());
         assertThat(page.getNextCursor(), is("11"));
     }
 
@@ -154,17 +153,17 @@ class PaginatorTest {
         Page<Thing> page = paginator.page();
 
         assertThat(page.getData(), hasSize(10));
-        assertThat(page.getPreviousCursor(), isEmptyOrNullString());
+        assertThat(page.getPreviousCursor(), emptyOrNullString());
         assertThat(page.getNextCursor(), is("11"));
     }
 }
 
 class Thing {
+    private final String id;
+
     Thing(String id) {
         this.id = id;
     }
-
-    private String id;
 
     public String getId() {
         return id;

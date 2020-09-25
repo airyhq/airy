@@ -1,7 +1,7 @@
 package co.airy.kafka.core.deserializer;
 
-import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import co.airy.kafka.core.serdes.Configurations;
+import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;

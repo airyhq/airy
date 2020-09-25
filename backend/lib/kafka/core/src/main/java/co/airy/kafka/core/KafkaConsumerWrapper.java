@@ -1,13 +1,13 @@
 package co.airy.kafka.core;
 
 import co.airy.kafka.core.deserializer.KafkaHybridDeserializer;
+import co.airy.log.AiryLoggerFactory;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
-import co.airy.log.AiryLoggerFactory;
-import org.slf4j.Logger;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.slf4j.Logger;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;

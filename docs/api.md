@@ -236,142 +236,11 @@ Example response:
 }
 ```
 
-
-### Tags
-
-The following endpoints enable adding and removing tags on a contact level.
-Adding and removing tags is an async action, so the response is always empty.
-
-#### Creating a tag
-
-`POST /create-tag`
-
-Example body:
-
-```json5
-{
-  "name": "Urgent",
-  "color": "tag-red" // one of tag-red | tag-blue | tag-green | tag-purple
-}
-```
-
-If the tag is successfully created the endpoint will return `201` (created) with the tag id in the response body.
-
-Example response:
-
-```json5
-{
-  id: "TAG-UUID"
-}
-```
-
-#### Deleting a tag
-
-`POST /delete-tag`
-
-```json
-{
-  "id": "ID-OF-THE-TAG"
-}
-```
-
-Since this is an async action, the endpoint returns `202` (accepted).
-The response is always an empty JSON.
-
-Example response:
-
-```json5
-{}
-```
-
-#### Updating a tag
-
-`POST /update-tag`
-
-```json
-{
-  "id": "TAG-ID",
-  "name": "Urgent",
-  "color": "tag-blue"
-}
-```
-
-Since this is an async action, the endpoint returns `202` (accepted). The
-response is always an empty JSON.
-
-Example response:
-
-```json5
-{}
-```
-
-#### Getting tags
-
-`POST /tags`
-
-Example response:
-
-```json5
-{
-  tags: [
-    {
-      id: "TAG-ID",
-      name: "name of the tag",
-      color: "RED"
-    }
-  ]
-}
-```
-
-#### Adding tag
-
-This endpoint adds an existing tag to a conversation
-
-`POST /add-tag`
-
-Example body:
-
-```json5
-{
-  conversation_id: "424242424242",
-  tag_id: "uuid-of-the-tag"
-}
-```
-
-Since this is an async action, the endpoint returns `202` (accepted).
-The response is always an empty JSON.
-
-Example response:
-
-```json5
-{}
-```
-
-#### Removing tag
-
-`POST /remove-tag`
-
-```json5
-{
-  converation_id: "424242424242",
-  tag_id: "tag-uuid"
-}
-```
-
-Since this is an async action, the endpoint returns `202` HTTP status code (accepted).
-The response is always an empty JSON.
-
-Example response:
-
-```json5
-{}
-```
-
 ### Channels
 
 #### Connecting Channels
 
-`POST /connect-channels`
+`POST /channels.connect`
 
 Async endpoint for connecting channels. It submits one or
 more `ChannelConnectRequest` records to be handled by a source specific
@@ -405,7 +274,7 @@ The Airy channel ids are used to await connection confirmation over websocket
 
 #### Disconnecting Channels
 
-`POST /disconnect-channels`
+`POST /channels.disconnect`
 
 Async endpoint for disconnecting channels. It submits
 one or more `ChannelDisConnectRequest` records to be handled by a source
@@ -424,17 +293,10 @@ channel ids can be used to await disconnection confirmation over websocket
 
 #### List Available Channels
 
-`POST /channels`
+`POST /channels.available`
 
-Async endpoint for listing available channels of a given source., .  It submits
-an `AvailableChannelsRequest` records to be handled by a source specific
-`ChannelConnector`.  The endoint responds with an
-`available_channels_request_id`, which should be used to clients to await the
-response for the given request over websocket (see websocket.md).  The
-response delivered over web socket includes the list of channels over the
-given source, that have been connected to the Airy app (i.e. Airy has been
-granted permission to consume events on behalf of those channels).  The
-response also specifies, per channel whether it is connected.
+A synchronous endpoint that makes a request to the source on behalf of the user to list all the channels that are available
+for connection. Due to the nature of the request, response time may vary.
 
 **Sample Request**
 
@@ -445,24 +307,16 @@ response also specifies, per channel whether it is connected.
 }
 ```
 
-**Sample Response**
-
-```json5
-{
-	"available_channels_request_id": "some-uuid"
-}
-```
-
 
 #### List Connected Channels
 
-`POST /connected-channels`
+`POST /channels.connected`
 
 **Sample Response**
 
 ```json5
 {
-	"channels": [
+	"data": [
 		{
 			"id": "channel-uuid-1",
 			"name": "my page 1",
@@ -478,221 +332,6 @@ response also specifies, per channel whether it is connected.
 	]
 }
 ```
-
-### Teams
-
-A team is a collection of filters.
-
-#### Getting teams
-
-`POST /teams`
-
-**Sample Response**
-
-```json5
-{
-  "teams": [
-    {
-      "id": "5112eb0d-8dcf-4546-85e3-8d40c25ae5d9",
-      "name": "GEEZ",
-      "members": [
-        {
-          "first_name": "Rick",
-          "last_name": "Sanchez",
-          "id": "a2c700f3-f537-4b3d-bd4b-dd9cfb1e3442"
-        }
-      ]
-    }
-  ]
-}
-```
-
-#### Creating a team
-
-**Sample Request**
-
-`POST /create-team`
-
-```json5
-{
-    "name": "TEAM NAME",
-    "query": {
-        "contact_ids": ["cid1", "cid2"], //for a team that only receive conversations of cid1 and cid2,
-        "channel_ids": ["channel1", "channel2"], //for a team that only receives conversations written to channel1 and channel 2
-        "display_names": ["Kobi", "Thomas"], //for a team that only receives conversations with Kobi or Thomas
-        "min_unread_message_count": 1, //for a team that only receives conversations with at least 1 unread message
-        "max_unread_message_count": 5, //for a team that only receives conversations with at most 5 unread messages
-        "contact_tag_ids": ["tag1", "tag2"], //for a team that only receives conversation with contacts tagged with tag1 and tag2
-    },
-    "member_ids": ["user id 1", "user id 2"]
-}
-```
-
-**Required**
-
-- `name`: String
-- `query`:
-  - `channel_ids`: List of UUIDs. Needs to have AT LEAST one channel id.
-- `member_ids`: List of String
-
-**Optional**
-- `query`:
-  - `contact_ids`: List of UUIDs
-  - `display_names`: List of String
-  - `min_unread_message_count`: Integer
-  - `max_unread_message_count`: Integer
-  - `contact_tag_ids`: List of String
-
-**Sample Response**
-
-```json5
-{
-  id: "TEAM UUID"
-}
-```
-
-#### Updating a team
-
-`POST /update-team`
-
-**Sample Request**
-
-
-```json5
-{
-    "team_id": "TEAM ID",
-    "name": "TEAM NAME",
-    "query": {
-        "contact_ids": ["cid1", "cid2"], //for a team that only receive conversations of cid1 and cid2,
-        "channel_ids": ["channel1", "channel2"], //for a team that only receives conversations written to channel1 and channel 2
-        "display_names": ["Kobi", "Thomas"], //for a team that only receives conversations with Kobi or Thomas
-        "min_unread_message_count": 1, //for a team that only receives conversations with at least 1 unread message
-        "max_unread_message_count": 5, //for a team that only receives conversations with at most 5 unread messages
-        "contact_tag_ids": ["tag1", "tag2"], //for a team that only receives conversation with contacts tagged with tag1 and tag2
-    }
-}
-```
-
-**Required**
-
-- `team_id`: UUID of the team
-- `name`: String
-- `query`:
-  - `channel_ids`: List of UUIDs. Needs to have AT LEAST one channel id.
-
-**Optional**
-- `query`:
-  - `contact_ids`: List of UUIDs
-  - `display_names`: List of String
-  - `min_unread_message_count`: Integer
-  - `max_unread_message_count`: Integer
-  - `contact_tag_ids`: List of String
-
-#### Adding users to a team
-
-`POST /add-users-to-team`
-
-**Sample Request**
-
-```json5
-{
-    "team_id": "team_id",
-    "user_ids": ["user1", "user2"]
-}
-```
-
-**Required**
-
-- `team_id`: UUID
-- `user_ids`: List of UUIDs
-
-**Sample Response**
-
-This endpoint return `200` with an empty JSON body
-
-```json5
-{}
-```
-
-#### Remove users from a team
-
-`POST /remove-users-from-team`
-
-**Sample Request**
-
-```json5
-{
-    "team_id": "team_id",
-    "user_ids": ["user1", "user2"]
-}
-```
-
-**Required**
-
-- `team_id`: UUID
-- `user_ids`: List of UUIDs
-
-**Sample Response**
-
-This endpoint return `200` with an empty JSON body
-
-```json5
-{}
-```
-
-#### Fetching a team
-
-`POST /team`
-
-**Sample Request**
-
-```json5
-{
-  "team_id": "TEAM ID"
-}
-```
-
-**Sample Response**
-
-```json5
-{
-  "id": "TEAM ID",
-  "name": "wubba lubba dub dub",
-  "members": [
-    {
-      "id": "USER ID",
-      "first_name": "First Name",
-      "last_name": "Last Name"
-    }
-  ],
-  "query": {
-    "contact_ids": ["cid1", "cid2"],
-    "channel_ids": ["channel1", "channel2"],
-    "display_names": ["Kobi", "Thomas"],
-    "min_unread_message_count": 1,
-    "max_unread_message_count": 5,
-    "contact_tag_ids": ["tag1", "tag2"],
-  }
-}
-```
-#### Deleting a team
-
-`POST /delete-team`
-
-**Sample Request**
-```json5
-{
-  "team_id": "TEAM ID"
-}
-```
-
-**Sample Response**
-
-```json5
-{}
-```
-
-The endpoint returns `202` (Accepted)
 
 ### Webhooks
 

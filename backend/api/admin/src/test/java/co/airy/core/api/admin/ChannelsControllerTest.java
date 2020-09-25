@@ -1,14 +1,11 @@
-package co.airy.core.api.conversations;
+package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
-import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,10 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-import java.util.UUID;
-
-import static co.airy.core.api.conversations.util.ConversationGenerator.getMessages;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,10 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "kafka.cleanup=true",
         "kafka.commit-interval-ms=100"
 }, classes = AirySpringBootApplication.class)
-@ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-public class MessagesTest {
-
+@ExtendWith(SpringExtension.class)
+public class ChannelsControllerTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
@@ -50,18 +42,14 @@ public class MessagesTest {
     @Autowired
     private MockMvc mvc;
 
-    private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
+    private static boolean testDataInitialized = false;
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
 
     @BeforeAll
     static void beforeAll() throws Exception {
         testHelper = new TestHelper(sharedKafkaTestResource,
-                applicationCommunicationMessages,
-                applicationCommunicationChannels,
-                applicationCommunicationMetadata
+                applicationCommunicationChannels
         );
-
         testHelper.beforeAll();
     }
 
@@ -71,41 +59,47 @@ public class MessagesTest {
     }
 
     @BeforeEach
-    void init() throws Exception {
+    void initializeTestDataOnce() throws Exception {
+        if (testDataInitialized) {
+            return;
+        }
+
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
                 "Application is not healthy"
         );
+
+        testDataInitialized = true;
     }
 
     @Test
-    void messageListOk() throws Exception {
-        final String conversationId = UUID.randomUUID().toString();
-        final String channelId = "channelId";
+    void connectedChannels() throws Exception {
+        testHelper.produceRecords(
+                new ProducerRecord<>(applicationCommunicationChannels.name(), "channel-id-1",
+                        Channel.newBuilder()
+                                .setConnectionState(ChannelConnectionState.CONNECTED)
+                                .setId("channel-id-1")
+                                .setName("channel-name-2")
+                                .setSource("FACEBOOK")
+                                .setSourceChannelId("ps-id-1")
+                                .build()
+                ),
+                new ProducerRecord<>(applicationCommunicationChannels.name(), "channel-id-2",
+                        Channel.newBuilder()
+                                .setConnectionState(ChannelConnectionState.DISCONNECTED)
+                                .setId("channel-id-2")
+                                .setName("channel-name-2")
+                                .setSource("FACEBOOK")
+                                .setSourceChannelId("ps-id-2")
+                                .build()
+                )
+        );
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
-                .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId(channelId)
-                .setName("channel-name")
-                .setSource("FACEBOOK")
-                .setSourceChannelId("ps-id")
-                .build()
-        ));
-
-        int messageCount = 10;
-        final List<ProducerRecord<String, SpecificRecordBase>> records = getMessages(10, channelId, conversationId);
-
-        testHelper.produceRecords(records);
-
-        String requestPayload = "{\"conversation_id\":\"" + conversationId + "\"}";
-
-        testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.messages-list")
-                        .headers(buildHeaders())
-                        .content(requestPayload))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(messageCount))),
-                "/conversations.messages-list endpoint error"
+        testHelper.waitForCondition(() -> mvc.perform(post("/channels.connected").
+                headers(buildHeaders()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(1))),
+                "/channels.connected did not return the right number of channels"
         );
     }
 

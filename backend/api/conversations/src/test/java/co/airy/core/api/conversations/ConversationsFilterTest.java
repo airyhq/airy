@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
 import static co.airy.core.api.conversations.util.ConversationGenerator.CreateConversation;
+import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

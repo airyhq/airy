@@ -70,7 +70,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     }
 
     @GetMapping("/health")
-    ResponseEntity health() {
+    ResponseEntity<Void> health() {
         getChannelsStore();
 
         // If no exception was thrown by one of the above calls, this service is healthy

@@ -46,7 +46,7 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.available")
-    ResponseEntity availableChannels(@RequestBody @Valid AvailableChannelsRequestPayload requestPayload) throws SourceApiException {
+    ResponseEntity<?> availableChannels(@RequestBody @Valid AvailableChannelsRequestPayload requestPayload) throws SourceApiException {
         final String sourceIdentifier = requestPayload.getSource();
 
         final Source source = sourceMap.get(sourceIdentifier);

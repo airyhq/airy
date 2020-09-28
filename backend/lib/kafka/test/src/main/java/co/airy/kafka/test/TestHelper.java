@@ -105,10 +105,6 @@ public class TestHelper {
         producer.send(record).get();
     }
 
-    public <T, S> void produceRecords(ProducerRecord<T, S>... records) throws ExecutionException, InterruptedException {
-        produceRecords(Arrays.asList(records));
-    }
-
     public <T, S> void produceRecords(List<ProducerRecord<T, S>> records) throws ExecutionException, InterruptedException {
         for (ProducerRecord<T, S> record : records) {
             produceRecord(record);

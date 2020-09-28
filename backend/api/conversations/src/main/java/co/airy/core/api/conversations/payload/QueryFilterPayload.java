@@ -14,9 +14,7 @@ import java.util.UUID;
 @Builder
 public class QueryFilterPayload {
     private List<UUID> conversationIds;
-
     private List<String> channelIds;
-
     private List<String> displayNames;
 }
 

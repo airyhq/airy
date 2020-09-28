@@ -10,13 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailableChannelPayload {
-
     private String sourceChannelId;
-
     private String name;
-
     private String imageUrl;
-
     private boolean connected;
-
 }

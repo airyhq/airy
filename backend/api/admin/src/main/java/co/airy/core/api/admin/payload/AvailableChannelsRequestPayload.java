@@ -11,7 +11,6 @@ import lombok.NonNull;
 public class AvailableChannelsRequestPayload {
     @NonNull
     String source;
-
     @NonNull
     String token;
 }

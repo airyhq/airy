@@ -115,7 +115,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     }
 
     @GetMapping("/health")
-    ResponseEntity health() {
+    ResponseEntity<Void> health() {
         getConversationsStore();
         getMessagesStore();
 

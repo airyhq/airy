@@ -126,7 +126,7 @@ public class TestHelper {
                     return false;
                 },
                 TestHelper.MAX_WAIT_MS,
-                () -> container.getThrowable().toString()
+                () -> container.getThrowable().getLocalizedMessage()
         );
     }
 

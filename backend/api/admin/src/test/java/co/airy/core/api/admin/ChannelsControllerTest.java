@@ -2,6 +2,7 @@ package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.core.api.admin.dto.ChannelMetadata;
 import co.airy.core.api.admin.payload.AvailableChannelPayload;
 import co.airy.core.api.admin.sources.facebook.FacebookSource;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -126,13 +128,12 @@ public class ChannelsControllerTest {
                         .build()
         ));
 
-        final AvailableChannelPayload availableChannel = AvailableChannelPayload.builder()
+        final ChannelMetadata availableChannel = ChannelMetadata.builder()
                 .name(channelName)
                 .sourceChannelId("ps-id-1")
                 .build();
 
-        final AvailableChannelPayload connectedChannel = AvailableChannelPayload.builder()
-                .name(channelName)
+        final ChannelMetadata connectedChannel = ChannelMetadata.builder()
                 .sourceChannelId("ps-id-2")
                 .build();
 
@@ -150,6 +151,32 @@ public class ChannelsControllerTest {
                 "/channels.connected did not return the right number of channels"
         );
     }
+
+
+    @Test
+    void connectChannel() throws Exception {
+        final String token = "token";
+        final String channelName = "channel-name";
+        final String sourceChannelId = "ps-id";
+
+        doReturn(new ChannelMetadata()).when(facebookSource).connectChannel(token, sourceChannelId);
+
+        final String payload = "{\"token\":\"" + token + "\",\"source\":\"FACEBOOK\"," +
+                "\"source_channel_id\":\"" + sourceChannelId + "\"," +
+                "\"name\":\"" + channelName + "\"" +
+                "}";
+
+        testHelper.waitForCondition(() -> mvc.perform(post("/channels.connect")
+                        .headers(buildHeaders())
+                        .content(payload))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.name", equalTo(channelName)))
+                        .andExpect(jsonPath("$.source_channel_id", equalTo(sourceChannelId)))
+                ,
+                "/channels.connected did not return the right number of channels"
+        );
+    }
+
 
     private HttpHeaders buildHeaders() {
         HttpHeaders headers = new HttpHeaders();

@@ -3,6 +3,8 @@ package co.airy.core.api.admin;
 import co.airy.avro.communication.Channel;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 @Component
 @RestController
@@ -37,18 +40,25 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.<String, Channel>stream(applicationCommunicationChannels)
-                .groupBy((k,v) -> allChannelsKey)
+                .groupBy((k, v) -> allChannelsKey)
                 .aggregate(HashMap::new, (allKey, channel, channelsMap) -> {
                     // An external channel id may only be connected once
-                    channelsMap.put(channel.getSourceChannelId(), channel);
+                    channelsMap.put(channel.getId(), channel);
                     return channelsMap;
                 }, Materialized.as(CHANNELS_STORE));
 
         streams.start(builder.build(), appId);
     }
 
-    public ReadOnlyKeyValueStore<String, Map<String,Channel>> getChannelsStore() {
+    public ReadOnlyKeyValueStore<String, Map<String, Channel>> getChannelsStore() {
         return streams.acquireLocalStore(CHANNELS_STORE);
+    }
+
+    @Autowired
+    KafkaProducer<String, Channel> producer;
+
+    public void storeChannel(Channel channel) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
     }
 
     public Map<String, Channel> getChannelsMap() {

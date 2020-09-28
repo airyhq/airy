@@ -2,13 +2,17 @@ package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.core.api.admin.dto.ChannelMetadata;
 import co.airy.core.api.admin.payload.AvailableChannelPayload;
 import co.airy.core.api.admin.payload.AvailableChannelsRequestPayload;
 import co.airy.core.api.admin.payload.AvailableChannelsResponsePayload;
 import co.airy.core.api.admin.payload.ChannelsResponsePayload;
+import co.airy.core.api.admin.payload.ConnectChannelRequestPayload;
 import co.airy.payload.response.RequestError;
+import co.airy.uuid.UUIDV5;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -46,7 +51,7 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.available")
-    ResponseEntity<?> availableChannels(@RequestBody @Valid AvailableChannelsRequestPayload requestPayload) throws SourceApiException {
+    ResponseEntity<?> availableChannels(@RequestBody @Valid AvailableChannelsRequestPayload requestPayload) {
         final String sourceIdentifier = requestPayload.getSource();
 
         final Source source = sourceMap.get(sourceIdentifier);
@@ -55,7 +60,13 @@ public class ChannelsController {
             return ResponseEntity.badRequest().body(new RequestError(String.format("source %s not implemented", source)));
         }
 
-        final List<AvailableChannelPayload> availableChannels = source.getAvailableChannels(requestPayload.getToken());
+        final List<ChannelMetadata> availableChannels;
+
+        try {
+            availableChannels = source.getAvailableChannels(requestPayload.getToken());
+        } catch (SourceApiException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
+        }
 
         final Map<String, Channel> channelsMap = stores.getChannelsMap();
         final List<String> connectedSourceIds = channelsMap.values()
@@ -67,9 +78,63 @@ public class ChannelsController {
         return ResponseEntity.ok(
                 new AvailableChannelsResponsePayload(
                         availableChannels.stream()
-                                .peek((channel) -> channel.setConnected(connectedSourceIds.contains(channel.getSourceChannelId())))
+                                .map((channel) -> AvailableChannelPayload.builder()
+                                        .sourceChannelId(channel.getSourceChannelId())
+                                        .name(channel.getName())
+                                        .imageUrl(channel.getImageUrl())
+                                        .connected(connectedSourceIds.contains(channel.getSourceChannelId()))
+                                        .build()
+                                )
                                 .collect(toList())
                 )
         );
+    }
+
+    @PostMapping("/channels.connect")
+    ResponseEntity<?> connectChannel(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
+        final String token = requestPayload.getToken();
+        final String sourceChannelId = requestPayload.getSourceChannelId();
+        final String sourceIdentifier = requestPayload.getSource();
+
+        final String channelId = UUIDV5.fromNamespaceAndName(sourceIdentifier, sourceChannelId).toString();
+
+        final Source source = sourceMap.get(sourceIdentifier);
+
+        if (source == null) {
+            return ResponseEntity.badRequest().body(new RequestError(String.format("source %s not implemented", source)));
+        }
+
+        final Map<String, Channel> channelsMap = stores.getChannelsMap();
+        final Channel existingChannel = channelsMap.get(channelId);
+
+        if (existingChannel != null && ChannelConnectionState.CONNECTED.equals(existingChannel.getConnectionState())) {
+            return ResponseEntity.ok(Mapper.fromChannel(existingChannel));
+        }
+
+        final ChannelMetadata channelMetadata;
+
+        try {
+            channelMetadata = source.connectChannel(token, sourceChannelId);
+        } catch (SourceApiException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
+        }
+
+        final Channel channel = Channel.newBuilder()
+                .setId(channelId)
+                .setConnectionState(ChannelConnectionState.CONNECTED)
+                .setImageUrl(Optional.ofNullable(requestPayload.getImage_url()).orElse(channelMetadata.getImageUrl()))
+                .setName(Optional.ofNullable(requestPayload.getName()).orElse(channelMetadata.getName()))
+                .setSource(sourceIdentifier)
+                .setSourceChannelId(sourceChannelId)
+                .setToken(token)
+                .build();
+
+        try {
+            stores.storeChannel(channel);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
+
+        return ResponseEntity.ok(Mapper.fromChannel(channel));
     }
 }

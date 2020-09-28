@@ -4,6 +4,7 @@ load("//tools/build:junit5.bzl", "junit5")
 app_deps = [
     "//backend/avro/communication:channel",
     "//backend/lib/payload",
+    "//backend/lib/uuid",
     "//backend/lib/kafka/schema:kafka-schema",
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/spring/kafka/core:spring-kafka-core",

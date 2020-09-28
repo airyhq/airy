@@ -33,8 +33,10 @@ public class FacebookApi {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private final String pageFields = "fields=id,name_with_location_descriptor,access_token,picture,is_webhooks_subscribed";
+
     public List<FbPageWithConnectInfo> getAllPagesForUser(String accessToken) throws Exception {
-        String pagesUrl = String.format(baseUrl + "/me/accounts?fields=id,name_with_location_descriptor,access_token,picture,is_webhooks_subscribed&access_token=%s", accessToken);
+        String pagesUrl = String.format(baseUrl + "/me/accounts?%s&access_token=%s", pageFields, accessToken);
 
         boolean paginated = true;
         List<FbPageWithConnectInfo> pageList = new ArrayList<>();
@@ -51,12 +53,12 @@ public class FacebookApi {
     }
 
     public FbPageWithConnectInfo getPageForUser(final String pageId, final String accessToken) throws Exception {
-        final String pageUrl = String.format(baseUrl + "/%s?fields=id,name_with_location_descriptor,access_token,picture,is_webhooks_subscribed&access_token=%s", pageId, accessToken);
+        final String pageUrl = String.format(baseUrl + "/%s?%s&access_token=%s", pageId, pageFields, accessToken);
 
         return apiResponse(pageUrl, HttpMethod.GET, FbPageWithConnectInfo.class);
     }
 
-    public void connectPageToAiryApp(String pageToken) throws Exception {
+    public void connectPageToApp(String pageToken) throws Exception {
         String apiUrl = String.format(baseUrl + "/me/subscribed_apps?access_token=%s", pageToken);
         apiResponse(apiUrl, HttpMethod.POST, Map.class);
     }

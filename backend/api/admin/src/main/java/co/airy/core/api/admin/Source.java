@@ -1,11 +1,13 @@
 package co.airy.core.api.admin;
 
-import co.airy.core.api.admin.payload.AvailableChannelPayload;
+import co.airy.core.api.admin.dto.ChannelMetadata;
 
 import java.util.List;
 
 public interface Source {
     String getIdentifier();
 
-    List<AvailableChannelPayload> getAvailableChannels(String token) throws SourceApiException;
+    List<ChannelMetadata> getAvailableChannels(String token) throws SourceApiException;
+
+    ChannelMetadata connectChannel(String token, String sourceChannelId) throws SourceApiException ;
 }

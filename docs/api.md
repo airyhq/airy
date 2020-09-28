@@ -242,22 +242,19 @@ Example response:
 
 `POST /channels.connect`
 
-Async endpoint for connecting channels. It submits one or
-more `ChannelConnectRequest` records to be handled by a source specific
-`ChannelConnector`.  The endpoint responds with a map of external channel ids
-(supplied in the endpoint's payload), and their generated Airy channel ids.
-The Airy channel ids are used to await connection confirmation over websocket
-(see websocket.md)
+A synchronous endpoint that makes a request to the source on behalf of the user to connect the channel and produce a record to Kafka.
+
+If the given source channel id is already connected, the status will be `202`.
 
 **Sample Request**
 
 ```json5
 {
   "source": "FACEBOOK",
-  "external_channel_ids": ["fb-page-id-1", "fb-page-id-2"],
+  "source_channel_id": "fb-page-id-1",
   "token": "FB_TOKEN",
   "name": "My custom name for this page", // optional
-  "image_url": "http://aws.com/jeff.jpg" // optional
+  "image_url": "https://example.org/custom-image.jpg" // optional
 }
 ```
 
@@ -265,10 +262,11 @@ The Airy channel ids are used to await connection confirmation over websocket
 
 ```json5
 {
-	"pending_channel_ids": [
-		"fb-page-id-1": "airy-channel-uuid-1",
-		"fb-page-id-2": "airy-channel-uuid-2"
-	]
+	"id": "channel-uuid-1",
+    "name": "My custom name for this page",
+    "image_url": "https://example.org/custom-image.jpg", // optional
+    "source": "FACEBOOK",
+    "source_channel_id": "fb-page-id-1"
 }
 ```
 
@@ -276,18 +274,12 @@ The Airy channel ids are used to await connection confirmation over websocket
 
 `POST /channels.disconnect`
 
-Async endpoint for disconnecting channels. It submits
-one or more `ChannelDisConnectRequest` records to be handled by a source
-specific `ChannelConnector`.  The endpoint has  no response, but the Airy
-channel ids can be used to await disconnection confirmation over websocket
-(see websocket.md)
-
 **Sample Request**
 
 ```json5
 {
   "source": "FACEBOOK",
-  "external_channel_ids": ["external-channel-id-1", "external-channel-id-2"]
+  "source_channel_ids": ["external-channel-id-1", "external-channel-id-2"]
 }
 ```
 
@@ -295,8 +287,7 @@ channel ids can be used to await disconnection confirmation over websocket
 
 `POST /channels.available`
 
-A synchronous endpoint that makes a request to the source on behalf of the user to list all the channels that are available
-for connection. Due to the nature of the request, response time may vary.
+A synchronous endpoint that makes a request to the source on behalf of the user to list all the channels that are available. Some of those channels may already be connected, which is accounted for in the boolean field `connected`. Due to the nature of the request, response time may vary.
 
 **Sample Request**
 
@@ -307,6 +298,27 @@ for connection. Due to the nature of the request, response time may vary.
 }
 ```
 
+**Sample Response**
+
+```json5
+{
+	"data": [
+		{
+			"name": "my page 1",
+			"source": "FACEBOOK",
+			"source_channel_id": "fb-page-id-1",
+			"connected": false,
+			"image_url": "fb-page-id-1" // optional
+		},
+		{
+			"name": "my page 2",
+			"source": "FACEBOOK",
+			"source_channel_id": "fb-page-id-2",
+            "connected": true
+		}
+	]
+}
+```
 
 #### List Connected Channels
 
@@ -321,13 +333,13 @@ for connection. Due to the nature of the request, response time may vary.
 			"id": "channel-uuid-1",
 			"name": "my page 1",
 			"source": "FACEBOOK",
-			"external_channel_id": "fb-page-id-1"
+			"source_channel_id": "fb-page-id-1"
 		},
 		{
 			"id": "channel-uuid-2",
 			"name": "my page 2",
 			"source": "FACEBOOK",
-			"external_channel_id": "fb-page-id-2"
+			"source_channel_id": "fb-page-id-2"
 		}
 	]
 }

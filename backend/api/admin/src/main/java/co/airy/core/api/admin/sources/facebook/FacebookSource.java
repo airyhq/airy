@@ -52,4 +52,9 @@ public class FacebookSource implements Source {
             throw new SourceApiException(e.getMessage());
         }
     }
+
+    @Override
+    public void disconnectChannel(String token, String sourceChannelId) {
+
+    }
 }

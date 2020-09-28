@@ -10,4 +10,6 @@ public interface Source {
     List<ChannelMetadata> getAvailableChannels(String token) throws SourceApiException;
 
     ChannelMetadata connectChannel(String token, String sourceChannelId) throws SourceApiException ;
+
+    void disconnectChannel(String token, String sourceChannelId) throws SourceApiException;
 }

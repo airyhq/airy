@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,6 +28,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -72,28 +74,43 @@ public class ChannelsControllerTest {
     @SpyBean
     FacebookSource facebookSource;
 
+    private static boolean testDataInitialized = false;
+
+    final static String facebookToken = "token";
+    final static Channel connectedChannel = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId(UUID.randomUUID().toString())
+            .setName("connected channel name")
+            .setSource("FACEBOOK")
+            .setToken(facebookToken)
+            .setSourceChannelId("source-channel-id")
+            .build();
+
     @BeforeEach
     void init() throws Exception {
         MockitoAnnotations.initMocks(this);
+
+        if (testDataInitialized) {
+            return;
+        }
+
+        testDataInitialized = true;
+
+        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(),
+                connectedChannel.getId(),
+                connectedChannel
+        ));
 
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
                 "Application is not healthy"
         );
+
     }
 
     @Test
     void connectedChannels() throws Exception {
         testHelper.produceRecords(List.of(
-                new ProducerRecord<>(applicationCommunicationChannels.name(), "channel-id-1",
-                        Channel.newBuilder()
-                                .setConnectionState(ChannelConnectionState.CONNECTED)
-                                .setId("channel-id-1")
-                                .setName("channel-name-2")
-                                .setSource("FACEBOOK")
-                                .setSourceChannelId("ps-id-1")
-                                .build()
-                ),
                 new ProducerRecord<>(applicationCommunicationChannels.name(), "channel-id-2",
                         Channel.newBuilder()
                                 .setConnectionState(ChannelConnectionState.DISCONNECTED)
@@ -115,29 +132,17 @@ public class ChannelsControllerTest {
 
     @Test
     void availableChannels() throws Exception {
-        final String facebookToken = "token";
         final String channelName = "channel-name";
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), "channel-id-2",
-                Channel.newBuilder()
-                        .setConnectionState(ChannelConnectionState.CONNECTED)
-                        .setId("channel-id-2")
-                        .setName("channel-name-2")
-                        .setSource("FACEBOOK")
-                        .setSourceChannelId("ps-id-2")
+        doReturn(List.of(
+                ChannelMetadata.builder()
+                        .name(channelName)
+                        .sourceChannelId("ps-id-1")
+                        .build(),
+                ChannelMetadata.builder()
+                        .sourceChannelId(connectedChannel.getSourceChannelId())
                         .build()
-        ));
-
-        final ChannelMetadata availableChannel = ChannelMetadata.builder()
-                .name(channelName)
-                .sourceChannelId("ps-id-1")
-                .build();
-
-        final ChannelMetadata connectedChannel = ChannelMetadata.builder()
-                .sourceChannelId("ps-id-2")
-                .build();
-
-        doReturn(List.of(availableChannel, connectedChannel)).when(facebookSource).getAvailableChannels(facebookToken);
+        )).when(facebookSource).getAvailableChannels(facebookToken);
 
         testHelper.waitForCondition(() -> mvc.perform(post("/channels.available")
                         .headers(buildHeaders())
@@ -148,7 +153,7 @@ public class ChannelsControllerTest {
                         .andExpect(jsonPath("$.data[0].connected", equalTo(false)))
                         .andExpect(jsonPath("$.data[1].connected", equalTo(true)))
                 ,
-                "/channels.connected did not return the right number of channels"
+                "/channels.available did not return the mocked channels"
         );
     }
 
@@ -173,8 +178,20 @@ public class ChannelsControllerTest {
                         .andExpect(jsonPath("$.name", equalTo(channelName)))
                         .andExpect(jsonPath("$.source_channel_id", equalTo(sourceChannelId)))
                 ,
-                "/channels.connected did not return the right number of channels"
+                "/channels.connect failed"
         );
+    }
+
+    @Test
+    void disconnectChannel() throws Exception {
+        testHelper.waitForCondition(() -> mvc.perform(post("/channels.disconnect")
+                        .headers(buildHeaders())
+                        .content("{\"channel_id\":\"" + connectedChannel.getId() + "\"}"))
+                        .andExpect(status().isOk()),
+                "/channels.disconnect failed"
+        );
+
+        Mockito.verify(facebookSource).disconnectChannel(connectedChannel.getToken(), connectedChannel.getSourceChannelId());
     }
 
 

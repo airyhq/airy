@@ -8,6 +8,8 @@ import co.airy.core.api.admin.payload.AvailableChannelsRequestPayload;
 import co.airy.core.api.admin.payload.AvailableChannelsResponsePayload;
 import co.airy.core.api.admin.payload.ChannelsResponsePayload;
 import co.airy.core.api.admin.payload.ConnectChannelRequestPayload;
+import co.airy.core.api.admin.payload.DisconnectChannelRequestPayload;
+import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestError;
 import co.airy.uuid.UUIDV5;
 import lombok.NonNull;
@@ -22,6 +24,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -136,5 +139,37 @@ public class ChannelsController {
         }
 
         return ResponseEntity.ok(Mapper.fromChannel(channel));
+    }
+
+    @PostMapping("/channels.disconnect")
+    ResponseEntity<?> disconnectChannel(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
+        final String channelId = requestPayload.getChannelId().toString();
+
+        final Map<String, Channel> channelsMap = stores.getChannelsMap();
+        final Channel channel = channelsMap.get(channelId);
+
+        if (channel == null) {
+            return ResponseEntity.notFound().build();
+        } else if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
+            return ResponseEntity.accepted().build();
+        }
+
+        final Source source = sourceMap.get(channel.getSource());
+
+        if (source == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new RequestError(String.format("source %s not implemented", channel.getSource())));
+        }
+
+        try {
+            source.disconnectChannel(channel.getToken(), channel.getSourceChannelId());
+        } catch (SourceApiException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
+        }
+
+        channel.setConnectionState(ChannelConnectionState.DISCONNECTED);
+        channel.setToken(null);
+
+        return ResponseEntity.ok(new EmptyResponsePayload());
     }
 }

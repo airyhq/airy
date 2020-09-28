@@ -244,7 +244,7 @@ Example response:
 
 A synchronous endpoint that makes a request to the source on behalf of the user to connect the channel and produce a record to Kafka.
 
-If the given source channel id is already connected, the status will be `202`.
+This action is idempotent, so if the channel is already connected the status will be `202`.
 
 **Sample Request**
 
@@ -274,12 +274,16 @@ If the given source channel id is already connected, the status will be `202`.
 
 `POST /channels.disconnect`
 
+A synchronous endpoint that makes a request to the source on behalf of the user to disconnect the channel. Marks the channel as disconnected and deletes the auth token.
+
+This action is idempotent, so if the channel is disconnected the status will be `202`.
+If the channel is unknown, the response status will be `400`.
+
 **Sample Request**
 
 ```json5
 {
-  "source": "FACEBOOK",
-  "source_channel_ids": ["external-channel-id-1", "external-channel-id-2"]
+  "channel_id": "uuid"
 }
 ```
 

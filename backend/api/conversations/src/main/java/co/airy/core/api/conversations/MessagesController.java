@@ -4,7 +4,6 @@ import co.airy.avro.communication.Message;
 import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.core.api.conversations.payload.MessageListRequestPayload;
 import co.airy.core.api.conversations.payload.MessageListResponsePayload;
-import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.annotation.Autowired;

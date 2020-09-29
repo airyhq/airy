@@ -111,6 +111,7 @@ public class TestHelper {
         }
     }
 
+
     public void waitForCondition(RunnableTest runnableTest, String conditionDetails) throws InterruptedException {
         ThrowableContainer container = new ThrowableContainer();
 
@@ -125,7 +126,7 @@ public class TestHelper {
                     return false;
                 },
                 TestHelper.MAX_WAIT_MS,
-                () -> container.getThrowable().toString()
+                () -> container.getThrowable().getLocalizedMessage()
         );
     }
 

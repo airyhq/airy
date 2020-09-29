@@ -1,13 +1,10 @@
 package co.airy.core.api.conversations.util;
 
 import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.api.conversations.dto.Conversation;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import lombok.Builder;
@@ -81,7 +78,7 @@ public class ConversationGenerator {
                             .setSenderId("source-conversation-id")
                             .setSenderType(SenderType.SOURCE_CONTACT)
                             .setConversationId(conversationId)
-                            .setHeaders(Map.of("SOURCE", "FACEBOOK"))
+                            .setHeaders(Map.of("SOURCE", "facebook"))
                             .setChannelId(channelId)
                             .setContent("{\"text\":\"hello world\"}")
                             .build()));

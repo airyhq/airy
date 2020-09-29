@@ -2,7 +2,6 @@ package co.airy.kafka.streams;
 
 import co.airy.kafka.core.serdes.KafkaHybridSerde;
 import co.airy.log.AiryLoggerFactory;
-import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -20,7 +19,6 @@ import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.kafka.streams.state.StreamsMetadata;
 import org.slf4j.Logger;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.Duration;

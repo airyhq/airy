@@ -2,7 +2,6 @@ package co.airy.spring.kafka.core;
 
 import co.airy.kafka.core.KafkaConsumerWrapper;
 import co.airy.kafka.core.serializer.KafkaHybridSerializer;
-import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;

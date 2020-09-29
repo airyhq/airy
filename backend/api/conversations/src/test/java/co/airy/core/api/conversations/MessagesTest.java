@@ -2,16 +2,12 @@ package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.Message;
-import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -28,16 +24,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getMessages;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -97,7 +87,7 @@ public class MessagesTest {
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId(channelId)
                 .setName("channel-name")
-                .setSource("FACEBOOK")
+                .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build()
         ));

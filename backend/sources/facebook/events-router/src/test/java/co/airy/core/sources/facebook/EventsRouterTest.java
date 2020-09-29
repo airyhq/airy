@@ -109,7 +109,7 @@ class EventsRouterTest {
                     .setConnectionState(ChannelConnectionState.CONNECTED)
                     .setSourceChannelId(pageId)
                     .setName("fb-page-a")
-                    .setSource("FACEBOOK")
+                    .setSource("facebook")
                     .setToken("")
                     .build()));
 

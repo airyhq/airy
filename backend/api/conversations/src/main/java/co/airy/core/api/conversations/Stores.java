@@ -4,14 +4,12 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.kstream.Initializer;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
@@ -117,7 +115,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     }
 
     @GetMapping("/health")
-    ResponseEntity health() {
+    ResponseEntity<Void> health() {
         getConversationsStore();
         getMessagesStore();
 

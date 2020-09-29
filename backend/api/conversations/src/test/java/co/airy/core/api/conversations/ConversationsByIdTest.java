@@ -24,13 +24,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.IntStream;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
-import static java.util.stream.Collectors.toList;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -87,7 +83,7 @@ class ConversationsByIdTest {
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId("channel-id")
                 .setName("channel-name")
-                .setSource("FACEBOOK")
+                .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build();
 

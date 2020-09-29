@@ -81,7 +81,7 @@ public class ChannelsControllerTest {
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(UUID.randomUUID().toString())
             .setName("connected channel name")
-            .setSource("FACEBOOK")
+            .setSource("facebook")
             .setToken(facebookToken)
             .setSourceChannelId("source-channel-id")
             .build();
@@ -116,7 +116,7 @@ public class ChannelsControllerTest {
                                 .setConnectionState(ChannelConnectionState.DISCONNECTED)
                                 .setId("channel-id-2")
                                 .setName("channel-name-2")
-                                .setSource("FACEBOOK")
+                                .setSource("facebook")
                                 .setSourceChannelId("ps-id-2")
                                 .build()
                 ))
@@ -146,7 +146,7 @@ public class ChannelsControllerTest {
 
         testHelper.waitForCondition(() -> mvc.perform(post("/channels.available")
                         .headers(buildHeaders())
-                        .content("{\"token\":\"" + facebookToken + "\",\"source\":\"FACEBOOK\"}"))
+                        .content("{\"token\":\"" + facebookToken + "\",\"source\":\"facebook\"}"))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(2)))
                         .andExpect(jsonPath("$.data[0].name", equalTo(channelName)))
@@ -166,7 +166,7 @@ public class ChannelsControllerTest {
 
         doReturn(new ChannelMetadata()).when(facebookSource).connectChannel(token, sourceChannelId);
 
-        final String payload = "{\"token\":\"" + token + "\",\"source\":\"FACEBOOK\"," +
+        final String payload = "{\"token\":\"" + token + "\",\"source\":\"facebook\"," +
                 "\"source_channel_id\":\"" + sourceChannelId + "\"," +
                 "\"name\":\"" + channelName + "\"" +
                 "}";

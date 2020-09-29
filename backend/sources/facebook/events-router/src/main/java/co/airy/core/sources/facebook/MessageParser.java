@@ -56,12 +56,12 @@ public class MessageParser {
 
         final Map<String, String> headers = new HashMap<>();
 
-        headers.put("source", "FACEBOOK");
+        headers.put("source", "facebook");
         if (postbackNode != null) {
             if (postbackNode.get("payload") != null) {
                 headers.put("postback.payload", postbackNode.get("payload").textValue());
             } else {
-                headers.put("postback.payload", "__empty_postback__");
+                headers.put("postback.payload", "__empty__");
             }
         }
 

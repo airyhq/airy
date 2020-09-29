@@ -78,7 +78,7 @@ public class ConversationGenerator {
                             .setSenderId("source-conversation-id")
                             .setSenderType(SenderType.SOURCE_CONTACT)
                             .setConversationId(conversationId)
-                            .setHeaders(Map.of("SOURCE", "FACEBOOK"))
+                            .setHeaders(Map.of("SOURCE", "facebook"))
                             .setChannelId(channelId)
                             .setContent("{\"text\":\"hello world\"}")
                             .build()));

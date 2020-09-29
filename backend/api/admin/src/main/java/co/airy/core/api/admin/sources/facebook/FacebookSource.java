@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.toList;
 public class FacebookSource implements Source {
 
     public String getIdentifier() {
-        return "FACEBOOK";
+        return "facebook";
     }
 
     @Autowired

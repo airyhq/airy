@@ -22,7 +22,7 @@ Header data contains information that is important for downstream processing tel
 
     The following key/values need to be implemented by sources
 
-    - `source` string source that ingested the message `FACEBOOK`, `GOOGLE`, `SMS_TWILIO` etc.
+    - `source` string source that ingested the message `facebook`, `google`, `sms_twilio` etc.
 
     Optional headers:
 

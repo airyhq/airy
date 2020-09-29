@@ -87,7 +87,7 @@ public class MessagesTest {
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId(channelId)
                 .setName("channel-name")
-                .setSource("FACEBOOK")
+                .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build()
         ));

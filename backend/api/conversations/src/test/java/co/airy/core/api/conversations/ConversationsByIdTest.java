@@ -83,7 +83,7 @@ class ConversationsByIdTest {
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId("channel-id")
                 .setName("channel-name")
-                .setSource("FACEBOOK")
+                .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build();
 

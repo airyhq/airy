@@ -71,7 +71,7 @@ Example Response:
     {
       "id": "a688d36c-a85e-44af-bc02-4248c2c97622",
       "channel": {
-        "name": "FACEBOOK", // name of the source
+        "name": "facebook", // name of the source
         "id": "318efa04-7cc1-4200-988e-50699d0dd6e3"
       },
       "created_at": "2019-01-07T09:01:44.000Z",
@@ -124,7 +124,7 @@ Example Response:
 {
   "id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "channel": {
-    "name": "FACEBOOK",
+    "name": "facebook",
     "id": "318efa04-7cc1-4200-988e-50699d0dd6e3"
   },
   "created_at": "2019-01-07T09:01:44.000Z",
@@ -250,7 +250,7 @@ This action is idempotent, so if the channel is already connected the status wil
 
 ```json5
 {
-  "source": "FACEBOOK",
+  "source": "facebook",
   "source_channel_id": "fb-page-id-1",
   "token": "FB_TOKEN",
   "name": "My custom name for this page", // optional
@@ -265,7 +265,7 @@ This action is idempotent, so if the channel is already connected the status wil
 	"id": "channel-uuid-1",
     "name": "My custom name for this page",
     "image_url": "https://example.org/custom-image.jpg", // optional
-    "source": "FACEBOOK",
+    "source": "facebook",
     "source_channel_id": "fb-page-id-1"
 }
 ```
@@ -297,7 +297,7 @@ A synchronous endpoint that makes a request to the source on behalf of the user 
 
 ```json5
 {
-  "source": "FACEBOOK",
+  "source": "facebook",
   "token": "some-token"
 }
 ```
@@ -309,14 +309,14 @@ A synchronous endpoint that makes a request to the source on behalf of the user 
 	"data": [
 		{
 			"name": "my page 1",
-			"source": "FACEBOOK",
+			"source": "facebook",
 			"source_channel_id": "fb-page-id-1",
 			"connected": false,
 			"image_url": "fb-page-id-1" // optional
 		},
 		{
 			"name": "my page 2",
-			"source": "FACEBOOK",
+			"source": "facebook",
 			"source_channel_id": "fb-page-id-2",
             "connected": true
 		}
@@ -336,13 +336,13 @@ A synchronous endpoint that makes a request to the source on behalf of the user 
 		{
 			"id": "channel-uuid-1",
 			"name": "my page 1",
-			"source": "FACEBOOK",
+			"source": "facebook",
 			"source_channel_id": "fb-page-id-1"
 		},
 		{
 			"id": "channel-uuid-2",
 			"name": "my page 2",
-			"source": "FACEBOOK",
+			"source": "facebook",
 			"source_channel_id": "fb-page-id-2"
 		}
 	]

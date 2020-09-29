@@ -16,5 +16,5 @@ public class ConnectChannelRequestPayload {
     @NonNull
     String token;
     String name;
-    String image_url;
+    String imageUrl;
 }

@@ -12,7 +12,6 @@ import co.airy.core.api.admin.payload.DisconnectChannelRequestPayload;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestError;
 import co.airy.uuid.UUIDV5;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +23,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -36,7 +33,16 @@ public class ChannelsController {
     Stores stores;
 
     @Autowired
-    SourceMapConfig.SourceMap sourceMap;
+    List<Source> sources;
+
+    private Source getSource(String sourceIdentifier) {
+        return Optional.ofNullable(sources)
+                .orElse(List.of())
+                .stream()
+                .filter((source -> source.getIdentifier().equalsIgnoreCase(sourceIdentifier)))
+                .findFirst()
+                .orElse(null);
+    }
 
     @PostMapping("/channels.connected")
     ResponseEntity<ChannelsResponsePayload> connectedChannels() {
@@ -57,7 +63,7 @@ public class ChannelsController {
     ResponseEntity<?> availableChannels(@RequestBody @Valid AvailableChannelsRequestPayload requestPayload) {
         final String sourceIdentifier = requestPayload.getSource();
 
-        final Source source = sourceMap.get(sourceIdentifier);
+        final Source source = getSource(sourceIdentifier);
 
         if (source == null) {
             return ResponseEntity.badRequest().body(new RequestError(String.format("source %s not implemented", source)));
@@ -101,7 +107,7 @@ public class ChannelsController {
 
         final String channelId = UUIDV5.fromNamespaceAndName(sourceIdentifier, sourceChannelId).toString();
 
-        final Source source = sourceMap.get(sourceIdentifier);
+        final Source source = getSource(sourceIdentifier);
 
         if (source == null) {
             return ResponseEntity.badRequest().body(new RequestError(String.format("source %s not implemented", source)));
@@ -125,7 +131,7 @@ public class ChannelsController {
         final Channel channel = Channel.newBuilder()
                 .setId(channelId)
                 .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setImageUrl(Optional.ofNullable(requestPayload.getImage_url()).orElse(channelMetadata.getImageUrl()))
+                .setImageUrl(Optional.ofNullable(requestPayload.getImageUrl()).orElse(channelMetadata.getImageUrl()))
                 .setName(Optional.ofNullable(requestPayload.getName()).orElse(channelMetadata.getName()))
                 .setSource(sourceIdentifier)
                 .setSourceChannelId(sourceChannelId)
@@ -154,7 +160,7 @@ public class ChannelsController {
             return ResponseEntity.accepted().build();
         }
 
-        final Source source = sourceMap.get(channel.getSource());
+        final Source source = getSource(channel.getSource());
 
         if (source == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,16 +33,12 @@ public class ChannelsController {
     @Autowired
     Stores stores;
 
-    @Autowired
-    List<Source> sources;
+    private final Map<String, Source> sourceMap = new HashMap<>();
 
-    private Source getSource(String sourceIdentifier) {
-        return Optional.ofNullable(sources)
-                .orElse(List.of())
-                .stream()
-                .filter((source -> source.getIdentifier().equalsIgnoreCase(sourceIdentifier)))
-                .findFirst()
-                .orElse(null);
+    public ChannelsController(@Autowired List<Source> sources) {
+        for (Source source : sources) {
+            sourceMap.put(source.getIdentifier(), source);
+        }
     }
 
     @PostMapping("/channels.connected")
@@ -63,7 +60,7 @@ public class ChannelsController {
     ResponseEntity<?> availableChannels(@RequestBody @Valid AvailableChannelsRequestPayload requestPayload) {
         final String sourceIdentifier = requestPayload.getSource();
 
-        final Source source = getSource(sourceIdentifier);
+        final Source source = sourceMap.get(sourceIdentifier);
 
         if (source == null) {
             return ResponseEntity.badRequest().body(new RequestError(String.format("source %s not implemented", source)));
@@ -107,7 +104,7 @@ public class ChannelsController {
 
         final String channelId = UUIDV5.fromNamespaceAndName(sourceIdentifier, sourceChannelId).toString();
 
-        final Source source = getSource(sourceIdentifier);
+        final Source source = sourceMap.get(sourceIdentifier);
 
         if (source == null) {
             return ResponseEntity.badRequest().body(new RequestError(String.format("source %s not implemented", source)));
@@ -156,11 +153,13 @@ public class ChannelsController {
 
         if (channel == null) {
             return ResponseEntity.notFound().build();
-        } else if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
+        }
+
+        if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
             return ResponseEntity.accepted().build();
         }
 
-        final Source source = getSource(channel.getSource());
+        final Source source = sourceMap.get(channel.getSource());
 
         if (source == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -175,6 +174,12 @@ public class ChannelsController {
 
         channel.setConnectionState(ChannelConnectionState.DISCONNECTED);
         channel.setToken(null);
+
+        try {
+            stores.storeChannel(channel);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
 
         return ResponseEntity.ok(new EmptyResponsePayload());
     }

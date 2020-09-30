@@ -29,6 +29,10 @@ avro_java_library(
 avro_java_library(
     name = "contact",
 )
+avro_java_library(
+    name = "send-message-request",
+    srcs = ["message.avsc", "contact.avsc", "send-message-request.avsc"]
+)
 
 java_library(
     name = "metadata-action",

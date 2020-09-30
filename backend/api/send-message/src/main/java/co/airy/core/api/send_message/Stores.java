@@ -12,6 +12,7 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Named;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                         Materialized.as(CONTACT_CHANNEL_STORE));
 
         streams.start(builder.build(), appId);
+    }
+
+    public ReadOnlyKeyValueStore<String, Pair<Contact, Channel>> getContactChannelStore() {
+        return streams.acquireLocalStore(CONTACT_CHANNEL_STORE);
     }
 
     @Override

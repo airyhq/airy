@@ -4,6 +4,8 @@ load("//tools/build:junit5.bzl", "junit5")
 
 app_deps = [
     "//backend/lib/kafka/schema:source-facebook-send-message-requests",
+    "//backend/lib/spring/kafka/core:spring-kafka-core",
+    "//backend/lib/spring/kafka/streams:spring-kafka-streams",
 ]
 
 springboot(

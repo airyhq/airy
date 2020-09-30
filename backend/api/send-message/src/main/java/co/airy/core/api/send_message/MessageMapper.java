@@ -15,22 +15,15 @@ import java.util.UUID;
 public class MessageMapper {
 
     public Message fromPayload(final String conversationId, final String rawMessage, final Channel channel) {
-        SenderType senderType;
-        if ("SELF".equalsIgnoreCase(channel.getSource())) {
-            senderType = SenderType.APP_USER;
-        } else {
-            senderType = SenderType.SOURCE_USER; // never know which one is right
-        }
-
         return Message.newBuilder()
-                .setId(UUID.randomUUID().toString()) //should be v5 right?
+                .setId(UUID.randomUUID().toString())
                 .setChannelId(channel.getId())
                 .setContent(rawMessage)
                 .setConversationId(conversationId)
-                .setHeaders(Map.of()) //what goes in the headers map now?
+                .setHeaders(Map.of("SOURCE", channel.getSource()))
                 .setOffset(0) //hm
                 .setSenderId(channel.getId())
-                .setSenderType(senderType)
+                .setSenderType(SenderType.APP_USER)
                 .setSentAt(Instant.now().toEpochMilli())
                 .build();
     }

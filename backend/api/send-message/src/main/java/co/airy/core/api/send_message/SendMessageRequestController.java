@@ -18,6 +18,7 @@ import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +36,7 @@ public class SendMessageRequestController {
     @Autowired
     private KafkaProducer<String, SpecificRecordBase> producer;
 
+    @PostMapping("/wtv")
     public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException {
         final ReadOnlyKeyValueStore<String, Pair<Contact, Channel>> contactChannelStore = stores.getContactChannelStore();
         final Pair<Contact, Channel> contactChannel = contactChannelStore.get(payload.getConversationId());
@@ -62,7 +64,6 @@ public class SendMessageRequestController {
 
             producer.send(record).get();
         }
-
 
         return ResponseEntity.ok(new SendMessageResponsePayload(message.getId()));
     }

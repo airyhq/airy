@@ -14,10 +14,7 @@ import java.util.UUID;
 @Component
 public class MessageMapper {
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    Message fromPayload(final String conversationId, final String rawMessage, final Channel channel) {
+    public Message fromPayload(final String conversationId, final String rawMessage, final Channel channel) {
         SenderType senderType;
         if ("SELF".equalsIgnoreCase(channel.getSource())) {
             senderType = SenderType.APP_USER;

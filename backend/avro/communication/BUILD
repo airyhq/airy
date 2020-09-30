@@ -26,6 +26,9 @@ avro_java_library(
 avro_java_library(
     name = "conversation",
 )
+avro_java_library(
+    name = "contact",
+)
 
 java_library(
     name = "metadata-action",

@@ -56,7 +56,8 @@ public class SendMessageRequestController {
         ProducerRecord record = new ProducerRecord<>(resolveChannelConnectTopicName(channel.getSource()), channel.getId(), sendMessageRequest);
 
         producer.send(record).get();
-        return null;
+
+        return ResponseEntity.ok(new SendMessageResponsePayload(message.getId()));
     }
 
     private String resolveChannelConnectTopicName(String source) {

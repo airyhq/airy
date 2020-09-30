@@ -5,6 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Contact;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SendMessageRequest;
+import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
 import co.airy.kafka.schema.source.SourceGoogleSendMessageRequests;
 import co.airy.kafka.schema.source.SourceTwilioSendMessageRequests;
@@ -48,14 +49,20 @@ public class SendMessageRequestController {
         final Channel channel = contactChannel.getValue1();
         final Message message = messageMapper.fromPayload(payload.getConversationId(), payload.getText(), channel);
 
-        final SendMessageRequest sendMessageRequest = SendMessageRequest.newBuilder()
-                .setContact(contactChannel.getValue0())
-                .setMessage(message)
-                .setCreatedAt(message.getSentAt())
-                .build();
-        ProducerRecord record = new ProducerRecord<>(resolveChannelConnectTopicName(channel.getSource()), channel.getId(), sendMessageRequest);
+        //Must check for self source
+        if ("SELF".equalsIgnoreCase(channel.getSource())) {
+            producer.send(new ProducerRecord<>(new ApplicationCommunicationMessages().name(), message.getId(), message)).get();
+        } else {
+            final SendMessageRequest sendMessageRequest = SendMessageRequest.newBuilder()
+                    .setContact(contactChannel.getValue0())
+                    .setMessage(message)
+                    .setCreatedAt(message.getSentAt())
+                    .build();
+            ProducerRecord record = new ProducerRecord<>(resolveChannelConnectTopicName(channel.getSource()), channel.getId(), sendMessageRequest);
 
-        producer.send(record).get();
+            producer.send(record).get();
+        }
+
 
         return ResponseEntity.ok(new SendMessageResponsePayload(message.getId()));
     }

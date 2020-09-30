@@ -12,6 +12,7 @@ app_deps = [
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-conversations",
     "//backend/lib/kafka/schema:application-communication-contacts",
+    "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/kafka/schema:source-facebook-send-message-requests",
     "//backend/lib/kafka/schema:source-google-send-message-requests",
     "//backend/lib/kafka/schema:source-twilio-send-message-requests",

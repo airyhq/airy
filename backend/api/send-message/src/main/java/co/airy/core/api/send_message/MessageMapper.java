@@ -18,20 +18,23 @@ public class MessageMapper {
     private ObjectMapper objectMapper;
 
     Message fromPayload(final String conversationId, final String rawMessage, final Channel channel) {
-        final String messageId = UUID.randomUUID().toString();
-
-        final Long sendDate = Instant.now().toEpochMilli();
+        SenderType senderType;
+        if ("SELF".equalsIgnoreCase(channel.getSource())) {
+            senderType = SenderType.APP_USER;
+        } else {
+            senderType = SenderType.SOURCE_USER; // never know which one is right
+        }
 
         return Message.newBuilder()
-                .setId(messageId)
+                .setId(UUID.randomUUID().toString()) //should be v5 right?
                 .setChannelId(channel.getId())
                 .setContent(rawMessage)
                 .setConversationId(conversationId)
-                .setHeaders(Map.of()) //need to check if source is self?
+                .setHeaders(Map.of()) //what goes in the headers map now?
                 .setOffset(0) //hm
                 .setSenderId(channel.getId())
-                .setSenderType(SenderType.APP_USER) //need to check if self
-                .setSentAt(sendDate)
+                .setSenderType(senderType)
+                .setSentAt(Instant.now().toEpochMilli())
                 .build();
     }
 }

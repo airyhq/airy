@@ -21,7 +21,7 @@ public class MessageMapper {
                 .setContent(rawMessage)
                 .setConversationId(conversationId)
                 .setHeaders(Map.of("SOURCE", channel.getSource()))
-                .setOffset(0) //hm
+                .setOffset(0L)
                 .setSenderId(channel.getId())
                 .setSenderType(SenderType.APP_USER)
                 .setSentAt(Instant.now().toEpochMilli())

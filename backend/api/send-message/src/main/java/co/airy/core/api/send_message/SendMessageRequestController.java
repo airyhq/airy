@@ -51,7 +51,6 @@ public class SendMessageRequestController {
         final Channel channel = contactChannel.getValue1();
         final Message message = messageMapper.fromPayload(payload.getConversationId(), payload.getText(), channel);
 
-        //Must check for self source
         if ("SELF".equalsIgnoreCase(channel.getSource())) {
             producer.send(new ProducerRecord<>(new ApplicationCommunicationMessages().name(), message.getId(), message)).get();
         } else {
@@ -60,7 +59,7 @@ public class SendMessageRequestController {
                     .setMessage(message)
                     .setCreatedAt(message.getSentAt())
                     .build();
-            ProducerRecord record = new ProducerRecord<>(resolveChannelConnectTopicName(channel.getSource()), channel.getId(), sendMessageRequest);
+            ProducerRecord record = new ProducerRecord<>(resolveChannelConnectTopicName(channel.getSource()), message.getConversationId(), sendMessageRequest);
 
             producer.send(record).get();
         }

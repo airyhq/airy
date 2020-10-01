@@ -69,49 +69,12 @@ public class SendMessageRequestControllerIntegrationTest {
             .setSource("FACEBOOK")
             .setSourceChannelId("ps-id")
             .build();
-    final Channel googleChannel = Channel.newBuilder()
-            .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("google-channel-id")
-            .setName("channel-name")
-            .setSource("GOOGLE")
-            .setSourceChannelId("ps-id")
-            .build();
-    final Channel twilioChannel = Channel.newBuilder()
-            .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("twilio-channel-id")
-            .setName("channel-name")
-            .setSource("SMS_TWILIO")
-            .setSourceChannelId("ps-id")
-            .build();
-    final Channel selfChannel = Channel.newBuilder()
-            .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("self-channel-id")
-            .setName("channel-name")
-            .setSource("SELF")
-            .setSourceChannelId("ps-id")
-            .build();
     private final List<ConversationGenerator.CreateConversation> conversations = List.of(
             ConversationGenerator.CreateConversation.builder()
                     .conversationId(facebookConversationId)
                     .lastOffset(1L)
                     .channel(facebookChannel)
-                    .build(),
-            ConversationGenerator.CreateConversation.builder()
-                    .conversationId(googleConversationId)
-                    .lastOffset(1L)
-                    .channel(googleChannel)
-                    .build(),
-            ConversationGenerator.CreateConversation.builder()
-                    .conversationId(twilioConversationId)
-                    .lastOffset(1L)
-                    .channel(twilioChannel)
-                    .build(),
-            ConversationGenerator.CreateConversation.builder()
-                    .conversationId(selfConversationId)
-                    .lastOffset(1L)
-                    .channel(selfChannel)
-                    .build()
-    );
+                    .build());
     @Autowired
     private MockMvc mvc;
 
@@ -135,10 +98,6 @@ public class SendMessageRequestControllerIntegrationTest {
         }
 
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), googleChannel.getId(), googleChannel));
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), twilioChannel.getId(), twilioChannel));
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), selfChannel.getId(), selfChannel));
-
         testHelper.produceRecords(getConversationRecords(conversations));
 
         testHelper.waitForCondition(
@@ -162,9 +121,6 @@ public class SendMessageRequestControllerIntegrationTest {
         );
 
         String facebookPayload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"text\": \"answer is 42\"}";
-        String googlePayload = "{\"conversation_id\": \"" + googleConversationId + "\", \"text\": \"This is better than yelp.\"}";
-        String twilioPayload = "{\"conversation_id\": \"" + twilioConversationId + "\", \"text\": \"We are just a sparkling twilio.\"}";
-        String selfPayload = "{\"conversation_id\": \"" + selfConversationId + "\", \"text\": \"I'm gonna get myself, I'm gonna get myself, I'm gonna get myself connected, I ain't gonna go blind, For the light which is reflected\"}";
 
         testHelper.waitForCondition(() ->
                         mvc.perform(post("/send-message")
@@ -174,39 +130,9 @@ public class SendMessageRequestControllerIntegrationTest {
                 "Facebook Message was not sent"
         );
 
-        testHelper.waitForCondition(() ->
-                        mvc.perform(post("/send-message")
-                                .headers(buildHeaders())
-                                .content(googlePayload))
-                                .andExpect(status().isOk()),
-                "Google was not sent"
-        );
-
-        testHelper.waitForCondition(() ->
-                        mvc.perform(post("/send-message")
-                                .headers(buildHeaders())
-                                .content(twilioPayload))
-                                .andExpect(status().isOk()),
-                "Twilio message was not sent"
-        );
-
-        testHelper.waitForCondition(() ->
-                        mvc.perform(post("/send-message")
-                                .headers(buildHeaders())
-                                .content(selfPayload))
-                                .andExpect(status().isOk()),
-                "Self Message was not sent"
-        );
 
         List<ConsumerRecord<String, SendMessageRequest>> records = testHelper.consumeRecords(1, sourceFacebookSendMessageRequests.name());
         assertThat(records, hasSize(1));
-
-        List<ConsumerRecord<String, SendMessageRequest>> twilioRecords = testHelper.consumeRecords(1, sourceTwilioSendMessageRequests.name());
-        assertThat(twilioRecords, hasSize(1));
-
-        List<ConsumerRecord<String, Message>> selfRecord = testHelper.consumeRecords(1, applicationCommunicationMessages.name());
-        assertThat(selfRecord, hasSize(1));
-        assertThat(selfRecord.get(0).value().getContent(), equalTo("I'm gonna get myself, I'm gonna get myself, I'm gonna get myself connected, I ain't gonna go blind, For the light which is reflected"));
     }
 
     private HttpHeaders buildHeaders() {

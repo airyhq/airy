@@ -7,6 +7,7 @@ import co.airy.avro.communication.SendMessageRequest;
 import co.airy.core.api.conversations.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
 import co.airy.kafka.schema.source.SourceGoogleSendMessageRequests;
 import co.airy.kafka.schema.source.SourceTwilioSendMessageRequests;
@@ -54,36 +55,37 @@ public class SendMessageRequestControllerIntegrationTest {
     private static String googleConversationId = "google-conversation-id";
     private static String twilioConversationId = "twilio-conversation-id";
     private static String selfConversationId = "self-conversation-id";
-    private static SourceFacebookSendMessageRequests sourceFacebookSendMessageRequests = new SourceFacebookSendMessageRequests();
-    private static SourceGoogleSendMessageRequests sourceGoogleSendMessageRequests = new SourceGoogleSendMessageRequests();
-    private static SourceTwilioSendMessageRequests sourceTwilioSendMessageRequests = new SourceTwilioSendMessageRequests();
-    private static ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
+    private static final SourceFacebookSendMessageRequests sourceFacebookSendMessageRequests = new SourceFacebookSendMessageRequests();
+    private static final SourceGoogleSendMessageRequests sourceGoogleSendMessageRequests = new SourceGoogleSendMessageRequests();
+    private static final SourceTwilioSendMessageRequests sourceTwilioSendMessageRequests = new SourceTwilioSendMessageRequests();
+    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
+    private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
+    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
     private static boolean testDataInitialized = false;
     final Channel facebookChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("channel-id")
+            .setId("facebook-channel-id")
             .setName("channel-name")
             .setSource("FACEBOOK")
             .setSourceChannelId("ps-id")
             .build();
     final Channel googleChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("channel-id")
+            .setId("google-channel-id")
             .setName("channel-name")
             .setSource("GOOGLE")
             .setSourceChannelId("ps-id")
             .build();
     final Channel twilioChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("channel-id")
+            .setId("twilio-channel-id")
             .setName("channel-name")
             .setSource("SMS_TWILIO")
             .setSourceChannelId("ps-id")
             .build();
     final Channel selfChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("channel-id")
+            .setId("self-channel-id")
             .setName("channel-name")
             .setSource("SELF")
             .setSourceChannelId("ps-id")
@@ -116,6 +118,7 @@ public class SendMessageRequestControllerIntegrationTest {
     @BeforeAll
     static void beforeAll() throws Exception {
         testHelper = new TestHelper(sharedKafkaTestResource,
+                applicationCommunicationMetadata,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
                 sourceFacebookSendMessageRequests,

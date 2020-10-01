@@ -62,6 +62,7 @@ public class SendMessageRequestControllerIntegrationTest {
             .setName("channel-name")
             .setSource("FACEBOOK")
             .setSourceChannelId("ps-id")
+            .setToken("AWESOME TOKEN")
             .build();
     private final List<ConversationGenerator.CreateConversation> conversations = List.of(
             ConversationGenerator.CreateConversation.builder()

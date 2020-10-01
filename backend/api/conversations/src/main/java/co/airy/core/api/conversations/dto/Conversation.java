@@ -3,6 +3,7 @@ package co.airy.core.api.conversations.dto;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataKeys;
+import co.airy.avro.communication.SenderType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Data
 @Builder
@@ -20,7 +23,8 @@ public class Conversation implements Serializable {
     Long createdAt;
     String channelId;
     Message lastMessage;
-
+    @Builder.Default
+    Set<Participant> participants = new HashSet<>();
     Channel channel;
 
     @Builder.Default
@@ -47,5 +51,14 @@ public class Conversation implements Serializable {
     public String getChannelId() {
         return this.lastMessage.getChannelId();
     }
+
+    public String getSourceConversationId() {
+        return participants.stream()
+                .filter((participant -> participant.getSenderType().equals(SenderType.SOURCE_CONTACT)))
+                .findFirst()
+                .get()
+                .getSenderId();
+    }
+
 }
 

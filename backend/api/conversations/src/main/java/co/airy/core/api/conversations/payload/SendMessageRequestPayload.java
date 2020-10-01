@@ -15,6 +15,13 @@ public class SendMessageRequestPayload {
     @NotBlank
     public String conversationId;
 
-    @JsonProperty("text")
-    public String text;
+    public MessagePayload message;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MessagePayload {
+        @JsonProperty("text")
+        public String text;
+    }
 }

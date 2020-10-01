@@ -9,6 +9,8 @@ import co.airy.core.api.conversations.payload.SendMessageRequestPayload;
 import co.airy.core.api.conversations.payload.SendMessageResponsePayload;
 import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
 import co.airy.payload.response.EmptyResponsePayload;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -28,7 +30,8 @@ public class SendMessageRequestController {
 
     @Autowired
     Stores stores;
-
+    @Autowired
+    private ObjectMapper objectMapper;
     @Autowired
     private MessageMapper messageMapper;
 
@@ -36,7 +39,7 @@ public class SendMessageRequestController {
     private KafkaProducer<String, SpecificRecordBase> producer;
 
     @PostMapping("/send-message")
-    public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException {
+    public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException, JsonProcessingException {
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
         final Conversation conversation = conversationsStore.get(payload.getConversationId());
 
@@ -49,7 +52,8 @@ public class SendMessageRequestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new EmptyResponsePayload());
         }
 
-        final Message message = messageMapper.fromPayload(payload.getConversationId(), payload.getText(), channel);
+        final Message message = messageMapper.fromPayload(payload.getConversationId(),
+                objectMapper.writeValueAsString(payload.getMessage()), channel);
 
         final SendMessageRequest sendMessageRequest = SendMessageRequest.newBuilder()
                 .setMessage(message)

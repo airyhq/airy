@@ -35,6 +35,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.is;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
         "kafka.cleanup=true",
@@ -110,7 +111,7 @@ public class SendMessageRequestControllerIntegrationTest {
                 "Application is not healthy"
         );
 
-        String facebookPayload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"text\": \"answer is 42\"}";
+        String facebookPayload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"message\": { \"text\": \"answer is 42\" }}";
 
         testHelper.waitForCondition(() ->
                         mvc.perform(post("/send-message")
@@ -123,6 +124,10 @@ public class SendMessageRequestControllerIntegrationTest {
 
         List<ConsumerRecord<String, SendMessageRequest>> records = testHelper.consumeRecords(1, sourceFacebookSendMessageRequests.name());
         assertThat(records, hasSize(1));
+
+        final SendMessageRequest sendMessageRequest = records.get(0).value();
+        assertThat(sendMessageRequest.getMessage().getContent(),
+                is("{\"text\":\"answer is 42\"}"));
     }
 
     private HttpHeaders buildHeaders() {
@@ -130,5 +135,4 @@ public class SendMessageRequestControllerIntegrationTest {
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
         return headers;
     }
-
 }

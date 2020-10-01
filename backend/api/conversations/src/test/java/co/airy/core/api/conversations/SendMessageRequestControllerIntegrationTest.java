@@ -4,6 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SendMessageRequest;
+import co.airy.core.api.conversations.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
@@ -16,6 +17,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -29,10 +31,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,7 +50,7 @@ public class SendMessageRequestControllerIntegrationTest {
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
     private static TestHelper testHelper;
-    private static String conversationId = "facebook-conversation-id";
+    private static String facebookConversationId = "facebook-conversation-id";
     private static String googleConversationId = "google-conversation-id";
     private static String twilioConversationId = "twilio-conversation-id";
     private static String selfConversationId = "self-conversation-id";
@@ -57,60 +59,91 @@ public class SendMessageRequestControllerIntegrationTest {
     private static SourceTwilioSendMessageRequests sourceTwilioSendMessageRequests = new SourceTwilioSendMessageRequests();
     private static ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
+    private static boolean testDataInitialized = false;
+    final Channel facebookChannel = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId("channel-id")
+            .setName("channel-name")
+            .setSource("FACEBOOK")
+            .setSourceChannelId("ps-id")
+            .build();
+    final Channel googleChannel = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId("channel-id")
+            .setName("channel-name")
+            .setSource("GOOGLE")
+            .setSourceChannelId("ps-id")
+            .build();
+    final Channel twilioChannel = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId("channel-id")
+            .setName("channel-name")
+            .setSource("SMS_TWILIO")
+            .setSourceChannelId("ps-id")
+            .build();
+    final Channel selfChannel = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId("channel-id")
+            .setName("channel-name")
+            .setSource("SELF")
+            .setSourceChannelId("ps-id")
+            .build();
+    private final List<ConversationGenerator.CreateConversation> conversations = List.of(
+            ConversationGenerator.CreateConversation.builder()
+                    .conversationId(facebookConversationId)
+                    .lastOffset(1L)
+                    .channel(facebookChannel)
+                    .build(),
+            ConversationGenerator.CreateConversation.builder()
+                    .conversationId(googleConversationId)
+                    .lastOffset(1L)
+                    .channel(googleChannel)
+                    .build(),
+            ConversationGenerator.CreateConversation.builder()
+                    .conversationId(twilioConversationId)
+                    .lastOffset(1L)
+                    .channel(twilioChannel)
+                    .build(),
+            ConversationGenerator.CreateConversation.builder()
+                    .conversationId(selfConversationId)
+                    .lastOffset(1L)
+                    .channel(selfChannel)
+                    .build()
+    );
     @Autowired
     private MockMvc mvc;
 
     @BeforeAll
     static void beforeAll() throws Exception {
         testHelper = new TestHelper(sharedKafkaTestResource,
-                applicationCommunicationChannels,
                 applicationCommunicationMessages,
+                applicationCommunicationChannels,
                 sourceFacebookSendMessageRequests,
                 sourceGoogleSendMessageRequests,
                 sourceTwilioSendMessageRequests
         );
 
         testHelper.beforeAll();
+    }
+    @BeforeEach
+    void init() throws Exception {
+        if (testDataInitialized) {
+            return;
+        }
 
-        final String facebookChannelId = "channel id";
-        final String googleChannelId = "google channel id";
-        final String twilioChannelId = "twilio channel id";
-        final String selfChannelId = "self channel id";
+        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
+        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), googleChannel.getId(), googleChannel));
+        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), twilioChannel.getId(), twilioChannel));
+        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), selfChannel.getId(), selfChannel));
 
-        testHelper.produceRecords(List.of(
-                new ProducerRecord<>(applicationCommunicationChannels.name(), selfChannelId, Channel.newBuilder()
-                        .setId(selfChannelId)
-                        .setSourceChannelId("ps-1")
-                        .setConnectionState(ChannelConnectionState.CONNECTED)
-                        .setName("widget")
-                        .setSource("SELF")
-                        .setToken("some-token")
-                        .build()),
-                new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannelId, Channel.newBuilder()
-                        .setId(facebookChannelId)
-                        .setConnectionState(ChannelConnectionState.CONNECTED)
-                        .setSourceChannelId("ps-2")
-                        .setName("fb-page")
-                        .setSource("FACEBOOK")
-                        .setToken("some-token")
-                        .build()),
-                new ProducerRecord<>(applicationCommunicationChannels.name(), googleChannelId, Channel.newBuilder()
-                        .setId(googleChannelId)
-                        .setConnectionState(ChannelConnectionState.CONNECTED)
-                        .setSourceChannelId("ps-3")
-                        .setName("google location")
-                        .setSource("GOOGLE")
-                        .setToken("some google token")
-                        .build()),
-                new ProducerRecord<>(applicationCommunicationChannels.name(), twilioChannelId, Channel.newBuilder()
-                        .setId(twilioChannelId)
-                        .setConnectionState(ChannelConnectionState.CONNECTED)
-                        .setSourceChannelId("ps-4")
-                        .setName("What would be the name?")
-                        .setSource("SMS_TWILIO")
-                        .setToken("")
-                        .build())
-                ));
+        testHelper.produceRecords(getConversationRecords(conversations));
+
+        testHelper.waitForCondition(
+                () -> mvc.perform(get("/health")).andExpect(status().isOk()),
+                "Application is not healthy"
+        );
+
+        testDataInitialized = true;
     }
 
     @AfterAll
@@ -125,7 +158,7 @@ public class SendMessageRequestControllerIntegrationTest {
                 "Application is not healthy"
         );
 
-        String facebookPayload = "{\"conversation_id\": \"" + conversationId + "\", \"text\": \"answer is 42\"}";
+        String facebookPayload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"text\": \"answer is 42\"}";
         String googlePayload = "{\"conversation_id\": \"" + googleConversationId + "\", \"text\": \"This is better than yelp.\"}";
         String twilioPayload = "{\"conversation_id\": \"" + twilioConversationId + "\", \"text\": \"We are just a sparkling twilio.\"}";
         String selfPayload = "{\"conversation_id\": \"" + selfConversationId + "\", \"text\": \"I'm gonna get myself, I'm gonna get myself, I'm gonna get myself connected, I ain't gonna go blind, For the light which is reflected\"}";

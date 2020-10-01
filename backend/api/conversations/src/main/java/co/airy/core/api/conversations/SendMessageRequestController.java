@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SendMessageRequest;
-import co.airy.core.api.conversations.MessageMapper;
 import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.core.api.conversations.payload.SendMessageRequestPayload;
 import co.airy.core.api.conversations.payload.SendMessageResponsePayload;
@@ -17,7 +16,6 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +66,7 @@ public class SendMessageRequestController {
             producer.send(record).get();
         }
 
-        return ResponseEntity.ok(new SendMessageResponsePayload("wat"));
+        return ResponseEntity.ok(new SendMessageResponsePayload(message.getId()));
     }
 
     private String resolveChannelConnectTopicName(String source) {

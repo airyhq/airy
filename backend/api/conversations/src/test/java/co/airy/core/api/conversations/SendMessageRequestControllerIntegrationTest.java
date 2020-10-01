@@ -8,8 +8,6 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
-import co.airy.kafka.schema.source.SourceGoogleSendMessageRequests;
-import co.airy.kafka.schema.source.SourceTwilioSendMessageRequests;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -48,8 +46,6 @@ public class SendMessageRequestControllerIntegrationTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static final SourceFacebookSendMessageRequests sourceFacebookSendMessageRequests = new SourceFacebookSendMessageRequests();
-    private static final SourceGoogleSendMessageRequests sourceGoogleSendMessageRequests = new SourceGoogleSendMessageRequests();
-    private static final SourceTwilioSendMessageRequests sourceTwilioSendMessageRequests = new SourceTwilioSendMessageRequests();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
@@ -79,9 +75,7 @@ public class SendMessageRequestControllerIntegrationTest {
                 applicationCommunicationMetadata,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
-                sourceFacebookSendMessageRequests,
-                sourceGoogleSendMessageRequests,
-                sourceTwilioSendMessageRequests
+                sourceFacebookSendMessageRequests
         );
 
         testHelper.beforeAll();

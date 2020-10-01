@@ -7,10 +7,7 @@ import co.airy.avro.communication.SendMessageRequest;
 import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.core.api.conversations.payload.SendMessageRequestPayload;
 import co.airy.core.api.conversations.payload.SendMessageResponsePayload;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
-import co.airy.kafka.schema.source.SourceGoogleSendMessageRequests;
-import co.airy.kafka.schema.source.SourceTwilioSendMessageRequests;
 import co.airy.payload.response.EmptyResponsePayload;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -43,7 +40,7 @@ public class SendMessageRequestController {
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
         final Conversation conversation = conversationsStore.get(payload.getConversationId());
 
-        if(conversation == null) {
+        if (conversation == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmptyResponsePayload());
         }
 
@@ -54,34 +51,23 @@ public class SendMessageRequestController {
 
         final Message message = messageMapper.fromPayload(payload.getConversationId(), payload.getText(), channel);
 
-        if ("SELF".equalsIgnoreCase(channel.getSource())) {
-            producer.send(new ProducerRecord<>(new ApplicationCommunicationMessages().name(), message.getId(), message)).get();
-        } else {
-            final SendMessageRequest sendMessageRequest = SendMessageRequest.newBuilder()
-                    .setMessage(message)
-                    .setToken(channel.getToken())
-                    .setCreatedAt(message.getSentAt())
-                    .setSourceConversationId(conversation.getSourceConversationId())
-                    .build();
-            ProducerRecord record = new ProducerRecord<>(resolveChannelConnectTopicName(channel.getSource()), message.getConversationId(), sendMessageRequest);
+        final SendMessageRequest sendMessageRequest = SendMessageRequest.newBuilder()
+                .setMessage(message)
+                .setToken(channel.getToken())
+                .setCreatedAt(message.getSentAt())
+                .setSourceConversationId(conversation.getSourceConversationId())
+                .build();
+        ProducerRecord record = new ProducerRecord<>(resolveChannelConnectTopicName(channel.getSource()), message.getConversationId(), sendMessageRequest);
 
-            producer.send(record).get();
-        }
+        producer.send(record).get();
 
         return ResponseEntity.ok(new SendMessageResponsePayload(message.getId()));
     }
 
     private String resolveChannelConnectTopicName(String source) {
-        switch (source) {
-            case "GOOGLE":
-                return new SourceGoogleSendMessageRequests().name();
-            case "FACEBOOK":
-                return new SourceFacebookSendMessageRequests().name();
-            case "SMS_TWILIO":
-            case "WHATSAPP_TWILIO":
-                return new SourceTwilioSendMessageRequests().name();
-            default:
-                throw new IllegalArgumentException("Unknown source: " + source);
+        if (source.equalsIgnoreCase("FACEBOOK")) {
+            return new SourceFacebookSendMessageRequests().name();
         }
+        throw new IllegalArgumentException("Unknown source: " + source);
     }
 }

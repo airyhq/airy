@@ -14,8 +14,6 @@ app_deps = [
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-metadata",
     "//backend/lib/kafka/schema:source-facebook-send-message-requests",
-    "//backend/lib/kafka/schema:source-google-send-message-requests",
-    "//backend/lib/kafka/schema:source-twilio-send-message-requests",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
 ]

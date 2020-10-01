@@ -24,17 +24,8 @@ avro_java_library(
 )
 
 avro_java_library(
-    name = "conversation",
-)
-
-avro_java_library(
-    name = "contact",
-)
-
-avro_java_library(
     name = "send-message-request",
     srcs = [
-        "contact.avsc",
         "message.avsc",
         "send-message-request.avsc",
     ],

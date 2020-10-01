@@ -36,7 +36,7 @@ public class SendMessageRequestController {
     @Autowired
     private KafkaProducer<String, SpecificRecordBase> producer;
 
-    @PostMapping("/wtv")
+    @PostMapping("/send-message")
     public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException {
         final ReadOnlyKeyValueStore<String, Pair<Contact, Channel>> contactChannelStore = stores.getContactChannelStore();
         final Pair<Contact, Channel> contactChannel = contactChannelStore.get(payload.getConversationId());

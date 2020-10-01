@@ -18,7 +18,9 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Component
@@ -61,5 +63,14 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
         startStream();
+    }
+
+
+    @GetMapping("/health")
+    ResponseEntity<Void> health() {
+        getContactChannelStore();
+
+        // If no exception was thrown by one of the above calls, this service is healthy
+        return ResponseEntity.ok().build();
     }
 }

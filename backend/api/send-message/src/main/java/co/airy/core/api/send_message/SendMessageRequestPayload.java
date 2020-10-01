@@ -19,8 +19,4 @@ public class SendMessageRequestPayload {
 
     @JsonProperty("text")
     public String text;
-
-    //forgot to delete?
-    @JsonProperty("metadata")
-    public String metadata;
 }

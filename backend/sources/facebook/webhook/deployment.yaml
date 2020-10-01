@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-facebook-webhook
+  namespace: default
+  labels:
+    app: sources-facebook-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sources-facebook-webhook
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-facebook-webhook
+        api: 'true'
+    spec:
+      containers:
+      - name: sources-facebook-webhook
+        image: bazel/backend/sources/facebook/webhook:image
+        imagePullPolicy: Never
+        env:
+        - name: KAFKA_BROKERS
+          value: http://core-kafka-cp-kafka-headless:9092
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          value: http://core-kafka-cp-schema-registry:8081
+        - name: FB_WEBHOOK_SECRET
+          value: ravioliravioligivemetheformuoli
+        - name: SERVICE_NAME
+          value: facebook-webhook
+        livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              httpHeaders:
+              - name: Health-Check
+                value: health-check
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sources-facebook-webhook
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: sources-facebook-webhook

@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-admin
+  namespace: default
+  labels:
+    app: api-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-admin
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: api-admin
+    spec:
+      containers:
+      - name: api-admin
+        image: bazel/backend/api/admin:image
+        imagePullPolicy: Never
+        env:
+        - name: KAFKA_BROKERS
+          value: http://core-kafka-cp-kafka-headless:9092
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          value: http://core-kafka-cp-schema-registry:8081
+        - name: FACEBOOK_APP_ID
+          value: "1654394508205728"
+        - name: FACEBOOK_APP_SECRET
+          value: "no"
+        - name: SERVICE_NAME
+          value: facebook-events-router
+        livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              httpHeaders:
+              - name: Health-Check
+                value: health-check
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-admin
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: api-admin

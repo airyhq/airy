@@ -1,3 +1,4 @@
+
 # Airy Core Platform API
 
 This documents aims to offer an high-level overview of the different parts that

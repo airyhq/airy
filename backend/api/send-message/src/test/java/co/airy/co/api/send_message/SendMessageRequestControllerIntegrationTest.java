@@ -241,12 +241,12 @@ public class SendMessageRequestControllerIntegrationTest {
         List<ConsumerRecord<String, SendMessageRequest>> googleRecords = testHelper.consumeRecords(1, sourceGoogleSendMessageRequests.name());
         assertThat(googleRecords, hasSize(1));
 
-//        List<ConsumerRecord<String, SendMessageRequest>> twilioRecords = testHelper.consumeRecords(1, sourceTwilioSendMessageRequests.name());
-//        assertThat(twilioRecords, hasSize(1));
+        List<ConsumerRecord<String, SendMessageRequest>> twilioRecords = testHelper.consumeRecords(1, sourceTwilioSendMessageRequests.name());
+        assertThat(twilioRecords, hasSize(1));
 
-//        List<ConsumerRecord<String, Message>> selfRecord = testHelper.consumeRecords(1, applicationCommunicationMessages.name());
-//        assertThat(selfRecord, hasSize(1));
-//        assertThat(selfRecord.get(0).value().getContent(), equalTo("I'm gonna get myself, I'm gonna get myself, I'm gonna get myself connected, I ain't gonna go blind, For the light which is reflected"));
+        List<ConsumerRecord<String, Message>> selfRecord = testHelper.consumeRecords(1, applicationCommunicationMessages.name());
+        assertThat(selfRecord, hasSize(1));
+        assertThat(selfRecord.get(0).value().getContent(), equalTo("I'm gonna get myself, I'm gonna get myself, I'm gonna get myself connected, I ain't gonna go blind, For the light which is reflected"));
     }
 
     private HttpHeaders buildHeaders() {

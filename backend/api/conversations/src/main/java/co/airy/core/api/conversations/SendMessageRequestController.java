@@ -1,10 +1,13 @@
-package co.airy.core.api.send_message;
+package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.Contact;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SendMessageRequest;
+import co.airy.core.api.conversations.MessageMapper;
+import co.airy.core.api.conversations.dto.Conversation;
+import co.airy.core.api.conversations.payload.SendMessageRequestPayload;
+import co.airy.core.api.conversations.payload.SendMessageResponsePayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
 import co.airy.kafka.schema.source.SourceGoogleSendMessageRequests;
@@ -27,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 public class SendMessageRequestController {
+
     @Autowired
     Stores stores;
 
@@ -38,24 +42,24 @@ public class SendMessageRequestController {
 
     @PostMapping("/send-message")
     public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException {
-        final ReadOnlyKeyValueStore<String, Pair<Contact, Channel>> contactChannelStore = stores.getContactChannelStore();
-        final Pair<Contact, Channel> contactChannel = contactChannelStore.get(payload.getConversationId());
+        final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
+        final Conversation conversation = conversationsStore.get(payload.getConversationId());
 
-        if (contactChannel == null) {
+        if(conversation == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmptyResponsePayload());
         }
 
-        if (contactChannel.getValue1().getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
+        final Channel channel = conversation.getChannel();
+        if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new EmptyResponsePayload());
         }
-        final Channel channel = contactChannel.getValue1();
+
         final Message message = messageMapper.fromPayload(payload.getConversationId(), payload.getText(), channel);
 
         if ("SELF".equalsIgnoreCase(channel.getSource())) {
             producer.send(new ProducerRecord<>(new ApplicationCommunicationMessages().name(), message.getId(), message)).get();
         } else {
             final SendMessageRequest sendMessageRequest = SendMessageRequest.newBuilder()
-                    .setContact(contactChannel.getValue0())
                     .setMessage(message)
                     .setCreatedAt(message.getSentAt())
                     .build();
@@ -64,7 +68,7 @@ public class SendMessageRequestController {
             producer.send(record).get();
         }
 
-        return ResponseEntity.ok(new SendMessageResponsePayload(message.getId()));
+        return ResponseEntity.ok(new SendMessageResponsePayload("wat"));
     }
 
     private String resolveChannelConnectTopicName(String source) {

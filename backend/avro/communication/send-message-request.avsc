@@ -3,7 +3,6 @@
   "name": "SendMessageRequest",
   "type": "record",
   "fields": [
-    {"name": "contact", "type": "co.airy.avro.communication.Contact"},
     {"name": "message", "type": "co.airy.avro.communication.Message"},
     {"name": "createdAt", "type": "long", "logicalType": "timestamp-millis"}
   ]

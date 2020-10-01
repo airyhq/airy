@@ -1,10 +1,8 @@
-package co.airy.core.api.send_message;
+package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;

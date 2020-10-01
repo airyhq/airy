@@ -1,4 +1,4 @@
-package co.airy.core.api.send_message;
+package co.airy.core.api.conversations.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

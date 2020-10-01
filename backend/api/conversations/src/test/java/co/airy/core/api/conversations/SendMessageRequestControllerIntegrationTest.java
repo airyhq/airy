@@ -1,14 +1,10 @@
-package co.airy.co.api.send_message;
+package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.Contact;
-import co.airy.avro.communication.Conversation;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SendMessageRequest;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationContacts;
-import co.airy.kafka.schema.application.ApplicationCommunicationConversations;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
 import co.airy.kafka.schema.source.SourceGoogleSendMessageRequests;
@@ -59,8 +55,6 @@ public class SendMessageRequestControllerIntegrationTest {
     private static SourceFacebookSendMessageRequests sourceFacebookSendMessageRequests = new SourceFacebookSendMessageRequests();
     private static SourceGoogleSendMessageRequests sourceGoogleSendMessageRequests = new SourceGoogleSendMessageRequests();
     private static SourceTwilioSendMessageRequests sourceTwilioSendMessageRequests = new SourceTwilioSendMessageRequests();
-    private static ApplicationCommunicationConversations applicationCommunicationConversations = new ApplicationCommunicationConversations();
-    private static ApplicationCommunicationContacts applicationCommunicationContacts = new ApplicationCommunicationContacts();
     private static ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     @Autowired
@@ -69,9 +63,7 @@ public class SendMessageRequestControllerIntegrationTest {
     @BeforeAll
     static void beforeAll() throws Exception {
         testHelper = new TestHelper(sharedKafkaTestResource,
-                applicationCommunicationConversations,
                 applicationCommunicationChannels,
-                applicationCommunicationContacts,
                 applicationCommunicationMessages,
                 sourceFacebookSendMessageRequests,
                 sourceGoogleSendMessageRequests,
@@ -94,22 +86,6 @@ public class SendMessageRequestControllerIntegrationTest {
                         .setSource("SELF")
                         .setToken("some-token")
                         .build()),
-                new ProducerRecord<>(applicationCommunicationConversations.name(), selfConversationId, Conversation.newBuilder()
-                        .setId(selfConversationId)
-                        .setLocale(null)
-                        .setSourceContactId("yo")
-                        .setCreatedAt(1)
-                        .setChannelId(selfChannelId)
-                        .build()),
-                new ProducerRecord<>(applicationCommunicationContacts.name(), selfConversationId, Contact.newBuilder()
-                        .setId(selfConversationId)
-                        .setSourceLocale(null)
-                        .setAvatarUrl("avatar-1")
-                        .setCreatedAt(1)
-                        .setFirstName("Anonymous")
-                        .setLastName("Anonymous")
-                        .setSourceContactId("yo")
-                        .build()),
                 new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannelId, Channel.newBuilder()
                         .setId(facebookChannelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
@@ -117,22 +93,6 @@ public class SendMessageRequestControllerIntegrationTest {
                         .setName("fb-page")
                         .setSource("FACEBOOK")
                         .setToken("some-token")
-                        .build()),
-                new ProducerRecord<>(applicationCommunicationConversations.name(), conversationId, Conversation.newBuilder()
-                        .setId(conversationId)
-                        .setLocale(null)
-                        .setSourceContactId("yo")
-                        .setCreatedAt(1)
-                        .setChannelId(facebookChannelId)
-                        .build()),
-                new ProducerRecord<>(applicationCommunicationContacts.name(), conversationId, Contact.newBuilder()
-                        .setId(conversationId)
-                        .setSourceLocale(null)
-                        .setAvatarUrl("avatar-1")
-                        .setCreatedAt(1)
-                        .setFirstName("Anonymous")
-                        .setLastName("Anonymous")
-                        .setSourceContactId("yo")
                         .build()),
                 new ProducerRecord<>(applicationCommunicationChannels.name(), googleChannelId, Channel.newBuilder()
                         .setId(googleChannelId)
@@ -149,40 +109,8 @@ public class SendMessageRequestControllerIntegrationTest {
                         .setName("What would be the name?")
                         .setSource("SMS_TWILIO")
                         .setToken("")
-                        .build()),
-                new ProducerRecord<>(applicationCommunicationConversations.name(), twilioConversationId, Conversation.newBuilder()
-                        .setId(twilioConversationId)
-                        .setLocale(null)
-                        .setSourceContactId("+4938743874834")
-                        .setCreatedAt(1)
-                        .setChannelId(twilioChannelId)
-                        .build()),
-                new ProducerRecord<>(applicationCommunicationContacts.name(), twilioConversationId, Contact.newBuilder()
-                        .setId(twilioConversationId)
-                        .setSourceLocale(null)
-                        .setAvatarUrl("avatar-1")
-                        .setCreatedAt(1)
-                        .setFirstName("Anonymous")
-                        .setLastName("Anonymous")
-                        .setSourceContactId("yo")
-                        .build()),
-                new ProducerRecord<>(applicationCommunicationConversations.name(), googleConversationId, Conversation.newBuilder()
-                        .setId(googleConversationId)
-                        .setLocale(null)
-                        .setCreatedAt(1)
-                        .setChannelId(googleChannelId)
-                        .setSourceContactId("yo")
-                        .build()),
-                new ProducerRecord<>(applicationCommunicationContacts.name(), googleConversationId, Contact.newBuilder()
-                        .setId(googleConversationId)
-                        .setSourceLocale(null)
-                        .setAvatarUrl("avatar-1")
-                        .setCreatedAt(1)
-                        .setFirstName("Anonymous")
-                        .setLastName("Anonymous")
-                        .setSourceContactId("yo")
                         .build())
-        ));
+                ));
     }
 
     @AfterAll
@@ -236,10 +164,6 @@ public class SendMessageRequestControllerIntegrationTest {
 
         List<ConsumerRecord<String, SendMessageRequest>> records = testHelper.consumeRecords(1, sourceFacebookSendMessageRequests.name());
         assertThat(records, hasSize(1));
-
-        assertEquals("contact is not the same", records.get(0).value().getContact().getId(), conversationId);
-        List<ConsumerRecord<String, SendMessageRequest>> googleRecords = testHelper.consumeRecords(1, sourceGoogleSendMessageRequests.name());
-        assertThat(googleRecords, hasSize(1));
 
         List<ConsumerRecord<String, SendMessageRequest>> twilioRecords = testHelper.consumeRecords(1, sourceTwilioSendMessageRequests.name());
         assertThat(twilioRecords, hasSize(1));

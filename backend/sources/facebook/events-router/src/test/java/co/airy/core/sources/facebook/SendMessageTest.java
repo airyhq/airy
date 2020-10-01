@@ -1,8 +1,10 @@
 package co.airy.core.sources.facebook;
 
-import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.SendMessageRequest;
+import co.airy.avro.communication.SenderType;
+import co.airy.core.sources.facebook.model.SendMessagePayload;
+import co.airy.core.sources.facebook.services.Api;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -12,7 +14,6 @@ import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
-import co.airy.uuid.UUIDV5;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,24 +21,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 
 @SpringBootTest(properties = {
         "kafka.cleanup=true",
@@ -45,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         "facebook.app-id=12345"
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
-class EventsRouterTest {
+class SendMessageTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
@@ -57,8 +60,13 @@ class EventsRouterTest {
     private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
 
+    @MockBean
+    private Api api;
+
     @Autowired
+    @InjectMocks
     private EventsRouter worker;
+
 
     private static boolean streamInitialized = false;
 
@@ -82,6 +90,8 @@ class EventsRouterTest {
 
     @BeforeEach
     void beforeEach() throws InterruptedException {
+        MockitoAnnotations.initMocks(this);
+
         if (!streamInitialized) {
 
             testHelper.waitForCondition(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
@@ -90,63 +100,53 @@ class EventsRouterTest {
         }
     }
 
-    private final String eventTemplate = "{\"object\":\"page\",\"entry\":[{\"id\":\"%s\",\"time\":1550050754198,\"messaging\":[{\"sender\":{\"id\":\"%s\"},\"recipient\":{\"id\":\"%s\"},\"timestamp\":1550050753811,\"message\":{\"mid\":\"4242\",\"seq\":1362432,\"text\":\"the answer is 42\"}}]}]}";
-
-    // This tests simulates multiple users sending messages via multiple facebook pages
-    // It ensures that we create the correct number of conversations and messages
     @Test
-    void joinsAndCountsMessagesCorrectly() throws Exception {
-        Random rand = new Random();
-        List<String> pageIds = Arrays.asList("p1", "p2", "p3", "p4", "p5");
+    void callsTheFacebookApi() throws Exception {
+        final String conversationId = "conversationId";
+        final String messageId = "message-id";
+        final String sourceConversationId = "source-conversation-id";
+        final String token = "token";
+        final String text = "Hello World";
 
-        List<ProducerRecord<String, String>> facebookMessageRecords = new ArrayList<>();
-        Map<String, Integer> messagesPerContact = new HashMap<>();
-        int totalMessages = 0;
-        int usersPerPage = 5;
+        ArgumentCaptor<SendMessagePayload> payloadCaptor = ArgumentCaptor.forClass(SendMessagePayload.class);
+        ArgumentCaptor<String> tokenCaptor = ArgumentCaptor.forClass(String.class);
+        doNothing().when(api).sendMessage(tokenCaptor.capture(), payloadCaptor.capture());
 
-        for (String pageId : pageIds) {
-            String channelId = UUID.randomUUID().toString();
+        testHelper.produceRecord(new ProducerRecord<>(sourceFacebookSendMessageRequests.name(), conversationId,
+                SendMessageRequest.newBuilder()
+                        .setCreatedAt(Instant.now().toEpochMilli())
+                        .setMessage(Message.newBuilder()
+                                .setId(messageId)
+                                .setOffset(0L)
+                                .setSentAt(Instant.now().toEpochMilli())
+                                .setSenderId(sourceConversationId)
+                                .setSenderType(SenderType.APP_USER)
+                                .setConversationId(conversationId)
+                                .setHeaders(Map.of("SOURCE", "facebook"))
+                                .setChannelId("channel-id")
+                                .setContent("{\"text\":\"" + text + "\"}")
+                                .build())
+                        .setSourceConversationId(sourceConversationId)
+                        .setToken(token)
+                        .build()
+        ));
 
-            testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
-                    .setId(channelId)
-                    .setConnectionState(ChannelConnectionState.CONNECTED)
-                    .setSourceChannelId(pageId)
-                    .setName("fb-page-a")
-                    .setSource("facebook")
-                    .setToken("")
-                    .build()));
 
-            for (int i = 0; i < usersPerPage; i++) {
-                String userId = UUID.randomUUID().toString();
-                int nMessages = rand.nextInt(4) + 2;
+            List<Message> messages = testHelper.consumeValues(1, applicationCommunicationMessages.name());
 
-                final String conversationId = UUIDV5.fromNamespaceAndName(channelId, userId).toString();
-                String webhookPayload = String.format(eventTemplate, pageId, userId, pageId);
+            assertThat(messages, hasSize(1));
 
-                messagesPerContact.put(conversationId, nMessages);
+            final Message message = messages.get(0);
 
-                for (int j = 0; j < nMessages; j++) {
-                    facebookMessageRecords.add(new ProducerRecord<>(sourceFacebookEvents.name(), UUID.randomUUID().toString(), webhookPayload));
-                }
-                totalMessages = totalMessages + nMessages;
-            }
-        }
+            assertThat(message.getId(), equalTo(messageId));
+            assertThat(message.getConversationId(), equalTo(conversationId));
 
-        // Simulate messages from different people to different pages
-        // somewhat close to reality
-        Collections.shuffle(facebookMessageRecords);
+            final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
 
-        // Wait for the channels table to catch up
-        TimeUnit.SECONDS.sleep(5);
+            assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));
+            assertThat(sendMessagePayload.getMessage().getText(), equalTo(text));
 
-        testHelper.produceRecords(facebookMessageRecords);
-
-        List<Message> messages = testHelper.consumeValues(totalMessages, applicationCommunicationMessages.name());
-        assertThat(messages, hasSize(totalMessages));
-
-        messagesPerContact.forEach((conversationId, expectedCount) -> {
-            assertEquals(messages.stream().filter(m -> m.getConversationId().equals(conversationId)).count(), expectedCount.longValue());
-        });
+            assertThat(tokenCaptor.getValue(), equalTo(token));
 
     }
 }

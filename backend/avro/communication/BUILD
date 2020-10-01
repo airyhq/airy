@@ -4,19 +4,7 @@ load("@rules_java//java:defs.bzl", "java_library")
 package(default_visibility = ["//visibility:public"])
 
 avro_java_library(
-    name = "channel-connect-request",
-)
-
-avro_java_library(
     name = "channel",
-)
-
-avro_java_library(
-    name = "available-channels-request",
-)
-
-avro_java_library(
-    name = "available-channels-response",
 )
 
 avro_java_library(
@@ -34,4 +22,12 @@ avro_java_library(
     name = "metadata-action-avro",
     srcs = ["metadata-action.avsc"],
     visibility = ["//visibility:private"],
+)
+
+avro_java_library(
+    name = "send-message-request",
+    srcs = [
+        "message.avsc",
+        "send-message-request.avsc",
+    ],
 )

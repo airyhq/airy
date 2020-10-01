@@ -3,11 +3,16 @@ package co.airy.core.sources.facebook;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.SendMessageRequest;
 import co.airy.avro.communication.SenderType;
+import co.airy.core.sources.facebook.model.SendMessagePayload;
 import co.airy.core.sources.facebook.model.WebhookEvent;
+import co.airy.core.sources.facebook.services.Api;
+import co.airy.core.sources.facebook.services.Mapper;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
+import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
 import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
@@ -18,12 +23,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
@@ -34,6 +39,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -48,7 +54,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     private KafkaStreamsWrapper streams;
 
     @Autowired
-    private ObjectMapper mapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
     private KafkaProducer<String, Message> producer;
@@ -61,16 +67,23 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
+        // Channels table
         KTable<String, Channel> channelsTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
                 .groupBy((k, v) -> v.getSourceChannelId())
                 .reduce((aggValue, newValue) -> newValue)
-                .filter((sourceChannelId, channel) -> channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
+                .filter((sourceChannelId, channel) -> "facebook".equalsIgnoreCase(channel.getSource())
+                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
+        // Outbound
+        final KStream<String, Message> outboundStream = builder.<String, SendMessageRequest>stream(new SourceFacebookSendMessageRequests().name())
+                .mapValues(this::sendMessage);
+
+        // Inbound
         builder.<String, String>stream(new SourceFacebookEvents().name())
                 .flatMap((key, event) -> {
                     WebhookEvent webhookEvent;
                     try {
-                        webhookEvent = mapper.readValue(event, WebhookEvent.class);
+                        webhookEvent = objectMapper.readValue(event, WebhookEvent.class);
                         if (webhookEvent.getEntries() == null) {
                             log.warn("empty entries. key={} event={}", key, event);
                             return Collections.emptyList();
@@ -130,6 +143,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                         return KeyValue.pair("skip", null);
                     }
                 })
+                .merge(outboundStream)
                 .filter((conversationId, message) -> message != null)
                 .groupByKey()
                 .aggregate(() -> ConversationAggregationDTO.builder()
@@ -166,6 +180,31 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     static class ConversationAggregationDTO implements Serializable {
         Long offset;
         Message message;
+    }
+
+    @Autowired
+    Mapper mapper;
+
+    @Autowired
+    Api api;
+
+    private Message sendMessage(SendMessageRequest sendMessageRequest) {
+        try {
+            final String pageToken = sendMessageRequest.getToken();
+            final SendMessagePayload fbSendMessagePayload = mapper.fromSendMessageRequest(sendMessageRequest);
+
+            api.sendMessage(pageToken, fbSendMessagePayload);
+
+            return sendMessageRequest.getMessage();
+        } catch (ApiException e) {
+            log.error(
+                    String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n FB Error Message: %s \n", sendMessageRequest, e.getMessage()), e
+            );
+        } catch (Exception e) {
+            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s", sendMessageRequest), e);
+        }
+
+        return null;
     }
 
     @Override

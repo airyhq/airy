@@ -59,6 +59,7 @@ public class SendMessageRequestController {
         } else {
             final SendMessageRequest sendMessageRequest = SendMessageRequest.newBuilder()
                     .setMessage(message)
+                    .setToken(channel.getToken())
                     .setCreatedAt(message.getSentAt())
                     .build();
             ProducerRecord record = new ProducerRecord<>(resolveChannelConnectTopicName(channel.getSource()), message.getConversationId(), sendMessageRequest);

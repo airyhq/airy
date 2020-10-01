@@ -2,7 +2,6 @@ package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SendMessageRequest;
 import co.airy.core.api.conversations.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
@@ -34,7 +33,6 @@ import java.util.List;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,18 +47,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SendMessageRequestControllerIntegrationTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-
-    private static TestHelper testHelper;
-    private static String facebookConversationId = "facebook-conversation-id";
-    private static String googleConversationId = "google-conversation-id";
-    private static String twilioConversationId = "twilio-conversation-id";
-    private static String selfConversationId = "self-conversation-id";
     private static final SourceFacebookSendMessageRequests sourceFacebookSendMessageRequests = new SourceFacebookSendMessageRequests();
     private static final SourceGoogleSendMessageRequests sourceGoogleSendMessageRequests = new SourceGoogleSendMessageRequests();
     private static final SourceTwilioSendMessageRequests sourceTwilioSendMessageRequests = new SourceTwilioSendMessageRequests();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
+    private static TestHelper testHelper;
+    private static String facebookConversationId = "facebook-conversation-id";
     private static boolean testDataInitialized = false;
     final Channel facebookChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
@@ -91,6 +85,12 @@ public class SendMessageRequestControllerIntegrationTest {
 
         testHelper.beforeAll();
     }
+
+    @AfterAll
+    static void afterAll() throws Exception {
+        testHelper.afterAll();
+    }
+
     @BeforeEach
     void init() throws Exception {
         if (testDataInitialized) {
@@ -106,11 +106,6 @@ public class SendMessageRequestControllerIntegrationTest {
         );
 
         testDataInitialized = true;
-    }
-
-    @AfterAll
-    static void afterAll() throws Exception {
-        testHelper.afterAll();
     }
 
     @Test

@@ -23,7 +23,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,7 +38,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 
 @SpringBootTest(properties = {
@@ -132,21 +130,21 @@ class SendMessageTest {
         ));
 
 
-            List<Message> messages = testHelper.consumeValues(1, applicationCommunicationMessages.name());
+        List<Message> messages = testHelper.consumeValues(1, applicationCommunicationMessages.name());
 
-            assertThat(messages, hasSize(1));
+        assertThat(messages, hasSize(1));
 
-            final Message message = messages.get(0);
+        final Message message = messages.get(0);
 
-            assertThat(message.getId(), equalTo(messageId));
-            assertThat(message.getConversationId(), equalTo(conversationId));
+        assertThat(message.getId(), equalTo(messageId));
+        assertThat(message.getConversationId(), equalTo(conversationId));
 
-            final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
+        final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
 
-            assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));
-            assertThat(sendMessagePayload.getMessage().getText(), equalTo(text));
+        assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));
+        assertThat(sendMessagePayload.getMessage().getText(), equalTo(text));
 
-            assertThat(tokenCaptor.getValue(), equalTo(token));
+        assertThat(tokenCaptor.getValue(), equalTo(token));
 
     }
 }

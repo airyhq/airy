@@ -69,7 +69,7 @@ public class SendMessageRequestController {
     }
 
     private String resolveChannelConnectTopicName(String source) {
-        if (source.equalsIgnoreCase("FACEBOOK")) {
+        if (source.equalsIgnoreCase("facebook")) {
             return new SourceFacebookSendMessageRequests().name();
         }
         throw new IllegalArgumentException("Unknown source: " + source);

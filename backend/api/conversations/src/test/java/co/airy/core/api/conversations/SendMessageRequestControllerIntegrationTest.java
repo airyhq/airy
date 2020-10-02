@@ -57,7 +57,7 @@ public class SendMessageRequestControllerIntegrationTest {
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("facebook-channel-id")
             .setName("channel-name")
-            .setSource("FACEBOOK")
+            .setSource("facebook")
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")
             .build();

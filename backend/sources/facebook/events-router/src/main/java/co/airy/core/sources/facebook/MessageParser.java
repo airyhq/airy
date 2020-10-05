@@ -1,5 +1,6 @@
 package co.airy.core.sources.facebook;
 
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -56,7 +57,6 @@ public class MessageParser {
 
         final Map<String, String> headers = new HashMap<>();
 
-        headers.put("source", "facebook");
         if (postbackNode != null) {
             if (postbackNode.get("payload") != null) {
                 headers.put("postback.payload", postbackNode.get("payload").textValue());

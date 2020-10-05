@@ -3,7 +3,6 @@ package co.airy.core.api.admin;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.core.api.admin.dto.ChannelMetadata;
-import co.airy.core.api.admin.payload.AvailableChannelPayload;
 import co.airy.core.api.admin.sources.facebook.FacebookSource;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.test.TestHelper;
@@ -30,9 +29,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.doNothing;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -110,11 +111,13 @@ public class ChannelsControllerTest {
 
     @Test
     void connectedChannels() throws Exception {
+        final String disconnectedChannel = "channel-id-2";
+
         testHelper.produceRecords(List.of(
-                new ProducerRecord<>(applicationCommunicationChannels.name(), "channel-id-2",
+                new ProducerRecord<>(applicationCommunicationChannels.name(), disconnectedChannel,
                         Channel.newBuilder()
                                 .setConnectionState(ChannelConnectionState.DISCONNECTED)
-                                .setId("channel-id-2")
+                                .setId(disconnectedChannel)
                                 .setName("channel-name-2")
                                 .setSource("facebook")
                                 .setSourceChannelId("ps-id-2")
@@ -125,7 +128,9 @@ public class ChannelsControllerTest {
         testHelper.waitForCondition(() -> mvc.perform(post("/channels.connected").
                         headers(buildHeaders()))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(1))),
+                        .andExpect(jsonPath("$.data.length()", greaterThanOrEqualTo(1)))
+                        .andExpect(jsonPath("$.data[*].id").value(not(contains(disconnectedChannel))))
+                ,
                 "/channels.connected did not return the right number of channels"
         );
     }
@@ -184,14 +189,27 @@ public class ChannelsControllerTest {
 
     @Test
     void disconnectChannel() throws Exception {
+        final String channelId = UUID.randomUUID().toString();
+
+        final Channel channel = Channel.newBuilder()
+                .setConnectionState(ChannelConnectionState.CONNECTED)
+                .setId(channelId)
+                .setName("connected channel name")
+                .setSource("facebook")
+                .setToken("disconnect-token")
+                .setSourceChannelId("disconnect-source-channel-id")
+                .build();
+
+        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, channel));
+
         testHelper.waitForCondition(() -> mvc.perform(post("/channels.disconnect")
                         .headers(buildHeaders())
-                        .content("{\"channel_id\":\"" + connectedChannel.getId() + "\"}"))
+                        .content("{\"channel_id\":\"" + channelId + "\"}"))
                         .andExpect(status().isOk()),
                 "/channels.disconnect failed"
         );
 
-        Mockito.verify(facebookSource).disconnectChannel(connectedChannel.getToken(), connectedChannel.getSourceChannelId());
+        Mockito.verify(facebookSource).disconnectChannel(channel.getToken(), channel.getSourceChannelId());
     }
 
 

@@ -43,7 +43,7 @@ public class MessageParser {
         final String appId = (message != null && message.get("app_id") != null && !message.get("app_id").isNull()) ? message.get("app_id").asText() : null;
 
         SenderType senderType;
-        String senderId = null;
+        String senderId;
 
         if (!isEcho) {
             senderType = SenderType.SOURCE_CONTACT;
@@ -52,7 +52,8 @@ public class MessageParser {
             senderType = SenderType.SOURCE_USER;
             senderId = appId;
         } else {
-            senderType = SenderType.APP_USER;
+            // Filter out echoes coming from this app
+            throw new NotAMessageException();
         }
 
         final Map<String, String> headers = new HashMap<>();

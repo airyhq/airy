@@ -1,6 +1,7 @@
 package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
@@ -42,7 +43,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
+        final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+                .filter((messageId, message) -> DeliveryState.DELIVERED.equals(message.getDeliveryState()));
 
         final KTable<String, Channel> channelTable = builder.table(new ApplicationCommunicationChannels().name());
 

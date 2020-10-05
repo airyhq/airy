@@ -6,7 +6,6 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.facebook.model.WebhookEvent;
-import co.airy.core.sources.facebook.services.Api;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
@@ -72,8 +71,8 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
 
         // Outbound
         final KStream<String, Message> outboundStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId, message) -> message.getOffset() > 0)
-                .filter((messageId,  message) -> message.getSenderType().equals(SenderType.APP_USER));
+                .filter((messageId,  message) -> "facebook".equalsIgnoreCase(message.getSource()) &&
+                        message.getOffset() == 0 && message.getSenderType().equals(SenderType.APP_USER));
 
         // Inbound
         builder.<String, String>stream(new SourceFacebookEvents().name())
@@ -120,15 +119,12 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     try {
                         final Message.Builder messageBuilder = messageParser.parse(payload);
 
-                        final String senderId = SenderType.APP_USER.equals(messageBuilder.getSenderType()) ? channel.getId() : messageBuilder.getSenderId();
-
                         return KeyValue.pair(
                                 conversationId,
                                 messageBuilder
                                         .setSource("facebook")
                                         .setDeliveryState(DeliveryState.DELIVERED)
                                         .setId(messageId)
-                                        .setSenderId(senderId)
                                         .setChannelId(channel.getId())
                                         .setOffset(0L)
                                         .setConversationId(conversationId)
@@ -180,9 +176,6 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
         Long offset;
         Message message;
     }
-
-    @Autowired
-    Api api;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {

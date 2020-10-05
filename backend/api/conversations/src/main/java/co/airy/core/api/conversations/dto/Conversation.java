@@ -37,10 +37,6 @@ public class Conversation implements Serializable {
         );
     }
 
-    public Long getLastOffset() {
-        return this.lastMessage.getOffset();
-    }
-
     public String getId() {
         return this.lastMessage.getConversationId();
     }

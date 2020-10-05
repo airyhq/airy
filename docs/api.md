@@ -85,7 +85,6 @@ Example Response:
       "last_message": {
         "display_text": "Welcome to Airy Messenger - I’m Mathias and I’m here to help.",
         "media_type": "text/fb-template",
-        "offset": 27, // Sequence number of the last available message
         "id": "1e7674d7-b575-4683-8a77-d2651b9e3149-relayed",
         "sent_at": "2019-01-07T09:01:44.000Z"
       },
@@ -138,7 +137,6 @@ Example Response:
   "last_message": {
     "display_text": "Welcome to Airy Messenger - I’m Mathias and I’m here to help.",
     "media_type": "text/fb-template",
-    "offset": 27, // Sequence number of the last available message
     "id": "1e7674d7-b575-4683-8a77-d2651b9e3149-relayed",
     "sent_at": "2019-01-07T09:01:44.000Z"
   },
@@ -189,8 +187,8 @@ Example Response:
       id: "{UUID}",
       content: "{String}",
       // source content string
-      offset: "{number}",
-      // represents the chronological ordering of messages in a conversation,
+      state: "{String}",
+      // delivery state of message, one of PENDING, FAILED, DELIVERED
       alignment: "{string/enum}",
       // LEFT, RIGHT, CENTER - horizontal placement of message
       sent_at: "{string}",

@@ -74,7 +74,6 @@ public class ConversationGenerator {
                     final String messageId = UUID.randomUUID().toString();
                     records.add(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, Message.newBuilder()
                             .setId(messageId)
-                            .setOffset(offset)
                             .setSentAt(System.currentTimeMillis() + offset)
                             .setSenderId("source-conversation-id")
                             .setDeliveryState(DeliveryState.DELIVERED)

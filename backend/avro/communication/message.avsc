@@ -63,10 +63,6 @@
       "type": "string"
     },
     {
-      "name": "offset",
-      "type": "long"
-    },
-    {
       "name": "sentAt",
       "type": "long",
       "logicalType": "timestamp-millis"

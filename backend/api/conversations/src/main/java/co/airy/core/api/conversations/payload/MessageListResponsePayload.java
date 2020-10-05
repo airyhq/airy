@@ -22,8 +22,8 @@ public class MessageListResponsePayload implements Serializable {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ResponseMetadata {
-        private Long previousCursor;
-        private Long nextCursor;
+        private String previousCursor;
+        private String nextCursor;
         private long total; // total message count
     }
 }

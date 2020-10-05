@@ -65,6 +65,7 @@ Identifies the participant that sent the message. Interpretation is based on the
 
     - `PENDING` message to be sent out
     - `DELIVERED` message has been sent to source
+    - `FAILED` message sending has terminally failed
     
 - `sentAt` timestamp
 

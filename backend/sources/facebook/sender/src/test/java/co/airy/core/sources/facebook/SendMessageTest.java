@@ -119,7 +119,6 @@ class SendMessageTest {
                         Message.newBuilder()
                                 .setId("other-message-id")
                                 .setSource("facebook")
-                                .setOffset(0L)
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setSenderId(sourceConversationId)
                                 .setSenderType(SenderType.SOURCE_CONTACT)
@@ -135,7 +134,6 @@ class SendMessageTest {
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                 Message.newBuilder()
                         .setId(messageId)
-                        .setOffset(0L)
                         .setSentAt(Instant.now().toEpochMilli())
                         .setSenderId(sourceConversationId)
                         .setSenderType(SenderType.APP_USER)

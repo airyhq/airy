@@ -62,7 +62,6 @@ public class SendMessageRequestController {
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
                 .setSource(channel.getSource())
-                .setOffset(0L)
                 .setSenderId(channel.getId())
                 .setSenderType(SenderType.APP_USER)
                 .setSentAt(Instant.now().toEpochMilli())

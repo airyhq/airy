@@ -1,5 +1,6 @@
 package co.airy.core.api.conversations;
 
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataKeys;
 import co.airy.avro.communication.SenderType;
@@ -19,8 +20,8 @@ public class Mapper {
         return MessageResponsePayload.builder()
                 .content(message.getContent())
                 .alignment(getAlignment(message.getSenderType()))
+                .state(getState(message.getDeliveryState()))
                 .id(message.getId())
-                .offset(message.getOffset())
                 .sentAt(ISO_FROM_MILLIS(message.getSentAt()))
                 .build();
     }
@@ -31,6 +32,15 @@ public class Mapper {
             case SOURCE_USER: return "LEFT";
             case SOURCE_CONTACT: return "RIGHT";
             default: throw new RuntimeException("Unknown sender type " + senderType);
+        }
+    }
+
+    static String getState(DeliveryState deliveryState) {
+        switch (deliveryState) {
+            case FAILED: return "failed";
+            case PENDING: return "pending";
+            case DELIVERED: return "delivered";
+            default: throw new RuntimeException("Unknown delivery type " + deliveryState);
         }
     }
 

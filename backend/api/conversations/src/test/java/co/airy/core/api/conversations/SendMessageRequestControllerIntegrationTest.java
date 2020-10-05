@@ -2,12 +2,11 @@ package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.SendMessageRequest;
+import co.airy.avro.communication.Message;
 import co.airy.core.api.conversations.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -31,11 +30,11 @@ import java.util.List;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.is;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
         "kafka.cleanup=true",
@@ -46,7 +45,6 @@ import static org.hamcrest.Matchers.is;
 public class SendMessageRequestControllerIntegrationTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static final SourceFacebookSendMessageRequests sourceFacebookSendMessageRequests = new SourceFacebookSendMessageRequests();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
@@ -75,8 +73,7 @@ public class SendMessageRequestControllerIntegrationTest {
         testHelper = new TestHelper(sharedKafkaTestResource,
                 applicationCommunicationMetadata,
                 applicationCommunicationMessages,
-                applicationCommunicationChannels,
-                sourceFacebookSendMessageRequests
+                applicationCommunicationChannels
         );
 
         testHelper.beforeAll();
@@ -122,12 +119,11 @@ public class SendMessageRequestControllerIntegrationTest {
         );
 
 
-        List<ConsumerRecord<String, SendMessageRequest>> records = testHelper.consumeRecords(1, sourceFacebookSendMessageRequests.name());
+        List<ConsumerRecord<String, Message>> records = testHelper.consumeRecords(1, applicationCommunicationMessages.name());
         assertThat(records, hasSize(1));
 
-        final SendMessageRequest sendMessageRequest = records.get(0).value();
-        assertThat(sendMessageRequest.getMessage().getContent(),
-                is("{\"text\":\"answer is 42\"}"));
+        final Message message = records.get(0).value();
+        assertThat(message.getContent(), is("{\"text\":\"answer is 42\"}"));
     }
 
     private HttpHeaders buildHeaders() {

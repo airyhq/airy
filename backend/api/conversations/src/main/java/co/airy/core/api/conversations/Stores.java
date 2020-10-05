@@ -4,8 +4,8 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
+import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
-import co.airy.core.api.conversations.dto.Participant;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -70,13 +70,15 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                                         .lastMessage(message)
                                         .createdAt(message.getSentAt()) // Set this only once for the sent time of the first message
                                         .build();
-                                final Participant participant = new Participant(message.getSenderId(), message.getSenderType());
-                                aggregate.getParticipants().add(participant);
                             }
 
                             // equals because messages can be updated
                             if (message.getOffset() >= aggregate.getLastOffset()) {
                                 aggregate.setLastMessage(message);
+                            }
+
+                            if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
+                                aggregate.setSourceConversationId(message.getSenderId());
                             }
 
                             return aggregate;

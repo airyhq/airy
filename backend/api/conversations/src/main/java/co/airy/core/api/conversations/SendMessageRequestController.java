@@ -3,11 +3,11 @@ package co.airy.core.api.conversations;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SendMessageRequest;
+import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.core.api.conversations.payload.SendMessageRequestPayload;
 import co.airy.core.api.conversations.payload.SendMessageResponsePayload;
-import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
+import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.payload.response.EmptyResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.Instant;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -32,8 +35,6 @@ public class SendMessageRequestController {
     Stores stores;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private MessageMapper messageMapper;
 
     @Autowired
     private KafkaProducer<String, SpecificRecordBase> producer;
@@ -52,26 +53,21 @@ public class SendMessageRequestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new EmptyResponsePayload());
         }
 
-        final Message message = messageMapper.fromPayload(payload.getConversationId(),
-                objectMapper.writeValueAsString(payload.getMessage()), channel);
-
-        final SendMessageRequest sendMessageRequest = SendMessageRequest.newBuilder()
-                .setMessage(message)
-                .setToken(channel.getToken())
-                .setCreatedAt(message.getSentAt())
-                .setSourceConversationId(conversation.getSourceConversationId())
+        final Message message = Message.newBuilder()
+                .setId(UUID.randomUUID().toString())
+                .setChannelId(channel.getId())
+                .setContent(objectMapper.writeValueAsString(payload.getMessage()))
+                .setConversationId(payload.getConversationId())
+                .setHeaders(Map.of("SOURCE", channel.getSource()))
+                .setOffset(0L)
+                .setSenderId(channel.getId())
+                .setSenderType(SenderType.APP_USER)
+                .setSentAt(Instant.now().toEpochMilli())
                 .build();
-        ProducerRecord record = new ProducerRecord<>(resolveChannelConnectTopicName(channel.getSource()), message.getConversationId(), sendMessageRequest);
+        ProducerRecord record = new ProducerRecord<>(new ApplicationCommunicationMessages().name(), message.getId(), message);
 
         producer.send(record).get();
 
         return ResponseEntity.ok(new SendMessageResponsePayload(message.getId()));
-    }
-
-    private String resolveChannelConnectTopicName(String source) {
-        if (source.equalsIgnoreCase("facebook")) {
-            return new SourceFacebookSendMessageRequests().name();
-        }
-        throw new IllegalArgumentException("Unknown source: " + source);
     }
 }

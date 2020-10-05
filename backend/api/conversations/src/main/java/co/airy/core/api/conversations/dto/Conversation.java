@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 @Data
 @Builder
@@ -23,8 +21,7 @@ public class Conversation implements Serializable {
     Long createdAt;
     String channelId;
     Message lastMessage;
-    @Builder.Default
-    Set<Participant> participants = new HashSet<>();
+    String sourceConversationId;
     Channel channel;
 
     @Builder.Default
@@ -51,14 +48,5 @@ public class Conversation implements Serializable {
     public String getChannelId() {
         return this.lastMessage.getChannelId();
     }
-
-    public String getSourceConversationId() {
-        return participants.stream()
-                .filter((participant -> participant.getSenderType().equals(SenderType.SOURCE_CONTACT)))
-                .findFirst()
-                .get()
-                .getSenderId();
-    }
-
 }
 

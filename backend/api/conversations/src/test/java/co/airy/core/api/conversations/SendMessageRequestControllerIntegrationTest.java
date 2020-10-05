@@ -3,6 +3,7 @@ package co.airy.core.api.conversations;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -119,10 +120,14 @@ public class SendMessageRequestControllerIntegrationTest {
         );
 
 
-        List<ConsumerRecord<String, Message>> records = testHelper.consumeRecords(1, applicationCommunicationMessages.name());
-        assertThat(records, hasSize(1));
+        List<ConsumerRecord<String, Message>> records = testHelper.consumeRecords(2, applicationCommunicationMessages.name());
+        assertThat(records, hasSize(2));
 
-        final Message message = records.get(0).value();
+        final Message message = records.stream()
+                .map(ConsumerRecord::value)
+                .filter(m -> m.getSenderType().equals(SenderType.APP_USER))
+                .findFirst()
+                .orElse(null);
         assertThat(message.getContent(), is("{\"text\":\"answer is 42\"}"));
     }
 

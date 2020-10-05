@@ -2,6 +2,7 @@ package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
@@ -58,7 +59,9 @@ public class SendMessageRequestController {
                 .setChannelId(channel.getId())
                 .setContent(objectMapper.writeValueAsString(payload.getMessage()))
                 .setConversationId(payload.getConversationId())
-                .setHeaders(Map.of("SOURCE", channel.getSource()))
+                .setHeaders(Map.of())
+                .setDeliveryState(DeliveryState.PENDING)
+                .setSource(channel.getSource())
                 .setOffset(0L)
                 .setSenderId(channel.getId())
                 .setSenderType(SenderType.APP_USER)

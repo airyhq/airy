@@ -72,7 +72,8 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
 
         // Outbound
         final KStream<String, Message> outboundStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId,  message) -> message.getDeliveryState().equals(DeliveryState.DELIVERED));
+                .filter((messageId, message) -> message.getOffset() > 0)
+                .filter((messageId,  message) -> message.getSenderType().equals(SenderType.APP_USER));
 
         // Inbound
         builder.<String, String>stream(new SourceFacebookEvents().name())

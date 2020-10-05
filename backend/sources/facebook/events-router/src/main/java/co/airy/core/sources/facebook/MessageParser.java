@@ -1,6 +1,5 @@
 package co.airy.core.sources.facebook;
 
-import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import com.fasterxml.jackson.databind.JsonNode;

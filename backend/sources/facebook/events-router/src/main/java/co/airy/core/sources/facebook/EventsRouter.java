@@ -4,16 +4,12 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SendMessageRequest;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.sources.facebook.model.SendMessagePayload;
 import co.airy.core.sources.facebook.model.WebhookEvent;
 import co.airy.core.sources.facebook.services.Api;
-import co.airy.core.sources.facebook.services.Mapper;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
-import co.airy.kafka.schema.source.SourceFacebookSendMessageRequests;
 import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
@@ -75,8 +71,9 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
         // Outbound
-        final KStream<String, Message> outboundStream = builder.<String, SendMessageRequest>stream(new SourceFacebookSendMessageRequests().name())
-                .mapValues(this::sendMessage);
+        final KStream<String, Message> outboundStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+                .filter((messageId, message) -> message.getOffset() > 0)
+                .filter((messageId,  message) -> message.getSenderType().equals(SenderType.APP_USER));
 
         // Inbound
         builder.<String, String>stream(new SourceFacebookEvents().name())
@@ -185,29 +182,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     }
 
     @Autowired
-    Mapper mapper;
-
-    @Autowired
     Api api;
-
-    private Message sendMessage(SendMessageRequest sendMessageRequest) {
-        try {
-            final String pageToken = sendMessageRequest.getToken();
-            final SendMessagePayload fbSendMessagePayload = mapper.fromSendMessageRequest(sendMessageRequest);
-
-            api.sendMessage(pageToken, fbSendMessagePayload);
-
-            return sendMessageRequest.getMessage();
-        } catch (ApiException e) {
-            log.error(
-                    String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n FB Error Message: %s \n", sendMessageRequest, e.getMessage()), e
-            );
-        } catch (Exception e) {
-            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s", sendMessageRequest), e);
-        }
-
-        return null;
-    }
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {

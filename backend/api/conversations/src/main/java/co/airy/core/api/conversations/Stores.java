@@ -4,6 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
+import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -74,6 +75,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                             // equals because messages can be updated
                             if (message.getOffset() >= aggregate.getLastOffset()) {
                                 aggregate.setLastMessage(message);
+                            }
+
+                            if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
+                                aggregate.setSourceConversationId(message.getSenderId());
                             }
 
                             return aggregate;

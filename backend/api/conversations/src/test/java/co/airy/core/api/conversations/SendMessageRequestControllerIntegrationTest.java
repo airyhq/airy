@@ -119,7 +119,6 @@ public class SendMessageRequestControllerIntegrationTest {
                 "Facebook Message was not sent"
         );
 
-
         List<ConsumerRecord<String, Message>> records = testHelper.consumeRecords(2, applicationCommunicationMessages.name());
         assertThat(records, hasSize(2));
 

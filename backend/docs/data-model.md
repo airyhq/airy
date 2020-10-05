@@ -20,10 +20,6 @@ Header data contains information that is important for downstream processing tel
 
 - `headers` string map
 
-    The following key/values need to be implemented by sources
-
-    - `source` string source that ingested the message `facebook`, `google`, `sms_twilio` etc.
-
     Optional headers:
 
     - `postback.payload` string postback payloads used for source automations
@@ -32,7 +28,7 @@ Header data contains information that is important for downstream processing tel
 
 - `id` uuid
 
-Message id for deduplication and joining body data
+Unique message id for deduplication
 
 - `senderType` string
 
@@ -55,6 +51,23 @@ Identifies the participant that sent the message. Interpretation is based on the
 
 - `conversationId` uuid
 
+- `channelId` uuid
+
 - `content` string
+
+- `offset` long sequence number of message within a conversation
+
+- `source` string source that ingested the message `facebook`, `google`, `sms_twilio` etc.
+
+- `deliveryState` string
+
+    One of:
+
+    - `PENDING` message to be sent out
+    - `DELIVERED` message has been sent to source
+    
+- `sentAt` timestamp
+
+- `updatedAt` timestamp null for messages that are inserted first time 
 
 ## Team

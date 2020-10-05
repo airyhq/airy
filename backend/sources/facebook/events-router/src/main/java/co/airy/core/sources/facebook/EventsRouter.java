@@ -2,6 +2,7 @@ package co.airy.core.sources.facebook;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SendMessageRequest;
 import co.airy.avro.communication.SenderType;
@@ -127,6 +128,8 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                         return KeyValue.pair(
                                 conversationId,
                                 messageBuilder
+                                        .setSource("facebook")
+                                        .setDeliveryState(DeliveryState.DELIVERED)
                                         .setId(messageId)
                                         .setSenderId(senderId)
                                         .setChannelId(channel.getId())

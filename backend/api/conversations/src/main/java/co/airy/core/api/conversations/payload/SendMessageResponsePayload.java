@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class SendMessageResponsePayload {
-    String messageId;
+    private String messageId;
 }

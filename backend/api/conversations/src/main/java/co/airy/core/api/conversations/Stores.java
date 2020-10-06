@@ -72,7 +72,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                         Materialized.as(MESSAGES_STORE)
                 );
 
-        messageStream.groupBy((messageId, message) -> message.getConversationId())
+        messageStream
+                .groupByKey()
                 .aggregate(Conversation::new,
                         (conversationId, message, aggregate) -> {
                             if (aggregate.getLastMessage() == null) {

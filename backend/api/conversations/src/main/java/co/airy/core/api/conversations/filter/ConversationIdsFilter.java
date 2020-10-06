@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Component
 public class ConversationIdsFilter implements Filter<Conversation> {
     @Override
@@ -15,7 +17,7 @@ public class ConversationIdsFilter implements Filter<Conversation> {
             return true;
         }
 
-        return filterPayload.getConversationIds().stream().map(UUID::toString).collect(Collectors.toList())
+        return filterPayload.getConversationIds().stream().map(UUID::toString).collect(toList())
                 .contains(conversation.getId());
     }
 }

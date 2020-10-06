@@ -11,7 +11,6 @@ import co.airy.pagination.Paginator;
 import co.airy.payload.response.ConversationResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,12 +25,13 @@ import static java.util.Comparator.comparing;
 
 @RestController
 public class ConversationsController {
+    private final Stores stores;
+    private final List<Filter<Conversation>> conversationFilters;
 
-    @Autowired
-    Stores stores;
-
-    @Autowired
-    private List<Filter<Conversation>> conversationFilters;
+    ConversationsController(Stores stores, List<Filter<Conversation>> conversationFilters) {
+        this.stores = stores;
+        this.conversationFilters = conversationFilters;
+    }
 
     @PostMapping("/conversations.list")
     ResponseEntity<ConversationListResponsePayload> conversationList(@RequestBody @Valid ConversationListRequestPayload requestPayload) {
@@ -71,13 +71,12 @@ public class ConversationsController {
                                         .previousCursor(page.getPreviousCursor())
                                         .total(totalSize)
                                         .build()
-                        ).build()
-        );
+                        ).build());
     }
 
 
     @PostMapping("/conversations.by_id")
-    ResponseEntity conversationById(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
+    ResponseEntity<?> conversationById(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
 
         final Conversation conversation = store.get(requestPayload.getConversationId().toString());

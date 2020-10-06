@@ -14,6 +14,9 @@ app_deps = [
     "//backend/lib/kafka/schema:application-communication-metadata",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
+    "@maven//:org_springframework_boot_spring_boot_starter_websocket",
+    "@maven//:org_springframework_spring_messaging",
+    "@maven//:org_springframework_spring_websocket",
 ]
 
 springboot(

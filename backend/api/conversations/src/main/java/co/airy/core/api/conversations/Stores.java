@@ -1,12 +1,17 @@
 package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
+<<<<<<< HEAD
 import co.airy.core.api.conversations.dto.MessagesTreeSet;
+=======
+import co.airy.core.api.conversations.dto.MessageUpsertPayload;
+>>>>>>> starting
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -16,11 +21,13 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.javatuples.Pair;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +45,9 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
     @Autowired
     private KafkaStreamsWrapper streams;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     private final String MESSAGES_STORE = "messages-store";
     private final String CONVERSATIONS_STORE = "conversations-store";
@@ -72,6 +82,12 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                         Materialized.as(MESSAGES_STORE)
                 );
 
+        messageStream
+                .filter((messageId, message) -> DeliveryState.DELIVERED.equals(message.getDeliveryState()))
+                .selectKey((messageId, message) -> message.getChannelId())
+                .join(channelTable, Pair::with)
+                .peek(this::sendMessageToWebsocket);
+
         messageStream.groupBy((messageId, message) -> message.getConversationId())
                 .aggregate(Conversation::new,
                         (conversationId, message, aggregate) -> {
@@ -105,6 +121,14 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         streams.start(builder.build(), appId);
     }
 
+    private void sendMessageToWebsocket(String key, Pair<Message, Channel> pair) {
+        final MessageUpsertPayload messageUpsertPayload = MessageUpsertPayload.fromMessageAndChannel(pair.getValue0(), pair.getValue1());
+        messagingTemplate.convertAndSend("/queue/airy/message/upsert", messageUpsertPayload);
+    }
+
+    public String messageOffsetKey(String conversationId, Long offset) {
+        return String.format("%s_%d", conversationId, offset);
+    }
 
     public ReadOnlyKeyValueStore<String, Conversation> getConversationsStore() {
         return streams.acquireLocalStore(CONVERSATIONS_STORE);

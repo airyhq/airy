@@ -1,6 +1,5 @@
 package co.airy.core.api.conversations.dto;
 
-import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.payload.response.ChannelPayload;
 import co.airy.payload.response.MessageResponsePayload;
@@ -20,31 +19,21 @@ public class MessageUpsertPayload implements Serializable {
     private ChannelPayload source;
     private MessageResponsePayload message;
 
-    public static MessageUpsertPayload fromMessageAndChannel(Message message, Channel channel) {
+    public static MessageUpsertPayload fromMessage(Message message) {
         return MessageUpsertPayload.builder()
                 .conversationId(message.getConversationId())
-                .source(buildChannelPayload(channel))
                 .message(buildMessagePayload(message))
-                .build();
-    }
-
-    private static ChannelPayload buildChannelPayload(Channel channel) {
-        return ChannelPayload.builder()
-                .id(channel.getId())
-                .imageUrl("")
-                .name("channel name")
-                .source("source")
-                .sourceChannelId("source channel id")
                 .build();
     }
 
     private static MessageResponsePayload buildMessagePayload(Message message) {
         return MessageResponsePayload.builder()
-                .alignment("LEFT")
+                .alignment(message.getConversationId().equals(message.getSenderId()) ? "LEFT" : "RIGHT")
                 .content(message.getContent())
                 .id(message.getId())
                 .offset(message.getOffset())
                 .sentAt(String.valueOf(message.getSentAt()))
+                .deliveryState(message.getDeliveryState().toString())
                 .build();
     }
 }

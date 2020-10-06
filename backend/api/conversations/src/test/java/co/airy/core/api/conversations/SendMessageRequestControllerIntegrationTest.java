@@ -63,7 +63,7 @@ public class SendMessageRequestControllerIntegrationTest {
     private final List<ConversationGenerator.CreateConversation> conversations = List.of(
             ConversationGenerator.CreateConversation.builder()
                     .conversationId(facebookConversationId)
-                    .lastOffset(1L)
+                    .messageCount(1L)
                     .channel(facebookChannel)
                     .build());
     @Autowired

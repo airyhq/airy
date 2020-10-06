@@ -94,7 +94,7 @@ class ConversationsByIdTest {
         testHelper.produceRecords(getConversationRecords(
                 ConversationGenerator.CreateConversation.builder()
                         .channel(channel)
-                        .lastOffset(1L)
+                        .messageCount(1L)
                         .conversationId(conversationId)
                         .build()
         ));

@@ -157,26 +157,17 @@ information.
 
 `POST /conversations.messages-list`
 
-This is a [paginated](#pagination) endpoint.
+This is a [paginated](#pagination) endpoint and messages are sorted from oldest to latest.
 
 Example body:
 
-```json
+```json5
 {
-  "conversation_id": "4242-4242-4242-424242",
-  "cursor": "next-page-uuid",
-  "page_size": 2
+  "conversation_id": "4242-4242-4242-424242", 
+  "cursor": "next-page-uuid", // optional
+  "page_size": 2  // optional
 }
 ```
-
-**Required**:
-
-- `conversation_id` UUID - the conversation for which messages are to be fetched
-
-**Optional**:
-
-- `cursor` UUID
-- `page_size` Integer
 
 Example Response:
 

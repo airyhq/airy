@@ -129,15 +129,6 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
         streams.start(builder.build(), appId);
     }
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    static class ConversationAggregationDTO implements Serializable {
-        Long offset;
-        Message message;
-    }
-
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         startStream();

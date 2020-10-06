@@ -153,6 +153,6 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 class MessagesTreeSet extends TreeSet<Message> {
     @JsonCreator
     MessagesTreeSet() {
-        super(Comparator.comparing(Message::getSentAt).reversed());
+        super(Comparator.comparing(Message::getSentAt));
     }
 }

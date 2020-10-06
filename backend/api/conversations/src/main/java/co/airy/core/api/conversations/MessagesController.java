@@ -5,7 +5,6 @@ import co.airy.core.api.conversations.payload.MessageListRequestPayload;
 import co.airy.core.api.conversations.payload.MessageListResponsePayload;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,13 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 public class MessagesController {
+    private final Stores stores;
 
-    @Autowired
-    Stores stores;
+    MessagesController(Stores stores) {
+        this.stores = stores;
+    }
 
     @PostMapping("/conversations.messages-list")
     ResponseEntity<MessageListResponsePayload> messageList(@RequestBody @Valid MessageListRequestPayload messageListRequestPayload) {
@@ -43,15 +45,12 @@ public class MessagesController {
             return null;
         }
 
-        Paginator<Message> paginator =
-                new Paginator<>(messages, Message::getId)
-                        .perPage(pageSize)
-                        .from(cursor);
+        Paginator<Message> paginator = new Paginator<>(messages, Message::getId).perPage(pageSize).from(cursor);
 
         Page<Message> page = paginator.page();
 
         return MessageListResponsePayload.builder()
-                .data(messages.stream().map(Mapper::fromMessage).collect(Collectors.toList()))
+                .data(messages.stream().map(Mapper::fromMessage).collect(toList()))
                 .responseMetadata(MessageListResponsePayload.ResponseMetadata.builder()
                         .nextCursor(page.getNextCursor())
                         .previousCursor(cursor)

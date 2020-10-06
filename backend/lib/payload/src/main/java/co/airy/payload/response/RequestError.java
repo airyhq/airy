@@ -8,5 +8,5 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 public class RequestError implements Serializable {
-    String message;
+    private String message;
 }

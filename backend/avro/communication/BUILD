@@ -23,11 +23,3 @@ avro_java_library(
     srcs = ["metadata-action.avsc"],
     visibility = ["//visibility:private"],
 )
-
-avro_java_library(
-    name = "send-message-request",
-    srcs = [
-        "message.avsc",
-        "send-message-request.avsc",
-    ],
-)

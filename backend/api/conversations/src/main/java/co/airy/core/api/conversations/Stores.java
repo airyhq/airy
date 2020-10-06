@@ -6,11 +6,11 @@ import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
+import co.airy.core.api.conversations.dto.MessagesTreeSet;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
@@ -26,11 +26,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 @Component
 @RestController
@@ -150,9 +148,3 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     }
 }
 
-class MessagesTreeSet extends TreeSet<Message> {
-    @JsonCreator
-    MessagesTreeSet() {
-        super(Comparator.comparing(Message::getSentAt));
-    }
-}

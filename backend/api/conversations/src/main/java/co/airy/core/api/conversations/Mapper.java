@@ -20,7 +20,7 @@ public class Mapper {
         return MessageResponsePayload.builder()
                 .content(message.getContent())
                 .alignment(getAlignment(message.getSenderType()))
-                .state(getState(message.getDeliveryState()))
+                .state(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
                 .sentAt(ISO_FROM_MILLIS(message.getSentAt()))
                 .build();
@@ -32,15 +32,6 @@ public class Mapper {
             case SOURCE_USER: return "LEFT";
             case SOURCE_CONTACT: return "RIGHT";
             default: throw new RuntimeException("Unknown sender type " + senderType);
-        }
-    }
-
-    static String getState(DeliveryState deliveryState) {
-        switch (deliveryState) {
-            case FAILED: return "failed";
-            case PENDING: return "pending";
-            case DELIVERED: return "delivered";
-            default: throw new RuntimeException("Unknown delivery type " + deliveryState);
         }
     }
 

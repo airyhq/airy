@@ -69,7 +69,6 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         messageStream
                 .peek(this::sendMessageToWebsocket)
-                .selectKey((messageId, message) -> messageOffsetKey(message.getConversationId(), message.getOffset()))
                 .groupByKey()
                 .aggregate(MessagesTreeSet::new,
                         ((key, value, aggregate) -> {

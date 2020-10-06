@@ -31,7 +31,6 @@ public class MessageUpsertPayload implements Serializable {
                 .alignment(message.getConversationId().equals(message.getSenderId()) ? "LEFT" : "RIGHT")
                 .content(message.getContent())
                 .id(message.getId())
-                .offset(message.getOffset())
                 .sentAt(String.valueOf(message.getSentAt()))
                 .deliveryState(message.getDeliveryState().toString())
                 .build();

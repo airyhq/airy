@@ -4,13 +4,10 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.facebook.model.WebhookEvent;
-import co.airy.core.sources.facebook.services.Api;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
-import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.uuid.UUIDV5;
@@ -20,12 +17,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
@@ -53,9 +47,6 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     private ObjectMapper objectMapper;
 
     @Autowired
-    private KafkaProducer<String, Message> producer;
-
-    @Autowired
     private MessageParser messageParser;
 
     private final String appId = "sources.facebook.EventsRouter";
@@ -69,11 +60,6 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                 .reduce((aggValue, newValue) -> newValue)
                 .filter((sourceChannelId, channel) -> "facebook".equalsIgnoreCase(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
-
-        // Outbound
-        final KStream<String, Message> outboundStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId, message) -> message.getOffset() > 0)
-                .filter((messageId,  message) -> message.getSenderType().equals(SenderType.APP_USER));
 
         // Inbound
         builder.<String, String>stream(new SourceFacebookEvents().name())
@@ -108,7 +94,6 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                             .collect(toList());
                 })
                 .join(channelsTable, Pair::add)
-                .through(new SourceFacebookTransformedEvents().name())
                 .map((facebookId, triplet) -> {
                     final String sourceConversationId = triplet.getValue0();
                     final String payload = triplet.getValue1();
@@ -120,17 +105,13 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     try {
                         final Message.Builder messageBuilder = messageParser.parse(payload);
 
-                        final String senderId = SenderType.APP_USER.equals(messageBuilder.getSenderType()) ? channel.getId() : messageBuilder.getSenderId();
-
                         return KeyValue.pair(
-                                conversationId,
+                                messageId,
                                 messageBuilder
                                         .setSource("facebook")
                                         .setDeliveryState(DeliveryState.DELIVERED)
                                         .setId(messageId)
-                                        .setSenderId(senderId)
                                         .setChannelId(channel.getId())
-                                        .setOffset(0L)
                                         .setConversationId(conversationId)
                                         .build()
                         );
@@ -142,47 +123,11 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                         return KeyValue.pair("skip", null);
                     }
                 })
-                .merge(outboundStream)
                 .filter((conversationId, message) -> message != null)
-                .groupByKey()
-                .aggregate(() -> ConversationAggregationDTO.builder()
-                                .message(null)
-                                .offset(0L)
-                                .build()
-                        , (aggKey, message, aggregate) -> {
-                            final long newOffset = aggregate.getOffset() + 1;
-                            message.setOffset(newOffset);
-
-                            return ConversationAggregationDTO.builder()
-                                    .message(message)
-                                    .offset(newOffset)
-                                    .build();
-                        })
-                .toStream()
-                .foreach(
-                        (conversationId, aggregationDTO) -> {
-                            final Message message = aggregationDTO.getMessage();
-                            try {
-                                producer.send(new ProducerRecord<>(new ApplicationCommunicationMessages().name(), message.getId(), message)).get();
-                            } catch (Exception e) {
-                                log.error("Failed to produce message {}", message, e);
-                            }
-                        });
+                .to(new ApplicationCommunicationMessages().name());
 
         streams.start(builder.build(), appId);
     }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    static class ConversationAggregationDTO implements Serializable {
-        Long offset;
-        Message message;
-    }
-
-    @Autowired
-    Api api;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {

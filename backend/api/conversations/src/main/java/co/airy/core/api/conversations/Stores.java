@@ -6,6 +6,7 @@ import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
+import co.airy.core.api.conversations.dto.MessagesTreeSet;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -24,7 +25,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -42,7 +45,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
+        final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+                .selectKey((messageId, message) -> message.getConversationId());
 
         final KTable<String, Channel> channelTable = builder.table(new ApplicationCommunicationChannels().name());
 
@@ -58,9 +62,15 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                     return aggregate;
                 });
 
-        messageStream.selectKey((messageId, message) -> messageOffsetKey(message.getConversationId(), message.getOffset()))
+        messageStream
                 .groupByKey()
-                .reduce((v1, v2) -> v2, Materialized.as(MESSAGES_STORE));
+                .aggregate(MessagesTreeSet::new,
+                        ((key, value, aggregate) -> {
+                            aggregate.add(value);
+                            return aggregate;
+                        }),
+                        Materialized.as(MESSAGES_STORE)
+                );
 
         messageStream.groupBy((messageId, message) -> message.getConversationId())
                 .aggregate(Conversation::new,
@@ -73,7 +83,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                             }
 
                             // equals because messages can be updated
-                            if (message.getOffset() >= aggregate.getLastOffset()) {
+                            if (message.getSentAt() >= aggregate.getLastMessage().getSentAt()) {
                                 aggregate.setLastMessage(message);
                             }
 
@@ -95,16 +105,25 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         streams.start(builder.build(), appId);
     }
 
-    public String messageOffsetKey(String conversationId, Long offset) {
-        return String.format("%s_%d", conversationId, offset);
-    }
 
     public ReadOnlyKeyValueStore<String, Conversation> getConversationsStore() {
         return streams.acquireLocalStore(CONVERSATIONS_STORE);
     }
 
-    public ReadOnlyKeyValueStore<String, Message> getMessagesStore() {
+    public ReadOnlyKeyValueStore<String, MessagesTreeSet> getMessagesStore() {
         return streams.acquireLocalStore(MESSAGES_STORE);
+    }
+
+    public List<Message> getMessages(String conversationId) {
+        final ReadOnlyKeyValueStore<String, MessagesTreeSet> messagesStore = getMessagesStore();
+
+        final MessagesTreeSet messagesTreeSet = messagesStore.get(conversationId);
+
+        if (messagesTreeSet == null) {
+            return null;
+        }
+
+        return new ArrayList<>(messagesTreeSet);
     }
 
     @Override
@@ -128,3 +147,4 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         return ResponseEntity.ok().build();
     }
 }
+

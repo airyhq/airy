@@ -102,27 +102,27 @@ class ConversationsFilterTest {
                                     MetadataKeys.SOURCE.CONTACT.FIRST_NAME, firstNameToFind
                             ))
                     .conversationId(UUID.randomUUID().toString())
-                    .lastOffset(1L)
+                    .messageCount(1L)
                     .channel(defaultChannel)
                     .build(),
             CreateConversation.builder()
                     .conversationId(UUID.randomUUID().toString())
-                    .lastOffset(1L)
+                    .messageCount(1L)
                     .channel(channelToFind)
                     .build(),
             CreateConversation.builder()
                     .conversationId(conversationIdToFind)
-                    .lastOffset(1L)
+                    .messageCount(1L)
                     .channel(defaultChannel)
                     .build(),
             CreateConversation.builder()
                     .conversationId(UUID.randomUUID().toString())
-                    .lastOffset(1L)
+                    .messageCount(1L)
                     .channel(defaultChannel)
                     .build(),
             CreateConversation.builder()
                     .conversationId(UUID.randomUUID().toString())
-                    .lastOffset(1L)
+                    .messageCount(1L)
                     .channel(defaultChannel)
                     .build()
     );

@@ -1,11 +1,10 @@
 package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Message;
-import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.core.api.conversations.payload.MessageListRequestPayload;
 import co.airy.core.api.conversations.payload.MessageListResponsePayload;
-import org.apache.kafka.streams.state.KeyValueIterator;
-import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import co.airy.pagination.Page;
+import co.airy.pagination.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,22 +25,9 @@ public class MessagesController {
     @PostMapping("/conversations.messages-list")
     ResponseEntity<MessageListResponsePayload> messageList(@RequestBody @Valid MessageListRequestPayload messageListRequestPayload) {
         final String conversationId = messageListRequestPayload.getConversationId().toString();
-        final Long pageSize = Optional.ofNullable(messageListRequestPayload.getPageSize()).orElse(20L);
+        final int pageSize = Optional.ofNullable(messageListRequestPayload.getPageSize()).orElse(20);
 
-        Long cursor = messageListRequestPayload.getCursor();
-
-        if (cursor == null) {
-            ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
-            Conversation conversation = store.get(conversationId);
-
-            if (conversation == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            cursor = conversation.getLastOffset();
-        }
-
-        MessageListResponsePayload response = fetchMessages(conversationId, pageSize, cursor);
+        MessageListResponsePayload response = fetchMessages(conversationId, pageSize, messageListRequestPayload.getCursor());
 
         if (response == null) {
             return ResponseEntity.notFound().build();
@@ -51,31 +36,27 @@ public class MessagesController {
         return ResponseEntity.ok(response);
     }
 
-    private MessageListResponsePayload fetchMessages(String conversationId, Long pageSize, Long cursor) {
-        final ReadOnlyKeyValueStore<String, Message> store = stores.getMessagesStore();
+    private MessageListResponsePayload fetchMessages(String conversationId, int pageSize, String cursor) {
+        final List<Message> messages = stores.getMessages(conversationId);
 
-        final long lowerOffset = Math.max(cursor - pageSize, 0);
+        if (messages == null) {
+            return null;
+        }
 
-        final String upperKey = messageOffsetKey(conversationId, cursor);
-        final String lowerKey = messageOffsetKey(conversationId, lowerOffset);
+        Paginator<Message> paginator =
+                new Paginator<>(messages, Message::getId)
+                        .perPage(pageSize)
+                        .from(cursor);
 
-        final KeyValueIterator<String, Message> iterator = store.range(lowerKey, upperKey);
-
-        List<Message> messages = new ArrayList<>();
-        iterator.forEachRemaining((entry) -> messages.add(entry.value));
+        Page<Message> page = paginator.page();
 
         return MessageListResponsePayload.builder()
                 .data(messages.stream().map(Mapper::fromMessage).collect(Collectors.toList()))
                 .responseMetadata(MessageListResponsePayload.ResponseMetadata.builder()
-                        .nextCursor(lowerOffset > 0 ? lowerOffset : null) // don't return if we've reached the end
+                        .nextCursor(page.getNextCursor())
                         .previousCursor(cursor)
                         .total(messages.size())
                         .build()
                 ).build();
     }
-
-    private String messageOffsetKey(String conversationId, Long offset) {
-        return String.format("%s_%d", conversationId, offset);
-    }
-
 }

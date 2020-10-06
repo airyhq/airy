@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 public class ConversationGenerator {
@@ -30,7 +31,7 @@ public class ConversationGenerator {
         Channel channel;
         String conversationId;
         Map<String, String> metadata;
-        Long lastOffset;
+        Long messageCount;
     }
 
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
@@ -48,7 +49,7 @@ public class ConversationGenerator {
         final String conversationId = conversation.getConversationId();
         final Channel channel = conversation.getChannel();
 
-        records.addAll(getMessages(conversation.getLastOffset().intValue(), channel.getId(), conversationId));
+        records.addAll(getMessages(conversation.getMessageCount().intValue(), channel.getId(), conversationId));
 
         if (conversation.getMetadata() != null) {
             conversation.getMetadata().forEach((metadataKey, metadataValue) ->
@@ -66,16 +67,15 @@ public class ConversationGenerator {
         return records;
     }
 
-    public static List<ProducerRecord<String, SpecificRecordBase>> getMessages(Integer lastOffset, String channelId, String conversationId) {
+    public static List<ProducerRecord<String, SpecificRecordBase>> getMessages(Integer messageCount, String channelId, String conversationId) {
         List<ProducerRecord<String, SpecificRecordBase>> records = new ArrayList<>();
 
-        LongStream.range(0, lastOffset)
-                .forEach(offset -> {
+        IntStream.range(0, messageCount)
+                .forEach(index -> {
                     final String messageId = UUID.randomUUID().toString();
                     records.add(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, Message.newBuilder()
                             .setId(messageId)
-                            .setOffset(offset)
-                            .setSentAt(System.currentTimeMillis() + offset)
+                            .setSentAt(System.currentTimeMillis() + index * 1000)
                             .setSenderId("source-conversation-id")
                             .setDeliveryState(DeliveryState.DELIVERED)
                             .setSource("facebook")

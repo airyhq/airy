@@ -11,6 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class MessageListRequestPayload {
     private UUID conversationId;
-    private Long cursor;
-    private Long pageSize;
+    private String cursor;
+    private Integer pageSize;
 }

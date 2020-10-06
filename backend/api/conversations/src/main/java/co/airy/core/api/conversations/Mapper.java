@@ -1,5 +1,6 @@
 package co.airy.core.api.conversations;
 
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataKeys;
 import co.airy.avro.communication.SenderType;
@@ -19,8 +20,8 @@ public class Mapper {
         return MessageResponsePayload.builder()
                 .content(message.getContent())
                 .alignment(getAlignment(message.getSenderType()))
+                .state(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
-                .offset(message.getOffset())
                 .sentAt(ISO_FROM_MILLIS(message.getSentAt()))
                 .build();
     }

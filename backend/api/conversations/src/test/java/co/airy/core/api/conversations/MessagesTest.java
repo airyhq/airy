@@ -2,11 +2,13 @@ package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.Message;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.payload.format.DateFormat;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -28,6 +30,9 @@ import java.util.List;
 import java.util.UUID;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getMessages;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -104,7 +109,13 @@ public class MessagesTest {
                         .headers(buildHeaders())
                         .content(requestPayload))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(messageCount))),
+                        .andExpect(jsonPath("$.data", hasSize(messageCount)))
+                        .andExpect(jsonPath("$.data[*].sent_at").value(contains(
+                                records.stream()
+                                        .map((record) -> ((Message) record.value()).getSentAt())
+                                        .map(DateFormat::ISO_FROM_MILLIS)
+                                        .sorted().toArray())))
+                ,
                 "/conversations.messages-list endpoint error"
         );
     }

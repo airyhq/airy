@@ -2,8 +2,7 @@ package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
+import co.airy.core.api.conversations.dto.MessageUpsertPayload;
 import co.airy.core.api.conversations.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -11,39 +10,46 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.socket.WebSocketHttpHeaders;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
-        "kafka.cleanup=true",
-        "kafka.commit-interval-ms=100",
-}, classes = AirySpringBootApplication.class)
+@Tag("kafka-integration")
 @ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {AirySpringBootApplication.class})
 @AutoConfigureMockMvc
-public class SendMessageRequestControllerIntegrationTest {
+public class WebsocketIntegrationTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
@@ -52,13 +58,14 @@ public class SendMessageRequestControllerIntegrationTest {
     private static TestHelper testHelper;
     private static String facebookConversationId = "facebook-conversation-id";
     private static boolean testDataInitialized = false;
+    private static String MESSAGE_UPSERT_OUTBOUND_QUEUE = "/queue/airy/message/upsert";
     final Channel facebookChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("facebook-channel-id")
             .setName("channel-name")
             .setSource("facebook")
             .setSourceChannelId("ps-id")
-           .setToken("AWESOME TOKEN")
+            .setToken("AWESOME TOKEN")
             .build();
     private final List<ConversationGenerator.CreateConversation> conversations = List.of(
             ConversationGenerator.CreateConversation.builder()
@@ -66,6 +73,8 @@ public class SendMessageRequestControllerIntegrationTest {
                     .messageCount(1L)
                     .channel(facebookChannel)
                     .build());
+    @Value("${local.server.port}")
+    private static int port;
     @Autowired
     private MockMvc mvc;
 
@@ -76,7 +85,6 @@ public class SendMessageRequestControllerIntegrationTest {
                 applicationCommunicationMessages,
                 applicationCommunicationChannels
         );
-
         testHelper.beforeAll();
     }
 
@@ -91,8 +99,6 @@ public class SendMessageRequestControllerIntegrationTest {
             return;
         }
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
-        testHelper.produceRecords(getConversationRecords(conversations));
 
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
@@ -103,36 +109,54 @@ public class SendMessageRequestControllerIntegrationTest {
     }
 
     @Test
-    void dispatchesCorrectly() throws Exception {
-        testHelper.waitForCondition(
-                () -> mvc.perform(get("/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+    void sendsToWebsocket() throws Exception {
+        final CompletableFuture<MessageUpsertPayload> completableFuture = subscribe(MessageUpsertPayload.class,"/user" + MESSAGE_UPSERT_OUTBOUND_QUEUE);
 
-        String facebookPayload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"message\": { \"text\": \"answer is 42\" }}";
+        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
+        testHelper.produceRecords(getConversationRecords(conversations));
 
-        testHelper.waitForCondition(() ->
-                        mvc.perform(post("/send-message")
-                                .headers(buildHeaders())
-                                .content(facebookPayload))
-                                .andExpect(status().isOk()),
-                "Facebook Message was not sent"
-        );
+        final MessageUpsertPayload receivedOverWS;
+        receivedOverWS = completableFuture.get(30, TimeUnit.SECONDS);
 
-        List<ConsumerRecord<String, Message>> records = testHelper.consumeRecords(2, applicationCommunicationMessages.name());
-        assertThat(records, hasSize(2));
-
-        final Message message = records.stream()
-                .map(ConsumerRecord::value)
-                .filter(m -> m.getSenderType().equals(SenderType.APP_USER))
-                .findFirst()
-                .orElse(null);
-        assertThat(message.getContent(), is("{\"text\":\"answer is 42\"}"));
+        assertNotNull(receivedOverWS);
     }
 
-    private HttpHeaders buildHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
-        return headers;
+    private static StompSession connectToWs() throws ExecutionException, InterruptedException {
+        final WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
+        MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
+        ObjectMapper objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        messageConverter.setObjectMapper(objectMapper);
+        stompClient.setMessageConverter(messageConverter);
+
+        StompHeaders connectHeaders = new StompHeaders();
+        WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
+
+        return stompClient.connect("ws://localhost:" + port + "/ws", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
+        }).get();
+    }
+
+    public static <T> CompletableFuture<T> subscribe(Class<T> payloadType, String topic) throws ExecutionException, InterruptedException {
+        final StompSession stompSession = connectToWs();
+
+        final CompletableFuture<T> completableFuture = new CompletableFuture<>();
+
+        stompSession.subscribe(topic, new StompSessionHandlerAdapter() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return payloadType;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                completableFuture.complete((T) payload);
+            }
+        });
+
+        return completableFuture;
+    }
+    public static void send(Object payload, String topic) throws ExecutionException, InterruptedException {
+        final StompSession stompSession = connectToWs();
+
+        stompSession.send(topic, payload);
     }
 }

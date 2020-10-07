@@ -16,7 +16,6 @@ import java.io.Serializable;
 @Data
 public class MessageUpsertPayload implements Serializable {
     private String conversationId;
-    private ChannelPayload source;
     private MessageResponsePayload message;
 
     public static MessageUpsertPayload fromMessage(Message message) {

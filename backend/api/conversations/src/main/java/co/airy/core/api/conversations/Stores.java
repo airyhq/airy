@@ -111,7 +111,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         streams.start(builder.build(), appId);
     }
 
-    private void sendMessageToWebsocket(String messageId, Message message) {
+    private void sendMessageToWebsocket(String conversationId, Message message) {
         final MessageUpsertPayload messageUpsertPayload = MessageUpsertPayload.fromMessage(message);
         messagingTemplate.convertAndSend("/queue/airy/message/upsert", messageUpsertPayload);
     }

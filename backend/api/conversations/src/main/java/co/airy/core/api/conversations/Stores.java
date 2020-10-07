@@ -54,7 +54,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name());
+        final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+                .selectKey((messageId, message) -> message.getConversationId());
 
         final KTable<String, Channel> channelTable = builder.table(new ApplicationCommunicationChannels().name());
 
@@ -100,7 +101,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                     // TODO send to websocket queue
                 });
 
-        final KGroupedStream<String, Message> messageGroupedStream = messageStream.groupBy((messageId, message) -> message.getConversationId());
+        final KGroupedStream<String, Message> messageGroupedStream = messageStream.groupByKey();
 
         // messages store
         messageGroupedStream

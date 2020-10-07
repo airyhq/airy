@@ -87,7 +87,7 @@ Example Response:
         "id": "1e7674d7-b575-4683-8a77-d2651b9e3149-relayed",
         "sent_at": "2019-01-07T09:01:44.000Z"
       },
-      "min_unread_message_count": 1
+      "unread_message_count": 1,
     }
   ],
   "response_metadata": {
@@ -118,7 +118,7 @@ Example Response:
 
 **Sample Response**
 
-```
+```json5
 {
   "id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "channel": {
@@ -139,7 +139,7 @@ Example Response:
     "id": "1e7674d7-b575-4683-8a77-d2651b9e3149-relayed",
     "sent_at": "2019-01-07T09:01:44.000Z"
   },
-  "min_unread_message_count": 1
+  "unread_message_count": 1
 }
 ```
 

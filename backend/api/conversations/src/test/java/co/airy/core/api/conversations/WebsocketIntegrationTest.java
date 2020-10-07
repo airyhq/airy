@@ -117,13 +117,12 @@ public class WebsocketIntegrationTest {
 
     @Test
     void sendsToWebsocket() throws Exception {
-        final CompletableFuture<MessageUpsertPayload> completableFuture = subscribe(port, MessageUpsertPayload.class,"/user" + MESSAGE_UPSERT_OUTBOUND_QUEUE);
+        final CompletableFuture<MessageUpsertPayload> completableFuture = subscribe(port, MessageUpsertPayload.class, MESSAGE_UPSERT_OUTBOUND_QUEUE);
 
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
         testHelper.produceRecords(getConversationRecords(conversations));
 
-        final MessageUpsertPayload receivedOverWS;
-        receivedOverWS = completableFuture.get(30, TimeUnit.SECONDS);
+        final MessageUpsertPayload receivedOverWS = completableFuture.get(30, TimeUnit.SECONDS);
 
         assertNotNull(receivedOverWS);
     }

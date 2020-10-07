@@ -3,21 +3,25 @@
 This documents aims to offer an high-level overview of the different parts that
 compose our API.
 
-- [Introduction](#introduction)
-- [Endpoints](#endpoints)
-  - [Conversations](#conversations)
-    - [List conversations](#list-conversations)
-    - [Conversation by id](#conversation-by-id)
-    - [Mark all conversations as read](#mark-all-conversations-as-read)
-    - [Messages of a conversation](#messages-of-a-conversation)
-    - [Send a message](#send-a-message)
-  - [Channels](#channels)
-    - [Connecting Channels](#connecting-channels)
-    - [Disconnecting Channels](#disconnecting-channels)
-    - [List Available Channels](#list-available-channels)
-    - [List Connected Channels](#list-connected-channels)
-- [Error codes](#error-codes)
-- [Pagination](#pagination)
+- [Airy Core Platform API](#airy-core-platform-api)
+  - [Introduction](#introduction)
+  - [Endpoints](#endpoints)
+    - [Conversations](#conversations)
+      - [List conversations](#list-conversations)
+      - [Conversation by id](#conversation-by-id)
+    - [Messages](#messages)
+      - [Messages of a conversation](#messages-of-a-conversation)
+      - [Send a message](#send-a-message)
+    - [Channels](#channels)
+      - [Connecting Channels](#connecting-channels)
+      - [Disconnecting Channels](#disconnecting-channels)
+      - [List Available Channels](#list-available-channels)
+      - [List Connected Channels](#list-connected-channels)
+    - [Webhooks](#webhooks)
+      - [Subscribing to a webhook](#subscribing-to-a-webhook)
+      - [Unsubscribing to a webhook](#unsubscribing-to-a-webhook)
+      - [Fetch webhook](#fetch-webhook)
+  - [Pagination](#pagination)
 
 ## Introduction
 
@@ -26,17 +30,12 @@ Our HTTP endpoints adhere to the following conventions:
 - Endpoints only accept `POST` JSON requests.
 - Except for the `/login` and `/signup` endpoints, communication
   always requires a valid [JWT token](#authorization).
-- There are no nested URLs (eg there are no `/thing/:id/:otherthing`)
-- `4xx` responses always use a machine [error code](/#error-codes).
-
-These constraints aim to simplify the eventual migration of our API to a GraphQL
-schema, as a bonus we avoid complicated URL builders in the frontends.
+- We use dots for namespacing URLS (eg there are no `/things.add`).
 
 ## Endpoints
 
-As there is no nesting, we group endpoints only logically. The idea is to focus
-on the feature set endpoints enable. The grouping reflects the high level
-entities of the [Airy Data Model](/docs/data-model.md).
+The way we group endpoints reflects the high level entities of the [Airy Core Data
+Model](/docs/data-model.md).
 
 ### Conversations
 
@@ -49,7 +48,7 @@ information.
 
 This is a [paginated](#pagination) endpoint.
 
-Example body:
+**Sample Request**
 
 ```json
 {
@@ -105,11 +104,11 @@ Example Response:
 
 `POST /conversations.by_id`
 
-Example body:
+**Sample Request**
 
 ```json
 {
-  "conversation_id": "4242-4242-4242-424242"
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622"
 }
 ```
 
@@ -117,7 +116,7 @@ Example body:
 
 - `conversation_id` UUID
 
-Example Response:
+**Sample Response**
 
 ```
 {
@@ -144,10 +143,6 @@ Example Response:
 }
 ```
 
-#### Mark all conversations as read
-
-`POST /mark-all-conversations-as-read`
-
 ### Messages
 
 Please refer to our [messages](/docs/data-model.md#message) definition for more
@@ -159,7 +154,7 @@ information.
 
 This is a [paginated](#pagination) endpoint and messages are sorted from oldest to latest.
 
-Example body:
+**Sample Request**
 
 ```json5
 {
@@ -169,7 +164,7 @@ Example body:
 }
 ```
 
-Example Response:
+**Sample Response**
 
 ```json5
 {
@@ -199,25 +194,29 @@ Example Response:
 
 `POST /conversations.send`
 
-Returns the id that the message will be persisted with in the backend. Combined with the websocket [queue for message upserts](websocket.md#userqueueairymessageupsert) (/user/queue/airy/message/upsert) you can use this id to verify that a message has been delivered.
+Returns the id that the message will be persisted with in the backend. Combined
+with the websocket [queue for message
+upserts](websocket.md#userqueueairymessageupsert)
+(/user/queue/airy/message/upsert) you can use this id to verify that a message
+has been delivered.
 
 **Required**:
 
 - `conversation_id` UUID
 - `message` Object
 
-Example payload:
+**Sample Request**
 
 ```json5
 {
-  conversation_id: "4242424242",
+  conversation_id: "a688d36c-a85e-44af-bc02-4248c2c97622",
   message: {
     text: "{String}"
   }
 }
 ```
 
-Example response:
+**Sample Response**
 
 ```json
 {
@@ -231,7 +230,8 @@ Example response:
 
 `POST /channels.connect`
 
-A synchronous endpoint that makes a request to the source on behalf of the user to connect the channel and produce a record to Kafka.
+A synchronous endpoint that makes a request to the source on behalf of the user
+to connect the channel.
 
 This action is idempotent, so if the channel is already connected the status will be `202`.
 
@@ -263,7 +263,9 @@ This action is idempotent, so if the channel is already connected the status wil
 
 `POST /channels.disconnect`
 
-A synchronous endpoint that makes a request to the source on behalf of the user to disconnect the channel. Marks the channel as disconnected and deletes the auth token.
+A synchronous endpoint that makes a request to the source on behalf of the user
+to disconnect the channel. It marks the channel as disconnected and deletes the
+auth token.
 
 This action is idempotent, so if the channel is disconnected the status will be `202`.
 If the channel is unknown, the response status will be `400`.
@@ -280,7 +282,10 @@ If the channel is unknown, the response status will be `400`.
 
 `POST /channels.available`
 
-A synchronous endpoint that makes a request to the source on behalf of the user to list all the channels that are available. Some of those channels may already be connected, which is accounted for in the boolean field `connected`. Due to the nature of the request, response time may vary.
+A synchronous endpoint that makes a request to the source on behalf of the user
+to list all the channels that are available. Some of those channels may already
+be connected, which is accounted for in the boolean field `connected`. Due to
+the nature of the request, response time may vary.
 
 **Sample Request**
 
@@ -355,7 +360,7 @@ A synchronous endpoint that makes a request to the source on behalf of the user 
 }
 ```
 
-**Response**
+**Sample Response**
 
 This endpoints returns 200 and an empty body.
 
@@ -363,15 +368,15 @@ This endpoints returns 200 and an empty body.
 
 `POST /webhook-unsubscribe`
 
-**Response**
+**Sample Response**
 
 This endpoints returns 200 and an empty body.
 
-#### Get webhook
+#### Fetch webhook
 
 `POST /webhook`
 
-**Response**
+**Sample Response**
 
 ```json5
 {
@@ -383,14 +388,9 @@ This endpoints returns 200 and an empty body.
 }
 ```
 
-## Error codes
-
-Error codes are 3-digit unique codes that represent logical errors the platform
-means to communicate to the frontends.
-
 ## Pagination
 
-By default, paginated endpoints return at max 10 elements of the first page.
+By default, paginated endpoints return at max 20 elements of the first page.
 
 The size of the returned page can be controller via the `page_size` field of the
 body. You can move back and forth between pages using the `cursor` field of the

@@ -31,14 +31,16 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 public class SendMessageRequestController {
-
     @Autowired
     Stores stores;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
-    private KafkaProducer<String, SpecificRecordBase> producer;
+    private KafkaProducer<String, Message> producer;
+
+    private final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
 
     @PostMapping("/send-message")
     public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException, JsonProcessingException {
@@ -66,9 +68,8 @@ public class SendMessageRequestController {
                 .setSenderType(SenderType.APP_USER)
                 .setSentAt(Instant.now().toEpochMilli())
                 .build();
-        ProducerRecord record = new ProducerRecord<>(new ApplicationCommunicationMessages().name(), message.getId(), message);
 
-        producer.send(record).get();
+        producer.send(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message)).get();
 
         return ResponseEntity.ok(new SendMessageResponsePayload(message.getId()));
     }

@@ -39,23 +39,19 @@ public class Mapper {
         final Map<String, String> metadata = conversation.getMetadata();
 
         return ConversationResponsePayload.builder()
-                .channel(
-                        ChannelPayload.builder()
+                .channel(ChannelPayload.builder()
                                 .id(conversation.getChannelId())
                                 .name(conversation.getChannel().getName())
-                                .build()
-                )
+                                .build())
                 .id(conversation.getId())
                 .unreadMessageCount(conversation.getUnreadCount())
                 .createdAt(ISO_FROM_MILLIS(conversation.getCreatedAt()))
-                .contact(
-                        ContactResponsePayload.builder()
+                .contact(ContactResponsePayload.builder()
                                 .avatarUrl(metadata.get(MetadataKeys.SOURCE.CONTACT.AVATAR_URL))
                                 .firstName(metadata.get(MetadataKeys.SOURCE.CONTACT.FIRST_NAME))
                                 .lastName(metadata.get(MetadataKeys.SOURCE.CONTACT.LAST_NAME))
                                 .info(filterPrefix(metadata, "user.contact-info"))
-                                .build()
-                )
+                                .build())
                 .message(fromMessage(conversation.getLastMessage()))
                 .build();
     }

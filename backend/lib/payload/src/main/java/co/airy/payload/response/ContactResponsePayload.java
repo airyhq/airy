@@ -13,12 +13,9 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class ContactResponsePayload implements Serializable {
-    public String avatarUrl;
-
-    public String firstName;
-
-    public String lastName;
-
-    public Map<String, String> info;
+    private String avatarUrl;
+    private String firstName;
+    private String lastName;
+    private Map<String, String> info;
 }
 

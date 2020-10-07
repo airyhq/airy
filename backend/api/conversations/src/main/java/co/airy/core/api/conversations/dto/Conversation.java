@@ -17,11 +17,11 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Conversation implements Serializable {
-    Long createdAt;
-    String channelId;
-    Message lastMessage;
-    String sourceConversationId;
-    Channel channel;
+    private Long createdAt;
+    private String channelId;
+    private Message lastMessage;
+    private String sourceConversationId;
+    private  Channel channel;
 
     Integer unreadCount;
 

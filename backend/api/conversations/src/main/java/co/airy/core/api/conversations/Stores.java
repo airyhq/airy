@@ -116,10 +116,6 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         messagingTemplate.convertAndSend("/queue/airy/message/upsert", messageUpsertPayload);
     }
 
-    public String messageOffsetKey(String conversationId, Long offset) {
-        return String.format("%s_%d", conversationId, offset);
-    }
-
     public ReadOnlyKeyValueStore<String, Conversation> getConversationsStore() {
         return streams.acquireLocalStore(CONVERSATIONS_STORE);
     }

@@ -4,6 +4,13 @@ This document aims to provide an high-level overview of the Airy Core Platform D
 
 **Please note this document is constantly being worked on.**
 
+- [Airy Core Plafrom Data Model](#airy-core-plafrom-data-model)
+  - [Introduction](#introduction)
+  - [Channel](#channel)
+  - [Conversation](#conversation)
+  - [Message](#message)
+  - [Team](#team)
+
 ## Introduction
 
 Our [avro schemas](/backend/avro) provide a machine readable up-to-date version
@@ -16,14 +23,16 @@ such, the avro schemas folder is the right place.
 
 ## Message
 
-Header data contains information that is important for downstream processing tells us who sent a message of what type and when. It also includes preview data and tags that are useful for certain apps like automations.
+Header data contains information that is important for downstream processing
+tells us who sent a message of what type and when. It also includes preview data
+and tags that are useful for certain apps like automations.
 
 - `headers` string map
 
     Optional headers:
 
     - `postback.payload` string postback payloads used for source automations
-    - `postback.referral` string facebook specific referral identifier 
+    - `postback.referral` string facebook specific referral identifier
 
 
 - `id` uuid
@@ -43,7 +52,7 @@ What type of actor inserted the message. One of:
 Identifies the participant that sent the message. Interpretation is based on the value of `senderType` like so:
 
 | senderType     | senderId                                            |
-|----------------|-----------------------------------------------------|
+| -------------- | --------------------------------------------------- |
 | SOURCE_CONTACT | source contact id (e.g. Facebook page scoped id)    |
 | APP_USER       | app channel id                                      |
 | SOURCE_USER    | source dependent (e.g. Facebook third party app id) |
@@ -66,9 +75,9 @@ Identifies the participant that sent the message. Interpretation is based on the
     - `PENDING` message to be sent out
     - `DELIVERED` message has been sent to source
     - `FAILED` message sending has terminally failed
-    
+
 - `sentAt` timestamp
 
-- `updatedAt` timestamp null for messages that are inserted first time 
+- `updatedAt` timestamp null for messages that are inserted first time
 
 ## Team

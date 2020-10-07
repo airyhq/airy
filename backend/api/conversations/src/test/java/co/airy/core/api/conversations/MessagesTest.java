@@ -6,6 +6,7 @@ import co.airy.avro.communication.Message;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.payload.format.DateFormat;
@@ -30,9 +31,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getMessages;
-import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -58,13 +57,15 @@ public class MessagesTest {
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
+    private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
 
     @BeforeAll
     static void beforeAll() throws Exception {
         testHelper = new TestHelper(sharedKafkaTestResource,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
-                applicationCommunicationMetadata
+                applicationCommunicationMetadata,
+                applicationCommunicationReadReceipts
         );
 
         testHelper.beforeAll();

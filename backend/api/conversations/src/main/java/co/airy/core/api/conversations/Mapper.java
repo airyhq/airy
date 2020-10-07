@@ -46,6 +46,7 @@ public class Mapper {
                                 .build()
                 )
                 .id(conversation.getId())
+                .unreadMessageCount(conversation.getUnreadCount())
                 .createdAt(ISO_FROM_MILLIS(conversation.getCreatedAt()))
                 .contact(
                         ContactResponsePayload.builder()

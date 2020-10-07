@@ -11,6 +11,10 @@ avro_java_library(
     name = "message",
 )
 
+avro_java_library(
+    name = "read-receipt",
+)
+
 java_library(
     name = "metadata-action",
     srcs = glob(["metadata-action/src/main/**/*.java"]),

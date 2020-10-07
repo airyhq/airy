@@ -12,10 +12,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageResponsePayload implements Serializable {
-    public String id;
-    public String content;
-    public String state;
-    public String alignment;
-    public String sentAt;
-    public String deliveryState;
+    private String id;
+    private String content;
+    private String state;
+    private String alignment;
+    private String sentAt;
+    private String deliveryState;
 }

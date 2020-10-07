@@ -41,6 +41,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,6 +127,7 @@ public class WebsocketIntegrationTest {
         final MessageUpsertPayload receivedOverWS = completableFuture.get(30, TimeUnit.SECONDS);
 
         assertNotNull(receivedOverWS);
+        assertThat(receivedOverWS.getConversationId(), is(facebookConversationId));
     }
 
     private static StompSession connectToWs(int port) throws ExecutionException, InterruptedException {

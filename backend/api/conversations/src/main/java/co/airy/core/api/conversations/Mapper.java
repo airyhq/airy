@@ -1,6 +1,5 @@
 package co.airy.core.api.conversations;
 
-import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataKeys;
 import co.airy.avro.communication.SenderType;
@@ -26,7 +25,7 @@ public class Mapper {
                 .build();
     }
 
-    static String getAlignment(SenderType senderType) {
+    public static String getAlignment(SenderType senderType) {
         switch (senderType) {
             case APP_USER:
             case SOURCE_USER: return "LEFT";

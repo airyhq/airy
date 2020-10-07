@@ -1,6 +1,7 @@
 package co.airy.core.api.conversations.dto;
 
 import co.airy.avro.communication.Message;
+import co.airy.core.api.conversations.Mapper;
 import co.airy.payload.response.ChannelPayload;
 import co.airy.payload.response.MessageResponsePayload;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class MessageUpsertPayload implements Serializable {
 
     private static MessageResponsePayload buildMessagePayload(Message message) {
         return MessageResponsePayload.builder()
-                .alignment(message.getConversationId().equals(message.getSenderId()) ? "LEFT" : "RIGHT")
+                .alignment(Mapper.getAlignment(message.getSenderType()))
                 .content(message.getContent())
                 .id(message.getId())
                 .sentAt(String.valueOf(message.getSentAt()))

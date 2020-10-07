@@ -60,7 +60,7 @@ public class WebsocketIntegrationTest {
     private static TestHelper testHelper;
     private static String facebookConversationId = "facebook-conversation-id";
     private static boolean testDataInitialized = false;
-    private static String MESSAGE_UPSERT_OUTBOUND_QUEUE = "/queue/airy/message/upsert";
+    private static String MESSAGE_UPSERT_OUTBOUND_QUEUE = "/queue/message/upsert";
     final Channel facebookChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("facebook-channel-id")

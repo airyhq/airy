@@ -74,9 +74,12 @@ public class WebsocketIntegrationTest {
                     .channel(facebookChannel)
                     .build());
     @Value("${local.server.port}")
-    private static int port;
+    private int port;
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private Stores store;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -99,7 +102,6 @@ public class WebsocketIntegrationTest {
             return;
         }
 
-
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
                 "Application is not healthy"
@@ -108,9 +110,14 @@ public class WebsocketIntegrationTest {
         testDataInitialized = true;
     }
 
+    @BeforeEach
+    void beforeEach() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(10); //Since the controller is configured to read "latest", we must give it enough time to start consuming
+    }
+
     @Test
     void sendsToWebsocket() throws Exception {
-        final CompletableFuture<MessageUpsertPayload> completableFuture = subscribe(MessageUpsertPayload.class,"/user" + MESSAGE_UPSERT_OUTBOUND_QUEUE);
+        final CompletableFuture<MessageUpsertPayload> completableFuture = subscribe(port, MessageUpsertPayload.class,"/user" + MESSAGE_UPSERT_OUTBOUND_QUEUE);
 
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
         testHelper.produceRecords(getConversationRecords(conversations));
@@ -121,7 +128,7 @@ public class WebsocketIntegrationTest {
         assertNotNull(receivedOverWS);
     }
 
-    private static StompSession connectToWs() throws ExecutionException, InterruptedException {
+    private static StompSession connectToWs(int port) throws ExecutionException, InterruptedException {
         final WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
         MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
         ObjectMapper objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
@@ -135,8 +142,8 @@ public class WebsocketIntegrationTest {
         }).get();
     }
 
-    public static <T> CompletableFuture<T> subscribe(Class<T> payloadType, String topic) throws ExecutionException, InterruptedException {
-        final StompSession stompSession = connectToWs();
+    public static <T> CompletableFuture<T> subscribe(int port, Class<T> payloadType, String topic) throws ExecutionException, InterruptedException {
+        final StompSession stompSession = connectToWs(port);
 
         final CompletableFuture<T> completableFuture = new CompletableFuture<>();
 
@@ -153,10 +160,5 @@ public class WebsocketIntegrationTest {
         });
 
         return completableFuture;
-    }
-    public static void send(Object payload, String topic) throws ExecutionException, InterruptedException {
-        final StompSession stompSession = connectToWs();
-
-        stompSession.send(topic, payload);
     }
 }

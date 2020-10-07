@@ -24,7 +24,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +34,6 @@ import java.util.Map;
 
 @Component
 @RestController
-@Controller
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
 
     private static final String appId = "api.ConversationsController";

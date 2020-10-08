@@ -1,0 +1,9 @@
+{
+  "namespace": "co.airy.avro.communication",
+  "name": "ReadReceipt",
+  "type": "record",
+  "fields": [
+    {"name": "conversationId", "type": "string"},
+    {"name": "readDate", "type": "long", "logicalType": "timestamp-millis"}
+  ]
+}

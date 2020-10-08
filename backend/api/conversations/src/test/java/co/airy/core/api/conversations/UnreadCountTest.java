@@ -2,6 +2,7 @@ package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.conversations.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -25,10 +26,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import static co.airy.core.api.conversations.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-class ConversationsByIdTest {
+class UnreadCountTest {
 
 
     @RegisterExtension
@@ -81,7 +84,7 @@ class ConversationsByIdTest {
     }
 
     @Test
-    void getConversationById() throws Exception {
+    void shouldResetTheUnreadCount() throws Exception {
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId("channel-id")
@@ -94,10 +97,12 @@ class ConversationsByIdTest {
 
         final String conversationId = UUID.randomUUID().toString();
 
+        final Integer unreadMessages = 3;
+
         testHelper.produceRecords(getConversationRecords(
                 ConversationGenerator.CreateConversation.builder()
                         .channel(channel)
-                        .messageCount(1L)
+                        .messageCount(unreadMessages.longValue())
                         .conversationId(conversationId)
                         .build()
         ));
@@ -107,8 +112,16 @@ class ConversationsByIdTest {
                         .headers(buildHeaders())
                         .content("{\"conversation_id\":\"" + conversationId + "\"}"))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.id", is(conversationId))), "Conversations list is missing records"
+                        .andExpect(jsonPath("$.unread_message_count", equalTo(unreadMessages))),
+                "Conversation list not showing unread count"
         );
+
+        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationReadReceipts.name(), conversationId,
+                ReadReceipt.newBuilder()
+                        .setConversationId(conversationId)
+                        .setReadDate(Instant.now().toEpochMilli())
+                        .build()
+        ));
     }
 
     private HttpHeaders buildHeaders() {

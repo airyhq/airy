@@ -23,17 +23,20 @@ public class Conversation implements Serializable {
     private String sourceConversationId;
     private  Channel channel;
 
+    Integer unreadCount;
+
     @Builder.Default
     Map<String, String> metadata = new HashMap<>();
 
     public String getDisplayName() {
-        if (this.metadata == null) {
+        final String firstName = this.metadata.get(MetadataKeys.SOURCE.CONTACT.FIRST_NAME);
+        final String lastName = this.metadata.get(MetadataKeys.SOURCE.CONTACT.LAST_NAME);
+
+        if (firstName == null && lastName == null) {
             return null;
         }
 
-        return String.format("%s %s", this.metadata.get(MetadataKeys.SOURCE.CONTACT.FIRST_NAME),
-                this.metadata.get(MetadataKeys.SOURCE.CONTACT.LAST_NAME)
-        );
+        return String.format("%s %s", firstName, lastName).trim();
     }
 
     public String getId() {

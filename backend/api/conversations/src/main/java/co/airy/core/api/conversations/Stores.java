@@ -7,6 +7,7 @@ import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
+import co.airy.core.api.conversations.dto.MessageUpsertPayload;
 import co.airy.core.api.conversations.dto.CountAction;
 import co.airy.core.api.conversations.dto.MessagesTreeSet;
 import co.airy.core.api.conversations.dto.UnreadCountState;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +50,9 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     @Autowired
     private KafkaStreamsWrapper streams;
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
     private final String MESSAGES_STORE = "messages-store";
     private final String CONVERSATIONS_STORE = "conversations-store";
 
@@ -55,7 +60,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .selectKey((messageId, message) -> message.getConversationId());
+                .selectKey((messageId, message) -> message.getConversationId())
+                .peek(this::sendMessageToWebsocket);
 
         final KTable<String, Channel> channelTable = builder.table(new ApplicationCommunicationChannels().name());
 
@@ -155,6 +161,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         streams.start(builder.build(), appId);
     }
 
+    private void sendMessageToWebsocket(String conversationId, Message message) {
+        final MessageUpsertPayload messageUpsertPayload = MessageUpsertPayload.fromMessage(message);
+        messagingTemplate.convertAndSend("/queue/message/upsert", messageUpsertPayload);
+    }
 
     public ReadOnlyKeyValueStore<String, Conversation> getConversationsStore() {
         return streams.acquireLocalStore(CONVERSATIONS_STORE);

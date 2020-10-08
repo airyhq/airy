@@ -17,4 +17,5 @@ public class MessageResponsePayload implements Serializable {
     private String state;
     private String alignment;
     private String sentAt;
+    private String deliveryState;
 }

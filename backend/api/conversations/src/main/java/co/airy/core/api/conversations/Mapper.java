@@ -43,6 +43,7 @@ public class Mapper {
                                 .name(conversation.getChannel().getName())
                                 .build())
                 .id(conversation.getId())
+                .unreadMessageCount(conversation.getUnreadCount())
                 .createdAt(ISO_FROM_MILLIS(conversation.getCreatedAt()))
                 .contact(ContactResponsePayload.builder()
                                 .avatarUrl(metadata.get(MetadataKeys.SOURCE.CONTACT.AVATAR_URL))

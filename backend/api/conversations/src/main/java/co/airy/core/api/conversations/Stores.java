@@ -2,21 +2,27 @@ package co.airy.core.api.conversations;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.ReadReceipt;
 import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.conversations.dto.Conversation;
 import co.airy.core.api.conversations.dto.MessageUpsertPayload;
+import co.airy.core.api.conversations.dto.CountAction;
 import co.airy.core.api.conversations.dto.MessagesTreeSet;
+import co.airy.core.api.conversations.dto.UnreadCountState;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.KGroupedStream;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.javatuples.Pair;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -29,8 +35,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toCollection;
 
 @Component
 @RestController
@@ -51,7 +60,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .selectKey((messageId, message) -> message.getConversationId());
+                .selectKey((messageId, message) -> message.getConversationId())
+                .peek(this::sendMessageToWebsocket);
 
         final KTable<String, Channel> channelTable = builder.table(new ApplicationCommunicationChannels().name());
 
@@ -67,9 +77,40 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                     return aggregate;
                 });
 
-        messageStream
-                .peek(this::sendMessageToWebsocket)
+        final KStream<String, Pair<CountAction, Long>> resetStream = builder.<String, ReadReceipt>stream(new ApplicationCommunicationReadReceipts().name())
+                .mapValues((readReceipt -> Pair.with(CountAction.RESET, readReceipt.getReadDate())));
+
+        // unread counts
+        final KTable<String, UnreadCountState> unreadCountTable = messageStream
+                .mapValues((message -> Pair.with(CountAction.INCREMENT, message.getSentAt())))
+                .merge(resetStream)
                 .groupByKey()
+                .aggregate(UnreadCountState::new, (conversationId, pair, unreadCountState) -> {
+                    final CountAction countAction = pair.getValue0();
+                    final Long actionDate = pair.getValue1();
+
+                    if (countAction.equals(CountAction.INCREMENT)) {
+                        unreadCountState.getMessageSentDates().add(actionDate);
+                    } else {
+                        unreadCountState.setMessageSentDates(
+                                unreadCountState.getMessageSentDates().stream()
+                                        .filter((timestamp) -> timestamp > actionDate)
+                                        .collect(toCollection(HashSet::new))
+                        );
+                    }
+
+                    return unreadCountState;
+                });
+
+        unreadCountTable.toStream()
+                .peek((conversationId, unreadCountState) -> {
+                    // TODO send to websocket queue
+                });
+
+        final KGroupedStream<String, Message> messageGroupedStream = messageStream.groupByKey();
+
+        // messages store
+        messageGroupedStream
                 .aggregate(MessagesTreeSet::new,
                         ((key, value, aggregate) -> {
                             aggregate.add(value);
@@ -78,8 +119,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                         Materialized.as(MESSAGES_STORE)
                 );
 
-        messageStream
-                .groupByKey()
+        // conversations store
+        messageGroupedStream
                 .aggregate(Conversation::new,
                         (conversationId, message, aggregate) -> {
                             if (aggregate.getLastMessage() == null) {
@@ -105,7 +146,15 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                     return conversation;
                 })
                 .leftJoin(metadataTable, (conversation, metadataMap) -> {
-                    conversation.setMetadata(metadataMap);
+                    if (metadataMap != null) {
+                        conversation.setMetadata(metadataMap);
+                    }
+                    return conversation;
+                })
+                .leftJoin(unreadCountTable, (conversation, unreadCountState) -> {
+                    if (unreadCountState != null) {
+                        conversation.setUnreadCount(unreadCountState.getUnreadCount());
+                    }
                     return conversation;
                 }, Materialized.as(CONVERSATIONS_STORE));
 

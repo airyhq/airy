@@ -8,6 +8,7 @@ import co.airy.core.api.conversations.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -43,12 +44,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-public class SendMessageRequestControllerIntegrationTest {
+public class SendMessageRequestControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
     private static TestHelper testHelper;
     private static String facebookConversationId = "facebook-conversation-id";
     private static boolean testDataInitialized = false;
@@ -69,16 +67,23 @@ public class SendMessageRequestControllerIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
+    private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
+    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
+    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
+    private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
+
     @BeforeAll
     static void beforeAll() throws Exception {
         testHelper = new TestHelper(sharedKafkaTestResource,
-                applicationCommunicationMetadata,
                 applicationCommunicationMessages,
-                applicationCommunicationChannels
+                applicationCommunicationChannels,
+                applicationCommunicationMetadata,
+                applicationCommunicationReadReceipts
         );
 
         testHelper.beforeAll();
     }
+
 
     @AfterAll
     static void afterAll() throws Exception {

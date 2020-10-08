@@ -7,6 +7,7 @@ import co.airy.core.api.conversations.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -51,12 +52,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {AirySpringBootApplication.class})
 @AutoConfigureMockMvc
-public class WebsocketIntegrationTest {
+public class WebsocketTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
+    private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
     private static TestHelper testHelper;
     private static String facebookConversationId = "facebook-conversation-id";
     private static boolean testDataInitialized = false;
@@ -88,7 +90,8 @@ public class WebsocketIntegrationTest {
         testHelper = new TestHelper(sharedKafkaTestResource,
                 applicationCommunicationMetadata,
                 applicationCommunicationMessages,
-                applicationCommunicationChannels
+                applicationCommunicationChannels,
+                applicationCommunicationReadReceipts
         );
         testHelper.beforeAll();
     }

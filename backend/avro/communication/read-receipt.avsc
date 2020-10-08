@@ -4,6 +4,6 @@
   "type": "record",
   "fields": [
     {"name": "conversationId", "type": "string"},
-    {"name": "lastReadDate", "type": "long", "logicalType": "timestamp-millis"}
+    {"name": "readDate", "type": "long", "logicalType": "timestamp-millis"}
   ]
 }

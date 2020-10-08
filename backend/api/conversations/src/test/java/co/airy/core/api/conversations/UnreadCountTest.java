@@ -119,7 +119,7 @@ class UnreadCountTest {
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationReadReceipts.name(), conversationId,
                 ReadReceipt.newBuilder()
                         .setConversationId(conversationId)
-                        .setLastReadDate(Instant.now().toEpochMilli())
+                        .setReadDate(Instant.now().toEpochMilli())
                         .build()
         ));
     }

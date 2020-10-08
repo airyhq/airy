@@ -72,7 +72,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 });
 
         final KStream<String, Pair<CountAction, Long>> resetStream = builder.<String, ReadReceipt>stream(new ApplicationCommunicationReadReceipts().name())
-                .mapValues((readReceipt -> Pair.with(CountAction.RESET, readReceipt.getLastReadDate())));
+                .mapValues((readReceipt -> Pair.with(CountAction.RESET, readReceipt.getReadDate())));
 
         // unread counts
         final KTable<String, UnreadCountState> unreadCountTable = messageStream

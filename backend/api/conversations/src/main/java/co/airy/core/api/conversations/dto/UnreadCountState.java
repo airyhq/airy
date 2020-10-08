@@ -6,12 +6,13 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UnreadCountState implements Serializable {
-    HashSet<Long> messageSentDates = new HashSet<>();
+    Set<Long> messageSentDates = new HashSet<>();
 
     public Integer getUnreadCount() {
         return messageSentDates.size();

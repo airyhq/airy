@@ -8,6 +8,7 @@ compose our API.
   - [Authorization](#authorization)
     - [Login](#login)
   - [Endpoints](#endpoints)
+    - [Users](#users)
     - [Conversations](#conversations)
       - [List conversations](#list-conversations)
       - [Conversation by id](#conversation-by-id)
@@ -82,6 +83,48 @@ Example response:
 
 The way we group endpoints reflects the high level entities of the [Airy Core Data
 Model](/docs/data-model.md).
+
+### Users
+
+Please refer to our [user](/docs/data-model.md#users) definition for more
+information.
+
+#### Signup
+
+`POST /signup`
+
+Example payload:
+
+```json
+{
+  "first_name": "Grace",
+  "last_name": "Hopper",
+  "password": "the_answer_is_42",
+  "email": "grace@example.com"
+}
+```
+
+**Required**:
+
+- `first_name` String
+- `last_name` String
+- `password` String
+- `email` String
+
+The password _MUST_ be at least 6 (six) characters long
+
+Example response:
+
+```json
+{
+  "id": "424242-4242-42-4242-4242",
+  "first_name": "Grace",
+  "last_name": "Hopper",
+  "organizations": [],
+  "token": "JWT_TOKEN",
+  "refresh_token": "JWT_REFRESH_TOKEN"
+}
+```
 
 ### Conversations
 

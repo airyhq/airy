@@ -11,6 +11,7 @@ compose our API.
     - [Users](#users)
       - [Signup](#signup)
       - [Signup via invitation](#signup-via-invitation)
+      - [Request password reset](#request-password-reset)
     - [Conversations](#conversations)
       - [List conversations](#list-conversations)
       - [Conversation by id](#conversation-by-id)
@@ -162,6 +163,26 @@ Example response:
 ```
 
 This endpoint returns the same response as the login
+
+#### Request password reset
+
+`POST /request-password-reset`
+
+This endpoint requests a password reset email link to be sent to the given email. If the email does not exist, the response does not change.
+
+Example payload:
+
+```json5
+{
+  email: "grace@example.com"
+}
+```
+
+Example response:
+
+```json5
+{}
+```
 
 ### Conversations
 

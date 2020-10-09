@@ -48,7 +48,7 @@ maven_install(
         "io.jsonwebtoken:jjwt-api:0.10.5",
         "io.jsonwebtoken:jjwt-impl:0.10.5",
         "io.jsonwebtoken:jjwt-jackson:0.10.5",
-        "io.zonky.test:embedded-database-spring-test:1.4.1",
+        "io.zonky.test:embedded-database-spring-test:1.5.1",
         "javax.activation:javax.activation-api:1.2.0",
         "javax.validation:validation-api:2.0.1.Final",
         "javax.xml.bind:jaxb-api:2.3.1",

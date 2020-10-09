@@ -19,7 +19,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 public class JdbiConfiguration {
     private static final Logger log = AiryLoggerFactory.getLogger(JdbiConfiguration.class);
 
-    @Value("${db.debug}")
+    @Value("${db.debug:false}")
     private boolean dbDebug;
 
     @Bean

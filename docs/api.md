@@ -12,6 +12,7 @@ compose our API.
       - [Signup](#signup)
       - [Signup via invitation](#signup-via-invitation)
       - [Request password reset](#request-password-reset)
+      - [Reset password](#reset-password)
     - [Conversations](#conversations)
       - [List conversations](#list-conversations)
       - [Conversation by id](#conversation-by-id)
@@ -183,6 +184,29 @@ Example response:
 ```json5
 {}
 ```
+
+#### Reset password
+
+`POST /reset-password`
+
+This endpoint sets a new password given a valid reset token. Used or expired tokens produce errors.
+
+Example payload:
+
+```json5
+{
+  token: "a-valid-reset-token",
+  new_password: "i-hope-i-will-remember-this-one"
+}
+```
+
+Example response:
+
+```json5
+{}
+```
+
+The new password _MUST_ be at least 6 (six) characters long
 
 ### Conversations
 

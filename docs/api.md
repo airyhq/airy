@@ -13,6 +13,8 @@ compose our API.
       - [Signup via invitation](#signup-via-invitation)
       - [Request password reset](#request-password-reset)
       - [Reset password](#reset-password)
+    - [Invitations](#invitations)
+      - [Creating an invitation](#creating-an-invitation)
     - [Conversations](#conversations)
       - [List conversations](#list-conversations)
       - [Conversation by id](#conversation-by-id)
@@ -208,6 +210,35 @@ Example response:
 
 The new password _MUST_ be at least 6 (six) characters long
 
+### Invitations
+
+#### Creating an invitation
+
+`POST /create-invitation`
+
+Creates an invite for a non a registered user.
+
+```json5
+{
+  "email": "invitee-email@non-airy.com"
+}
+```
+
+**Required**
+
+- `organization_id`: UUID
+- `email`: String
+- `role` : MEMBER | ADMIN
+
+Example response:
+
+```json5
+{
+  "id": "invitation-id",
+}
+```
+
+This endpoint returns 201 (created) if invite was created successfully.
 ### Conversations
 
 Please refer to our [conversation](/docs/data-model.md#conversation) definition for more

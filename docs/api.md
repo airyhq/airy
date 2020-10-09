@@ -5,6 +5,8 @@ compose our API.
 
 - [Airy Core Platform API](#airy-core-platform-api)
   - [Introduction](#introduction)
+  - [Authorization](#authorization)
+    - [Login](#login)
   - [Endpoints](#endpoints)
     - [Conversations](#conversations)
       - [List conversations](#list-conversations)
@@ -31,6 +33,50 @@ Our HTTP endpoints adhere to the following conventions:
 - Except for the `/login` and `/signup` endpoints, communication
   always requires a valid [JWT token](#authorization).
 - We use dots for namespacing URLS (eg there are no `/things.add`).
+
+## Authorization
+
+In order to communicate with our API endpoints, you need a valid
+[JWT](https://jwt.io/) token. To get a valid token you need to use the login endpoint
+[login](#login).
+
+The login endpoints returns the following
+
+- a short lived JWT token you can use for API requests
+- a refresh token you can use to generate a new JWT token if it is no longer
+  valid. Only store the refresh token and use it to generate the short lived
+  token.
+
+### Login
+
+As the purpose of this endpoint is to obtain valid JWT tokens, this endpoint
+does not require a valid token to be present in the headers.
+
+`POST /login
+
+Example payload:
+
+```json
+{ "email": "grace@example.com", "password": "avalidpassword" }
+```
+
+**Required**:
+
+- `email` String
+- `password` String
+
+Example response:
+
+```json
+{
+  "id": "424242-4242-42-4242-4242",
+  "first_name": "Grace",
+  "last_name": "Hopper",
+  "avatar_url": "http://example.com/avatar.png",
+  "token": "JWT_TOKEN",
+  "refresh_token": "JWT_REFRESH_TOKEN"
+}
+```
 
 ## Endpoints
 

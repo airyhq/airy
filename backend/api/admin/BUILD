@@ -1,5 +1,6 @@
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
     "//backend/avro/communication:channel",
@@ -30,3 +31,13 @@ springboot(
     )
     for file in glob(["src/test/java/**/*Test.java"])
 ]
+
+
+container_push(
+    name = "release-prod",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/pascal-airy/admin-api.latest",
+    repository = "api-admin",
+    tag = "latest",
+)

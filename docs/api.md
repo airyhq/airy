@@ -9,6 +9,8 @@ compose our API.
     - [Login](#login)
   - [Endpoints](#endpoints)
     - [Users](#users)
+      - [Signup](#signup)
+      - [Signup via invitation](#signup-via-invitation)
     - [Conversations](#conversations)
       - [List conversations](#list-conversations)
       - [Conversation by id](#conversation-by-id)
@@ -125,6 +127,41 @@ Example response:
   "refresh_token": "JWT_REFRESH_TOKEN"
 }
 ```
+
+#### Signup via invitation
+
+`POST /signup-via-invitation`
+
+```json5
+{
+  "id": "invitation-code",
+  "first_name": "GOOD",
+  "last_name": "DOGGO",
+  "password": "MUCH-PASSWORD"
+}
+```
+
+**Required**
+
+- `id`: String
+- `first_name`: String
+- `last_name`: String
+- `password`: String (6 chars minimum)
+
+Example response:
+
+```json5
+{
+  "id": "62ba6901-22bd-483f-8b34-f3954206028e",
+  "email": "wow@airy.co",
+  "first_name": "GOOD",
+  "last_name": "DOGGO",
+  "token": "TOKEN",
+  "refresh_token": "REFRESH-TOKEN"
+}
+```
+
+This endpoint returns the same response as the login
 
 ### Conversations
 

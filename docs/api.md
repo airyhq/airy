@@ -54,7 +54,7 @@ The login endpoints returns the  a short lived JWT token you can use for API req
 As the purpose of this endpoint is to obtain valid JWT tokens, this endpoint
 does not require a valid token to be present in the headers.
 
-`POST /login
+`POST /user.login
 
 Example payload:
 
@@ -126,7 +126,7 @@ Example response:
 
 #### Signup via invitation
 
-`POST /user.invite`
+`POST /user.accept-invitation`
 
 ```json5
 {
@@ -205,7 +205,7 @@ The new password _MUST_ be at least 6 (six) characters long
 
 #### Creating an invitation
 
-`POST /create-invitation`
+`POST /user.invite`
 
 Creates an invite for a non a registered user.
 

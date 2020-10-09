@@ -5,7 +5,16 @@ compose our API.
 
 - [Airy Core Platform API](#airy-core-platform-api)
   - [Introduction](#introduction)
+  - [Authentication](#authentication)
+    - [Login](#login)
   - [Endpoints](#endpoints)
+    - [Users](#users)
+      - [Signup](#signup)
+      - [Signup via invitation](#signup-via-invitation)
+      - [Request password reset](#request-password-reset)
+      - [Reset password](#reset-password)
+    - [Invitations](#invitations)
+      - [Creating an invitation](#creating-an-invitation)
     - [Conversations](#conversations)
       - [List conversations](#list-conversations)
       - [Conversation by id](#conversation-by-id)
@@ -33,11 +42,193 @@ Our HTTP endpoints adhere to the following conventions:
   always requires a valid [JWT token](#authorization).
 - We use dots for namespacing URLS (eg there are no `/things.add`).
 
+## Authentication
+
+In order to communicate with our API endpoints, you need a valid
+[JWT](https://jwt.io/) token. To get a valid token you need to use the login endpoint
+[login](#login).
+
+The login endpoints returns the  a short lived JWT token you can use for API requests
+
+### Login
+
+As the purpose of this endpoint is to obtain valid JWT tokens, this endpoint
+does not require a valid token to be present in the headers.
+
+`POST /users.login`
+
+Example payload:
+
+```json
+{ "email": "grace@example.com", "password": "avalidpassword" }
+```
+
+**Required**:
+
+- `email` String
+- `password` String
+
+Example response:
+
+```json
+{
+  "id": "424242-4242-42-4242-4242",
+  "first_name": "Grace",
+  "last_name": "Hopper",
+  "avatar_url": "http://example.com/avatar.png",
+  "token": "JWT_TOKEN"
+}
+```
+
 ## Endpoints
 
 The way we group endpoints reflects the high level entities of the [Airy Core Data
 Model](/docs/data-model.md).
 
+### Users
+
+Please refer to our [user](/docs/data-model.md#users) definition for more
+information.
+
+#### Signup
+
+`POST /users.signup`
+
+Example payload:
+
+```json
+{
+  "first_name": "Grace",
+  "last_name": "Hopper",
+  "password": "the_answer_is_42",
+  "email": "grace@example.com"
+}
+```
+
+**Required**:
+
+- `first_name` String
+- `last_name` String
+- `password` String
+- `email` String
+
+The password _MUST_ be at least 6 (six) characters long
+
+Example response:
+
+```json
+{
+  "id": "424242-4242-42-4242-4242",
+  "first_name": "Grace",
+  "last_name": "Hopper",
+  "token": "JWT_TOKEN"
+}
+```
+
+#### Signup via invitation
+
+`POST /users.accept-invitation`
+
+```json5
+{
+  "id": "invitation-code",
+  "first_name": "GOOD",
+  "last_name": "DOGGO",
+  "password": "MUCH-PASSWORD"
+}
+```
+
+**Required**
+
+- `id`: String
+- `first_name`: String
+- `last_name`: String
+- `password`: String (6 chars minimum)
+
+Example response:
+
+```json5
+{
+  "id": "62ba6901-22bd-483f-8b34-f3954206028e",
+  "email": "wow@airy.co",
+  "first_name": "GOOD",
+  "last_name": "DOGGO",
+  "token": "TOKEN"
+}
+```
+
+This endpoint returns the same response as the login
+
+#### Request password reset
+
+`POST /users.request-password-reset`
+
+This endpoint requests a password reset email link to be sent to the given email. If the email does not exist, the response does not change.
+
+Example payload:
+
+```json5
+{
+  email: "grace@example.com"
+}
+```
+
+Example response:
+
+```json5
+{}
+```
+
+#### Reset password
+
+`POST /users.password-reset`
+
+This endpoint sets a new password given a valid reset token. Used or expired tokens produce errors.
+
+Example payload:
+
+```json5
+{
+  token: "a-valid-reset-token",
+  new_password: "i-hope-i-will-remember-this-one"
+}
+```
+
+Example response:
+
+```json5
+{}
+```
+
+The new password _MUST_ be at least 6 (six) characters long
+
+### Invitations
+
+#### Creating an invitation
+
+`POST /users.invite`
+
+Creates an invite for a non a registered user.
+
+```json5
+{
+  "email": "invitee-email@non-airy.com"
+}
+```
+
+**Required**
+
+- `email`: String
+
+Example response:
+
+```json5
+{
+  "id": "invitation-id",
+}
+```
+
+This endpoint returns 201 (created) if invite was created successfully.
 ### Conversations
 
 Please refer to our [conversation](/docs/data-model.md#conversation) definition for more

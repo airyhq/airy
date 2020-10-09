@@ -126,7 +126,6 @@ Example response:
   "id": "424242-4242-42-4242-4242",
   "first_name": "Grace",
   "last_name": "Hopper",
-  "organizations": [],
   "token": "JWT_TOKEN",
   "refresh_token": "JWT_REFRESH_TOKEN"
 }
@@ -226,9 +225,7 @@ Creates an invite for a non a registered user.
 
 **Required**
 
-- `organization_id`: UUID
 - `email`: String
-- `role` : MEMBER | ADMIN
 
 Example response:
 

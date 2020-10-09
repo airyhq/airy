@@ -54,7 +54,7 @@ The login endpoints returns the  a short lived JWT token you can use for API req
 As the purpose of this endpoint is to obtain valid JWT tokens, this endpoint
 does not require a valid token to be present in the headers.
 
-`POST /user.login
+`POST /users.login`
 
 Example payload:
 
@@ -91,7 +91,7 @@ information.
 
 #### Signup
 
-`POST /user.signup`
+`POST /users.signup`
 
 Example payload:
 
@@ -126,7 +126,7 @@ Example response:
 
 #### Signup via invitation
 
-`POST /user.accept-invitation`
+`POST /users.accept-invitation`
 
 ```json5
 {
@@ -160,7 +160,7 @@ This endpoint returns the same response as the login
 
 #### Request password reset
 
-`POST /user.request-password-reset`
+`POST /users.request-password-reset`
 
 This endpoint requests a password reset email link to be sent to the given email. If the email does not exist, the response does not change.
 
@@ -180,7 +180,7 @@ Example response:
 
 #### Reset password
 
-`POST /user.password-reset`
+`POST /users.password-reset`
 
 This endpoint sets a new password given a valid reset token. Used or expired tokens produce errors.
 
@@ -205,7 +205,7 @@ The new password _MUST_ be at least 6 (six) characters long
 
 #### Creating an invitation
 
-`POST /user.invite`
+`POST /users.invite`
 
 Creates an invite for a non a registered user.
 

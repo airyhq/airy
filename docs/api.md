@@ -126,7 +126,7 @@ Example response:
 
 #### Signup via invitation
 
-`POST /signup-via-invitation`
+`POST /user.invite`
 
 ```json5
 {
@@ -160,7 +160,7 @@ This endpoint returns the same response as the login
 
 #### Request password reset
 
-`POST /request-password-reset`
+`POST /user.request-password-reset`
 
 This endpoint requests a password reset email link to be sent to the given email. If the email does not exist, the response does not change.
 
@@ -180,7 +180,7 @@ Example response:
 
 #### Reset password
 
-`POST /reset-password`
+`POST /user.password-reset`
 
 This endpoint sets a new password given a valid reset token. Used or expired tokens produce errors.
 

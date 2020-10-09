@@ -9,6 +9,7 @@ compose our API.
     - [Conversations](#conversations)
       - [List conversations](#list-conversations)
       - [Conversation by id](#conversation-by-id)
+      - [Mark conversation as read](#mark-conversation-as-read)
     - [Messages](#messages)
       - [Messages of a conversation](#messages-of-a-conversation)
       - [Send a message](#send-a-message)
@@ -112,10 +113,6 @@ Example Response:
 }
 ```
 
-**Required**:
-
-- `conversation_id` UUID
-
 **Sample Response**
 
 ```json5
@@ -127,20 +124,46 @@ Example Response:
   },
   "created_at": "2019-01-07T09:01:44.000Z",
   "contact": {
-    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
-    "first_name": "Airy Support",
-    "last_name": null,
+    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg", // optional
+    "first_name": "Airy Support", // optional
+    "last_name": null, // optional
     "id": "36d07b7b-e242-4612-a82c-76832cfd1026",
   },
   "tags": null,
   "last_message": {
-    "display_text": "Welcome to Airy Messenger - I’m Mathias and I’m here to help.",
-    "media_type": "text/fb-template",
-    "id": "1e7674d7-b575-4683-8a77-d2651b9e3149-relayed",
-    "sent_at": "2019-01-07T09:01:44.000Z"
+    id: "{UUID}",
+    content: "{String}",
+    // source content string
+    state: "{String}",
+    // delivery state of message, one of PENDING, FAILED, DELIVERED
+    alignment: "{string/enum}",
+    // LEFT, RIGHT, CENTER - horizontal placement of message
+    sent_at: "{string}",
+    //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   },
   "unread_message_count": 1
 }
+```
+
+
+#### Mark conversation as read
+
+`POST /conversations.mark-read`
+
+Resets the unread count of a conversation and returns `202 (Accepted)`.
+
+**Sample Request**
+
+```json
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622"
+}
+```
+
+**Sample Response**
+
+```json5
+{}
 ```
 
 ### Messages
@@ -194,16 +217,7 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
 
 `POST /conversations.send`
 
-Returns the id that the message will be persisted with in the backend. Combined
-with the websocket [queue for message
-upserts](websocket.md#userqueueairymessageupsert)
-(/user/queue/airy/message/upsert) you can use this id to verify that a message
-has been delivered.
-
-**Required**:
-
-- `conversation_id` UUID
-- `message` Object
+Sends a message to a conversation and returns a payload.
 
 **Sample Request**
 
@@ -218,10 +232,18 @@ has been delivered.
 
 **Sample Response**
 
-```json
+```json5
 {
-    "message_id": "7560bf66-d9c4-48f8-b7f1-27ab6c40a40a"
-}
+      id: "{UUID}",
+      content: "{String}",
+      // source content string
+      state: "{String}",
+      // delivery state of message, one of PENDING, FAILED, DELIVERED
+      alignment: "{string/enum}",
+      // LEFT, RIGHT, CENTER - horizontal placement of message
+      sent_at: "{string}",
+      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    }
 ```
 
 ### Channels
@@ -306,7 +328,7 @@ the nature of the request, response time may vary.
 			"source": "facebook",
 			"source_channel_id": "fb-page-id-1",
 			"connected": false,
-			"image_url": "fb-page-id-1" // optional
+			"image_url": "http://example.org/avatar.jpeg" // optional
 		},
 		{
 			"name": "my page 2",
@@ -331,7 +353,8 @@ the nature of the request, response time may vary.
 			"id": "channel-uuid-1",
 			"name": "my page 1",
 			"source": "facebook",
-			"source_channel_id": "fb-page-id-1"
+			"source_channel_id": "fb-page-id-1",
+            "image_url": "http://example.org/avatar.jpeg" // optional
 		},
 		{
 			"id": "channel-uuid-2",

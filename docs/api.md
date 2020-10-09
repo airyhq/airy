@@ -47,12 +47,7 @@ In order to communicate with our API endpoints, you need a valid
 [JWT](https://jwt.io/) token. To get a valid token you need to use the login endpoint
 [login](#login).
 
-The login endpoints returns the following
-
-- a short lived JWT token you can use for API requests
-- a refresh token you can use to generate a new JWT token if it is no longer
-  valid. Only store the refresh token and use it to generate the short lived
-  token.
+The login endpoints returns the  a short lived JWT token you can use for API requests
 
 ### Login
 
@@ -80,8 +75,7 @@ Example response:
   "first_name": "Grace",
   "last_name": "Hopper",
   "avatar_url": "http://example.com/avatar.png",
-  "token": "JWT_TOKEN",
-  "refresh_token": "JWT_REFRESH_TOKEN"
+  "token": "JWT_TOKEN"
 }
 ```
 
@@ -126,8 +120,7 @@ Example response:
   "id": "424242-4242-42-4242-4242",
   "first_name": "Grace",
   "last_name": "Hopper",
-  "token": "JWT_TOKEN",
-  "refresh_token": "JWT_REFRESH_TOKEN"
+  "token": "JWT_TOKEN"
 }
 ```
 
@@ -159,8 +152,7 @@ Example response:
   "email": "wow@airy.co",
   "first_name": "GOOD",
   "last_name": "DOGGO",
-  "token": "TOKEN",
-  "refresh_token": "REFRESH-TOKEN"
+  "token": "TOKEN"
 }
 ```
 

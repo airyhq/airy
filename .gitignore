@@ -30,3 +30,5 @@ node_modules/
 yarn-error.log
 package-lock.json
 
+infrastructure/packer/airy/.vagrant-out
+infrastructure/bootstrap/.vagrant

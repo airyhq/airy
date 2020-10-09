@@ -62,7 +62,7 @@ public class ConversationsController {
 
         final List<ConversationResponsePayload> response = page.getData()
                 .stream()
-                .map(Mapper::fromConversation)
+                .map(ConversationResponsePayload::fromConversation)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(
@@ -89,7 +89,7 @@ public class ConversationsController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(Mapper.fromConversation(conversation));
+        return ResponseEntity.ok(ConversationResponsePayload.fromConversation(conversation));
     }
 
     private List<Conversation> fetchAllConversations() {

@@ -97,7 +97,7 @@ information.
 
 #### Signup
 
-`POST /signup`
+`POST /user.signup`
 
 Example payload:
 

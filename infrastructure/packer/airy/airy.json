@@ -1,0 +1,35 @@
+
+{
+    "variables": {
+      "version": ""
+    },
+    "builders": [
+        {
+            "name": "airy",
+            "communicator": "ssh",
+            "source_path": "mrvantage/centos7-minikube",
+            "provider": "virtualbox",
+            "add_force": true,
+            "type": "vagrant",
+            "output_dir": ".vagrant-out"
+        }
+    ],
+    "provisioners": [
+        {
+            "scripts": [
+              "./tasks/bootstrap.sh"
+            ],
+            "type": "shell"
+          }
+  
+      ],
+    "post-processors": [
+        {
+            "type": "shell-local",
+            "inline": [
+                "aws --profile airy-prod s3 cp ./.vagrant-out/package.box s3://airy-core-images/vagrant/airy.{{timestamp}}.box"
+            ]
+
+        }
+    ]
+  }

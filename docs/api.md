@@ -5,7 +5,7 @@ compose our API.
 
 - [Airy Core Platform API](#airy-core-platform-api)
   - [Introduction](#introduction)
-  - [Authorization](#authorization)
+  - [Authentication](#authentication)
     - [Login](#login)
   - [Endpoints](#endpoints)
     - [Users](#users)
@@ -41,7 +41,7 @@ Our HTTP endpoints adhere to the following conventions:
   always requires a valid [JWT token](#authorization).
 - We use dots for namespacing URLS (eg there are no `/things.add`).
 
-## Authorization
+## Authentication
 
 In order to communicate with our API endpoints, you need a valid
 [JWT](https://jwt.io/) token. To get a valid token you need to use the login endpoint

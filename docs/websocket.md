@@ -1,36 +1,42 @@
 # Airy Core WebSocket API
 
-- [Introduction](#introduction)
-- [Outbound Queues](#outbound-queues)
-  - [Message upsert](#message-upsert)
-  - [Unread count](#unread-count)
-  - [Channel connected](#channel-connected)
-  - [Channel disconnected](#channel-disconnected)
-
-- [Resources](#resources)
+- [Airy Core WebSocket API](#airy-core-websocket-api)
+  - [Introduction](#introduction)
+  - [Outbound Queues](#outbound-queues)
+    - [Message upsert](#message-upsert)
+    - [Unread count](#unread-count)
+        - [Channel connected](#channel-connected)
+        - [Channel disconnected](#channel-disconnected)
+  - [Resources](#resources)
 
 
 ## Introduction
 
-As a messaging system the Airy core offers a websocket that allows clients to connect and receive live updates on communication data.
-
-To achieve this we use host a [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol) protocol endpoint at `/ws`.
+The Airy Core Platform offers a websocket server that allows clients to connect
+and receive near real-time updates on communication data. The websocket server
+uses the
+[STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
+protocol endpoint at `/ws`.
 
 ## Outbound Queues
 
-Outbound queues follow the pattern `/queue/{entity type}/{event type}` and deliver JSON encoded payloads.
+Outbound queues follow the pattern `/queue/{entity type}/{event type}` and
+deliver JSON encoded payloads.
 
 ### Message upsert
 
 `/queue/message/upsert`
 
-Payloads coming into this queue notify the subscribed user that a message was created or updated. This can be one of the following:
+Payloads coming into this queue notify the subscribed user that a message was
+created or updated. This can be one of the following:
 
 - First message of a conversation - conversation should be appended to the list
 
-- A subsequent message of a conversation - message should be appended to existing conversation
+- A subsequent message of a conversation - message should be appended to
+  existing conversation
 
-- An existing message in an existing conversation - message should be replaced in the existing conversation
+- An existing message in an existing conversation - message should be replaced
+  in the existing conversation
 
 
 **Payload**
@@ -57,7 +63,10 @@ Payloads coming into this queue notify the subscribed user that a message was cr
 
 `/queue/unread-count/update`
 
-Payloads coming into this queue notify the subscribed user of the unread message count for the given conversation, at a given point in time. Clients should update the conversation's unread count only if the timestamp in the payload is _after_ the timestamp of the last recorded count.
+Payloads coming into this queue notify the subscribed user of the unread message
+count for the given conversation, at a given point in time. Clients should
+update the conversation's unread count only if the timestamp in the payload is
+_after_ the timestamp of the last recorded count.
 
 
 **Payload**

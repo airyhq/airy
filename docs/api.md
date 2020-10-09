@@ -163,7 +163,8 @@ This endpoint returns the same response as the login
 
 `POST /users.request-password-reset`
 
-This endpoint requests a password reset email link to be sent to the given email. If the email does not exist, the response does not change.
+This endpoint requests a password reset email link to be sent to the given
+email. If the email does not exist, the response does not change.
 
 Example payload:
 
@@ -183,7 +184,8 @@ Example response:
 
 `POST /users.password-reset`
 
-This endpoint sets a new password given a valid reset token. Used or expired tokens produce errors.
+This endpoint sets a new password given a valid reset token. Used or expired
+tokens produce errors.
 
 Example payload:
 
@@ -229,10 +231,11 @@ Example response:
 ```
 
 This endpoint returns 201 (created) if invite was created successfully.
+
 ### Conversations
 
-Please refer to our [conversation](/docs/data-model.md#conversation) definition for more
-information.
+Please refer to our [conversation](/docs/data-model.md#conversation) definition
+for more information.
 
 #### List conversations
 
@@ -335,7 +338,6 @@ Example Response:
   "unread_message_count": 1
 }
 ```
-
 
 #### Mark conversation as read
 
@@ -446,7 +448,8 @@ Sends a message to a conversation and returns a payload.
 A synchronous endpoint that makes a request to the source on behalf of the user
 to connect the channel.
 
-This action is idempotent, so if the channel is already connected the status will be `202`.
+This action is idempotent, so if the channel is already connected the status
+will be `202`.
 
 **Sample Request**
 

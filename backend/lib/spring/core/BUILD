@@ -23,11 +23,21 @@ java_library(
         "@maven//:org_aspectj_aspectjweaver",
         "@maven//:org_springframework_boot_spring_boot",
         "@maven//:org_springframework_boot_spring_boot_autoconfigure",
-        "@maven//:org_springframework_boot_spring_boot_starter_cache",
         "@maven//:org_springframework_retry_spring_retry",
         "@maven//:org_springframework_spring_aop",
         "@maven//:org_springframework_spring_beans",
         "@maven//:org_springframework_spring_context",
         "@maven//:org_springframework_spring_context_support",
     ],
+)
+
+java_library(
+    name = "spring-test",
+    visibility = ["//visibility:public"],
+    exports = [
+        "@maven//:org_springframework_boot_spring_boot_starter_test",
+        "@maven//:org_springframework_boot_spring_boot_test",
+        "@maven//:org_springframework_boot_spring_boot_test_autoconfigure",
+        "@maven//:org_springframework_spring_test"
+    ]
 )

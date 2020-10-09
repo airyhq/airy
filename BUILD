@@ -56,6 +56,19 @@ java_library(
 )
 
 java_library(
+    name = "jdbi",
+    visibility = [
+        "//visibility:public",
+    ],
+    exports = [
+        "@maven//:org_jdbi_jdbi3_core",
+        "@maven//:org_jdbi_jdbi3_postgres",
+        "@maven//:org_jdbi_jdbi3_sqlobject",
+        "@maven//:org_jdbi_jdbi3_spring4",
+    ],
+)
+
+java_library(
     name = "lombok",
     exported_plugins = [
         ":lombok_plugin",

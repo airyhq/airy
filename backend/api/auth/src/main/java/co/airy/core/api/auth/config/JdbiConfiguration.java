@@ -2,6 +2,7 @@ package co.airy.core.api.auth.config;
 
 import javax.sql.DataSource;
 
+import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dao.UserDAO;
 import co.airy.log.AiryLoggerFactory;
 import org.jdbi.v3.core.Jdbi;
@@ -49,5 +50,10 @@ public class JdbiConfiguration {
     @Bean
     public UserDAO userDAO(Jdbi jdbi) {
         return jdbi.onDemand(UserDAO.class);
+    }
+
+    @Bean
+    public InvitationDAO invitationDAO(Jdbi jdbi) {
+        return jdbi.onDemand(InvitationDAO.class);
     }
 }

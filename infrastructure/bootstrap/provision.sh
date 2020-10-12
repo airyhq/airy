@@ -20,11 +20,7 @@ helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
 helm repo update
 helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 500s
 
-
-wget -nv https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.zip
-unzip -u ./terraform_0.12.2_linux_amd64.zip -d /usr/local/bin/
-
-
+export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
 export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
 
@@ -37,6 +33,6 @@ kubectl cp create-topics.sh kafka-client:/tmp
 
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
 
-kubectl apply -f deployments/api-admin/deployment.yaml
-kubectl apply -f deployments/api-conversations/deployment.yaml
-kubectl apply -f deployments/events-router/deployment.yaml
+kubectl apply -f api-admin.yaml
+kubectl apply -f api-conversations.yaml
+kubectl apply -f events-router.yaml

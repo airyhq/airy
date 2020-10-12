@@ -18,5 +18,6 @@ public interface UserDAO {
     void insert(@BindBean User user);
 
     @SqlQuery("SELECT * FROM users WHERE id=:id")
+    @RegisterBeanMapper(User.class)
     User findById(UUID id);
 }

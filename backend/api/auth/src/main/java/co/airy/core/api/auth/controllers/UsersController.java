@@ -7,7 +7,6 @@ import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Password;
 import co.airy.payload.response.RequestError;
 import co.airy.spring.web.Jwt;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,14 +18,17 @@ import java.util.UUID;
 @RestController
 public class UsersController {
 
-    @Autowired
-    private Password passwordService;
+    private final Password passwordService;
 
-    @Autowired
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
 
-    @Autowired
-    private Jwt jwt;
+    private final Jwt jwt;
+
+    public UsersController(Password passwordService, UserDAO userDAO, Jwt jwt) {
+        this.passwordService = passwordService;
+        this.userDAO = userDAO;
+        this.jwt = jwt;
+    }
 
     @PostMapping("/users.signup")
     ResponseEntity<?> signupUser(@RequestBody @Valid SignupRequestPayload signupRequestPayload) {

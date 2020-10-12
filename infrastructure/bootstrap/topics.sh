@@ -2,8 +2,8 @@
 
 # topics.sh
 
-# Used from the create-topics.sh script, holds registry of all Kafka topics in
-# our system
+# A registry of all the neccessary topics in kafka.
+# Used from the create-topics.sh script
 
 IFS=$'\n\t'
 

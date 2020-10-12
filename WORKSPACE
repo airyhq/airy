@@ -36,6 +36,7 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
     artifacts = [
+        "de.mkammerer:argon2-jvm:2.7",
         "com.fasterxml.jackson.core:jackson-annotations:2.10.0",
         "com.fasterxml.jackson.core:jackson-core:2.10.0",
         "com.fasterxml.jackson.core:jackson-databind:2.10.0",
@@ -65,6 +66,7 @@ maven_install(
         "org.apache.kafka:kafka-streams:2.5.1",
         "org.apache.kafka:kafka_2.12:2.5.1",
         "org.aspectj:aspectjweaver:1.8.10",
+        "org.bouncycastle:bcpkix-jdk15on:1.63",
         "org.flywaydb:flyway-core:5.2.4",
         "org.hamcrest:hamcrest-library:2.1",
         "org.hamcrest:hamcrest:2.1",
@@ -94,6 +96,7 @@ maven_install(
         "org.springframework:spring-context:5.2.0.RELEASE",
         "org.springframework:spring-messaging:5.1.2.RELEASE",
         "org.springframework:spring-websocket:5.1.2.RELEASE",
+        "org.springframework.security:spring-security-crypto:5.3.0.RELEASE",
         "org.rocksdb:rocksdbjni:5.18.3",
     ],
     excluded_artifacts = [

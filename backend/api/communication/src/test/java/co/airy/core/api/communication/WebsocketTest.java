@@ -142,6 +142,7 @@ public class WebsocketTest {
         final ChannelPayload receivedChannel = channelFuture.get(30, TimeUnit.SECONDS);
 
         assertNotNull(receivedChannel);
+
         assertThat(receivedChannel.getId(), is(channel.getId()));
 
         final UnreadCountPayload receivedUnreadCount = unreadFuture.get(30, TimeUnit.SECONDS);

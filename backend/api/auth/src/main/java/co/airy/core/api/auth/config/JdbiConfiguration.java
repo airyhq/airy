@@ -3,13 +3,16 @@ package co.airy.core.api.auth.config;
 import javax.sql.DataSource;
 
 import co.airy.core.api.auth.dao.UserDAO;
+import co.airy.core.api.auth.dto.User;
 import co.airy.log.AiryLoggerFactory;
 import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.core.mapper.reflect.BeanMapper;
 import org.jdbi.v3.core.statement.SqlLogger;
 import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.postgres.PostgresPlugin;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +35,8 @@ public class JdbiConfiguration {
 
         jdbi.installPlugin(new SqlObjectPlugin());
         jdbi.installPlugin(new PostgresPlugin());
+
+        jdbi.registerRowMapper(BeanMapper.factory(User.class));
 
         if (dbDebug) {
             SqlLogger sqlLogger = new SqlLogger() {

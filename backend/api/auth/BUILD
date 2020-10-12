@@ -4,9 +4,11 @@ app_deps = [
     "//backend/lib/payload",
     "//backend/lib/spring/web:spring-web",
     "//backend/lib/pagination",
+    "@maven//:org_bouncycastle_bcpkix_jdk15on",
     "@maven//:org_flywaydb_flyway_core",
     "@maven//:org_postgresql_postgresql",
     "@maven//:org_springframework_boot_spring_boot_starter_data_jdbc",
+    "@maven//:org_springframework_security_spring_security_crypto",
     "@maven//:org_springframework_spring_jdbc",
     "@maven//:org_springframework_spring_tx",
 ]

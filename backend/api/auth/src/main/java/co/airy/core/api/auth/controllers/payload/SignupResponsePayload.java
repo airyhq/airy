@@ -1,20 +1,20 @@
-package co.airy.core.api.auth.dto;
+package co.airy.core.api.auth.controllers.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-import java.util.UUID;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private UUID id;
-    private String email;
+public class SignupResponsePayload {
+    private String id;
     private String firstName;
     private String lastName;
-    private String passwordHash;
+    private String token;
 }

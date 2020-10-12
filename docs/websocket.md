@@ -7,7 +7,6 @@
     - [Unread count](#unread-count)
         - [Channel connected](#channel-connected)
         - [Channel disconnected](#channel-disconnected)
-  - [Resources](#resources)
 
 
 ## Introduction
@@ -110,8 +109,3 @@ Notifies whenever a channel was connected or updated.
   "id": "{UUID}"
 }
 ```
-
-
-## Resources
-
-http://jmesnil.net/stomp-websocket/doc/

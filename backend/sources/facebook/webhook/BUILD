@@ -33,7 +33,7 @@ container_push(
     name = "release",
     format = "Docker",
     image = ":image",
-    registry = "ghcr.io/pascal-airy/sources-facebook-webhook",
+    registry = "ghcr.io/airyhq/sources-facebook-webhook",
     repository = "sources-facebook-webhook",
     tag = "latest",
 )

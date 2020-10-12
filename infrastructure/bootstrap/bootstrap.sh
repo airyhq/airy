@@ -44,6 +44,7 @@ cd /home/vagrant
 kubectl apply -f kafka-client.yaml
 kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
+kubectl apply -f deployment.yaml
 
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
 

@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class InviteUserRequestPayload {
-    String email;
+    private String email;
 }

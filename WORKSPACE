@@ -36,7 +36,6 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
     artifacts = [
-        "de.mkammerer:argon2-jvm:2.7",
         "com.fasterxml.jackson.core:jackson-annotations:2.10.0",
         "com.fasterxml.jackson.core:jackson-core:2.10.0",
         "com.fasterxml.jackson.core:jackson-databind:2.10.0",

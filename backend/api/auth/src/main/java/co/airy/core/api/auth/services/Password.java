@@ -9,7 +9,7 @@ public class Password {
     private final Argon2PasswordEncoder argon = new Argon2PasswordEncoder();
 
     public boolean isPasswordValid(String password) {
-        return password.length() > 0;
+        return password.length() > 6;
     }
 
     public String hashPassword(String password) {

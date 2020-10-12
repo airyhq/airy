@@ -63,8 +63,8 @@ java_library(
     exports = [
         "@maven//:org_jdbi_jdbi3_core",
         "@maven//:org_jdbi_jdbi3_postgres",
-        "@maven//:org_jdbi_jdbi3_sqlobject",
         "@maven//:org_jdbi_jdbi3_spring4",
+        "@maven//:org_jdbi_jdbi3_sqlobject",
     ],
 )
 

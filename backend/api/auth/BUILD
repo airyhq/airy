@@ -1,5 +1,3 @@
-load("@rules_java//java:defs.bzl", "java_library")
-
 app_deps = [
     "//:lombok",
     "//:jdbi",
@@ -31,7 +29,7 @@ load("//tools/build:junit5.bzl", "junit5")
         deps = [
             ":app",
             "//backend/lib/spring/core:spring-test",
-            "@maven//:io_zonky_test_embedded_database_spring_test"
+            "@maven//:io_zonky_test_embedded_database_spring_test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

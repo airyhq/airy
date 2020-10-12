@@ -34,5 +34,5 @@ kubectl cp create-topics.sh kafka-client:/tmp
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
 
 kubectl apply -f api-admin.yaml
-kubectl apply -f api-conversations.yaml
+kubectl apply -f api-communication.yaml
 kubectl apply -f events-router.yaml

@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: api-admin
-        image: ghcr.io/airyhq/admin-api/api-admin:latest
+        image: ghcr.io/airyhq/admin/api:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

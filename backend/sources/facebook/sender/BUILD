@@ -35,7 +35,7 @@ springboot(
 ]
 
 container_push(
-    name = "release-prod",
+    name = "release",
     format = "Docker",
     image = ":image",
     registry = "ghcr.io/airyhq/sources",

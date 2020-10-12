@@ -51,10 +51,10 @@ java_library(
 ]
 
 container_push(
-    name = "release-prod",
+    name = "release",
     format = "Docker",
     image = ":image",
     registry = "ghcr.io/airyhq/api",
-    repository = "conversations",
+    repository = "communication",
     tag = "latest",
 )

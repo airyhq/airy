@@ -1,0 +1,23 @@
+@import '../../../assets/scss/colors.scss';
+@import '../../../assets/scss/fonts.scss';
+
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: var(--color-airy-blue);
+  cursor: pointer;
+  padding: 4px 16px;
+
+  &:hover {
+    background-color: var(--color-airy-blue-hover);
+    text-decoration: none;
+  }
+
+  text-decoration: none;
+}
+
+.buttonLabel {
+  @include font-base;
+  color: white;
+  text-align: center;
+}

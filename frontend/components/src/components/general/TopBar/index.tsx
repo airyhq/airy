@@ -1,19 +1,20 @@
+// @ts-nocheck
 import React, {useState, useCallback} from 'react';
 import {connect} from 'react-redux';
 import {withRouter, Link} from 'react-router-dom';
 import {ReactSVG} from 'react-svg';
 
-import {User} from '../../model/User';
+import {User} from '../../../model/User';
 import ListenOutsideClick from '../ListenOutsideClick';
 
 import styles from './index.module.scss';
 
-import cogIcon from '../../assets/images/icons/cog.svg';
-import logoutIcon from '../../assets/images/icons/sign-out.svg';
-import shortcutIcon from '../../assets/images/icons/shortcut.svg';
-import speakBubbleIcon from '../../assets/images/icons/speak-bubble.svg';
-import airyLogo from '../../assets/images/logo/airy_primary_rgb.svg';
-import chevronDown from '../../assets/images/icons/chevron-down.svg';
+import cogIcon from '../../../assets/images/icons/cog.svg';
+import logoutIcon from '../../../assets/images/icons/sign-out.svg';
+import shortcutIcon from '../../../assets/images/icons/shortcut.svg';
+import speakBubbleIcon from '../../../assets/images/icons/speak-bubble.svg';
+import airyLogo from '../../../assets/images/logo/airy_primary_rgb.svg';
+import chevronDown from '../../../assets/images/icons/chevron-down.svg';
 
 type TopBarProps = {
   user: User;
@@ -26,7 +27,7 @@ type TopBarProps = {
 
 const LOGOUT_ROUTE = '/logout';
 
-const TopBar = (props: TopBarProps) => {
+const TopBarComponent = (props: TopBarProps) => {
   const [isAccountDropdownOn, setAccountDropdownOn] = useState(false);
   const [isFaqDropdownOn, setFaqDropdownOn] = useState(false);
 
@@ -142,4 +143,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(TopBar));
+export const TopBar = withRouter(connect(mapStateToProps)(TopBarComponent));

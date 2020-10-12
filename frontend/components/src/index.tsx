@@ -1,12 +1,25 @@
+
+//@ts-nocheck
 import * as React from 'react'
-import styles from './styles.module.css'
 
-interface Props {
-  text: string
-}
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
 
-export * from './general'
+import TopBar from './components/general/TopBar'
+import {store} from './store';
 
-export const ExampleComponent = ({ text }: Props) => {
-  return <div className={styles.test}>Example Component: {text}</div>
-}
+
+export * from './components/alerts'
+export * from './components/cta'
+export * from './components/general'
+
+
+// export const ExampleComponent = () => {
+//   return (
+//     <Provider store={store}>
+//         <BrowserRouter>
+//             <TopBar isAdmin={true} />
+//         </BrowserRouter>
+//     </Provider>
+//   )
+// }

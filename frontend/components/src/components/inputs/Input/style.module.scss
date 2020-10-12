@@ -1,0 +1,175 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.label {
+  width: 100%;
+}
+
+.input {
+  display: flex;
+  background-color: white;
+  width: 100%;
+  border: 1px solid var(--color-dark-elements-gray);
+  border-radius: 4px;
+  overflow: hidden;
+  color: var(--color-text-contrast);
+
+  &::placeholder {
+    color: var(--color-text-gray);
+  }
+
+  &:focus-within {
+    background-color: var(--color-background-blue);
+    border: 1px solid var(--color-airy-blue);
+    outline: none;
+  }
+}
+
+.inputInvalid {
+  .inputTitle {
+    color: var(--color-red-alert);
+
+    .icon svg {
+      path {
+        fill: var(--color-red-alert);
+      }
+    }
+  }
+  .input {
+    border: 1px solid var(--color-red-alert);
+    background-color: var(--color-background-red);
+
+    &:invalid {
+      border: 1px solid var(--color-red-alert);
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.inputValid {
+  .inputTitle {
+    color: var(--color-soft-green);
+
+    .icon svg {
+      width: 12px;
+      height: 12px;
+
+      path {
+        fill: var(--color-soft-green);
+      }
+    }
+  }
+  .input {
+    border: 1px solid var(--color-soft-green);
+  }
+}
+
+.inputTitle {
+  @include font-base;
+  color: var(--color-text-contrast);
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.inputHint {
+  @include font-s;
+  margin-top: 8px;
+  color: var(--color-text-contrast);
+}
+
+.icon {
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.inputTitleRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.inputMaxLength {
+  @include font-s;
+  color: var(--color-text-contrast);
+  margin-bottom: 8px;
+  margin-right: 4px;
+  display: flex;
+  align-self: flex-end;
+}
+
+.inputInner {
+  flex-grow: 1;
+  border: none;
+  padding: 4px 8px;
+
+  &:focus {
+    background-color: var(--color-background-blue);
+    border: none;
+    outline: none;
+  }
+
+  &:invalid {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+.inputMaxLengthError {
+  color: var(--color-red-alert);
+}
+
+.emojiIcon {
+  display: inline-block;
+  height: 26px;
+  padding-right: 4px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  svg {
+    width: 16px;
+    path {
+      fill: var(--color-light-gray);
+    }
+  }
+  &:hover {
+    svg {
+      width: 16px;
+      path {
+        fill: var(--color-text-contrast);
+      }
+    }
+  }
+  &:disabled {
+    cursor: not-allowed;
+    svg {
+      width: 16px;
+      path {
+        fill: var(--color-light-gray);
+      }
+    }
+  }
+}
+
+.emojiIconActive {
+  svg {
+    width: 16px;
+    path {
+      fill: var(--color-airy-blue);
+    }
+  }
+  &:hover {
+    svg {
+      width: 16px;
+      path {
+        fill: var(--color-airy-blue);
+      }
+    }
+  }
+}
+
+.emojiDrawer {
+  white-space: normal;
+}

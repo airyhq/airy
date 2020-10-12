@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React from 'react';
 import {ReactSVG} from 'react-svg';
 import warningIcon from '../../../assets/images/icons/exclamation-triangle.svg';
@@ -11,15 +10,14 @@ type ErrorMessageProps = {
   text?: string;
 } & WithTranslation
 
-const ErrorMessageComponent = (props: ErrorMessageProps) => {
-  const {t} = props;
+const ErrorMessageComponent = ({t, text}: ErrorMessageProps) => {
   return (
     <>
       <div className={styles.headerError}>
         <img src={logo} alt="Airy Logo" width={128} />
         <div className={styles.errorContainer}>
           <ReactSVG src={warningIcon} />
-          <p>{props.text || t('alerts.linkExpired')}</p>
+          <p>{text || t('alerts.linkExpired')}</p>
         </div>
       </div>
       <img src={picture} className={styles.errorImage} alt="Airy Waiting" />

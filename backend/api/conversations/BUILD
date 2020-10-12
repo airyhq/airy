@@ -49,7 +49,7 @@ container_push(
     name = "release-prod",
     format = "Docker",
     image = ":image",
-    registry = "ghcr.io/pascal-airy/api-conversations.latest",
-    repository = "api-conversations",
+    registry = "ghcr.io/airyhq/api.latest",
+    repository = "conversations",
     tag = "latest",
 )

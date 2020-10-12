@@ -32,7 +32,6 @@ springboot(
     for file in glob(["src/test/java/**/*Test.java"])
 ]
 
-
 container_push(
     name = "release",
     format = "Docker",

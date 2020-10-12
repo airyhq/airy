@@ -15,7 +15,7 @@ public interface InvitationDAO {
     @RegisterBeanMapper(Invitation.class)
     void insert(@BindBean Invitation invitation);
 
-    @SqlQuery("select * from invitations")
+    @SqlQuery("select id, email, sent_at, accepted_at, created_at, updated_at from invitations")
     @RegisterBeanMapper(Invitation.class)
     List<Invitation> listInvitations();
 }

@@ -3,42 +3,31 @@
 - [Airy Core WebSocket API](#airy-core-websocket-api)
   - [Introduction](#introduction)
   - [Outbound Queues](#outbound-queues)
-    - [Message upsert](#message-upsert)
+    - [Message](#message)
     - [Unread count](#unread-count)
-        - [Channel connected](#channel-connected)
-        - [Channel disconnected](#channel-disconnected)
-
+    - [Channel connected](#channel-connected)
+    - [Channel disconnected](#channel-disconnected)
 
 ## Introduction
 
-The Airy Core Platform offers a websocket server that allows clients to connect
-and receive near real-time updates on communication data. The websocket server
+The Airy Core Platform offers a WebSocket server that allows clients to connect
+and receive near real-time updates on communication data. The WebSocket server
 uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
 protocol endpoint at `/ws`.
 
 ## Outbound Queues
 
-Outbound queues follow the pattern `/queue/{entity type}/{event type}` and
+Outbound queues follow the pattern `/queue/:event_type[/:action}]` and
 deliver JSON encoded payloads.
 
-### Message upsert
+### Message
 
-`/queue/message/upsert`
+`/queue/message`
 
-Payloads coming into this queue notify the subscribed user that a message was
-created or updated. This can be one of the following:
+Incoming payloads notify connected clients that a message was created or updated.
 
-- First message of a conversation - conversation should be appended to the list
-
-- A subsequent message of a conversation - message should be appended to
-  existing conversation
-
-- An existing message in an existing conversation - message should be replaced
-  in the existing conversation
-
-
-**Payload**
+**Sample Payload**
 
 ```json5
 {
@@ -60,15 +49,14 @@ created or updated. This can be one of the following:
 
 ### Unread count
 
-`/queue/unread-count/update`
+`/queue/unread-count`
 
-Payloads coming into this queue notify the subscribed user of the unread message
-count for the given conversation, at a given point in time. Clients should
-update the conversation's unread count only if the timestamp in the payload is
-_after_ the timestamp of the last recorded count.
+Incoming payloads notify connected clients of the unread message count for a
+specific conversation at the time of delivery. Clients should keep track of the
+latest time the unread count for a specific conversation was updated and update
+the value only for a more recent count.
 
-
-**Payload**
+**Sample Payload**
 
 ```json5
 {
@@ -81,12 +69,13 @@ _after_ the timestamp of the last recorded count.
 }
 ```
 
-
-##### Channel connected
+### Channel connected
 
 `/queue/channel/connected`
 
-Notifies whenever a channel was connected or updated.
+Incoming payloads notify connected clients whenever a channel was connected or updated.
+
+**Sample Payload**
 
 ```json5
 {
@@ -100,12 +89,19 @@ Notifies whenever a channel was connected or updated.
 
 ------
 
-##### Channel disconnected
+### Channel disconnected
 
-`/user/queue/airy/channel/disconnected`
+Incoming payloads notify connected clients whenever a channel was disconnected.
+
+`/queue/channel/disconnected`
+
+**Sample Payload**
 
 ```json5
 {
-  "id": "{UUID}"
+    "id": "{UUID}",
+    "name": "my page 1",
+    "source": "facebook",
+    "source_channel_id": "fb-page-id-1",
+    "image_url": "http://example.org/avatar.jpeg" // optional
 }
-```

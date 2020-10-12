@@ -37,7 +37,7 @@ container_push(
     name = "release-prod",
     format = "Docker",
     image = ":image",
-    registry = "ghcr.io/pascal-airy/admin-api.latest",
+    registry = "ghcr.io/pascal-airy/api-admin",
     repository = "api-admin",
     tag = "latest",
 )

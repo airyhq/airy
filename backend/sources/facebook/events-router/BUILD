@@ -40,7 +40,7 @@ container_push(
     name = "release-prod",
     format = "Docker",
     image = ":image",
-    registry = "ghcr.io/pascal-airy/sources-facebook-events-router.latest",
-    repository = "sources-facebook-events-router",
+    registry = "ghcr.io/airyhq/sources.latest",
+    repository = "facebook-events-router",
     tag = "latest",
 )

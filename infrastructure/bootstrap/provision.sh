@@ -1,15 +1,6 @@
 #!/bin/bash
 
 sudo yum install -y wget unzip
-sudo yum install git cmake gcc-c++ cyrus-sasl -y 
-sudo yum install -y librdkafka-devel yajl-devel avro-c-devel
-
-sudo yum group install “Development Tools” -y
-git clone https://github.com/edenhill/kafkacat.git
-cd kafkacat/
-./configure
-make
-cd
 
 wget -nv https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz
 tar -zxvf helm-v3.3.4-linux-amd64.tar.gz
@@ -25,9 +16,9 @@ export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
 export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
 
 cd /home/vagrant
+kubectl apply -f kafka-client.yaml
 sleep 3m
 
-kubectl apply -f kafka-client.yaml
 kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
 

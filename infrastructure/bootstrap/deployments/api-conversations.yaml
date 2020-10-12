@@ -23,7 +23,7 @@ spec:
       containers:
       - name: api-communication
         image: ghcr.io/airyhq/api/conversations:latest
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
           value: airy-cp-kafka-headless:9092

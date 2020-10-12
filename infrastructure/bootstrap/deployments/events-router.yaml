@@ -23,7 +23,7 @@ spec:
       containers:
       - name: sources-facebook-events-router
         image: ghcr.io/airyhq/sources/facebook-events-router:latest
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
           value: airy-cp-kafka-headless:9092

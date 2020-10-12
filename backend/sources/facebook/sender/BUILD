@@ -38,7 +38,7 @@ container_push(
     name = "release-prod",
     format = "Docker",
     image = ":image",
-    registry = "ghcr.io/airyhq/sources.latest",
+    registry = "ghcr.io/airyhq/sources",
     repository = "facebook-sender",
     tag = "latest",
 )

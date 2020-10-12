@@ -1,6 +1,7 @@
 package co.airy.core.api.auth.controllers;
 
 import co.airy.core.api.auth.controllers.payload.InviteUserRequestPayload;
+import co.airy.core.api.auth.controllers.payload.InviteUserResponsePayload;
 import co.airy.core.api.auth.controllers.payload.SignupRequestPayload;
 import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dto.Invitation;
@@ -27,6 +28,7 @@ public class UsersController {
         // TODO
         return ResponseEntity.ok(new EmptyResponsePayload());
     }
+
     @PostMapping("/users.invite")
     ResponseEntity<?> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
         final UUID id = UUID.randomUUID();
@@ -41,6 +43,8 @@ public class UsersController {
                 .updatedAt(now)
                 .user(null)
                 .build());
-        return ResponseEntity.status(HttpStatus.CREATED).body(new EmptyResponsePayload());
+        return ResponseEntity.status(HttpStatus.CREATED).body(InviteUserResponsePayload.builder()
+                .id(id.toString())
+                .build());
     }
 }

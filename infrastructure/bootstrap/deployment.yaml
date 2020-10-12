@@ -26,9 +26,9 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: KAFKA_BROKERS
-          value: http://core-kafka-cp-kafka-headless:9092
+          value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
-          value: http://core-kafka-cp-schema-registry:8081
+          value: airy-kafka-cp-schema-registry:8081
         - name: FACEBOOK_APP_ID
           value: "1654394508205728"
         - name: FACEBOOK_APP_SECRET

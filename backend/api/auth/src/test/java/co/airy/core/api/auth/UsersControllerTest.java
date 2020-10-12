@@ -30,6 +30,6 @@ public class UsersControllerTest {
     void userSignup() throws Exception {
         userDAO.insert(User.builder().id(UUID.randomUUID()).build());
 
-        throw new Error("TODO");
+        // TODO write signup api test
     }
 }

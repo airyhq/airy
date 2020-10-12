@@ -21,27 +21,27 @@ spec:
         app: api-admin
     spec:
       containers:
-        - name: api-admin
-          image: ghcr.io/pascal-airy/admin-api:latest
-          imagePullPolicy: Initial
-          env:
-            - name: KAFKA_BROKERS
-              value: http://airy-cp-kafka-headless:9092
-            - name: KAFKA_SCHEMA_REGISTRY_URL
-              value: http://airy-kafka-cp-schema-registry:8081
-            - name: FACEBOOK_APP_ID
-              value: "1654394508205728"
-            - name: FACEBOOK_APP_SECRET
-              value: "no"
-            - name: SERVICE_NAME
-              value: facebook-events-router
-          livenessProbe:
+      - name: api-admin
+        image: ghcr.io/airyhq/admin-api/api-admin:latest
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BROKERS
+          value: airy-cp-kafka-headless:9092
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          value: airy-kafka-cp-schema-registry:8081
+        - name: FACEBOOK_APP_ID
+          value: "1654394508205728"
+        - name: FACEBOOK_APP_SECRET
+          value: "no"
+        - name: SERVICE_NAME
+          value: facebook-events-router
+        livenessProbe:
             httpGet:
               path: /health
               port: 8080
               httpHeaders:
-                - name: Health-Check
-                  value: health-check
+              - name: Health-Check
+                value: health-check
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 3

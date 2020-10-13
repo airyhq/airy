@@ -131,6 +131,9 @@ public class UsersControllerTest {
         User user = userDAO.findById(UUID.fromString(id));
 
         assertThat(user.getEmail(), equalTo(email));
+        assertThat(user.getFirstName(), equalTo("Katherine"));
+        assertThat(user.getLastName(), equalTo("Johnson"));
+        assertThat(user.getPasswordHash(), is(not(nullValue())));
     }
 }
 

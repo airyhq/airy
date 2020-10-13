@@ -27,6 +27,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureEmbeddedDatabase(beanName = "dataSource")
@@ -43,23 +44,22 @@ public class UsersControllerTest {
     private MockMvc mvc;
 
     @Autowired
-    private UserDAO userDAO;
-
-    @Autowired
     private InvitationDAO invitationDAO;
 
     @Test
-    void userSignup() throws Exception {
+    void userSignupAndLogin() throws Exception {
         final String firstName = "grace";
         final String email = "grace@airy.co";
+        final String password = "trustno1";
 
-        final String requestContent = "{\"email\":\"" + email + "\",\"first_name\":\"" + firstName + "\"," +
-                "\"last_name\":\"grace\",\"password\":\"trustno1\"}";
+        final String signUpRequest = "{\"email\":\"" + email + "\",\"first_name\":\"" + firstName + "\"," +
+                "\"last_name\":\"hopper\",\"password\":\"" + password + "\"}";
 
         final String responseString = mvc.perform(post("/users.signup")
-                .content(requestContent)
+                .content(signUpRequest)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token", not(nullValue())))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -67,9 +67,23 @@ public class UsersControllerTest {
         final JsonNode jsonNode = objectMapper.readTree(responseString);
         final String id = jsonNode.get("id").textValue();
 
-        User user = userDAO.findById(UUID.fromString(id));
+        final String loginRequest = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
 
-        assertThat(user.getEmail(), equalTo(email));
+        mvc.perform(post("/users.login")
+                .content(loginRequest)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", equalTo(id)))
+                .andExpect(jsonPath("$.first_name", equalTo(firstName)))
+                .andExpect(jsonPath("$.token", not(nullValue())));
+
+        final String loginRequestWrongPwd = "{\"email\":\"" + email + "\",\"password\":\"guess-i-should-have-trusted-a-password-manager\"}";
+
+        mvc.perform(post("/users.login")
+                .content(loginRequestWrongPwd)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+                .andExpect(status().isUnauthorized());
+
     }
 
     @Test

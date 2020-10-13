@@ -48,7 +48,7 @@ In order to communicate with our API endpoints, you need a valid
 [JWT](https://jwt.io/) token. To get a valid token you need to use the login endpoint
 [login](#login).
 
-The login endpoints returns the  a short lived JWT token you can use for API requests
+The login endpoints returns a short-lived JWT token you can use for API requests
 
 ### Login
 
@@ -59,14 +59,12 @@ does not require a valid token to be present in the headers.
 
 **Sample Request**
 
-```json
-{ "email": "grace@example.com", "password": "avalidpassword" }
+```json5
+{ 
+  "email": "grace@example.com", 
+  "password": "avalidpassword" 
+}
 ```
-
-**Required**:
-
-- `email` String
-- `password` String
 
 **Sample Response**
 
@@ -75,7 +73,6 @@ does not require a valid token to be present in the headers.
   "id": "424242-4242-42-4242-4242",
   "first_name": "Grace",
   "last_name": "Hopper",
-  "avatar_url": "http://example.com/avatar.png",
   "token": "JWT_TOKEN"
 }
 ```

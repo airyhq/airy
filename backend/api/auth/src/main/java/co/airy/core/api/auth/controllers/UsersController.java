@@ -2,6 +2,8 @@ package co.airy.core.api.auth.controllers;
 
 import co.airy.core.api.auth.controllers.payload.InviteUserRequestPayload;
 import co.airy.core.api.auth.controllers.payload.InviteUserResponsePayload;
+import co.airy.core.api.auth.controllers.payload.LoginRequestPayload;
+import co.airy.core.api.auth.controllers.payload.LoginResponsePayload;
 import co.airy.core.api.auth.controllers.payload.SignupRequestPayload;
 import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dto.Invitation;
@@ -64,6 +66,26 @@ public class UsersController {
                 .lastName(lastName)
                 .token(jwt.tokenFor(userId.toString()))
                 .id(userId.toString())
+                .build()
+        );
+    }
+
+    @PostMapping("/users.login")
+    ResponseEntity<?> loginUser(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
+        final String password = loginRequestPayload.getPassword();
+        final String email = loginRequestPayload.getEmail();
+
+        final User user = userDAO.findByEmail(email);
+
+        if (user == null || !passwordService.passwordMatches(password, user.getPasswordHash())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        return ResponseEntity.ok(LoginResponsePayload.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .token(jwt.tokenFor(user.getId().toString()))
+                .id(user.getId().toString())
                 .build()
         );
     }

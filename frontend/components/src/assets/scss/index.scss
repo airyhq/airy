@@ -1,10 +1,10 @@
-@import './reset.scss';
-@import './fonts.scss';
-@import './colors.scss';
-@import './animations.scss';
-@import './third-party/toastify.scss';
-@import './third-party/onesignal.scss';
-@import './third-party/fb-button.scss';
+@import "./reset.scss";
+@import "./fonts.scss";
+@import "./colors.scss";
+@import "./animations.scss";
+@import "./third-party/toastify.scss";
+@import "./third-party/onesignal.scss";
+@import "./third-party/fb-button.scss";
 
 body {
   display: flex;
@@ -24,7 +24,7 @@ button {
 input,
 textarea,
 button {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 strong {

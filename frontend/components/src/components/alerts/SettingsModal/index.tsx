@@ -1,10 +1,10 @@
-import React from 'react';
-import Modal from 'react-modal';
-import ModalHeader from './ModalHeader';
+import React from "react";
+import Modal from "react-modal";
+import ModalHeader from "./ModalHeader";
 
-import styles from './style.module.scss';
+import styles from "./style.module.scss";
 
-const SettingsModal = ({close, title, children, style}) => {
+const SettingsModal = ({ close, title, children, style }) => {
   return (
     <Modal
       className={styles.content}
@@ -13,7 +13,8 @@ const SettingsModal = ({close, title, children, style}) => {
       contentLabel={title}
       isOpen={true}
       shouldCloseOnOverlayClick={true}
-      onRequestClose={close}>
+      onRequestClose={close}
+    >
       <div style={style}>
         <ModalHeader title={title} close={close} />
 

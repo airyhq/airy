@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import styles from './style.module.scss';
+import styles from "./style.module.scss";
 
-export const LinkButton = ({children, onClick, type}) => (
+export const LinkButton = ({ children, onClick, type }) => (
   <button type={type} className={styles.button} onClick={onClick}>
     {children}
   </button>
@@ -15,5 +15,5 @@ LinkButton.propTypes = {
   /** button clicked callback */
   onClick: PropTypes.func,
   /** the button type */
-  type: PropTypes.string,
+  type: PropTypes.string
 };

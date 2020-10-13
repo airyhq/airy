@@ -1,22 +1,22 @@
-import React, {Component, Fragment} from 'react';
-import {withTranslation, WithTranslation} from 'react-i18next';
-import {Picker} from 'emoji-mart';
+import React, { Component, Fragment } from "react";
+import { withTranslation, WithTranslation } from "react-i18next";
+import { Picker } from "emoji-mart";
 
-import {AccessibleSVG} from '../../labels/AccessibleSVG';
+import { AccessibleSVG } from "../../labels/AccessibleSVG";
 
-import styles from './style.module.scss';
-import checkmarkIcon from 'assets/images/icons/checkmark.svg';
-import closeIcon from 'assets/images/icons/close.svg';
-import smileyIcon from 'assets/images/icons/smiley.svg';
+import styles from "./style.module.scss";
+import checkmarkIcon from "assets/images/icons/checkmark.svg";
+import closeIcon from "assets/images/icons/close.svg";
+import smileyIcon from "assets/images/icons/smiley.svg";
 
 class InputComponent extends Component<InputProps & WithTranslation, IState> {
   public static defaultProps = {
     height: 48,
-    fontClass: 'font-l',
-    label: '',
+    fontClass: "font-l",
+    label: "",
     autoFocus: false,
     hideLabel: false,
-    showCounter: true,
+    showCounter: true
   };
 
   inputRef: React.RefObject<HTMLInputElement>;
@@ -27,13 +27,13 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
     this.state = {
       validationResult: undefined,
       wasBlurred: false,
-      isShowingEmojiDrawer: false,
+      isShowingEmojiDrawer: false
     };
     this.inputRef = React.createRef();
   }
 
   componentDidMount = () => {
-    const {inputRef, value} = this.props;
+    const { inputRef, value } = this.props;
     if (!!value) {
       this.validateInput((inputRef || this.inputRef).current);
     }
@@ -41,16 +41,19 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
 
   componentDidUpdate = prevProps => {
     const inputRef = this.props.inputRef || this.inputRef;
-    if ((inputRef.current && !prevProps.showErrors && this.props.showErrors) || this.props.value !== prevProps.value) {
+    if (
+      (inputRef.current && !prevProps.showErrors && this.props.showErrors) ||
+      this.props.value !== prevProps.value
+    ) {
       this.validateInput(inputRef.current);
     }
   };
 
   translateResult = (type, validity) => {
     if (validity.valueMissing) {
-      return this.props.t('input.valueMissing');
-    } else if (type === 'url' && validity.typeMismatch) {
-      return this.props.t('input.urlWrongFormat');
+      return this.props.t("input.valueMissing");
+    } else if (type === "url" && validity.typeMismatch) {
+      return this.props.t("input.urlWrongFormat");
     } else {
       return validity.valid;
     }
@@ -61,28 +64,40 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
       return;
     }
     inputElement.checkValidity();
-    this.setState({validationResult: inputElement.validity.valid});
-    if (inputElement.type === 'email') {
+    this.setState({ validationResult: inputElement.validity.valid });
+    if (inputElement.type === "email") {
       if (!inputElement.validity.valid) {
-        this.setState({validationResult: this.props.t('input.wrongEmail') as string});
+        this.setState({
+          validationResult: this.props.t("input.wrongEmail") as string
+        });
       } else {
-        this.setState({validationResult: true});
+        this.setState({ validationResult: true });
       }
     } else {
-      this.setState({validationResult: this.translateResult(inputElement.type, inputElement.validity)});
+      this.setState({
+        validationResult: this.translateResult(
+          inputElement.type,
+          inputElement.validity
+        )
+      });
     }
   };
 
   hasValidations = () => {
-    return this.props.required || this.props.minLength || this.props.maxLength || this.props.validation;
+    return (
+      this.props.required ||
+      this.props.minLength ||
+      this.props.maxLength ||
+      this.props.validation
+    );
   };
 
   checkWithValidationFunction = inputElement => {
-    const {validation} = this.props;
+    const { validation } = this.props;
     const validationResult = validation(inputElement.value);
-    this.setState({validationResult: validationResult});
+    this.setState({ validationResult: validationResult });
     if (validationResult === true) {
-      inputElement.setCustomValidity('');
+      inputElement.setCustomValidity("");
     } else {
       inputElement.setCustomValidity(validationResult);
     }
@@ -99,18 +114,20 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
      * if there is a dot inside of the field just to be save.
      */
     if (!inputElement.value.match(/.*\w\.\w.*/)) {
-      this.setState({validationResult: this.props.t('input.urlWrongFormat') as string});
-      inputElement.setCustomValidity(this.props.t('input.urlWrongFormat'));
+      this.setState({
+        validationResult: this.props.t("input.urlWrongFormat") as string
+      });
+      inputElement.setCustomValidity(this.props.t("input.urlWrongFormat"));
     } else {
-      inputElement.setCustomValidity('');
+      inputElement.setCustomValidity("");
     }
   };
 
   validateInput = inputElement => {
-    const {validation, type} = this.props;
+    const { validation, type } = this.props;
     if (validation) {
       this.checkWithValidationFunction(inputElement);
-    } else if (type === 'url') {
+    } else if (type === "url") {
       this.checkWithURLValidation(inputElement);
     } else {
       this.checkWithHTML5Validation(inputElement);
@@ -118,7 +135,7 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
   };
 
   onChange = event => {
-    const {onChange} = this.props;
+    const { onChange } = this.props;
     this.validateInput(event.target);
     if (onChange) {
       onChange(event);
@@ -126,8 +143,8 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
   };
 
   onBlur = event => {
-    const {onBlur} = this.props;
-    this.setState({wasBlurred: true});
+    const { onBlur } = this.props;
+    this.setState({ wasBlurred: true });
     this.validateInput(event.target);
     if (onBlur) {
       onBlur(event);
@@ -136,7 +153,7 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
 
   getCurrentValidationState = () => {
     if (this.state.validationResult === true) {
-      return 'inputValid';
+      return "inputValid";
     } else if (this.state.validationResult === undefined) {
       return null;
     }
@@ -145,17 +162,17 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
       return null;
     }
 
-    return 'inputInvalid';
+    return "inputInvalid";
   };
 
   classForState = () => {
     switch (this.getCurrentValidationState()) {
-      case 'inputInvalid':
+      case "inputInvalid":
         return styles.inputInvalid;
-      case 'inputValid':
+      case "inputValid":
         return styles.inputValid;
       default:
-        return '';
+        return "";
     }
   };
 
@@ -182,13 +199,13 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
   };
 
   addListeners = () => {
-    document.addEventListener('keydown', this.handleEmojiKeyEvent);
-    document.addEventListener('click', this.handleEmojiOutsideClick);
+    document.addEventListener("keydown", this.handleEmojiKeyEvent);
+    document.addEventListener("click", this.handleEmojiOutsideClick);
   };
 
   removeListeners = () => {
-    document.removeEventListener('keydown', this.handleEmojiKeyEvent);
-    document.removeEventListener('click', this.handleEmojiOutsideClick);
+    document.removeEventListener("keydown", this.handleEmojiKeyEvent);
+    document.removeEventListener("click", this.handleEmojiOutsideClick);
   };
 
   handleEmojiDrawer = () => {
@@ -200,12 +217,12 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
     }
 
     this.setState(prevState => ({
-      isShowingEmojiDrawer: !prevState.isShowingEmojiDrawer,
+      isShowingEmojiDrawer: !prevState.isShowingEmojiDrawer
     }));
   };
 
   handleEmojiKeyEvent = e => {
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       this.handleEmojiDrawer();
     }
   };
@@ -221,14 +238,14 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
     let message = emoji.native;
     const inputRef = this.props.inputRef || this.inputRef;
     if (this.props.value) {
-      message = this.props.value + ' ' + message;
+      message = this.props.value + " " + message;
     }
 
     inputRef.current.value = message;
 
     this.onChange({
       persist: () => {},
-      target: inputRef.current,
+      target: inputRef.current
     });
 
     this.handleEmojiDrawer();
@@ -239,12 +256,13 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
       ref={node => {
         this.node = node;
       }}
-      className={styles.emojiDrawer}>
+      className={styles.emojiDrawer}
+    >
       <Picker
         showPreview={false}
         onSelect={this.addEmoji}
         title="Emoji"
-        style={{right: '50px', position: 'absolute', bottom: '48px'}}
+        style={{ right: "50px", position: "absolute", bottom: "48px" }}
       />
     </div>
   );
@@ -277,10 +295,10 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
       pattern,
       t,
       showCounter,
-      onFocus,
+      onFocus
     } = this.props;
 
-    const {validationResult, wasBlurred} = this.state;
+    const { validationResult, wasBlurred } = this.state;
     const labelClass = `${this.classForState()} ${styles.label}`;
     const inputClass = `${styles[fontClass]} ${styles.inputInner} `;
 
@@ -300,12 +318,18 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
           )}
           {this.props.maxLength > 0 && this.props.showCounter ? (
             <div className={styles.inputMaxLength}>
-              <span className={value.length > this.props.maxLength ? styles.inputMaxLengthError : ''}>
+              <span
+                className={
+                  value.length > this.props.maxLength
+                    ? styles.inputMaxLengthError
+                    : ""
+                }
+              >
                 {Math.max(0, this.props.maxLength - value.length)}
               </span>
             </div>
           ) : (
-            ''
+            ""
           )}
         </div>
         {inputComponent ? (
@@ -327,7 +351,7 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
             fontClass: fontClass,
             pattern: pattern,
             currentValidationState: this.getCurrentValidationState(),
-            showCounter: showCounter,
+            showCounter: showCounter
           })
         ) : (
           <div className={styles.input}>
@@ -342,7 +366,7 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
               onFocus={onFocus}
               onBlur={this.onBlur}
               style={{
-                height: `${height}px`,
+                height: `${height}px`
               }}
               type={type}
               value={value}
@@ -362,14 +386,18 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
                 type="button"
                 onClick={this.handleEmojiDrawer}
                 disabled={this.props.maxLength - value.length <= 0}
-                className={`${styles.emojiIcon} ${this.state.isShowingEmojiDrawer && styles.emojiIconActive}`}>
-                <AccessibleSVG title={t('input.emoji')} src={smileyIcon} />
+                className={`${styles.emojiIcon} ${this.state
+                  .isShowingEmojiDrawer && styles.emojiIconActive}`}
+              >
+                <AccessibleSVG title={t("input.emoji")} src={smileyIcon} />
               </button>
             ) : null}
           </div>
         )}
         <div className={styles.inputHint}>
-          {typeof validationResult === 'string' && (wasBlurred || showErrors) ? validationResult : hint}
+          {typeof validationResult === "string" && (wasBlurred || showErrors)
+            ? validationResult
+            : hint}
         </div>
       </label>
     );
@@ -421,7 +449,13 @@ export interface InputProps {
   height?: number;
 
   // Since tuning font size is not the most common operation, this should suffice for now
-  fontClass?: 'font-base' | 'font-s' | 'font-m' | 'font-l' | 'font-xl' | 'font-xxl';
+  fontClass?:
+    | "font-base"
+    | "font-s"
+    | "font-m"
+    | "font-l"
+    | "font-xl"
+    | "font-xxl";
 
   /**
    * If you want to modify the label, you can add a function here. It will
@@ -445,7 +479,15 @@ export interface InputProps {
   showCounter?: boolean;
 
   // html5 input mode
-  inputmode?: 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
+  inputmode?:
+    | "text"
+    | "none"
+    | "tel"
+    | "url"
+    | "email"
+    | "numeric"
+    | "decimal"
+    | "search";
 }
 
 interface IState {

@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import 'react-dates/initialize';
-import {DateRangePicker} from 'react-dates';
-import moment from 'moment';
+import React, { useState } from "react";
+import "react-dates/initialize";
+import { DateRangePicker } from "react-dates";
+import moment from "moment";
 
-import 'react-dates/lib/css/_datepicker.css';
+import "react-dates/lib/css/_datepicker.css";
 // Sadly this needs to be imported without changing the classnames. That is
 // the only way to override the default look of this component.
-import './react-date-override.scss';
+import "./react-date-override.scss";
 
 export const DateRange = ({
   startDate,
@@ -16,7 +16,7 @@ export const DateRange = ({
   maxDate,
   variant,
   anchorDirection,
-  openDirection,
+  openDirection
 }: DateRangeProps) => {
   const [focusedInput, setFocusedInput] = useState(null);
   return (
@@ -30,7 +30,7 @@ export const DateRange = ({
         focusedInput={focusedInput}
         onFocusChange={focusedInput => setFocusedInput(focusedInput)}
         isOutsideRange={day => {
-          return !moment(day).isBetween(minDate, maxDate, null, '[]');
+          return !moment(day).isBetween(minDate, maxDate, null, "[]");
         }}
         minDate={minDate}
         maxDate={maxDate}
@@ -43,16 +43,19 @@ export const DateRange = ({
 };
 
 DateRange.defaultProps = {
-  variant: 'default',
+  variant: "default"
 };
 
 export interface DateRangeProps {
   startDate?: moment.Moment;
   endDate?: moment.Moment;
-  onDatesChange: (arg: {startDate: moment.Moment; endDate: moment.Moment}) => void;
+  onDatesChange: (arg: {
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+  }) => void;
   minDate: moment.Moment;
   maxDate: moment.Moment;
-  openDirection?: 'up' | 'down';
-  anchorDirection?: 'left' | 'right';
-  variant?: 'light' | 'default';
+  openDirection?: "up" | "down";
+  anchorDirection?: "left" | "right";
+  variant?: "light" | "default";
 }

@@ -1,9 +1,9 @@
-import React, {createRef, useCallback} from 'react';
+import React, { createRef, useCallback } from "react";
 
-import {AccessibleSVG} from '../../labels/AccessibleSVG';
-import closeIcon from 'assets/images/icons/close.svg';
-import searchIcon from 'assets/images/icons/search.svg';
-import styles from './style.module.scss';
+import { AccessibleSVG } from "../../labels/AccessibleSVG";
+import closeIcon from "assets/images/icons/close.svg";
+import searchIcon from "assets/images/icons/search.svg";
+import styles from "./style.module.scss";
 
 type Props = {
   id?: string;
@@ -14,10 +14,17 @@ type Props = {
   autoFocus?: boolean;
 };
 
-export const SearchField = ({id, placeholder, value, setValue, resetClicked, autoFocus}: Props) => {
+export const SearchField = ({
+  id,
+  placeholder,
+  value,
+  setValue,
+  resetClicked,
+  autoFocus
+}: Props) => {
   const inputRef = createRef<HTMLInputElement>();
   const resetButton = useCallback(() => {
-    setValue('');
+    setValue("");
     if (resetClicked) {
       resetClicked();
     }
@@ -25,7 +32,11 @@ export const SearchField = ({id, placeholder, value, setValue, resetClicked, aut
 
   return (
     <div className={styles.component}>
-      <AccessibleSVG ariaHidden="true" src={searchIcon} className={styles.searchIcon} />
+      <AccessibleSVG
+        ariaHidden="true"
+        src={searchIcon}
+        className={styles.searchIcon}
+      />
       <input
         ref={inputRef}
         id={id}
@@ -35,9 +46,17 @@ export const SearchField = ({id, placeholder, value, setValue, resetClicked, aut
         type="search"
         autoFocus={autoFocus}
       />
-      {value !== '' && (
-        <button className={styles.resetButton} onClick={resetButton} title="Reset Search">
-          <AccessibleSVG ariaHidden="true" src={closeIcon} className={styles.closeIcon} />
+      {value !== "" && (
+        <button
+          className={styles.resetButton}
+          onClick={resetButton}
+          title="Reset Search"
+        >
+          <AccessibleSVG
+            ariaHidden="true"
+            src={closeIcon}
+            className={styles.closeIcon}
+          />
         </button>
       )}
     </div>

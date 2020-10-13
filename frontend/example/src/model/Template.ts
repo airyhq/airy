@@ -13,7 +13,7 @@ export interface TemplateButton {
 }
 
 export interface ReceiptTemplate {
-  template_type: 'receipt';
+  template_type: "receipt";
   recipient_name?: string;
   order_number?: string;
   currency?: string;

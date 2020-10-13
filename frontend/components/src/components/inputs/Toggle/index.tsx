@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import styles from './style.module.scss';
+import React, { useRef, useState } from "react";
+import styles from "./style.module.scss";
 
 type ToggleType = {
   value: boolean;
@@ -7,7 +7,7 @@ type ToggleType = {
   updateValue: (value: boolean) => void;
 };
 
-export const Toggle = ({value, text, updateValue}: ToggleType) => {
+export const Toggle = ({ value, text, updateValue }: ToggleType) => {
   const onCheckboxChange = event => {
     updateValue(event.target.checked);
   };

@@ -1,21 +1,28 @@
-import React, {ReactNode} from 'react';
+import React, { ReactNode } from "react";
 
-import styles from './style.module.scss';
+import styles from "./style.module.scss";
 
-export const Button = ({children, onClick, type, styleVariant, disabled, tabIndex}: buttonProps) => {
+export const Button = ({
+  children,
+  onClick,
+  type,
+  styleVariant,
+  disabled,
+  tabIndex
+}: buttonProps) => {
   const styleFor = variant => {
     switch (variant) {
-      case 'small':
+      case "small":
         return styles.smallButton;
-      case 'outline':
+      case "outline":
         return styles.outlineButton;
-      case 'outline-big':
+      case "outline-big":
         return styles.outlineButtonBig;
-      case 'warning':
+      case "warning":
         return styles.warningButton;
-      case 'link':
+      case "link":
         return styles.linkButton;
-      case 'text':
+      case "text":
         return styles.textButton;
       default:
         return styles.button;
@@ -24,12 +31,13 @@ export const Button = ({children, onClick, type, styleVariant, disabled, tabInde
 
   return (
     <button
-      type={type || 'button'}
+      type={type || "button"}
       disabled={disabled || false}
       className={styleFor(styleVariant)}
       onClick={onClick}
       //@ts-ignore
-      tabIndex={tabIndex}>
+      tabIndex={tabIndex}
+    >
       {children}
     </button>
   );
@@ -41,9 +49,16 @@ type buttonProps = {
   /** button clicked callback */
   onClick?: (event?) => void;
   /** the button type */
-  type?: 'submit' | 'button' | 'reset';
+  type?: "submit" | "button" | "reset";
   disabled?: boolean;
   /** the button style variation */
-  styleVariant?: 'small' | 'normal' | 'outline' | 'outline-big' | 'warning' | 'link' | 'text';
+  styleVariant?:
+    | "small"
+    | "normal"
+    | "outline"
+    | "outline-big"
+    | "warning"
+    | "link"
+    | "text";
   tabIndex?: any;
 };

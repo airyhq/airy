@@ -1,12 +1,12 @@
-import React from 'react';
-import {ReactSVG} from 'react-svg';
+import React from "react";
+import { ReactSVG } from "react-svg";
 
-import warningIcon from '../../../assets/images/icons/exclamation-triangle.svg';
-import closeIcon from '../../../assets/images/icons/close.svg';
-import styles from './style.module.scss';
+import warningIcon from "../../../assets/images/icons/exclamation-triangle.svg";
+import closeIcon from "../../../assets/images/icons/close.svg";
+import styles from "./style.module.scss";
 
 export const ErrorPopUp = (props: errorPopUpProps) => {
-  const {message, closeHandler} = props;
+  const { message, closeHandler } = props;
 
   return (
     <div className={styles.main}>

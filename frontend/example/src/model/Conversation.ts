@@ -1,8 +1,8 @@
-import {Channel} from './Channel';
+import { Channel } from "./Channel";
 
 export interface Conversation {
   id: string;
-  state: 'OPEN' | 'CLOSED';
+  state: "OPEN" | "CLOSED";
   created_at: string;
   channel?: Channel;
   source?: Channel;

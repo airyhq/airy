@@ -1,16 +1,16 @@
-import React, {useRef, useState, useEffect, useCallback} from 'react';
-import styles from './style.module.scss';
-import {AccessibleSVG} from '../../labels/AccessibleSVG';
-import chevronDown from 'assets/images/icons/chevron-down.svg';
+import React, { useRef, useState, useEffect, useCallback } from "react";
+import styles from "./style.module.scss";
+import { AccessibleSVG } from "../../labels/AccessibleSVG";
+import chevronDown from "assets/images/icons/chevron-down.svg";
 
-export const Dropdown = ({text, options, variant, onClick}) => {
+export const Dropdown = ({ text, options, variant, onClick }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const componentEl = useRef(null);
   const buttonEl = useRef(null);
 
   const styleFor = variant => {
     switch (variant) {
-      case 'borderless':
+      case "borderless":
         return styles.borderlessButton;
       default:
         return styles.button;
@@ -34,7 +34,7 @@ export const Dropdown = ({text, options, variant, onClick}) => {
 
   const keyDownHandler = useCallback(
     e => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         showDropdown(false);
       }
     },
@@ -51,30 +51,42 @@ export const Dropdown = ({text, options, variant, onClick}) => {
   );
 
   useEffect(() => {
-    document.addEventListener('keydown', keyDownHandler);
-    document.addEventListener('click', eventHandler, true);
-    document.addEventListener('focus', eventHandler, true);
+    document.addEventListener("keydown", keyDownHandler);
+    document.addEventListener("click", eventHandler, true);
+    document.addEventListener("focus", eventHandler, true);
 
     return () => {
-      document.removeEventListener('keydown', keyDownHandler);
-      document.removeEventListener('click', eventHandler);
-      document.removeEventListener('focus', eventHandler);
+      document.removeEventListener("keydown", keyDownHandler);
+      document.removeEventListener("click", eventHandler);
+      document.removeEventListener("focus", eventHandler);
     };
   }, [document, eventHandler, keyDownHandler]);
 
   return (
     <div className={styles.component} ref={componentEl}>
-      <button ref={buttonEl} className={styleFor(variant)} type="button" onClick={() => showDropdown(!dropdownVisible)}>
+      <button
+        ref={buttonEl}
+        className={styleFor(variant)}
+        type="button"
+        onClick={() => showDropdown(!dropdownVisible)}
+      >
         <div>{text}</div>
         <AccessibleSVG
           src={chevronDown}
-          className={`${styles.chevron} ${dropdownVisible ? styles.chevronRotated : ''}`}
+          className={`${styles.chevron} ${
+            dropdownVisible ? styles.chevronRotated : ""
+          }`}
         />
       </button>
       {dropdownVisible && (
         <div className={styles.dropDown}>
           {options.map(option => (
-            <button type="button" key={option} className={styles.item} onClick={() => itemSelected(option)}>
+            <button
+              type="button"
+              key={option}
+              className={styles.item}
+              onClick={() => itemSelected(option)}
+            >
               {option}
             </button>
           ))}

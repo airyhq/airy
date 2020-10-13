@@ -1,1 +1,1 @@
-export * from './AccessibleSVG';
+export * from "./AccessibleSVG";

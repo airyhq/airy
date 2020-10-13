@@ -5,7 +5,7 @@ load("//tools/build/web:typescript.bzl", "ts_library")
 ts_library(
     name = "components",
     tsconfig = "//:tsconfig.json",
-    deps = [        
+    deps = [
         "@npm//@crello/react-lottie",
         "@npm//@types/prop-types",
         "@npm//@types/react",

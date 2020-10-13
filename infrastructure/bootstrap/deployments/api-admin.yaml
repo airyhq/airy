@@ -35,6 +35,12 @@ spec:
           value: ""
         - name: SERVICE_NAME
           value: facebook-events-router
+        - name: DB_USERNAME
+          value:
+        - name: DB_PASSWORD
+            value:
+        - name: DB_ENDPOINT
+            value:
         livenessProbe:
             httpGet:
               path: /health

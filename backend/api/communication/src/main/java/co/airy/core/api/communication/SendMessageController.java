@@ -6,16 +6,15 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
+import co.airy.core.api.communication.payload.MessageResponsePayload;
 import co.airy.core.api.communication.payload.SendMessageRequestPayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.payload.response.EmptyResponsePayload;
-import co.airy.core.api.communication.payload.MessageResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,16 +29,17 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 public class SendMessageController {
-    @Autowired
-    Stores stores;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private KafkaProducer<String, Message> producer;
+    private final Stores stores;
+    private final ObjectMapper objectMapper;
+    private final KafkaProducer<String, Message> producer;
 
     private final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
+
+    SendMessageController(Stores stores, ObjectMapper objectMapper, KafkaProducer<String, Message> producer) {
+        this.stores = stores;
+        this.objectMapper = objectMapper;
+        this.producer = producer;
+    }
 
     @PostMapping("/conversations.send")
     public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException, JsonProcessingException {

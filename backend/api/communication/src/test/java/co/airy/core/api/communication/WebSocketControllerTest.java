@@ -43,9 +43,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import static co.airy.core.api.communication.Websocket.QUEUE_CHANNEL_CONNECTED;
-import static co.airy.core.api.communication.Websocket.QUEUE_MESSAGE_UPSERT;
-import static co.airy.core.api.communication.Websocket.QUEUE_UNREAD_COUNT;
+import static co.airy.core.api.communication.WebSocketController.QUEUE_CHANNEL_CONNECTED;
+import static co.airy.core.api.communication.WebSocketController.QUEUE_MESSAGE;
+import static co.airy.core.api.communication.WebSocketController.QUEUE_UNREAD_COUNT;
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -57,13 +57,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {AirySpringBootApplication.class})
 @AutoConfigureMockMvc
-public class WebsocketTest {
+public class WebSocketControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
+
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
     private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
+
     private static TestHelper testHelper;
 
     private static boolean testDataInitialized = false;
@@ -127,7 +129,7 @@ public class WebsocketTest {
 
     @Test
     void sendsToWebsocket() throws Exception {
-        final CompletableFuture<MessageUpsertPayload> messageFuture = subscribe(port, MessageUpsertPayload.class, QUEUE_MESSAGE_UPSERT);
+        final CompletableFuture<MessageUpsertPayload> messageFuture = subscribe(port, MessageUpsertPayload.class, QUEUE_MESSAGE);
         final CompletableFuture<ChannelPayload> channelFuture = subscribe(port, ChannelPayload.class, QUEUE_CHANNEL_CONNECTED);
         final CompletableFuture<UnreadCountPayload> unreadFuture = subscribe(port, UnreadCountPayload.class, QUEUE_UNREAD_COUNT);
 

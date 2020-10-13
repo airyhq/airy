@@ -45,10 +45,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 class ConversationsFilterTest {
-
-
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
+
     private static TestHelper testHelper;
 
     @Autowired
@@ -100,10 +99,7 @@ class ConversationsFilterTest {
 
     private final List<CreateConversation> conversations = List.of(
             CreateConversation.builder()
-                    .metadata(
-                            Map.of(
-                                    MetadataKeys.SOURCE.CONTACT.FIRST_NAME, firstNameToFind
-                            ))
+                    .metadata(Map.of(MetadataKeys.SOURCE.CONTACT.FIRST_NAME, firstNameToFind))
                     .conversationId(UUID.randomUUID().toString())
                     .messageCount(1L)
                     .channel(defaultChannel)

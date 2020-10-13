@@ -45,10 +45,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 public class MessagesTest {
-
-
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
+
     private static TestHelper testHelper;
 
     @Autowired
@@ -80,8 +79,7 @@ public class MessagesTest {
     void init() throws Exception {
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+                "Application is not healthy");
     }
 
     @Test

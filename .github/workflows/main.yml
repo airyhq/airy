@@ -40,12 +40,9 @@ jobs:
         run: |
           "${GITHUB_WORKSPACE}/bin/bazel" test //...
 
-  deploy:
-    needs: build
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - uses: jakejarvis/s3-sync-action@master
+      - name: Deploy component library
+        if: ${{github.ref == 'refs/heads/main'}}
+        uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
@@ -53,4 +50,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DISTRIBUTION_ID: ${{ secrets.AWS_DISTRIBUTION_ID }}
-          SOURCE_DIR: 'bazel-bin/frontend/demo/bundle'
+          SOURCE_DIR: 'bazel-bin/frontend/showcase/bundle'

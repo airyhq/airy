@@ -107,3 +107,12 @@ java_library(
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
     ],
 )
+
+exports_files(
+    [
+        "package.json",
+        "yarn.lock",
+        "tsconfig.json",
+    ],
+    visibility = ["//visibility:public"],
+)

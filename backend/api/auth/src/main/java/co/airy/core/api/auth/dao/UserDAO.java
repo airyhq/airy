@@ -20,4 +20,8 @@ public interface UserDAO {
     @SqlQuery("SELECT * FROM users WHERE id=:id")
     @RegisterBeanMapper(User.class)
     User findById(UUID id);
+
+    @SqlQuery("SELECT * FROM users WHERE email=:email")
+    @RegisterBeanMapper(User.class)
+    User findByEmail(String email);
 }

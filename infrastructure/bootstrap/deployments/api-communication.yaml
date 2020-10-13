@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: api-communication
-        image: ghcr.io/airyhq/api/conversations:latest
+        image: ghcr.io/airyhq/api/communication:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

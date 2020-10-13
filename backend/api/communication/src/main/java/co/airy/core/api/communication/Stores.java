@@ -2,9 +2,9 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.ReadReceipt;
 import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
+import co.airy.avro.communication.ReadReceipt;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.CountAction;
@@ -25,7 +25,6 @@ import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.http.ResponseEntity;
@@ -45,30 +44,32 @@ import static java.util.stream.Collectors.toCollection;
 @Component
 @RestController
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+    private static final String appId = "api.CommunicationStores";
 
-    private static final String appId = "api.ConversationsController";
-
-    @Autowired
-    private KafkaStreamsWrapper streams;
-
-    @Autowired
-    KafkaProducer<String, ReadReceipt> producer;
+    private final KafkaStreamsWrapper streams;
+    private final KafkaProducer<String, ReadReceipt> producer;
+    private final WebSocketController webSocketController;
 
     private final String MESSAGES_STORE = "messages-store";
     private final String CONVERSATIONS_STORE = "conversations-store";
 
-    @Autowired
-    private WebSocketController websocket;
+    Stores(KafkaStreamsWrapper streams,
+           KafkaProducer<String, ReadReceipt> producer,
+           WebSocketController webSocketController) {
+        this.streams = streams;
+        this.producer = producer;
+        this.webSocketController = webSocketController;
+    }
 
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .selectKey((messageId, message) -> message.getConversationId())
-                .peek((conversationId, message) -> websocket.onNewMessage(message));
+                .peek((conversationId, message) -> webSocketController.onNewMessage(message));
 
         final KTable<String, Channel> channelTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
-                .peek((channelId, channel) -> websocket.onChannelUpdate(channel))
+                .peek((channelId, channel) -> webSocketController.onChannelUpdate(channel))
                 .toTable();
 
         final KTable<String, Map<String, String>> metadataTable = builder.<String, MetadataAction>stream(new ApplicationCommunicationMetadata().name())
@@ -101,15 +102,13 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                         unreadCountState.setMessageSentDates(
                                 unreadCountState.getMessageSentDates().stream()
                                         .filter((timestamp) -> timestamp > actionDate)
-                                        .collect(toCollection(HashSet::new))
-                        );
+                                        .collect(toCollection(HashSet::new)));
                     }
 
                     return unreadCountState;
                 });
 
-        unreadCountTable.toStream()
-                .peek(websocket::onUnreadCount);
+        unreadCountTable.toStream().peek(webSocketController::onUnreadCount);
 
         final KGroupedStream<String, Message> messageGroupedStream = messageStream.groupByKey();
 
@@ -184,11 +183,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         final MessagesTreeSet messagesTreeSet = messagesStore.get(conversationId);
 
-        if (messagesTreeSet == null) {
-            return null;
-        }
-
-        return new ArrayList<>(messagesTreeSet);
+        return messagesTreeSet == null ? null : new ArrayList<>(messagesTreeSet);
     }
 
     @Override

@@ -1,13 +1,9 @@
 //@ts-nocheck
 import React from 'react'
 
-import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { Button, LinkButton, HrefButton, ErrorMessage, ErrorNotice, TopBar } from 'components'
 
-import {store} from './store'
-
-import 'components/dist/index.css'
 import styles from './index.module.scss'
 
 const App = () => {
@@ -15,7 +11,7 @@ const App = () => {
   return (
     <>
       <h1 className={styles.title}>Airy Components Library Showcase</h1>
-      <div className={styles.main}> 
+      <div className={styles.main}>
         <h2 className={styles.sectionTitle}>Alerts</h2>
         <div className={styles.section}>
           <div className={styles.item}>
@@ -26,21 +22,21 @@ const App = () => {
               </BrowserRouter>
             </Provider> */}
             <ErrorMessage text="This in an error message" />
-          </div>  
+          </div>
           <div className={styles.item}>
             <h3>Error notice warning</h3>
             <ErrorNotice theme="warning">
               <p>This in an warning message</p>
             </ErrorNotice>
-          </div>  
+          </div>
           <div className={styles.item}>
             <h3>Error notice error</h3>
             <ErrorNotice theme="error">
               <p>This in an error message"</p>
             </ErrorNotice>
-          </div>  
-                
-        </div> 
+          </div>
+
+        </div>
         <h2 className={styles.sectionTitle}>Buttons</h2>
         <div className={styles.section}>
           <div className={styles.item}>
@@ -62,11 +58,11 @@ const App = () => {
           <div className={styles.item}>
             <h3>Warning</h3>
             <Button styleVariant="warning" type="submit" onClick={() => (alert("Button Pressed"))}>Button</Button>
-          </div>          
+          </div>
           <div className={styles.item}>
             <h3>Text</h3>
             <Button styleVariant="text" type="submit" onClick={() => (alert("Button Pressed"))}>Button</Button>
-          </div>  
+          </div>
           <div className={styles.item}>
             <h3>Link</h3>
             <LinkButton onClick={() => (alert("Button Pressed"))}>Button</LinkButton>

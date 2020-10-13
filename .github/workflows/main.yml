@@ -15,6 +15,16 @@ jobs:
           java-version: '11'
           architecture: 'x64'
 
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DISTRIBUTION_ID: ${{ secrets.AWS_DISTRIBUTION_ID }}
+          SOURCE_DIR: 'bazel-bin/frontend/demo/bundle'
+
       - name: Mount bazel cache
         uses: actions/cache@v2
         with:

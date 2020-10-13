@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm install --save components
+npm install --save @airyhq/components
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm install --save components
 ```tsx
 import React, { Component } from 'react'
 
-import MyComponent from 'components'
+import MyComponent from ' @airyhq/components'
 import 'components/dist/index.css'
 
 class Example extends Component {

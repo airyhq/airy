@@ -1,20 +1,21 @@
 package co.airy.core.api.auth.controllers;
 
+import co.airy.core.api.auth.controllers.payload.AcceptInvitationRequestPayload;
+import co.airy.core.api.auth.controllers.payload.AcceptInvitationResponsePayload;
 import co.airy.core.api.auth.controllers.payload.InviteUserRequestPayload;
 import co.airy.core.api.auth.controllers.payload.InviteUserResponsePayload;
 import co.airy.core.api.auth.controllers.payload.LoginRequestPayload;
 import co.airy.core.api.auth.controllers.payload.LoginResponsePayload;
 import co.airy.core.api.auth.controllers.payload.SignupRequestPayload;
-import co.airy.core.api.auth.dao.InvitationDAO;
-import co.airy.core.api.auth.dto.Invitation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import co.airy.core.api.auth.controllers.payload.SignupResponsePayload;
+import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dao.UserDAO;
+import co.airy.core.api.auth.dto.Invitation;
 import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Password;
 import co.airy.payload.response.RequestError;
 import co.airy.spring.web.Jwt;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -108,5 +109,32 @@ public class UsersController {
         return ResponseEntity.status(HttpStatus.CREATED).body(InviteUserResponsePayload.builder()
                 .id(id)
                 .build());
+    }
+
+    @PostMapping("/users.accept-invitation")
+    ResponseEntity<AcceptInvitationResponsePayload> acceptInvitation(@RequestBody @Valid AcceptInvitationRequestPayload payload) {
+        final Invitation invitation = invitationDAO.findInvitation(payload.getId());
+        final Instant now = Instant.now();
+
+        final boolean recordUpdated = invitationDAO.update(invitation.getId(), now, now);
+
+        final UUID userId = UUID.randomUUID();
+        final User user = User.builder()
+                .id(userId)
+                .email(invitation.getEmail())
+                .firstName(payload.getFirstName())
+                .lastName(payload.getLastName())
+                .passwordHash(passwordService.hashPassword(payload.getPassword()))
+                .build();
+
+        userDAO.insert(user);
+
+        return ResponseEntity.ok(AcceptInvitationResponsePayload.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .token(jwt.tokenFor(userId.toString()))
+                .id(userId.toString())
+                .build()
+        );
     }
 }

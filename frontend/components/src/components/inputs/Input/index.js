@@ -421,12 +421,13 @@ var InputComponent = /** @class */ (function(_super) {
                       (this.state.isShowingEmojiDrawer &&
                         style_module_scss_1["default"].emojiIconActive)
                   },
-                  react_1[
-                    "default"
-                  ].createElement(AccessibleSVG_1.AccessibleSVG, {
-                    title: t("input.emoji"),
-                    src: smiley_svg_1["default"]
-                  })
+                  react_1["default"].createElement(
+                    AccessibleSVG_1.AccessibleSVG,
+                    {
+                      title: t("input.emoji"),
+                      src: smiley_svg_1["default"]
+                    }
+                  )
                 )
               : null
           ),

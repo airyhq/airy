@@ -2,7 +2,6 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -26,11 +25,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
-import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,10 +41,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 class UnreadCountTest {
-
-
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
+
     private static TestHelper testHelper;
 
     @Autowired
@@ -119,9 +115,9 @@ class UnreadCountTest {
         );
 
         mvc.perform(post("/conversations.mark-read")
-                        .headers(buildHeaders())
-                        .content(conversationByIdRequest))
-                        .andExpect(status().isAccepted());
+                .headers(buildHeaders())
+                .content(conversationByIdRequest))
+                .andExpect(status().isAccepted());
 
         testHelper.waitForCondition(
                 () -> mvc.perform(post("/conversations.by_id")

@@ -48,8 +48,9 @@ public class SendMessageControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static TestHelper testHelper;
-    private static String facebookConversationId = "facebook-conversation-id";
+    private static final String facebookConversationId = "facebook-conversation-id";
     private static boolean testDataInitialized = false;
+
     final Channel facebookChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("facebook-channel-id")
@@ -58,12 +59,14 @@ public class SendMessageControllerTest {
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")
             .build();
+
     private final List<ConversationGenerator.CreateConversation> conversations = List.of(
             ConversationGenerator.CreateConversation.builder()
                     .conversationId(facebookConversationId)
                     .messageCount(1L)
                     .channel(facebookChannel)
                     .build());
+
     @Autowired
     private MockMvc mvc;
 

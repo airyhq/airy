@@ -2,7 +2,6 @@ package co.airy.core.api.auth;
 
 import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dao.UserDAO;
-import co.airy.core.api.auth.dto.Invitation;
 import co.airy.core.api.auth.dto.User;
 import co.airy.spring.core.AirySpringBootApplication;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,14 +16,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -45,6 +42,9 @@ public class UsersControllerTest {
 
     @Autowired
     private InvitationDAO invitationDAO;
+
+    @Autowired
+    private UserDAO userDAO;
 
     @Test
     void userSignupAndLogin() throws Exception {

@@ -5,7 +5,6 @@ import co.airy.core.api.auth.controllers.payload.InviteUserResponsePayload;
 import co.airy.core.api.auth.controllers.payload.SignupRequestPayload;
 import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dto.Invitation;
-import co.airy.payload.response.EmptyResponsePayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import co.airy.core.api.auth.controllers.payload.SignupResponsePayload;
@@ -26,16 +25,15 @@ import java.util.UUID;
 @RestController
 public class UsersController {
 
-    @Autowired
-    private InvitationDAO invitationDAO;
-
+    private final InvitationDAO invitationDAO;
     private final UserDAO userDAO;
     private final Password passwordService;
     private final Jwt jwt;
 
-    public UsersController(Password passwordService, UserDAO userDAO, Jwt jwt) {
+    public UsersController(Password passwordService, UserDAO userDAO, InvitationDAO invitationDAO, Jwt jwt) {
         this.passwordService = passwordService;
         this.userDAO = userDAO;
+        this.invitationDAO = invitationDAO;
         this.jwt = jwt;
     }
 
@@ -71,7 +69,8 @@ public class UsersController {
     }
 
     @PostMapping("/users.invite")
-    ResponseEntity<?> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
+    //TODO: Write a custom ExceptionHandler for JDBI
+    ResponseEntity<InviteUserResponsePayload> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
         final UUID id = UUID.randomUUID();
         final Instant now = Instant.now();
 
@@ -82,10 +81,10 @@ public class UsersController {
                 .email(inviteUserRequestPayload.getEmail())
                 .sentAt(null)
                 .updatedAt(now)
-                .user(null)
+                .createdBy(null)
                 .build());
         return ResponseEntity.status(HttpStatus.CREATED).body(InviteUserResponsePayload.builder()
-                .id(id.toString())
+                .id(id)
                 .build());
     }
 }

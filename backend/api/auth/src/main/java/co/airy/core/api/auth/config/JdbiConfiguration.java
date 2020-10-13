@@ -44,6 +44,7 @@ public class JdbiConfiguration {
         return jdbi;
     }
 
+    //TODO: BeanFactory to generate bindings for DAOs
     @Bean
     public UserDAO userDAO(Jdbi jdbi) {
         return jdbi.onDemand(UserDAO.class);

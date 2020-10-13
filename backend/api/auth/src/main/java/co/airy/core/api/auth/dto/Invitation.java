@@ -15,9 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Invitation {
     private UUID id;
-
-    @ColumnName("created_by")
-    private User user;
+    private User createdBy;
     private String email;
     private Instant sentAt;
     private Instant acceptedAt;

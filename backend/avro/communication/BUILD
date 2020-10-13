@@ -11,6 +11,10 @@ avro_java_library(
     name = "message",
 )
 
+avro_java_library(
+    name = "read-receipt",
+)
+
 java_library(
     name = "metadata-action",
     srcs = glob(["metadata-action/src/main/**/*.java"]),
@@ -22,12 +26,4 @@ avro_java_library(
     name = "metadata-action-avro",
     srcs = ["metadata-action.avsc"],
     visibility = ["//visibility:private"],
-)
-
-avro_java_library(
-    name = "send-message-request",
-    srcs = [
-        "message.avsc",
-        "send-message-request.avsc",
-    ],
 )

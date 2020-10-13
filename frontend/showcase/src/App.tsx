@@ -1,5 +1,5 @@
 //@ts-nocheck
-import React from 'react'
+import React from "react";
 
 import { BrowserRouter } from 'react-router-dom'
 import { Button, LinkButton, HrefButton, ErrorMessage, ErrorNotice, TopBar } from 'components'
@@ -7,7 +7,6 @@ import { Button, LinkButton, HrefButton, ErrorMessage, ErrorNotice, TopBar } fro
 import styles from './index.module.scss'
 
 const App = () => {
-
   return (
     <>
       <h1 className={styles.title}>Airy Components Library Showcase</h1>
@@ -35,37 +34,74 @@ const App = () => {
               <p>This in an error message"</p>
             </ErrorNotice>
           </div>
-
         </div>
         <h2 className={styles.sectionTitle}>Buttons</h2>
         <div className={styles.section}>
           <div className={styles.item}>
             <h3>Normal</h3>
-            <Button styleVariant="normal" type="submit" onClick={() => (alert("Button Pressed"))}>Button</Button>
+            <Button
+              styleVariant="normal"
+              type="submit"
+              onClick={() => alert("Button Pressed")}
+            >
+              Button
+            </Button>
           </div>
           <div className={styles.item}>
             <h3>Small</h3>
-            <Button styleVariant="small" type="submit" onClick={() => (alert("Button Pressed"))}>Button</Button>
+            <Button
+              styleVariant="small"
+              type="submit"
+              onClick={() => alert("Button Pressed")}
+            >
+              Button
+            </Button>
           </div>
           <div className={styles.item}>
             <h3>Outline normal</h3>
-            <Button styleVariant="outline" type="submit" onClick={() => (alert("Button Pressed"))}>Button</Button>
+            <Button
+              styleVariant="outline"
+              type="submit"
+              onClick={() => alert("Button Pressed")}
+            >
+              Button
+            </Button>
           </div>
           <div className={styles.item}>
             <h3>Outline big</h3>
-            <Button styleVariant="outline-big" type="submit" onClick={() => (alert("Button Pressed"))}>Button</Button>
+            <Button
+              styleVariant="outline-big"
+              type="submit"
+              onClick={() => alert("Button Pressed")}
+            >
+              Button
+            </Button>
           </div>
           <div className={styles.item}>
             <h3>Warning</h3>
-            <Button styleVariant="warning" type="submit" onClick={() => (alert("Button Pressed"))}>Button</Button>
+            <Button
+              styleVariant="warning"
+              type="submit"
+              onClick={() => alert("Button Pressed")}
+            >
+              Button
+            </Button>
           </div>
           <div className={styles.item}>
             <h3>Text</h3>
-            <Button styleVariant="text" type="submit" onClick={() => (alert("Button Pressed"))}>Button</Button>
+            <Button
+              styleVariant="text"
+              type="submit"
+              onClick={() => alert("Button Pressed")}
+            >
+              Button
+            </Button>
           </div>
           <div className={styles.item}>
             <h3>Link</h3>
-            <LinkButton onClick={() => (alert("Button Pressed"))}>Button</LinkButton>
+            <LinkButton onClick={() => alert("Button Pressed")}>
+              Button
+            </LinkButton>
           </div>
           <div className={styles.item}>
             <h3>Href</h3>
@@ -76,7 +112,7 @@ const App = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

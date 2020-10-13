@@ -1,14 +1,14 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-import styles from './style.module.scss';
+import styles from "./style.module.scss";
 
 type Props = {
   children: React.ReactNode;
   href: string;
 };
 
-export const HrefButton = ({children, href}: Props) => (
+export const HrefButton = ({ children, href }: Props) => (
   <Link to={href}>
     <div className={styles.button}>
       <span className={styles.buttonLabel}>{children}</span>

@@ -107,6 +107,8 @@ def springboot(name, main_class, deps, srcs, resources = []):
         srcs = srcs,
         resources = resources,
         main_class = main_class,
+        # Add parameters to enable this jdbi feature http://jdbi.org/#_compiling_with_parameter_names
+        javacopts = ["-parameters"],
         deps = deps,
     )
 

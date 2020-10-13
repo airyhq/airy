@@ -37,6 +37,7 @@
         "type": "enum",
         "symbols": [
           "PENDING",
+          "FAILED",
           "DELIVERED"
         ]
       }
@@ -60,10 +61,6 @@
     {
       "name": "content",
       "type": "string"
-    },
-    {
-      "name": "offset",
-      "type": "long"
     },
     {
       "name": "sentAt",

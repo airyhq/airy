@@ -1,15 +1,15 @@
-@import './colors.scss';
-@import './animations.scss';
-@import './fonts.scss';
+@import "./colors.scss";
+@import "./animations.scss";
+@import "./fonts.scss";
 
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 .color-examples::after {
   visibility: hidden;
   display: block;
-  content: '';
+  content: "";
   clear: both;
   height: 0;
 }

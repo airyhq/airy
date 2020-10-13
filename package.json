@@ -24,7 +24,10 @@
     "redux": "4.0.5",
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.5",
-    "typescript": "3.7.4"
+    "typescript": "3.7.4",
+    "react-i18next": "10",
+    "i18next": "19.0.3",
+    "i18next-browser-languagedetector": "4.0.1"
   },
   "scripts": {},
   "devDependencies": {

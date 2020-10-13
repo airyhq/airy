@@ -8,10 +8,10 @@ module_deps = [
 webapp(
     name = "bundle",
     app_lib = ":app",
-    entry = "frontend/demo/src/index.js",
+    entry = "frontend/showcase/src/index.js",
     index = ":index.html",
     module_deps = module_deps,
-    static_assets = "//frontend/demo/public",
+    static_assets = "//frontend/showcase/public",
 )
 
 ts_library(

@@ -3,21 +3,35 @@
 This documents aims to offer an high-level overview of the different parts that
 compose our API.
 
-- [Introduction](#introduction)
-- [Endpoints](#endpoints)
-  - [Conversations](#conversations)
-    - [List conversations](#list-conversations)
-    - [Conversation by id](#conversation-by-id)
-    - [Mark all conversations as read](#mark-all-conversations-as-read)
-    - [Messages of a conversation](#messages-of-a-conversation)
-    - [Send a message](#send-a-message)
-  - [Channels](#channels)
-    - [Connecting Channels](#connecting-channels)
-    - [Disconnecting Channels](#disconnecting-channels)
-    - [List Available Channels](#list-available-channels)
-    - [List Connected Channels](#list-connected-channels)
-- [Error codes](#error-codes)
-- [Pagination](#pagination)
+- [Airy Core Platform API](#airy-core-platform-api)
+  - [Introduction](#introduction)
+  - [Authentication](#authentication)
+    - [Login](#login)
+  - [Endpoints](#endpoints)
+    - [Users](#users)
+      - [Signup](#signup)
+      - [Signup via invitation](#signup-via-invitation)
+      - [Request password reset](#request-password-reset)
+      - [Reset password](#reset-password)
+    - [Invitations](#invitations)
+      - [Creating an invitation](#creating-an-invitation)
+    - [Conversations](#conversations)
+      - [List conversations](#list-conversations)
+      - [Conversation by id](#conversation-by-id)
+      - [Mark conversation as read](#mark-conversation-as-read)
+    - [Messages](#messages)
+      - [Messages of a conversation](#messages-of-a-conversation)
+      - [Send a message](#send-a-message)
+    - [Channels](#channels)
+      - [Connecting Channels](#connecting-channels)
+      - [Disconnecting Channels](#disconnecting-channels)
+      - [List Available Channels](#list-available-channels)
+      - [List Connected Channels](#list-connected-channels)
+    - [Webhooks](#webhooks)
+      - [Subscribing to a webhook](#subscribing-to-a-webhook)
+      - [Unsubscribing to a webhook](#unsubscribing-to-a-webhook)
+      - [Fetch webhook](#fetch-webhook)
+  - [Pagination](#pagination)
 
 ## Introduction
 
@@ -26,22 +40,199 @@ Our HTTP endpoints adhere to the following conventions:
 - Endpoints only accept `POST` JSON requests.
 - Except for the `/login` and `/signup` endpoints, communication
   always requires a valid [JWT token](#authorization).
-- There are no nested URLs (eg there are no `/thing/:id/:otherthing`)
-- `4xx` responses always use a machine [error code](/#error-codes).
+- We use dots for namespacing URLS (eg there are no `/things.add`).
 
-These constraints aim to simplify the eventual migration of our API to a GraphQL
-schema, as a bonus we avoid complicated URL builders in the frontends.
+## Authentication
+
+In order to communicate with our API endpoints, you need a valid
+[JWT](https://jwt.io/) token. To get a valid token you need to use the login endpoint
+[login](#login).
+
+The login endpoints returns a short-lived JWT token you can use for API requests
+
+### Login
+
+As the purpose of this endpoint is to obtain valid JWT tokens, this endpoint
+does not require a valid token to be present in the headers.
+
+`POST /users.login`
+
+**Sample Request**
+
+```json5
+{ 
+  "email": "grace@example.com", 
+  "password": "avalidpassword" 
+}
+```
+
+**Sample Response**
+
+```json
+{
+  "id": "424242-4242-42-4242-4242",
+  "first_name": "Grace",
+  "last_name": "Hopper",
+  "token": "JWT_TOKEN"
+}
+```
 
 ## Endpoints
 
-As there is no nesting, we group endpoints only logically. The idea is to focus
-on the feature set endpoints enable. The grouping reflects the high level
-entities of the [Airy Data Model](/docs/data-model.md).
+The way we group endpoints reflects the high level entities of the [Airy Core Data
+Model](/docs/data-model.md).
+
+### Users
+
+Please refer to our [user](/docs/data-model.md#users) definition for more
+information.
+
+#### Signup
+
+`POST /users.signup`
+
+**Sample Request**
+
+```json
+{
+  "first_name": "Grace",
+  "last_name": "Hopper",
+  "password": "the_answer_is_42",
+  "email": "grace@example.com"
+}
+```
+
+**Required**:
+
+- `first_name` String
+- `last_name` String
+- `password` String
+- `email` String
+
+The password _MUST_ be at least 6 (six) characters long
+
+**Sample Response**
+
+```json
+{
+  "id": "424242-4242-42-4242-4242",
+  "first_name": "Grace",
+  "last_name": "Hopper",
+  "token": "JWT_TOKEN"
+}
+```
+
+#### Signup via invitation
+
+`POST /users.accept-invitation`
+
+```json5
+{
+  "id": "invitation-code",
+  "first_name": "GOOD",
+  "last_name": "DOGGO",
+  "password": "MUCH-PASSWORD"
+}
+```
+
+**Required**
+
+- `id`: String
+- `first_name`: String
+- `last_name`: String
+- `password`: String (6 chars minimum)
+
+**Sample Response**
+
+```json5
+{
+  "id": "62ba6901-22bd-483f-8b34-f3954206028e",
+  "email": "wow@airy.co",
+  "first_name": "GOOD",
+  "last_name": "DOGGO",
+  "token": "TOKEN"
+}
+```
+
+This endpoint returns the same response as the login
+
+#### Request password reset
+
+`POST /users.request-password-reset`
+
+This endpoint requests a password reset email link to be sent to the given
+email. If the email does not exist, the response does not change.
+
+**Sample Request**
+
+```json5
+{
+  email: "grace@example.com"
+}
+```
+
+**Sample Response**
+
+```json5
+{}
+```
+
+#### Reset password
+
+`POST /users.password-reset`
+
+This endpoint sets a new password given a valid reset token. Used or expired
+tokens produce errors.
+
+**Sample Request**
+
+```json5
+{
+  token: "a-valid-reset-token",
+  new_password: "i-hope-i-will-remember-this-one"
+}
+```
+
+**Sample Response**
+
+```json5
+{}
+```
+
+The new password _MUST_ be at least 6 (six) characters long
+
+### Invitations
+
+#### Creating an invitation
+
+`POST /users.invite`
+
+Creates an invite for a non a registered user.
+
+```json5
+{
+  "email": "invitee-email@non-airy.com"
+}
+```
+
+**Required**
+
+- `email`: String
+
+**Sample Response**
+
+```json5
+{
+  "id": "invitation-id",
+}
+```
+
+This endpoint returns 201 (created) if invite was created successfully.
 
 ### Conversations
 
-Please refer to our [conversation](/docs/data-model.md#conversation) definition for more
-information.
+Please refer to our [conversation](/docs/data-model.md#conversation) definition
+for more information.
 
 #### List conversations
 
@@ -49,7 +240,7 @@ information.
 
 This is a [paginated](#pagination) endpoint.
 
-Example body:
+**Sample Request**
 
 ```json
 {
@@ -63,7 +254,7 @@ Example body:
 }
 ```
 
-Example Response:
+**Sample Response**
 
 ```json5
 {
@@ -85,11 +276,10 @@ Example Response:
       "last_message": {
         "display_text": "Welcome to Airy Messenger - I’m Mathias and I’m here to help.",
         "media_type": "text/fb-template",
-        "offset": 27, // Sequence number of the last available message
         "id": "1e7674d7-b575-4683-8a77-d2651b9e3149-relayed",
         "sent_at": "2019-01-07T09:01:44.000Z"
       },
-      "min_unread_message_count": 1
+      "unread_message_count": 1,
     }
   ],
   "response_metadata": {
@@ -106,21 +296,17 @@ Example Response:
 
 `POST /conversations.by_id`
 
-Example body:
+**Sample Request**
 
 ```json
 {
-  "conversation_id": "4242-4242-4242-424242"
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622"
 }
 ```
 
-**Required**:
+**Sample Response**
 
-- `conversation_id` UUID
-
-Example Response:
-
-```
+```json5
 {
   "id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "channel": {
@@ -129,26 +315,46 @@ Example Response:
   },
   "created_at": "2019-01-07T09:01:44.000Z",
   "contact": {
-    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
-    "first_name": "Airy Support",
-    "last_name": null,
+    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg", // optional
+    "first_name": "Airy Support", // optional
+    "last_name": null, // optional
     "id": "36d07b7b-e242-4612-a82c-76832cfd1026",
   },
   "tags": null,
   "last_message": {
-    "display_text": "Welcome to Airy Messenger - I’m Mathias and I’m here to help.",
-    "media_type": "text/fb-template",
-    "offset": 27, // Sequence number of the last available message
-    "id": "1e7674d7-b575-4683-8a77-d2651b9e3149-relayed",
-    "sent_at": "2019-01-07T09:01:44.000Z"
+    id: "{UUID}",
+    content: "{String}",
+    // source content string
+    state: "{String}",
+    // delivery state of message, one of PENDING, FAILED, DELIVERED
+    alignment: "{string/enum}",
+    // LEFT, RIGHT, CENTER - horizontal placement of message
+    sent_at: "{string}",
+    //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   },
-  "min_unread_message_count": 1
+  "unread_message_count": 1
 }
 ```
 
-#### Mark all conversations as read
+#### Mark conversation as read
 
-`POST /mark-all-conversations-as-read`
+`POST /conversations.mark-read`
+
+Resets the unread count of a conversation and returns `202 (Accepted)`.
+
+**Sample Request**
+
+```json
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622"
+}
+```
+
+**Sample Response**
+
+```json5
+{}
+```
 
 ### Messages
 
@@ -159,28 +365,19 @@ information.
 
 `POST /conversations.messages-list`
 
-This is a [paginated](#pagination) endpoint.
+This is a [paginated](#pagination) endpoint and messages are sorted from oldest to latest.
 
-Example body:
+**Sample Request**
 
-```json
+```json5
 {
-  "conversation_id": "4242-4242-4242-424242",
-  "cursor": "next-page-uuid",
-  "page_size": 2
+  "conversation_id": "4242-4242-4242-424242", 
+  "cursor": "next-page-uuid", // optional
+  "page_size": 2  // optional
 }
 ```
 
-**Required**:
-
-- `conversation_id` UUID - the conversation for which messages are to be fetched
-
-**Optional**:
-
-- `cursor` UUID
-- `page_size` Integer
-
-Example Response:
+**Sample Response**
 
 ```json5
 {
@@ -189,8 +386,8 @@ Example Response:
       id: "{UUID}",
       content: "{String}",
       // source content string
-      offset: "{number}",
-      // represents the chronological ordering of messages in a conversation,
+      state: "{String}",
+      // delivery state of message, one of PENDING, FAILED, DELIVERED
       alignment: "{string/enum}",
       // LEFT, RIGHT, CENTER - horizontal placement of message
       sent_at: "{string}",
@@ -210,30 +407,33 @@ Example Response:
 
 `POST /conversations.send`
 
-Returns the id that the message will be persisted with in the backend. Combined with the websocket [queue for message upserts](websocket.md#userqueueairymessageupsert) (/user/queue/airy/message/upsert) you can use this id to verify that a message has been delivered.
+Sends a message to a conversation and returns a payload.
 
-**Required**:
-
-- `conversation_id` UUID
-- `message` Object
-
-Example payload:
+**Sample Request**
 
 ```json5
 {
-  conversation_id: "4242424242",
+  conversation_id: "a688d36c-a85e-44af-bc02-4248c2c97622",
   message: {
     text: "{String}"
   }
 }
 ```
 
-Example response:
+**Sample Response**
 
-```json
+```json5
 {
-    "message_id": "7560bf66-d9c4-48f8-b7f1-27ab6c40a40a"
-}
+      id: "{UUID}",
+      content: "{String}",
+      // source content string
+      state: "{String}",
+      // delivery state of message, one of PENDING, FAILED, DELIVERED
+      alignment: "{string/enum}",
+      // LEFT, RIGHT, CENTER - horizontal placement of message
+      sent_at: "{string}",
+      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    }
 ```
 
 ### Channels
@@ -242,9 +442,11 @@ Example response:
 
 `POST /channels.connect`
 
-A synchronous endpoint that makes a request to the source on behalf of the user to connect the channel and produce a record to Kafka.
+A synchronous endpoint that makes a request to the source on behalf of the user
+to connect the channel.
 
-This action is idempotent, so if the channel is already connected the status will be `202`.
+This action is idempotent, so if the channel is already connected the status
+will be `202`.
 
 **Sample Request**
 
@@ -274,7 +476,9 @@ This action is idempotent, so if the channel is already connected the status wil
 
 `POST /channels.disconnect`
 
-A synchronous endpoint that makes a request to the source on behalf of the user to disconnect the channel. Marks the channel as disconnected and deletes the auth token.
+A synchronous endpoint that makes a request to the source on behalf of the user
+to disconnect the channel. It marks the channel as disconnected and deletes the
+auth token.
 
 This action is idempotent, so if the channel is disconnected the status will be `202`.
 If the channel is unknown, the response status will be `400`.
@@ -291,7 +495,10 @@ If the channel is unknown, the response status will be `400`.
 
 `POST /channels.available`
 
-A synchronous endpoint that makes a request to the source on behalf of the user to list all the channels that are available. Some of those channels may already be connected, which is accounted for in the boolean field `connected`. Due to the nature of the request, response time may vary.
+A synchronous endpoint that makes a request to the source on behalf of the user
+to list all the channels that are available. Some of those channels may already
+be connected, which is accounted for in the boolean field `connected`. Due to
+the nature of the request, response time may vary.
 
 **Sample Request**
 
@@ -312,7 +519,7 @@ A synchronous endpoint that makes a request to the source on behalf of the user 
 			"source": "facebook",
 			"source_channel_id": "fb-page-id-1",
 			"connected": false,
-			"image_url": "fb-page-id-1" // optional
+			"image_url": "http://example.org/avatar.jpeg" // optional
 		},
 		{
 			"name": "my page 2",
@@ -337,7 +544,8 @@ A synchronous endpoint that makes a request to the source on behalf of the user 
 			"id": "channel-uuid-1",
 			"name": "my page 1",
 			"source": "facebook",
-			"source_channel_id": "fb-page-id-1"
+			"source_channel_id": "fb-page-id-1",
+            "image_url": "http://example.org/avatar.jpeg" // optional
 		},
 		{
 			"id": "channel-uuid-2",
@@ -366,7 +574,7 @@ A synchronous endpoint that makes a request to the source on behalf of the user 
 }
 ```
 
-**Response**
+**Sample Response**
 
 This endpoints returns 200 and an empty body.
 
@@ -374,15 +582,15 @@ This endpoints returns 200 and an empty body.
 
 `POST /webhook-unsubscribe`
 
-**Response**
+**Sample Response**
 
 This endpoints returns 200 and an empty body.
 
-#### Get webhook
+#### Fetch webhook
 
 `POST /webhook`
 
-**Response**
+**Sample Response**
 
 ```json5
 {
@@ -394,14 +602,9 @@ This endpoints returns 200 and an empty body.
 }
 ```
 
-## Error codes
-
-Error codes are 3-digit unique codes that represent logical errors the platform
-means to communicate to the frontends.
-
 ## Pagination
 
-By default, paginated endpoints return at max 10 elements of the first page.
+By default, paginated endpoints return at max 20 elements of the first page.
 
 The size of the returned page can be controller via the `page_size` field of the
 body. You can move back and forth between pages using the `cursor` field of the

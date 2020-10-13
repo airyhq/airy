@@ -17,14 +17,10 @@ public interface InvitationDAO {
     @RegisterBeanMapper(Invitation.class)
     void insert(@BindBean Invitation invitation);
 
-    @SqlQuery("select id, email, sent_at, accepted_at, created_at, updated_at from invitations")
-    @RegisterBeanMapper(Invitation.class)
-    List<Invitation> listInvitations();
-
     @SqlQuery("select id, email, sent_at, accepted_at, created_at, updated_at from invitations where id = ?")
     @RegisterBeanMapper(Invitation.class)
     Invitation findInvitation(UUID id);
 
-    @SqlQuery("insert into invitations (id, accepted_at, updated_at) values (?, ?, ?)")
+    @SqlUpdate("update invitations set accepted_at = :acceptedAt, updated_at = :updatedAt where id = :id")
     boolean update(UUID id, Instant acceptedAt, Instant updatedAt);
 }

@@ -1,5 +1,6 @@
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
     "//backend/avro/communication:channel",
@@ -34,3 +35,12 @@ springboot(
     )
     for file in glob(["src/test/java/**/*Test.java"])
 ]
+
+container_push(
+    name = "release",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/sources",
+    repository = "facebook-events-router",
+    tag = "latest",
+)

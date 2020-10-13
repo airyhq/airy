@@ -57,7 +57,7 @@ does not require a valid token to be present in the headers.
 
 `POST /users.login`
 
-Example payload:
+**Sample Request**
 
 ```json
 { "email": "grace@example.com", "password": "avalidpassword" }
@@ -68,7 +68,7 @@ Example payload:
 - `email` String
 - `password` String
 
-Example response:
+**Sample Response**
 
 ```json
 {
@@ -94,7 +94,7 @@ information.
 
 `POST /users.signup`
 
-Example payload:
+**Sample Request**
 
 ```json
 {
@@ -114,7 +114,7 @@ Example payload:
 
 The password _MUST_ be at least 6 (six) characters long
 
-Example response:
+**Sample Response**
 
 ```json
 {
@@ -145,7 +145,7 @@ Example response:
 - `last_name`: String
 - `password`: String (6 chars minimum)
 
-Example response:
+**Sample Response**
 
 ```json5
 {
@@ -166,7 +166,7 @@ This endpoint returns the same response as the login
 This endpoint requests a password reset email link to be sent to the given
 email. If the email does not exist, the response does not change.
 
-Example payload:
+**Sample Request**
 
 ```json5
 {
@@ -174,7 +174,7 @@ Example payload:
 }
 ```
 
-Example response:
+**Sample Response**
 
 ```json5
 {}
@@ -187,7 +187,7 @@ Example response:
 This endpoint sets a new password given a valid reset token. Used or expired
 tokens produce errors.
 
-Example payload:
+**Sample Request**
 
 ```json5
 {
@@ -196,7 +196,7 @@ Example payload:
 }
 ```
 
-Example response:
+**Sample Response**
 
 ```json5
 {}
@@ -222,7 +222,7 @@ Creates an invite for a non a registered user.
 
 - `email`: String
 
-Example response:
+**Sample Response**
 
 ```json5
 {
@@ -257,7 +257,7 @@ This is a [paginated](#pagination) endpoint.
 }
 ```
 
-Example Response:
+**Sample Response**
 
 ```json5
 {

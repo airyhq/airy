@@ -3,9 +3,9 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Message;
 import co.airy.core.api.communication.payload.MessageListRequestPayload;
 import co.airy.core.api.communication.payload.MessageListResponsePayload;
+import co.airy.core.api.communication.payload.MessageResponsePayload;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
-import co.airy.core.api.communication.payload.MessageResponsePayload;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,7 +56,6 @@ public class MessagesController {
                         .nextCursor(page.getNextCursor())
                         .previousCursor(cursor)
                         .total(messages.size())
-                        .build()
-                ).build();
+                        .build()).build();
     }
 }

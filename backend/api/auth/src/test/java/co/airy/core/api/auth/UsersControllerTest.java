@@ -27,6 +27,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureEmbeddedDatabase(beanName = "dataSource")
 @SpringBootTest(properties = {
@@ -49,9 +53,26 @@ public class UsersControllerTest {
 
     @Test
     void userSignup() throws Exception {
-        userDAO.insert(User.builder().id(UUID.randomUUID()).build());
+        final String firstName = "grace";
+        final String email = "grace@airy.co";
 
-        // TODO write signup api test
+        final String requestContent = "{\"email\":\"" + email + "\",\"first_name\":\"" + firstName + "\"," +
+                "\"last_name\":\"grace\",\"password\":\"trustno1\"}";
+
+        final String responseString = mvc.perform(post("/users.signup")
+                .content(requestContent)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        final JsonNode jsonNode = objectMapper.readTree(responseString);
+        final String id = jsonNode.get("id").textValue();
+
+        User user = userDAO.findById(UUID.fromString(id));
+
+        assertThat(user.getEmail(), equalTo(email));
     }
 
     @Test

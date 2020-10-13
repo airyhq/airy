@@ -1,10 +1,10 @@
-# Airy Core Plafrom Data Model
+# Airy Core Platform Data Model
 
 This document aims to provide an high-level overview of the Airy Core Platform Data Model.
 
 **Please note this document is constantly being worked on.**
 
-- [Airy Core Plafrom Data Model](#airy-core-plafrom-data-model)
+- [Airy Core Platform Data Model](#airy-core-platform-data-model)
   - [Introduction](#introduction)
   - [Channel](#channel)
   - [Conversation](#conversation)
@@ -14,10 +14,16 @@ This document aims to provide an high-level overview of the Airy Core Platform D
 ## Introduction
 
 Our [avro schemas](/backend/avro) provide a machine readable up-to-date version
-of our data model. If you are looking for details like null constraints and
-such, the avro schemas folder is the right place.
+of our backend data model. If you are looking for details like null constraints
+and such, the avro schemas folder is the right place. Furthermore, it is worth
+underlining that the avro data model and the Airy Core Platform data model do
+not correspond exactly. The former is the exact machine representation of the
+data we store and the latter is a conceptual artifact we created to discuss and
+solve problems of a typical messaging system.
 
 ## Channel
+
+A channel represents a connection between a source and the Airy Core Platform.
 
 ## Conversation
 
@@ -37,13 +43,13 @@ and tags that are useful for certain apps like automations.
 
 - `id` uuid
 
-Unique message id for deduplication
+Unique message id for deduplication.
 
 - `senderType` string
 
 What type of actor inserted the message. One of:
 
-    - `SOURCE_CONTACT` messagesent by a contact to the user source
+    - `SOURCE_CONTACT` message sent by a contact to the user source
     - `SOURCE_USER` sent to the source by the user but not via app
     - `APP_USER` sent to source via app
 

@@ -58,7 +58,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     private final String CONVERSATIONS_STORE = "conversations-store";
 
     @Autowired
-    private Websocket websocket;
+    private WebSocketController websocket;
 
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();

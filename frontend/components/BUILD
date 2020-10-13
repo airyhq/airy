@@ -21,3 +21,18 @@ ts_library(
         "@npm//react-svg",
     ],
 )
+
+load("@graknlabs_bazel_distribution//npm:rules.bzl", "deploy_npm", "assemble_npm")
+
+assemble_npm(
+    name = "assemble-npm",
+    target = "//frontend/components",
+    version_file = "1.0.0",    
+)
+
+deploy_npm(
+    name = "deploy-npm",
+    target = ":assemble-npm",
+    release = ""
+    snapshot = "https://github.com/airyhq/core/frontend/components"
+)

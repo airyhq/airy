@@ -224,6 +224,12 @@ git_repository(
     remote = "https://github.com/atlassian/bazel-tools.git",
 )
 
+git_repository(
+    name = "graknlabs_bazel_distribution",
+    remote = "https://github.com/graknlabs/bazel-distribution",
+    commit = "e181add439dc1cfb7b1c27db771ec741d5dd43e6"
+)
+
 load("@com_github_atlassian_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
 
 multirun_dependencies()

@@ -1,7 +1,5 @@
 package co.airy.core.api.auth.config;
 
-import javax.sql.DataSource;
-
 import co.airy.core.api.auth.dao.UserDAO;
 import co.airy.log.AiryLoggerFactory;
 import org.jdbi.v3.core.Jdbi;
@@ -11,12 +9,11 @@ import org.jdbi.v3.postgres.PostgresPlugin;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class JdbiConfiguration {

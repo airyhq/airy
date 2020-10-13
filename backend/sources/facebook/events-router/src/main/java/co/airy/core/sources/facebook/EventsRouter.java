@@ -116,7 +116,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                                         .build()
                         );
                     } catch (NotAMessageException e) {
-                        // This way we filter out conversation events
+                        // This way we filter out conversation events and echoes
                         return KeyValue.pair("skip", null);
                     } catch (Exception e) {
                         log.warn("skip facebook record for error" + triplet, e);

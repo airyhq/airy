@@ -91,7 +91,7 @@ public class UsersController {
     }
 
     @PostMapping("/users.invite")
-        //TODO: Write a custom ExceptionHandler for JDBI
+    //TODO: Write a custom ExceptionHandler for JDBI
     ResponseEntity<InviteUserResponsePayload> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
         final UUID id = UUID.randomUUID();
         final Instant now = Instant.now();

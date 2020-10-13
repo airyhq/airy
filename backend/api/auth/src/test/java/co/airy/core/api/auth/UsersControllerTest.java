@@ -52,11 +52,11 @@ public class UsersControllerTest {
         final String email = "grace@airy.co";
         final String password = "trustno1";
 
-        final String requestContent = "{\"email\":\"" + email + "\",\"first_name\":\"" + firstName + "\"," +
+        final String signUpRequest = "{\"email\":\"" + email + "\",\"first_name\":\"" + firstName + "\"," +
                 "\"last_name\":\"hopper\",\"password\":\"" + password + "\"}";
 
         final String responseString = mvc.perform(post("/users.signup")
-                .content(requestContent)
+                .content(signUpRequest)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token", not(nullValue())))
@@ -67,15 +67,22 @@ public class UsersControllerTest {
         final JsonNode jsonNode = objectMapper.readTree(responseString);
         final String id = jsonNode.get("id").textValue();
 
-        final String loginRequestContent = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
+        final String loginRequest = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
 
         mvc.perform(post("/users.login")
-                .content(loginRequestContent)
+                .content(loginRequest)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(id)))
                 .andExpect(jsonPath("$.first_name", equalTo(firstName)))
                 .andExpect(jsonPath("$.token", not(nullValue())));
+
+        final String loginRequestWrongPwd = "{\"email\":\"" + email + "\",\"password\":\"guess-i-should-have-trusted-a-password-manager\"}";
+
+        mvc.perform(post("/users.login")
+                .content(loginRequestWrongPwd)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+                .andExpect(status().isUnauthorized());
 
     }
 

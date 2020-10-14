@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -42,6 +43,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 }, classes = AirySpringBootApplication.class)
 @AutoConfigureMockMvc
 @FlywayDataSource
+@TestPropertySource(properties = {
+        "MAIL_URL=localhost",
+        "MAIL_PORT=25",
+        "MAIL_FROM=snasa@snasa.gov",
+        "MAIL_USERNAME=snasa",
+        "MAIL_PASSWORD=extreme-secure-pass",
+})
 public class UsersControllerTest {
     @Autowired
     private ObjectMapper objectMapper;

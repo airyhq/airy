@@ -30,7 +30,7 @@ compose our API.
     - [Webhooks](#webhooks)
       - [Subscribing to a webhook](#subscribing-to-a-webhook)
       - [Unsubscribing to a webhook](#unsubscribing-to-a-webhook)
-      - [Fetch webhook](#fetch-webhook)
+      - [Get webhook](#get-webhook)
   - [Pagination](#pagination)
 
 ## Introduction
@@ -561,7 +561,9 @@ the nature of the request, response time may vary.
 
 #### Subscribing to a webhook
 
-`POST /webhook-subscribe`
+`POST /webhooks.subscribe`
+
+Subscribes the webhook for the first time or update its parameters.
 
 **Sample Request**
 
@@ -576,19 +578,38 @@ the nature of the request, response time may vary.
 
 **Sample Response**
 
-This endpoints returns 200 and an empty body.
+```json5
+{
+  
+  "url": "https://my-url-to-be-hit",
+  "headers": {
+    "X-Custom-Header": "custom-code-for-header"
+  },
+  "status": "Subscribed",
+  "api_secret": "{UUID}"
+}
+```
 
 #### Unsubscribing to a webhook
 
-`POST /webhook-unsubscribe`
+`POST /webhooks.unsubscribe`
 
 **Sample Response**
 
-This endpoints returns 200 and an empty body.
+```json5
+{
+  
+  "url": "https://my-url-to-be-hit",
+  "headers": {
+    "X-Custom-Header": "custom-code-for-header"
+  },
+  "status": "Unsubscribed",
+  "api_secret": "{UUID}"
+}
+```
+#### Get webhook
 
-#### Fetch webhook
-
-`POST /webhook`
+`POST /webhooks.get`
 
 **Sample Response**
 

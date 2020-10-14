@@ -7,6 +7,8 @@ import co.airy.core.api.auth.controllers.payload.LoginResponsePayload;
 import co.airy.core.api.auth.controllers.payload.SignupRequestPayload;
 import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dto.Invitation;
+import co.airy.core.api.auth.services.Mail;
+import co.airy.payload.response.EmptyResponsePayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import co.airy.core.api.auth.controllers.payload.SignupResponsePayload;
@@ -22,7 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 public class UsersController {
@@ -31,12 +36,14 @@ public class UsersController {
     private final UserDAO userDAO;
     private final Password passwordService;
     private final Jwt jwt;
+    private final Mail mail;
 
-    public UsersController(Password passwordService, UserDAO userDAO, InvitationDAO invitationDAO, Jwt jwt) {
+    public UsersController(Password passwordService, UserDAO userDAO, InvitationDAO invitationDAO, Jwt jwt, Mail mail) {
         this.passwordService = passwordService;
         this.userDAO = userDAO;
         this.invitationDAO = invitationDAO;
         this.jwt = jwt;
+        this.mail = mail;
     }
 
     @PostMapping("/users.signup")
@@ -90,8 +97,40 @@ public class UsersController {
         );
     }
 
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+    @PostMapping("/users.request-password-reset")
+    ResponseEntity<?> requestPasswordReset(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
+        final String email = loginRequestPayload.getEmail();
+
+        // We execute async so that attackers cannot infer the presence of an email address
+        // based on response time.
+        executor.submit(() -> requestResetFor(email));
+        return ResponseEntity.ok(new EmptyResponsePayload());
+    }
+
+
+    private void requestResetFor(String email) {
+        final User user = userDAO.findByEmail(email);
+
+        if (user != null) {
+            final String emailBody = String.format("Hello %s,\na reset was requested for your airy core account. " +
+                            "If this was not you, please ignore this email. Otherwise you can use this token to change your password: %s\n",
+                    user.getFullName(), getResetToken(user.getId().toString())
+            );
+
+            mail.sendMail(email, "Password reset", emailBody);
+        }
+    }
+
+    private String getResetToken(String userId) {
+        Map<String, Object> refreshClaim = Map.of("reset_pwd_for", userId);
+
+        return jwt.tokenFor(userId, refreshClaim);
+    }
+
     @PostMapping("/users.invite")
-    //TODO: Write a custom ExceptionHandler for JDBI
+        //TODO: Write a custom ExceptionHandler for JDBI
     ResponseEntity<InviteUserResponsePayload> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
         final UUID id = UUID.randomUUID();
         final Instant now = Instant.now();

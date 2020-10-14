@@ -17,4 +17,8 @@ public class User {
     private String firstName;
     private String lastName;
     private String passwordHash;
+
+    public String getFullName() {
+        return String.format("%s %s", firstName, lastName).trim();
+    }
 }

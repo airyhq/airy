@@ -1,6 +1,14 @@
 package(default_visibility = ["//visibility:public"])
 
 load("//tools/build/web:typescript.bzl", "ts_library")
+load("@npm_bazel_typescript//:index.bzl", "ts_config")
+load("//tools/build/web:web_library.bzl", "web_library")
+
+web_library(
+    name = "library",
+    app_lib = ":components",
+    entry = "frontend/components/index.js",    
+)
 
 ts_library(
     name = "components",
@@ -26,7 +34,7 @@ load("@graknlabs_bazel_distribution//npm:rules.bzl", "deploy_npm", "assemble_npm
 
 assemble_npm(
     name = "assemble-npm",
-    target = "//frontend/components",
+    target = ":library",
     version_file = "1.0.0",    
 )
 
@@ -34,5 +42,5 @@ deploy_npm(
     name = "deploy-npm",
     target = ":assemble-npm",
     release = ""
-    snapshot = "https://github.com/airyhq/core/frontend/components"
+    snapshot = ""
 )

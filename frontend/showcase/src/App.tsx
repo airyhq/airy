@@ -1,7 +1,6 @@
 //@ts-nocheck
 import React from "react";
 
-import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import {
   Button,
@@ -12,9 +11,6 @@ import {
   TopBar
 } from "components";
 
-import { store } from "./store";
-
-import "components/dist/index.css";
 import styles from "./index.module.scss";
 
 const App = () => {

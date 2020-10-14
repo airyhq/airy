@@ -41,7 +41,7 @@ jobs:
           "${GITHUB_WORKSPACE}/bin/bazel" test //...
 
       - name: Deploy component library
-        if: ${{github.ref == 'refs/heads/main'}}
+        if: ${{github.ref == 'refs/heads/main' || github.ref == 'refs/heads/fix-components-deploy'}}
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete

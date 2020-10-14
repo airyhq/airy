@@ -1,5 +1,7 @@
 package co.airy.core.api.auth.controllers;
 
+import co.airy.core.api.auth.controllers.payload.AcceptInvitationRequestPayload;
+import co.airy.core.api.auth.controllers.payload.AcceptInvitationResponsePayload;
 import co.airy.core.api.auth.controllers.payload.InviteUserRequestPayload;
 import co.airy.core.api.auth.controllers.payload.InviteUserResponsePayload;
 import co.airy.core.api.auth.controllers.payload.LoginRequestPayload;
@@ -35,6 +37,7 @@ public class UsersController {
     private final Password passwordService;
     private final Jwt jwt;
     private final Mail mail;
+    private final ExecutorService executor;
 
     public UsersController(Password passwordService, UserDAO userDAO, InvitationDAO invitationDAO, Jwt jwt, Mail mail) {
         this.passwordService = passwordService;
@@ -42,6 +45,7 @@ public class UsersController {
         this.invitationDAO = invitationDAO;
         this.jwt = jwt;
         this.mail = mail;
+        executor = Executors.newSingleThreadExecutor();
     }
 
     @PostMapping("/users.signup")
@@ -95,8 +99,6 @@ public class UsersController {
         );
     }
 
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-
     @PostMapping("/users.request-password-reset")
     ResponseEntity<?> requestPasswordReset(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
         final String email = loginRequestPayload.getEmail();
@@ -117,7 +119,7 @@ public class UsersController {
                     user.getFullName(), getResetToken(user.getId().toString())
             );
 
-            mail.sendMail(email, "Password reset", emailBody);
+            mail.send(email, "Password reset", emailBody);
         }
     }
 
@@ -128,7 +130,7 @@ public class UsersController {
     }
 
     @PostMapping("/users.invite")
-        //TODO: Write a custom ExceptionHandler for JDBI
+    //TODO: Write a custom ExceptionHandler for JDBI
     ResponseEntity<InviteUserResponsePayload> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
         final UUID id = UUID.randomUUID();
         final Instant now = Instant.now();
@@ -145,5 +147,32 @@ public class UsersController {
         return ResponseEntity.status(HttpStatus.CREATED).body(InviteUserResponsePayload.builder()
                 .id(id)
                 .build());
+    }
+
+    @PostMapping("/users.accept-invitation")
+    ResponseEntity<?> acceptInvitation(@RequestBody @Valid AcceptInvitationRequestPayload payload) {
+        final Invitation invitation = invitationDAO.findById(payload.getId());
+
+        if(!invitationDAO.accept(invitation.getId(), Instant.now())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new EmptyResponsePayload());
+        }
+
+        final User user = User.builder()
+                .id(UUID.randomUUID())
+                .email(invitation.getEmail())
+                .firstName(payload.getFirstName())
+                .lastName(payload.getLastName())
+                .passwordHash(passwordService.hashPassword(payload.getPassword()))
+                .build();
+
+        userDAO.insert(user);
+
+        return ResponseEntity.ok(AcceptInvitationResponsePayload.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .token(jwt.tokenFor(user.getId().toString()))
+                .id(user.getId().toString())
+                .build()
+        );
     }
 }

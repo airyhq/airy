@@ -7,7 +7,8 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.time.Instant;
+import java.util.UUID;
 
 @Component
 public interface InvitationDAO {
@@ -15,7 +16,10 @@ public interface InvitationDAO {
     @RegisterBeanMapper(Invitation.class)
     void insert(@BindBean Invitation invitation);
 
-    @SqlQuery("SELECT id, email, sent_at, accepted_at, created_at, updated_at FROM invitations")
+    @SqlQuery("select id, email, sent_at, accepted_at, created_at, updated_at from invitations where id = ?")
     @RegisterBeanMapper(Invitation.class)
-    List<Invitation> listInvitations();
+    Invitation findById(UUID id);
+
+    @SqlUpdate("update invitations set accepted_at = :acceptedAt, updated_at = :acceptedAt where id = :id")
+    boolean accept(UUID id, Instant acceptedAt);
 }

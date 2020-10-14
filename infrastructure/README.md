@@ -14,7 +14,7 @@ The Airy core platform is comprised of the following components:
 - Kafka cluster (kafka and zookeeper instances)
 - Kafka Schema registry
 - PostgreSQL server
-- All the backend and frontend apps required for Airy to operate on top.
+- All the backend and frontend apps required for Airy to operate on top
 
 The kubernetes manifests for those apps are located in this folder. If you want to customize some parts, please have a look at the `bootstrap.sh` and `provisioning.sh` scripts.
 

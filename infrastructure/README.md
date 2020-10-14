@@ -1,5 +1,11 @@
 # Infrastructure of the Airy Core Platform
 
+- [Infrastructure](#infrastructure-of-the-airy-core-platform)
+  - [Comopnents](#components)
+  - [Networking](#networking)
+  - [Prepared images](#prepared-images)
+
+
 ## Components
 
 The Airy core platform currently runs on kubernetes. In order to bootstrap the whole platform, we have prepared a Vagrantfile which holds the necessary commands to create a new minikube cluster and deploy the necessary components inside.

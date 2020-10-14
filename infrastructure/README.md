@@ -1,7 +1,7 @@
 # Infrastructure of the Airy Core Platform
 
 - [Infrastructure](#infrastructure-of-the-airy-core-platform)
-  - [Comopnents](#components)
+  - [Components](#components)
   - [Networking](#networking)
   - [Prepared images](#prepared-images)
 

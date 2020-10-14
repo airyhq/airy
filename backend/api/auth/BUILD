@@ -8,7 +8,9 @@ app_deps = [
     "@maven//:org_flywaydb_flyway_core",
     "@maven//:org_postgresql_postgresql",
     "@maven//:org_springframework_boot_spring_boot_starter_data_jdbc",
+    "@maven//:org_springframework_boot_spring_boot_starter_mail",
     "@maven//:org_springframework_security_spring_security_crypto",
+    "@maven//:org_springframework_spring_context_support",
     "@maven//:org_springframework_spring_jdbc",
     "@maven//:org_springframework_spring_tx",
 ]

@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 @Service
 public class Mail {
 
-    @Value("${MAIL_FROM}")
+    @Value("${mail.sender.from}")
     private String mailFrom;
 
     @Autowired

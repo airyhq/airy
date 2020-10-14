@@ -44,10 +44,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @FlywayDataSource
 @TestPropertySource(properties = {
-        "MAIL_HOST=localhost",
-        "MAIL_HOST_PORT=25",
-        "MAIL_FROM=nasa@nasa.gov",
-        "MAIL_USERNAME=nasa",
+        "MAIL_URL=localhost",
+        "MAIL_PORT=25",
+        "MAIL_FROM=snasa@snasa.gov",
+        "MAIL_USERNAME=snasa",
         "MAIL_PASSWORD=extreme-secure-pass",
 })
 public class UsersControllerTest {

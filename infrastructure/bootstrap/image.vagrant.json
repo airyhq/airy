@@ -17,7 +17,7 @@
     "provisioners": [
         {
             "scripts": [
-              "./tasks/bootstrap.sh"
+              "./provision.sh"
             ],
             "type": "shell"
           }
@@ -27,7 +27,7 @@
         {
             "type": "shell-local",
             "inline": [
-                "aws --profile airy-prod s3 cp ./.vagrant-out/package.box s3://airy-core-images/vagrant/airy.{{timestamp}}.box"
+                "aws s3 cp ./.vagrant-out/package.box s3://core-images.airy.co/vagrant/airy.box"
             ]
 
         }

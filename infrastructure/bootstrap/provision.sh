@@ -8,7 +8,7 @@ wget -nv https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz
 tar -zxvf helm-v3.3.4-linux-amd64.tar.gz
 chmod +x linux-amd64/helm
 export PATH=$PATH:/usr/local/bin
-mv linux-amd64/helm /usr/local/bin/helm
+sudo mv linux-amd64/helm /usr/local/bin/helm
 helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
 helm repo update
 helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 500s
@@ -17,8 +17,8 @@ export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
 export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
 
-cd /home/vagrant
-kubectl apply -f kafka-client.yaml
+cd /vagrant
+kubectl apply -f tools/kafka-client.yaml
 sleep 3m
 
 kubectl cp topics.sh kafka-client:/tmp

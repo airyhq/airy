@@ -10,14 +10,6 @@ Vagrant.configure("2") do |config|
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "4096", "--cpus", "2"]
   end
-
-
-  config.vm.provision "file", source: "topics.sh", destination: "/home/vagrant/topics.sh"
-  config.vm.provision "file", source: "create-topics.sh", destination: "/home/vagrant/create-topics.sh"
-  config.vm.provision "file", source: "kafka-client.yaml", destination: "/home/vagrant/kafka-client.yaml"
-  config.vm.provision "file", source: "deployments/api-admin.yaml", destination: "/home/vagrant/api-admin.yaml"
-  config.vm.provision "file", source: "deployments/api-communication.yaml", destination: "/home/vagrant/api-communication.yaml"
-  config.vm.provision "file", source: "deployments/events-router.yaml", destination: "/home/vagrant/events-router.yaml"
   
   config.vm.provision :shell, path: "provision.sh"
 

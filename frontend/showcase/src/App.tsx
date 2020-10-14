@@ -1,10 +1,17 @@
 //@ts-nocheck
 import React from "react";
 
-import { BrowserRouter } from 'react-router-dom'
-import { Button, LinkButton, HrefButton, ErrorMessage, ErrorNotice, TopBar } from 'components'
+import { BrowserRouter } from "react-router-dom";
+import {
+  Button,
+  LinkButton,
+  HrefButton,
+  ErrorMessage,
+  ErrorNotice,
+  TopBar
+} from "components";
 
-import styles from './index.module.scss'
+import styles from "./index.module.scss";
 
 const App = () => {
   return (

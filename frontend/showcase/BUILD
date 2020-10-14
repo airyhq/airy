@@ -2,7 +2,7 @@ load("//tools/build/web:typescript.bzl", "ts_library")
 load("//tools/build/web:webapp.bzl", "webapp")
 
 module_deps = [
-    "//frontend/components"
+    "//frontend/components",
 ]
 
 webapp(

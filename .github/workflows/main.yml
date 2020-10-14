@@ -50,4 +50,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DISTRIBUTION_ID: ${{ secrets.AWS_DISTRIBUTION_ID }}
-          SOURCE_DIR: 'bazel-bin/frontend/showcase/bundle'
+          SOURCE_DIR: './bazel-bin/frontend/showcase/bundle'

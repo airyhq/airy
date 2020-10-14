@@ -1,13 +1,12 @@
 # Airy Core Platform
 
-This [monorepository](https://en.wikipedia.org/wiki/Monorepo) contains all the
+This [monorepo](https://en.wikipedia.org/wiki/Monorepo) contains all the
 code and tooling required to run the Airy Core Platform.
 
 - [Airy Core Platform](#airy-core-platform)
   - [What's the Airy Core Platform?](#whats-the-airy-core-platform)
   - [Getting started](#getting-started)
   - [Design principles of the Airy Core Platform](#design-principles-of-the-airy-core-platform)
-  - [Future plansfi](#future-plansfi)
   - [How to contribute](#how-to-contribute)
   - [Code of Conduct](#code-of-conduct)
 
@@ -20,12 +19,13 @@ following components:
 
 - A ingestion platform that heavily relies on [Apache
   Kafka](https://kafka.apache.org) to process incoming webhook data from
-  different sources. We make sense of the data and reshape it into an [Airy Data
-  Model](/docs/data-model.md) representing contacts, conversations, and messages.
+  different sources. We make sense of the data and reshape it into source
+  independent contacts, conversations, and messages (see our
+  [glossary](/docs/glossary.md) for formal definitions).
 
 - A [React](https://reactjs.org/) UI component library which we showcase at
   [components.airy.co]
- 
+
 - An [API](/docs/api.md) to manage the data sets the platform
   handles.
 
@@ -40,30 +40,30 @@ following components:
 Here is a quick overview of how the repository is organized:
 
 - `backend`
-  
+
   This directory contains the code of the ingestion platform (in the
   subdirectory `backend/sources`), the code of the webhook server (in the
   subdirectory `backend/webhook`), and the code of the API endpoints (in the
   subdirectory `backend/api`).
 
 - `frontend`
-  
+
   This directory contains the code of the "inbox", "admin" applications, and the
   frontend libraries used by both modules.
 
 - `infrastructure`
-  
+
   This directory contains the code that creates the infrastructure (we rely
   heavily on Kubernetes as a runtime for our applications).
 
 - `tools`
-  
+
   This directory contains the tooling we wrote to support our
   [bazel](https://bazel.build) builds. Furthermore, it contains some support
   tooling for our infrastructure.
 
 - `scripts`
-  
+
   This directory contains a variety of utility scripts.
 
 If you wish to learn more about a specific project, please refer to the
@@ -82,8 +82,6 @@ $ ./scripts/bootstrap.sh
 The Airy Core Platform is built using a few guiding principles. An introduction
 to these principles is essential to navigate the code base with ease. You can
 read more about it [here](/docs/design.md)
-
-## Future plansfi
 
 ## How to contribute
 

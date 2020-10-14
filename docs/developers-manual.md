@@ -1,17 +1,17 @@
 # Developers' manual
 
-The Airy Core Platform uses [bazel](https://bazel.build/) to build and test
+The Airy Core Platform uses [Bazel](https://bazel.build/) to build and test
 itself. We suggest you to install
 [bazelisk](https://github.com/bazelbuild/bazelisk), a small utility that will
-install the right version of bazel for you.
+install the right version of Bazel for you.
 
 - [Developers' manual](#developers-manual)
-  - [Build and test code](#build-and-test-code)
+  - [Build](#build)
   - [Test](#test)
   - [Managing maven dependencies](#managing-maven-dependencies)
   - [Exploring the code base](#exploring-the-code-base)
 
-## Build and test code
+## Build
 
 You can build the whole platform using the following command:
 
@@ -42,7 +42,7 @@ $ bazel test //conversations/api/conversations:all
 ## Managing maven dependencies
 
 If you add, remove, or change a dependency from the maven_install, you must
-repin dependencies using the following command:
+re-pin dependencies using the following command:
 
 ```sh
 $ bazel run @unpinned_maven//:pin

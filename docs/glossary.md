@@ -1,37 +1,57 @@
-# Airy Core Platform Data Model
+# Glossary
 
-This document aims to provide an high-level overview of the Airy Core Platform Data Model.
+This document aims to provide an high-level overview of the Airy Core Platform
+technical vocabulary. It provides definition of the most important terms used
+both in the code and in the rest of the documentation.
 
 **Please note this document is constantly being worked on.**
 
-- [Airy Core Platform Data Model](#airy-core-platform-data-model)
+- [Glossary](#glossary)
   - [Introduction](#introduction)
+  - [Source](#source)
   - [Channel](#channel)
+  - [Contact](#contact)
   - [Conversation](#conversation)
   - [Message](#message)
-  - [Team](#team)
+    - [headers](#headers)
 
 ## Introduction
 
-Our [avro schemas](/backend/avro) provide a machine readable up-to-date version
+Our [Avro schemas](/backend/avro) provide a machine readable up-to-date version
 of our backend data model. If you are looking for details like null constraints
-and such, the avro schemas folder is the right place. Furthermore, it is worth
-underlining that the avro data model and the Airy Core Platform data model do
-not correspond exactly. The former is the exact machine representation of the
-data we store and the latter is a conceptual artifact we created to discuss and
-solve problems of a typical messaging system.
+and such, the Avro schemas folder is the right place. Furthermore, it is worth
+underlining that the Avro data model and glossary do not correspond exactly. The
+former is the exact machine representation of the data we store and the latter
+is a conceptual artifact we created to discuss and solve problems of a typical
+messaging system.
+
+The Airy Core Platform allows its [users](#user) to process messaging data from
+a variety of [sources](#source). Users connect to sources via
+[channels](#channel). Once the channel is connected, the Airy Core Platform
+ingests source data and transforms them into [conversations](#conversation),
+[contacts](#contact), and [messages](#message).
+
+## Source
+
+A source represents a system that generates messaging data that a user wants
+process with the Airy Core Platform. In most cases, a source provides data via a
+webhook integration.
 
 ## Channel
 
-A channel represents a connection between a source and the Airy Core Platform.
+A channel represents a connection between a [source](#source) and the Airy Core Platform.
+
+## Contact
 
 ## Conversation
 
 ## Message
 
-Header data contains information that is important for downstream processing
-tells us who sent a message of what type and when. It also includes preview data
-and tags that are useful for certain apps like automations.
+### headers 
+
+Header data contains information that is important for downstream processing. It
+also includes the message preview and tags that are useful for certain apps like
+automations.
 
 - `headers` string map
 
@@ -85,5 +105,3 @@ Identifies the participant that sent the message. Interpretation is based on the
 - `sentAt` timestamp
 
 - `updatedAt` timestamp null for messages that are inserted first time
-
-## Team

@@ -592,7 +592,7 @@ Subscribes the webhook for the first time or update its parameters.
 
 #### Unsubscribing to a webhook
 
-`POST /webhook.unsubscribe`
+`POST /webhooks.unsubscribe`
 
 **Sample Response**
 
@@ -609,7 +609,7 @@ Subscribes the webhook for the first time or update its parameters.
 ```
 #### Get webhook
 
-`POST /webhook.get`
+`POST /webhooks.get`
 
 **Sample Response**
 

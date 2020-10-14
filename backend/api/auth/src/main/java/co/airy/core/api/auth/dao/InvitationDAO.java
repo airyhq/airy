@@ -8,12 +8,11 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @Component
 public interface InvitationDAO {
-    @SqlUpdate("INSERT INTO invitations(id, email, sent_at, accepted_at, created_at, updated_at) values (:id, :email, :sentAt, :acceptedAt, :createdAt, :updatedAt)")
+    @SqlUpdate("INSERT INTO invitations(id, email, sent_at, accepted_at, created_at, updated_at) VALUES (:id, :email, :sentAt, :acceptedAt, :createdAt, :updatedAt)")
     @RegisterBeanMapper(Invitation.class)
     void insert(@BindBean Invitation invitation);
 

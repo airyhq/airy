@@ -1,0 +1,34 @@
+@import "../../../assets/scss/colors.scss";
+@import "../../../assets/scss/fonts.scss";
+
+.container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transition: top 0.5s;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  min-width: 450px;
+  transform: translate(-50%, -50%);
+  border: none;
+  background-color: white;
+  border-radius: 7px;
+  padding: 2em;
+  outline: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}

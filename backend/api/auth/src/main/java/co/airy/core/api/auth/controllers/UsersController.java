@@ -27,7 +27,6 @@ import java.util.UUID;
 
 @RestController
 public class UsersController {
-
     private final InvitationDAO invitationDAO;
     private final UserDAO userDAO;
     private final Password passwordService;
@@ -72,7 +71,7 @@ public class UsersController {
     }
 
     @PostMapping("/users.login")
-    ResponseEntity<?> loginUser(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
+    ResponseEntity<LoginResponsePayload> loginUser(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
         final String password = loginRequestPayload.getPassword();
         final String email = loginRequestPayload.getEmail();
 
@@ -92,7 +91,7 @@ public class UsersController {
     }
 
     @PostMapping("/users.invite")
-    //TODO: Write a custom ExceptionHandler for JDBI
+        //TODO: Write a custom ExceptionHandler for JDBI
     ResponseEntity<InviteUserResponsePayload> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
         final UUID id = UUID.randomUUID();
         final Instant now = Instant.now();

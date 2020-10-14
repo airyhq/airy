@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "strict": false,
+    "baseUrl": "./",
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "paths": {     
+      "components": [
+        "./frontend/components"
+      ],
+      "components/*": [
+        "./frontend/components/*"
+      ],
+      "*": [
+        "./*"
+      ]
+    }
+  },
+  "exclude": ["node_modules"]
+}

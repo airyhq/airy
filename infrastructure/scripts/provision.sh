@@ -11,21 +11,28 @@ export PATH=$PATH:/usr/local/bin
 sudo mv linux-amd64/helm /usr/local/bin/helm
 helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
 helm repo update
+
+cd /vagrant
+pwd
+ls -lah
+
 helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 500s
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
 export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
 
-cd /vagrant
-kubectl apply -f tools/kafka-client.yaml
+cd /vagrant/scripts/
+kubectl apply -f ../tools/kafka-client.yaml
+pwd
+ls -a
 sleep 3m
-
+echo "Copying scripts now..."
 kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
-
+echo "Creating topics now..."
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
-
-kubectl apply -f api-admin.yaml
-kubectl apply -f api-communication.yaml
-kubectl apply -f events-router.yaml
+echo "Creating airy deployments..."
+kubectl apply -f ../deployments/api-admin.yaml
+kubectl apply -f ../deployments/api-communication.yaml
+kubectl apply -f ../deployments/events-router.yaml

@@ -52,8 +52,8 @@ If you wish to learn more about a specific project, please refer to the
 
 ```sh
 $ git clone https://github.com/airyhq/core
-$ cd core
-$ ./scripts/bootstrap.sh
+$ cd core/infrastructure
+$ ./bootstrap.sh
 ```
 
 ## Design principles of the Airy Core Platform

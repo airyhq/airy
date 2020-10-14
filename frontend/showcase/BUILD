@@ -31,3 +31,12 @@ ts_library(
         "@npm//react-svg",
     ],
 )
+
+load("//tools/aws:static_site.bzl", "static_site")
+
+static_site(
+    name = "deploy",
+    bucket_name = "components.airy.co",
+    directory = ":bundle",
+    distribution_id = "E2EV0JFTC3HOMS",
+)

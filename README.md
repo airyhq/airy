@@ -22,7 +22,7 @@ following components:
   Kafka](https://kafka.apache.org) to process incoming webhook data from
   different sources. We make sense of the data and reshape it into an [Airy Data
   Model](/docs/data-model.md) representing contacts, conversations, and messages.
-  
+
 - A [React](https://reactjs.org/) UI component library which we showcase at
   [components.airy.co]
  

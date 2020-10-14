@@ -25,6 +25,8 @@ kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
 
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
+kubectl exec -it kafka-client -- /tmp/create-database.sh
+
 
 kubectl apply -f api-auth.yaml
 kubectl apply -f api-admin.yaml

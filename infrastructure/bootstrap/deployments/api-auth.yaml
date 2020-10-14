@@ -28,9 +28,9 @@ spec:
         - name: SERVICE_NAME
           value: api-auth
         - name: DB_USERNAME
-          value: auth
+          value: admin
         - name: DB_PASSWORD
-          value: auth123
+          value: 4fRteQH2MTKmZzdv
         - name: DB_ENDPOINT
           value: postgres:5432
         livenessProbe:

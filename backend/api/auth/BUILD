@@ -34,3 +34,14 @@ load("//tools/build:junit5.bzl", "junit5")
     )
     for file in glob(["src/test/java/**/*Test.java"])
 ]
+
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
+
+container_push(
+    name = "release",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/api",
+    repository = "auth",
+    tag = "latest",
+)

@@ -12,16 +12,16 @@ import java.util.UUID;
 @Component
 public interface UserDAO {
 
-    @SqlUpdate("INSERT INTO users(id,email,first_name,last_name,password_hash) " +
-            "values (:id,:email,:firstName,:lastName,:passwordHash)")
+    @SqlUpdate("INSERT INTO users(id, email, first_name, last_name, password_hash) " +
+            "values (:id, :email, :firstName, :lastName, :passwordHash)")
     @RegisterBeanMapper(User.class)
     void insert(@BindBean User user);
 
-    @SqlQuery("SELECT * FROM users WHERE id=:id")
+    @SqlQuery("SELECT * FROM users WHERE id = :id")
     @RegisterBeanMapper(User.class)
     User findById(UUID id);
 
-    @SqlQuery("SELECT * FROM users WHERE email=:email")
+    @SqlQuery("SELECT * FROM users WHERE email = :email")
     @RegisterBeanMapper(User.class)
     User findByEmail(String email);
 }

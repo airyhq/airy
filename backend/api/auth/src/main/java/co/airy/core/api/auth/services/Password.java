@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Password {
-
     private final Argon2PasswordEncoder argon = new Argon2PasswordEncoder();
 
     public boolean isPasswordValid(String password) {

@@ -5,18 +5,17 @@ import co.airy.core.api.auth.controllers.payload.InviteUserResponsePayload;
 import co.airy.core.api.auth.controllers.payload.LoginRequestPayload;
 import co.airy.core.api.auth.controllers.payload.LoginResponsePayload;
 import co.airy.core.api.auth.controllers.payload.SignupRequestPayload;
-import co.airy.core.api.auth.dao.InvitationDAO;
-import co.airy.core.api.auth.dto.Invitation;
-import co.airy.core.api.auth.services.Mail;
-import co.airy.payload.response.EmptyResponsePayload;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import co.airy.core.api.auth.controllers.payload.SignupResponsePayload;
+import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dao.UserDAO;
+import co.airy.core.api.auth.dto.Invitation;
 import co.airy.core.api.auth.dto.User;
+import co.airy.core.api.auth.services.Mail;
 import co.airy.core.api.auth.services.Password;
+import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestError;
 import co.airy.spring.web.Jwt;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +30,6 @@ import java.util.concurrent.Executors;
 
 @RestController
 public class UsersController {
-
     private final InvitationDAO invitationDAO;
     private final UserDAO userDAO;
     private final Password passwordService;
@@ -78,7 +76,7 @@ public class UsersController {
     }
 
     @PostMapping("/users.login")
-    ResponseEntity<?> loginUser(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
+    ResponseEntity<LoginResponsePayload> loginUser(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
         final String password = loginRequestPayload.getPassword();
         final String email = loginRequestPayload.getEmail();
 

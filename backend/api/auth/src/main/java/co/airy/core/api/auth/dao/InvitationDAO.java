@@ -18,8 +18,8 @@ public interface InvitationDAO {
 
     @SqlQuery("select id, email, sent_at, accepted_at, created_at, updated_at from invitations where id = ?")
     @RegisterBeanMapper(Invitation.class)
-    Invitation findInvitation(UUID id);
+    Invitation findById(UUID id);
 
-    @SqlUpdate("update invitations set accepted_at = :acceptedAt, updated_at = :updatedAt where id = :id")
-    boolean update(UUID id, Instant acceptedAt, Instant updatedAt);
+    @SqlUpdate("update invitations set accepted_at = :acceptedAt, updated_at = :acceptedAt where id = :id")
+    boolean accept(UUID id, Instant acceptedAt);
 }

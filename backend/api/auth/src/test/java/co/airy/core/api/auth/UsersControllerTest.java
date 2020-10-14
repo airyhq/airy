@@ -99,7 +99,7 @@ public class UsersControllerTest {
         final String invitationId = objectMapper.readValue(rawResponse, JsonNode.class).get("id").asText();
         assertThat(invitationId, is(not(nullValue())));
 
-        assertThat(invitationDAO.findInvitation(UUID.fromString(invitationId)), is(not(nullValue())));
+        assertThat(invitationDAO.findById(UUID.fromString(invitationId)), is(not(nullValue())));
     }
 
     @Test

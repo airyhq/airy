@@ -13,6 +13,7 @@ import co.airy.core.api.auth.dao.UserDAO;
 import co.airy.core.api.auth.dto.Invitation;
 import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Password;
+import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestError;
 import co.airy.spring.web.Jwt;
 import org.springframework.http.HttpStatus;
@@ -91,7 +92,7 @@ public class UsersController {
     }
 
     @PostMapping("/users.invite")
-        //TODO: Write a custom ExceptionHandler for JDBI
+    //TODO: Write a custom ExceptionHandler for JDBI
     ResponseEntity<InviteUserResponsePayload> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
         final UUID id = UUID.randomUUID();
         final Instant now = Instant.now();
@@ -111,11 +112,15 @@ public class UsersController {
     }
 
     @PostMapping("/users.accept-invitation")
-    ResponseEntity<AcceptInvitationResponsePayload> acceptInvitation(@RequestBody @Valid AcceptInvitationRequestPayload payload) {
-        final Invitation invitation = invitationDAO.findInvitation(payload.getId());
+    ResponseEntity<?> acceptInvitation(@RequestBody @Valid AcceptInvitationRequestPayload payload) {
+        final Invitation invitation = invitationDAO.findById(payload.getId());
         final Instant now = Instant.now();
 
-        final boolean recordUpdated = invitationDAO.update(invitation.getId(), now, now);
+        final boolean recordUpdated = invitationDAO.accept(invitation.getId(), now);
+
+        if(!recordUpdated) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new EmptyResponsePayload());
+        }
 
         final UUID userId = UUID.randomUUID();
         final User user = User.builder()

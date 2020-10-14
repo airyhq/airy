@@ -35,10 +35,14 @@ public class Jwt {
     }
 
     public String tokenFor(String userId) {
-        Date now = Date.from(Instant.now());
-
         Map<String, Object> claims = new HashMap<>();
         claims.put(USER_ID_CLAIM, userId);
+
+        return tokenFor(userId, claims);
+    }
+
+    public String tokenFor(String userId, Map<String, Object> claims) {
+        Date now = Date.from(Instant.now());
 
         JwtBuilder builder = Jwts.builder()
                 .setId(userId)

@@ -1,28 +1,37 @@
 package co.airy.core.api.auth;
 
+import co.airy.core.api.auth.controllers.UsersController;
 import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dao.UserDAO;
 import co.airy.core.api.auth.dto.User;
+import co.airy.core.api.auth.services.Mail;
 import co.airy.spring.core.AirySpringBootApplication;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayDataSource;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,6 +54,18 @@ public class UsersControllerTest {
 
     @Autowired
     private UserDAO userDAO;
+
+    @MockBean
+    private Mail mail;
+
+    @Autowired
+    @InjectMocks
+    private UsersController usersController;
+
+    @BeforeEach
+    void beforeEach() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void userSignupAndLogin() throws Exception {
@@ -83,7 +104,31 @@ public class UsersControllerTest {
                 .content(loginRequestWrongPwd)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
                 .andExpect(status().isUnauthorized());
+    }
 
+    @Test
+    void requestPasswordReset() throws Exception {
+        final String email = "ada@airy.co";
+
+        final String signUpRequest = "{\"email\":\"" + email + "\",\"first_name\":\"something\"," +
+                "\"last_name\":\"hopper\",\"password\":\"trustno1\"}";
+
+        mvc.perform(post("/users.signup")
+                .content(signUpRequest)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()));
+
+        final String passwordResetRequest = "{\"email\":\"" + email + "\"}";
+
+        doNothing().when(mail).send(Mockito.eq(email), Mockito.anyString(), Mockito.anyString());
+
+        mvc.perform(post("/users.request-password-reset")
+                .content(passwordResetRequest)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+                .andExpect(status().isOk());
+
+        TimeUnit.MILLISECONDS.sleep(500);
+
+        Mockito.verify(mail).send(Mockito.eq(email), Mockito.anyString(), Mockito.anyString());
     }
 
     @Test

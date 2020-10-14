@@ -114,17 +114,13 @@ public class UsersController {
     @PostMapping("/users.accept-invitation")
     ResponseEntity<?> acceptInvitation(@RequestBody @Valid AcceptInvitationRequestPayload payload) {
         final Invitation invitation = invitationDAO.findById(payload.getId());
-        final Instant now = Instant.now();
 
-        final boolean recordUpdated = invitationDAO.accept(invitation.getId(), now);
-
-        if(!recordUpdated) {
+        if(!invitationDAO.accept(invitation.getId(), Instant.now())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new EmptyResponsePayload());
         }
 
-        final UUID userId = UUID.randomUUID();
         final User user = User.builder()
-                .id(userId)
+                .id(UUID.randomUUID())
                 .email(invitation.getEmail())
                 .firstName(payload.getFirstName())
                 .lastName(payload.getLastName())
@@ -136,8 +132,8 @@ public class UsersController {
         return ResponseEntity.ok(AcceptInvitationResponsePayload.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .token(jwt.tokenFor(userId.toString()))
-                .id(userId.toString())
+                .token(jwt.tokenFor(user.getId().toString()))
+                .id(user.getId().toString())
                 .build()
         );
     }

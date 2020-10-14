@@ -28,7 +28,7 @@ spec:
         - name: SERVICE_NAME
           value: api-auth
         - name: DB_USERNAME
-          value: admin
+          value: postgresadmin
         - name: DB_PASSWORD
           value: 4fRteQH2MTKmZzdv
         - name: DB_ENDPOINT

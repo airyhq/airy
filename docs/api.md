@@ -80,11 +80,11 @@ does not require a valid token to be present in the headers.
 ## Endpoints
 
 The way we group endpoints reflects the high level entities of the [Airy Core Data
-Model](/docs/data-model.md).
+Model](/docs/glossary.md).
 
 ### Users
 
-Please refer to our [user](/docs/data-model.md#users) definition for more
+Please refer to our [user](/docs/glossary.md#users) definition for more
 information.
 
 #### Signup
@@ -231,7 +231,7 @@ This endpoint returns 201 (created) if invite was created successfully.
 
 ### Conversations
 
-Please refer to our [conversation](/docs/data-model.md#conversation) definition
+Please refer to our [conversation](/docs/glossary.md#conversation) definition
 for more information.
 
 #### List conversations
@@ -358,7 +358,7 @@ Resets the unread count of a conversation and returns `202 (Accepted)`.
 
 ### Messages
 
-Please refer to our [messages](/docs/data-model.md#message) definition for more
+Please refer to our [messages](/docs/glossary.md#message) definition for more
 information.
 
 #### Messages of a conversation

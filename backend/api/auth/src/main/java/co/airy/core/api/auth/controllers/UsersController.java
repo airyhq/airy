@@ -6,6 +6,7 @@ import co.airy.core.api.auth.controllers.payload.InviteUserRequestPayload;
 import co.airy.core.api.auth.controllers.payload.InviteUserResponsePayload;
 import co.airy.core.api.auth.controllers.payload.LoginRequestPayload;
 import co.airy.core.api.auth.controllers.payload.LoginResponsePayload;
+import co.airy.core.api.auth.controllers.payload.PasswordResetRequestPayload;
 import co.airy.core.api.auth.controllers.payload.SignupRequestPayload;
 import co.airy.core.api.auth.controllers.payload.SignupResponsePayload;
 import co.airy.core.api.auth.dao.InvitationDAO;
@@ -32,6 +33,7 @@ import java.util.concurrent.Executors;
 
 @RestController
 public class UsersController {
+    public static final String RESET_PWD_FOR = "reset_pwd_for";
     private final InvitationDAO invitationDAO;
     private final UserDAO userDAO;
     private final Password passwordService;
@@ -108,7 +110,15 @@ public class UsersController {
         executor.submit(() -> requestResetFor(email));
         return ResponseEntity.ok(new EmptyResponsePayload());
     }
+    @PostMapping("/users.password-reset")
+    ResponseEntity<?> passwordReset(@RequestBody @Valid PasswordResetRequestPayload payload) {
+        Map<String, Object> claims = jwt.getClaims(payload.getToken());
+        final String userId = (String) claims.get(RESET_PWD_FOR);
 
+        userDAO.changePassword(UUID.fromString(userId), passwordService.hashPassword(payload.getNewPassword()));
+
+        return ResponseEntity.ok(new EmptyResponsePayload());
+    }
 
     private void requestResetFor(String email) {
         final User user = userDAO.findByEmail(email);
@@ -124,7 +134,7 @@ public class UsersController {
     }
 
     private String getResetToken(String userId) {
-        Map<String, Object> refreshClaim = Map.of("reset_pwd_for", userId);
+        Map<String, Object> refreshClaim = Map.of(RESET_PWD_FOR, userId);
 
         return jwt.tokenFor(userId, refreshClaim);
     }

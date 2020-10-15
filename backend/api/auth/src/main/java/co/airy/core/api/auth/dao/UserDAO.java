@@ -7,6 +7,7 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Component
@@ -24,4 +25,7 @@ public interface UserDAO {
     @SqlQuery("SELECT * FROM users WHERE email = :email")
     @RegisterBeanMapper(User.class)
     User findByEmail(String email);
+
+    @SqlUpdate("update users set password_hash = :newPasswordHash where id = :id")
+    boolean changePassword(UUID id, String newPasswordHash);
 }

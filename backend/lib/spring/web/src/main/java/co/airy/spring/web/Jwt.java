@@ -81,6 +81,10 @@ public class Jwt {
         }
     }
 
+    public Map<String, Object> getClaims(String token) {
+        return extractClaims(token);
+    }
+
     private Key parseSigningKey(String tokenKey) {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(tokenKey);
         return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());

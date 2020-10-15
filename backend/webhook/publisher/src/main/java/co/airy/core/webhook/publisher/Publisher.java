@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 
 @Component
-@RestController
 public class Publisher implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "webhook.Publisher";
     private final String WEBHOOKS_STORE = "webhook-store";
@@ -42,7 +41,9 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
                 // Only send new messages
                 .filter(((messageId, message) -> message.getUpdatedAt() == null))
                 .peek((messageId, message) -> {
-                    final Webhook webhook = getWebhook();
+
+                    final ReadOnlyKeyValueStore<String, Webhook> webhookStore = streams.acquireLocalStore(WEBHOOKS_STORE);
+                    final Webhook webhook = webhookStore.get(allWebhooksKey);
 
                     if (webhook != null && webhook.getStatus().equals(Status.Subscribed)) {
                         redisQueuePublisher.publishMessage(webhook.getId(),
@@ -55,16 +56,6 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
                 });
 
         streams.start(builder.build(), appId);
-    }
-
-    public ReadOnlyKeyValueStore<String, Webhook> getWebhookStore() {
-        return streams.acquireLocalStore(WEBHOOKS_STORE);
-    }
-
-    public Webhook getWebhook() {
-        final ReadOnlyKeyValueStore<String, Webhook> webhookStore = getWebhookStore();
-
-        return webhookStore.get(allWebhooksKey);
     }
 
     @Override

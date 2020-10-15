@@ -114,6 +114,15 @@ public class UsersController {
     ResponseEntity<?> passwordReset(@RequestBody @Valid PasswordResetRequestPayload payload) {
         Map<String, Object> claims = jwt.getClaims(payload.getToken());
         final String userId = (String) claims.get(RESET_PWD_FOR);
+        final User user = userDAO.findById(UUID.fromString(userId));
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if(!payload.getToken().equals(getResetToken(userId))) {
+            return ResponseEntity.badRequest().build();
+        }
 
         userDAO.changePassword(UUID.fromString(userId), passwordService.hashPassword(payload.getNewPassword()));
 

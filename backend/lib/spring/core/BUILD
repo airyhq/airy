@@ -35,11 +35,11 @@ java_library(
     name = "spring-test",
     visibility = ["//visibility:public"],
     exports = [
-        "@maven//:org_springframework_spring_core",
-        "@maven//:org_springframework_spring_beans",
         "@maven//:org_springframework_boot_spring_boot_starter_test",
         "@maven//:org_springframework_boot_spring_boot_test",
         "@maven//:org_springframework_boot_spring_boot_test_autoconfigure",
+        "@maven//:org_springframework_spring_beans",
+        "@maven//:org_springframework_spring_core",
         "@maven//:org_springframework_spring_test",
     ],
 )

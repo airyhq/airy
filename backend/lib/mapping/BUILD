@@ -14,7 +14,7 @@ java_library(
     name = "mapping",
     srcs = glob(["src/main/java/co/airy/mapping/**/*.java"]),
     visibility = ["//visibility:public"],
-    deps = lib_deps
+    deps = lib_deps,
 )
 
 [
@@ -24,7 +24,7 @@ java_library(
         deps = lib_deps + [
             ":mapping",
             "//backend/lib/spring/core:spring-test",
-            "//backend/lib/spring/core:spring-core"
+            "//backend/lib/spring/core:spring-core",
         ],
     )
     for file in glob(["src/test/java/**/*Test.java"])

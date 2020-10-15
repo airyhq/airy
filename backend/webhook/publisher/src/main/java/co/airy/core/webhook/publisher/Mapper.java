@@ -17,7 +17,7 @@ public class Mapper {
     @Autowired
     private ContentMapper mapper;
 
-    public WebhookBody fromMessage(Message message) {
+    public WebhookBody fromMessage(Message message) throws Exception {
         mapper.render(message);
 
         return WebhookBody.builder()

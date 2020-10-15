@@ -11,13 +11,14 @@
             "provider": "virtualbox",
             "add_force": true,
             "type": "vagrant",
+            "template": "./Vagrantfile.packer.tpl",
             "output_dir": ".vagrant-out"
         }
     ],
     "provisioners": [
         {
             "scripts": [
-              "./tasks/bootstrap.sh"
+              "./scripts/provision.sh"
             ],
             "type": "shell"
           }
@@ -27,9 +28,9 @@
         {
             "type": "shell-local",
             "inline": [
-                "aws --profile airy-prod s3 cp ./.vagrant-out/package.box s3://airy-core-images/vagrant/airy.{{timestamp}}.box"
+                "aws s3 cp ./.vagrant-out/package.box s3://core-images.airy.co/vagrant/airy.box",
+                "aws s3api put-object-acl --bucket core-images.airy.co --key vagrant/airy.box --acl public-read"
             ]
-
         }
     ]
   } 

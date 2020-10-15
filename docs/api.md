@@ -698,8 +698,7 @@ Example response:
 - `name`: String
 - `color`: tag-red | tag-blue | tag-green | tag-purple
 
-Since this is an async action, the endpoint returns `202` (accepted). The
-response is always an empty JSON.
+If action is sucessuful, returns HTTP status `200`.
 
 Example response:
 
@@ -722,8 +721,7 @@ Example response:
 
 - `tag_id`: UUID
 
-Since this is an async action, the endpoint returns `202` (accepted).
-The response is always an empty JSON.
+If action is sucessuful, returns HTTP status `200`.
 
 Example response:
 

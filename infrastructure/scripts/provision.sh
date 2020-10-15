@@ -12,7 +12,7 @@ sudo mv linux-amd64/helm /usr/local/bin/helm
 helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
 helm repo update
 
-helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 500s
+helm upgrade airy airyhq/cp-helm-charts --version 0.5.0 --timeout 500s
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
@@ -21,7 +21,7 @@ export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
 cd /vagrant/scripts/
 kubectl apply -f ../tools/kafka-client.yaml
 echo "Waiting few minutes for kafka and zookeeper to start in minikube"
-sleep 5m
+# sleep 5m
 
 echo "Creating kafka topics and required databaes"
 kubectl cp topics.sh kafka-client:/tmp
@@ -35,3 +35,5 @@ kubectl apply -f ../deployments/api-auth.yaml
 kubectl apply -f ../deployments/api-admin.yaml
 kubectl apply -f ../deployments/api-communication.yaml
 kubectl apply -f ../deployments/events-router.yaml
+kubectl apply -f ../deployments/sources-facebook-webhook-producer.yaml
+kubectl apply -f ../deployments/sources-facebook-webhook-consumer.yaml

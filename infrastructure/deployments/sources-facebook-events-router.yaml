@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-admin
+  name: sources-facebook-events-router
   namespace: default
   labels:
-    app: api-admin
+    app: sources-facebook-events-router
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api-admin
+      app: sources-facebook-events-router
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,23 +18,21 @@ spec:
   template:
     metadata:
       labels:
-        app: api-admin
+        app: sources-facebook-events-router
     spec:
       containers:
-      - name: api-admin
-        image: ghcr.io/airyhq/api/admin:latest
+      - name: sources-facebook-events-router
+        image: ghcr.io/airyhq/sources/facebook/events-router:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: airy-kafka-cp-schema-registry:8081
-        - name: FACEBOOK_APP_ID
-          value: ""
-        - name: FACEBOOK_APP_SECRET
+        - name: FB_APP_ID
           value: ""
         - name: SERVICE_NAME
-          value: api-admin
+          value: facebook-events-router
         livenessProbe:
             httpGet:
               path: /health
@@ -49,7 +47,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: api-admin
+  name: sources-facebook-events-router
   namespace: default
 spec:
   ports:
@@ -58,4 +56,4 @@ spec:
       protocol: TCP
   type: NodePort
   selector:
-    app: api-admin
+    app: sources-facebook-events-router

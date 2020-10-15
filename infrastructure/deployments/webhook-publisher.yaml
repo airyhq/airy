@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sources-facebook-events-router
+  name: webhook-publisher
   namespace: default
   labels:
-    app: sources-facebook-events-router
+    app: webhook-publisher
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sources-facebook-events-router
+      app: webhook-publisher
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,21 +18,27 @@ spec:
   template:
     metadata:
       labels:
-        app: sources-facebook-events-router
+        app: webhook-publisher
     spec:
       containers:
-      - name: sources-facebook-events-router
-        image: ghcr.io/airyhq/sources/facebook-events-router:latest
+      - name: webhook-publisher
+        image: ghcr.io/airyhq/webhook/publisher:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
-          value: airy-cp-kafka-headless:9092
+          value: airy-cp-kafka-headless:9092 
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: airy-kafka-cp-schema-registry:8081
-        - name: FB_APP_ID
+        - name: FACEBOOK_APP_ID
+          value: ""
+        - name: FACEBOOK_APP_SECRET
           value: ""
         - name: SERVICE_NAME
-          value: facebook-events-router
+          value: webhook-publisher
+        - name: REDIS_HOSTNAME
+          value: redis
+        - name: REDIS_PORT
+          value: 6379
         livenessProbe:
             httpGet:
               path: /health
@@ -47,7 +53,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sources-facebook-events-router
+  name: webhook-publisher
   namespace: default
 spec:
   ports:
@@ -56,4 +62,4 @@ spec:
       protocol: TCP
   type: NodePort
   selector:
-    app: sources-facebook-events-router
+    app: webhook-publisher

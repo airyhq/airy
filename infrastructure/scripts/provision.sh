@@ -35,3 +35,7 @@ kubectl apply -f ../deployments/api-auth.yaml
 kubectl apply -f ../deployments/api-admin.yaml
 kubectl apply -f ../deployments/api-communication.yaml
 kubectl apply -f ../deployments/events-router.yaml
+
+echo "Deploying ingress rules"
+kubectl apply -f ../network/istio-controller.yaml
+kubectl apply -f ../network/istio-services.yaml

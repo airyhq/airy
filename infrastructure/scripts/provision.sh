@@ -12,10 +12,6 @@ sudo mv linux-amd64/helm /usr/local/bin/helm
 helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
 helm repo update
 
-cd /vagrant
-pwd
-ls -lah
-
 helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 500s
 
 export RELEASE_NAME=airy

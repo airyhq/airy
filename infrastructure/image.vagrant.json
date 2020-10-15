@@ -31,7 +31,6 @@
                 "aws s3 cp ./.vagrant-out/package.box s3://core-images.airy.co/vagrant/airy.box",
                 "aws s3api put-object-acl --bucket core-images.airy.co --key vagrant/airy.box --acl public-read"
             ]
-
         }
     ]
   } 

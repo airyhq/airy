@@ -43,15 +43,23 @@ A channel represents a connection between a [source](#source) and the Airy Core 
 
 ## Contact
 
+Represents the [source](#source) participant. For one [conversation](#conversation) to exist,
+it must have at least one message from the source participant.
+
 ## Conversation
+
+A conversation is the logical aggregation of messages (at least one) from exactly one source
+participant.
 
 ## Message
 
-### headers 
+A message wraps the data that is being transfered from and to the source with metadata.
 
-Header data contains information that is important for downstream processing. It
-also includes the message preview and tags that are useful for certain apps like
-automations.
+### Fields
+
+- `id` uuid
+
+Unique message id for deduplication.
 
 - `headers` string map
 
@@ -60,16 +68,11 @@ automations.
     - `postback.payload` string postback payloads used for source automations
     - `postback.referral` string facebook specific referral identifier
 
-
-- `id` uuid
-
-Unique message id for deduplication.
-
 - `senderType` string
 
 What type of actor inserted the message. One of:
 
-    - `SOURCE_CONTACT` message sent by a contact to the user source
+    - `SOURCE_CONTACT` sent to the source by a contact
     - `SOURCE_USER` sent to the source by the user but not via app
     - `APP_USER` sent to source via app
 
@@ -80,8 +83,8 @@ Identifies the participant that sent the message. Interpretation is based on the
 | senderType     | senderId                                            |
 | -------------- | --------------------------------------------------- |
 | SOURCE_CONTACT | source contact id (e.g. Facebook page scoped id)    |
-| APP_USER       | app channel id                                      |
 | SOURCE_USER    | source dependent (e.g. Facebook third party app id) |
+| APP_USER       | app channel id                                      |
 
 
 - `conversationId` uuid
@@ -105,3 +108,12 @@ Identifies the participant that sent the message. Interpretation is based on the
 - `sentAt` timestamp
 
 - `updatedAt` timestamp null for messages that are inserted first time
+
+
+#### Headers 
+
+Header data contains information that is important for downstream processing. It
+also includes the message preview and tags that are useful for certain apps like
+automations.
+
+

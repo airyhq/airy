@@ -192,6 +192,13 @@ container_pull(
     tag = "11.0.3-jre-slim",
 )
 
+load(
+    "@io_bazel_rules_docker//go:image.bzl",
+    _go_image_repos = "repositories",
+)
+
+_go_image_repos()
+
 ### Frontend build tooling
 
 http_archive(
@@ -235,3 +242,8 @@ git_repository(
 load("@com_github_atlassian_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
 
 multirun_dependencies()
+
+load("//:go_repositories.bzl", "go_repositories")
+
+# gazelle:repository_macro go_repositories.bzl%go_repositories
+go_repositories()

@@ -24,24 +24,24 @@ spec:
     - airy-core
     http:
     - match:
-    - uri:
-        prefix: /users.login
-    - uri:
-        prefix: /users.signup
-    - uri:
-        prefix: /users.accept-invitation
-    - uri:
-        prefix: /users.request-password-reset
-    - uri:
-        prefix: /users.password-reset
-    - uri:
-        prefix: /users.invite
-    route:
-    - destination:
-        host: api-auth
-        port:
+      - uri:
+          prefix: /users.login
+      - uri: 
+          prefix: /users.signup
+      - uri:
+          prefix: /users.accept-invitation
+      - uri:
+          prefix: /users.request-password-reset
+      - uri:
+          prefix: /users.password-reset
+      - uri:
+          prefix: /users.invite
+      route:
+      - destination:
+          host: api-auth
+          port:
             number: 80
-            ---
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -53,20 +53,20 @@ spec:
     - airy-core
     http:
     - match:
-    - uri:
-        prefix: /conversations.list
-    - uri:
-        prefix: /conversations.by_id
-    - uri:
-        prefix: /conversations.mark-read
-    - uri:
-        prefix: /conversations.messages-list
-    - uri:
-        prefix: /conversations.send
-    route:
-    - destination:
-        host: api-communication
-        port:
+      - uri:
+          prefix: /conversations.list
+      - uri:
+          prefix: /conversations.by_id
+      - uri:
+          prefix: /conversations.mark-read
+      - uri:
+          prefix: /conversations.messages-list
+      - uri:
+          prefix: /conversations.send
+      route:
+      - destination:
+          host: api-communication
+          port:
             number: 80
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -80,22 +80,22 @@ spec:
     - airy-core
     http:
     - match:
-    - uri:
-        prefix: /channels.connect
-    - uri:
-        prefix: /channels.disconnect
-    - uri:
-        prefix: /channels.available
-    - uri:
-        prefix: /channels.connected
-    - uri:
-        prefix: /webhooks.subscribe
-    - uri:
-        prefix: /webhooks.unsubscribe
-    - uri:
-        prefix: /webhooks.get
-    route:
-    - destination:
-        host: api-admin
-        port:
+      - uri:
+          prefix: /channels.connect
+      - uri:
+          prefix: /channels.disconnect
+      - uri:
+          prefix: /channels.available
+      - uri:
+          prefix: /channels.connected
+      - uri:
+          prefix: /webhooks.subscribe
+      - uri:
+          prefix: /webhooks.unsubscribe
+      - uri:
+          prefix: /webhooks.get
+      route:
+      - destination:
+          host: api-admin
+          port:
             number: 80

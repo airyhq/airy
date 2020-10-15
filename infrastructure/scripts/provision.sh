@@ -30,12 +30,15 @@ kubectl cp create-database.sh kafka-client:/tmp
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
 kubectl exec -it kafka-client -- /tmp/create-database.sh
 
+echo "Deploying ingress rules"
+kubectl apply -f ../network/istio-crd.yaml
+kubectl apply -f ../network/istio-controller.yaml
+kubectl apply -f ../network/istio-operator.yaml
+kubectl apply -f ../network/istio-services.yaml
+kubectl label namespace default istio-injection=enabled
+
 echo "Deploying airy-core apps"
 kubectl apply -f ../deployments/api-auth.yaml
 kubectl apply -f ../deployments/api-admin.yaml
 kubectl apply -f ../deployments/api-communication.yaml
 kubectl apply -f ../deployments/events-router.yaml
-
-echo "Deploying ingress rules"
-kubectl apply -f ../network/istio-controller.yaml
-kubectl apply -f ../network/istio-services.yaml

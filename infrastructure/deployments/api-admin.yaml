@@ -34,7 +34,7 @@ spec:
         - name: FACEBOOK_APP_SECRET
           value: ""
         - name: SERVICE_NAME
-          value: facebook-events-router
+          value: api-auth
         livenessProbe:
             httpGet:
               path: /health

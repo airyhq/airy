@@ -24,15 +24,18 @@ export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
 
 cd /vagrant/scripts/
 kubectl apply -f ../tools/kafka-client.yaml
-pwd
-ls -a
-sleep 3m
-echo "Copying scripts now..."
+echo "Waiting few minutes for kafka and zookeeper to start in minikube"
+sleep 5m
+
+echo "Creating kafka topics and required databaes"
 kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
-echo "Creating topics now..."
+kubectl cp create-database.sh kafka-client:/tmp
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
-echo "Creating airy deployments..."
+kubectl exec -it kafka-client -- /tmp/create-database.sh
+
+echo "Deploying airy-core apps"
+kubectl apply -f ../deployments/api-auth.yaml
 kubectl apply -f ../deployments/api-admin.yaml
 kubectl apply -f ../deployments/api-communication.yaml
 kubectl apply -f ../deployments/events-router.yaml

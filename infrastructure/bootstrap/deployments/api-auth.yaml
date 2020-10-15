@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-auth
+  namespace: default
+  labels:
+    app: api-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-auth
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: api-auth
+    spec:
+      containers:
+      - name: api-auth
+        image: ghcr.io/airyhq/api/auth:latest
+        imagePullPolicy: Always
+        env:
+        - name: SERVICE_NAME
+          value: api-auth
+        - name: DB_USERNAME
+          value: postgresadmin
+        - name: DB_PASSWORD
+          value: 4fRteQH2MTKmZzdv
+        - name: DB_ENDPOINT
+          value: postgres:5432
+        livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              httpHeaders:
+              - name: Health-Check
+                value: health-check
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-auth
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: api-auth

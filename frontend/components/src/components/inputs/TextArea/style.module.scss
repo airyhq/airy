@@ -1,0 +1,52 @@
+@import "../../../assets/scss/colors.scss";
+@import "../../../assets/scss/fonts.scss";
+
+.textarea {
+  background-color: white;
+  width: 100%;
+  border: 1px solid var(--color-dark-elements-gray);
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: var(--color-text-contrast);
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: var(--color-text-gray);
+  }
+
+  &:focus {
+    background-color: var(--color-background-blue);
+    border: 1px solid var(--color-airy-blue);
+    outline: none;
+  }
+
+  &:invalid {
+    border: 1px solid var(--color-dark-elements-gray);
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.inputInvalid {
+  border: 1px solid var(--color-red-alert);
+  background-color: var(--color-background-red);
+
+  &:invalid {
+    border: 1px solid var(--color-red-alert);
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:focus {
+    background-color: var(--color-background-red);
+  }
+}
+
+.inputValid {
+  border: 1px solid var(--color-soft-green);
+
+  &:focus {
+    background-color: var(--color-background-blue);
+    border: 1px solid var(--color-airy-blue);
+  }
+}

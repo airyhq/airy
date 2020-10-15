@@ -13,5 +13,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class PasswordResetRequestPayload {
     @NotBlank
-    private String password;
+    private String token;
+    @NotBlank
+    private String newPassword;
 }

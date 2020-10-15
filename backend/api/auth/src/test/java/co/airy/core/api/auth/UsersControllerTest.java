@@ -6,6 +6,7 @@ import co.airy.core.api.auth.dao.UserDAO;
 import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Mail;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.web.Jwt;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
@@ -24,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -62,6 +64,9 @@ public class UsersControllerTest {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private Jwt jwt;
 
     @MockBean
     private Mail mail;
@@ -187,6 +192,40 @@ public class UsersControllerTest {
         assertThat(user.getFirstName(), equalTo("Katherine"));
         assertThat(user.getLastName(), equalTo("Johnson"));
         assertThat(user.getPasswordHash(), is(not(nullValue())));
+    }
+
+    @Test
+    void changesPassword() throws Exception {
+        final String email = "ada-2@airy.co";
+        final String signUpRequest = "{\"email\":\"" + email + "\",\"first_name\":\"something\"," +
+                "\"last_name\":\"hopper\",\"password\":\"trustno1\"}";
+
+        final String signupResponse = mvc.perform(post("/users.signup")
+                .content(signUpRequest)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+                .andReturn().getResponse().getContentAsString();
+
+        final JsonNode jsonNode = objectMapper.readTree(signupResponse);
+        final String userId = jsonNode.get("id").textValue();
+
+        final String requestPasswordRequest = "{\"email\":\"" + email + "\"}";
+
+        doNothing().when(mail).send(Mockito.eq(email), Mockito.anyString(), Mockito.anyString());
+
+         mvc.perform(post("/users.request-password-reset")
+                .content(requestPasswordRequest)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+                .andExpect(status().isOk());
+
+        Map<String, Object> refreshClaim = Map.of("reset_pwd_for", userId);
+        final String token = jwt.tokenFor(userId, refreshClaim);
+
+        final String passwordResetRequest = "{\"token\":\"" + token + "\", \"new_password\": \"super-safe-password\"}";
+
+        mvc.perform(post("/users.password-reset")
+                .content(passwordResetRequest)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+                .andExpect(status().isOk());
     }
 }
 

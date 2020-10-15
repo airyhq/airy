@@ -733,8 +733,6 @@ Example response:
 
 `POST /tags.list`
 
-This endpoint has no parameters.
-
 Example response:
 
 ```json5

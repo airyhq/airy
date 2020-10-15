@@ -26,6 +26,6 @@ public interface UserDAO {
     @RegisterBeanMapper(User.class)
     User findByEmail(String email);
 
-    @SqlUpdate("update users set password_hash = :newPasswordHash where id = :id")
+    @SqlUpdate("UPDATE users SET password_hash = :newPasswordHash WHERE id = :id")
     boolean changePassword(UUID id, String newPasswordHash);
 }

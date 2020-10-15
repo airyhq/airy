@@ -744,7 +744,6 @@ Example response:
   tags: [
     {
       id: "TAG-ID",
-      organization_id: "org-id",
       name: "name of the tag",
       color: "RED"
     }

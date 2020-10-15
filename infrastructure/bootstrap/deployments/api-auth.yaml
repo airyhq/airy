@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sources-facebook-events-router
+  name: api-auth
   namespace: default
   labels:
-    app: sources-facebook-events-router
+    app: api-auth
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sources-facebook-events-router
+      app: api-auth
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,21 +18,21 @@ spec:
   template:
     metadata:
       labels:
-        app: sources-facebook-events-router
+        app: api-auth
     spec:
       containers:
-      - name: sources-facebook-events-router
-        image: ghcr.io/airyhq/sources/facebook-events-router:latest
+      - name: api-auth
+        image: ghcr.io/airyhq/api/auth:latest
         imagePullPolicy: Always
         env:
-        - name: KAFKA_BROKERS
-          value: airy-cp-kafka-headless:9092
-        - name: KAFKA_SCHEMA_REGISTRY_URL
-          value: airy-kafka-cp-schema-registry:8081
-        - name: FB_APP_ID
-          value: ""
         - name: SERVICE_NAME
-          value: facebook-events-router
+          value: api-auth
+        - name: DB_USERNAME
+          value: postgresadmin
+        - name: DB_PASSWORD
+          value: 4fRteQH2MTKmZzdv
+        - name: DB_ENDPOINT
+          value: postgres:5432
         livenessProbe:
             httpGet:
               path: /health
@@ -47,7 +47,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sources-facebook-events-router
+  name: api-auth
   namespace: default
 spec:
   ports:
@@ -56,4 +56,4 @@ spec:
       protocol: TCP
   type: NodePort
   selector:
-    app: sources-facebook-events-router
+    app: api-auth

@@ -19,13 +19,17 @@ export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
 
 cd /home/vagrant
 kubectl apply -f kafka-client.yaml
-sleep 3m
+sleep 5m
 
 kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
+kubectl cp create-database.sh kafka-client:/tmp
 
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
+kubectl exec -it kafka-client -- /tmp/create-database.sh
 
+
+kubectl apply -f api-auth.yaml
 kubectl apply -f api-admin.yaml
 kubectl apply -f api-communication.yaml
 kubectl apply -f events-router.yaml

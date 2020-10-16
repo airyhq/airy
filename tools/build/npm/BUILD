@@ -24,7 +24,7 @@ bzl_library(
     srcs = [
         "rules.bzl",
     ],
-    visibility = ["//visibility:public"]
+    visibility = ["//visibility:public"],
 )
 
 py_binary(

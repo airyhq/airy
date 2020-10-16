@@ -23,7 +23,7 @@ def _assemble_npm_impl(ctx):
 
     if not ctx.attr.version_file:
         version_file = ctx.actions.declare_file(ctx.attr.name + "__do_not_reference.version")
-        version = ctx.var.get('version', '0.0.0')
+        version = ctx.var.get("version", "0.0.0")
 
         if len(version) == 40:
             # this is a commit SHA, most likely
@@ -32,15 +32,15 @@ def _assemble_npm_impl(ctx):
         ctx.actions.run_shell(
             inputs = [],
             outputs = [version_file],
-            command = "echo {} > {}".format(version, version_file.path)
+            command = "echo {} > {}".format(version, version_file.path),
         )
     else:
         version_file = ctx.file.version_file
 
     args = ctx.actions.args()
-    args.add('--package', ctx.files.target[0].path)
-    args.add('--output', ctx.outputs.npm_package.path)
-    args.add('--version_file', version_file.path)
+    args.add("--package", ctx.files.target[0].path)
+    args.add("--output", ctx.outputs.npm_package.path)
+    args.add("--version_file", version_file.path)
 
     ctx.actions.run(
         inputs = ctx.files.target + ctx.files._npm + [version_file],
@@ -49,7 +49,6 @@ def _assemble_npm_impl(ctx):
         executable = ctx.executable._assemble_script,
         # note: do not run in RBE
     )
-
 
 assemble_npm = rule(
     implementation = _assemble_npm_impl,
@@ -65,34 +64,33 @@ assemble_npm = rule(
             File containing version string.
             Alternatively, pass --define version=VERSION to Bazel invocation.
             Not specifying version at all defaults to '0.0.0'
-            """
+            """,
         ),
         "_assemble_script": attr.label(
             default = "//tools/build/npm:assemble",
             executable = True,
-            cfg = "host"
+            cfg = "host",
         ),
         "_npm": attr.label(
             default = Label("@nodejs//:npm"),
-            allow_files = True
-        )
+            allow_files = True,
+        ),
     },
     outputs = {
-          "npm_package": "%{name}.tar.gz",
+        "npm_package": "%{name}.tar.gz",
     },
-    doc = "Assemble `npm_package` target for further deployment. Currently does not support remote execution (RBE)."
+    doc = "Assemble `npm_package` target for further deployment. Currently does not support remote execution (RBE).",
 )
-
 
 def _deploy_npm(ctx):
     ctx.actions.expand_template(
         template = ctx.file._deployment_script_template,
         output = ctx.outputs.executable,
         substitutions = {
-            "{snapshot}" : ctx.attr.snapshot,
-            "{release}" : ctx.attr.release,
+            "{snapshot}": ctx.attr.snapshot,
+            "{release}": ctx.attr.release,
         },
-        is_executable = True
+        is_executable = True,
     )
 
     files = [
@@ -106,8 +104,9 @@ def _deploy_npm(ctx):
             files = files,
             symlinks = {
                 "deploy_npm.tgz": ctx.file.target,
-            }))
-
+            },
+        ),
+    )
 
 deploy_npm = rule(
     implementation = _deploy_npm,
@@ -120,11 +119,11 @@ deploy_npm = rule(
         ),
         "snapshot": attr.string(
             mandatory = True,
-            doc = 'Snapshot repository to deploy npm artifact to',
+            doc = "Snapshot repository to deploy npm artifact to",
         ),
         "release": attr.string(
             mandatory = True,
-            doc = 'Release repository to deploy npm artifact to',
+            doc = "Release repository to deploy npm artifact to",
         ),
         "_deployment_script_template": attr.label(
             allow_single_file = True,
@@ -132,7 +131,7 @@ deploy_npm = rule(
         ),
         "_npm": attr.label(
             default = Label("@nodejs//:npm"),
-            allow_files = True
+            allow_files = True,
         ),
     },
 )

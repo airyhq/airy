@@ -1,7 +1,6 @@
 package(default_visibility = ["//visibility:public"])
 
 load("//tools/build/web:typescript.bzl", "ts_library")
-load("@npm_bazel_typescript//:index.bzl", "ts_config")
 load("//tools/build/web:web_library.bzl", "web_library")
 
 lib_deps = [
@@ -26,7 +25,6 @@ ts_library(
     deps = lib_deps,
 )
 
-
 web_library(
     name = "dist",
     app_lib = ":components",
@@ -34,28 +32,32 @@ web_library(
     output = {
         "library": "AiryComponents",
         "libraryTarget": "umd",
-        "filename": "index.js"
-    }
+        "filename": "index.js",
+    },
 )
 
 genrule(
     name = "npm_library",
+    srcs = [
+        ":package.json",
+        "README.md",
+        ":dist",
+    ],
     outs = ["components_lib"],
-    srcs = [":package.json", "README.md", ":dist"],
-    cmd = """mkdir -p $(OUTS)/dist cp -vr $(location :dist) $(OUTS) && cp $(location :package.json) $(location :README.md) $(OUTS)"""
+    cmd = """mkdir -p $(OUTS)/dist && cp -R $(location :dist) $(OUTS) && cp $(location :package.json) $(location :README.md) $(OUTS)""",
 )
 
-load("//tools/build/npm:rules.bzl", "deploy_npm", "assemble_npm")
+load("//tools/build/npm:rules.bzl", "assemble_npm", "deploy_npm")
 
 assemble_npm(
     name = "assemble-npm",
     target = ":components_lib",
-    version_file = ":VERSION.txt",
+    version_file = ":VERSION",
 )
 
 deploy_npm(
     name = "publish-npm",
-    target = ":assemble-npm",
     release = "https://registry.npmjs.org/",
-    snapshot = "https://registry.npmjs.org/"
+    snapshot = "https://registry.npmjs.org/",
+    target = ":assemble-npm",
 )

@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: sources-facebook-sender
-        image: ghcr.io/airyhq/sources/facebook/sender:latest
+        image: ghcr.io/airyhq/sources/facebook-sender:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: sources-facebook-webhook
-        image: ghcr.io/airyhq/sources/facebook/webhook:latest
+        image: ghcr.io/airyhq/sources/facebook-webhook:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

@@ -28,7 +28,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 container_push(
     name = "release",
     format = "Docker",
-    image = ":image",
+    image = ":go_image",
     registry = "ghcr.io/airyhq/webhook",
     repository = "consumer",
     tag = "latest",

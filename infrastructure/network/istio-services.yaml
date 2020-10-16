@@ -1,4 +1,4 @@
-apiVersion: networking.istio.io/v1alpha1
+apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: airy-core
@@ -13,7 +13,7 @@ spec:
     hosts:
     - "*"
 ---
-apiVersion: networking.istio.io/v1alpha1
+apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
     name: auth
@@ -42,7 +42,7 @@ spec:
           port:
             number: 80
 ---
-apiVersion: networking.istio.io/v1alpha1
+apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
     name: communication
@@ -69,7 +69,7 @@ spec:
           port:
             number: 80
 ---
-apiVersion: networking.istio.io/v1alpha1
+apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
     name: admin

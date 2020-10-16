@@ -115,8 +115,8 @@ public class TagsControllerTest {
                     .headers(buildHeaders())
                     .content(payload))
                     .andExpect(jsonPath("$.data.length()", is(1)))
-                    .andExpect(jsonPath("$.data[*].id").value(is(tagId)))
-                    .andExpect(jsonPath("$.data[*].name").value(is(name)));
+                    .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
+                    .andExpect(jsonPath("$.data[0].name").value(is(name)));
         }, "/tags.list failed");
     }
 

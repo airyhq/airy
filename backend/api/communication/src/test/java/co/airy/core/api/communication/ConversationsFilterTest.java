@@ -99,7 +99,7 @@ class ConversationsFilterTest {
 
     private final List<CreateConversation> conversations = List.of(
             CreateConversation.builder()
-                    .metadata(Map.of(MetadataKeys.SOURCE.CONTACT.FIRST_NAME, firstNameToFind))
+                    .metadata(Map.of(MetadataKeys.source.contact.FIRST_NAME, firstNameToFind))
                     .conversationId(UUID.randomUUID().toString())
                     .messageCount(1L)
                     .channel(defaultChannel)

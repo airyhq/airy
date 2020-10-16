@@ -1,6 +1,7 @@
 package co.airy.core.api.communication.payload;
 
 import co.airy.avro.communication.MetadataKeys;
+import co.airy.avro.communication.MetadataMapper;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.payload.response.ChannelPayload;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import static co.airy.avro.communication.MetadataMapper.filterPrefix;
@@ -23,6 +25,7 @@ public class ConversationResponsePayload implements Serializable {
     private String id;
     private String createdAt;
     private ChannelPayload channel;
+    private List<String> tags;
     private ContactResponsePayload contact;
     private MessageResponsePayload message;
     private Integer unreadMessageCount;
@@ -37,11 +40,12 @@ public class ConversationResponsePayload implements Serializable {
                         .build())
                 .id(conversation.getId())
                 .unreadMessageCount(conversation.getUnreadCount())
+                .tags(MetadataMapper.getTags(metadata))
                 .createdAt(ISO_FROM_MILLIS(conversation.getCreatedAt()))
                 .contact(ContactResponsePayload.builder()
-                        .avatarUrl(metadata.get(MetadataKeys.SOURCE.CONTACT.AVATAR_URL))
-                        .firstName(metadata.get(MetadataKeys.SOURCE.CONTACT.FIRST_NAME))
-                        .lastName(metadata.get(MetadataKeys.SOURCE.CONTACT.LAST_NAME))
+                        .avatarUrl(metadata.get(MetadataKeys.source.contact.AVATAR_URL))
+                        .firstName(metadata.get(MetadataKeys.source.contact.FIRST_NAME))
+                        .lastName(metadata.get(MetadataKeys.source.contact.LAST_NAME))
                         .info(filterPrefix(metadata, "user.contact-info"))
                         .build())
                 .message(fromMessage(conversation.getLastMessage()))

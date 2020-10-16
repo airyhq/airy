@@ -1,45 +1,35 @@
 package co.airy.core.api.admin;
 
-import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.core.api.admin.dto.ChannelMetadata;
-import co.airy.core.api.admin.sources.facebook.FacebookSource;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-import java.util.UUID;
+import javax.swing.tree.ExpandVetoException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -57,6 +47,9 @@ public class TagsControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
@@ -99,6 +92,32 @@ public class TagsControllerTest {
                 ,
                 "/tags.create failed"
         );
+    }
+
+    @Test
+    void listTags() throws Exception {
+        final String name = "awesome-tag";
+        final String color = "tag-red";
+        final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
+
+        final String createTagResponse = mvc.perform(post("/tags.create")
+                .headers(buildHeaders())
+                .content(payload))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        final JsonNode jsonNode = objectMapper.readTree(createTagResponse);
+        final String tagId = jsonNode.get("id").textValue();
+
+        testHelper.waitForCondition(() -> {
+            mvc.perform(post("/tags.list")
+                    .headers(buildHeaders())
+                    .content(payload))
+                    .andExpect(jsonPath("$.data.length()", is(1)))
+                    .andExpect(jsonPath("$.data[*].id").value(is(tagId)))
+                    .andExpect(jsonPath("$.data[*].name").value(is(name)));
+        }, "/tags.list failed");
     }
 
     private HttpHeaders buildHeaders() {

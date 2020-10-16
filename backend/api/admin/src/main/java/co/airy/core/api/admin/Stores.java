@@ -1,8 +1,10 @@
 package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.Tag;
 import co.airy.avro.communication.Webhook;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import org.apache.avro.specific.SpecificRecordBase;
@@ -35,6 +37,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     private KafkaStreamsWrapper streams;
 
     private final String CHANNELS_STORE = "channels-store";
+    private final String TAGS_STORE     = "tags-store";
     private final String WEBHOOKS_STORE = "webhook-store";
     private final String allChannelsKey = "ALL";
 
@@ -44,6 +47,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
     private final String applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks().name();
+    private final String applicationCommunicationTags  = new ApplicationCommunicationTags().name();
 
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
@@ -60,6 +64,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 .groupBy((webhookId, webhook) -> allWebhooksKey)
                 .reduce((oldValue, newValue) -> newValue, Materialized.as(WEBHOOKS_STORE));
 
+        builder.<String, Tag>table(applicationCommunicationTags, Materialized.as(TAGS_STORE));
+
         streams.start(builder.build(), appId);
     }
 
@@ -69,6 +75,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
     public ReadOnlyKeyValueStore<String, Webhook> getWebhookStore() {
         return streams.acquireLocalStore(WEBHOOKS_STORE);
+    }
+
+    public ReadOnlyKeyValueStore<String, Tag> getTagsStore() {
+        return streams.acquireLocalStore(TAGS_STORE);
     }
 
     @Autowired
@@ -81,6 +91,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     public void storeWebhook(Webhook webhook) throws ExecutionException, InterruptedException {
         webhook.setId(allWebhooksKey);
         producer.send(new ProducerRecord<>(applicationCommunicationWebhooks, allWebhooksKey, webhook)).get();
+    }
+
+    public void storeTag(Tag tag) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationTags, tag.getId(), tag)).get();
     }
 
     public Map<String, Channel> getChannelsMap() {
@@ -111,6 +125,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     ResponseEntity<Void> health() {
         getChannelsStore();
         getWebhookStore();
+        getTagsStore();
 
         // If no exception was thrown by one of the above calls, this service is healthy
         return ResponseEntity.ok().build();

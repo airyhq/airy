@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
+import _, { withTranslation, WithTranslation } from "react-i18next";
 import { Picker } from "emoji-mart";
 
 import { AccessibleSVG } from "../../labels/AccessibleSVG";

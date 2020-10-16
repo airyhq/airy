@@ -125,6 +125,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     ResponseEntity<Void> health() {
         getChannelsStore();
         getWebhookStore();
+        getTagsStore();
 
         // If no exception was thrown by one of the above calls, this service is healthy
         return ResponseEntity.ok().build();

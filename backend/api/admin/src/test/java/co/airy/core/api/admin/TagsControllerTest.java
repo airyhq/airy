@@ -23,11 +23,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.swing.tree.ExpandVetoException;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,17 +39,14 @@ public class TagsControllerTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static TestHelper testHelper;
-
-    @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
     private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
+    private static TestHelper testHelper;
+    @Autowired
+    private MockMvc mvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -85,12 +78,11 @@ public class TagsControllerTest {
         final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
 
         testHelper.waitForCondition(() -> mvc.perform(post("/tags.create")
-                        .headers(buildHeaders())
-                        .content(payload))
-                        .andExpect(status().isCreated())
-                        .andExpect(jsonPath("$.id", is(not(nullValue()))))
-                ,
-                "/tags.create failed"
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
+                .content(payload))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is(not(nullValue()))))
+                ,"/tags.create failed"
         );
     }
 
@@ -116,7 +108,8 @@ public class TagsControllerTest {
                     .content(payload))
                     .andExpect(jsonPath("$.data.length()", is(1)))
                     .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
-                    .andExpect(jsonPath("$.data[0].name").value(is(name)));
+                    .andExpect(jsonPath("$.data[0].name").value(is(name)))
+                    .andExpect(jsonPath("$.data[0].color").value(is("RED")));
         }, "/tags.list failed");
     }
 

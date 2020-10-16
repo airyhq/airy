@@ -1,0 +1,36 @@
+load("//tools/build:springboot.bzl", "springboot")
+load("//tools/build:junit5.bzl", "junit5")
+
+app_deps = [
+    "//backend/avro/communication:message",
+    "//backend/avro/communication:webhook",
+    "//backend/lib/uuid",
+    "//backend/lib/payload",
+    "//backend/lib/mapping",
+    "//backend/lib/kafka/schema:application-communication-messages",
+    "//backend/lib/kafka/schema:application-communication-webhooks",
+    "//backend/lib/spring/kafka/core:spring-kafka-core",
+    "//backend/lib/spring/kafka/streams:spring-kafka-streams",
+    "@maven//:io_lettuce_lettuce_core",
+    "@maven//:org_springframework_data_spring_data_redis",
+]
+
+springboot(
+    name = "events-router",
+    srcs = glob(["src/main/java/**/*.java"]),
+    main_class = "co.airy.spring.core.AirySpringBootApplication",
+    deps = app_deps,
+)
+
+[
+    junit5(
+        size = "medium",
+        file = file,
+        resources = glob(["src/test/resources/**/*"]),
+        deps = [
+            ":app",
+            "//backend/lib/kafka/test:kafka-test",
+        ] + app_deps,
+    )
+    for file in glob(["src/test/java/**/*Test.java"])
+]

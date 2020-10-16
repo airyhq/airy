@@ -14,7 +14,7 @@ two connected principles. Here's the first one:
 
 We mean that _all_ of the data the Airy Core Platform lives in Kafka. One way of
 thinking about the Airy Core Platform as a strongly typed (via
-[avro](https://avro.apache.org)) data pipeline. The HTTP endpoints the platform
+[Avro](https://avro.apache.org)) data pipeline. The HTTP endpoints the platform
 provide also solely rely on Kafka via a feature called [interactive
 queries](https://kafka.apache.org/documentation/streams/developer-guide/interactive-queries.html).
 
@@ -24,9 +24,9 @@ And here's the second principle:
 
 What we mean is that we do not allow services to talk to each other and share
 state via internal HTTP calls. Let's use an example to clarify: imagine we have
-a service dealing with `conversations` data that needs `channels` data (see the
-[data model](/docs/data-model.md) documentation for more information) to build a
-JSON response. Many systems would work like this:
+a service dealing with `conversations` data that needs `channels` data (see our
+[glossary](/docs/glossary.md) for more information) to build a JSON response.
+Many systems would work like this:
 
 - A client asks for `conversations`
 - the service in charge makes an HTTP internal call to the `channels` service

@@ -3,6 +3,11 @@ workspace(
     managed_directories = {"@npm": ["node_modules"]},
 )
 
+register_toolchains(
+    "//tools/aws/toolchain:aws_toolchain_linux",
+    "//tools/aws/toolchain:aws_toolchain_osx",
+)
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
@@ -48,6 +53,7 @@ maven_install(
         "io.jsonwebtoken:jjwt-api:0.10.5",
         "io.jsonwebtoken:jjwt-impl:0.10.5",
         "io.jsonwebtoken:jjwt-jackson:0.10.5",
+        "io.lettuce:lettuce-core:5.3.3.RELEASE",
         "io.zonky.test:embedded-database-spring-test:1.5.1",
         "javax.activation:javax.activation-api:1.2.0",
         "javax.validation:validation-api:2.0.1.Final",
@@ -86,6 +92,7 @@ maven_install(
         "org.springframework.boot:spring-boot-starter-data-jdbc:2.3.1.RELEASE",
         "org.springframework.boot:spring-boot-starter-jetty:2.3.1.RELEASE",
         "org.springframework.boot:spring-boot-starter-test:2.3.1.RELEASE",
+        "org.springframework.boot:spring-boot-starter-mail:2.3.1.RELEASE",
         "org.springframework.boot:spring-boot-starter-web:2.3.1.RELEASE",
         "org.springframework.boot:spring-boot-starter-websocket:2.3.1.RELEASE",
         "org.springframework.retry:spring-retry:1.2.4.RELEASE",
@@ -95,6 +102,7 @@ maven_install(
         "org.springframework:spring-context:5.2.0.RELEASE",
         "org.springframework:spring-messaging:5.1.2.RELEASE",
         "org.springframework:spring-websocket:5.1.2.RELEASE",
+        "org.springframework.data:spring-data-redis:2.3.3.RELEASE",
         "org.springframework.security:spring-security-crypto:5.3.0.RELEASE",
         "org.rocksdb:rocksdbjni:5.18.3",
     ],
@@ -184,6 +192,13 @@ container_pull(
     tag = "11.0.3-jre-slim",
 )
 
+load(
+    "@io_bazel_rules_docker//go:image.bzl",
+    _go_image_repos = "repositories",
+)
+
+_go_image_repos()
+
 ### Frontend build tooling
 
 http_archive(
@@ -233,3 +248,8 @@ git_repository(
 load("@com_github_atlassian_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
 
 multirun_dependencies()
+
+load("//:go_repositories.bzl", "go_repositories")
+
+# gazelle:repository_macro go_repositories.bzl%go_repositories
+go_repositories()

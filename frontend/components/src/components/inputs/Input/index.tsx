@@ -5,9 +5,9 @@ import { Picker } from "emoji-mart";
 import { AccessibleSVG } from "../../labels/AccessibleSVG";
 
 import styles from "./style.module.scss";
-import checkmarkIcon from "assets/images/icons/checkmark.svg";
-import closeIcon from "assets/images/icons/close.svg";
-import smileyIcon from "assets/images/icons/smiley.svg";
+import checkmarkIcon from "../../../assets/images/icons/checkmark.svg";
+import closeIcon from "../../../assets/images/icons/close.svg";
+import smileyIcon from "../../../assets/images/icons/smiley.svg";
 
 class InputComponent extends Component<InputProps & WithTranslation, IState> {
   public static defaultProps = {

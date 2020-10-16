@@ -21,11 +21,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Instant;
@@ -68,7 +68,7 @@ public class PublisherTest {
     @InjectMocks
     Publisher publisher;
 
-    @Mock
+    @MockBean
     private RedisQueue redisQueue;
 
     @BeforeEach
@@ -109,7 +109,7 @@ public class PublisherTest {
                             .setSentAt(Instant.now().toEpochMilli())
                             .setUpdatedAt(null)
                             .setSenderId("sourceConversationId")
-                            .setSenderType(SenderType.SOURCE_CONTACT)
+                            .setSenderType(SenderType.APP_USER)
                             .setDeliveryState(DeliveryState.DELIVERED)
                             .setConversationId("conversationId")
                             .setChannelId("channelId")
@@ -125,7 +125,7 @@ public class PublisherTest {
                             .setSentAt(Instant.now().toEpochMilli())
                             .setUpdatedAt(Instant.now().toEpochMilli()) // field presence identifies message as update
                             .setSenderId("sourceConversationId")
-                            .setSenderType(SenderType.SOURCE_CONTACT)
+                            .setSenderType(SenderType.APP_USER)
                             .setDeliveryState(DeliveryState.DELIVERED)
                             .setConversationId("conversationId")
                             .setChannelId("channelId")

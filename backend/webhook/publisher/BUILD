@@ -6,6 +6,7 @@ app_deps = [
     "//backend/avro/communication:webhook",
     "//backend/lib/uuid",
     "//backend/lib/payload",
+    "//backend/lib/mapping",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/kafka/schema:application-communication-webhooks",
     "//backend/lib/spring/kafka/core:spring-kafka-core",

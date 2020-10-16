@@ -21,6 +21,10 @@ Vagrant.configure("2") do |config|
       vbox.cpus = 3
       vbox.memory = 6144
     end
+    airy_core_custom.trigger.after :up do |status|
+      status.name = "status"
+      status.run_remote = {inline: "/vagrant/scripts/status.sh"}
+    end
   end
   
 end

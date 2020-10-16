@@ -35,18 +35,12 @@ spec:
             value: "sni-dnat"
         service:
           ports:
-            - port: 15021
-              targetPort: 15021
-              name: status-port
             - port: 80
               targetPort: 8080
               name: http2
             - port: 443
               targetPort: 8443
               name: https
-            - port: 15443
-              targetPort: 15443
-              name: tls
         resources:
           requests:
             cpu: 10m

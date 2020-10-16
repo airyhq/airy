@@ -13,5 +13,6 @@ INGRESS_IP=`ip addr show eth1 | grep "inet " | awk '{ print $2; }' | cut -d "/" 
 echo $INGRESS_IP:$INGRESS_PORT
 echo "You can access the API of Airy Core at:"
 echo "http://$INGRESS_IP:$INGRESS_PORT/"
-echo "\nExample:"
+echo 
+echo "Example:"
 echo "curl -X POST -d '{}' http://$INGRESS_IP:$INGRESS_PORT/conversations.list"

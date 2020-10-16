@@ -43,5 +43,14 @@ kubectl apply -f ../deployments/api-communication.yaml
 kubectl apply -f ../deployments/events-router.yaml
 
 echo "Deploying ingress routes"
-kubectl get crd
+while ! `kubectl get crd 2>/dev/null| grep -q gateways.networking.istio.io`
+do 
+    sleep 5
+    echo "Waiting for istio to create all the Gateway CRD..."
+done
+while ! `kubectl get crd 2>/dev/null| grep -q virtualservices.networking.istio.io`
+do 
+    sleep 5
+    echo "Waiting for istio to create all the VirtualService CRD..."
+done
 kubectl apply -f ../network/istio-services.yaml

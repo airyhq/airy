@@ -41,8 +41,8 @@ web_library(
 genrule(
     name = "npm_library",
     outs = ["components_lib"],
-    srcs = [":package.json", ":dist"],
-    cmd = "cp -r $(location :dist) $(OUTS) && cp $(location :package.json) $(OUTS)"
+    srcs = [":package.json", "README.md", ":dist"],
+    cmd = """mkdir -p $(OUTS)/dist cp -vr $(location :dist) $(OUTS) && cp $(location :package.json) $(location :README.md) $(OUTS)"""
 )
 
 load("//tools/build/npm:rules.bzl", "deploy_npm", "assemble_npm")
@@ -54,7 +54,7 @@ assemble_npm(
 )
 
 deploy_npm(
-    name = "deploy-npm",
+    name = "publish-npm",
     target = ":assemble-npm",
     release = "https://registry.npmjs.org/",
     snapshot = "https://registry.npmjs.org/"

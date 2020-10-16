@@ -1,10 +1,7 @@
 {
   "name": "@airyhq/components",
-  "description": "Airy core ui components",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "Airy core UI components",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/airyhq/core.git"

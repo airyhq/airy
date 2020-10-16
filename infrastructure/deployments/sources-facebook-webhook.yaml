@@ -33,16 +33,8 @@ spec:
           value: ""
         - name: SERVICE_NAME
           value: sources-facebook-webhook
-        livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-              httpHeaders:
-              - name: Health-Check
-                value: health-check
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
+        - name: FB_WEBHOOK_SECRET
+          value: ""
 ---
 apiVersion: v1
 kind: Service

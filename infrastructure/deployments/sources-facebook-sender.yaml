@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sources-facebook-events-router
+  name: sources-facebook-sender
   namespace: default
   labels:
-    app: sources-facebook-events-router
+    app: sources-facebook-sender
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sources-facebook-events-router
+      app: sources-facebook-sender
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,11 +18,11 @@ spec:
   template:
     metadata:
       labels:
-        app: sources-facebook-events-router
+        app: sources-facebook-sender
     spec:
       containers:
-      - name: sources-facebook-events-router
-        image: ghcr.io/airyhq/sources/facebook-events-router:latest
+      - name: sources-facebook-sender
+        image: ghcr.io/airyhq/sources/facebook-sender:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
@@ -32,22 +32,12 @@ spec:
         - name: FB_APP_ID
           value: ""
         - name: SERVICE_NAME
-          value: facebook-events-router
-        livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-              httpHeaders:
-              - name: Health-Check
-                value: health-check
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
+          value: facebook-sender
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: sources-facebook-events-router
+  name: sources-facebook-sender
   namespace: default
 spec:
   ports:
@@ -56,4 +46,4 @@ spec:
       protocol: TCP
   type: NodePort
   selector:
-    app: sources-facebook-events-router
+    app: sources-facebook-sender

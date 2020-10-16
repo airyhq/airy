@@ -16,6 +16,7 @@ communicationTopics=(
     "application.communication.metadata"
     "application.communication.channels"
     "application.communication.messages"
+    "application.communication.read-receipt"
 )
 
 opsTopicsShortLived=(

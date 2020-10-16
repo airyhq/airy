@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-admin
+  name: webhook-publisher
   namespace: default
   labels:
-    app: api-admin
+    app: webhook-publisher
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api-admin
+      app: webhook-publisher
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,15 +18,15 @@ spec:
   template:
     metadata:
       labels:
-        app: api-admin
+        app: webhook-publisher
     spec:
       containers:
-      - name: api-admin
-        image: ghcr.io/airyhq/api/admin:latest
+      - name: webhook-publisher
+        image: ghcr.io/airyhq/webhook/publisher:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
-          value: airy-cp-kafka-headless:9092
+          value: airy-cp-kafka-headless:9092 
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: airy-kafka-cp-schema-registry:8081
         - name: FACEBOOK_APP_ID
@@ -34,7 +34,11 @@ spec:
         - name: FACEBOOK_APP_SECRET
           value: ""
         - name: SERVICE_NAME
-          value: api-admin
+          value: webhook-publisher
+        - name: REDIS_HOSTNAME
+          value: redis
+        - name: REDIS_PORT
+          value: 6379
         livenessProbe:
             httpGet:
               path: /health
@@ -49,7 +53,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: api-admin
+  name: webhook-publisher
   namespace: default
 spec:
   ports:
@@ -58,4 +62,4 @@ spec:
       protocol: TCP
   type: NodePort
   selector:
-    app: api-admin
+    app: webhook-publisher

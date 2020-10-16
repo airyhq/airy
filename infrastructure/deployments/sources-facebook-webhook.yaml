@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-admin
+  name: sources-facebook-webhook
   namespace: default
   labels:
-    app: api-admin
+    app: sources-facebook-webhook
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api-admin
+      app: sources-facebook-webhook
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,38 +18,28 @@ spec:
   template:
     metadata:
       labels:
-        app: api-admin
+        app: sources-facebook-webhook
     spec:
       containers:
-      - name: api-admin
-        image: ghcr.io/airyhq/api/admin:latest
+      - name: sources-facebook-webhook
+        image: ghcr.io/airyhq/sources/facebook-webhook:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: airy-kafka-cp-schema-registry:8081
-        - name: FACEBOOK_APP_ID
-          value: ""
-        - name: FACEBOOK_APP_SECRET
+        - name: FB_APP_ID
           value: ""
         - name: SERVICE_NAME
-          value: api-admin
-        livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-              httpHeaders:
-              - name: Health-Check
-                value: health-check
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
+          value: sources-facebook-webhook
+        - name: FB_WEBHOOK_SECRET
+          value: ""
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: api-admin
+  name: sources-facebook-webhook
   namespace: default
 spec:
   ports:
@@ -58,4 +48,4 @@ spec:
       protocol: TCP
   type: NodePort
   selector:
-    app: api-admin
+    app: sources-facebook-webhook

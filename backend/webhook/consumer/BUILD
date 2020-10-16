@@ -22,3 +22,14 @@ go_image(
     name = "go_image",
     embed = [":go_default_library"],
 )
+
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
+
+container_push(
+    name = "release",
+    format = "Docker",
+    image = ":go_image",
+    registry = "ghcr.io/airyhq/webhook",
+    repository = "consumer",
+    tag = "latest",
+)

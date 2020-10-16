@@ -38,4 +38,6 @@ echo "Deploying airy-core apps"
 kubectl apply -f ../deployments/api-auth.yaml
 kubectl apply -f ../deployments/api-admin.yaml
 kubectl apply -f ../deployments/api-communication.yaml
-kubectl apply -f ../deployments/events-router.yaml
+kubectl apply -f ../deployments/sources-facebook-events-router.yaml
+kubectl apply -f ../deployments/sources-facebook-sender.yaml
+kubectl apply -f ../deployments/sources-facebook-webhook.yaml

@@ -1,0 +1,12 @@
+{
+  "sender": {
+    "id": "12345"
+  },
+  "recipient": {
+    "id": "12345"
+  },
+  "timestamp": 1550824236438,
+  "message": {
+    "text": "%s"
+  }
+}

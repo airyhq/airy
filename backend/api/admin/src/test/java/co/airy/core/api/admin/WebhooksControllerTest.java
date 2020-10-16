@@ -1,6 +1,7 @@
 package co.airy.core.api.admin;
 
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -44,12 +45,14 @@ public class WebhooksControllerTest {
 
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
+    private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
 
     @BeforeAll
     static void beforeAll() throws Exception {
         testHelper = new TestHelper(sharedKafkaTestResource,
                 applicationCommunicationChannels,
-                applicationCommunicationWebhooks
+                applicationCommunicationWebhooks,
+                applicationCommunicationTags
         );
         testHelper.beforeAll();
     }

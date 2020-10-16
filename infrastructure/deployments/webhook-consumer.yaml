@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-consumer
+  namespace: default
+  labels:
+    app: webhook-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhook-consumer
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: webhook-consumer
+    spec:
+      containers:
+      - name: webhook-consumer
+        image: ghcr.io/airyhq/webhook/consumer:latest
+        imagePullPolicy: Always
+        env:
+        - name: SERVICE_NAME
+          value: webhook-consumer
+        - name: REDIS_HOSTNAME
+          value: redis
+        - name: REDIS_PORT
+          value: 6379
+        livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              httpHeaders:
+              - name: Health-Check
+                value: health-check
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webhook-consumer
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: webhook-consumer

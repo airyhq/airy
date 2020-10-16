@@ -34,7 +34,7 @@ spec:
         - name: FACEBOOK_APP_SECRET
           value: ""
         - name: SERVICE_NAME
-          value: api-auth
+          value: api-admin
         livenessProbe:
             httpGet:
               path: /health

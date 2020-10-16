@@ -20,8 +20,12 @@ export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
 
 cd /vagrant/scripts/
 kubectl apply -f ../tools/kafka-client.yaml
-echo "Waiting few minutes for kafka and zookeeper to start in minikube"
-sleep 5m
+echo "Waiting few minutes for airy-client, kafka and zookeeper to start in minikube"
+while ! `kubectl get pod --field-selector="metadata.name=kafka-client,status.phase=Running" 2>/dev/null| grep -q kafka-client`
+do 
+    sleep 10
+    echo "Waiting for kafka-client to start..."
+done
 
 echo "Creating kafka topics and required databaes"
 kubectl cp topics.sh kafka-client:/tmp
@@ -41,6 +45,9 @@ kubectl apply -f ../deployments/api-auth.yaml
 kubectl apply -f ../deployments/api-admin.yaml
 kubectl apply -f ../deployments/api-communication.yaml
 kubectl apply -f ../deployments/events-router.yaml
+kubectl apply -f ../deployments/sources-facebook-events-router.yaml
+kubectl apply -f ../deployments/sources-facebook-sender.yaml
+kubectl apply -f ../deployments/sources-facebook-webhook.yaml
 
 echo "Deploying ingress routes"
 while ! `kubectl get crd 2>/dev/null| grep -q gateways.networking.istio.io`

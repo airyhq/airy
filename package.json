@@ -11,7 +11,10 @@
     "@types/react-transition-group": "^4.2.3",
     "core-js": "3",
     "emoji-mart": "^3.0.0",
+    "i18next": "19.0.3",
+    "i18next-browser-languagedetector": "4.0.1",
     "lodash-es": "^4.17.15",
+    "npm": "^6.14.8",
     "react": "16.12.0",
     "react-autosize-textarea": "^7.1.0",
     "react-dates": "^21.8.0",
@@ -24,10 +27,7 @@
     "redux": "4.0.5",
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.5",
-    "typescript": "3.7.4",
-    "react-i18next": "10",
-    "i18next": "19.0.3",
-    "i18next-browser-languagedetector": "4.0.1"
+    "typescript": "3.7.4"
   },
   "scripts": {},
   "devDependencies": {

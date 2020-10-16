@@ -15,7 +15,7 @@ npm install --save @airyhq/components
 ```tsx
 import React, { Component } from 'react'
 
-import MyComponent from ' @airyhq/components'
+import {MyComponent} from '@airyhq/components'
 import 'components/dist/index.css'
 
 class Example extends Component {

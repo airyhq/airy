@@ -19,6 +19,7 @@ compose our API.
       - [List conversations](#list-conversations)
       - [Conversation by id](#conversation-by-id)
       - [Mark conversation as read](#mark-conversation-as-read)
+      - [Tagging a conversation](#tagging-a-conversation)
     - [Messages](#messages)
       - [Messages of a conversation](#messages-of-a-conversation)
       - [Send a message](#send-a-message)
@@ -31,6 +32,11 @@ compose our API.
       - [Subscribing to a webhook](#subscribing-to-a-webhook)
       - [Unsubscribing to a webhook](#unsubscribing-to-a-webhook)
       - [Get webhook](#get-webhook)
+    - [Tags](#tags)
+      - [Creating a tag](#creating-a-tag)
+      - [Updating a tag](#updating-a-tag)
+      - [Deleting a tag](#deleting-a-tag)
+      - [Listing tags](#listing-tags)
   - [Pagination](#pagination)
 
 ## Introduction
@@ -80,11 +86,11 @@ does not require a valid token to be present in the headers.
 ## Endpoints
 
 The way we group endpoints reflects the high level entities of the [Airy Core Data
-Model](/docs/data-model.md).
+Model](/docs/glossary.md).
 
 ### Users
 
-Please refer to our [user](/docs/data-model.md#users) definition for more
+Please refer to our [user](/docs/glossary.md#users) definition for more
 information.
 
 #### Signup
@@ -231,7 +237,7 @@ This endpoint returns 201 (created) if invite was created successfully.
 
 ### Conversations
 
-Please refer to our [conversation](/docs/data-model.md#conversation) definition
+Please refer to our [conversation](/docs/glossary.md#conversation) definition
 for more information.
 
 #### List conversations
@@ -356,9 +362,30 @@ Resets the unread count of a conversation and returns `202 (Accepted)`.
 {}
 ```
 
+#### Tagging a conversation
+
+Tags an existing conversation with an existing tag. Returns 200 if sucessful.
+
+`POST /conversations.tag`
+
+**Example request**
+
+```json5
+{
+  "conversation_id": "CONVERSATION_ID",
+  "tag_id": "TAG_ID",
+}
+```
+
+**Example response**
+
+```json5
+{}
+```
+
 ### Messages
 
-Please refer to our [messages](/docs/data-model.md#message) definition for more
+Please refer to our [messages](/docs/glossary.md#message) definition for more
 information.
 
 #### Messages of a conversation
@@ -621,6 +648,104 @@ Subscribes the webhook for the first time or update its parameters.
     "X-Custom-Header": "custom-code-for-header"
   }
 }
+```
+
+### Tags
+
+#### Creating a tag
+
+`POST /tags.create`
+
+Example body:
+
+```json
+{
+  "name": "Urgent",
+  "color": "tag-red"
+}
+```
+
+**Required**:
+
+- `name`: String
+- `color`: tag-red | tag-blue | tag-green | tag-purple
+
+If the tag is successfully created the endpoint will return `201` (created) with the tag id in the response body.
+
+Example response:
+
+```json5
+{
+  id: "TAG-UUID"
+}
+```
+
+#### Updating a tag
+
+`POST /tags.update`
+
+```json
+{
+  "id": "TAG-ID",
+  "name": "Urgent",
+  "color": "tag-blue"
+}
+```
+
+**Required**:
+
+- `id`: UUID
+- `name`: String
+- `color`: tag-red | tag-blue | tag-green | tag-purple
+
+If action is sucessuful, returns HTTP status `200`.
+
+Example response:
+
+```json5
+{}
+```
+
+
+#### Deleting a tag
+
+`POST /tags.delete`
+
+```json
+{
+  "id": "ID-OF-THE-TAG"
+}
+```
+
+**Required**:
+
+- `tag_id`: UUID
+
+If action is sucessuful, returns HTTP status `200`.
+
+Example response:
+
+```json5
+{}
+```
+
+#### Listing tags
+
+`POST /tags.list`
+
+Example response:
+
+```json5
+{
+  tags: [
+    {
+      id: "TAG-ID",
+      name: "name of the tag",
+      color: "RED"
+    }
+  ]
+}
+
 ```
 
 ## Pagination

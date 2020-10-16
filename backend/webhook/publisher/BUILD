@@ -1,11 +1,13 @@
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
     "//backend/avro/communication:message",
     "//backend/avro/communication:webhook",
     "//backend/lib/uuid",
     "//backend/lib/payload",
+    "//backend/lib/mapping",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/kafka/schema:application-communication-webhooks",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
@@ -33,3 +35,12 @@ springboot(
     )
     for file in glob(["src/test/java/**/*Test.java"])
 ]
+
+container_push(
+    name = "release",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/webhook",
+    repository = "publisher",
+    tag = "latest",
+)

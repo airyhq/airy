@@ -17,11 +17,9 @@ parameters:
 
 name            - Unique name of the build rule. The dev server rule will be called name_server
 app_lib         - Label of the ts_library to run the tests on
-public_path     - See https://webpack.js.org/configuration/output/#outputpublicpath
-global_object   - For script installations this will be the variable name that the default export is available at
 entry           - Relative path to your compiled index.js
+output          - Dictionary that gets applied to the webpack output https://webpack.js.org/configuration/output/
 module_deps     - (optional) app_lib dependencies on our own typescript libraries (TODO infer this)
-
 """
 
 def web_library(

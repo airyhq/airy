@@ -4,7 +4,7 @@ import warningIcon from "../../../assets/images/icons/exclamation-triangle.svg";
 import picture from "../../../assets/images/pictures/fogg-waiting.png";
 import logo from "../../../assets/images/logo/airy_primary_rgb.svg";
 import styles from "./style.module.scss";
-import { WithTranslation, withTranslation } from "react-i18next";
+import _, { WithTranslation, withTranslation } from "react-i18next";
 
 type ErrorMessageProps = {
   text?: string;

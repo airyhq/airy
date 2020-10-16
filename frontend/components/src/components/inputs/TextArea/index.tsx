@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
+import _, { withTranslation, WithTranslation } from "react-i18next";
 import TextareaAutosize from "react-autosize-textarea";
 
 import { Input, InputProps } from "../Input";

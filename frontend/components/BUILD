@@ -28,26 +28,34 @@ ts_library(
 
 
 web_library(
-    name = "library",
+    name = "dist",
     app_lib = ":components",
     entry = "frontend/components/index.js",
     output = {
         "library": "AiryComponents",
-        "libraryTarget": "umd"
+        "libraryTarget": "umd",
+        "filename": "index.js"
     }
 )
 
-#load("@graknlabs_bazel_distribution//npm:rules.bzl", "deploy_npm", "assemble_npm")
-#
-#assemble_npm(
-#    name = "assemble-npm",
-#    target = ":library",
-#    version_file = "1.0.0",
-#)
-#
-#deploy_npm(
-#    name = "deploy-npm",
-#    target = ":assemble-npm",
-#    release = ""
-#    snapshot = ""
-#)
+genrule(
+    name = "npm_library",
+    outs = ["components_lib"],
+    srcs = [":package.json", ":dist"],
+    cmd = "cp -r $(location :dist) $(OUTS) && cp $(location :package.json) $(OUTS)"
+)
+
+load("//tools/build/npm:rules.bzl", "deploy_npm", "assemble_npm")
+
+assemble_npm(
+    name = "assemble-npm",
+    target = ":components_lib",
+    version_file = ":VERSION.txt",
+)
+
+deploy_npm(
+    name = "deploy-npm",
+    target = ":assemble-npm",
+    release = "https://registry.npmjs.org/",
+    snapshot = "https://registry.npmjs.org/"
+)

@@ -42,9 +42,16 @@ jobs:
 
       - uses: chrislennon/action-aws-cli@v1.1
 
-      - name: Deploy component library
+      - name: Deploy component library showcase
         if: ${{github.ref == 'refs/heads/main'}}
         run: bazel run //frontend/showcase:deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Publish component library to npm
+        if: ${{github.ref == 'refs/heads/main'}}
+        run: bazel run //frontend/components:deploy release
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

@@ -31,3 +31,7 @@ avro_java_library(
     srcs = ["metadata-action.avsc"],
     visibility = ["//visibility:private"],
 )
+
+avro_java_library(
+    name = "tag",
+)

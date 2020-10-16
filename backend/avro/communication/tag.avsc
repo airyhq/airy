@@ -1,0 +1,10 @@
+{
+  "namespace": "co.airy.avro.communication",
+  "name": "Tag",
+  "type": "record",
+  "fields": [
+    {"name": "id", "type": "string"},
+    {"name": "name", "type": "string"},
+    {"name": "color", "type": {"name": "TagColor", "type": "enum", "symbols": ["RED", "GREEN", "BLUE", "PURPLE"]}}
+  ]
+}

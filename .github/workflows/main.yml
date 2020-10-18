@@ -51,7 +51,9 @@ jobs:
 
       - name: Publish component library to npm
         if: ${{ startsWith(github.ref, 'refs/tags/npm-v') }}
-        run: bazel run //frontend/components:publish-npm release
+        run: |
+          sudo apt-get install -y expect
+          bazel run //frontend/components:publish-npm release
         env:
           DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
           DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}

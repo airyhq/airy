@@ -4,6 +4,7 @@
 *.tfvars
 *.tfstate.*.backup
 .iml
+*.bak
 
 
 # Editors and IDE's

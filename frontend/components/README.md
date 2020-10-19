@@ -27,4 +27,4 @@ class Example extends Component {
 
 ## License
 
-MIT © [AitorAlgorta](https://github.com/AitorAlgorta)
+Apache 2.0 © [Airy, Inc.](https://airy.co)

@@ -50,7 +50,7 @@ public class Application {
                 name = topicClass.getMethod("name");
                 config = topicClass.getMethod("config");
 
-                String topicName = ((String) name.invoke(topicClass.getDeclaredConstructor().newInstance(), null)).replace(".", "_");
+                String topicName = ((String) name.invoke(topicClass.getDeclaredConstructor().newInstance(), null));
 
                 Map<String, String> topicConfig = (Map<String, String>) config.invoke(topicClass.getDeclaredConstructor().newInstance(), null);
 

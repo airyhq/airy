@@ -1,0 +1,70 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: istio-system
+  labels:
+    istio-operator-managed: Reconcile
+    istio-injection: disabled
+---
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  namespace: istio-system
+  name: istio-ingressgateway
+spec:
+  profile: default
+  components:
+    base:
+      enabled: true
+    pilot:
+      enabled: true
+    policy:
+      enabled: false
+    telemetry:
+      enabled: false
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: true
+      label:
+        istio: ingressgateway
+        app: istio-ingressgateway
+      k8s:
+        env:
+          - name: ISTIO_META_ROUTER_MODE
+            value: "sni-dnat"
+        service:
+          ports:
+            - port: 15021
+              targetPort: 15021
+              name: status-port
+            - port: 80
+              targetPort: 8080
+              name: http2
+            - port: 443
+              targetPort: 8443
+              name: https
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            cpu: 50m
+            memory: 64Mi
+    egressGateways:
+    cni:
+      enabled: false
+    istiodRemote:
+      enabled: false
+  addonComponents:
+    prometheus:
+      enabled: false
+    grafana:
+      enabled: false
+    kiali:
+      enabled: false
+    tracing:
+      enabled: false
+    istiocoredns:
+      enabled: false
+

@@ -5,19 +5,29 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "airy-core", primary: true, autostart: true do |airy_core|
     airy_core.vm.box = "https://s3.amazonaws.com/core-images.airy.co/vagrant/airy.box"
+    airy_core.vm.network "private_network", ip: "192.168.50.4"
     airy_core.vm.provider "virtualbox" do |vbox|
       vbox.cpus = 3
       vbox.memory = 6144
+    end
+    airy_core.trigger.after :up do |status|
+      status.name = "status"
+      status.run_remote = {inline: "/vagrant/scripts/status.sh"}
     end
   end
 
   config.vm.define "airy-core-custom", autostart: false do |airy_core_custom|
     airy_core_custom.vm.box = "mrvantage/centos7-minikube"
     airy_core_custom.vm.box_version = "1.1.1-20200929"
+    airy_core_custom.vm.network "private_network", ip: "192.168.50.5"
     airy_core_custom.vm.provision :shell, path: "scripts/provision.sh"
     airy_core_custom.vm.provider "virtualbox" do |vbox|
       vbox.cpus = 3
       vbox.memory = 6144
+    end
+    airy_core_custom.trigger.after :up do |status|
+      status.name = "status"
+      status.run_remote = {inline: "/vagrant/scripts/status.sh"}
     end
   end
   

@@ -93,7 +93,7 @@ public class TagsControllerTest {
         final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
 
         final String createTagResponse = mvc.perform(post("/tags.create")
-                .headers(buildHeaders())
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(payload))
                 .andReturn()
                 .getResponse()
@@ -104,7 +104,7 @@ public class TagsControllerTest {
 
         testHelper.waitForCondition(() -> {
             mvc.perform(post("/tags.list")
-                    .headers(buildHeaders())
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .content(payload))
                     .andExpect(jsonPath("$.data.length()", is(1)))
                     .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
@@ -113,9 +113,32 @@ public class TagsControllerTest {
         }, "/tags.list failed");
     }
 
-    private HttpHeaders buildHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
-        return headers;
+    @Test
+    void deleteTag() throws Exception {
+        final String name = "awesome-tag";
+        final String color = "tag-red";
+        final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
+
+        final String createTagResponse = mvc.perform(post("/tags.create")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .content(payload))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        final JsonNode jsonNode = objectMapper.readTree(createTagResponse);
+        final String tagId = jsonNode.get("id").textValue();
+
+        testHelper.waitForCondition(() -> mvc.perform(post("/tags.delete")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .content("{\"id\": \"" + tagId + "\"}"))
+                .andExpect(status().isOk()), "/tags.delete failed");
+
+        testHelper.waitForCondition(() ->
+                mvc.perform(post("/tags.list")
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .content(payload))
+                        .andExpect(jsonPath("$.data.length()", is(0))),
+                "/tags.list failed");
     }
 }

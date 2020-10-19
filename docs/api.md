@@ -721,7 +721,7 @@ Example response:
 
 - `tag_id`: UUID
 
-If action is sucessuful, returns HTTP status `200`.
+If action is successful, returns HTTP status `200`.
 
 Example response:
 

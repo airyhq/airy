@@ -97,6 +97,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         producer.send(new ProducerRecord<>(applicationCommunicationTags, tag.getId(), tag)).get();
     }
 
+    public void deleteTag(Tag tag) {
+        producer.send(new ProducerRecord<>(applicationCommunicationTags, tag.getId(), null));
+    }
+
     public Map<String, Channel> getChannelsMap() {
         final ReadOnlyKeyValueStore<String, Map<String, Channel>> channelsStore = getChannelsStore();
 

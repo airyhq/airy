@@ -23,15 +23,18 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
+        "kafka.cleanup=true",
+        "kafka.commit-interval-ms=100"
+}, classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
@@ -72,73 +75,49 @@ public class TagsControllerTest {
     }
 
     @Test
-    void createsTag() throws Exception {
+    void tagsIntegration() throws Exception {
         final String name = "awesome-tag";
         final String color = "tag-red";
         final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
 
-        testHelper.waitForCondition(() -> mvc.perform(post("/tags.create")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
+        final String createTagResponse = mvc.perform(post("/tags.create")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(payload))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(not(nullValue()))))
-                ,"/tags.create failed"
-        );
-    }
-
-    @Test
-    void listTags() throws Exception {
-        final String name = "awesome-tag";
-        final String color = "tag-red";
-        final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
-
-        final String createTagResponse = mvc.perform(post("/tags.create")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content(payload))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
         final JsonNode jsonNode = objectMapper.readTree(createTagResponse);
         final String tagId = jsonNode.get("id").textValue();
+        TimeUnit.SECONDS.sleep(5);
+        mvc.perform(post("/tags.list")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.data.length()", is(1)))
+                .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
+                .andExpect(jsonPath("$.data[0].name").value(is(name)))
+                .andExpect(jsonPath("$.data[0].color").value(is("RED")));
 
-        testHelper.waitForCondition(() -> {
-            mvc.perform(post("/tags.list")
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .content(payload))
-                    .andExpect(jsonPath("$.data.length()", is(1)))
-                    .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
-                    .andExpect(jsonPath("$.data[0].name").value(is(name)))
-                    .andExpect(jsonPath("$.data[0].color").value(is("RED")));
-        }, "/tags.list failed");
-    }
-
-    @Test
-    void deleteTag() throws Exception {
-        final String name = "awesome-tag";
-        final String color = "tag-red";
-        final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
-
-        final String createTagResponse = mvc.perform(post("/tags.create")
+        mvc.perform(post("/tags.update")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .content(payload))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+                .content("{\"id\": \"" + tagId + "\", \"name\": \"new-name\", \"color\": \"" + color + "\"}"))
+                .andExpect(status().isOk());
 
-        final JsonNode jsonNode = objectMapper.readTree(createTagResponse);
-        final String tagId = jsonNode.get("id").textValue();
+        mvc.perform(post("/tags.list")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.data.length()", is(1)))
+                .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
+                .andExpect(jsonPath("$.data[0].name").value(is("new-name")))
+                .andExpect(jsonPath("$.data[0].color").value(is("RED")));
 
-        testHelper.waitForCondition(() -> mvc.perform(post("/tags.delete")
+        mvc.perform(post("/tags.delete")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content("{\"id\": \"" + tagId + "\"}"))
-                .andExpect(status().isOk()), "/tags.delete failed");
+                .andExpect(status().isOk());
 
-        testHelper.waitForCondition(() ->
-                mvc.perform(post("/tags.list")
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .content(payload))
-                        .andExpect(jsonPath("$.data.length()", is(0))),
-                "/tags.list failed");
+        TimeUnit.SECONDS.sleep(5);
+        mvc.perform(post("/tags.list")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.data.length()", is(0)));
     }
 }

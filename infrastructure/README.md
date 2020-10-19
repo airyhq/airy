@@ -30,4 +30,6 @@ Since Minikube usually runs on your local computer, where it is not exposed to t
 
 We have packaged the whole Airy Core Platform in a [Vagrant](https://www.vagrantup.com/) image (box), which is hosted in an s3 bucket in AWS. The `../scripts/bootstrap.sh` script pulls this box and runs it on the local machine.
 
+You will need Vagrant in order to be able to run the Airy Core Platform locally on your computer. The `../scripts/bootstrap.sh` detects if you have Vagrant installed and will try to install it for you if not.
+
 The image is created with [Packer](https://www.packer.io/) and the code for it is in the `image.vagrant.json` file.

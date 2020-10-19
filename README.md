@@ -73,8 +73,16 @@ If you wish to learn more about a specific project, please refer to the
 
 ```sh
 $ git clone https://github.com/airyhq/core
+$ cd core
+$ ./scripts/bootstrap.sh
+```
+
+The script will check if you have Vagrant and try to install it for you. If it fails, you will need to install [Vagrant](https://www.vagrantup.com/) by yourself.
+
+To remove Airy Core from your machine completely, you need to do
+```
 $ cd core/infrastructure
-$ ./bootstrap.sh
+$ vagrant destroy
 ```
 
 ## Design principles of the Airy Core Platform

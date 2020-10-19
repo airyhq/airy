@@ -6,6 +6,8 @@ code and tooling required to run the Airy Core Platform.
 - [Airy Core Platform](#airy-core-platform)
   - [What's the Airy Core Platform?](#whats-the-airy-core-platform)
   - [Getting started](#getting-started)
+    - [Debug the local installation](#debug-the-local-installation)
+    - [Delete the local installation](#delete-the-local-installation)
   - [Design principles of the Airy Core Platform](#design-principles-of-the-airy-core-platform)
   - [How to contribute](#how-to-contribute)
   - [Code of Conduct](#code-of-conduct)
@@ -71,22 +73,32 @@ If you wish to learn more about a specific project, please refer to the
 
 ## Getting started
 
-To get the Airy Core Platform up and running on your local computer, execute the following commands.
-You will need [Vagrant](https://www.vagrantup.com/downloads) installed as a prerequisite.
+
+The Airy Core Platform **requires**
+[Vagrant](https://www.vagrantup.com/downloads) to run locally. Once you have
+Vagrant on your machine, you can run the following commands:
+
 ```sh
 $ git clone https://github.com/airyhq/core
 $ cd core
 $ ./scripts/bootstrap.sh
 ```
 
-To go inside the Airy box for testing and debugging. 
+
+### Debug the local installation
+
+You can ssh inside the Airy Core Platform box for testing and debugging purposes like so:
+
 ```sh
 $ cd infrastructure
 $ vagrant ssh
 $ kubectl get pods
 ```
 
-To remove Airy Core from your machine completely, you need to do
+### Delete the local installation 
+
+You can remove the Airy Core Platform Box from your machine completely running the following commands:
+
 ```sh
 $ cd infrastructure
 $ vagrant destroy

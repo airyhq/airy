@@ -46,7 +46,7 @@ Our HTTP endpoints adhere to the following conventions:
 - Endpoints only accept `POST` JSON requests.
 - Except for the `/login` and `/signup` endpoints, communication
   always requires a valid [JWT token](#authorization).
-- We use dots for namespacing URLS (eg there are no `/things.add`).
+- We use dots for namespacing URLS (eg `/things.add`).
 
 ## Authentication
 
@@ -698,7 +698,7 @@ Example response:
 - `name`: String
 - `color`: tag-red | tag-blue | tag-green | tag-purple
 
-If action is sucessuful, returns HTTP status `200`.
+If action is successful, returns HTTP status `200`.
 
 Example response:
 

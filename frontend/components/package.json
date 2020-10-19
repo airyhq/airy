@@ -1,0 +1,15 @@
+{
+  "name": "@airyhq/components",
+  "description": "Airy core UI components",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airyhq/core.git"
+  },
+  "author": "Airy, Inc.",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/airyhq/core/issues"
+  },
+  "homepage": "https://github.com/airyhq/core#readme"
+}

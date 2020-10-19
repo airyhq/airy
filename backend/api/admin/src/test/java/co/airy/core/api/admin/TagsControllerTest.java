@@ -1,45 +1,31 @@
 package co.airy.core.api.admin;
 
-import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.core.api.admin.dto.ChannelMetadata;
-import co.airy.core.api.admin.sources.facebook.FacebookSource;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-import java.util.UUID;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -53,14 +39,14 @@ public class TagsControllerTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static TestHelper testHelper;
-
-    @Autowired
-    private MockMvc mvc;
-
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
     private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
+    private static TestHelper testHelper;
+    @Autowired
+    private MockMvc mvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -92,18 +78,67 @@ public class TagsControllerTest {
         final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
 
         testHelper.waitForCondition(() -> mvc.perform(post("/tags.create")
-                        .headers(buildHeaders())
-                        .content(payload))
-                        .andExpect(status().isCreated())
-                        .andExpect(jsonPath("$.id", is(not(nullValue()))))
-                ,
-                "/tags.create failed"
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
+                .content(payload))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is(not(nullValue()))))
+                ,"/tags.create failed"
         );
     }
 
-    private HttpHeaders buildHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
-        return headers;
+    @Test
+    void listTags() throws Exception {
+        final String name = "awesome-tag";
+        final String color = "tag-red";
+        final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
+
+        final String createTagResponse = mvc.perform(post("/tags.create")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .content(payload))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        final JsonNode jsonNode = objectMapper.readTree(createTagResponse);
+        final String tagId = jsonNode.get("id").textValue();
+
+        testHelper.waitForCondition(() -> {
+            mvc.perform(post("/tags.list")
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .content(payload))
+                    .andExpect(jsonPath("$.data.length()", is(1)))
+                    .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
+                    .andExpect(jsonPath("$.data[0].name").value(is(name)))
+                    .andExpect(jsonPath("$.data[0].color").value(is("RED")));
+        }, "/tags.list failed");
+    }
+
+    @Test
+    void deleteTag() throws Exception {
+        final String name = "awesome-tag";
+        final String color = "tag-red";
+        final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
+
+        final String createTagResponse = mvc.perform(post("/tags.create")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .content(payload))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        final JsonNode jsonNode = objectMapper.readTree(createTagResponse);
+        final String tagId = jsonNode.get("id").textValue();
+
+        testHelper.waitForCondition(() -> mvc.perform(post("/tags.delete")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .content("{\"id\": \"" + tagId + "\"}"))
+                .andExpect(status().isOk()), "/tags.delete failed");
+
+        testHelper.waitForCondition(() ->
+                mvc.perform(post("/tags.list")
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .content(payload))
+                        .andExpect(jsonPath("$.data.length()", is(0))),
+                "/tags.list failed");
     }
 }

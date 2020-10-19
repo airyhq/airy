@@ -34,6 +34,12 @@ kubectl cp create-database.sh kafka-client:/tmp
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
 kubectl exec -it kafka-client -- /tmp/create-database.sh
 
+echo "Deploying ingress controller"
+kubectl apply -f ../network/istio-crd.yaml
+kubectl apply -f ../network/istio-controller.yaml
+kubectl apply -f ../network/istio-operator.yaml
+kubectl label namespace default istio-injection=enabled
+
 echo "Deploying airy-core apps"
 kubectl apply -f ../deployments/api-auth.yaml
 kubectl apply -f ../deployments/api-admin.yaml
@@ -41,3 +47,16 @@ kubectl apply -f ../deployments/api-communication.yaml
 kubectl apply -f ../deployments/sources-facebook-events-router.yaml
 kubectl apply -f ../deployments/sources-facebook-sender.yaml
 kubectl apply -f ../deployments/sources-facebook-webhook.yaml
+
+echo "Deploying ingress routes"
+while ! `kubectl get crd 2>/dev/null| grep -q gateways.networking.istio.io`
+do 
+    sleep 5
+    echo "Waiting for istio to create all the Gateway CRD..."
+done
+while ! `kubectl get crd 2>/dev/null| grep -q virtualservices.networking.istio.io`
+do 
+    sleep 5
+    echo "Waiting for istio to create all the VirtualService CRD..."
+done
+kubectl apply -f ../network/istio-services.yaml

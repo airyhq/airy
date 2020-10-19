@@ -42,8 +42,8 @@ application.communication.messages
 
 ## Message compression
 
-The compression algorithm used by the producers is LZ4. This puts a bit more
-load on the producers and the consumers but saves network because compression
-occurs before the data is sent over to the brokers. Furthermore the size of the
-topics is reduced by up to 80%. You can find more details in our
-`KafkaStreamsWrapper.java` class.
+The compression algorithm used by the producers is
+[LZ4](https://lz4.github.io/lz4/). This puts a bit more load on the producers
+and the consumers but saves network because compression occurs before the data
+is sent over to the brokers. Furthermore the size of the topics is reduced by up
+to 80%. You can find more details in our `KafkaStreamsWrapper.java` class.

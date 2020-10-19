@@ -79,9 +79,16 @@ $ ./scripts/bootstrap.sh
 
 The script will check if you have Vagrant and try to install it for you. If it fails, you will need to install [Vagrant](https://www.vagrantup.com/) by yourself.
 
+To go inside the Airy box for testing and debugging. 
+```
+$ cd infrastructure
+$ vagrant ssh
+$ kubectl get pods
+```
+
 To remove Airy Core from your machine completely, you need to do
 ```
-$ cd core/infrastructure
+$ cd infrastructure
 $ vagrant destroy
 ```
 

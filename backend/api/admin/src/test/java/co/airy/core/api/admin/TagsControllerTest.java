@@ -134,10 +134,11 @@ public class TagsControllerTest {
                 .content("{\"id\": \"" + tagId + "\"}"))
                 .andExpect(status().isOk()), "/tags.delete failed");
 
-
-            mvc.perform(post("/tags.list")
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .content(payload))
-                    .andExpect(jsonPath("$.data.length()", is(0)));
+        testHelper.waitForCondition(() ->
+                mvc.perform(post("/tags.list")
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .content(payload))
+                        .andExpect(jsonPath("$.data.length()", is(0))),
+                "/tags.list failed");
     }
 }

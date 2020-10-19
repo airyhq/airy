@@ -14,7 +14,7 @@ while ! nc -z airy-cp-zookeeper 2181; do sleep 10; echo "Waiting for Zookeeper t
 echo "Dumping topics..."
 kafka-topics --create --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic application_communication_channels
 
-kafka-topics --create --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic application_communication_messages
+kafka-topics --create --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic application_communication_messages --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760
 
 kafka-topics --create --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic application_communication_metadata
 
@@ -24,7 +24,7 @@ kafka-topics --create --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --pa
 
 kafka-topics --create --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic application_communication_webhooks
 
-kafka-topics --create --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic ops_application_health
+kafka-topics --create --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic ops_application_health --config retention.ms=3600000
 
 kafka-topics --create --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic source_facebook_events
 

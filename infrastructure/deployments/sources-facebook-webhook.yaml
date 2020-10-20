@@ -29,12 +29,10 @@ spec:
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: airy-kafka-cp-schema-registry:8081
-        - name: FB_APP_ID
-          value: ""
         - name: SERVICE_NAME
           value: sources-facebook-webhook
         - name: FB_WEBHOOK_SECRET
-          value: ""
+          value: "<fb_webhook_secret>"
 ---
 apiVersion: v1
 kind: Service

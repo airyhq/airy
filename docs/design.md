@@ -56,7 +56,7 @@ interactive queries. These endpoints depend on:
 
 - Apache Kafka
 - Apache Zookeeper (indirectly as Kafka depends on it)
-- The confluent schema registry (almost all our topics are avro encoded)
+- The confluent schema registry (almost all our topics are Avro encoded)
 
 To us, "testing the real thing" in this context means:
 

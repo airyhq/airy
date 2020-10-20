@@ -30,15 +30,15 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class ChannelsController {
 
-    @Autowired
-    Stores stores;
+    private final Stores stores;
 
     private final Map<String, Source> sourceMap = new HashMap<>();
 
-    public ChannelsController(@Autowired List<Source> sources) {
+    public ChannelsController(Stores stores, List<Source> sources) {
         for (Source source : sources) {
             sourceMap.put(source.getIdentifier(), source);
         }
+        this.stores = stores;
     }
 
     @PostMapping("/channels.connected")

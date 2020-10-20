@@ -30,7 +30,7 @@ spec:
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: airy-kafka-cp-schema-registry:8081
         - name: FB_APP_ID
-          value: ""
+          value: "<fb_app_id>"
         - name: SERVICE_NAME
           value: facebook-events-router
 ---

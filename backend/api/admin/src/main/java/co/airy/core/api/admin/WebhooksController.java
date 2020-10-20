@@ -17,7 +17,6 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 public class WebhooksController {
-
     private final Stores stores;
 
     public WebhooksController(Stores stores) {
@@ -27,16 +26,16 @@ public class WebhooksController {
     @PostMapping("/webhooks.subscribe")
     public ResponseEntity<?> subscribe(@RequestBody @Valid WebhookSubscriptionPayload payload) {
         final String apiSecret = Optional.ofNullable(stores.getWebhook())
-            .map(Webhook::getApiSecret)
-            .orElse(UUID.randomUUID().toString());
+                .map(Webhook::getApiSecret)
+                .orElse(UUID.randomUUID().toString());
 
         final Webhook webhook = Webhook.newBuilder()
-            .setApiSecret(apiSecret)
-            .setId(UUID.randomUUID().toString())
-            .setEndpoint(payload.getUrl())
-            .setStatus(Status.Subscribed)
-            .setHeaders(payload.getHeaders())
-            .build();
+                .setApiSecret(apiSecret)
+                .setId(UUID.randomUUID().toString())
+                .setEndpoint(payload.getUrl())
+                .setStatus(Status.Subscribed)
+                .setHeaders(payload.getHeaders())
+                .build();
 
         try {
             stores.storeWebhook(webhook);
@@ -45,11 +44,11 @@ public class WebhooksController {
         }
 
         final GetWebhookResponse webhookResponse = GetWebhookResponse.builder()
-            .headers(webhook.getHeaders())
-            .apiSecret(apiSecret)
-            .status(webhook.getStatus().toString())
-            .url(webhook.getEndpoint())
-            .build();
+                .headers(webhook.getHeaders())
+                .apiSecret(apiSecret)
+                .status(webhook.getStatus().toString())
+                .url(webhook.getEndpoint())
+                .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(webhookResponse);
     }
@@ -89,11 +88,11 @@ public class WebhooksController {
         }
 
         final GetWebhookResponse webhookResponse = GetWebhookResponse.builder()
-            .headers(webhook.getHeaders())
-            .apiSecret(webhook.getApiSecret())
-            .status(webhook.getStatus().toString())
-            .url(webhook.getEndpoint())
-            .build();
+                .headers(webhook.getHeaders())
+                .apiSecret(webhook.getApiSecret())
+                .status(webhook.getStatus().toString())
+                .url(webhook.getEndpoint())
+                .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(webhookResponse);
     }

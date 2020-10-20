@@ -13,7 +13,9 @@ both in the code and in the rest of the documentation.
   - [Contact](#contact)
   - [Conversation](#conversation)
   - [Message](#message)
-    - [headers](#headers)
+    - [Fields](#fields)
+      - [Headers](#headers)
+- [User](#user)
 
 ## Introduction
 
@@ -43,17 +45,21 @@ A channel represents a connection between a [source](#source) and the Airy Core 
 
 ## Contact
 
-Represents the [source](#source) participant. For one [conversation](#conversation) to exist,
-it must have at least one message from the source participant.
+A contact represents the [source](#source) participant. A
+[conversation](#conversation) exists *only* if it has *at least one* message
+from a contact.
 
 ## Conversation
 
-A conversation is the logical aggregation of messages (at least one) from exactly one source
-participant.
+A conversation is the logical aggregation of [messages](#message) (at least one) from
+exactly one [contact](#contact).
 
 ## Message
 
-A message wraps the data that is being transfered from and to the source with metadata.
+A message wraps the data that is being transferred from and to the
+[source](#source) with metadata. By definition, the data is [source](#source)
+dependent and it can be plain text, rich media like videos or sound, images, or
+templates.
 
 ### Fields
 
@@ -117,3 +123,6 @@ also includes the message preview and tags that are useful for certain apps like
 automations.
 
 
+# User
+
+A user represents one authorized agent in the Airy Core Platform. 

@@ -10,6 +10,7 @@ import co.airy.kafka.streams.KafkaStreamsWrapper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
@@ -30,11 +31,9 @@ import java.util.concurrent.ExecutionException;
 @Component
 @RestController
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+    private static final String appId = "api.AdminStores";
 
-    private static final String appId = "api.Admin";
-
-    @Autowired
-    private KafkaStreamsWrapper streams;
+    private final KafkaStreamsWrapper streams;
 
     private final String CHANNELS_STORE = "channels-store";
     private final String TAGS_STORE     = "tags-store";
@@ -48,6 +47,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
     private final String applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks().name();
     private final String applicationCommunicationTags  = new ApplicationCommunicationTags().name();
+
+    public Stores(KafkaStreamsWrapper streams) {
+        this.streams = streams;
+    }
 
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
@@ -95,6 +98,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
     public void storeTag(Tag tag) throws ExecutionException, InterruptedException {
         producer.send(new ProducerRecord<>(applicationCommunicationTags, tag.getId(), tag)).get();
+    }
+
+    public void deleteTag(Tag tag) {
+        producer.send(new ProducerRecord<>(applicationCommunicationTags, tag.getId(), null));
     }
 
     public Map<String, Channel> getChannelsMap() {

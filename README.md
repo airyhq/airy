@@ -72,7 +72,7 @@ If you wish to learn more about a specific project, please refer to the
 ## Getting started
 
 To get the Airy Core Platform up and running on your local computer, execute the following commands.
-You will need [Vagrant](https://www.vagrantup.com/downloads) installed as a prerequisite.
+The script will check if you have Vagrant and try to install it for you. If it fails, you will need to install [Vagrant](https://www.vagrantup.com/downloads) by yourself, otherwise your system is not currently supported to run the Airy Core Platform.
 ```sh
 $ git clone https://github.com/airyhq/core
 $ cd core

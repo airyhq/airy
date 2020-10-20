@@ -40,7 +40,7 @@ then
             VAGRANT_URL="https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.dmg"
             printf "Downloading Vagrant from ${VAGRANT_URL} ...\n"
             curl -fsL ${VAGRANT_URL} -o /tmp/vagrant.dmg
-            VOLUME=`hdiutil attach vagrant.dmg | grep Volumes | awk '{print $3}'`
+            VOLUME=`hdiutil attach /tmp/vagrant.dmg | grep Volumes | awk '{print $3}'`
             sudo installer -package /Volumes/Vagrant/vagrant.pkg  -target "/Volumes/Macintosh HD"
             hdiutil detach $VOLUME
         ;;

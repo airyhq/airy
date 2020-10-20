@@ -12,7 +12,7 @@ sudo mv linux-amd64/helm /usr/local/bin/helm
 helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
 helm repo update
 
-helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 500s
+helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
@@ -20,14 +20,14 @@ export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
 
 cd /vagrant/scripts/
 kubectl apply -f ../tools/kafka-client.yaml
-echo "Waiting few minutes for airy-client, kafka and zookeeper to start in minikube"
+echo "Waiting a few minutes for airy-client, kafka and zookeeper to start in minikube"
 while ! `kubectl get pod --field-selector="metadata.name=kafka-client,status.phase=Running" 2>/dev/null| grep -q kafka-client`
 do 
     sleep 10
     echo "Waiting for kafka-client to start..."
 done
 
-echo "Creating kafka topics and required databaes"
+echo "Creating kafka topics and required databases"
 kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
 kubectl cp create-database.sh kafka-client:/tmp

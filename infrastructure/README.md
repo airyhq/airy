@@ -45,6 +45,8 @@ We packaged the whole Airy Core Platform in a
 [Vagrant](https://www.vagrantup.com/) image (box), which is hosted in an s3
 bucket in AWS. The `../scripts/bootstrap.sh` script pulls the box and runs it on
 the local machine.
+You will need Vagrant in order to be able to run the Airy Core Platform locally on your computer. 
+If not, the `../scripts/bootstrap.sh` will try to install it for you.
 
 The image is created with [Packer](https://www.packer.io/), you can see it
 yourself in the `image.vagrant.json` file.

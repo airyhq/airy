@@ -15,6 +15,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -47,14 +48,16 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     private static final String appId = "api.CommunicationStores";
 
     private final KafkaStreamsWrapper streams;
-    private final KafkaProducer<String, ReadReceipt> producer;
+    private final KafkaProducer<String, SpecificRecordBase> producer;
     private final WebSocketController webSocketController;
 
     private final String MESSAGES_STORE = "messages-store";
     private final String CONVERSATIONS_STORE = "conversations-store";
+    private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
+    private final String applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts().name();
 
     Stores(KafkaStreamsWrapper streams,
-           KafkaProducer<String, ReadReceipt> producer,
+           KafkaProducer<String, SpecificRecordBase> producer,
            WebSocketController webSocketController) {
         this.streams = streams;
         this.producer = producer;
@@ -72,7 +75,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 .peek((channelId, channel) -> webSocketController.onChannelUpdate(channel))
                 .toTable();
 
-        final KTable<String, Map<String, String>> metadataTable = builder.<String, MetadataAction>stream(new ApplicationCommunicationMetadata().name())
+        final KTable<String, Map<String, String>> metadataTable = builder.<String, MetadataAction>stream(applicationCommunicationMetadata)
                 .groupByKey()
                 .aggregate(HashMap::new, (conversationId, metadataAction, aggregate) -> {
                     if (metadataAction.getActionType().equals(MetadataActionType.SET)) {
@@ -84,7 +87,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                     return aggregate;
                 });
 
-        final KStream<String, Pair<CountAction, Long>> resetStream = builder.<String, ReadReceipt>stream(new ApplicationCommunicationReadReceipts().name())
+        final KStream<String, Pair<CountAction, Long>> resetStream = builder.<String, ReadReceipt>stream(applicationCommunicationReadReceipts)
                 .mapValues((readReceipt -> Pair.with(CountAction.RESET, readReceipt.getReadDate())));
 
         // unread counts
@@ -172,10 +175,12 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         return streams.acquireLocalStore(MESSAGES_STORE);
     }
 
-    private final String applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts().name();
-
     public void storeReadReceipt(ReadReceipt readReceipt) throws ExecutionException, InterruptedException {
         producer.send(new ProducerRecord<>(applicationCommunicationReadReceipts, readReceipt.getConversationId(), readReceipt)).get();
+    }
+
+    public void storeMetadata(MetadataAction metadataAction) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationMetadata, metadataAction.getConversationId(), metadataAction)).get();
     }
 
     public List<Message> getMessages(String conversationId) {

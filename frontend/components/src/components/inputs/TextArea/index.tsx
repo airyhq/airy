@@ -6,7 +6,7 @@ import { Input, InputProps } from "../Input";
 import styles from "./style.module.scss";
 
 class TextAreaComponent extends Component<
-  IProps & InputProps & WithTranslation
+  WithTranslation & IProps & InputProps
 > {
   classForState = currentValidationState => {
     switch (currentValidationState) {
@@ -69,7 +69,7 @@ class TextAreaComponent extends Component<
   }
 }
 
-export interface IProps {
+interface IProps {
   minRows: number;
   maxRows: number;
 }

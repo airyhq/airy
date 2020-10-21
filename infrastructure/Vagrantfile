@@ -33,6 +33,10 @@ Vagrant.configure("2") do |config|
       status.name = "status"
       status.run_remote = {inline: "/vagrant/scripts/status.sh"}
     end
+    airy_core_custom.trigger.after :status do |user_input|
+      user_input.name = "user_input"
+      user_input.run_remote = {inline: "/vagrant/scripts/user-input.sh"}
+    end
   end
   
 end

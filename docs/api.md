@@ -19,7 +19,8 @@ compose our API.
       - [List conversations](#list-conversations)
       - [Conversation by id](#conversation-by-id)
       - [Mark conversation as read](#mark-conversation-as-read)
-      - [Tagging a conversation](#tagging-a-conversation)
+      - [Tag a conversation](#tag-a-conversation)
+      - [Untag a conversation](#untag-a-conversation)
     - [Messages](#messages)
       - [Messages of a conversation](#messages-of-a-conversation)
       - [Send a message](#send-a-message)
@@ -278,7 +279,7 @@ This is a [paginated](#pagination) endpoint.
         "last_name": null,
         "id": "36d07b7b-e242-4612-a82c-76832cfd1026",
       },
-      "tags": null,
+      "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
       "last_message": {
         "display_text": "Welcome to Airy Messenger - I’m Mathias and I’m here to help.",
         "media_type": "text/fb-template",
@@ -326,7 +327,7 @@ This is a [paginated](#pagination) endpoint.
     "last_name": null, // optional
     "id": "36d07b7b-e242-4612-a82c-76832cfd1026",
   },
-  "tags": null,
+  "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
   "last_message": {
     id: "{UUID}",
     content: "{String}",
@@ -362,13 +363,13 @@ Resets the unread count of a conversation and returns `202 (Accepted)`.
 {}
 ```
 
-#### Tagging a conversation
+#### Tag a conversation
 
 Tags an existing conversation with an existing tag. Returns 200 if sucessful.
 
 `POST /conversations.tag`
 
-**Example request**
+**Sample Request**
 
 ```json5
 {
@@ -377,7 +378,27 @@ Tags an existing conversation with an existing tag. Returns 200 if sucessful.
 }
 ```
 
-**Example response**
+**Sample Response**
+
+```json5
+{}
+```
+
+#### Untag a conversation
+
+
+`POST /conversations.untag`
+
+**Sample Request**
+
+```json5
+{
+  "conversation_id": "CONVERSATION_ID",
+  "tag_id": "TAG_ID",
+}
+```
+
+**Sample Response**
 
 ```json5
 {}
@@ -395,8 +416,7 @@ information.
 This is a [paginated](#pagination) endpoint and messages are sorted from oldest to latest.
 
 **Sample Request**
-
-```json5
+w```json5
 {
   "conversation_id": "4242-4242-4242-424242", 
   "cursor": "next-page-uuid", // optional

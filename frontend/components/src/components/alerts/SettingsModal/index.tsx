@@ -4,7 +4,7 @@ import ModalHeader from "./ModalHeader";
 
 import styles from "./style.module.scss";
 
-const SettingsModal = ({ close, title, children, style }) => {
+export const SettingsModal = ({ close, title, children, style }) => {
   return (
     <Modal
       className={styles.content}
@@ -23,5 +23,3 @@ const SettingsModal = ({ close, title, children, style }) => {
     </Modal>
   );
 };
-
-export default SettingsModal;

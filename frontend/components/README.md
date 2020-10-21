@@ -10,13 +10,19 @@
 npm install --save @airyhq/components
 ```
 
+or
+
+```bash
+yarn add @airyhq/components
+``` 
+
 ## Usage
 
 ```tsx
 import React, { Component } from 'react'
 
 import {MyComponent} from '@airyhq/components'
-import 'components/dist/index.css'
+import '@airyhq/components/dist/main.css'
 
 class Example extends Component {
   render() {

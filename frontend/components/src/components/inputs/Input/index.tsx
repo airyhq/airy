@@ -2,12 +2,10 @@ import React, { Component, Fragment } from "react";
 import _, { withTranslation, WithTranslation } from "react-i18next";
 import { Picker } from "emoji-mart";
 
-import { AccessibleSVG } from "../../labels/AccessibleSVG";
-
 import styles from "./style.module.scss";
-import checkmarkIcon from "../../../assets/images/icons/checkmark.svg";
-import closeIcon from "../../../assets/images/icons/close.svg";
-import smileyIcon from "../../../assets/images/icons/smiley.svg";
+import { ReactComponent as CheckmarkIcon } from "../../../assets/images/icons/checkmark.svg";
+import { ReactComponent as CloseIcon } from "../../../assets/images/icons/close.svg";
+import { ReactComponent as SmileyIcon } from "../../../assets/images/icons/smiley.svg";
 
 class InputComponent extends Component<InputProps & WithTranslation, IState> {
   public static defaultProps = {
@@ -180,7 +178,7 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
     if (this.state.validationResult === true) {
       return (
         <div className={styles.icon}>
-          <AccessibleSVG ariaHidden="true" src={checkmarkIcon} />
+          <CheckmarkIcon aria-hidden="true" />
         </div>
       );
     } else if (this.state.validationResult === undefined) {
@@ -193,7 +191,7 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
 
     return (
       <div className={styles.icon}>
-        <AccessibleSVG ariaHidden="true" src={closeIcon} />
+        <CloseIcon aria-hidden="true" />
       </div>
     );
   };
@@ -389,7 +387,7 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
                 className={`${styles.emojiIcon} ${this.state
                   .isShowingEmojiDrawer && styles.emojiIconActive}`}
               >
-                <AccessibleSVG title={t("input.emoji")} src={smileyIcon} />
+                <SmileyIcon title={t("input.emoji")} />
               </button>
             ) : null}
           </div>

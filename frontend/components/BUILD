@@ -16,11 +16,21 @@ lib_deps = [
     "@npm//react-modal",
     "@npm//react-redux",
     "@npm//react-router-dom",
-    "@npm//react-svg",
 ]
 
 ts_library(
     name = "components",
+    data = glob(
+        [
+            "**/*.scss",
+            "**/*.css",
+            "**/*.json",
+            "**/*.png",
+            "**/*.svg",
+            "**/*.json",
+        ],
+        exclude = ["package.json"],
+    ),
     tsconfig = "//:tsconfig.json",
     deps = lib_deps,
 )
@@ -28,9 +38,23 @@ ts_library(
 web_library(
     name = "dist",
     app_lib = ":components",
-    entry = "frontend/components/index.js",
+    entry = "frontend/components/src/index.js",
+    externals = {
+        "react": "react",
+        "react-dom": "react-dom",
+        "react-router-dom": "react-router-dom",
+        "@crello/react-lottie": "@crello/react-lottie",
+        "emoji-mart": "emoji-mart",
+        "moment": "moment",
+        "react-autosize-textarea": "react-autosize-textarea",
+        "react-dates": "react-dates",
+        "react-i18next": "react-i18next",
+        "react-modal": "react-modal",
+        "react-redux": "react-redux",
+    },
     output = {
-        "library": "AiryComponents",
+        "library": "@airyhq/components",
+        "globalObject": "this",
         "libraryTarget": "umd",
         "filename": "index.js",
     },
@@ -39,12 +63,17 @@ web_library(
 genrule(
     name = "npm_library",
     srcs = [
-        ":package.json",
+        "package.json",
         "README.md",
         ":dist",
+        ":components",
     ],
     outs = ["components_lib"],
-    cmd = """mkdir -p $(OUTS)/dist && cp -R $(location :dist) $(OUTS) && cp $(location :package.json) $(location :README.md) $(OUTS)""",
+    cmd = """
+    mkdir -p $(OUTS)/{src,dist} && cp -R $(location :dist) $(OUTS) \
+    && cp $(location :package.json) $(location :README.md) $(OUTS) \
+    && mv $(RULEDIR)/src $(OUTS)
+""",
 )
 
 load("//tools/build/npm:rules.bzl", "assemble_npm", "deploy_npm")

@@ -8,8 +8,6 @@ web_library(
     name = "bundle",
     app_lib = ":app",
     entry = "ui/web/widget/src/index.js",
-    public_path = "https://airy.domain.com/"
-    global_object = "Widget"
     module_deps = module_deps
 )
 
@@ -19,6 +17,7 @@ name            - Unique name of the build rule. The dev server rule will be cal
 app_lib         - Label of the ts_library to run the tests on
 entry           - Relative path to your compiled index.js
 output          - Dictionary that gets applied to the webpack output https://webpack.js.org/configuration/output/
+externals       - (optional) Dependencies that should not be bundled, see https://webpack.js.org/guides/author-libraries/#externalize-lodash
 module_deps     - (optional) app_lib dependencies on our own typescript libraries (TODO infer this)
 """
 
@@ -27,6 +26,7 @@ def web_library(
         app_lib,
         entry,
         output,
+        externals = {},
         module_deps = []):
     ts_transpiled_sources = name + "_ts_transpiled"
 
@@ -50,7 +50,9 @@ def web_library(
         "--tsconfig",
         "$(location " + ts_config + ")",
         "--outputDict",
-        encode_output_list(output),
+        encode_dict(output),
+        "--externalDict",
+        encode_dict(externals),
         "--path",
         "$(@D)",
     ]
@@ -68,7 +70,7 @@ def web_library(
                ts_srcs_assets,
     )
 
-def encode_output_list(output):
+def encode_dict(output):
     return "|".join([
         setting[0] + "=" + setting[1]
         for setting in output.items()

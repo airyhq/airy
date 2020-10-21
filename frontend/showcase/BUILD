@@ -28,7 +28,6 @@ ts_library(
         "@npm//react-modal",
         "@npm//react-redux",
         "@npm//react-router-dom",
-        "@npm//react-svg",
     ],
 )
 

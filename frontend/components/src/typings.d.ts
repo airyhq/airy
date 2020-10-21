@@ -25,9 +25,19 @@ declare module "*.webp" {
   export default src;
 }
 
+interface CustomSVGRProps {
+  title?: string; // https://react-svgr.com/docs/options/#title
+}
+
+interface SvgrComponent
+  extends React.FunctionComponent<
+    React.SVGAttributes<SVGElement> & CustomSVGRProps
+  > {}
+
 declare module "*.svg" {
   const src: string;
   export default src;
+  export const ReactComponent: SvgrComponent;
 }
 
 declare module "*.css" {

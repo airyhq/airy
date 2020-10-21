@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import styles from "./style.module.scss";
-import { AccessibleSVG } from "../../labels/AccessibleSVG";
-import chevronDown from "../../../assets/images/icons/chevron-down.svg";
+import { ReactComponent as ChevronDown } from "../../../assets/images/icons/chevron-down.svg";
 
 export const Dropdown = ({ text, options, variant, onClick }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -71,8 +70,7 @@ export const Dropdown = ({ text, options, variant, onClick }) => {
         onClick={() => showDropdown(!dropdownVisible)}
       >
         <div>{text}</div>
-        <AccessibleSVG
-          src={chevronDown}
+        <ChevronDown
           className={`${styles.chevron} ${
             dropdownVisible ? styles.chevronRotated : ""
           }`}

@@ -20,7 +20,7 @@ import {
   AiryLoader,
   AnalyticsLoader,
   SimpleLoader
-} from "components";
+} from "components/src";
 
 import styles from "./index.module.scss";
 

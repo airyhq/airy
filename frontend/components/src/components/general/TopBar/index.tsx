@@ -2,19 +2,18 @@
 import React, { useState, useCallback } from "react";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
-import { ReactSVG } from "react-svg";
 
-import { User } from "../../../model/User";
+import { User } from "../../../model";
 import ListenOutsideClick from "../ListenOutsideClick";
 
 import styles from "./index.module.scss";
 
-import cogIcon from "../../../assets/images/icons/cog.svg";
-import logoutIcon from "../../../assets/images/icons/sign-out.svg";
-import shortcutIcon from "../../../assets/images/icons/shortcut.svg";
-import speakBubbleIcon from "../../../assets/images/icons/speak-bubble.svg";
-import airyLogo from "../../../assets/images/logo/airy_primary_rgb.svg";
-import chevronDown from "../../../assets/images/icons/chevron-down.svg";
+import { ReactComponent as CogIcon } from "../../../assets/images/icons/cog.svg";
+import { ReactComponent as LogoutIcon } from "../../../assets/images/icons/sign-out.svg";
+import { ReactComponent as ShortcutIcon } from "../../../assets/images/icons/shortcut.svg";
+import { ReactComponent as SpeakBubbleIcon } from "../../../assets/images/icons/speak-bubble.svg";
+import { ReactComponent as AiryLogo } from "../../../assets/images/logo/airy_primary_rgb.svg";
+import { ReactComponent as ChevronDown } from "../../../assets/images/icons/chevron-down.svg";
 
 type TopBarProps = {
   user: User;
@@ -58,7 +57,7 @@ const TopBarComponent = (props: TopBarProps) => {
         {props.isAuthSuccess && (
           <>
             <div className={styles.airyLogo}>
-              <ReactSVG src={airyLogo} className={styles.airyLogoSvg} />
+              <AiryLogo className={styles.airyLogoSvg} />
             </div>
             <div className={styles.menuArea}>
               <div className={styles.menuItem}>
@@ -74,11 +73,7 @@ const TopBarComponent = (props: TopBarProps) => {
                       href="mailto:support@airy.co"
                       className={styles.dropdownLine}
                     >
-                      <ReactSVG
-                        src={shortcutIcon}
-                        className={styles.dropdownIcon}
-                        wrapper="span"
-                      />
+                      <ShortcutIcon className={styles.dropdownIcon} />
                       <span>Contact us</span>
                     </a>
                     <a
@@ -86,11 +81,7 @@ const TopBarComponent = (props: TopBarProps) => {
                       target="_blank"
                       className={styles.dropdownLine}
                     >
-                      <ReactSVG
-                        src={shortcutIcon}
-                        className={styles.dropdownIcon}
-                        wrapper="span"
-                      />
+                      <ShortcutIcon className={styles.dropdownIcon} />
                       <span>FAQ</span>
                     </a>
                   </div>
@@ -116,11 +107,7 @@ const TopBarComponent = (props: TopBarProps) => {
                         isAccountDropdownOn ? styles.dropHintOpen : ""
                       }`}
                     >
-                      <ReactSVG
-                        src={chevronDown}
-                        className={styles.chevronDown}
-                        wrapper="span"
-                      />
+                      <ChevronDown className={styles.chevronDown} />
                     </div>
                   </div>
                 </ListenOutsideClick>
@@ -133,11 +120,7 @@ const TopBarComponent = (props: TopBarProps) => {
                         target="_blank"
                         className={styles.dropdownLine}
                       >
-                        <ReactSVG
-                          src={speakBubbleIcon}
-                          className={styles.dropdownIcon}
-                          wrapper="span"
-                        />
+                        <SpeakBubbleIcon className={styles.dropdownIcon} />
                         <span>Go to Inbox</span>
                       </a>
                     ) : (
@@ -146,20 +129,12 @@ const TopBarComponent = (props: TopBarProps) => {
                         target="_blank"
                         className={styles.dropdownLine}
                       >
-                        <ReactSVG
-                          src={cogIcon}
-                          className={styles.dropdownIcon}
-                          wrapper="span"
-                        />
+                        <CogIcon className={styles.dropdownIcon} />
                         <span>Go to Admin</span>
                       </a>
                     )}
                     <Link to={LOGOUT_ROUTE} className={styles.dropdownLine}>
-                      <ReactSVG
-                        src={logoutIcon}
-                        className={styles.dropdownIcon}
-                        wrapper="span"
-                      />
+                      <LogoutIcon className={styles.dropdownIcon} />
                       <span>Logout</span>
                     </Link>
                     <div className={styles.dropdownLastLine}>

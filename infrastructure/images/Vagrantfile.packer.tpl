@@ -15,10 +15,6 @@ Vagrant.configure("2") do |config|
     vbox.memory = 4096
   end
 
-  {{ if ne .SyncedFolder "" -}}
-    config.vm.synced_folder "{{.SyncedFolder}}", "/vagrant"
-  {{- else -}}
-    config.vm.synced_folder "../", "/vagrant", disabled: false
-  {{- end}}
+  config.vm.synced_folder "../../", "/vagrant", disabled: false
   
 end

@@ -20,9 +20,9 @@ done < ../airy.conf
 sed -i '.bak' "s/<fb_app_id>/${config[FB_APP_ID]}/" ../deployments/sources-facebook-events-router.yaml
 sed -i '.bak' "s/<fb_app_id>/${config[FB_APP_ID]}/" ../deployments/api-admin.yaml
 
-sed -i  '.bak' "s/<fb_app_secret>/${config[FB_APP_SECRET]}cret/" ../deployments/api-admin.yaml
+sed -i  '.bak' "s/<fb_app_secret>/${config[FB_APP_SECRET]}/" ../deployments/api-admin.yaml
 
-sed -i '.bak' "s/<fb_webhook_secret>/${config[FB_WEBHOOK_SECRET]}k_secret/" ../deployments/sources-facebook-webhook.yaml
+sed -i '.bak' "s/<fb_webhook_secret>/${config[FB_WEBHOOK_SECRET]}/" ../deployments/sources-facebook-webhook.yaml
 
 kubectl apply -f ../deployments/sources-facebook-events-router.yaml
 kubectl apply -f ../deployments/api-admin.yaml

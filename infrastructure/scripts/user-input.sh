@@ -3,9 +3,9 @@ set -euo pipefail
 IFS=$'\n\t'
 
 config=( # set default values in config array
-    [fb_app_id]="default"
-    [fb_app_secret]="default"
-    [fb_webhook_secret]="default"
+    [FB_APP_ID]="default"
+    [FB_APP_SECRET]="default"
+    [FB_WEBHOOK_SECRET]="default"
 )
 
 while read line
@@ -17,12 +17,12 @@ do
     fi
 done < ../airy.conf
 
-sed -i '.bak' "s/<fb_app_id>/${config[fb_app_id]}/" ../deployments/sources-facebook-events-router.yaml
-sed -i '.bak' "s/<fb_app_id>/${config[fb_app_id]}/" ../deployments/api-admin.yaml
+sed -i '.bak' "s/<fb_app_id>/${config[FB_APP_ID]}/" ../deployments/sources-facebook-events-router.yaml
+sed -i '.bak' "s/<fb_app_id>/${config[FB_APP_ID]}/" ../deployments/api-admin.yaml
 
-sed -i  '.bak' "s/<fb_app_secret>/${config[fb_app_se]}cret/" ../deployments/api-admin.yaml
+sed -i  '.bak' "s/<fb_app_secret>/${config[FB_APP_SECRET]}cret/" ../deployments/api-admin.yaml
 
-sed -i '.bak' "s/<fb_webhook_secret>/${config[fb_webhoo]}k_secret/" ../deployments/sources-facebook-webhook.yaml
+sed -i '.bak' "s/<fb_webhook_secret>/${config[FB_WEBHOOK_SECRET]}k_secret/" ../deployments/sources-facebook-webhook.yaml
 
 kubectl apply -f ../deployments/sources-facebook-events-router.yaml
 kubectl apply -f ../deployments/api-admin.yaml

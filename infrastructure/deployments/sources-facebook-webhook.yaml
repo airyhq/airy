@@ -76,3 +76,11 @@ data:
   config.yml: |
     server_addr: proxy.tunnel.airy.co:4443
     trust_host_root_certs: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: public-urls
+  namespace: default
+data:
+  FB_WEBHOOK_PUBLIC_URL: https://<ngrok_client_string>.tunnel.airy.co

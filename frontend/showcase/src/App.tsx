@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React, { useState } from "react";
-import moment from 'moment';
+import moment from "moment";
 import { BrowserRouter } from "react-router-dom";
 
 import {
@@ -25,7 +25,6 @@ import {
 import styles from "./index.module.scss";
 
 const App = () => {
-
   const [showErrorPopUp, setShowErrorPopUp] = useState(false);
   const [showModalPopUp, setShowModalPopUp] = useState(false);
   const [startDate, setStartDate] = useState(null);
@@ -34,21 +33,32 @@ const App = () => {
   const [inputText, setInputText] = useState("");
   const [inputSecret, setInputSecret] = useState("");
   const [searchValue, setSearchValue] = useState("");
-  const [textAreaValue, setTextAreaValue] = useState("");  
-  const [toggleValue, setToggleValue] = useState(false);  
-  const [urlInput, setUrlInput] = useState("");  
+  const [textAreaValue, setTextAreaValue] = useState("");
+  const [toggleValue, setToggleValue] = useState(false);
+  const [urlInput, setUrlInput] = useState("");
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Airy Components Library Showcase</h1>
       <div className={styles.main}>
         <h2 className={styles.sectionTitle}>Alerts</h2>
-        <div className={styles.section}>          
+        <div className={styles.section}>
           <div className={styles.item}>
-            <h3>Error PopUp</h3>                                              
-            <Button styleVariant="outline-big" type="submit" onClick={() => setShowErrorPopUp(true)}>Show Error PopUp</Button>
-            {showErrorPopUp && <ErrorPopUp message="This in an error message popup" closeHandler={() => setShowErrorPopUp(false)} />}
-          </div>            
+            <h3>Error PopUp</h3>
+            <Button
+              styleVariant="outline-big"
+              type="submit"
+              onClick={() => setShowErrorPopUp(true)}
+            >
+              Show Error PopUp
+            </Button>
+            {showErrorPopUp && (
+              <ErrorPopUp
+                message="This in an error message popup"
+                closeHandler={() => setShowErrorPopUp(false)}
+              />
+            )}
+          </div>
           <div className={styles.item}>
             <h3>Error notice warning</h3>
             <ErrorNotice theme="warning">
@@ -57,16 +67,28 @@ const App = () => {
           </div>
           <div className={styles.item}>
             <h3>Error notice error</h3>
-            <ErrorNotice theme="error">
-              This in an error message
-            </ErrorNotice>
+            <ErrorNotice theme="error">This in an error message</ErrorNotice>
           </div>
           <div className={styles.item}>
             <h3>Error setting modal</h3>
-            <Button styleVariant="outline-big" type="submit" onClick={() => setShowModalPopUp(true)}>Show Settings Modal</Button>
-            {showModalPopUp && 
-              <SettingsModal style={{maxWidth: '420px'}} title="Settings Modal" close={() => setShowModalPopUp(false)}><p>This is a modal</p><p>This is a modal</p><p>This is a modal</p></SettingsModal>
-            }
+            <Button
+              styleVariant="outline-big"
+              type="submit"
+              onClick={() => setShowModalPopUp(true)}
+            >
+              Show Settings Modal
+            </Button>
+            {showModalPopUp && (
+              <SettingsModal
+                style={{ maxWidth: "420px" }}
+                title="Settings Modal"
+                close={() => setShowModalPopUp(false)}
+              >
+                <p>This is a modal</p>
+                <p>This is a modal</p>
+                <p>This is a modal</p>
+              </SettingsModal>
+            )}
           </div>
         </div>
         <h2 className={styles.sectionTitle}>Buttons</h2>
@@ -152,21 +174,34 @@ const App = () => {
           <DateRange
             startDate={startDate}
             endDate={endDate}
-            onDatesChange={({startDate, endDate}) => {
+            onDatesChange={({ startDate, endDate }) => {
               setStartDate(startDate);
               setEndDate(endDate);
-            }}            
-            minDate={moment().startOf('day')}
+            }}
+            minDate={moment().startOf("day")}
             maxDate={moment()
-              .add(2, 'y')
-              .endOf('day')}
+              .add(2, "y")
+              .endOf("day")}
             variant="light"
             anchorDirection="right"
           />
         </div>
         <div className={styles.item}>
           <h3>Dropdown</h3>
-          <Dropdown variant="default" options={["Dropdown","Option A","Option B","Option C","Option D"]} onClick={(item: string) => {setDropdownOption(item)}} text={dropdownOption} />
+          <Dropdown
+            variant="default"
+            options={[
+              "Dropdown",
+              "Option A",
+              "Option B",
+              "Option C",
+              "Option D"
+            ]}
+            onClick={(item: string) => {
+              setDropdownOption(item);
+            }}
+            text={dropdownOption}
+          />
         </div>
         <div className={styles.item}>
           <h3>Input</h3>
@@ -176,13 +211,15 @@ const App = () => {
             name="newLabel"
             type="text"
             value={inputText}
-            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setInputText(e.target.value)}
+            onChange={(e: {
+              target: { value: React.SetStateAction<string> };
+            }) => setInputText(e.target.value)}
             required={true}
             height={32}
             minLength={6}
             fontClass="font-base"
           />
-        </div>    
+        </div>
         <div className={styles.item}>
           <h3>Input Secret</h3>
           <Input
@@ -191,19 +228,25 @@ const App = () => {
             name="newInputSecret"
             type="password"
             value={inputSecret}
-            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setInputSecret(e.target.value)}
+            onChange={(e: {
+              target: { value: React.SetStateAction<string> };
+            }) => setInputSecret(e.target.value)}
             required={true}
             height={32}
             minLength={6}
             fontClass="font-base"
-          />     
-        </div> 
+          />
+        </div>
         <div className={styles.item}>
           <h3>Search Field</h3>
-          <SearchField placeholder="Search Stuff" value={searchValue} setValue={(value: string) => setSearchValue(value)}/>
-        </div>  
+          <SearchField
+            placeholder="Search Stuff"
+            value={searchValue}
+            setValue={(value: string) => setSearchValue(value)}
+          />
+        </div>
         <div className={styles.item}>
-          <h3>Text Area</h3>          
+          <h3>Text Area</h3>
           {/* <TextArea
             label="Audience"
             placeholder="Set your audience here"
@@ -216,9 +259,9 @@ const App = () => {
             required={false}
             fontClass="font-base"
           /> */}
-        </div>   
+        </div>
         <div className={styles.item}>
-          <h3>Toogle</h3>          
+          <h3>Toogle</h3>
           <Toggle
             text="This is a toggle"
             value={toggleValue}
@@ -226,33 +269,39 @@ const App = () => {
               setToggleValue(value);
             }}
           />
-        </div>   
+        </div>
         <div className={styles.item}>
-          <h3>URL Input</h3>          
-          <UrlInputField            
+          <h3>URL Input</h3>
+          <UrlInputField
             label="Button URL"
             fontClass="font-s"
-            height={32}            
+            height={32}
             value={urlInput}
-            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUrlInput(e.target.value)}
+            onChange={(e: {
+              target: { value: React.SetStateAction<string> };
+            }) => setUrlInput(e.target.value)}
           />
-        </div>                     
-      </div>      
+        </div>
+      </div>
       <h2 className={styles.sectionTitle}>Loaders</h2>
       <div className={styles.section}>
         <div className={styles.item}>
-          <h3>Airy Loader</h3>   
-          <div className={styles.loaders}><AiryLoader /></div>               
+          <h3>Airy Loader</h3>
+          <div className={styles.loaders}>
+            <AiryLoader />
+          </div>
         </div>
         <div className={styles.item}>
-          <h3>Airy Analytics Loader</h3>        
+          <h3>Airy Analytics Loader</h3>
           <AnalyticsLoader />
         </div>
         <div className={styles.item}>
-          <h3>Airy Simple Loader</h3>        
-          <div className={styles.loaderSmall}><SimpleLoader /></div>
+          <h3>Airy Simple Loader</h3>
+          <div className={styles.loaderSmall}>
+            <SimpleLoader />
+          </div>
         </div>
-      </div>      
+      </div>
     </div>
   );
 };

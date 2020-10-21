@@ -1,11 +1,15 @@
 package co.airy.core.api.communication;
 
+import co.airy.avro.communication.MetadataAction;
+import co.airy.avro.communication.MetadataActionType;
+import co.airy.avro.communication.MetadataKeys;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.filter.Filter;
 import co.airy.core.api.communication.payload.ConversationByIdRequestPayload;
 import co.airy.core.api.communication.payload.ConversationListRequestPayload;
 import co.airy.core.api.communication.payload.ConversationListResponsePayload;
+import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.QueryFilterPayload;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
@@ -122,6 +126,43 @@ public class ConversationsController {
 
         try {
             stores.storeReadReceipt(readReceipt);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
+        }
+
+        return ResponseEntity.accepted().build();
+    }
+
+    @PostMapping("/conversations.tag")
+    ResponseEntity<?> conversationTag(@RequestBody @Valid ConversationTagRequestPayload requestPayload) {
+        return setConversationTag(requestPayload, MetadataActionType.SET);
+    }
+
+    @PostMapping("/conversations.untag")
+    ResponseEntity<?> conversationUntag(@RequestBody @Valid ConversationTagRequestPayload requestPayload) {
+        return setConversationTag(requestPayload, MetadataActionType.REMOVE);
+    }
+
+    private ResponseEntity<?> setConversationTag(ConversationTagRequestPayload requestPayload, MetadataActionType actionType) {
+        final String conversationId = requestPayload.getConversationId().toString();
+        final String tagId = requestPayload.getTagId().toString();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        final MetadataAction metadataAction = MetadataAction.newBuilder()
+                .setActionType(actionType)
+                .setTimestamp(Instant.now().toEpochMilli())
+                .setConversationId(conversationId)
+                .setValue("present")
+                .setKey(String.format("%s.%s", MetadataKeys.TAGS, tagId))
+                .build();
+
+        try {
+            stores.storeMetadata(metadataAction);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
         }

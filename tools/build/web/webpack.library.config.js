@@ -113,7 +113,27 @@ module.exports = (env, argv) => ({
           {
             loader: "@svgr/webpack",
             options: {
-              titleProp: true
+              titleProp: true,
+              template: (
+                { template },
+                opts,
+                { imports, interfaces, componentName, props, jsx, exports }
+              ) => {
+                const plugins = ["jsx"];
+                if (opts.typescript) {
+                  plugins.push("typescript");
+                }
+                const typeScriptTpl = template.smart({ plugins });
+                return typeScriptTpl.ast`
+                                    ${imports}
+                                    ${interfaces}
+                                    function ${componentName}(${props}) {
+                                      props = { title: '', ...props };
+                                      return ${jsx};
+                                    }
+                                    ${exports}
+                                    `;
+              }
             }
           },
           // Use url-loader to be able to inject into img src

@@ -10,9 +10,17 @@ done
 
 INGRESS_PORT=`kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}'`
 INGRESS_IP=`ip addr show eth1 | grep "inet " | awk '{ print $2; }' | cut -d "/" -f1`
-echo $INGRESS_IP:$INGRESS_PORT
+
+while ! nc -z ${INGRESS_IP} ${INGRESS_PORT}
+do 
+    echo "Waiting for ingress port to open..."
+    sleep 15
+    INGRESS_PORT=`kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}'`
+done
+
+echo ${INGRESS_IP}:${INGRESS_PORT}
 echo "You can access the API of Airy Core at:"
-echo "http://$INGRESS_IP:$INGRESS_PORT/"
+echo "http://${INGRESS_IP}:${INGRESS_PORT}/"
 echo 
 echo "Example:"
-echo "curl -X POST -H 'Content-Type: application/json' -d '{"first_name": "Grace","last_name": "Hopper","password": "the_answer_is_42","email": "grace@example.com"}' http://$INGRESS_IP:$INGRESS_PORT/users.signup"
+echo "curl -X POST -H 'Content-Type: application/json' -d '{"first_name": "Grace","last_name": "Hopper","password": "the_answer_is_42","email": "grace@example.com"}' http://${INGRESS_IP}:${INGRESS_PORT}/users.signup"

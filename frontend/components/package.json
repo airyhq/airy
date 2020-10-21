@@ -6,10 +6,27 @@
     "type": "git",
     "url": "git+https://github.com/airyhq/core.git"
   },
+  "dependencies": {
+    "@crello/react-lottie": "^0.0.9",
+    "react-autosize-textarea": "^7.1.0",
+    "react-dates": "^21.8.0",
+    "react-i18next": "^11.7.3",
+    "react-modal": "^3.11.2",
+    "react-redux": "^7.2.1",
+    "react-router-dom": "5.1.2",
+    "react-svg": "^11.0.38",
+    "emoji-mart": "^3.0.0",
+    "moment": "^2.29.1"
+  },
+  "peerDependencies": {
+    "react": "16.0.0^",
+    "react-dom": "16.0.0^"
+  },
   "author": "Airy, Inc.",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/airyhq/core/issues"
   },
+  "version": "0.0.3",
   "homepage": "https://github.com/airyhq/core#readme"
 }

@@ -2,6 +2,8 @@
 import React from "react";
 
 import { BrowserRouter } from "react-router-dom";
+
+import "@airyhq/components/dist/main.css";
 import {
   Button,
   LinkButton,
@@ -9,7 +11,7 @@ import {
   ErrorMessage,
   ErrorNotice,
   TopBar
-} from "components";
+} from "@airyhq/components";
 
 import styles from "./index.module.scss";
 

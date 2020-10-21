@@ -62,12 +62,12 @@ def web_library(
         output_dir = True,
         args = args,
         data = [
-           ":" + ts_transpiled_sources,
-           webpack_config,
-           ts_config,
-           "@npm//:node_modules",
-        ] +
-        ts_srcs_assets,
+                   ":" + ts_transpiled_sources,
+                   webpack_config,
+                   ts_config,
+                   "@npm//:node_modules",
+               ] +
+               ts_srcs_assets,
     )
 
 def encode_dict(output):

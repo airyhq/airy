@@ -15,11 +15,22 @@ lib_deps = [
     "@npm//react-i18next",
     "@npm//react-modal",
     "@npm//react-redux",
-    "@npm//react-router-dom"
+    "@npm//react-router-dom",
 ]
 
 ts_library(
     name = "components",
+    data = glob(
+        [
+            "**/*.scss",
+            "**/*.css",
+            "**/*.json",
+            "**/*.png",
+            "**/*.svg",
+            "**/*.json",
+        ],
+        exclude = ["package.json"],
+    ),
     tsconfig = "//:tsconfig.json",
     deps = lib_deps,
 )
@@ -28,25 +39,25 @@ web_library(
     name = "dist",
     app_lib = ":components",
     entry = "frontend/components/src/index.js",
+    externals = {
+        "react": "react",
+        "react-dom": "react-dom",
+        "react-router-dom": "react-router-dom",
+        "@crello/react-lottie": "@crello/react-lottie",
+        "emoji-mart": "emoji-mart",
+        "moment": "moment",
+        "react-autosize-textarea": "react-autosize-textarea",
+        "react-dates": "react-dates",
+        "react-i18next": "react-i18next",
+        "react-modal": "react-modal",
+        "react-redux": "react-redux",
+    },
     output = {
         "library": "@airyhq/components",
         "globalObject": "this",
         "libraryTarget": "umd",
         "filename": "index.js",
     },
-    externals = {
-        'react': 'react',
-        'react-dom': 'react-dom',
-        'react-router-dom': 'react-router-dom',
-        '@crello/react-lottie': '@crello/react-lottie',
-        'emoji-mart': 'emoji-mart',
-        'moment': 'moment',
-        'react-autosize-textarea': 'react-autosize-textarea',
-        'react-dates': 'react-dates',
-        'react-i18next': 'react-i18next',
-        'react-modal': 'react-modal',
-        'react-redux': 'react-redux'
-    }
 )
 
 genrule(
@@ -55,7 +66,7 @@ genrule(
         "package.json",
         "README.md",
         ":dist",
-        ":components"
+        ":components",
     ],
     outs = ["components_lib"],
     cmd = """

@@ -1,5 +1,5 @@
 import React from "react";
-import {ReactComponent as WarningIcon} from "../../../assets/images/icons/exclamation-triangle.svg";
+import { ReactComponent as WarningIcon } from "../../../assets/images/icons/exclamation-triangle.svg";
 import picture from "../../../assets/images/pictures/fogg-waiting.png";
 import logoUrl from "../../../assets/images/logo/airy_primary_rgb.svg";
 import styles from "./style.module.scss";

@@ -2,7 +2,7 @@ load("//tools/build/web:typescript.bzl", "ts_library")
 load("//tools/build/web:webapp.bzl", "webapp")
 
 module_deps = [
-    # "//frontend/components",
+    "//frontend/components",
 ]
 
 webapp(
@@ -22,14 +22,12 @@ ts_library(
         "@npm//@types/react",
         "@npm//emoji-mart",
         "@npm//moment",
-        "@npm//@airyhq/components",
         "@npm//react",
         "@npm//react-autosize-textarea",
         "@npm//react-dates",
         "@npm//react-modal",
         "@npm//react-redux",
         "@npm//react-router-dom",
-        "@npm//react-svg",
     ],
 )
 

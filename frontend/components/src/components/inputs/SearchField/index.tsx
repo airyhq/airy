@@ -1,8 +1,7 @@
 import React, { createRef, useCallback } from "react";
 
-import { AccessibleSVG } from "../../labels/AccessibleSVG";
-import closeIcon from "../../../assets/images/icons/close.svg";
-import searchIcon from "../../../assets/images/icons/search.svg";
+import {ReactComponent as CloseIcon} from "../../../assets/images/icons/close.svg";
+import {ReactComponent as SearchIcon} from "../../../assets/images/icons/search.svg";
 import styles from "./style.module.scss";
 
 type Props = {
@@ -32,9 +31,8 @@ export const SearchField = ({
 
   return (
     <div className={styles.component}>
-      <AccessibleSVG
-        ariaHidden="true"
-        src={searchIcon}
+      <SearchIcon
+        aria-hidden="true"
         className={styles.searchIcon}
       />
       <input
@@ -52,9 +50,8 @@ export const SearchField = ({
           onClick={resetButton}
           title="Reset Search"
         >
-          <AccessibleSVG
-            ariaHidden="true"
-            src={closeIcon}
+          <CloseIcon
+            aria-hidden="true"
             className={styles.closeIcon}
           />
         </button>

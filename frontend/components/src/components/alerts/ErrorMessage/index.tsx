@@ -1,8 +1,7 @@
 import React from "react";
-import { ReactSVG } from "react-svg";
-import warningIcon from "../../../assets/images/icons/exclamation-triangle.svg";
+import {ReactComponent as WarningIcon} from "../../../assets/images/icons/exclamation-triangle.svg";
 import picture from "../../../assets/images/pictures/fogg-waiting.png";
-import logo from "../../../assets/images/logo/airy_primary_rgb.svg";
+import logoUrl from "../../../assets/images/logo/airy_primary_rgb.svg";
 import styles from "./style.module.scss";
 import _, { WithTranslation, withTranslation } from "react-i18next";
 
@@ -14,9 +13,9 @@ const ErrorMessageComponent = ({ t, text }: ErrorMessageProps) => {
   return (
     <>
       <div className={styles.headerError}>
-        <img src={logo} alt="Airy Logo" width={128} />
+        <img src={logoUrl} alt="Airy Logo" width={128} />
         <div className={styles.errorContainer}>
-          <ReactSVG src={warningIcon} />
+          <WarningIcon />
           <p>{text || t("alerts.linkExpired")}</p>
         </div>
       </div>

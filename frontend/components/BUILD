@@ -15,8 +15,7 @@ lib_deps = [
     "@npm//react-i18next",
     "@npm//react-modal",
     "@npm//react-redux",
-    "@npm//react-router-dom",
-    "@npm//react-svg",
+    "@npm//react-router-dom"
 ]
 
 ts_library(
@@ -46,8 +45,7 @@ web_library(
         'react-dates': 'react-dates',
         'react-i18next': 'react-i18next',
         'react-modal': 'react-modal',
-        'react-redux': 'react-redux',
-        'react-svg': 'react-svg',
+        'react-redux': 'react-redux'
     }
 )
 

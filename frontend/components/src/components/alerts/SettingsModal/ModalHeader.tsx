@@ -1,10 +1,8 @@
 import React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 
-import { AccessibleSVG } from "../../labels/AccessibleSVG";
-
 import styles from "./ModalHeader.module.scss";
-import closeIcon from "../../../assets/images/icons/close.svg";
+import {ReactComponent as CloseIcon} from "../../../assets/images/icons/close.svg";
 
 type ModalHeaderProps = {
   title: string;
@@ -19,8 +17,7 @@ const ModalHeader = ({
   return (
     <div className={styles.modalHeader}>
       <button className={styles.closeButton} onClick={close}>
-        <AccessibleSVG
-          src={closeIcon}
+        <CloseIcon
           className={styles.closeIcon}
           title={t("common.close")}
         />

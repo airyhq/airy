@@ -45,7 +45,6 @@ module.exports = (env, argv) => ({
     },
     output: {
         path: path.resolve(argv.path),
-        umdNamedDefine: true,
         ...parseBazelDict(argv.outputDict)
     },
 
@@ -106,17 +105,21 @@ module.exports = (env, argv) => ({
             },
             {
                 test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
-                loader: "url-loader",
-                options: {
-                    limit: true
-                }
+                loader: "url-loader"
             },
             {
                 test: /\.svg$/,
-                loader: "file-loader",
-                options: {
-                    name: "media/[name].[hash:8].[ext]"
-                }
+                use: [
+                    {
+                        loader: '@svgr/webpack',
+                        options: {
+                            titleProp: true
+                        }
+                    },
+                    // Use url-loader to be able to inject into img src
+                    // https://www.npmjs.com/package/@svgr/webpack#using-with-url-loader-or-file-loader
+                    'url-loader'
+                ]
             }
         ]
     },
@@ -126,11 +129,11 @@ module.exports = (env, argv) => ({
         }),
         new webpack.DefinePlugin({
             "process.env.NODE_ENV": "'production'"
-        }),/*
-    new BundleAnalyzerPlugin({
-      analyzerMode: "static",
-      openAnalyzer: false
-    }),*/
+        }),
+        new BundleAnalyzerPlugin({
+            analyzerMode: "static",
+            openAnalyzer: false
+        }),
         new OptimizeCSSAssetsPlugin()
     ]
 });

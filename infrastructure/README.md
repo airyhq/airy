@@ -48,5 +48,4 @@ the local machine.
 You will need Vagrant in order to be able to run the Airy Core Platform locally on your computer. 
 If not, the `../scripts/bootstrap.sh` will try to install it for you.
 
-The image is created with [Packer](https://www.packer.io/), you can see it
-yourself in the `image.vagrant.json` file.
+The prepared images are created with [Packer](https://www.packer.io/). The Packer code, for creating the images, is in the `images` directory.

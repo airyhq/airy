@@ -15,12 +15,12 @@
     "isolatedModules": true,
     "sourceMap": true,
     "jsx": "react",
-    "paths": {     
+    "paths": {
       "components": [
-        "./frontend/components"
+        "./frontend/components/src"
       ],
       "components/*": [
-        "./frontend/components/*"
+        "./frontend/components/src/*"
       ],
       "*": [
         "./*"

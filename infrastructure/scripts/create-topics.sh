@@ -10,7 +10,7 @@ REPLICAS=${REPLICAS:-2}
 while ! nc -z airy-cp-kafka 9092; do sleep 15; echo "Waiting for kafka to start..."; done
 while ! nc -z airy-cp-zookeeper 2181; do sleep 10; echo "Waiting for Zookeeper to start..."; done
 
-//TODO make sure the minimum number of kafkas are there before we deploy core topics
+# TODO make sure the minimum number of kafkas are there before we deploy core topics
 sleep 1m
 
 echo "Dumping topics..."

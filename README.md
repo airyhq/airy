@@ -7,6 +7,8 @@ code and tooling required to run the Airy Core Platform.
   - [What's the Airy Core Platform?](#whats-the-airy-core-platform)
   - [Getting started](#getting-started)
     - [Debug the local installation](#debug-the-local-installation)
+    - [Connect the Facebook source](#connect-the-facebook-source)
+    - [Airy Core API and Public webhooks](airy-core-api-and-public-webhooks)
     - [Delete the local installation](#delete-the-local-installation)
   - [Design principles of the Airy Core Platform](#design-principles-of-the-airy-core-platform)
   - [How to contribute](#how-to-contribute)
@@ -90,13 +92,47 @@ You can ssh inside the Airy Core Platform box for testing and debugging purposes
 
 ```sh
 $ cd infrastructure
+$ vagrant status
 $ vagrant ssh
 $ kubectl get pods
 ```
 
+You can stop, start or restart the Airy Core Platform box with the following commands:
+```sh
+$ cd infrastructure
+$ vagrant halt
+$ vagrant start
+$ vagrant reload
+```
+
+You can delete and re-create the whole environment with the following commands:
+```sh
+$ cd infrastructure
+$ vagrant destroy
+$ vagrant up
+```
+
+### Connect the Facebook source
+
+In order to work with the Facebook source, you need to provide your Facebook credentials. The system provisions a demo credentials initially. 
+If you want to put in your facebook credentials, you need to edit the `infrastructure/airy.conf` config file and then run the following command:
+```sh
+$ vagrant provision --provision-with user-data
+```
+
+### Airy Core API and Public webhooks
+
+During the bootstrapping phase, the Airy Core Platform prints out the public webhook URLs and the local address you can use to query the API.
+To display this information again, you can run:
+```sh
+$ cd infrastructure
+$ vagrant ssh
+$ /vagrant/scripts/status.sh
+```
+
 ### Delete the local installation 
 
-You can remove the Airy Core Platform Box from your machine completely running the following commands:
+You can remove the Airy Core Platform box from your machine completely running the following commands:
 
 ```sh
 $ cd infrastructure

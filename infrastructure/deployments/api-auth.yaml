@@ -34,15 +34,15 @@ spec:
         - name: DB_ENDPOINT
           value: postgres:5432
         livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-              httpHeaders:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
               - name: Health-Check
                 value: health-check
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3
 ---
 apiVersion: v1
 kind: Service

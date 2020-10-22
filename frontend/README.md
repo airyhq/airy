@@ -1,14 +1,21 @@
-# Airy Core Platform - Frontend
+# Frontend
 
-This part of the [monorepo](https://en.wikipedia.org/wiki/Monorepo) contains all the frontend
-code of the Airy Core Platform.
+The `frontend` top-level folder of the Airy Core Platform
+[monorepo](https://en.wikipedia.org/wiki/Monorepo) contains the UI related code
+of the platform.
 
-## What's inside?
+Here is a quick introduction to the frontend projects:
 
 - `components`
 
-  This directory contains the components library that contains all the components necessary to build a messaging application. This library is used in the Airy platform. 
+  Here you can find the [Airy
+  Components Library](https://www.npmjs.com/package/@airyhq/components library. We are open-sourcing
+  (it's a work in progress) the critical components necessary to build a
+  messaging application. We use this library to power our commercial offering.
 
 - `showcase`
 
-  Application that showcases all the components available in the [Airy Components Library](https://www.npmjs.com/package/@airyhq/components), this is being shown in https://components.airy.co. 
+  This directory contains a small React application that showcases the
+  components of the [Airy Components
+  Library](https://www.npmjs.com/package/@airyhq/components), we host a `main`
+  branch version at [https://components.airy.co](https://components.airy.co).

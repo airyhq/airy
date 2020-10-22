@@ -10,7 +10,7 @@ chmod +x linux-amd64/helm
 export PATH=$PATH:/usr/local/bin
 sudo mv linux-amd64/helm /usr/local/bin/helm
 
-helm install -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f ../helm-chart/values.yaml airy ../helm-chart/ --version 0.5.0 --timeout 1000s
+helm install -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181

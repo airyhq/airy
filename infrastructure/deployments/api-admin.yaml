@@ -30,9 +30,9 @@ spec:
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: airy-kafka-cp-schema-registry:8081
         - name: FACEBOOK_APP_ID
-          value: "<fb_app_id>"
+          value: "changeme"
         - name: FACEBOOK_APP_SECRET
-          value: "<fb_app_secret>"
+          value: "changeme"
         - name: SERVICE_NAME
           value: api-admin
         livenessProbe:

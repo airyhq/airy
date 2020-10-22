@@ -6,10 +6,6 @@ cp-zookeeper:
   servers: 2
   image: confluentinc/cp-zookeeper
   imageTag: 5.5.0
-  ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
-  ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  imagePullSecrets:
-  #  - name: "regcred"
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
     enabled: true
@@ -41,10 +37,6 @@ cp-kafka:
   brokers: 0
   image: confluentinc/cp-enterprise-kafka
   imageTag: 5.5.0
-  ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
-  ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  imagePullSecrets:
-  #  - name: "regcred"
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
     enabled: true
@@ -68,10 +60,6 @@ cp-schema-registry:
   enabled: true
   image: confluentinc/cp-schema-registry
   imageTag: 5.5.0
-  ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
-  ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  imagePullSecrets:
-  #  - name: "regcred"
   heapOptions: "-Xms512M -Xmx512M"
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
@@ -90,11 +78,20 @@ postgres:
   enabled: true
   image: postgres
   imageTag: 12.4
-  ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
-  ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
-  imagePullSecrets:
-  #  - name: "regcred"
-  heapOptions: "-Xms512M -Xmx512M"
+  resources: {}
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #  requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+redis:
+  enabled: true
+  image: redis
+  imageTag: redis:5.0.1-alpine
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'

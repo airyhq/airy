@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: redis:5.0.1-alpine
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         ports:
         - containerPort: 6379
           name: client

@@ -153,7 +153,9 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 })
                 .leftJoin(metadataTable, (conversation, metadataMap) -> {
                     if (metadataMap != null) {
-                        conversation.setMetadata(metadataMap);
+                        return conversation.toBuilder()
+                                .metadata(metadataMap)
+                                .build();
                     }
                     return conversation;
                 })

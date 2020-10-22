@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-sudo yum install -y wget unzip
+sudo yum install -y wget unzip nc
 
 wget -nv https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz
 tar -zxvf helm-v3.3.4-linux-amd64.tar.gz
@@ -12,7 +12,7 @@ sudo mv linux-amd64/helm /usr/local/bin/helm
 helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
 helm repo update
 
-helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s
+helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s || helm upgrade airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
@@ -38,7 +38,7 @@ echo "Deploying ingress controller"
 kubectl apply -f ../network/istio-crd.yaml
 kubectl apply -f ../network/istio-controller.yaml
 kubectl apply -f ../network/istio-operator.yaml
-kubectl label namespace default istio-injection=enabled
+kubectl label namespace default istio-injection=enabled --overwrite
 
 echo "Deploying airy-core apps"
 kubectl apply -f ../deployments/api-auth.yaml

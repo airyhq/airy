@@ -36,7 +36,7 @@ ingests source data and transforms them into [conversations](#conversation),
 ## Source
 
 A source represents a system that generates messaging data that a user wants
-process with the Airy Core Platform. In most cases, a source provides data via a
+to process with the Airy Core Platform. In most cases, a source provides data via a
 webhook integration.
 
 ## Channel

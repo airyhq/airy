@@ -11,7 +11,7 @@
 The Airy Core Platform runs on [Kubernetes](https://kubernetes.io/). In order to
 bootstrap it, we built a
 [Vagrantfile](https://www.vagrantup.com/docs/vagrantfile) that allows you to
-create a virtual machine. The box contains a
+create a virtual machine (box). The box contains a
 [Minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/)
 cluster preconfigured to deploy and run all the Airy Core Platform components.
 
@@ -39,16 +39,16 @@ included an ngrok client to facilitate the integration of sources (via
 webhooks).
 
 In order for the Airy Core Platform to be accessible from the outside (for example from Facebook, in order to send events to the Facebook webhook),
-the system must have public access. To facilitate this, we have included a [Ngrok](https://ngrok.com/) deployment
-inside the cluster, which will create the public endpoint and redirect it into the local Facebook webhook pod.
-The public URL will be printed every time you start or restart the Airy Core Platform,
-or you can initiate it with the `/vagrant/scripts/status.sh` script, from inside the virtual machine.
+the system must have public access. To facilitate this process, we included a [Ngrok](https://ngrok.com/) client deployment
+inside the cluster. The Ngrok client, connects to our hosted Ngrok server at `tunnel.airy.co`, creates a unique public endpoint (ex. https://some-random-string.tunnel.airy.co) and redirects the traffic into the local Facebook webhook pod.
+When starting, the Airy Core Platform prints the public URL for the Facebook webhook.
+You can also print this information with the `/vagrant/scripts/status.sh` script, from inside the Airy Core Platform box.
 
 
 ## Prepared images
 
 We packaged the whole Airy Core Platform in a
-[Vagrant](https://www.vagrantup.com/) image (box), which is hosted in an s3
+[Vagrant](https://www.vagrantup.com/) image (box), hosted in an s3
 bucket in AWS. The `../scripts/bootstrap.sh` script pulls the box and runs it on
 the local machine.
 You will need Vagrant in order to be able to run the Airy Core Platform locally on your computer. 

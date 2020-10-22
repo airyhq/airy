@@ -95,6 +95,7 @@ maven_install(
         "org.springframework.boot:spring-boot-starter-mail:2.3.1.RELEASE",
         "org.springframework.boot:spring-boot-starter-web:2.3.1.RELEASE",
         "org.springframework.boot:spring-boot-starter-websocket:2.3.1.RELEASE",
+        "org.springframework.boot:spring-boot-starter-security:2.3.1.RELEASE",
         "org.springframework.retry:spring-retry:1.2.4.RELEASE",
         "org.springframework:spring-aop:4.1.4.RELEASE",
         "org.springframework:spring-jdbc:4.1.4.RELEASE",

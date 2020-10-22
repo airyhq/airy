@@ -157,7 +157,7 @@ public class ConversationsController {
                 .setActionType(actionType)
                 .setTimestamp(Instant.now().toEpochMilli())
                 .setConversationId(conversationId)
-                .setValue("present")
+                .setValue("")
                 .setKey(String.format("%s.%s", MetadataKeys.TAGS, tagId))
                 .build();
 

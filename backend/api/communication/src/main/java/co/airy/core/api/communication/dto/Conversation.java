@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Conversation implements Serializable {

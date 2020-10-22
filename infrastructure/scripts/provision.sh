@@ -12,7 +12,7 @@ sudo mv linux-amd64/helm /usr/local/bin/helm
 helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
 helm repo update
 
-helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s || helm upgrade airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s
+helm install -f helm-chart/values.yaml airy helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f helm-chart/values.yaml airy helm-chart/ --version 0.5.0 --timeout 1000s
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181

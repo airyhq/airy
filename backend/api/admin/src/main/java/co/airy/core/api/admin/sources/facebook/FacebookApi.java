@@ -21,8 +21,8 @@ import java.util.Map;
 
 @Service
 public class FacebookApi {
-    private RestTemplate restTemplate = new RestTemplate();
-    private String baseUrl = "https://graph.facebook.com/v3.1";
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final String baseUrl = "https://graph.facebook.com/v3.1";
 
     @Value("${facebook.app-id}")
     private String fbAppId;

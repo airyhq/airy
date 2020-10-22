@@ -11,6 +11,7 @@
             "org.hamcrest:hamcrest:2.1": "org.hamcrest:hamcrest:2.2",
             "org.mockito:mockito-core:2.28.2": "org.mockito:mockito-core:3.3.3",
             "org.slf4j:slf4j-api:1.7.29": "org.slf4j:slf4j-api:1.7.30",
+            "org.springframework.security:spring-security-core:5.1.2.RELEASE": "org.springframework.security:spring-security-core:5.3.3.RELEASE",
             "org.springframework:spring-aop:4.1.4.RELEASE": "org.springframework:spring-aop:5.2.8.RELEASE",
             "org.springframework:spring-context-support:5.2.0.RELEASE": "org.springframework:spring-context-support:5.2.8.RELEASE",
             "org.springframework:spring-context:5.2.0.RELEASE": "org.springframework:spring-context:5.2.8.RELEASE",

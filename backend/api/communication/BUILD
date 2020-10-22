@@ -4,6 +4,7 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
+    "//backend/lib/spring/auth:spring-auth",
     "//backend/avro/communication:message",
     "//backend/avro/communication:channel",
     "//backend/avro/communication:metadata-action",

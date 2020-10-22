@@ -104,6 +104,7 @@ maven_install(
         "org.springframework:spring-messaging:5.1.2.RELEASE",
         "org.springframework:spring-websocket:5.1.2.RELEASE",
         "org.springframework.data:spring-data-redis:2.3.3.RELEASE",
+        "org.springframework.security:spring-security-core:5.1.2.RELEASE",
         "org.springframework.security:spring-security-crypto:5.3.0.RELEASE",
         "org.rocksdb:rocksdbjni:5.18.3",
     ],

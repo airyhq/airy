@@ -1,6 +1,6 @@
 #!/bin/bash
-#set -euo pipefail
-#IFS=$'\n\t'
+set -eo pipefail
+IFS=$'\n\t'
 
 config=( # set default values in config array
     [FB_APP_ID]="default"

@@ -11,19 +11,24 @@
             "provider": "virtualbox",
             "add_force": true,
             "type": "vagrant",
-            "template": "./Vagrantfile.packer.tpl",
+            "template": "./vagrantfile.packer.tpl",
             "output_dir": ".vagrant-out"
         }
     ],
     "provisioners": [
-        {
-            "scripts": [
-              "../scripts/provision.sh"
-            ],
-            "type": "shell"
-          }
-  
-      ],
+      {
+        "scripts": [
+          "./tasks/pull-images.sh"
+        ],
+        "type": "shell"
+      },
+      {
+        "scripts": [
+          "../scripts/provision.sh"
+        ],
+        "type": "shell"
+      }
+    ],
     "post-processors": [
         {
             "type": "shell-local",

@@ -38,7 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
         "kafka.cleanup=true",
-        "kafka.cache.max.bytes=0",
         "kafka.commit-interval-ms=100"
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
@@ -125,7 +124,7 @@ class ConversationsTagTest {
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
                         .andExpect(jsonPath("$.tags", containsInAnyOrder(tagId))),
-            "Conversation was not tagged"
+                "Conversation was not tagged"
         );
 
         mvc.perform(post("/conversations.untag")
@@ -133,13 +132,14 @@ class ConversationsTagTest {
                 .content("{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}"))
                 .andExpect(status().isAccepted());
 
-        TimeUnit.SECONDS.sleep(5);
-        mvc.perform(post("/conversations.by_id")
-                .headers(buildHeaders())
-                .content("{\"conversation_id\":\"" + conversationId + "\"}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(conversationId)))
-                .andExpect(jsonPath("$.tags.length()", is(0)));
+        testHelper.waitForCondition(
+                () -> mvc.perform(post("/conversations.by_id")
+                        .headers(buildHeaders())
+                        .content("{\"conversation_id\":\"" + conversationId + "\"}"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id", is(conversationId)))
+                        .andExpect(jsonPath("$.tags.length()", is(0))),
+                "Conversation was not untagged");
     }
 
     private HttpHeaders buildHeaders() {

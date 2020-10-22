@@ -1,0 +1,111 @@
+# Airy Chat plugin
+
+The chat plugin allows anonymous website visitors to start a conversation with 
+the airy messaging core and respond to messages.
+
+This documents offers an overview over the http endpoints and websocket queues used to provide this experience.
+
+- [Airy Core Platform API](#airy-core-platform-api)
+  - [Introduction](#introduction)
+  - [HTTP API](#http-api)
+    - [Authenticate web users](#authenticating-web-users)
+    - [Send message](#send-message)
+  - [Websocket API](#websocket-api)
+    - [Receive message](#receive-message)
+
+## Introduction
+
+The Airy Core chat plugin is a fully featured [source](./glossary.md#source) for enabling conversations with anonymous 
+website visitors through a web chat plugin.
+
+Like for any other source you have to connect a channel first using the [channels connection endpoint](api.md#connecting-channels) 
+and setting the `source` field in the request payload to `chat_plugin`. You can leave the token parameter empty. 
+
+
+## HTTP API
+
+The HTTP api adheres to standards laid out in the [core API](api.md).
+
+### Authenticating web users
+
+`POST /chatplugin.authenticate`
+
+The request returns an authentication token that needs to be included in the websocket connection handshake.
+
+**Sample Request**
+
+```json5
+{
+  "channel_id": "09816fe0-7950-40cb-bf60-adfa0d6d0679"
+}
+```
+
+**Sample Response**
+
+```json5
+{
+  "token": "jwt auth token"
+}
+```
+
+#### Send a message
+
+`POST /chatplugin.send`
+
+**Sample Request**
+
+```json5
+{
+  message: {
+    text: "{String}"
+  }
+}
+```
+
+**Sample Response**
+
+```json5
+{
+      id: "{UUID}",
+      content: "{String}",
+      // source content string
+      state: "{String}",
+      // delivery state of message, one of PENDING, FAILED, DELIVERED
+      alignment: "{string/enum}",
+      // LEFT, RIGHT, CENTER - horizontal placement of message
+      sent_at: "{string}",
+      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    }
+```
+
+
+
+## Websocket API
+
+Connection and standards are the same as for the [core websocket](websocket.md) except that the authorization 
+token is obtained from the [chatplugin authentication API](#authenticating-web-users).
+
+The websocket endpoint is at `/chat-plugin-ws`. 
+
+
+### Receive message
+
+`/queue/message`
+
+**Sample Payload**
+
+```json5
+{
+  message: {
+      id: "{UUID}",
+      content: "{String}",
+      // source content string
+      state: "{String}",
+      // delivery state of message, one of PENDING, FAILED, DELIVERED
+      alignment: "{string/enum}",
+      // LEFT, RIGHT, CENTER - horizontal placement of message
+      sent_at: "{string}",
+      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+  }
+}
+```

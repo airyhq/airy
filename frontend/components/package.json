@@ -10,7 +10,6 @@
   "dependencies": {
     "@crello/react-lottie": "^0.0.9",
     "react-autosize-textarea": "^7.1.0",
-    "react-dates": "^21.8.0",
     "react-i18next": "^11.7.3",
     "react-modal": "^3.11.2",
     "react-redux": "^7.2.1",

@@ -10,7 +10,6 @@ import {
   ErrorNotice,
   ErrorPopUp,
   SettingsModal,
-  DateRange,
   Dropdown,
   Input,
   SearchField,
@@ -20,7 +19,7 @@ import {
   AiryLoader,
   AnalyticsLoader,
   SimpleLoader
-} from "components/src";
+} from "@airyhq/components";
 
 import styles from "./index.module.scss";
 
@@ -169,23 +168,6 @@ const App = () => {
       </div>
       <h2 className={styles.sectionTitle}>Inputs</h2>
       <div className={styles.section}>
-        <div className={styles.item}>
-          <h3>Date Range</h3>
-          <DateRange
-            startDate={startDate}
-            endDate={endDate}
-            onDatesChange={({ startDate, endDate }) => {
-              setStartDate(startDate);
-              setEndDate(endDate);
-            }}
-            minDate={moment().startOf("day")}
-            maxDate={moment()
-              .add(2, "y")
-              .endOf("day")}
-            variant="light"
-            anchorDirection="right"
-          />
-        </div>
         <div className={styles.item}>
           <h3>Dropdown</h3>
           <Dropdown

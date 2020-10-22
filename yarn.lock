@@ -2,10 +2,20 @@
 # yarn lockfile v1
 
 
-"@airyhq/components@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@airyhq/components/-/components-0.0.3.tgz#f162c644192a9e6764291c765a0d7344d0aa95de"
-  integrity sha512-okpR6ZUvOqghEY1lV7AkBrExsPWTwyiq6DWjhz6q2vnLFceEesf1on7v9NcIuul4GNvSheg0EH1bknEc4Xp4Nw==
+"@airyhq/components@latest":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@airyhq/components/-/components-0.1.0.tgz#c56fb45ab08147f98e2a6bd35b30c0a40248d9a1"
+  integrity sha512-Bqkhy7UusSGbjRA/MEwL6gFTbErty7siMKj/4x35JGte95eXbyQytuq+jZfZ2QRiRLX7lhbSuGMc1Zd9lR8Acg==
+  dependencies:
+    "@crello/react-lottie" "^0.0.9"
+    emoji-mart "^3.0.0"
+    moment "^2.29.1"
+    react-autosize-textarea "^7.1.0"
+    react-dates "^21.8.0"
+    react-i18next "^11.7.3"
+    react-modal "^3.11.2"
+    react-redux "^7.2.1"
+    react-router-dom "5.1.2"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
   version "7.10.4"
@@ -9567,12 +9577,12 @@ string-width@^3.0.0, string-width@^3.1.0:
     strip-ansi "^5.1.0"
 
 string.prototype.trimend@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/string.prototype.trimend/-/string.prototype.trimend-1.0.1.tgz#85812a6b847ac002270f5808146064c995fb6913"
-  integrity sha512-LRPxFUaTtpqYsTeNKaFOw3R4bxIzWOnbQ837QfBylo8jIxtcbK/A/sMV7Q+OAV/vWo+7s25pOE10KYSjaSO06g==
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/string.prototype.trimend/-/string.prototype.trimend-1.0.2.tgz#6ddd9a8796bc714b489a3ae22246a208f37bfa46"
+  integrity sha512-8oAG/hi14Z4nOVP0z6mdiVZ/wqjDtWSLygMigTzAb+7aPEDTleeFf+WrF+alzecxIRkckkJVn+dTlwzJXORATw==
   dependencies:
     define-properties "^1.1.3"
-    es-abstract "^1.17.5"
+    es-abstract "^1.18.0-next.1"
 
 string.prototype.trimleft@^2.1.1:
   version "2.1.1"
@@ -9591,12 +9601,12 @@ string.prototype.trimright@^2.1.1:
     function-bind "^1.1.1"
 
 string.prototype.trimstart@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/string.prototype.trimstart/-/string.prototype.trimstart-1.0.1.tgz#14af6d9f34b053f7cfc89b72f8f2ee14b9039a54"
-  integrity sha512-XxZn+QpvrBI1FOcg6dIpxUPgWCPuNXvMD72aaRaUQv1eD4e/Qy8i/hFTe0BUmD60p/QA6bh1avmuPTfNjqVWRw==
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/string.prototype.trimstart/-/string.prototype.trimstart-1.0.2.tgz#22d45da81015309cd0cdd79787e8919fc5c613e7"
+  integrity sha512-7F6CdBTl5zyu30BJFdzSTlSlLPwODC23Od+iLoVH8X6+3fvDPPuBVVj9iaB1GOsSTSIgVfsfm27R2FGrAPznWg==
   dependencies:
     define-properties "^1.1.3"
-    es-abstract "^1.17.5"
+    es-abstract "^1.18.0-next.1"
 
 string_decoder@^1.0.0, string_decoder@^1.1.1:
   version "1.3.0"

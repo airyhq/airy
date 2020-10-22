@@ -7,6 +7,7 @@ code and tooling required to run the Airy Core Platform.
   - [What's the Airy Core Platform?](#whats-the-airy-core-platform)
   - [Getting started](#getting-started)
     - [Debug the local installation](#debug-the-local-installation)
+    - [Connect the Facebook source](#connect-the-facebook-source)
     - [Delete the local installation](#delete-the-local-installation)
   - [Design principles of the Airy Core Platform](#design-principles-of-the-airy-core-platform)
   - [How to contribute](#how-to-contribute)
@@ -90,8 +91,39 @@ You can ssh inside the Airy Core Platform box for testing and debugging purposes
 
 ```sh
 $ cd infrastructure
+$ vagrant status
 $ vagrant ssh
 $ kubectl get pods
+```
+
+When the platform starts it will print out the public webhook urls and the local API IP and port. 
+To refresh this information, you can run:
+```sh
+$ cd infrastructure
+$ vagrant ssh
+$ /vagrant/scripts/status.sh
+```
+
+You can stop, start or restart the Airy Core Platform virtual machine with the following commands
+```sh
+$ cd infrastructure
+$ vagrant halt
+$ vagrant start
+$ vagrant reload
+```
+
+You can delete and re-create the whole environment with the following commands
+```sh
+$ cd infrastructure
+$ vagrant destroy
+$ vagrant up
+```
+
+### Connect the Facebook source
+
+In order to work with the Facebook source, you will need to provide your Facebook credentials. The system will provision a demo credentials initially and if you want to put in your facebook credentials, please edit the `infrastructure/airy.conf` config file and then run the following command
+```sh
+$ vagrant provision --provision-with user-data
 ```
 
 ### Delete the local installation 

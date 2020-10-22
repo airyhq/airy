@@ -28,7 +28,7 @@ sed -i "s/<fb_webhook_secret>/${config[FB_WEBHOOK_SECRET]}/" ../deployments/sour
 
 # Generate random string for the ngrok webhook
 RANDOM_INGRESS_ID=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 16; echo`
-sed -i "s/<ngrok_client_string>/${RANDOM_INGRESS_ID}/" ../deployments/sources-facebook-webhook.yaml
+sed -i "s/<ngrok_client_string>/fb-${RANDOM_INGRESS_ID}/" ../deployments/sources-facebook-webhook.yaml
 
 kubectl apply -f ../deployments/sources-facebook-events-router.yaml
 kubectl apply -f ../deployments/api-admin.yaml

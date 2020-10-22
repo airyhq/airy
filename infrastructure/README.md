@@ -38,6 +38,12 @@ Since Minikube clusters are usually not exposed to the public internet, we
 included an ngrok client to facilitate the integration of sources (via
 webhooks).
 
+In order for the Airy Core Platform to be accessible from the outside (for example from Facebook, in order to send events to the Facebook webhook),
+the system must have public access. To facilitate this, we have included a [Ngrok](https://ngrok.com/) deployment
+inside the cluster, which will create the public endpoint and redirect it into the local Facebook webhook pod.
+The public URL will be printed every time you start or restart the Airy Core Platform,
+or you can initiate it with the `/vagrant/scripts/status.sh` script, from inside the virtual machine.
+
 
 ## Prepared images
 

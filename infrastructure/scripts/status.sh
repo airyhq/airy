@@ -18,7 +18,12 @@ do
     INGRESS_PORT=`kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}'`
 done
 
-echo ${INGRESS_IP}:${INGRESS_PORT}
+FB_WEBHOOK_PUBLIC_URL=`kubectl get configmap public-urls -o jsonpath='{.data.FB_WEBHOOK_PUBLIC_URL}'`
+
+echo
+echo "Your public url for the Facebook Webhook is:"
+echo ${FB_WEBHOOK_PUBLIC_URL}
+echo
 echo "You can access the API of Airy Core at:"
 echo "http://${INGRESS_IP}:${INGRESS_PORT}/"
 echo 

@@ -45,7 +45,7 @@ compose our API.
 Our HTTP endpoints adhere to the following conventions:
 
 - Endpoints only accept `POST` JSON requests.
-- Except for the `/login` and `/signup` endpoints, communication
+- Except for the `/users.login` and `/users.signup` endpoints, communication
   always requires a valid [JWT token](#authorization).
 - We use dots for namespacing URLS (eg `/things.add`).
 
@@ -109,13 +109,6 @@ information.
 }
 ```
 
-**Required**:
-
-- `first_name` String
-- `last_name` String
-- `password` String
-- `email` String
-
 The password _MUST_ be at least 6 (six) characters long
 
 **Sample Response**
@@ -138,16 +131,9 @@ The password _MUST_ be at least 6 (six) characters long
   "id": "invitation-code",
   "first_name": "GOOD",
   "last_name": "DOGGO",
-  "password": "MUCH-PASSWORD"
+  "password": "MUCH-PASSWORD" // (6 chars minimum)
 }
 ```
-
-**Required**
-
-- `id`: String
-- `first_name`: String
-- `last_name`: String
-- `password`: String (6 chars minimum)
 
 **Sample Response**
 
@@ -221,10 +207,6 @@ Creates an invite for a non a registered user.
   "email": "invitee-email@non-airy.com"
 }
 ```
-
-**Required**
-
-- `email`: String
 
 **Sample Response**
 
@@ -416,7 +398,8 @@ information.
 This is a [paginated](#pagination) endpoint and messages are sorted from oldest to latest.
 
 **Sample Request**
-w```json5
+
+```json5
 {
   "conversation_id": "4242-4242-4242-424242", 
   "cursor": "next-page-uuid", // optional
@@ -654,6 +637,7 @@ Subscribes the webhook for the first time or update its parameters.
   "api_secret": "{UUID}"
 }
 ```
+
 #### Get webhook
 
 `POST /webhooks.get`
@@ -681,14 +665,10 @@ Example body:
 ```json
 {
   "name": "Urgent",
-  "color": "tag-red"
+  "color": "tag-red" // one of tag-red | tag-blue | tag-green | tag-purple
 }
 ```
 
-**Required**:
-
-- `name`: String
-- `color`: tag-red | tag-blue | tag-green | tag-purple
 
 If the tag is successfully created the endpoint will return `201` (created) with the tag id in the response body.
 
@@ -708,15 +688,9 @@ Example response:
 {
   "id": "TAG-ID",
   "name": "Urgent",
-  "color": "tag-blue"
+  "color": "tag-blue" // one of tag-red | tag-blue | tag-green | tag-purple
 }
 ```
-
-**Required**:
-
-- `id`: UUID
-- `name`: String
-- `color`: tag-red | tag-blue | tag-green | tag-purple
 
 If action is successful, returns HTTP status `200`.
 
@@ -736,10 +710,6 @@ Example response:
   "id": "ID-OF-THE-TAG"
 }
 ```
-
-**Required**:
-
-- `tag_id`: UUID
 
 If action is successful, returns HTTP status `200`.
 

@@ -6,7 +6,7 @@
 ## Schema Registry
 ## ------------------------------------------------------
 
-## Number of Scheme Registry Pod
+## Number of Schema Registry Pod
 replicaCount: 0
 
 ## Image Info

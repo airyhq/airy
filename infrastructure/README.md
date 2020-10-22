@@ -40,7 +40,7 @@ webhooks).
 
 In order for the Airy Core Platform to be accessible from the outside (for example from Facebook, in order to send events to the Facebook webhook),
 the system must have public access. To facilitate this process, we included a [Ngrok](https://ngrok.com/) client deployment
-inside the cluster. The Ngrok client, connects to our hosted Ngrok server at `tunnel.airy.co`, creates a unique public endpoint (ex. https://some-random-string.tunnel.airy.co) and redirects the traffic into the local Facebook webhook pod.
+inside the cluster. The Ngrok client connects to our hosted Ngrok server at `tunnel.airy.co`, creates a unique public endpoint (ex. https://some-random-string.tunnel.airy.co) and redirects the traffic into the local Facebook webhook pod.
 When starting, the Airy Core Platform prints the public URL for the Facebook webhook.
 You can also print this information with the `/vagrant/scripts/status.sh` script, from inside the Airy Core Platform box.
 

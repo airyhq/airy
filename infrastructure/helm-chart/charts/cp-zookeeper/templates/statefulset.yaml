@@ -46,7 +46,6 @@ spec:
                     - {{ .Release.Name }}
               topologyKey: "kubernetes.io/hostname"
       containers:
-      {{- end }}
       - name: {{ template "cp-zookeeper.name" . }}-server
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
@@ -107,7 +106,6 @@ spec:
         emptyDir: {}
       - name: datalogdir
         emptyDir: {}
-      {{- end }}
       {{- end }}
       {{- if .Values.nodeSelector }}
       nodeSelector:

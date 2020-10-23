@@ -9,26 +9,10 @@ cp-zookeeper:
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
     enabled: true
-    ## The size of the PersistentVolume to allocate to each Zookeeper Pod in the StatefulSet. For
-    ## production servers this number should likely be much larger.
-    ##
-    ## Size for Data dir, where ZooKeeper will store the in-memory database snapshots.
     dataDirSize: 10Gi
-    # dataDirStorageClass: ""
-
-    ## Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snaphots.
     dataLogDirSize: 10Gi
-    # dataLogDirStorageClass: ""
   resources: {}
-  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
-  ## and remove the curly braces after 'resources:'
-  #  limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  #  requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
+            
 ## ------------------------------------------------------
 ## Kafka
 ## ------------------------------------------------------
@@ -44,15 +28,7 @@ cp-kafka:
     size: 5Gi
     disksPerBroker: 1
   resources: {}
-  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
-  ## and remove the curly braces after 'resources:'
-  #  limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  #  requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
+            
 ## ------------------------------------------------------
 ## Schema Registry
 ## ------------------------------------------------------
@@ -62,15 +38,7 @@ cp-schema-registry:
   imageTag: 5.5.0
   heapOptions: "-Xms512M -Xmx512M"
   resources: {}
-  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
-  ## and remove the curly braces after 'resources:'
-  #  limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  #  requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
+            
 ## ------------------------------------------------------
 ## Postgres
 ## ------------------------------------------------------
@@ -79,25 +47,10 @@ postgres:
   image: postgres
   imageTag: 12.4
   resources: {}
-  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
-  ## and remove the curly braces after 'resources:'
-  #  limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  #  requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
+            
 redis:
   enabled: true
   image: redis
   imageTag: redis:5.0.1-alpine
   resources: {}
-  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
-  ## and remove the curly braces after 'resources:'
-  #  limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  #  requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+            

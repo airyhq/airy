@@ -9,8 +9,6 @@ tar -zxvf helm-v3.3.4-linux-amd64.tar.gz
 chmod +x linux-amd64/helm
 export PATH=$PATH:/usr/local/bin
 
-/vagrant/scripts/pull-images.sh
-
 sudo mv linux-amd64/helm /usr/local/bin/helm
 helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
 helm repo update

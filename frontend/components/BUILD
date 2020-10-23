@@ -13,7 +13,6 @@ lib_deps = [
     "@npm//react-autosize-textarea",
     "@npm//react-i18next",
     "@npm//react-modal",
-    "@npm//react-redux",
     "@npm//react-router-dom",
 ]
 
@@ -48,7 +47,6 @@ web_library(
         "react-autosize-textarea": "react-autosize-textarea",
         "react-i18next": "react-i18next",
         "react-modal": "react-modal",
-        "react-redux": "react-redux",
     },
     output = {
         "library": "@airyhq/components",

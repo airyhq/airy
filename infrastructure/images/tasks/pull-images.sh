@@ -2,7 +2,6 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-docker pull confluentinc/cp-enterprise-kafka:5.5.0
 docker pull confluentinc/cp-kafka:5.5.0
 docker pull confluentinc/cp-zookeeper:5.5.0
 docker pull postgres:12.4

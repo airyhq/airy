@@ -18,7 +18,7 @@ cp-zookeeper:
 ## ------------------------------------------------------
 cp-kafka:
   enabled: true
-  brokers: 0
+  brokers: 2
   image: confluentinc/cp-kafka
   imageTag: 5.5.0
   heapOptions: "-Xms512M -Xmx512M"

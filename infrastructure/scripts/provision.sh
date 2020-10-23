@@ -25,9 +25,6 @@ do
     echo "Waiting for kafka-client to start..."
 done
 
-kubectl scale statefulset airy-cp-kafka --replicas=2
-kubectl scale deployment airy-cp-schema-registry --replicas=1
-
 
 echo "Creating kafka topics and required databases"
 kubectl cp topics.sh kafka-client:/tmp

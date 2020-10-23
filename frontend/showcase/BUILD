@@ -21,7 +21,6 @@ ts_library(
         "@npm//react",
         "@npm//react-autosize-textarea",
         "@npm//react-modal",
-        "@npm//react-redux",
         "@npm//react-router-dom",
     ],
 )

@@ -12,7 +12,6 @@ Vagrant.configure("2") do |config|
     airy_core.vm.provider "virtualbox" do |vbox|
       vbox.cpus = 3
       vbox.memory = 6144
-      vbox.audio = "none"
       vbox.customize [
         "modifyvm", :id, "--audio", "none"
       ]

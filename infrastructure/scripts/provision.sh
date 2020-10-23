@@ -9,10 +9,8 @@ tar -zxvf helm-v3.3.4-linux-amd64.tar.gz
 chmod +x linux-amd64/helm
 export PATH=$PATH:/usr/local/bin
 sudo mv linux-amd64/helm /usr/local/bin/helm
-helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
-helm repo update
 
-helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s || helm upgrade airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s
+helm install -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
@@ -26,6 +24,7 @@ do
     sleep 10
     echo "Waiting for kafka-client to start..."
 done
+
 
 echo "Creating kafka topics and required databases"
 kubectl cp topics.sh kafka-client:/tmp

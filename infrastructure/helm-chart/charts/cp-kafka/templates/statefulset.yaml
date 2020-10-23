@@ -28,16 +28,6 @@ spec:
       labels:
         app: {{ template "cp-kafka.name" . }}
         release: {{ .Release.Name }}
-      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
-      annotations:
-      {{- range $key, $value := .Values.podAnnotations }}
-        {{ $key }}: {{ $value | quote }}
-      {{- end }}
-      {{- if .Values.prometheus.jmx.enabled }}
-        prometheus.io/scrape: "true"
-        prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
-      {{- end }}
-      {{- end }}
     spec:
       affinity:
         podAntiAffinity:
@@ -56,38 +46,12 @@ spec:
                     - {{ .Release.Name }}
               topologyKey: "kubernetes.io/hostname"
       containers:
-      {{- if .Values.prometheus.jmx.enabled }}
-      - name: prometheus-jmx-exporter
-        image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
-        imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
-        command:
-        - java
-        - -XX:+UnlockExperimentalVMOptions
-        - -XX:+UseCGroupMemoryLimitForHeap
-        - -XX:MaxRAMFraction=1
-        - -XshowSettings:vm
-        - -jar
-        - jmx_prometheus_httpserver.jar
-        - {{ .Values.prometheus.jmx.port | quote }}
-        - /etc/jmx-kafka/jmx-kafka-prometheus.yml
-        ports:
-        - containerPort: {{ .Values.prometheus.jmx.port }}
-        resources:
-{{ toYaml .Values.prometheus.jmx.resources | indent 10 }}
-        volumeMounts:
-        - name: jmx-config
-          mountPath: /etc/jmx-kafka
-      {{- end }}
       - name: {{ template "cp-kafka.name" . }}-broker
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         ports:
         - containerPort: 9092
           name: kafka
-        {{- if .Values.prometheus.jmx.enabled }}
-        - containerPort: {{ .Values.jmx.port }}
-          name: jmx
-        {{- end }}
         {{- if .Values.nodeport.enabled }}
           {{- $brokers := .Values.brokers | int }}
           {{- $root := . }}
@@ -133,10 +97,6 @@ spec:
         - name: {{ $key | quote }}
           value: {{ $value | quote }}
         {{- end }}
-        {{- if .Values.jmx.port }}
-        - name: KAFKA_JMX_PORT
-          value: "{{ .Values.jmx.port }}"
-        {{- end }}
         # This is required because the Downward API does not yet support identification of
         # pod numbering in statefulsets. Thus, we are required to specify a command which
         # allows us to extract the pod ID for usage as the Kafka Broker ID.
@@ -164,19 +124,6 @@ spec:
       {{- if not .Values.persistence.enabled }}
       - name: datadir-0
         emptyDir: {}
-      {{- end }}
-      {{- if .Values.prometheus.jmx.enabled }}
-      - name: jmx-config
-        configMap:
-          name: {{ template "cp-kafka.fullname" . }}-jmx-configmap
-      {{- end }}
-      {{- if .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
-      {{- end }}
-      {{- if .Values.tolerations }}
-      tolerations:
-{{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:

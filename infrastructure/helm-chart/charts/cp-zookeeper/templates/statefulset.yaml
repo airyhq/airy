@@ -28,16 +28,6 @@ spec:
       labels:
         app: {{ template "cp-zookeeper.name" . }}
         release: {{ .Release.Name }}
-      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
-      annotations:
-      {{- range $key, $value := .Values.podAnnotations }}
-        {{ $key }}: {{ $value | quote }}
-      {{- end }}
-      {{- if .Values.prometheus.jmx.enabled }}
-        prometheus.io/scrape: "true"
-        prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
-      {{- end }}
-      {{- end }}
     spec:
       affinity:
         podAntiAffinity:
@@ -56,27 +46,6 @@ spec:
                     - {{ .Release.Name }}
               topologyKey: "kubernetes.io/hostname"
       containers:
-      {{- if .Values.prometheus.jmx.enabled }}
-      - name: prometheus-jmx-exporter
-        image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
-        imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
-        command:
-        - java
-        - -XX:+UnlockExperimentalVMOptions
-        - -XX:+UseCGroupMemoryLimitForHeap
-        - -XX:MaxRAMFraction=1
-        - -XshowSettings:vm
-        - -jar
-        - jmx_prometheus_httpserver.jar
-        - {{ .Values.prometheus.jmx.port | quote }}
-        - /etc/jmx-zookeeper/jmx-zookeeper-prometheus.yml
-        ports:
-        - containerPort: {{ .Values.prometheus.jmx.port }}
-        resources:
-{{ toYaml .Values.prometheus.jmx.resources | indent 10 }}
-        volumeMounts:
-        - name: jmx-config
-          mountPath: /etc/jmx-zookeeper
       {{- end }}
       - name: {{ template "cp-zookeeper.name" . }}-server
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
@@ -88,19 +57,11 @@ spec:
           name: server
         - containerPort: {{ .Values.leaderElectionPort }}
           name: leader-election
-        {{- if .Values.prometheus.jmx.enabled }}
-        - containerPort: {{ .Values.jmx.port }}
-          name: jmx
-        {{- end }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
         - name : KAFKA_HEAP_OPTS
           value: "{{ .Values.heapOptions }}"
-        {{- if .Values.jmx.port }}
-        - name : KAFKA_JMX_PORT
-          value: "{{ .Values.jmx.port }}"
-        {{- end }}
         - name : ZOOKEEPER_TICK_TIME
           value: "{{ .Values.tickTime }}"
         - name : ZOOKEEPER_SYNC_LIMIT
@@ -147,10 +108,6 @@ spec:
       - name: datalogdir
         emptyDir: {}
       {{- end }}
-      {{- if .Values.prometheus.jmx.enabled }}
-      - name: jmx-config
-        configMap:
-          name: {{ template "cp-zookeeper.fullname" . }}-jmx-configmap
       {{- end }}
       {{- if .Values.nodeSelector }}
       nodeSelector:

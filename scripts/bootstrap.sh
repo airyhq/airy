@@ -2,16 +2,13 @@
 set -eo pipefail
 IFS=$'\n\t'
 
-printf "\n"
-printf "Checking for vagrant installation\n\n"
-
 if ! command -v vagrant &> /dev/null
 then
     printf "\nVagrant binary not found. Attempting to install...\n"
     printf "\n"
     VAGRANT_VERSION="2.2.10"
     ARCH=$(uname -m)
-    case "${ARCH}" in 
+    case "${ARCH}" in
         x86_64|amd64|arm64)
             printf "Detected ${ARCH} system architecture\n"
             ;;
@@ -24,7 +21,7 @@ then
             ;;
     esac
     OS=$(uname)
-    case "${OS}" in 
+    case "${OS}" in
         Linux|linux)
             printf "Detected Linux system\n"
             VAGRANT_URL="https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_linux_amd64.zip"
@@ -50,9 +47,9 @@ then
         ;;
     esac
 
+    printf "Vagrant installed in "`which vagrant`"\n"
 fi
 
-printf "Vagrant installed in "`which vagrant`"\n"	
 
 cd infrastructure
 vagrant up

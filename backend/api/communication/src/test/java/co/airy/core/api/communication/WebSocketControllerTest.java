@@ -164,7 +164,7 @@ public class WebSocketControllerTest {
         StompHeaders connectHeaders = new StompHeaders();
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
 
-        return stompClient.connect("ws://localhost:" + port + "/ws", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
+        return stompClient.connect("ws://localhost:" + port + "/ws.communication", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
         }).get();
     }
 

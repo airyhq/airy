@@ -18,12 +18,6 @@
     "provisioners": [
       {
         "scripts": [
-          "./tasks/pull-images.sh"
-        ],
-        "type": "shell"
-      },
-      {
-        "scripts": [
           "../scripts/provision.sh"
         ],
         "type": "shell"

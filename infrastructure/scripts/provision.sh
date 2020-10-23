@@ -8,10 +8,12 @@ wget -nv https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz
 tar -zxvf helm-v3.3.4-linux-amd64.tar.gz
 chmod +x linux-amd64/helm
 export PATH=$PATH:/usr/local/bin
+
+/vagrant/scripts/pull-images.sh
+
 sudo mv linux-amd64/helm /usr/local/bin/helm
 helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
 helm repo update
-
 helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s || helm upgrade airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s
 
 export RELEASE_NAME=airy

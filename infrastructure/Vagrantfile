@@ -4,7 +4,8 @@
 Vagrant.configure("2") do |config|
 
   config.vm.define "airy-core", primary: true, autostart: true do |airy_core|
-    airy_core.vm.box = "https://s3.amazonaws.com/core-images.airy.co/vagrant/airy.box"
+    airy_core.vm.box = "airy"
+    airy_core.vm.box_url = "https://s3.amazonaws.com/core-images.airy.co/vagrant/airy.box"
     airy_core.vm.network "private_network", ip: "192.168.50.4"
     airy_core.vm.provision "user-data", type: "shell" do |s|
        s.inline = "/vagrant/scripts/user-input.sh"

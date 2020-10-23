@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthenticationResponsePayload {
-    @NotBlank
-    String token;
+    private String token;
 }
 

@@ -6,7 +6,6 @@ import co.airy.avro.communication.Message;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
-import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -29,17 +28,23 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
     private final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
     private final KafkaStreamsWrapper streams;
-    private final KafkaProducer<String, SpecificRecordBase> producer;
+    private final WebSocketController webSocketController;
+    private final KafkaProducer<String, Message> producer;
     private final String CHANNEL_STORE = "channel-store";
 
     Stores(KafkaStreamsWrapper streams,
-           KafkaProducer<String, SpecificRecordBase> producer) {
+           KafkaProducer<String, Message> producer,
+           WebSocketController webSocketController) {
         this.streams = streams;
         this.producer = producer;
+        this.webSocketController = webSocketController;
     }
 
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
+
+        builder.<String, Message>stream(applicationCommunicationMessages)
+                .peek((messageId, message) -> webSocketController.onNewMessage(message));
 
         builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
                 .filter((channelId, channel) -> "chat_plugin".equals(channel.getSource())

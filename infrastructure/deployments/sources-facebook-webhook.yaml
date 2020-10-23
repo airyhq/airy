@@ -37,7 +37,7 @@ spec:
           command:
             - /bin/bash
             - -c
-            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="fb-hyfs3jhthca61f95" 8080
+            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="<ngrok_client_string>" 8080
           env:
           image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
           imagePullPolicy: Always
@@ -83,4 +83,4 @@ metadata:
   name: public-urls
   namespace: default
 data:
-  FB_WEBHOOK_PUBLIC_URL: https://fb-hyfs3jhthca61f95.tunnel.airy.co
+  FB_WEBHOOK_PUBLIC_URL: https://<ngrok_client_string>.tunnel.airy.co

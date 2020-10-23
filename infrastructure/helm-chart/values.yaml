@@ -51,6 +51,6 @@ postgres:
 redis:
   enabled: true
   image: redis
-  imageTag: redis:5.0.1-alpine
+  imageTag: 5.0.1-alpine
   resources: {}
             

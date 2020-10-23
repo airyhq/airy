@@ -3,12 +3,12 @@ package co.airy.spring.auth;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.authentication.AuthenticationManager;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.FilterChain;
@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.Key;
-import java.util.ArrayList;
 import java.util.List;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {

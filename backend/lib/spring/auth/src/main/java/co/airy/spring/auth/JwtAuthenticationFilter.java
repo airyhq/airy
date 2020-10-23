@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.security.Key;
 import java.util.List;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private static final String tokenKey = "sdfajlsdfjlkasdflkjklfadsljajkldsfljdfjklasdfjllfdjlskaldfsjfldjsaljfdksjlkfdssfdfdssfdfdsfsdfdssdffdsfdsdfssfdsdfdfsdgfsgffsggsfgsfasdfasfdasljadfsljkdfasjlkadfsjlkafdsljadfsjladfsljjlkdfsjlkadfsjlkafdsjlljdfkasjladfsajldfksjlkafdsjlkfdsljkadfsjlkdafsjlkdafsjlkadfsjlkadfsjlkbljkbjlfaskjlkqvjlksalajsfkljkfjlk";
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authManager) {
         super(authManager);
     }
 

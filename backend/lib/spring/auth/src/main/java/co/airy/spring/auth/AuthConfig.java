@@ -17,7 +17,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors().disable().csrf().disable()
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .authorizeRequests(authorize -> authorize
                         .mvcMatchers("/health").permitAll()
                         .anyRequest().authenticated()

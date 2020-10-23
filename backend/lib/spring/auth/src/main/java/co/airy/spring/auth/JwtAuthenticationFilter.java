@@ -1,31 +1,26 @@
 package co.airy.spring.auth;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
-import java.security.Key;
 import java.util.List;
 
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
-    private static final String tokenKey = "sdfajlsdfjlkasdflkjklfadsljajkldsfljdfjklasdfjllfdjlskaldfsjfldjsaljfdksjlkfdssfdfdssfdfdsfsdfdssdffdsfdsdfssfdsdfdfsdgfsgffsggsfgsfasdfasfdasljadfsljkdfasjlkadfsjlkafdsljadfsjladfsljjlkdfsjlkadfsjlkafdsjlljdfkasjladfsajldfksjlkafdsjlkfdsljkadfsjlkdafsjlkdafsjlkadfsjlkadfsjlkbljkbjlfaskjlkqvjlksalajsfkljkfjlk";
+    private Jwt jwt;
 
-    public JwtAuthenticationFilter(AuthenticationManager authManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authManager, Jwt jwt) {
         super(authManager);
+        this.jwt = jwt;
     }
 
     @Override
@@ -47,26 +42,14 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token != null) {
-            final String user = Jwts.parser()
-                    .setSigningKey(parseSigningKey())
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
+            final String user = jwt.authenticate(token);
 
             if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, authorities());
+                return new UsernamePasswordAuthenticationToken(user, null, List.of());
             }
             return null;
         }
         return null;
     }
 
-    private Key parseSigningKey() {
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(tokenKey);
-        return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
-    }
-
-    private List<GrantedAuthority> authorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
-    }
 }

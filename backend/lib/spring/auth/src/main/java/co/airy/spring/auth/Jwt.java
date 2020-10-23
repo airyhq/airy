@@ -27,11 +27,9 @@ public class Jwt {
     private static final Logger log = AiryLoggerFactory.getLogger(Jwt.class);
 
     private final Key signingKey;
-    private static final String tokenKey = "sdfajlsdfjlkasdflkjklfadsljajkldsfljdfjklasdfjllfdjlskaldfsjfldjsaljfdksjlkfdssfdfdssfdfdsfsdfdssdffdsfdsdfssfdsdfdfsdgfsgffsggsfgsfasdfasfdasljadfsljkdfasjlkadfsjlkafdsljadfsjladfsljjlkdfsjlkadfsjlkafdsjlljdfkasjladfsajldfksjlkafdsjlkfdsljkadfsjlkdafsjlkdafsjlkadfsjlkadfsjlkbljkbjlfaskjlkqvjlksalajsfkljkfjlk";
-
     public static final String USER_ID_CLAIM = "user_id";
 
-    public Jwt() {
+    public Jwt(@Value("${auth.jwt-secret}") String tokenKey) {
         this.signingKey = parseSigningKey(tokenKey);
     }
 

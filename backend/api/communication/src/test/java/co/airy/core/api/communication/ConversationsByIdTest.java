@@ -9,6 +9,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -48,6 +49,9 @@ class ConversationsByIdTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private Jwt jwt;
 
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
@@ -103,15 +107,16 @@ class ConversationsByIdTest {
 
         testHelper.waitForCondition(
                 () -> mvc.perform(post("/conversations.by_id")
-                        .headers(buildHeaders())
+                        .headers(buildHeaders("user-id"))
                         .content("{\"conversation_id\":\"" + conversationId + "\"}"))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId))), "Conversations list is missing records"
         );
     }
 
-    private HttpHeaders buildHeaders() {
+    private HttpHeaders buildHeaders(final String userId) {
         HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
         return headers;
     }

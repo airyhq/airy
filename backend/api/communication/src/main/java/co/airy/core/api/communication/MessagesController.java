@@ -26,7 +26,6 @@ public class MessagesController {
         this.stores = stores;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/conversations.messages-list")
     ResponseEntity<MessageListResponsePayload> messageList(@RequestBody @Valid MessageListRequestPayload messageListRequestPayload) {
         final String conversationId = messageListRequestPayload.getConversationId().toString();

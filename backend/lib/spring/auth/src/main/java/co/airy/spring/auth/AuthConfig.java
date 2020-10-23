@@ -16,7 +16,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class AuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.cors().disable().csrf().disable().authorizeRequests().anyRequest().permitAll()
-                .and().addFilter(new JWTAuthorizationFilter(authenticationManager()));
+        http.cors().disable().csrf().disable()
+                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .authorizeRequests(authorize -> authorize
+                        .mvcMatchers("/health").permitAll()
+                        .anyRequest().authenticated()
+                );
     }
 }

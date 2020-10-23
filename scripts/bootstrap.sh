@@ -55,4 +55,4 @@ fi
 printf "Vagrant installed in "`which vagrant`"\n"	
 
 cd infrastructure
-vagrant up airy-core-custom
+vagrant up

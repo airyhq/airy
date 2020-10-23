@@ -8,6 +8,7 @@ wget -nv https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz
 tar -zxvf helm-v3.3.4-linux-amd64.tar.gz
 chmod +x linux-amd64/helm
 export PATH=$PATH:/usr/local/bin
+
 sudo mv linux-amd64/helm /usr/local/bin/helm
 
 helm install -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s
@@ -59,3 +60,5 @@ do
     echo "Waiting for istio to create all the VirtualService CRD..."
 done
 kubectl apply -f ../network/istio-services.yaml
+
+sudo yum clean all

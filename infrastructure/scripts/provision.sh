@@ -21,7 +21,7 @@ cd /vagrant/scripts/
 kubectl apply -f ../tools/kafka-client.yaml
 echo "Waiting a few minutes for airy-client, kafka and zookeeper to start in minikube"
 while ! `kubectl get pod --field-selector="metadata.name=kafka-client,status.phase=Running" 2>/dev/null| grep -q kafka-client`
-do 
+do
     sleep 10
     echo "Waiting for kafka-client to start..."
 done
@@ -50,12 +50,12 @@ kubectl apply -f ../deployments/sources-facebook-webhook.yaml
 
 echo "Deploying ingress routes"
 while ! `kubectl get crd 2>/dev/null| grep -q gateways.networking.istio.io`
-do 
+do
     sleep 5
     echo "Waiting for istio to create all the Gateway CRD..."
 done
 while ! `kubectl get crd 2>/dev/null| grep -q virtualservices.networking.istio.io`
-do 
+do
     sleep 5
     echo "Waiting for istio to create all the VirtualService CRD..."
 done

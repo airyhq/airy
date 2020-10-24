@@ -2,7 +2,6 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-
   config.vm.define "airy-core", primary: true, autostart: true do |airy_core|
     airy_core.vm.box = "airy"
     airy_core.vm.box_url = "https://s3.amazonaws.com/core-images.airy.co/vagrant/airy.box"
@@ -43,5 +42,4 @@ Vagrant.configure("2") do |config|
       status.run_remote = {inline: "/vagrant/scripts/status.sh"}
     end
   end
-  
 end

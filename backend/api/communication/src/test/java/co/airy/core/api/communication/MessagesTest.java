@@ -10,6 +10,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.payload.format.DateFormat;
+import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -53,6 +54,9 @@ public class MessagesTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private Jwt jwt;
+
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
@@ -86,6 +90,7 @@ public class MessagesTest {
     void messageListOk() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
         final String channelId = "channelId";
+        final String userId = "user-id";
 
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
@@ -105,7 +110,7 @@ public class MessagesTest {
 
         testHelper.waitForCondition(
                 () -> mvc.perform(post("/conversations.messages-list")
-                        .headers(buildHeaders())
+                        .headers(buildHeaders(userId))
                         .content(requestPayload))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(messageCount)))
@@ -119,8 +124,9 @@ public class MessagesTest {
         );
     }
 
-    private HttpHeaders buildHeaders() {
+    private HttpHeaders buildHeaders(String userId) {
         HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
         return headers;
     }

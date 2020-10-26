@@ -27,7 +27,7 @@ public class MessagesController {
         this.stores = stores;
     }
 
-    @PostMapping("/conversations.messages-list")
+    @PostMapping("/messages.list")
     ResponseEntity<MessageListResponsePayload> messageList(@RequestBody @Valid MessageListRequestPayload messageListRequestPayload) {
         final String conversationId = messageListRequestPayload.getConversationId().toString();
         final int pageSize = Optional.ofNullable(messageListRequestPayload.getPageSize()).orElse(20);

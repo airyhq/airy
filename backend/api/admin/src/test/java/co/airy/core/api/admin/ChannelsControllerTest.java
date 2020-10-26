@@ -101,15 +101,11 @@ public class ChannelsControllerTest {
         testDataInitialized = true;
 
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(),
-                connectedChannel.getId(),
-                connectedChannel
-        ));
+                connectedChannel.getId(), connectedChannel));
 
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
-
+                "Application is not healthy");
     }
 
     @Test
@@ -124,22 +120,19 @@ public class ChannelsControllerTest {
                                 .setName("channel-name-2")
                                 .setSource("facebook")
                                 .setSourceChannelId("ps-id-2")
-                                .build()
-                ))
+                                .build()))
         );
 
-        testHelper.waitForCondition(() -> mvc.perform(post("/channels.connected").
+        testHelper.waitForCondition(() -> mvc.perform(post("/channels.list").
                         headers(buildHeaders()))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data.length()", greaterThanOrEqualTo(1)))
                         .andExpect(jsonPath("$.data[*].id").value(not(contains(disconnectedChannel))))
-                ,
-                "/channels.connected did not return the right number of channels"
-        );
+                , "/channels.list did not return the right number of channels");
     }
 
     @Test
-    void availableChannels() throws Exception {
+    void exploreChannels() throws Exception {
         final String channelName = "channel-name";
 
         doReturn(List.of(
@@ -152,7 +145,7 @@ public class ChannelsControllerTest {
                         .build()
         )).when(facebookSource).getAvailableChannels(facebookToken);
 
-        testHelper.waitForCondition(() -> mvc.perform(post("/channels.available")
+        testHelper.waitForCondition(() -> mvc.perform(post("/channels.explore")
                         .headers(buildHeaders())
                         .content("{\"token\":\"" + facebookToken + "\",\"source\":\"facebook\"}"))
                         .andExpect(status().isOk())
@@ -160,9 +153,7 @@ public class ChannelsControllerTest {
                         .andExpect(jsonPath("$.data[0].name", equalTo(channelName)))
                         .andExpect(jsonPath("$.data[0].connected", equalTo(false)))
                         .andExpect(jsonPath("$.data[1].connected", equalTo(true)))
-                ,
-                "/channels.available did not return the mocked channels"
-        );
+                , "/channels.list did not return the mocked channels");
     }
 
 
@@ -185,9 +176,7 @@ public class ChannelsControllerTest {
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.name", equalTo(channelName)))
                         .andExpect(jsonPath("$.source_channel_id", equalTo(sourceChannelId)))
-                ,
-                "/channels.connect failed"
-        );
+                , "/channels.connect failed");
     }
 
     @Test
@@ -209,8 +198,7 @@ public class ChannelsControllerTest {
                         .headers(buildHeaders())
                         .content("{\"channel_id\":\"" + channelId + "\"}"))
                         .andExpect(status().isOk()),
-                "/channels.disconnect failed"
-        );
+                "/channels.disconnect failed");
 
         Mockito.verify(facebookSource).disconnectChannel(channel.getToken(), channel.getSourceChannelId());
     }

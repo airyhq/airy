@@ -81,8 +81,7 @@ class ConversationsTagTest {
     void init() throws Exception {
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+                "Application is not healthy");
     }
 
     @Test
@@ -108,7 +107,7 @@ class ConversationsTagTest {
         ));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.by_id")
+                () -> mvc.perform(post("/conversations.info")
                         .headers(buildHeaders(userId))
                         .content("{\"conversation_id\":\"" + conversationId + "\"}"))
                         .andExpect(status().isOk())
@@ -123,7 +122,7 @@ class ConversationsTagTest {
                 .andExpect(status().isAccepted());
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.by_id")
+                () -> mvc.perform(post("/conversations.info")
                         .headers(buildHeaders(userId))
                         .content("{\"conversation_id\":\"" + conversationId + "\"}"))
                         .andExpect(status().isOk())
@@ -138,7 +137,7 @@ class ConversationsTagTest {
                 .andExpect(status().isAccepted());
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.by_id")
+                () -> mvc.perform(post("/conversations.info")
                         .headers(buildHeaders(userId))
                         .content("{\"conversation_id\":\"" + conversationId + "\"}"))
                         .andExpect(status().isOk())

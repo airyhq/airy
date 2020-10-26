@@ -108,8 +108,7 @@ public class SendMessageControllerTest {
 
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+                "Application is not healthy");
 
         testDataInitialized = true;
     }
@@ -118,19 +117,17 @@ public class SendMessageControllerTest {
     void dispatchesCorrectly() throws Exception {
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+                "Application is not healthy");
 
         String facebookPayload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"message\": { \"text\": \"answer is 42\" }}";
         final String userId = "user-id";
 
         testHelper.waitForCondition(() ->
-                        mvc.perform(post("/conversations.send")
+                        mvc.perform(post("/messages.send")
                                 .headers(buildHeaders(userId))
                                 .content(facebookPayload))
                                 .andExpect(status().isOk()),
-                "Facebook Message was not sent"
-        );
+                "Facebook Message was not sent");
 
         List<ConsumerRecord<String, Message>> records = testHelper.consumeRecords(2, applicationCommunicationMessages.name());
         assertThat(records, hasSize(2));

@@ -17,6 +17,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +43,7 @@ public class SendMessageController {
     }
 
     @PostMapping("/messages.send")
-    public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException, JsonProcessingException {
+    public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload, Authentication auth) throws ExecutionException, InterruptedException, JsonProcessingException {
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
         final Conversation conversation = conversationsStore.get(payload.getConversationId());
 
@@ -63,7 +64,7 @@ public class SendMessageController {
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
                 .setSource(channel.getSource())
-                .setSenderId(channel.getId())
+                .setSenderId(auth.getPrincipal().toString())
                 .setSenderType(SenderType.APP_USER)
                 .setSentAt(Instant.now().toEpochMilli())
                 .build();

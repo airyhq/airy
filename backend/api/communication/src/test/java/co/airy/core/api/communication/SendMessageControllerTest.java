@@ -11,6 +11,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -70,6 +71,9 @@ public class SendMessageControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private Jwt jwt;
+
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
@@ -116,10 +120,11 @@ public class SendMessageControllerTest {
                 "Application is not healthy");
 
         String facebookPayload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"message\": { \"text\": \"answer is 42\" }}";
+        final String userId = "user-id";
 
         testHelper.waitForCondition(() ->
                         mvc.perform(post("/messages.send")
-                                .headers(buildHeaders())
+                                .headers(buildHeaders(userId))
                                 .content(facebookPayload))
                                 .andExpect(status().isOk()),
                 "Facebook Message was not sent");
@@ -133,11 +138,13 @@ public class SendMessageControllerTest {
                 .findFirst()
                 .orElse(null);
         assertThat(message.getContent(), is("{\"text\":\"answer is 42\"}"));
+        assertThat(message.getSenderId(), is(userId));
     }
 
-    private HttpHeaders buildHeaders() {
+    private HttpHeaders buildHeaders(String userId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
+        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
         return headers;
     }
 }

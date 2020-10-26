@@ -2,6 +2,7 @@ app_deps = [
     "//:lombok",
     "//:jdbi",
     "//backend/lib/payload",
+    "//backend/lib/spring/auth:spring-auth",
     "//backend/lib/spring/web:spring-web",
     "//backend/lib/pagination",
     "@maven//:org_bouncycastle_bcpkix_jdk15on",

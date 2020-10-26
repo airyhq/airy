@@ -9,6 +9,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -49,6 +50,9 @@ class UnreadCountTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private Jwt jwt;
+
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
@@ -80,6 +84,7 @@ class UnreadCountTest {
 
     @Test
     void shouldResetTheUnreadCount() throws Exception {
+        final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId("channel-id")
@@ -106,7 +111,7 @@ class UnreadCountTest {
 
         testHelper.waitForCondition(
                 () -> mvc.perform(post("/conversations.info")
-                        .headers(buildHeaders())
+                        .headers(buildHeaders(userId))
                         .content(conversationByIdRequest))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.unread_message_count", equalTo(unreadMessages))),
@@ -114,21 +119,22 @@ class UnreadCountTest {
         );
 
         mvc.perform(post("/conversations.read")
-                .headers(buildHeaders())
+                .headers(buildHeaders(userId))
                 .content(conversationByIdRequest))
                 .andExpect(status().isAccepted());
 
         testHelper.waitForCondition(
                 () -> mvc.perform(post("/conversations.info")
-                        .headers(buildHeaders())
+                        .headers(buildHeaders(userId))
                         .content(conversationByIdRequest))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.unread_message_count", equalTo(0))),
                 "Conversation unread count did not reset");
     }
 
-    private HttpHeaders buildHeaders() {
+    private HttpHeaders buildHeaders(final String userId) {
         HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
         return headers;
     }

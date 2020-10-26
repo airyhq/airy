@@ -12,6 +12,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.payload.response.ChannelPayload;
+import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -97,6 +98,9 @@ public class WebSocketControllerTest {
     @Autowired
     private Stores store;
 
+    @Autowired
+    private Jwt jwt;
+
     @BeforeAll
     static void beforeAll() throws Exception {
         testHelper = new TestHelper(sharedKafkaTestResource,
@@ -129,9 +133,9 @@ public class WebSocketControllerTest {
 
     @Test
     void sendsToWebsocket() throws Exception {
-        final CompletableFuture<MessageUpsertPayload> messageFuture = subscribe(port, MessageUpsertPayload.class, QUEUE_MESSAGE);
-        final CompletableFuture<ChannelPayload> channelFuture = subscribe(port, ChannelPayload.class, QUEUE_CHANNEL_CONNECTED);
-        final CompletableFuture<UnreadCountPayload> unreadFuture = subscribe(port, UnreadCountPayload.class, QUEUE_UNREAD_COUNT);
+        final CompletableFuture<MessageUpsertPayload> messageFuture = subscribe(port, MessageUpsertPayload.class, QUEUE_MESSAGE, jwt);
+        final CompletableFuture<ChannelPayload> channelFuture = subscribe(port, ChannelPayload.class, QUEUE_CHANNEL_CONNECTED, jwt);
+        final CompletableFuture<UnreadCountPayload> unreadFuture = subscribe(port, UnreadCountPayload.class, QUEUE_UNREAD_COUNT, jwt);
 
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
         testHelper.produceRecords(getConversationRecords(conversations));
@@ -154,7 +158,7 @@ public class WebSocketControllerTest {
 
     }
 
-    private static StompSession connectToWs(int port) throws ExecutionException, InterruptedException {
+    private static StompSession connectToWs(int port, Jwt jwt) throws ExecutionException, InterruptedException {
         final WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
         MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
         ObjectMapper objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
@@ -163,13 +167,14 @@ public class WebSocketControllerTest {
 
         StompHeaders connectHeaders = new StompHeaders();
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
+        connectHeaders.add(WebSocketHttpHeaders.AUTHORIZATION, jwt.tokenFor("userId"));
 
         return stompClient.connect("ws://localhost:" + port + "/ws.communication", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
         }).get();
     }
 
-    public static <T> CompletableFuture<T> subscribe(int port, Class<T> payloadType, String topic) throws ExecutionException, InterruptedException {
-        final StompSession stompSession = connectToWs(port);
+    public static <T> CompletableFuture<T> subscribe(int port, Class<T> payloadType, String topic, Jwt jwt) throws ExecutionException, InterruptedException {
+        final StompSession stompSession = connectToWs(port, jwt);
 
         final CompletableFuture<T> completableFuture = new CompletableFuture<>();
 

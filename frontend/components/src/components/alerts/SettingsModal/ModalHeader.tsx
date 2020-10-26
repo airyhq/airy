@@ -1,6 +1,4 @@
 import React from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
-
 import styles from "./ModalHeader.module.scss";
 import { ReactComponent as CloseIcon } from "../../../assets/images/icons/close.svg";
 
@@ -10,18 +8,17 @@ type ModalHeaderProps = {
 };
 
 const ModalHeader = ({
-  t,
   title,
-  close
-}: ModalHeaderProps & WithTranslation) => {
+  close,
+}: ModalHeaderProps) => {
   return (
     <div className={styles.modalHeader}>
       <button className={styles.closeButton} onClick={close}>
-        <CloseIcon className={styles.closeIcon} title={t("common.close")} />
+        <CloseIcon className={styles.closeIcon} title="Close" />
       </button>
       <div className={styles.headline}>{title}</div>
     </div>
   );
 };
 
-export default withTranslation()(ModalHeader);
+export default (ModalHeader);

@@ -1,16 +1,4 @@
-This document describes the Airy public API
-
-- [Introduction](#introduction)
-- [Webhook](#webhook)
-
-## Introduction
-
-Our HTTP endpoints adhere to the following conventions:
-
-- Endpoints only accept `POST` JSON requests.
-- All URLs are in the form `/METHOD_FAMILY.method`. (e.g., `/conversations.list`, `/messages.send`)
-
-## Webhook
+# Webhook Integration
 
 After subscribing to an Airy webhook. You will start receiving events on your URL of choice.
 The event will *always* be a POST request with the following structure:

@@ -2,10 +2,12 @@
 set -eo pipefail
 IFS=$'\n\t'
 
+declare -A config
+
 config=( # set default values in config array
-    [FB_APP_ID]="default"
-    [FB_APP_SECRET]="default"
-    [FB_WEBHOOK_SECRET]="default"
+    ["FB_APP_ID"]="default"
+    ["FB_APP_SECRET"]="default"
+    ["FB_WEBHOOK_SECRET"]="default"
 )
 
 cd /vagrant/scripts
@@ -15,7 +17,7 @@ do
     if echo $line | grep -F = &>/dev/null
     then
         varname=$(echo "$line" | cut -d '=' -f 1)
-        config[$varname]=$(echo "$line" | cut -d '=' -f 2-)
+        config[$varname]=$(echo "$line" | cut -d '=' -f 2)
     fi
 done < ../airy.conf
 

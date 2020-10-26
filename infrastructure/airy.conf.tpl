@@ -1,3 +1,8 @@
 FB_APP_ID=changeme
 FB_APP_SECRET=changeme
 FB_WEBHOOK_SECRET=changeme
+MAIL_URL=changeme
+MAIL_PORT=changeme
+MAIL_USERNAME=changeme
+MAIL_PASSWORD=changeme
+MAIL_FROM=changeme

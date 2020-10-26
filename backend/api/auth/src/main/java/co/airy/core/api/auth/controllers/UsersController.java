@@ -17,7 +17,7 @@ import co.airy.core.api.auth.services.Mail;
 import co.airy.core.api.auth.services.Password;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestError;
-import co.airy.spring.web.Jwt;
+import co.airy.spring.auth.Jwt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

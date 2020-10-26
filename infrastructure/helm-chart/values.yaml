@@ -1,0 +1,56 @@
+## ------------------------------------------------------
+## Zookeeper
+## ------------------------------------------------------
+cp-zookeeper:
+  enabled: true
+  servers: 2
+  image: confluentinc/cp-zookeeper
+  imageTag: 5.5.0
+  heapOptions: "-Xms512M -Xmx512M"
+  persistence:
+    enabled: true
+    dataDirSize: 10Gi
+    dataLogDirSize: 10Gi
+  resources: {}
+            
+## ------------------------------------------------------
+## Kafka
+## ------------------------------------------------------
+cp-kafka:
+  enabled: true
+  brokers: 2
+  image: confluentinc/cp-kafka
+  imageTag: 5.5.0
+  heapOptions: "-Xms512M -Xmx512M"
+  persistence:
+    enabled: true
+    # storageClass: ""
+    size: 5Gi
+    disksPerBroker: 1
+  resources: {}
+            
+## ------------------------------------------------------
+## Schema Registry
+## ------------------------------------------------------
+cp-schema-registry:
+  enabled: true
+  image: confluentinc/cp-schema-registry
+  imageTag: 5.5.0
+  heapOptions: "-Xms512M -Xmx512M"
+  resources: {}
+            
+## ------------------------------------------------------
+## Postgres
+## ------------------------------------------------------
+postgres:
+  enabled: true
+  image: postgres
+  imageTag: 12.4
+  resources: {}
+            
+redis:
+  enabled: true
+  image: redis
+  imageTag: 5.0.1-alpine
+  resources: {}
+            

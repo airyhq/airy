@@ -2,18 +2,21 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-
   config.vm.define "airy-core", primary: true, autostart: true do |airy_core|
-    airy_core.vm.box = "https://s3.amazonaws.com/core-images.airy.co/vagrant/airy.box"
+    airy_core.vm.box = "airy"
+    airy_core.vm.box_url = "https://s3.amazonaws.com/core-images.airy.co/vagrant/airy.box"
     airy_core.vm.network "private_network", ip: "192.168.50.4"
-    airy_core.vm.provision "user-data", type: "shell" do |s|
-       s.inline = "/vagrant/scripts/user-input.sh"
+    airy_core.vm.provision "user-data", type: "shell" do |u|
+      u.inline = "/vagrant/scripts/user-input.sh"
     end
     airy_core.vm.provider "virtualbox" do |vbox|
       vbox.cpus = 3
       vbox.memory = 6144
+      vbox.customize [
+        "modifyvm", :id, "--audio", "none"
+      ]
     end
-    airy_core.trigger.after :up do |status|
+    airy_core.trigger.after [:up, :reload] do |status|
       status.name = "status"
       status.run_remote = {inline: "/vagrant/scripts/status.sh"}
     end
@@ -23,18 +26,22 @@ Vagrant.configure("2") do |config|
     airy_core_custom.vm.box = "mrvantage/centos7-minikube"
     airy_core_custom.vm.box_version = "1.1.1-20200929"
     airy_core_custom.vm.network "private_network", ip: "192.168.50.5"
-    airy_core_custom.vm.provision :shell, path: "scripts/provision.sh"
-    airy_core_custom.vm.provision "user-data", type: "shell" do |s|
-       s.inline = "/vagrant/scripts/user-input.sh"
+    airy_core_custom.vm.provision "core", type: "shell" do |c|
+      c.inline = "/vagrant/scripts/provision.sh"
+    end
+    airy_core_custom.vm.provision "user-data", type: "shell" do |u|
+      u.inline = "/vagrant/scripts/user-input.sh"
     end
     airy_core_custom.vm.provider "virtualbox" do |vbox|
       vbox.cpus = 3
       vbox.memory = 6144
+      vbox.customize [
+        "modifyvm", :id, "--audio", "none"
+      ]
     end
     airy_core_custom.trigger.after [:up, :reload] do |status|
       status.name = "status"
       status.run_remote = {inline: "/vagrant/scripts/status.sh"}
     end
   end
-  
 end

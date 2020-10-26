@@ -8,11 +8,10 @@ wget -nv https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz
 tar -zxvf helm-v3.3.4-linux-amd64.tar.gz
 chmod +x linux-amd64/helm
 export PATH=$PATH:/usr/local/bin
-sudo mv linux-amd64/helm /usr/local/bin/helm
-helm repo add airyhq https://airyhq.github.io/cp-helm-charts/
-helm repo update
 
-helm install airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s || helm upgrade airy airyhq/cp-helm-charts --version 0.5.0 --timeout 1000s
+sudo mv linux-amd64/helm /usr/local/bin/helm
+
+helm install -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
@@ -22,10 +21,11 @@ cd /vagrant/scripts/
 kubectl apply -f ../tools/kafka-client.yaml
 echo "Waiting a few minutes for airy-client, kafka and zookeeper to start in minikube"
 while ! `kubectl get pod --field-selector="metadata.name=kafka-client,status.phase=Running" 2>/dev/null| grep -q kafka-client`
-do 
+do
     sleep 10
     echo "Waiting for kafka-client to start..."
 done
+
 
 echo "Creating kafka topics and required databases"
 kubectl cp topics.sh kafka-client:/tmp
@@ -42,21 +42,20 @@ kubectl label namespace default istio-injection=enabled --overwrite
 
 echo "Deploying airy-core apps"
 kubectl apply -f ../deployments/api-auth.yaml
-kubectl apply -f ../deployments/api-admin.yaml
 kubectl apply -f ../deployments/api-communication.yaml
-kubectl apply -f ../deployments/sources-facebook-events-router.yaml
 kubectl apply -f ../deployments/sources-facebook-sender.yaml
-kubectl apply -f ../deployments/sources-facebook-webhook.yaml
 
 echo "Deploying ingress routes"
 while ! `kubectl get crd 2>/dev/null| grep -q gateways.networking.istio.io`
-do 
+do
     sleep 5
     echo "Waiting for istio to create all the Gateway CRD..."
 done
 while ! `kubectl get crd 2>/dev/null| grep -q virtualservices.networking.istio.io`
-do 
+do
     sleep 5
     echo "Waiting for istio to create all the VirtualService CRD..."
 done
 kubectl apply -f ../network/istio-services.yaml
+
+sudo yum clean all

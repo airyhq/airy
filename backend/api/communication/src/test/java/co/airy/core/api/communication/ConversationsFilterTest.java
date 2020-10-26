@@ -9,6 +9,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -53,6 +54,9 @@ class ConversationsFilterTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private Jwt jwt;
+
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
@@ -96,6 +100,7 @@ class ConversationsFilterTest {
             .build();
 
     private final String conversationIdToFind = UUID.randomUUID().toString();
+    private final String userId = "user-id";
 
     private final List<CreateConversation> conversations = List.of(
             CreateConversation.builder()
@@ -149,7 +154,7 @@ class ConversationsFilterTest {
     void returnAll() throws Exception {
         testHelper.waitForCondition(
                 () -> mvc.perform(post("/conversations.list")
-                        .headers(buildHeaders())
+                        .headers(buildHeaders(userId))
                         .content("{}}"))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
@@ -183,7 +188,7 @@ class ConversationsFilterTest {
     private void checkNoConversationReturned(String payload) throws Exception {
         testHelper.waitForCondition(
                 () -> mvc.perform(post("/conversations.list")
-                        .headers(buildHeaders())
+                        .headers(buildHeaders(userId))
                         .content(payload))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(0))),
@@ -194,7 +199,7 @@ class ConversationsFilterTest {
     private void checkOneConversationExists(String payload) throws InterruptedException {
         testHelper.waitForCondition(
                 () -> mvc.perform(post("/conversations.list")
-                        .headers(buildHeaders())
+                        .headers(buildHeaders(userId))
                         .content(payload))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))
@@ -204,8 +209,9 @@ class ConversationsFilterTest {
     }
 
 
-    private HttpHeaders buildHeaders() {
+    private HttpHeaders buildHeaders(final String userId) {
         HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
         return headers;
     }

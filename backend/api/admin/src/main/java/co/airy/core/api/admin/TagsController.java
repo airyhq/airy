@@ -55,7 +55,7 @@ public class TagsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        return ResponseEntity.status(201).body(CreateTagResponsePayload.builder().id(tag.getId().toString()).build());
+        return ResponseEntity.status(201).body(CreateTagResponsePayload.builder().id(tag.getId()).build());
     }
 
     @PostMapping("/tags.list")

@@ -83,8 +83,8 @@ public class ConversationsController {
     }
 
 
-    @PostMapping("/conversations.by_id")
-    ResponseEntity<?> conversationById(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
+    @PostMapping("/conversations.info")
+    ResponseEntity<?> conversationInfo(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
 
         final Conversation conversation = store.get(requestPayload.getConversationId().toString());
@@ -107,7 +107,7 @@ public class ConversationsController {
         return conversations;
     }
 
-    @PostMapping("/conversations.mark-read")
+    @PostMapping("/conversations.read")
     ResponseEntity<?> conversationMarkRead(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
 

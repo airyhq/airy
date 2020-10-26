@@ -11,26 +11,37 @@
             "provider": "virtualbox",
             "add_force": true,
             "type": "vagrant",
-            "template": "./Vagrantfile.packer.tpl",
+            "template": "./vagrantfile.packer.tpl",
             "output_dir": ".vagrant-out"
         }
     ],
     "provisioners": [
-        {
-            "scripts": [
-              "../scripts/provision.sh"
-            ],
-            "type": "shell"
-          }
-  
-      ],
+      {
+        "scripts": [
+          "tasks/pull-images.sh"
+        ],
+        "type": "shell"
+      },
+      {
+        "scripts": [
+          "../scripts/provision.sh"
+        ],
+        "type": "shell"
+      },
+      {
+        "scripts": [
+          "../scripts/user-input.sh"
+        ],
+        "type": "shell"
+      }
+    ],
     "post-processors": [
         {
-            "type": "shell-local",
-            "inline": [
-                "aws s3 cp ./.vagrant-out/package.box s3://core-images.airy.co/vagrant/airy.box",
-                "aws s3api put-object-acl --bucket core-images.airy.co --key vagrant/airy.box --acl public-read"
-            ]
+          "type": "shell-local",
+          "inline": [
+            "aws s3 cp ./.vagrant-out/package.box s3://core-images.airy.co/vagrant/airy.box",
+            "aws s3api put-object-acl --bucket core-images.airy.co --key vagrant/airy.box --acl public-read"
+          ]
         }
     ]
   } 

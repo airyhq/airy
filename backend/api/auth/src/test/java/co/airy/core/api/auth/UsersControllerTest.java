@@ -5,8 +5,8 @@ import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dao.UserDAO;
 import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Mail;
+import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
-import co.airy.spring.web.Jwt;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
@@ -146,8 +146,10 @@ public class UsersControllerTest {
 
     @Test
     void createsInvitation() throws Exception {
+        final String userId = "user-id";
         final String rawResponse = mvc.perform(post("/users.invite")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
+                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId))
                 .content("{\"email\": \"katherine.johnson@nasa.gov\"}"))
                 .andExpect(status().isCreated())
                 .andReturn()
@@ -163,8 +165,10 @@ public class UsersControllerTest {
     @Test
     void acceptsInvitation() throws Exception {
         final String email = "katherine.johnson@nasa.gov";
+        final String userId = "user-id";
         final String rawResponse = mvc.perform(post("/users.invite")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
+                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId))
                 .content("{\"email\": \"katherine.johnson@nasa.gov\"}"))
                 .andExpect(status().isCreated())
                 .andReturn()
@@ -177,6 +181,7 @@ public class UsersControllerTest {
 
         final String responseString = mvc.perform(post("/users.accept-invitation")
                 .content(requestContent)
+                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
                 .andExpect(status().isOk())
                 .andReturn()

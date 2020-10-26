@@ -66,14 +66,13 @@ public class WebhooksControllerTest {
     void beforeEach() throws Exception {
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+                "Application is not healthy");
     }
 
 
     @Test
     public void createAndUnsubscribeWebhook() throws Exception {
-        mvc.perform(post("/webhooks.get")
+        mvc.perform(post("/webhooks.info")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
                 .andExpect(status().isNotFound());
 
@@ -90,7 +89,7 @@ public class WebhooksControllerTest {
                 .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
                 .andExpect(jsonPath("$.api_secret", is(not(nullValue()))));
 
-        testHelper.waitForCondition(() -> mvc.perform(post("/webhooks.get")
+        testHelper.waitForCondition(() -> mvc.perform(post("/webhooks.info")
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.url", equalTo(url)))

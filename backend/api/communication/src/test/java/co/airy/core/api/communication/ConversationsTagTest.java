@@ -9,6 +9,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -51,6 +52,9 @@ class ConversationsTagTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private Jwt jwt;
+
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
@@ -77,12 +81,12 @@ class ConversationsTagTest {
     void init() throws Exception {
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+                "Application is not healthy");
     }
 
     @Test
     void tagsAndUntagsConversation() throws Exception {
+        final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId("channel-id")
@@ -103,8 +107,8 @@ class ConversationsTagTest {
         ));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.by_id")
-                        .headers(buildHeaders())
+                () -> mvc.perform(post("/conversations.info")
+                        .headers(buildHeaders(userId))
                         .content("{\"conversation_id\":\"" + conversationId + "\"}"))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId))), "Conversation was not created"
@@ -113,13 +117,13 @@ class ConversationsTagTest {
         final String tagId = UUID.randomUUID().toString();
 
         mvc.perform(post("/conversations.tag")
-                .headers(buildHeaders())
+                .headers(buildHeaders(userId))
                 .content("{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}"))
                 .andExpect(status().isAccepted());
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.by_id")
-                        .headers(buildHeaders())
+                () -> mvc.perform(post("/conversations.info")
+                        .headers(buildHeaders(userId))
                         .content("{\"conversation_id\":\"" + conversationId + "\"}"))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
@@ -128,13 +132,13 @@ class ConversationsTagTest {
         );
 
         mvc.perform(post("/conversations.untag")
-                .headers(buildHeaders())
+                .headers(buildHeaders(userId))
                 .content("{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}"))
                 .andExpect(status().isAccepted());
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.by_id")
-                        .headers(buildHeaders())
+                () -> mvc.perform(post("/conversations.info")
+                        .headers(buildHeaders(userId))
                         .content("{\"conversation_id\":\"" + conversationId + "\"}"))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
@@ -142,8 +146,9 @@ class ConversationsTagTest {
                 "Conversation was not untagged");
     }
 
-    private HttpHeaders buildHeaders() {
+    private HttpHeaders buildHeaders(final String userId) {
         HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
         return headers;
     }

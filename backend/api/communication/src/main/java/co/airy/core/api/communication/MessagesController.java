@@ -7,6 +7,8 @@ import co.airy.core.api.communication.payload.MessageResponsePayload;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +27,7 @@ public class MessagesController {
         this.stores = stores;
     }
 
-    @PostMapping("/conversations.messages-list")
+    @PostMapping("/messages.list")
     ResponseEntity<MessageListResponsePayload> messageList(@RequestBody @Valid MessageListRequestPayload messageListRequestPayload) {
         final String conversationId = messageListRequestPayload.getConversationId().toString();
         final int pageSize = Optional.ofNullable(messageListRequestPayload.getPageSize()).orElse(20);

@@ -4,9 +4,7 @@ java_library(
     name = "spring-auth",
     srcs = glob(["src/main/java/co/airy/spring/auth/**/*.java"]),
     visibility = ["//visibility:public"],
-    exports = [
-        "//backend/lib/log",
-    ],
+    exports = [],
     deps = [
         "//:jackson",
         "//:jwt",

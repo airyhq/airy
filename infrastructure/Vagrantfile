@@ -6,6 +6,9 @@ Vagrant.configure("2") do |config|
     airy_core.vm.box = "airy"
     airy_core.vm.box_url = "https://s3.amazonaws.com/core-images.airy.co/vagrant/airy.box"
     airy_core.vm.network "private_network", ip: "192.168.50.4"
+    airy_core.vm.provision "scale-apps", type: "shell" do |s|
+      s.inline = "kubectl scale --replicas=1 deployment -l boxImage=\"no\""
+    end
     airy_core.vm.provision "user-data", type: "shell" do |u|
       u.inline = "/vagrant/scripts/user-input.sh"
     end

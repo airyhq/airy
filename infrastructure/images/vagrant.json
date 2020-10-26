@@ -33,6 +33,12 @@
           "../scripts/user-input.sh"
         ],
         "type": "shell"
+      },
+      {
+        "scripts": [
+          "tasks/scale-images.sh"
+        ],
+        "type": "shell"
       }
     ],
     "post-processors": [

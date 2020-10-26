@@ -10,6 +10,7 @@ spec:
   selector:
     matchLabels:
       app: sources-facebook-webhook
+      boxImage: "no"
   strategy:
     rollingUpdate:
       maxSurge: 1

@@ -5,6 +5,7 @@ metadata:
   namespace: default
   labels:
     app: sources-facebook-sender
+    boxImage: "no"
 spec:
   replicas: 1
   selector:

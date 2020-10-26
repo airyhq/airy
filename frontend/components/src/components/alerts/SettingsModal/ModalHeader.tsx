@@ -7,10 +7,7 @@ type ModalHeaderProps = {
   close: (event: any) => void;
 };
 
-const ModalHeader = ({
-  title,
-  close,
-}: ModalHeaderProps) => {
+const ModalHeader = ({ title, close }: ModalHeaderProps) => {
   return (
     <div className={styles.modalHeader}>
       <button className={styles.closeButton} onClick={close}>
@@ -21,4 +18,4 @@ const ModalHeader = ({
   );
 };
 
-export default (ModalHeader);
+export default ModalHeader;

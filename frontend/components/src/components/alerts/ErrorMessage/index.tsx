@@ -8,7 +8,7 @@ type ErrorMessageProps = {
   text?: string;
 };
 
-const ErrorMessageComponent = ({text}: ErrorMessageProps) => {
+const ErrorMessageComponent = ({ text }: ErrorMessageProps) => {
   return (
     <>
       <div className={styles.headerError}>
@@ -23,4 +23,4 @@ const ErrorMessageComponent = ({text}: ErrorMessageProps) => {
   );
 };
 
-export const ErrorMessage = (ErrorMessageComponent);
+export const ErrorMessage = ErrorMessageComponent;

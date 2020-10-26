@@ -258,7 +258,9 @@ const App = () => {
             fontClass="font-s"
             height={32}
             value={urlInput}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUrlInput(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUrlInput(e.target.value)
+            }
           />
         </div>
       </div>

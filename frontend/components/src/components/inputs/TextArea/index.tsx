@@ -71,4 +71,4 @@ interface IProps {
   maxRows: number;
 }
 
-export const TextArea = (TextAreaComponent);
+export const TextArea = TextAreaComponent;

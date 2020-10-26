@@ -289,7 +289,7 @@ class InputComponent extends Component<InputProps, IState> {
       autoComplete,
       disabled,
       onKeyDown,
-      pattern,      
+      pattern,
       showCounter,
       onFocus
     } = this.props;
@@ -492,4 +492,4 @@ interface IState {
   isShowingEmojiDrawer: boolean;
 }
 
-export const Input = (InputComponent);
+export const Input = InputComponent;

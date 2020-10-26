@@ -1,4 +1,4 @@
-package co.airy.spring.web;
+package co.airy.spring.auth;
 
 import co.airy.log.AiryLoggerFactory;
 import io.jsonwebtoken.Claims;
@@ -27,7 +27,6 @@ public class Jwt {
     private static final Logger log = AiryLoggerFactory.getLogger(Jwt.class);
 
     private final Key signingKey;
-
     public static final String USER_ID_CLAIM = "user_id";
 
     public Jwt(@Value("${auth.jwt-secret}") String tokenKey) {

@@ -21,7 +21,7 @@ do
     fi
 done < ../airy.conf
 
-mkdir ~/airy-core
+mkdir -p ~/airy-core
 cp ../deployments/sources-facebook-events-router.yaml ~/airy-core/
 cp ../deployments/api-admin.yaml ~/airy-core/
 cp ../deployments/sources-facebook-webhook.yaml ~/airy-core/

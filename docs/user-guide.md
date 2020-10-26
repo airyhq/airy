@@ -56,8 +56,14 @@ $ vagrant up
 ### Connect the Facebook source
 
 To integrate the Facebook source, you must provide your Facebook credentials. If
-you want to put in your facebook credentials, you must edit the
-`infrastructure/airy.conf` config file and then run the following command:
+you want to put in your facebook credentials, you must create a configuration file
+`airy.conf` located in the `infrastructure` directory:
+```sh
+cd infrastructure
+cp airy.conf.tpl airy.conf
+```
+You need to put your credentials in the `infrastructure/airy.conf` config file and
+then run the following command:
 
 ```sh
 $ vagrant provision --provision-with user-data

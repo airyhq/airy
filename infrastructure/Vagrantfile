@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
     airy_core_custom.vm.box_version = "1.1.1-20200929"
     airy_core_custom.vm.network "private_network", ip: "192.168.50.5"
     airy_core_custom.vm.provision "core", type: "shell" do |c|
-      c.inline = "scripts/provision.sh"
+      c.inline = "/vagrant/scripts/provision.sh"
     end
     airy_core_custom.vm.provision "user-data", type: "shell" do |u|
       u.inline = "/vagrant/scripts/user-input.sh"

@@ -33,3 +33,6 @@ package-lock.json
 
 infrastructure/.vagrant
 infrastructure/.vagrant-out
+infrastructure/images/.vagrant
+infrastructure/images/.vagrant-out
+infrastructure/airy.conf

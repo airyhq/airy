@@ -79,7 +79,7 @@ $ cd core
 $ ./scripts/bootstrap.sh
 ```
 
-The Airy Core Platform requires [Vagrant](https://www.vagrantup.com/downloads) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not found, the script will attempt to install them for you.
+The bootstrap installation requires [Vagrant](https://www.vagrantup.com/downloads) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not found, the script will attempt to install them for you.
 Check out our [user guide](/docs/user-guide.md) for detailed information.
 
 ## Design principles of the Airy Core Platform

@@ -1,0 +1,5 @@
+.vagrant/
+.vagrant-out/
+images/.vagrant/
+images/.vagrant-out/
+airy.conf

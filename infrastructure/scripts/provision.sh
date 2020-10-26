@@ -42,11 +42,8 @@ kubectl label namespace default istio-injection=enabled --overwrite
 
 echo "Deploying airy-core apps"
 kubectl apply -f ../deployments/api-auth.yaml
-kubectl apply -f ../deployments/api-admin.yaml
 kubectl apply -f ../deployments/api-communication.yaml
-kubectl apply -f ../deployments/sources-facebook-events-router.yaml
 kubectl apply -f ../deployments/sources-facebook-sender.yaml
-kubectl apply -f ../deployments/sources-facebook-webhook.yaml
 
 echo "Deploying ingress routes"
 while ! `kubectl get crd 2>/dev/null| grep -q gateways.networking.istio.io`

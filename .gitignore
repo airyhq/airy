@@ -1,35 +1,24 @@
-.terraform
-*.tfstate
-*.tfstate.backup
-*.tfvars
-*.tfstate.*.backup
-.iml
-*.bak
-
-
 # Editors and IDE's
 .idea/
 .code/
 .vscode/
 .ijwb/
 
+# Bazel
 !.ijwb/.bazelproject
+dist/
+bazel-*
 
 # Emacs backup files
 .\#*
 
-dist/
-bazel-*
-
 # Generated file for live markdown preview
 docs/api.html
-
-.DS_Store
 
 # Node packages
 node_modules/
 yarn-error.log
 package-lock.json
 
-infrastructure/.vagrant
-infrastructure/.vagrant-out
+# Misc
+.DS_Store

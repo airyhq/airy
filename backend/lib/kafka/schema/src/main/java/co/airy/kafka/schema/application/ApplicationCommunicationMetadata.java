@@ -2,6 +2,8 @@ package co.airy.kafka.schema.application;
 
 import co.airy.kafka.schema.ApplicationCommunication;
 
+import java.util.Map;
+
 public class ApplicationCommunicationMetadata extends ApplicationCommunication {
 
     @Override

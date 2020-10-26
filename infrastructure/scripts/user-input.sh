@@ -12,14 +12,16 @@ config=(
 
 cd /vagrant/scripts
 
-while read line
-do
-    if echo $line | grep -F = &>/dev/null
-    then
-        varname=$(echo "$line" | cut -d '=' -f 1)
-        config[$varname]=$(echo "$line" | cut -d '=' -f 2)
-    fi
-done < ../airy.conf
+if test -f "../airy.conf"; then
+    while read line
+    do
+        if echo $line | grep -F = &>/dev/null
+        then
+            varname=$(echo "$line" | cut -d '=' -f 1)
+            config[$varname]=$(echo "$line" | cut -d '=' -f 2)
+        fi
+    done < ../airy.conf
+fi
 
 mkdir -p ~/airy-core
 cp ../deployments/sources-facebook-events-router.yaml ~/airy-core/

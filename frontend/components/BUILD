@@ -11,7 +11,6 @@ lib_deps = [
     "@npm//moment",
     "@npm//react",
     "@npm//react-autosize-textarea",
-    "@npm//react-i18next",
     "@npm//react-modal",
     "@npm//react-router-dom",
 ]
@@ -45,7 +44,6 @@ web_library(
         "emoji-mart": "emoji-mart",
         "moment": "moment",
         "react-autosize-textarea": "react-autosize-textarea",
-        "react-i18next": "react-i18next",
         "react-modal": "react-modal",
     },
     output = {

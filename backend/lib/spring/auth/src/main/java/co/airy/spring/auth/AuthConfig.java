@@ -26,6 +26,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
                 .authorizeRequests(authorize -> authorize
                         .mvcMatchers("/health").permitAll()
+                        .antMatchers("/ws.communication").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement()

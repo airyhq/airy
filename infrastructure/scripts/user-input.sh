@@ -3,9 +3,9 @@ set -eo pipefail
 IFS=$'\n\t'
 
 config=( # set default values in config array
-    [FB_APP_ID]="default"
-    [FB_APP_SECRET]="default"
-    [FB_WEBHOOK_SECRET]="default"
+    ["FB_APP_ID"]="default"
+    ["FB_APP_SECRET"]="default"
+    ["FB_WEBHOOK_SECRET"]="default"
 )
 
 cd /vagrant/scripts

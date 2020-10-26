@@ -104,7 +104,7 @@ public class MessagesTest {
         String requestPayload = "{\"conversation_id\":\"" + conversationId + "\"}";
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.messages-list")
+                () -> mvc.perform(post("/messages.list")
                         .headers(buildHeaders())
                         .content(requestPayload))
                         .andExpect(status().isOk())
@@ -114,9 +114,7 @@ public class MessagesTest {
                                         .map((record) -> ((Message) record.value()).getSentAt())
                                         .map(DateFormat::ISO_FROM_MILLIS)
                                         .sorted().toArray())))
-                ,
-                "/conversations.messages-list endpoint error"
-        );
+                , "/messages.list endpoint error");
     }
 
     private HttpHeaders buildHeaders() {

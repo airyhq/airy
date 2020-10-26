@@ -41,7 +41,7 @@ public class ChannelsController {
         this.stores = stores;
     }
 
-    @PostMapping("/channels.connected")
+    @PostMapping("/channels.list")
     ResponseEntity<ChannelsResponsePayload> connectedChannels() {
         final Map<String, Channel> channelsMap = stores.getChannelsMap();
 
@@ -56,14 +56,14 @@ public class ChannelsController {
         );
     }
 
-    @PostMapping("/channels.available")
-    ResponseEntity<?> availableChannels(@RequestBody @Valid AvailableChannelsRequestPayload requestPayload) {
+    @PostMapping("/channels.explore")
+    ResponseEntity<?> listChannels(@RequestBody @Valid AvailableChannelsRequestPayload requestPayload) {
         final String sourceIdentifier = requestPayload.getSource();
 
         final Source source = sourceMap.get(sourceIdentifier);
 
         if (source == null) {
-            return ResponseEntity.badRequest().body(new RequestError(String.format("source %s not implemented", source)));
+            return ResponseEntity.badRequest().body(new RequestError(String.format("source %s not implemented", sourceIdentifier)));
         }
 
         final List<ChannelMetadata> availableChannels;

@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-class ConversationsByIdTest {
+class ConversationsInfoTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
@@ -60,8 +60,7 @@ class ConversationsByIdTest {
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
                 applicationCommunicationMetadata,
-                applicationCommunicationReadReceipts
-        );
+                applicationCommunicationReadReceipts);
 
         testHelper.beforeAll();
     }
@@ -75,8 +74,7 @@ class ConversationsByIdTest {
     void init() throws Exception {
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+                "Application is not healthy");
     }
 
     @Test
@@ -102,7 +100,7 @@ class ConversationsByIdTest {
         ));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.by_id")
+                () -> mvc.perform(post("/conversations.info")
                         .headers(buildHeaders())
                         .content("{\"conversation_id\":\"" + conversationId + "\"}"))
                         .andExpect(status().isOk())

@@ -75,8 +75,7 @@ class UnreadCountTest {
     void init() throws Exception {
         testHelper.waitForCondition(
                 () -> mvc.perform(get("/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+                "Application is not healthy");
     }
 
     @Test
@@ -106,7 +105,7 @@ class UnreadCountTest {
         final String conversationByIdRequest = "{\"conversation_id\":\"" + conversationId + "\"}";
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.by_id")
+                () -> mvc.perform(post("/conversations.info")
                         .headers(buildHeaders())
                         .content(conversationByIdRequest))
                         .andExpect(status().isOk())
@@ -114,19 +113,18 @@ class UnreadCountTest {
                 "Conversation list not showing unread count"
         );
 
-        mvc.perform(post("/conversations.mark-read")
+        mvc.perform(post("/conversations.read")
                 .headers(buildHeaders())
                 .content(conversationByIdRequest))
                 .andExpect(status().isAccepted());
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.by_id")
+                () -> mvc.perform(post("/conversations.info")
                         .headers(buildHeaders())
                         .content(conversationByIdRequest))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.unread_message_count", equalTo(0))),
-                "Conversation unread count did not reset"
-        );
+                "Conversation unread count did not reset");
     }
 
     private HttpHeaders buildHeaders() {

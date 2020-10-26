@@ -41,7 +41,7 @@ public class SendMessageController {
         this.producer = producer;
     }
 
-    @PostMapping("/conversations.send")
+    @PostMapping("/messages.send")
     public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException, JsonProcessingException {
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
         final Conversation conversation = conversationsStore.get(payload.getConversationId());

@@ -9,13 +9,13 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 public class SendMessageRequestPayload {
-    public MessagePayload message;
+    private MessagePayload message;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MessagePayload {
         @NotBlank
-        public String text;
+        private String text;
     }
 }

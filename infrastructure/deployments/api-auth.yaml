@@ -36,7 +36,7 @@ spec:
         - name: MAIL_URL
           value: <mail_url>
         - name: MAIL_PORT
-          value: <mail_port>
+          value: "<mail_port>"
         - name: MAIL_USERNAME
           value: <mail_username>
         - name: MAIL_PASSWORD

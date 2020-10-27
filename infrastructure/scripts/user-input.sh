@@ -9,10 +9,10 @@ config=(
     ["FB_APP_SECRET"]="default"
     ["FB_WEBHOOK_SECRET"]="default"
     ["MAIL_URL"]="default"
-    ["MAIL_PORT"]="default"
+    ["MAIL_PORT"]="587"
     ["MAIL_USERNAME"]="default"
     ["MAIL_PASSWORD"]="default"
-    ["MAIL_FROM"]="default"
+    ["MAIL_FROM"]="default@localhost"
 )
 
 cd /vagrant/scripts

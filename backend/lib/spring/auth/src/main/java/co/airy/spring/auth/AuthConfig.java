@@ -25,7 +25,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         http.cors().disable().csrf().disable()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
                 .authorizeRequests(authorize -> authorize
-                        .mvcMatchers("/health").permitAll()
+                        .mvcMatchers("/health", "/actuator/health").permitAll()
                         .mvcMatchers("/users.signup", "/users.login", "/users.request-password-reset", "/users.password-reset").permitAll()
                         .antMatchers("/ws.communication").permitAll()
                         .anyRequest().authenticated()

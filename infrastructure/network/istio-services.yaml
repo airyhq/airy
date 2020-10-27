@@ -87,7 +87,7 @@ spec:
       - uri:
           prefix: /channels.explore
       - uri:
-          prefix: /channels.connected
+          prefix: /channels.connect
       - uri:
           prefix: /webhooks.subscribe
       - uri:

@@ -31,6 +31,8 @@ spec:
           value: airy-kafka-cp-schema-registry:8081
         - name: SERVICE_NAME
           value: api-communication
+        - name: JWT_SECRET
+          value: <jwt_secret>
         livenessProbe:
             httpGet:
               path: /health

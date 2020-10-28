@@ -35,6 +35,8 @@ spec:
           value: "<fb_app_secret>"
         - name: SERVICE_NAME
           value: api-admin
+        - name: JWT_SECRET
+          value: <jwt_secret>
         livenessProbe:
             httpGet:
               path: /health

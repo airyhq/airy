@@ -12,10 +12,10 @@ export PATH=$PATH:/usr/local/bin
 sudo mv linux-amd64/helm /usr/local/bin/helm
 
 RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
-sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" /vagrant/helm-chart/charts/postgres/values.yaml
+cp -R /vagrant/helm-chart ~/airy-core/
+sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/charts/postgres/values.yaml
 
-helm install -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s
-sed -i "s/$RANDOM_POSTGRES_PASSWORD/<pg_password>/" /vagrant/helm-chart/charts/postgres/values.yaml
+helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181

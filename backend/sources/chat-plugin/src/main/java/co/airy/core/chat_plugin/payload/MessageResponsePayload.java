@@ -1,4 +1,4 @@
-package co.airy.core.api.communication.payload;
+package co.airy.core.chat_plugin.payload;
 
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
@@ -15,7 +15,7 @@ import static co.airy.payload.format.DateFormat.ISO_FROM_MILLIS;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageResponsePayload {
+public class MessageResponsePayload implements Serializable {
     private String id;
     private String content;
     private String state;

@@ -56,8 +56,8 @@ The request returns an authentication token that needs to be included in the Web
 
 ```json5
 {
-  message: {
-    text: "{String}"
+  "message": {
+    "text": "{String}"
   }
 }
 ```
@@ -66,16 +66,16 @@ The request returns an authentication token that needs to be included in the Web
 
 ```json5
 {
-      id: "{UUID}",
-      content: "{String}",
-      // source content string
-      state: "{String}",
-      // delivery state of message, one of PENDING, FAILED, DELIVERED
-      alignment: "{string/enum}",
-      // LEFT, RIGHT, CENTER - horizontal placement of message
-      sent_at: "{string}",
-      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-    }
+  id: "{UUID}",
+  content: "{String}",
+  // source content string
+  state: "{String}",
+  // delivery state of message, one of PENDING, FAILED, DELIVERED
+  alignment: "{string/enum}",
+  // LEFT, RIGHT, CENTER - horizontal placement of message
+  sent_at: "{string}",
+  //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+}
 ```
 
 

@@ -12,7 +12,6 @@ import co.airy.core.api.admin.payload.DisconnectChannelRequestPayload;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestError;
 import co.airy.uuid.UUIDV5;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

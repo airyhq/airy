@@ -106,7 +106,7 @@ public class SendMessageControllerTest {
         testHelper.produceRecords(getConversationRecords(conversations));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/health")).andExpect(status().isOk()),
+                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
                 "Application is not healthy");
 
         testDataInitialized = true;
@@ -115,7 +115,7 @@ public class SendMessageControllerTest {
     @Test
     void dispatchesCorrectly() throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/health")).andExpect(status().isOk()),
+                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
                 "Application is not healthy");
 
         String facebookPayload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"message\": { \"text\": \"answer is 42\" }}";

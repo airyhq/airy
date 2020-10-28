@@ -1,6 +1,5 @@
 package co.airy.spring.auth;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,9 +25,8 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         http.cors().disable().csrf().disable()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
                 .authorizeRequests(authorize -> authorize
-                        .mvcMatchers("/health").permitAll()
                         .mvcMatchers("/users.signup", "/users.login", "/users.request-password-reset", "/users.password-reset").permitAll()
-                        .antMatchers("/ws.communication").permitAll()
+                        .antMatchers("/actuator/**", "/ws.communication").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement()

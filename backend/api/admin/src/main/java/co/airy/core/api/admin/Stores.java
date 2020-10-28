@@ -10,18 +10,17 @@ import co.airy.kafka.streams.KafkaStreamsWrapper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,14 +28,13 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @Component
-@RestController
-public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "api.AdminStores";
 
     private final KafkaStreamsWrapper streams;
 
     private final String CHANNELS_STORE = "channels-store";
-    private final String TAGS_STORE     = "tags-store";
+    private final String TAGS_STORE = "tags-store";
     private final String WEBHOOKS_STORE = "webhook-store";
     private final String allChannelsKey = "ALL";
 
@@ -46,7 +44,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
     private final String applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks().name();
-    private final String applicationCommunicationTags  = new ApplicationCommunicationTags().name();
+    private final String applicationCommunicationTags = new ApplicationCommunicationTags().name();
 
     public Stores(KafkaStreamsWrapper streams) {
         this.streams = streams;
@@ -128,13 +126,12 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         startStream();
     }
 
-    @GetMapping("/health")
-    ResponseEntity<Void> health() {
+    @Override
+    public Health health() {
         getChannelsStore();
         getWebhookStore();
         getTagsStore();
 
-        // If no exception was thrown by one of the above calls, this service is healthy
-        return ResponseEntity.ok().build();
+        return Health.status(Status.UP).build();
     }
 }

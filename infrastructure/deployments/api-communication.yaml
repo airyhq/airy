@@ -35,7 +35,7 @@ spec:
           value: <jwt_secret>
         livenessProbe:
             httpGet:
-              path: /health
+              path: /actuator/health
               port: 8080
               httpHeaders:
               - name: Health-Check

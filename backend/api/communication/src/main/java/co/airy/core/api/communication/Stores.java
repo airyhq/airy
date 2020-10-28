@@ -26,12 +26,12 @@ import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ import static java.util.stream.Collectors.toCollection;
 
 @Component
 @RestController
-public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "api.CommunicationStores";
 
     private final KafkaStreamsWrapper streams;
@@ -206,13 +206,13 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         startStream();
     }
 
-    @GetMapping("/health")
-    ResponseEntity<Void> health() {
+
+    @Override
+    public Health health() {
         getConversationsStore();
         getMessagesStore();
 
-        // If no exception was thrown by one of the above calls, this service is healthy
-        return ResponseEntity.ok().build();
+        return Health.status(Status.UP).build();
     }
 }
 

@@ -10,6 +10,9 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.http.HttpStatus;
@@ -25,7 +28,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 @RestController
-public class FacebookWebhook implements ApplicationListener<ApplicationReadyEvent>, DisposableBean {
+public class FacebookWebhook implements HealthIndicator, ApplicationListener<ApplicationReadyEvent>, DisposableBean {
 
     private final String sourceFacebookEvents = new SourceFacebookEvents().name();
 
@@ -52,10 +55,13 @@ public class FacebookWebhook implements ApplicationListener<ApplicationReadyEven
     @Autowired
     private ProducerHealthCheck producerHealthCheck;
 
-    @GetMapping("/health")
-    ResponseEntity<Void> health() throws Exception {
-        producerHealthCheck.sendHealthCheck();
-        return ResponseEntity.ok().build();
+    public Health health() {
+        try {
+            producerHealthCheck.sendHealthCheck();
+            return Health.status(Status.UP).build();
+        } catch (Exception e) {
+            return Health.down(e).build();
+        }
     }
 
     // https://developers.facebook.com/docs/graph-api/webhooks/getting-started

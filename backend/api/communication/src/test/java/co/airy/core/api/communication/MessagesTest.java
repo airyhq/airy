@@ -81,7 +81,7 @@ public class MessagesTest {
     @BeforeEach
     void init() throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/health")).andExpect(status().isOk()),
+                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
                 "Application is not healthy");
     }
 

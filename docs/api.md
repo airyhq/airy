@@ -10,29 +10,26 @@ compose our API.
   - [Endpoints](#endpoints)
     - [Users](#users)
       - [Signup](#signup)
-      - [Signup via invitation](#signup-via-invitation)
       - [Request password reset](#request-password-reset)
       - [Reset password](#reset-password)
-    - [Invitations](#invitations)
-      - [Creating an invitation](#creating-an-invitation)
     - [Conversations](#conversations)
       - [List conversations](#list-conversations)
-      - [Conversation by id](#conversation-by-id)
+      - [Conversation info](#conversation-info)
       - [Mark conversation as read](#mark-conversation-as-read)
       - [Tag a conversation](#tag-a-conversation)
       - [Untag a conversation](#untag-a-conversation)
     - [Messages](#messages)
-      - [Messages of a conversation](#messages-of-a-conversation)
+      - [List messages](#list-messages)
       - [Send a message](#send-a-message)
     - [Channels](#channels)
       - [Connecting Channels](#connecting-channels)
       - [Disconnecting Channels](#disconnecting-channels)
-      - [List Available Channels](#list-available-channels)
-      - [List Connected Channels](#list-connected-channels)
+      - [Explore Channels](#explore-channels)
+      - [List Channels](#list-channels)
     - [Webhooks](#webhooks)
       - [Subscribing to a webhook](#subscribing-to-a-webhook)
       - [Unsubscribing to a webhook](#unsubscribing-to-a-webhook)
-      - [Get webhook](#get-webhook)
+      - [Webhook info](#webhook-info)
     - [Tags](#tags)
       - [Creating a tag](#creating-a-tag)
       - [Updating a tag](#updating-a-tag)
@@ -122,31 +119,6 @@ The password _MUST_ be at least 6 (six) characters long
 }
 ```
 
-#### Signup via invitation
-
-`POST /users.accept-invitation`
-
-```json5
-{
-  "id": "invitation-code",
-  "first_name": "GOOD",
-  "last_name": "DOGGO",
-  "password": "MUCH-PASSWORD" // (6 chars minimum)
-}
-```
-
-**Sample Response**
-
-```json5
-{
-  "id": "62ba6901-22bd-483f-8b34-f3954206028e",
-  "email": "wow@airy.co",
-  "first_name": "GOOD",
-  "last_name": "DOGGO",
-  "token": "TOKEN"
-}
-```
-
 This endpoint returns the same response as the login
 
 #### Request password reset
@@ -193,30 +165,6 @@ tokens produce errors.
 ```
 
 The new password _MUST_ be at least 6 (six) characters long
-
-### Invitations
-
-#### Creating an invitation
-
-`POST /users.invite`
-
-Creates an invite for a non a registered user.
-
-```json5
-{
-  "email": "invitee-email@non-airy.com"
-}
-```
-
-**Sample Response**
-
-```json5
-{
-  "id": "invitation-id",
-}
-```
-
-This endpoint returns 201 (created) if invite was created successfully.
 
 ### Conversations
 
@@ -281,9 +229,9 @@ This is a [paginated](#pagination) endpoint.
 }
 ```
 
-#### Conversation by id
+#### Conversation info
 
-`POST /conversations.by_id`
+`POST /conversations.info`
 
 **Sample Request**
 
@@ -327,7 +275,7 @@ This is a [paginated](#pagination) endpoint.
 
 #### Mark conversation as read
 
-`POST /conversations.mark-read`
+`POST /conversations.read`
 
 Resets the unread count of a conversation and returns `202 (Accepted)`.
 
@@ -347,7 +295,7 @@ Resets the unread count of a conversation and returns `202 (Accepted)`.
 
 #### Tag a conversation
 
-Tags an existing conversation with an existing tag. Returns 200 if sucessful.
+Tags an existing conversation with an existing tag. Returns 200 if successful.
 
 `POST /conversations.tag`
 
@@ -391,9 +339,9 @@ Tags an existing conversation with an existing tag. Returns 200 if sucessful.
 Please refer to our [messages](/docs/glossary.md#message) definition for more
 information.
 
-#### Messages of a conversation
+#### List messages
 
-`POST /conversations.messages-list`
+`POST /messages.list`
 
 This is a [paginated](#pagination) endpoint and messages are sorted from oldest to latest.
 
@@ -435,7 +383,7 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
 
 #### Send a message
 
-`POST /conversations.send`
+`POST /messages.send`
 
 Sends a message to a conversation and returns a payload.
 
@@ -521,9 +469,9 @@ If the channel is unknown, the response status will be `400`.
 }
 ```
 
-#### List Available Channels
+#### Explore Channels
 
-`POST /channels.available`
+`POST /channels.explore`
 
 A synchronous endpoint that makes a request to the source on behalf of the user
 to list all the channels that are available. Some of those channels may already
@@ -561,9 +509,9 @@ the nature of the request, response time may vary.
 }
 ```
 
-#### List Connected Channels
+#### List Channels
 
-`POST /channels.connected`
+`POST /channels.list`
 
 **Sample Response**
 
@@ -638,9 +586,9 @@ Subscribes the webhook for the first time or update its parameters.
 }
 ```
 
-#### Get webhook
+#### Webhook info
 
-`POST /webhooks.get`
+`POST /webhooks.info`
 
 **Sample Response**
 

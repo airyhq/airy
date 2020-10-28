@@ -26,7 +26,7 @@ spec:
     - match:
       - uri:
           prefix: /users.login
-      - uri: 
+      - uri:
           prefix: /users.signup
       - uri:
           prefix: /users.accept-invitation
@@ -56,13 +56,13 @@ spec:
       - uri:
           prefix: /conversations.list
       - uri:
-          prefix: /conversations.by_id
+          prefix: /conversations.info
       - uri:
-          prefix: /conversations.mark-read
+          prefix: /conversations.read
       - uri:
-          prefix: /conversations.messages-list
+          prefix: /messages.list
       - uri:
-          prefix: /conversations.send
+          prefix: /messages.send
       route:
       - destination:
           host: api-communication
@@ -81,11 +81,11 @@ spec:
     http:
     - match:
       - uri:
-          prefix: /channels.connect
+          prefix: /channels.list
       - uri:
           prefix: /channels.disconnect
       - uri:
-          prefix: /channels.available
+          prefix: /channels.explore
       - uri:
           prefix: /channels.connected
       - uri:
@@ -93,7 +93,15 @@ spec:
       - uri:
           prefix: /webhooks.unsubscribe
       - uri:
-          prefix: /webhooks.get
+          prefix: /webhooks.info
+      - uri:
+          prefix: /tags.create
+      - uri:
+          prefix: /tags.update
+      - uri:
+          prefix: /tags.list
+      - uri:
+          prefix: /tags.delete
       route:
       - destination:
           host: api-admin

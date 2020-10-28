@@ -79,8 +79,8 @@ public class WebhooksController {
         return ResponseEntity.status(HttpStatus.OK).body(webhookResponse);
     }
 
-    @PostMapping("/webhooks.get")
-    public ResponseEntity<?> getWebhook() {
+    @PostMapping("/webhooks.info")
+    public ResponseEntity<GetWebhookResponse> webhookInfo() {
         final Webhook webhook = stores.getWebhook();
 
         if (webhook == null) {

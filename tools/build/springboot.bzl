@@ -124,7 +124,6 @@ def springboot(name, main_class, deps, srcs, resources = []):
     genmanifest_cmd = "echo 'Manifest-Version: 1.0' >$@;" + \
                       "echo 'Created-By: Bazel' >>$@;" + \
                       "echo 'Built-By: Bazel' >>$@;" + \
-                      "echo 'Throw-Down: hootenanny' >>$@;" + \
                       "echo 'Main-Class: org.springframework.boot.loader.JarLauncher' >>$@;" + \
                       "echo 'Spring-Boot-Classes: BOOT-INF/classes/' >>$@;" + \
                       "echo 'Spring-Boot-Lib: BOOT-INF/lib/' >>$@;" + \

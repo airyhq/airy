@@ -8,6 +8,7 @@ app_deps = [
     "//backend/avro/communication:tag",
     "//backend/lib/payload",
     "//backend/lib/uuid",
+    "//backend/lib/spring/auth:spring-auth",
     "//backend/lib/kafka/schema:kafka-schema",
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-webhooks",

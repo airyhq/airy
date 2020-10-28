@@ -1,6 +1,5 @@
 //@ts-nocheck
 import React, { useState } from "react";
-import moment from "moment";
 import { BrowserRouter } from "react-router-dom";
 
 import {
@@ -259,9 +258,9 @@ const App = () => {
             fontClass="font-s"
             height={32}
             value={urlInput}
-            onChange={(e: {
-              target: { value: React.SetStateAction<string> };
-            }) => setUrlInput(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUrlInput(e.target.value)
+            }
           />
         </div>
       </div>

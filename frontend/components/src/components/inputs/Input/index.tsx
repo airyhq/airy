@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import _, { withTranslation, WithTranslation } from "react-i18next";
 import { Picker } from "emoji-mart";
 
 import styles from "./style.module.scss";
@@ -7,7 +6,7 @@ import { ReactComponent as CheckmarkIcon } from "../../../assets/images/icons/ch
 import { ReactComponent as CloseIcon } from "../../../assets/images/icons/close.svg";
 import { ReactComponent as SmileyIcon } from "../../../assets/images/icons/smiley.svg";
 
-class InputComponent extends Component<InputProps & WithTranslation, IState> {
+class InputComponent extends Component<InputProps, IState> {
   public static defaultProps = {
     height: 48,
     fontClass: "font-l",
@@ -49,9 +48,9 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
 
   translateResult = (type, validity) => {
     if (validity.valueMissing) {
-      return this.props.t("input.valueMissing");
+      return "This field cannot be empty.";
     } else if (type === "url" && validity.typeMismatch) {
-      return this.props.t("input.urlWrongFormat");
+      return "The URL is invalid";
     } else {
       return validity.valid;
     }
@@ -66,7 +65,7 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
     if (inputElement.type === "email") {
       if (!inputElement.validity.valid) {
         this.setState({
-          validationResult: this.props.t("input.wrongEmail") as string
+          validationResult: "This doesn’t look like an email address."
         });
       } else {
         this.setState({ validationResult: true });
@@ -113,9 +112,9 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
      */
     if (!inputElement.value.match(/.*\w\.\w.*/)) {
       this.setState({
-        validationResult: this.props.t("input.urlWrongFormat") as string
+        validationResult: "The URL is invalid"
       });
-      inputElement.setCustomValidity(this.props.t("input.urlWrongFormat"));
+      inputElement.setCustomValidity("The URL is invalid");
     } else {
       inputElement.setCustomValidity("");
     }
@@ -291,7 +290,6 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
       disabled,
       onKeyDown,
       pattern,
-      t,
       showCounter,
       onFocus
     } = this.props;
@@ -387,7 +385,7 @@ class InputComponent extends Component<InputProps & WithTranslation, IState> {
                 className={`${styles.emojiIcon} ${this.state
                   .isShowingEmojiDrawer && styles.emojiIconActive}`}
               >
-                <SmileyIcon title={t("input.emoji")} />
+                <SmileyIcon title="Emoji" />
               </button>
             ) : null}
           </div>
@@ -494,4 +492,4 @@ interface IState {
   isShowingEmojiDrawer: boolean;
 }
 
-export const Input = withTranslation()(InputComponent);
+export const Input = InputComponent;

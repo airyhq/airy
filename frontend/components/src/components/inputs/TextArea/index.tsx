@@ -1,13 +1,10 @@
 import React, { Component } from "react";
-import _, { withTranslation, WithTranslation } from "react-i18next";
 import TextareaAutosize from "react-autosize-textarea";
 
 import { Input, InputProps } from "../Input";
 import styles from "./style.module.scss";
 
-class TextAreaComponent extends Component<
-  WithTranslation & IProps & InputProps
-> {
+class TextAreaComponent extends Component<IProps & InputProps> {
   classForState = currentValidationState => {
     switch (currentValidationState) {
       case "inputInvalid":
@@ -74,4 +71,4 @@ interface IProps {
   maxRows: number;
 }
 
-export const TextArea = withTranslation()(TextAreaComponent);
+export const TextArea = TextAreaComponent;

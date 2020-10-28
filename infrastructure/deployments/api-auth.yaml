@@ -33,6 +33,16 @@ spec:
           value: 4fRteQH2MTKmZzdv
         - name: DB_ENDPOINT
           value: postgres:5432
+        - name: MAIL_URL
+          value: <mail_url>
+        - name: MAIL_PORT
+          value: "<mail_port>"
+        - name: MAIL_USERNAME
+          value: <mail_username>
+        - name: MAIL_PASSWORD
+          value: <mail_password>
+        - name: MAIL_FROM
+          value: <mail_from>
         livenessProbe:
           httpGet:
             path: /actuator/health

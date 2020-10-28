@@ -47,7 +47,10 @@ postgres:
   image: postgres
   imageTag: 12.4
   resources: {}
-            
+
+## ------------------------------------------------------
+## Redis
+## ------------------------------------------------------   
 redis:
   enabled: true
   image: redis

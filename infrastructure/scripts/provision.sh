@@ -11,7 +11,12 @@ export PATH=$PATH:/usr/local/bin
 
 sudo mv linux-amd64/helm /usr/local/bin/helm
 
-helm install -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s
+RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
+mkdir -p ~/airy-core
+cp -R /vagrant/helm-chart ~/airy-core/
+sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/charts/postgres/values.yaml
+
+helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
@@ -32,7 +37,7 @@ kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
 kubectl cp create-database.sh kafka-client:/tmp
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
-kubectl exec -it kafka-client -- /tmp/create-database.sh
+kubectl exec -it kafka-client -- env PGPASSWORD="$RANDOM_POSTGRES_PASSWORD" /tmp/create-database.sh
 
 echo "Deploying ingress controller"
 kubectl apply -f ../network/istio-crd.yaml
@@ -41,7 +46,7 @@ kubectl apply -f ../network/istio-operator.yaml
 kubectl label namespace default istio-injection=enabled --overwrite
 
 echo "Deploying airy-core apps"
-kubectl apply -f ../deployments/api-auth.yaml
+sed "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ../deployments/api-auth.yaml | kubectl apply -f -
 kubectl apply -f ../deployments/api-communication.yaml
 kubectl apply -f ../deployments/sources-facebook-sender.yaml
 

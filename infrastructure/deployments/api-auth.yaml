@@ -30,9 +30,11 @@ spec:
         - name: DB_USERNAME
           value: postgresadmin
         - name: DB_PASSWORD
-          value: 4fRteQH2MTKmZzdv
+          value: <pg_password>
         - name: DB_ENDPOINT
           value: postgres:5432
+        - name: JWT_SECRET
+          value: <jwt_secret>
         - name: MAIL_URL
           value: <mail_url>
         - name: MAIL_PORT

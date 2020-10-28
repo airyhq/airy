@@ -33,18 +33,18 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: user-config
-              key: FACEBOOK_APP_ID
+              key: FB_APP_ID
         - name: FACEBOOK_APP_SECRET
           valueFrom:
             configMapKeyRef:
               name: user-config
-              key: FACEBOOK_APP_SECRET
+              key: FB_APP_SECRET
         - name: SERVICE_NAME
           value: api-admin
         - name: JWT_SECRET
           valueFrom:
             configMapKeyRef:
-              name: user-config
+              name: secrets-config
               key: JWT_SECRET
         livenessProbe:
             httpGet:

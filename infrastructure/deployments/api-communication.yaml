@@ -34,7 +34,7 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             configMapKeyRef:
-              name: user-config
+              name: secrets-config
               key: JWT_SECRET
         livenessProbe:
             httpGet:

@@ -30,7 +30,7 @@ public class Jwt {
     public static final String CHANNEL_ID_CLAIM = "channel_id";
     private final Key signingKey;
 
-    public Jwt(@Value("${auth.jwt-secret}") String tokenKey) {
+    public Jwt(@Value("${chat-plugin.auth.jwt-secret}") String tokenKey) {
         this.signingKey = parseSigningKey(tokenKey);
     }
 

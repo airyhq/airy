@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.ExecutionException;
 
-@Component
 @RestController
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "sources.ChatPluginStores";

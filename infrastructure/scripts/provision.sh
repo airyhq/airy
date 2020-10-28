@@ -15,7 +15,7 @@ RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head
 sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" /vagrant/helm-chart/charts/postgres/values.yaml
 
 helm install -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f /vagrant/helm-chart/values.yaml airy /vagrant/helm-chart/ --version 0.5.0 --timeout 1000s
-sed -i "s/$RANDOM_POSTGRES_PASSWORD/<pg_password>}/" /vagrant/helm-chart/charts/postgres/values.yaml
+sed -i "s/$RANDOM_POSTGRES_PASSWORD/<pg_password>/" /vagrant/helm-chart/charts/postgres/values.yaml
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
@@ -36,7 +36,7 @@ kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
 kubectl cp create-database.sh kafka-client:/tmp
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
-kubectl exec -it kafka-client -- /tmp/create-database.sh
+kubectl exec -it kafka-client -- env PG_PASSWORD=$RANDOM_POSTGRES_PASSWORD /tmp/create-database.sh
 
 echo "Deploying ingress controller"
 kubectl apply -f ../network/istio-crd.yaml

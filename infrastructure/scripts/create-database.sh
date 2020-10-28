@@ -6,4 +6,4 @@ while ! nc -z postgres 5432; do sleep 10; echo "Waiting for Postgres to start...
 
 apt update
 apt-get install postgresql-client -y --force-yes
-PGPASSWORD=4fRteQH2MTKmZzdv psql -h postgres postgres -U postgresadmin -tc "SELECT 1 FROM pg_database WHERE datname = 'airy_core'" | grep -q 1 || PGPASSWORD=4fRteQH2MTKmZzdv psql -h postgres postgres -U postgresadmin -c "CREATE DATABASE airy_core"
+psql -h postgres postgres -U postgresadmin -tc "SELECT 1 FROM pg_database WHERE datname = 'airy_core'" | grep -q 1 || psql -h postgres postgres -U postgresadmin -c "CREATE DATABASE airy_core"

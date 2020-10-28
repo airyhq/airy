@@ -5,6 +5,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,10 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
-        "kafka.cleanup=true",
-        "kafka.commit-interval-ms=100"
-}, classes = AirySpringBootApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
@@ -48,6 +46,8 @@ public class TagsControllerTest {
     private static TestHelper testHelper;
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private Jwt jwt;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -81,6 +81,7 @@ public class TagsControllerTest {
 
         final String createTagResponse = mvc.perform(post("/tags.create")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id"))
                 .content(payload))
                 .andExpect(status().isCreated())
                 .andReturn()
@@ -91,7 +92,8 @@ public class TagsControllerTest {
         final String tagId = jsonNode.get("id").textValue();
         TimeUnit.SECONDS.sleep(5);
         mvc.perform(post("/tags.list")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id")))
                 .andExpect(jsonPath("$.data.length()", is(1)))
                 .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
                 .andExpect(jsonPath("$.data[0].name").value(is(name)))
@@ -99,11 +101,13 @@ public class TagsControllerTest {
 
         mvc.perform(post("/tags.update")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id"))
                 .content("{\"id\": \"" + tagId + "\", \"name\": \"new-name\", \"color\": \"" + color + "\"}"))
                 .andExpect(status().isOk());
 
         mvc.perform(post("/tags.list")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id")))
                 .andExpect(jsonPath("$.data.length()", is(1)))
                 .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
                 .andExpect(jsonPath("$.data[0].name").value(is("new-name")))
@@ -111,12 +115,14 @@ public class TagsControllerTest {
 
         mvc.perform(post("/tags.delete")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id"))
                 .content("{\"id\": \"" + tagId + "\"}"))
                 .andExpect(status().isOk());
 
         TimeUnit.SECONDS.sleep(5);
         mvc.perform(post("/tags.list")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id")))
                 .andExpect(jsonPath("$.data.length()", is(0)));
     }
 }

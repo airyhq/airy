@@ -99,6 +99,11 @@ public class UsersControllerTest {
                 .getResponse()
                 .getContentAsString();
 
+        mvc.perform(post("/users.signup")
+                .content(signUpRequest)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+                .andExpect(status().isUnauthorized());
+
         final JsonNode jsonNode = objectMapper.readTree(responseString);
         final String id = jsonNode.get("id").textValue();
 

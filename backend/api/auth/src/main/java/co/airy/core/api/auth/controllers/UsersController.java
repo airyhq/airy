@@ -18,6 +18,7 @@ import co.airy.core.api.auth.services.Password;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestError;
 import co.airy.spring.auth.Jwt;
+import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,7 +71,11 @@ public class UsersController {
                 .passwordHash(passwordService.hashPassword(password))
                 .build();
 
-        userDAO.insert(user);
+        try {
+            userDAO.insert(user);
+        } catch (UnableToExecuteStatementException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
         return ResponseEntity.ok(SignupResponsePayload.builder()
                 .firstName(firstName)
@@ -110,6 +115,7 @@ public class UsersController {
         executor.submit(() -> requestResetFor(email));
         return ResponseEntity.ok(new EmptyResponsePayload());
     }
+
     @PostMapping("/users.password-reset")
     ResponseEntity<?> passwordReset(@RequestBody @Valid PasswordResetRequestPayload payload) {
         Map<String, Object> claims = jwt.getClaims(payload.getToken());
@@ -120,7 +126,7 @@ public class UsersController {
             return ResponseEntity.notFound().build();
         }
 
-        if(!payload.getToken().equals(getResetToken(userId))) {
+        if (!payload.getToken().equals(getResetToken(userId))) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -149,7 +155,7 @@ public class UsersController {
     }
 
     @PostMapping("/users.invite")
-    //TODO: Write a custom ExceptionHandler for JDBI
+        //TODO: Write a custom ExceptionHandler for JDBI
     ResponseEntity<InviteUserResponsePayload> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
         final UUID id = UUID.randomUUID();
         final Instant now = Instant.now();
@@ -172,7 +178,7 @@ public class UsersController {
     ResponseEntity<?> acceptInvitation(@RequestBody @Valid AcceptInvitationRequestPayload payload) {
         final Invitation invitation = invitationDAO.findById(payload.getId());
 
-        if(!invitationDAO.accept(invitation.getId(), Instant.now())) {
+        if (!invitationDAO.accept(invitation.getId(), Instant.now())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new EmptyResponsePayload());
         }
 

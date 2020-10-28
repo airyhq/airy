@@ -57,5 +57,3 @@ do
     echo "Waiting for istio to create all the VirtualService CRD..."
 done
 kubectl apply -f ../network/istio-services.yaml
-
-sudo yum clean all

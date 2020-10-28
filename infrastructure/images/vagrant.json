@@ -36,7 +36,7 @@
       },
       {
         "scripts": [
-          "tasks/scale-images.sh"
+          "tasks/cleanup.sh"
         ],
         "type": "shell"
       }

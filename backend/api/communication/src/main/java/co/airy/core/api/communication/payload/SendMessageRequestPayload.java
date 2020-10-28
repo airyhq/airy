@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
 
@@ -11,17 +12,16 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SendMessageRequestPayload {
-
     @NotBlank
-    public String conversationId;
-
-    public MessagePayload message;
+    private String conversationId;
+    @NonNull
+    private MessagePayload message;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MessagePayload {
         @JsonProperty("text")
-        public String text;
+        private String text;
     }
 }

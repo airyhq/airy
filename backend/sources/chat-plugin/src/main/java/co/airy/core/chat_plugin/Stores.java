@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 @Component
 @RestController
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
-    private static final String appId = "sources.ChatPlugin";
+    private static final String appId = "sources.ChatPluginStores";
 
     private final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
     private final KafkaStreamsWrapper streams;
@@ -58,7 +58,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         producer.send(new ProducerRecord<>(applicationCommunicationMessages, message.getId(), message)).get();
     }
 
-    public ReadOnlyKeyValueStore<String, Channel> getChannelsStore() {
+    private ReadOnlyKeyValueStore<String, Channel> getChannelsStore() {
         return streams.acquireLocalStore(CHANNEL_STORE);
     }
 

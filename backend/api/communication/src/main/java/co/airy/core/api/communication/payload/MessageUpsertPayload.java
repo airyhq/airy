@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageUpsertPayload implements Serializable {
+public class MessageUpsertPayload {
     private String conversationId;
     private String channelId;
     private MessageResponsePayload message;

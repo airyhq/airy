@@ -21,7 +21,7 @@ import static co.airy.payload.format.DateFormat.ISO_FROM_MILLIS;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ConversationResponsePayload implements Serializable {
+public class ConversationResponsePayload {
     private String id;
     private String createdAt;
     private ChannelPayload channel;

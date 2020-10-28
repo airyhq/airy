@@ -37,8 +37,9 @@ cp ../deployments/sources-facebook-webhook.yaml ~/airy-core/
 cp ../deployments/api-communication.yaml ~/airy-core/
 
 RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
+cp -R /vagrant/helm-chart ~/airy-core/
 sed "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" /vagrant/helm-chart/charts/postgres/values.yaml > ~/airy-core/helm-chart/charts/postgres/values.yaml
-helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s
+/usr/local/bin/helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s
 kubectl delete pods -l app=postgres
 sed -i "s/<pg_password>/${RANDOM_POSTGRES_PASSWORD}/" ~/airy-core/api-auth.yaml
 

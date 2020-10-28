@@ -33,9 +33,12 @@ cp ../deployments/sources-facebook-events-router.yaml ~/airy-core/
 cp ../deployments/api-admin.yaml ~/airy-core/
 cp ../deployments/api-auth.yaml ~/airy-core/
 cp ../deployments/sources-facebook-webhook.yaml ~/airy-core/
+cp ../deployments/api-communication.yaml ~/airy-core/
 
 RANDOM_JWT_SECRET=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 128; echo`
 sed -i "s/<jwt_secret>/$RANDOM_JWT_SECRET/" ~/airy-core/api-auth.yaml
+sed -i "s/<jwt_secret>/$RANDOM_JWT_SECRET/" ~/airy-core/api-adminyaml
+sed -i "s/<jwt_secret>/$RANDOM_JWT_SECRET/" ~/airy-core/api-communication.yaml
 
 sed -i "s/<fb_app_id>/${config[FB_APP_ID]}/" ~/airy-core/sources-facebook-events-router.yaml
 sed -i "s/<fb_app_id>/${config[FB_APP_ID]}/" ~/airy-core/api-admin.yaml

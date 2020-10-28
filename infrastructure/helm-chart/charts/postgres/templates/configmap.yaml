@@ -7,4 +7,4 @@ metadata:
 data:
   POSTGRES_DB: postgresdb
   POSTGRES_USER: postgresadmin
-  POSTGRES_PASSWORD: 4fRteQH2MTKmZzdv
+  POSTGRES_PASSWORD: {{ .Values.pgPassword }}

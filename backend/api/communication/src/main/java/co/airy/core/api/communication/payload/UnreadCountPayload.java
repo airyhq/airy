@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UnreadCountPayload implements Serializable {
+public class UnreadCountPayload {
     private String conversationId;
     private Integer unreadMessageCount;
     private String timestamp;

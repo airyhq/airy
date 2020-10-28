@@ -12,7 +12,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ContactResponsePayload implements Serializable {
+public class ContactResponsePayload {
     private String avatarUrl;
     private String firstName;
     private String lastName;

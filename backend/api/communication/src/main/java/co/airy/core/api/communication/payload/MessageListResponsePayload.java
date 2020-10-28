@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageListResponsePayload implements Serializable {
+public class MessageListResponsePayload {
     private List<MessageResponsePayload> data;
     private ResponseMetadata responseMetadata;
 

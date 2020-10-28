@@ -1,4 +1,4 @@
-package co.airy.core.api.communication.payload;
+package co.airy.core.chat_plugin.payload;
 
 import co.airy.avro.communication.Message;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageUpsertPayload {
+public class MessageUpsertPayload implements Serializable {
     private String conversationId;
     private String channelId;
     private MessageResponsePayload message;

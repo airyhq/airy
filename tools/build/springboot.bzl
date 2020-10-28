@@ -80,7 +80,7 @@ def springboot(name, main_class, deps, srcs, resources = []):
     merged_log4j = "src/main/resources/log4j2.properties"
 
     for idx, resource in enumerate(resources):
-        if resource.rfind("src/main/resources/log4j-custom.properties") != -1:
+        if resource.rfind("src/main/resources/log4j2-custom.properties") != -1:
             native.genrule(
                 name = "merged_log4j_target",
                 cmd = "cat $(location src/main/resources/log4j-custom.properties) $(location //tools/build:log4j2.properties) >> $@",

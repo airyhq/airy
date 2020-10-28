@@ -16,16 +16,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
         jsr250Enabled = true
 )
 public class AuthConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private Jwt jwt;
+    private final Jwt jwt;
+    public AuthConfig(Jwt jwt) {
+        this.jwt = jwt;
+    }
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors().disable().csrf().disable()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
                 .authorizeRequests(authorize -> authorize
-                        .mvcMatchers("/health", "/actuator/health").permitAll()
+                        .mvcMatchers("/health").permitAll()
                         .mvcMatchers("/users.signup", "/users.login", "/users.request-password-reset", "/users.password-reset").permitAll()
                         .antMatchers("/ws.communication").permitAll()
                         .anyRequest().authenticated()

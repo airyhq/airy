@@ -36,7 +36,7 @@ kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
 kubectl cp create-database.sh kafka-client:/tmp
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
-kubectl exec -it kafka-client -- env PG_PASSWORD=$RANDOM_POSTGRES_PASSWORD /tmp/create-database.sh
+kubectl exec -it kafka-client -- env PGPASSWORD=$RANDOM_POSTGRES_PASSWORD /tmp/create-database.sh
 
 echo "Deploying ingress controller"
 kubectl apply -f ../network/istio-crd.yaml

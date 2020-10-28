@@ -32,7 +32,10 @@ spec:
         - name: SERVICE_NAME
           value: api-communication
         - name: JWT_SECRET
-          value: <jwt_secret>
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: JWT_SECRET
         livenessProbe:
             httpGet:
               path: /health

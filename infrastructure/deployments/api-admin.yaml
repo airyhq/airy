@@ -30,13 +30,22 @@ spec:
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: airy-kafka-cp-schema-registry:8081
         - name: FACEBOOK_APP_ID
-          value: "<fb_app_id>"
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: FACEBOOK_APP_ID
         - name: FACEBOOK_APP_SECRET
-          value: "<fb_app_secret>"
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: FACEBOOK_APP_SECRET
         - name: SERVICE_NAME
           value: api-admin
         - name: JWT_SECRET
-          value: <jwt_secret>
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: JWT_SECRET
         livenessProbe:
             httpGet:
               path: /health

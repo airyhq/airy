@@ -24,27 +24,29 @@ spec:
       - name: api-auth
         image: ghcr.io/airyhq/api/auth:latest
         imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: user-config
         env:
         - name: SERVICE_NAME
           value: api-auth
         - name: DB_USERNAME
-          value: postgresadmin
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: POSTGRES_USER
         - name: DB_PASSWORD
-          value: <pg_password>
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: POSTGRES_PASSWORD
         - name: DB_ENDPOINT
           value: postgres:5432
         - name: JWT_SECRET
-          value: <jwt_secret>
-        - name: MAIL_URL
-          value: <mail_url>
-        - name: MAIL_PORT
-          value: "<mail_port>"
-        - name: MAIL_USERNAME
-          value: <mail_username>
-        - name: MAIL_PASSWORD
-          value: <mail_password>
-        - name: MAIL_FROM
-          value: <mail_from>
+          valueFrom:
+            configMapKeyRef:
+              name: secrets-config
+              key: JWT_SECRET
         livenessProbe:
           httpGet:
             path: /actuator/health

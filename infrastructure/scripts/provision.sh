@@ -12,6 +12,7 @@ export PATH=$PATH:/usr/local/bin
 sudo mv linux-amd64/helm /usr/local/bin/helm
 
 RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
+mkdir -p ~/airy-core
 cp -R /vagrant/helm-chart ~/airy-core/
 sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/charts/postgres/values.yaml
 
@@ -36,7 +37,7 @@ kubectl cp topics.sh kafka-client:/tmp
 kubectl cp create-topics.sh kafka-client:/tmp
 kubectl cp create-database.sh kafka-client:/tmp
 kubectl exec -it kafka-client -- /tmp/create-topics.sh
-kubectl exec -it kafka-client -- env PGPASSWORD=$RANDOM_POSTGRES_PASSWORD /tmp/create-database.sh
+kubectl exec -it kafka-client -- env PGPASSWORD="$RANDOM_POSTGRES_PASSWORD" /tmp/create-database.sh
 
 echo "Deploying ingress controller"
 kubectl apply -f ../network/istio-crd.yaml

@@ -29,7 +29,6 @@ if test -f "${CONFIG_FILE}"; then
     done < ${CONFIG_FILE}
 fi
 
-mkdir -p ~/airy-core
 cp ../deployments/sources-facebook-events-router.yaml ~/airy-core/
 cp ../deployments/api-admin.yaml ~/airy-core/
 cp ../deployments/api-auth.yaml ~/airy-core/

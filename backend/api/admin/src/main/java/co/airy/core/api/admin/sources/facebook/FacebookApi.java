@@ -22,7 +22,8 @@ import java.util.Map;
 @Service
 public class FacebookApi {
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String baseUrl = "https://graph.facebook.com/v3.1";
+    private final String baseUrl = "https://graph.facebook.com/v3.2";
+    private final String SUBSCRIBED_FIELDS = "affiliation,attire,awards,bio,birthday,category,checkins,company_overview,culinary_team,current_location,description,email,feed,founded,general_info,general_manager,hometown";
 
     @Value("${facebook.app-id}")
     private String fbAppId;
@@ -58,7 +59,7 @@ public class FacebookApi {
     }
 
     public void connectPageToApp(String pageToken) throws Exception {
-        String apiUrl = String.format(baseUrl + "/me/subscribed_apps?access_token=%s", pageToken);
+        String apiUrl = String.format(baseUrl + "/me/subscribed_apps?access_token=%s&subscribed_fields=%s", pageToken, SUBSCRIBED_FIELDS);
         apiResponse(apiUrl, HttpMethod.POST, Map.class);
     }
 

@@ -13,12 +13,14 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class FacebookSource implements Source {
 
+    final FacebookApi api;
+    public FacebookSource(FacebookApi api) {
+        this.api = api;
+    }
+
     public String getIdentifier() {
         return "facebook";
     }
-
-    @Autowired
-    FacebookApi api;
 
     public List<ChannelMetadata> getAvailableChannels(String token) throws SourceApiException {
         try {
@@ -36,7 +38,7 @@ public class FacebookSource implements Source {
         }
     }
 
-    public ChannelMetadata connectChannel(String token, String sourceChannelId) throws SourceApiException  {
+    public ChannelMetadata connectChannel(String token, String sourceChannelId) throws SourceApiException {
         try {
             final String longLivingUserToken = api.exchangeToLongLivingUserAccessToken(token);
             final FbPageWithConnectInfo fbPageWithConnectInfo = api.getPageForUser(sourceChannelId, longLivingUserToken);
@@ -55,6 +57,5 @@ public class FacebookSource implements Source {
 
     @Override
     public void disconnectChannel(String token, String sourceChannelId) {
-
     }
 }

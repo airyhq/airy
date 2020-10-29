@@ -69,4 +69,5 @@ sed -i "s/<ngrok_client_string>/fb-${RANDOM_INGRESS_ID}/" ~/airy-core/sources-fa
 kubectl apply -f ~/airy-core/sources-facebook-events-router.yaml
 kubectl apply -f ~/airy-core/api-admin.yaml
 kubectl apply -f ~/airy-core/api-auth.yaml
+kubectl apply -f ~/airy-core/api-communication.yaml
 kubectl apply -f ~/airy-core/sources-facebook-webhook.yaml

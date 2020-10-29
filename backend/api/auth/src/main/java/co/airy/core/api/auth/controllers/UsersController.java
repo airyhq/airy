@@ -21,6 +21,7 @@ import co.airy.spring.auth.Jwt;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +52,7 @@ public class UsersController {
         executor = Executors.newSingleThreadExecutor();
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/users.signup")
     ResponseEntity<?> signupUser(@RequestBody @Valid SignupRequestPayload signupRequestPayload) {
         final String password = signupRequestPayload.getPassword();
@@ -86,6 +88,7 @@ public class UsersController {
         );
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/users.login")
     ResponseEntity<LoginResponsePayload> loginUser(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
         final String password = loginRequestPayload.getPassword();
@@ -106,6 +109,7 @@ public class UsersController {
         );
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/users.request-password-reset")
     ResponseEntity<?> requestPasswordReset(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
         final String email = loginRequestPayload.getEmail();
@@ -116,6 +120,7 @@ public class UsersController {
         return ResponseEntity.ok(new EmptyResponsePayload());
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/users.password-reset")
     ResponseEntity<?> passwordReset(@RequestBody @Valid PasswordResetRequestPayload payload) {
         Map<String, Object> claims = jwt.getClaims(payload.getToken());

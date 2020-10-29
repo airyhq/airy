@@ -10,6 +10,7 @@ java_library(
     deps = [
         "//:jackson",
         "//:jwt",
+        "//:lombok",
         "//backend/lib/log",
         "//backend/lib/spring/core:spring-core",
         "@maven//:javax_servlet_javax_servlet_api",

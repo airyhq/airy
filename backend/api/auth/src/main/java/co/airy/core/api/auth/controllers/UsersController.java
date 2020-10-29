@@ -17,17 +17,19 @@ import co.airy.core.api.auth.services.Mail;
 import co.airy.core.api.auth.services.Password;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestError;
+import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.auth.Jwt;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -52,7 +54,11 @@ public class UsersController {
         executor = Executors.newSingleThreadExecutor();
     }
 
-    @PreAuthorize("permitAll()")
+    @Bean
+    public IgnoreAuthPattern ignoreAuthPattern() {
+        return new IgnoreAuthPattern("/users.signup", "/users.login", "/users.request-password-reset", "/users.password-reset");
+    }
+
     @PostMapping("/users.signup")
     ResponseEntity<?> signupUser(@RequestBody @Valid SignupRequestPayload signupRequestPayload) {
         final String password = signupRequestPayload.getPassword();
@@ -88,7 +94,6 @@ public class UsersController {
         );
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/users.login")
     ResponseEntity<LoginResponsePayload> loginUser(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
         final String password = loginRequestPayload.getPassword();
@@ -109,7 +114,6 @@ public class UsersController {
         );
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/users.request-password-reset")
     ResponseEntity<?> requestPasswordReset(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
         final String email = loginRequestPayload.getEmail();
@@ -120,7 +124,6 @@ public class UsersController {
         return ResponseEntity.ok(new EmptyResponsePayload());
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/users.password-reset")
     ResponseEntity<?> passwordReset(@RequestBody @Valid PasswordResetRequestPayload payload) {
         Map<String, Object> claims = jwt.getClaims(payload.getToken());

@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -16,8 +18,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 )
 public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final Jwt jwt;
-    public AuthConfig(Jwt jwt) {
+    private final String[] ignoreAuthPatterns;
+    public AuthConfig(Jwt jwt, List<IgnoreAuthPattern> ignorePatternBeans) {
         this.jwt = jwt;
+        this.ignoreAuthPatterns = ignorePatternBeans.stream()
+                .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
+                .toArray(String[]::new);
     }
 
     @Override
@@ -26,6 +32,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
                 .authorizeRequests(authorize -> authorize
                         .antMatchers("/actuator/**", "/ws.communication").permitAll()
+                        .antMatchers(ignoreAuthPatterns).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement()

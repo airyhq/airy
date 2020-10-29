@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,7 +102,7 @@ public class ChatControllerTest {
         testDataInitialized = true;
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/health")).andExpect(status().isOk()),
+                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
                 "Application is not healthy");
     }
 

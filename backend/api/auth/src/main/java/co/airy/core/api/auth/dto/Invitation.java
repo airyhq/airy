@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jdbi.v3.core.mapper.reflect.ColumnName;
 
 import java.time.Instant;
 import java.util.UUID;

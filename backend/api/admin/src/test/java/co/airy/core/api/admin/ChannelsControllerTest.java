@@ -106,7 +106,7 @@ public class ChannelsControllerTest {
                 connectedChannel.getId(), connectedChannel));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/health")).andExpect(status().isOk()),
+                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
                 "Application is not healthy");
     }
 

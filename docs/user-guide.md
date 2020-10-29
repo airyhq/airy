@@ -78,6 +78,11 @@ $ cd infrastructure
 $ vagrant ssh
 $ /vagrant/scripts/status.sh
 ```
+or
+```sh
+$ cd infrastructure
+$ vagrant ssh -c /vagrant/scripts/status.sh
+```
 
 ### Uninstall the Airy Core Platform Box
 

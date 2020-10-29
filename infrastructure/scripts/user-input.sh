@@ -29,16 +29,24 @@ if test -f "${CONFIG_FILE}"; then
     done < ${CONFIG_FILE}
 fi
 
+mkdir -p ~/airy-core
 cp ../deployments/sources-facebook-events-router.yaml ~/airy-core/
 cp ../deployments/api-admin.yaml ~/airy-core/
 cp ../deployments/api-auth.yaml ~/airy-core/
 cp ../deployments/sources-facebook-webhook.yaml ~/airy-core/
 cp ../deployments/api-communication.yaml ~/airy-core/
 
+RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
+cp -R /vagrant/helm-chart ~/airy-core/
+sed "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" /vagrant/helm-chart/charts/postgres/values.yaml > ~/airy-core/helm-chart/charts/postgres/values.yaml
+/usr/local/bin/helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s
+kubectl delete pods -l app=postgres
+sed -i "s/<pg_password>/${RANDOM_POSTGRES_PASSWORD}/" ~/airy-core/api-auth.yaml
+
 RANDOM_JWT_SECRET=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 128; echo`
-sed -i "s/<jwt_secret>/$RANDOM_JWT_SECRET/" ~/airy-core/api-auth.yaml
-sed -i "s/<jwt_secret>/$RANDOM_JWT_SECRET/" ~/airy-core/api-admin.yaml
-sed -i "s/<jwt_secret>/$RANDOM_JWT_SECRET/" ~/airy-core/api-communication.yaml
+sed -i "s/<jwt_secret>/${RANDOM_JWT_SECRET}/" ~/airy-core/api-auth.yaml
+sed -i "s/<jwt_secret>/${RANDOM_JWT_SECRET}/" ~/airy-core/api-admin.yaml
+sed -i "s/<jwt_secret>/${RANDOM_JWT_SECRET}/" ~/airy-core/api-communication.yaml
 
 sed -i "s/<fb_app_id>/${config[FB_APP_ID]}/" ~/airy-core/sources-facebook-events-router.yaml
 sed -i "s/<fb_app_id>/${config[FB_APP_ID]}/" ~/airy-core/api-admin.yaml

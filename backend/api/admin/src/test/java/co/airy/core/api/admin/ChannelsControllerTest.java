@@ -9,8 +9,8 @@ import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,11 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,8 +36,6 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,9 +53,7 @@ public class ChannelsControllerTest {
     private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
 
     @Autowired
-    private MockMvc mvc;
-    @Autowired
-    private Jwt jwt;
+    private WebTestHelper webTestHelper;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -106,12 +99,12 @@ public class ChannelsControllerTest {
                 connectedChannel.getId(), connectedChannel));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
+                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
                 "Application is not healthy");
     }
 
     @Test
-    void connectedChannels() throws Exception {
+    void canListChannels() throws Exception {
         final String disconnectedChannel = "channel-id-2";
 
         testHelper.produceRecords(List.of(
@@ -125,8 +118,7 @@ public class ChannelsControllerTest {
                                 .build()))
         );
 
-        testHelper.waitForCondition(() -> mvc.perform(post("/channels.list").
-                        headers(buildHeaders()))
+        testHelper.waitForCondition(() -> webTestHelper.post("/channels.list", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data.length()", greaterThanOrEqualTo(1)))
                         .andExpect(jsonPath("$.data[*].id").value(not(contains(disconnectedChannel))))
@@ -134,7 +126,7 @@ public class ChannelsControllerTest {
     }
 
     @Test
-    void exploreChannels() throws Exception {
+    void canExploreChannels() throws Exception {
         final String channelName = "channel-name";
 
         doReturn(List.of(
@@ -147,9 +139,8 @@ public class ChannelsControllerTest {
                         .build()
         )).when(facebookSource).getAvailableChannels(facebookToken);
 
-        testHelper.waitForCondition(() -> mvc.perform(post("/channels.explore")
-                        .headers(buildHeaders())
-                        .content("{\"token\":\"" + facebookToken + "\",\"source\":\"facebook\"}"))
+        testHelper.waitForCondition(() -> webTestHelper.post("/channels.explore",
+                "{\"token\":\"" + facebookToken + "\",\"source\":\"facebook\"}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(2)))
                         .andExpect(jsonPath("$.data[0].name", equalTo(channelName)))
@@ -160,7 +151,7 @@ public class ChannelsControllerTest {
 
 
     @Test
-    void connectChannel() throws Exception {
+    void canConnectChannel() throws Exception {
         final String token = "token";
         final String channelName = "channel-name";
         final String sourceChannelId = "ps-id";
@@ -172,12 +163,11 @@ public class ChannelsControllerTest {
                 "\"name\":\"" + channelName + "\"" +
                 "}";
 
-        testHelper.waitForCondition(() -> mvc.perform(post("/channels.connect")
-                        .headers(buildHeaders())
-                        .content(payload))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.name", equalTo(channelName)))
-                        .andExpect(jsonPath("$.source_channel_id", equalTo(sourceChannelId)))
+        testHelper.waitForCondition(() ->
+                        webTestHelper.post("/channels.connect", payload, "user-id")
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.name", equalTo(channelName)))
+                                .andExpect(jsonPath("$.source_channel_id", equalTo(sourceChannelId)))
                 , "/channels.connect failed");
     }
 
@@ -196,21 +186,13 @@ public class ChannelsControllerTest {
 
         testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, channel));
 
-        testHelper.waitForCondition(() -> mvc.perform(post("/channels.disconnect")
-                        .headers(buildHeaders())
-                        .content("{\"channel_id\":\"" + channelId + "\"}"))
-                        .andExpect(status().isOk()),
+        testHelper.waitForCondition(() ->
+                        webTestHelper.post("/channels.disconnect",
+                                "{\"channel_id\":\"" + channelId + "\"}", "user-id")
+                                .andExpect(status().isOk()),
                 "/channels.disconnect failed");
 
         Mockito.verify(facebookSource).disconnectChannel(channel.getToken(), channel.getSourceChannelId());
     }
 
-
-    private HttpHeaders buildHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
-        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id"));
-
-        return headers;
-    }
 }

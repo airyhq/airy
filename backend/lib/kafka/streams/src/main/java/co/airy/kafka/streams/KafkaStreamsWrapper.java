@@ -42,6 +42,7 @@ public class KafkaStreamsWrapper {
     private int threadCount;
     private boolean cleanup;
     private int sessionTimeoutMs;
+    private int replicationFactor;
     private int heartbeatIntervalMs;
     private int pollMs;
     private int maxPollRecords;
@@ -106,6 +107,11 @@ public class KafkaStreamsWrapper {
 
     public KafkaStreamsWrapper withSessionTimeoutMs(int sessionTimeoutMs) {
         this.sessionTimeoutMs = sessionTimeoutMs;
+        return this;
+    }
+
+    public KafkaStreamsWrapper withReplicationFactor(int replicationFactor) {
+        this.replicationFactor = replicationFactor;
         return this;
     }
 
@@ -226,7 +232,7 @@ public class KafkaStreamsWrapper {
         props.put(StreamsConfig.consumerPrefix(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG), sessionTimeoutMs);
         props.put(StreamsConfig.consumerPrefix(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG), heartbeatIntervalMs);
 
-        props.put(StreamsConfig.REPLICATION_FACTOR_CONFIG, testMode ? 1 : 2);
+        props.put(StreamsConfig.REPLICATION_FACTOR_CONFIG, testMode ? 1 : this.replicationFactor);
 
         props.put(StreamsConfig.producerPrefix(ProducerConfig.COMPRESSION_TYPE_CONFIG), "lz4");
 

@@ -42,13 +42,3 @@ Platform box or directly:
 ```sh
 vagrant ssh -c /vagrant/scripts/status.sh
 ```
-
-## Prepared images
-
-We packaged the whole Airy Core Platform in a
-[Vagrant](https://www.vagrantup.com/) image (box), hosted in an s3 bucket in
-AWS. The `../scripts/bootstrap.sh` script pulls the box and runs it on the local
-machine.
-
-We create images with [Packer](https://www.packer.io/). The Packer code is in
-the `images` directory.

@@ -15,7 +15,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +37,6 @@ public class ChatController {
         this.objectMapper = objectMapper;
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/chatplugin.authenticate")
     ResponseEntity<AuthenticationResponsePayload> authenticateVisitor(@RequestBody @Valid AuthenticationRequestPayload requestPayload) {
         final String channelId = requestPayload.getChannelId().toString();

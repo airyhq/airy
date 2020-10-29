@@ -142,7 +142,7 @@ class ConversationsFilterTest {
         testHelper.produceRecords(getConversationRecords(conversations));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/health")).andExpect(status().isOk()),
+                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
                 "Application is not healthy"
         );
 

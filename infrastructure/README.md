@@ -38,7 +38,10 @@ public endpoint (ex. https://some-random-string.tunnel.airy.co) and redirects
 the traffic to the local Facebook webhook pod. When starting, the Airy Core
 Platform prints the public URL for the Facebook webhook. You can also check it
 by running the `/vagrant/scripts/status.sh` script from inside the Airy Core
-Platform box.
+Platform box or directly:
+```sh
+vagrant ssh -c /vagrant/scripts/status.sh
+```
 
 ## Prepared images
 

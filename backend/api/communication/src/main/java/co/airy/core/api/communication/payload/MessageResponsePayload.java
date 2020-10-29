@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 import static co.airy.payload.format.DateFormat.ISO_FROM_MILLIS;
 
 @Data

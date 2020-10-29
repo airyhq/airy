@@ -12,17 +12,17 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.ExecutionException;
 
-@RestController
-public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+@Component
+public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "sources.ChatPluginStores";
 
     private final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
@@ -78,10 +78,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         startStream();
     }
 
-    @GetMapping("/health")
-    ResponseEntity<Void> health() {
+    @Override
+    public Health health() {
         getChannelsStore();
-        return ResponseEntity.ok().build();
+        return Health.status(Status.UP).build();
     }
 }
 

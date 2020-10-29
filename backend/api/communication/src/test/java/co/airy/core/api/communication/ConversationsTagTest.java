@@ -28,7 +28,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
@@ -79,7 +78,7 @@ class ConversationsTagTest {
     @BeforeEach
     void init() throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/health")).andExpect(status().isOk()),
+                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
                 "Application is not healthy");
     }
 

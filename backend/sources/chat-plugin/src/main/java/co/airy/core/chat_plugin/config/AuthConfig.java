@@ -24,8 +24,8 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         http.cors().disable().csrf().disable()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
                 .authorizeRequests()
-                .antMatchers("/ws.chatplugin").permitAll()
-                .mvcMatchers("/health", "/chatplugin.authenticate").permitAll()
+                .antMatchers("/actuator/**", "/ws.chatplugin").permitAll()
+                .mvcMatchers("/chatplugin.authenticate").permitAll()
                 .anyRequest().authenticated();
     }
 }

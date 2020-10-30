@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.ServletException;
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.Charset;
 import java.security.Key;
@@ -56,7 +57,7 @@ public class Jwt {
         return builder.compact();
     }
 
-    public String authenticate(final String authHeader) throws HttpClientErrorException.Unauthorized {
+    public String authenticate(final String authHeader) {
         Claims claims = null;
         if (authHeader != null) {
             try {
@@ -67,7 +68,7 @@ public class Jwt {
         }
 
         if (claims == null) {
-            throw new HttpClientErrorException(UNAUTHORIZED, "Unauthorized", null, null, Charset.defaultCharset());
+            return null;
         }
 
         String userId;
@@ -76,7 +77,7 @@ public class Jwt {
             return userId;
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new HttpClientErrorException(UNAUTHORIZED, "Unauthorized", null, null, Charset.defaultCharset());
+            return null;
         }
     }
 

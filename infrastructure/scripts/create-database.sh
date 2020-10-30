@@ -2,7 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-while ! nc -z postgres 5432; do sleep 10; echo "Waiting for Postgres to start..."; done
+kubectl scale deployment postgres --replicas=1
+/root/wait-for-service.sh postgres 5432 5 Postgres
 
 apt update
 apt-get install postgresql-client -y --force-yes

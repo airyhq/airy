@@ -61,7 +61,6 @@ sed -i "s/<mail_username>/${config[MAIL_USERNAME]}/" ~/airy-core/api-auth.yaml
 sed -i "s/<mail_password>/${config[MAIL_PASSWORD]}/" ~/airy-core/api-auth.yaml
 sed -i "s/<mail_from>/${config[MAIL_FROM]}/" ~/airy-core/api-auth.yaml
 
-
 # Generate random string for the ngrok webhook
 RANDOM_INGRESS_ID=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 16; echo`
 sed -i "s/<ngrok_client_string>/fb-${RANDOM_INGRESS_ID}/" ~/airy-core/sources-facebook-webhook.yaml
@@ -70,3 +69,8 @@ kubectl apply -f ~/airy-core/sources-facebook-events-router.yaml
 kubectl apply -f ~/airy-core/api-admin.yaml
 kubectl apply -f ~/airy-core/api-auth.yaml
 kubectl apply -f ~/airy-core/sources-facebook-webhook.yaml
+
+kubectl scale deployment sources-facebook-events-router --replicas=1
+kubectl scale deployment api-admin --replicas=1
+kubectl scale deployment api-auth --replicas=1
+kubectl scale deployment sources-facebook-webhook --replicas=1

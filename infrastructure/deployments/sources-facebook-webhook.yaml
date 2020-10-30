@@ -6,7 +6,7 @@ metadata:
   labels:
     app: sources-facebook-webhook
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: sources-facebook-webhook

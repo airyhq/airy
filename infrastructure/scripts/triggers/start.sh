@@ -10,15 +10,15 @@ done
 
 kubectl cp /vagrant/scripts/triggers/wait-for-service.sh kafka-client:/root
 kubectl scale statefulset airy-cp-zookeeper --replicas=1
-kubectl exec -it kafka-client -- /root/wait-for-service.sh airy-cp-zookeeper 2181 10 Zookeeper 1>/dev/null
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-zookeeper 2181 10 Zookeeper
 kubectl scale statefulset airy-cp-kafka --replicas=1 
-kubectl exec -it kafka-client -- /root/wait-for-service.sh airy-cp-kafka 9092 10 Kafka 1>/dev/null
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-kafka 9092 10 Kafka
 kubectl scale statefulset redis-cluster --replicas=1
-kubectl exec -it kafka-client -- /root/wait-for-service.sh redis-cluster 6379 5 Redis 1>/dev/null
+kubectl exec kafka-client -- /root/wait-for-service.sh redis-cluster 6379 5 Redis
 kubectl scale deployment postgres --replicas=1
-kubectl exec -it kafka-client -- /root/wait-for-service.sh postgres 5432 5 Postgres 1>/dev/null
+kubectl exec kafka-client -- /root/wait-for-service.sh postgres 5432 5 Postgres
 kubectl scale deployment airy-cp-schema-registry --replicas=1
-kubectl exec -it kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 5 Postgres 1>/dev/null
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 5 Postgres
 echo "Starting up all the apps"
 kubectl scale deployment api-admin --replicas=1
 kubectl scale deployment api-auth --replicas=1

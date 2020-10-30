@@ -43,6 +43,9 @@ public class KafkaStreamsConfig {
     @Value("${kafka.session.timeout.ms:30000}")
     private int sessionTimeoutMs;
 
+    @Value("${kafka.replication.factor:1}")
+    private int replicationFactor;
+
     @Value("${kafka.heartbeat.interval.ms:10000}")
     private int heartbeatIntervalMs;
 
@@ -76,6 +79,7 @@ public class KafkaStreamsConfig {
                 .withCleanup(cleanup)
                 .withCacheMaxBytes(cacheMaxBytes)
                 .withSessionTimeoutMs(sessionTimeoutMs)
+                .withReplicationFactor(replicationFactor)
                 .withHeartbeatIntervalMs(heartbeatIntervalMs)
                 .withPollMs(pollMs)
                 .withMaxPollRecords(maxPollRecords)

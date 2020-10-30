@@ -7,5 +7,4 @@ exports_files([
     "springboot_pkg.sh",
     "helper.bzl",
     "log4j2.properties",
-    "log4j2-test.properties",
 ])

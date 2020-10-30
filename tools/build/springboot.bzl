@@ -101,15 +101,6 @@ def springboot(name, main_class, deps, srcs, resources = []):
 
         resources.append(merged_log4j)
 
-    log4j_test = "src/main/resources/log4j2-test.properties"
-    native.genrule(
-        name = "log4j_test_file",
-        cmd = "cp $< $@",
-        outs = [log4j_test],
-        srcs = ["//tools/build:log4j2-test.properties"],
-    )
-    resources.append(log4j_test)
-
     # SUBRULE 1: COMPILE THE SPRING BOOT APPLICATION
     java_binary(
         name = appcompile_rule,

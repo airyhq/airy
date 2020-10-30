@@ -1,6 +1,4 @@
-# components
-
-> Airy Components Library
+# Airy Components Library
 
 ## Install
 

@@ -38,7 +38,7 @@ jobs:
 
       - name: Test
         run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" test --test_output=summary //...
+          "${GITHUB_WORKSPACE}/bin/bazel" test //...
 
       - uses: chrislennon/action-aws-cli@v1.1
 

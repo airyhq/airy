@@ -5,8 +5,8 @@ import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,18 +16,13 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,10 +37,7 @@ public class WebhooksControllerTest {
     private static TestHelper testHelper;
 
     @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private Jwt jwt;
+    private WebTestHelper webTestHelper;
 
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
@@ -69,35 +61,26 @@ public class WebhooksControllerTest {
     @BeforeEach
     void beforeEach() throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
+                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
                 "Application is not healthy");
     }
 
-
     @Test
-    public void createAndUnsubscribeWebhook() throws Exception {
-        mvc.perform(post("/webhooks.info")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id")))
-                .andExpect(status().isNotFound());
+    public void canManageWebhook() throws Exception {
+        webTestHelper.post("/webhooks.info", "{}", "user-id").andExpect(status().isNotFound());
 
         final String url = "http://example.org/webhook";
         final String xAuthHeader = "auth token";
 
-        final String requestContent = "{\"url\":\"" + url + "\",\"headers\":{\"X-Auth\":\"" + xAuthHeader + "\"}}";
+        final String payload = "{\"url\":\"" + url + "\",\"headers\":{\"X-Auth\":\"" + xAuthHeader + "\"}}";
 
-        mvc.perform(post("/webhooks.subscribe")
-                .content(requestContent)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id")))
+        webTestHelper.post("/webhooks.subscribe", payload, "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", equalTo(url)))
                 .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
                 .andExpect(jsonPath("$.api_secret", is(not(nullValue()))));
 
-        testHelper.waitForCondition(() -> mvc.perform(post("/webhooks.info")
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
-                        .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id")))
+        testHelper.waitForCondition(() -> webTestHelper.post("/webhooks.info", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.url", equalTo(url)))
                         .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
@@ -105,14 +88,13 @@ public class WebhooksControllerTest {
                 "Webhook was not stored"
         );
 
-
-        mvc.perform(post("/webhooks.unsubscribe")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id")))
+        webTestHelper.post("/webhooks.unsubscribe", payload, "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", equalTo(url)))
                 .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
                 .andExpect(jsonPath("$.api_secret", is(not(nullValue()))));
+
+        //TODO add assertion?
     }
 
 }

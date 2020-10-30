@@ -11,6 +11,7 @@ import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,10 +48,7 @@ class UnreadCountTest {
     private static TestHelper testHelper;
 
     @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private Jwt jwt;
+    private WebTestHelper webTestHelper;
 
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
@@ -77,12 +75,12 @@ class UnreadCountTest {
     @BeforeEach
     void init() throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
+                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
                 "Application is not healthy");
     }
 
     @Test
-    void shouldResetTheUnreadCount() throws Exception {
+    void canResetUnreadCount() throws Exception {
         final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
@@ -106,35 +104,20 @@ class UnreadCountTest {
                         .build()
         ));
 
-        final String conversationByIdRequest = "{\"conversation_id\":\"" + conversationId + "\"}";
+        final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.info")
-                        .headers(buildHeaders(userId))
-                        .content(conversationByIdRequest))
+                () -> webTestHelper.post("/conversations.info", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.unread_message_count", equalTo(unreadMessages))),
-                "Conversation list not showing unread count"
-        );
+                "Conversation list not showing unread count");
 
-        mvc.perform(post("/conversations.read")
-                .headers(buildHeaders(userId))
-                .content(conversationByIdRequest))
-                .andExpect(status().isAccepted());
+        webTestHelper.post("/conversations.read", payload, userId).andExpect(status().isAccepted());
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.info")
-                        .headers(buildHeaders(userId))
-                        .content(conversationByIdRequest))
+                () -> webTestHelper.post("/conversations.info", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.unread_message_count", equalTo(0))),
                 "Conversation unread count did not reset");
-    }
-
-    private HttpHeaders buildHeaders(final String userId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
-        return headers;
     }
 }

@@ -11,11 +11,12 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,20 +25,17 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
@@ -68,10 +66,7 @@ public class SendMessageControllerTest {
                     .build());
 
     @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private Jwt jwt;
+    private WebTestHelper webTestHelper;
 
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
@@ -106,44 +101,35 @@ public class SendMessageControllerTest {
         testHelper.produceRecords(getConversationRecords(conversations));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
+                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
                 "Application is not healthy");
 
         testDataInitialized = true;
     }
 
     @Test
-    void dispatchesCorrectly() throws Exception {
-        testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
-                "Application is not healthy");
-
-        String facebookPayload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"message\": { \"text\": \"answer is 42\" }}";
+    void canSendMessages() throws Exception {
+        String payload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"message\": { \"text\": \"answer is 42\" }}";
         final String userId = "user-id";
 
         testHelper.waitForCondition(() ->
-                        mvc.perform(post("/messages.send")
-                                .headers(buildHeaders(userId))
-                                .content(facebookPayload))
-                                .andExpect(status().isOk()),
+                        webTestHelper.post("/messages.send", payload, userId).andExpect(status().isOk()),
                 "Facebook Message was not sent");
 
         List<ConsumerRecord<String, Message>> records = testHelper.consumeRecords(2, applicationCommunicationMessages.name());
         assertThat(records, hasSize(2));
 
-        final Message message = records.stream()
+        final Optional<Message> maybeMessage = records.stream()
                 .map(ConsumerRecord::value)
                 .filter(m -> m.getSenderType().equals(SenderType.APP_USER))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
+
+        if (maybeMessage.isEmpty()) {
+            fail("message not present");
+        }
+
+        final Message message = maybeMessage.get();
         assertThat(message.getContent(), is("{\"text\":\"answer is 42\"}"));
         assertThat(message.getSenderId(), is(userId));
-    }
-
-    private HttpHeaders buildHeaders(String userId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
-        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
-        return headers;
     }
 }

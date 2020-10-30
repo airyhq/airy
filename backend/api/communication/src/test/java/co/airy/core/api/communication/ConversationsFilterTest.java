@@ -9,8 +9,8 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,11 +21,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.Map;
@@ -35,8 +32,6 @@ import static co.airy.core.api.communication.util.ConversationGenerator.CreateCo
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,10 +46,7 @@ class ConversationsFilterTest {
     private static TestHelper testHelper;
 
     @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private Jwt jwt;
+    private WebTestHelper webTestHelper;
 
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
@@ -142,28 +134,24 @@ class ConversationsFilterTest {
         testHelper.produceRecords(getConversationRecords(conversations));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
+                "Application is not healthy");
 
         testDataInitialized = true;
     }
 
     @Test
-    void returnAll() throws Exception {
+    void canFetchAllConversations() throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.list")
-                        .headers(buildHeaders(userId))
-                        .content("{}}"))
+                () -> webTestHelper.post("/conversations.list", "{} ", userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
                         .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
-                "Expected one conversation returned"
-        );
+                "Expected one conversation returned");
     }
 
     @Test
-    void filterOutConversationForConversationId() throws Exception {
+    void canFilterByConversationId() throws Exception {
         String payload = "{\"filter\": {\"conversation_ids\": [\"" + conversationIdToFind + "\"]}}";
 
         checkOneConversationExists(payload);
@@ -171,7 +159,7 @@ class ConversationsFilterTest {
 
 
     @Test
-    void filterInConversationByDisplayName() throws Exception {
+    void canFilterByDisplayName() throws Exception {
         String payload = "{\"filter\": {\"display_names\": [\"" + firstNameToFind + "\"]}}";
 
         checkOneConversationExists(payload);
@@ -186,32 +174,18 @@ class ConversationsFilterTest {
 
     private void checkNoConversationReturned(String payload) throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.list")
-                        .headers(buildHeaders(userId))
-                        .content(payload))
+                () -> webTestHelper.post("/conversations.list", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(0))),
-                "Expected no conversations returned"
-        );
+                "Expected no conversations returned");
     }
 
     private void checkOneConversationExists(String payload) throws InterruptedException {
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.list")
-                        .headers(buildHeaders(userId))
-                        .content(payload))
+                () -> webTestHelper.post("/conversations.list", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))
                         .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
-                "Expected one conversation returned"
-        );
-    }
-
-
-    private HttpHeaders buildHeaders(final String userId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
-        return headers;
+                "Expected one conversation returned");
     }
 }

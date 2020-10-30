@@ -5,8 +5,8 @@ import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
@@ -18,17 +18,12 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,10 +39,10 @@ public class TagsControllerTest {
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
     private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
     private static TestHelper testHelper;
+
     @Autowired
-    private MockMvc mvc;
-    @Autowired
-    private Jwt jwt;
+    private WebTestHelper webTestHelper;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -69,20 +64,18 @@ public class TagsControllerTest {
     @BeforeEach
     void init() throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
+                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
                 "Application is not healthy");
     }
 
     @Test
-    void tagsIntegration() throws Exception {
+    void canManageTags() throws Exception {
         final String name = "awesome-tag";
         final String color = "tag-red";
         final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
 
-        final String createTagResponse = mvc.perform(post("/tags.create")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id"))
-                .content(payload))
+
+        final String createTagResponse = webTestHelper.post("/tags.create", payload, "user-id")
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
@@ -90,39 +83,35 @@ public class TagsControllerTest {
 
         final JsonNode jsonNode = objectMapper.readTree(createTagResponse);
         final String tagId = jsonNode.get("id").textValue();
+
+        //TODO wait for tag to be there
         TimeUnit.SECONDS.sleep(5);
-        mvc.perform(post("/tags.list")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id")))
+
+        webTestHelper.post("/tags.list", "{}", "user-id")
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(1)))
                 .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
                 .andExpect(jsonPath("$.data[0].name").value(is(name)))
                 .andExpect(jsonPath("$.data[0].color").value(is("RED")));
 
-        mvc.perform(post("/tags.update")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id"))
-                .content("{\"id\": \"" + tagId + "\", \"name\": \"new-name\", \"color\": \"" + color + "\"}"))
+        webTestHelper.post("/tags.update",
+                "{\"id\": \"" + tagId + "\", \"name\": \"new-name\", \"color\": \"" + color + "\"}", "user-id")
                 .andExpect(status().isOk());
 
-        mvc.perform(post("/tags.list")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id")))
+        webTestHelper.post("/tags.list", "{}", "user-id")
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(1)))
                 .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
                 .andExpect(jsonPath("$.data[0].name").value(is("new-name")))
                 .andExpect(jsonPath("$.data[0].color").value(is("RED")));
 
-        mvc.perform(post("/tags.delete")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id"))
-                .content("{\"id\": \"" + tagId + "\"}"))
-                .andExpect(status().isOk());
+        webTestHelper.post("/tags.delete", "{\"id\": \"" + tagId + "\"}", "user-id").andExpect(status().isOk());
 
+        //TODO wait for tag deletion
         TimeUnit.SECONDS.sleep(5);
-        mvc.perform(post("/tags.list")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor("user-id")))
+
+        webTestHelper.post("/tags.list", "{}", "user-id")
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(0)));
     }
 }

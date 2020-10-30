@@ -13,5 +13,6 @@ public class CreateTagRequestPayload {
     @NotNull
     private String name;
 
+    @NotNull
     private String color;
 }

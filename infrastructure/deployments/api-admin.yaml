@@ -17,11 +17,13 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
       labels:
         app: api-admin
     spec:
       containers:
-      - name: api-admin
+      - name: app
         image: ghcr.io/airyhq/api/admin:latest
         imagePullPolicy: Always
         env:

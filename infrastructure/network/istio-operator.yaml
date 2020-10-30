@@ -67,4 +67,7 @@ spec:
       enabled: false
     istiocoredns:
       enabled: false
-
+  values:
+    global:
+      proxy:
+        autoInject: disabled

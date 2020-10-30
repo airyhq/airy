@@ -21,7 +21,7 @@ spec:
         app: sources-facebook-events-router
     spec:
       containers:
-      - name: sources-facebook-events-router
+      - name: app
         image: ghcr.io/airyhq/sources/facebook-events-router:latest
         imagePullPolicy: Always
         env:

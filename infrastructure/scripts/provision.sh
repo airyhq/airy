@@ -54,11 +54,6 @@ kubectl apply -f ../network/istio-controller.yaml
 kubectl apply -f ../network/istio-operator.yaml
 kubectl label namespace default istio-injection=enabled --overwrite
 
-echo "Deploying airy-core apps"
-sed "s/<pg_password>/${RANDOM_POSTGRES_PASSWORD}/" ../deployments/api-auth.yaml | kubectl apply -f -
-kubectl apply -f ../deployments/api-communication.yaml
-kubectl apply -f ../deployments/sources-facebook-sender.yaml
-
 echo "Deploying ingress routes"
 while ! `kubectl get crd 2>/dev/null| grep -q gateways.networking.istio.io`
 do

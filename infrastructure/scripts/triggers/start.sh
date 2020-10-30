@@ -18,7 +18,7 @@ kubectl exec kafka-client -- /root/wait-for-service.sh redis-cluster 6379 5 Redi
 kubectl scale deployment postgres --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh postgres 5432 5 Postgres
 kubectl scale deployment airy-cp-schema-registry --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 5 Postgres
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 10 Schema-registry
 echo "Starting up all the apps"
 kubectl scale deployment api-admin --replicas=1
 kubectl scale deployment api-auth --replicas=1

@@ -21,7 +21,7 @@ spec:
         app: webhook-consumer
     spec:
       containers:
-      - name: webhook-consumer
+      - name: app
         image: ghcr.io/airyhq/webhook/consumer:latest
         imagePullPolicy: Always
         env:

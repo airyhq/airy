@@ -17,11 +17,13 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
       labels:
         app: api-communication
     spec:
       containers:
-      - name: api-communication
+      - name: app
         image: ghcr.io/airyhq/api/communication:latest
         imagePullPolicy: Always
         env:

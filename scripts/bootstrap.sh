@@ -5,6 +5,10 @@ IFS=$'\n\t'
 ARCH=$(uname -m)
 OS=$(uname)
 
+if [[ $0 == "./bootstrap.sh" ]]; then
+  cd ..
+fi
+
 if ! command -v vagrant &> /dev/null
 then
     printf "\nVagrant binary not found. Attempting to install...\n"

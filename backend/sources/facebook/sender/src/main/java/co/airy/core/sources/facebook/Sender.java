@@ -31,7 +31,7 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
     @Autowired
     private KafkaStreamsWrapper streams;
 
-    private final String appId = "sources.facebook.EventsRouter";
+    private final String appId = "sources.facebook.Sender";
 
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();

@@ -31,7 +31,9 @@ export const SearchField = ({
 
   return (
     <div className={styles.component}>
-      <SearchIcon aria-hidden="true" className={styles.searchIcon} />
+      <div className={styles.searchIcon}>
+        <SearchIcon aria-hidden="true" className={styles.searchIcon} />
+      </div>      
       <input
         ref={inputRef}
         id={id}

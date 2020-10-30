@@ -12,6 +12,7 @@ import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.payload.format.DateFormat;
 import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -51,10 +52,7 @@ public class MessagesTest {
     private static TestHelper testHelper;
 
     @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private Jwt jwt;
+    private WebTestHelper webTestHelper;
 
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
@@ -81,12 +79,12 @@ public class MessagesTest {
     @BeforeEach
     void init() throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
+                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
                 "Application is not healthy");
     }
 
     @Test
-    void messageListOk() throws Exception {
+    void canFetchMessages() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
         final String channelId = "channelId";
         final String userId = "user-id";
@@ -105,12 +103,10 @@ public class MessagesTest {
 
         testHelper.produceRecords(records);
 
-        String requestPayload = "{\"conversation_id\":\"" + conversationId + "\"}";
+        final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/messages.list")
-                        .headers(buildHeaders(userId))
-                        .content(requestPayload))
+                () -> webTestHelper.post("/messages.list", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(messageCount)))
                         .andExpect(jsonPath("$.data[*].sent_at").value(contains(
@@ -121,10 +117,4 @@ public class MessagesTest {
                 , "/messages.list endpoint error");
     }
 
-    private HttpHeaders buildHeaders(String userId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
-        return headers;
-    }
 }

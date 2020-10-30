@@ -46,6 +46,7 @@ java_library(
             ":app",
             ":test-util",
             "//backend/lib/kafka/test:kafka-test",
+            "//backend/lib/spring/test:spring-test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

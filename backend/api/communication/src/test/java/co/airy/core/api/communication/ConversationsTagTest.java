@@ -9,8 +9,8 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.TestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,19 +21,14 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,10 +43,7 @@ class ConversationsTagTest {
     private static TestHelper testHelper;
 
     @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private Jwt jwt;
+    private WebTestHelper webTestHelper;
 
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
@@ -78,12 +70,12 @@ class ConversationsTagTest {
     @BeforeEach
     void init() throws Exception {
         testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
+                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
                 "Application is not healthy");
     }
 
     @Test
-    void tagsAndUntagsConversation() throws Exception {
+    void canTagAndUntagConversations() throws Exception {
         final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
@@ -105,49 +97,36 @@ class ConversationsTagTest {
         ));
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.info")
-                        .headers(buildHeaders(userId))
-                        .content("{\"conversation_id\":\"" + conversationId + "\"}"))
+                () -> webTestHelper.post("/conversations.info",
+                        "{\"conversation_id\":\"" + conversationId + "\"}", userId)
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.id", is(conversationId))), "Conversation was not created"
-        );
+                        .andExpect(jsonPath("$.id", is(conversationId))), "Conversation was not created");
 
         final String tagId = UUID.randomUUID().toString();
 
-        mvc.perform(post("/conversations.tag")
-                .headers(buildHeaders(userId))
-                .content("{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}"))
+        webTestHelper.post("/conversations.tag",
+                "{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}", userId)
                 .andExpect(status().isAccepted());
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.info")
-                        .headers(buildHeaders(userId))
-                        .content("{\"conversation_id\":\"" + conversationId + "\"}"))
+                () -> webTestHelper.post("/conversations.info",
+                        "{\"conversation_id\":\"" + conversationId + "\"}", userId)
+                        .andExpect(status().isOk())
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
                         .andExpect(jsonPath("$.tags", containsInAnyOrder(tagId))),
-                "Conversation was not tagged"
-        );
+                "Conversation was not tagged");
 
-        mvc.perform(post("/conversations.untag")
-                .headers(buildHeaders(userId))
-                .content("{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}"))
+        webTestHelper.post("/conversations.untag",
+                "{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}", userId)
                 .andExpect(status().isAccepted());
 
         testHelper.waitForCondition(
-                () -> mvc.perform(post("/conversations.info")
-                        .headers(buildHeaders(userId))
-                        .content("{\"conversation_id\":\"" + conversationId + "\"}"))
+                () -> webTestHelper.post("/conversations.info",
+                        "{\"conversation_id\":\"" + conversationId + "\"}", userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
                         .andExpect(jsonPath("$.tags.length()", is(0))),
                 "Conversation was not untagged");
-    }
-
-    private HttpHeaders buildHeaders(final String userId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId));
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
-        return headers;
     }
 }

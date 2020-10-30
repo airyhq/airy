@@ -17,8 +17,10 @@ import co.airy.core.api.auth.services.Mail;
 import co.airy.core.api.auth.services.Password;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestError;
+import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.auth.Jwt;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -49,6 +52,11 @@ public class UsersController {
         this.jwt = jwt;
         this.mail = mail;
         executor = Executors.newSingleThreadExecutor();
+    }
+
+    @Bean
+    public IgnoreAuthPattern ignoreAuthPattern() {
+        return new IgnoreAuthPattern("/users.signup", "/users.login", "/users.request-password-reset", "/users.password-reset");
     }
 
     @PostMapping("/users.signup")

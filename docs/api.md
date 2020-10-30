@@ -64,9 +64,9 @@ does not require a valid token to be present in the headers.
 **Sample Request**
 
 ```json5
-{ 
-  "email": "grace@example.com", 
-  "password": "avalidpassword" 
+{
+  "email": "grace@example.com",
+  "password": "avalidpassword"
 }
 ```
 
@@ -349,7 +349,7 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
 
 ```json5
 {
-  "conversation_id": "4242-4242-4242-424242", 
+  "conversation_id": "4242-4242-4242-424242",
   "cursor": "next-page-uuid", // optional
   "page_size": 2  // optional
 }
@@ -558,7 +558,7 @@ Subscribes the webhook for the first time or update its parameters.
 
 ```json5
 {
-  
+
   "url": "https://my-url-to-be-hit",
   "headers": {
     "X-Custom-Header": "custom-code-for-header"
@@ -576,7 +576,7 @@ Subscribes the webhook for the first time or update its parameters.
 
 ```json5
 {
-  
+
   "url": "https://my-url-to-be-hit",
   "headers": {
     "X-Custom-Header": "custom-code-for-header"

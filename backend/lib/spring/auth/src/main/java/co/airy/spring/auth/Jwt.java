@@ -50,7 +50,7 @@ public class Jwt {
                 .addClaims(claims)
                 .signWith(signingKey, SignatureAlgorithm.HS256);
 
-        Date exp = Date.from(Instant.now().plus(Duration.ofHours(1)));
+        Date exp = Date.from(Instant.now().plus(Duration.ofDays(1)));
         builder.setExpiration(exp);
 
         return builder.compact();

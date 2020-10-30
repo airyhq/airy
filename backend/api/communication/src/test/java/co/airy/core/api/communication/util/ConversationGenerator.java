@@ -19,8 +19,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.toList;
 
 public class ConversationGenerator {
 
@@ -40,7 +41,7 @@ public class ConversationGenerator {
         return conversations.stream()
                 .map(ConversationGenerator::getConversationRecords)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public static List<ProducerRecord<String, SpecificRecordBase>> getConversationRecords(CreateConversation conversation) {

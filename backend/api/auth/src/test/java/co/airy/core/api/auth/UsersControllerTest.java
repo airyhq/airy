@@ -7,6 +7,7 @@ import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Mail;
 import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
@@ -20,10 +21,7 @@ import org.springframework.boot.autoconfigure.flyway.FlywayDataSource;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
 import java.util.UUID;
@@ -34,8 +32,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,16 +56,16 @@ public class UsersControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private MockMvc mvc;
+    private WebTestHelper webTestHelper;
+
+    @Autowired
+    private Jwt jwt;
 
     @Autowired
     private InvitationDAO invitationDAO;
 
     @Autowired
     private UserDAO userDAO;
-
-    @Autowired
-    private Jwt jwt;
 
     @MockBean
     private Mail mail;
@@ -82,36 +80,29 @@ public class UsersControllerTest {
     }
 
     @Test
-    void userSignupAndLogin() throws Exception {
+    void canSignupAndLogin() throws Exception {
         final String firstName = "grace";
-        final String email = "grace@airy.co";
+        final String email = "grace@example.com";
         final String password = "trustno1";
 
         final String signUpRequest = "{\"email\":\"" + email + "\",\"first_name\":\"" + firstName + "\"," +
                 "\"last_name\":\"hopper\",\"password\":\"" + password + "\"}";
 
-        final String responseString = mvc.perform(post("/users.signup")
-                .content(signUpRequest)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+        final String responseString = webTestHelper.post("/users.signup", signUpRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token", not(nullValue())))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        mvc.perform(post("/users.signup")
-                .content(signUpRequest)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
-                .andExpect(status().isUnauthorized());
+        webTestHelper.post("/users.signup", signUpRequest).andExpect(status().isUnauthorized());
 
         final JsonNode jsonNode = objectMapper.readTree(responseString);
         final String id = jsonNode.get("id").textValue();
 
         final String loginRequest = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
 
-        mvc.perform(post("/users.login")
-                .content(loginRequest)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+        webTestHelper.post("/users.login", loginRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(id)))
                 .andExpect(jsonPath("$.first_name", equalTo(firstName)))
@@ -119,44 +110,35 @@ public class UsersControllerTest {
 
         final String loginRequestWrongPwd = "{\"email\":\"" + email + "\",\"password\":\"guess-i-should-have-trusted-a-password-manager\"}";
 
-        mvc.perform(post("/users.login")
-                .content(loginRequestWrongPwd)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
-                .andExpect(status().isUnauthorized());
+        webTestHelper.post("/users.login", loginRequestWrongPwd).andExpect(status().isUnauthorized());
     }
 
     @Test
-    void requestPasswordReset() throws Exception {
-        final String email = "ada@airy.co";
+    void canRestPassword() throws Exception {
+        final String email = "ada@example.com";
 
         final String signUpRequest = "{\"email\":\"" + email + "\",\"first_name\":\"something\"," +
                 "\"last_name\":\"hopper\",\"password\":\"trustno1\"}";
 
-        mvc.perform(post("/users.signup")
-                .content(signUpRequest)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()));
+        webTestHelper.post("/users.signup", signUpRequest).andExpect(status().isOk());
 
         final String passwordResetRequest = "{\"email\":\"" + email + "\"}";
 
-        doNothing().when(mail).send(Mockito.eq(email), Mockito.anyString(), Mockito.anyString());
+        doNothing().when(mail).send(Mockito.eq(email), anyString(), anyString());
 
-        mvc.perform(post("/users.request-password-reset")
-                .content(passwordResetRequest)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+        webTestHelper.post("/users.request-password-reset", passwordResetRequest)
                 .andExpect(status().isOk());
 
         TimeUnit.MILLISECONDS.sleep(500);
 
-        Mockito.verify(mail).send(Mockito.eq(email), Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(mail).send(Mockito.eq(email), anyString(), anyString());
     }
 
     @Test
-    void createsInvitation() throws Exception {
+    void canInviteUsers() throws Exception {
         final String userId = "user-id";
-        final String rawResponse = mvc.perform(post("/users.invite")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId))
-                .content("{\"email\": \"katherine.johnson@nasa.gov\"}"))
+        final String rawResponse = webTestHelper.post("/users.invite",
+                "{\"email\": \"katherine.johnson@example.com\"}", userId)
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
@@ -169,13 +151,11 @@ public class UsersControllerTest {
     }
 
     @Test
-    void acceptsInvitation() throws Exception {
-        final String email = "katherine.johnson@nasa.gov";
+    void canAcceptInvitations() throws Exception {
+        final String email = "katherine.johnson@example.com";
         final String userId = "user-id";
-        final String rawResponse = mvc.perform(post("/users.invite")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId))
-                .content("{\"email\": \"katherine.johnson@nasa.gov\"}"))
+        final String rawResponse = webTestHelper.post("/users.invite",
+                "{\"email\": \"katherine.johnson@example.com\"}", userId)
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
@@ -185,10 +165,8 @@ public class UsersControllerTest {
         final String requestContent = "{\"id\":\"" + invitationId + "\",\"first_name\":\"" + "Katherine" + "\"," +
                 "\"last_name\":\"Johnson\",\"password\":\"trustno1\"}";
 
-        final String responseString = mvc.perform(post("/users.accept-invitation")
-                .content(requestContent)
-                .header(HttpHeaders.AUTHORIZATION, jwt.tokenFor(userId))
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+        final String responseString = webTestHelper.post("/users.accept-invitation",
+                requestContent, "user-id")
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -206,14 +184,12 @@ public class UsersControllerTest {
     }
 
     @Test
-    void changesPassword() throws Exception {
-        final String email = "ada-2@airy.co";
+    void canChangePassword() throws Exception {
+        final String email = "ada-2@example.com";
         final String signUpRequest = "{\"email\":\"" + email + "\",\"first_name\":\"something\"," +
                 "\"last_name\":\"hopper\",\"password\":\"trustno1\"}";
 
-        final String signupResponse = mvc.perform(post("/users.signup")
-                .content(signUpRequest)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+        final String signupResponse = webTestHelper.post("/users.signup", signUpRequest)
                 .andReturn().getResponse().getContentAsString();
 
         final JsonNode jsonNode = objectMapper.readTree(signupResponse);
@@ -221,11 +197,9 @@ public class UsersControllerTest {
 
         final String requestPasswordRequest = "{\"email\":\"" + email + "\"}";
 
-        doNothing().when(mail).send(Mockito.eq(email), Mockito.anyString(), Mockito.anyString());
+        doNothing().when(mail).send(Mockito.eq(email), anyString(), anyString());
 
-         mvc.perform(post("/users.request-password-reset")
-                .content(requestPasswordRequest)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+        webTestHelper.post("/users.request-password-reset", requestPasswordRequest)
                 .andExpect(status().isOk());
 
         Map<String, Object> refreshClaim = Map.of("reset_pwd_for", userId);
@@ -233,10 +207,7 @@ public class UsersControllerTest {
 
         final String passwordResetRequest = "{\"token\":\"" + token + "\", \"new_password\": \"super-safe-password\"}";
 
-        mvc.perform(post("/users.password-reset")
-                .content(passwordResetRequest)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
-                .andExpect(status().isOk());
+        webTestHelper.post("/users.password-reset", passwordResetRequest).andExpect(status().isOk());
     }
 }
 

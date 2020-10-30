@@ -33,7 +33,7 @@ export const SearchField = ({
     <div className={styles.component}>
       <div className={styles.searchIcon}>
         <SearchIcon aria-hidden="true" className={styles.searchIcon} />
-      </div>      
+      </div>
       <input
         ref={inputRef}
         id={id}

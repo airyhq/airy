@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -75,6 +76,10 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                             .stream()
                             .flatMap(entry -> {
                                 List<JsonNode> messagingList = entry.getMessaging() != null ? entry.getMessaging() : entry.getStandby();
+
+                                if (messagingList == null) {
+                                    return Stream.empty();
+                                }
 
                                 return messagingList.stream().map(messaging -> {
                                     try {

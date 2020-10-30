@@ -38,7 +38,7 @@ jobs:
 
       - name: Test
         run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" test //...
+          "${GITHUB_WORKSPACE}/bin/bazel" test --action_env=ROOT_LOG_LEVEL=ERROR //...
 
       - uses: chrislennon/action-aws-cli@v1.1
 

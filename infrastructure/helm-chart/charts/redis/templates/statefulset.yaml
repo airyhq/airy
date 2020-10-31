@@ -4,7 +4,7 @@ metadata:
   name: redis-cluster
 spec:
   serviceName: redis-cluster
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: redis-cluster

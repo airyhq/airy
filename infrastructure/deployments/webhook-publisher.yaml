@@ -6,7 +6,7 @@ metadata:
   labels:
     app: webhook-publisher
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: webhook-publisher
@@ -21,14 +21,14 @@ spec:
         app: webhook-publisher
     spec:
       containers:
-      - name: webhook-publisher
+      - name: app
         image: ghcr.io/airyhq/webhook/publisher:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
-          value: http://airy-kafka-cp-schema-registry:8081
+          value: http://airy-cp-schema-registry:8081
         - name: SERVICE_NAME
           value: webhook-publisher
         - name: REDIS_HOSTNAME

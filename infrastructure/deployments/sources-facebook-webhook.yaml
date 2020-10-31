@@ -6,7 +6,7 @@ metadata:
   labels:
     app: sources-facebook-webhook
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: sources-facebook-webhook
@@ -21,14 +21,14 @@ spec:
         app: sources-facebook-webhook
     spec:
       containers:
-        - name: sources-facebook-webhook
+        - name: app
           image: ghcr.io/airyhq/sources/facebook-webhook:latest
           imagePullPolicy: Always
           env:
             - name: KAFKA_BROKERS
               value: airy-cp-kafka-headless:9092
             - name: KAFKA_SCHEMA_REGISTRY_URL
-              value: http://airy-kafka-cp-schema-registry:8081
+              value: http://airy-cp-schema-registry:8081
             - name: SERVICE_NAME
               value: sources-facebook-webhook
             - name: FB_WEBHOOK_SECRET

@@ -8,6 +8,8 @@ do
     echo "Waiting for ingressgateway to start... "
 done
 
+kubectl exec kafka-client -- /root/wait-for-service.sh api-auth 80 10 Airy-auth
+
 INGRESS_PORT=`kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}'`
 INGRESS_IP=`ip addr show eth1 | grep "inet " | awk '{ print $2; }' | cut -d "/" -f1`
 

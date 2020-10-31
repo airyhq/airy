@@ -30,17 +30,9 @@ if test -f "${CONFIG_FILE}"; then
 fi
 
 mkdir -p ~/airy-core
-cp ../deployments/sources-facebook-events-router.yaml ~/airy-core/
-cp ../deployments/api-admin.yaml ~/airy-core/
-cp ../deployments/api-auth.yaml ~/airy-core/
-cp ../deployments/sources-facebook-webhook.yaml ~/airy-core/
-cp ../deployments/api-communication.yaml ~/airy-core/
+cp ../deployments/* ~/airy-core/
 
-RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
-cp -R /vagrant/helm-chart ~/airy-core/
-sed "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" /vagrant/helm-chart/charts/postgres/values.yaml > ~/airy-core/helm-chart/charts/postgres/values.yaml
-/usr/local/bin/helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s
-kubectl delete pods -l app=postgres
+RANDOM_POSTGRES_PASSWORD=`kubectl get configmap postgres-config -o jsonpath='{.data.POSTGRES_PASSWORD}'`
 sed -i "s/<pg_password>/${RANDOM_POSTGRES_PASSWORD}/" ~/airy-core/api-auth.yaml
 
 RANDOM_JWT_SECRET=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 128; echo`
@@ -61,13 +53,23 @@ sed -i "s/<mail_username>/${config[MAIL_USERNAME]}/" ~/airy-core/api-auth.yaml
 sed -i "s/<mail_password>/${config[MAIL_PASSWORD]}/" ~/airy-core/api-auth.yaml
 sed -i "s/<mail_from>/${config[MAIL_FROM]}/" ~/airy-core/api-auth.yaml
 
-
 # Generate random string for the ngrok webhook
 RANDOM_INGRESS_ID=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 16; echo`
 sed -i "s/<ngrok_client_string>/fb-${RANDOM_INGRESS_ID}/" ~/airy-core/sources-facebook-webhook.yaml
 
-kubectl apply -f ~/airy-core/sources-facebook-events-router.yaml
 kubectl apply -f ~/airy-core/api-admin.yaml
 kubectl apply -f ~/airy-core/api-auth.yaml
 kubectl apply -f ~/airy-core/api-communication.yaml
+kubectl apply -f ~/airy-core/sources-facebook-events-router.yaml
+kubectl apply -f ~/airy-core/sources-facebook-sender.yaml
 kubectl apply -f ~/airy-core/sources-facebook-webhook.yaml
+
+kubectl scale deployment airy-cp-schema-registry --replicas=1
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 10 Schema-registry
+
+kubectl scale deployment api-admin --replicas=1
+kubectl scale deployment api-auth --replicas=1
+kubectl scale deployment api-communication --replicas=1
+kubectl scale deployment sources-facebook-events-router --replicas=1
+kubectl scale deployment sources-facebook-sender --replicas=1
+kubectl scale deployment sources-facebook-webhook --replicas=1

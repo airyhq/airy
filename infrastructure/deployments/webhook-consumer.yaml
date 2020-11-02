@@ -30,7 +30,7 @@ spec:
         - name: REDIS_HOSTNAME
           value: redis
         - name: REDIS_PORT
-          value: 6379
+          value: "6379"
         livenessProbe:
             httpGet:
               path: /health

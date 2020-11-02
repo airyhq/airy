@@ -21,12 +21,12 @@ following components:
   Kafka](https://kafka.apache.org) to process incoming webhook data from
   different sources. We make sense of the data and reshape it into source
   independent contacts, conversations, and messages (see our
-  [glossary](/docs/glossary.md) for formal definitions).
+  [glossary](/docs/docs/glossary.md) for formal definitions).
 
 - A [React](https://reactjs.org/) UI component library which we showcase at
   [components.airy.co](https://components.airy.co)
 
-- An [API](/docs/api.md) to manage the data sets the platform
+- An [API](/docs/docs/api.md) to manage the data sets the platform
   handles.
 
 - A webhook integration server that allows its users to programmatically
@@ -80,13 +80,13 @@ $ ./scripts/bootstrap.sh
 ```
 
 The bootstrap installation requires [Vagrant](https://www.vagrantup.com/downloads) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not found, the script will attempt to install them for you.
-Check out our [user guide](/docs/user-guide.md) for detailed information.
+Check out our [user guide](/docs/docs/user-guide.md) for detailed information.
 
 ## Design principles of the Airy Core Platform
 
 The Airy Core Platform is built using a few guiding principles. An introduction
 to these principles is essential to navigate the code base with ease. You can
-read more about it [here](/docs/design.md)
+read more about it [here](/docs/docs/design.md)
 
 ## How to contribute
 
@@ -94,7 +94,7 @@ We welcome (and love) every form of contribution! Good entry points to the
 project are:
 
 - Our [contributing guidelines](/CONTRIBUTING.md)
-- Our [developers' manual](/docs/developers-manual.md)
+- Our [developers' manual](/docs/docs/developers-manual.md)
 - Issues with the tag
   [gardening](https://github.com/airyhq/airy/issues?q=is%3Aissue+is%3Aopen+label%3Agardening)
 - Issues with the tag [good first

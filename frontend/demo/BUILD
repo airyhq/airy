@@ -17,12 +17,10 @@ webapp(
 ts_library(
     name = "app",
     deps = module_deps + [
-        "@npm//@airyhq/components",
         "@npm//@crello/react-lottie",
         "@npm//@types/prop-types",
         "@npm//@types/react",
         "@npm//emoji-mart",
-        "@npm//moment",
         "@npm//react",
         "@npm//react-autosize-textarea",
         "@npm//react-modal",

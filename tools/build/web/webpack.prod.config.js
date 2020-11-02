@@ -170,9 +170,6 @@ module.exports = (env, argv) => ({
     ]
   },
   plugins: [
-    // Reduce the moment bundle file by only loading de and en (https://github.com/jmblog/how-to-optimize-momentjs-with-webpack)
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|de/),
-
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": "'production'"
     }),

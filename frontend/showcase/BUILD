@@ -17,7 +17,6 @@ ts_library(
         "@npm//@types/prop-types",
         "@npm//@types/react",
         "@npm//emoji-mart",
-        "@npm//moment",
         "@npm//react",
         "@npm//react-autosize-textarea",
         "@npm//react-modal",

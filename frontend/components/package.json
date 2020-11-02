@@ -12,8 +12,7 @@
     "react-autosize-textarea": "^7.1.0",
     "react-modal": "^3.11.2",
     "react-router-dom": "5.1.2",
-    "emoji-mart": "^3.0.0",
-    "moment": "^2.29.1"
+    "emoji-mart": "^3.0.0"
   },
   "peerDependencies": {
     "react": "^16",

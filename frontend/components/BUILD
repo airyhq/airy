@@ -39,7 +39,6 @@ web_library(
         "react-router-dom": "react-router-dom",
         "@crello/react-lottie": "@crello/react-lottie",
         "emoji-mart": "emoji-mart",
-        "moment": "moment",
         "react-autosize-textarea": "react-autosize-textarea",
         "react-modal": "react-modal",
     },

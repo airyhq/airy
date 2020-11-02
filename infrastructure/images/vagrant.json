@@ -30,7 +30,7 @@
       },
       {
         "scripts": [
-          "../scripts/user-input.sh"
+          "../scripts/airy-conf.sh"
         ],
         "type": "shell"
       }

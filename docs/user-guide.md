@@ -61,7 +61,7 @@ you want to put in your facebook credentials, you must put your credentials in t
 then run the following command:
 
 ```sh
-$ vagrant provision --provision-with user-data
+$ vagrant provision --provision-with airy-conf
 ```
 
 ### Airy Core API and Public webhooks

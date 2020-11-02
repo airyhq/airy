@@ -5,8 +5,6 @@ sidebar_label: Glossary
 slug: /glossary
 ---
 
-# Glossary
-
 This document aims to provide an high-level overview of the Airy Core Platform
 technical vocabulary. It provides definition of the most important terms used
 both in the code and in the rest of the documentation.

@@ -13,6 +13,7 @@ sudo mv linux-amd64/helm /usr/local/bin/helm
 
 RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
 mkdir -p ~/airy-core
+cp ../airy.conf.tpl ../airy.conf
 cp -R /vagrant/helm-chart ~/airy-core/
 sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/charts/postgres/values.yaml
 

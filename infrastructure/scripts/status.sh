@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 while ! `kubectl -n istio-system get service --field-selector="metadata.name=istio-ingressgateway" 2>/dev/null | grep -q "istio-ingressgateway"`
 do
-    sleep 5
+    sleep 15
     echo "Waiting for ingressgateway to start... "
 done
 
@@ -16,7 +16,7 @@ INGRESS_IP=`ip addr show eth1 | grep "inet " | awk '{ print $2; }' | cut -d "/" 
 while ! nc -z ${INGRESS_IP} ${INGRESS_PORT}
 do
     echo "Waiting for ingress port to open..."
-    sleep 15
+    sleep 20
     INGRESS_PORT=`kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}'`
 done
 

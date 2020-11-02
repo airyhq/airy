@@ -24,7 +24,7 @@ following components:
   [glossary](/docs/glossary.md) for formal definitions).
 
 - A [React](https://reactjs.org/) UI component library which we showcase at
-  [components.airy.co]
+  [components.airy.co](https://components.airy.co)
 
 - An [API](/docs/api.md) to manage the data sets the platform
   handles.

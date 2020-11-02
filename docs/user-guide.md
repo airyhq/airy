@@ -21,7 +21,7 @@ components](/infrastructure/README.md#componentes).
 To get started, run the following commands:
 
 ```sh
-$ git clone https://github.com/airyhq/core
+$ git clone https://github.com/airyhq/airy
 $ cd core
 $ ./scripts/bootstrap.sh
 ```

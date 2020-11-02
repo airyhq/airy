@@ -48,7 +48,7 @@ Our HTTP endpoints adhere to the following conventions:
 - Endpoints only accept `POST` JSON requests.
 - Except for the `/users.login` and `/users.signup` endpoints, communication
   always requires a valid [JWT token](#authorization).
-- We use dots for namespacing URLS (eg `/things.add`).
+- We use dots for name-spacing URLS (eg `/things.add`).
 
 ## Authentication
 

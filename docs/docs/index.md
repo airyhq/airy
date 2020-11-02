@@ -13,12 +13,12 @@ following components:
   Kafka](https://kafka.apache.org) to process incoming webhook data from
   different sources. We make sense of the data and reshape it into source
   independent contacts, conversations, and messages (see our
-  [glossary](/docs/docs/glossary.md) for formal definitions).
+  [glossary](glossary.md) for formal definitions).
 
 - A [React](https://reactjs.org/) UI component library which we showcase at
-  [components.airy.co](https://components.airy.co)
+  [components.airy.co](https://components.airy.co).
 
-- An [API](/docs/docs/api.md) to manage the data sets the platform
+- An [API](api.md) to manage the data sets the platform
   handles.
 
 - A webhook integration server that allows its users to programmatically
@@ -42,4 +42,4 @@ The bootstrap installation requires
 [Vagrant](https://www.vagrantup.com/downloads) and
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
 found, the script will attempt to install them for you. Check out our [user
-guide](/docs/docs/user-guide.md) for detailed information.
+guide](user-guide.md) for detailed information.

@@ -27,11 +27,16 @@ tsconfig -  (optional) It's possible to extend tsconfigs! Give it a try, if
 """
 
 ASSETS_SUFFIX = "_assets"
+DEFAULT_DEP_NAME = "types"
+DEFAULT_DEP = "//frontend/" + DEFAULT_DEP_NAME
 
 def ts_library(name, srcs = None, deps = None, data = None, tsconfig = None):
     tsconfig = "//:tsconfig.json" if not tsconfig else tsconfig
     deps = [] if not deps else deps
     srcs = native.glob(["**/*.tsx", "**/*.ts"]) if not srcs else srcs
+
+    if DEFAULT_DEP not in deps and name != DEFAULT_DEP_NAME:
+        deps = [DEFAULT_DEP] + deps
 
     default_data_glob = native.glob([
         "**/*.scss",

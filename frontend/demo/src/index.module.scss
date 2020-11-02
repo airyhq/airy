@@ -1,0 +1,39 @@
+.title {
+  text-align: center;
+}
+
+.container {
+  padding: 24px;
+}
+
+.main {
+}
+
+.sectionTitle {
+  text-align-last: center;
+  margin-top: 80px;
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: wrap;
+  padding: 0 8px 8px 8px;
+}
+
+.item {
+  text-align: center;
+}
+
+.loaders {
+  height: 200px;
+  width: 200px;
+  div {
+    height: 200px;
+    width: 200px;
+  }
+}
+
+.loaderSmall {
+  margin-top: 48px;
+}

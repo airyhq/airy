@@ -122,11 +122,45 @@ module.exports = (env, argv) => ({
         ]
       },
       {
-        test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|svg)(\?.*)?$/,
+        test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
         loader: "file-loader",
         options: {
           name: "media/[name].[hash:8].[ext]"
         }
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "@svgr/webpack",
+            options: {
+              titleProp: true,
+              template: (
+                { template },
+                opts,
+                { imports, interfaces, componentName, props, jsx, exports }
+              ) => {
+                const plugins = ["jsx"];
+                if (opts.typescript) {
+                  plugins.push("typescript");
+                }
+                const typeScriptTpl = template.smart({ plugins });
+                return typeScriptTpl.ast`
+                                    ${imports}
+                                    ${interfaces}
+                                    function ${componentName}(${props}) {
+                                      props = { title: '', ...props };
+                                      return ${jsx};
+                                    }
+                                    ${exports}
+                                    `;
+              }
+            }
+          },
+          // Use url-loader to be able to inject into img src
+          // https://www.npmjs.com/package/@svgr/webpack#using-with-url-loader-or-file-loader
+          "url-loader"
+        ]
       },
       {
         test: /\.js$/,

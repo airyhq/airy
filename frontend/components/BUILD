@@ -3,18 +3,6 @@ package(default_visibility = ["//visibility:public"])
 load("//tools/build/web:typescript.bzl", "ts_library")
 load("//tools/build/web:web_library.bzl", "web_library")
 
-lib_deps = [
-    "@npm//@crello/react-lottie",
-    "@npm//@types/prop-types",
-    "@npm//@types/react",
-    "@npm//emoji-mart",
-    "@npm//moment",
-    "@npm//react",
-    "@npm//react-autosize-textarea",
-    "@npm//react-modal",
-    "@npm//react-router-dom",
-]
-
 ts_library(
     name = "components",
     data = glob(
@@ -29,7 +17,16 @@ ts_library(
         exclude = ["package.json"],
     ),
     tsconfig = "//:tsconfig.json",
-    deps = lib_deps,
+    deps = [
+        "@npm//@crello/react-lottie",
+        "@npm//@types/prop-types",
+        "@npm//@types/react",
+        "@npm//emoji-mart",
+        "@npm//react",
+        "@npm//react-autosize-textarea",
+        "@npm//react-modal",
+        "@npm//react-router-dom",
+    ],
 )
 
 web_library(

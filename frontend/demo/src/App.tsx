@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AiryLoader } from "@airyhq/components";
+import { AiryLoader } from "components/src";
 
 import styles from "./index.module.scss";
 

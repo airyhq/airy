@@ -22,6 +22,6 @@ Here is a quick introduction to the frontend projects:
 
 - `demo`
 
-  This project is a minimum UI implementation of the provided [Airy Core Platform API](docs/api.md). 
+  This project is a minimum UI implementation of the provided [Airy Core Platform API](docs_tmp/api.md). 
   Unlike `showcase` it does not use the `npm` version of the `components` library, but instead uses the 
   local repository version. 

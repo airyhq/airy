@@ -16,7 +16,6 @@ ts_library(
         ],
         exclude = ["package.json"],
     ),
-    tsconfig = "//:tsconfig.json",
     deps = [
         "@npm//@crello/react-lottie",
         "@npm//@types/prop-types",

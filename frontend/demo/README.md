@@ -1,6 +1,6 @@
 # Airy Demo Inbox
 
-This app demos a minimal frontend that uses both the [Airy Core Platform API](docs/api.md)
+This app demos a minimal frontend that uses both the [Airy Core Platform API](docs_tmp/api.md)
 
 ## Develop
 

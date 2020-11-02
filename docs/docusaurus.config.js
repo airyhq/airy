@@ -1,6 +1,6 @@
 module.exports = {
   title: 'Airy Documentation',
-  tagline: 'The tagline of my site',
+  tagline: 'Airy documentation website',
   url: 'https://docs.airy.co',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -8,15 +8,19 @@ module.exports = {
   organizationName: 'airyhq', // Usually your GitHub org/user name.
   projectName: 'airy', // Usually your repo name.
   themeConfig: {
+    prism: {
+      theme: require('prism-react-renderer/themes/github'),
+      darkTheme: require('./src/plugins/prism_themes/monokai'),
+    },
     navbar: {
-      title: 'Airy Documentation',
+      title: 'Documentation',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Airy Documentation',
         src: 'img/logo.svg',
       }
     },
     footer: {
-      style: 'dark',
+      style: 'light',
       copyright: `Copyright © ${new Date().getFullYear()} Airy, Inc.`,
     },
   },

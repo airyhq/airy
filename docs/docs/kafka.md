@@ -8,9 +8,8 @@ slug: /kafka
 The goal of this document is to provide information about how we use Kafka in
 the Airy Core Platform.
 
-- [Kafka](#kafka)
-  - [Topic naming conventions](#topic-naming-conventions)
-  - [Message compression](#message-compression)
+- [Topic naming conventions](#topic-naming-conventions)
+- [Message compression](#message-compression)
 
 
 ## Topic naming conventions

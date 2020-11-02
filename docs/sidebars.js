@@ -1,3 +1,13 @@
 module.exports = {
-    docs: ['index', 'api', 'chat-plugin', 'design', 'websocketapi', 'webhookintegration', 'userguide', 'kafka', 'glossary']
+    docs: [
+        'index', 
+        'api', 
+        'chat-plugin', 
+        'design', 
+        'glossary',
+        'kafka', 
+        'websocket', 
+        'webhook-integration', 
+        'user-guide', 
+    ]
 };

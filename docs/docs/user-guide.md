@@ -1,5 +1,5 @@
 ---
-id: userguide
+id: user-guide
 title: User Guide
 sidebar_label: User Guide
 slug: /user-guide
@@ -8,12 +8,11 @@ slug: /user-guide
 The goal of this document is to provide an overview of how to run the Airy Core
 Platform.
 
-- [User guide](#user-guide)
-  - [Running the platform on your machine](#running-the-platform-on-your-machine)
-    - [Debug your installation](#debug-your-installation)
-    - [Connect the Facebook source](#connect-the-facebook-source)
-    - [Airy Core API and Public webhooks](#airy-core-api-and-public-webhooks)
-    - [Uninstall the Airy Core Platform Box](#uninstall-the-airy-core-platform-box)
+- [Running the platform on your machine](#running-the-platform-on-your-machine)
+  - [Debug your installation](#debug-your-installation)
+  - [Connect the Facebook source](#connect-the-facebook-source)
+  - [Airy Core API and Public webhooks](#airy-core-api-and-public-webhooks)
+  - [Uninstall the Airy Core Platform Box](#uninstall-the-airy-core-platform-box)
 
 ## Running the platform on your machine
 
@@ -27,7 +26,7 @@ To get started, run the following commands:
 
 ```sh
 $ git clone https://github.com/airyhq/airy
-$ cd core
+$ cd airy
 $ ./scripts/bootstrap.sh
 ```
 
@@ -61,17 +60,13 @@ $ vagrant up
 ### Connect the Facebook source
 
 To integrate the Facebook source, you must provide your Facebook credentials. If
-you want to put in your facebook credentials, you must create a configuration file
-`airy.conf` located in the `infrastructure` directory:
-```sh
-cd infrastructure
-cp airy.conf.tpl airy.conf
-```
-You need to put your credentials in the `infrastructure/airy.conf` config file and
-then run the following command:
+you want to put in your facebook credentials, you must edit the configuration
+file `airy.conf` located in the `infrastructure` directory. You need to put your
+credentials in the `infrastructure/airy.conf` config file and then run the
+following command:
 
 ```sh
-$ vagrant provision --provision-with user-data
+$ vagrant provision --provision-with airy-conf
 ```
 
 ### Airy Core API and Public webhooks

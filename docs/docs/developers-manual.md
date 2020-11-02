@@ -1,8 +1,8 @@
 ---
-id: developermanual
+id: developers-manual
 title: Developers' Manual
 sidebar_label: Developers' Manual
-slug: /developer-manual
+slug: /developers-manual
 ---
 
 The Airy Core Platform uses [Bazel](https://bazel.build/) to build and test
@@ -10,11 +10,10 @@ itself. We suggest you to install
 [bazelisk](https://github.com/bazelbuild/bazelisk), a small utility that will
 install the right version of Bazel for you.
 
-- [Developers' manual](#developers-manual)
-  - [Build](#build)
-  - [Test](#test)
-  - [Managing maven dependencies](#managing-maven-dependencies)
-  - [Exploring the code base](#exploring-the-code-base)
+- [Build](#build)
+- [Test](#test)
+- [Managing maven dependencies](#managing-maven-dependencies)
+- [Exploring the code base](#exploring-the-code-base)
 
 ## Build
 

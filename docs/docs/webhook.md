@@ -1,8 +1,8 @@
 ---
-id: webhookintegration
+id: webhook-integration
 title: Webhook Integration
 sidebar_label: Webhook
-slug: /webhook
+slug: /webhook-integration
 ---
 
 After subscribing to an Airy webhook, you will start receiving events on your URL of choice.

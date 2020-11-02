@@ -73,3 +73,5 @@ kubectl scale deployment api-communication --replicas=1
 kubectl scale deployment sources-facebook-events-router --replicas=1
 kubectl scale deployment sources-facebook-sender --replicas=1
 kubectl scale deployment sources-facebook-webhook --replicas=1
+
+/vagrant/scripts/status.sh

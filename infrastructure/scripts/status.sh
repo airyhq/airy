@@ -27,7 +27,7 @@ echo "Your public url for the Facebook Webhook is:"
 echo ${FB_WEBHOOK_PUBLIC_URL}
 echo
 echo "You can access the API of the Airy Core Platform at:"
-echo "http://${INGRESS_IP}:${INGRESS_PORT}/"
+echo "http://${INGRESS_IP}:${INGRESS_PORT}/facebook"
 echo
 echo "Example:"
 echo "curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}' http://${INGRESS_IP}:${INGRESS_PORT}/users.signup"

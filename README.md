@@ -74,7 +74,7 @@ If you wish to learn more about a specific project, please refer to the
 You can run the Airy Core Platform locally by running the following commands:
 
 ```sh
-$ git clone https://github.com/airyhq/core
+$ git clone https://github.com/airyhq/airy
 $ cd core
 $ ./scripts/bootstrap.sh
 ```
@@ -96,12 +96,12 @@ project are:
 - Our [contributing guidelines](/CONTRIBUTING.md)
 - Our [developers' manual](/docs/developers-manual.md)
 - Issues with the tag
-  [gardening](https://github.com/airyhq/core/issues?q=is%3Aissue+is%3Aopen+label%3Agardening)
+  [gardening](https://github.com/airyhq/airy/issues?q=is%3Aissue+is%3Aopen+label%3Agardening)
 - Issues with the tag [good first
-  patch](https://github.com/airyhq/core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+patch%22)
+  patch](https://github.com/airyhq/airy/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+patch%22)
 
 If you're still not sure where to start, please open a [new
-issue](https://github.com/airyhq/core/issues/new) and we'll gladly help you get
+issue](https://github.com/airyhq/airy/issues/new) and we'll gladly help you get
 started.
 
 ## Code of Conduct

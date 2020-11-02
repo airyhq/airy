@@ -1,4 +1,9 @@
-# Webhook Integration
+---
+id: webhookintegration
+title: Webhook Integration
+sidebar_label: Webhook
+slug: /webhook
+---
 
 After subscribing to an Airy webhook, you will start receiving events on your URL of choice.
 The event will *always* be a POST request with the following structure:

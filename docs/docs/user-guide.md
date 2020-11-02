@@ -1,4 +1,9 @@
-# User guide
+---
+id: userguide
+title: User Guide
+sidebar_label: User Guide
+slug: /user-guide
+---
 
 The goal of this document is to provide an overview of how to run the Airy Core
 Platform.

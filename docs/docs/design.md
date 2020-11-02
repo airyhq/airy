@@ -1,4 +1,9 @@
-# Design principles
+---
+id: designprinciples
+title: Design Principles
+sidebar_label: Design Principles
+slug: /design-principles
+---
 
 The design of the Airy Core Platform heavily relies on a few core ideas. The
 goal of this document is to provide context about these ideas and how they
@@ -25,7 +30,7 @@ And here's the second principle:
 What we mean is that we do not allow services to talk to each other and share
 state via internal HTTP calls. Let's use an example to clarify: imagine we have
 a service dealing with `conversations` data that needs `channels` data (see our
-[glossary](/docs/glossary.md) for more information) to build a JSON response.
+[glossary](glossary.md) for more information) to build a JSON response.
 Many systems would work like this:
 
 - A client asks for `conversations`

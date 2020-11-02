@@ -1,4 +1,10 @@
-# Airy Chat plugin
+---
+id: airychatplugin
+title: Airy Chat Plugin
+sidebar_label: Chat Plugin
+slug: /chat-plugin
+---
+
 
 The chat plugin allows anonymous website visitors to start a conversation with 
 the Airy Core Platform and respond to messages.

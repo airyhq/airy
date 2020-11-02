@@ -1,4 +1,9 @@
-# Airy Core WebSocket API
+---
+id: websocketapi
+title: Airy Core WebSocket API
+sidebar_label: Websocket API
+slug: /websocket-api
+---
 
 - [Airy Core WebSocket API](#airy-core-websocket-api)
   - [Introduction](#introduction)

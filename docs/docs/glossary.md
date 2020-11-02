@@ -1,3 +1,11 @@
+---
+id: glossary
+title: Glossary
+sidebar_label: Glossary
+slug: /glossary
+---
+
+
 # Glossary
 
 This document aims to provide an high-level overview of the Airy Core Platform

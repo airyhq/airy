@@ -1,4 +1,9 @@
-# Developers' manual
+---
+id: developermanual
+title: Developers' Manual
+sidebar_label: Developers' Manual
+slug: /developer-manual
+---
 
 The Airy Core Platform uses [Bazel](https://bazel.build/) to build and test
 itself. We suggest you to install

@@ -3,7 +3,7 @@
 We love every form of contribution. By participating to this project, you
 agree to abide to the `Airy Core Platform` [code of conduct](/code_of_conduct.md).
 
-Please refer to our [developers' manual](/docs/developers-manual.md) to learn
+Please refer to our [developers' manual](/docs_tmp/developers-manual.md) to learn
 how to build, run, and test the `Airy Core Platform`.
 
 ## Test your change

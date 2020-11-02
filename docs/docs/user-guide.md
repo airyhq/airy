@@ -20,8 +20,8 @@ Platform.
 We built a virtual machine with [Vagrant](https://www.vagrantup.com) that allows
 you to create a virtual machine (box). The box contains a
 [Minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/)
-cluster preconfigured to deploy and run all the [Airy Core Platform
-components](/infrastructure/README.md#componentes).
+cluster preconfigured to deploy and run all the Airy Core Platform
+components.
 
 To get started, run the following commands:
 

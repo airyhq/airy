@@ -27,7 +27,7 @@ both in the code and in the rest of the documentation.
 
 ## Introduction
 
-Our [Avro schemas](/backend/avro) provide a machine readable up-to-date version
+Our Avro schemas provide a machine readable up-to-date version
 of our backend data model. If you are looking for details like null constraints
 and such, the Avro schemas folder is the right place. Furthermore, it is worth
 underlining that the Avro data model and glossary do not correspond exactly. The

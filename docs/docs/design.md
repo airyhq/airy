@@ -1,5 +1,5 @@
 ---
-id: designprinciples
+id: design
 title: Design Principles
 sidebar_label: Design Principles
 slug: /design-principles

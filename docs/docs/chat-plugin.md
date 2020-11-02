@@ -1,5 +1,5 @@
 ---
-id: airychatplugin
+id: chat-plugin
 title: Airy Chat Plugin
 sidebar_label: Chat Plugin
 slug: /chat-plugin

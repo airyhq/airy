@@ -77,3 +77,5 @@ kubectl scale deployment sources-facebook-sender --replicas=1
 kubectl scale deployment sources-facebook-webhook --replicas=1
 kubectl scale deployment webhook-consumer --replicas=1
 kubectl scale deployment webhook-publisher --replicas=1
+
+/vagrant/scripts/status.sh

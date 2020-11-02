@@ -3,7 +3,6 @@
 - [Infrastructure](#infrastructure)
   - [Components](#components)
   - [Networking](#networking)
-  - [Prepared images](#prepared-images)
 
 ## Components
 
@@ -34,7 +33,7 @@ example from Facebook, in order to send events to the Facebook webhook), the
 system must have public access. To facilitate the process, we included a
 [ngrok](https://ngrok.com/) client deployment inside the cluster. The ngrok
 client connects to our hosted ngrok server at `tunnel.airy.co`, creates a unique
-public endpoint (ex. https://some-random-string.tunnel.airy.co) and redirects
+public endpoint (ex. https://some-random-string.tunnel.airy.co/facebook) and redirects
 the traffic to the local Facebook webhook pod. When starting, the Airy Core
 Platform prints the public URL for the Facebook webhook. You can also check it
 by running the `/vagrant/scripts/status.sh` script from inside the Airy Core

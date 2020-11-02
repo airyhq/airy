@@ -10,8 +10,8 @@ Vagrant.configure("2") do |config|
     airy_core.vm.provision "core", type: "shell" do |c|
       c.inline = "/vagrant/scripts/provision.sh"
     end
-    airy_core.vm.provision "user-data", type: "shell" do |u|
-      u.inline = "/vagrant/scripts/user-input.sh"
+    airy_core.vm.provision "airy-conf", type: "shell" do |u|
+      u.inline = "/vagrant/scripts/airy-conf.sh"
     end
     airy_core.vm.provider "virtualbox" do |vbox|
       vbox.cpus = 4

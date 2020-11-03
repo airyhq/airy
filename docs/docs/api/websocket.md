@@ -3,13 +3,6 @@ title: WebSocket
 sidebar_label: Websocket
 ---
 
-- [Introduction](#introduction)
-- [Outbound Queues](#outbound-queues)
-  - [Message](#message)
-  - [Unread count](#unread-count)
-  - [Channel connected](#channel-connected)
-  - [Channel disconnected](#channel-disconnected)
-
 ## Introduction
 
 The Airy Core Platform offers a WebSocket server that allows clients to connect

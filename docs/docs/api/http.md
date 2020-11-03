@@ -6,39 +6,6 @@ sidebar_label: HTTP
 This documents aims to offer an high-level overview of the different parts that
 compose our API.
 
-- [Introduction](#introduction)
-- [Authentication](#authentication)
-  - [Login](#login)
-- [Endpoints](#endpoints)
-  - [Users](#users)
-    - [Signup](#signup)
-    - [Request password reset](#request-password-reset)
-    - [Reset password](#reset-password)
-  - [Conversations](#conversations)
-    - [List conversations](#list-conversations)
-    - [Conversation info](#conversation-info)
-    - [Mark conversation as read](#mark-conversation-as-read)
-    - [Tag a conversation](#tag-a-conversation)
-    - [Untag a conversation](#untag-a-conversation)
-  - [Messages](#messages)
-    - [List messages](#list-messages)
-    - [Send a message](#send-a-message)
-  - [Channels](#channels)
-    - [Connecting Channels](#connecting-channels)
-    - [Disconnecting Channels](#disconnecting-channels)
-    - [Explore Channels](#explore-channels)
-    - [List Channels](#list-channels)
-  - [Webhooks](#webhooks)
-    - [Subscribing to a webhook](#subscribing-to-a-webhook)
-    - [Unsubscribing to a webhook](#unsubscribing-to-a-webhook)
-    - [Webhook info](#webhook-info)
-  - [Tags](#tags)
-    - [Creating a tag](#creating-a-tag)
-    - [Updating a tag](#updating-a-tag)
-    - [Deleting a tag](#deleting-a-tag)
-    - [Listing tags](#listing-tags)
-- [Pagination](#pagination)
-
 ## Introduction
 
 Our HTTP endpoints adhere to the following conventions:
@@ -121,28 +88,7 @@ The password _MUST_ be at least 6 (six) characters long
 }
 ```
 
-This endpoint returns the same response as the login
-
-#### Request password reset
-
-`POST /users.request-password-reset`
-
-This endpoint requests a password reset email link to be sent to the given
-email. If the email does not exist, the response does not change.
-
-**Sample Request**
-
-```json5
-{
-  email: "grace@example.com"
-}
-```
-
-**Sample Response**
-
-```json5
-{}
-```
+This endpoint returns the same response as the login.
 
 #### Reset password
 

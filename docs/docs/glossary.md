@@ -11,17 +11,6 @@ both in the code and in the rest of the documentation.
 
 **Please note this document is constantly being worked on.**
 
-- [Glossary](#glossary)
-  - [Introduction](#introduction)
-  - [Source](#source)
-  - [Channel](#channel)
-  - [Contact](#contact)
-  - [Conversation](#conversation)
-  - [Message](#message)
-    - [Fields](#fields)
-      - [Headers](#headers)
-- [User](#user)
-
 ## Introduction
 
 Our Avro schemas provide a machine readable up-to-date version

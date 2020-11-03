@@ -6,7 +6,7 @@ metadata:
   labels:
     app: webhook-consumer
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: webhook-consumer
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: ghcr.io/airyhq/webhook/consumer:latest
+        image: ghcr.io/airyhq/airy/webhook/consumer:latest
         imagePullPolicy: Always
         env:
         - name: SERVICE_NAME

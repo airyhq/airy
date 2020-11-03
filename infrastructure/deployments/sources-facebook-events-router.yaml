@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: ghcr.io/airyhq/sources/facebook-events-router:latest
+        image: ghcr.io/airyhq/airy/sources/facebook-events-router:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

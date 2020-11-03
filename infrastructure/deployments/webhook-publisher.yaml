@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: ghcr.io/airyhq/webhook/publisher:latest
+        image: ghcr.io/airyhq/airy/webhook/publisher:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

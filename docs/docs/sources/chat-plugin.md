@@ -9,13 +9,6 @@ the Airy Core Platform and respond to messages.
 
 This documents offers an overview of the HTTP endpoints and WebSocket queues required for the Airy Chat plugin to function.
 
-- [Introduction](#introduction)
-- [HTTP API](#http-api)
-  - [Authenticating web users](#authenticating-web-users)
-    - [Send message](#send-message)
-- [WebSocket API](#websocket-api)
-  - [Receive message](#receive-message)
-
 ## Introduction
 
 The Airy Core chat plugin is a fully-featured [source](./glossary.md#source)

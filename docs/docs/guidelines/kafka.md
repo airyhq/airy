@@ -6,10 +6,6 @@ sidebar_label: Kafka
 The goal of this document is to provide information about how we use Kafka in
 the Airy Core Platform.
 
-- [Topic naming conventions](#topic-naming-conventions)
-- [Message compression](#message-compression)
-
-
 ## Topic naming conventions
 
 Inspired by [this
@@ -41,11 +37,3 @@ application.entity.organizations
 application.communication.conversations
 application.communication.messages
 ```
-
-## Message compression
-
-The compression algorithm used by the producers is
-[LZ4](https://lz4.github.io/lz4/). This puts a bit more load on the producers
-and the consumers but saves network because compression occurs before the data
-is sent over to the brokers. Furthermore the size of the topics is reduced by up
-to 80%. You can find more details in our `KafkaStreamsWrapper.java` class.

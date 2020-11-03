@@ -8,11 +8,6 @@ slug: /user-guide
 The goal of this document is to provide an overview of how to run the Airy Core
 Platform.
 
-- [Running the platform on your machine](#running-the-platform-on-your-machine)
-  - [Debug your installation](#debug-your-installation)
-  - [Connect the Facebook source](#connect-the-facebook-source)
-  - [Airy Core API and Public webhooks](#airy-core-api-and-public-webhooks)
-  - [Uninstall the Airy Core Platform Box](#uninstall-the-airy-core-platform-box)
 
 ## Running the platform on your machine
 

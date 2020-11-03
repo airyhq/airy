@@ -10,11 +10,6 @@ itself. We suggest you to install
 [bazelisk](https://github.com/bazelbuild/bazelisk), a small utility that will
 install the right version of Bazel for you.
 
-- [Build](#build)
-- [Test](#test)
-- [Managing maven dependencies](#managing-maven-dependencies)
-- [Exploring the code base](#exploring-the-code-base)
-
 ## Build
 
 You can build the whole platform using the following command:

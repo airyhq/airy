@@ -7,10 +7,12 @@ module.exports = {
   favicon: "img/favicon.ico",
   organizationName: "airyhq",
   projectName: "airy",
+  // siteConfig.js
   themeConfig: {
     prism: {
       theme: require("prism-react-renderer/themes/github"),
-      darkTheme: require("./src/plugins/prism_themes/monokai")
+      darkTheme: require("./src/plugins/prism_themes/monokai"),
+      additionalLanguages: ["json5"]
     },
     navbar: {
       title: "Documentation",

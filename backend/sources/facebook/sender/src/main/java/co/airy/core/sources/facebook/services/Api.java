@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationListener;
@@ -28,11 +27,8 @@ import java.io.IOException;
  */
 @Service
 public class Api implements ApplicationListener<ApplicationReadyEvent> {
-    @Autowired
-    RestTemplateBuilder restTemplateBuilder;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final RestTemplateBuilder restTemplateBuilder;
+    private final ObjectMapper objectMapper;
 
     private RestTemplate restTemplate;
 
@@ -45,8 +41,10 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
                     "Http Status Code: %s \n" +
                     "Error Message: %s \n";
 
-    public Api() {
+    public Api(ObjectMapper objectMapper, RestTemplateBuilder restTemplateBuilder) {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        this.objectMapper = objectMapper;
+        this.restTemplateBuilder = restTemplateBuilder;
     }
 
 
@@ -78,11 +76,10 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
     @NoArgsConstructor
     @AllArgsConstructor
     private static class FbSendMessageResponse {
-
         @JsonProperty("recipient_id")
-        private String recipient_id;
+        private String recipientId;
 
         @JsonProperty("message_id")
-        private String message_id;
+        private String messageId;
     }
 }

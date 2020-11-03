@@ -5,7 +5,6 @@ import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.ThreadContext;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -24,14 +23,16 @@ import java.util.stream.Collectors;
 @Component
 public class RequestLoggingFilter extends OncePerRequestFilter {
     private static final Logger log = AiryLoggerFactory.getLogger(RequestLoggingFilter.class);
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
     private static final List<String> ignoredHeaders = List.of(HttpHeaders.AUTHORIZATION);
     private static final List<String> ignoredFields = List.of("password", "new_password");
 
     private static final int MAX_JSON_LENGTH = 2048;
+
+    private final ObjectMapper objectMapper;
+
+    RequestLoggingFilter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         boolean isFirstRequest = !this.isAsyncDispatch(request);
@@ -56,12 +57,12 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
         final Map<String, String> headerMap = (new ServletServerHttpRequest(request)).getHeaders().toSingleValueMap();
 
         final Map<String, String> sanitizedHeaders = headerMap.entrySet()
-            .stream()
-            .filter((entry) ->
-                ignoredHeaders.stream().noneMatch((ignoredHeader) -> entry.getKey().equalsIgnoreCase(ignoredHeader))
-            )
-            .map((entry) -> Map.entry(entry.getKey().toLowerCase(), entry.getValue()))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .stream()
+                .filter((entry) ->
+                        ignoredHeaders.stream().noneMatch((ignoredHeader) -> entry.getKey().equalsIgnoreCase(ignoredHeader))
+                )
+                .map((entry) -> Map.entry(entry.getKey().toLowerCase(), entry.getValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         try {
             ThreadContext.put("headers", objectMapper.writeValueAsString(sanitizedHeaders));

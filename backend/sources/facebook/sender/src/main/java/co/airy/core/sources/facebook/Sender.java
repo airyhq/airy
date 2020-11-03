@@ -19,7 +19,6 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -28,10 +27,17 @@ import org.springframework.stereotype.Component;
 public class Sender implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final Logger log = AiryLoggerFactory.getLogger(Sender.class);
 
-    @Autowired
-    private KafkaStreamsWrapper streams;
+    private final KafkaStreamsWrapper streams;
+    private final Api api;
+    private final Mapper mapper;
 
-    private final String appId = "sources.facebook.Sender";
+    Sender(KafkaStreamsWrapper streams, Api api, Mapper mapper) {
+        this.streams = streams;
+        this.api = api;
+        this.mapper = mapper;
+    }
+
+    private static final String appId = "sources.facebook.Sender";
 
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
@@ -72,12 +78,6 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
 
         streams.start(builder.build(), appId);
     }
-
-    @Autowired
-    Api api;
-
-    @Autowired
-    Mapper mapper;
 
     private Message sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();

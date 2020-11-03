@@ -63,9 +63,11 @@ kubectl apply -f ~/airy-core/api-communication.yaml
 kubectl apply -f ~/airy-core/sources-facebook-events-router.yaml
 kubectl apply -f ~/airy-core/sources-facebook-sender.yaml
 kubectl apply -f ~/airy-core/sources-facebook-webhook.yaml
+kubectl apply -f ~/airy-core/webhook-consumer.yaml
+kubectl apply -f ~/airy-core/webhook-publisher.yaml
 
 kubectl scale deployment airy-cp-schema-registry --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 10 Schema-registry
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 15 Schema-registry
 
 kubectl scale deployment api-admin --replicas=1
 kubectl scale deployment api-auth --replicas=1
@@ -73,5 +75,7 @@ kubectl scale deployment api-communication --replicas=1
 kubectl scale deployment sources-facebook-events-router --replicas=1
 kubectl scale deployment sources-facebook-sender --replicas=1
 kubectl scale deployment sources-facebook-webhook --replicas=1
+kubectl scale deployment webhook-consumer --replicas=1
+kubectl scale deployment webhook-publisher --replicas=1
 
 /vagrant/scripts/status.sh

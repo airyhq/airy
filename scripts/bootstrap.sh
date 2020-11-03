@@ -4,6 +4,11 @@ IFS=$'\n\t'
 
 ARCH=$(uname -m)
 OS=$(uname)
+SCRIPT_PATH=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+
+infra_path=""
+infra_path+=$( dirname $SCRIPT_PATH )
+infra_path+="/infrastructure"
 
 if ! command -v vagrant &> /dev/null
 then
@@ -109,5 +114,5 @@ then
 fi
 
 
-cd infrastructure
+cd $infra_path
 vagrant up

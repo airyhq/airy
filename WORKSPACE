@@ -237,6 +237,7 @@ http_archive(
 git_repository(
     name = "com_github_atlassian_bazel_tools",
     commit = "dc5e715035b6b17f24f1d40a7eac08f8f2ac8a11",
+    shallow_since = "1597268988 +1000",
     remote = "https://github.com/atlassian/bazel-tools.git",
 )
 

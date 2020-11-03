@@ -14,7 +14,6 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.Status;
@@ -32,6 +31,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private static final String appId = "api.AdminStores";
 
     private final KafkaStreamsWrapper streams;
+    private final KafkaProducer<String, SpecificRecordBase> producer;
 
     private final String CHANNELS_STORE = "channels-store";
     private final String TAGS_STORE = "tags-store";
@@ -46,8 +46,9 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks().name();
     private final String applicationCommunicationTags = new ApplicationCommunicationTags().name();
 
-    public Stores(KafkaStreamsWrapper streams) {
+    public Stores(KafkaStreamsWrapper streams, KafkaProducer<String, SpecificRecordBase> producer) {
         this.streams = streams;
+        this.producer = producer;
     }
 
     private void startStream() {
@@ -81,9 +82,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public ReadOnlyKeyValueStore<String, Tag> getTagsStore() {
         return streams.acquireLocalStore(TAGS_STORE);
     }
-
-    @Autowired
-    KafkaProducer<String, SpecificRecordBase> producer;
 
     public void storeChannel(Channel channel) throws ExecutionException, InterruptedException {
         producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();

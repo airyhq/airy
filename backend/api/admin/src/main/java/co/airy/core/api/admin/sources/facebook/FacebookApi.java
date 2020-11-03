@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -21,31 +20,36 @@ import java.util.Map;
 
 @Service
 public class FacebookApi {
+    private final static String SUBSCRIBED_FIELDS = "affiliation,attire,awards,bio,birthday,category,checkins,company_overview,culinary_team,current_location,description,email,feed,founded,general_info,general_manager,hometown";
     private final RestTemplate restTemplate = new RestTemplate();
     private final String baseUrl = "https://graph.facebook.com/v3.2";
-    private final String SUBSCRIBED_FIELDS = "affiliation,attire,awards,bio,birthday,category,checkins,company_overview,culinary_team,current_location,description,email,feed,founded,general_info,general_manager,hometown";
-
-    @Value("${facebook.app-id}")
-    private String fbAppId;
-    @Value("${facebook.app-secret}")
-    private String fbApiSecret;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
     private final String pageFields = "fields=id,name_with_location_descriptor,access_token,picture,is_webhooks_subscribed";
+
+    private final String fbAppId;
+    private final String fbApiSecret;
+    private final ObjectMapper objectMapper;
+
+    FacebookApi(
+            @Value("${facebook.app-id}") String fbAppId,
+            @Value("${facebook.app-secret}") String fbApiSecret,
+            ObjectMapper objectMapper
+    ) {
+        this.fbAppId = fbAppId;
+        this.fbApiSecret = fbApiSecret;
+        this.objectMapper = objectMapper;
+    }
 
     public List<FbPageWithConnectInfo> getAllPagesForUser(String accessToken) throws Exception {
         String pagesUrl = String.format(baseUrl + "/me/accounts?%s&access_token=%s", pageFields, accessToken);
 
-        boolean paginated = true;
+        boolean hasMorePages = true;
         List<FbPageWithConnectInfo> pageList = new ArrayList<>();
-        while (paginated) {
+        while (hasMorePages) {
             FbPages fbPages = apiResponse(pagesUrl, HttpMethod.GET, FbPages.class);
             if (fbPages.getPaging() != null && fbPages.getPaging().getNext() != null) {
                 pagesUrl = URLDecoder.decode(fbPages.getPaging().getNext(), StandardCharsets.UTF_8);
             } else {
-                paginated = false;
+                hasMorePages = false;
             }
             pageList.addAll(fbPages.getData());
         }

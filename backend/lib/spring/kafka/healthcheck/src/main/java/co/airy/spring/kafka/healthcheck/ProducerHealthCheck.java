@@ -4,18 +4,19 @@ import co.airy.avro.ops.HealthCheck;
 import co.airy.kafka.schema.ops.OpsApplicationHealth;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
 @Service
 public class ProducerHealthCheck {
+    private final KafkaProducer<String, HealthCheck> producer;
 
-    @Autowired
-    private KafkaProducer<String, HealthCheck> producer;
+    ProducerHealthCheck(KafkaProducer<String, HealthCheck> producer) {
+        this.producer = producer;
+    }
 
-    private final OpsApplicationHealth opsApplicationHealth = new OpsApplicationHealth();
+    private final String opsApplicationHealth = new OpsApplicationHealth().name();
 
     public void sendHealthCheck() throws Exception {
         final String serviceName = System.getenv("SERVICE_NAME");
@@ -26,15 +27,11 @@ public class ProducerHealthCheck {
         sendHealthCheck(serviceName);
     }
 
-
     private void sendHealthCheck(String app) throws Exception {
-        producer.send(
-                new ProducerRecord<>(opsApplicationHealth.name(), null,
-                        HealthCheck.newBuilder()
-                                .setApp(app)
-                                .setTime(Instant.now().toEpochMilli())
-                                .build()
-                )
-        ).get();
+        producer.send(new ProducerRecord<>(opsApplicationHealth, null,
+                HealthCheck.newBuilder()
+                        .setApp(app)
+                        .setTime(Instant.now().toEpochMilli())
+                        .build())).get();
     }
 }

@@ -15,8 +15,11 @@ import java.util.Optional;
 public class MessageParser {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("${facebook.app-id}")
-    private String facebookAppId;
+    private final String facebookAppId;
+
+    MessageParser(@Value("${facebook.app-id}") String facebookAppId) {
+        this.facebookAppId = facebookAppId;
+    }
 
     String getSourceConversationId(final JsonNode webhookMessaging) throws NullPointerException {
         final JsonNode message = webhookMessaging.get("message");
@@ -76,5 +79,4 @@ public class MessageParser {
                 .setHeaders(headers)
                 .setSentAt(webhookMessaging.get("timestamp").asLong());
     }
-
 }

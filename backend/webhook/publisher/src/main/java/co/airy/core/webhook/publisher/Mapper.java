@@ -4,7 +4,6 @@ import co.airy.avro.communication.Message;
 import co.airy.core.webhook.publisher.model.Postback;
 import co.airy.core.webhook.publisher.model.WebhookBody;
 import co.airy.mapping.ContentMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -13,12 +12,14 @@ import static co.airy.payload.format.DateFormat.ISO_FROM_MILLIS;
 
 @Component
 public class Mapper {
+    private final ContentMapper contentMapper;
 
-    @Autowired
-    private ContentMapper mapper;
+    Mapper(ContentMapper contentMapper) {
+        this.contentMapper = contentMapper;
+    }
 
     public WebhookBody fromMessage(Message message) throws Exception {
-        mapper.render(message);
+        contentMapper.render(message);
 
         return WebhookBody.builder()
                 .conversationId(message.getConversationId())

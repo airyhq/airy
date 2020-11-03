@@ -8,13 +8,10 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.Status;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,19 +25,18 @@ import java.util.Properties;
 import java.util.UUID;
 
 @RestController
-public class FacebookWebhook implements HealthIndicator, ApplicationListener<ApplicationReadyEvent>, DisposableBean {
-
+public class FacebookWebhook implements HealthIndicator, DisposableBean {
     private final String sourceFacebookEvents = new SourceFacebookEvents().name();
+    private final String webhookSecret;
 
-    @Value("${kafka.brokers}")
-    private String brokers;
+    private final Producer<String, String> producer;
+    private final ProducerHealthCheck producerHealthCheck;
 
-    @Value("${facebook.webhook-secret}")
-    private String webhookSecret;
-
-    private Producer<String, String> producer;
-
-    private void setup() {
+    FacebookWebhook(ProducerHealthCheck producerHealthCheck,
+                    @Value("${kafka.brokers}") String brokers,
+                    @Value("${facebook.webhook-secret}") String webhookSecret) {
+        this.producerHealthCheck = producerHealthCheck;
+        this.webhookSecret = webhookSecret;
         final Properties props = new Properties();
 
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
@@ -51,9 +47,6 @@ public class FacebookWebhook implements HealthIndicator, ApplicationListener<App
 
         producer = new KafkaProducer<>(props);
     }
-
-    @Autowired
-    private ProducerHealthCheck producerHealthCheck;
 
     public Health health() {
         try {
@@ -84,11 +77,6 @@ public class FacebookWebhook implements HealthIndicator, ApplicationListener<App
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
-    }
-
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-        setup();
     }
 
     @Override

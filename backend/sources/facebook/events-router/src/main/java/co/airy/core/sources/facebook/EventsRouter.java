@@ -20,7 +20,6 @@ import org.apache.kafka.streams.kstream.KTable;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -36,16 +35,17 @@ import static java.util.stream.Collectors.toList;
 public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final Logger log = AiryLoggerFactory.getLogger(EventsRouter.class);
 
-    @Autowired
-    private KafkaStreamsWrapper streams;
+    private final KafkaStreamsWrapper streams;
+    private final ObjectMapper objectMapper;
+    private final MessageParser messageParser;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    EventsRouter(KafkaStreamsWrapper streams, ObjectMapper objectMapper, MessageParser messageParser) {
+        this.streams = streams;
+        this.objectMapper = objectMapper;
+        this.messageParser = messageParser;
+    }
 
-    @Autowired
-    private MessageParser messageParser;
-
-    private final String appId = "sources.facebook.EventsRouter";
+    private static final String appId = "sources.facebook.EventsRouter";
 
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();

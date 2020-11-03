@@ -1,8 +1,6 @@
 ---
-id: api
 title: API
-sidebar_label: API
-slug: /api
+sidebar_label: HTTP
 ---
 
 This documents aims to offer an high-level overview of the different parts that

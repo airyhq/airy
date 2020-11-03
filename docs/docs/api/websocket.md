@@ -1,8 +1,6 @@
 ---
-id: websocket
-title: WebSocket API
-sidebar_label: Websocket API
-slug: /websocket-api
+title: WebSocket 
+sidebar_label: Websocket
 ---
 
 - [Introduction](#introduction)

@@ -18,7 +18,7 @@ following components:
 - A [React](https://reactjs.org/) UI component library which we showcase at
   [components.airy.co](https://components.airy.co).
 
-- An [API](api.md) to manage the data sets the platform
+- An [HTTP api](api/http.md) to manage the data sets the platform
   handles.
 
 - A webhook integration server that allows its users to programmatically

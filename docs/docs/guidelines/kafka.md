@@ -1,8 +1,6 @@
 ---
-id: kafka
 title: Kafka
 sidebar_label: Kafka
-slug: /kafka
 ---
 
 The goal of this document is to provide information about how we use Kafka in

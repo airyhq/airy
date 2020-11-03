@@ -1,8 +1,6 @@
 ---
-id: design
 title: Design Principles
 sidebar_label: Design Principles
-slug: /design-principles
 ---
 
 The design of the Airy Core Platform heavily relies on a few core ideas. The

@@ -5,8 +5,8 @@ module.exports = {
   baseUrl: "/",
   onBrokenLinks: "throw",
   favicon: "img/favicon.ico",
-  organizationName: "airyhq", // Usually your GitHub org/user name.
-  projectName: "airy", // Usually your repo name.
+  organizationName: "airyhq",
+  projectName: "airy",
   themeConfig: {
     prism: {
       theme: require("prism-react-renderer/themes/github"),

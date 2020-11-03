@@ -39,16 +39,16 @@ kubectl cp create-database.sh kafka-client:/tmp
 kubectl cp /vagrant/scripts/triggers/wait-for-service.sh kafka-client:/root
 echo "Creating kafka topics"
 kubectl scale statefulset airy-cp-zookeeper --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-zookeeper 2181 10 Zookeeper
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-zookeeper 2181 15 Zookeeper
 kubectl scale statefulset airy-cp-kafka --replicas=1 
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-kafka 9092 10 Kafka
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-kafka 9092 15 Kafka
 kubectl exec kafka-client -- /tmp/create-topics.sh
 echo "Creating required databases"
 kubectl scale deployment postgres --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh postgres 5432 5 Postgres
+kubectl exec kafka-client -- /root/wait-for-service.sh postgres 5432 10 Postgres
 kubectl exec kafka-client -- env PGPASSWORD="${RANDOM_POSTGRES_PASSWORD}" /tmp/create-database.sh
 kubectl scale statefulset redis-cluster --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh redis-cluster 6379 5 Redis
+kubectl exec kafka-client -- /root/wait-for-service.sh redis-cluster 6379 10 Redis
 
 echo "Deploying ingress controller"
 kubectl apply -f ../network/istio-crd.yaml
@@ -59,12 +59,12 @@ kubectl label namespace default istio-injection=enabled --overwrite
 echo "Deploying ingress routes"
 while ! `kubectl get crd 2>/dev/null| grep -q gateways.networking.istio.io`
 do
-    sleep 5
+    sleep 15
     echo "Waiting for istio to create all the Gateway CRD..."
 done
 while ! `kubectl get crd 2>/dev/null| grep -q virtualservices.networking.istio.io`
 do
-    sleep 5
+    sleep 15
     echo "Waiting for istio to create all the VirtualService CRD..."
 done
 kubectl apply -f ../network/istio-services.yaml

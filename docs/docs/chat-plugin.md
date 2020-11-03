@@ -1,30 +1,37 @@
-# Airy Chat plugin
+---
+title: Chat Plugin
+sidebar_label: Chat Plugin
+---
+
 
 The chat plugin allows anonymous website visitors to start a conversation with 
 the Airy Core Platform and respond to messages.
 
 This documents offers an overview of the HTTP endpoints and WebSocket queues required for the Airy Chat plugin to function.
 
-- [Airy Chat plugin](#airy-chat-plugin)
-  - [Introduction](#introduction)
-  - [HTTP API](#http-api)
-    - [Authenticate web users](#authenticating-web-users)
+- [Introduction](#introduction)
+- [HTTP API](#http-api)
+  - [Authenticating web users](#authenticating-web-users)
     - [Send message](#send-message)
-  - [Websocket API](#websocket-api)
-    - [Receive message](#receive-message)
+- [WebSocket API](#websocket-api)
+  - [Receive message](#receive-message)
 
 ## Introduction
 
-The Airy Core chat plugin is a fully-featured [source](./glossary.md#source) that enables conversations with anonymous 
-website visitors through a web chat plugin.
+The Airy Core chat plugin is a fully-featured [source](./glossary.md#source)
+that enables conversations with anonymous website visitors through a web chat
+plugin.
 
-Like for any other source you must connect a channel first using the [channels connection endpoint](api.md#connecting-channels) 
-and setting the `source` field in the request payload to `chat_plugin`. You can leave the token parameter empty. 
+Like for any other source you must connect a channel first using the [channels
+connection endpoint](api/http.md#connecting-channels) and setting the `source`
+field in the request payload to `chat_plugin`. You can leave the token parameter
+empty. 
 
 
 ## HTTP API
 
-The HTTP api adheres to standards laid out in the [core API](api.md#introduction).
+The HTTP api adheres to standards laid out in the [core
+API](api/http.md#introduction).
 
 ### Authenticating web users
 
@@ -78,15 +85,13 @@ The request returns an authentication token that needs to be included in the Web
 }
 ```
 
-
-
 ## WebSocket API
 
-Connection and standards are the same as for the [core websocket](websocket.md) except that the authorization 
-token is obtained from the [chatplugin authentication API](#authenticating-web-users).
+Connection and standards are the same as for the [core websocket](api/websocket.md)
+except that the authorization token is obtained from the [chatplugin
+authentication API](#authenticating-web-users).
 
 The WebSocket endpoint is at `/ws.chatplugin`. 
-
 
 ### Receive message
 

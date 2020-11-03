@@ -1,28 +1,32 @@
-# User guide
+---
+id: user-guide
+title: User Guide
+sidebar_label: User Guide
+slug: /user-guide
+---
 
 The goal of this document is to provide an overview of how to run the Airy Core
 Platform.
 
-- [User guide](#user-guide)
-  - [Running the platform on your machine](#running-the-platform-on-your-machine)
-    - [Debug your installation](#debug-your-installation)
-    - [Connect the Facebook source](#connect-the-facebook-source)
-    - [Airy Core API and Public webhooks](#airy-core-api-and-public-webhooks)
-    - [Uninstall the Airy Core Platform Box](#uninstall-the-airy-core-platform-box)
+- [Running the platform on your machine](#running-the-platform-on-your-machine)
+  - [Debug your installation](#debug-your-installation)
+  - [Connect the Facebook source](#connect-the-facebook-source)
+  - [Airy Core API and Public webhooks](#airy-core-api-and-public-webhooks)
+  - [Uninstall the Airy Core Platform Box](#uninstall-the-airy-core-platform-box)
 
 ## Running the platform on your machine
 
 We built a virtual machine with [Vagrant](https://www.vagrantup.com) that allows
 you to create a virtual machine (box). The box contains a
 [Minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/)
-cluster preconfigured to deploy and run all the [Airy Core Platform
-components](/infrastructure/README.md#componentes).
+cluster preconfigured to deploy and run all the Airy Core Platform
+components.
 
 To get started, run the following commands:
 
 ```sh
 $ git clone https://github.com/airyhq/airy
-$ cd core
+$ cd airy
 $ ./scripts/bootstrap.sh
 ```
 
@@ -55,8 +59,9 @@ $ vagrant up
 
 ### Connect the Facebook source
 
-To integrate the Facebook source, you must provide your Facebook credentials. You must put them in the configuration file
-`airy.conf` located in the `infrastructure` directory and then run the following command:
+To integrate the Facebook source, you must provide your Facebook credentials.
+You must put them in the configuration file `airy.conf` located in the
+`infrastructure` directory and then run the following command:
 
 ```sh
 $ vagrant provision --provision-with airy-conf

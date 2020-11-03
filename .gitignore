@@ -13,7 +13,7 @@ bazel-*
 .\#*
 
 # Generated file for live markdown preview
-docs/api.html
+docs/build
 
 # Node packages
 node_modules/

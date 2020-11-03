@@ -1,12 +1,14 @@
-# Airy Core WebSocket API
+---
+title: WebSocket 
+sidebar_label: Websocket
+---
 
-- [Airy Core WebSocket API](#airy-core-websocket-api)
-  - [Introduction](#introduction)
-  - [Outbound Queues](#outbound-queues)
-    - [Message](#message)
-    - [Unread count](#unread-count)
-    - [Channel connected](#channel-connected)
-    - [Channel disconnected](#channel-disconnected)
+- [Introduction](#introduction)
+- [Outbound Queues](#outbound-queues)
+  - [Message](#message)
+  - [Unread count](#unread-count)
+  - [Channel connected](#channel-connected)
+  - [Channel disconnected](#channel-disconnected)
 
 ## Introduction
 

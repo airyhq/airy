@@ -1,41 +1,43 @@
-# Airy Core Platform API
+---
+title: API
+sidebar_label: HTTP
+---
 
 This documents aims to offer an high-level overview of the different parts that
 compose our API.
 
-- [Airy Core Platform API](#airy-core-platform-api)
-  - [Introduction](#introduction)
-  - [Authentication](#authentication)
-    - [Login](#login)
-  - [Endpoints](#endpoints)
-    - [Users](#users)
-      - [Signup](#signup)
-      - [Request password reset](#request-password-reset)
-      - [Reset password](#reset-password)
-    - [Conversations](#conversations)
-      - [List conversations](#list-conversations)
-      - [Conversation info](#conversation-info)
-      - [Mark conversation as read](#mark-conversation-as-read)
-      - [Tag a conversation](#tag-a-conversation)
-      - [Untag a conversation](#untag-a-conversation)
-    - [Messages](#messages)
-      - [List messages](#list-messages)
-      - [Send a message](#send-a-message)
-    - [Channels](#channels)
-      - [Connecting Channels](#connecting-channels)
-      - [Disconnecting Channels](#disconnecting-channels)
-      - [Explore Channels](#explore-channels)
-      - [List Channels](#list-channels)
-    - [Webhooks](#webhooks)
-      - [Subscribing to a webhook](#subscribing-to-a-webhook)
-      - [Unsubscribing to a webhook](#unsubscribing-to-a-webhook)
-      - [Webhook info](#webhook-info)
-    - [Tags](#tags)
-      - [Creating a tag](#creating-a-tag)
-      - [Updating a tag](#updating-a-tag)
-      - [Deleting a tag](#deleting-a-tag)
-      - [Listing tags](#listing-tags)
-  - [Pagination](#pagination)
+- [Introduction](#introduction)
+- [Authentication](#authentication)
+  - [Login](#login)
+- [Endpoints](#endpoints)
+  - [Users](#users)
+    - [Signup](#signup)
+    - [Request password reset](#request-password-reset)
+    - [Reset password](#reset-password)
+  - [Conversations](#conversations)
+    - [List conversations](#list-conversations)
+    - [Conversation info](#conversation-info)
+    - [Mark conversation as read](#mark-conversation-as-read)
+    - [Tag a conversation](#tag-a-conversation)
+    - [Untag a conversation](#untag-a-conversation)
+  - [Messages](#messages)
+    - [List messages](#list-messages)
+    - [Send a message](#send-a-message)
+  - [Channels](#channels)
+    - [Connecting Channels](#connecting-channels)
+    - [Disconnecting Channels](#disconnecting-channels)
+    - [Explore Channels](#explore-channels)
+    - [List Channels](#list-channels)
+  - [Webhooks](#webhooks)
+    - [Subscribing to a webhook](#subscribing-to-a-webhook)
+    - [Unsubscribing to a webhook](#unsubscribing-to-a-webhook)
+    - [Webhook info](#webhook-info)
+  - [Tags](#tags)
+    - [Creating a tag](#creating-a-tag)
+    - [Updating a tag](#updating-a-tag)
+    - [Deleting a tag](#deleting-a-tag)
+    - [Listing tags](#listing-tags)
+- [Pagination](#pagination)
 
 ## Introduction
 
@@ -44,7 +46,7 @@ Our HTTP endpoints adhere to the following conventions:
 - Endpoints only accept `POST` JSON requests.
 - Except for the `/users.login` and `/users.signup` endpoints, communication
   always requires a valid [JWT token](#authorization).
-- We use dots for namespacing URLS (eg `/things.add`).
+- We use dots for name-spacing URLS (eg `/things.add`).
 
 ## Authentication
 
@@ -84,11 +86,11 @@ does not require a valid token to be present in the headers.
 ## Endpoints
 
 The way we group endpoints reflects the high level entities of the [Airy Core Data
-Model](/docs/glossary.md).
+Model](glossary.md).
 
 ### Users
 
-Please refer to our [user](/docs/glossary.md#users) definition for more
+Please refer to our [user](glossary.md#users) definition for more
 information.
 
 #### Signup
@@ -168,7 +170,7 @@ The new password _MUST_ be at least 6 (six) characters long
 
 ### Conversations
 
-Please refer to our [conversation](/docs/glossary.md#conversation) definition
+Please refer to our [conversation](glossary.md#conversation) definition
 for more information.
 
 #### List conversations
@@ -336,7 +338,7 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 
 ### Messages
 
-Please refer to our [messages](/docs/glossary.md#message) definition for more
+Please refer to our [messages](glossary.md#message) definition for more
 information.
 
 #### List messages

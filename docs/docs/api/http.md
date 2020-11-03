@@ -428,13 +428,17 @@ to connect the channel.
 This action is idempotent, so if the channel is already connected the status
 will be `202`.
 
+The request requires an authentication`token`, which has a different meaning for each source:
+
+- `FACEBOOK` The page access token 
+
 **Sample Request**
 
 ```json5
 {
   "source": "facebook",
   "source_channel_id": "fb-page-id-1",
-  "token": "FB_TOKEN",
+  "token": "authentication token",
   "name": "My custom name for this page", // optional
   "image_url": "https://example.org/custom-image.jpg" // optional
 }
@@ -480,12 +484,16 @@ to list all the channels that are available. Some of those channels may already
 be connected, which is accounted for in the boolean field `connected`. Due to
 the nature of the request, response time may vary.
 
+The request requires an authentication`token`, which has a different meaning for each source:
+
+- `FACEBOOK` The user access token
+
 **Sample Request**
 
 ```json5
 {
   "source": "facebook",
-  "token": "some-token"
+  "token": "authentication token"
 }
 ```
 

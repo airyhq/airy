@@ -47,7 +47,7 @@ container_push(
     name = "release",
     format = "Docker",
     image = ":image",
-    registry = "ghcr.io/airyhq/airy/api",
-    repository = "auth",
+    registry = "docker.pkg.github.com/airyhq",
+    repository = "airy/api-auth",
     tag = "latest",
 )

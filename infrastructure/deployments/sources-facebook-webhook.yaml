@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/airyhq/airy/sources/facebook-webhook:latest
+          image: ghcr.io/airyhq/sources-facebook-webhook:latest
           imagePullPolicy: Always
           env:
             - name: KAFKA_BROKERS
@@ -39,7 +39,7 @@ spec:
             - -c
             - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="<ngrok_client_string>" 8080
           env:
-          image: ghcr.io/airyhq/airy/infrastructure/ngrok-client:latest
+          image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
           imagePullPolicy: Always
           resources:
             limits:

@@ -40,7 +40,7 @@ container_push(
     name = "release",
     format = "Docker",
     image = ":image",
-    registry = "ghcr.io/airyhq/airy/webhook",
-    repository = "publisher",
+    registry = "docker.pkg.github.com/airyhq",
+    repository = "airy/webhook-publisher",
     tag = "latest",
 )

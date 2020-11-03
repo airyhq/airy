@@ -29,7 +29,7 @@ container_push(
     name = "release",
     format = "Docker",
     image = ":go_image",
-    registry = "ghcr.io/airyhq/airy/webhook",
-    repository = "consumer",
+    registry = "docker.pkg.github.com/airyhq",
+    repository = "airy/webhook-consumer",
     tag = "latest",
 )

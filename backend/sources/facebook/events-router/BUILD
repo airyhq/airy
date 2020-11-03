@@ -40,7 +40,7 @@ container_push(
     name = "release",
     format = "Docker",
     image = ":image",
-    registry = "ghcr.io/airyhq/airy/sources",
+    registry = "docker.pkg.github.com/airyhq",
     repository = "facebook-events-router",
     tag = "latest",
 )

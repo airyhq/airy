@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: ghcr.io/airyhq/airy/webhook/consumer:latest
+        image: docker.pkg.github.com/airyhq/airy/webhook-consumer:latest
         imagePullPolicy: Always
         env:
         - name: SERVICE_NAME

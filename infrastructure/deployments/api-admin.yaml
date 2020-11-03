@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: ghcr.io/airyhq/airy/api/admin:latest
+        image: docker.pkg.github.com/airyhq/airy/api-admin:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

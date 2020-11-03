@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: ghcr.io/airyhq/airy/api/auth:latest
+        image: docker.pkg.github.com/airyhq/airy/api-auth:latest
         imagePullPolicy: Always
         env:
         - name: SERVICE_NAME

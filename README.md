@@ -1,8 +1,9 @@
 # Airy Core Platform
 
-The Airy Core Platform is an open source, fully-featured, production ready messaging platform
-to process conversational data from a variety of sources (like
-Facebook Messenger, Google Business Messages, Website Live Chat, and more).
+The Airy Core Platform is an open source, fully-featured, production ready
+messaging platform to process conversational data from a variety of sources
+(like Facebook Messenger, Google Business Messages, Website Live Chat, and
+more).
 
 - [Getting Started](#getting-started)
 - [Components](#components)
@@ -18,12 +19,15 @@ You can run the Airy Core Platform locally by running the following commands:
 
 ```sh
 $ git clone https://github.com/airyhq/airy
-$ cd core
+$ cd airy
 $ ./scripts/bootstrap.sh
 ```
 
-The bootstrap installation requires [Vagrant](https://www.vagrantup.com/downloads) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not found, the script will attempt to install them for you.
-Check out our [user guide](/docs/docs/user-guide.md) for detailed information.
+The bootstrap installation requires
+[Vagrant](https://www.vagrantup.com/downloads) and
+[VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
+found, the script will attempt to install them for you.  Check out our [user
+guide](/docs/docs/user-guide.md) for detailed information.
 
 
 ## Components
@@ -85,16 +89,15 @@ Here is a quick overview of how the repository is organized:
 
   This directory contains a variety of utility scripts.
 
-If you wish to learn more about a specific project, please refer to the
+If you wish to learn more about a specific project, refer to the
 `README.md` in the corresponding subdirectory.
 
 
-
-## Design Principles 
+## Design Principles
 
 The Airy Core Platform is built using a few guiding principles. An introduction
 to these principles is essential to navigate the code base with ease. You can
-read more about it [here](/docs/docs/design.md)
+read more about it [here](/docs/docs/guidelines/design-principles.md)
 
 
 ## How to contribute
@@ -109,7 +112,7 @@ project are:
 - Issues with the tag [good first
   patch](https://github.com/airyhq/airy/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+patch%22)
 
-If you're still not sure where to start, please open a [new
+If you're still not sure where to start, open a [new
 issue](https://github.com/airyhq/airy/issues/new) and we'll gladly help you get
 started.
 

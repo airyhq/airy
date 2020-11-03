@@ -2,10 +2,10 @@ module.exports = {
   docs: [
     "index",
     "user-guide",
-    {"API": ["api/http", "api/websocket", "api/webhook"]},
+    { API: ["api/http", "api/websocket", "api/webhook"] },
     "chat-plugin",
-    {"Guidelines": ["guidelines/design-principles", "guidelines/kafka"]},
+    { Guidelines: ["guidelines/design-principles", "guidelines/kafka"] },
     "developers-manual",
-    "glossary",
+    "glossary"
   ]
 };

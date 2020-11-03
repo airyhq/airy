@@ -10,11 +10,9 @@
   "dependencies": {
     "@crello/react-lottie": "^0.0.9",
     "react-autosize-textarea": "^7.1.0",
-    "react-i18next": "^11.7.3",
     "react-modal": "^3.11.2",
     "react-router-dom": "5.1.2",
-    "emoji-mart": "^3.0.0",
-    "moment": "^2.29.1"
+    "emoji-mart": "^3.0.0"
   },
   "peerDependencies": {
     "react": "^16",

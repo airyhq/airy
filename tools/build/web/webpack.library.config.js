@@ -96,7 +96,8 @@ module.exports = (env, argv) => ({
             loader: "css-loader",
             options: {
               modules: {
-                auto: true
+                auto: true,
+                localIdentName: "[name]_[local]-[hash:base64:5]"
               }
             }
           },
@@ -114,6 +115,9 @@ module.exports = (env, argv) => ({
             loader: "@svgr/webpack",
             options: {
               titleProp: true,
+
+              // adapted from the default template
+              // https://github.com/gregberge/svgr/blob/master/packages/babel-plugin-transform-svg-component/src/index.js
               template: (
                 { template },
                 opts,

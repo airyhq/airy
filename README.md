@@ -1,23 +1,36 @@
 # Airy Core Platform
 
-This [monorepo](https://en.wikipedia.org/wiki/Monorepo) contains all the
-code and tooling required to run the Airy Core Platform.
+The Airy Core Platform is an open source, fully-featured, production ready messaging platform
+to process conversational data from a variety of sources (like
+Facebook Messenger, Google Business Messages, Website Live Chat, and more).
 
-- [Airy Core Platform](#airy-core-platform)
-  - [What's the Airy Core Platform?](#whats-the-airy-core-platform)
-  - [Getting started](#getting-started)
-  - [Design principles of the Airy Core Platform](#design-principles-of-the-airy-core-platform)
-  - [How to contribute](#how-to-contribute)
-  - [Code of Conduct](#code-of-conduct)
+- [Getting Started](#getting-started)
+- [Components](#components)
+- [Organization of this Repo](#organization-of-the-repository)
+- [Design Principles](#design-principles)
+- [How to contribute](#how-to-contribute)
+- [Code of Conduct](#code-of-conduct)
 
-## What's the Airy Core Platform?
 
-The Airy Core Platform is a fully-featured, production ready messaging platform
-that allows its user to process messaging data from a variety of sources (like
-facebook messenger or google business messages). The core platform contains the
-following components:
+## Getting started
 
-- A ingestion platform that heavily relies on [Apache
+You can run the Airy Core Platform locally by running the following commands:
+
+```sh
+$ git clone https://github.com/airyhq/airy
+$ cd core
+$ ./scripts/bootstrap.sh
+```
+
+The bootstrap installation requires [Vagrant](https://www.vagrantup.com/downloads) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not found, the script will attempt to install them for you.
+Check out our [user guide](/docs/docs/user-guide.md) for detailed information.
+
+
+## Components
+
+The Airy Core Platform contains the following components:
+
+- An ingestion platform that heavily relies on [Apache
   Kafka](https://kafka.apache.org) to process incoming webhook data from
   different sources. We make sense of the data and reshape it into source
   independent contacts, conversations, and messages (see our
@@ -35,6 +48,12 @@ following components:
 
 - A WebSocket server that allows clients to receive near real-time updates about
   data flowing through the system.
+
+
+## Organization of the Repository
+
+This [monorepo](https://en.wikipedia.org/wiki/Monorepo) contains all the
+code and tooling required to run the Airy Core Platform.
 
 Here is a quick overview of how the repository is organized:
 
@@ -69,24 +88,14 @@ Here is a quick overview of how the repository is organized:
 If you wish to learn more about a specific project, please refer to the
 `README.md` in the corresponding subdirectory.
 
-## Getting started
 
-You can run the Airy Core Platform locally by running the following commands:
 
-```sh
-$ git clone https://github.com/airyhq/airy
-$ cd core
-$ ./scripts/bootstrap.sh
-```
-
-The bootstrap installation requires [Vagrant](https://www.vagrantup.com/downloads) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not found, the script will attempt to install them for you.
-Check out our [user guide](/docs/docs/user-guide.md) for detailed information.
-
-## Design principles of the Airy Core Platform
+## Design Principles 
 
 The Airy Core Platform is built using a few guiding principles. An introduction
 to these principles is essential to navigate the code base with ease. You can
 read more about it [here](/docs/docs/design.md)
+
 
 ## How to contribute
 
@@ -103,6 +112,7 @@ project are:
 If you're still not sure where to start, please open a [new
 issue](https://github.com/airyhq/airy/issues/new) and we'll gladly help you get
 started.
+
 
 ## Code of Conduct
 

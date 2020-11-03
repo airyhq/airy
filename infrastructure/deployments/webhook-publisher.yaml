@@ -32,7 +32,7 @@ spec:
         - name: SERVICE_NAME
           value: webhook-publisher
         - name: REDIS_HOSTNAME
-          value: redis
+          value: redis-cluster
         - name: REDIS_PORT
           value: "6379"
         livenessProbe:

@@ -12,9 +12,8 @@ Platform.
 ## Running the platform on your machine
 
 We built a virtual machine with [Vagrant](https://www.vagrantup.com) that allows
-you to create a virtual machine (box). The box contains a
-[Minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/)
-cluster preconfigured to deploy and run all the Airy Core Platform
+you to create a virtual machine (box). The box contains [K3OS](https://k3os.io/),
+a pre-configured kubernetes cluster, to deploy and run all the Airy Core Platform
 components.
 
 To get started, run the following commands:
@@ -33,7 +32,7 @@ You can ssh inside the Airy Core Platform box for testing and debugging purposes
 $ cd infrastructure
 $ vagrant status
 $ vagrant ssh
-$ kubectl get pods # to see what's running inside the minikube
+$ kubectl get pods # to see what's running inside the kubernetes cluster
 ```
 
 You can stop, start or restart the Airy Core Platform box with the following commands:

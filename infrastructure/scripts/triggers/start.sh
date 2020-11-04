@@ -11,7 +11,7 @@ done
 kubectl cp /vagrant/scripts/triggers/wait-for-service.sh kafka-client:/root
 kubectl scale statefulset airy-cp-zookeeper --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-zookeeper 2181 15 Zookeeper
-kubectl scale statefulset airy-cp-kafka --replicas=1 
+kubectl scale statefulset airy-cp-kafka --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-kafka 9092 15 Kafka
 kubectl scale statefulset redis-cluster --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh redis-cluster 6379 10 Redis
@@ -22,6 +22,7 @@ kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8
 echo "Starting up all the apps"
 kubectl scale deployment api-admin --replicas=1
 kubectl scale deployment api-auth --replicas=1
+kubectl scale deployment frontend-demo --replicas=1
 kubectl scale deployment api-communication --replicas=1
 kubectl scale deployment sources-facebook-events-router --replicas=1
 kubectl scale deployment sources-facebook-sender --replicas=1

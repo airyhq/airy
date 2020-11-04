@@ -70,8 +70,8 @@ Here is a quick overview of how the repository is organized:
 
 - `frontend`
 
-  This directory contains the code of the "inbox", "admin" applications, and the
-  frontend libraries used by both modules.
+  This directory contains the code for the UI components library and a demo epplication
+  that uses the library and a basic subset of the API. 
 
 - `infrastructure`
 

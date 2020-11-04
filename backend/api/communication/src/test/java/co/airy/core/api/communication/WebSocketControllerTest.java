@@ -41,6 +41,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -96,9 +97,6 @@ public class WebSocketControllerTest {
 
     @Autowired
     private MockMvc mvc;
-
-    @Autowired
-    private Stores store;
 
     @Autowired
     private Jwt jwt;

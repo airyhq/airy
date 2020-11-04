@@ -6,7 +6,6 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
-import co.airy.core.api.communication.payload.MessageResponsePayload;
 import co.airy.core.api.communication.payload.SendMessageRequestPayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.payload.response.EmptyResponsePayload;
@@ -33,13 +32,15 @@ public class SendMessageController {
     private final Stores stores;
     private final ObjectMapper objectMapper;
     private final KafkaProducer<String, Message> producer;
+    private final Mapper mapper;
 
     private final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
 
-    SendMessageController(Stores stores, ObjectMapper objectMapper, KafkaProducer<String, Message> producer) {
+    SendMessageController(Stores stores, ObjectMapper objectMapper, KafkaProducer<String, Message> producer, Mapper mapper) {
         this.stores = stores;
         this.objectMapper = objectMapper;
         this.producer = producer;
+        this.mapper = mapper;
     }
 
     @PostMapping("/messages.send")
@@ -71,6 +72,6 @@ public class SendMessageController {
 
         producer.send(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message)).get();
 
-        return ResponseEntity.ok(MessageResponsePayload.fromMessage(message));
+        return ResponseEntity.ok(mapper.fromMessage(message));
     }
 }

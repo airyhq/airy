@@ -18,7 +18,7 @@ import {
   AiryLoader,
   AnalyticsLoader,
   SimpleLoader
-} from "@airyhq/components";
+} from "components/src";
 
 import styles from "./index.module.scss";
 

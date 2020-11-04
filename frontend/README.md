@@ -17,11 +17,11 @@ Here is a quick introduction to the frontend projects:
 
   This directory contains a small React application that showcases the
   components of the [Airy Components
-  Library](https://www.npmjs.com/package/@airyhq/components), we host a `main`
+  Library](https://www.npmjs.com/package/@airyhq/components), we host the `main`
   branch version at [https://components.airy.co](https://components.airy.co).
 
 - `demo`
 
-  This project is a minimum UI implementation of the provided [Airy Core Platform API](docs_tmp/api.md). 
+  This project is a minimum UI implementation of the provided [Airy Core Platform API](https://docs.airy.co/api/http). 
   Unlike `showcase` it does not use the `npm` version of the `components` library, but instead uses the 
   local repository version. 

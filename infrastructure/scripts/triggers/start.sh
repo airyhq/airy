@@ -13,8 +13,6 @@ kubectl scale statefulset airy-cp-zookeeper --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-zookeeper 2181 15 Zookeeper
 kubectl scale statefulset airy-cp-kafka --replicas=1 
 kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-kafka 9092 15 Kafka
-kubectl scale statefulset redis-cluster --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh redis-cluster 6379 10 Redis
 kubectl scale deployment postgres --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh postgres 5432 10 Postgres
 kubectl scale deployment airy-cp-schema-registry --replicas=1

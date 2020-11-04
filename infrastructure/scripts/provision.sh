@@ -20,6 +20,9 @@ sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/chart
 
 helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s
 
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install redis bitnami/redis --values helm-chart/charts/redis/values.yaml
+
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
 export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
@@ -47,8 +50,7 @@ echo "Creating required databases"
 kubectl scale deployment postgres --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh postgres 5432 10 Postgres
 kubectl exec kafka-client -- env PGPASSWORD="${RANDOM_POSTGRES_PASSWORD}" /tmp/create-database.sh
-kubectl scale statefulset redis-cluster --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh redis-cluster 6379 10 Redis
+
 
 echo "Deploying ingress controller"
 kubectl apply -f ../network/istio-crd.yaml

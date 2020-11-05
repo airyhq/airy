@@ -5,13 +5,13 @@ IFS=$'\n\t'
 
 content_type='Content-Type: application/json'
 
-API_URL=http://${HOST}:${PORT}
+API_URL=https://${HOST}:${PORT}
 
 function apiCall {
   local endpoint=$1
   local request_payload=$2
   local expected_http_response_code=$3
-  local token=$4
+  local token=${4:-no-auth}
 
   url=${API_URL}/$1
   if [ "$token" = "no-auth" ]; then
@@ -30,29 +30,30 @@ function apiCall {
   echo ${response_payload}
 }
 
-login_payload=$(apiCall "users.login" '{"email":"grace@example.com","password":"the_answer_is_42"}' 200 "no-auth")
+login_payload=$(apiCall "users.login" '{"email":"grace@example.com","password":"the_answer_is_42"}' 200)
 
 token=$(echo $login_payload | jq -r '.token')
-conversation_list_payload=$(apiCall "conversations.list" '{}' 200 ${token})
+
+conversation_list_payload=$(apiCall "conversations" '{}' 200 ${token})
+conversations_info=$(apiCall "conversations.info" '{}' 200 ${token})
+conversations_read=$(apiCall "conversations.read" '{}' 200 ${token})
+
 chatplugin_authenticate_payload=$(apiCall "chatplugin.authenticate" '{}' 200 ${token})
 
 channels_list=$(apiCall "channels.list" '{}' 200 ${token})
 channels_disconnect=$(apiCall "channels.disconnect" '{}' 200 ${token})
 channels_explore=$(apiCall "channels.explore" '{}' 200 ${token})
 channels_connect=$(apiCall "channels.connect" '{}' 200 ${token})
+
 webhooks_subscribe=$(apiCall "webhooks.subscribe" '{}' 200 ${token})
 webhooks_unsubscribe=$(apiCall "webhooks.unsubscribe" '{}' 200 ${token})
 webhooks_info=$(apiCall "webhooks.info" '{}' 200 ${token})
+
 tags_create=$(apiCall "tags.create" '{}' 200 ${token})
 tags_update=$(apiCall "tags.update" '{}' 200 ${token})
 tags_list=$(apiCall "tags.list" '{}' 200 ${token})
 tags_delete=$(apiCall "tags.delete" '{}' 200 ${token})
-users_accept=$(apiCall "users.accept-invitation" '{}' 200 ${token})
-users_request=$(apiCall "users.request-password-reset" '{}' 200 ${token})
+
 users_password=$(apiCall "users.password-reset" '{}' 200 ${token})
-users_invite=$(apiCall "users.invite" '{}' 200 ${token})
-conversations_list=$(apiCall "conversations.list" '{}' 200 ${token})
-conversations_info=$(apiCall "conversations.info" '{}' 200 ${token})
-conversations_read=$(apiCall "conversations.read" '{}' 200 ${token})
 messages_list=$(apiCall "messages.list" '{}' 200 ${token})
 messages_send=$(apiCall "messages.send" '{}' 200 ${token})

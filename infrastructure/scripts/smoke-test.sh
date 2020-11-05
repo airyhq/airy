@@ -14,14 +14,11 @@ function apiCall {
   local token=$4
 
   url=${API_URL}/$1
-  if [ $token == "no-auth" ]
-    then
-      auth=""
+  if [ "$token" = "no-auth" ]; then
+      response=$(curl -H ${content_type} -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
     else
-      auth="-H \"Authorization: $token\""
+      response=$(curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
   fi
-  response=$(curl -H ${content_type} ${auth} -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
-
   response_http_code=$(head -1 <<< "$response")
   response_payload=$(tail -1 <<< "$response")
 
@@ -36,5 +33,5 @@ function apiCall {
 login_payload=$(apiCall "users.login" '{"email":"grace@example.com","password":"the_answer_is_42"}' 200 "no-auth")
 
 token=$(echo $login_payload | jq -r '.token')
-
-# conversation_list_payload=$(apiCall "conversations.list" '{}' 200)
+conversation_list_payload=$(apiCall "conversations.list" '{}' 200 ${token})
+# chatplugin_authenticate_payload=$(apiCall "chatplugin.authenticate" '{}' 200 ${token})

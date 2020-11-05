@@ -1,46 +1,35 @@
-
 #!/bin/bash
 
 set -euo pipefail
 IFS=$'\n\t'
 
-sudo yum install jq -y
+content_type='Content-Type: application/json'
 
-header='Content-Type: application/json'
-ingress_port=`kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}'`
-if [ $(curl -X POST -H $header -d '{"password": "password","email": "testing@example.com"}' "192.168.50.5:$ingress_port/users.login" -o login.txt -w '%{http_code}\n' -s) == "200" ]; then
-    echo "Logged in"
-else
-    if [ $(curl -X POST -H 'Content-Type: application/json' -d '{"first_name": "test","last_name": "user","password": "password","email": "testing@example.com"}' "localhost:$ingress_port/users.signup" -o login.txt -w '%{http_code}\n' -s) != "200" ]; then
-        echo "Could not login" 
-        exit 1
-    fi
-fi
+API_URL=https://${HOST}:${PORT}
 
-token=($(jq -r ".token" login.txt))
+function apiCall {
+  local endpoint=$1
+  local request_payload=$2
+  local expected_http_response_code=$3
 
+  url=${API_URL}/$1
+  response=$(curl -H ${content_type} -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
 
-declare -A endpoints 
-declare -A bodies
+  response_http_code=$(head -1 <<< "$response")
+  response_payload=$(tail -1 <<< "$response")
 
-endpoints['conversations.list']='{}'
-bodies['conversations.list']='{"data":[],"response_metadata":{"previous_cursor":null,"next_cursor":null,"filtered_total":0,"total":0}}'
-
-# endpoints["conversations.info"]='{}'
-# bodies["conversations.info"]='{"data":[],"response_metadata":{"previous_cursor":null,"next_cursor":null,"filtered_total":0,"total":0}}'
-
-
-
-
-for i in "${!endpoints[@]}"
-do
-  response=$(curl -X POST -H $header -H "Authorization: $token" -d ${endpoints[$i]} "localhost:$ingress_port/$i")
-  if [ $response == ${bodies[$i]} ]
-  then
-    echo "Endpoint $i is fine"
-  else 
-    echo "not fine"
-    echo $response
+  if [ ${response_http_code} != ${expected_http_response_code} ]; then
+    echo "${url} response code was ${response_http_code}. expected: ${expected_http_response_code}"
+    exit
   fi
 
-done
+  echo ${response_payload}
+}
+
+login_payload=$(apiCall "login-via-email" '{"email":"luca@airy.co","password":"validpassword"}' 200)
+
+token=$(echo $login_payload | jq -r '.token')
+
+echo $token
+
+conversation_list_payload=$(apiCall "/conversations" '{}' 200)

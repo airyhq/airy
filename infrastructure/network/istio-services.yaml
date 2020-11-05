@@ -107,3 +107,22 @@ spec:
           host: api-admin
           port:
             number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+    name: demo
+spec:
+    hosts:
+    - "*"
+    gateways:
+    - airy-core
+    http:
+    - match:
+      - uri:
+          prefix: /demo
+      route:
+      - destination:
+          host: frontend-demo
+          port:
+            number: 80

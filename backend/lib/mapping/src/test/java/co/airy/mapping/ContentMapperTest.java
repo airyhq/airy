@@ -5,6 +5,8 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.mapping.model.Text;
 import co.airy.spring.core.AirySpringBootApplication;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +46,17 @@ public class ContentMapperTest {
 
         assertThat(textMessage.getText(), equalTo(text));
         Mockito.verify(outboundMapper).render(Mockito.anyString());
+    }
+
+    @Test
+    void includesTypeInformation() throws Exception {
+        final String testText = "Hello world";
+        final Text textContent = new Text(testText);
+        final String value = (new ObjectMapper()).writeValueAsString(textContent);
+
+        final JsonNode jsonNode = (new ObjectMapper()).readTree(value);
+
+        assertThat(jsonNode.get("type").textValue(), equalTo("text"));
+        assertThat(jsonNode.get("text").textValue(), equalTo(testText));
     }
 }

@@ -9,6 +9,7 @@ app_deps = [
     "//backend/avro/communication:channel",
     "//backend/avro/communication:metadata-action",
     "//backend/avro/communication:read-receipt",
+    "//backend/lib/mapping",
     "//backend/lib/payload",
     "//backend/lib/pagination",
     "//backend/lib/kafka/schema:kafka-schema",

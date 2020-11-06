@@ -3,6 +3,8 @@ load("//tools/build:junit5.bzl", "junit5")
 
 lib_deps = [
     "//:lombok",
+    "//:jackson",
+    "//backend/lib/log",
     "//backend/avro/communication:message",
     "@maven//:org_springframework_spring_context",
     "@maven//:com_fasterxml_jackson_core_jackson_databind",

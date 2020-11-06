@@ -2,7 +2,10 @@ package co.airy.mapping;
 
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
+import co.airy.log.AiryLoggerFactory;
 import co.airy.mapping.model.Content;
+import co.airy.mapping.model.Text;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -11,6 +14,7 @@ import java.util.Map;
 
 @Component
 public class ContentMapper {
+    private final Logger log = AiryLoggerFactory.getLogger(ContentMapper.class);
     private final Map<String, SourceMapper> mappers = new HashMap<>();
     private final OutboundMapper outboundMapper;
 
@@ -32,5 +36,14 @@ public class ContentMapper {
         }
 
         return sourceMapper.render(message.getContent());
+    }
+
+    public Content renderWithDefaultAndLog(Message message) {
+        try {
+            return this.render(message);
+        } catch (Exception e) {
+            log.error("Failed to render message {}", message, e);
+            return new Text("This content cannot be displayed");
+        }
     }
 }

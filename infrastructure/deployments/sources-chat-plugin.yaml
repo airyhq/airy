@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-plugin
+  namespace: default
+  labels:
+    app: chat-plugin
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: chat-plugin
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: chat-plugin
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/airyhq/frontend/demo:latest
+        imagePullPolicy: Always
+        env:
+        - name: JWT_SECRET
+          value: <jwt_secret>
+        livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+              httpHeaders:
+              - name: Health-Check
+                value: health-check
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-plugin
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: chat-plugin

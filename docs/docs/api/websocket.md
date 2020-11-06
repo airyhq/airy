@@ -31,7 +31,9 @@ Incoming payloads notify connected clients that a message was created or updated
   message: {
     id: "{UUID}",
     content: {
-      text: "{String}"
+      text: "{String}",
+      type: "text"
+      // Determines the schema of the content
     },
     // typed source message model
     state: "{String}",

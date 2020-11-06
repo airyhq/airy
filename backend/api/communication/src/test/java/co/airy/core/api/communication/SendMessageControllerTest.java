@@ -30,6 +30,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static co.airy.test.Timing.retryOnException;
@@ -46,8 +47,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SendMessageControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
+    
     private static KafkaTestHelper kafkaTestHelper;
-    private static final String facebookConversationId = "facebook-conversation-id";
+    private static final String facebookConversationId = UUID.randomUUID().toString();
     private static boolean testDataInitialized = false;
 
     final Channel facebookChannel = Channel.newBuilder()

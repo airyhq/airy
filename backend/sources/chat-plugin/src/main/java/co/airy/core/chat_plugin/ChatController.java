@@ -9,7 +9,7 @@ import co.airy.core.chat_plugin.payload.AuthenticationRequestPayload;
 import co.airy.core.chat_plugin.payload.AuthenticationResponsePayload;
 import co.airy.core.chat_plugin.payload.MessageResponsePayload;
 import co.airy.core.chat_plugin.payload.SendMessageRequestPayload;
-import co.airy.payload.response.RequestError;
+import co.airy.payload.response.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDV5;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,9 +81,9 @@ public class ChatController {
             stores.sendMessage(message);
             return ResponseEntity.ok(MessageResponsePayload.fromMessage(message));
         } catch (JsonProcessingException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestError(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestErrorResponsePayload(e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
     }
 }

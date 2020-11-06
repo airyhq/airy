@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.NonNull;
 
 import java.util.UUID;
 
@@ -12,5 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class DeleteTagRequestPayload {
+    @NonNull
     private UUID id;
 }

@@ -1,19 +1,20 @@
 package co.airy.core.api.communication.payload;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SendMessageRequestPayload {
-    @NotBlank
-    private String conversationId;
+    @NonNull
+    private UUID conversationId;
+    @Valid
     @NonNull
     private MessagePayload message;
 
@@ -21,7 +22,6 @@ public class SendMessageRequestPayload {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MessagePayload {
-        @JsonProperty("text")
         private String text;
     }
 }

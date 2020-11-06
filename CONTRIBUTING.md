@@ -54,9 +54,9 @@ This command runs all the tests.
 To keep a clean track of what is being released, every feature must contain only one commit when merged.
 The commit message of the squashed commit is very important, since it will be used to keep track of the features in a release.
 
-The convention is [#issue - description], for the example issue "Map message content" with number 216, the squashed commit message would be
+The convention is [#issue] - description, for the example issue "Map message content" with number 216, the squashed commit message would be
 
-`[#216 - Map message content]`
+`[#216] - Map message content`
 
 ## Submitting
 

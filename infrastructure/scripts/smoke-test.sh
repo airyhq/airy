@@ -36,7 +36,7 @@ conversation_list_payload=$(apiCall "conversations.list" '{}' 200 ${token})
 conversations_info_payload=$(apiCall "conversations.info" '{}' 200 ${token})
 conversations_read_payload=$(apiCall "conversations.read" '{}' 200 ${token})
 
-chatplugin_authenticate_payload=$(apiCall "chatplugin.authenticate" '{"channel_id": "09816fe0-7950-40cb-bf60-adfa0d6d0679"}' 200 ${token})
+chatplugin_authenticate_payload=$(apiCall "chatplugin.authenticate" '{}' 200 ${token})
 
 channels_list_payload=$(apiCall "channels.list" '{}' 200 ${token})
 channels_disconnect_payload=$(apiCall "channels.disconnect" '{}' 200 ${token})

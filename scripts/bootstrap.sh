@@ -53,6 +53,7 @@ then
     esac
 
     printf "Vagrant installed in "`which vagrant`"\n"
+    vagrant plugin install vagrant-hostsupdater 
 fi
 
 if ! command -v VBoxManage &> /dev/null

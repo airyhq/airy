@@ -19,16 +19,15 @@ and `provisioning.sh` scripts are good entry-points.
 
 ## Networking
 
-As the Airy Core Platform runs in Kubernetes, we created a service that exposes
-an [Istio](https://istio.io/) ingress controller, located inside Minikube.
+As the Airy Core Platform runs in Kubernetes, using the [K3OS](https://k3os.io/) distribution.
+All of the necessary services exposed with [Traefik](https://traefik.io/) ingress controller.
 Through that ingress controller, the internal services are exposed and can be
-accessed from outside of Minikube.
+accessed from outside of the Vagrant box.
 
-Since Minikube clusters are usually not exposed to the public internet, we
-included an ngrok client to facilitate the integration of sources (via
-webhooks).
+Since k3os kubernetes clusters are usually not exposed to the public internet, 
+we included an ngrok client to facilitate the integration of sources (via webhooks).
 
-In order for the Airy Core Platform to be accessible from the outside (for
+For the Airy Core Platform to be accessible from the outside (for
 example from Facebook, in order to send events to the Facebook webhook), the
 system must have public access. To facilitate the process, we included a
 [ngrok](https://ngrok.com/) client deployment inside the cluster. The ngrok

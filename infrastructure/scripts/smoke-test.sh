@@ -5,7 +5,7 @@ IFS=$'\n\t'
 
 content_type='Content-Type: application/json'
 
-API_URL=https://${HOST}:${PORT}
+API_URL=http://${HOST}:${PORT}
 
 function apiCall {
   local endpoint=$1
@@ -34,7 +34,7 @@ login_payload=$(apiCall "users.login" '{"email":"grace@example.com","password":"
 
 token=$(echo $login_payload | jq -r '.token')
 
-conversation_list_payload=$(apiCall "conversations" '{}' 200 ${token})
+conversation_list_payload=$(apiCall "conversations.list" '{}' 200 ${token})
 conversations_info=$(apiCall "conversations.info" '{}' 200 ${token})
 conversations_read=$(apiCall "conversations.read" '{}' 200 ${token})
 

@@ -4,11 +4,17 @@ IFS=$'\n\t'
 
 while ! `kubectl get pod --field-selector="metadata.name=kafka-client,status.phase=Running" 2>/dev/null| grep -q kafka-client`
 do
-    sleep 10
+    sleep 5
     echo "Waiting for kafka-client to start..."
 done
 
-kubectl cp /vagrant/scripts/triggers/wait-for-service.sh kafka-client:/root
+while ! `kubectl exec kafka-client -- id > /dev/null`
+do
+    sleep 5
+    echo "Waiting for kafka-client to be ready..."
+done
+
+kubectl cp /vagrant/scripts/trigger/wait-for-service.sh kafka-client:/root/
 kubectl scale statefulset airy-cp-zookeeper --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-zookeeper 2181 15 Zookeeper
 kubectl scale statefulset airy-cp-kafka --replicas=1
@@ -29,3 +35,5 @@ kubectl scale deployment sources-facebook-sender --replicas=1
 kubectl scale deployment sources-facebook-webhook --replicas=1
 kubectl scale deployment webhook-consumer --replicas=1
 kubectl scale deployment webhook-publisher --replicas=1
+
+chmod o+r /etc/rancher/k3s/k3s.yaml

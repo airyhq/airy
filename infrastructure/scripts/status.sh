@@ -15,6 +15,7 @@ FB_WEBHOOK_PUBLIC_URL=`kubectl get configmap public-urls -o jsonpath='{.data.FB_
 
 echo
 echo "Your public url for the Facebook Webhook is:"
-echo http://api.airy.local/facebook
+echo ${FB_WEBHOOK_PUBLIC_URL}/facebook
+echo
 echo "Example:"
 echo "curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}' http://api.airy.local/users.signup"

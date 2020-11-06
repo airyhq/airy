@@ -18,9 +18,6 @@ echo
 echo "Your public url for the Facebook Webhook is:"
 echo ${FB_WEBHOOK_PUBLIC_URL}/facebook
 echo
-echo "You can access the web frontend of the Airy Core Platform at:"
-echo "http://${INGRESS_IP}/demo"
-echo
 echo "You can access the API of the Airy Core Platform at:"
 echo "http://${INGRESS_IP}/"
 echo

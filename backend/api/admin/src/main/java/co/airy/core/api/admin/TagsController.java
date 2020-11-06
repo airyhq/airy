@@ -9,6 +9,7 @@ import co.airy.core.api.admin.payload.ListTagsResponsePayload;
 import co.airy.core.api.admin.payload.TagResponsePayload;
 import co.airy.core.api.admin.payload.UpdateTagRequestPayload;
 import co.airy.payload.response.EmptyResponsePayload;
+import co.airy.payload.response.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -28,12 +30,6 @@ import static java.util.stream.Collectors.toList;
 
 @RestController
 public class TagsController {
-    private final Stores stores;
-
-    TagsController(Stores stores) {
-        this.stores = stores;
-    }
-
     private static final Map<String, TagColor> tagColors = Map.of(
             "tag-blue", TagColor.BLUE,
             "tag-red", TagColor.RED,
@@ -41,8 +37,21 @@ public class TagsController {
             "tag-purple", TagColor.PURPLE
     );
 
+    private final Stores stores;
+    private final String wrongTagColorErrorMessage;
+
+    TagsController(Stores stores) {
+        this.stores = stores;
+        this.wrongTagColorErrorMessage = String.format("Tag color must be one of %s", tagColors.keySet());
+    }
+
     @PostMapping("/tags.create")
     ResponseEntity<?> createTag(@RequestBody @Valid CreateTagRequestPayload payload) {
+        if (!tagColors.containsKey(payload.getColor())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new RequestErrorResponsePayload(wrongTagColorErrorMessage));
+        }
+
         final Tag tag = Tag.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setColor(tagColors.get(payload.getColor()))
@@ -91,12 +100,20 @@ public class TagsController {
     @PostMapping("/tags.update")
     ResponseEntity<?> updateTag(@RequestBody @Valid UpdateTagRequestPayload payload) {
         final Tag tag = stores.getTagsStore().get(payload.getId().toString());
-        if(tag == null) {
+        if (tag == null) {
             return ResponseEntity.notFound().build();
         }
 
-        tag.setColor(tagColors.get(payload.getColor()));
-        tag.setName(payload.getName());
+        final String color = payload.getColor();
+        if (color != null && !tagColors.containsKey(color)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new RequestErrorResponsePayload(wrongTagColorErrorMessage));
+        }
+        if (color != null) {
+            tag.setColor(tagColors.get(color));
+        }
+
+        tag.setName(Optional.ofNullable(payload.getName()).orElse(tag.getName()));
 
         try {
             stores.storeTag(tag);

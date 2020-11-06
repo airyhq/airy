@@ -16,7 +16,7 @@ import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Mail;
 import co.airy.core.api.auth.services.Password;
 import co.airy.payload.response.EmptyResponsePayload;
-import co.airy.payload.response.RequestError;
+import co.airy.payload.response.RequestErrorResponsePayload;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.auth.Jwt;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -64,7 +63,7 @@ public class UsersController {
         final String password = signupRequestPayload.getPassword();
 
         if (!passwordService.isPasswordValid(password)) {
-            return ResponseEntity.badRequest().body(new RequestError("password is not valid"));
+            return ResponseEntity.badRequest().body(new RequestErrorResponsePayload("password is not valid"));
         }
 
         final UUID userId = UUID.randomUUID();

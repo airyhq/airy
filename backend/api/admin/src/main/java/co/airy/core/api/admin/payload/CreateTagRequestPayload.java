@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 public class CreateTagRequestPayload {
     @NotNull
     private String name;
-
     @NotNull
     private String color;
 }

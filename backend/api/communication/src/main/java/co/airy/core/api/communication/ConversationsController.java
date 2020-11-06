@@ -14,7 +14,7 @@ import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.QueryFilterPayload;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
-import co.airy.payload.response.RequestError;
+import co.airy.payload.response.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.http.HttpStatus;
@@ -127,7 +127,7 @@ public class ConversationsController {
         try {
             stores.storeReadReceipt(readReceipt);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
         return ResponseEntity.accepted().build();
@@ -164,7 +164,7 @@ public class ConversationsController {
         try {
             stores.storeMetadata(metadataAction);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
         return ResponseEntity.accepted().build();

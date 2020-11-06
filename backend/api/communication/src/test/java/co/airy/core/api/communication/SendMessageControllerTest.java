@@ -30,6 +30,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -46,7 +47,7 @@ public class SendMessageControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static TestHelper testHelper;
-    private static final String facebookConversationId = "facebook-conversation-id";
+    private static final String facebookConversationId = UUID.randomUUID().toString();
     private static boolean testDataInitialized = false;
 
     final Channel facebookChannel = Channel.newBuilder()

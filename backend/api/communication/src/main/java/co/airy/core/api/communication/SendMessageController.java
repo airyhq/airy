@@ -45,7 +45,7 @@ public class SendMessageController {
     @PostMapping("/messages.send")
     public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload, Authentication auth) throws ExecutionException, InterruptedException, JsonProcessingException {
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
-        final Conversation conversation = conversationsStore.get(payload.getConversationId());
+        final Conversation conversation = conversationsStore.get(payload.getConversationId().toString());
 
         if (conversation == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmptyResponsePayload());
@@ -60,7 +60,7 @@ public class SendMessageController {
                 .setId(UUID.randomUUID().toString())
                 .setChannelId(channel.getId())
                 .setContent(objectMapper.writeValueAsString(payload.getMessage()))
-                .setConversationId(payload.getConversationId())
+                .setConversationId(payload.getConversationId().toString())
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
                 .setSource(channel.getSource())

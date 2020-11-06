@@ -9,8 +9,7 @@ how to build, run, and test the `Airy Core Platform`.
 
 ## Open an issue
 
-We track our development on Github using [issues](https://github.com/airyhq/airy/issues), so every Pull Request
-that is opened should refer to an issue.
+We track our development on Github using [issues](https://github.com/airyhq/airy/issues), so every pull request must refer to an issue.
 
 
 ## Label the issue
@@ -23,6 +22,11 @@ Feature branches must start with `feature/*`, have the issue number and a descri
 If for example the issue is named "Map message content" and it's issue number 216, a good name would be
 
 `feature/216-map-message-content`
+
+Hotfix branches must start with `hotfix/*`, have the issue number and a description as well.
+If for example the issue is named "Fix uuid serialization" and it's number is 322, the branch name will be
+
+`hotfix/322-fix-uuid-serialization`
 
 ## Commits
 
@@ -56,7 +60,7 @@ The convention is [#issue - description], for the example issue "Map message con
 
 ## Submitting
 
-When opening a Pull Request, make sure that 
+When opening a Pull Request, make sure that:
 
 - Tests are passing
 - Code is linted

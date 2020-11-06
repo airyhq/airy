@@ -9,11 +9,12 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.payload.response.ChannelPayload;
 import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.test.Timing;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -50,9 +51,11 @@ import static co.airy.core.api.communication.WebSocketController.QUEUE_CHANNEL_C
 import static co.airy.core.api.communication.WebSocketController.QUEUE_MESSAGE;
 import static co.airy.core.api.communication.WebSocketController.QUEUE_UNREAD_COUNT;
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -70,7 +73,7 @@ public class WebSocketControllerTest {
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
     private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
 
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
 
     private static boolean testDataInitialized = false;
 
@@ -103,42 +106,39 @@ public class WebSocketControllerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationMetadata,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
                 applicationCommunicationReadReceipts
         );
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @BeforeEach
-    void init() throws Exception {
+    void beforeEach() throws Exception {
         if (testDataInitialized) {
             return;
         }
 
-        testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
-                "Application is not healthy"
-        );
+        retryOnException(() -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()), "Application is not healthy");
 
         testDataInitialized = true;
     }
 
     @Test
-    void sendsToWebsocket() throws Exception {
+    void canSendMessagesViaWebSocket() throws Exception {
         final CompletableFuture<MessageUpsertPayload> messageFuture = subscribe(port, MessageUpsertPayload.class, QUEUE_MESSAGE, jwt);
         final CompletableFuture<ChannelPayload> channelFuture = subscribe(port, ChannelPayload.class, QUEUE_CHANNEL_CONNECTED, jwt);
         final CompletableFuture<UnreadCountPayload> unreadFuture = subscribe(port, UnreadCountPayload.class, QUEUE_UNREAD_COUNT, jwt);
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-        testHelper.produceRecords(getConversationRecords(conversations));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
+        kafkaTestHelper.produceRecords(getConversationRecords(conversations));
 
         final MessageUpsertPayload recMessage = messageFuture.get(30, TimeUnit.SECONDS);
 
@@ -155,7 +155,6 @@ public class WebSocketControllerTest {
 
         assertNotNull(receivedUnreadCount);
         assertThat(receivedUnreadCount.getUnreadMessageCount(), is(1));
-
     }
 
     private static StompSession connectToWs(int port, Jwt jwt) throws ExecutionException, InterruptedException {
@@ -167,7 +166,7 @@ public class WebSocketControllerTest {
 
         StompHeaders connectHeaders = new StompHeaders();
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
-        connectHeaders.add(WebSocketHttpHeaders.AUTHORIZATION, jwt.tokenFor("userId"));
+        connectHeaders.add(AUTHORIZATION, jwt.tokenFor("userId"));
 
         return stompClient.connect("ws://localhost:" + port + "/ws.communication", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
         }).get();

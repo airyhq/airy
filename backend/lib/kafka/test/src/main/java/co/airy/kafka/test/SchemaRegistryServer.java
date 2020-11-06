@@ -1,6 +1,6 @@
 package co.airy.kafka.test;
 
-import io.confluent.kafka.schemaregistry.avro.AvroCompatibilityLevel;
+import io.confluent.kafka.schemaregistry.CompatibilityLevel;
 import io.confluent.kafka.schemaregistry.rest.SchemaRegistryConfig;
 import io.confluent.kafka.schemaregistry.rest.SchemaRegistryRestApplication;
 import org.apache.kafka.common.security.auth.SecurityProtocol;
@@ -16,11 +16,11 @@ public class SchemaRegistryServer {
     public SchemaRegistryServer(int port, String zookeeperConnectionUrl, String brokersList) {
         prop = new Properties();
         prop.put(SchemaRegistryConfig.KAFKASTORE_SECURITY_PROTOCOL_CONFIG, SecurityProtocol.PLAINTEXT.name);
-        prop.put(SchemaRegistryConfig.LISTENERS_CONFIG, "http://localhost:"+port);
+        prop.put(SchemaRegistryConfig.LISTENERS_CONFIG, "http://localhost:" + port);
         prop.put(SchemaRegistryConfig.KAFKASTORE_CONNECTION_URL_CONFIG, zookeeperConnectionUrl);
-        prop.put(SchemaRegistryConfig.KAFKASTORE_BOOTSTRAP_SERVERS_CONFIG,  brokersList);
+        prop.put(SchemaRegistryConfig.KAFKASTORE_BOOTSTRAP_SERVERS_CONFIG, brokersList);
         prop.put(SchemaRegistryConfig.KAFKASTORE_TOPIC_CONFIG, "_schemas");
-        prop.put(SchemaRegistryConfig.COMPATIBILITY_CONFIG, AvroCompatibilityLevel.NONE.name);
+        prop.put(SchemaRegistryConfig.SCHEMA_COMPATIBILITY_CONFIG, CompatibilityLevel.NONE.name);
         prop.put(SchemaRegistryConfig.MASTER_ELIGIBILITY, true);
     }
 

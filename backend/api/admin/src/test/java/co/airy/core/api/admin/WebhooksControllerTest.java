@@ -3,7 +3,7 @@ package co.airy.core.api.admin;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -34,7 +35,7 @@ public class WebhooksControllerTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -45,24 +46,22 @@ public class WebhooksControllerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationChannels,
                 applicationCommunicationWebhooks,
                 applicationCommunicationTags
         );
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @BeforeEach
     void beforeEach() throws Exception {
-        testHelper.waitForCondition(
-                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
-                "Application is not healthy");
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test
@@ -80,7 +79,7 @@ public class WebhooksControllerTest {
                 .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
                 .andExpect(jsonPath("$.api_secret", is(not(nullValue()))));
 
-        testHelper.waitForCondition(() -> webTestHelper.post("/webhooks.info", "{}", "user-id")
+        retryOnException(() -> webTestHelper.post("/webhooks.info", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.url", equalTo(url)))
                         .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))

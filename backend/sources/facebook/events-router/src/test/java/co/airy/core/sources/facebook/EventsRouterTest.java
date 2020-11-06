@@ -8,9 +8,10 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.test.Timing;
 import co.airy.uuid.UUIDV5;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -33,6 +34,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -48,7 +50,7 @@ class EventsRouterTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
 
     private static final Topic sourceFacebookEvents = new SourceFacebookEvents();
     private static final Topic sourceFacebookTransformedEvents = new SourceFacebookTransformedEvents();
@@ -62,26 +64,25 @@ class EventsRouterTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 sourceFacebookEvents,
                 sourceFacebookTransformedEvents,
                 applicationCommunicationChannels,
                 applicationCommunicationMessages
         );
 
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @BeforeEach
     void beforeEach() throws InterruptedException {
         if (!streamInitialized) {
-
-            testHelper.waitForCondition(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
+            retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
 
             streamInitialized = true;
         }
@@ -104,7 +105,7 @@ class EventsRouterTest {
         for (String pageId : pageIds) {
             String channelId = UUID.randomUUID().toString();
 
-            testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
+            kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                     .setId(channelId)
                     .setConnectionState(ChannelConnectionState.CONNECTED)
                     .setSourceChannelId(pageId)
@@ -136,14 +137,13 @@ class EventsRouterTest {
         // Wait for the channels table to catch up
         TimeUnit.SECONDS.sleep(5);
 
-        testHelper.produceRecords(facebookMessageRecords);
+        kafkaTestHelper.produceRecords(facebookMessageRecords);
 
-        List<Message> messages = testHelper.consumeValues(totalMessages, applicationCommunicationMessages.name());
+        List<Message> messages = kafkaTestHelper.consumeValues(totalMessages, applicationCommunicationMessages.name());
         assertThat(messages, hasSize(totalMessages));
 
         messagesPerContact.forEach((conversationId, expectedCount) -> {
             assertEquals(messages.stream().filter(m -> m.getConversationId().equals(conversationId)).count(), expectedCount.longValue());
         });
-
     }
 }

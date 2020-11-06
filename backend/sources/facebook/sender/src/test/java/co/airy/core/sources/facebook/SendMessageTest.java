@@ -10,7 +10,7 @@ import co.airy.core.sources.facebook.services.Api;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -32,6 +32,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -48,7 +49,7 @@ class SendMessageTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
 
     private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
@@ -60,22 +61,21 @@ class SendMessageTest {
     @InjectMocks
     private Sender worker;
 
-
     private static boolean streamInitialized = false;
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationChannels,
                 applicationCommunicationMessages
         );
 
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @BeforeEach
@@ -83,8 +83,7 @@ class SendMessageTest {
         MockitoAnnotations.initMocks(this);
 
         if (!streamInitialized) {
-
-            testHelper.waitForCondition(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
+            retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
 
             streamInitialized = true;
         }
@@ -103,7 +102,7 @@ class SendMessageTest {
         ArgumentCaptor<String> tokenCaptor = ArgumentCaptor.forClass(String.class);
         doNothing().when(api).sendMessage(tokenCaptor.capture(), payloadCaptor.capture());
 
-        testHelper.produceRecords(List.of(
+        kafkaTestHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                         .setToken(token)
                         .setSourceChannelId("ps-id")
@@ -129,7 +128,7 @@ class SendMessageTest {
 
         TimeUnit.SECONDS.sleep(5);
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                 Message.newBuilder()
                         .setId(messageId)
                         .setSentAt(Instant.now().toEpochMilli())
@@ -143,7 +142,7 @@ class SendMessageTest {
                         .build())
         );
 
-        testHelper.waitForCondition(() -> {
+        retryOnException(() -> {
             final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
 
             assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));

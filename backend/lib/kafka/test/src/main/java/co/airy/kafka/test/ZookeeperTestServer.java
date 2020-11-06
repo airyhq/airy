@@ -1,5 +1,6 @@
 package co.airy.kafka.test;
 
+import co.airy.test.FileHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.test.InstanceSpec;
 import org.apache.curator.test.TestingServer;

@@ -5,7 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.core.chat_plugin.payload.MessageUpsertPayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,6 +41,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static co.airy.core.chat_plugin.WebSocketController.QUEUE_MESSAGE;
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -66,7 +67,7 @@ public class ChatControllerTest {
     @Value("${local.server.port}")
     private int port;
 
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static boolean testDataInitialized = false;
@@ -81,29 +82,28 @@ public class ChatControllerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels
         );
 
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @BeforeEach
-    void init() throws Exception {
+    void beforeEach() throws Exception {
         if (testDataInitialized) {
             return;
         }
         testDataInitialized = true;
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-        testHelper.waitForCondition(
-                () -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()),
-                "Application is not healthy");
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
+
+        retryOnException(() -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()), "Application is not healthy");
     }
 
     @Test
@@ -124,7 +124,7 @@ public class ChatControllerTest {
 
         final String messageText = "answer is 42";
         String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\" }}";
-        testHelper.waitForCondition(() ->
+        retryOnException(() ->
                         mvc.perform(post("/chatplugin.send")
                                 .headers(buildHeaders(token))
                                 .content(sendMessagePayload))

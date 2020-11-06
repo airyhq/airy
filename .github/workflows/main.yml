@@ -18,7 +18,9 @@ jobs:
       - name: Mount bazel cache
         uses: actions/cache@v2
         with:
-          path: "/home/runner/.cache/bazel"
+          path: |
+            /home/runner/.cache/bazel
+            /home/runner/.cache/bazel_external
           key: bazel
 
       - name: Install bazelisk
@@ -28,9 +30,11 @@ jobs:
           mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
           chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
 
-      - name: Build
+      - name: Enable CI settings
         run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" build //...
+          cat <<EOF >>.bazelrc
+            common --config=ci
+          EOF
 
       - name: Lint
         run: |
@@ -38,7 +42,11 @@ jobs:
 
       - name: Test
         run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" test --action_env=ROOT_LOG_LEVEL=ERROR //...
+          "${GITHUB_WORKSPACE}/bin/bazel" test //...
+
+      - name: Build all artifacts
+        run: |
+          "${GITHUB_WORKSPACE}/bin/bazel" build //...
 
       - uses: chrislennon/action-aws-cli@v1.1
 

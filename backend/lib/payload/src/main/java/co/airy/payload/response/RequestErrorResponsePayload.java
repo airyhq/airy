@@ -7,6 +7,6 @@ import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-public class RequestError implements Serializable {
+public class RequestErrorResponsePayload implements Serializable {
     private String message;
 }

@@ -10,7 +10,7 @@ import co.airy.core.api.admin.payload.ChannelsResponsePayload;
 import co.airy.core.api.admin.payload.ConnectChannelRequestPayload;
 import co.airy.core.api.admin.payload.DisconnectChannelRequestPayload;
 import co.airy.payload.response.EmptyResponsePayload;
-import co.airy.payload.response.RequestError;
+import co.airy.payload.response.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDV5;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +62,7 @@ public class ChannelsController {
         final Source source = sourceMap.get(sourceIdentifier);
 
         if (source == null) {
-            return ResponseEntity.badRequest().body(new RequestError(String.format("source %s not implemented", sourceIdentifier)));
+            return ResponseEntity.badRequest().body(new RequestErrorResponsePayload(String.format("source %s not implemented", sourceIdentifier)));
         }
 
         final List<ChannelMetadata> availableChannels;
@@ -70,7 +70,7 @@ public class ChannelsController {
         try {
             availableChannels = source.getAvailableChannels(requestPayload.getToken());
         } catch (SourceApiException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
         final Map<String, Channel> channelsMap = stores.getChannelsMap();
@@ -106,7 +106,7 @@ public class ChannelsController {
         final Source source = sourceMap.get(sourceIdentifier);
 
         if (source == null) {
-            return ResponseEntity.badRequest().body(new RequestError(String.format("source %s not implemented", source)));
+            return ResponseEntity.badRequest().body(new RequestErrorResponsePayload(String.format("source %s not implemented", source)));
         }
 
         final Map<String, Channel> channelsMap = stores.getChannelsMap();
@@ -121,7 +121,7 @@ public class ChannelsController {
         try {
             channelMetadata = source.connectChannel(token, sourceChannelId);
         } catch (SourceApiException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
         final Channel channel = Channel.newBuilder()
@@ -162,13 +162,13 @@ public class ChannelsController {
 
         if (source == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new RequestError(String.format("source %s not implemented", channel.getSource())));
+                    .body(new RequestErrorResponsePayload(String.format("source %s not implemented", channel.getSource())));
         }
 
         try {
             source.disconnectChannel(channel.getToken(), channel.getSourceChannelId());
         } catch (SourceApiException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestError(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
         channel.setConnectionState(ChannelConnectionState.DISCONNECTED);

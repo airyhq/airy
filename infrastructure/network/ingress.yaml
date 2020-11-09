@@ -1,0 +1,106 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: "airy-core"
+  namespace: default
+spec:
+  rules:
+    - host: ""
+      http:
+        paths:
+          - path: /users.login
+            backend:
+              serviceName: api-auth
+              servicePort: 80
+          - path: /users.signup
+            backend:
+              serviceName: api-auth
+              servicePort: 80
+          - path: /users.signup
+            backend:
+              serviceName: api-auth
+              servicePort: 80
+          - path: /users.accept-invitation
+            backend:
+              serviceName: api-auth
+              servicePort: 80
+          - path: /users.request-password-reset
+            backend:
+              serviceName: api-auth
+              servicePort: 80
+          - path: /users.password-reset
+            backend:
+              serviceName: api-auth
+              servicePort: 80
+          - path: /users.invite
+            backend:
+              serviceName: api-auth
+              servicePort: 80
+          - path: /conversations.list
+            backend:
+              serviceName: api-communication
+              servicePort: 80
+          - path: /conversations.info
+            backend:
+              serviceName: api-communication
+              servicePort: 80
+          - path: /conversations.read
+            backend:
+              serviceName: api-communication
+              servicePort: 80
+          - path: /messages.list
+            backend:
+              serviceName: api-communication
+              servicePort: 80
+          - path: /messages.send
+            backend:
+              serviceName: api-communication
+              servicePort: 80
+          - path: /channels.list
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /channels.disconnect
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /channels.explore
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /channels.connect
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /webhooks.subscribe
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /webhooks.unsubscribe
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /webhooks.info
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /tags.create
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /tags.update
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /tags.list
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /tags.delete
+            backend:
+              serviceName: api-admin
+              servicePort: 80
+          - path: /demo
+            backend:
+              serviceName: frontend-demo
+              servicePort: 80

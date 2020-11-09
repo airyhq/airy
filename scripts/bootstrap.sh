@@ -55,11 +55,12 @@ then
     printf "Vagrant installed in "`which vagrant`"\n"
 fi
 
-read -p "Do you want to add the vagrant box to the host file so you can access it under airy.local?" -n 1 -r
+read -p "Do you want to add the vagrant box to the host file so you can access it under airy.local? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]];
 then
-    vagrant plugin install vagrant-hostsupdater 
+    gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/
+    vagrant plugin install vagrant-hostsupdater  --plugin-clean-source --plugin-source https://gems.ruby-china.org/
 fi
 
 if ! command -v VBoxManage &> /dev/null

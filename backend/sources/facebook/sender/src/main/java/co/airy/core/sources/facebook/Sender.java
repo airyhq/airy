@@ -23,9 +23,12 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+
 @Component
 public class Sender implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final Logger log = AiryLoggerFactory.getLogger(Sender.class);
+    private static final String appId = "sources.facebook.Sender";
 
     private final KafkaStreamsWrapper streams;
     private final Api api;
@@ -36,8 +39,6 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
         this.api = api;
         this.mapper = mapper;
     }
-
-    private static final String appId = "sources.facebook.Sender";
 
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
@@ -54,7 +55,6 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
                 .groupByKey()
                 .aggregate(SendMessageRequest::new,
                         (conversationId, message, aggregate) -> {
-
                             if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
                                 aggregate.setSourceConversationId(message.getSenderId());
                             }
@@ -88,18 +88,20 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
 
             api.sendMessage(pageToken, fbSendMessagePayload);
 
+            //TODO move the change state logic to lib/kafka/schema once we have more sources
             message.setDeliveryState(DeliveryState.DELIVERED);
+            message.setUpdatedAt(Instant.now().toEpochMilli());
 
             return message;
         } catch (ApiException e) {
-            log.error(
-                    String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n FB Error Message: %s \n", sendMessageRequest, e.getMessage()), e
-            );
+            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n FB Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
         } catch (Exception e) {
             log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s", sendMessageRequest), e);
         }
 
+        //TODO move the change state logic to lib/kafka/schema once we have more sources
         message.setDeliveryState(DeliveryState.FAILED);
+        message.setUpdatedAt(Instant.now().toEpochMilli());
 
         return message;
     }

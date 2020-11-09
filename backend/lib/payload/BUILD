@@ -8,6 +8,5 @@ java_library(
         "//:jackson",
         "//:lombok",
         "@maven//:javax_validation_validation_api",
-        "@maven//:org_javatuples_javatuples",
     ],
 )

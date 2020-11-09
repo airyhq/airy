@@ -7,7 +7,6 @@ lib_deps = [
     "//:kafka_streams",
     "//backend/lib/log:log",
     "//:lombok",
-    "@maven//:org_javatuples_javatuples",
     "@maven//:org_rocksdb_rocksdbjni",
 ]
 
@@ -19,7 +18,6 @@ java_library(
     visibility = ["//visibility:public"],
     exports = [
         "//:kafka_streams",
-        "@maven//:org_javatuples_javatuples",
     ],
     deps = lib_deps,
 )

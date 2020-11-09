@@ -4,6 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.core.sources.facebook.dto.Event;
 import co.airy.core.sources.facebook.model.WebhookEvent;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -17,7 +18,6 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KTable;
-import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -83,7 +83,11 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
 
                                 return messagingList.stream().map(messaging -> {
                                     try {
-                                        return KeyValue.pair(entry.getId(), Pair.with(messageParser.getSourceConversationId(messaging), messaging.toString()));
+                                        return KeyValue.pair(entry.getId(),
+                                                Event.builder()
+                                                        .sourceConversationId(messageParser.getSourceConversationId(messaging))
+                                                        .payload(messaging.toString()).build()
+                                        );
                                     } catch (Exception e) {
                                         log.warn("Skipping facebook error for record " + entry.toString(), e);
                                         return null;
@@ -93,11 +97,11 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                             .filter(Objects::nonNull)
                             .collect(toList());
                 })
-                .join(channelsTable, Pair::add)
-                .map((facebookId, triplet) -> {
-                    final String sourceConversationId = triplet.getValue0();
-                    final String payload = triplet.getValue1();
-                    final Channel channel = triplet.getValue2();
+                .join(channelsTable, (event, channel) -> event.toBuilder().channel(channel).build())
+                .map((facebookId, event) -> {
+                    final String sourceConversationId = event.getSourceConversationId();
+                    final String payload = event.getPayload();
+                    final Channel channel = event.getChannel();
 
                     final String conversationId = UUIDV5.fromNamespaceAndName(channel.getId(), sourceConversationId).toString();
                     final String messageId = UUIDV5.fromNamespaceAndName(channel.getId(), payload).toString();
@@ -119,7 +123,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                         // This way we filter out conversation events and echoes
                         return KeyValue.pair("skip", null);
                     } catch (Exception e) {
-                        log.warn("skip facebook record for error" + triplet, e);
+                        log.warn("skip facebook record for error: " + event.toString(), e);
                         return KeyValue.pair("skip", null);
                     }
                 })

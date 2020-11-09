@@ -76,7 +76,6 @@ maven_install(
         "org.flywaydb:flyway-core:5.2.4",
         "org.hamcrest:hamcrest-library:2.1",
         "org.hamcrest:hamcrest:2.1",
-        "org.javatuples:javatuples:1.2",
         "org.junit.jupiter:junit-jupiter-engine:5.7.0",
         "org.junit.jupiter:junit-jupiter:5.7.0",
         "org.junit.platform:junit-platform-console:1.7.0",

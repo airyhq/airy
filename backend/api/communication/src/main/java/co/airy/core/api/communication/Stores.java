@@ -24,7 +24,6 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.javatuples.Pair;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -88,24 +87,21 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                     return aggregate;
                 });
 
-        final KStream<String, Pair<CountAction, Long>> resetStream = builder.<String, ReadReceipt>stream(applicationCommunicationReadReceipts)
-                .mapValues((readReceipt -> Pair.with(CountAction.RESET, readReceipt.getReadDate())));
+        final KStream<String, CountAction> resetStream = builder.<String, ReadReceipt>stream(applicationCommunicationReadReceipts)
+                .mapValues(readReceipt -> CountAction.reset(readReceipt.getReadDate()));
 
         // unread counts
         final KTable<String, UnreadCountState> unreadCountTable = messageStream
-                .mapValues((message -> Pair.with(CountAction.INCREMENT, message.getSentAt())))
+                .mapValues(message -> CountAction.increment(message.getSentAt()))
                 .merge(resetStream)
                 .groupByKey()
-                .aggregate(UnreadCountState::new, (conversationId, pair, unreadCountState) -> {
-                    final CountAction countAction = pair.getValue0();
-                    final Long actionDate = pair.getValue1();
-
-                    if (countAction.equals(CountAction.INCREMENT)) {
-                        unreadCountState.getMessageSentDates().add(actionDate);
+                .aggregate(UnreadCountState::new, (conversationId, countAction, unreadCountState) -> {
+                    if (countAction.getActionType().equals(CountAction.ActionType.INCREMENT)) {
+                        unreadCountState.getMessageSentDates().add(countAction.getReadDate());
                     } else {
                         unreadCountState.setMessageSentDates(
                                 unreadCountState.getMessageSentDates().stream()
-                                        .filter((timestamp) -> timestamp > actionDate)
+                                        .filter((timestamp) -> timestamp > countAction.getReadDate())
                                         .collect(toCollection(HashSet::new)));
                     }
 
@@ -117,14 +113,11 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         final KGroupedStream<String, Message> messageGroupedStream = messageStream.groupByKey();
 
         // messages store
-        messageGroupedStream
-                .aggregate(MessagesTreeSet::new,
-                        ((key, value, aggregate) -> {
-                            aggregate.add(value);
-                            return aggregate;
-                        }),
-                        Materialized.as(MESSAGES_STORE)
-                );
+        messageGroupedStream.aggregate(MessagesTreeSet::new,
+                ((key, value, aggregate) -> {
+                    aggregate.add(value);
+                    return aggregate;
+                }), Materialized.as(MESSAGES_STORE));
 
         // conversations store
         messageGroupedStream

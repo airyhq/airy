@@ -21,12 +21,12 @@ public class Conversation implements Serializable {
     private String channelId;
     private Message lastMessage;
     private String sourceConversationId;
-    private  Channel channel;
+    private Channel channel;
 
-    Integer unreadCount;
+    private Integer unreadCount;
 
     @Builder.Default
-    Map<String, String> metadata = new HashMap<>();
+    private Map<String, String> metadata = new HashMap<>();
 
     public String getDisplayName() {
         final String firstName = this.metadata.get(MetadataKeys.source.contact.FIRST_NAME);
@@ -47,4 +47,3 @@ public class Conversation implements Serializable {
         return this.lastMessage.getChannelId();
     }
 }
-

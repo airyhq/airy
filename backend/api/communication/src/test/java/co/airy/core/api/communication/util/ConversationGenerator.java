@@ -83,7 +83,7 @@ public class ConversationGenerator {
                             .setConversationId(conversationId)
                             .setHeaders(Map.of())
                             .setChannelId(channelId)
-                            .setContent("{\"text\":\"hello world\"}")
+                            .setContent("{\"message\":{\"text\":\"hello world\"}}")
                             .build()));
                 });
 

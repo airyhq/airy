@@ -195,6 +195,7 @@ container_pull(
 
 container_pull(
     name = "nginx_base",
+    digest = "sha256:662a0c5a8677063c27b0ddd42f1c801be643b9502f7b1a4e2e727cb2bc3808a8",
     registry = "index.docker.io",
     repository = "nginx",
     tag = "stable-alpine",

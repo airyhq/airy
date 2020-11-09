@@ -29,15 +29,17 @@ Incoming payloads notify connected clients that a message was created or updated
   conversation_id: "{UUID}",
   channelId: "{UUID}",
   message: {
-      id: "{UUID}",
-      content: "{String}",
-      // source content string
-      state: "{String}",
-      // delivery state of message, one of PENDING, FAILED, DELIVERED
-      alignment: "{string/enum}",
-      // LEFT, RIGHT, CENTER - horizontal placement of message
-      sent_at: "{string}",
-      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    id: "{UUID}",
+    content: {
+      text: "{String}"
+    },
+    // typed source message model
+    state: "{String}",
+    // delivery state of message, one of PENDING, FAILED, DELIVERED
+    alignment: "{string/enum}",
+    // LEFT, RIGHT, CENTER - horizontal placement of message
+    sent_at: "{string}",
+    //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   }
 }
 ```

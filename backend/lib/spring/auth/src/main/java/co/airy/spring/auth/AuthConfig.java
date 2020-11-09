@@ -29,9 +29,11 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors().disable().csrf().disable()
+                // Don't let Spring create its own session
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
                 .authorizeRequests(authorize -> authorize
-                        .antMatchers("/actuator/**", "/ws.communication").permitAll()
+                        .antMatchers("/actuator/**", "/ws*").permitAll()
                         .antMatchers(ignoreAuthPatterns).permitAll()
                         .anyRequest().authenticated()
                 )

@@ -3,16 +3,9 @@
 
 Vagrant.configure("2") do |config|
   config.vm.define "airy-core", autostart: true do |airy_core|
-    airy_core.vm.box = "mrvantage/centos7-minikube"
-    airy_core.vm.box_version = "1.1.1-20200929"
+    airy_core.vm.box = "generic/alpine310"
     airy_core.vm.hostname = "airy-core"
     airy_core.vm.network "private_network", ip: "192.168.50.5"
-    airy_core.vm.provision "core", type: "shell" do |c|
-      c.inline = "/vagrant/scripts/provision.sh"
-    end
-    airy_core.vm.provision "airy-conf", type: "shell" do |u|
-      u.inline = "/vagrant/scripts/airy-conf.sh"
-    end
     airy_core.vm.provider "virtualbox" do |vbox|
       vbox.cpus = 4
       vbox.memory = 7168
@@ -20,13 +13,23 @@ Vagrant.configure("2") do |config|
         "modifyvm", :id, "--audio", "none"
       ]
     end
+    airy_core.vm.synced_folder "./", "/vagrant", disabled: false
+    airy_core.vm.provision "pre-requests", type: "shell" do |p|
+      p.inline = "/vagrant/scripts/provision/prerequisites.sh"
+    end
+    airy_core.vm.provision "airy-core", type: "shell" do |c|
+      c.inline = "/vagrant/scripts/provision/airy-core.sh"
+    end
+    airy_core.vm.provision "airy-conf", type: "shell" do |u|
+      u.inline = "/vagrant/scripts/airy-conf.sh"
+    end
     airy_core.trigger.before [:halt, :reload] do |stop|
       stop.name = "stop"
-      stop.run_remote = {inline: "/vagrant/scripts/triggers/stop.sh"}
+      stop.run_remote = {inline: "/vagrant/scripts/trigger/stop.sh"}
     end
     airy_core.trigger.after [:up, :reload] do |start|
       start.name = "start"
-      start.run_remote = {inline: "/vagrant/scripts/triggers/start.sh"}
+      start.run_remote = {inline: "/vagrant/scripts/trigger/start.sh"}
     end
     airy_core.trigger.after [:up, :reload] do |status|
       status.name = "status"

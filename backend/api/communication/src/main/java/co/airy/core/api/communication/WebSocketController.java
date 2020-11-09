@@ -16,20 +16,25 @@ import static co.airy.payload.format.DateFormat.ISO_FROM_MILLIS;
 
 @Service
 public class WebSocketController {
-
     public static final String QUEUE_MESSAGE = "/queue/message";
     public static final String QUEUE_CHANNEL_CONNECTED = "/queue/channel/connected";
     public static final String QUEUE_CHANNEL_DISCONNECTED = "/queue/channel/disconnected";
     public static final String QUEUE_UNREAD_COUNT = "/queue/unread-count";
 
     private final SimpMessagingTemplate messagingTemplate;
-
-    WebSocketController(SimpMessagingTemplate messagingTemplate) {
+    private final Mapper mapper;
+    WebSocketController(SimpMessagingTemplate messagingTemplate, Mapper mapper) {
         this.messagingTemplate = messagingTemplate;
+        this.mapper = mapper;
     }
 
     public void onNewMessage(Message message) {
-        messagingTemplate.convertAndSend(QUEUE_MESSAGE, MessageUpsertPayload.fromMessage(message));
+        final MessageUpsertPayload messageUpsertPayload = MessageUpsertPayload.builder()
+                .channelId(message.getChannelId())
+                .conversationId(message.getConversationId())
+                .message(mapper.fromMessage(message))
+                .build();
+        messagingTemplate.convertAndSend(QUEUE_MESSAGE, messageUpsertPayload);
     }
 
     public void onUnreadCount(String conversationId, UnreadCountState unreadCountState) {

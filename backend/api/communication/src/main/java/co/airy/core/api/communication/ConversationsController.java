@@ -35,10 +35,12 @@ import static java.util.Comparator.comparing;
 public class ConversationsController {
     private final Stores stores;
     private final List<Filter<Conversation>> conversationFilters;
+    private final Mapper mapper;
 
-    ConversationsController(Stores stores, List<Filter<Conversation>> conversationFilters) {
+    ConversationsController(Stores stores, List<Filter<Conversation>> conversationFilters, Mapper mapper) {
         this.stores = stores;
         this.conversationFilters = conversationFilters;
+        this.mapper = mapper;
     }
 
     @PostMapping("/conversations.list")
@@ -66,7 +68,7 @@ public class ConversationsController {
 
         final List<ConversationResponsePayload> response = page.getData()
                 .stream()
-                .map(ConversationResponsePayload::fromConversation)
+                .map(mapper::fromConversation)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(
@@ -93,7 +95,7 @@ public class ConversationsController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(ConversationResponsePayload.fromConversation(conversation));
+        return ResponseEntity.ok(mapper.fromConversation(conversation));
     }
 
     private List<Conversation> fetchAllConversations() {

@@ -200,16 +200,23 @@ This is a [paginated](#pagination) endpoint.
   },
   "created_at": "2019-01-07T09:01:44.000Z",
   "contact": {
-    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg", // optional
-    "first_name": "Airy Support", // optional
-    "last_name": null, // optional
+    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
+    // optional
+    "first_name": "Airy Support",
+    // optional
+    "last_name": null,
+    // optional
     "id": "36d07b7b-e242-4612-a82c-76832cfd1026",
   },
-  "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
+  "tags": [
+    "f339c325-8614-43cb-a70a-e83d81bf56fc"
+  ],
   "last_message": {
     id: "{UUID}",
-    content: "{String}",
-    // source content string
+    content: {
+      text: "{String}"
+    },
+    // typed source message model
     state: "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     alignment: "{string/enum}",
@@ -310,8 +317,10 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
   "data": [
     {
       id: "{UUID}",
-      content: "{String}",
-      // source content string
+      content: {
+        text: "{String}"
+      },
+      // typed source message model
       state: "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
       alignment: "{string/enum}",
@@ -350,16 +359,18 @@ Sends a message to a conversation and returns a payload.
 
 ```json5
 {
-      id: "{UUID}",
-      content: "{String}",
-      // source content string
-      state: "{String}",
-      // delivery state of message, one of PENDING, FAILED, DELIVERED
-      alignment: "{string/enum}",
-      // LEFT, RIGHT, CENTER - horizontal placement of message
-      sent_at: "{string}",
-      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-    }
+  id: "{UUID}",
+  content: {
+    text: "{String}"
+  },
+  // typed source message model
+  state: "{String}",
+  // delivery state of message, one of PENDING, FAILED, DELIVERED
+  alignment: "{string/enum}",
+  // LEFT, RIGHT, CENTER - horizontal placement of message
+  sent_at: "{string}",
+  //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+}
 ```
 
 ### Channels

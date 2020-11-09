@@ -3,10 +3,88 @@ title: Webhook
 sidebar_label: Webhook
 ---
 
-## Webhook payload
+The webhook integration enables you to programmatically participate in
+conversations by sending messages or reacting to them. Here's a common
+integration pattern:
 
-After subscribing to an Airy webhook, you will start receiving events on your URL of choice.
-The event will *always* be a POST request with the following structure:
+- Call the [subscribe](#subscribing) endpoint 
+- Consume on your URL of choice [events](#event-payload)
+- React to those events by calling the [send
+  message](api/http.md#send-a-message) endpoint
+
+You must de-duplicate messages on arrival as the webhook *does not* guarantee
+events uniqueness.
+
+## Subscribing
+
+`POST /webhooks.subscribe`
+
+Subscribes the webhook for the first time or update its parameters.
+
+**Sample Request**
+
+```json5
+{
+  "url": "https://my-url-to-be-hit",
+  "headers": {
+    "X-Custom-Header": "custom-code-for-header"
+  }
+}
+```
+
+**Sample Response**
+
+```json5
+{
+
+  "url": "https://my-url-to-be-hit",
+  "headers": {
+    "X-Custom-Header": "custom-code-for-header"
+  },
+  "status": "Subscribed",
+  "api_secret": "{UUID}"
+}
+```
+
+## Unsubscribing
+
+`POST /webhooks.unsubscribe`
+
+**Sample Response**
+
+```json5
+{
+
+  "url": "https://my-url-to-be-hit",
+  "headers": {
+    "X-Custom-Header": "custom-code-for-header"
+  },
+  "status": "Unsubscribed",
+  "api_secret": "{UUID}"
+}
+```
+
+## Info
+
+`POST /webhooks.info`
+
+**Sample Response**
+
+```json5
+{
+  "status": "Subscribed",
+  "url": "https://my-url-to-be-hit",
+  "headers": {
+    "X-Custom-Header": "custom-code-for-header"
+  }
+}
+```
+
+## Event Payload
+
+After [subscribing](#subscribing-to-a-webhook) to an Airy webhook, you will start receiving events on your
+URL of choice. The event will *always* be a POST request with the following
+structure:
 
 ```json5
 {

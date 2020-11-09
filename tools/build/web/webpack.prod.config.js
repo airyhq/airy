@@ -135,6 +135,11 @@ module.exports = (env, argv) => ({
             loader: "@svgr/webpack",
             options: {
               titleProp: true,
+              svgoConfig: {
+                plugins: {
+                  removeViewBox: false
+                }
+              },
               template: (
                 { template },
                 opts,

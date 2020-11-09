@@ -115,6 +115,11 @@ module.exports = (env, argv) => ({
             loader: "@svgr/webpack",
             options: {
               titleProp: true,
+              svgoConfig: {
+                plugins: {
+                  removeViewBox: false
+                }
+              },
 
               // adapted from the default template
               // https://github.com/gregberge/svgr/blob/master/packages/babel-plugin-transform-svg-component/src/index.js

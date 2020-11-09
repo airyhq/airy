@@ -7,7 +7,7 @@ import co.airy.core.api.admin.sources.facebook.FacebookSource;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
@@ -30,6 +30,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.UUID;
 
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -47,7 +48,7 @@ public class ChannelsControllerTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
     private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
@@ -57,17 +58,17 @@ public class ChannelsControllerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationChannels,
                 applicationCommunicationWebhooks,
                 applicationCommunicationTags
         );
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @SpyBean
@@ -86,7 +87,7 @@ public class ChannelsControllerTest {
             .build();
 
     @BeforeEach
-    void init() throws Exception {
+    void beforeEach() throws Exception {
         MockitoAnnotations.initMocks(this);
 
         if (testDataInitialized) {
@@ -95,19 +96,17 @@ public class ChannelsControllerTest {
 
         testDataInitialized = true;
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(),
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(),
                 connectedChannel.getId(), connectedChannel));
 
-        testHelper.waitForCondition(
-                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
-                "Application is not healthy");
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test
     void canListChannels() throws Exception {
         final String disconnectedChannel = "channel-id-2";
 
-        testHelper.produceRecords(List.of(
+        kafkaTestHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), disconnectedChannel,
                         Channel.newBuilder()
                                 .setConnectionState(ChannelConnectionState.DISCONNECTED)
@@ -118,7 +117,7 @@ public class ChannelsControllerTest {
                                 .build()))
         );
 
-        testHelper.waitForCondition(() -> webTestHelper.post("/channels.list", "{}", "user-id")
+        retryOnException(() -> webTestHelper.post("/channels.list", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data.length()", greaterThanOrEqualTo(1)))
                         .andExpect(jsonPath("$.data[*].id").value(not(contains(disconnectedChannel))))
@@ -139,7 +138,7 @@ public class ChannelsControllerTest {
                         .build()
         )).when(facebookSource).getAvailableChannels(facebookToken);
 
-        testHelper.waitForCondition(() -> webTestHelper.post("/channels.explore",
+        retryOnException(() -> webTestHelper.post("/channels.explore",
                 "{\"token\":\"" + facebookToken + "\",\"source\":\"facebook\"}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(2)))
@@ -163,7 +162,7 @@ public class ChannelsControllerTest {
                 "\"name\":\"" + channelName + "\"" +
                 "}";
 
-        testHelper.waitForCondition(() ->
+        retryOnException(() ->
                         webTestHelper.post("/channels.connect", payload, "user-id")
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.name", equalTo(channelName)))
@@ -184,9 +183,9 @@ public class ChannelsControllerTest {
                 .setSourceChannelId("disconnect-source-channel-id")
                 .build();
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, channel));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, channel));
 
-        testHelper.waitForCondition(() ->
+        retryOnException(() ->
                         webTestHelper.post("/channels.disconnect",
                                 "{\"channel_id\":\"" + channelId + "\"}", "user-id")
                                 .andExpect(status().isOk()),

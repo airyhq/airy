@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 )
 public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final Jwt jwt;
+
     public AuthConfig(Jwt jwt) {
         this.jwt = jwt;
     }

@@ -2,7 +2,7 @@ package co.airy.core.sources.facebook;
 
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.junit.jupiter.api.AfterAll;
@@ -35,7 +35,7 @@ class FacebookWebhookTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
 
     private static final Topic sourceFacebookEvents = new SourceFacebookEvents();
 
@@ -44,9 +44,9 @@ class FacebookWebhookTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource, sourceFacebookEvents);
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, sourceFacebookEvents);
 
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @Test
@@ -55,7 +55,7 @@ class FacebookWebhookTest {
                 .content("whatever"))
                 .andExpect(status().isOk());
 
-        List<String> records = testHelper.consumeValues(1, sourceFacebookEvents.name());
+        List<String> records = kafkaTestHelper.consumeValues(1, sourceFacebookEvents.name());
 
         assertThat(records, hasSize(1));
         assertEquals("whatever", records.get(0));
@@ -63,6 +63,6 @@ class FacebookWebhookTest {
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 }

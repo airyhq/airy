@@ -59,7 +59,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         return heartbeatScheduler;
     }
 
-
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.interceptors(new ChannelInterceptor() {

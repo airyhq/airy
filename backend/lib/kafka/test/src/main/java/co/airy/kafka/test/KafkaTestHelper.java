@@ -5,7 +5,6 @@ import co.airy.kafka.core.serializer.KafkaHybridSerializer;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
-import lombok.Data;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -25,18 +24,17 @@ import java.util.concurrent.ExecutionException;
 
 import static java.util.stream.Collectors.toList;
 
-public class TestHelper {
+public class KafkaTestHelper {
     private final SchemaRegistryServer schemaRegistryServer;
     private final SharedKafkaTestResource sharedKafkaTestResource;
     private final List<Topic> topics;
-    private static final long MAX_WAIT_MS = 30_000;
 
     private final String consumerId = UUID.randomUUID().toString();
 
     private KafkaConsumer consumer;
     private KafkaProducer producer;
 
-    public TestHelper(SharedKafkaTestResource sharedKafkaTestResource, Topic... topics) {
+    public KafkaTestHelper(SharedKafkaTestResource sharedKafkaTestResource, Topic... topics) {
         this.topics = Arrays.asList(topics);
         this.schemaRegistryServer = new SchemaRegistryServer(SocketUtils.findAvailableTcpPort(), sharedKafkaTestResource.getZookeeperConnectString(), sharedKafkaTestResource.getKafkaConnectString());
         this.sharedKafkaTestResource = sharedKafkaTestResource;
@@ -79,7 +77,6 @@ public class TestHelper {
 
         final List<String> topicNames = List.of(topics);
 
-
         //try
         int retries = 0;
         do {
@@ -111,27 +108,4 @@ public class TestHelper {
         }
     }
 
-
-    public void waitForCondition(RunnableTest runnableTest, String conditionDetails) throws InterruptedException {
-        ThrowableContainer container = new ThrowableContainer();
-
-        TestUtils.waitForCondition(
-                () -> {
-                    try {
-                        runnableTest.test();
-                        return true;
-                    } catch (Throwable throwable) {
-                        container.setThrowable(new Exception(conditionDetails + ". Original exception:\n" + throwable.getMessage(), throwable));
-                    }
-                    return false;
-                },
-                TestHelper.MAX_WAIT_MS,
-                () -> container.getThrowable().getLocalizedMessage()
-        );
-    }
-
-    @Data
-    private static class ThrowableContainer {
-        Throwable throwable = new Throwable();
-    }
 }

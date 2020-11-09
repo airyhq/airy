@@ -8,9 +8,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static co.airy.test.Timing.retryOnException;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Component
 public class WebTestHelper {
@@ -20,6 +22,10 @@ public class WebTestHelper {
     WebTestHelper(MockMvc mvc, Jwt jwt) {
         this.mvc = mvc;
         this.jwt = jwt;
+    }
+
+    public void waitUntilHealthy() throws InterruptedException {
+        retryOnException(() -> get("/actuator/health").andExpect(status().isOk()), "Application is not healthy");
     }
 
     public ResultActions post(String url, String body, String userId) throws Exception {

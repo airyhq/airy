@@ -3,7 +3,7 @@ package co.airy.core.api.admin;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
@@ -38,7 +38,7 @@ public class TagsControllerTest {
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
     private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -48,24 +48,22 @@ public class TagsControllerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationChannels,
                 applicationCommunicationWebhooks,
                 applicationCommunicationTags
         );
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @BeforeEach
-    void init() throws Exception {
-        testHelper.waitForCondition(
-                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
-                "Application is not healthy");
+    void beforeEach() throws Exception {
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test
@@ -73,7 +71,6 @@ public class TagsControllerTest {
         final String name = "awesome-tag";
         final String color = "tag-red";
         final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
-
 
         final String createTagResponse = webTestHelper.post("/tags.create", payload, "user-id")
                 .andExpect(status().isCreated())

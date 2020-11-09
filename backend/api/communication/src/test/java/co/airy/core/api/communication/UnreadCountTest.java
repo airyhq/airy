@@ -7,9 +7,8 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -22,18 +21,14 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +40,7 @@ class UnreadCountTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -57,26 +52,24 @@ class UnreadCountTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
                 applicationCommunicationMetadata,
                 applicationCommunicationReadReceipts
         );
 
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @BeforeEach
-    void init() throws Exception {
-        testHelper.waitForCondition(
-                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
-                "Application is not healthy");
+    void beforeEach() throws Exception {
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test
@@ -90,13 +83,13 @@ class UnreadCountTest {
                 .setSourceChannelId("ps-id")
                 .build();
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
 
         final String conversationId = UUID.randomUUID().toString();
 
         final Integer unreadMessages = 3;
 
-        testHelper.produceRecords(getConversationRecords(
+        kafkaTestHelper.produceRecords(getConversationRecords(
                 ConversationGenerator.CreateConversation.builder()
                         .channel(channel)
                         .messageCount(unreadMessages.longValue())
@@ -106,15 +99,14 @@ class UnreadCountTest {
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
 
-        testHelper.waitForCondition(
-                () -> webTestHelper.post("/conversations.info", payload, userId)
+        retryOnException(() -> webTestHelper.post("/conversations.info", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.unread_message_count", equalTo(unreadMessages))),
                 "Conversation list not showing unread count");
 
         webTestHelper.post("/conversations.read", payload, userId).andExpect(status().isAccepted());
 
-        testHelper.waitForCondition(
+        retryOnException(
                 () -> webTestHelper.post("/conversations.info", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.unread_message_count", equalTo(0))),

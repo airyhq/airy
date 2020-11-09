@@ -9,14 +9,14 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
+import co.airy.test.Timing;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -46,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SendMessageControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
     private static final String facebookConversationId = UUID.randomUUID().toString();
     private static boolean testDataInitialized = false;
 
@@ -76,34 +77,32 @@ public class SendMessageControllerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
                 applicationCommunicationMetadata,
                 applicationCommunicationReadReceipts
         );
 
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @BeforeEach
-    void init() throws Exception {
+    void beforeEach() throws Exception {
         if (testDataInitialized) {
             return;
         }
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
-        testHelper.produceRecords(getConversationRecords(conversations));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
+        kafkaTestHelper.produceRecords(getConversationRecords(conversations));
 
-        testHelper.waitForCondition(
-                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
-                "Application is not healthy");
+        webTestHelper.waitUntilHealthy();
 
         testDataInitialized = true;
     }
@@ -113,11 +112,9 @@ public class SendMessageControllerTest {
         String payload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"message\": { \"text\": \"answer is 42\" }}";
         final String userId = "user-id";
 
-        testHelper.waitForCondition(() ->
-                        webTestHelper.post("/messages.send", payload, userId).andExpect(status().isOk()),
-                "Facebook Message was not sent");
+        retryOnException(() -> webTestHelper.post("/messages.send", payload, userId).andExpect(status().isOk()), "Facebook Message was not sent");
 
-        List<ConsumerRecord<String, Message>> records = testHelper.consumeRecords(2, applicationCommunicationMessages.name());
+        List<ConsumerRecord<String, Message>> records = kafkaTestHelper.consumeRecords(2, applicationCommunicationMessages.name());
         assertThat(records, hasSize(2));
 
         final Optional<Message> maybeMessage = records.stream()

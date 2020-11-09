@@ -45,15 +45,14 @@ public class ConversationGenerator {
     }
 
     public static List<ProducerRecord<String, SpecificRecordBase>> getConversationRecords(CreateConversation conversation) {
-        List<ProducerRecord<String, SpecificRecordBase>> records = new ArrayList<>();
         final String conversationId = conversation.getConversationId();
         final Channel channel = conversation.getChannel();
 
-        records.addAll(getMessages(conversation.getMessageCount().intValue(), channel.getId(), conversationId));
+        List<ProducerRecord<String, SpecificRecordBase>> records = new ArrayList<>(getMessages(conversation.getMessageCount().intValue(), channel.getId(), conversationId));
 
         if (conversation.getMetadata() != null) {
             conversation.getMetadata().forEach((metadataKey, metadataValue) ->
-                    records.add(new ProducerRecord(applicationCommunicationMetadata.name(), conversationId,
+                    records.add(new ProducerRecord<>(applicationCommunicationMetadata.name(), conversationId,
                             MetadataAction.newBuilder()
                                     .setKey(metadataKey)
                                     .setValue(metadataValue)

@@ -1,5 +1,6 @@
 package co.airy.kafka.test;
 
+import co.airy.test.FileHelper;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServerStartable;
 import org.apache.curator.test.InstanceSpec;

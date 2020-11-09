@@ -1,4 +1,4 @@
-package co.airy.kafka.test;
+package co.airy.test;
 
 @FunctionalInterface
 public interface RunnableTest {

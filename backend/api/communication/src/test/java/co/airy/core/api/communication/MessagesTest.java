@@ -7,12 +7,12 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.payload.format.DateFormat;
-import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
+import co.airy.test.Timing;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -24,16 +24,14 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.UUID;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.getMessages;
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -49,7 +47,7 @@ public class MessagesTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -61,26 +59,24 @@ public class MessagesTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
                 applicationCommunicationMetadata,
                 applicationCommunicationReadReceipts
         );
 
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @BeforeEach
-    void init() throws Exception {
-        testHelper.waitForCondition(
-                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
-                "Application is not healthy");
+    void beforeEach() throws Exception {
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test
@@ -89,7 +85,7 @@ public class MessagesTest {
         final String channelId = "channelId";
         final String userId = "user-id";
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId(channelId)
                 .setName("channel-name")
@@ -101,11 +97,11 @@ public class MessagesTest {
         int messageCount = 10;
         final List<ProducerRecord<String, SpecificRecordBase>> records = getMessages(10, channelId, conversationId);
 
-        testHelper.produceRecords(records);
+        kafkaTestHelper.produceRecords(records);
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
 
-        testHelper.waitForCondition(
+        retryOnException(
                 () -> webTestHelper.post("/messages.list", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(messageCount)))

@@ -15,8 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
-
-    private Jwt jwt;
+    private final Jwt jwt;
 
     public JwtAuthenticationFilter(AuthenticationManager authManager, Jwt jwt) {
         super(authManager);
@@ -39,6 +38,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
+
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token != null) {
@@ -51,5 +51,4 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         }
         return null;
     }
-
 }

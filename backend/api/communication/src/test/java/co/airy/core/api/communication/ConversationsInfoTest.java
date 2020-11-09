@@ -7,7 +7,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
@@ -27,6 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.UUID;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,7 +40,7 @@ class ConversationsInfoTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -51,25 +52,23 @@ class ConversationsInfoTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
                 applicationCommunicationMetadata,
                 applicationCommunicationReadReceipts);
 
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     @BeforeEach
-    void init() throws Exception {
-        testHelper.waitForCondition(
-                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
-                "Application is not healthy");
+    void beforeEach() throws Exception {
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test
@@ -82,11 +81,11 @@ class ConversationsInfoTest {
                 .setSourceChannelId("ps-id")
                 .build();
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
 
         final String conversationId = UUID.randomUUID().toString();
 
-        testHelper.produceRecords(getConversationRecords(
+        kafkaTestHelper.produceRecords(getConversationRecords(
                 ConversationGenerator.CreateConversation.builder()
                         .channel(channel)
                         .messageCount(1L)
@@ -94,7 +93,7 @@ class ConversationsInfoTest {
                         .build()
         ));
 
-        testHelper.waitForCondition(
+        retryOnException(
                 () -> webTestHelper.post("/conversations.info",
                         "{\"conversation_id\":\"" + conversationId + "\"}",
                         "user-id")
@@ -103,5 +102,4 @@ class ConversationsInfoTest {
                 "Conversations list is missing records"
         );
     }
-
 }

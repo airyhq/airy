@@ -8,7 +8,7 @@ import co.airy.avro.communication.Webhook;
 import co.airy.core.webhook.publisher.model.QueueMessage;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
@@ -50,18 +51,18 @@ import static org.mockito.Mockito.doNothing;
 public class PublisherTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationWebhooks,
                 applicationCommunicationMessages
         );
 
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @Autowired
@@ -74,13 +75,13 @@ public class PublisherTest {
     @BeforeEach
     void beforeEach() throws InterruptedException {
         MockitoAnnotations.initMocks(this);
-        testHelper.waitForCondition(() -> assertEquals(publisher.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
+        retryOnException(() -> assertEquals(publisher.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test
     void shouldPublishMessageUpsertsToSQS() throws Exception {
 
-        testHelper.produceRecord(
+        kafkaTestHelper.produceRecord(
                 new ProducerRecord<>(applicationCommunicationWebhooks.name(), "339ab777-92aa-43a5-b452-82e73c50fc59",
                         Webhook.newBuilder()
                                 .setApiSecret("such secret")
@@ -134,9 +135,9 @@ public class PublisherTest {
             );
         }
 
-        testHelper.produceRecords(messages);
+        kafkaTestHelper.produceRecords(messages);
 
-        testHelper.waitForCondition(() -> {
+        retryOnException(() -> {
             final List<QueueMessage> allMessages = batchCaptor.getAllValues();
             assertEquals(4, allMessages.size());
         }, "Right amount of messages was not delivered");
@@ -144,6 +145,6 @@ public class PublisherTest {
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 }

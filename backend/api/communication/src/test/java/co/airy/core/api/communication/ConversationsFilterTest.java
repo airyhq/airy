@@ -7,7 +7,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
-import co.airy.kafka.test.TestHelper;
+import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
@@ -30,6 +30,7 @@ import java.util.UUID;
 
 import static co.airy.core.api.communication.util.ConversationGenerator.CreateConversation;
 import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -43,7 +44,7 @@ class ConversationsFilterTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
-    private static TestHelper testHelper;
+    private static KafkaTestHelper kafkaTestHelper;
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -55,19 +56,19 @@ class ConversationsFilterTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new TestHelper(sharedKafkaTestResource,
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
                 applicationCommunicationMetadata,
                 applicationCommunicationReadReceipts
         );
 
-        testHelper.beforeAll();
+        kafkaTestHelper.beforeAll();
     }
 
     @AfterAll
     static void afterAll() throws Exception {
-        testHelper.afterAll();
+        kafkaTestHelper.afterAll();
     }
 
     private static boolean testDataInitialized = false;
@@ -123,26 +124,24 @@ class ConversationsFilterTest {
     );
 
     @BeforeEach
-    void init() throws Exception {
+    void beforeEach() throws Exception {
         if (testDataInitialized) {
             return;
         }
 
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), defaultChannel.getId(), defaultChannel));
-        testHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelToFind.getId(), channelToFind));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), defaultChannel.getId(), defaultChannel));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelToFind.getId(), channelToFind));
 
-        testHelper.produceRecords(getConversationRecords(conversations));
+        kafkaTestHelper.produceRecords(getConversationRecords(conversations));
 
-        testHelper.waitForCondition(
-                () -> webTestHelper.get("/actuator/health").andExpect(status().isOk()),
-                "Application is not healthy");
+        webTestHelper.waitUntilHealthy();
 
         testDataInitialized = true;
     }
 
     @Test
     void canFetchAllConversations() throws Exception {
-        testHelper.waitForCondition(
+        retryOnException(
                 () -> webTestHelper.post("/conversations.list", "{} ", userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
@@ -157,7 +156,6 @@ class ConversationsFilterTest {
         checkOneConversationExists(payload);
     }
 
-
     @Test
     void canFilterByDisplayName() throws Exception {
         String payload = "{\"filter\": {\"display_names\": [\"" + firstNameToFind + "\"]}}";
@@ -166,14 +164,14 @@ class ConversationsFilterTest {
     }
 
     @Test
-    void filterOutConversationForUnknownDisplayName() throws Exception {
+    void canFilterForUnknownNames() throws Exception {
         String payload = "{\"filter\": {\"display_names\": [\"Ada\"]}}";
 
         checkNoConversationReturned(payload);
     }
 
     private void checkNoConversationReturned(String payload) throws Exception {
-        testHelper.waitForCondition(
+        retryOnException(
                 () -> webTestHelper.post("/conversations.list", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(0))),
@@ -181,7 +179,7 @@ class ConversationsFilterTest {
     }
 
     private void checkOneConversationExists(String payload) throws InterruptedException {
-        testHelper.waitForCondition(
+        retryOnException(
                 () -> webTestHelper.post("/conversations.list", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))

@@ -46,6 +46,7 @@ java_library(
         deps = [
             ":app",
             ":test-util",
+            "//backend/lib/test:test",
             "//backend/lib/kafka/test:kafka-test",
             "//backend/lib/spring/test:spring-test",
         ] + app_deps,

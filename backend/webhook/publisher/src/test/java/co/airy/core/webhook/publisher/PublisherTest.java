@@ -32,6 +32,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static co.airy.test.Timing.retryOnException;
@@ -63,7 +64,24 @@ public class PublisherTest {
         );
 
         kafkaTestHelper.beforeAll();
+
+        testHelper.produceRecord(
+                new ProducerRecord<>(applicationCommunicationWebhooks.name(), "339ab777-92aa-43a5-b452-82e73c50fc59",
+                        Webhook.newBuilder()
+                                .setApiSecret("such secret")
+                                .setEndpoint("http://somesalesforce.com/form")
+                                .setHeaders(Map.of())
+                                .setId("339ab777-92aa-43a5-b452-82e73c50fc59")
+                                .setStatus(Status.Subscribed)
+                                .build()
+                ));
     }
+
+    @AfterAll
+    static void afterAll() throws Exception {
+        kafkaTestHelper.afterAll();
+    }
+
 
     @Autowired
     @InjectMocks
@@ -78,22 +96,7 @@ public class PublisherTest {
         retryOnException(() -> assertEquals(publisher.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
-    @Test
-    void shouldPublishMessageUpsertsToSQS() throws Exception {
-
-        kafkaTestHelper.produceRecord(
-                new ProducerRecord<>(applicationCommunicationWebhooks.name(), "339ab777-92aa-43a5-b452-82e73c50fc59",
-                        Webhook.newBuilder()
-                                .setApiSecret("such secret")
-                                .setEndpoint("http://somesalesforce.com/form")
-                                .setHeaders(Map.of())
-                                .setId("339ab777-92aa-43a5-b452-82e73c50fc59")
-                                .setStatus(Status.Subscribed)
-                                .build()
-                ));
-
-        TimeUnit.SECONDS.sleep(2);
-
+    void canPublishMessageToQueue() throws Exception {
         ArgumentCaptor<QueueMessage> batchCaptor = ArgumentCaptor.forClass(QueueMessage.class);
         doNothing().when(redisQueue).publishMessage(Mockito.anyString(), batchCaptor.capture());
 
@@ -141,10 +144,5 @@ public class PublisherTest {
             final List<QueueMessage> allMessages = batchCaptor.getAllValues();
             assertEquals(4, allMessages.size());
         }, "Right amount of messages was not delivered");
-    }
-
-    @AfterAll
-    static void afterAll() throws Exception {
-        kafkaTestHelper.afterAll();
     }
 }

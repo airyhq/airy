@@ -44,7 +44,8 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
                 .reduce((oldValue, newValue) -> newValue, Materialized.as(WEBHOOKS_STORE));
 
         builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter(((messageId, message) -> DeliveryState.DELIVERED.equals(message.getDeliveryState())))
+                .filter(((messageId, message) ->
+                        DeliveryState.DELIVERED.equals(message.getDeliveryState()) && message.getUpdatedAt() == null))
                 .peek((messageId, message) -> {
                     try {
                         final ReadOnlyKeyValueStore<String, Webhook> webhookStore = streams.acquireLocalStore(WEBHOOKS_STORE);

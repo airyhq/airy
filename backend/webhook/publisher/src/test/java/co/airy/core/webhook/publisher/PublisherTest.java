@@ -28,11 +28,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.sql.Time;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static co.airy.test.Timing.retryOnException;
@@ -64,17 +64,6 @@ public class PublisherTest {
         );
 
         kafkaTestHelper.beforeAll();
-
-        testHelper.produceRecord(
-                new ProducerRecord<>(applicationCommunicationWebhooks.name(), "339ab777-92aa-43a5-b452-82e73c50fc59",
-                        Webhook.newBuilder()
-                                .setApiSecret("such secret")
-                                .setEndpoint("http://somesalesforce.com/form")
-                                .setHeaders(Map.of())
-                                .setId("339ab777-92aa-43a5-b452-82e73c50fc59")
-                                .setStatus(Status.Subscribed)
-                                .build()
-                ));
     }
 
     @AfterAll
@@ -96,7 +85,21 @@ public class PublisherTest {
         retryOnException(() -> assertEquals(publisher.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
+    @Test
     void canPublishMessageToQueue() throws Exception {
+        kafkaTestHelper.produceRecord(
+                new ProducerRecord<>(applicationCommunicationWebhooks.name(), "339ab777-92aa-43a5-b452-82e73c50fc59",
+                        Webhook.newBuilder()
+                                .setApiSecret("such secret")
+                                .setEndpoint("http://somesalesforce.com/form")
+                                .setHeaders(Map.of())
+                                .setId("339ab777-92aa-43a5-b452-82e73c50fc59")
+                                .setStatus(Status.Subscribed)
+                                .build()
+                ));
+
+        TimeUnit.SECONDS.sleep(2);
+
         ArgumentCaptor<QueueMessage> batchCaptor = ArgumentCaptor.forClass(QueueMessage.class);
         doNothing().when(redisQueue).publishMessage(Mockito.anyString(), batchCaptor.capture());
 
@@ -106,11 +109,12 @@ public class PublisherTest {
         for (int i = 0; i < count; i++) {
             final String messageId = "message-" + i;
 
+            long now = Instant.now().toEpochMilli();
             messages.add(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                     Message.newBuilder()
                             .setId(messageId)
                             .setSource("facebook")
-                            .setSentAt(Instant.now().toEpochMilli())
+                            .setSentAt(now)
                             .setUpdatedAt(null)
                             .setSenderId("sourceConversationId")
                             .setSenderType(SenderType.APP_USER)
@@ -126,8 +130,8 @@ public class PublisherTest {
                     Message.newBuilder()
                             .setId(messageId)
                             .setSource("facebook")
-                            .setSentAt(Instant.now().toEpochMilli())
-                            .setUpdatedAt(Instant.now().toEpochMilli()) // field presence identifies message as update
+                            .setSentAt(now)
+                            .setUpdatedAt(now) // field presence identifies message as update
                             .setSenderId("sourceConversationId")
                             .setSenderType(SenderType.APP_USER)
                             .setDeliveryState(DeliveryState.DELIVERED)
@@ -143,6 +147,6 @@ public class PublisherTest {
         retryOnException(() -> {
             final List<QueueMessage> allMessages = batchCaptor.getAllValues();
             assertEquals(4, allMessages.size());
-        }, "Right amount of messages was not delivered");
+        }, "Number of delivered message is incorrect");
     }
 }

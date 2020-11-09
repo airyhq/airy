@@ -5,7 +5,7 @@ IFS=$'\n\t'
 
 content_type='Content-Type: application/json'
 
-API_URL=http://${HOST}:${PORT}
+API_URL=http://airy.local
 
 function apiCall {
   local endpoint=$1
@@ -18,6 +18,8 @@ function apiCall {
       response=$(curl -H ${content_type} -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
     else
       response=$(curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
+      >&2 echo curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1
+
   fi
   response_http_code=$(head -1 <<< "$response")
   response_payload=$(tail -1 <<< "$response")
@@ -34,16 +36,21 @@ login_payload=$(apiCall "users.login" '{"email":"grace@example.com","password":"
 
 token=$(echo $login_payload | jq -r '.token')
 
+channels_connect=$(apiCall "channels.connect" '{"source": "chat_plugin", "source_channel_id": "my-chat-channel-1", "token": "wat", "name": "chat plugin source", "image_url": ""}' 200 ${token})
+channels_connect_payload=$(tail -1 <<< "$channels_connect")
+channel_id=$(echo $channels_connect_payload | jq -r '.id')
+chatplugin_authenticate_payload=$(apiCall "chatplugin.authenticate" "{"channel_id": "$channel_id"}" 200 ${token})
+exit
+
+
 conversation_list_payload=$(apiCall "conversations.list" '{}' 200 ${token})
 conversations_info=$(apiCall "conversations.info" '{}' 200 ${token})
 conversations_read=$(apiCall "conversations.read" '{}' 200 ${token})
 
-chatplugin_authenticate_payload=$(apiCall "chatplugin.authenticate" '{}' 200 ${token})
 
 channels_list=$(apiCall "channels.list" '{}' 200 ${token})
 channels_disconnect=$(apiCall "channels.disconnect" '{}' 200 ${token})
 channels_explore=$(apiCall "channels.explore" '{}' 200 ${token})
-channels_connect=$(apiCall "channels.connect" '{}' 200 ${token})
 
 webhooks_subscribe=$(apiCall "webhooks.subscribe" '{}' 200 ${token})
 webhooks_unsubscribe=$(apiCall "webhooks.unsubscribe" '{}' 200 ${token})

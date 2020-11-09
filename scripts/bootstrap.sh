@@ -122,4 +122,5 @@ fi
 
 
 cd $infra_path
+vagrant destroy -f
 vagrant up

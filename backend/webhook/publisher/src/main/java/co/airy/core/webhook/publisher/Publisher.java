@@ -1,5 +1,6 @@
 package co.airy.core.webhook.publisher;
 
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
@@ -43,10 +44,9 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
                 .reduce((oldValue, newValue) -> newValue, Materialized.as(WEBHOOKS_STORE));
 
         builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                // Only send new messages
-                .filter(((messageId, message) -> message.getUpdatedAt() == null))
+                .filter(((messageId, message) ->
+                        DeliveryState.DELIVERED.equals(message.getDeliveryState()) && message.getUpdatedAt() == null))
                 .peek((messageId, message) -> {
-
                     try {
                         final ReadOnlyKeyValueStore<String, Webhook> webhookStore = streams.acquireLocalStore(WEBHOOKS_STORE);
                         final Webhook webhook = webhookStore.get(allWebhooksKey);

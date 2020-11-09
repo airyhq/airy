@@ -28,6 +28,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.sql.Time;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,12 @@ public class PublisherTest {
         kafkaTestHelper.beforeAll();
     }
 
+    @AfterAll
+    static void afterAll() throws Exception {
+        kafkaTestHelper.afterAll();
+    }
+
+
     @Autowired
     @InjectMocks
     Publisher publisher;
@@ -79,8 +86,7 @@ public class PublisherTest {
     }
 
     @Test
-    void shouldPublishMessageUpsertsToSQS() throws Exception {
-
+    void canPublishMessageToQueue() throws Exception {
         kafkaTestHelper.produceRecord(
                 new ProducerRecord<>(applicationCommunicationWebhooks.name(), "339ab777-92aa-43a5-b452-82e73c50fc59",
                         Webhook.newBuilder()
@@ -103,11 +109,12 @@ public class PublisherTest {
         for (int i = 0; i < count; i++) {
             final String messageId = "message-" + i;
 
+            long now = Instant.now().toEpochMilli();
             messages.add(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                     Message.newBuilder()
                             .setId(messageId)
                             .setSource("facebook")
-                            .setSentAt(Instant.now().toEpochMilli())
+                            .setSentAt(now)
                             .setUpdatedAt(null)
                             .setSenderId("sourceConversationId")
                             .setSenderType(SenderType.APP_USER)
@@ -123,8 +130,8 @@ public class PublisherTest {
                     Message.newBuilder()
                             .setId(messageId)
                             .setSource("facebook")
-                            .setSentAt(Instant.now().toEpochMilli())
-                            .setUpdatedAt(Instant.now().toEpochMilli()) // field presence identifies message as update
+                            .setSentAt(now)
+                            .setUpdatedAt(now) // field presence identifies message as update
                             .setSenderId("sourceConversationId")
                             .setSenderType(SenderType.APP_USER)
                             .setDeliveryState(DeliveryState.DELIVERED)
@@ -140,11 +147,6 @@ public class PublisherTest {
         retryOnException(() -> {
             final List<QueueMessage> allMessages = batchCaptor.getAllValues();
             assertEquals(4, allMessages.size());
-        }, "Right amount of messages was not delivered");
-    }
-
-    @AfterAll
-    static void afterAll() throws Exception {
-        kafkaTestHelper.afterAll();
+        }, "Number of delivered message is incorrect");
     }
 }

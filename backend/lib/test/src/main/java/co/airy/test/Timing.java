@@ -1,6 +1,10 @@
 package co.airy.test;
 
+import co.airy.log.AiryLoggerFactory;
+import org.slf4j.Logger;
+
 public class Timing {
+    private static final Logger log = AiryLoggerFactory.getLogger(Timing.class);
     private static final long MAX_WAIT_MS = 30_000;
 
     public static void retryOnException(RunnableTest runnableTest, String failureMessage) throws InterruptedException {
@@ -15,7 +19,7 @@ public class Timing {
                 runnableTest.test();
                 return;
             } catch (Throwable t) {
-
+                log.info(t.getLocalizedMessage());
                 if (expectedEnd <= System.currentTimeMillis()) {
                     throw new AssertionError(failureMessage);
                 }

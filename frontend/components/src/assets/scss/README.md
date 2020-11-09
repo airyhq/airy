@@ -9,7 +9,7 @@ If you need to modify third party dependencies, put them into the
 These are the colors we use in the app. Simply import them with 
 
 ```css
-@import 'assets/scss/colors.scss';
+@import './assets/scss/colors.scss';
 ```
 
 After that you have the following variables defined:

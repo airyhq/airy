@@ -1,0 +1,71 @@
+@import './assets/scss/colors.scss';
+@import './assets/scss/fonts.scss';
+
+.App {
+  text-align: center;
+  flex-grow: 1;
+  font-family: 'Lato', sans-serif;
+  width: 100vw;
+  min-height: 100vh;
+  margin-left: 250px;
+  overflow: visible;
+  background: var(--color-blue-white);
+
+  @media screen and (max-width: 700px) {
+    margin-left: 56px;
+  }
+}
+
+.Content {
+  width: auto;
+  background: white;
+  padding: 32px;
+  margin: 102px 2.5em 2.5em 2.5em;
+  border-radius: 10px;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.Container {
+  @include font-base;
+  font-family: 'Lato', sans-serif;
+  display: flex;
+  width: 100vw;
+  min-width: 550px;
+  min-height: 100vh;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.ContainerApp {
+  display: flex;
+  justify-content: flex-start;
+  overflow: visible;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background-color: var(--color-background-gray);
+}
+
+.ContainerAppNotLogin {
+  display: flex;
+  justify-content: flex-start;
+  overflow: visible;
+  z-index: 0;
+  width: 100%;
+}
+
+a {
+  color: var(--color-airy-blue);
+  font-weight: bold;
+
+  &:hover {
+    color: var(--color-airy-blue-hover);
+  }
+
+  &:active,
+  &:focus {
+    color: var(--color-airy-blue-pressed);
+  }
+}

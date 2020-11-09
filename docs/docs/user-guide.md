@@ -24,7 +24,7 @@ $ cd airy
 $ ./scripts/bootstrap.sh
 ```
 
-During the bootstrap process you will be promted for your passwort because we are using the [Vagrant Host Manager Plugin](https://github.com/devopsgroup-io/vagrant-hostmanager) to add entries to your hosts file. You can also skip this step and add the following lines to /etc/hosts yourself.
+The script will ask for your password as we are using the [Vagrant Host Manager Plugin](https://github.com/devopsgroup-io/vagrant-hostmanager) to add entries to your hosts file. You can skip this step and add the following lines to /etc/hosts yourself.
 
 ```
 192.168.50.5  demo.airy.local

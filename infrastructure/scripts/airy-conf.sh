@@ -39,6 +39,7 @@ RANDOM_JWT_SECRET=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 128
 sed -i "s/<jwt_secret>/${RANDOM_JWT_SECRET}/" ~/airy-core/api-auth.yaml
 sed -i "s/<jwt_secret>/${RANDOM_JWT_SECRET}/" ~/airy-core/api-admin.yaml
 sed -i "s/<jwt_secret>/${RANDOM_JWT_SECRET}/" ~/airy-core/api-communication.yaml
+sed -i "s/<jwt_secret>/${RANDOM_JWT_SECRET}/" ~/airy-core/sources-chatplugin.yaml
 
 sed -i "s/<fb_app_id>/${config[FB_APP_ID]}/" ~/airy-core/sources-facebook-events-router.yaml
 sed -i "s/<fb_app_id>/${config[FB_APP_ID]}/" ~/airy-core/api-admin.yaml
@@ -66,6 +67,7 @@ kubectl apply -f ~/airy-core/sources-facebook-sender.yaml
 kubectl apply -f ~/airy-core/sources-facebook-webhook.yaml
 kubectl apply -f ~/airy-core/webhook-consumer.yaml
 kubectl apply -f ~/airy-core/webhook-publisher.yaml
+kubectl apply -f ~/airy-core/sources-chatplugin.yaml
 
 kubectl scale deployment airy-cp-schema-registry --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 15 Schema-registry
@@ -79,5 +81,6 @@ kubectl scale deployment sources-facebook-sender --replicas=1
 kubectl scale deployment sources-facebook-webhook --replicas=1
 kubectl scale deployment webhook-consumer --replicas=1
 kubectl scale deployment webhook-publisher --replicas=1
+kubectl scale deployment sources-chatplugin --replicas=1
 
 /vagrant/scripts/status.sh

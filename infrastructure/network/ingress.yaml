@@ -104,3 +104,7 @@ spec:
             backend:
               serviceName: frontend-demo
               servicePort: 80
+          - path: /chatplugin.authenticate
+            backend:
+              serviceName: sources-chatplugin
+              servicePort: 80

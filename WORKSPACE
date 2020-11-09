@@ -46,6 +46,7 @@ maven_install(
         "com.fasterxml.jackson.core:jackson-databind:2.10.0",
         "com.fasterxml.jackson.module:jackson-module-afterburner:2.10.0",
         "com.jayway.jsonpath:json-path:2.4.0",
+        "cz.habarta.typescript-generator:typescript-generator-core:2.26.723",
         "io.confluent:kafka-avro-serializer:5.5.1",
         "io.confluent:kafka-schema-registry-client:5.5.1",
         "io.confluent:kafka-schema-registry:5.5.1",

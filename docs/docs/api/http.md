@@ -214,7 +214,9 @@ This is a [paginated](#pagination) endpoint.
   "last_message": {
     id: "{UUID}",
     content: {
-      text: "{String}"
+      text: "{String}",
+      type: "text"
+      // Determines the schema of the content 
     },
     // typed source message model
     state: "{String}",
@@ -318,7 +320,9 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
     {
       id: "{UUID}",
       content: {
-        text: "{String}"
+        text: "{String}",
+        type: "text"
+        // Determines the schema of the content
       },
       // typed source message model
       state: "{String}",
@@ -361,7 +365,9 @@ Sends a message to a conversation and returns a payload.
 {
   id: "{UUID}",
   content: {
-    text: "{String}"
+    text: "{String}",
+    type: "text"
+    // Determines the schema of the content
   },
   // typed source message model
   state: "{String}",

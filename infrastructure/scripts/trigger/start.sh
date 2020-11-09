@@ -37,3 +37,9 @@ kubectl scale deployment webhook-consumer --replicas=1
 kubectl scale deployment webhook-publisher --replicas=1
 
 chmod o+r /etc/rancher/k3s/k3s.yaml
+
+read -p "Do you want to add the vagrant box to the host file so you can access it under airy.local? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]];
+then
+    echo "192.168.50.5 api.airy.local demo.airy.local" | sudo tee -a /etc/hosts >/dev/null

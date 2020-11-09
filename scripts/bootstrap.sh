@@ -55,14 +55,6 @@ then
     printf "Vagrant installed in "`which vagrant`"\n"
 fi
 
-read -p "Do you want to add the vagrant box to the host file so you can access it under airy.local? " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]];
-then
-    gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.com/
-    vagrant plugin install vagrant-hostsupdater  --plugin-clean-source --plugin-source https://gems.ruby-china.com/
-fi
-
 if ! command -v VBoxManage &> /dev/null
 then
     printf "\nVirtualbox binary not found. Attempting to install...\n"

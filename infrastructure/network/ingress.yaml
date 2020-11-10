@@ -183,3 +183,10 @@ spec:
                 name: sources-chatplugin
                 port: 
                   number: 80
+          - path: /chatplugin.send
+            pathType: Prefix 
+            backend:
+              service:
+                name: sources-chatplugin
+                port: 
+                  number: 80

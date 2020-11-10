@@ -38,7 +38,7 @@ token=$(echo $login_payload | jq -r '.token')
 channels_connect=$(apiCall "channels.connect" '{"source": "chat_plugin", "source_channel_id": "my-chat-channel-1", "token": "wat", "name": "chat plugin source", "image_url": ""}' 200 ${token})
 channels_connect_payload=$(tail -1 <<< "$channels_connect")
 channel_id=$(echo $channels_connect_payload | jq -r '.id')
-chatplugin_authenticate_payload=$(apiCall "chatplugin.authenticate" "{"channel_id": "$channel_id"}" 200 ${token})
+chatplugin_authenticate_payload=$(apiCall "chatplugin.authenticate" "{\"channel_id\": \"$channel_id\"}" 200 ${token})
 exit
 
 

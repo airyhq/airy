@@ -17,7 +17,7 @@ function apiCall {
       response=$(curl -H ${content_type} -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
     else
       response=$(curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
-      >&2 echo curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1
+      # >&2 echo curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1
 
   fi
   response_http_code=$(head -1 <<< "$response")
@@ -39,6 +39,12 @@ channels_connect=$(apiCall "channels.connect" '{"source": "chat_plugin", "source
 channels_connect_payload=$(tail -1 <<< "$channels_connect")
 channel_id=$(echo $channels_connect_payload | jq -r '.id')
 chatplugin_authenticate_payload=$(apiCall "chatplugin.authenticate" "{\"channel_id\": \"$channel_id\"}" 200 ${token})
+chatplugin_authenticate_payload=$(tail -1 <<< "$chatplugin_authenticate_payload")
+token=$(echo $chatplugin_authenticate_payload | jq -r '.token')
+
+conversation_list_payload=$(apiCall "chatplugin.send" '{"message": {"text": "This is my fault"}}' 200 ${token})
+
+echo  "The token is: $token"
 exit
 
 

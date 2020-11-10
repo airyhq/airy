@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-echo "Scaling down all the apps..."
+echo "Scaling down Airy Core platform applications"
 kubectl scale deployment airy-cp-schema-registry --replicas=0
 kubectl scale deployment api-admin --replicas=0
 kubectl scale deployment api-auth --replicas=0

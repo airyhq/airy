@@ -5,15 +5,13 @@ Vagrant.configure("2") do |config|
   config.vm.define "airy-core", autostart: true do |airy_core|
     airy_core.vm.box = "generic/alpine310"
     airy_core.vm.box_check_update = false
-    airy_core.vm.hostname = "airy.local"
+    airy_core.vm.hostname = "airy"
     airy_core.vm.network "private_network", ip: "192.168.50.5"
-    config.hostsupdater.aliases = ["demo.airy.local", "api.airy.local"]
+    config.hostsupdater.aliases = %w[demo.airy api.airy]
     airy_core.vm.provider "virtualbox" do |vbox|
       vbox.cpus = 4
       vbox.memory = 7168
-      vbox.customize [
-        "modifyvm", :id, "--audio", "none"
-      ]
+      vbox.customize [ "modifyvm", :id, "--audio", "none" ]
     end
     airy_core.vm.synced_folder "./", "/vagrant", disabled: false
     airy_core.vm.provision "pre-requests", type: "shell" do |p|

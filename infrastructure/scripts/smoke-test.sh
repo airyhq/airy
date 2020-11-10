@@ -11,8 +11,8 @@ function apiCall {
   local request_payload=$2
   local expected_http_response_code=$3
   local token=${4:-no-auth}
+  local url="api.airy/${endpoint}"
 
-  url="airy.local/$1"
   if [ "$token" = "no-auth" ]; then
       response=$(curl -H ${content_type} -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
     else

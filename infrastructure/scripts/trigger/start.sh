@@ -25,7 +25,8 @@ kubectl scale deployment postgres --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh postgres 5432 10 Postgres
 kubectl scale deployment airy-cp-schema-registry --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 15 Schema-registry
-echo "Starting up all the apps"
+
+echo "Starting up Airy Core Platform appplications"
 kubectl scale deployment api-admin --replicas=1
 kubectl scale deployment api-auth --replicas=1
 kubectl scale deployment frontend-demo --replicas=1

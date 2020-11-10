@@ -55,7 +55,7 @@ then
     printf "Vagrant installed in "`which vagrant`"\n"
 fi
 
-read -p "Do you want to add the vagrant box to the host file so you can access it under airy.local?" -n 1 -r
+read -p "Do you want to add the vagrant box to the host file so you can access it under airy.local [yn]? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]];
 then

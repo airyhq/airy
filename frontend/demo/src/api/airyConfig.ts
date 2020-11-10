@@ -1,11 +1,66 @@
+import { getAuthToken } from "./webStore";
+
 export class AiryConfig {
-  static API_URL = 'https://platform.airy.co';
-  static WS_URL = 'wss://websocket.airy.co/ws';
-  static DEVICE_TYPE = 'web';
+  static API_URL = "http://192.168.50.5";
+  static WS_URL = "";
+  static DEVICE_TYPE = "web";
   static NODE_ENV = process.env.NODE_ENV;
-  static FB_APP_ID = '1654394508205728';
-  static LAST_HASH = process.env.REACT_APP_LAST_HASH;
-  static BRANCH = process.env.REACT_APP_BRANCH;
-  static TOP_DOMAIN = 'airy.co';
-  static FB_GRAPH_API_URL = 'https://graph.facebook.com';
+  static FB_APP_ID = "";
+  static TOP_DOMAIN = "";
+}
+
+export const doFetchFromBackend = async (
+  url: string,
+  body?: Object,
+  retryCount: number = 0
+): Promise<any> => {
+  const headers = {
+    Accept: "application/json"
+  };
+
+  const token = getAuthToken();
+  if (token) {
+    headers["Authorization"] = token;
+  }
+
+  if (!(body instanceof FormData)) {
+    if (!isString(body)) {
+      body = JSON.stringify(body);
+    }
+    headers["Content-Type"] = "application/json";
+  }
+
+  try {
+    const response: Response = await fetch(`${AiryConfig.API_URL}/${url}`, {
+      method: "POST",
+      headers: headers,
+      body: body as BodyInit
+    });
+
+    return parseBody(response);
+  } catch (error) {
+    return error;
+  }
+};
+
+async function parseBody(response: Response): Promise<any> {
+  if (response.ok) {
+    return response.json();
+  }
+
+  let body = await response.text();
+  if (body.length > 0) {
+    body = JSON.parse(body);
+  }
+
+  const errorResponse = {
+    status: response.status,
+    body: body
+  };
+
+  throw errorResponse;
+}
+
+function isString(object: any) {
+  return typeof object === "string" || object instanceof String;
 }

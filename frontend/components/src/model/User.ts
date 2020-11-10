@@ -1,6 +1,3 @@
-import { Organization } from "./Organization";
-import { Membership } from "./Membership";
-
 export interface User {
   id: string;
   first_name: string;
@@ -12,8 +9,6 @@ export interface User {
   fbToken?: string;
   isAuthSuccess?: boolean;
   onboarded?: boolean;
-  organizations?: Organization[];
-  memberships?: Membership[];
   error: string;
 }
 
@@ -25,7 +20,7 @@ export enum AUTH_STATE {
 
 export const authState = (state: User) => {
   if (!!state.refresh_token) {
-    if (!state.id || !state.organizations) {
+    if (!state.id) {
       return AUTH_STATE.REFRESHING;
     }
 

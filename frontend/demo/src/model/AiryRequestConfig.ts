@@ -1,4 +1,4 @@
-import {User} from './User';
+import { User } from "./User";
 
 export abstract class AiryRequestConfig {
   appId: string;
@@ -6,8 +6,6 @@ export abstract class AiryRequestConfig {
   constructor(appId: string) {
     this.appId = appId;
   }
-
-  abstract getOrgId(): string;
 
   abstract onLogoutUser(): void;
   abstract onLoginUser(payload: User): void;

@@ -58,7 +58,7 @@ declare module "*.scss" {
   export default classes;
 }
 
-declare module '*.json';
+declare module "*.json";
 
 declare type Dict<T> = {
   [key: string]: T;

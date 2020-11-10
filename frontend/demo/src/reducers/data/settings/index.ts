@@ -1,4 +1,4 @@
-import {ActionType} from 'typesafe-actions';
+import { ActionType } from "typesafe-actions";
 
 type Action = ActionType<any>;
 

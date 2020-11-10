@@ -1,5 +1,5 @@
-import {Organization} from './Organization';
-import {Membership} from './Membership';
+import { Organization } from "./Organization";
+import { Membership } from "./Membership";
 
 export interface User {
   id: string;
@@ -20,7 +20,7 @@ export interface User {
 export enum AUTH_STATE {
   NOT_AUTHENTICATED,
   REFRESHING,
-  AUTHENTICATED_AND_LOADED,
+  AUTHENTICATED_AND_LOADED
 }
 
 export const authState = (state: User) => {

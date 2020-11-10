@@ -32,20 +32,71 @@ export const refreshUser = () => {
 
 export const facebookLoggedIn = createAction(FB_LOGIN, resolve => (FbToken: string) => resolve(FbToken));
 
-export const loginViaEmail = (email: String, password: String) => {
-  return (dispatch: Dispatch) => {
-  //   return AiryAPIWithoutAuth.fetchFromBackend('login-via-email', {
-  //     email,
-  //     password,
-  //   })
-  //     .then(response => {
-  //       dispatch(setCurrentUserAction(response));
-  //       return true;
-  //     })
-  //     .catch(error => {
-  //       dispatch(userAuthErrorAction(error));
-  //       return false;
-  //     });
+async function parseBody(response: Response): Promise<any> {
+  if (response.ok) {
+    return response.json();
+  }
+
+  let body = await response.text();
+  if (body.length > 0) {
+    body = JSON.parse(body);
+  }
+
+  const errorResponse = {
+    status: response.status,
+    body: body,
+  };
+
+  throw errorResponse;
+}
+
+function isString(object: any) {
+  return typeof object === 'string' || object instanceof String;
+}
+
+const doFetchFromBackend = async (url: string, body?: Object, retryCount: number = 0): Promise<any> => {
+  
+  const headers = {  
+    Accept: 'application/json',
+  };
+
+  // const token = getAuthToken();
+  // if (token) {
+  //   headers['Authorization'] = token;
+  // }
+
+  if (!(body instanceof FormData)) {
+    if (!isString(body)) {
+      body = JSON.stringify(body);
+    }
+    headers['Content-Type'] = 'application/json';
+  }
+
+  try {
+    const response: Response = await fetch(`http://192.168.50.5/${url}`, {
+      method: 'POST',
+      headers: headers,
+      body: body as BodyInit,
+    });
+
+    return parseBody(response);
+  } catch (error) {
+    return error;
+  }
+}
+
+export function loginViaEmail(email: String, password: String) {
+  return async (dispatch: Dispatch<any>) => {
+    return doFetchFromBackend('users.login', {
+      email,
+      password,
+    }).then(response => {
+      dispatch(setCurrentUserAction(response));
+      return true;
+    }).catch(error => {
+      dispatch(userAuthErrorAction(error));
+      return false;
+    });    
   };
 };
 

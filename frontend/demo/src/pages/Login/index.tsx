@@ -1,19 +1,32 @@
-import React, {useState} from 'react';
-import {withRouter} from 'react-router-dom';
-import {ErrorNotice, Input, Button} from 'components/src';
-import logo from 'components/src/assets/images/logo/airy_primary_rgb.svg';
+import React, { useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
+
+import { ErrorNotice, Input, Button } from '@airyhq/components';
+
+import { loginViaEmail } from '../../actions/user';
+
+import logo from '../../assets/images/logo/airy_primary_rgb.svg';
 import styles from './index.module.scss';
 
-const Login = props => {
+const mapDispatchToProps = {
+  loginViaEmail,
+};
+
+const connector = connect(null, mapDispatchToProps);
+
+type LoginConnectProps = {} & ConnectedProps<typeof connector> & RouteComponentProps;
+
+const Login = (props: LoginConnectProps) => {
   
   const [credentialError, setCredentialError] = useState(false);
 
-  const handleLogin = e => {
+  const handleLogin = (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    // props.loginViaEmail(formData.get('email'), formData.get('password')).then(success => {
-    //   return success ? props.history.push(MESSENGER_ROUTE) : setCredentialError(true);
-    // });
+    props.loginViaEmail(formData.get('email') as string, formData.get('password') as string).then((success: boolean) => {
+      return success ? props.history.push('/') : setCredentialError(true);
+    });
   };
 
   const handleEmailChange = () => {
@@ -29,7 +42,7 @@ const Login = props => {
       <div className={styles.formWrapper}>
         <header>
           <img src={logo} alt="Airy Logo" width={128} />
-          <h1>Log in to Airy Cloud</h1>
+          <h1>Log in to Airy</h1>
         </header>
         <form onSubmit={handleLogin} className={styles.loginForm}>
           <div className={styles.inputFields}>
@@ -76,5 +89,4 @@ const Login = props => {
   );
 };
 
-
-export default withRouter(Login);
+export default connect(null, mapDispatchToProps)(Login);

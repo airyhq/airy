@@ -3,7 +3,6 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, Route, Switch, Redirect, RouteComponentProps} from 'react-router-dom';
 
 import {AiryLoader} from '@airyhq/components';
-
 import TopBar from './components/TopBar';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
@@ -16,9 +15,6 @@ import {
 } from './routes/routes';
 
 import styles from './App.module.scss';
-
-
-
 
 const publicRoutes = [LOGIN_ROUTE];
 
@@ -43,7 +39,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     }
 
     const shouldShowSidebar = (path: string) => {
-      return false;        
+      return this.isAuthSuccess;        
     };
 
     return (      

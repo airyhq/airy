@@ -1,12 +1,9 @@
 import React from 'react';
 import {withRouter, Link, matchPath} from 'react-router-dom';
-import {ReactSVG} from 'react-svg';
 
-import performance from '../../assets/images/icons/performance.svg';
-import plug from '../../assets/images/icons/git-merge.svg';
-import members from '../../assets/images/icons/user-follow.svg';
-import billing from '../../assets/images/icons/billing-nav.svg';
-import airy from '../../assets/images/icons/airy-messenger-nav.svg';
+import { ReactComponent as PerformanceIcon } from '../../assets/images/icons/performance.svg';
+import { ReactComponent as PlugIcon } from '../../assets/images/icons/git-merge.svg';
+import { ReactComponent as MembersIcon } from '../../assets/images/icons/user-follow.svg';
 
 import styles from './index.module.scss';
 import {
@@ -25,34 +22,22 @@ const Sidebar = props => {
       <div className={styles.linkSection}>
         <div className={styles.align}>
           <Link to={ANALYTICS_ROUTE} className={`${styles.link} ${isActive(ANALYTICS_ROUTE) ? styles.active : ''}`}>
-            <ReactSVG src={performance} />
+            <PerformanceIcon />
             <span className={styles.iconText}>Analytics</span>
           </Link>
         </div>       
         <div className={styles.align}>
           <Link to={CHANNELS_ROUTE} className={`${styles.link} ${isActive(CHANNELS_ROUTE) ? styles.active : ''}`}>
-            <ReactSVG src={plug} />
+            <PlugIcon />
             <span className={styles.iconText}>Channels</span>
           </Link>
         </div>        
         <div className={styles.align}>
           <Link to={MEMBERS_ROUTE} className={`${styles.link} ${isActive(MEMBERS_ROUTE) ? styles.active : ''}`}>
-            <ReactSVG src={members} />
+            <MembersIcon />
             <span className={styles.iconText}>Members</span>
           </Link>
-        </div>        
-        <div className={styles.align}>
-          <a href="https://billing.airy.co" target="_blank" rel="noopener noreferrer" className={styles.linkExternal}>
-            <ReactSVG src={billing} />
-            <span className={styles.iconText}>Billing</span>
-          </a>        
-        </div>
-        <div className={styles.align}>
-          <a href="https://app.airy.co" target="_blank" rel="noopener noreferrer" className={styles.linkExternal}>
-            <ReactSVG src={airy} />
-            <span className={styles.iconText}>Airy Messenger</span>
-          </a>
-        </div>
+        </div>                
       </div>
     </nav>
   );

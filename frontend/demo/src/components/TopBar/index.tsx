@@ -1,32 +1,39 @@
 import React, {useState, useCallback} from 'react';
-import {connect} from 'react-redux';
-import {withRouter, Link} from 'react-router-dom';
-import {ReactSVG} from 'react-svg';
+import {connect, ConnectedProps} from 'react-redux';
+import {withRouter, Link, RouteComponentProps} from 'react-router-dom';
 
-import {User} from '../../model/User';
+import { StateModel } from '../../reducers';
+
 import ListenOutsideClick from '../ListenOutsideClick';
+
+import { ReactComponent as CogIcon } from '../../assets/images/icons/cog.svg';
+import { ReactComponent as LogoutIcon } from '../../assets/images/icons/sign-out.svg';
+import { ReactComponent as ShortcutIcon } from '../../assets/images/icons/shortcut.svg';
+import { ReactComponent as SpeakBubbleIcon } from '../../assets/images/icons/speak-bubble.svg';
+import { ReactComponent as AiryLogo } from '../../assets/images/logo/airy_primary_rgb.svg';
+import { ReactComponent as ChevronDownIcon } from '../../assets/images/icons/chevron-down.svg';
 
 import styles from './index.module.scss';
 
-import cogIcon from '../../assets/images/icons/cog.svg';
-import logoutIcon from '../../assets/images/icons/sign-out.svg';
-import shortcutIcon from '../../assets/images/icons/shortcut.svg';
-import speakBubbleIcon from '../../assets/images/icons/speak-bubble.svg';
-import airyLogo from '../../assets/images/logo/airy_primary_rgb.svg';
-import chevronDown from '../../assets/images/icons/chevron-down.svg';
+const LOGOUT_ROUTE = '/logout';
 
-type TopBarProps = {
-  user: User;
-  isAuthSuccess: string;
-  first_name: string;
-  last_name: string;
-  organization_name: string;
+interface TopBarProps {
   isAdmin: boolean;
 };
 
-const LOGOUT_ROUTE = '/logout';
+const mapStateToProps = (state: StateModel) => {
+  return {
+    user: state.data.user,
+    first_name: state.data.user.first_name,
+    last_name: state.data.user.last_name,
+    isAuthSuccess: state.data.user.token,
+  };
+};
 
-const TopBar = (props: TopBarProps) => {
+const connector = connect(mapStateToProps);
+
+const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteComponentProps) => {
+  
   const [isAccountDropdownOn, setAccountDropdownOn] = useState(false);
   const [isFaqDropdownOn, setFaqDropdownOn] = useState(false);
 
@@ -55,7 +62,7 @@ const TopBar = (props: TopBarProps) => {
         {props.isAuthSuccess && (
           <>
             <div className={styles.airyLogo}>
-              <ReactSVG src={airyLogo} className={styles.airyLogoSvg} />
+              <AiryLogo className={styles.airyLogoSvg} />
             </div>
             <div className={styles.menuArea}>
               <div className={styles.menuItem}>
@@ -68,11 +75,11 @@ const TopBar = (props: TopBarProps) => {
                 {isFaqDropdownOn && (
                   <div className={styles.dropdown}>
                     <a href="mailto:support@airy.co" className={styles.dropdownLine}>
-                      <ReactSVG src={shortcutIcon} className={styles.dropdownIcon} wrapper="span" />
+                      <span className={styles.dropdownIcon}><ShortcutIcon /></span>
                       <span>Contact us</span>
                     </a>
                     <a href="https://airy.co/faq" target="_blank" className={styles.dropdownLine}>
-                      <ReactSVG src={shortcutIcon} className={styles.dropdownIcon} wrapper="span" />
+                      <span className={styles.dropdownIcon}><ShortcutIcon /></span>
                       <span>FAQ</span>
                     </a>
                   </div>
@@ -84,10 +91,9 @@ const TopBar = (props: TopBarProps) => {
                   <div className={styles.dropDown} onClick={accountClickHandler}>
                     <div className={styles.accountDetails}>
                       <div className={styles.accountName}>{props.first_name + ' ' + props.last_name}</div>
-                      <div className={styles.accountHint}>{props.organization_name}</div>
                     </div>
                     <div className={`${styles.dropHint} ${isAccountDropdownOn ? styles.dropHintOpen : ''}`}>
-                      <ReactSVG src={chevronDown} className={styles.chevronDown} wrapper="span" />
+                      <span className={styles.chevronDown}><ChevronDownIcon /></span>
                     </div>
                   </div>
                 </ListenOutsideClick>
@@ -96,17 +102,17 @@ const TopBar = (props: TopBarProps) => {
                   <div className={styles.dropdown}>
                     {props.isAdmin ? (
                       <a href="https://app.airy.co" target="_blank" className={styles.dropdownLine}>
-                        <ReactSVG src={speakBubbleIcon} className={styles.dropdownIcon} wrapper="span" />
+                        <span className={styles.dropdownIcon}><SpeakBubbleIcon /></span>
                         <span>Go to Inbox</span>
                       </a>
                     ) : (
                       <a href="https://admin.airy.co" target="_blank" className={styles.dropdownLine}>
-                        <ReactSVG src={cogIcon} className={styles.dropdownIcon} wrapper="span" />
+                        <span className={styles.dropdownIcon}><CogIcon /></span>
                         <span>Go to Admin</span>
                       </a>
                     )}
                     <Link to={LOGOUT_ROUTE} className={styles.dropdownLine}>
-                      <ReactSVG src={logoutIcon} className={styles.dropdownIcon} wrapper="span" />
+                      <span className={styles.dropdownIcon}><LogoutIcon /></span>                      
                       <span>Logout</span>
                     </Link>
                     <div className={styles.dropdownLastLine}>
@@ -126,20 +132,6 @@ const TopBar = (props: TopBarProps) => {
       </div>
     </>
   );
-};
-
-export function getOrganizationName(user: User) {
-  return (user.organizations && user.organizations.length && user.organizations[0].name) || '';
-}
-
-const mapStateToProps = state => {
-  return {
-    user: state.data.user,
-    first_name: state.data.user.first_name,
-    last_name: state.data.user.last_name,
-    organization_name: getOrganizationName(state.data.user),
-    isAuthSuccess: state.data.user.refresh_token,
-  };
 };
 
 export default withRouter(connect(mapStateToProps)(TopBar));

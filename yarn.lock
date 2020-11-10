@@ -2,6 +2,17 @@
 # yarn lockfile v1
 
 
+"@airyhq/components@latest":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@airyhq/components/-/components-0.4.4.tgz#10a6461eeecf63e9f47a0701b29efefaaf4ef10f"
+  integrity sha512-zgb2uYtffZiD4/gzPmfbe0kHT2cGyTrK7jcgXIFQg23zHmZaIy0zCcBkCP29yuTr60w3Y0J+RPTruqLFfP6QPA==
+  dependencies:
+    "@crello/react-lottie" "^0.0.9"
+    emoji-mart "^3.0.0"
+    react-autosize-textarea "^7.1.0"
+    react-modal "^3.11.2"
+    react-router-dom "5.1.2"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"
@@ -1514,7 +1525,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.12.1":
+"@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.5.5":
   version "7.12.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
   integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
@@ -8153,6 +8164,11 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
 
+react-is@^16.9.0:
+  version "16.13.1"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+  integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
@@ -8167,6 +8183,18 @@ react-modal@^3.11.2:
     prop-types "^15.5.10"
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
+
+react-redux@7.1.3:
+  version "7.1.3"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.3.tgz#717a3d7bbe3a1b2d535c94885ce04cdc5a33fc79"
+  integrity sha512-uI1wca+ECG9RoVkWQFF4jDMqmaw0/qnvaSvOoL/GA4dNxf6LoV8sUAcNDvE5NWKs4hFpn0t6wswNQnY3f7HT3w==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    hoist-non-react-statics "^3.3.0"
+    invariant "^2.2.4"
+    loose-envify "^1.4.0"
+    prop-types "^15.7.2"
+    react-is "^16.9.0"
 
 react-router-dom@5.1.2:
   version "5.1.2"
@@ -8203,6 +8231,15 @@ react-svg@*:
   integrity sha512-jxp0JVlUakgqNY4IMgwcoRhMNt0X1EJp8Pni3/oDu7KZth1WOUh9cyC/+kOoiQR9X3RtOzabM97c7iD5DIWOGg==
   dependencies:
     "@babel/runtime" "^7.12.1"
+    "@tanem/svg-injector" "^8.1.0"
+    prop-types "^15.7.2"
+
+react-svg@^11.0.7:
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-11.1.1.tgz#0e9b11fbf0efc7df347d8f268e8d77fd9d022a3a"
+  integrity sha512-bqj+2C/niy/V519ABD3fUD9+T33DiDUUUuu39d2O9G2RXTXSFHqA7zU7DEjF+yadMXmEbe0+NlNSZimHWN5jew==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
     "@tanem/svg-injector" "^8.1.0"
     prop-types "^15.7.2"
 

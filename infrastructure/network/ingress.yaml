@@ -13,180 +13,180 @@ spec:
             backend:
               service:
                 name: api-auth
-                port: 
+                port:
                   number: 80
           - path: /users.signup
             pathType: Prefix
             backend:
               service:
                 name: api-auth
-                port: 
+                port:
                   number: 80
           - path: /users.signup
             pathType: Prefix
             backend:
               service:
                 name: api-auth
-                port: 
+                port:
                   number: 80
           - path: /users.accept-invitation
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-auth
-                port: 
+                port:
                   number: 80
           - path: /users.request-password-reset
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-auth
-                port: 
+                port:
                   number: 80
           - path: /users.password-reset
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-auth
-                port: 
+                port:
                   number: 80
           - path: /users.invite
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-auth
-                port: 
+                port:
                   number: 80
           - path: /conversations.list
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-communication
-                port: 
+                port:
                   number: 80
           - path: /conversations.info
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-communication
-                port: 
+                port:
                   number: 80
           - path: /conversations.read
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-communication
-                port: 
+                port:
                   number: 80
           - path: /messages.list
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-communication
-                port: 
+                port:
                   number: 80
           - path: /messages.send
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-communication
-                port: 
+                port:
                   number: 80
           - path: /channels.list
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /channels.disconnect
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /channels.explore
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /channels.connect
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /webhooks.subscribe
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /webhooks.unsubscribe
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /webhooks.info
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /tags.create
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /tags.update
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /tags.list
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /tags.delete
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: api-admin
-                port: 
+                port:
                   number: 80
           - path: /demo
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: frontend-demo
-                port: 
+                port:
                   number: 80
           - path: /chatplugin.authenticate
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: sources-chatplugin
-                port: 
+                port:
                   number: 80
           - path: /chatplugin.send
-            pathType: Prefix 
+            pathType: Prefix
             backend:
               service:
                 name: sources-chatplugin
-                port: 
+                port:
                   number: 80

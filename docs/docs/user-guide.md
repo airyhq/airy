@@ -27,8 +27,8 @@ $ ./scripts/bootstrap.sh
 The script will ask for your password as we are using the [Vagrant Host Manager Plugin](https://github.com/devopsgroup-io/vagrant-hostmanager) to add entries to your hosts file. You can skip this step and add the following lines to your hosts file yourself.
 
 ```
-192.168.50.5  demo.airy.local
-192.168.50.5  api.airy.local
+192.168.50.5  demo.airy
+192.168.50.5  api.airy
 ```
 
 

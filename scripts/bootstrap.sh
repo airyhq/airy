@@ -59,7 +59,7 @@ read -p "Do you want to add the vagrant box to the host file so you can access i
 echo
 if [[ $REPLY =~ ^[Yy]$ ]];
 then
-    vagrant plugin install vagrant-hostsupdater 
+    vagrant plugin install vagrant-hostsupdater --plugin-clean-sources --plugin-source https://gems.ruby-china.com
 fi
 
 if ! command -v VBoxManage &> /dev/null

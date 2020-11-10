@@ -39,7 +39,6 @@ java_library(
     ],
     exports = [
         "@maven//:org_apache_kafka_kafka_streams",
-        "@maven//:org_javatuples_javatuples",
     ],
 )
 

@@ -2,19 +2,10 @@ package co.airy.spring.kafka.streams;
 
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.kafka.streams.MetadataService;
-import org.apache.kafka.streams.KeyValue;
-import org.apache.kafka.streams.kstream.Transformer;
-import org.apache.kafka.streams.kstream.TransformerSupplier;
-import org.apache.kafka.streams.processor.ProcessorContext;
-import org.javatuples.Pair;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 public class KafkaStreamsConfig {
@@ -95,70 +86,4 @@ public class KafkaStreamsConfig {
         return new MetadataService(airyKafkaStreams(brokers, schemaRegistryUrl));
     }
 
-    @Bean
-    public <K, V> TransformerSupplier<K, V, KeyValue<K, Pair<V, Map<String, String>>>> headerExtractorTransformerSupplier() {
-        return new TransformerSupplier<>() {
-            @Override
-            public Transformer<K, V, KeyValue<K, Pair<V, Map<String, String>>>> get() {
-                return new Transformer<>() {
-
-                    private ProcessorContext context;
-
-                    @Override
-                    public void init(ProcessorContext processorContext) {
-                        this.context = processorContext;
-                    }
-
-                    @Override
-                    public KeyValue<K, Pair<V, Map<String, String>>> transform(K k, V v) {
-                        final Map<String, String> headers = new HashMap<>();
-
-                        context.headers().forEach(
-                                header -> headers.put(header.key(), new String(header.value()))
-                        );
-
-                        return KeyValue.pair(k, Pair.with(v, headers));
-                    }
-
-                    @Override
-                    public void close() {
-
-                    }
-                };
-            }
-        };
-    }
-
-    /**
-     * Enriches an incoming record with context.timestamp()
-     * https://kafka.apache.org/21/javadoc/index.html?org/apache/kafka/streams/processor/ProcessorContext.html#timestamp
-     */
-    @Bean
-    @Qualifier("timestampExtractor")
-    public <K, V> TransformerSupplier<K, V, KeyValue<K, Pair<V, Long>>> timestampExtractorTransformerSupplier() {
-
-        return new TransformerSupplier<>() {
-            @Override
-            public Transformer<K, V, KeyValue<K, Pair<V, Long>>> get() {
-                return new Transformer<>() {
-
-                    private ProcessorContext context;
-
-                    @Override
-                    public void init(ProcessorContext processorContext) {
-                        this.context = processorContext;
-                    }
-
-                    @Override
-                    public KeyValue<K, Pair<V, Long>> transform(K k, V v) {
-                        return KeyValue.pair(k, Pair.with(v, context.timestamp()));
-                    }
-
-                    @Override
-                    public void close() {
-                    }
-                };
-            }
-        };
-    }
 }

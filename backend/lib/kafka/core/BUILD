@@ -16,6 +16,5 @@ java_library(
         "//:lombok",
         "//backend/lib/log",
         "@maven//:com_fasterxml_jackson_module_jackson_module_afterburner",
-        "@maven//:org_javatuples_javatuples",
     ],
 )

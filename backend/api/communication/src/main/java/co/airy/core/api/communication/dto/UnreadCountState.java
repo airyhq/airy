@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UnreadCountState implements Serializable {
-    Set<Long> messageSentDates = new HashSet<>();
+    private Set<Long> messageSentDates = new HashSet<>();
 
     public Integer getUnreadCount() {
         return messageSentDates.size();

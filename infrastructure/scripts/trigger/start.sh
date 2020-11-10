@@ -43,3 +43,4 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]];
 then
     echo "192.168.50.5 api.airy.local demo.airy.local" | sudo tee -a /etc/hosts >/dev/null
+fi

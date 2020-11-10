@@ -18,4 +18,4 @@ kubectl scale statefulset redis-cluster --replicas=0
 kubectl scale statefulset airy-cp-kafka --replicas=0
 kubectl scale statefulset airy-cp-zookeeper --replicas=0
 
-sudo sed -n -i '' '/^192.168.50.5 api.airy.local demo.airy.local/d'  /etc/hosts 
+sudo sed -i '' "/^192.168.50.5 api.airy.local demo.airy.local/d"  "/etc/hosts"

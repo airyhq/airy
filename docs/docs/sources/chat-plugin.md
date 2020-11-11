@@ -88,7 +88,7 @@ The WebSocket endpoint is at `/ws.chatplugin`.
 
 ### Receive message
 
-`/queue/message`
+`/user/queue/message`
 
 **Sample Payload**
 

@@ -10,7 +10,6 @@ import co.airy.core.chat_plugin.payload.AuthenticationResponsePayload;
 import co.airy.core.chat_plugin.payload.MessageResponsePayload;
 import co.airy.core.chat_plugin.payload.SendMessageRequestPayload;
 import co.airy.payload.response.RequestErrorResponsePayload;
-import co.airy.uuid.UUIDV5;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -46,8 +45,8 @@ public class ChatController {
             return ResponseEntity.notFound().build();
         }
 
-        final String userId = UUID.randomUUID().toString();
-        final String token = jwt.tokenFor(userId, channelId);
+        final String sessionId = UUID.randomUUID().toString();
+        final String token = jwt.tokenFor(sessionId, channelId);
 
         return ResponseEntity.ok(new AuthenticationResponsePayload(token));
     }
@@ -64,12 +63,11 @@ public class ChatController {
         }
 
         try {
-            final String conversationId = UUIDV5.fromNamespaceAndName(channel.getId(), sessionId).toString();
             final Message message = Message.newBuilder()
                     .setId(UUID.randomUUID().toString())
                     .setChannelId(channel.getId())
                     .setContent(objectMapper.writeValueAsString(requestPayload.getMessage()))
-                    .setConversationId(conversationId)
+                    .setConversationId(principal.getName())
                     .setHeaders(Map.of())
                     .setDeliveryState(DeliveryState.DELIVERED)
                     .setSource(channel.getSource())

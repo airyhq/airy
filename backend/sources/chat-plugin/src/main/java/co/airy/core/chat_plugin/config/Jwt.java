@@ -71,7 +71,7 @@ public class Jwt {
         try {
             final String sessionId = (String) claims.get(SESSION_ID_CLAIM);
             final String channelId = (String) claims.get(CHANNEL_ID_CLAIM);
-            return Principal.builder().sessionId(sessionId).channelId(channelId).build();
+            return new Principal(channelId, sessionId);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new HttpClientErrorException(UNAUTHORIZED, "Unauthorized", null, null, Charset.defaultCharset());

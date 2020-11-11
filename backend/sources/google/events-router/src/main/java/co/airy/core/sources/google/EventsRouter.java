@@ -29,12 +29,10 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
 
     private final KafkaStreamsWrapper streams;
     private final ObjectMapper objectMapper;
-    private final MessageParser messageParser;
 
-    public EventsRouter(KafkaStreamsWrapper streams, ObjectMapper objectMapper, MessageParser messageParser) {
+    public EventsRouter(KafkaStreamsWrapper streams, ObjectMapper objectMapper) {
         this.streams = streams;
         this.objectMapper = objectMapper;
-        this.messageParser = messageParser;
     }
 
     @Override
@@ -76,8 +74,13 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     GoogleEventInfo googleEventInfo = GoogleInfoExtractor.extract(webhookEvent);
                     googleEventInfo.setEventPayload(sourceEvent);
 
+                    if (!webhookEvent.isMessage()) {
+                        return KeyValue.pair(googleEventInfo.getAgentId(), null);
+                    }
+
                     return KeyValue.pair(googleEventInfo.getAgentId(), googleEventInfo);
                 })
+                .filter((agentId, event) -> event != null)
                 .join(channelsTable, (event, channel) -> event.toBuilder().channel(channel).build())
                 .map((agentId, event) -> {
                     final Channel channel = event.getChannel();
@@ -87,9 +90,9 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     final String conversationId = UUIDV5.fromNamespaceAndName(channel.getId(), event.getConversationId()).toString();
                     final String sourceConversationId = event.getConversationId();
 
-                    if (!messageParser.isMessage(payload)) {
-                        return KeyValue.pair(messageId, null);
-                    }
+//                    if (!messageParser.isMessage(payload)) {
+//                        return KeyValue.pair(messageId, null);
+//                    }
                     Message.Builder messageBuilder = Message.newBuilder();
                     return KeyValue.pair(
                             messageId,

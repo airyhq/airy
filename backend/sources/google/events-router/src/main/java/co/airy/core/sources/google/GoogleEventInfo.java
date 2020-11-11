@@ -17,4 +17,5 @@ public class GoogleEventInfo implements Serializable {
     private String conversationId;
     private String eventPayload;
     private Channel channel;
+    private boolean isMessage;
 }

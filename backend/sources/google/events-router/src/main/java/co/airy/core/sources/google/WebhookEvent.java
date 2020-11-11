@@ -42,4 +42,8 @@ public class WebhookEvent {
                 .findFirst()
                 .get();
     }
+
+    public boolean isMessage() {
+        return this.message != null;
+    }
 }

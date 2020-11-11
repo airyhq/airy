@@ -3,18 +3,17 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
-    "//backend/avro/communication:channel",
     "//backend/avro/communication:message",
     "//backend/lib/payload",
     "//backend/lib/kafka/schema:kafka-schema",
-    "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
+    "@maven//:com_google_auth_google_auth_library_oauth2_http",
 ]
 
 springboot(
-    name = "sender",
+    name = "google-sender",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,
@@ -22,7 +21,7 @@ springboot(
 
 [
     junit5(
-        size = "medium",
+        size = "small",
         file = file,
         resources = glob(["src/test/resources/**/*"]),
         deps = [
@@ -39,6 +38,6 @@ container_push(
     format = "Docker",
     image = ":image",
     registry = "ghcr.io/airyhq/sources",
-    repository = "facebook-sender",
+    repository = "google-sender",
     tag = "latest",
 )

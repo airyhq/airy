@@ -48,10 +48,10 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
     }
 
 
-    public void sendMessage(final String pageToken, SendMessagePayload fbSendMessagePayload) {
+    public void sendMessage(final String pageToken, SendMessagePayload sendMessagePayload) {
         String fbReqUrl = String.format(requestTemplate, pageToken);
 
-        restTemplate.postForEntity(fbReqUrl, new HttpEntity<>(fbSendMessagePayload, httpHeaders), FbSendMessageResponse.class);
+        restTemplate.postForEntity(fbReqUrl, new HttpEntity<>(sendMessagePayload, httpHeaders), FbSendMessageResponse.class);
     }
 
     @Override

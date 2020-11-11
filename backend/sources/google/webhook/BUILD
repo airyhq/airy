@@ -39,3 +39,12 @@ container_push(
     repository = "google-webhook",
     tag = "latest",
 )
+
+container_push(
+    name = "develop",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/sources",
+    repository = "google-webhook",
+    tag = "beta",
+)

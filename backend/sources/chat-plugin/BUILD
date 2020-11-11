@@ -47,3 +47,12 @@ container_push(
     repository = "chat-plugin",
     tag = "latest",
 )
+
+container_push(
+    name = "develop",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/sources",
+    repository = "chat-plugin",
+    tag = "beta",
+)

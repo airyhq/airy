@@ -52,3 +52,12 @@ container_push(
     repository = "auth",
     tag = "latest",
 )
+
+container_push(
+    name = "develop",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/api",
+    repository = "auth",
+    tag = "beta",
+)

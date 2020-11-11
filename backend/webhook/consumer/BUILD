@@ -33,3 +33,12 @@ container_push(
     repository = "consumer",
     tag = "latest",
 )
+
+container_push(
+    name = "develop",
+    format = "Docker",
+    image = ":go_image",
+    registry = "ghcr.io/airyhq/webhook",
+    repository = "consumer",
+    tag = "beta",
+)

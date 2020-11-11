@@ -39,3 +39,12 @@ container_push(
     repository = "facebook-webhook",
     tag = "latest",
 )
+
+container_push(
+    name = "develop",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/sources",
+    repository = "facebook-webhook",
+    tag = "beta",
+)

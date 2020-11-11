@@ -29,29 +29,45 @@ function apiCall {
   echo ${response_payload}
 }
 
-login_payload=$(apiCall "users.login" '{"email":"grace@example.com","password":"the_answer_is_42"}' 200)
+function extractFromPayload {
+  local payload=$(tail -1 <<< "$1")
+  echo $payload | jq -r ".$2"
+}
 
-token=$(echo $login_payload | jq -r '.token')
-conversation_list_payload=$(apiCall "conversations.list" '{}' 200 ${token})
-conversations_info_payload=$(apiCall "conversations.info" '{}' 200 ${token})
-conversations_read_payload=$(apiCall "conversations.read" '{}' 200 ${token})
+login_response=$(apiCall "users.login" '{"email":"grace@example.com","password":"the_answer_is_42"}' 200)
 
-chatplugin_authenticate_payload=$(apiCall "chatplugin.authenticate" '{}' 200 ${token})
+token=$(echo $login_response | jq -r '.token')
 
-channels_list_payload=$(apiCall "channels.list" '{}' 200 ${token})
-channels_disconnect_payload=$(apiCall "channels.disconnect" '{}' 200 ${token})
-channels_explore_payload=$(apiCall "channels.explore" '{}' 200 ${token})
-channels_connect_payload=$(apiCall "channels.connect" '{}' 200 ${token})
+channels_connect_response=$(apiCall "channels.connect" '{"source": "chat_plugin", "source_channel_id": "my-chat-channel-1", "token": "wat", "name": "chat plugin source", "image_url": ""}' 200 ${token})
+sleep 1
+channels_list=$(apiCall "channels.list" '{}' 200 ${token})
+channels_explore=$(apiCall "channels.explore" '{}' 200 ${token})
+channel_id=$(extractFromPayload $channels_connect_response "id")
 
-webhooks_subscribe_payload=$(apiCall "webhooks.subscribe" '{}' 200 ${token})
-webhooks_unsubscribe_payload=$(apiCall "webhooks.unsubscribe" '{}' 200 ${token})
-webhooks_info_payload=$(apiCall "webhooks.info" '{}' 200 ${token})
 
-tags_create_payload=$(apiCall "tags.create" '{}' 200 ${token})
-tags_update_payload=$(apiCall "tags.update" '{}' 200 ${token})
-tags_list_payload=$(apiCall "tags.list" '{}' 200 ${token})
-tags_delete_payload=$(apiCall "tags.delete" '{}' 200 ${token})
+chatplugin_authenticate_response=$(apiCall "chatplugin.authenticate" "{\"channel_id\": \"$channel_id\"}" 200 ${token})
+chatplugin_token=$(extractFromPayload $chatplugin_authenticate_response "token")
 
-users_password_payload=$(apiCall "users.password-reset" '{}' 200 ${token})
-messages_list_payload=$(apiCall "messages.list" '{}' 200 ${token})
-messages_send_payload=$(apiCall "messages.send" '{}' 200 ${token})
+chatplugin_send_response=$(apiCall "chatplugin.send" '{"message": {"text": "Message from chatplugin"}}' 200 ${chatplugin_token})
+chatplugin_message_id=$(extractFromPayload $chatplugin_send_response "id")
+sleep 1
+conversation_list_response=$(apiCall "conversations.list" '{}' 200 ${token})
+conversation_id=$(extractFromPayload $conversation_list_response "data[0].id")
+conversations_info_response=$(apiCall "conversations.info" "{\"conversation_id\": \"$conversation_id\"}" 200 ${token})
+conversations_read_response=$(apiCall "conversations.read" "{\"conversation_id\": \"$conversation_id\"}" 202 ${token})
+
+
+messages_send_response=$(apiCall "messages.send" "{\"conversation_id\": \"$conversation_id\", \"message\":{\"text\": \"Response from Airy\"}}" 200 ${token})
+messages_list_response=$(apiCall "messages.list" "{\"conversation_id\": \"$conversation_id\"}" 200 ${token})
+
+tags_create_response=$(apiCall "tags.create" '{"name": "tag-1", "color":"tag-red"}' 201 ${token})
+tag_id=$(extractFromPayload $tags_create_response "id")
+tags_update_response=$(apiCall "tags.update" "{\"id\":\"$tag_id\", \"name\": \"tag-1\", \"color\": \"tag-blue\"}" 200 ${token})
+tags_list_response=$(apiCall "tags.list" '{}' 200 ${token})
+tags_delete_response=$(apiCall "tags.delete" "{\"id\": \"$tag_id\"}" 200 ${token})
+
+webhooks_subscribe_response=$(apiCall "webhooks.subscribe" '{}' 200 ${token})
+webhooks_unsubscribe_response=$(apiCall "webhooks.unsubscribe" '{}' 200 ${token})
+webhooks_info_response=$(apiCall "webhooks.info" '{}' 200 ${token})
+
+channels_disconnect=$(apiCall "channels.disconnect" "{\"channel_id\": \"$channel_id\"}" 200 ${token})

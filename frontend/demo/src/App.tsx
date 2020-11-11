@@ -47,7 +47,7 @@ class App extends Component<
       } else if (shouldRedirect(this.props.location.pathname)) {
         return <Redirect to={LOGIN_ROUTE} />;
       }
-    }    
+    }
 
     return (
       <div className={styles.Container}>

@@ -18,7 +18,6 @@ export const doFetchFromBackend = async (
   body?: Object,
   retryCount: number = 0
 ): Promise<any> => {
-
   const token = getAuthToken();
   if (token) {
     headers["Authorization"] = token;

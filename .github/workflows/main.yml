@@ -57,11 +57,11 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Deploy apps
-        if: ${{github.ref == 'refs/heads/infra/publish-images'}}
+      - name: Deploy backend apps
+        if: ${{github.ref == 'refs/heads/infra/develop'}}
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u pascal-airy --password-stdin
-          bazel run //backend/webhook/publisher:develop
+          "${GITHUB_WORKSPACE}/bin/bazel" run //backend/...:develop
 
       - name: Publish component library to npm
         if: ${{ startsWith(github.ref, 'refs/tags/npm-v') }}

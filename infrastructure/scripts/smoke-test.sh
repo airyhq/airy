@@ -8,27 +8,26 @@ content_type='Content-Type: application/json'
 
 function apiCall {
   local endpoint=$1
-  local request_response=$2
+  local request_payload=$2
   local expected_http_response_code=$3
   local token=${4:-no-auth}
   local url="api.airy/${endpoint}"
 
   if [ "$token" = "no-auth" ]; then
-      response=$(curl -H ${content_type} -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_response} 2>&1)
+      response=$(curl -H ${content_type} -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
     else
-      response=$(curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_response} 2>&1)
-      # >&2 echo curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_response} 2>&1
+      response=$(curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
 
   fi
   response_http_code=$(head -1 <<< "$response")
-  response_response=$(tail -1 <<< "$response")
+  response_payload=$(tail -1 <<< "$response")
 
   if [ "${response_http_code}" != "${expected_http_response_code}" ]; then
     >&2 echo "${url} response code was ${response_http_code}. expected: ${expected_http_response_code}"
     exit
   fi
 
-  echo ${response_response}
+  echo ${response_payload}
 }
 
 function getValueFrom {
@@ -57,7 +56,7 @@ conversations_info_response=$(apiCall "conversations.info" "{\"conversation_id\"
 conversations_read_response=$(apiCall "conversations.read" "{\"conversation_id\": \"$conversation_id\"}" 202 ${token})
 
 
-messages_send_response=$(apiCall "messages.send" "{\"conversation_id\": \"$conversation_id\"}, \"message\":{\"text\": \"Response from Airy\"}" 200 ${token})
+messages_send_response=$(apiCall "messages.send" "{\"conversation_id\": \"$conversation_id\", \"message\":{\"text\": \"Response from Airy\"}}" 200 ${token})
 messages_list_response=$(apiCall "messages.list" "{\"conversation_id\": \"$conversation_id\"}" 200 ${token})
 
 tags_create_response=$(apiCall "tags.create" '{"name": "tag-1", "color":"tag-red"}' 201 ${token})

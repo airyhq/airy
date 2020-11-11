@@ -9,14 +9,15 @@ export class AiryConfig {
   static TOP_DOMAIN = "";
 }
 
+const headers = {
+  Accept: "application/json"
+};
+
 export const doFetchFromBackend = async (
   url: string,
   body?: Object,
   retryCount: number = 0
 ): Promise<any> => {
-  const headers = {
-    Accept: "application/json"
-  };
 
   const token = getAuthToken();
   if (token) {

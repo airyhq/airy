@@ -36,6 +36,10 @@ class App extends Component<
     return this.props.user.token && this.props.user.token !== "";
   }
 
+  shouldShowSidebar = (path: string) => {
+    return this.isAuthSuccess;
+  };
+
   render() {
     if (!this.props.user.id) {
       if (this.props.token) {
@@ -43,11 +47,7 @@ class App extends Component<
       } else if (shouldRedirect(this.props.location.pathname)) {
         return <Redirect to={LOGIN_ROUTE} />;
       }
-    }
-
-    const shouldShowSidebar = (path: string) => {
-      return this.isAuthSuccess;
-    };
+    }    
 
     return (
       <div className={styles.Container}>
@@ -58,7 +58,7 @@ class App extends Component<
               : styles.ContainerAppNotLogin
           }`}
         >
-          {shouldShowSidebar(this.props.location.pathname) ? (
+          {this.shouldShowSidebar(this.props.location.pathname) ? (
             <>
               <TopBar isAdmin={true} />
               <Sidebar />

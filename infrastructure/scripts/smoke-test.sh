@@ -17,7 +17,6 @@ function apiCall {
       response=$(curl -H ${content_type} -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
     else
       response=$(curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
-
   fi
   response_http_code=$(head -1 <<< "$response")
   response_payload=$(tail -1 <<< "$response")
@@ -68,8 +67,5 @@ tags_delete_response=$(apiCall "tags.delete" "{\"id\": \"$tag_id\"}" 200 ${token
 webhooks_subscribe_response=$(apiCall "webhooks.subscribe" '{}' 200 ${token})
 webhooks_unsubscribe_response=$(apiCall "webhooks.unsubscribe" '{}' 200 ${token})
 webhooks_info_response=$(apiCall "webhooks.info" '{}' 200 ${token})
-
-
-users_password_response=$(apiCall "users.password-reset" '{}' 200 ${token})
 
 channels_disconnect=$(apiCall "channels.disconnect" "{\"channel_id\": \"$channel_id\"}" 200 ${token})

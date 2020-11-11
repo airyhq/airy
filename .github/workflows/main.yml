@@ -58,13 +58,13 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Push beta app images
-        if: ${{github.ref == 'refs/heads/infra/develop'}}
+        if: ${{github.ref == 'refs/heads/develop'}}
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u pascal-airy --password-stdin
           "${GITHUB_WORKSPACE}/bin/bazel" run //backend/...:develop
 
       - name: Push release app images
-        if: ${{github.ref == 'refs/heads/infra/main'}}
+        if: ${{github.ref == 'refs/heads/main'}}
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u pascal-airy --password-stdin
           "${GITHUB_WORKSPACE}/bin/bazel" run //backend/...:release

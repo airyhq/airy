@@ -57,3 +57,11 @@ redis:
   imageTag: 5.0.1-alpine
   resources: {}
             
+## ------------------------------------------------------
+## Webhook Publisher
+## ------------------------------------------------------   
+webhook-publisher:
+  enabled: true
+  imageTag: release
+  resources: {}
+            

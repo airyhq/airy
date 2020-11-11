@@ -1,7 +1,6 @@
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
-load("@io_bazel_rules_docker//container:container.bzl", "container_push_develop")
 
 app_deps = [
     "//backend/avro/communication:message",
@@ -47,7 +46,7 @@ container_push(
     tag = "latest",
 )
 
-container_push_develop(
+container_push(
     name = "develop",
     format = "Docker",
     image = ":image",

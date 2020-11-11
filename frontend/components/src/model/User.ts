@@ -5,8 +5,6 @@ export interface User {
   email?: string;
   display_name?: string;
   token?: string;
-  refresh_token?: string;
-  fbToken?: string;
   isAuthSuccess?: boolean;
   onboarded?: boolean;
   error: string;
@@ -19,14 +17,9 @@ export enum AUTH_STATE {
 }
 
 export const authState = (state: User) => {
-  if (!!state.refresh_token) {
-    if (!state.id) {
-      return AUTH_STATE.REFRESHING;
-    }
-
-    return AUTH_STATE.AUTHENTICATED_AND_LOADED;
+  if (!state.id) {
+    return AUTH_STATE.REFRESHING;
   }
-
   return AUTH_STATE.NOT_AUTHENTICATED;
 };
 

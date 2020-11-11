@@ -33,12 +33,12 @@ class App extends Component<
   }
 
   get isAuthSuccess() {
-    return this.props.user.id.length;
+    return this.props.user.token && this.props.user.token !== "";
   }
 
   render() {
     if (!this.props.user.id) {
-      if (this.props.refreshToken) {
+      if (this.props.token) {
         return <Route path="*" component={AiryLoader} />;
       } else if (shouldRedirect(this.props.location.pathname)) {
         return <Redirect to={LOGIN_ROUTE} />;
@@ -87,7 +87,7 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
   return {
     user: state.data.user,
     pathname: ownProps.location.pathname,
-    refreshToken: state.data.user.refresh_token
+    token: state.data.user.token
   };
 };
 

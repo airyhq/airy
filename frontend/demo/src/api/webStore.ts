@@ -15,14 +15,11 @@ export const storeDomainCookie = (key: string) => (token: string) => {
 
 export const setUserId = storeDomainCookie("user_id");
 export const setAuthToken = storeDomainCookie("auth_token");
-export const setRefreshToken = storeDomainCookie("refresh_token");
 export const getUserId = () => getCookie("user_id");
 export const getAuthToken = () => getCookie("auth_token");
 
 export function storeUserData(data: User) {
-  setRefreshToken(data.refresh_token);
-
-  if (data.refresh_token) {
+  if (data.token) {
     localStorage.setItem("id", data.id);
     localStorage.setItem("first_name", data.first_name);
     localStorage.setItem("last_name", data.last_name);

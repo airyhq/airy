@@ -25,10 +25,6 @@ export const logoutUser = () => {
   };
 };
 
-export const refreshUser = () => {
-  //TODO: FETCH SESSION TOKEN
-};
-
 export function loginViaEmail(email: String, password: String) {
   return async (dispatch: Dispatch<any>) => {
     return doFetchFromBackend("users.login", {

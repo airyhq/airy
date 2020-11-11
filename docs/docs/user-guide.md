@@ -8,7 +8,6 @@ slug: /user-guide
 The goal of this document is to provide an overview of how to run the Airy Core
 Platform.
 
-
 ## Running the platform on your machine
 
 We built a virtual machine with [Vagrant](https://www.vagrantup.com) that allows
@@ -34,7 +33,8 @@ The script will ask for your password as we are using the [Vagrant Host Manager 
 
 ### Debug your installation
 
-You can ssh inside the Airy Core Platform box for testing and debugging purposes like so:
+You can ssh inside the Airy Core Platform box for testing and debugging purposes
+like so:
 
 ```sh
 $ cd infrastructure
@@ -43,7 +43,8 @@ $ vagrant ssh
 $ kubectl get pods # to see what's running inside the kubernetes cluster
 ```
 
-You can stop, start or restart the Airy Core Platform box with the following commands:
+You can stop, start or restart the Airy Core Platform box with the following
+commands:
 
 ```sh
 $ cd infrastructure
@@ -53,6 +54,7 @@ $ vagrant reload
 ```
 
 You can delete and re-create the whole environment with the following commands:
+
 ```sh
 $ cd infrastructure
 $ vagrant destroy
@@ -71,7 +73,8 @@ $ vagrant provision --provision-with airy-conf
 
 ### Airy Core API and Public webhooks
 
-You can find your current webhook URLs and your API local address running the following commands:
+You can find your current webhook URLs and your API local address running the
+following commands:
 
 ```sh
 $ cd infrastructure

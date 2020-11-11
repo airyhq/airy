@@ -2,7 +2,6 @@
 id: glossary
 title: Glossary
 sidebar_label: Glossary
-slug: /glossary
 ---
 
 This document aims to provide an high-level overview of the Airy Core Platform
@@ -13,12 +12,12 @@ both in the code and in the rest of the documentation.
 
 ## Introduction
 
-Our Avro schemas provide a machine readable up-to-date version
-of our backend data model. If you are looking for details like null constraints
-and such, the Avro schemas folder is the right place. Furthermore, it is worth
-underlining that the Avro data model and glossary do not correspond exactly. The
-former is the exact machine representation of the data we store and the latter
-is a conceptual artifact we created to discuss and solve problems of a typical
+Our Avro schemas provide a machine readable up-to-date version of our backend
+data model. If you are looking for details like null constraints and such, the
+Avro schemas folder is the right place. Furthermore, it is worth underlining
+that the Avro data model and glossary do not correspond exactly. The former is
+the exact machine representation of the data we store and the latter is a
+conceptual artifact we created to discuss and solve problems of a typical
 messaging system.
 
 The Airy Core Platform allows its [users](#user) to process messaging data from
@@ -29,13 +28,14 @@ ingests source data and transforms them into [conversations](#conversation),
 
 ## Source
 
-A source represents a system that generates messaging data that a user wants
-to process with the Airy Core Platform. In most cases, a source provides data via a
+A source represents a system that generates messaging data that a user wants to
+process with the Airy Core Platform. In most cases, a source provides data via a
 webhook integration.
 
 ## Channel
 
-A channel represents a connection between a [source](#source) and the Airy Core Platform.
+A channel represents a connection between a [source](#source) and the Airy Core
+Platform.
 
 ## Contact
 
@@ -45,8 +45,8 @@ from a contact.
 
 ## Conversation
 
-A conversation is the logical aggregation of [messages](#message) (at least one) from
-exactly one [contact](#contact).
+A conversation is the logical aggregation of [messages](#message) (at least one)
+from exactly one [contact](#contact).
 
 ## Message
 
@@ -91,8 +91,7 @@ Identifies the participant that sent the message. Interpretation is based on the
 
 - `channelId` uuid
 
-- `content` string  Immutable string version of the ingested content. APIs dynamically parse and map it to a schema
-                    using the mapping library. [Read more]()
+- `content` string  Immutable string version of the ingested content. APIs dynamically parse and map it to a schema using the mapping library.
 
 - `offset` long sequence number of message within a conversation
 
@@ -111,7 +110,7 @@ Identifies the participant that sent the message. Interpretation is based on the
 - `updatedAt` timestamp null for messages that are inserted first time
 
 
-#### Headers 
+#### Headers
 
 Header data contains information that is important for downstream processing. It
 also includes the message preview and tags that are useful for certain apps like
@@ -120,4 +119,4 @@ automations.
 
 # User
 
-A user represents one authorized agent in the Airy Core Platform. 
+A user represents one authorized agent in the Airy Core Platform.

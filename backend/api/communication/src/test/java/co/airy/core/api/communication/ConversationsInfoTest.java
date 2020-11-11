@@ -26,7 +26,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -85,13 +84,11 @@ class ConversationsInfoTest {
 
         final String conversationId = UUID.randomUUID().toString();
 
-        kafkaTestHelper.produceRecords(getConversationRecords(
-                ConversationGenerator.CreateConversation.builder()
-                        .channel(channel)
-                        .messageCount(1L)
-                        .conversationId(conversationId)
-                        .build()
-        ));
+        kafkaTestHelper.produceRecords(
+                ConversationGenerator.TestConversation.from(conversationId,
+                        channel,
+                        1).getRecords()
+        );
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",

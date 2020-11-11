@@ -26,7 +26,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -87,15 +86,13 @@ class UnreadCountTest {
 
         final String conversationId = UUID.randomUUID().toString();
 
-        final Integer unreadMessages = 3;
+        final int unreadMessages = 3;
 
-        kafkaTestHelper.produceRecords(getConversationRecords(
-                ConversationGenerator.CreateConversation.builder()
+        kafkaTestHelper.produceRecords(ConversationGenerator.TestConversation.builder()
                         .channel(channel)
-                        .messageCount(unreadMessages.longValue())
+                        .messageCount(unreadMessages)
                         .conversationId(conversationId)
-                        .build()
-        ));
+                        .build().generateRecords());
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
 

@@ -13,7 +13,6 @@ import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
-import co.airy.test.Timing;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -28,12 +27,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static co.airy.test.Timing.retryOnException;
+import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -61,10 +62,10 @@ public class SendMessageControllerTest {
             .setToken("AWESOME TOKEN")
             .build();
 
-    private final List<ConversationGenerator.CreateConversation> conversations = List.of(
-            ConversationGenerator.CreateConversation.builder()
+    private final List<ConversationGenerator.TestConversation> conversations = List.of(
+            ConversationGenerator.TestConversation.builder()
                     .conversationId(facebookConversationId)
-                    .messageCount(1L)
+                    .messageCount(1)
                     .channel(facebookChannel)
                     .build());
 
@@ -101,7 +102,7 @@ public class SendMessageControllerTest {
         }
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
-        kafkaTestHelper.produceRecords(getConversationRecords(conversations));
+        kafkaTestHelper.produceRecords(conversations.stream().map(ConversationGenerator.TestConversation::generateRecords).flatMap(Collection::stream).collect(toList()));
 
         webTestHelper.waitUntilHealthy();
 

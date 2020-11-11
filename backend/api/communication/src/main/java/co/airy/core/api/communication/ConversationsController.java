@@ -27,9 +27,9 @@ import javax.validation.Valid;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 
 @RestController
 public class ConversationsController {
@@ -47,7 +47,7 @@ public class ConversationsController {
     ResponseEntity<ConversationListResponsePayload> conversationList(@RequestBody @Valid ConversationListRequestPayload requestPayload) {
         List<Conversation> conversations = fetchAllConversations();
 
-        conversations.sort(comparing((conversation) -> conversation.getLastMessage().getSentAt()));
+        conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessage().getSentAt()));
 
         final QueryFilterPayload filterPayload = requestPayload.getFilter();
 
@@ -56,7 +56,7 @@ public class ConversationsController {
         if (filterPayload != null) {
             conversations = conversations.stream()
                     .filter(conversation -> conversationFilters.stream().allMatch(filter -> filter.filter(conversation, filterPayload)))
-                    .collect(Collectors.toList());
+                    .collect(toList());
         }
 
         final int filteredTotal = conversations.size();
@@ -66,10 +66,11 @@ public class ConversationsController {
 
         final Page<Conversation> page = paginator.page();
 
+
         final List<ConversationResponsePayload> response = page.getData()
                 .stream()
                 .map(mapper::fromConversation)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         return ResponseEntity.ok(
                 ConversationListResponsePayload.builder()

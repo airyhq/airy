@@ -11,7 +11,6 @@ import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
-import co.airy.test.Timing;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,7 +26,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
@@ -88,13 +86,13 @@ class ConversationsTagTest {
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
 
         final String conversationId = UUID.randomUUID().toString();
-        kafkaTestHelper.produceRecords(getConversationRecords(
-                ConversationGenerator.CreateConversation.builder()
+        kafkaTestHelper.produceRecords(
+                ConversationGenerator.TestConversation.builder()
                         .channel(channel)
-                        .messageCount(1L)
+                        .messageCount(1)
                         .conversationId(conversationId)
-                        .build()
-        ));
+                        .build().generateRecords()
+        );
 
         retryOnException(() -> webTestHelper.post("/conversations.info",
                         "{\"conversation_id\":\"" + conversationId + "\"}", userId)

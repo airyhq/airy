@@ -3,12 +3,14 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.MetadataKeys;
+import co.airy.core.api.communication.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.payload.format.DateFormat;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -24,13 +26,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.ConversationGenerator.CreateConversation;
-import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
+import static co.airy.core.api.communication.util.ConversationGenerator.TestConversation;
 import static co.airy.test.Timing.retryOnException;
+import static java.util.Comparator.reverseOrder;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-class ConversationsFilterTest {
+class ConversationsListTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
@@ -94,33 +99,12 @@ class ConversationsFilterTest {
     private final String conversationIdToFind = UUID.randomUUID().toString();
     private final String userId = "user-id";
 
-    private final List<CreateConversation> conversations = List.of(
-            CreateConversation.builder()
-                    .metadata(Map.of(MetadataKeys.source.contact.FIRST_NAME, firstNameToFind))
-                    .conversationId(UUID.randomUUID().toString())
-                    .messageCount(1L)
-                    .channel(defaultChannel)
-                    .build(),
-            CreateConversation.builder()
-                    .conversationId(UUID.randomUUID().toString())
-                    .messageCount(1L)
-                    .channel(channelToFind)
-                    .build(),
-            CreateConversation.builder()
-                    .conversationId(conversationIdToFind)
-                    .messageCount(1L)
-                    .channel(defaultChannel)
-                    .build(),
-            CreateConversation.builder()
-                    .conversationId(UUID.randomUUID().toString())
-                    .messageCount(1L)
-                    .channel(defaultChannel)
-                    .build(),
-            CreateConversation.builder()
-                    .conversationId(UUID.randomUUID().toString())
-                    .messageCount(1L)
-                    .channel(defaultChannel)
-                    .build()
+    private final List<TestConversation> conversations = List.of(
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.source.contact.FIRST_NAME, firstNameToFind), 1),
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind, 1),
+            TestConversation.from(conversationIdToFind, defaultChannel, 1),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1)
     );
 
     @BeforeEach
@@ -132,7 +116,7 @@ class ConversationsFilterTest {
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), defaultChannel.getId(), defaultChannel));
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelToFind.getId(), channelToFind));
 
-        kafkaTestHelper.produceRecords(getConversationRecords(conversations));
+        kafkaTestHelper.produceRecords(conversations.stream().map(ConversationGenerator.TestConversation::getRecords).flatMap(Collection::stream).collect(toList()));
 
         webTestHelper.waitUntilHealthy();
 
@@ -146,7 +130,14 @@ class ConversationsFilterTest {
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
                         .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
-                "Expected one conversation returned");
+                String.format("Expected %s conversations", conversations.size()));
+
+        webTestHelper.post("/conversations.list", "{} ", userId)
+                .andExpect(jsonPath("$.data[*].last_message.sent_at").value(contains(
+                        conversations.stream()
+                                .map(TestConversation::getLastMessageSentAt)
+                                .map(DateFormat::ISO_FROM_MILLIS)
+                                .sorted().toArray())));
     }
 
     @Test

@@ -45,3 +45,12 @@ container_push(
     repository = "facebook-events-router",
     tag = "latest",
 )
+
+container_push(
+    name = "develop",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/sources",
+    repository = "facebook-events-router",
+    tag = "beta",
+)

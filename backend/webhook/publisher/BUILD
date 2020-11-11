@@ -1,6 +1,7 @@
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
+load("@io_bazel_rules_docker//container:container.bzl", "container_push_develop")
 
 app_deps = [
     "//backend:base_app",
@@ -43,4 +44,13 @@ container_push(
     registry = "ghcr.io/airyhq/webhook",
     repository = "publisher",
     tag = "latest",
+)
+
+container_push_develop(
+    name = "develop",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/webhook",
+    repository = "publisher",
+    tag = "beta",
 )

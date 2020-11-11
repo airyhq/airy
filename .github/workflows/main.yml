@@ -57,6 +57,10 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+      - name: Deploy apps
+        if: ${{github.ref == 'refs/heads/infra/publish-images'}}
+        run: bazel run //backend/webhook/publisher:develop
+
       - name: Publish component library to npm
         if: ${{ startsWith(github.ref, 'refs/tags/npm-v') }}
         run: |

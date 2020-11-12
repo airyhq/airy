@@ -1,19 +1,8 @@
 package co.airy.mapping;
 
-import co.airy.avro.communication.DeliveryState;
-import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.mapping.model.Text;
-import co.airy.mapping.sources.facebook.FacebookMapper;
 import co.airy.mapping.sources.google.GoogleMapper;
-import co.airy.spring.core.AirySpringBootApplication;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-
-import java.time.Instant;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

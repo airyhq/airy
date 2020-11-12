@@ -48,9 +48,8 @@ public class SendMessageControllerTest {
 
     private static KafkaTestHelper kafkaTestHelper;
     private static final String facebookConversationId = UUID.randomUUID().toString();
-    private static boolean testDataInitialized = false;
 
-    final Channel facebookChannel = Channel.newBuilder()
+    private static final Channel facebookChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("facebook-channel-id")
             .setName("channel-name")
@@ -77,6 +76,9 @@ public class SendMessageControllerTest {
         );
 
         kafkaTestHelper.beforeAll();
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
+        kafkaTestHelper.produceRecords(TestConversation.generateRecords(facebookConversationId, facebookChannel, 1));
     }
 
     @AfterAll
@@ -86,21 +88,7 @@ public class SendMessageControllerTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        if (testDataInitialized) {
-            return;
-        }
-
-        TestConversation testConversation = TestConversation.from(
-                facebookConversationId,
-                facebookChannel,
-                1);
-
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
-        kafkaTestHelper.produceRecords(testConversation.getRecords());
-
         webTestHelper.waitUntilHealthy();
-
-        testDataInitialized = true;
     }
 
     @Test

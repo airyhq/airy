@@ -84,11 +84,7 @@ class ConversationsInfoTest {
 
         final String conversationId = UUID.randomUUID().toString();
 
-        kafkaTestHelper.produceRecords(
-                TestConversation.from(conversationId,
-                        channel,
-                        1).getRecords()
-        );
+        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",

@@ -88,10 +88,7 @@ class UnreadCountTest {
 
         final int unreadMessages = 3;
 
-        kafkaTestHelper.produceRecords(TestConversation.from(
-                conversationId,
-                channel,
-                unreadMessages).getRecords());
+        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, unreadMessages));
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
 

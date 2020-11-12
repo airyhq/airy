@@ -92,8 +92,7 @@ public class MessagesTest {
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, channel));
 
         int messageCount = 10;
-        TestConversation testConversation = TestConversation.from(conversationId, channel, messageCount);
-        final List<ProducerRecord<String, SpecificRecordBase>> records = testConversation.getRecords();
+        final List<ProducerRecord<String, SpecificRecordBase>> records = TestConversation.generateRecords(conversationId, channel, messageCount);
 
         kafkaTestHelper.produceRecords(records);
 

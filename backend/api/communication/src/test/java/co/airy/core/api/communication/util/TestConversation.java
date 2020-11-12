@@ -98,4 +98,8 @@ public class TestConversation {
 
         return records;
     }
+
+    public static List<ProducerRecord<String, SpecificRecordBase>> generateRecords(String conversationId, Channel channel, int messageCount) {
+        return TestConversation.from(conversationId, channel, messageCount).generateRecords();
+    }
 }

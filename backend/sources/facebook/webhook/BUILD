@@ -3,6 +3,9 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
+    "//:lombok",
+    "//:jackson",
+    "//:springboot",
     "//backend/lib/kafka/schema:kafka-schema",
     "//backend/lib/kafka/schema:source-facebook-events",
     "//backend/lib/spring/kafka/core:spring-kafka-core",

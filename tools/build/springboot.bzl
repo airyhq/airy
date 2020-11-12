@@ -69,9 +69,6 @@ def springboot(name, main_class, deps, srcs, resources = []):
     genmanifest_rule = "genmanifest"
     genjar_rule = "genjar"
 
-    # Append to the passed deps with the standard Spring Boot deps as a convenience
-    _add_default_deps(deps)
-
     # for resources, assume all files in the standard location unless overridden by config
     if len(resources) == 0:
         resources = native.glob(["src/main/resources/**/*"])
@@ -177,38 +174,3 @@ def springboot(name, main_class, deps, srcs, resources = []):
         genjar_rule = ":" + genjar_rule,
         deps = deps,
     )
-
-# end springboot macro
-
-# Default Dependencies
-# Add in the standard Spring Boot dependencies so that app devs don't
-# need to explicitly state them every time in the BUILD file.
-def _add_default_deps(deps):
-    _safe_add(deps, "//backend/lib/log:log")
-    _safe_add(deps, "@maven//:javax_servlet_javax_servlet_api")
-    _safe_add(deps, "@maven//:javax_validation_validation_api")
-
-    _safe_add(deps, "@maven//:org_springframework_spring_core")
-    _safe_add(deps, "@maven//:org_springframework_spring_web")
-    _safe_add(deps, "@maven//:org_springframework_spring_beans")
-    _safe_add(deps, "@maven//:org_springframework_spring_context")
-    _safe_add(deps, "@maven//:org_springframework_spring_webmvc")
-
-    _safe_add(deps, "@maven//:org_springframework_boot_spring_boot")
-    _safe_add(deps, "@maven//:org_springframework_boot_spring_boot_autoconfigure")
-    _safe_add(deps, "@maven//:org_springframework_boot_spring_boot_actuator_autoconfigure")
-    _safe_add(deps, "@maven//:org_springframework_boot_spring_boot_loader")
-    _safe_add(deps, "@maven//:org_springframework_boot_spring_boot_starter")
-    _safe_add(deps, "@maven//:org_springframework_boot_spring_boot_starter_jetty")
-    _safe_add(deps, "@maven//:org_springframework_boot_spring_boot_starter_web")
-    _safe_add(deps, "@maven//:org_springframework_boot_spring_boot_starter_actuator")
-    _safe_add(deps, "@maven//:org_springframework_boot_spring_boot_actuator")
-
-    _safe_add(deps, "//:jackson")
-    _safe_add(deps, "//:lombok")
-
-# Bazel will fail if a dependency appears twice for the same target, so be
-# safe when adding a dependencies to the deps list
-def _safe_add(deps, dep):
-    if not (dep in deps):
-        deps.append(dep)

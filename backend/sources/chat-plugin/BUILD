@@ -4,6 +4,9 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
     "//:jwt",
+    "//:jackson",
+    "//:lombok",
+    "//:springboot",
     "//backend/avro/communication:channel",
     "//backend/avro/communication:message",
     "//backend/lib/uuid",

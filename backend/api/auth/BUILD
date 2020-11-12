@@ -1,5 +1,7 @@
 app_deps = [
+    "//:jackson",
     "//:lombok",
+    "//:springboot",
     "//:jdbi",
     "//backend/lib/payload",
     "//backend/lib/spring/auth:spring-auth",

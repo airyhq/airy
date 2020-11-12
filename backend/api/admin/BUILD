@@ -3,6 +3,9 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
+    "//:jackson",
+    "//:lombok",
+    "//:springboot",
     "//backend/avro/communication:channel",
     "//backend/avro/communication:webhook",
     "//backend/avro/communication:tag",

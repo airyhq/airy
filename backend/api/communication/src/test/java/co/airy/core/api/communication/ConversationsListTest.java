@@ -123,15 +123,13 @@ class ConversationsListTest {
                 () -> webTestHelper.post("/conversations.list", "{} ", userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
-                        .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
-                String.format("Expected %s conversations", conversations.size()));
-
-        webTestHelper.post("/conversations.list", "{} ", userId)
-                .andExpect(jsonPath("$.data[*].last_message.sent_at").value(contains(
-                        conversations.stream()
-                                .map(TestConversation::getLastMessageSentAt)
-                                .map(DateFormat::ISO_FROM_MILLIS)
-                                .sorted(reverseOrder()).toArray())));
+                        .andExpect(jsonPath("response_metadata.total", is(conversations.size())))
+                        .andExpect(jsonPath("$.data[*].last_message.sent_at").value(contains(
+                                conversations.stream()
+                                        .map(TestConversation::getLastMessageSentAt)
+                                        .map(DateFormat::ISO_FROM_MILLIS)
+                                        .sorted(reverseOrder()).toArray()))),
+                String.format("Expected %s conversations in order", conversations.size()));
     }
 
     @Test

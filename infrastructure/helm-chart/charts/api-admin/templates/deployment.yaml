@@ -34,7 +34,10 @@ spec:
         - name: FACEBOOK_APP_SECRET
           value: "<fb_app_secret>"
         - name: JWT_SECRET
-          value: <jwt_secret>
+          valueFrom:
+            configMapKeyRef:
+              name: secrets-config
+              key: JWT_SECRET
         livenessProbe:
             httpGet:
               path: /actuator/health

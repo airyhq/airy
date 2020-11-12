@@ -12,8 +12,8 @@ sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/chart
 helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s 2>/dev/null || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s 2>/dev/null
 
 export RELEASE_NAME=airy
-export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
-export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
+export ZOOKEEPERS=${RELEASE_NAME}-zookeeper:2181
+export KAFKAS=${RELEASE_NAME}-kafka-headless:9092
 
 cd /vagrant/scripts/
 while ! `kubectl get sa default 2>/dev/null| grep -q default`
@@ -22,7 +22,7 @@ do
     sleep 5
 done
 kubectl apply -f ../tools/kafka-client.yaml
-kubectl scale statefulset airy-cp-zookeeper --replicas=1
+kubectl scale statefulset airy-zookeeper --replicas=1
 
 while ! `kubectl get pod --field-selector="metadata.name=kafka-client,status.phase=Running" 2>/dev/null| grep -q kafka-client`
 do
@@ -34,9 +34,9 @@ kubectl cp provision/create-topics.sh kafka-client:/tmp
 kubectl cp provision/create-database.sh kafka-client:/tmp
 kubectl cp /vagrant/scripts/trigger/wait-for-service.sh kafka-client:/root/
 
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-zookeeper 2181 15 Zookeeper
-kubectl scale statefulset airy-cp-kafka --replicas=1 
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-kafka 9092 15 Kafka
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-zookeeper 2181 15 Zookeeper
+kubectl scale statefulset airy-kafka --replicas=1 
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-kafka 9092 15 Kafka
 kubectl exec kafka-client -- /tmp/create-topics.sh
 
 kubectl delete pod -l app=postgres

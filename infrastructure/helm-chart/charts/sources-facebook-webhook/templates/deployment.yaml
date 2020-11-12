@@ -26,9 +26,9 @@ spec:
           imagePullPolicy: Always
           env:
             - name: KAFKA_BROKERS
-              value: airy-cp-kafka-headless:9092
+              value: airy-kafka-headless:9092
             - name: KAFKA_SCHEMA_REGISTRY_URL
-              value: http://airy-cp-schema-registry:8081
+              value: http://airy-schema-registry:8081
             - name: SERVICE_NAME
               value: sources-facebook-webhook
             - name: FB_WEBHOOK_SECRET
@@ -67,13 +67,3 @@ spec:
         - name: ngrok-client-config
           configMap:
             name: ngrok-client-config
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ngrok-client-config
-  namespace: default
-data:
-  config.yml: |
-    server_addr: proxy.tunnel.airy.co:4443
-    trust_host_root_certs: true

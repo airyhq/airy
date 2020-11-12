@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webhook-publisher
+  name: api-admin
   namespace: default
   labels:
-    app: webhook-publisher
+    app: api-admin
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
-      app: webhook-publisher
+      app: api-admin
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,23 +18,23 @@ spec:
   template:
     metadata:
       labels:
-        app: webhook-publisher
+        app: api-admin
     spec:
       containers:
       - name: app
-        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        image: "{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
-          value: airy-cp-kafka-headless:9092
+          value: airy-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
-          value: http://airy-cp-schema-registry:8081
-        - name: SERVICE_NAME
-          value: webhook-publisher
-        - name: REDIS_HOSTNAME
-          value: redis-cluster
-        - name: REDIS_PORT
-          value: "6379"
+          value: http://airy-schema-registry:8081
+        - name: FACEBOOK_APP_ID
+          value: "<fb_app_id>"
+        - name: FACEBOOK_APP_SECRET
+          value: "<fb_app_secret>"
+        - name: JWT_SECRET
+          value: <jwt_secret>
         livenessProbe:
             httpGet:
               path: /actuator/health

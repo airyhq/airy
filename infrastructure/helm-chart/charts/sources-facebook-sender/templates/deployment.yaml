@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sources-chatplugin
+  name: sources-facebook-sender
   namespace: default
   labels:
-    app: sources-chatplugin
+    app: sources-facebook-sender
 spec:
   replicas: 0
   selector:
     matchLabels:
-      app: sources-chatplugin
+      app: sources-facebook-sender
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,19 +18,20 @@ spec:
   template:
     metadata:
       labels:
-        app: sources-chatplugin
+        app: sources-facebook-sender
     spec:
       containers:
       - name: app
-        image: ghcr.io/airyhq/sources/chat-plugin:latest
+        image: "{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
-        - name: JWT_SECRET
-          value: <jwt_secret>
         - name: KAFKA_BROKERS
-          value: airy-cp-kafka-headless:9092
+          value: airy-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
+        - name: SERVICE_NAME
+          value: facebook-sender
+
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -41,17 +42,5 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 3
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: sources-chatplugin
-  namespace: default
-spec:
-  ports:
-    - port: 80
-      targetPort: 8080
-      protocol: TCP
-  type: NodePort
-  selector:
-    app: sources-chatplugin
+          value: http://airy-schema-registry:8081
+        

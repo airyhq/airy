@@ -1,0 +1,2 @@
+image: ghcr.io/airyhq/webhook/consumer
+appImageTag: release

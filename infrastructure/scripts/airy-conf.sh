@@ -77,8 +77,8 @@ kubectl apply -f ~/airy-core/webhook-consumer.yaml
 kubectl apply -f ~/airy-core/webhook-publisher.yaml
 kubectl apply -f ~/airy-core/sources-chatplugin.yaml
 
-kubectl scale deployment airy-cp-schema-registry --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 15 Schema-registry
+kubectl scale deployment airy-schema-registry --replicas=1
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-schema-registry 8081 15 Schema-registry
 
 kubectl scale deployment api-admin --replicas=1
 kubectl scale deployment api-auth --replicas=1

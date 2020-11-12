@@ -1,15 +1,12 @@
-package co.airy.core.sources.facebook;
+package co.airy.core.sources.google;
 
-import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.sources.facebook.model.SendMessagePayload;
-import co.airy.core.sources.facebook.model.SendMessageRequest;
-import co.airy.core.sources.facebook.services.Api;
-import co.airy.core.sources.facebook.services.Mapper;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.core.sources.google.model.SendMessagePayload;
+import co.airy.core.sources.google.model.SendMessageRequest;
+import co.airy.core.sources.google.services.Api;
+import co.airy.core.sources.google.services.Mapper;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
@@ -28,7 +25,7 @@ import java.time.Instant;
 @Component
 public class Sender implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final Logger log = AiryLoggerFactory.getLogger(Sender.class);
-    private static final String appId = "sources.facebook.Sender";
+    private static final String appId = "sources.google.Sender";
 
     private final KafkaStreamsWrapper streams;
     private final Api api;
@@ -43,11 +40,6 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // Channels table
-        KTable<String, Channel> channelsTable = builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
-                .filter((sourceChannelId, channel) -> "facebook".equalsIgnoreCase(channel.getSource())
-                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
-
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .selectKey((messageId, message) -> message.getConversationId());
 
@@ -58,15 +50,8 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
                             if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
                                 aggregate.setSourceConversationId(message.getSenderId());
                             }
-
-                            aggregate.setChannelId(message.getChannelId());
-
                             return aggregate;
-                        })
-                .join(channelsTable, SendMessageRequest::getChannelId, (aggregate, channel) -> {
-                    aggregate.setChannel(channel);
-                    return aggregate;
-                });
+                        });
 
         messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, sendMessageRequest) -> {
@@ -83,14 +68,13 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
         final Message message = sendMessageRequest.getMessage();
 
         try {
-            final String pageToken = sendMessageRequest.getChannel().getToken();
-            final SendMessagePayload fbSendMessagePayload = mapper.fromSendMessageRequest(sendMessageRequest);
+            final SendMessagePayload sendMessagePayload = mapper.fromSendMessageRequest(sendMessageRequest);
 
-            api.sendMessage(pageToken, fbSendMessagePayload);
+            api.sendMessage(sendMessageRequest.getSourceConversationId(), sendMessagePayload);
 
-            //TODO move the change state logic to backend/avro/message
-            message.setDeliveryState(DeliveryState.DELIVERED);
+            // TODO move the change state logic to backend/avro/message
             message.setUpdatedAt(Instant.now().toEpochMilli());
+            message.setDeliveryState(DeliveryState.DELIVERED);
 
             return message;
         } catch (ApiException e) {
@@ -99,7 +83,7 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
             log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s", sendMessageRequest), e);
         }
 
-        //TODO move the change state logic to backend/avro/message
+        // TODO move the change state logic to backend/avro/message
         message.setDeliveryState(DeliveryState.FAILED);
         message.setUpdatedAt(Instant.now().toEpochMilli());
 

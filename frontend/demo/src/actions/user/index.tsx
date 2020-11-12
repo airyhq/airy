@@ -30,7 +30,7 @@ export const logoutUser = () => {
 export interface LoginViaEmailRequestPayload {
   email: String;
   password: String;
-};
+}
 
 export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
@@ -44,4 +44,4 @@ export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
         return false;
       });
   };
-};
+}

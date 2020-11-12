@@ -8,14 +8,14 @@ export interface User {
   isAuthSuccess?: boolean;
   onboarded?: boolean;
   error?: string;
-};
+}
 
 export interface UserPayload {
   id: string;
   first_name: string;
   last_name: string;
   token: string;
-};
+}
 
 export const userMapper = (payload: UserPayload): User => {
   const user: User = {

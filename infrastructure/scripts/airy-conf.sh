@@ -18,22 +18,14 @@ config=(
 cd /vagrant/scripts
 CONFIG_FILE="../airy.conf"
 
-if test -f "${CONFIG_FILE}"; then
-    while read line
-    do
-        if echo $line | grep -F = &>/dev/null
-        then
-            varname=$(echo "$line" | cut -d '=' -f 1)
-            config[$varname]=$(echo "$line" | cut -d '=' -f 2)
-        fi
-    done < ${CONFIG_FILE}
-fi
 
 mkdir -p ~/airy-core
-cp ../deployments/* ~/airy-core/
 
-RANDOM_POSTGRES_PASSWORD=`kubectl get configmap postgres-config -o jsonpath='{.data.POSTGRES_PASSWORD}'`
-sed -i "s/<pg_password>/${RANDOM_POSTGRES_PASSWORD}/" ~/airy-core/api-auth.yaml
+
+kubectl create configmap secrets-config --from-literal=JWT_SECRET=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 128; echo` --dry-run=client -o yaml | kubectl apply -f -
+kubectl create configmap user-config --from-env-file=../airy.conf --dry-run=client -o yaml | kubectl apply -f -
+
+
 
 RANDOM_JWT_SECRET=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 128; echo`
 sed -i "s/<jwt_secret>/${RANDOM_JWT_SECRET}/" ~/airy-core/api-auth.yaml

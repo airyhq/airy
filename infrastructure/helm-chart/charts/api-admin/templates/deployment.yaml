@@ -36,7 +36,10 @@ spec:
         - name: SERVICE_NAME
           value: api-admin
         - name: JWT_SECRET
-          value: <jwt_secret>
+          valueFrom:
+            configMapKeyRef:
+              name: secrets-config
+              key: JWT_SECRET
         livenessProbe:
             httpGet:
               path: /actuator/health

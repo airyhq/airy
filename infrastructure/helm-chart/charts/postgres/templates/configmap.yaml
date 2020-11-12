@@ -5,6 +5,6 @@ metadata:
   labels:
     app: postgres
 data:
-  POSTGRES_DB: postgresdb
+  POSTGRES_DB: airy-core
   POSTGRES_USER: postgresadmin
   POSTGRES_PASSWORD: {{ .Values.pgPassword }}

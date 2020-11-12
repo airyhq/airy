@@ -55,10 +55,10 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
 
         // Channels table
         KTable<String, Channel> channelsTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
+                .filter((channelId, channel) -> "google".equalsIgnoreCase(channel.getSource())
+                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED))
                 .groupBy((k, v) -> v.getSourceChannelId())
-                .reduce((aggValue, newValue) -> newValue)
-                .filter((sourceChannelId, channel) -> "google".equalsIgnoreCase(channel.getSource())
-                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
+                .reduce((aggValue, newValue) -> newValue);
 
         builder.<String, String>stream(new SourceGoogleEvents().name())
                 .map((key, sourceEvent) -> {

@@ -35,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(properties = {
         "kafka.cleanup=true",
         "kafka.commit-interval-ms=100",
-        "facebook.app-id=12345"
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
 public class EventsRouterTest {

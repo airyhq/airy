@@ -27,14 +27,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static co.airy.test.Timing.retryOnException;
-import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -48,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SendMessageControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    
+
     private static KafkaTestHelper kafkaTestHelper;
     private static final String facebookConversationId = UUID.randomUUID().toString();
     private static boolean testDataInitialized = false;
@@ -61,13 +58,6 @@ public class SendMessageControllerTest {
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")
             .build();
-
-    private final List<ConversationGenerator.TestConversation> conversations = List.of(
-            ConversationGenerator.TestConversation.builder()
-                    .conversationId(facebookConversationId)
-                    .messageCount(1)
-                    .channel(facebookChannel)
-                    .build());
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -101,8 +91,13 @@ public class SendMessageControllerTest {
             return;
         }
 
+        ConversationGenerator.TestConversation testConversation = ConversationGenerator.TestConversation.from(
+                facebookConversationId,
+                facebookChannel,
+                1);
+
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
-        kafkaTestHelper.produceRecords(conversations.stream().map(ConversationGenerator.TestConversation::generateRecords).flatMap(Collection::stream).collect(toList()));
+        kafkaTestHelper.produceRecords(testConversation.getRecords());
 
         webTestHelper.waitUntilHealthy();
 

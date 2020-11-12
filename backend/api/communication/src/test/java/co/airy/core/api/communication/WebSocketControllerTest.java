@@ -40,18 +40,14 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static co.airy.core.api.communication.WebSocketController.QUEUE_CHANNEL_CONNECTED;
 import static co.airy.core.api.communication.WebSocketController.QUEUE_MESSAGE;
 import static co.airy.core.api.communication.WebSocketController.QUEUE_UNREAD_COUNT;
 import static co.airy.test.Timing.retryOnException;
-import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -87,13 +83,6 @@ public class WebSocketControllerTest {
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")
             .build();
-
-    private final List<ConversationGenerator.TestConversation> conversations = List.of(
-            ConversationGenerator.TestConversation.builder()
-                    .conversationId(conversationId)
-                    .messageCount(1)
-                    .channel(channel)
-                    .build());
 
     @Value("${local.server.port}")
     private int port;
@@ -138,7 +127,13 @@ public class WebSocketControllerTest {
         final CompletableFuture<UnreadCountPayload> unreadFuture = subscribe(port, UnreadCountPayload.class, QUEUE_UNREAD_COUNT, jwt);
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-        kafkaTestHelper.produceRecords(conversations.stream().map(ConversationGenerator.TestConversation::generateRecords).flatMap(Collection::stream).collect(toList()));
+
+        ConversationGenerator.TestConversation testConversation = ConversationGenerator.TestConversation.from(
+                conversationId,
+                channel,
+                1);
+        
+        kafkaTestHelper.produceRecords(testConversation.getRecords());
 
         final MessageUpsertPayload recMessage = messageFuture.get(30, TimeUnit.SECONDS);
 

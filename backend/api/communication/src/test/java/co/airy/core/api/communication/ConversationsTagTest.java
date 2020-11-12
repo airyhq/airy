@@ -87,17 +87,15 @@ class ConversationsTagTest {
 
         final String conversationId = UUID.randomUUID().toString();
         kafkaTestHelper.produceRecords(
-                ConversationGenerator.TestConversation.builder()
-                        .channel(channel)
-                        .messageCount(1)
-                        .conversationId(conversationId)
-                        .build().generateRecords()
-        );
+                ConversationGenerator.TestConversation.from(
+                        conversationId,
+                        channel,
+                        1).getRecords());
 
         retryOnException(() -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}", userId)
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.id", is(conversationId))), "Conversation was not created");
+                "{\"conversation_id\":\"" + conversationId + "\"}", userId)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(conversationId))), "Conversation was not created");
 
         final String tagId = UUID.randomUUID().toString();
 

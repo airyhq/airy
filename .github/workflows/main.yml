@@ -61,13 +61,21 @@ jobs:
         if: ${{github.ref == 'refs/heads/develop'}}
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u pascal-airy --password-stdin
-          "${GITHUB_WORKSPACE}/bin/bazel" run //backend/...:develop
+          release_targets=$(bazel query "filter("beta$", //...)" --output label)
+          for target in $release_targets; do
+            echo "Deploying $target"
+            bazel run $target
+          done
 
       - name: Push release app images
         if: ${{github.ref == 'refs/heads/main'}}
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u pascal-airy --password-stdin
-          "${GITHUB_WORKSPACE}/bin/bazel" run //backend/...:release
+          release_targets=$(bazel query "filter("latest$", //...)" --output label)
+          for target in $release_targets; do
+            echo "Deploying $target"
+            bazel run $target
+          done
 
       - name: Publish component library to npm
         if: ${{ startsWith(github.ref, 'refs/tags/npm-v') }}

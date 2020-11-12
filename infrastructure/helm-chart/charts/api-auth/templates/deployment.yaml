@@ -24,6 +24,9 @@ spec:
       - name: app
         image: "{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: user-config
         env:
         - name: DB_USERNAME
           value: postgresadmin
@@ -39,16 +42,6 @@ spec:
             configMapKeyRef:
               name: secrets-config
               key: JWT_SECRET
-        - name: MAIL_URL
-          value: <mail_url>
-        - name: MAIL_PORT
-          value: "<mail_port>"
-        - name: MAIL_USERNAME
-          value: <mail_username>
-        - name: MAIL_PASSWORD
-          value: <mail_password>
-        - name: MAIL_FROM
-          value: <mail_from>
         livenessProbe:
           httpGet:
             path: /actuator/health

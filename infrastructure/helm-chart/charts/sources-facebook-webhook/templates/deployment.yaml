@@ -32,7 +32,10 @@ spec:
             - name: SERVICE_NAME
               value: sources-facebook-webhook
             - name: FB_WEBHOOK_SECRET
-              value: "<fb_webhook_secret>"
+              valueFrom:
+                configMapKeyRef:
+                  name: user-config
+                  key: FB_WEBHOOK_SECRET
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -43,6 +46,7 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 3
+
         - name: ngrok
           command:
             - /bin/bash

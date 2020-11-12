@@ -12,6 +12,7 @@ import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.uuid.UUIDV5;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KTable;
@@ -19,10 +20,12 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.Map;
 
+@Component
 public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final String appId = "sources.google.EventsRouter";
     private static final Logger log = AiryLoggerFactory.getLogger(EventsRouter.class);
@@ -90,9 +93,6 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     final String conversationId = UUIDV5.fromNamespaceAndName(channel.getId(), event.getConversationId()).toString();
                     final String sourceConversationId = event.getConversationId();
 
-//                    if (!messageParser.isMessage(payload)) {
-//                        return KeyValue.pair(messageId, null);
-//                    }
                     Message.Builder messageBuilder = Message.newBuilder();
                     return KeyValue.pair(
                             messageId,
@@ -115,5 +115,10 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                 .to(new ApplicationCommunicationMessages().name());
 
         streams.start(builder.build(), appId);
+    }
+
+    // visible for testing
+    KafkaStreams.State getStreamState() {
+        return streams.state();
     }
 }

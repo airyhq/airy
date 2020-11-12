@@ -32,7 +32,10 @@ spec:
             - name: SERVICE_NAME
               value: sources-facebook-webhook
             - name: FB_WEBHOOK_SECRET
-              value: "<fb_webhook_secret>"
+              valueFrom:
+                configMapKeyRef:
+                  name: user-config
+                  key: FB_WEBHOOK_SECRET
         - name: ngrok
           command:
             - /bin/bash

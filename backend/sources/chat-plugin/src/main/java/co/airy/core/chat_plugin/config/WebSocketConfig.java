@@ -67,23 +67,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
                 if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    Object nativeHeaders = message
-                            .getHeaders()
-                            .get(SimpMessageHeaderAccessor.NATIVE_HEADERS);
-
-                    if (nativeHeaders != null && Map.class.isAssignableFrom(nativeHeaders.getClass())) {
-                        Map headerMap = (Map) nativeHeaders;
-                        Object jwtToken = headerMap.get(HttpHeaders.AUTHORIZATION);
-
-                        if (jwtToken != null && List.class.isAssignableFrom(jwtToken.getClass())) {
-                            final String jwtTokenString = ((List) jwtToken).get(0).toString();
-                            try {
-                                final Principal principal = jwt.authenticate(jwtTokenString);
-                                accessor.setUser(principal);
-                            } catch (Exception e) {
-                                log.error(String.format("STOMP Command: %s, token: %s \n Failed to authenticate", accessor.getCommand(), jwtTokenString));
-                            }
-                        }
+                    final String jwtToken = accessor.getFirstNativeHeader(HttpHeaders.AUTHORIZATION);
+                    try {
+                        final Principal principal = jwt.authenticate(jwtToken);
+                        accessor.setUser(principal);
+                    } catch (Exception e) {
+                        log.error(String.format("STOMP Command: %s, token: %s \n Failed to authenticate", accessor.getCommand(), jwtToken));
                     }
                 }
 

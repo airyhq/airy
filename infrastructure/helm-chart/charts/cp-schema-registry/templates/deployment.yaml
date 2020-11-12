@@ -5,26 +5,26 @@ apiVersion: apps/v1beta2
 {{- end }}
 kind: Deployment
 metadata:
-  name: {{ template "cp-schema-registry.fullname" . }}
+  name: {{ template "schema-registry.fullname" . }}
   labels:
-    app: {{ template "cp-schema-registry.name" . }}
-    chart: {{ template "cp-schema-registry.chart" . }}
+    app: {{ template "schema-registry.name" . }}
+    chart: {{ template "schema-registry.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "cp-schema-registry.name" . }}
+      app: {{ template "schema-registry.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "cp-schema-registry.name" . }}
+        app: {{ template "schema-registry.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ template "cp-schema-registry.name" . }}-server
+        - name: {{ template "schema-registry.name" . }}-server
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
@@ -41,9 +41,9 @@ spec:
           - name: SCHEMA_REGISTRY_LISTENERS
             value: http://0.0.0.0:{{ .Values.servicePort }}
           - name: SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
-            value: {{ template "cp-schema-registry.kafka.bootstrapServers" . }}
+            value: {{ template "schema-registry.kafka.bootstrapServers" . }}
           - name: SCHEMA_REGISTRY_KAFKASTORE_GROUP_ID
-            value: {{ template "cp-schema-registry.groupId" . }}
+            value: {{ template "schema-registry.groupId" . }}
           - name: SCHEMA_REGISTRY_MASTER_ELIGIBILITY
             value: "true"
           - name: SCHEMA_REGISTRY_HEAP_OPTS

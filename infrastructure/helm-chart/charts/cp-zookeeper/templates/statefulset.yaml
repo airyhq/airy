@@ -5,20 +5,20 @@ apiVersion: apps/v1beta1
 {{- end }}
 kind: StatefulSet
 metadata:
-  name: {{ template "cp-zookeeper.fullname" . }}
+  name: {{ template "zookeeper.fullname" . }}
   labels:
-    app: {{ template "cp-zookeeper.name" . }}
-    chart: {{ template "cp-zookeeper.chart" . }}
+    app: {{ template "zookeeper.name" . }}
+    chart: {{ template "zookeeper.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   {{- if .Capabilities.APIVersions.Has "apps/v1" }}
   selector:
     matchLabels:
-      app: {{ template "cp-zookeeper.name" . }}
+      app: {{ template "zookeeper.name" . }}
       release: {{ .Release.Name }}
   {{- end }}
-  serviceName: {{ template "cp-zookeeper.fullname" . }}-headless
+  serviceName: {{ template "zookeeper.fullname" . }}-headless
   podManagementPolicy: {{ .Values.podManagementPolicy }}
   replicas: {{ default 3 .Values.servers }}
   updateStrategy:
@@ -26,7 +26,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "cp-zookeeper.name" . }}
+        app: {{ template "zookeeper.name" . }}
         release: {{ .Release.Name }}
     spec:
       affinity:
@@ -39,14 +39,14 @@ spec:
                   - key: "app"
                     operator: In
                     values:
-                    - {{ template "cp-zookeeper.name" . }}
+                    - {{ template "zookeeper.name" . }}
                   - key: "release"
                     operator: In
                     values:
                     - {{ .Release.Name }}
               topologyKey: "kubernetes.io/hostname"
       containers:
-      - name: {{ template "cp-zookeeper.name" . }}-server
+      - name: {{ template "zookeeper.name" . }}-server
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         ports:
@@ -76,8 +76,8 @@ spec:
         - name: ZOOKEEPER_CLIENT_PORT
           value: "{{ .Values.clientPort }}"
         - name : ZOOKEEPER_SERVERS
-          value: {{ template "cp-zookeeper.serverlist" . }}
-        # ZOOKEEPER_SERVER_ID is required just to pass cp-zookeeper ensure script for env check,
+          value: {{ template "zookeeper.serverlist" . }}
+        # ZOOKEEPER_SERVER_ID is required just to pass zookeeper ensure script for env check,
         # the value(metadata.mame) is not used and will be overwritten in command part
         - name: ZOOKEEPER_SERVER_ID
           valueFrom:

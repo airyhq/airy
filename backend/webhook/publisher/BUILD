@@ -43,7 +43,7 @@ container_push(
     image = ":image",
     registry = "ghcr.io/airyhq/webhook",
     repository = "publisher",
-    tag = "latest",
+    tag = "release",
 )
 
 container_push(

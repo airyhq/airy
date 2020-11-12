@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webhook-publisher
+  name: webhook-consumer
   namespace: default
   labels:
-    app: webhook-publisher
+    app: webhook-consumer
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
-      app: webhook-publisher
+      app: webhook-consumer
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,19 +18,19 @@ spec:
   template:
     metadata:
       labels:
-        app: webhook-publisher
+        app: webhook-consumer
     spec:
       containers:
       - name: app
-        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        image: "{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
-          value: airy-cp-kafka-headless:9092
+          value: airy-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
-          value: http://airy-cp-schema-registry:8081
+          value: http://airy-schema-registry:8081
         - name: SERVICE_NAME
-          value: webhook-publisher
+          value: webhook-consumer
         - name: REDIS_HOSTNAME
           value: redis-cluster
         - name: REDIS_PORT

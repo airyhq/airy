@@ -15,16 +15,16 @@ do
 done
 
 kubectl cp /vagrant/scripts/trigger/wait-for-service.sh kafka-client:/root/
-kubectl scale statefulset airy-cp-zookeeper --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-zookeeper 2181 15 Zookeeper
-kubectl scale statefulset airy-cp-kafka --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-kafka 9092 15 Kafka
+kubectl scale statefulset airy-zookeeper --replicas=1
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-zookeeper 2181 15 Zookeeper
+kubectl scale statefulset airy-kafka --replicas=1
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-kafka 9092 15 Kafka
 kubectl scale statefulset redis-cluster --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh redis-cluster 6379 10 Redis
 kubectl scale deployment postgres --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh postgres 5432 10 Postgres
-kubectl scale deployment airy-cp-schema-registry --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 15 Schema-registry
+kubectl scale deployment airy-schema-registry --replicas=1
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-schema-registry 8081 15 Schema-registry
 
 echo "Starting up Airy Core Platform appplications"
 kubectl scale deployment api-admin --replicas=1

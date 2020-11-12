@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sources-chatplugin
+  name: api-auth
   namespace: default
   labels:
-    app: sources-chatplugin
+    app: api-auth
 spec:
   replicas: 0
   selector:
     matchLabels:
-      app: sources-chatplugin
+      app: api-auth
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,19 +18,33 @@ spec:
   template:
     metadata:
       labels:
-        app: sources-chatplugin
+        app: api-auth
     spec:
       containers:
       - name: app
-        image: ghcr.io/airyhq/sources/chat-plugin:latest
+        image: "{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
+        - name: SERVICE_NAME
+          value: api-auth
+        - name: DB_USERNAME
+          value: postgresadmin
+        - name: DB_PASSWORD
+          value: <pg_password>
+        - name: DB_ENDPOINT
+          value: postgres:5432
         - name: JWT_SECRET
           value: <jwt_secret>
-        - name: KAFKA_BROKERS
-          value: airy-cp-kafka-headless:9092
-        - name: KAFKA_SCHEMA_REGISTRY_URL
-          value: http://airy-cp-schema-registry:8081
+        - name: MAIL_URL
+          value: <mail_url>
+        - name: MAIL_PORT
+          value: "<mail_port>"
+        - name: MAIL_USERNAME
+          value: <mail_username>
+        - name: MAIL_PASSWORD
+          value: <mail_password>
+        - name: MAIL_FROM
+          value: <mail_from>
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -41,17 +55,3 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 3
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: sources-chatplugin
-  namespace: default
-spec:
-  ports:
-    - port: 80
-      targetPort: 8080
-      protocol: TCP
-  type: NodePort
-  selector:
-    app: sources-chatplugin

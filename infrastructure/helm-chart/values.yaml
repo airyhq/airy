@@ -1,10 +1,10 @@
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
-cp-zookeeper:
+zookeeper:
   enabled: true
   servers: 1
-  image: confluentinc/cp-zookeeper
+  image: confluentinc/zookeeper
   imageTag: 5.5.0
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
@@ -16,10 +16,10 @@ cp-zookeeper:
 ## ------------------------------------------------------
 ## Kafka
 ## ------------------------------------------------------
-cp-kafka:
+kafka:
   enabled: true
   brokers: 1
-  image: confluentinc/cp-kafka
+  image: confluentinc/kafka
   imageTag: 5.5.0
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
@@ -32,9 +32,9 @@ cp-kafka:
 ## ------------------------------------------------------
 ## Schema Registry
 ## ------------------------------------------------------
-cp-schema-registry:
+schema-registry:
   enabled: true
-  image: confluentinc/cp-schema-registry
+  image: confluentinc/schema-registry
   imageTag: 5.5.0
   heapOptions: "-Xms512M -Xmx512M"
   resources: {}
@@ -56,12 +56,6 @@ redis:
   image: redis
   imageTag: 5.0.1-alpine
   resources: {}
-            
-## ------------------------------------------------------
-## Webhook Publisher
-## ------------------------------------------------------   
-webhook-publisher:
-  enabled: true
-  imageTag: release
-  resources: {}
-            
+                        
+global:
+  appImageTag: release

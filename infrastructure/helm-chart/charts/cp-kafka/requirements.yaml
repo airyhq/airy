@@ -1,5 +1,5 @@
 dependencies:
-- name: cp-zookeeper
+- name: zookeeper
   version: 0.1.0
-  repository: file://../cp-zookeeper
-  condition: cp-zookeeper.enabled
+  repository: file://../zookeeper
+  condition: zookeeper.enabled

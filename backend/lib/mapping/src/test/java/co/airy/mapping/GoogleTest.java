@@ -39,9 +39,6 @@ public class GoogleTest {
                 "}";
 
         final Text message = (Text) mapper.render(content);
-
         assertThat(message.getText(), equalTo("Yes confirmed"));
     }
-
-
 }

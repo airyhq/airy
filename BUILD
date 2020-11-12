@@ -121,6 +121,23 @@ java_library(
 )
 
 java_library(
+    name = "springboot_test",
+    visibility = [
+        "//visibility:public",
+    ],
+    exports = [
+        "@maven//:org_junit_jupiter_junit_jupiter",
+        "@maven//:org_junit_jupiter_junit_jupiter_api",
+        "@maven//:org_mockito_mockito_core",
+        "@maven//:org_springframework_boot_spring_boot_starter_test",
+        "@maven//:org_springframework_boot_spring_boot_test",
+        "@maven//:org_springframework_boot_spring_boot_test_autoconfigure",
+        "@maven//:org_springframework_spring_core",
+        "@maven//:org_springframework_spring_test",
+    ],
+)
+
+java_library(
     name = "jackson",
     visibility = [
         "//visibility:public",

@@ -35,7 +35,7 @@ java_binary(
         resources = glob(["src/test/resources/**/*"]),
         deps = lib_deps + [
             ":mapping",
-            "//backend/lib/spring/core:spring-test",
+            "//:springboot_test",
             "//backend/lib/spring/core:spring-core",
         ],
     )

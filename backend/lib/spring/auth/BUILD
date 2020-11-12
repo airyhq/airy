@@ -44,7 +44,7 @@ load("//tools/build:junit5.bzl", "junit5")
             "@maven//:org_springframework_spring_webmvc",
             "@maven//:org_springframework_boot_spring_boot_starter_jetty",
             ":spring-auth",
-            "//backend/lib/spring/core:spring-test",
+            "//:springboot_test",
         ],
     )
     for file in glob(["src/test/java/**/*Test.java"])

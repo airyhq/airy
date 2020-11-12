@@ -3,6 +3,7 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.MetadataKeys;
+import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -30,8 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import co.airy.core.api.communication.util.TestConversation;
 import static co.airy.test.Timing.retryOnException;
+import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
@@ -57,6 +58,36 @@ class ConversationsListTest {
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
     private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
 
+    private static final String firstNameToFind = "Grace";
+
+    private static final Channel defaultChannel = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId("channel-id")
+            .setName("channel-name")
+            .setSource("facebook")
+            .setSourceChannelId("ps-id")
+            .build();
+
+    private static final Channel channelToFind = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId("special-channel-id")
+            .setName("channel-name")
+            .setSource("facebook")
+            .setSourceChannelId("special-external-channel-id")
+            .build();
+
+    private static final String conversationIdToFind = UUID.randomUUID().toString();
+    private static final String userId = "user-id";
+
+    private static final List<TestConversation> conversations = List.of(
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.source.contact.FIRST_NAME, firstNameToFind), 1),
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind, 1),
+            TestConversation.from(conversationIdToFind, defaultChannel, 1),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1)
+    );
+
+
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
@@ -67,6 +98,12 @@ class ConversationsListTest {
         );
 
         kafkaTestHelper.beforeAll();
+
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), defaultChannel.getId(), defaultChannel));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelToFind.getId(), channelToFind));
+
+        kafkaTestHelper.produceRecords(conversations.stream().map(TestConversation::getRecords).flatMap(Collection::stream).collect(toList()));
     }
 
     @AfterAll
@@ -74,51 +111,10 @@ class ConversationsListTest {
         kafkaTestHelper.afterAll();
     }
 
-    private static boolean testDataInitialized = false;
-
-    private final String firstNameToFind = "Grace";
-
-    private final Channel defaultChannel = Channel.newBuilder()
-            .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("channel-id")
-            .setName("channel-name")
-            .setSource("facebook")
-            .setSourceChannelId("ps-id")
-            .build();
-
-    private final Channel channelToFind = Channel.newBuilder()
-            .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("special-channel-id")
-            .setName("channel-name")
-            .setSource("facebook")
-            .setSourceChannelId("special-external-channel-id")
-            .build();
-
-    private final String conversationIdToFind = UUID.randomUUID().toString();
-    private final String userId = "user-id";
-
-    private final List<TestConversation> conversations = List.of(
-            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.source.contact.FIRST_NAME, firstNameToFind), 1),
-            TestConversation.from(UUID.randomUUID().toString(), channelToFind, 1),
-            TestConversation.from(conversationIdToFind, defaultChannel, 1),
-            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1),
-            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1)
-    );
 
     @BeforeEach
     void beforeEach() throws Exception {
-        if (testDataInitialized) {
-            return;
-        }
-
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), defaultChannel.getId(), defaultChannel));
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelToFind.getId(), channelToFind));
-
-        kafkaTestHelper.produceRecords(conversations.stream().map(TestConversation::getRecords).flatMap(Collection::stream).collect(toList()));
-
         webTestHelper.waitUntilHealthy();
-
-        testDataInitialized = true;
     }
 
     @Test
@@ -135,7 +131,7 @@ class ConversationsListTest {
                         conversations.stream()
                                 .map(TestConversation::getLastMessageSentAt)
                                 .map(DateFormat::ISO_FROM_MILLIS)
-                                .sorted().toArray())));
+                                .sorted(reverseOrder()).toArray())));
     }
 
     @Test

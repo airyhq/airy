@@ -47,7 +47,7 @@ public class ConversationsController {
     ResponseEntity<ConversationListResponsePayload> conversationList(@RequestBody @Valid ConversationListRequestPayload requestPayload) {
         List<Conversation> conversations = fetchAllConversations();
 
-        conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessage().getSentAt()));
+        conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessage().getSentAt()).reversed());
 
         final QueryFilterPayload filterPayload = requestPayload.getFilter();
 
@@ -65,7 +65,6 @@ public class ConversationsController {
                 .from(requestPayload.getCursor()).perPage(requestPayload.getPageSize());
 
         final Page<Conversation> page = paginator.page();
-
 
         final List<ConversationResponsePayload> response = page.getData()
                 .stream()

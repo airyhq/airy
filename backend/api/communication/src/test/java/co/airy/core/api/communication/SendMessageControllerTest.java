@@ -79,7 +79,6 @@ public class SendMessageControllerTest {
         kafkaTestHelper.beforeAll();
     }
 
-
     @AfterAll
     static void afterAll() throws Exception {
         kafkaTestHelper.afterAll();

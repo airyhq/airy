@@ -5,13 +5,13 @@ java_library(
     srcs = glob(["src/main/java/co/airy/spring/web/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//backend/lib/log",
         "//backend/lib/spring/core:spring-core",
         "@maven//:javax_servlet_javax_servlet_api",
     ],
     deps = [
         "//:jwt",
         "//:lombok",
+        "//:jackson",
         "//backend/lib/log",
         "//backend/lib/spring/core:spring-core",
         "@maven//:javax_servlet_javax_servlet_api",

@@ -5,14 +5,6 @@ java_library(
     srcs = glob(["src/main/java/co/airy/spring/core/**/*.java"]),
     resources = glob(["src/main/resources/**/*"]),
     visibility = ["//visibility:public"],
-    exports = [
-        "//backend/lib/log",
-        "@maven//:com_fasterxml_jackson_core_jackson_databind",
-        "@maven//:javax_validation_validation_api",
-        "@maven//:org_springframework_spring_aop",
-        "@maven//:org_springframework_spring_beans",
-        "@maven//:org_springframework_spring_context",
-    ],
     deps = [
         "//:jackson",
         "//backend/lib/log",

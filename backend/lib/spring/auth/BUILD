@@ -12,6 +12,7 @@ lib_deps = [
     "@maven//:org_springframework_security_spring_security_config",
     "@maven//:org_springframework_security_spring_security_core",
     "@maven//:org_springframework_security_spring_security_web",
+    "@maven//:org_springframework_spring_beans",
     "@maven//:org_springframework_spring_context",
     "@maven//:org_springframework_spring_context_support",
     "@maven//:org_springframework_spring_web",

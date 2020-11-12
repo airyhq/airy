@@ -11,6 +11,7 @@ app_deps = [
     "//backend/avro/communication:message",
     "//backend/lib/uuid",
     "//backend/lib/payload",
+    "//backend/lib/log",
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/spring/kafka/core:spring-kafka-core",

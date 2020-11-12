@@ -9,6 +9,7 @@ app_deps = [
     "//backend/avro/communication:message",
     "//backend/avro/communication:webhook",
     "//backend/lib/uuid",
+    "//backend/lib/log",
     "//backend/lib/payload",
     "//backend/lib/mapping",
     "//backend/lib/kafka/schema:application-communication-messages",

@@ -14,6 +14,7 @@ app_deps = [
     "//backend/avro/communication:read-receipt",
     "//backend/lib/mapping",
     "//backend/lib/payload",
+    "//backend/lib/log",
     "//backend/lib/pagination",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/kafka/schema:application-communication-channels",

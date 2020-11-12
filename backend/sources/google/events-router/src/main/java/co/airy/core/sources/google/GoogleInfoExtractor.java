@@ -22,6 +22,7 @@ public class GoogleInfoExtractor {
                     .conversationId(event.getConversationId())
                     .build();
         } catch (Throwable e) {
+            log.info("Event {} is not parseable", event);
             throw new IllegalArgumentException("Could not extract event", e);
         }
     }

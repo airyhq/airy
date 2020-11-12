@@ -48,8 +48,6 @@ public class EventsRouterTest {
     @Autowired
     private EventsRouter worker;
 
-    private static boolean streamInitialized = false;
-
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
@@ -68,15 +66,11 @@ public class EventsRouterTest {
 
     @BeforeEach
     void beforeEach() throws InterruptedException {
-        if (!streamInitialized) {
-            retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
-
-            streamInitialized = true;
-        }
+        retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test
-    void wat() throws Exception {
+    void canRouteGoogleMessages() throws Exception {
         String channelId = UUID.randomUUID().toString();
         String pageId = UUID.randomUUID().toString();
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()

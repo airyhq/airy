@@ -15,7 +15,6 @@ app_deps = [
     "//backend/lib/mapping",
     "//backend/lib/payload",
     "//backend/lib/pagination",
-    "//backend/lib/kafka/schema:kafka-schema",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-metadata",

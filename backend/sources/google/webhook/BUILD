@@ -7,7 +7,6 @@ app_deps = [
     "//:jackson",
     "//:springboot",
     "//backend/lib/payload",
-    "//backend/lib/kafka/schema:kafka-schema",
     "//backend/lib/kafka/schema:source-google-events",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/healthcheck",

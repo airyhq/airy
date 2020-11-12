@@ -11,7 +11,6 @@ app_deps = [
     "//backend/lib/uuid",
     "//backend/lib/payload",
     "//backend/lib/kafka/schema:source-google-events",
-    "//backend/lib/kafka/schema:kafka-schema",
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/spring/kafka/core:spring-kafka-core",

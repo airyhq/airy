@@ -169,7 +169,7 @@ public class ChatControllerTest {
 
         final CompletableFuture<T> completableFuture = new CompletableFuture<>();
 
-        stompSession.subscribe(topic, new StompSessionHandlerAdapter() {
+        stompSession.subscribe("/user" + topic, new StompSessionHandlerAdapter() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
                 return payloadType;

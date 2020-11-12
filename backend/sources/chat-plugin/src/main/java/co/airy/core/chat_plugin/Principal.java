@@ -1,18 +1,22 @@
 package co.airy.core.chat_plugin;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import co.airy.uuid.UUIDV5;
 import lombok.Data;
 
 @Data
-@Builder
-@AllArgsConstructor
 public class Principal implements java.security.Principal {
     private String channelId;
     private String sessionId;
+    private String conversationId;
+
+    public Principal(String channelId, String sessionId) {
+        this.channelId = channelId;
+        this.sessionId = sessionId;
+        this.conversationId = UUIDV5.fromNamespaceAndName(channelId, sessionId).toString();
+    }
 
     @Override
     public String getName() {
-        return sessionId;
+        return conversationId;
     }
 }

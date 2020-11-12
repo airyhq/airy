@@ -2,15 +2,20 @@ package co.airy.core.chat_plugin;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
+import co.airy.log.AiryLoggerFactory;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -23,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+    private static final Logger log = AiryLoggerFactory.getLogger(Stores.class);
     private static final String appId = "sources.ChatPluginStores";
 
     private final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
@@ -42,8 +48,28 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        builder.<String, Message>stream(applicationCommunicationMessages)
+        final KStream<String, Message> messageStream = builder.<String, Message>stream(applicationCommunicationMessages)
+                .filter((messageId, message) -> "chat_plugin".equals(message.getSource()));
+
+        // Client Echoes
+        messageStream.filter((messageId, message) -> message.getSenderType().equals(SenderType.SOURCE_CONTACT))
                 .peek((messageId, message) -> webSocketController.onNewMessage(message));
+
+        // Runtime Outbound
+        messageStream.filter((messageId, message) -> !message.getSenderType().equals(SenderType.SOURCE_CONTACT)
+                && message.getDeliveryState().equals(DeliveryState.PENDING)
+        )
+                .mapValues((messageId, message) -> {
+                    message.setDeliveryState(DeliveryState.DELIVERED);
+                    try {
+                        webSocketController.onNewMessage(message);
+                    } catch (Exception e) {
+                        log.error("Failed delivering message via websocket: {}", message, e);
+                        message.setDeliveryState(DeliveryState.FAILED);
+                    }
+                    return message;
+                })
+                .to(applicationCommunicationMessages);
 
         builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
                 .filter((channelId, channel) -> "chat_plugin".equals(channel.getSource())

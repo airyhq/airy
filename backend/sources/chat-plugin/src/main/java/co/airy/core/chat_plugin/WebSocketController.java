@@ -15,6 +15,6 @@ public class WebSocketController {
     }
 
     public void onNewMessage(Message message) {
-        messagingTemplate.convertAndSend(QUEUE_MESSAGE, MessageUpsertPayload.fromMessage(message));
+        messagingTemplate.convertAndSendToUser(message.getConversationId(), QUEUE_MESSAGE, MessageUpsertPayload.fromMessage(message));
     }
 }

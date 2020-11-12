@@ -3,7 +3,6 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.MetadataKeys;
-import co.airy.core.api.communication.util.ConversationGenerator;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -31,9 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.ConversationGenerator.TestConversation;
+import co.airy.core.api.communication.util.TestConversation;
 import static co.airy.test.Timing.retryOnException;
-import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
@@ -116,7 +114,7 @@ class ConversationsListTest {
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), defaultChannel.getId(), defaultChannel));
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelToFind.getId(), channelToFind));
 
-        kafkaTestHelper.produceRecords(conversations.stream().map(ConversationGenerator.TestConversation::getRecords).flatMap(Collection::stream).collect(toList()));
+        kafkaTestHelper.produceRecords(conversations.stream().map(TestConversation::getRecords).flatMap(Collection::stream).collect(toList()));
 
         webTestHelper.waitUntilHealthy();
 

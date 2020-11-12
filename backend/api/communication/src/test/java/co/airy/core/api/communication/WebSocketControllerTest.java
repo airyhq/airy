@@ -4,7 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.core.api.communication.payload.MessageUpsertPayload;
 import co.airy.core.api.communication.payload.UnreadCountPayload;
-import co.airy.core.api.communication.util.ConversationGenerator;
+import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -128,11 +128,11 @@ public class WebSocketControllerTest {
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
 
-        ConversationGenerator.TestConversation testConversation = ConversationGenerator.TestConversation.from(
+        TestConversation testConversation = TestConversation.from(
                 conversationId,
                 channel,
                 1);
-        
+
         kafkaTestHelper.produceRecords(testConversation.getRecords());
 
         final MessageUpsertPayload recMessage = messageFuture.get(30, TimeUnit.SECONDS);

@@ -3,7 +3,7 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
-import co.airy.core.api.communication.util.ConversationGenerator;
+import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -92,7 +92,7 @@ public class MessagesTest {
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, channel));
 
         int messageCount = 10;
-        ConversationGenerator.TestConversation testConversation = ConversationGenerator.TestConversation.from(conversationId, channel, messageCount);
+        TestConversation testConversation = TestConversation.from(conversationId, channel, messageCount);
         final List<ProducerRecord<String, SpecificRecordBase>> records = testConversation.getRecords();
 
         kafkaTestHelper.produceRecords(records);

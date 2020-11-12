@@ -2,7 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.core.api.communication.util.ConversationGenerator;
+import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -85,7 +85,7 @@ class ConversationsInfoTest {
         final String conversationId = UUID.randomUUID().toString();
 
         kafkaTestHelper.produceRecords(
-                ConversationGenerator.TestConversation.from(conversationId,
+                TestConversation.from(conversationId,
                         channel,
                         1).getRecords()
         );

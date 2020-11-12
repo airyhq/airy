@@ -4,7 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.api.communication.util.ConversationGenerator;
+import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -91,7 +91,7 @@ public class SendMessageControllerTest {
             return;
         }
 
-        ConversationGenerator.TestConversation testConversation = ConversationGenerator.TestConversation.from(
+        TestConversation testConversation = TestConversation.from(
                 facebookConversationId,
                 facebookChannel,
                 1);

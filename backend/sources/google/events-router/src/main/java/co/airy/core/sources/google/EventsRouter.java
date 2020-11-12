@@ -18,6 +18,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KTable;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     private final KafkaStreamsWrapper streams;
     private final ObjectMapper objectMapper;
 
-    public EventsRouter(KafkaStreamsWrapper streams, ObjectMapper objectMapper) {
+    public EventsRouter(KafkaStreamsWrapper streams, @Qualifier("googleObjectMapper") ObjectMapper objectMapper) {
         this.streams = streams;
         this.objectMapper = objectMapper;
     }

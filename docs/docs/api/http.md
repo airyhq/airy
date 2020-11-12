@@ -391,9 +391,17 @@ to connect the channel.
 This action is idempotent, so if the channel is already connected the status
 will be `202`.
 
-The request requires an authentication`token`, which has a different meaning for each source:
+<!-- TODO move this section to source specific documentation -->
 
-- `FACEBOOK` The page access token 
+This request requires an authentication `token`, which has a different meaning for each source:
+
+- `facebook` The page access token
+- `google` leave empty. To allow authentication you must provide a [Google service account key file](https://developers.google.com/business-communications/business-messages/guides/quickstarts/prerequisite-setup) in your runtime configuration.
+
+The meaning of `source_channel_id` is also different per source
+
+- `facebook` The page id
+- `google` The id of your Google Business Message [agent](https://developers.google.com/business-communications/business-messages/reference/business-communications/rest/v1/brands.agents#Agent). 
 
 **Sample Request**
 
@@ -447,9 +455,11 @@ to list all the channels that are available. Some of those channels may already
 be connected, which is accounted for in the boolean field `connected`. Due to
 the nature of the request, response time may vary.
 
-The request requires an authentication`token`, which has a different meaning for each source:
+<!-- TODO move this section to source specific documentation -->
 
-- `FACEBOOK` The user access token
+The request requires an authentication `token`, which has a different meaning for each source:
+
+- `facebook` The user access token
 
 **Sample Request**
 
@@ -517,7 +527,7 @@ The request requires an authentication`token`, which has a different meaning for
 
 Example body:
 
-```json
+```json5
 {
   "name": "Urgent",
   "color": "tag-red" // one of tag-red | tag-blue | tag-green | tag-purple

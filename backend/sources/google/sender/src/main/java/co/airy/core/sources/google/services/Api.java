@@ -27,8 +27,6 @@ import java.util.List;
 
 @Service
 public class Api implements ApplicationListener<ApplicationReadyEvent> {
-    private static final Logger log = AiryLoggerFactory.getLogger(Api.class);
-
     final RestTemplateBuilder restTemplateBuilder;
     final ObjectMapper objectMapper;
     final GoogleServiceAccount serviceAccount;

@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: public-urls
+  namespace: default
+data:
+  GOOGLE_WEBHOOK_PUBLIC_URL: https://fb-<ngrok_client_id>.tunnel.airy.co
+  FACEBOOK_WEBHOOK_PUBLIC_URL: https://gl-<ngrok_client_id>.tunnel.airy.co

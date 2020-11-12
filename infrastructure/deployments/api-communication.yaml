@@ -29,8 +29,6 @@ spec:
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
-        - name: SERVICE_NAME
-          value: api-communication
         - name: JWT_SECRET
           value: <jwt_secret>
         livenessProbe:

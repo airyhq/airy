@@ -13,6 +13,7 @@ test --test_output=errors
 # ----------------
 common:ci --color=no
 
+build:ci --noshow_progress
 build:ci --verbose_failures
 build:ci --disk_cache=~/.cache/bazel
 build:ci --repository_cache==~/.cache/bazel_external

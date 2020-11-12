@@ -24,8 +24,8 @@ interface TopBarProps {
 const mapStateToProps = (state: StateModel) => {
   return {
     user: state.data.user,
-    first_name: state.data.user.first_name,
-    last_name: state.data.user.last_name,
+    firstName: state.data.user.firstName,
+    lastName: state.data.user.lastName,
     isAuthSuccess: state.data.user.token
   };
 };
@@ -108,7 +108,7 @@ const TopBar = (
                   >
                     <div className={styles.accountDetails}>
                       <div className={styles.accountName}>
-                        {props.first_name + " " + props.last_name}
+                        {props.firstName + " " + props.lastName}
                       </div>
                     </div>
                     <div

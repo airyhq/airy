@@ -13,16 +13,16 @@ export const storeDomainCookie = (key: string) => (token: string) => {
   setCookie(key, token, domain);
 };
 
-export const setUserId = storeDomainCookie("user_id");
-export const setAuthToken = storeDomainCookie("auth_token");
-export const getUserId = () => getCookie("user_id");
-export const getAuthToken = () => getCookie("auth_token");
+export const setUserId = storeDomainCookie("userId");
+export const setAuthToken = storeDomainCookie("authToken");
+export const getUserId = () => getCookie("userId");
+export const getAuthToken = () => getCookie("authToken");
 
 export function storeUserData(data: User) {
   if (data.token) {
     localStorage.setItem("id", data.id);
-    localStorage.setItem("first_name", data.first_name);
-    localStorage.setItem("last_name", data.last_name);
+    localStorage.setItem("firstName", data.firstName);
+    localStorage.setItem("lastName", data.lastName);
     localStorage.setItem("isAuthSuccess", JSON.stringify(true));
     setAuthToken(data.token);
     setUserId(data.id);
@@ -44,8 +44,8 @@ export const getUserFromStore = () => {
     return {
       isAuthSuccess: localStorage.isAuthSuccess,
       id: localStorage.id,
-      first_name: localStorage.first_name,
-      last_name: localStorage.last_name,
+      firstName: localStorage.firstName,
+      lastName: localStorage.lastName,
       role: localStorage.role,
       ...tokens
     };
@@ -58,11 +58,12 @@ export const getUserFromStore = () => {
 
 export const notifyOnAuthChange = (callback: (userId: string) => void) => {
   let userId = getUserId();
-  setInterval(() => {
+  const interval = setInterval(() => {
     const newUserId = getUserId();
     if (userId !== newUserId) {
       userId = newUserId;
       callback(newUserId);
     }
   }, 1000);
+  return () => clearInterval(interval);
 };

@@ -3,7 +3,7 @@ import _, { Dispatch } from "redux";
 
 import { doFetchFromBackend } from "../../api/airyConfig";
 
-import { User } from "../../model/User";
+import { User, userMapper, UserPayload } from "../../model/User";
 
 const SET_CURRENT_USER = "@@auth/SET_CURRENT_USER";
 const USER_AUTH_ERROR = "@@auth/ERROR";
@@ -13,10 +13,12 @@ export const setCurrentUserAction = createAction(
   SET_CURRENT_USER,
   resolve => (user: User) => resolve(user)
 );
+
 export const userAuthErrorAction = createAction(
   USER_AUTH_ERROR,
   resolve => (error: Error) => resolve(error)
 );
+
 export const logoutUserAction = createAction(USER_LOGOUT);
 
 export const logoutUser = () => {
@@ -25,14 +27,16 @@ export const logoutUser = () => {
   };
 };
 
-export function loginViaEmail(email: String, password: String) {
+export interface LoginViaEmailRequestPayload {
+  email: String;
+  password: String;
+};
+
+export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return doFetchFromBackend("users.login", {
-      email,
-      password
-    })
-      .then((response: User) => {
-        dispatch(setCurrentUserAction(response));
+    return doFetchFromBackend("users.login", requestPayload)
+      .then((response: UserPayload) => {
+        dispatch(setCurrentUserAction(userMapper(response)));
         return true;
       })
       .catch((error: Error) => {
@@ -40,4 +44,4 @@ export function loginViaEmail(email: String, password: String) {
         return false;
       });
   };
-}
+};

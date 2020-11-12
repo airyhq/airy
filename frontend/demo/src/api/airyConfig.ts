@@ -1,11 +1,9 @@
 import { getAuthToken } from "./webStore";
 
 export class AiryConfig {
-  static API_URL = "airy.api";
-  static WS_URL = "";
+  static API_URL = "http://192.168.50.5";
   static DEVICE_TYPE = "web";
   static NODE_ENV = process.env.NODE_ENV;
-  static FB_APP_ID = "";
   static TOP_DOMAIN = "";
 }
 

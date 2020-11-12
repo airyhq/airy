@@ -25,10 +25,10 @@ const Login = (props: LoginConnectProps) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     props
-      .loginViaEmail(
-        formData.get("email") as string,
-        formData.get("password") as string
-      )
+      .loginViaEmail({
+        email: formData.get("email") as string,
+        password: formData.get("password") as string
+      })
       .then((success: boolean) => {
         return success ? props.history.push("/") : setCredentialError(true);
       });

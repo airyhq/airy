@@ -8,8 +8,8 @@ type Action = ActionType<typeof actions>;
 export const initialState = {
   id: "",
   email: "",
-  first_name: "",
-  last_name: "",
+  firstName: "",
+  lastName: "",
   error: ""
 };
 

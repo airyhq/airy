@@ -18,6 +18,6 @@ public class ConversationResponsePayload {
     private ChannelPayload channel;
     private List<String> tags;
     private ContactResponsePayload contact;
-    private MessageResponsePayload message;
+    private MessageResponsePayload lastMessage;
     private Integer unreadMessageCount;
 }

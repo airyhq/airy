@@ -4,7 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.core.api.communication.payload.MessageUpsertPayload;
 import co.airy.core.api.communication.payload.UnreadCountPayload;
-import co.airy.core.api.communication.util.ConversationGenerator;
+import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -14,7 +14,6 @@ import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.payload.response.ChannelPayload;
 import co.airy.spring.auth.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
-import co.airy.test.Timing;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -41,8 +40,6 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -50,7 +47,6 @@ import java.util.concurrent.TimeUnit;
 import static co.airy.core.api.communication.WebSocketController.QUEUE_CHANNEL_CONNECTED;
 import static co.airy.core.api.communication.WebSocketController.QUEUE_MESSAGE;
 import static co.airy.core.api.communication.WebSocketController.QUEUE_UNREAD_COUNT;
-import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -87,13 +83,6 @@ public class WebSocketControllerTest {
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")
             .build();
-
-    private final List<ConversationGenerator.CreateConversation> conversations = List.of(
-            ConversationGenerator.CreateConversation.builder()
-                    .conversationId(conversationId)
-                    .messageCount(1L)
-                    .channel(channel)
-                    .build());
 
     @Value("${local.server.port}")
     private int port;
@@ -138,7 +127,13 @@ public class WebSocketControllerTest {
         final CompletableFuture<UnreadCountPayload> unreadFuture = subscribe(port, UnreadCountPayload.class, QUEUE_UNREAD_COUNT, jwt);
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-        kafkaTestHelper.produceRecords(getConversationRecords(conversations));
+
+        TestConversation testConversation = TestConversation.from(
+                conversationId,
+                channel,
+                1);
+
+        kafkaTestHelper.produceRecords(testConversation.getRecords());
 
         final MessageUpsertPayload recMessage = messageFuture.get(30, TimeUnit.SECONDS);
 

@@ -3,12 +3,14 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.MetadataKeys;
+import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.payload.format.DateFormat;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -24,13 +26,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.ConversationGenerator.CreateConversation;
-import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static co.airy.test.Timing.retryOnException;
+import static java.util.Comparator.reverseOrder;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-class ConversationsFilterTest {
+class ConversationsListTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
@@ -54,6 +58,36 @@ class ConversationsFilterTest {
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
     private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
 
+    private static final String firstNameToFind = "Grace";
+
+    private static final Channel defaultChannel = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId("channel-id")
+            .setName("channel-name")
+            .setSource("facebook")
+            .setSourceChannelId("ps-id")
+            .build();
+
+    private static final Channel channelToFind = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId("special-channel-id")
+            .setName("channel-name")
+            .setSource("facebook")
+            .setSourceChannelId("special-external-channel-id")
+            .build();
+
+    private static final String conversationIdToFind = UUID.randomUUID().toString();
+    private static final String userId = "user-id";
+
+    private static final List<TestConversation> conversations = List.of(
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.source.contact.FIRST_NAME, firstNameToFind), 1),
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind, 1),
+            TestConversation.from(conversationIdToFind, defaultChannel, 1),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1)
+    );
+
+
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
@@ -64,6 +98,12 @@ class ConversationsFilterTest {
         );
 
         kafkaTestHelper.beforeAll();
+
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), defaultChannel.getId(), defaultChannel));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelToFind.getId(), channelToFind));
+
+        kafkaTestHelper.produceRecords(conversations.stream().map(TestConversation::getRecords).flatMap(Collection::stream).collect(toList()));
     }
 
     @AfterAll
@@ -71,72 +111,10 @@ class ConversationsFilterTest {
         kafkaTestHelper.afterAll();
     }
 
-    private static boolean testDataInitialized = false;
-
-    private final String firstNameToFind = "Grace";
-
-    private final Channel defaultChannel = Channel.newBuilder()
-            .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("channel-id")
-            .setName("channel-name")
-            .setSource("facebook")
-            .setSourceChannelId("ps-id")
-            .build();
-
-    private final Channel channelToFind = Channel.newBuilder()
-            .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("special-channel-id")
-            .setName("channel-name")
-            .setSource("facebook")
-            .setSourceChannelId("special-external-channel-id")
-            .build();
-
-    private final String conversationIdToFind = UUID.randomUUID().toString();
-    private final String userId = "user-id";
-
-    private final List<CreateConversation> conversations = List.of(
-            CreateConversation.builder()
-                    .metadata(Map.of(MetadataKeys.source.contact.FIRST_NAME, firstNameToFind))
-                    .conversationId(UUID.randomUUID().toString())
-                    .messageCount(1L)
-                    .channel(defaultChannel)
-                    .build(),
-            CreateConversation.builder()
-                    .conversationId(UUID.randomUUID().toString())
-                    .messageCount(1L)
-                    .channel(channelToFind)
-                    .build(),
-            CreateConversation.builder()
-                    .conversationId(conversationIdToFind)
-                    .messageCount(1L)
-                    .channel(defaultChannel)
-                    .build(),
-            CreateConversation.builder()
-                    .conversationId(UUID.randomUUID().toString())
-                    .messageCount(1L)
-                    .channel(defaultChannel)
-                    .build(),
-            CreateConversation.builder()
-                    .conversationId(UUID.randomUUID().toString())
-                    .messageCount(1L)
-                    .channel(defaultChannel)
-                    .build()
-    );
 
     @BeforeEach
     void beforeEach() throws Exception {
-        if (testDataInitialized) {
-            return;
-        }
-
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), defaultChannel.getId(), defaultChannel));
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelToFind.getId(), channelToFind));
-
-        kafkaTestHelper.produceRecords(getConversationRecords(conversations));
-
         webTestHelper.waitUntilHealthy();
-
-        testDataInitialized = true;
     }
 
     @Test
@@ -145,8 +123,13 @@ class ConversationsFilterTest {
                 () -> webTestHelper.post("/conversations.list", "{} ", userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
-                        .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
-                "Expected one conversation returned");
+                        .andExpect(jsonPath("response_metadata.total", is(conversations.size())))
+                        .andExpect(jsonPath("$.data[*].last_message.sent_at").value(contains(
+                                conversations.stream()
+                                        .map(TestConversation::getLastMessageSentAt)
+                                        .map(DateFormat::ISO_FROM_MILLIS)
+                                        .sorted(reverseOrder()).toArray()))),
+                String.format("Expected %s conversations in order", conversations.size()));
     }
 
     @Test

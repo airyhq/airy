@@ -43,7 +43,7 @@ public class Mapper {
                         .lastName(metadata.get(MetadataKeys.source.contact.LAST_NAME))
                         .info(filterPrefix(metadata, "user.contact-info"))
                         .build())
-                .message(fromMessage(conversation.getLastMessage()))
+                .lastMessage(fromMessage(conversation.getLastMessage()))
                 .build();
     }
 

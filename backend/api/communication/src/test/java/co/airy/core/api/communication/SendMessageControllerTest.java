@@ -4,7 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.api.communication.util.ConversationGenerator;
+import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -13,7 +13,6 @@ import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
-import co.airy.test.Timing;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -32,7 +31,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -47,12 +45,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SendMessageControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-    
+
     private static KafkaTestHelper kafkaTestHelper;
     private static final String facebookConversationId = UUID.randomUUID().toString();
-    private static boolean testDataInitialized = false;
 
-    final Channel facebookChannel = Channel.newBuilder()
+    private static final Channel facebookChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("facebook-channel-id")
             .setName("channel-name")
@@ -60,13 +57,6 @@ public class SendMessageControllerTest {
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")
             .build();
-
-    private final List<ConversationGenerator.CreateConversation> conversations = List.of(
-            ConversationGenerator.CreateConversation.builder()
-                    .conversationId(facebookConversationId)
-                    .messageCount(1L)
-                    .channel(facebookChannel)
-                    .build());
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -86,8 +76,10 @@ public class SendMessageControllerTest {
         );
 
         kafkaTestHelper.beforeAll();
-    }
 
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
+        kafkaTestHelper.produceRecords(TestConversation.generateRecords(facebookConversationId, facebookChannel, 1));
+    }
 
     @AfterAll
     static void afterAll() throws Exception {
@@ -96,16 +88,7 @@ public class SendMessageControllerTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        if (testDataInitialized) {
-            return;
-        }
-
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
-        kafkaTestHelper.produceRecords(getConversationRecords(conversations));
-
         webTestHelper.waitUntilHealthy();
-
-        testDataInitialized = true;
     }
 
     @Test

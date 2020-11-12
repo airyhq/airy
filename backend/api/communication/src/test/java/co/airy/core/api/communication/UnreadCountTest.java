@@ -2,7 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.core.api.communication.util.ConversationGenerator;
+import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -26,7 +26,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.ConversationGenerator.getConversationRecords;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -87,15 +86,9 @@ class UnreadCountTest {
 
         final String conversationId = UUID.randomUUID().toString();
 
-        final Integer unreadMessages = 3;
+        final int unreadMessages = 3;
 
-        kafkaTestHelper.produceRecords(getConversationRecords(
-                ConversationGenerator.CreateConversation.builder()
-                        .channel(channel)
-                        .messageCount(unreadMessages.longValue())
-                        .conversationId(conversationId)
-                        .build()
-        ));
+        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, unreadMessages));
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
 

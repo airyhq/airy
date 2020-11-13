@@ -26,7 +26,7 @@ go_image(
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 container_push(
-    name = "release",
+    name = "latest",
     format = "Docker",
     image = ":go_image",
     registry = "ghcr.io/airyhq/webhook",
@@ -35,7 +35,7 @@ container_push(
 )
 
 container_push(
-    name = "develop",
+    name = "beta",
     format = "Docker",
     image = ":go_image",
     registry = "ghcr.io/airyhq/webhook",

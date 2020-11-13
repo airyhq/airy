@@ -6,9 +6,9 @@ import java.util.function.Function;
 
 public class Paginator<T> {
     private final List<T> list;
+    private final Function<T, String> id;
     private Integer perPage = 10;
     private String cursor;
-    private final Function<T, String> id;
 
     public Paginator(List<T> list, Function<T, String> id) {
         this.list = list;

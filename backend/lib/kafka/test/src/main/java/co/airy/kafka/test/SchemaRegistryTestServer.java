@@ -8,12 +8,12 @@ import org.eclipse.jetty.server.Server;
 
 import java.util.Properties;
 
-public class SchemaRegistryServer {
+public class SchemaRegistryTestServer {
     private final Properties prop;
     private Server restServer;
     private String url;
 
-    public SchemaRegistryServer(int port, String zookeeperConnectionUrl, String brokersList) {
+    public SchemaRegistryTestServer(int port, String zookeeperConnectionUrl, String brokersList) {
         prop = new Properties();
         prop.put(SchemaRegistryConfig.KAFKASTORE_SECURITY_PROTOCOL_CONFIG, SecurityProtocol.PLAINTEXT.name);
         prop.put(SchemaRegistryConfig.LISTENERS_CONFIG, "http://localhost:" + port);

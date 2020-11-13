@@ -25,7 +25,7 @@ do
     sleep 5
 done
 kubectl apply -f ../tools/kafka-client.yaml
-kubectl scale statefulset airy-zookeeper --replicas=1
+kubectl scale statefulset zookeeper --replicas=1
 
 while ! `kubectl get pod --field-selector="metadata.name=kafka-client,status.phase=Running" 2>/dev/null| grep -q kafka-client`
 do
@@ -36,9 +36,9 @@ done
 kubectl cp provision/create-topics.sh kafka-client:/tmp
 kubectl cp /vagrant/scripts/trigger/wait-for-service.sh kafka-client:/root/
 
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-zookeeper 2181 15 Zookeeper
-kubectl scale statefulset airy-kafka --replicas=1 
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-kafka 9092 15 Kafka
+kubectl exec kafka-client -- /root/wait-for-service.sh zookeeper 2181 15 Zookeeper
+kubectl scale statefulset kafka --replicas=1 
+kubectl exec kafka-client -- /root/wait-for-service.sh kafka 9092 15 Kafka
 kubectl exec kafka-client -- /tmp/create-topics.sh
 
 kubectl delete pod -l app=postgres

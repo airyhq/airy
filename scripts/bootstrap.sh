@@ -123,4 +123,4 @@ fi
 
 cd $infra_path
 vagrant destroy -f
-vagrant up
+APP_IMAGE_TAG=$APP_IMAGE_TAG vagrant up

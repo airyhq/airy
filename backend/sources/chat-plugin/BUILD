@@ -7,6 +7,8 @@ app_deps = [
     "//:jackson",
     "//:lombok",
     "//:springboot",
+    "//:springboot_websocket",
+    "//:springboot_security",
     "//backend/avro/communication:channel",
     "//backend/avro/communication:message",
     "//backend/lib/uuid",
@@ -18,13 +20,6 @@ app_deps = [
     "//backend/lib/spring/web:spring-web",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
-    "@maven//:org_springframework_boot_spring_boot_starter_security",
-    "@maven//:org_springframework_boot_spring_boot_starter_websocket",
-    "@maven//:org_springframework_security_spring_security_config",
-    "@maven//:org_springframework_security_spring_security_core",
-    "@maven//:org_springframework_security_spring_security_web",
-    "@maven//:org_springframework_spring_messaging",
-    "@maven//:org_springframework_spring_websocket",
     "@maven//:javax_xml_bind_jaxb_api",
 ]
 

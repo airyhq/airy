@@ -9,9 +9,9 @@ java_library(
         "@maven//:javax_servlet_javax_servlet_api",
     ],
     deps = [
+        "//:jackson",
         "//:jwt",
         "//:lombok",
-        "//:jackson",
         "//backend/lib/log",
         "//backend/lib/spring/core:spring-core",
         "@maven//:javax_servlet_javax_servlet_api",

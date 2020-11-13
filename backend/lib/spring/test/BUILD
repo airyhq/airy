@@ -14,9 +14,9 @@ java_library(
         "@maven//:javax_servlet_javax_servlet_api",
         "@maven//:javax_validation_validation_api",
         "@maven//:org_eclipse_jetty_jetty_server",
-        "@maven//:org_springframework_spring_web",
         "@maven//:org_springframework_spring_context",
         "@maven//:org_springframework_spring_context_support",
         "@maven//:org_springframework_spring_core",
+        "@maven//:org_springframework_spring_web",
     ],
 )

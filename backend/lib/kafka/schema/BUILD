@@ -6,10 +6,10 @@ load("//tools/build:helper.bzl", "file_to_kebab")
         name = file_to_kebab(file),
         srcs = [file],
         visibility = ["//visibility:public"],
-        deps = [":kafka-schema"],
         exports = [
-          ":kafka-schema"
-        ]
+            ":kafka-schema",
+        ],
+        deps = [":kafka-schema"],
     )
     for file in glob(["src/main/java/co/airy/kafka/schema/**/*.java"])
 ]

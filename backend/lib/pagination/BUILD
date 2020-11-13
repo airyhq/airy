@@ -12,6 +12,7 @@ java_library(
         file = file,
         resources = glob(["src/test/resources/**/*"]),
         deps = [
+            "//:junit",
             ":pagination",
         ],
     )

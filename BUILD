@@ -121,14 +121,29 @@ java_library(
 )
 
 java_library(
+    name = "junit",
+    visibility = [
+        "//visibility:public",
+    ],
+    exports = [
+        "@maven//:com_jayway_jsonpath_json_path",
+        "@maven//:org_hamcrest_hamcrest",
+        "@maven//:org_hamcrest_hamcrest_library",
+        "@maven//:org_junit_jupiter_junit_jupiter",
+        "@maven//:org_junit_jupiter_junit_jupiter_api",
+        "@maven//:org_junit_jupiter_junit_jupiter_engine",
+        "@maven//:org_junit_jupiter_junit_jupiter_params",
+        "@maven//:org_mockito_mockito_core",
+    ],
+)
+
+java_library(
     name = "springboot_test",
     visibility = [
         "//visibility:public",
     ],
     exports = [
-        "@maven//:org_junit_jupiter_junit_jupiter",
-        "@maven//:org_junit_jupiter_junit_jupiter_api",
-        "@maven//:org_mockito_mockito_core",
+        ":junit",
         "@maven//:org_springframework_boot_spring_boot_starter_test",
         "@maven//:org_springframework_boot_spring_boot_test",
         "@maven//:org_springframework_boot_spring_boot_test_autoconfigure",

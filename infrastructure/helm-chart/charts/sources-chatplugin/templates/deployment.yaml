@@ -31,9 +31,9 @@ spec:
               name: secrets-config
               key: JWT_SECRET
         - name: KAFKA_BROKERS
-          value: airy-kafka-headless:9092
+          value: kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
-          value: http://airy-schema-registry:8081
+          value: http://schema-registry:8081
         livenessProbe:
           httpGet:
             path: /actuator/health

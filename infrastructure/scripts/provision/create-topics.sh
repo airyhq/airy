@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-ZOOKEEPER=airy-zookeeper:2181
+ZOOKEEPER=zookeeper:2181
 PARTITIONS=${PARTITIONS:-10}
 REPLICAS=${REPLICAS:-1}
 

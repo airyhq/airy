@@ -26,8 +26,8 @@ spec:
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
-          value: airy-kafka-headless:9092
+          value: kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
-          value: http://airy-schema-registry:8081
+          value: http://schema-registry:8081
         - name: SERVICE_NAME
           value: facebook-sender

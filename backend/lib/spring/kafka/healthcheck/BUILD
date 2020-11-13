@@ -14,7 +14,6 @@ java_library(
         ":healthcheck_schema",
         "//backend/lib/kafka/core:kafka-core",
         "//backend/lib/kafka/schema:ops-application-health",
-        "//backend/lib/spring/core:spring-core",
         "@maven//:org_springframework_spring_context",
     ],
 )

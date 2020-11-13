@@ -5,6 +5,7 @@ app_deps = [
     "//:jdbi",
     "//backend/lib/payload",
     "//backend/lib/log",
+    "//backend/lib/spring/core:spring-core",
     "//backend/lib/spring/auth:spring-auth",
     "//backend/lib/spring/web:spring-web",
     "//backend/lib/pagination",

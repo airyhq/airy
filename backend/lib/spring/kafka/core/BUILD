@@ -6,7 +6,6 @@ java_library(
     visibility = ["//visibility:public"],
     exports = [
         "//backend/lib/kafka/core:kafka-core",
-        "//backend/lib/spring/core:spring-core",
     ],
     deps = [
         "//backend/lib/kafka/core:kafka-core",

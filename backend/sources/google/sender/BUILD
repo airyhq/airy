@@ -9,6 +9,7 @@ app_deps = [
     "//backend/avro/communication:message",
     "//backend/lib/log",
     "//backend/lib/kafka/schema:application-communication-messages",
+    "//backend/lib/spring/core:spring-core",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
     "@maven//:com_google_auth_google_auth_library_oauth2_http",

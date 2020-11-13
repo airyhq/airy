@@ -14,6 +14,7 @@ app_deps = [
     "//backend/lib/mapping",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/kafka/schema:application-communication-webhooks",
+    "//backend/lib/spring/core:spring-core",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
     "@maven//:io_lettuce_lettuce_core",

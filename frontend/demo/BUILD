@@ -8,6 +8,11 @@ module_deps = [
 ts_library(
     name = "app",
     deps = module_deps + [
+        "@npm//@airyhq/components",
+        "@npm//@types/react-redux",
+        "@npm//react-svg",
+        "@npm//redux",
+        "@npm//redux-starter-kit",
         "@npm//@crello/react-lottie",
         "@npm//@types/prop-types",
         "@npm//@types/react",
@@ -16,6 +21,9 @@ ts_library(
         "@npm//react-autosize-textarea",
         "@npm//react-modal",
         "@npm//react-router-dom",
+        "@npm//typesafe-actions",
+        "@npm//lodash-es",
+        "@npm//@types/node",
     ],
 )
 

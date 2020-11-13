@@ -4,7 +4,7 @@
 zookeeper:
   enabled: true
   servers: 1
-  image: confluentinc/zookeeper
+  image: confluentinc/cp-zookeeper
   imageTag: 5.5.0
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
@@ -19,7 +19,7 @@ zookeeper:
 kafka:
   enabled: true
   brokers: 1
-  image: confluentinc/kafka
+  image: confluentinc/cp-kafka
   imageTag: 5.5.0
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
@@ -34,7 +34,7 @@ kafka:
 ## ------------------------------------------------------
 schema-registry:
   enabled: true
-  image: confluentinc/schema-registry
+  image: confluentinc/cp-schema-registry
   imageTag: 5.5.0
   heapOptions: "-Xms512M -Xmx512M"
   resources: {}

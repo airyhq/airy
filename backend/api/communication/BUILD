@@ -51,7 +51,7 @@ java_library(
 ]
 
 container_push(
-    name = "release",
+    name = "latest",
     format = "Docker",
     image = ":image",
     registry = "ghcr.io/airyhq/api",
@@ -60,7 +60,7 @@ container_push(
 )
 
 container_push(
-    name = "develop",
+    name = "beta",
     format = "Docker",
     image = ":image",
     registry = "ghcr.io/airyhq/api",

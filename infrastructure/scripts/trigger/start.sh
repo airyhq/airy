@@ -39,5 +39,7 @@ kubectl scale deployment sources-google-sender --replicas=1
 kubectl scale deployment sources-google-webhook --replicas=1
 kubectl scale deployment webhook-consumer --replicas=1
 kubectl scale deployment webhook-publisher --replicas=1
+kubectl scale deployment sources-chatplugin --replicas=1
+
 
 chmod o+r /etc/rancher/k3s/k3s.yaml

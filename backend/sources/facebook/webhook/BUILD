@@ -6,8 +6,8 @@ app_deps = [
     "//:lombok",
     "//:jackson",
     "//:springboot",
-    "//backend/lib/kafka/schema:source-facebook-events",
     "//backend/lib/spring/core:spring-core",
+    "//backend/lib/kafka/schema:source-facebook-events",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/healthcheck",
 ]

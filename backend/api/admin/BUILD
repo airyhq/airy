@@ -12,10 +12,11 @@ app_deps = [
     "//backend/lib/payload",
     "//backend/lib/uuid",
     "//backend/lib/spring/auth:spring-auth",
+    "//backend/lib/spring/core:spring-core",
+    "//backend/lib/spring/web:spring-web",
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-webhooks",
     "//backend/lib/kafka/schema:application-communication-tags",
-    "//backend/lib/spring/core:spring-core",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
 ]

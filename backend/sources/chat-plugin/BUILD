@@ -15,6 +15,7 @@ app_deps = [
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/spring/core:spring-core",
+    "//backend/lib/spring/web:spring-web",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
     "@maven//:org_springframework_boot_spring_boot_starter_security",

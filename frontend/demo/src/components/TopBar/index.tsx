@@ -54,11 +54,6 @@ const TopBar = (
     setFaqDropdownOn(false);
   }, [setFaqDropdownOn]);
 
-  const redirectURL = props.isAdmin
-    ? "https://app.airy.co"
-    : "https://admin.airy.co";
-  const redirectText = props.isAdmin ? "Go to Inbox" : "Go to Admin";
-
   return (
     <>
       <div className={styles.topBar}>

@@ -17,10 +17,7 @@ export enum AUTH_STATE {
 }
 
 export const authState = (state: User) => {
-  if (!state.id) {
-    return AUTH_STATE.REFRESHING;
-  }
-  return AUTH_STATE.NOT_AUTHENTICATED;
+  return state.id ? AUTH_STATE.NOT_AUTHENTICATED : AUTH_STATE.REFRESHING;
 };
 
 export function userInitials(user: User) {

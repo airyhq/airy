@@ -1,10 +1,8 @@
 import { getAuthToken } from "./webStore";
 
 export class AiryConfig {
-  static API_URL = "http://192.168.50.5";
-  static DEVICE_TYPE = "web";
+  static API_URL = "airy.api";
   static NODE_ENV = process.env.NODE_ENV;
-  static TOP_DOMAIN = "";
 }
 
 const headers = {

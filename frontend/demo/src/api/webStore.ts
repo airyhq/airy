@@ -1,16 +1,8 @@
-import { AiryConfig } from "./airyConfig";
 import { getCookie, setCookie } from "./cookie";
 import { User } from "../model/User";
 
 export const storeDomainCookie = (key: string) => (token: string) => {
-  let domain = AiryConfig.TOP_DOMAIN;
-
-  // If we are on development or don't have access to {domain} we set it to the current domain
-  if (AiryConfig.NODE_ENV !== "production" || !document.domain.endsWith("")) {
-    domain = document.domain;
-  }
-
-  setCookie(key, token, domain);
+  setCookie(key, token, document.domain);
 };
 
 export const setUserId = storeDomainCookie("userId");
@@ -49,11 +41,11 @@ export const getUserFromStore = () => {
       role: localStorage.role,
       ...tokens
     };
-  } else {
-    return {
-      ...tokens
-    };
   }
+
+  return {
+    ...tokens
+  };
 };
 
 export const notifyOnAuthChange = (callback: (userId: string) => void) => {

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class ObjectMapperConfig {
+public class AiryObjectMapperConfig {
 
     @Bean
     @Primary

@@ -1,6 +1,8 @@
 load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
+package(default_visibility = ["//visibility:public"])
+
 alias(
     name = "check",
     actual = "//tools/code-format:check",
@@ -14,14 +16,10 @@ alias(
 container_image(
     name = "base_image",
     base = "@java_base//image",
-    visibility = ["//visibility:public"],
 )
 
 java_library(
     name = "kafka_core",
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         "@maven//:io_confluent_kafka_avro_serializer",
         "@maven//:io_confluent_kafka_schema_registry",
@@ -34,9 +32,6 @@ java_library(
 
 java_library(
     name = "kafka_streams",
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         "@maven//:org_apache_kafka_kafka_streams",
     ],
@@ -44,9 +39,6 @@ java_library(
 
 java_library(
     name = "jwt",
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         "@maven//:io_jsonwebtoken_jjwt_api",
         "@maven//:io_jsonwebtoken_jjwt_impl",
@@ -56,9 +48,6 @@ java_library(
 
 java_library(
     name = "jdbi",
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         "@maven//:org_jdbi_jdbi3_core",
         "@maven//:org_jdbi_jdbi3_postgres",
@@ -72,9 +61,6 @@ java_library(
     exported_plugins = [
         ":lombok_plugin",
     ],
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         "@maven//:org_projectlombok_lombok",
     ],
@@ -87,9 +73,6 @@ java_plugin(
     name = "lombok_plugin",
     generates_api = True,
     processor_class = "lombok.launch.AnnotationProcessorHider$AnnotationProcessor",
-    visibility = [
-        "//visibility:public",
-    ],
     deps = [
         "@maven//:org_projectlombok_lombok",
     ],
@@ -97,9 +80,6 @@ java_plugin(
 
 java_library(
     name = "springboot",
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         "@maven//:javax_servlet_javax_servlet_api",
         "@maven//:javax_validation_validation_api",
@@ -122,9 +102,6 @@ java_library(
 
 java_library(
     name = "junit",
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         "@maven//:com_jayway_jsonpath_json_path",
         "@maven//:org_hamcrest_hamcrest",
@@ -139,9 +116,6 @@ java_library(
 
 java_library(
     name = "springboot_websocket",
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         "@maven//:org_springframework_boot_spring_boot_starter_websocket",
         "@maven//:org_springframework_spring_messaging",
@@ -151,9 +125,6 @@ java_library(
 
 java_library(
     name = "springboot_security",
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         "@maven//:org_springframework_boot_spring_boot_starter_security",
         "@maven//:org_springframework_security_spring_security_config",
@@ -164,9 +135,6 @@ java_library(
 
 java_library(
     name = "springboot_test",
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         ":junit",
         "@maven//:org_springframework_boot_spring_boot_starter_test",
@@ -179,9 +147,6 @@ java_library(
 
 java_library(
     name = "jackson",
-    visibility = [
-        "//visibility:public",
-    ],
     exports = [
         "@maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@maven//:com_fasterxml_jackson_core_jackson_core",
@@ -195,5 +160,4 @@ exports_files(
         "yarn.lock",
         "tsconfig.json",
     ],
-    visibility = ["//visibility:public"],
 )

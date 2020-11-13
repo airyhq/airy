@@ -3,16 +3,13 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
-    "//:jackson",
-    "//:lombok",
-    "//:springboot",
+    "//backend:base_app",
     "//backend/avro/communication:channel",
     "//backend/avro/communication:webhook",
     "//backend/avro/communication:tag",
     "//backend/lib/payload",
     "//backend/lib/uuid",
     "//backend/lib/spring/auth:spring-auth",
-    "//backend/lib/spring/core:spring-core",
     "//backend/lib/spring/web:spring-web",
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-webhooks",

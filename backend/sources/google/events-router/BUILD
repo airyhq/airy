@@ -3,18 +3,14 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
-    "//:lombok",
-    "//:jackson",
-    "//:springboot",
+    "//backend:base_app",
     "//backend/avro/communication:channel",
     "//backend/avro/communication:message",
     "//backend/lib/uuid",
     "//backend/lib/payload",
-    "//backend/lib/log",
     "//backend/lib/kafka/schema:source-google-events",
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-messages",
-    "//backend/lib/spring/core:spring-core",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
 ]

@@ -12,7 +12,7 @@ sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/chart
 
 echo "Deploying apps with ${app_image_tag} image tag"
 
-helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$RELEASE --version 0.5.0 --timeout 1000s 2>/dev/null
+helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-zookeeper:2181

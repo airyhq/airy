@@ -31,7 +31,15 @@ spec:
         - name: SERVICE_NAME
           value: api-auth
         - name: DB_USERNAME
-          value: postgresadmin
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: POSTGRES_USER
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: POSTGRES_DB
         - name: DB_PASSWORD
           valueFrom:
             configMapKeyRef:

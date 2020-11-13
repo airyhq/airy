@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webhook-publisher
+  name: sources-google-sender
   namespace: default
   labels:
-    app: webhook-publisher
+    app: sources-google-sender
 spec:
   replicas: 0
   selector:
     matchLabels:
-      app: webhook-publisher
+      app: sources-google-sender
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,28 +18,26 @@ spec:
   template:
     metadata:
       labels:
-        app: webhook-publisher
+        app: sources-google-sender
     spec:
       containers:
       - name: app
-        image: ghcr.io/airyhq/webhook/publisher:latest
+        image: ghcr.io/airyhq/sources/google-sender:latest
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
-        - name: REDIS_HOSTNAME
-          value: redis-cluster
-        - name: REDIS_PORT
-          value: "6379"
+        - name: GOOGLE_SA_FILE
+          value: "<google_sa_file>"
         livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-              httpHeaders:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
               - name: Health-Check
                 value: health-check
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3

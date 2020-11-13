@@ -25,8 +25,6 @@ spec:
         image: ghcr.io/airyhq/api/auth:latest
         imagePullPolicy: Always
         env:
-        - name: SERVICE_NAME
-          value: api-auth
         - name: DB_USERNAME
           value: postgresadmin
         - name: DB_PASSWORD

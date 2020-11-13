@@ -8,6 +8,8 @@ config=(
     ["FB_APP_ID"]="default"
     ["FB_APP_SECRET"]="default"
     ["FB_WEBHOOK_SECRET"]="default"
+    ["GOOGLE_PARTNER_KEY"]="default"
+    ["GOOGLE_SA_FILE"]="default"
     ["MAIL_URL"]="default"
     ["MAIL_PORT"]="587"
     ["MAIL_USERNAME"]="default"
@@ -48,6 +50,9 @@ sed -i "s/<fb_app_secret>/${config[FB_APP_SECRET]}/" ~/airy-core/api-admin.yaml
 
 sed -i "s/<fb_webhook_secret>/${config[FB_WEBHOOK_SECRET]}/" ~/airy-core/sources-facebook-webhook.yaml
 
+sed -i "s/<google_partner_key>/${config[GOOGLE_PARTNER_KEY]}/" ~/airy-core/sources-google-webhook.yaml
+sed -i "s/<google_sa_file>/${config[GOOGLE_SA_FILE]}/" ~/airy-core/sources-google-sender.yaml
+
 sed -i "s/<mail_url>/${config[MAIL_URL]}/" ~/airy-core/api-auth.yaml
 sed -i "s/<mail_port>/${config[MAIL_PORT]}/" ~/airy-core/api-auth.yaml
 sed -i "s/<mail_username>/${config[MAIL_USERNAME]}/" ~/airy-core/api-auth.yaml
@@ -56,7 +61,7 @@ sed -i "s/<mail_from>/${config[MAIL_FROM]}/" ~/airy-core/api-auth.yaml
 
 # Generate random string for the ngrok webhook
 RANDOM_INGRESS_ID=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 16; echo`
-sed -i "s/<ngrok_client_string>/fb-${RANDOM_INGRESS_ID}/" ~/airy-core/sources-facebook-webhook.yaml
+sed -i "s/<ngrok_client_id>/${RANDOM_INGRESS_ID}/" ~/airy-core/public-urls-config.yaml
 
 kubectl apply -f ~/airy-core/api-admin.yaml
 kubectl apply -f ~/airy-core/api-auth.yaml
@@ -65,6 +70,9 @@ kubectl apply -f ~/airy-core/api-communication.yaml
 kubectl apply -f ~/airy-core/sources-facebook-events-router.yaml
 kubectl apply -f ~/airy-core/sources-facebook-sender.yaml
 kubectl apply -f ~/airy-core/sources-facebook-webhook.yaml
+kubectl apply -f ~/airy-core/sources-google-events-router.yaml
+kubectl apply -f ~/airy-core/sources-google-sender.yaml
+kubectl apply -f ~/airy-core/sources-google-webhook.yaml
 kubectl apply -f ~/airy-core/webhook-consumer.yaml
 kubectl apply -f ~/airy-core/webhook-publisher.yaml
 kubectl apply -f ~/airy-core/sources-chatplugin.yaml
@@ -79,6 +87,9 @@ kubectl scale deployment api-communication --replicas=1
 kubectl scale deployment sources-facebook-events-router --replicas=1
 kubectl scale deployment sources-facebook-sender --replicas=1
 kubectl scale deployment sources-facebook-webhook --replicas=1
+kubectl scale deployment sources-google-events-router --replicas=1
+kubectl scale deployment sources-google-sender --replicas=1
+kubectl scale deployment sources-google-webhook --replicas=1
 kubectl scale deployment webhook-consumer --replicas=1
 kubectl scale deployment webhook-publisher --replicas=1
 kubectl scale deployment sources-chatplugin --replicas=1

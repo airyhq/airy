@@ -29,19 +29,13 @@ spec:
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
-        - name: SERVICE_NAME
-          value: facebook-sender
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: sources-facebook-sender
-  namespace: default
-spec:
-  ports:
-    - port: 80
-      targetPort: 8080
-      protocol: TCP
-  type: NodePort
-  selector:
-    app: sources-facebook-sender
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+              - name: Health-Check
+                value: health-check
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3

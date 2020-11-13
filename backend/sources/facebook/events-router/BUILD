@@ -9,7 +9,6 @@ app_deps = [
     "//backend/lib/payload",
     "//backend/lib/kafka/schema:kafka-schema",
     "//backend/lib/kafka/schema:source-facebook-events",
-    "//backend/lib/kafka/schema:source-facebook-transformed-events",
     "//backend/lib/kafka/schema:application-communication-channels",
     "//backend/lib/kafka/schema:application-communication-messages",
     "//backend/lib/spring/kafka/core:spring-kafka-core",

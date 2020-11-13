@@ -31,19 +31,14 @@ spec:
           value: http://airy-cp-schema-registry:8081
         - name: FB_APP_ID
           value: "<fb_app_id>"
-        - name: SERVICE_NAME
-          value: facebook-events-router
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: sources-facebook-events-router
-  namespace: default
-spec:
-  ports:
-    - port: 80
-      targetPort: 8080
-      protocol: TCP
-  type: NodePort
-  selector:
-    app: sources-facebook-events-router
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+              - name: Health-Check
+                value: health-check
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3
+

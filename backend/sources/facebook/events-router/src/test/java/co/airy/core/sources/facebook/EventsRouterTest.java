@@ -7,11 +7,9 @@ import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
-import co.airy.kafka.schema.source.SourceFacebookTransformedEvents;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
-import co.airy.test.Timing;
 import co.airy.uuid.UUIDV5;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -53,7 +51,6 @@ class EventsRouterTest {
     private static KafkaTestHelper kafkaTestHelper;
 
     private static final Topic sourceFacebookEvents = new SourceFacebookEvents();
-    private static final Topic sourceFacebookTransformedEvents = new SourceFacebookTransformedEvents();
     private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
 
@@ -66,7 +63,6 @@ class EventsRouterTest {
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 sourceFacebookEvents,
-                sourceFacebookTransformedEvents,
                 applicationCommunicationChannels,
                 applicationCommunicationMessages
         );

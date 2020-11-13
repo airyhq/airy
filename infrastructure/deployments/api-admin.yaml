@@ -33,8 +33,6 @@ spec:
           value: "<fb_app_id>"
         - name: FACEBOOK_APP_SECRET
           value: "<fb_app_secret>"
-        - name: SERVICE_NAME
-          value: api-admin
         - name: JWT_SECRET
           value: <jwt_secret>
         livenessProbe:

@@ -13,7 +13,7 @@ public class AiryObjectMapperConfig {
 
     @Bean
     @Primary
-    public static ObjectMapper objectMapper() {
+    public static ObjectMapper airyObjectMapper() {
         return new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY, false)

@@ -2,6 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+app_image_tag="${APP_IMAGE_TAG:-latest}"
 RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
 mkdir -p ~/airy-core
 cd /vagrant
@@ -9,8 +10,9 @@ cp airy.conf.tpl airy.conf
 cp -R /vagrant/helm-chart ~/airy-core/
 sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/charts/postgres/values.yaml
 
-RELEASE=beta
-helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$RELEASE --version 0.5.0 --timeout 1000s 2>/dev/null || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$RELEASE --version 0.5.0 --timeout 1000s 2>/dev/null
+echo "Deploying apps with ${app_image_tag} image tag"
+
+helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$RELEASE --version 0.5.0 --timeout 1000s 2>/dev/null
 
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-zookeeper:2181

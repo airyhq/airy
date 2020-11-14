@@ -10,11 +10,6 @@ import org.apache.kafka.common.serialization.Serializer;
 import java.io.Serializable;
 import java.util.Map;
 
-
-/**
- * A hybrid serde we in our Kafka stream applications.
- * It makes use of a hybrid serializer and a hybrid deserializer so we can support both Avro and JSON
- */
 public class KafkaHybridSerde implements Serde<Serializable> {
 
   private final Serde<Serializable> serde;

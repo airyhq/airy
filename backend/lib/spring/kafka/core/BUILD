@@ -11,6 +11,5 @@ java_library(
         "//:spring",
         "//backend/lib/kafka/core:kafka-core",
         "//backend/lib/spring/core:spring-core",
-        "@maven//:javax_validation_validation_api",
     ],
 )

@@ -6,7 +6,6 @@ java_library(
     visibility = ["//visibility:public"],
     deps = [
         "//:jackson",
-        "//:kafka_streams",
         "//:lombok",
         "//backend:base_test",
         "//backend/lib/kafka/core:kafka-core",
@@ -17,6 +16,7 @@ java_library(
         "@maven//:org_apache_curator_curator_test",
         "@maven//:org_apache_kafka_kafka_2_12",
         "@maven//:org_apache_kafka_kafka_clients_test",
+        "@maven//:org_apache_kafka_kafka_streams",
         "@maven//:org_eclipse_jetty_jetty_server",
     ],
 )

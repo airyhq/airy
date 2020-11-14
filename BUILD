@@ -31,13 +31,6 @@ java_library(
 )
 
 java_library(
-    name = "kafka_streams",
-    exports = [
-        "@maven//:org_apache_kafka_kafka_streams",
-    ],
-)
-
-java_library(
     name = "jwt",
     exports = [
         "@maven//:io_jsonwebtoken_jjwt_api",

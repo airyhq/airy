@@ -2,10 +2,10 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/build:junit5.bzl", "junit5")
 
 lib_deps = [
+    "@maven//:org_apache_kafka_kafka_streams",
     "//backend/lib/kafka/schema:kafka-schema",
     "//backend/lib/kafka/core:kafka-core",
-    "//:kafka_streams",
-    "//backend/lib/log:log",
+    "//backend/lib/log",
     "//:lombok",
     "@maven//:org_rocksdb_rocksdbjni",
 ]
@@ -17,7 +17,7 @@ java_library(
     ]),
     visibility = ["//visibility:public"],
     exports = [
-        "//:kafka_streams",
+        "@maven//:org_apache_kafka_kafka_streams",
     ],
     deps = lib_deps,
 )

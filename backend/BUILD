@@ -16,8 +16,8 @@ java_library(
 java_library(
     name = "base_test",
     exports = [
-        "//:springboot_test",
         "//:junit",
+        "//:springboot_test",
         "//backend/lib/test",
     ],
 )

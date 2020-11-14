@@ -72,7 +72,6 @@ maven_install(
         "org.apache.kafka:kafka-clients:jar:test:2.5.1",
         "org.apache.kafka:kafka-streams:2.5.1",
         "org.apache.kafka:kafka_2.12:2.5.1",
-        "org.aspectj:aspectjweaver:1.8.10",
         "org.bouncycastle:bcpkix-jdk15on:1.63",
         "org.flywaydb:flyway-core:5.2.4",
         "org.hamcrest:hamcrest-library:2.1",

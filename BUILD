@@ -72,6 +72,16 @@ java_plugin(
 )
 
 java_library(
+    name = "spring",
+    exports = [
+        "@maven//:org_springframework_spring_beans",
+        "@maven//:org_springframework_spring_context",
+        "@maven//:org_springframework_spring_core",
+        "@maven//:org_springframework_spring_web",
+    ],
+)
+
+java_library(
     name = "springboot",
     exports = [
         "@maven//:javax_servlet_javax_servlet_api",
@@ -85,11 +95,6 @@ java_library(
         "@maven//:org_springframework_boot_spring_boot_starter_actuator",
         "@maven//:org_springframework_boot_spring_boot_starter_jetty",
         "@maven//:org_springframework_boot_spring_boot_starter_web",
-        "@maven//:org_springframework_spring_beans",
-        "@maven//:org_springframework_spring_context",
-        "@maven//:org_springframework_spring_core",
-        "@maven//:org_springframework_spring_web",
-        "@maven//:org_springframework_spring_webmvc",
     ],
 )
 

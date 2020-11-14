@@ -6,6 +6,7 @@ java_library(
     resources = glob(["src/main/resources/**/*"]),
     visibility = ["//visibility:public"],
     deps = [
+        "//:spring",
         "//:jackson",
         "//backend/lib/log",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
@@ -15,9 +16,5 @@ java_library(
         "@maven//:org_aspectj_aspectjweaver",
         "@maven//:org_springframework_boot_spring_boot",
         "@maven//:org_springframework_boot_spring_boot_autoconfigure",
-        "@maven//:org_springframework_spring_aop",
-        "@maven//:org_springframework_spring_beans",
-        "@maven//:org_springframework_spring_context",
-        "@maven//:org_springframework_spring_context_support",
     ],
 )

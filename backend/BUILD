@@ -7,6 +7,7 @@ java_library(
     exports = [
         "//:jackson",
         "//:lombok",
+        "//:spring",
         "//:springboot",
         "//backend/lib/log",
         "//backend/lib/spring/core:spring-core",

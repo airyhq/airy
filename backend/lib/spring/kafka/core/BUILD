@@ -8,11 +8,9 @@ java_library(
         "//backend/lib/kafka/core:kafka-core",
     ],
     deps = [
+        "//:spring",
         "//backend/lib/kafka/core:kafka-core",
         "//backend/lib/spring/core:spring-core",
         "@maven//:javax_validation_validation_api",
-        "@maven//:org_springframework_spring_aop",
-        "@maven//:org_springframework_spring_beans",
-        "@maven//:org_springframework_spring_context",
     ],
 )

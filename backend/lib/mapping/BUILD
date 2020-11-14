@@ -7,7 +7,6 @@ lib_deps = [
     "//:jackson",
     "//backend/lib/log",
     "//backend/avro/communication:message",
-    "@maven//:com_fasterxml_jackson_core_jackson_databind",
     "@maven//:javax_validation_validation_api",
 ]
 

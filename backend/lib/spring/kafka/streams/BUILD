@@ -12,7 +12,6 @@ java_library(
         "//backend/lib/kafka/core:kafka-core",
         "//backend/lib/kafka/streams:kafka-streams",
         "//backend/lib/spring/core:spring-core",
-        "@maven//:com_fasterxml_jackson_core_jackson_databind",
         "@maven//:javax_validation_validation_api",
     ],
 )

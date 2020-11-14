@@ -11,8 +11,6 @@ java_library(
         "//backend/lib/kafka/core:kafka-core",
         "//backend/lib/kafka/schema:kafka-schema",
         "//backend/lib/log",
-        "@maven//:javax_servlet_javax_servlet_api",
-        "@maven//:javax_validation_validation_api",
         "@maven//:org_apache_curator_curator_test",
         "@maven//:org_apache_kafka_kafka_2_12",
         "@maven//:org_apache_kafka_kafka_clients_test",

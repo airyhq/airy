@@ -87,14 +87,20 @@ java_library(
         "@maven//:javax_servlet_javax_servlet_api",
         "@maven//:javax_validation_validation_api",
         "@maven//:org_springframework_boot_spring_boot",
-        "@maven//:org_springframework_boot_spring_boot_actuator",
-        "@maven//:org_springframework_boot_spring_boot_actuator_autoconfigure",
         "@maven//:org_springframework_boot_spring_boot_autoconfigure",
         "@maven//:org_springframework_boot_spring_boot_loader",
         "@maven//:org_springframework_boot_spring_boot_starter",
-        "@maven//:org_springframework_boot_spring_boot_starter_actuator",
         "@maven//:org_springframework_boot_spring_boot_starter_jetty",
         "@maven//:org_springframework_boot_spring_boot_starter_web",
+    ],
+)
+
+java_library(
+    name = "springboot_actuator",
+    exports = [
+        "@maven//:org_springframework_boot_spring_boot_actuator",
+        "@maven//:org_springframework_boot_spring_boot_actuator_autoconfigure",
+        "@maven//:org_springframework_boot_spring_boot_starter_actuator",
     ],
 )
 

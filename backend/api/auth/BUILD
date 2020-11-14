@@ -1,5 +1,6 @@
 app_deps = [
     "//backend:base_app",
+    "//:springboot_actuator",
     "//:jdbi",
     "//backend/lib/payload",
     "//backend/lib/spring/auth:spring-auth",

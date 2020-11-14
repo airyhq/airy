@@ -4,6 +4,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
+    "//:springboot_actuator",
     "//backend/lib/payload",
     "//backend/lib/kafka/schema:source-google-events",
     "//backend/lib/spring/kafka/core:spring-kafka-core",

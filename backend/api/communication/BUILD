@@ -5,6 +5,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
+    "//:springboot_actuator",
     "//:springboot_websocket",
     "//backend:message",
     "//backend:channel",

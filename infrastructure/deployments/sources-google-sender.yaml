@@ -32,12 +32,8 @@ spec:
         - name: GOOGLE_SA_FILE
           value: "<google_sa_file>"
         livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-            httpHeaders:
-              - name: Health-Check
-                value: health-check
+          tcpSocket:
+            port: 6000
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 3

@@ -4,8 +4,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
-    "//backend/avro/communication:message",
-    "//backend/lib/kafka/schema:application-communication-messages",
+    "//backend:message",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
     "@maven//:com_google_auth_google_auth_library_oauth2_http",

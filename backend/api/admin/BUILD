@@ -4,16 +4,13 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
-    "//backend/avro/communication:channel",
-    "//backend/avro/communication:webhook",
-    "//backend/avro/communication:tag",
+    "//backend:channel",
+    "//backend:tag",
+    "//backend:webhook",
     "//backend/lib/payload",
     "//backend/lib/uuid",
     "//backend/lib/spring/auth:spring-auth",
     "//backend/lib/spring/web:spring-web",
-    "//backend/lib/kafka/schema:application-communication-channels",
-    "//backend/lib/kafka/schema:application-communication-webhooks",
-    "//backend/lib/kafka/schema:application-communication-tags",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
 ]

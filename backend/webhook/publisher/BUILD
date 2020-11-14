@@ -29,8 +29,7 @@ springboot(
         resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
-            "//:springboot_test",
-            "//backend/lib/test:test",
+            "//backend:base_test",
             "//backend/lib/kafka/test:kafka-test",
         ] + app_deps,
     )

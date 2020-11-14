@@ -136,7 +136,6 @@ java_library(
 java_library(
     name = "springboot_test",
     exports = [
-        ":junit",
         "@maven//:org_springframework_boot_spring_boot_starter_test",
         "@maven//:org_springframework_boot_spring_boot_test",
         "@maven//:org_springframework_boot_spring_boot_test_autoconfigure",

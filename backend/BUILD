@@ -14,6 +14,15 @@ java_library(
 )
 
 java_library(
+    name = "base_test",
+    exports = [
+        "//:springboot_test",
+        "//:junit",
+        "//backend/lib/test",
+    ],
+)
+
+java_library(
     name = "channel",
     exports = [
         "//backend/avro/communication:channel",

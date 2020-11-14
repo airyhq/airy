@@ -33,7 +33,7 @@ load("//tools/build:junit5.bzl", "junit5")
         file = file,
         deps = [
             ":app",
-            "//:springboot_test",
+            "//backend:base_test",
             "//backend/lib/spring/test:spring-test",
             "@maven//:io_zonky_test_embedded_database_spring_test",
         ] + app_deps,

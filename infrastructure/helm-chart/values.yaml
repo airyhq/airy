@@ -17,6 +17,7 @@ zookeeper:
 ## Kafka
 ## ------------------------------------------------------
 kafka:
+  fullname: airy-kafka
   enabled: true
   brokers: 1
   image: confluentinc/cp-kafka

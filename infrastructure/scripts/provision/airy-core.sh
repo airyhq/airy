@@ -12,18 +12,15 @@ sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/chart
 
 echo "Deploying apps with ${app_image_tag} image tag"
 
-helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null
-
-export RELEASE_NAME=airy
-export ZOOKEEPERS=${RELEASE_NAME}-zookeeper:2181
-export KAFKAS=${RELEASE_NAME}-kafka-headless:9092
-
 cd /vagrant/scripts/
 while ! `kubectl get sa default 2>/dev/null| grep -q default`
 do
     echo "Waiting for default ServiceAccount to be created..."
     sleep 5
 done
+
+helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null
+
 kubectl apply -f ../tools/kafka-client.yaml
 kubectl scale statefulset zookeeper --replicas=1
 

@@ -47,7 +47,7 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
       - name: {{ template "zookeeper.name" . }}-server
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         ports:
         - containerPort: {{ .Values.clientPort }}

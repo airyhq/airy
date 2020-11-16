@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432

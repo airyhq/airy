@@ -48,28 +48,6 @@ data:
     appendonly yes
     protected-mode no
 ---
-# Source: helm-charts/charts/sources-facebook-webhook/templates/configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ngrok-client-config
-  namespace: default
-data:
-  config.yml: |
-    server_addr: proxy.tunnel.airy.co:4443
-    trust_host_root_certs: true
----
-# Source: helm-charts/charts/sources-google-sender/templates/service.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ngrok-client-config
-  namespace: default
-data:
-  config.yml: |
-    server_addr: proxy.tunnel.airy.co:4443
-    trust_host_root_certs: true
----
 # Source: helm-charts/charts/postgres/templates/persistent-volume.yaml
 kind: PersistentVolume
 apiVersion: v1
@@ -427,7 +405,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "ghcr.io/airyhq/ghcr.io/airyhq/api/admin:"
+        image: "ghcr.io/airyhq/api/admin:"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
@@ -487,11 +465,8 @@ spec:
     spec:
       containers:
       - name: app
-        image: "ghcr.io/airyhq/ghcr.io/airyhq/api/auth:"
+        image: "ghcr.io/airyhq/api/auth:"
         imagePullPolicy: Always
-        envFrom:
-          - configMapRef:
-              name: user-config
         env:
         - name: DB_USERNAME
           valueFrom:
@@ -576,7 +551,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "ghcr.io/airyhq/ghcr.io/airyhq/api/communication:"
+        image: "ghcr.io/airyhq/api/communication:"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
@@ -626,7 +601,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "ghcr.io/airyhq/ghcr.io/airyhq/frontend/demo:"
+        image: "ghcr.io/airyhq/frontend/demo:"
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -656,7 +631,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: "postgres:12.4"
+          image: "ghcr.io/airyhq/postgres:"
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432
@@ -746,7 +721,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "ghcr.io/airyhq/ghcr.io/airyhq/sources/chatplugin:"
+        image: "ghcr.io/airyhq/sources/chatplugin:"
         imagePullPolicy: Always
         env:
         - name: JWT_SECRET
@@ -794,7 +769,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "ghcr.io/airyhq/ghcr.io/airyhq/sources/facebook-events-router:"
+        image: "ghcr.io/airyhq/sources/facebook-events-router:"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
@@ -840,7 +815,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "ghcr.io/airyhq/ghcr.io/airyhq/sources/facebook-sender:"
+        image: "ghcr.io/airyhq/sources/facebook-sender:"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
@@ -885,7 +860,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/airyhq/sources/facebook-webhook:latest
+          image: "ghcr.io/airyhq/webhook/consumer:"
           imagePullPolicy: Always
           env:
             - name: KAFKA_BROKERS
@@ -935,6 +910,45 @@ spec:
           configMap:
             name: ngrok-client-config
 ---
+# Source: helm-charts/charts/sources-google-events-router/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-google-events-router
+  namespace: default
+  labels:
+    app: sources-google-events-router
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: sources-google-events-router
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-google-events-router
+    spec:
+      containers:
+      - name: app
+        image: "ghcr.io/airyhq/sources/google-events-router:"
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BROKERS
+          value: airy-cp-kafka-headless:9092
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          value: http://airy-cp-schema-registry:8081
+        livenessProbe:
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3
+---
 # Source: helm-charts/charts/sources-google-sender/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -960,7 +974,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/airyhq/sources/google-webhook:latest
+          image: "ghcr.io/airyhq/sources/google-sender:"
           imagePullPolicy: Always
           env:
             - name: KAFKA_BROKERS
@@ -971,9 +985,9 @@ spec:
               value: sources-google-webhook
             - name: GOOGLE_PARTNER_KEY
               valueFrom:
-              configMapKeyRef:
-                name: user-config
-                key: GOOGLE_PARTNER_KEY
+                configMapKeyRef:
+                  name: user-config
+                  key: GOOGLE_PARTNER_KEY
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -989,7 +1003,7 @@ spec:
             - /bin/bash
             - -c
             - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="$WEBHOOK_SUBDOMAIN" 8080
-          image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
+          image: infrastructure/ngrok-client:latest
           env:
             - name: WEBHOOK_SUBDOMAIN
               valueFrom:
@@ -1034,7 +1048,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "ghcr.io/airyhq/ghcr.io/airyhq/webhook/consumer:"
+        image: "ghcr.io/airyhq/webhook/consumer:"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
@@ -1083,7 +1097,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "ghcr.io/airyhq/ghcr.io/airyhq/webhook/publisher:"
+        image: "ghcr.io/airyhq/webhook/publisher:"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
@@ -1235,7 +1249,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: "redis:5.0.1-alpine"
+        image: "ghcr.io/airyhq/redis:"
         ports:
         - containerPort: 6379
           name: client

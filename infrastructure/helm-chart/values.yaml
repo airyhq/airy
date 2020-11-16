@@ -60,3 +60,4 @@ redis:
                         
 global:
   appImageTag: release
+  containerRegistry: ghcr.io/airyhq

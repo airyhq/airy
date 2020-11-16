@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sources-google-events-router
+  name: sources-google-sender
   namespace: default
   labels:
-    app: sources-google-events-router
+    app: sources-google-sender
 spec:
   replicas: 0
   selector:
     matchLabels:
-      app: sources-google-events-router
+      app: sources-google-sender
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,17 +18,19 @@ spec:
   template:
     metadata:
       labels:
-        app: sources-google-events-router
+        app: sources-google-sender
     spec:
       containers:
       - name: app
-        image: ghcr.io/airyhq/sources/google-events-router:latest
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
+        - name: GOOGLE_SA_FILE
+          value: "<google_sa_file>"
         livenessProbe:
           tcpSocket:
             port: 6000

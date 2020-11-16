@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

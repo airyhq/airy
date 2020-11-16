@@ -67,13 +67,3 @@ spec:
         - name: ngrok-client-config
           configMap:
             name: ngrok-client-config
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ngrok-client-config
-  namespace: default
-data:
-  config.yml: |
-    server_addr: proxy.tunnel.airy.co:4443
-    trust_host_root_certs: true

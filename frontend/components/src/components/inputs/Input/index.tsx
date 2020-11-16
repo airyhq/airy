@@ -213,9 +213,7 @@ class InputComponent extends Component<InputProps, IState> {
       this.inputRef.current && this.inputRef.current.focus();
     }
 
-    this.setState(prevState => ({
-      isShowingEmojiDrawer: !prevState.isShowingEmojiDrawer
-    }));
+    this.setState({ isShowingEmojiDrawer: !this.state.isShowingEmojiDrawer });
   };
 
   handleEmojiKeyEvent = e => {
@@ -248,21 +246,23 @@ class InputComponent extends Component<InputProps, IState> {
     this.handleEmojiDrawer();
   };
 
-  emojiDrawer = (
-    <div
-      ref={node => {
-        this.node = node;
-      }}
-      className={styles.emojiDrawer}
-    >
-      <Picker
-        showPreview={false}
-        onSelect={this.addEmoji}
-        title="Emoji"
-        style={{ right: "50px", position: "absolute", bottom: "48px" }}
-      />
-    </div>
-  );
+  emojiDrawer = () => {
+    return (
+      <div
+        ref={node => {
+          this.node = node;
+        }}
+        className={styles.emojiDrawer}
+      >
+        <Picker
+          showPreview={false}
+          onSelect={this.addEmoji}
+          title="Emoji"
+          style={{ right: "0px", position: "absolute", bottom: "46px" }}
+        />
+      </div>
+    );
+  };
 
   render() {
     const {
@@ -376,17 +376,19 @@ class InputComponent extends Component<InputProps, IState> {
               pattern={pattern}
               inputMode={inputmode}
             />
-            {this.state.isShowingEmojiDrawer && this.emojiDrawer}
             {this.props.emoji ? (
-              <button
-                type="button"
-                onClick={this.handleEmojiDrawer}
-                disabled={this.props.maxLength - value.length <= 0}
-                className={`${styles.emojiIcon} ${this.state
-                  .isShowingEmojiDrawer && styles.emojiIconActive}`}
-              >
-                <SmileyIcon title="Emoji" />
-              </button>
+              <div className={styles.emojiWrapper}>
+                {this.state.isShowingEmojiDrawer && this.emojiDrawer()}
+                <button
+                  type="button"
+                  onClick={this.handleEmojiDrawer}
+                  disabled={this.props.maxLength - value.length <= 0}
+                  className={`${styles.emojiIcon} ${this.state
+                    .isShowingEmojiDrawer && styles.emojiIconActive}`}
+                >
+                  <SmileyIcon title="Emoji" />
+                </button>
+              </div>
             ) : null}
           </div>
         )}

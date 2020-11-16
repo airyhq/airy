@@ -1,6 +1,7 @@
 //@ts-nocheck
 import React, { useState } from "react";
 import { BrowserRouter } from "react-router-dom";
+import "emoji-mart/css/emoji-mart.css";
 
 import {
   Button,
@@ -29,6 +30,7 @@ const App = () => {
   const [endDate, setEndDate] = useState(null);
   const [dropdownOption, setDropdownOption] = useState("Dropdown");
   const [inputText, setInputText] = useState("");
+  const [inputEmojiText, setInputEmojiText] = useState("");
   const [inputSecret, setInputSecret] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [textAreaValue, setTextAreaValue] = useState("");
@@ -202,6 +204,24 @@ const App = () => {
           />
         </div>
         <div className={styles.item}>
+          <h3>Input with Emoji</h3>
+          <Input
+            label="Label"
+            placeholder="Placeholder"
+            name="newLabel"
+            type="text"
+            value={inputEmojiText}
+            onChange={(e: {
+              target: { value: React.SetStateAction<string> };
+            }) => setInputEmojiText(e.target.value)}
+            required={true}
+            emoji={true}
+            height={32}
+            minLength={6}
+            fontClass="font-base"
+          />
+        </div>
+        <div className={styles.item}>
           <h3>Input Secret</h3>
           <Input
             label="Label Secret"
@@ -228,18 +248,18 @@ const App = () => {
         </div>
         <div className={styles.item}>
           <h3>Text Area</h3>
-          {/* <TextArea
+          <TextArea
             label="Audience"
             placeholder="Set your audience here"
             name="audience"
             minRows={2}
             maxRows={10}
             maxLength={100}
-            value={textAreaValue || ''}
-            onChange={e => {}}
+            value={textAreaValue || ""}
+            onChange={e => setTextAreaValue(e.target.value)}
             required={false}
             fontClass="font-base"
-          /> */}
+          />
         </div>
         <div className={styles.item}>
           <h3>Toogle</h3>

@@ -17,5 +17,39 @@ You must also configure the webhook URL to `https://<your-address-url>/facebook`
 
 Once the verification process has been completed, Facebook will immediately start sending events to your Airy Core Platform instance.
 
+## Channel connect
+
+Connects a Facebook page to an user account.
+
+```
+POST /channels.connect
+```
+
+- `source` MUST be `facebook`
+- `source_channel_id` is the Facebook page id
+- `token` is the page Access Token
+
+```json5
+{
+  "source": "facebook",
+  "source_channel_id": "fb-page-id-1",
+  "token": "authentication token",
+  "name": "My custom name for this page", // optional
+  "image_url": "https://example.org/custom-image.jpg" // optional
+}
+```
+
+**Sample Response**
+
+```json5
+{
+	"id": "channel-uuid-1",
+    "name": "My custom name for this page",
+    "image_url": "https://example.org/custom-image.jpg", // optional
+    "source": "facebook",
+    "source_channel_id": "fb-page-id-1"
+}
+```
+
 
 

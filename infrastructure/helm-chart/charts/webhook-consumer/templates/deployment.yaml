@@ -40,8 +40,8 @@ spec:
               path: /actuator/health
               port: 8080
               httpHeaders:
-              - name: Health-Check
-                value: health-check
+                - name: Health-Check
+                  value: health-check
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 3

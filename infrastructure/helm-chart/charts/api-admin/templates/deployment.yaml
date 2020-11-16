@@ -47,12 +47,12 @@ spec:
               name: secrets-config
               key: JWT_SECRET
         livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-              httpHeaders:
-              - name: Health-Check
-                value: health-check
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+            - name: Health-Check
+              value: health-check
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3

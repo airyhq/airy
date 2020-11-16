@@ -25,12 +25,12 @@ spec:
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
         livenessProbe:
-            httpGet:
-              path: /health
-              port: 80
-              httpHeaders:
-              - name: Health-Check
-                value: health-check
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            failureThreshold: 3
+          httpGet:
+            path: /health
+            port: 80
+            httpHeaders:
+            - name: Health-Check
+              value: health-check
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 3

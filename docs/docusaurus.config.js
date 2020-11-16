@@ -7,8 +7,11 @@ module.exports = {
   favicon: "img/favicon.ico",
   organizationName: "airyhq",
   projectName: "airy",
-  // siteConfig.js
   themeConfig: {
+    algolia: {
+      apiKey: "768788b65303eb29ca1f195847ed1e78",
+      indexName: "airy"
+    },
     prism: {
       theme: require("prism-react-renderer/themes/github"),
       darkTheme: require("./src/plugins/prism_themes/monokai"),

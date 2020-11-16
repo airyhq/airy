@@ -42,3 +42,12 @@ container_push(
     repository = "google-events-router",
     tag = "latest",
 )
+
+container_push(
+    name = "beta",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/sources",
+    repository = "google-events-router",
+    tag = "beta",
+)

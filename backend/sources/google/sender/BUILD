@@ -39,3 +39,12 @@ container_push(
     repository = "google-sender",
     tag = "latest",
 )
+
+container_push(
+    name = "beta",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/sources",
+    repository = "google-sender",
+    tag = "beta",
+)

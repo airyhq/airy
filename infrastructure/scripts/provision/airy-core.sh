@@ -9,8 +9,6 @@ cp airy.conf.tpl airy.conf
 cp -R /vagrant/helm-chart ~/airy-core/
 sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/charts/postgres/values.yaml
 
-helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s 2>/dev/null || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s 2>/dev/null
-
 export RELEASE_NAME=airy
 export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
 export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
@@ -21,6 +19,7 @@ do
     echo "Waiting for default ServiceAccount to be created..."
     sleep 5
 done
+helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s 2>/dev/null || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --version 0.5.0 --timeout 1000s 2>/dev/null
 kubectl apply -f ../tools/kafka-client.yaml
 kubectl scale statefulset airy-cp-zookeeper --replicas=1
 

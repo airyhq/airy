@@ -67,6 +67,7 @@ kubectl apply -f ~/airy-core/api-admin.yaml
 kubectl apply -f ~/airy-core/api-auth.yaml
 kubectl apply -f ~/airy-core/frontend-demo.yaml
 kubectl apply -f ~/airy-core/api-communication.yaml
+kubectl apply -f ~/airy-core/public-urls-config.yaml
 kubectl apply -f ~/airy-core/sources-facebook-events-router.yaml
 kubectl apply -f ~/airy-core/sources-facebook-sender.yaml
 kubectl apply -f ~/airy-core/sources-facebook-webhook.yaml

@@ -36,12 +36,8 @@ spec:
         - name: REDIS_PORT
           value: "6379"
         livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-              httpHeaders:
-              - name: Health-Check
-                value: health-check
+            tcpSocket:
+              port: 6000
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 3

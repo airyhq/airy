@@ -17,10 +17,10 @@ Vagrant.configure("2") do |config|
     airy_core.vm.provision "pre-requests", type: "shell" do |p|
       p.inline = "/vagrant/scripts/provision/prerequisites.sh"
     end
-    airy_core.vm.provision "airy-core", type: "shell" do |c|
+    airy_core.vm.provision "airy-core", type: "shell", env: {"APP_IMAGE_TAG" => ENV['APP_IMAGE_TAG']} do |c|
       c.inline = "/vagrant/scripts/provision/airy-core.sh"
     end
-    airy_core.vm.provision "airy-conf", type: "shell" do |u|
+    airy_core.vm.provision "airy-conf", type: "shell", env: {"APP_IMAGE_TAG" => ENV['APP_IMAGE_TAG']} do |u|
       u.inline = "/vagrant/scripts/airy-conf.sh"
     end
     airy_core.trigger.before [:halt, :reload] do |stop|

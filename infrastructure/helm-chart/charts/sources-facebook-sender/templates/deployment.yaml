@@ -31,7 +31,6 @@ spec:
           value: http://schema-registry:8081
         - name: SERVICE_NAME
           value: facebook-sender
-
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -42,5 +41,4 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 3
-          value: http://airy-schema-registry:8081
         

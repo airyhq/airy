@@ -6,6 +6,7 @@ ARCH=$(uname -m)
 OS=$(uname)
 SCRIPT_PATH=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
+app_image_tag=${APP_IMAGE_TAG:-latest}
 infra_path=""
 infra_path+=$( dirname $SCRIPT_PATH )
 infra_path+="/infrastructure"
@@ -123,4 +124,4 @@ fi
 
 cd $infra_path
 vagrant destroy -f
-APP_IMAGE_TAG=$APP_IMAGE_TAG vagrant up
+APP_IMAGE_TAG=app_image_tag vagrant up

@@ -1,8 +1,8 @@
 #!/bin/bash
-set -euo pipefail
+set -eo pipefail
 IFS=$'\n\t'
 
-app_image_tag="${APP_IMAGE_TAG:-latest}"
+app_image_tag="${ENV[APP_IMAGE_TAG]:-latest}"
 RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
 mkdir -p ~/airy-core
 cd /vagrant
@@ -19,7 +19,7 @@ do
     sleep 5
 done
 
-helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null
+helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$app_image_tag --version 0.5.0 --timeout 1000s 2>/dev/null
 
 kubectl apply -f ../tools/kafka-client.yaml
 kubectl scale statefulset zookeeper --replicas=1
@@ -34,8 +34,8 @@ kubectl cp provision/create-topics.sh kafka-client:/tmp
 kubectl cp /vagrant/scripts/trigger/wait-for-service.sh kafka-client:/root/
 
 kubectl exec kafka-client -- /root/wait-for-service.sh zookeeper 2181 15 Zookeeper
-kubectl scale statefulset kafka --replicas=1 
-kubectl exec kafka-client -- /root/wait-for-service.sh kafka 9092 15 Kafka
+kubectl scale statefulset kafka-broker --replicas=1 
+kubectl exec kafka-client -- /root/wait-for-service.sh kafka-broker 9092 15 Kafka
 kubectl exec kafka-client -- /tmp/create-topics.sh
 
 kubectl delete pod -l app=postgres

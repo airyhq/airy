@@ -24,9 +24,6 @@ spec:
       - name: app
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
-        envFrom:
-          - configMapRef:
-              name: user-config
         env:
         - name: DB_USERNAME
           valueFrom:

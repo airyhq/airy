@@ -32,7 +32,10 @@ spec:
             - name: SERVICE_NAME
               value: sources-google-webhook
             - name: GOOGLE_PARTNER_KEY
-              value: "<google_partner_key>"
+              valueFrom:
+                configMapKeyRef:
+                  name: user-config
+                  key: GOOGLE_PARTNER_KEY
           livenessProbe:
             httpGet:
               path: /actuator/health

@@ -30,7 +30,10 @@ spec:
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
         - name: GOOGLE_SA_FILE
-          value: "<google_sa_file>"
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: GOOGLE_SA_FILE
         livenessProbe:
           tcpSocket:
             port: 6000

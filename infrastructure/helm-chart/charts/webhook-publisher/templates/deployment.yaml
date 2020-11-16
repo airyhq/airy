@@ -36,8 +36,8 @@ spec:
         - name: REDIS_PORT
           value: "6379"
         livenessProbe:
-            tcpSocket:
-              port: 6000
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3

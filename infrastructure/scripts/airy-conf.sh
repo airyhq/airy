@@ -12,8 +12,8 @@ kubectl create configmap public-urls --from-literal=RANDOM_INGRESS_ID=`cat /dev/
 
 helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=beta --version 0.5.0 --timeout 1000s 2>/dev/null
 
-kubectl scale deployment schema-registry --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh schema-registry 8081 15 Schema-registry
+kubectl scale deployment schema-registry-1 --replicas=1
+kubectl exec kafka-client -- /root/wait-for-service.sh schema-registry-1 8081 15 Schema-registry
 
 kubectl scale deployment api-admin --replicas=1
 kubectl scale deployment api-auth --replicas=1

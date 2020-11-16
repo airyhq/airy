@@ -1,6 +1,6 @@
 ---
-title: Facebook Source
-sidebar_label: Facebook Source
+title: Facebook
+sidebar_label: Facebook
 ---
 
 ## Introduction

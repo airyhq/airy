@@ -1,6 +1,6 @@
 ---
-title: Google Source
-sidebar_label: Google Source
+title: Google
+sidebar_label: Google
 ---
 
 ## Introduction

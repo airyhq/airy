@@ -5,7 +5,7 @@ sidebar_label: Google Source
 
 ## Introduction
 
-The Google source provides a channel of communication between your Google Business Location and your running instance of the airy core.
+The Google source provides a channel of communication between your Google Business Location and your running instance of the Airy Core Platform.
 
 Like for any other source you must connect a channel first using the [channels
 connection endpoint](api/http.md#connecting-channels) and setting the `source`
@@ -19,13 +19,7 @@ First step is to copy the Google Service Account file provided by Google to `inf
 GOOGLE_SA_FILE=<CONTENT OF THE FILE>
 ```
 
-As a security measure, every request sent by Google is signed and veryfied against your partner key.
-After fetching it from the Google Business account, set the environment variable `GOOGLE_PARTNER_KEY` with the value.
+As a security measure, every request sent by Google is signed and verified against your partner key.
+You must also set the environment variable `GOOGLE_PARTNER_KEY` to your partner key
 
-## Events
-
-```json5
-POST /google
-```
-
-Those events will be processed and turned into messages.
+Once the verification process has been completed, Google will immediately start sending events to your Airy Core Platform instance.

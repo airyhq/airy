@@ -5,11 +5,9 @@ sidebar_label: Facebook Source
 
 ## Introduction
 
-The Facebook source provides a channel of communication between your managed Facebook page and your running instance of the airy core.
+The Facebook source provides a channel of communication between a Facebook page and your running instance of the Airy Core Platform.
 
-Like for any other source you must connect a channel first using the [channels
-connection endpoint](api/http.md#connecting-channels) and setting the `source`
-field in the request payload to `facebook`. The token parameter must be the token provided by Facebook.
+When connecting a channel via the [/channels.connect](api/http.md#connecting-channels), you must set the `source` field `facebook` and the `token` field to a valid Facebook user access token
 
 ## Configuration
 
@@ -19,16 +17,7 @@ by Facebook.
 
 You must also configure the webhook URL to `https://<your-address-url>/facebook`.
 
-## Events
-
-After the verification process, Facebook will start sending events to your local instance.
-
-```json5
-POST /facebook
-```
-
-Those events will be processed and turned into messages.
-
+Once the verification process has been completed, Facebook will immediately start sending events to your Airy Core Platform instance.
 
 
 

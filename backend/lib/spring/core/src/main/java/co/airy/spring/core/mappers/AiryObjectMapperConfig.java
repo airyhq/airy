@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class MapperConfig {
+public class AiryObjectMapperConfig {
 
     @Bean
     @Primary
-    public static ObjectMapper globalObjectMapper() {
+    public static ObjectMapper airyObjectMapper() {
         return new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY, false)
-            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY, false)
+                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
 
 }

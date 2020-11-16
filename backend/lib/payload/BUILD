@@ -7,6 +7,5 @@ java_library(
     deps = [
         "//:jackson",
         "//:lombok",
-        "@maven//:javax_validation_validation_api",
     ],
 )

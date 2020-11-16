@@ -3,16 +3,15 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
-    "//backend/avro/communication:channel",
-    "//backend/avro/communication:webhook",
-    "//backend/avro/communication:tag",
+    "//backend:base_app",
+    "//:springboot_actuator",
+    "//backend:channel",
+    "//backend:tag",
+    "//backend:webhook",
     "//backend/lib/payload",
     "//backend/lib/uuid",
     "//backend/lib/spring/auth:spring-auth",
-    "//backend/lib/kafka/schema:kafka-schema",
-    "//backend/lib/kafka/schema:application-communication-channels",
-    "//backend/lib/kafka/schema:application-communication-webhooks",
-    "//backend/lib/kafka/schema:application-communication-tags",
+    "//backend/lib/spring/web:spring-web",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
 ]
@@ -31,7 +30,7 @@ springboot(
         resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
-            "//backend/lib/test:test",
+            "//backend:base_test",
             "//backend/lib/kafka/test:kafka-test",
             "//backend/lib/spring/test:spring-test",
         ] + app_deps,

@@ -3,13 +3,10 @@ load("//tools/build:junit5.bzl", "junit5")
 
 lib_deps = [
     "//:lombok",
+    "//:spring",
     "//:jackson",
     "//backend/lib/log",
     "//backend/avro/communication:message",
-    "@maven//:org_springframework_spring_context",
-    "@maven//:com_fasterxml_jackson_core_jackson_databind",
-    "@maven//:javax_validation_validation_api",
-    "@maven//:org_springframework_spring_beans",
 ]
 
 java_library(
@@ -35,7 +32,7 @@ java_binary(
         resources = glob(["src/test/resources/**/*"]),
         deps = lib_deps + [
             ":mapping",
-            "//backend/lib/spring/core:spring-test",
+            "//backend:base_test",
             "//backend/lib/spring/core:spring-core",
         ],
     )

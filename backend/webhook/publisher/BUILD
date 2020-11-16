@@ -3,13 +3,12 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
-    "//backend/avro/communication:message",
-    "//backend/avro/communication:webhook",
+    "//backend:base_app",
+    "//backend:message",
+    "//backend:webhook",
     "//backend/lib/uuid",
     "//backend/lib/payload",
     "//backend/lib/mapping",
-    "//backend/lib/kafka/schema:application-communication-messages",
-    "//backend/lib/kafka/schema:application-communication-webhooks",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
     "@maven//:io_lettuce_lettuce_core",
@@ -30,7 +29,7 @@ springboot(
         resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
-            "//backend/lib/test:test",
+            "//backend:base_test",
             "//backend/lib/kafka/test:kafka-test",
         ] + app_deps,
     )

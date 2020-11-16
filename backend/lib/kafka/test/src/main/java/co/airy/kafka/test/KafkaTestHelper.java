@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
 import static java.util.stream.Collectors.toList;
 
 public class KafkaTestHelper {
-    private final SchemaRegistryServer schemaRegistryServer;
+    private final SchemaRegistryTestServer schemaRegistryTestServer;
     private final SharedKafkaTestResource sharedKafkaTestResource;
     private final List<Topic> topics;
 
@@ -36,21 +36,21 @@ public class KafkaTestHelper {
 
     public KafkaTestHelper(SharedKafkaTestResource sharedKafkaTestResource, Topic... topics) {
         this.topics = Arrays.asList(topics);
-        this.schemaRegistryServer = new SchemaRegistryServer(SocketUtils.findAvailableTcpPort(), sharedKafkaTestResource.getZookeeperConnectString(), sharedKafkaTestResource.getKafkaConnectString());
+        this.schemaRegistryTestServer = new SchemaRegistryTestServer(SocketUtils.findAvailableTcpPort(), sharedKafkaTestResource.getZookeeperConnectString(), sharedKafkaTestResource.getKafkaConnectString());
         this.sharedKafkaTestResource = sharedKafkaTestResource;
     }
 
     public void beforeAll() throws Exception {
-        schemaRegistryServer.start();
+        schemaRegistryTestServer.start();
         System.setProperty("kafka.brokers", sharedKafkaTestResource.getKafkaConnectString());
-        System.setProperty("kafka.schema-registry-url", schemaRegistryServer.getUrl());
+        System.setProperty("kafka.schema-registry-url", schemaRegistryTestServer.getUrl());
         for (Topic topic : topics) {
             String topicName = topic.name();
             sharedKafkaTestResource.createTopic(topicName, 1, (short) 1);
         }
 
         Properties consumerConfig = TestUtils.consumerConfig(sharedKafkaTestResource.getKafkaConnectString(), KafkaHybridDeserializer.class, KafkaHybridDeserializer.class);
-        consumerConfig.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryServer.getUrl());
+        consumerConfig.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryTestServer.getUrl());
         consumerConfig.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
         consumerConfig.put(ConsumerConfig.GROUP_ID_CONFIG, consumerId);
 
@@ -59,13 +59,13 @@ public class KafkaTestHelper {
         consumer.subscribe(topics.stream().map(Topic::name).collect(toList()));
 
         Properties producerConfig = TestUtils.producerConfig(sharedKafkaTestResource.getKafkaConnectString(), KafkaHybridSerializer.class, KafkaHybridSerializer.class);
-        producerConfig.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryServer.getUrl());
+        producerConfig.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryTestServer.getUrl());
 
         producer = new KafkaProducer<>(producerConfig);
     }
 
     public void afterAll() throws Exception {
-        schemaRegistryServer.stop();
+        schemaRegistryTestServer.stop();
     }
 
     public <K, V> List<ConsumerRecord<K, V>> consumeRecords(int expected, String... topics) {

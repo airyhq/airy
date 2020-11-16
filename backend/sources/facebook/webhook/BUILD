@@ -3,7 +3,8 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
-    "//backend/lib/kafka/schema:kafka-schema",
+    "//backend:base_app",
+    "//:springboot_actuator",
     "//backend/lib/kafka/schema:source-facebook-events",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/healthcheck",
@@ -23,6 +24,7 @@ springboot(
         resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
+            "//backend:base_test",
             "//backend/lib/kafka/test:kafka-test",
         ] + app_deps,
     )

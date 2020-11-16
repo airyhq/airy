@@ -5,7 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
 public class DateFormat {
-    public static final DateTimeFormatter ISO_INSTANT_WITH_MILLIS_DF = new DateTimeFormatterBuilder().parseCaseInsensitive().appendInstant(3).toFormatter();
+    private static final DateTimeFormatter ISO_INSTANT_WITH_MILLIS_DF = new DateTimeFormatterBuilder().parseCaseInsensitive().appendInstant(3).toFormatter();
+
     public static String ISO_FROM_MILLIS(Long epochMilli) {
         return ISO_INSTANT_WITH_MILLIS_DF.format(Instant.ofEpochMilli(epochMilli));
     }

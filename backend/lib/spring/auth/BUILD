@@ -4,17 +4,12 @@ lib_deps = [
     "//:jackson",
     "//:jwt",
     "//:lombok",
+    "//:spring",
+    "//:springboot_security",
     "//backend/lib/log",
     "//backend/lib/spring/core:spring-core",
     "@maven//:javax_servlet_javax_servlet_api",
     "@maven//:javax_xml_bind_jaxb_api",
-    "@maven//:org_springframework_boot_spring_boot_starter_security",
-    "@maven//:org_springframework_security_spring_security_config",
-    "@maven//:org_springframework_security_spring_security_core",
-    "@maven//:org_springframework_security_spring_security_web",
-    "@maven//:org_springframework_spring_context",
-    "@maven//:org_springframework_spring_context_support",
-    "@maven//:org_springframework_spring_web",
 ]
 
 java_library(
@@ -43,7 +38,7 @@ load("//tools/build:junit5.bzl", "junit5")
             "@maven//:org_springframework_spring_webmvc",
             "@maven//:org_springframework_boot_spring_boot_starter_jetty",
             ":spring-auth",
-            "//backend/lib/spring/core:spring-test",
+            "//backend:base_test",
         ],
     )
     for file in glob(["src/test/java/**/*Test.java"])

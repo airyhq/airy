@@ -1,5 +1,6 @@
 app_deps = [
-    "//:lombok",
+    "//backend:base_app",
+    "//:springboot_actuator",
     "//:jdbi",
     "//backend/lib/payload",
     "//backend/lib/spring/auth:spring-auth",
@@ -33,7 +34,7 @@ load("//tools/build:junit5.bzl", "junit5")
         file = file,
         deps = [
             ":app",
-            "//backend/lib/spring/core:spring-test",
+            "//backend:base_test",
             "//backend/lib/spring/test:spring-test",
             "@maven//:io_zonky_test_embedded_database_spring_test",
         ] + app_deps,

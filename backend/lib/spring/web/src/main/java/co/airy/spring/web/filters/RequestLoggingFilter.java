@@ -70,8 +70,6 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
             if (sanitizedHeaders.get("content-type").startsWith("application/json")) {
                 String payload = getMessagePayload((ContentCachingRequestWrapper) request);
                 ThreadContext.put("payload", payload);
-                ThreadContext.put("deviceType", sanitizedHeaders.get("device_type"));
-                ThreadContext.put("appId", sanitizedHeaders.get("app_id"));
             }
         } catch (Exception ignored) {
         }

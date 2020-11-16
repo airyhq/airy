@@ -30,13 +30,8 @@ spec:
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
         livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-            httpHeaders:
-              - name: Health-Check
-                value: health-check
+          tcpSocket:
+            port: 6000
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 3
-

@@ -32,13 +32,8 @@ spec:
         - name: FB_APP_ID
           value: "<fb_app_id>"
         livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-            httpHeaders:
-              - name: Health-Check
-                value: health-check
+          tcpSocket:
+            port: 6000
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 3
-

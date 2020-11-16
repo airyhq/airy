@@ -3,9 +3,8 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
-    "//backend/avro/communication:message",
-    "//backend/lib/kafka/schema:kafka-schema",
-    "//backend/lib/kafka/schema:application-communication-messages",
+    "//backend:base_app",
+    "//backend:message",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
     "@maven//:com_google_auth_google_auth_library_oauth2_http",
@@ -25,7 +24,7 @@ springboot(
         resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
-            "//backend/lib/test:test",
+            "//backend:base_test",
             "//backend/lib/kafka/test:kafka-test",
         ] + app_deps,
     )

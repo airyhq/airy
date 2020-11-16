@@ -4,24 +4,20 @@ load("//tools/build:junit5.bzl", "junit5")
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 app_deps = [
-    "//backend/lib/spring/auth:spring-auth",
-    "//backend/avro/communication:message",
-    "//backend/avro/communication:channel",
-    "//backend/avro/communication:metadata-action",
-    "//backend/avro/communication:read-receipt",
+    "//backend:base_app",
+    "//:springboot_actuator",
+    "//:springboot_websocket",
+    "//backend:message",
+    "//backend:channel",
+    "//backend:metadata",
+    "//backend:read-receipt",
     "//backend/lib/mapping",
     "//backend/lib/payload",
     "//backend/lib/pagination",
-    "//backend/lib/kafka/schema:kafka-schema",
-    "//backend/lib/kafka/schema:application-communication-messages",
-    "//backend/lib/kafka/schema:application-communication-channels",
-    "//backend/lib/kafka/schema:application-communication-metadata",
-    "//backend/lib/kafka/schema:application-communication-read-receipts",
+    "//backend/lib/spring/auth:spring-auth",
+    "//backend/lib/spring/web:spring-web",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
-    "@maven//:org_springframework_boot_spring_boot_starter_websocket",
-    "@maven//:org_springframework_spring_messaging",
-    "@maven//:org_springframework_spring_websocket",
     "@maven//:org_springframework_security_spring_security_core",
 ]
 
@@ -46,7 +42,7 @@ java_library(
         deps = [
             ":app",
             ":test-util",
-            "//backend/lib/test:test",
+            "//backend:base_test",
             "//backend/lib/kafka/test:kafka-test",
             "//backend/lib/spring/test:spring-test",
         ] + app_deps,

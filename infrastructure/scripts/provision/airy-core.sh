@@ -2,7 +2,7 @@
 set -eo pipefail
 IFS=$'\n\t'
 
-app_image_tag="${ENV[APP_IMAGE_TAG]:-latest}"
+app_image_tag="${APP_IMAGE_TAG:-latest}"
 RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
 mkdir -p ~/airy-core
 cd /vagrant

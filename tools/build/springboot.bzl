@@ -1,5 +1,7 @@
 load("@rules_java//java:defs.bzl", "java_binary")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
+load("//tools/code-format:checkstyle.bzl", "check_pkg")
+
 # Spring Boot Executable JAR Layout specification
 # reverse engineered from the Spring Boot maven plugin
 # /
@@ -63,6 +65,9 @@ _springboot_rule = rule(
 #  deps:  the array of upstream dependencies
 #  resources (optional): list of resources to build into the jar, if not specified, assumes src/main/resources/**/*
 def springboot(name, main_class, deps, srcs, resources = []):
+    # Code style checking for sources
+    check_pkg()
+
     # Create the subrule names
     appcompile_rule = "app"
     dep_aggregator_rule = "deps"

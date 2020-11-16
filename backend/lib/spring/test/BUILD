@@ -1,6 +1,6 @@
-load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/build:java_library.bzl", "custom_java_library")
 
-java_library(
+custom_java_library(
     name = "spring-test",
     srcs = glob(["src/main/java/co/airy/spring/test/**/*.java"]),
     visibility = ["//visibility:public"],

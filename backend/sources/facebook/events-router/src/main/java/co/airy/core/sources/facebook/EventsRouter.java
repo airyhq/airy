@@ -11,7 +11,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.uuid.UUIDV5;
+import co.airy.uuid.UUIDv5;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.streams.KafkaStreams;
@@ -103,8 +103,8 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     final String payload = event.getPayload();
                     final Channel channel = event.getChannel();
 
-                    final String conversationId = UUIDV5.fromNamespaceAndName(channel.getId(), sourceConversationId).toString();
-                    final String messageId = UUIDV5.fromNamespaceAndName(channel.getId(), payload).toString();
+                    final String conversationId = UUIDv5.fromNamespaceAndName(channel.getId(), sourceConversationId).toString();
+                    final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
 
                     try {
                         final Message.Builder messageBuilder = messageParser.parse(payload);

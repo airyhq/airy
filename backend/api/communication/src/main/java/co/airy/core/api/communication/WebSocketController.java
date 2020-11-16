@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
-import static co.airy.payload.format.DateFormat.ISO_FROM_MILLIS;
+import static co.airy.payload.format.DateFormat.isoFromMillis;
 
 @Service
 public class WebSocketController {
@@ -23,6 +23,7 @@ public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final Mapper mapper;
+
     WebSocketController(SimpMessagingTemplate messagingTemplate, Mapper mapper) {
         this.messagingTemplate = messagingTemplate;
         this.mapper = mapper;
@@ -41,7 +42,7 @@ public class WebSocketController {
         final UnreadCountPayload unreadCountPayload = UnreadCountPayload.builder()
                 .conversationId(conversationId)
                 .unreadMessageCount(unreadCountState.getUnreadCount())
-                .timestamp(ISO_FROM_MILLIS(Instant.now().toEpochMilli()))
+                .timestamp(isoFromMillis(Instant.now().toEpochMilli()))
                 .build();
 
         messagingTemplate.convertAndSend(QUEUE_UNREAD_COUNT, unreadCountPayload);

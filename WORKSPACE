@@ -47,6 +47,7 @@ maven_install(
         "com.fasterxml.jackson.module:jackson-module-afterburner:2.10.0",
         "com.google.auth:google-auth-library-oauth2-http:0.20.0",
         "com.jayway.jsonpath:json-path:2.4.0",
+        "com.puppycrawl.tools:checkstyle:8.37",
         "cz.habarta.typescript-generator:typescript-generator-core:2.26.723",
         "io.confluent:kafka-avro-serializer:5.5.1",
         "io.confluent:kafka-schema-registry-client:5.5.1",

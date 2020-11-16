@@ -161,8 +161,8 @@ public class UsersController {
         return jwt.tokenFor(userId, refreshClaim);
     }
 
+    //TODO: Write a custom ExceptionHandler for JDBI
     @PostMapping("/users.invite")
-        //TODO: Write a custom ExceptionHandler for JDBI
     ResponseEntity<InviteUserResponsePayload> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
         final UUID id = UUID.randomUUID();
         final Instant now = Instant.now();

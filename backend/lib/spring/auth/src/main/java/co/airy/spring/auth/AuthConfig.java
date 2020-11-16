@@ -19,6 +19,7 @@ import java.util.List;
 public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final Jwt jwt;
     private final String[] ignoreAuthPatterns;
+
     public AuthConfig(Jwt jwt, List<IgnoreAuthPattern> ignorePatternBeans) {
         this.jwt = jwt;
         this.ignoreAuthPatterns = ignorePatternBeans.stream()

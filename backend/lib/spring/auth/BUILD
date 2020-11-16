@@ -1,4 +1,5 @@
-load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/build:java_library.bzl", "custom_java_library")
+load("//tools/build:junit5.bzl", "junit5")
 
 lib_deps = [
     "//:jackson",
@@ -12,7 +13,7 @@ lib_deps = [
     "@maven//:javax_xml_bind_jaxb_api",
 ]
 
-java_library(
+custom_java_library(
     name = "spring-auth",
     srcs = glob(["src/main/java/co/airy/spring/auth/**/*.java"]),
     visibility = ["//visibility:public"],
@@ -22,13 +23,11 @@ java_library(
     deps = lib_deps,
 )
 
-java_library(
+custom_java_library(
     name = "test-app",
     srcs = ["src/test/java/co/airy/spring/auth/TestApp.java"],
     deps = lib_deps,
 )
-
-load("//tools/build:junit5.bzl", "junit5")
 
 [
     junit5(

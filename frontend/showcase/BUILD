@@ -1,5 +1,6 @@
 load("//tools/build/web:typescript.bzl", "ts_library")
 load("//tools/build/web:webapp.bzl", "webapp")
+load("//tools/aws:static_site.bzl", "static_site")
 
 module_deps = [
     "//frontend/components",
@@ -27,8 +28,6 @@ ts_library(
         "@npm//react-router-dom",
     ],
 )
-
-load("//tools/aws:static_site.bzl", "static_site")
 
 static_site(
     name = "deploy",

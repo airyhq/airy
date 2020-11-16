@@ -24,7 +24,7 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
     private final Logger log = AiryLoggerFactory.getLogger(Publisher.class);
 
     private static final String appId = "webhook.Publisher";
-    private final String WEBHOOKS_STORE = "webhook-store";
+    private final String webhooksStore = "webhook-store";
     private final String allWebhooksKey = "339ab777-92aa-43a5-b452-82e73c50fc59";
     private final KafkaStreamsWrapper streams;
     private final RedisQueue redisQueuePublisher;
@@ -41,14 +41,14 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
 
         builder.<String, Webhook>stream(new ApplicationCommunicationWebhooks().name())
                 .groupBy((webhookId, webhook) -> allWebhooksKey)
-                .reduce((oldValue, newValue) -> newValue, Materialized.as(WEBHOOKS_STORE));
+                .reduce((oldValue, newValue) -> newValue, Materialized.as(webhooksStore));
 
         builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .filter(((messageId, message) ->
                         DeliveryState.DELIVERED.equals(message.getDeliveryState()) && message.getUpdatedAt() == null))
                 .peek((messageId, message) -> {
                     try {
-                        final ReadOnlyKeyValueStore<String, Webhook> webhookStore = streams.acquireLocalStore(WEBHOOKS_STORE);
+                        final ReadOnlyKeyValueStore<String, Webhook> webhookStore = streams.acquireLocalStore(webhooksStore);
                         final Webhook webhook = webhookStore.get(allWebhooksKey);
 
                         if (webhook != null && webhook.getStatus().equals(Status.Subscribed)) {

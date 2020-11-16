@@ -105,9 +105,9 @@ public class MessagesTest {
                         .andExpect(jsonPath("$.data[*].sent_at").value(contains(
                                 records.stream()
                                         .map((record) -> ((Message) record.value()).getSentAt())
-                                        .map(DateFormat::ISO_FROM_MILLIS)
-                                        .sorted().toArray())))
-                , "/messages.list endpoint error");
+                                        .map(DateFormat::isoFromMillis)
+                                        .sorted().toArray()))),
+                "/messages.list endpoint error");
     }
 
 }

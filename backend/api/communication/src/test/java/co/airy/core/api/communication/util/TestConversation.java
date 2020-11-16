@@ -55,6 +55,10 @@ public class TestConversation {
         return testConversation;
     }
 
+    public static List<ProducerRecord<String, SpecificRecordBase>> generateRecords(String conversationId, Channel channel, int messageCount) {
+        return TestConversation.from(conversationId, channel, messageCount).generateRecords();
+    }
+
     private List<ProducerRecord<String, SpecificRecordBase>> generateRecords() {
         final List<ProducerRecord<String, SpecificRecordBase>> messages = getMessages();
         this.lastMessageSentAt = ((Message) messages.get(messages.size() - 1).value()).getSentAt();
@@ -97,9 +101,5 @@ public class TestConversation {
         }
 
         return records;
-    }
-
-    public static List<ProducerRecord<String, SpecificRecordBase>> generateRecords(String conversationId, Channel channel, int messageCount) {
-        return TestConversation.from(conversationId, channel, messageCount).generateRecords();
     }
 }

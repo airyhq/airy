@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-import static co.airy.payload.format.DateFormat.ISO_FROM_MILLIS;
+import static co.airy.payload.format.DateFormat.isoFromMillis;
 
 @Data
 @Builder
@@ -29,7 +29,7 @@ public class MessageResponsePayload implements Serializable {
                 .alignment(getAlignment(message.getSenderType()))
                 .state(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
-                .sentAt(ISO_FROM_MILLIS(message.getSentAt()))
+                .sentAt(isoFromMillis(message.getSentAt()))
                 .build();
     }
 

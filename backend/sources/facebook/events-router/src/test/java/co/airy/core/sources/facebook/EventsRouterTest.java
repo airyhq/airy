@@ -10,7 +10,7 @@ import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
-import co.airy.uuid.UUIDV5;
+import co.airy.uuid.UUIDv5;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -84,7 +84,9 @@ class EventsRouterTest {
         }
     }
 
-    private final String eventTemplate = "{\"object\":\"page\",\"entry\":[{\"id\":\"%s\",\"time\":1550050754198,\"messaging\":[{\"sender\":{\"id\":\"%s\"},\"recipient\":{\"id\":\"%s\"},\"timestamp\":1550050753811,\"message\":{\"mid\":\"4242\",\"seq\":1362432,\"text\":\"the answer is 42\"}}]}]}";
+    private final String eventTemplate = "{\"object\":\"page\",\"entry\":[{\"id\":\"%s\",\"time\":1550050754198," +
+            "\"messaging\":[{\"sender\":{\"id\":\"%s\"},\"recipient\":{\"id\":\"%s\"},\"timestamp\":1550050753811," +
+            "\"message\":{\"mid\":\"4242\",\"seq\":1362432,\"text\":\"the answer is 42\"}}]}]}";
 
     // This tests simulates multiple users sending messages via multiple facebook pages
     // It ensures that we create the correct number of conversations and messages
@@ -112,17 +114,17 @@ class EventsRouterTest {
 
             for (int i = 0; i < usersPerPage; i++) {
                 String userId = UUID.randomUUID().toString();
-                int nMessages = rand.nextInt(4) + 2;
+                int messages = rand.nextInt(4) + 2;
 
-                final String conversationId = UUIDV5.fromNamespaceAndName(channelId, userId).toString();
+                final String conversationId = UUIDv5.fromNamespaceAndName(channelId, userId).toString();
                 String webhookPayload = String.format(eventTemplate, pageId, userId, pageId);
 
-                messagesPerContact.put(conversationId, nMessages);
+                messagesPerContact.put(conversationId, messages);
 
-                for (int j = 0; j < nMessages; j++) {
+                for (int j = 0; j < messages; j++) {
                     facebookMessageRecords.add(new ProducerRecord<>(sourceFacebookEvents.name(), UUID.randomUUID().toString(), webhookPayload));
                 }
-                totalMessages = totalMessages + nMessages;
+                totalMessages = totalMessages + messages;
             }
         }
 

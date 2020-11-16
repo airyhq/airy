@@ -78,7 +78,7 @@ class SendMessageTest {
     }
 
     @Test
-    void canSendMessageViaThegoogleAPI() throws Exception {
+    void canSendMessageViaGoogleApi() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
         final String messageId = UUID.randomUUID().toString();
         final String sourceConversationId = "source-conversation-id";

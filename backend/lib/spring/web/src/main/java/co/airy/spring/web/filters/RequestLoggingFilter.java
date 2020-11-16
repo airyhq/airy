@@ -71,7 +71,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
                 String payload = getMessagePayload((ContentCachingRequestWrapper) request);
                 ThreadContext.put("payload", payload);
             }
-        } catch (Exception ignored) {
+        } catch (Exception expected) {
         }
 
         return "";

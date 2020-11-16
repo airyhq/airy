@@ -35,6 +35,33 @@ life meaning" and its number is 4242, the branch name will be
 
 You can push as many commits we need to finish a feature.
 
+## Lint your changes
+
+We use a couple of language specific linters. For Bazel code we use [buildifier](https://github.com/bazelbuild/buildtools/tree/master/buildifier),
+for web projects [prettier](https://prettier.io/), and for Java [CheckStyle](https://checkstyle.sourceforge.io/).
+
+Java linting is run as a test, so depending on the package you can run
+
+```sh
+bazel test //my/package:checkstyle
+```
+
+to have Bazel check your Java code for linting errors.
+
+Buildifier and Prettier are bundled up in a single Bazel command. So you can run
+
+```sh
+bazel run //:check
+```
+
+to check your code and
+
+```sh
+bazel run //:fix
+```
+
+to have the linters try and fix and the issues.
+
 ## Test your change
 
 You can create a branch for your changes and try to build from the source as

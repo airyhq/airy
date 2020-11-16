@@ -1,7 +1,8 @@
-package(default_visibility = ["//visibility:public"])
-
 load("//tools/build/web:typescript.bzl", "ts_library")
 load("//tools/build/web:web_library.bzl", "web_library")
+load("//tools/build/npm:rules.bzl", "assemble_npm", "deploy_npm")
+
+package(default_visibility = ["//visibility:public"])
 
 ts_library(
     name = "components",
@@ -64,8 +65,6 @@ genrule(
     && mv $(RULEDIR)/src $(OUTS)
 """,
 )
-
-load("//tools/build/npm:rules.bzl", "assemble_npm", "deploy_npm")
 
 assemble_npm(
     name = "assemble-npm",

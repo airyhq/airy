@@ -13,6 +13,7 @@ import static java.util.stream.Collectors.toList;
 public class FacebookSource implements Source {
 
     final FacebookApi api;
+
     public FacebookSource(FacebookApi api) {
         this.api = api;
     }

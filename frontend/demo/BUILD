@@ -1,5 +1,7 @@
 load("//tools/build/web:typescript.bzl", "ts_library")
 load("//tools/build/web:webapp.bzl", "webapp")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_push")
 
 module_deps = [
     "//frontend/components",
@@ -35,9 +37,6 @@ webapp(
     module_deps = module_deps,
     static_assets = "//frontend/demo/public",
 )
-
-load("@rules_pkg//:pkg.bzl", "pkg_tar")
-load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_push")
 
 pkg_tar(
     name = "bundle_tar",

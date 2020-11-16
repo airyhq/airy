@@ -1,4 +1,5 @@
-load("@rules_java//java:defs.bzl", "java_binary", "java_library")
+load("//tools/build:java_library.bzl", "custom_java_library")
+load("@rules_java//java:defs.bzl", "java_binary")
 load("//tools/build:junit5.bzl", "junit5")
 
 lib_deps = [
@@ -9,7 +10,7 @@ lib_deps = [
     "//backend/avro/communication:message",
 ]
 
-java_library(
+custom_java_library(
     name = "mapping",
     srcs = glob(["src/main/java/co/airy/mapping/**/*.java"]),
     visibility = ["//visibility:public"],

@@ -129,8 +129,7 @@ public class ChatControllerTest {
                                 .headers(buildHeaders(token))
                                 .content(sendMessagePayload))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.content", containsString(messageText)))
-                ,
+                                .andExpect(jsonPath("$.content", containsString(messageText))),
                 "Message was not sent"
         );
 

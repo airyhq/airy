@@ -80,7 +80,7 @@ class ConversationsListTest {
     private static final String userId = "user-id";
 
     private static final List<TestConversation> conversations = List.of(
-            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.source.contact.FIRST_NAME, firstNameToFind), 1),
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.Source.Contact.FIRST_NAME, firstNameToFind), 1),
             TestConversation.from(UUID.randomUUID().toString(), channelToFind, 1),
             TestConversation.from(conversationIdToFind, defaultChannel, 1),
             TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1),
@@ -127,7 +127,7 @@ class ConversationsListTest {
                         .andExpect(jsonPath("$.data[*].last_message.sent_at").value(contains(
                                 conversations.stream()
                                         .map(TestConversation::getLastMessageSentAt)
-                                        .map(DateFormat::ISO_FROM_MILLIS)
+                                        .map(DateFormat::isoFromMillis)
                                         .sorted(reverseOrder()).toArray()))),
                 String.format("Expected %s conversations in order", conversations.size()));
     }

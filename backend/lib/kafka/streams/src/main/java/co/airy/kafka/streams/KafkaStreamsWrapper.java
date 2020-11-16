@@ -8,6 +8,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.errors.InvalidStateStoreException;
@@ -175,11 +176,11 @@ public class KafkaStreamsWrapper {
         int retries = 0;
         do
             try {
-                return streams.store(storeName, QueryableStoreTypes.keyValueStore());
+                return streams.store(StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore()));
             } catch (InvalidStateStoreException e) {
                 try {
                     TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException ignored) {
+                } catch (InterruptedException expected) {
                 }
             }
         while (retries++ < 10);
@@ -239,7 +240,7 @@ public class KafkaStreamsWrapper {
         // Unlimited buffer for sending large aggregates
         props.put(StreamsConfig.producerPrefix(ProducerConfig.BUFFER_MEMORY_CONFIG), this.bufferMemory);
 
-        props.put(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG, CustomRocksDBConfig.class);
+        props.put(StreamsConfig.ROCKSDB_CONFIG_SETTER_CLASS_CONFIG, CustomRocksDbConfig.class);
 
         //Custom Properties
         if (0 < commitIntervalInMs) {

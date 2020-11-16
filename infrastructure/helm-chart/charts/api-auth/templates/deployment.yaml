@@ -50,6 +50,31 @@ spec:
             configMapKeyRef:
               name: secrets-config
               key: JWT_SECRET
+        - name: MAIL_URL
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: MAIL_URL
+        - name: MAIL_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: MAIL_PORT
+        - name: MAIL_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: MAIL_USERNAME
+        - name: MAIL_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: MAIL_PASSWORD
+        - name: MAIL_FROM
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: MAIL_FROM
         livenessProbe:
           httpGet:
             path: /actuator/health

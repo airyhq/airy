@@ -2,6 +2,8 @@
 set -eo pipefail
 IFS=$'\n\t'
 
+APP_IMAGE_TAG=${APP_IMAGE_TAG:-latest}
+
 cd /vagrant/scripts
 mkdir -p ~/airy-core
 

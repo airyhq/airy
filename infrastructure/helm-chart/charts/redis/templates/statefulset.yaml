@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         ports:
         - containerPort: 6379
           name: client

@@ -47,7 +47,7 @@ spec:
               topologyKey: "kubernetes.io/hostname"
       containers:
       - name: {{ template "kafka.name" . }}-broker
-        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         ports:
         - containerPort: 9092

@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: {{ template "schema-registry.name" . }}-server
-          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
             - name: schema-registry

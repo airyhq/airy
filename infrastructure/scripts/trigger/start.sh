@@ -23,8 +23,8 @@ kubectl scale statefulset redis-cluster --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh redis-cluster 6379 10 Redis
 kubectl scale deployment postgres --replicas=1
 kubectl exec kafka-client -- /root/wait-for-service.sh postgres 5432 10 Postgres
-kubectl scale deployment schema-registry --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh schema-registry 8081 15 Schema-registry
+kubectl scale deployment kafka-schema-registry --replicas=1
+kubectl exec kafka-client -- /root/wait-for-service.sh kafka-schema-registry 8081 15 Schema-registry
 
 echo "Starting up Airy Core Platform appplications"
 kubectl scale deployment api-admin --replicas=1

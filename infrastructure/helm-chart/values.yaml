@@ -1,3 +1,7 @@
+global:
+  appImageTag: release
+  containerRegistry: ghcr.io/airyhq
+
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
@@ -17,7 +21,6 @@ zookeeper:
 ## Kafka
 ## ------------------------------------------------------
 kafka:
-  fullname: kafka-broker
   enabled: true
   brokers: 1
   image: confluentinc/cp-kafka
@@ -34,6 +37,7 @@ kafka:
 ## Schema Registry
 ## ------------------------------------------------------
 schema-registry:
+  fullname: kafka-schema-registry
   enabled: true
   image: confluentinc/cp-schema-registry
   imageTag: 5.5.0
@@ -57,7 +61,3 @@ redis:
   image: redis
   imageTag: 5.0.1-alpine
   resources: {}
-                        
-global:
-  appImageTag: release
-  containerRegistry: ghcr.io/airyhq

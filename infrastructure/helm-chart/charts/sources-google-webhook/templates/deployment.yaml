@@ -28,7 +28,7 @@ spec:
             - name: KAFKA_BROKERS
               value: kafka-headless:9092
             - name: KAFKA_SCHEMA_REGISTRY_URL
-              value: http://schema-registry:8081
+              value: http://kafka-schema-registry:8081
             - name: SERVICE_NAME
               value: sources-google-webhook
             - name: GOOGLE_PARTNER_KEY

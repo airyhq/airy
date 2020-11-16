@@ -3,8 +3,6 @@ title: Facebook
 sidebar_label: Facebook
 ---
 
-## Introduction
-
 The Facebook source provides a channel of communication between a Facebook page and your running instance of the Airy Core Platform.
 
 When connecting a channel via the [/channels.connect](api/http.md#connecting-channels), you must set the `source` field `facebook` and the `token` field to a valid Facebook user access token

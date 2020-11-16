@@ -3,8 +3,6 @@ title: Google
 sidebar_label: Google
 ---
 
-## Introduction
-
 The Google source provides a channel of communication between your Google Business Location and your running instance of the Airy Core Platform.
 
 Like for any other source you must connect a channel first using the [channels

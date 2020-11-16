@@ -35,7 +35,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final KafkaStreamsWrapper streams;
     private final WebSocketController webSocketController;
     private final KafkaProducer<String, Message> producer;
-    private final String CHANNEL_STORE = "channel-store";
+    private final String channelStore = "channel-store";
 
     Stores(KafkaStreamsWrapper streams,
            KafkaProducer<String, Message> producer,
@@ -74,7 +74,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
                 .filter((channelId, channel) -> "chat_plugin".equals(channel.getSource())
                                 && ChannelConnectionState.CONNECTED.equals(channel.getConnectionState()),
-                        Materialized.as(CHANNEL_STORE));
+                        Materialized.as(channelStore));
 
         streams.start(builder.build(), appId);
     }
@@ -84,7 +84,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     private ReadOnlyKeyValueStore<String, Channel> getChannelsStore() {
-        return streams.acquireLocalStore(CHANNEL_STORE);
+        return streams.acquireLocalStore(channelStore);
     }
 
     public Channel getChannel(String channelId) {

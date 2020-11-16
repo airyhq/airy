@@ -35,6 +35,32 @@ life meaning" and its number is 4242, the branch name will be
 
 You can push as many commits we need to finish a feature.
 
+## Lint your changes
+
+We use language specific linters: [buildifier](https://github.com/bazelbuild/buildtools/tree/master/buildifier) to lint Bazel files, [prettier](https://prettier.io/) for TypeScript, JavaScript and SCSS, [CheckStyle](https://checkstyle.sourceforge.io/) for Java.
+
+Java linting is run as a test, so depending on the package you can run:
+
+```sh
+bazel test //my/package:checkstyle
+```
+
+to have Bazel check your Java code for linting errors.
+
+Buildifier and Prettier are bundled up in a single Bazel command. So you can run:
+
+```sh
+bazel run //:check
+```
+
+to check your code and:
+
+```sh
+bazel run //:fix
+```
+
+to try fixing linting issues automatically.
+
 ## Test your change
 
 You can create a branch for your changes and try to build from the source as
@@ -73,4 +99,3 @@ When opening a Pull Request, make sure that:
 - Description references the issue
 - Branch name follows the convention previously described
 - Commits are squashed
-

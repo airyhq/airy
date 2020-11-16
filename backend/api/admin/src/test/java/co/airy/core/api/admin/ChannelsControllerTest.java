@@ -76,8 +76,8 @@ public class ChannelsControllerTest {
 
     private static boolean testDataInitialized = false;
 
-    final static String facebookToken = "token";
-    final static Channel connectedChannel = Channel.newBuilder()
+    static final String facebookToken = "token";
+    static final Channel connectedChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(UUID.randomUUID().toString())
             .setName("connected channel name")
@@ -120,8 +120,8 @@ public class ChannelsControllerTest {
         retryOnException(() -> webTestHelper.post("/channels.list", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data.length()", greaterThanOrEqualTo(1)))
-                        .andExpect(jsonPath("$.data[*].id").value(not(contains(disconnectedChannel))))
-                , "/channels.list did not return the right number of channels");
+                        .andExpect(jsonPath("$.data[*].id").value(not(contains(disconnectedChannel)))),
+                "/channels.list did not return the right number of channels");
     }
 
     @Test
@@ -144,8 +144,8 @@ public class ChannelsControllerTest {
                         .andExpect(jsonPath("$.data", hasSize(2)))
                         .andExpect(jsonPath("$.data[0].name", equalTo(channelName)))
                         .andExpect(jsonPath("$.data[0].connected", equalTo(false)))
-                        .andExpect(jsonPath("$.data[1].connected", equalTo(true)))
-                , "/channels.list did not return the mocked channels");
+                        .andExpect(jsonPath("$.data[1].connected", equalTo(true))),
+                "/channels.list did not return the mocked channels");
     }
 
 
@@ -166,8 +166,8 @@ public class ChannelsControllerTest {
                         webTestHelper.post("/channels.connect", payload, "user-id")
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.name", equalTo(channelName)))
-                                .andExpect(jsonPath("$.source_channel_id", equalTo(sourceChannelId)))
-                , "/channels.connect failed");
+                                .andExpect(jsonPath("$.source_channel_id", equalTo(sourceChannelId))),
+                "/channels.connect failed");
     }
 
     @Test

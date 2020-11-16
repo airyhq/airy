@@ -11,14 +11,14 @@ import java.util.UUID;
  * This implementation is taken out from https://github.com/eugenp/tutorials/tree/master/core-java-modules/core-java/
  * Reference: https://www.baeldung.com/java-uuid
  */
-public class UUIDV5 {
+public class UUIDv5 {
     public static UUID fromNamespaceAndName(String namespace, String name) {
         String source = namespace + name;
         byte[] bytes = source.getBytes(StandardCharsets.UTF_8);
-        return type5UUIDFromBytes(bytes);
+        return fromBytes(bytes);
     }
 
-    public static UUID type5UUIDFromBytes(byte[] name) {
+    private static UUID fromBytes(byte[] name) {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("SHA-1");
@@ -30,10 +30,10 @@ public class UUIDV5 {
         bytes[6] |= 0x50; /* set to version 5     */
         bytes[8] &= 0x3f; /* clear variant        */
         bytes[8] |= 0x80; /* set to IETF variant  */
-        return constructType5UUID(bytes);
+        return construct(bytes);
     }
 
-    private static UUID constructType5UUID(byte[] data) {
+    private static UUID construct(byte[] data) {
         long msb = 0;
         long lsb = 0;
         assert data.length == 16 : "data must be 16 bytes in length";

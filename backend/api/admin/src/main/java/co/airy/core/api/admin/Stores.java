@@ -33,9 +33,9 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final KafkaStreamsWrapper streams;
     private final KafkaProducer<String, SpecificRecordBase> producer;
 
-    private final String CHANNELS_STORE = "channels-store";
-    private final String TAGS_STORE = "tags-store";
-    private final String WEBHOOKS_STORE = "webhook-store";
+    private final String channelsStore = "channels-store";
+    private final String tagsStore = "tags-store";
+    private final String webhooksStore = "webhook-store";
     private final String allChannelsKey = "ALL";
 
     // Using a UUID as the default key for the webhook will make it easier
@@ -60,27 +60,27 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                     // An external channel id may only be connected once
                     channelsMap.put(channel.getId(), channel);
                     return channelsMap;
-                }, Materialized.as(CHANNELS_STORE));
+                }, Materialized.as(channelsStore));
 
         builder.<String, Webhook>stream(applicationCommunicationWebhooks)
                 .groupBy((webhookId, webhook) -> allWebhooksKey)
-                .reduce((oldValue, newValue) -> newValue, Materialized.as(WEBHOOKS_STORE));
+                .reduce((oldValue, newValue) -> newValue, Materialized.as(webhooksStore));
 
-        builder.<String, Tag>table(applicationCommunicationTags, Materialized.as(TAGS_STORE));
+        builder.<String, Tag>table(applicationCommunicationTags, Materialized.as(tagsStore));
 
         streams.start(builder.build(), appId);
     }
 
     public ReadOnlyKeyValueStore<String, Map<String, Channel>> getChannelsStore() {
-        return streams.acquireLocalStore(CHANNELS_STORE);
+        return streams.acquireLocalStore(channelsStore);
     }
 
     public ReadOnlyKeyValueStore<String, Webhook> getWebhookStore() {
-        return streams.acquireLocalStore(WEBHOOKS_STORE);
+        return streams.acquireLocalStore(webhooksStore);
     }
 
     public ReadOnlyKeyValueStore<String, Tag> getTagsStore() {
-        return streams.acquireLocalStore(TAGS_STORE);
+        return streams.acquireLocalStore(tagsStore);
     }
 
     public void storeChannel(Channel channel) throws ExecutionException, InterruptedException {

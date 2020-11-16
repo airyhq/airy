@@ -6,9 +6,11 @@ package co.airy.avro.communication;
 public class MetadataKeys {
 
     public static String SOURCE = "source";
-    public static class source {
+
+    public static class Source {
         public static String CONTACT = "source.contact";
-        public static class contact {
+
+        public static class Contact {
             public static final String FIRST_NAME = "source.contact.first_name";
             public static final String LAST_NAME = "source.contact.last_name";
             public static final String AVATAR_URL = "source.contact.avatar_url";

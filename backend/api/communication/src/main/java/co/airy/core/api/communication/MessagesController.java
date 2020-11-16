@@ -20,6 +20,7 @@ import static java.util.stream.Collectors.toList;
 public class MessagesController {
     private final Stores stores;
     private final Mapper mapper;
+
     MessagesController(Stores stores, Mapper mapper) {
         this.stores = stores;
         this.mapper = mapper;

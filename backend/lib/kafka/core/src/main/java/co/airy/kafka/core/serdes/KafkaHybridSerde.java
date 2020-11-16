@@ -14,7 +14,7 @@ public class KafkaHybridSerde implements Serde<Serializable> {
 
   private final Serde<Serializable> serde;
 
-  public final static byte AIRY_MAGIC_BYTE = 0x8;
+  public static final byte AIRY_MAGIC_BYTE = 0x8;
 
   public KafkaHybridSerde() {
     serde = Serdes.serdeFrom(new KafkaHybridSerializer(), new KafkaHybridDeserializer());

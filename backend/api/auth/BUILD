@@ -1,3 +1,7 @@
+load("//tools/build:springboot.bzl", "springboot")
+load("//tools/build:junit5.bzl", "junit5")
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
+
 app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
@@ -17,16 +21,12 @@ app_deps = [
     "@maven//:org_springframework_spring_tx",
 ]
 
-load("//tools/build:springboot.bzl", "springboot")
-
 springboot(
     name = "api-auth",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,
 )
-
-load("//tools/build:junit5.bzl", "junit5")
 
 [
     junit5(
@@ -41,8 +41,6 @@ load("//tools/build:junit5.bzl", "junit5")
     )
     for file in glob(["src/test/java/**/*Test.java"])
 ]
-
-load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 container_push(
     name = "release",

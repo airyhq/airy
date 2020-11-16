@@ -54,6 +54,7 @@ public class GoogleWebhook implements HealthIndicator, DisposableBean {
         producer = new KafkaProducer<>(props);
 
     }
+
     @Override
     public void destroy() throws Exception {
         if (producer != null) {
@@ -70,6 +71,7 @@ public class GoogleWebhook implements HealthIndicator, DisposableBean {
             return Health.down(e).build();
         }
     }
+
     @PostMapping("/google")
     ResponseEntity<?> accept(@RequestBody String event, @RequestHeader("X-Goog-Signature") String signature) throws NoSuchAlgorithmException, InvalidKeyException {
         if(!validRequest(event, signature)) {

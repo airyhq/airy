@@ -29,8 +29,8 @@ public class Conversation implements Serializable {
     private Map<String, String> metadata = new HashMap<>();
 
     public String getDisplayName() {
-        final String firstName = this.metadata.get(MetadataKeys.source.contact.FIRST_NAME);
-        final String lastName = this.metadata.get(MetadataKeys.source.contact.LAST_NAME);
+        final String firstName = this.metadata.get(MetadataKeys.Source.Contact.FIRST_NAME);
+        final String lastName = this.metadata.get(MetadataKeys.Source.Contact.LAST_NAME);
 
         if (firstName == null && lastName == null) {
             return null;

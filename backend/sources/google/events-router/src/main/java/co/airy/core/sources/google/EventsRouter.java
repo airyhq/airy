@@ -10,7 +10,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceGoogleEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.uuid.UUIDV5;
+import co.airy.uuid.UUIDv5;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
@@ -90,8 +90,8 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     final Channel channel = event.getChannel();
                     final String payload = event.getEventPayload();
 
-                    final String messageId = UUIDV5.fromNamespaceAndName(channel.getId(), payload).toString();
-                    final String conversationId = UUIDV5.fromNamespaceAndName(channel.getId(), event.getConversationId()).toString();
+                    final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
+                    final String conversationId = UUIDv5.fromNamespaceAndName(channel.getId(), event.getConversationId()).toString();
                     final String sourceConversationId = event.getConversationId();
 
                     Message.Builder messageBuilder = Message.newBuilder();

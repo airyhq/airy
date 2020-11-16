@@ -90,7 +90,7 @@ class SendMessageTest {
     }
 
     @Test
-    void canSendMessageViaTheFacebookAPI() throws Exception {
+    void canSendMessageViaTheFacebookApi() throws Exception {
         final String conversationId = "conversationId";
         final String messageId = "message-id";
         final String sourceConversationId = "source-conversation-id";

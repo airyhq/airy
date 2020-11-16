@@ -6,12 +6,11 @@ import org.rocksdb.Options;
 
 import java.util.Map;
 
-public class CustomRocksDBConfig implements RocksDBConfigSetter {
+public class CustomRocksDbConfig implements RocksDBConfigSetter {
 
     @Override
     public void setConfig(String storeName, Options options, Map<String, Object> configs) {
         options.setCompressionType(CompressionType.LZ4_COMPRESSION);
         options.setBottommostCompressionType(CompressionType.ZSTD_COMPRESSION);
-
     }
 }

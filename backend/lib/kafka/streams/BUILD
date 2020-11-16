@@ -1,4 +1,4 @@
-load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/build:java_library.bzl", "custom_java_library")
 load("//tools/build:junit5.bzl", "junit5")
 
 lib_deps = [
@@ -10,7 +10,7 @@ lib_deps = [
     "@maven//:org_rocksdb_rocksdbjni",
 ]
 
-java_library(
+custom_java_library(
     name = "kafka-streams",
     srcs = glob([
         "src/main/java/co/airy/kafka/streams/**/*.java",

@@ -1,6 +1,6 @@
 package co.airy.core.chat_plugin;
 
-import co.airy.uuid.UUIDV5;
+import co.airy.uuid.UUIDv5;
 import lombok.Data;
 
 @Data
@@ -12,7 +12,7 @@ public class Principal implements java.security.Principal {
     public Principal(String channelId, String sessionId) {
         this.channelId = channelId;
         this.sessionId = sessionId;
-        this.conversationId = UUIDV5.fromNamespaceAndName(channelId, sessionId).toString();
+        this.conversationId = UUIDv5.fromNamespaceAndName(channelId, sessionId).toString();
     }
 
     @Override

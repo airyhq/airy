@@ -11,7 +11,7 @@ import co.airy.core.api.admin.payload.ConnectChannelRequestPayload;
 import co.airy.core.api.admin.payload.DisconnectChannelRequestPayload;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestErrorResponsePayload;
-import co.airy.uuid.UUIDV5;
+import co.airy.uuid.UUIDv5;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,7 +101,7 @@ public class ChannelsController {
         final String sourceChannelId = requestPayload.getSourceChannelId();
         final String sourceIdentifier = requestPayload.getSource();
 
-        final String channelId = UUIDV5.fromNamespaceAndName(sourceIdentifier, sourceChannelId).toString();
+        final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, sourceChannelId).toString();
 
         final Source source = sourceMap.get(sourceIdentifier);
 

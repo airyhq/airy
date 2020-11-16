@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static co.airy.payload.format.DateFormat.ISO_FROM_MILLIS;
+import static co.airy.payload.format.DateFormat.isoFromMillis;
 
 @Component
 public class Mapper {
@@ -27,7 +27,7 @@ public class Mapper {
                 .text(message.getContent())
                 .source(message.getSource())
                 .postback(buildPostback(message))
-                .sentAt(ISO_FROM_MILLIS(message.getSentAt()))
+                .sentAt(isoFromMillis(message.getSentAt()))
                 .sender(new WebhookBody.Sender(message.getSenderId()))
                 .build();
     }

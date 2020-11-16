@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static co.airy.avro.communication.MetadataMapper.filterPrefix;
 import static co.airy.core.api.communication.payload.MessageResponsePayload.getAlignment;
-import static co.airy.payload.format.DateFormat.ISO_FROM_MILLIS;
+import static co.airy.payload.format.DateFormat.isoFromMillis;
 
 @Component
 public class Mapper {
@@ -36,11 +36,11 @@ public class Mapper {
                 .id(conversation.getId())
                 .unreadMessageCount(conversation.getUnreadCount())
                 .tags(MetadataMapper.getTags(metadata))
-                .createdAt(ISO_FROM_MILLIS(conversation.getCreatedAt()))
+                .createdAt(isoFromMillis(conversation.getCreatedAt()))
                 .contact(ContactResponsePayload.builder()
-                        .avatarUrl(metadata.get(MetadataKeys.source.contact.AVATAR_URL))
-                        .firstName(metadata.get(MetadataKeys.source.contact.FIRST_NAME))
-                        .lastName(metadata.get(MetadataKeys.source.contact.LAST_NAME))
+                        .avatarUrl(metadata.get(MetadataKeys.Source.Contact.AVATAR_URL))
+                        .firstName(metadata.get(MetadataKeys.Source.Contact.FIRST_NAME))
+                        .lastName(metadata.get(MetadataKeys.Source.Contact.LAST_NAME))
                         .info(filterPrefix(metadata, "user.contact-info"))
                         .build())
                 .lastMessage(fromMessage(conversation.getLastMessage()))
@@ -53,7 +53,7 @@ public class Mapper {
                 .alignment(getAlignment(message.getSenderType()))
                 .state(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
-                .sentAt(ISO_FROM_MILLIS(message.getSentAt()))
+                .sentAt(isoFromMillis(message.getSentAt()))
                 .build();
     }
 }

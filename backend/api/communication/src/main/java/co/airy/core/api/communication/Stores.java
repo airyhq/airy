@@ -51,8 +51,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final KafkaProducer<String, SpecificRecordBase> producer;
     private final WebSocketController webSocketController;
 
-    private final String MESSAGES_STORE = "messages-store";
-    private final String CONVERSATIONS_STORE = "conversations-store";
+    private final String messagesStore = "messages-store";
+    private final String conversationsStore = "conversations-store";
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
     private final String applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts().name();
 
@@ -117,7 +117,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 ((key, value, aggregate) -> {
                     aggregate.add(value);
                     return aggregate;
-                }), Materialized.as(MESSAGES_STORE));
+                }), Materialized.as(messagesStore));
 
         // conversations store
         messageGroupedStream
@@ -158,17 +158,17 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                         conversation.setUnreadCount(unreadCountState.getUnreadCount());
                     }
                     return conversation;
-                }, Materialized.as(CONVERSATIONS_STORE));
+                }, Materialized.as(conversationsStore));
 
         streams.start(builder.build(), appId);
     }
 
     public ReadOnlyKeyValueStore<String, Conversation> getConversationsStore() {
-        return streams.acquireLocalStore(CONVERSATIONS_STORE);
+        return streams.acquireLocalStore(conversationsStore);
     }
 
     public ReadOnlyKeyValueStore<String, MessagesTreeSet> getMessagesStore() {
-        return streams.acquireLocalStore(MESSAGES_STORE);
+        return streams.acquireLocalStore(messagesStore);
     }
 
     public void storeReadReceipt(ReadReceipt readReceipt) throws ExecutionException, InterruptedException {

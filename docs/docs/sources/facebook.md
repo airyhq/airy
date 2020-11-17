@@ -8,8 +8,7 @@ The Facebook source provides a channel of communication between a Facebook page 
 ## Configuration
 
 For Facebook to start sending events to your local instance, it must first verify your instance with a challenge.
-The only configuration needed for that to happen is to set the environment variable `FB_WEBHOOK_SECRET` with the provided token
-by Facebook.
+To verify your Facebook webhook integration, you must set the environment variable `FB_WEBHOOK_SECRET` to the same value you supply in the webhook configuration on the Facebook integration.
 
 You must also configure the webhook URL to `https://<your-address-url>/facebook`.
 
@@ -23,7 +22,7 @@ Connects a Facebook page to an user account.
 POST /channels.connect
 ```
 
-- `source` MUST be `facebook`
+- `source` *must* be `facebook`
 - `source_channel_id` is the Facebook page id
 - `token` is the page Access Token
 
@@ -48,6 +47,5 @@ POST /channels.connect
     "source_channel_id": "fb-page-id-1"
 }
 ```
-
 
 

@@ -80,7 +80,7 @@ jobs:
           done
 
       - name: Publish component library to npm
-        if: ${{ startsWith(github.ref, 'refs/tags/npm-v') }}
+        if: ${{ startsWith(github.ref, 'refs/heads/npm/components/') }}
         run: |
           sudo apt-get install -y expect
           bazel run //frontend/components:publish-npm release

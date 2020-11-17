@@ -6,3 +6,4 @@ export * from "./components/loaders";
 
 // export the content model
 export * from "./content";
+export * from "./model";

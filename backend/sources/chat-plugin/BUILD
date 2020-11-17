@@ -12,6 +12,7 @@ app_deps = [
     "//backend:message",
     "//backend/lib/uuid",
     "//backend/lib/payload",
+    "//backend/lib/mapping",
     "//backend/lib/spring/web:spring-web",
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",

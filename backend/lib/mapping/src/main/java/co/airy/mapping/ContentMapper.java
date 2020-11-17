@@ -26,7 +26,7 @@ public class ContentMapper {
     }
 
     public Content render(Message message) throws Exception {
-        if (SenderType.APP_USER.equals(message.getSenderType())) {
+        if (SenderType.APP_USER.equals(message.getSenderType()) || "chat_plugin".equals(message.getSource())) {
             return outboundMapper.render(message.getContent());
         }
 

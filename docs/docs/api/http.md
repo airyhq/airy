@@ -147,22 +147,35 @@ This is a [paginated](#pagination) endpoint.
     {
       "id": "a688d36c-a85e-44af-bc02-4248c2c97622",
       "channel": {
-        "name": "facebook", // name of the source
+        "name": "facebook",
+        // name of the source
         "id": "318efa04-7cc1-4200-988e-50699d0dd6e3"
       },
       "created_at": "2019-01-07T09:01:44.000Z",
-      "contact": { // Additional data on the contact
+      "contact": {
+        // Additional data on the contact
         "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
         "first_name": "Airy Support",
         "last_name": null,
         "id": "36d07b7b-e242-4612-a82c-76832cfd1026",
       },
-      "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
+      "tags": [
+        "f339c325-8614-43cb-a70a-e83d81bf56fc"
+      ],
       "last_message": {
-        "display_text": "Welcome to Airy Messenger - I’m Mathias and I’m here to help.",
-        "media_type": "text/fb-template",
-        "id": "1e7674d7-b575-4683-8a77-d2651b9e3149-relayed",
-        "sent_at": "2019-01-07T09:01:44.000Z"
+        id: "{UUID}",
+        content: {
+          text: "{String}",
+          type: "text"
+          // Determines the schema of the content
+        },
+        // typed source message model
+        state: "{String}",
+        // delivery state of message, one of PENDING, FAILED, DELIVERED
+        alignment: "{string/enum}",
+        // LEFT, RIGHT, CENTER - horizontal placement of message
+        sent_at: "{string}",
+        //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
       },
       "unread_message_count": 1,
     }

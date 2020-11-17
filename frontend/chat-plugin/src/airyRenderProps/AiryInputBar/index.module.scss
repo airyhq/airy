@@ -1,0 +1,68 @@
+.inputBar {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.textArea {
+  border-radius: 8px;
+  resize: none;
+  overflow: hidden;
+  height: 32px;
+  width: 100%;
+  padding: 4px 4px 0 8px;
+  margin-right: 8px;
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+  border: 1px solid #cad5db;
+  outline: none;
+  &:focus {
+    border: 1px solid #1578d4;
+  }
+}
+
+.textAreaMedium {
+  @extend .textArea;
+  height: 64px;
+}
+
+.textAreaBig {
+  @extend .textArea;
+  height: 96px;
+}
+
+.textArea::-webkit-input-placeholder {
+  color: #999999;
+}
+
+.textArea:-moz-placeholder {
+  /* Firefox 18- */
+  color: #999999;
+}
+
+.textArea::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #999999;
+}
+
+.textArea:-ms-input-placeholder {
+  color: #999999;
+}
+
+.textArea::placeholder {
+  color: #999999;
+}
+
+.sendButton {
+  outline: none;
+  padding: 2px 0 0 2px;
+  border: none;
+  height: 32px;
+  width: 32px;
+  background: #1578d4;
+  border-radius: 100%;
+  align-self: center;
+  cursor: pointer;
+}

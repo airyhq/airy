@@ -9,12 +9,19 @@ import org.springframework.stereotype.Service;
 public class WebSocketController {
     public static final String QUEUE_MESSAGE = "/queue/message";
     private final SimpMessagingTemplate messagingTemplate;
+    private final Mapper mapper;
 
-    WebSocketController(SimpMessagingTemplate messagingTemplate) {
+    WebSocketController(SimpMessagingTemplate messagingTemplate, Mapper mapper) {
         this.messagingTemplate = messagingTemplate;
+        this.mapper = mapper;
     }
 
     public void onNewMessage(Message message) {
-        messagingTemplate.convertAndSendToUser(message.getConversationId(), QUEUE_MESSAGE, MessageUpsertPayload.fromMessage(message));
+        messagingTemplate.convertAndSendToUser(message.getConversationId(), QUEUE_MESSAGE,
+                MessageUpsertPayload.builder()
+                        .channelId(message.getChannelId())
+                        .conversationId(message.getConversationId())
+                        .message(mapper.fromMessage(message))
+                        .build());
     }
 }

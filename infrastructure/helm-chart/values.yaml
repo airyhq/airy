@@ -5,7 +5,7 @@ global:
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
-zookeeper:
+cp-zookeeper:
   enabled: true
   servers: 1
   image: confluentinc/cp-zookeeper
@@ -20,7 +20,7 @@ zookeeper:
 ## ------------------------------------------------------
 ## Kafka
 ## ------------------------------------------------------
-kafka:
+cp-kafka:
   enabled: true
   brokers: 1
   image: confluentinc/cp-kafka
@@ -36,7 +36,7 @@ kafka:
 ## ------------------------------------------------------
 ## Schema Registry
 ## ------------------------------------------------------
-schema-registry:
+cp-schema-registry:
   enabled: true
   image: confluentinc/cp-schema-registry
   imageTag: 5.5.0

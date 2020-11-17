@@ -19,7 +19,7 @@ If release name contains chart name it will be used as a full name.
 {{- if contains $name .Release.Name -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s" $name | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -37,7 +37,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 */}}
 {{- define "cp-kafka.cp-zookeeper.fullname" -}}
 {{- $name := default "cp-zookeeper" (index .Values "cp-zookeeper" "nameOverride") -}}
-{{- printf "%s-headless" $name | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s-headless" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -73,7 +73,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 */}}
 {{- define "cp-kafka.cp-kafka-headless.fullname" -}}
 {{- $name := "cp-kafka-headless" -}}
-{{- printf "%s" $name | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*

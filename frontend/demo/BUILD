@@ -70,3 +70,12 @@ container_push(
     repository = "demo",
     tag = "latest",
 )
+
+container_push(
+    name = "beta",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/frontend",
+    repository = "demo",
+    tag = "beta",
+)

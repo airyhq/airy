@@ -391,7 +391,7 @@ to connect the channel.
 This action is idempotent, so if the channel is already connected the status
 will be `202`.
 
-Connecting a channel is source specific, so you must read the source documentation for the correct payload.
+Connecting a channel is source specific by nature, refer to the relevant documentation for the correct payload:
 
 - [Facebook](../sources/facebook.md#connecting-a-channel)
 - [Google](../sources/google.md#connecting-a-channel)

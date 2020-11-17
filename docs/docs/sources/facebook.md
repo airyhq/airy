@@ -5,8 +5,6 @@ sidebar_label: Facebook
 
 The Facebook source provides a channel of communication between a Facebook page and your running instance of the Airy Core Platform.
 
-When connecting a channel via the [/channels.connect](api/http.md#connecting-channels), you must set the `source` field `facebook` and the `token` field to a valid Facebook user access token
-
 ## Configuration
 
 For Facebook to start sending events to your local instance, it must first verify your instance with a challenge.
@@ -17,7 +15,7 @@ You must also configure the webhook URL to `https://<your-address-url>/facebook`
 
 Once the verification process has been completed, Facebook will immediately start sending events to your Airy Core Platform instance.
 
-## Channel connect
+## Connecting a channel
 
 Connects a Facebook page to an user account.
 

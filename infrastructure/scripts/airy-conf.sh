@@ -19,8 +19,8 @@ kubectl create configmap user-config --from-env-file=../airy.conf --dry-run=clie
 
 helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=$APP_IMAGE_TAG --version 0.5.0 --timeout 1000s 2>/dev/null
 
-kubectl scale deployment airy-airy-cp-schema-registry --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-airy-cp-schema-registry 8081 15 Schema-registry
+kubectl scale deployment airy-cp-schema-registry --replicas=1
+kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 15 Schema-registry
 
 kubectl scale deployment api-admin --replicas=1
 kubectl scale deployment api-auth --replicas=1

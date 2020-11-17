@@ -26,7 +26,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: KAFKA_BROKERS
-              value: kafka-headless:9092
+              value: airy-cp-kafka-headless:9092
             - name: KAFKA_SCHEMA_REGISTRY_URL
               value: http://airy-cp-schema-registry:8081
             - name: SERVICE_NAME
@@ -52,7 +52,7 @@ spec:
             - /bin/bash
             - -c
             - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="$WEBHOOK_SUBDOMAIN" 8080
-          image: docker.io/infrastructure/ngrok-client:latest
+          image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
           env:
             - name: WEBHOOK_SUBDOMAIN
               valueFrom:

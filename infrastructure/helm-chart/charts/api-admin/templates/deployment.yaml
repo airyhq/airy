@@ -26,7 +26,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS
-          value: kafka-headless:9092
+          value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
         - name: FACEBOOK_APP_ID

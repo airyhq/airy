@@ -404,41 +404,10 @@ to connect the channel.
 This action is idempotent, so if the channel is already connected the status
 will be `202`.
 
-<!-- TODO move this section to source specific documentation -->
+Connecting a channel is source specific by nature, refer to the relevant documentation for the correct payload:
 
-This request requires an authentication `token`, which has a different meaning for each source:
-
-- `facebook` The page access token
-- `google` leave empty. To allow authentication you must provide a [Google service account key file](https://developers.google.com/business-communications/business-messages/guides/quickstarts/prerequisite-setup) in your runtime configuration.
-
-The meaning of `source_channel_id` is also different per source
-
-- `facebook` The page id
-- `google` The id of your Google Business Message [agent](https://developers.google.com/business-communications/business-messages/reference/business-communications/rest/v1/brands.agents#Agent). 
-
-**Sample Request**
-
-```json5
-{
-  "source": "facebook",
-  "source_channel_id": "fb-page-id-1",
-  "token": "authentication token",
-  "name": "My custom name for this page", // optional
-  "image_url": "https://example.org/custom-image.jpg" // optional
-}
-```
-
-**Sample Response**
-
-```json5
-{
-	"id": "channel-uuid-1",
-    "name": "My custom name for this page",
-    "image_url": "https://example.org/custom-image.jpg", // optional
-    "source": "facebook",
-    "source_channel_id": "fb-page-id-1"
-}
-```
+- [Facebook](../sources/facebook.md#connecting-a-channel)
+- [Google](../sources/google.md#connecting-a-channel)
 
 #### Disconnecting Channels
 

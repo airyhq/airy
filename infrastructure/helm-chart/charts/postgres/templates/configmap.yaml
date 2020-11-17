@@ -5,6 +5,6 @@ metadata:
   labels:
     app: postgres
 data:
-  POSTGRES_DB: postgresdb
-  POSTGRES_USER: postgresadmin
+  POSTGRES_DB: {{ .Values.dbName }}
+  POSTGRES_USER: {{ .Values.pgUser }}
   POSTGRES_PASSWORD: {{ .Values.pgPassword }}

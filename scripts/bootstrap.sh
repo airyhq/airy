@@ -6,6 +6,7 @@ ARCH=$(uname -m)
 OS=$(uname)
 SCRIPT_PATH=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
+AIRY_VERSION=${AIRY_VERSION:-latest}
 infra_path=""
 infra_path+=$( dirname $SCRIPT_PATH )
 infra_path+="/infrastructure"
@@ -123,4 +124,4 @@ fi
 
 cd $infra_path
 vagrant destroy -f
-vagrant up
+AIRY_VERSION=${AIRY_VERSION} vagrant up

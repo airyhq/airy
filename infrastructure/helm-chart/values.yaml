@@ -1,3 +1,7 @@
+global:
+  appImageTag: release
+  containerRegistry: ghcr.io/airyhq
+
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
@@ -56,4 +60,3 @@ redis:
   image: redis
   imageTag: 5.0.1-alpine
   resources: {}
-            

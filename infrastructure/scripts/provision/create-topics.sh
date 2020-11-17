@@ -25,4 +25,6 @@ kafka-topics --create --if-not-exists --zookeeper $ZOOKEEPER --replication-facto
 
 kafka-topics --create --if-not-exists --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic ops.application.health --config retention.ms=3600000 1>/dev/null
 
+kafka-topics --create --if-not-exists --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic source.facebook.events 1>/dev/null
+
 kafka-topics --create --if-not-exists --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic source.google.events 1>/dev/null

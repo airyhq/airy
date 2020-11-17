@@ -1,16 +1,16 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ template "zookeeper.fullname" . }}-pdb
+  name: {{ template "cp-zookeeper.fullname" . }}-pdb
   labels:
-    app: {{ template "zookeeper.name" . }}
-    chart: {{ template "zookeeper.chart" . }}
+    app: {{ template "cp-zookeeper.name" . }}
+    chart: {{ template "cp-zookeeper.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "zookeeper.name" . }}
+      app: {{ template "cp-zookeeper.name" . }}
       release: {{ .Release.Name }}
   {{- if .Values.minAvailable }}
   minAvailable: {{ .Values.minAvailable }}

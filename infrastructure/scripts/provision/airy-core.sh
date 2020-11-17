@@ -34,8 +34,8 @@ kubectl cp provision/create-topics.sh kafka-client:/tmp
 kubectl cp /vagrant/scripts/trigger/wait-for-service.sh kafka-client:/root/
 
 kubectl exec kafka-client -- /root/wait-for-service.sh zookeeper 2181 15 Zookeeper
-kubectl scale statefulset kafka-broker --replicas=1 
-kubectl exec kafka-client -- /root/wait-for-service.sh kafka-broker 9092 15 Kafka
+kubectl scale statefulset cp-kafka --replicas=1 
+kubectl exec kafka-client -- /root/wait-for-service.sh cp-kafka 9092 15 Kafka
 kubectl exec kafka-client -- /tmp/create-topics.sh
 
 kubectl delete pod -l app=postgres

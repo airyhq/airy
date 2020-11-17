@@ -44,7 +44,7 @@ nodeport:
   servicePort: 19092
   firstListenerPort: 31090
 
-zookeeper:
+cp-zookeeper:
   enabled: true
   servers: 2
   persistence:

@@ -1,5 +1,5 @@
 {{- if .Values.nodeport.enabled }}
-  {{- $fullName := include "kafka.fullname" . }}
+  {{- $fullName := include "cp-kafka.fullname" . }}
   {{- $brokers := .Values.brokers | int }}
   {{- $servicePort := .Values.nodeport.servicePort }}
   {{- $root := . }}
@@ -10,10 +10,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "kafka.fullname" $root }}-{{ $i }}-nodeport
+  name: {{ template "cp-kafka.fullname" $root }}-{{ $i }}-nodeport
   labels:
-    app: {{ include "kafka.name" $root }}
-    chart: {{ template "kafka.chart" $root }}
+    app: {{ include "cp-kafka.name" $root }}
+    chart: {{ template "cp-kafka.chart" $root }}
     release: {{ $root.Release.Name }}
     heritage: {{ $root.Release.Service }}
     pod: {{ $responsiblePod }}
@@ -26,7 +26,7 @@ spec:
       nodePort: {{ $externalListenerPort }}
       protocol: TCP
   selector:
-    app: {{ include "kafka.name" $root }}
+    app: {{ include "cp-kafka.name" $root }}
     release: {{ $root.Release.Name }}
     statefulset.kubernetes.io/pod-name: {{ $responsiblePod | quote }}
   {{- end }}

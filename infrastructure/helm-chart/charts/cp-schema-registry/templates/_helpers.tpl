@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "schema-registry.name" -}}
+{{- define "cp-schema-registry.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,19 +11,23 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "schema-registry.fullname" -}}
+{{- define "cp-schema-registry.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- printf "kafka-%s" $name | trunc 63 | trimSuffix "-" -}}
+{{- if contains $name .Release.Name -}}
+{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s" $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "schema-registry.chart" -}}
+{{- define "cp-schema-registry.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -31,27 +35,27 @@ Create chart name and version as used by the chart label.
 Create a default fully qualified kafka headless name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "kafka-rest.kafka-headless.fullname" -}}
-{{- $name := "kafka-headless" -}}
-{{- printf "%s" $name | trunc 63 | trimSuffix "-" -}}
+{{- define "cp-kafka-rest.cp-kafka-headless.fullname" -}}
+{{- $name := "cp-kafka-headless" -}}
+{{- printf "%s"  $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Form the Kafka URL. If Kafka is installed as part of this chart, use k8s service discovery,
 else use user-provided URL
 */}}
-{{- define "schema-registry.kafka.bootstrapServers" -}}
+{{- define "cp-schema-registry.kafka.bootstrapServers" -}}
 {{- if .Values.kafka.bootstrapServers -}}
 {{- .Values.kafka.bootstrapServers -}}
 {{- else -}}
-{{- printf "PLAINTEXT://%s:9092" (include "kafka-rest.kafka-headless.fullname" .) -}}
+{{- printf "PLAINTEXT://%s:9092" (include "cp-kafka-rest.cp-kafka-headless.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
 {{/*
 Default GroupId to Release Name but allow it to be overridden
 */}}
-{{- define "schema-registry.groupId" -}}
+{{- define "cp-schema-registry.groupId" -}}
 {{- if .Values.overrideGroupId -}}
 {{- .Values.overrideGroupId -}}
 {{- else -}}

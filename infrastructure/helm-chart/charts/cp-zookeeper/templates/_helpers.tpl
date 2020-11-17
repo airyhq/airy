@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "zookeeper.name" -}}
+{{- define "cp-zookeeper.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,19 +11,23 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "zookeeper.fullname" -}}
+{{- define "cp-zookeeper.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
 {{- printf "%s" $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "zookeeper.chart" -}}
+{{- define "cp-zookeeper.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -31,9 +35,9 @@ Create chart name and version as used by the chart label.
 Create a server list string based on fullname, namespace, # of servers
 in a format like "zkhost1:port:port;zkhost2:port:port"
 */}}
-{{- define "zookeeper.serverlist" -}}
+{{- define "cp-zookeeper.serverlist" -}}
 {{- $namespace := .Release.Namespace }}
-{{- $name := include "zookeeper.fullname" . -}}
+{{- $name := include "cp-zookeeper.fullname" . -}}
 {{- $serverPort := .Values.serverPort -}}
 {{- $leaderElectionPort := .Values.leaderElectionPort -}}
 {{- $zk := dict "servers" (list) -}}

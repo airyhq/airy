@@ -28,7 +28,7 @@ spec:
         - name: KAFKA_BROKERS
           value: kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
-          value: http://kafka-schema-registry:8081
+          value: http://cp-schema-registry:8081
         livenessProbe:
           tcpSocket:
             port: 6000

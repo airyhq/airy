@@ -37,7 +37,6 @@ kafka:
 ## Schema Registry
 ## ------------------------------------------------------
 schema-registry:
-  fullname: kafka-schema-registry
   enabled: true
   image: confluentinc/cp-schema-registry
   imageTag: 5.5.0

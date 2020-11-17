@@ -32,10 +32,19 @@ springboot(
 ]
 
 container_push(
-    name = "release",
+    name = "latest",
     format = "Docker",
     image = ":image",
     registry = "ghcr.io/airyhq/sources",
     repository = "facebook-webhook",
     tag = "latest",
+)
+
+container_push(
+    name = "beta",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/sources",
+    repository = "facebook-webhook",
+    tag = "beta",
 )

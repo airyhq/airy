@@ -36,10 +36,19 @@ springboot(
 ]
 
 container_push(
-    name = "release",
+    name = "latest",
     format = "Docker",
     image = ":image",
     registry = "ghcr.io/airyhq/sources",
     repository = "facebook-events-router",
     tag = "latest",
+)
+
+container_push(
+    name = "beta",
+    format = "Docker",
+    image = ":image",
+    registry = "ghcr.io/airyhq/sources",
+    repository = "facebook-events-router",
+    tag = "beta",
 )

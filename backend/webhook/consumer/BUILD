@@ -24,10 +24,19 @@ go_image(
 )
 
 container_push(
-    name = "release",
+    name = "latest",
     format = "Docker",
     image = ":go_image",
     registry = "ghcr.io/airyhq/webhook",
     repository = "consumer",
     tag = "latest",
+)
+
+container_push(
+    name = "beta",
+    format = "Docker",
+    image = ":go_image",
+    registry = "ghcr.io/airyhq/webhook",
+    repository = "consumer",
+    tag = "beta",
 )

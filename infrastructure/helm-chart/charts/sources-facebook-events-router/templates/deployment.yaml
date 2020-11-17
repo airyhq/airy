@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-facebook-events-router
+  namespace: default
+  labels:
+    app: sources-facebook-events-router
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: sources-facebook-events-router
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-facebook-events-router
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BROKERS
+          value: airy-cp-kafka-headless:9092
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          value: http://airy-cp-schema-registry:8081
+        - name: FB_APP_ID
+          valueFrom:
+            configMapKeyRef:
+              name: user-config
+              key: FB_APP_ID
+        - name: SERVICE_NAME
+          value: facebook-events-router
+        livenessProbe:
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3

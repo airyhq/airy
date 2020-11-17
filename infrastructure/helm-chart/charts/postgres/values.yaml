@@ -1,1 +1,3 @@
+pgUser: postgresadmin
 pgPassword: <pg_password>
+dbName: admin

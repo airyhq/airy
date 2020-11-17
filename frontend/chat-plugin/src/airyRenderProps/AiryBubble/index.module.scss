@@ -1,0 +1,40 @@
+.hideBubble {
+  float: right;
+  margin-bottom: 8px;
+  margin-right: 8px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #4bb3fd;
+  text-align: center;
+  cursor: pointer;
+}
+
+.hideBubble:hover {
+  .hideBubbleCross {
+    margin-top: 22px;
+    height: 15px;
+    width: 15px;
+  }
+}
+
+.hideBubble::before {
+  content: "";
+  position: absolute;
+  bottom: 9px;
+  right: 51px;
+  transform: rotateZ(42deg);
+  border-top: 14px solid #4bb3fd;
+  border-left: 8px solid transparent;
+  border-right: 14px solid transparent;
+  cursor: pointer;
+}
+
+.hideBubbleCross {
+  margin-top: 25px;
+}
+
+.bubbleIcon {
+  margin-top: 10px;
+  margin-right: 2px;
+}

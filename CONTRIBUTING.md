@@ -88,7 +88,7 @@ release.
 The convention is [#issue] - description, for the example issue "Introduce
 meaning of life" with number 42, the squashed commit message would be
 
-`[#42] - Introduce meaning of life`
+`[#42] Introduce meaning of life`
 
 ## Submitting
 

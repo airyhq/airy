@@ -67,8 +67,11 @@ The request returns an authentication token that needs to be included in the Web
 ```json5
 {
   id: "{UUID}",
-  content: "{String}",
-  // source content string
+  content: {
+    text: "{String}",
+    type: "text"
+    // Determines the schema of the content
+  },
   state: "{String}",
   // delivery state of message, one of PENDING, FAILED, DELIVERED
   alignment: "{string/enum}",

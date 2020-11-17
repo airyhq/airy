@@ -1,0 +1,42 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1578d4;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom: 1px solid #fff;
+  height: 48px;
+}
+
+.headerInfo {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  img {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+  }
+}
+
+.headerTitle {
+  color: white;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: bold;
+  padding: 0;
+  margin: 0 0 0 8px;
+  cursor: none;
+}
+
+.closeButton {
+  outline: none;
+  padding: 2px 0 0 2px;
+  border: none;
+  height: 32px;
+  width: 32px;
+  background: #1578d4;
+  border-radius: 100%;
+  cursor: pointer;
+}

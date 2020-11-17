@@ -21,7 +21,7 @@ parameters:
 
 name            - Unique name of the build rule. The dev server rule will be called name_server
 app_lib         - Label of the ts_library to run the tests on
-static_assets   - Filegroup (list of files) that should be copied "as is" to the webroot.
+static_assets   - (optional) Filegroup (list of files) that should be copied "as is" to the webroot.
                   Files need to be in a folder called 'public' so that we can implicitly infer their purpose
 entry           - Relative path to your compiled index.js
 index           - index.html file used for the build
@@ -36,11 +36,12 @@ def webapp(
         app_lib,
         entry,
         index,
-        static_assets,
+        static_assets = None,
         module_deps = [],
         dev_index = None,
         webpack_prod_config = None,
         webpack_dev_config = None):
+    static_assets = [static_assets] if static_assets else []
     ts_transpiled_sources = name + "_ts_transpiled"
 
     ts_srcs = [app_lib] + module_deps
@@ -72,14 +73,12 @@ def webapp(
             "$(@D)",
         ],
         data = [
-                   ":" + ts_transpiled_sources,
-                   webpack_prod_config,
-                   index,
-                   ts_config,
-                   "@npm//:node_modules",
-                   static_assets,
-               ] +
-               ts_srcs_assets,
+            ts_transpiled_sources,
+            webpack_prod_config,
+            index,
+            ts_config,
+            "@npm//:node_modules",
+        ] + ts_srcs_assets + static_assets,
     )
 
     dev_index = index if not dev_index else dev_index
@@ -99,14 +98,12 @@ def webapp(
         ],
         install_source_map_support = False,
         data = [
-                   ":" + ts_transpiled_sources,
-                   webpack_dev_config,
-                   dev_index,
-                   ts_config,
-                   "@npm//:node_modules",
-                   static_assets,
-               ] +
-               ts_srcs_assets,
+            ts_transpiled_sources,
+            webpack_dev_config,
+            dev_index,
+            ts_config,
+            "@npm//:node_modules",
+        ] + ts_srcs_assets + static_assets,
         tags = [
             "ibazel_notify_changes",
         ],

@@ -15,12 +15,13 @@ test --build_tests_only
 # CI configuration
 # ----------------
 common:ci --color=no
+# Disable highly verbose Kafka test output
+# This has to be common so that the action cache does not get invalidated
+common:ci --action_env=ROOT_LOG_LEVEL=ERROR
 
 build:ci --noshow_progress
 build:ci --verbose_failures
 build:ci --disk_cache=~/.cache/bazel
 build:ci --repository_cache==~/.cache/bazel_external
 
-# Disable highly verbose Kafka test output
-test:ci --action_env=ROOT_LOG_LEVEL=ERROR
 test:ci --flaky_test_attempts=2

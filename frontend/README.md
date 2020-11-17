@@ -25,3 +25,8 @@ Here is a quick introduction to the frontend projects:
   This project is a minimum UI implementation of the provided [Airy Core Platform API](https://docs.airy.co/api/http). 
   Unlike `showcase` it does not use the `npm` version of the `components` library, but instead uses the 
   local repository version. 
+
+- `chat_plugin`
+
+  This project is implements a UI for the [Chat Plugin Source](https://docs.airy.co/sources/chat-plugin) that can
+  be installed as Javascript tag on websites.

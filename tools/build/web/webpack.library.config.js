@@ -25,6 +25,10 @@ function resolveTsconfigPathsToAlias({ tsconfigPath, basePath }) {
 }
 
 const parseBazelDict = output => {
+  if (!output) {
+    return {};
+  }
+
   return output.split("|").reduce((acc, it) => {
     const keyValue = it.split("=");
     return {

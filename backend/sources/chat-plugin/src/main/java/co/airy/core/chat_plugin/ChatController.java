@@ -29,11 +29,13 @@ public class ChatController {
     private final ObjectMapper objectMapper;
     private final Stores stores;
     private final Jwt jwt;
+    private final Mapper mapper;
 
-    public ChatController(Stores stores, Jwt jwt, ObjectMapper objectMapper) {
+    public ChatController(Stores stores, Jwt jwt, ObjectMapper objectMapper, Mapper mapper) {
         this.stores = stores;
         this.jwt = jwt;
         this.objectMapper = objectMapper;
+        this.mapper = mapper;
     }
 
     @PostMapping("/chatplugin.authenticate")
@@ -77,7 +79,7 @@ public class ChatController {
                     .build();
 
             stores.sendMessage(message);
-            return ResponseEntity.ok(MessageResponsePayload.fromMessage(message));
+            return ResponseEntity.ok(mapper.fromMessage(message));
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestErrorResponsePayload(e.getMessage()));
         } catch (Exception e) {

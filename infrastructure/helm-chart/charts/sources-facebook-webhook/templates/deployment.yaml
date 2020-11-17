@@ -28,7 +28,7 @@ spec:
             - name: KAFKA_BROKERS
               value: kafka-headless:9092
             - name: KAFKA_SCHEMA_REGISTRY_URL
-              value: http://cp-schema-registry:8081
+              value: http://airy-cp-schema-registry:8081
             - name: SERVICE_NAME
               value: sources-facebook-webhook
             - name: FB_WEBHOOK_SECRET

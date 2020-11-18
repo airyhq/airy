@@ -17,7 +17,7 @@ test --build_tests_only
 common:ci --color=no
 # Disable highly verbose Kafka test output
 # This has to be common so that the action cache does not get invalidated
-common:ci --action_env=ROOT_LOG_LEVEL=ERROR
+build:ci --test_env=ROOT_LOG_LEVEL=ERROR
 
 build:ci --noshow_progress
 build:ci --verbose_failures

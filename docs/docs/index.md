@@ -33,7 +33,7 @@ following components:
 You can run the Airy Core Platform locally by running the following commands:
 
 ```sh
-$ git clone https://github.com/airyhq/airy
+$ git clone -b main https://github.com/airyhq/airy
 $ cd airy
 $ ./scripts/bootstrap.sh
 ```

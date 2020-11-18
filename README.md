@@ -20,7 +20,7 @@ You can run the Airy Core Platform locally by running the following commands:
 ```sh
 $ git clone https://github.com/airyhq/airy
 $ cd airy
-$ ./scripts/bootstrap.sh
+$ AIRY_VERSION=beta ./scripts/bootstrap.sh
 ```
 
 The bootstrap installation requires
@@ -71,7 +71,7 @@ Here is a quick overview of how the repository is organized:
 - `frontend`
 
   This directory contains the code for the UI components library and a demo epplication
-  that uses the library and a basic subset of the API. 
+  that uses the library and a basic subset of the API.
 
 - `infrastructure`
 

@@ -18,5 +18,5 @@ Here's an outline of the process:
   - Once we're satisfied with the release, we update the `VERSION` file with the current release number
   - We merge the release branch into `main`, tag `main` following the same naming convention and push to `main`
   - We merge the release branch back into `develop`
-  - We archive all done cards
+  - We archive cards in the done column of the [work in progress](https://github.com/airyhq/airy/projects/1) board
   - We announce the release!

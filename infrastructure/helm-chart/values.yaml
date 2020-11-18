@@ -49,7 +49,7 @@ cp-schema-registry:
 postgres:
   enabled: true
   image: postgres
-  imageTag: 12.4
+  imageTag: 12.4-alpine
   resources: {}
 
 ## ------------------------------------------------------

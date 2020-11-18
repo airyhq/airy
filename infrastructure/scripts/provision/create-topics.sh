@@ -9,7 +9,6 @@ REPLICAS=${REPLICAS:-1}
 echo "Creating kafka topics..."
 
 # TODO make sure the minimum number of kafkas are there before we deploy core topics
-sleep 1m
 
 kafka-topics --create --if-not-exists --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic application.communication.channels 1>/dev/null
 

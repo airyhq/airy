@@ -1,6 +1,6 @@
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
-load("@io_bazel_rules_docker//container:container.bzl", "container_push")
+load("//tools/build:container_push.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
@@ -32,19 +32,6 @@ springboot(
 ]
 
 container_push(
-    name = "latest",
-    format = "Docker",
-    image = ":image",
     registry = "ghcr.io/airyhq/sources",
     repository = "google-sender",
-    tag = "latest",
-)
-
-container_push(
-    name = "beta",
-    format = "Docker",
-    image = ":image",
-    registry = "ghcr.io/airyhq/sources",
-    repository = "google-sender",
-    tag = "beta",
 )

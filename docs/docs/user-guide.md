@@ -28,6 +28,7 @@ The script will ask for your password as we are using the [Vagrant Host Manager 
 ```
 192.168.50.5  demo.airy
 192.168.50.5  api.airy
+192.168.50.5  chatplugin.airy
 ```
 
 

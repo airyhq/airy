@@ -75,7 +75,7 @@ tag_id=$(extractFromPayload $tags_create_response "id")
 
 echo "tag created ${tag_id}"
 
-conversation_tag_response=$(apiCall "conversations.tag" "{\"conversation_id\": \"$conversation_id\"}, \"tag_id\": \"${tag_id}\"}" 202 ${token})
+conversation_tag_response=$(apiCall "conversations.tag" "{\"conversation_id\": \"$conversation_id\", \"tag_id\": \"${tag_id}\"}" 202 ${token})
 conversation_info_response=$(apiCall "conversations.info" "{\"conversation_id\": \"$conversation_id\"}" 200 ${token})
 
 echo "conversation info response ${conversation_info_response}"

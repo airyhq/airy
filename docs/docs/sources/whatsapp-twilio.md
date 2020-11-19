@@ -1,35 +1,24 @@
 ---
-title: Whatsapp with Twilio
+title: Whatsapp via Twilio
 sidebar_label: Whatsapp - Twilio
 ---
 
 The Twilio Whatsapp source provides a channel for sending and receiving Whatsapp messages
 using the [Twilio API](https://www.twilio.com/).
 
-This document assumes that you have already created a Twilio account and connected it to [Whatsapp](https://www.twilio.com/whatsapp).
+This document assumes that you have a Twilio account connected to [Whatsapp](https://www.twilio.com/whatsapp).
 
 ## Configuration
  
-First you must create a [Twilio auth token](https://support.twilio.com/hc/en-us/articles/223136027-Auth-Tokens-and-How-to-Change-Them),
-which you then add to `infrastructure/airy.conf` like so:
+You must create a [Twilio auth token](https://support.twilio.com/hc/en-us/articles/223136027-Auth-Tokens-and-How-to-Change-Them) and add it to `infrastructure/airy.conf` together with your account sid:
 
-```
-TWILIO_AUTH_TOKEN=<YOUR AUTH TOKEN>
-```
-
-You also have to add your account sid:
-
-```
-TWILIO_SID=<YOUR ACCOUNT SID>
-```
 
 
 ## Connecting a channel
 
-After you have created a Twilio phone number you must [point its webhook](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url) to your
-Airy Core installation.
+After you created a Twilio phone number, you must [point its webhook](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url) to your Airy Core Platform running instance.
 
-Next call the Platform API:
+Next call the Airy Core Platform API for connecting channels:
 
 ```
 POST /channels.connect
@@ -37,7 +26,7 @@ POST /channels.connect
 
 - `source` *must* be `whatsapp.twilio`
 - `source_channel_id`   The phone number as listed in your [Twilio dashboard](https://www.twilio.com/console/phone-numbers/). 
-                        Must not have spaces, must include the country code and be prefixed by `whatsapp:` 
+                        Must not have spaces, must include the country code, and be prefixed by `whatsapp:` 
 - `token` leave empty.
 
 ```json5

@@ -1,8 +1,8 @@
 package co.airy.kafka.schema.source;
 
-import co.airy.kafka.schema.SourceGoogle;
+import co.airy.kafka.schema.SourceTwilio;
 
-public class SourceGoogleEvents extends SourceGoogle {
+public class SourceTwilioEvents extends SourceTwilio {
     @Override
     public String dataset() {
         return "events";

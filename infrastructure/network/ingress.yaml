@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   rules:
-    - host: ""
+    - host: "api.airy"
       http:
         paths:
           - path: /users.login
@@ -176,13 +176,18 @@ spec:
                 name: api-admin
                 port:
                   number: 80
-          - path: /demo
-            pathType: Prefix
+    - host: "demo.airy"
+      http:
+        paths:
+          - path: /
             backend:
               service:
                 name: frontend-demo
                 port:
                   number: 80
+    - host: "chatplugin.airy"
+      http:
+        paths:
           - path: /chatplugin.authenticate
             pathType: Prefix
             backend:
@@ -195,5 +200,11 @@ spec:
             backend:
               service:
                 name: sources-chatplugin
+                port:
+                  number: 80
+          - path: /
+            backend:
+              service:
+                name: frontend-chat-plugin
                 port:
                   number: 80

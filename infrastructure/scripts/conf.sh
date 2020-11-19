@@ -21,6 +21,7 @@ kubectl delete pod startup-helper --force 2>/dev/null
 kubectl scale deployment api-admin --replicas=1
 kubectl scale deployment api-auth --replicas=1
 kubectl scale deployment frontend-demo --replicas=1
+kubectl scale deployment frontend-chat-plugin --replicas=1
 kubectl scale deployment api-communication --replicas=1
 kubectl scale deployment sources-facebook-events-router --replicas=1
 kubectl scale deployment sources-facebook-sender --replicas=1

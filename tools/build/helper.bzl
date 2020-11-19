@@ -1,3 +1,4 @@
+# E.g. ApplicationCommunicationMessages -> application-communication-messages
 def pascal_to_kebab(input):
     kebab_cased = ""
 

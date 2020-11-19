@@ -55,10 +55,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Deploy component library showcase
-        if: ${{github.ref == 'refs/heads/main'}}
-        run: bazel run //frontend/showcase:deploy
-
       - name: Push beta app images
         if: ${{github.ref == 'refs/heads/develop'}}
         run: |
@@ -88,13 +84,3 @@ jobs:
             echo "Deploying $target"
             bazel run $target
           done
-
-      - name: Publish component library to npm
-        if: ${{ startsWith(github.ref, 'refs/heads/npm/components/') }}
-        run: |
-          sudo apt-get install -y expect
-          bazel run //frontend/components:publish-npm release
-        env:
-          DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
-          DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}
-          DEPLOY_NPM_EMAIL: ${{ secrets.DEPLOY_NPM_EMAIL }}

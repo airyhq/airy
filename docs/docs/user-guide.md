@@ -66,11 +66,18 @@ $ vagrant up
 
 To integrate the Facebook source, you must provide your Facebook credentials.
 You must put them in the configuration file `airy.conf` located in the
-`infrastructure` directory and then run the following command:
+`infrastructure` directory and then run the following command in the root of the repository:
 
 ```sh
-$ vagrant provision --provision-with airy-conf
+./scripts/update-conf.sh
 ```
+
+or from inside the `infrastructure` directory:
+
+```sh
+vagrant ssh -c "/vagrant/scripts/conf.sh"
+```
+
 
 ### Airy Core API and Public webhooks
 

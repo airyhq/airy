@@ -19,6 +19,7 @@ do
 done
 mkdir -p /root/.kube
 ln -s /etc/rancher/k3s/k3s.yaml /root/.kube/config
+chmod o+r /etc/rancher/k3s/k3s.yaml
 
 cat <<EOF > /home/vagrant/.profile
 . /etc/profile

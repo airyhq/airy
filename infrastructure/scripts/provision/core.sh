@@ -21,12 +21,12 @@ sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/chart
 # Generate random JWT secret token
 kubectl create configmap secrets-config --from-literal=JWT_SECRET=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 128; echo`
 
-echo "Deploying Airy Core Platform with the ${APP_IMAGE_TAG} image tag"
+echo "Deploying the Airy Core Platform with the ${APP_IMAGE_TAG} image tag"
 
 cd /vagrant/scripts/
 wait-for-service-account
 
-helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=${APP_IMAGE_TAG} --version 0.5.0 --timeout 1000s > /dev/null 2>&1 || helm upgrade -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=${APP_IMAGE_TAG} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
+helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=${APP_IMAGE_TAG} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
 
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 kubectl scale statefulset airy-cp-zookeeper --replicas=1
@@ -38,7 +38,6 @@ wait-for-service startup-helper airy-cp-kafka 9092 15 Kafka
 kubectl cp provision/create-topics.sh airy-cp-kafka-0:/tmp
 kubectl exec airy-cp-kafka-0 -- /tmp/create-topics.sh
 
-kubectl delete pod -l app=postgres
 kubectl scale deployment postgres --replicas=1
 wait-for-service startup-helper postgres 5432 10 Postgres
 

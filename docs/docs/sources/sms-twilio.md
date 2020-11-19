@@ -9,18 +9,9 @@ This document assumes that you have a Twilio account.
 
 ## Configuration
  
-First you must create a [Twilio auth token](https://support.twilio.com/hc/en-us/articles/223136027-Auth-Tokens-and-How-to-Change-Them),
-which you then add to `infrastructure/airy.conf` like so:
+import TwilioSource from './twilio-source.mdx'
 
-```
-TWILIO_AUTH_TOKEN=<YOUR AUTH TOKEN>
-```
-
-You also have to add your account sid:
-
-```
-TWILIO_SID=<YOUR ACCOUNT SID>
-```
+<TwilioSource />
 
 ## Connecting a channel
 
@@ -38,11 +29,13 @@ POST /channels.connect
                         Must not have spaces and must include the country code. 
 - `token` leave empty.
 
+**Sample Request**
+
 ```json5
 {
   "source": "sms.twilio",
   "source_channel_id": "+491234567",
-  "name": "My custom name for this location",
+  "name": "SMS for receipts",
   "image_url": "https://example.com/custom-image.jpg" // optional
 }
 ```
@@ -52,7 +45,7 @@ POST /channels.connect
 ```json5
 {
     "id": "channel-uuid-1",
-    "name": "My custom name for this location",
+    "name": "SMS for receipts",
     "image_url": "https://example.com/custom-image.jpg",
     "source": "sms.twilio",
     "source_channel_id": "+491234567"

@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Service
 public class FacebookApi {
-    private final String SUBSCRIBED_FIELDS = "messages,messaging_postbacks,messaging_optins,message_deliveries,message_reads,messaging_payments,messaging_pre_checkouts,messaging_checkout_updates,messaging_account_linking,messaging_referrals,message_echoes,messaging_game_plays,standby,messaging_handovers,messaging_policy_enforcement,message_reactions,inbox_labels";
+    private static final String SUBSCRIBED_FIELDS = "messages,messaging_postbacks,messaging_optins,message_deliveries,message_reads,messaging_payments,messaging_pre_checkouts,messaging_checkout_updates,messaging_account_linking,messaging_referrals,message_echoes,messaging_game_plays,standby,messaging_handovers,messaging_policy_enforcement,message_reactions,inbox_labels";
     private final RestTemplate restTemplate = new RestTemplate();
     private final String baseUrl = "https://graph.facebook.com/v3.2";
     private final String pageFields = "fields=id,name_with_location_descriptor,access_token,picture,is_webhooks_subscribed";

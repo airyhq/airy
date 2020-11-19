@@ -7,9 +7,9 @@ content_type='Content-Type: application/json'
 
 
 function apiCall {
-  local endpoint=$1
-  local request_payload=$2
-  local expected_http_response_code=$3
+  local endpoint=${1}
+  local request_payload=${2}
+  local expected_http_response_code=${3}
   local token=${4:-no-auth}
   local url="api.airy/${endpoint}"
 
@@ -18,8 +18,8 @@ function apiCall {
     else
       response=$(curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
   fi
-  response_http_code=$(head -1 <<< "$response")
-  response_payload=$(tail -1 <<< "$response")
+  response_http_code=$(head -1 <<< "${response}")
+  response_payload=$(tail -1 <<< "${response}")
 
   if [ "${response_http_code}" != "${expected_http_response_code}" ]; then
     >&2 echo "${url} response code was ${response_http_code}. expected: ${expected_http_response_code}"
@@ -30,8 +30,8 @@ function apiCall {
 }
 
 function extractFromPayload {
-  local payload=$(tail -1 <<< "$1")
-  echo $payload | jq -r ".$2"
+  local payload=$(tail -1 <<< "${1}")
+  echo ${payload} | jq -r ".${2}"
 }
 
 login_response=$(apiCall "users.login" '{"email":"grace@example.com","password":"the_answer_is_42"}' 200)
@@ -75,7 +75,7 @@ tag_id=$(extractFromPayload $tags_create_response "id")
 
 echo "tag created ${tag_id}"
 
-conversation_tag_response=$(apiCall "conversations.tag" "{\"conversation_id\": \"$conversation_id\"}" 202 ${token})
+conversation_tag_response=$(apiCall "conversations.tag" "{\"conversation_id\": \"$conversation_id\", \"tag_id\": \"${tag_id}\"}" 202 ${token})
 conversation_info_response=$(apiCall "conversations.info" "{\"conversation_id\": \"$conversation_id\"}" 200 ${token})
 
 echo "conversation info response ${conversation_info_response}"

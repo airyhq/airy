@@ -2,14 +2,13 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-while ! `kubectl -n kube-system get service --field-selector="metadata.name=traefik" 2>/dev/null | grep -q "traefik"`
-do
-    echo "Waiting for ingress to start... "
-    sleep 10
-done
+source /vagrant/scripts/lib/k8s.sh
 
-kubectl exec kafka-client -- /root/wait-for-service.sh api-auth 80 10 Airy-auth
+kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 
+wait-for-ingress-service
+wait-for-running-pod startup-helper
+wait-for-service startup-helper api-auth 80 10 Airy-auth
 
 FACEBOOK_WEBHOOK_PUBLIC_URL=`kubectl get configmap public-urls -o jsonpath='{.data.FACEBOOK_WEBHOOK_PUBLIC_URL}'`
 GOOGLE_WEBHOOK_PUBLIC_URL=`kubectl get configmap public-urls -o jsonpath='{.data.GOOGLE_WEBHOOK_PUBLIC_URL}'`
@@ -26,3 +25,5 @@ echo "http://api.airy/"
 echo
 echo "Example:"
 echo "curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}' http://api.airy/users.signup"
+
+kubectl delete pod startup-helper --force 2>/dev/null

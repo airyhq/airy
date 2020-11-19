@@ -2,29 +2,21 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-while ! `kubectl get pod --field-selector="metadata.name=kafka-client,status.phase=Running" 2>/dev/null| grep -q kafka-client`
-do
-    sleep 5
-    echo "Waiting for kafka-client to start..."
-done
+source /vagrant/scripts/lib/k8s.sh
 
-while ! `kubectl exec kafka-client -- id > /dev/null`
-do
-    sleep 5
-    echo "Waiting for kafka-client to be ready..."
-done
+kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
+wait-for-running-pod startup-helper
 
-kubectl cp /vagrant/scripts/trigger/wait-for-service.sh kafka-client:/root/
 kubectl scale statefulset airy-cp-zookeeper --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-zookeeper 2181 15 Zookeeper
+wait-for-service startup-helper airy-cp-zookeeper 2181 15 Zookeeper
 kubectl scale statefulset airy-cp-kafka --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-kafka 9092 15 Kafka
+wait-for-service startup-helper airy-cp-kafka 9092 15 Kafka
 kubectl scale statefulset redis-cluster --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh redis-cluster 6379 10 Redis
+wait-for-service startup-helper redis-cluster 6379 10 Redis
 kubectl scale deployment postgres --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh postgres 5432 10 Postgres
+wait-for-service startup-helper postgres 5432 10 Postgres
 kubectl scale deployment airy-cp-schema-registry --replicas=1
-kubectl exec kafka-client -- /root/wait-for-service.sh airy-cp-schema-registry 8081 15 Schema-registry
+wait-for-service startup-helper airy-cp-schema-registry 8081 15 Schema-registry
 
 echo "Starting up Airy Core Platform appplications"
 kubectl scale deployment api-admin --replicas=1
@@ -42,5 +34,6 @@ kubectl scale deployment webhook-consumer --replicas=1
 kubectl scale deployment webhook-publisher --replicas=1
 kubectl scale deployment sources-chatplugin --replicas=1
 
-
 chmod o+r /etc/rancher/k3s/k3s.yaml
+
+kubectl delete pod startup-helper --force 2>/dev/null

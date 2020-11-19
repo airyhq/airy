@@ -34,7 +34,7 @@ POST /channels.connect
 {
   "source": "google",
   "source_channel_id": "gbm-id",
-  "name": "My custom name for this location", // optional
+  "name": "My custom name for this location",
   "image_url": "https://example.com/custom-image.jpg" // optional
 }
 ```

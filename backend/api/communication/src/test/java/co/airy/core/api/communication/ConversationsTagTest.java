@@ -122,7 +122,7 @@ class ConversationsTagTest {
     }
 
     @Test
-    public void badRequestOnEmptyPayload() throws Exception {
+    public void canHandleAnEmptyPayload() throws Exception {
         webTestHelper.post("/conversations.tag", "{}", "user-id")
                 .andExpect(status().isBadRequest());
     }

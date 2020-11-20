@@ -1,9 +1,9 @@
-import { h, Component } from "preact";
-import { Router } from "preact-router";
+import {h, Component} from 'preact';
+import {Router} from 'preact-router';
 
-import ChatRoute from "./routes/chat";
+import ChatRoute from './routes/chat';
 
-import style from "./App.module.scss";
+import style from './App.module.scss';
 
 export default class App extends Component {
   currentUrl: string = null;
@@ -16,7 +16,7 @@ export default class App extends Component {
     return (
       <div className={style.container}>
         <Router onChange={this.handleRoute}>
-          <ChatRoute path={"/"} />
+          <ChatRoute path={'/'} />
         </Router>
       </div>
     );

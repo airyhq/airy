@@ -1,24 +1,21 @@
-import { combineReducers } from "redux-starter-kit";
-import { getType } from "typesafe-actions";
-import _, { CombinedState } from "redux";
+import {combineReducers} from 'redux-starter-kit';
+import {getType} from 'typesafe-actions';
+import _, {CombinedState} from 'redux';
 
-import * as authActions from "../actions/user";
-import { clearUserData } from "../api/webStore";
+import * as authActions from '../actions/user';
+import {clearUserData} from '../api/webStore';
 
-import data, { DataState } from "./data";
+import data, {DataState} from './data';
 
 export type StateModel = {
   data: DataState;
 };
 
 const applicationReducer = combineReducers<StateModel>({
-  data
+  data,
 });
 
-const rootReducer: (state: any, action: any) => CombinedState<StateModel> = (
-  state,
-  action
-) => {
+const rootReducer: (state: any, action: any) => CombinedState<StateModel> = (state, action) => {
   if (action.type === getType(authActions.logoutUserAction)) {
     clearUserData();
     return applicationReducer(undefined, action);

@@ -1,19 +1,14 @@
-export function setCookie(
-  name: string,
-  value: string,
-  domain: string,
-  days: number = 3650
-) {
+export function setCookie(name: string, value: string, domain: string, days: number = 3650) {
   let expires: string;
   if (days) {
     const date = new Date();
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     expires = `; expires=${date.toUTCString()}`;
   } else {
-    expires = "";
+    expires = '';
   }
 
-  let setDomain = "";
+  let setDomain = '';
 
   if (domain) {
     setDomain = `; domain=${domain}`;
@@ -27,13 +22,11 @@ export function getCookie(cookieName: string): string | null {
     let cookieStart = document.cookie.indexOf(`${cookieName}=`);
     if (cookieStart !== -1) {
       cookieStart = cookieStart + cookieName.length + 1;
-      let cookieEnd = document.cookie.indexOf(";", cookieStart);
+      let cookieEnd = document.cookie.indexOf(';', cookieStart);
       if (cookieEnd === -1) {
         cookieEnd = document.cookie.length;
       }
-      return decodeURIComponent(
-        document.cookie.substring(cookieStart, cookieEnd)
-      );
+      return decodeURIComponent(document.cookie.substring(cookieStart, cookieEnd));
     }
   }
 

@@ -22,8 +22,8 @@ export const userMapper = (payload: UserPayload): User => {
     id: payload.id,
     firstName: payload.first_name,
     lastName: payload.last_name,
-    displayName: payload.first_name + " " + payload.last_name,
-    token: payload.token
+    displayName: payload.first_name + ' ' + payload.last_name,
+    token: payload.token,
   };
   return user;
 };
@@ -31,7 +31,7 @@ export const userMapper = (payload: UserPayload): User => {
 export enum AUTH_STATE {
   NOT_AUTHENTICATED,
   REFRESHING,
-  AUTHENTICATED_AND_LOADED
+  AUTHENTICATED_AND_LOADED,
 }
 
 export const authState = (state: User) => {

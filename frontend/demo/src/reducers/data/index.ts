@@ -1,14 +1,14 @@
-import _, { combineReducers, Reducer } from "redux-starter-kit";
-import { User } from "../../model/User";
+import _, {combineReducers, Reducer} from 'redux-starter-kit';
+import {User} from '../../model/User';
 
-import user from "./user";
+import user from './user';
 
 export type DataState = {
   user: User;
 };
 
 const reducers: Reducer = combineReducers<DataState>({
-  user
+  user,
 });
 
 export default reducers;

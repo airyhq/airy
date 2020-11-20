@@ -1,8 +1,8 @@
-import { h, render } from "preact";
+import {h, render} from 'preact';
 
 const renderMethod = () => {
-  const App = require("./App").default;
-  render(<App />, document.getElementById("root"));
+  const App = require('./App').default;
+  render(<App />, document.getElementById('root'));
 };
 
 renderMethod();
@@ -10,7 +10,7 @@ renderMethod();
 declare const module: any;
 
 if (module.hot) {
-  module.hot.accept("./App", () => {
+  module.hot.accept('./App', () => {
     renderMethod();
   });
 }

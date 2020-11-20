@@ -1,21 +1,21 @@
-import { getCookie, setCookie } from "./cookie";
-import { User } from "../model/User";
+import {getCookie, setCookie} from './cookie';
+import {User} from '../model/User';
 
 export const storeDomainCookie = (key: string) => (token: string) => {
   setCookie(key, token, document.domain);
 };
 
-export const setUserId = storeDomainCookie("userId");
-export const setAuthToken = storeDomainCookie("authToken");
-export const getUserId = () => getCookie("userId");
-export const getAuthToken = () => getCookie("authToken");
+export const setUserId = storeDomainCookie('userId');
+export const setAuthToken = storeDomainCookie('authToken');
+export const getUserId = () => getCookie('userId');
+export const getAuthToken = () => getCookie('authToken');
 
 export function storeUserData(data: User) {
   if (data.token) {
-    localStorage.setItem("id", data.id);
-    localStorage.setItem("firstName", data.firstName);
-    localStorage.setItem("lastName", data.lastName);
-    localStorage.setItem("isAuthSuccess", JSON.stringify(true));
+    localStorage.setItem('id', data.id);
+    localStorage.setItem('firstName', data.firstName);
+    localStorage.setItem('lastName', data.lastName);
+    localStorage.setItem('isAuthSuccess', JSON.stringify(true));
     setAuthToken(data.token);
     setUserId(data.id);
   }
@@ -23,13 +23,13 @@ export function storeUserData(data: User) {
 
 export function clearUserData() {
   localStorage.clear();
-  setAuthToken("");
-  setUserId("");
+  setAuthToken('');
+  setUserId('');
 }
 
 export const getUserFromStore = () => {
   const tokens = {
-    token: getAuthToken()
+    token: getAuthToken(),
   };
 
   if (localStorage.id) {
@@ -39,12 +39,12 @@ export const getUserFromStore = () => {
       firstName: localStorage.firstName,
       lastName: localStorage.lastName,
       role: localStorage.role,
-      ...tokens
+      ...tokens,
     };
   }
 
   return {
-    ...tokens
+    ...tokens,
   };
 };
 

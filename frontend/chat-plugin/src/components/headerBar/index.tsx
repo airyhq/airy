@@ -1,5 +1,5 @@
-import { h } from "preact";
-import { RenderProp } from "../../config";
+import {h} from 'preact';
+import {RenderProp} from '../../config';
 
 type Props = {
   render: RenderProp;

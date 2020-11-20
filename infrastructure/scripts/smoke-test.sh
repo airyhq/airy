@@ -48,12 +48,12 @@ echo "created channed ${channel_id}"
 channels_list=$(apiCall "channels.list" '{}' 200 ${token})
 channels_explore=$(apiCall "channels.explore" '{"source": "chat_plugin"}' 200 ${token})
 
-chatplugin_authenticate_response=$(apiCall "authenticate" "{\"channel_id\": \"$channel_id\"}" 200 ${token} chatplugin)
+chatplugin_authenticate_response=$(apiCall "chatplugin.authenticate" "{\"channel_id\": \"$channel_id\"}" 200 ${token} chatplugin)
 chatplugin_token=$(extractFromPayload $chatplugin_authenticate_response "token")
 
 echo "authenticated via chatplugin ${chatplugin_token}"
 
-chatplugin_send_response=$(apiCall "messages.send" '{"message": {"text": "Message from chatplugin"}}' 200 ${chatplugin_token} chatplugin)
+chatplugin_send_response=$(apiCall "chatplugin.send" '{"message": {"text": "Message from chatplugin"}}' 200 ${chatplugin_token} chatplugin)
 chatplugin_message_id=$(extractFromPayload $chatplugin_send_response "id")
 sleep 1
 

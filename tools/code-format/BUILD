@@ -5,7 +5,6 @@ load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 multirun(
     name = "check",
     commands = [
-        "check_prettier",
         "check_buildifier",
     ],
     parallel = True,
@@ -19,22 +18,6 @@ multirun(
         "fix_buildifier",
     ],
     visibility = ["//visibility:public"],
-)
-
-nodejs_binary(
-    name = "check_prettier",
-    data = [
-        "chdir.js",
-        "@npm//prettier",
-    ],
-    entry_point = "@npm//:node_modules/prettier/bin-prettier.js",
-    install_source_map_support = False,
-    templated_args = [
-        # This is a little trick we need to do in order to run prettier in the workspace root
-        # The check_prettier.sh executable can not be used in other executable rules
-        "--node_options=--require=$$(rlocation $(rootpath chdir.js))",
-        "--check '**/*.{css,scss,ts,tsx,js}'",
-    ],
 )
 
 buildifier(

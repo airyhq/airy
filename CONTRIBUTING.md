@@ -37,29 +37,37 @@ You can push as many commits we need to finish a feature.
 
 ## Lint your changes
 
+You can lint the entire code base by executing the `./lint.sh` script.
+
 We use language specific linters: [buildifier](https://github.com/bazelbuild/buildtools/tree/master/buildifier) to lint Bazel files, [prettier](https://prettier.io/) for TypeScript, JavaScript and SCSS, [CheckStyle](https://checkstyle.sourceforge.io/) for Java.
 
-Java linting is run as a test, so depending on the package you can run:
+Java and prettier are ran as test targets for each package, so for a Java package you can run
 
-```sh
+```shell script
 bazel test //my/package:checkstyle
 ```
 
-to have Bazel check your Java code for linting errors.
+to check the java code and:
 
-Buildifier and Prettier are bundled up in a single Bazel command. So you can run:
+```shell script
+bazel test //my/package:prettier
+```
+ 
+to check your web source files.
 
-```sh
-bazel run //:check
+To execute the buildifier linter run:
+
+```shell script
+bazel run //:check 
 ```
 
-to check your code and:
+You can also run:
 
-```sh
+```shell script
 bazel run //:fix
 ```
 
-to try fixing linting issues automatically.
+to try fixing linting issues automatically (not supported for checkstyle).
 
 ## Test your change
 

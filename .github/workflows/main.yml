@@ -38,11 +38,11 @@ jobs:
 
       - name: Lint
         run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" run //:check
+          ./lint.sh
 
       - name: Test
         run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" test //...
+          "${GITHUB_WORKSPACE}/bin/bazel" test --test_tag_filters=-lint //...
 
       - name: Build all artifacts
         run: |

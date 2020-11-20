@@ -1,4 +1,5 @@
 load("//tools/build/web:files.bzl", "copy_filegroups")
+load("//tools/code-format:prettier.bzl", "check_pkg")
 load("@npm_bazel_typescript//:index.bzl", lib_ts = "ts_library")
 
 """
@@ -46,6 +47,8 @@ def ts_library(name, srcs = None, deps = None, data = None, tsconfig = None):
         "**/*.svg",
         "**/*.json",
     ])
+
+    check_pkg()
 
     data = default_data_glob if not data else data
 

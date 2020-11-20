@@ -26,6 +26,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
+
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final Logger log = AiryLoggerFactory.getLogger(Stores.class);
@@ -60,7 +62,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 && message.getDeliveryState().equals(DeliveryState.PENDING)
         )
                 .mapValues((messageId, message) -> {
-                    message.setDeliveryState(DeliveryState.DELIVERED);
+                    updateDeliveryState(message, DeliveryState.DELIVERED);
                     try {
                         webSocketController.onNewMessage(message);
                     } catch (Exception e) {

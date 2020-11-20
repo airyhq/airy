@@ -1,21 +1,21 @@
-import { h } from "preact";
-import { useState, useEffect } from "preact/hooks";
-import style from "./index.module.scss";
+import {h} from 'preact';
+import {useState, useEffect} from 'preact/hooks';
+import style from './index.module.scss';
 
 type Props = {
   sendMessage: (text: string) => void;
 };
 
 const AiryInputBar = (props: Props) => {
-  const [messageString, setMessageString] = useState("");
+  const [messageString, setMessageString] = useState('');
 
   useEffect(() => {
-    setMessageString("");
+    setMessageString('');
   }, []);
 
   const resizeTextarea = e => {
     if (e.target.style) {
-      e.target.style.height = "32px";
+      e.target.style.height = '32px';
       e.target.style.height = `${Math.min(e.target.scrollHeight, 128)}px`;
     }
   };
@@ -23,7 +23,7 @@ const AiryInputBar = (props: Props) => {
   const onSubmit = (e: any) => {
     e.preventDefault();
     if (messageString.length) {
-      setMessageString("");
+      setMessageString('');
       props.sendMessage(messageString);
     }
   };
@@ -46,10 +46,10 @@ const AiryInputBar = (props: Props) => {
   const handleLocalKeyDown = e => {
     resizeTextarea(e);
     const localValue = e.target.value;
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       if (localValue.length) {
         e.preventDefault();
-        setMessageString("");
+        setMessageString('');
         props.sendMessage(localValue);
       }
     }
@@ -59,7 +59,7 @@ const AiryInputBar = (props: Props) => {
     <form className={style.inputBar} onSubmit={(e: any) => onSubmit(e)}>
       <textarea
         className={style.textArea}
-        placeholder={"Enter a message..."}
+        placeholder={'Enter a message...'}
         autoFocus={true}
         onChange={handleLocalChange}
         onInput={handleLocalOnInput}

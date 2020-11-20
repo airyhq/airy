@@ -1,8 +1,8 @@
-import AiryWidget from "./AiryWidget";
+import AiryWidget from './AiryWidget';
 
-const body = document.getElementsByTagName("body")[0];
+const body = document.getElementsByTagName('body')[0];
 
-const anchor = document.createElement("div");
+const anchor = document.createElement('div');
 
 anchor.style.cssText = `
 position: fixed;
@@ -24,5 +24,5 @@ body.appendChild(anchor);
 
 new AiryWidget({
   // @ts-ignore
-  channel_id: window.airy.cid
+  channel_id: window.airy.cid,
 }).render(anchor);

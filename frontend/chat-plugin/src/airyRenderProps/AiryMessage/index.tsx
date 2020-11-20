@@ -1,7 +1,7 @@
-import { h } from "preact";
-import linkifyString from "linkifyjs/string";
+import {h} from 'preact';
+import linkifyString from 'linkifyjs/string';
 
-import style from "./index.module.scss";
+import style from './index.module.scss';
 
 type Props = {
   message: {
@@ -12,18 +12,16 @@ type Props = {
   };
 };
 
-const AiryMessage = ({ message }: Props) => {
-  const isInbound = message.alignment === "LEFT";
+const AiryMessage = ({message}: Props) => {
+  const isInbound = message.alignment === 'LEFT';
   const messageDisplay = linkifyString(message.content.text, {
-    className: `${isInbound ? style.messageLinkRight : style.messageLinkLeft}`
+    className: `${isInbound ? style.messageLinkRight : style.messageLinkLeft}`,
   });
 
   return (
-    <div
-      className={`${isInbound ? style.containerRight : style.containerLeft}`}
-    >
+    <div className={`${isInbound ? style.containerRight : style.containerLeft}`}>
       <div className={`${isInbound ? style.bubbleRight : style.bubbleLeft}`}>
-        <div dangerouslySetInnerHTML={{ __html: messageDisplay }} />
+        <div dangerouslySetInnerHTML={{__html: messageDisplay}} />
       </div>
     </div>
   );

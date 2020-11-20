@@ -54,6 +54,12 @@ pkg_tar(
 )
 
 pkg_tar(
+    name = "example_tar",
+    srcs = [":example.html"],
+    package_dir = "/usr/share/nginx/html/",
+)
+
+pkg_tar(
     name = "conf_tar",
     srcs = [":nginx.conf"],
     package_dir = "/etc/nginx",
@@ -64,6 +70,7 @@ container_image(
     base = "@nginx_base//image",
     tars = [
         ":bundle_tar",
+        ":example_tar",
         ":conf_tar",
     ],
     visibility = ["//visibility:public"],

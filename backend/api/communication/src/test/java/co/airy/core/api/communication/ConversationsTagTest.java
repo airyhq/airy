@@ -120,4 +120,10 @@ class ConversationsTagTest {
                         .andExpect(jsonPath("$.tags.length()", is(0))),
                 "Conversation was not untagged");
     }
+
+    @Test
+    public void canHandleAnEmptyPayload() throws Exception {
+        webTestHelper.post("/conversations.tag", "{}", "user-id")
+                .andExpect(status().isBadRequest());
+    }
 }

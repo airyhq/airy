@@ -16,7 +16,7 @@ def prettier(srcs):
             "$(rootpath " + src + ")"
             for src in srcs
         ],
-        tags = ["lint"]
+        tags = ["lint"],
     )
 
 # Add code style checking to all web files in package if not already defined

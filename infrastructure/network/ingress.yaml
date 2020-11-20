@@ -189,14 +189,14 @@ spec:
     - host: "chatplugin.airy"
       http:
         paths:
-          - path: /chatplugin.authenticate
+          - path: /authenticate
             pathType: Prefix
             backend:
               service:
                 name: sources-chatplugin
                 port:
                   number: 80
-          - path: /chatplugin.send
+          - path: /messages.send
             pathType: Prefix
             backend:
               service:

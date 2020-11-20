@@ -28,7 +28,7 @@ API](api/http.md#introduction).
 
 ### Authenticating web users
 
-`POST /chatplugin.authenticate`
+`POST /authenticate`
 
 The request returns an authentication token that needs to be included in the WebSocket connection handshake.
 
@@ -50,7 +50,7 @@ The request returns an authentication token that needs to be included in the Web
 
 #### Send message
 
-`POST /chatplugin.send`
+`POST /messages.send`
 
 **Sample Request**
 

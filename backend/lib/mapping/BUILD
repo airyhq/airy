@@ -8,6 +8,7 @@ lib_deps = [
     "//:jackson",
     "//backend/lib/log",
     "//backend/avro/communication:message",
+    "@maven//:javax_validation_validation_api",
 ]
 
 custom_java_library(

@@ -11,7 +11,7 @@ function apiCall {
   local request_payload=${2}
   local expected_http_response_code=${3}
   local token=${4:-no-auth}
-  local host=${5:api}
+  local host=${5:-api}
   local url="${host}.airy/${endpoint}"
 
   if [ "$token" = "no-auth" ]; then

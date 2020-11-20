@@ -1,6 +1,10 @@
 import { Client, messageCallbackType, IFrame } from "@stomp/stompjs";
 import "regenerator-runtime/runtime";
 
+// @ts-ignore
+// Default to hostname set by local environment
+const API_HOST = window.airy.h || "chatplugin.api";
+
 class Websocket {
   client: Client;
   channel_id: string;
@@ -13,7 +17,7 @@ class Websocket {
 
   connect = (token: string) => {
     this.client = new Client({
-      brokerURL: "wss://airy.api/ws.chatplugin",
+      brokerURL: `wss://${API_HOST}/ws.chatplugin`,
       connectHeaders: {
         Authorization: token
       },
@@ -40,7 +44,7 @@ class Websocket {
   };
 
   onSend = (message: string) => {
-    return fetch("https://airy.api/chatplugin.send", {
+    return fetch(`https://${API_HOST}/chatplugin.send`, {
       method: "POST",
       body: message,
       headers: {
@@ -51,15 +55,18 @@ class Websocket {
 
   async start() {
     try {
-      const response = await fetch("https://airy.api/chatplugin.authenticate", {
-        method: "POST",
-        body: JSON.stringify({
-          channel_id: this.channel_id
-        }),
-        headers: {
-          "Content-Type": "application/json"
+      const response = await fetch(
+        `https://${API_HOST}/chatplugin.authenticate`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            channel_id: this.channel_id
+          }),
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
-      });
+      );
 
       const jsonResponse = await response.json();
       this.connect(jsonResponse.token);

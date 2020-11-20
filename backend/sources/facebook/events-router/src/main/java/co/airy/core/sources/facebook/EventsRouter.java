@@ -57,7 +57,6 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                 .filter((sourceChannelId, channel) -> "facebook".equalsIgnoreCase(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
-        // Inbound
         builder.<String, String>stream(new SourceFacebookEvents().name())
                 .flatMap((key, event) -> {
                     WebhookEvent webhookEvent;
@@ -98,7 +97,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                             .collect(toList());
                 })
                 .join(channelsTable, (event, channel) -> event.toBuilder().channel(channel).build())
-                .map((facebookId, event) -> {
+                .map((facebookPageId, event) -> {
                     final String sourceConversationId = event.getSourceConversationId();
                     final String payload = event.getPayload();
                     final Channel channel = event.getChannel();
@@ -112,7 +111,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                         return KeyValue.pair(
                                 messageId,
                                 messageBuilder
-                                        .setSource("facebook")
+                                        .setSource(channel.getSource())
                                         .setDeliveryState(DeliveryState.DELIVERED)
                                         .setId(messageId)
                                         .setChannelId(channel.getId())

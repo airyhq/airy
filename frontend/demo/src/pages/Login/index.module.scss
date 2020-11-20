@@ -1,3 +1,5 @@
+@import "../../assets/scss/fonts";
+
 .loginWrapper {
   display: flex;
   justify-content: safe center;
@@ -16,6 +18,7 @@
   }
 
   h1 {
+    @include font-xl;
     font-weight: bold;
     padding-top: 40px;
     padding-bottom: 32px;
@@ -74,6 +77,7 @@
 }
 
 .footer {
+  @include font-s;
   margin-bottom: 1em;
   text-align: center;
   padding-bottom: 16px;

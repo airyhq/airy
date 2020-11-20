@@ -1,18 +1,19 @@
-package co.airy.core.sources.facebook;
+package co.airy.core.sources.twilio;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.sources.facebook.model.SendMessagePayload;
-import co.airy.core.sources.facebook.model.SendMessageRequest;
-import co.airy.core.sources.facebook.services.Api;
-import co.airy.core.sources.facebook.services.Mapper;
+import co.airy.core.sources.twilio.model.SendMessageRequest;
+import co.airy.core.sources.twilio.services.Api;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
+import co.airy.mapping.ContentMapper;
+import co.airy.mapping.model.Text;
+import com.twilio.exception.ApiException;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
@@ -23,20 +24,18 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-
 import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
 
 @Component
 public class Sender implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final Logger log = AiryLoggerFactory.getLogger(Sender.class);
-    private static final String appId = "sources.facebook.Sender";
+    private static final String appId = "sources.twilio.Sender";
 
     private final KafkaStreamsWrapper streams;
     private final Api api;
-    private final Mapper mapper;
+    private final ContentMapper mapper;
 
-    Sender(KafkaStreamsWrapper streams, Api api, Mapper mapper) {
+    Sender(KafkaStreamsWrapper streams, Api api, ContentMapper mapper) {
         this.streams = streams;
         this.api = api;
         this.mapper = mapper;
@@ -47,11 +46,11 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
 
         // Channels table
         KTable<String, Channel> channelsTable = builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
-                .filter((sourceChannelId, channel) -> "facebook".equalsIgnoreCase(channel.getSource())
+                .filter((sourceChannelId, channel) -> channel.getSource().endsWith("twilio")
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId, message) -> "facebook".equalsIgnoreCase(message.getSource()))
+                .filter((messageId, message) -> message.getSource().endsWith("twilio"))
                 .selectKey((messageId, message) -> message.getConversationId());
 
         final KTable<String, SendMessageRequest> contextTable = messageStream
@@ -84,19 +83,20 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
 
     private Message sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();
+        final String from = sendMessageRequest.getChannel().getSourceChannelId();
+        final String to = sendMessageRequest.getSourceConversationId();
 
         try {
-            final String pageToken = sendMessageRequest.getChannel().getToken();
-            final SendMessagePayload fbSendMessagePayload = mapper.fromSendMessageRequest(sendMessageRequest);
-
-            api.sendMessage(pageToken, fbSendMessagePayload);
+            // TODO Figure out how we can let clients know which outbound message types are supported
+            final Text content = (Text) mapper.render(message);
+            api.sendMessage(from, to, content.getText());
 
             updateDeliveryState(message, DeliveryState.DELIVERED);
             return message;
         } catch (ApiException e) {
-            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
+            log.error(String.format("Failed to send a message to Twilio \n SendMessageRequest: %s \n Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
         } catch (Exception e) {
-            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s", sendMessageRequest), e);
+            log.error(String.format("Failed to send a message to Twilio \n SendMessageRequest: %s", sendMessageRequest), e);
         }
 
         updateDeliveryState(message, DeliveryState.FAILED);

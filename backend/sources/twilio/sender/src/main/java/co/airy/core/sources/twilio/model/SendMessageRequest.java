@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.model;
+package co.airy.core.sources.twilio.model;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;

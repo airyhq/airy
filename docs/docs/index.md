@@ -9,14 +9,11 @@ that allows its user to process messaging data from a variety of sources (like
 facebook messenger or google business messages). The core platform contains the
 following components:
 
-- A ingestion platform that heavily relies on [Apache
+- An ingestion platform that heavily relies on [Apache
   Kafka](https://kafka.apache.org) to process incoming webhook data from
   different sources. We make sense of the data and reshape it into source
   independent contacts, conversations, and messages (see our
   [glossary](glossary.md) for formal definitions).
-
-- A [React](https://reactjs.org/) UI component library which we showcase at
-  [components.airy.co](https://components.airy.co).
 
 - An [HTTP api](api/http.md) to manage the data sets the platform
   handles.

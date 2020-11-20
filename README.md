@@ -40,9 +40,6 @@ The Airy Core Platform contains the following components:
   independent contacts, conversations, and messages (see our
   [glossary](/docs/docs/glossary.md) for formal definitions).
 
-- A [React](https://reactjs.org/) UI component library which we showcase at
-  [components.airy.co](https://components.airy.co)
-
 - An [API](/docs/docs/api.md) to manage the data sets the platform
   handles.
 
@@ -70,8 +67,8 @@ Here is a quick overview of how the repository is organized:
 
 - `frontend`
 
-  This directory contains the code for the UI components library and a demo epplication
-  that uses the library and a basic subset of the API.
+  This directory contains the code of a demo epplication which showcases
+  the feature of the platform.
 
 - `infrastructure`
 

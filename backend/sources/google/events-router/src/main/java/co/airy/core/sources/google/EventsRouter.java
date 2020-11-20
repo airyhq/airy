@@ -77,6 +77,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
 
                     GoogleEventInfo googleEventInfo = GoogleInfoExtractor.extract(webhookEvent);
                     googleEventInfo.setEventPayload(sourceEvent);
+                    googleEventInfo.setTimestamp(Instant.parse(webhookEvent.getSendTime()).toEpochMilli());
 
                     if (!webhookEvent.isMessage()) {
                         return KeyValue.pair(googleEventInfo.getAgentId(), null);
@@ -98,7 +99,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     return KeyValue.pair(
                             messageId,
                             messageBuilder
-                                    .setSource("google")
+                                    .setSource(channel.getSource())
                                     .setDeliveryState(DeliveryState.DELIVERED)
                                     .setId(messageId)
                                     .setChannelId(channel.getId())
@@ -107,7 +108,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                                     .setContent(payload)
                                     .setSenderId(sourceConversationId)
                                     .setHeaders(Map.of()) // TODO we can add place Id
-                                    .setSentAt(Instant.now().toEpochMilli())
+                                    .setSentAt(event.getTimestamp())
                                     .setUpdatedAt(null)
                                     .build()
                     );

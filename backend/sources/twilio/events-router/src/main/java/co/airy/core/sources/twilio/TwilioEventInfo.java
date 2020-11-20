@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.dto;
+package co.airy.core.sources.twilio;
 
 import co.airy.avro.communication.Channel;
 import lombok.AllArgsConstructor;
@@ -12,8 +12,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class Event implements Serializable {
-    private String sourceConversationId;
+public class TwilioEventInfo implements Serializable {
+    private String to;
+    private String from;
     private String payload;
     private Channel channel;
+    private Long timestamp;
 }

@@ -146,6 +146,9 @@ public class ConversationsController {
     }
 
     private ResponseEntity<?> setConversationTag(ConversationTagRequestPayload requestPayload, MetadataActionType actionType) {
+        if(!validRequest(requestPayload)){
+            return ResponseEntity.badRequest().build();
+        }
         final String conversationId = requestPayload.getConversationId().toString();
         final String tagId = requestPayload.getTagId().toString();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
@@ -170,5 +173,12 @@ public class ConversationsController {
         }
 
         return ResponseEntity.accepted().build();
+    }
+
+    private boolean validRequest(ConversationTagRequestPayload requestPayload) {
+        if(requestPayload.getConversationId() == null || requestPayload.getTagId() == null) {
+            return false;
+        }
+        return true;
     }
 }

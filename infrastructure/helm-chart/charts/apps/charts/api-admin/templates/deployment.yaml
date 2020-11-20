@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-admin
+  namespace: default
+  labels:
+    app: api-admin
+    airy: api
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: api-admin
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: api-admin
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_SCHEMA_REGISTRY_URL
+        - name: FACEBOOK_APP_ID
+          valueFrom:
+            configMapKeyRef:
+              name: sources-config
+              key: FACEBOOK_APP_ID
+        - name: FACEBOOK_APP_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: sources-config
+              key: FACEBOOK_APP_SECRET
+        - name: SERVICE_NAME
+          value: api-admin
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: JWT_SECRET
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+            - name: Health-Check
+              value: health-check
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3

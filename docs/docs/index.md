@@ -38,8 +38,21 @@ cd airy
 The bootstrap installation requires
 [Vagrant](https://www.vagrantup.com/downloads) and
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
-found, the script will attempt to install them for you. Check out our [user
-guide](user-guide.md) for detailed information.
+found, the script will attempt to install them for you. 
+
+If Vagrant or VirtualBox cannot be installed with the `bootstrap.sh` script, you will need to install them manually.
+
+The script will also ask for your administrative credentials as we are using the 
+[Vagrant Host Manager Plugin](https://github.com/devopsgroup-io/vagrant-hostmanager) to add entries to your hosts file. 
+You can skip this step and add the following lines to your hosts file yourself.
+
+```
+192.168.50.5  demo.airy
+192.168.50.5  api.airy
+192.168.50.5  chatplugin.airy
+```
+
+Check out our [guide for running in test environment](guides/airy-core-in-test-env.md) for detailed information.
 
 ## Connecting a chat plugin source
 

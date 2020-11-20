@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-config
+data:
+  KAFKA_BROKERS: {{ .Values.kafka.brokers }}
+  KAFKA_SCHEMA_REGISTRY_URL: {{ .Values.kafka.schemaRegistryUrl }}

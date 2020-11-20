@@ -10,9 +10,9 @@ wait-for-ingress-service
 wait-for-running-pod startup-helper
 wait-for-service startup-helper api-auth 80 10 Airy-auth
 
-FACEBOOK_WEBHOOK_PUBLIC_URL=`kubectl get configmap public-urls -o jsonpath='{.data.FACEBOOK_WEBHOOK_PUBLIC_URL}'`
-GOOGLE_WEBHOOK_PUBLIC_URL=`kubectl get configmap public-urls -o jsonpath='{.data.GOOGLE_WEBHOOK_PUBLIC_URL}'`
-TWILIO_WEBHOOK_PUBLIC_URL=`kubectl get configmap public-urls -o jsonpath='{.data.TWILIO_WEBHOOK_PUBLIC_URL}'`
+FACEBOOK_WEBHOOK_PUBLIC_URL=`kubectl get configmap sources-config -o jsonpath='{.data.FACEBOOK_WEBHOOK_PUBLIC_URL}'`
+GOOGLE_WEBHOOK_PUBLIC_URL=`kubectl get configmap sources-config -o jsonpath='{.data.GOOGLE_WEBHOOK_PUBLIC_URL}'`
+TWILIO_WEBHOOK_PUBLIC_URL=`kubectl get configmap sources-config -o jsonpath='{.data.TWILIO_WEBHOOK_PUBLIC_URL}'`
 
 echo
 echo "Your public url for the Facebook Webhook is:"

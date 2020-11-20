@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-chatplugin
+  namespace: default
+  labels:
+    app: sources-chatplugin
+    airy: sources
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: sources-chatplugin
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-chatplugin
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        env:
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: JWT_SECRET
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_SCHEMA_REGISTRY_URL
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+              - name: Health-Check
+                value: health-check
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3

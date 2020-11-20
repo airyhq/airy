@@ -74,7 +74,7 @@ class TwilioControllerIntegrationTest {
 
 
     @Test
-    void returns200() throws Exception {
+    void canAcceptRequests() throws Exception {
         final Map<String, String> parameters = Map.of(
                 "ApiVersion", "2010-04-01",
                 "SmsSid", "MM3753d789407e9d3f4c0a8b919ec5473f"

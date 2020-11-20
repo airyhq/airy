@@ -43,6 +43,7 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+                .filter((messageId, message) -> "google".equalsIgnoreCase(message.getSource()))
                 .selectKey((messageId, message) -> message.getConversationId());
 
         final KTable<String, SendMessageRequest> contextTable = messageStream
@@ -77,9 +78,9 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
             updateDeliveryState(message, DeliveryState.DELIVERED);
             return message;
         } catch (ApiException e) {
-            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n FB Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
+            log.error(String.format("Failed to send a message to Google \n SendMessageRequest: %s \n Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
         } catch (Exception e) {
-            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s", sendMessageRequest), e);
+            log.error(String.format("Failed to send a message to Google \n SendMessageRequest: %s", sendMessageRequest), e);
         }
 
         updateDeliveryState(message, DeliveryState.FAILED);

@@ -12,9 +12,6 @@ bazel-*
 # Emacs backup files
 .\#*
 
-# Generated file for live markdown preview
-docs/build
-
 # Node packages
 node_modules/
 yarn-error.log

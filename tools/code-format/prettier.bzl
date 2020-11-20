@@ -23,4 +23,4 @@ def prettier(srcs):
 def check_pkg():
     existing_rules = native.existing_rules().keys()
     if "prettier" not in existing_rules:
-        prettier(native.glob(["**/*.ts", "**/*.tsx", "**/*.scss", "**/*.css"]))
+        prettier(native.glob(["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.scss", "**/*.css"]))

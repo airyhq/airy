@@ -3,12 +3,6 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 package(default_visibility = ["//visibility:public"])
 
-# TODO instead of running these as binaries we should define test targets per package
-alias(
-    name = "check",
-    actual = "//tools/code-format:check",
-)
-
 alias(
     name = "fix",
     actual = "//tools/code-format:fix",

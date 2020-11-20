@@ -23,7 +23,7 @@ This will give you a `channel_id`, which is required for the following steps.
 
 ## Installation
 
-To install the chat plugin UI on your website add the following script tag to your `<head>` section:
+To install the chat plugin UI on your website add the following script tag to the `<head>` section:
 
 ```html
 <script>(function (w, d, s, n) {
@@ -40,13 +40,13 @@ To install the chat plugin UI on your website add the following script tag to yo
 ```
 
 You must replace `CHANNEL_ID` with your channel id and `SCRIPT_HOST` with the host of your chat plugin server.
-When using the local vagrant environment `SCRIPT_HOST` should be set to `chatplugin.airy`. 
+When using the local vagrant environment `SCRIPT_HOST` must be set to `chatplugin.airy`. 
 
 :::note
-`chatplugin.airy` is not publicly accessible by default. So this will only work for local web pages.
+`chatplugin.airy` is not publicly accessible. The setup will only work for local web pages.
 :::
 
-To test that this works replace the `CHANNEL_ID` in this URL `http://chatplugin.airy/example.html?channel_id=CHANNEL_ID`
+To test the setup, replace the `CHANNEL_ID` in the URL `http://chatplugin.airy/example.html?channel_id=CHANNEL_ID`
 and open it in your browser.
 
 ## HTTP API

@@ -2,13 +2,9 @@ load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
 load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 
-multirun(
-    name = "check",
-    commands = [
-        "check_buildifier",
-    ],
-    parallel = True,
-    visibility = ["//visibility:public"],
+buildifier(
+    name = "check_buildifier",
+    mode = "diff",
 )
 
 multirun(
@@ -18,11 +14,6 @@ multirun(
         "fix_buildifier",
     ],
     visibility = ["//visibility:public"],
-)
-
-buildifier(
-    name = "check_buildifier",
-    mode = "diff",
 )
 
 nodejs_binary(

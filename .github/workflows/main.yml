@@ -38,7 +38,7 @@ jobs:
 
       - name: Lint
         run: |
-          ./lint.sh
+          ./scripts/lint.sh
 
       - name: Test
         run: |

@@ -21,16 +21,21 @@ conceptual artifact we created to discuss and solve problems of a typical
 messaging system.
 
 The Airy Core Platform allows its [users](#user) to process messaging data from
-a variety of [sources](#source). Users connect to sources via
-[channels](#channel). Once the channel is connected, the Airy Core Platform
-ingests source data and transforms them into [conversations](#conversation),
+a variety of [sources](#source), which are integrated via [source providers](#source-provider).
+Users connect to sources via [channels](#channel). Once the channel is connected, 
+the Airy Core Platform ingests source data and transforms them into [conversations](#conversation),
 [contacts](#contact), and [messages](#message).
 
 ## Source
 
 A source represents a system that generates messaging data that a user wants to
-process with the Airy Core Platform. In most cases, a source provides data via a
-webhook integration.
+process with the Airy Core Platform.
+
+## Source provider
+
+Source providers are API platforms that allow the Airy Core Platform to connect to 
+one or more of their sources typically via a webhook. E.g. Twilio is a source provider
+for the Twilio SMS and Whatsapp sources.
 
 ## Channel
 

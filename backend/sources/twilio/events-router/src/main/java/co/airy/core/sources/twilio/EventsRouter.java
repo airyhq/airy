@@ -39,7 +39,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
         KTable<String, Channel> channelsTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
                 .groupBy((k, v) -> v.getSourceChannelId())
                 .reduce((aggValue, newValue) -> newValue)
-                .filter((sourceChannelId, channel) -> channel.getSource().endsWith("twilio")
+                .filter((sourceChannelId, channel) -> channel.getSource().startsWith("twilio")
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
         builder.<String, String>stream(new SourceTwilioEvents().name()).map((key, sourceEvent) -> {

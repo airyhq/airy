@@ -24,7 +24,7 @@ Next call the Airy Core Platform API for connecting channels:
 POST /channels.connect
 ```
 
-- `source` *must* be `whatsapp.twilio`
+- `source` *must* be `twilio.whatsapp`
 - `source_channel_id`   The phone number as listed in your [Twilio dashboard](https://www.twilio.com/console/phone-numbers/). 
                         Must not have spaces, must include the country code, and be prefixed by `whatsapp:` 
 - `token` leave empty.
@@ -33,7 +33,7 @@ POST /channels.connect
 
 ```json5
 {
-  "source": "whatsapp.twilio",
+  "source": "twilio.whatsapp",
   "source_channel_id": "whatsapp:+491234567",
   "name": "Whatsapp Marketing",
   "image_url": "https://example.com/custom-image.jpg" // optional
@@ -47,7 +47,7 @@ POST /channels.connect
     "id": "channel-uuid-1",
     "name": "Whatsapp Marketing",
     "image_url": "https://example.com/custom-image.jpg",
-    "source": "whatsapp.twilio",
+    "source": "twilio.whatsapp",
     "source_channel_id": "whatsapp:+491234567"
 }
 ```

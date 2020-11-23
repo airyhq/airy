@@ -46,11 +46,11 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
 
         // Channels table
         KTable<String, Channel> channelsTable = builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
-                .filter((sourceChannelId, channel) -> channel.getSource().endsWith("twilio")
+                .filter((sourceChannelId, channel) -> channel.getSource().startsWith("twilio")
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId, message) -> message.getSource().endsWith("twilio"))
+                .filter((messageId, message) -> message.getSource().startsWith("twilio"))
                 .selectKey((messageId, message) -> message.getConversationId());
 
         final KTable<String, SendMessageRequest> contextTable = messageStream

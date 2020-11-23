@@ -12,6 +12,7 @@ wait-for-service startup-helper api-auth 80 10 Airy-auth
 
 FACEBOOK_WEBHOOK_PUBLIC_URL=`kubectl get configmap public-urls -o jsonpath='{.data.FACEBOOK_WEBHOOK_PUBLIC_URL}'`
 GOOGLE_WEBHOOK_PUBLIC_URL=`kubectl get configmap public-urls -o jsonpath='{.data.GOOGLE_WEBHOOK_PUBLIC_URL}'`
+TWILIO_WEBHOOK_PUBLIC_URL=`kubectl get configmap public-urls -o jsonpath='{.data.TWILIO_WEBHOOK_PUBLIC_URL}'`
 
 echo
 echo "Your public url for the Facebook Webhook is:"
@@ -19,6 +20,9 @@ echo ${FACEBOOK_WEBHOOK_PUBLIC_URL}/facebook
 echo
 echo "Your public url for the Google Webhook is:"
 echo ${GOOGLE_WEBHOOK_PUBLIC_URL}/google
+echo
+echo "Your public url for the Twilio Webhook is:"
+echo ${TWILIO_WEBHOOK_PUBLIC_URL}/twilio
 echo
 echo "You can access the API of the Airy Core Platform at:"
 echo "http://api.airy/"

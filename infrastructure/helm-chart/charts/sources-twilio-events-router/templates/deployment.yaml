@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webhook-publisher
+  name: sources-twilio-events-router
   namespace: default
   labels:
-    app: webhook-publisher
+    app: sources-twilio-events-router
 spec:
   replicas: 0
   selector:
     matchLabels:
-      app: webhook-publisher
+      app: sources-twilio-events-router
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       labels:
-        app: webhook-publisher
+        app: sources-twilio-events-router
     spec:
       containers:
       - name: app
@@ -29,10 +29,6 @@ spec:
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
-        - name: REDIS_HOSTNAME
-          value: redis-cluster
-        - name: REDIS_PORT
-          value: "6379"
         livenessProbe:
           tcpSocket:
             port: 6000

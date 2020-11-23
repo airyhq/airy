@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sources-facebook-sender
+  name: sources-twilio-webhook
   namespace: default
 spec:
   ports:
@@ -10,4 +10,4 @@ spec:
       protocol: TCP
   type: NodePort
   selector:
-    app: sources-facebook-sender
+    app: sources-twilio-webhook

@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sources-facebook-webhook
+  name: sources-twilio-webhook
   namespace: default
   labels:
-    app: sources-facebook-webhook
+    app: sources-twilio-webhook
 spec:
   replicas: 0
   selector:
     matchLabels:
-      app: sources-facebook-webhook
+      app: sources-twilio-webhook
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       labels:
-        app: sources-facebook-webhook
+        app: sources-twilio-webhook
     spec:
       containers:
         - name: app
@@ -30,12 +30,12 @@ spec:
             - name: KAFKA_SCHEMA_REGISTRY_URL
               value: http://airy-cp-schema-registry:8081
             - name: SERVICE_NAME
-              value: sources-facebook-webhook
-            - name: FACEBOOK_WEBHOOK_SECRET
+              value: sources-twilio-webhook
+            - name: TWILIO_AUTH_TOKEN
               valueFrom:
                 configMapKeyRef:
                   name: user-config
-                  key: FACEBOOK_WEBHOOK_SECRET
+                  key: TWILIO_AUTH_TOKEN
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -58,7 +58,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: public-urls
-                  key: FACEBOOK_WEBHOOK_PUBLIC_URL
+                  key: TWILIO_WEBHOOK_PUBLIC_URL
           imagePullPolicy: Always
           resources:
             limits:

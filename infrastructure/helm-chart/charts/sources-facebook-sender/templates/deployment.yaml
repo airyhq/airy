@@ -29,11 +29,9 @@ spec:
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
-        - name: SERVICE_NAME
-          value: facebook-sender
         livenessProbe:
           tcpSocket:
             port: 6000
           initialDelaySeconds: 60
           periodSeconds: 10
-          failureThreshold: 3        
+          failureThreshold: 3

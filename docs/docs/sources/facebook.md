@@ -8,7 +8,7 @@ The Facebook source provides a channel of communication between a Facebook page 
 ## Configuration
 
 For Facebook to start sending events to your local instance, it must first verify your instance with a challenge.
-To verify your Facebook webhook integration, you must set the environment variable `FB_WEBHOOK_SECRET` to the same value you supply in the webhook configuration on the Facebook integration.
+To verify your Facebook webhook integration, you must set the environment variable `FACEBOOK_WEBHOOK_SECRET` to the same value you supply in the webhook configuration on the Facebook integration.
 
 You must also configure the webhook URL to `https://<your-address-url>/facebook`.
 

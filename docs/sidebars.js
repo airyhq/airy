@@ -12,8 +12,14 @@ module.exports = {
         'sources/whatsapp-twilio',
       ],
     },
-    {Guidelines: ['guidelines/design-principles', 'guidelines/release-process', 'guidelines/kafka']},
-    'developers-manual',
+    {
+      Guidelines: [
+        'guidelines/contributing',
+        'guidelines/design-principles',
+        'guidelines/release-process',
+        'guidelines/kafka',
+      ],
+    },
     'glossary',
   ],
 };

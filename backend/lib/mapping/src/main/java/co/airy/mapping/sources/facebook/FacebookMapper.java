@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class FacebookMapper implements SourceMapper {
 
@@ -17,8 +19,8 @@ public class FacebookMapper implements SourceMapper {
     }
 
     @Override
-    public String getIdentifier() {
-        return "facebook";
+    public List<String> getIdentifiers() {
+        return List.of("facebook");
     }
 
     @Override

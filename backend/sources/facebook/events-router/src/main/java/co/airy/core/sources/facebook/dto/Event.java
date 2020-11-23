@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder(toBuilder = true)
 public class Event implements Serializable {
     private String sourceConversationId;

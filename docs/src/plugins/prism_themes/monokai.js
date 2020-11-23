@@ -1,46 +1,46 @@
 // Converted automatically using ./tools/themeFromVsCode
 var theme = {
   plain: {
-    color: "#f8f8f2",
-    backgroundColor: "#272822"
+    color: '#f8f8f2',
+    backgroundColor: '#272822',
   },
   styles: [
     {
-      types: ["comment"],
+      types: ['comment'],
       style: {
-        color: "rgb(136, 132, 111)"
-      }
+        color: 'rgb(136, 132, 111)',
+      },
     },
     {
-      types: ["string", "changed"],
+      types: ['string', 'changed'],
       style: {
-        color: "rgb(230, 219, 116)"
-      }
+        color: 'rgb(230, 219, 116)',
+      },
     },
     {
-      types: ["punctuation", "tag", "deleted"],
+      types: ['punctuation', 'tag', 'deleted'],
       style: {
-        color: "rgb(249, 38, 114)"
-      }
+        color: 'rgb(249, 38, 114)',
+      },
     },
     {
-      types: ["number", "builtin"],
+      types: ['number', 'builtin'],
       style: {
-        color: "rgb(174, 129, 255)"
-      }
+        color: 'rgb(174, 129, 255)',
+      },
     },
     {
-      types: ["variable"],
+      types: ['variable'],
       style: {
-        color: "rgb(248, 248, 242)"
-      }
+        color: 'rgb(248, 248, 242)',
+      },
     },
     {
-      types: ["function", "attr-name", "inserted"],
+      types: ['function', 'attr-name', 'inserted'],
       style: {
-        color: "rgb(166, 226, 46)"
-      }
-    }
-  ]
+        color: 'rgb(166, 226, 46)',
+      },
+    },
+  ],
 };
 module.exports = theme;

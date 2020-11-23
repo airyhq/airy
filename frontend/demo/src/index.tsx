@@ -1,17 +1,17 @@
-import "core-js";
-import "regenerator-runtime/runtime";
+import 'core-js';
+import 'regenerator-runtime/runtime';
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import { store } from "./store";
-import "./index.scss";
-import "./assets/scss/reset.scss";
-import "@airyhq/components/dist/main.css";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import {Provider} from 'react-redux';
+import {BrowserRouter} from 'react-router-dom';
+import {store} from './store';
+import './index.scss';
+import './assets/scss/reset.scss';
+import '@airyhq/components/dist/main.css';
 
 const render = () => {
-  const App = require("./App").default;
+  const App = require('./App').default;
   const RootContainer = () => (
     <Provider store={store}>
       <BrowserRouter>
@@ -20,7 +20,7 @@ const render = () => {
     </Provider>
   );
 
-  ReactDOM.render(<RootContainer />, document.getElementById("root"));
+  ReactDOM.render(<RootContainer />, document.getElementById('root'));
 };
 
 render();
@@ -28,7 +28,7 @@ render();
 declare const module: any;
 
 if (module.hot) {
-  module.hot.accept("./App", () => {
+  module.hot.accept('./App', () => {
     render();
   });
 }

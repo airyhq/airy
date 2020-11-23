@@ -34,6 +34,4 @@ kubectl scale deployment webhook-consumer --replicas=1
 kubectl scale deployment webhook-publisher --replicas=1
 kubectl scale deployment sources-chatplugin --replicas=1
 
-chmod o+r /etc/rancher/k3s/k3s.yaml
-
 kubectl delete pod startup-helper --force 2>/dev/null

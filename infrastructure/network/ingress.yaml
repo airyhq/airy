@@ -180,6 +180,7 @@ spec:
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
               service:
                 name: frontend-demo
@@ -203,6 +204,7 @@ spec:
                 port:
                   number: 80
           - path: /
+            pathType: Prefix
             backend:
               service:
                 name: frontend-chat-plugin

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class GoogleMapper implements SourceMapper {
     private final ObjectMapper objectMapper;
@@ -16,8 +18,8 @@ public class GoogleMapper implements SourceMapper {
     }
 
     @Override
-    public String getIdentifier() {
-        return "google";
+    public List<String> getIdentifiers() {
+        return List.of("google");
     }
 
     @Override

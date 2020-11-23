@@ -1,6 +1,6 @@
-import { h, render } from "preact";
-import Chat from "./components/chat";
-import { AiryWidgetConfiguration } from "./config";
+import {h, render} from 'preact';
+import Chat from './components/chat';
+import {AiryWidgetConfiguration} from './config';
 
 export default class {
   config: AiryWidgetConfiguration;

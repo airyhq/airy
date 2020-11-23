@@ -1,4 +1,4 @@
-import { getAuthToken } from "./webStore";
+import {getAuthToken} from './webStore';
 
 export class AiryConfig {
   static API_URL = "http://api.airy";
@@ -6,31 +6,27 @@ export class AiryConfig {
 }
 
 const headers = {
-  Accept: "application/json"
+  Accept: 'application/json',
 };
 
-export const doFetchFromBackend = async (
-  url: string,
-  body?: Object,
-  retryCount: number = 0
-): Promise<any> => {
+export const doFetchFromBackend = async (url: string, body?: Object, retryCount: number = 0): Promise<any> => {
   const token = getAuthToken();
   if (token) {
-    headers["Authorization"] = token;
+    headers['Authorization'] = token;
   }
 
   if (!(body instanceof FormData)) {
     if (!isString(body)) {
       body = JSON.stringify(body);
     }
-    headers["Content-Type"] = "application/json";
+    headers['Content-Type'] = 'application/json';
   }
 
   try {
     const response: Response = await fetch(`${AiryConfig.API_URL}/${url}`, {
-      method: "POST",
+      method: 'POST',
       headers: headers,
-      body: body as BodyInit
+      body: body as BodyInit,
     });
 
     return parseBody(response);
@@ -51,12 +47,12 @@ async function parseBody(response: Response): Promise<any> {
 
   const errorResponse = {
     status: response.status,
-    body: body
+    body: body,
   };
 
   throw errorResponse;
 }
 
 function isString(object: any) {
-  return typeof object === "string" || object instanceof String;
+  return typeof object === 'string' || object instanceof String;
 }

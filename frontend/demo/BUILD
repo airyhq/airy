@@ -4,26 +4,24 @@ load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/build:container_push.bzl", "container_push")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
-module_deps = [
-    "//frontend/components",
-]
-
 ts_library(
     name = "app",
-    deps = module_deps + [
+    deps = [
         "@npm//@airyhq/components",
-        "@npm//@types/react-redux",
-        "@npm//react-svg",
-        "@npm//redux",
-        "@npm//redux-starter-kit",
         "@npm//@crello/react-lottie",
+        "@npm//@types/node",
         "@npm//@types/prop-types",
         "@npm//@types/react",
+        "@npm//@types/react-redux",
         "@npm//emoji-mart",
+        "@npm//lodash-es",
         "@npm//react",
         "@npm//react-autosize-textarea",
         "@npm//react-modal",
         "@npm//react-router-dom",
+        "@npm//react-svg",
+        "@npm//redux",
+        "@npm//redux-starter-kit",
         "@npm//typesafe-actions",
         "@npm//lodash-es",
         "@npm//@types/node",
@@ -36,7 +34,6 @@ webapp(
     app_lib = ":app",
     entry = "frontend/demo/src/index.js",
     index = ":index.html",
-    module_deps = module_deps,
     static_assets = "//frontend/demo/public",
 )
 

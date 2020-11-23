@@ -1,4 +1,4 @@
-import { h } from "preact";
+import {h} from 'preact';
 
 type Props = {
   render: any;

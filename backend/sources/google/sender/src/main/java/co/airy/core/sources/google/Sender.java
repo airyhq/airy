@@ -22,6 +22,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
+import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
+
 @Component
 public class Sender implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final Logger log = AiryLoggerFactory.getLogger(Sender.class);
@@ -41,6 +43,7 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+                .filter((messageId, message) -> "google".equalsIgnoreCase(message.getSource()))
                 .selectKey((messageId, message) -> message.getConversationId());
 
         final KTable<String, SendMessageRequest> contextTable = messageStream
@@ -72,21 +75,15 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
 
             api.sendMessage(sendMessageRequest.getSourceConversationId(), sendMessagePayload);
 
-            // TODO move the change state logic to backend/avro/message
-            message.setUpdatedAt(Instant.now().toEpochMilli());
-            message.setDeliveryState(DeliveryState.DELIVERED);
-
+            updateDeliveryState(message, DeliveryState.DELIVERED);
             return message;
         } catch (ApiException e) {
-            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n FB Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
+            log.error(String.format("Failed to send a message to Google \n SendMessageRequest: %s \n Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
         } catch (Exception e) {
-            log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s", sendMessageRequest), e);
+            log.error(String.format("Failed to send a message to Google \n SendMessageRequest: %s", sendMessageRequest), e);
         }
 
-        // TODO move the change state logic to backend/avro/message
-        message.setDeliveryState(DeliveryState.FAILED);
-        message.setUpdatedAt(Instant.now().toEpochMilli());
-
+        updateDeliveryState(message, DeliveryState.FAILED);
         return message;
     }
 

@@ -1,18 +1,18 @@
-import { combineReducers } from "redux-starter-kit";
-import { getType } from "typesafe-actions";
-import _, { CombinedState } from "redux";
+import {combineReducers} from 'redux-starter-kit';
+import {getType} from 'typesafe-actions';
+import _, {CombinedState} from 'redux';
 
-import * as authActions from "../actions/user";
-import { clearUserData } from "../api/webStore";
+import * as authActions from '../actions/user';
+import {clearUserData} from '../api/webStore';
 
-import data, { DataState } from "./data";
+import data, {DataState} from './data';
 
 export type StateModel = {
   data: DataState;
 };
 
 const applicationReducer = combineReducers<StateModel>({
-  data
+  data,
 });
 
 export type RootState = ReturnType<typeof applicationReducer>;

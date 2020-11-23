@@ -16,6 +16,7 @@ def check_style(srcs):
         runtime_deps = [
             "@maven//:com_puppycrawl_tools_checkstyle",
         ],
+        tags = ["lint"],
     )
 
 # Add code style checking to all java files in package if not already defined

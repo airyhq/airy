@@ -8,15 +8,24 @@ avro_java_library(
 )
 
 avro_java_library(
-    name = "message",
-)
-
-avro_java_library(
     name = "webhook",
 )
 
 avro_java_library(
     name = "read-receipt",
+)
+
+custom_java_library(
+    name = "message",
+    srcs = ["message/src/main/java/co/airy/avro/communication/MessageRepository.java"],
+    exports = [":message-avro"],
+    deps = [":message-avro"],
+)
+
+avro_java_library(
+    name = "message-avro",
+    srcs = ["message.avsc"],
+    visibility = ["//visibility:private"],
 )
 
 custom_java_library(

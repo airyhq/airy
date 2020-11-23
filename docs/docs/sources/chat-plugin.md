@@ -3,11 +3,10 @@ title: Chat Plugin
 sidebar_label: Chat Plugin
 ---
 
-
 The chat plugin allows anonymous website visitors to start a conversation with 
 the Airy Core Platform and respond to messages.
 
-This documents offers an overview of the HTTP endpoints and WebSocket queues required for the Airy Chat plugin to function.
+This document covers how to install the chat plugin web widget as well as the HTTP and WebSocket APIs that power it.  
 
 ## Introduction
 
@@ -20,6 +19,35 @@ connection endpoint](api/http.md#connecting-channels) and setting the `source`
 field in the request payload to `chat_plugin`. You can leave the token parameter
 empty. 
 
+This will give you a `channel_id`, which is required for the following steps.
+
+## Installation
+
+To install the chat plugin UI on your website add the following script tag to the `<head>` section:
+
+```html
+<script>(function (w, d, s, n) {
+        w[n] = w[n] || {};
+        w[n].cid = "CHANNEL_ID";
+        w[n].h = "SCRIPT_HOST";
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s);
+        j.async = true;
+        j.src = w[n].h + '/s.js';
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'airy');
+</script>
+```
+
+You must replace `CHANNEL_ID` with your channel id and `SCRIPT_HOST` with the host of your chat plugin server.
+When using the local vagrant environment `SCRIPT_HOST` must be set to `chatplugin.airy`. 
+
+:::note
+`chatplugin.airy` is not publicly accessible. The setup will only work for local web pages.
+:::
+
+To test the setup, replace the `CHANNEL_ID` in the URL `http://chatplugin.airy/example.html?channel_id=CHANNEL_ID`
+and open it in your browser.
 
 ## HTTP API
 
@@ -84,10 +112,9 @@ The request returns an authentication token that needs to be included in the Web
 ## WebSocket API
 
 Connection and standards are the same as for the [core websocket](api/websocket.md)
-except that the authorization token is obtained from the [chatplugin
-authentication API](#authenticating-web-users).
+except that the authorization token is obtained from the [authentication endpoint](#authenticating-web-users).
 
-The WebSocket endpoint is at `/ws.chatplugin`. 
+The WebSocket connection endpoint is at `/ws.chatplugin`. 
 
 ### Receive message
 

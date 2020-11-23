@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useRef} from 'react';
 
 type ListenOutsideClickProps = {
   children: React.ReactNode;
@@ -6,27 +6,21 @@ type ListenOutsideClickProps = {
   onOuterClick: (event: React.MouseEvent<HTMLElement>) => void;
 };
 
-const ListenOutsideClick = ({
-  children,
-  className,
-  onOuterClick
-}: ListenOutsideClickProps) => {
+const ListenOutsideClick = ({children, className, onOuterClick}: ListenOutsideClickProps) => {
   const innerRef = useRef(null);
 
   useEffect(() => {
     const handleClick = (event: React.MouseEvent<HTMLElement> | any) => {
-      innerRef.current &&
-        !innerRef.current.contains(event.target) &&
-        onOuterClick(event);
+      innerRef.current && !innerRef.current.contains(event.target) && onOuterClick(event);
     };
 
     // only add listener, if the element exists
     if (innerRef.current) {
-      document.addEventListener("click", handleClick);
+      document.addEventListener('click', handleClick);
     }
 
     // unmount previous first in case inputs have changed
-    return () => document.removeEventListener("click", handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, [onOuterClick, innerRef]);
 
   return (

@@ -1,41 +1,32 @@
-import React, { Component } from "react";
-import _, { connect, ConnectedProps } from "react-redux";
-import {
-  withRouter,
-  Route,
-  Switch,
-  Redirect,
-  RouteComponentProps
-} from "react-router-dom";
+import React, {Component} from 'react';
+import _, {connect, ConnectedProps} from 'react-redux';
+import {withRouter, Route, Switch, Redirect, RouteComponentProps} from 'react-router-dom';
 
-import { AiryLoader } from "@airyhq/components";
-import TopBar from "./components/TopBar";
-import Login from "./pages/Login";
-import NotFound from "./pages/NotFound";
-import Sidebar from "./components/Sidebar";
+import {AiryLoader} from '@airyhq/components';
+import TopBar from './components/TopBar';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
+import Sidebar from './components/Sidebar';
 
 import { StateModel } from "./reducers";
 import { LOGIN_ROUTE, ROOT_ROUTE, TAGS_ROUTE } from "./routes/routes";
 
 import { Tags } from "./pages/Tags";
 
-import styles from "./App.module.scss";
+import styles from './App.module.scss';
 
 const publicRoutes = [LOGIN_ROUTE];
 
 const shouldRedirect = (path: string) =>
-  publicRoutes.filter((route: string) => path.indexOf(route) !== -1).length ===
-  0;
+  publicRoutes.filter((route: string) => path.indexOf(route) !== -1).length === 0;
 
-class App extends Component<
-  ConnectedProps<typeof connector> & RouteComponentProps
-> {
+class App extends Component<ConnectedProps<typeof connector> & RouteComponentProps> {
   constructor(props: ConnectedProps<typeof connector> & RouteComponentProps) {
     super(props);
   }
 
   get isAuthSuccess() {
-    return this.props.user.token && this.props.user.token !== "";
+    return this.props.user.token && this.props.user.token !== '';
   }
 
   shouldShowSidebar = (path: string) => {
@@ -53,13 +44,7 @@ class App extends Component<
 
     return (
       <div className={styles.Container}>
-        <div
-          className={`${
-            this.isAuthSuccess
-              ? styles.ContainerApp
-              : styles.ContainerAppNotLogin
-          }`}
-        >
+        <div className={`${this.isAuthSuccess ? styles.ContainerApp : styles.ContainerAppNotLogin}`}>
           {this.shouldShowSidebar(this.props.location.pathname) ? (
             <>
               <TopBar isAdmin={true} />
@@ -70,11 +55,7 @@ class App extends Component<
           )}
           <Switch>
             <Route exact path={ROOT_ROUTE}>
-              {this.isAuthSuccess ? (
-                <Redirect to={ROOT_ROUTE} />
-              ) : (
-                <Redirect to={LOGIN_ROUTE} />
-              )}
+              {this.isAuthSuccess ? <Redirect to={ROOT_ROUTE} /> : <Redirect to={LOGIN_ROUTE} />}
             </Route>
             <Route exact path={TAGS_ROUTE} component={Tags} />
             <Route exact path={LOGIN_ROUTE} component={Login} />
@@ -90,7 +71,7 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
   return {
     user: state.data.user,
     pathname: ownProps.location.pathname,
-    token: state.data.user.token
+    token: state.data.user.token,
   };
 };
 

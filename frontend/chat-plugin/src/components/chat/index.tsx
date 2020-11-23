@@ -1,37 +1,37 @@
-import { h } from "preact";
-import { useState, useEffect } from "preact/hooks";
-import { IMessage } from "@stomp/stompjs";
+import {h} from 'preact';
+import {useState, useEffect} from 'preact/hooks';
+import {IMessage} from '@stomp/stompjs';
 
-import Websocket from "../../components/websocket";
-import MessageProp from "../../components/message";
-import InputBarProp from "../../components/inputBar";
-import AiryInputBar from "../../airyRenderProps/AiryInputBar";
+import Websocket from '../../components/websocket';
+import MessageProp from '../../components/message';
+import InputBarProp from '../../components/inputBar';
+import AiryInputBar from '../../airyRenderProps/AiryInputBar';
 
-import style from "./index.module.scss";
-import HeaderBarProp from "../../components/headerBar";
-import AiryHeaderBar from "../../airyRenderProps/AiryHeaderBar";
-import AiryMessage from "../../airyRenderProps/AiryMessage";
-import { AiryWidgetConfiguration } from "../../config";
-import { RoutableProps } from "preact-router";
-import BubbleProp from "../bubble";
-import AiryBubble from "../../airyRenderProps/AiryBubble";
+import style from './index.module.scss';
+import HeaderBarProp from '../../components/headerBar';
+import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
+import AiryMessage from '../../airyRenderProps/AiryMessage';
+import {AiryWidgetConfiguration} from '../../config';
+import {RoutableProps} from 'preact-router';
+import BubbleProp from '../bubble';
+import AiryBubble from '../../airyRenderProps/AiryBubble';
 
 let ws: Websocket;
 
 const welcomeMessage = {
-  alignment: "RIGHT",
-  id: "19527d24-9b47-4e18-9f79-fd1998b95059",
-  sent_at: "undefined",
+  alignment: 'RIGHT',
+  id: '19527d24-9b47-4e18-9f79-fd1998b95059',
+  sent_at: 'undefined',
   content: {
-    text: "Hello! How can we help you?"
-  }
+    text: 'Hello! How can we help you?',
+  },
 };
 
 type Props = AiryWidgetConfiguration & RoutableProps;
 
 const Chat = (props: Props) => {
-  const [installError, setInstallError] = useState("");
-  const [animation, setAnimation] = useState("");
+  const [installError, setInstallError] = useState('');
+  const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(true);
   const [messages, setMessages] = useState([welcomeMessage]);
 
@@ -51,12 +51,12 @@ const Chat = (props: Props) => {
     toggleHideChat: () => {
       const newValue = !isChatHidden;
       if (newValue) {
-        setAnimation("close");
+        setAnimation('close');
         setTimeout(() => {
           setIsChatHidden(newValue);
         }, 500);
       } else {
-        setAnimation("open");
+        setAnimation('open');
         setIsChatHidden(newValue);
         setTimeout(() => {
           updateScroll();
@@ -67,11 +67,11 @@ const Chat = (props: Props) => {
       ws.onSend(
         JSON.stringify({
           message: {
-            text
-          }
+            text,
+          },
         })
       );
-    }
+    },
   };
 
   const sendMessage = (text: string) => {
@@ -84,7 +84,7 @@ const Chat = (props: Props) => {
   };
 
   const updateScroll = () => {
-    const element = document.getElementById("messages");
+    const element = document.getElementById('messages');
     if (element) {
       element.scrollTop = element.scrollHeight;
     }
@@ -92,12 +92,12 @@ const Chat = (props: Props) => {
 
   const styleFor = (animation: string) => {
     switch (animation) {
-      case "open":
+      case 'open':
         return style.containerAnimationOpen;
-      case "close":
+      case 'close':
         return style.containerAnimationClose;
       default:
-        return "";
+        return '';
     }
   };
 
@@ -111,12 +111,7 @@ const Chat = (props: Props) => {
 
   const bubble = props.bubbleProp
     ? () => props.bubbleProp(ctrl)
-    : () => (
-        <AiryBubble
-          isChatHidden={isChatHidden}
-          toggleHideChat={ctrl.toggleHideChat}
-        />
-      );
+    : () => <AiryBubble isChatHidden={isChatHidden} toggleHideChat={ctrl.toggleHideChat} />;
 
   if (installError) {
     return null;

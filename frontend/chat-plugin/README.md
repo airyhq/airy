@@ -9,3 +9,4 @@ Run with [Bazelisk](https://github.com/bazelbuild/bazelisk)
 ```bash
 ibazel run //frontend/chat-plugin:bundle_server
 ``` 
+ 

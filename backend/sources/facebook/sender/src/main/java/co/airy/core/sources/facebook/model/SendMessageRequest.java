@@ -14,9 +14,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SendMessageRequest implements Serializable {
-    String sourceConversationId;
-    String channelId;
-
-    Message message;
-    Channel channel;
+    private String sourceConversationId;
+    private String channelId;
+    private Message message;
+    private Channel channel;
 }

@@ -13,7 +13,7 @@ public class TwilioTest {
     private final TwilioMapper mapper = new TwilioMapper();
 
     @Test
-    void textMessage() {
+    void canRenderText() {
         final String body = "Hello World";
 
         String event = "ApiVersion=2010-04-01&SmsSid=SMbc31b6419de618d65076200c54676476&SmsStatus=received" +

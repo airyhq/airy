@@ -11,7 +11,7 @@ public class GoogleTest {
     private final GoogleMapper mapper = new GoogleMapper();
 
     @Test
-    void textMessage() throws Exception {
+    void canRenderText() throws Exception {
         final String content = "{\n" +
                 "  \"message\": {\n" +
                 "    \"name\": \"conversations/9cec28cc-8dbe-40d0-ad68-edd0f440c743/messages/3A25E132-20D6-4A5D-8602-7DF4979F181B\",\n" +

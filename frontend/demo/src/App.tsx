@@ -15,7 +15,9 @@ import NotFound from "./pages/NotFound";
 import Sidebar from "./components/Sidebar";
 
 import { StateModel } from "./reducers";
-import { LOGIN_ROUTE, ROOT_ROUTE } from "./routes/routes";
+import { LOGIN_ROUTE, ROOT_ROUTE, TAGS_ROUTE } from "./routes/routes";
+
+import { Tags } from "./pages/Tags";
 
 import styles from "./App.module.scss";
 
@@ -74,6 +76,7 @@ class App extends Component<
                 <Redirect to={LOGIN_ROUTE} />
               )}
             </Route>
+            <Route exact path={TAGS_ROUTE} component={Tags} />
             <Route exact path={LOGIN_ROUTE} component={Login} />
             <Route component={NotFound} />
           </Switch>

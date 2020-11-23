@@ -27,6 +27,7 @@ ts_library(
         "@npm//typesafe-actions",
         "@npm//lodash-es",
         "@npm//@types/node",
+        "@npm//reselect",
     ],
 )
 

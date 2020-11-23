@@ -1,7 +1,7 @@
 import { getAuthToken } from "./webStore";
 
 export class AiryConfig {
-  static API_URL = "airy.api";
+  static API_URL = "http://api.airy";
   static NODE_ENV = process.env.NODE_ENV;
 }
 

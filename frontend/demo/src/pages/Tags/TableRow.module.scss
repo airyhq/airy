@@ -1,0 +1,76 @@
+@import "../../assets/scss/colors.scss";
+
+.tableRow {
+  cursor: pointer;
+  &:hover {
+    background-color: var(--color-background-blue);
+  }
+  border-bottom: 1px solid var(--color-background-gray);
+}
+
+.tableCell {
+  padding: 17px 0;
+  padding-right: 4px;
+}
+
+.tagColor {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  line-height: 44px;
+  margin-top: 6px;
+}
+
+.editInput {
+  border: 1px solid #cad5db;
+  background-color: #f7f7f7;
+  border-radius: 4px;
+  padding: 6px;
+  font-size: 16px;
+  &::placeholder {
+    color: var(--color-text-gray);
+  }
+
+  &:focus {
+    outline: none;
+    background-color: var(--color-background-blue);
+    border: 1px solid var(--color-airy-blue);
+  }
+}
+
+.cancelButton {
+  margin-top: 4px;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 8px;
+  align-items: center;
+
+  > div,
+  > button {
+    margin-left: 8px;
+  }
+}
+
+.actionSVG {
+  svg {
+    width: 16px;
+    height: 16px;
+    &:hover {
+      path {
+        fill: var(--color-airy-blue);
+      }
+    }
+  }
+}
+
+.actionButton {
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+}

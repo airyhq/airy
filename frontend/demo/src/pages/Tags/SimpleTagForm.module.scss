@@ -1,0 +1,44 @@
+@import "../../assets/scss/fonts.scss";
+@import "../../assets/scss/colors.scss";
+
+.tagCreate {
+  padding: 1em;
+  max-width: 700px;
+  @media screen and (max-width: 850px) {
+    max-width: 500px;
+  }
+
+  .headline {
+    font-weight: 900;
+    color: var(--color-text-gray);
+  }
+
+  .errorMessage {
+    color: var(--color-red-alert);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .buttonRow {
+    margin-top: 16px;
+  }
+
+  .searchTags {
+    padding-left: 8px;
+  }
+
+  .description {
+    color: var(--color-text-gray);
+    @include font-base;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tagName {
+    display: inline-block;
+    padding: 3px 8px 5px;
+    margin: 8px 0;
+  }
+}

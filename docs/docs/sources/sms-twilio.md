@@ -24,7 +24,7 @@ Next call the Platform API:
 POST /channels.connect
 ```
 
-- `source` *must* be `sms.twilio`
+- `source` *must* be `twilio.sms`
 - `source_channel_id`   The phone number as listed in your [Twilio dashboard](https://www.twilio.com/console/phone-numbers/). 
                         Must not have spaces and must include the country code. 
 - `token` leave empty.
@@ -33,7 +33,7 @@ POST /channels.connect
 
 ```json5
 {
-  "source": "sms.twilio",
+  "source": "twilio.sms",
   "source_channel_id": "+491234567",
   "name": "SMS for receipts",
   "image_url": "https://example.com/custom-image.jpg" // optional
@@ -47,7 +47,7 @@ POST /channels.connect
     "id": "channel-uuid-1",
     "name": "SMS for receipts",
     "image_url": "https://example.com/custom-image.jpg",
-    "source": "sms.twilio",
+    "source": "twilio.sms",
     "source_channel_id": "+491234567"
 }
 ```

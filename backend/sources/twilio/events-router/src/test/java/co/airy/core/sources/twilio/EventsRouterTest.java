@@ -82,7 +82,7 @@ class EventsRouterTest {
                         .setSourceChannelId("whatsapp:+" + externalChannelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
                         .setName("twilio place")
-                        .setSource("whatsapp.twilio")
+                        .setSource("twilio.whatsapp")
                         .setToken("")
                         .build())
         ));
@@ -107,6 +107,6 @@ class EventsRouterTest {
         List<Message> messages = testHelper.consumeValues(1, applicationCommunicationMessages.name());
         assertEquals(1, messages.size(), "Expected 1 new message");
         final Message message = messages.get(0);
-        assertEquals("whatsapp.twilio", message.getSource());
+        assertEquals("twilio.whatsapp", message.getSource());
     }
 }

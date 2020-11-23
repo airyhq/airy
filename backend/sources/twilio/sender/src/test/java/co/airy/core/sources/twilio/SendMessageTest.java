@@ -100,7 +100,7 @@ class SendMessageTest {
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                         .setToken(token)
                         .setSourceChannelId(sourceChannelId)
-                        .setSource("sms.twilio")
+                        .setSource("twilio.sms")
                         .setName("name")
                         .setId(channelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
@@ -109,7 +109,7 @@ class SendMessageTest {
                 new ProducerRecord<>(applicationCommunicationMessages.name(), "other-message-id",
                         Message.newBuilder()
                                 .setId("other-message-id")
-                                .setSource("sms.twilio")
+                                .setSource("twilio.sms")
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setSenderId(sourceConversationId)
                                 .setSenderType(SenderType.SOURCE_CONTACT)
@@ -131,7 +131,7 @@ class SendMessageTest {
                         .setDeliveryState(DeliveryState.PENDING)
                         .setConversationId(conversationId)
                         .setChannelId(channelId)
-                        .setSource("sms.twilio")
+                        .setSource("twilio.sms")
                         .setContent("{\"text\":\"" + text + "\"}")
                         .build())
         );

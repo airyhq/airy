@@ -408,6 +408,8 @@ Connecting a channel is source specific by nature, refer to the relevant documen
 
 - [Facebook](../sources/facebook.md#connecting-a-channel)
 - [Google](../sources/google.md#connecting-a-channel)
+- [SMS - Twilio](../sources/sms-twilio.md#connecting-a-channel)
+- [Whatsapp - Twilio](../sources/whatsapp-twilio.md#connecting-a-channel)
 
 #### Disconnecting Channels
 

@@ -4,6 +4,9 @@ import 'regenerator-runtime/runtime';
 // @ts-ignore
 // Default to hostname set by local environment
 const API_HOST = window.airy.h || 'chatplugin.api';
+// @ts-ignore
+// Allow turning off ssl (unsafe!) for local development
+const TLS_PREFIX = window.airy.no_tls === true ? '' : 's';
 
 class Websocket {
   client: Client;
@@ -17,7 +20,7 @@ class Websocket {
 
   connect = (token: string) => {
     this.client = new Client({
-      brokerURL: `wss://${API_HOST}/ws.chatplugin`,
+      brokerURL: `ws${TLS_PREFIX}://${API_HOST}/ws.chatplugin`,
       connectHeaders: {
         Authorization: token,
       },
@@ -44,7 +47,7 @@ class Websocket {
   };
 
   onSend = (message: string) => {
-    return fetch(`https://${API_HOST}/chatplugin.send`, {
+    return fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.send`, {
       method: 'POST',
       body: message,
       headers: {
@@ -55,7 +58,7 @@ class Websocket {
 
   async start() {
     try {
-      const response = await fetch(`https://${API_HOST}/chatplugin.authenticate`, {
+      const response = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.authenticate`, {
         method: 'POST',
         body: JSON.stringify({
           channel_id: this.channel_id,

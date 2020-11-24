@@ -6,6 +6,7 @@ metadata:
 data:
   GOOGLE_WEBHOOK_PUBLIC_URL: https://fb-<ngrok_client_id>.tunnel.airy.co
   FACEBOOK_WEBHOOK_PUBLIC_URL: https://gl-<ngrok_client_id>.tunnel.airy.co
+  TWILIO_WEBHOOK_PUBLIC_URL: https://tw-<ngrok_client_id>.tunnel.airy.co
 ---
 apiVersion: v1
 kind: ConfigMap

@@ -29,13 +29,11 @@ spec:
           value: airy-cp-kafka-headless:9092
         - name: KAFKA_SCHEMA_REGISTRY_URL
           value: http://airy-cp-schema-registry:8081
-        - name: FB_APP_ID
+        - name: FACEBOOK_APP_ID
           valueFrom:
             configMapKeyRef:
               name: user-config
-              key: FB_APP_ID
-        - name: SERVICE_NAME
-          value: facebook-events-router
+              key: FACEBOOK_APP_ID
         livenessProbe:
           tcpSocket:
             port: 6000

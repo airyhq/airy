@@ -12,11 +12,14 @@ Here's an outline of the process:
 
 - We branch from `develop` unless it's a hot-fix (we'd use `main` in that case)
 - Once release days comes, we execute the following steps:
-  - We create a release branch from `develop`
-  - The branch must follow the convention `release/x.y.z`
-  - We test our release and any additional hot-fix is committed directly to the release branch
-  - Once we're satisfied with the release, we update the `VERSION` file with the current release number
-  - We merge the release branch into `main`, tag `main` following the same naming convention and push to `main`
+  - We create an issue "Release x.y.z"
+  - We create a release branch `release/x.y.z` from `develop`
+  - We test our release (`AIRY_VERSION=release ./scripts/bootstrap.sh`) and any
+    additional hot-fix is committed directly to the release branch.
+  - Once we're satisfied with the release, we update the `VERSION` file with the
+    current release number. The commit message must be `Fixes #issue-number`
+    where `issue-number` is the number of the current release issue.
+  - We merge the release branch into `main`, tag `main` with `x.y.z`and push to `main`
   - We merge the release branch back into `develop`
   - We archive cards in the done column of the [work in progress](https://github.com/airyhq/airy/projects/1) board
   - We announce the release!

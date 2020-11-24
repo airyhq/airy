@@ -1,0 +1,22 @@
+categories:
+  - title: '🚀 Features'
+    labels:
+      - 'feature'
+      - 'feat'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
+  - title: '📚 Documentation'
+    labels:
+      - 'doc'
+      - 'docs'
+  - title: '🧰 Maintenance'
+    label: 'chore'
+change-template: '- $TITLE (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+template: |
+  ## Changes
+
+  $CHANGES

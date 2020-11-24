@@ -1,3 +1,0 @@
-load("//tools/code-format:prettier.bzl", "check_pkg")
-
-check_pkg()

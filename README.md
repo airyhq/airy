@@ -102,8 +102,7 @@ read more about it [here](/docs/docs/guidelines/design-principles.md)
 We welcome (and love) every form of contribution! Good entry points to the
 project are:
 
-- Our [contributing guidelines](/CONTRIBUTING.md)
-- Our [developers' manual](/docs/docs/developers-manual.md)
+- Our [contributing guidelines](/docs/guidelines/contributing.md)
 - Issues with the tag
   [gardening](https://github.com/airyhq/airy/issues?q=is%3Aissue+is%3Aopen+label%3Agardening)
 - Issues with the tag [good first

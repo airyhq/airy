@@ -31,7 +31,7 @@ The script will ask for your password as we are using the [Vagrant Host Manager 
 192.168.50.5  chatplugin.airy
 ```
 
-## Sending messages through the system
+## Sending messages to the platform
 ### 1. Connecting a chatplugin source
 
 You can start connecting any source but the chatplugin is well suited to be the first because it doesn't have any outside dependencies. Make sure that the user you authenticate with exists.
@@ -65,12 +65,14 @@ Next simply type your message in the plugin and send it.
 
 ### 3. Receiving messages in the core platform
 
+Finally, request all conversations for the channel you just created which should return the message you just sent.
+
 ```
 curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 "{ \
     \"filter\": \
         { \
-            \"channel_ids\": [\"0c3a9e86-d27e-5eb4-94d0-ff0c4dbea749\"] \
+            \"channel_ids\": [\"<channel_id>\"] \
         } \
 }" api.airy/conversations.list | jq .
 ```

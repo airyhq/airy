@@ -44,7 +44,9 @@ guide](user-guide.md) for detailed information.
 ## Next Steps
 ### 1. Connecting a chatplugin source
 
-You can start connecting any source but the chatplugin is well suited to be the first because it doesn't have any outside dependencies. Make sure that the user you authenticate with exists.
+You can start connecting any source but the chatplugin is well suited to be the first because it doesn't have any outside dependencies. For connecting other sources refer to the respective documentation e.g. [Facebook](sources/facebook).
+
+Make sure that you have [signed up](api/http#signup) with the user which we are using to get the authentication token.
 
 ```
 token=$(echo $(curl -H 'Content-Type: application/json' -d \
@@ -56,7 +58,7 @@ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 "{ \
     \"source\": \"chat_plugin\", \
     \"source_channel_id\": \"my-chat-channel-1\", \
-    \"name\": \"chat plugin source\" \
+    \"name\": \"chat plugin source\"
 }" api.airy/channels.connect
 ```
 
@@ -73,7 +75,7 @@ Pass the channel id as query parameter when opening the demo page in your browse
 http://chatplugin.airy/example.html?channel_id=<channel_id>
 ```
 
-Next simply type your message in the plugin and send it.
+Next simply type your message in the text box and send it.
 
 ### 3. Receiving messages in the core platform
 
@@ -89,12 +91,13 @@ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 }" api.airy/conversations.list | jq .
 ```
 
-If you want to consume the messages directly from the topic you can do so with:
+If you want to consume the messages directly from the Kafka topic you can do so with:
 
 ```
-vagrant ssh
+cd infrastructure && vagrant ssh
 k exec -it airy-cp-kafka-0 -- /bin/bash
 kafka-console-consumer \
 --bootstrap-server airy-cp-kafka:9092 \
---topic application.communication.messages --from-beginning
+--topic application.communication.messages \
+--from-beginning
 ```

@@ -12,7 +12,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,6 +36,18 @@ public class JwtAuthenticationFilterTest {
         mvc.perform(post("/jwt.get"))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$").doesNotExist());
+    }
+
+    @Test
+    void setsCorsHeaders() throws Exception {
+        final String origin = "http://example.org";
+
+        mvc.perform(options("/jwt.get")
+                .header("Access-Control-Request-Method", "GET")
+                .header("Origin", origin)
+        )
+                .andExpect(status().isOk())
+                .andExpect(header().string("Access-Control-Allow-Origin", origin));
     }
 
     @Test

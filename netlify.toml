@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/components"
+  to = "https://components.airy.co"
+  status = 200
+  force = true

@@ -3,27 +3,47 @@ title: Chat Plugin
 sidebar_label: Chat Plugin
 ---
 
-The chat plugin allows anonymous website visitors to start a conversation with 
-the Airy Core Platform and respond to messages.
-
-This document covers how to install the chat plugin web widget as well as the HTTP and WebSocket APIs that power it.  
-
-## Introduction
-
-The Airy Core chat plugin is a fully-featured [source](./glossary.md#source)
+The Airy Core chat plugin is a fully-featured [source](/glossary.md#source)
 that enables conversations with anonymous website visitors through a web chat
 plugin.
 
-Like for any other source you must connect a channel first using the [channels
-connection endpoint](api/http.md#connecting-channels) and setting the `source`
-field in the request payload to `chat_plugin`. You can leave the token parameter
-empty. 
+This document covers how to connect a chat plugin as as
+[source](/glossary.md#source), how to  install the chat plugin web widget, and the
+HTTP and WebSocket APIs that power it.
 
-This will give you a `channel_id`, which is required for the following steps.
+## Connecting a channel
+
+Connects a chat plugin source to the Airy Core Platform.
+
+```
+POST /channels.connect
+```
+
+- `source` *must* be `chat_plugin`
+- `source_channel_id` is a unique identifier of your choice
+
+```json5
+{
+  "source": "chat_plugin",
+  "source_channel_id": "website-identifier-42"
+}
+```
+
+**Sample Response**
+
+```json5
+{
+	"id": "channel-uuid-1",
+    "name": "Chat plugin",
+    "source": "chat_plugin",
+    "source_channel_id": "awesome-website-42"
+}
+```
 
 ## Installation
 
-To install the chat plugin UI on your website add the following script tag to the `<head>` section:
+To install the chat plugin UI on your website add the following script tag to
+the `<head>` section:
 
 ```html
 <script>(function (w, d, s, n) {
@@ -39,15 +59,18 @@ To install the chat plugin UI on your website add the following script tag to th
 </script>
 ```
 
-You must replace `CHANNEL_ID` with your channel id and `SCRIPT_HOST` with the host of your chat plugin server.
-When using the local vagrant environment `SCRIPT_HOST` must be set to `chatplugin.airy`. 
+You must replace `CHANNEL_ID` with the channel id obtained when
+[connecting](#connecting-a-channel) the source and `SCRIPT_HOST` with the host
+of your chat plugin server. When using the local vagrant environment
+`SCRIPT_HOST` must be set to `chatplugin.airy`.
 
 :::note
 `chatplugin.airy` is not publicly accessible. The setup will only work for local web pages.
 :::
 
-To test the setup, replace the `CHANNEL_ID` in the URL `http://chatplugin.airy/example.html?channel_id=CHANNEL_ID`
-and open it in your browser.
+To test the setup, replace the `CHANNEL_ID` in the URL
+`http://chatplugin.airy/example.html?channel_id=CHANNEL_ID` and open it in your
+browser.
 
 ## HTTP API
 
@@ -58,7 +81,8 @@ API](api/http.md#introduction).
 
 `POST /chatplugin.authenticate`
 
-The request returns an authentication token that needs to be included in the WebSocket connection handshake.
+The request returns an authentication token that needs to be included in the
+WebSocket connection handshake.
 
 **Sample Request**
 
@@ -111,10 +135,11 @@ The request returns an authentication token that needs to be included in the Web
 
 ## WebSocket API
 
-Connection and standards are the same as for the [core websocket](api/websocket.md)
-except that the authorization token is obtained from the [authentication endpoint](#authenticating-web-users).
+Connection and standards are the same as for the [WebSocket server
+API](api/websocket.md). The authorization token is obtained from the
+[authentication endpoint](#authenticating-web-users).
 
-The WebSocket connection endpoint is at `/ws.chatplugin`. 
+The WebSocket connection endpoint is at `/ws.chatplugin`.
 
 ### Receive message
 

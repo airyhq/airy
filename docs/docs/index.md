@@ -61,10 +61,7 @@ $ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 }" api.airy/channels.connect
 ```
 
-
-
-
-The id from the response is the channel id, note it down as it's required in the next steps.
+The id from the response is the `channel_id`, note it down as it's required in the next steps.
 
 ## Sending messages with the chat plugin
 

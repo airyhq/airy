@@ -53,11 +53,11 @@ does not require a valid token to be present in the headers.
 ## Endpoints
 
 The way we group endpoints reflects the high level entities of the [Airy Core Data
-Model](glossary.md).
+Model](../glossary.md).
 
 ### Users
 
-Please refer to our [user](glossary.md#users) definition for more
+Please refer to our [user](../glossary.md#users) definition for more
 information.
 
 #### Signup
@@ -116,7 +116,7 @@ The new password _MUST_ be at least 6 (six) characters long
 
 ### Conversations
 
-Please refer to our [conversation](glossary.md#conversation) definition
+Please refer to our [conversation](../glossary.md#conversation) definition
 for more information.
 
 #### List conversations
@@ -306,7 +306,7 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 
 ### Messages
 
-Please refer to our [messages](glossary.md#message) definition for more
+Please refer to our [messages](../glossary.md#message) definition for more
 information.
 
 #### List messages

@@ -47,7 +47,7 @@ The chat plugin source is well suited for a first integration because it does no
 
 Once you [signed up](api/http#signup), you must [log in](api/http#login) so you can obtain a valid JWT token for the up-coming API calls:
 
-```
+```sh
 $ token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \
@@ -80,7 +80,7 @@ You can now type a message in the text box and send it 🎉
 
 To see how messages are flowing through the system, you can now [list conversations](api/http.md#list-conversations) for the channel you just created which should return the message you just sent.
 
-```
+```sh
 $ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 "{ \
     \"filter\": \
@@ -92,10 +92,10 @@ $ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 
 You can also consume the messages directly from the Kafka `application.communication.messages` topic:
 
-```
-cd infrastructure && vagrant ssh
-k exec -it airy-cp-kafka-0 -- /bin/bash
-kafka-console-consumer \
+```sh
+$ cd infrastructure && vagrant ssh
+$ k exec -it airy-cp-kafka-0 -- /bin/bash
+$ kafka-console-consumer \
 --bootstrap-server airy-cp-kafka:9092 \
 --topic application.communication.messages \
 --from-beginning

@@ -1,17 +1,10 @@
 categories:
   - title: '🚀 Features'
-    labels:
-      - 'feature'
-      - 'feat'
+    label: 'feature'
   - title: '🐛 Bug Fixes'
-    labels:
-      - 'fix'
-      - 'bugfix'
-      - 'bug'
+    label: 'fix'
   - title: '📚 Documentation'
-    labels:
-      - 'doc'
-      - 'docs'
+    label: 'docs'
   - title: '🧰 Maintenance'
     label: 'chore'
 change-template: '- $TITLE (#$NUMBER)'

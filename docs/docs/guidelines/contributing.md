@@ -133,6 +133,7 @@ Branches must abide to the following format:
 - `feature` or `feat` are used for feature branches
 - `bug`, `fix`, `hotfix` are used for bug fixes
 - `doc` or `docs` for documentation changes
+- `chore` for maintenance tasks on the repo
 
 The `description field` must use kebab case. 
 

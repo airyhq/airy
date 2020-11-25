@@ -30,9 +30,9 @@ following components:
 You can run the Airy Core Platform locally by running the following commands:
 
 ```bash
-$ git clone -b main https://github.com/airyhq/airy
-$ cd airy
-$ ./scripts/bootstrap.sh
+git clone -b main https://github.com/airyhq/airy
+cd airy
+./scripts/bootstrap.sh
 ```
 
 The bootstrap installation requires
@@ -48,12 +48,12 @@ The chat plugin source is well suited for a first integration because it does no
 Once you [signed up](api/http#signup), you must [log in](api/http#login) so you can obtain a valid JWT token for the up-coming API calls:
 
 ```bash
-$ token=$(echo $(curl -H 'Content-Type: application/json' -d \
+token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \
 \"password\":\"the_answer_is_42\" \
 }" api.airy/users.login) | jq -r '.token')
-$ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
+curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 "{ \
     \"source\": \"chat_plugin\", \
     \"source_channel_id\": \"my-chat-channel-1\", \
@@ -64,7 +64,7 @@ $ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 
 
 
-The id from the response is the channel id, note it down as it's required in the next steps.
+The id from the response is the `channel_id`, note it down as it's required in the next steps.
 
 ## Sending messages with the chat plugin
 
@@ -79,16 +79,16 @@ You can now type a message in the text box and send it 🎉
 To see how messages are flowing through the system, you can now [list conversations](api/http.md#list-conversations) for the channel you just created which should return the message you just sent.
 
 ```bash
-$ curl -H "Content-Type: application/json" -H "Authorization: $token" -d "{}" \
+curl -H "Content-Type: application/json" -H "Authorization: $token" -d "{}" \
 api.airy/conversations.list | jq .
 ```
 
 You can also consume the messages directly from the Kafka `application.communication.messages` topic:
 
 ```bash
-$ cd infrastructure && vagrant ssh
-$ kubectl exec -it airy-cp-kafka-0 -- /bin/bash
-$ kafka-console-consumer \
+cd infrastructure && vagrant ssh
+kubectl exec -it airy-cp-kafka-0 -- /bin/bash
+kafka-console-consumer \
 --bootstrap-server airy-cp-kafka:9092 \
 --topic application.communication.messages \
 --from-beginning

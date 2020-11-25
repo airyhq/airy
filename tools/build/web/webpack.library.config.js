@@ -1,9 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 function resolveTsconfigPathsToAlias({tsconfigPath, basePath}) {
   const {paths} = require(tsconfigPath).compilerOptions;
@@ -52,16 +49,6 @@ module.exports = (env, argv) => ({
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin()],
-    // Extract all styles into one sheet
-    splitChunks: {
-      cacheGroups: {
-        styles: {
-          name: 'styles',
-          test: /\.css$/,
-          chunks: 'all',
-        },
-      },
-    },
   },
 
   devtool: 'none',
@@ -91,7 +78,7 @@ module.exports = (env, argv) => ({
       {
         test: /\.(scss|css)$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          'style-loader',
           {
             loader: 'css-loader',
             options: {
@@ -149,16 +136,13 @@ module.exports = (env, argv) => ({
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': "'production'",
     }),
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      openAnalyzer: false,
-    }),
-    new OptimizeCSSAssetsPlugin(),
+    /* Uncomment to get bundle report
+        new require('webpack-bundle-analyzer').BundleAnalyzerPlugin({
+          analyzerMode: 'static',
+          openAnalyzer: false,
+        }),*/
   ],
 });

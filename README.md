@@ -12,7 +12,6 @@ more).
 - [How to contribute](#how-to-contribute)
 - [Code of Conduct](#code-of-conduct)
 
-
 ## Getting started
 
 You can run the Airy Core Platform locally by running the following commands:
@@ -26,9 +25,8 @@ $ AIRY_VERSION=beta ./scripts/bootstrap.sh
 The bootstrap installation requires
 [Vagrant](https://www.vagrantup.com/downloads) and
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
-found, the script will attempt to install them for you.  Check out our [user
+found, the script will attempt to install them for you. Check out our [user
 guide](/docs/docs/user-guide.md) for detailed information.
-
 
 ## Components
 
@@ -40,7 +38,7 @@ The Airy Core Platform contains the following components:
   independent contacts, conversations, and messages (see our
   [glossary](/docs/docs/glossary.md) for formal definitions).
 
-- An [API](/docs/docs/api.md) to manage the data sets the platform
+- An [API](/docs/docs/api/http.md) to manage the data sets the platform
   handles.
 
 - A webhook integration server that allows its users to programmatically
@@ -49,7 +47,6 @@ The Airy Core Platform contains the following components:
 
 - A WebSocket server that allows clients to receive near real-time updates about
   data flowing through the system.
-
 
 ## Organization of the Repository
 
@@ -89,20 +86,18 @@ Here is a quick overview of how the repository is organized:
 If you wish to learn more about a specific project, refer to the
 `README.md` in the corresponding subdirectory.
 
-
 ## Design Principles
 
 The Airy Core Platform is built using a few guiding principles. An introduction
 to these principles is essential to navigate the code base with ease. You can
 read more about it [here](/docs/docs/guidelines/design-principles.md)
 
-
 ## How to contribute
 
 We welcome (and love) every form of contribution! Good entry points to the
 project are:
 
-- Our [contributing guidelines](/docs/guidelines/contributing.md)
+- Our [contributing guidelines](/docs/docs/guidelines/contributing.md)
 - Issues with the tag
   [gardening](https://github.com/airyhq/airy/issues?q=is%3Aissue+is%3Aopen+label%3Agardening)
 - Issues with the tag [good first
@@ -111,7 +106,6 @@ project are:
 If you're still not sure where to start, open a [new
 issue](https://github.com/airyhq/airy/issues/new) and we'll gladly help you get
 started.
-
 
 ## Code of Conduct
 

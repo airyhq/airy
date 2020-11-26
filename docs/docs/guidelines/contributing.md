@@ -21,13 +21,13 @@ install the right version of Bazel for you.
 You can build the whole platform using the following command:
 
 ```sh
-$ bazel build //...
+bazel build //...
 ```
 
 and build a specific project like so:
 
 ```sh
-$ bazel build //backend/api/communication:all
+bazel build //backend/api/communication:all
 ```
 
 ### Test
@@ -35,13 +35,13 @@ $ bazel build //backend/api/communication:all
 To run tests, execute the following command:
 
 ```sh
-$ bazel test //...
+bazel test //...
 ```
 
 You can also run tests of a specific project like so:
 
 ```sh
-$ bazel test //backend/conversations/api/communication:all
+bazel test //backend/conversations/api/communication:all
 ```
 
 ### Lint
@@ -58,8 +58,8 @@ We use language specific linters:
 Java and prettier are ran as test targets for each package, so you can run:
 
 ```shell script
-$ bazel test //my/package:checkstyle
-$ bazel test //my/package:prettier 
+bazel test //my/package:checkstyle
+bazel test //my/package:prettier 
 ```
 
 To execute the buildifier linter run:
@@ -83,7 +83,7 @@ If you add, remove, or change a dependency from the maven_install, you must
 re-pin dependencies using the following command:
 
 ```sh
-$ bazel run @unpinned_maven//:pin
+bazel run @unpinned_maven//:pin
 ```
 
 ### Exploring the code base
@@ -93,21 +93,21 @@ language](https://docs.bazel.build/versions/master/query.html) you can use to
 dig deeper into projects. Here are a few examples:
 
 ```sh
-$ # show all deps of a given project
-$ bazel query "deps(//backend/api/conversations:all)" --output label
-$
-$ # show the available tests of a given project
-$ bazel query "tests(//backend/api/conversations:all)" --output label
-$
-$ # show all the packages under a specific path
-$ bazel query "backend/..." --output package
+# show all deps of a given project
+bazel query "deps(//backend/api/conversations:all)" --output label
+
+# show the available tests of a given project
+bazel query "tests(//backend/api/conversations:all)" --output label
+
+# show all the packages under a specific path
+bazel query "backend/..." --output package
 ```
 
 If you are not familiar with a specific project, you can also run the following
 query:
 
 ```sh
-$ bazel query "backend/..."
+bazel query "backend/..."
 ```
 
 The query shows all the targets produced under that specified package. It can

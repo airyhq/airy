@@ -2,9 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Tag as TagModel} from '../../model/Tag';
 
-// import {AccessibleSVG} from 'components';
-
-import close from '@airyhq/components';
+import close from '@airyhq/components/src/assets/images/icons/close.svg';
 import styles from './Tag.module.scss';
 
 type tagProps = {
@@ -57,7 +55,7 @@ export const Tag = ({
         <span className={`${expanded === true ? styles.tagNameExpanded : styles.tagName}`}>{tag.name}</span>
         {removeTagFromContact && (
           <span className={styles.removeTag} onClick={removeTagFromContact}>
-            {/* <AccessibleSVG className={styles.closeButton} src={close} title={t('common.delete')} /> */}
+            <img className={styles.closeButton} src={close} title="Delete" />
           </span>
         )}
       </div>

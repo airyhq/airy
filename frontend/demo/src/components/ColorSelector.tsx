@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {connect} from 'react-redux';
 
 import styles from './ColorSelector.module.scss';
@@ -15,7 +15,7 @@ type ColorSelctorState = {
 };
 
 const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSelectorProps & ColorSelctorState) => {
-  const getColorValue = useCallback(color => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
+  const getColorValue = useCallback(color => (tagSettings && tagSettings.colors[color].default) || 'fbbd54', [
     tagSettings,
   ]);
 
@@ -31,7 +31,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSel
           value="tag-blue"
         />
         <label htmlFor={`color-blue-${id}`}>
-          <span style={{backgroundColor: `#${getColorValue('tag-blue')}`}} />
+        <span style={{backgroundColor: `#${getColorValue('tag-blue')}`}} />
         </label>
       </div>
       <div>
@@ -57,7 +57,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSel
           value="tag-green"
         />
         <label htmlFor={`color-green-${id}`}>
-          <span style={{backgroundColor: `#${getColorValue('tag-green')}`}} />
+        <span style={{backgroundColor: `#${getColorValue('tag-green')}`}} />
         </label>
       </div>
       <div>
@@ -70,7 +70,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSel
           value="tag-purple"
         />
         <label htmlFor={`color-purple-${id}`}>
-          <span style={{backgroundColor: `#${getColorValue('tag-purple')}`}} />
+        <span style={{backgroundColor: `#${getColorValue('tag-purple')}`}} />
         </label>
       </div>
     </div>

@@ -2,8 +2,8 @@ import { createAction } from "typesafe-actions";
 import _, { Dispatch } from "redux";
 
 import { doFetchFromBackend } from "../../api/airyConfig";
-import {TagPayload} from '../../model/Tag';
-import { Tag } from "../../model/Tag";
+import { Tag, TagPayload, CreateTagRequestPayload } from '../../model/Tag';
+
 
 // import {addTagToConversation} from '../contacts';
 
@@ -14,22 +14,35 @@ export const ERROR_TAG = "ERROR_TAG";
 export const ADD_TAGS_TO_STORE = "ADD_TAGS_TO_STORE";
 export const SET_TAG_FILTER = "SET_TAG_FILTER";
 
-export function getTags(query: string = "") {
-  return function(dispatch: Dispatch<any>) {
-    return doFetchFromBackend("tags.list", {}).then(({ tags }) => {
-      dispatch({ tags, type: ADD_TAGS_TO_STORE });
-    });
-  };
+// export function getTags(query: string = "") {
+//   return function(dispatch: Dispatch<any>) {
+//     console.log("GETTAGS");
+//     return doFetchFromBackend("tags.list", {}).then(({ tags }) => {
+//       console.log(tags)
+//       dispatch({ tags, type: ADD_TAGS_TO_STORE });
+//     });
+//   };
+// }
+
+export function fetchTags(tags: Tag[]) {
+  console.log("FETCH")
+  console.log(tags);
+  return {
+    type: ADD_TAGS_TO_STORE,
+    tagData: tags,
+  }
 }
 
-export function upsertConversationTag(tag: Tag) {
-console.log("TEST12");
+export function addTag(id: string, name: string, color: string, count: number) {
   return {
-    type: UPSERT_TAG,
+    type: ADD_TAGS_TO_STORE,
     tagData: {
-      ...tag
+        id: id,
+        name: name,
+        color: color,
+        count: count,
     }
-  };
+  }
 }
 
 export function editedTag(
@@ -67,24 +80,16 @@ export function deleteConversationTag(tagId: string) {
   };
 }
 
-export interface CreateTagRequestPayload {
-    name: string;
-    color: string;
-}
-
 // export function createTag(requestPayload: CreateTagRequestPayload) {
 //   return async (dispatch: Dispatch<any>) => {
 //     return doFetchFromBackend("tags.create", requestPayload).then((response: TagPayload) => {
-//         console.log("ADAKSLDASKLAS");
-//         console.log(response);
-//     })
-//     //   .then(tag => {
-//     //       console.log("KALALALA");
-//     //     //   console.log(tag);
-//     //     dispatch(upsertConversationTag(tag));
-//     //     // contactId && dispatch(addTagToConversation(organizationId, contactId, tag.id, name, color));
-//     //     return true;
-//     //   })
+//     }).then(tag => {
+//           console.log("WORKS");
+//         //   console.log(tag);
+//         // dispatch(upsertConversationTag(tag));
+//         // contactId && dispatch(addTagToConversation(organizationId, contactId, tag.id, name, color));
+//         return true;
+//       })
 //       .catch(error => {
 //         dispatch(errorTag(error));
 //         return false;
@@ -92,14 +97,27 @@ export interface CreateTagRequestPayload {
 //   };
 // };
 
-export const createTag = (name: string, color: string) => {
-    return async (dispatch: Dispatch<any>) => {
-        return doFetchFromBackend('tags.create').then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
+export function getTags(query: string = "") {
+  return function(dispatch: Dispatch<any>) {
+    return doFetchFromBackend("tags.list").then((response: Tag[]) => {
+      console.log(response);
+        // dispatch({ response, type: ADD_TAGS_TO_STORE });
+        dispatch(fetchTags(response));
+    })
+  }
+}
+
+
+export function createTag(requestPayload: CreateTagRequestPayload) {
+  return async (dispatch: Dispatch<any>) => {
+    return doFetchFromBackend("tags.create", requestPayload).then((response: TagPayload) => {
+        dispatch(addTag(response.id, requestPayload.name, requestPayload.color, 0))
+        return true;
+    }).catch(error => {
+        dispatch(errorTag(error))
+        return false;
+    })
+  }
 }
 
 export function updateTag(

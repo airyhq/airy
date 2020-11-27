@@ -39,7 +39,7 @@ class TagsComponent extends Component<
   state = initialState;
 
   componentDidMount() {
-    // this.props.getTags(this.props.organizationId);
+    this.props.getTags();
     this.props.filterTags("");
   }
 
@@ -170,25 +170,24 @@ class TagsComponent extends Component<
         <header>
           <h1 className={styles.organizationSectionHeadline}>Tags</h1>
         </header>
-        <div className={styles.organizationContainer} key="1">
-          <div className={styles.tagsHeader}>
-            <div className={styles.searchContainer}>
-              <SearchField
+        
+    <div className={styles.organizationContainer} key="1">
+    <div className={styles.tagsHeader}>
+    <div className={styles.searchContainer}>
+              {/* <SearchField
                 placeholder="Search for tags"
                 value={this.state.tagQuery}
                 setValue={this.handleSearch}
-              />
-            </div>
+              /> */}
+    </div>
+    </div>
+    </div>
+  
             <button onClick={this.handleTagDrawer} className={styles.addButton}>
               Add tag{" "}
-              <ReactSVG src={plus} />
-              {/* <AccessibleSVG
-                ariaHidden="true"
-                className={styles.plusButton}
-                src={plus}
-              /> */}
+              <img className={styles.plusButton} src={plus} />
             </button>
-          </div>
+          {/* </div> */}
           {this.state.createDrawer && (
             <SimpleTagForm onClose={this.handleTagDrawer} />
           )}
@@ -203,6 +202,7 @@ class TagsComponent extends Component<
                 </tr>
                 {tags &&
                   tags.map((tag, idx) => {
+                    console.log(tag);
                     return (
                       <TableRow
                         key={idx}
@@ -219,7 +219,7 @@ class TagsComponent extends Component<
               <p>Try to search for a different term.</p>
             </div>
           )}
-        </div>
+        {/* </div> */}
         {this.renderConfirmDelete()}
       </div>
     );
@@ -227,6 +227,7 @@ class TagsComponent extends Component<
 
   render() {
     const { allTagsCount } = this.props;
+    console.log(allTagsCount);
     return (
       <div className={styles.tagsWrapper}>
         {allTagsCount == 0 ? <EmptyStateTags /> : this.renderTagList()}

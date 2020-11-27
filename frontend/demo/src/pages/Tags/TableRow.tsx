@@ -6,13 +6,14 @@ import { updateTag } from "../../actions/tags";
 import {
   Button,
   LinkButton,
-  edit,
-  trash,
 } from "@airyhq/components";
 
+import edit from "@airyhq/components/src/assets/images/icons/edit.svg";
+import trash from '@airyhq/components/src/assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
 
 import Tag from './Tag';
+import { Tag as TagModel } from '../../model/Tag';
 
 import styles from "./TableRow.module.scss";
 import { RootState } from "../../reducers";
@@ -21,10 +22,11 @@ type TableRowProps = {
   tag: any;
   tagSettings: any;
   showModal(label: string, id: string, name: string): void;
+  tags: TagModel[];
 } & ConnectedProps<typeof connector>;
 
 const TableRowComponent = (props: TableRowProps) => {
-  const { tag, updateTag, tagSettings, showModal } = props;
+  const { tag, updateTag, tagSettings, showModal, tags } = props;
 
   const [tagState, setTagState] = useState({
     edit: false,
@@ -32,6 +34,8 @@ const TableRowComponent = (props: TableRowProps) => {
     name: "",
     color: ""
   });
+
+  console.log(tags);
 
   const handleUpdate = useCallback(
     e => {
@@ -144,7 +148,7 @@ const TableRowComponent = (props: TableRowProps) => {
         style={{ width: "30%", maxWidth: "1px" }}
         className={styles.tableCell}
       >
-        <Tag tag={{ color: tag.color, name: tag.name }} />
+        <Tag tag={{ color: tag.color, name: tag.name, count: tag.count}} />
       </td>
       <td style={{ width: "30%" }}>
         <span
@@ -160,22 +164,21 @@ const TableRowComponent = (props: TableRowProps) => {
             className={styles.actionButton}
             onClick={() => setTagState({ ...tag, edit: true })}
           >
-            {/* <AccessibleSVG
-              src={edit}
-              className={styles.actionSVG}
-              title="Edit tag"
-            /> */}
+            <img 
+            className={styles.actionSVG} 
+            src={edit}
+            title="Edit tag" 
+            />
           </button>
           <button
             type="button"
             className={styles.actionButton}
             onClick={deleteClicked}
           >
-            {/* <AccessibleSVG
-              src={trash}
-              className={styles.actionSVG}
-              title="Delete tag"
-            /> */}
+            <img className={styles.actionSVG}
+            src={trash}
+            title="Delete tag"
+            />
           </button>
         </div>
       </td>
@@ -185,6 +188,7 @@ const TableRowComponent = (props: TableRowProps) => {
 
 const mapStateToProps = (state: RootState) => {
   return {
+    tags: state.data.tags.all,
     // tagSettings: state.data.settings && state.data.settings.contact_tags,
     tagSettings: null
   };

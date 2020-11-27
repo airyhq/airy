@@ -23,8 +23,6 @@ ts_library(
         "@npm//redux",
         "@npm//redux-starter-kit",
         "@npm//typesafe-actions",
-        "@npm//lodash-es",
-        "@npm//@types/node",
         "@npm//reselect",
     ],
 )

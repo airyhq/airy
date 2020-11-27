@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import {ReactSVG} from 'react-svg';
 
 import styles from "./index.module.scss";
-import { Button, emptyImage } from "@airyhq/components";
+import { Button } from "@airyhq/components";
+import emptyImage from "@airyhq/components/src/assets/images/empty-state/tags-empty-state.svg";
 import SimpleTagForm from "./SimpleTagForm";
 
 const EmptyStateTags = () => {
@@ -19,9 +20,7 @@ const EmptyStateTags = () => {
               Tags provide a useful way to group related conversations together
               and to quickly filter and search them.
             </p>
-            <ReactSVG src={emptyImage} />
-            <p>jsaldkjaslkdajslkdajslkdas</p>
-            {/* <AccessibleSVG src={emptyImage} /> */}
+            <img src={emptyImage} />
             <Button onClick={() => setShow(true)}>Create a Tag</Button>
           </div>
         </div>

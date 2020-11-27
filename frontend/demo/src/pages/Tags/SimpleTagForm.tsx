@@ -12,6 +12,7 @@ import Tag from '../../pages/Tags/Tag'
 
 import styles from "./SimpleTagForm.module.scss";
 import { RootState } from "../../reducers";
+import { count } from "console";
 
 const SimpleTagForm = ({
   errorMessage,
@@ -25,7 +26,8 @@ const SimpleTagForm = ({
   const [showError, setShowError] = useState(true);
   const handleCreate = () => {
     if (name.trim().length) {
-      createTag(name.trim(), color).then((success: any) => {
+      createTag({name: name.trim(), color}).then((success: any) => {
+      // createTag(name.trim(), color).then((success: any) => {
         if (success) {
           errorTag({ status: "" });
           onClose();
@@ -77,7 +79,7 @@ const SimpleTagForm = ({
         </p>
         {name && (
           <div>
-            <Tag tag={{ color: color, name: name }} />
+            <Tag tag={{ color: tags.color, name: tags.name, count: tags.count }} />
           </div>
         )}
         <Fragment>

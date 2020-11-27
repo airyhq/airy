@@ -42,9 +42,11 @@ const errorMessage = status => {
 export default function tagsReducer(state = defaultState, action): Tags {
   switch (action.type) {
     case ADD_TAGS_TO_STORE:
+      console.log("NOW")
       return {
         ...state,
-        all: action.tags
+        // all: state.all.concat(action.tagData)
+        // all: action.tagData,
       };
     case DELETE_TAG:
       return {
@@ -58,7 +60,7 @@ export default function tagsReducer(state = defaultState, action): Tags {
           updatedTag = true;
           return {
             ...tag,
-            ...action.tagData
+            ...action.tags
           };
         }
 

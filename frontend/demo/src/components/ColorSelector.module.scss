@@ -42,8 +42,7 @@
     }
 
     &.colorGreen + label span {
-      // background-color: var(--color-tag-green);
-      background-color: black;
+      background-color: var(--color-tag-green);
     }
 
     &.colorPurple + label span {

@@ -8,5 +8,5 @@ data:
   MAIL_URL: {{ .Values.api.mailUrl }}
   MAIL_USERNAME: {{ .Values.api.mailUsername }}
   MAIL_PASSWORD: {{ .Values.api.mailPassword }}
-  JWT_SECRET: {{ .Values.api.jwtSecret }}
+  JWT_SECRET: {{ randAlphaNum 128 | quote }}
   

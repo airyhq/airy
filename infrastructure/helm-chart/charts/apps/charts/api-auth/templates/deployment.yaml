@@ -29,23 +29,23 @@ spec:
         - name: DB_USERNAME
           valueFrom:
             configMapKeyRef:
-              name: postgresql-config
-              key: DB_USERNAME
+              name: postgres-config
+              key: POSTGRES_USER
         - name: DB_NAME
           valueFrom:
             configMapKeyRef:
-              name: postgresql-config
-              key: DB_NAME
+              name: postgres-config
+              key: POSTGRES_DB
         - name: DB_PASSWORD
           valueFrom:
             configMapKeyRef:
-              name: postgresql-config
-              key: DB_PASSWORD
+              name: postgres-config
+              key: POSTGRES_PASSWORD
         - name: DB_ENDPOINT
           valueFrom:
             configMapKeyRef:
-              name: postgresql-config
-              key: DB_ENDPOINT
+              name: postgres-config
+              key: POSTGRES_ENDPOINT
         - name: JWT_SECRET
           valueFrom:
             configMapKeyRef:

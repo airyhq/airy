@@ -10,11 +10,6 @@ cd /vagrant
 cp -u airy.conf.tpl airy.conf
 cp -R /vagrant/helm-chart ~/airy-core/
 
-# Generate random Postgress password
-RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
-sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/charts/postgres/values.yaml
-sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/charts/apps/charts/airy-config/values.yaml
-
 echo "Deploying the Airy Core Platform with the ${APP_IMAGE_TAG} image tag"
 
 cd /vagrant/scripts/

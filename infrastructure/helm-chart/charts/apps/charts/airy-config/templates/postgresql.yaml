@@ -1,10 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: postgresql-config
+  name: postgres-config
+  labels:
+    app: postgres
 data:
-  DB_ENDPOINT: {{ .Values.postgresql.dbEndpoint }}
-  DB_NAME: {{ .Values.postgresql.dbName }}
-  DB_USERNAME: {{ .Values.postgresql.dbUsername }}
-  DB_PASSWORD: {{ .Values.postgresql.dbPassword }}
-  
+  POSTGRES_ENDPOINT: {{ .Values.postgresql.dbEndpoint }}
+  POSTGRES_DB: {{ .Values.postgresql.dbName }}
+  POSTGRES_USER: {{ .Values.postgresql.dbUsername }}
+  POSTGRES_PASSWORD: {{ .Values.postgresql.dbPassword default randAlphaNum 16}}

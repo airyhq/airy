@@ -1,7 +1,6 @@
 module.exports = {
   docs: [
     'index',
-    'user-guide',
     {
       API: ['api/http', 'api/websocket', 'api/webhook'],
     },
@@ -22,6 +21,15 @@ module.exports = {
         'guidelines/kafka',
       ],
     },
+    {
+      Guides: [
+        'guides/architecture',
+        {
+          Deployment: ['guides/airy-core-in-test-env', 'guides/airy-core-in-production'],
+        },
+      ],
+    },
+
     'glossary',
   ],
 };

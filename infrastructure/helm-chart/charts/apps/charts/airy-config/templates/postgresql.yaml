@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-config
+data:
+  DB_ENDPOINT: {{ .Values.postgresql.dbEndpoint }}
+  DB_NAME: {{ .Values.postgresql.dbName }}
+  DB_USERNAME: {{ .Values.postgresql.dbUsername }}
+  DB_PASSWORD: {{ .Values.postgresql.dbPassword }}
+  

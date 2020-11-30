@@ -103,3 +103,17 @@ kafka-console-consumer \
 --topic application.communication.messages \
 --from-beginning
 ```
+
+## Known Issues
+
+If you are getting the following error it could be be because you
+
+```
+There was an error while executing `VBoxManage`, a CLI used by Vagrant
+for controlling VirtualBox. The command and stderr is shown below.
+Command: ["hostonlyif", "create"]
+Stderr: 0%...
+Progress state: NS_ERROR_FAILURE
+VBoxManage: error: Failed to create the host-only adapter
+```
+

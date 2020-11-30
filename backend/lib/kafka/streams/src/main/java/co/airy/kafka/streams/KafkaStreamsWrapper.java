@@ -167,10 +167,6 @@ public class KafkaStreamsWrapper {
         return suppressIntervalInMs;
     }
 
-    public KafkaStreams getStreams() {
-        return this.streams;
-    }
-
     public KafkaStreamsWrapper withExcludeInternalTopics(boolean excludeInternalTopicsConfig) {
         this.excludeInternalTopics = excludeInternalTopicsConfig;
         return this;

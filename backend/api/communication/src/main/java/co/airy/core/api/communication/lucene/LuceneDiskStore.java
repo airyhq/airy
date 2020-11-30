@@ -55,7 +55,7 @@ public class LuceneDiskStore implements StateStore, LuceneStore<String, Conversa
     @Override
     public void close() {
         try {
-            getWriter().flush();
+            getWriter().close();
         } catch (IOException e) {
             log.error("Failed to close Lucene store", e);
         }
@@ -80,8 +80,8 @@ public class LuceneDiskStore implements StateStore, LuceneStore<String, Conversa
         try {
             lucene.writeAll(records);
         } catch (IOException e) {
-            // TODO throw runtime exception?
             log.error("Failed to batch index Lucene document", e);
+            throw new RuntimeException(e);
         }
     }
 

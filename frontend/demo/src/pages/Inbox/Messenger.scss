@@ -1,0 +1,21 @@
+@import '../../assets/scss/colors.scss';
+
+.Messenger-Container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.Messenger-ContainerMiddlePanel {
+  background: var(--color-background-gray);
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+  max-width: 320px;
+  overflow: hidden;
+  margin: 16px 8px 0 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}

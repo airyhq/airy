@@ -18,6 +18,10 @@ ts_library(
         "@npm//redux",
         "@npm//redux-starter-kit",
         "@npm//typesafe-actions",
+        "@npm//lodash-es",
+        "@npm//react-window-infinite-loader",
+        "@npm//reselect",
+        "@npm//react-window",
     ],
 )
 

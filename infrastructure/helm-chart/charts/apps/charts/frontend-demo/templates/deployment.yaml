@@ -5,7 +5,7 @@ metadata:
   namespace: default
   labels:
     app: frontend-demo
-    airy: frontend
+    type: frontend
 spec:
   replicas: 0
   selector:

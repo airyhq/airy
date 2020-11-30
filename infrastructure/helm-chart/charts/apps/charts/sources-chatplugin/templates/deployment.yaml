@@ -5,7 +5,7 @@ metadata:
   namespace: default
   labels:
     app: sources-chatplugin
-    airy: sources
+    type: sources-chatplugin
 spec:
   replicas: 0
   selector:

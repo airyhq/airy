@@ -6,7 +6,7 @@ ZOOKEEPER=airy-cp-zookeeper:2181
 PARTITIONS=${PARTITIONS:-10}
 REPLICAS=${REPLICAS:-1}
 
-echo "Creating kafka topics..."
+echo "Creating Kafka topics..."
 
 kafka-topics --create --if-not-exists --zookeeper $ZOOKEEPER --replication-factor $REPLICAS --partitions $PARTITIONS --topic application.communication.channels 1>/dev/null
 

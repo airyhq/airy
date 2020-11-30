@@ -19,6 +19,9 @@ app_deps = [
     "//backend/lib/spring/kafka/core:spring-kafka-core",
     "//backend/lib/spring/kafka/streams:spring-kafka-streams",
     "@maven//:org_springframework_security_spring_security_core",
+    "@maven//:org_apache_lucene_lucene_queryparser",
+    "@maven//:org_apache_lucene_lucene_analyzers_common",
+    "@maven//:org_apache_lucene_lucene_core",
 ]
 
 springboot(

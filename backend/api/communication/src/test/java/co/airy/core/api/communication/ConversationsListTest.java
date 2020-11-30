@@ -13,7 +13,14 @@ import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.payload.format.DateFormat;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.flexible.standard.StandardQueryParser;
+import org.apache.lucene.queryparser.simple.SimpleQueryParser;
+import org.apache.lucene.search.Query;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +37,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static co.airy.test.Timing.retryOnException;
 import static java.util.Comparator.reverseOrder;
@@ -134,22 +142,23 @@ class ConversationsListTest {
 
     @Test
     void canFilterByConversationId() throws Exception {
-        String payload = "{\"filter\": {\"conversation_ids\": [\"" + conversationIdToFind + "\"]}}";
+        final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
 
-        checkOneConversationExists(payload);
+        final ObjectNode request = jsonNodeFactory.objectNode();
+        request.put("filters", "id:\"" + conversationIdToFind.replace("-", "\\-") + "\"");
+
+        checkOneConversationExists(request.toString());
     }
 
     @Test
     void canFilterByDisplayName() throws Exception {
-        String payload = "{\"filter\": {\"display_names\": [\"" + firstNameToFind + "\"]}}";
-
+        String payload = "{\"filters\": \"display_name:" + firstNameToFind + "\"}";
         checkOneConversationExists(payload);
     }
 
     @Test
     void canFilterForUnknownNames() throws Exception {
-        String payload = "{\"filter\": {\"display_names\": [\"Ada\"]}}";
-
+        String payload = "{\"filters\": \"display_name:Ada\"}";
         checkNoConversationReturned(payload);
     }
 
@@ -166,7 +175,7 @@ class ConversationsListTest {
                 () -> webTestHelper.post("/conversations.list", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))
-                        .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
+                        .andExpect(jsonPath("response_metadata.total", is(1))),
                 "Expected one conversation returned");
     }
 }

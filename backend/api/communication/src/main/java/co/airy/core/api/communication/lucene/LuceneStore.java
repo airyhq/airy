@@ -1,8 +1,8 @@
 package co.airy.core.api.communication.lucene;
 
-import org.apache.kafka.streams.processor.StateStore;
+import java.io.IOException;
 
-public interface LuceneStore<K, V> extends StateStore, ReadOnlyLuceneStore<K, V> {
-    void put(V v);
-    void delete(K k);
+public interface LuceneStore<K, V> extends ReadOnlyLuceneStore<K, V> {
+    void put(V v) throws IOException;
+    void delete(K k) throws IOException;
 }

@@ -5,6 +5,8 @@ import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.ProcessorSupplier;
 
+import java.io.IOException;
+
 public class IndexingProcessor implements Processor<String, Conversation> {
 
     private ProcessorContext context;
@@ -23,7 +25,15 @@ public class IndexingProcessor implements Processor<String, Conversation> {
 
     @Override
     public void process(String key, Conversation value) {
-        store.put(value);
+        try {
+            if (value == null) {
+                store.delete(key);
+            } else {
+                store.put(value);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         context.forward(key, value);
     }
 

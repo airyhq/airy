@@ -12,26 +12,21 @@ import co.airy.core.api.communication.dto.MessagesTreeSet;
 import co.airy.core.api.communication.dto.UnreadCountState;
 import co.airy.core.api.communication.lucene.IndexingProcessor;
 import co.airy.core.api.communication.lucene.LuceneDiskStore;
-import co.airy.core.api.communication.lucene.LuceneDiskStoreType;
+import co.airy.core.api.communication.lucene.LuceneProvider;
 import co.airy.core.api.communication.lucene.ReadOnlyLuceneStore;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
-import co.airy.kafka.streams.StoreNotReadyException;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.errors.InvalidStateStoreException;
 import org.apache.kafka.streams.kstream.KGroupedStream;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
-import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
@@ -48,7 +43,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import static java.util.stream.Collectors.toCollection;
 
@@ -60,6 +54,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final KafkaStreamsWrapper streams;
     private final KafkaProducer<String, SpecificRecordBase> producer;
     private final WebSocketController webSocketController;
+    private final LuceneProvider luceneProvider;
 
     private final String messagesStore = "messages-store";
     private final String conversationsStore = "conversations-store";
@@ -69,16 +64,19 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     Stores(KafkaStreamsWrapper streams,
            KafkaProducer<String, SpecificRecordBase> producer,
-           WebSocketController webSocketController) {
+           WebSocketController webSocketController,
+           LuceneProvider luceneProvider
+    ) {
         this.streams = streams;
         this.producer = producer;
         this.webSocketController = webSocketController;
+        this.luceneProvider = luceneProvider;
     }
 
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        builder.addStateStore(new LuceneDiskStore.Builder(conversationsLuceneStore));
+        builder.addStateStore(new LuceneDiskStore.Builder(conversationsLuceneStore, luceneProvider));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .selectKey((messageId, message) -> message.getConversationId())
@@ -187,20 +185,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     public ReadOnlyLuceneStore<String, Conversation> getConversationLuceneStore() {
-        final KafkaStreams kafkaStreams = this.streams.getStreams();
-        int retries = 0;
-        do
-            try {
-                return kafkaStreams.store(StoreQueryParameters.fromNameAndType(conversationsLuceneStore, new LuceneDiskStoreType()));
-            } catch (InvalidStateStoreException e) {
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException expected) {
-                }
-            }
-        while (retries++ < 10);
-
-        throw new RuntimeException(String.format("Store %s not ready yet.", conversationsLuceneStore));
+        return luceneProvider;
     }
 
     public void storeReadReceipt(ReadReceipt readReceipt) throws ExecutionException, InterruptedException {

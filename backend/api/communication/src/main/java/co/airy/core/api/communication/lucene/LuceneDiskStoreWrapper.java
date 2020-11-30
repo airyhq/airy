@@ -48,10 +48,10 @@ public class LuceneDiskStoreWrapper implements ReadOnlyLuceneStore<String, Conve
     }
 
     @Override
-    public LuceneQueryResult query(Query query, String cursor) {
+    public LuceneQueryResult query(Query query) {
         final List<ReadOnlyLuceneStore<String, Conversation>> stores = provider.stores(storeName, customStoreType);
 
         // Collect search results from all stores
-        return stores.stream().map(store -> store.query(query, cursor)).findFirst().get();
+        return stores.stream().map(store -> store.query(query)).findFirst().get();
     }
 }

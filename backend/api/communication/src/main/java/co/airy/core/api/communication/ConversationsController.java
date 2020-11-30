@@ -48,29 +48,26 @@ public class ConversationsController {
     ResponseEntity<ConversationListResponsePayload> conversationList(@RequestBody @Valid ConversationListRequestPayload requestPayload) throws Exception {
         final String queryFilter = requestPayload.getFilters();
         final String cursor = requestPayload.getCursor();
-        List<Conversation> conversations;
+        final int pageSize = requestPayload.getPageSize();
 
+        List<Conversation> conversations;
+        int totalSize;
         if (queryFilter != null) {
             final ReadOnlyLuceneStore<String, Conversation> conversationLuceneStore = stores.getConversationLuceneStore();
 
             final QueryParser simpleQueryParser = new QueryParser("id", new WhitespaceAnalyzer());
-            final LuceneQueryResult queryResult = conversationLuceneStore.query(simpleQueryParser.parse(queryFilter), cursor);
+            final LuceneQueryResult queryResult = conversationLuceneStore.query(simpleQueryParser.parse(queryFilter));
 
-            return ResponseEntity.ok(
-                    ConversationListResponsePayload.builder()
-                            .data(queryResult.getConversations().stream()
-                                    .map(mapper::fromConversation)
-                                    .collect(toList()))
-                            .responseMetadata(queryResult.getResponseMetadata()).build());
+            conversations = queryResult.getConversations();
+            totalSize = queryResult.getTotal();
+        } else {
+            conversations = fetchAllConversations();
+            totalSize = conversations.size();
+            conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessage().getSentAt()).reversed());
         }
 
-        conversations = fetchAllConversations();
-        conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessage().getSentAt()).reversed());
-
-        final int totalSize = conversations.size();
-
         final Paginator<Conversation> paginator = new Paginator<>(conversations, Conversation::getId)
-                .from(cursor).perPage(requestPayload.getPageSize());
+                .from(cursor).perPage(pageSize);
 
         final Page<Conversation> page = paginator.page();
 
@@ -84,7 +81,7 @@ public class ConversationsController {
                         .data(response)
                         .responseMetadata(
                                 ResponseMetadata.builder()
-                                        .filteredTotal(totalSize)
+                                        .filteredTotal(conversations.size())
                                         .nextCursor(page.getNextCursor())
                                         .previousCursor(page.getPreviousCursor())
                                         .total(totalSize)
@@ -120,9 +117,7 @@ public class ConversationsController {
     @PostMapping("/conversations.read")
     ResponseEntity<?> conversationMarkRead(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
-
         final String conversationId = requestPayload.getConversationId().toString();
-
         final Conversation conversation = store.get(conversationId);
 
         if (conversation == null) {

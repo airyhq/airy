@@ -130,7 +130,7 @@ public class LuceneDiskStore implements LuceneStore<String, Conversation> {
     }
 
     @Override
-    public LuceneQueryResult query(Query query, String cursor) {
+    public LuceneQueryResult query(Query query) {
         try {
             refreshReader();
             final IndexSearcher indexSearcher = new IndexSearcher(reader);
@@ -144,22 +144,12 @@ public class LuceneDiskStore implements LuceneStore<String, Conversation> {
 
             return LuceneQueryResult.builder()
                     .conversations(conversations)
-                    .responseMetadata(
-                            ResponseMetadata.builder()
-                                    .total(reader.maxDoc())
-                                    .filteredTotal(conversations.size())
-                                    .build()
-                    )
+                    .total(reader.maxDoc())
                     .build();
         } catch (Exception e) {
             log.error("Failed to query Lucene store with query {}", query, e);
             return LuceneQueryResult.builder().conversations(List.of())
-                    .responseMetadata(
-                            ResponseMetadata.builder()
-                                    .total(reader.maxDoc())
-                                    .filteredTotal(0)
-                                    .build()
-                    )
+                    .total(reader.maxDoc())
                     .build();
         }
     }

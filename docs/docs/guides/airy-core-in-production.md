@@ -116,10 +116,13 @@ helm install airy-apps ./helm-chart/charts/apps/ --timeout 1000s
 
 By default, the `Airy apps` deployments start with `replicas=0` so to scale them up, run:
 ```sh
-kubectl scale deployment -l airy=api --replicas=1
-kubectl scale deployment -l airy=sources --replicas=1
-kubectl scale deployment -l airy=webhook --replicas=1
-kubectl scale deployment -l airy=frontend --replicas=1
+kubectl scale deployment -l type=api --replicas=1
+kubectl scale deployment -l type=frontend --replicas=1
+kubectl scale deployment -l type=webhook --replicas=1
+kubectl scale deployment -l type=sources-chatplugin --replicas=1
+kubectl scale deployment -l type=sources-facebook --replicas=1
+kubectl scale deployment -l type=sources-google --replicas=1
+kubectl scale deployment -l type=sources-twilio --replicas=1
 ```
 
 At this point you should have a running `Airy Core Platform` in your environment 🎉.

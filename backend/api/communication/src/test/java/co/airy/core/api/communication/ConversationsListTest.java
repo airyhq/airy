@@ -13,14 +13,9 @@ import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.payload.format.DateFormat;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.queryparser.flexible.standard.StandardQueryParser;
-import org.apache.lucene.queryparser.simple.SimpleQueryParser;
-import org.apache.lucene.search.Query;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +32,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static co.airy.test.Timing.retryOnException;
 import static java.util.Comparator.reverseOrder;
@@ -147,13 +141,24 @@ class ConversationsListTest {
         final ObjectNode request = jsonNodeFactory.objectNode();
         request.put("filters", "id:\"" + conversationIdToFind.replace("-", "\\-") + "\"");
 
-        checkOneConversationExists(request.toString());
+        checkConversationsFound(request.toString(), 1);
     }
 
     @Test
     void canFilterByDisplayName() throws Exception {
         String payload = "{\"filters\": \"display_name:" + firstNameToFind + "\"}";
-        checkOneConversationExists(payload);
+        checkConversationsFound(payload, 1);
+    }
+
+    @Test
+    void canFilterByCombinedQueries() throws Exception {
+        final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
+
+        final ObjectNode request = jsonNodeFactory.objectNode();
+        request.put("filters", "display_name:" + firstNameToFind
+                + " OR id:\"" + conversationIdToFind.replace("-", "\\-") + "\"");
+
+        checkConversationsFound(request.toString(), 2);
     }
 
     @Test
@@ -170,12 +175,13 @@ class ConversationsListTest {
                 "Expected no conversations returned");
     }
 
-    private void checkOneConversationExists(String payload) throws InterruptedException {
+    private void checkConversationsFound(String payload, int count) throws InterruptedException {
         retryOnException(
                 () -> webTestHelper.post("/conversations.list", payload, userId)
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(1)))
-                        .andExpect(jsonPath("response_metadata.total", is(1))),
+                        .andExpect(jsonPath("$.data", hasSize(count)))
+                        .andExpect(jsonPath("response_metadata.filtered_total", is(count)))
+                        .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
                 "Expected one conversation returned");
     }
 }

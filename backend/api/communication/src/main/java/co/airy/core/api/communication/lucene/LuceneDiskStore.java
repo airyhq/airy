@@ -1,6 +1,8 @@
 package co.airy.core.api.communication.lucene;
 
 import co.airy.core.api.communication.dto.Conversation;
+import co.airy.core.api.communication.dto.LuceneQueryResult;
+import co.airy.core.api.communication.payload.ResponseMetadata;
 import co.airy.log.AiryLoggerFactory;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.processor.AbstractNotifyingBatchingRestoreCallback;
@@ -128,22 +130,37 @@ public class LuceneDiskStore implements LuceneStore<String, Conversation> {
     }
 
     @Override
-    public List<String> query(Query query) {
+    public LuceneQueryResult query(Query query, String cursor) {
         try {
             refreshReader();
             final IndexSearcher indexSearcher = new IndexSearcher(reader);
             final TopDocs topDocs = indexSearcher.search(query, Integer.MAX_VALUE);
 
-            List<String> conversationIds = new ArrayList<>();
+            List<Conversation> conversations = new ArrayList<>();
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
                 final Document doc = indexSearcher.doc(scoreDoc.doc);
-                conversationIds.add(doc.get("id"));
+                conversations.add(documentMapper.fromDocument(doc));
             }
 
-            return conversationIds;
+            return LuceneQueryResult.builder()
+                    .conversations(conversations)
+                    .responseMetadata(
+                            ResponseMetadata.builder()
+                                    .total(reader.maxDoc())
+                                    .filteredTotal(conversations.size())
+                                    .build()
+                    )
+                    .build();
         } catch (Exception e) {
             log.error("Failed to query Lucene store with query {}", query, e);
-            return List.of();
+            return LuceneQueryResult.builder().conversations(List.of())
+                    .responseMetadata(
+                            ResponseMetadata.builder()
+                                    .total(reader.maxDoc())
+                                    .filteredTotal(0)
+                                    .build()
+                    )
+                    .build();
         }
     }
 

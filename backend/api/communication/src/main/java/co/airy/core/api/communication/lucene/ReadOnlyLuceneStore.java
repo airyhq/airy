@@ -1,9 +1,8 @@
 package co.airy.core.api.communication.lucene;
 
+import co.airy.core.api.communication.dto.LuceneQueryResult;
 import org.apache.lucene.search.Query;
 
-import java.util.List;
-
 public interface ReadOnlyLuceneStore<K, V> {
-    List<String> query(Query query);
+    LuceneQueryResult query(Query query, String cursor);
 }

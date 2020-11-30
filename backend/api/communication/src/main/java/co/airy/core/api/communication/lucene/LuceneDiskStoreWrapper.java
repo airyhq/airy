@@ -1,6 +1,7 @@
 package co.airy.core.api.communication.lucene;
 
 import co.airy.core.api.communication.dto.Conversation;
+import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.log.AiryLoggerFactory;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.processor.AbstractNotifyingBatchingRestoreCallback;
@@ -47,10 +48,10 @@ public class LuceneDiskStoreWrapper implements ReadOnlyLuceneStore<String, Conve
     }
 
     @Override
-    public List<String> query(Query query) {
+    public LuceneQueryResult query(Query query, String cursor) {
         final List<ReadOnlyLuceneStore<String, Conversation>> stores = provider.stores(storeName, customStoreType);
 
         // Collect search results from all stores
-        return stores.stream().flatMap(store -> store.query(query).stream()).collect(toList());
+        return stores.stream().map(store -> store.query(query, cursor)).findFirst().get();
     }
 }

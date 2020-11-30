@@ -51,7 +51,7 @@ public class Mapper {
         return MessageResponsePayload.builder()
                 .content(contentMapper.renderWithDefaultAndLog(message))
                 .alignment(getAlignment(message.getSenderType()))
-                .state(message.getDeliveryState().toString().toLowerCase())
+                .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
                 .build();

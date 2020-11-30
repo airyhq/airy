@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class MessageResponsePayload {
     private String id;
     private Content content;
-    private String state;
     private String alignment;
     private String sentAt;
     private String deliveryState;

@@ -2,11 +2,9 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
-import co.airy.avro.communication.MetadataKeys;
 import co.airy.core.api.communication.payload.SetMetadataRequestPayload;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestErrorResponsePayload;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

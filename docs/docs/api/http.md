@@ -229,10 +229,10 @@ This is a [paginated](#pagination) endpoint.
     content: {
       text: "{String}",
       type: "text"
-      // Determines the schema of the content 
+      // Determines the schema of the content
     },
     // typed source message model
-    state: "{String}",
+    delivery_state: "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     alignment: "{string/enum}",
     // LEFT, RIGHT, CENTER - horizontal placement of message

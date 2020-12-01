@@ -1,9 +1,9 @@
 export interface Channel {
   name: string;
   source: string;
-  source_channel_id: string;
+  sourceChannelId: string;
   connected: boolean;
-  image_url?: string;
+  imageUrl?: string;
 }
 
 export interface ChannelPayload {
@@ -49,8 +49,8 @@ export const channelMapper = (payload: ChannelPayload): Channel => {
   return {
     name: payload.name,
     source: payload.source,
-    source_channel_id: payload.source_channel_id,
-    image_url: payload.image_url,
+    sourceChannelId: payload.source_channel_id,
+    imageUrl: payload.image_url,
     connected: true,
   };
 };

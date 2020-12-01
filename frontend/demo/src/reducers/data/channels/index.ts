@@ -9,7 +9,7 @@ export const initialState = [];
 
 const mergeChannels = (channels: Channel[], newChannels: Channel[]) =>
   unionWith(newChannels, channels, (channelA: Channel, channelB: Channel) => {
-    return channelA.source_channel_id === channelB.source_channel_id;
+    return channelA.sourceChannelId === channelB.sourceChannelId;
   });
 
 const channelsReducer: any = (state = initialState, action: Action): Channel[] | {} => {

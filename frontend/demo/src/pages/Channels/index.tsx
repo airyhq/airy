@@ -35,7 +35,7 @@ const Channels = (props: ChannelsConnectProps) => {
     props.getChannels();
   }, []);
 
-  const connect = token => {
+  const connect = (token: string) => {
     props.exploreChannels({
       source: 'facebook',
       token,
@@ -60,7 +60,7 @@ const Channels = (props: ChannelsConnectProps) => {
     (channel: Channel) => {
       props.connectChannel({
         source: channel.source,
-        source_channel_id: channel.source_channel_id,
+        source_channel_id: channel.sourceChannelId,
         token: facebookToken,
       });
     },
@@ -93,8 +93,8 @@ const Channels = (props: ChannelsConnectProps) => {
       </div>
       <ul className={styles.channelList}>
         {props.channels.map((channel: Channel) => (
-          <li key={channel.source_channel_id} className={styles.channelListEntry}>
-            <img src={channel.image_url} className={styles.channelImage} />
+          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+            <img src={channel.imageUrl} className={styles.channelImage} />
             <div className={styles.channelName}>{channel.name}</div>
             <div className={styles.channelAction}>
               {channel.connected ? (

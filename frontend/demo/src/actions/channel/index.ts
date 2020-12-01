@@ -5,6 +5,8 @@ import {doFetchFromBackend} from '../../api/airyConfig';
 
 import {
   Channel,
+  ChannelPayload,
+  ChannelsPayload,
   channelsMapper,
   channelMapper,
   ConnectChannelRequestPayload,
@@ -24,7 +26,7 @@ export const addChannelsAction = createAction(ADD_CHANNELS, resolve => (channels
 export function getChannels() {
   return async (dispatch: Dispatch<any>) => {
     return doFetchFromBackend('channels.list')
-      .then(response => {
+      .then((response: ChannelsPayload) => {
         const channels = channelsMapper(response);
         dispatch(setCurrentChannelsAction(channels));
         return Promise.resolve(channels);
@@ -38,7 +40,7 @@ export function getChannels() {
 export function exploreChannels(requestPayload: ExploreChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
     return doFetchFromBackend('channels.explore', requestPayload)
-      .then(response => {
+      .then((response: ChannelsPayload) => {
         const channels = channelsMapper(response, requestPayload.source);
         dispatch(addChannelsAction(channels));
         return Promise.resolve(channels);
@@ -52,7 +54,7 @@ export function exploreChannels(requestPayload: ExploreChannelRequestPayload) {
 export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
     return doFetchFromBackend('channels.connect', requestPayload)
-      .then(response => {
+      .then((response: ChannelPayload) => {
         const channel = channelMapper(response);
         dispatch(addChannelsAction([channel]));
         return Promise.resolve(channel);
@@ -66,7 +68,7 @@ export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
 export function disconnectChannel(requestPayload: DisconnectChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
     return doFetchFromBackend('channels.disconnect', requestPayload)
-      .then(response => {
+      .then((response: ChannelsPayload) => {
         const channels = channelsMapper(response);
         dispatch(setCurrentChannelsAction(channels));
         return Promise.resolve(channels);

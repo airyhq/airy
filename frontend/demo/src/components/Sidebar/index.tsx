@@ -1,10 +1,10 @@
 import React from 'react';
 import {withRouter, Link, matchPath, RouteProps} from 'react-router-dom';
 
-import { ReactComponent as PlugIcon } from "../../assets/images/icons/git-merge.svg";
-import { ReactComponent as TagIcon } from "../../assets/images/icons/price-tag.svg";
+import {ReactComponent as PlugIcon} from '../../assets/images/icons/git-merge.svg';
+import {ReactComponent as TagIcon} from '../../assets/images/icons/price-tag.svg';
 
-import { CHANNELS_ROUTE, TAGS_ROUTE } from "../../routes/routes";
+import {CHANNELS_ROUTE, TAGS_ROUTE} from '../../routes/routes';
 
 import styles from './index.module.scss';
 
@@ -23,12 +23,7 @@ const Sidebar = (props: RouteProps) => {
           </Link>
         </div>
         <div className={styles.align}>
-          <Link
-            to={TAGS_ROUTE}
-            className={`${styles.link} ${
-              isActive(TAGS_ROUTE) ? styles.active : ""
-            }`}
-          >
+          <Link to={TAGS_ROUTE} className={`${styles.link} ${isActive(TAGS_ROUTE) ? styles.active : ''}`}>
             <TagIcon />
             <span className={styles.iconText}>Tags</span>
           </Link>

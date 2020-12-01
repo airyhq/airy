@@ -1,9 +1,9 @@
-import _, { combineReducers, Reducer } from "redux-starter-kit";
-import { User } from "../../model/User";
-import { Tags } from "./tags";
+import _, {combineReducers, Reducer} from 'redux-starter-kit';
+import {User} from '../../model/User';
+import {Tags} from './tags';
 
-import user from "./user";
-import tags from "./tags";
+import user from './user';
+import tags from './tags';
 
 export type DataState = {
   user: User;
@@ -12,7 +12,7 @@ export type DataState = {
 
 const reducers: Reducer = combineReducers<DataState>({
   user,
-  tags
+  tags,
 });
 
 export default reducers;

@@ -1,42 +1,35 @@
-import React, { useState, Fragment } from "react";
-import { connect } from "react-redux";
+import React, {useState, Fragment} from 'react';
+import {connect} from 'react-redux';
 
-import { createTag, getTags, errorTag, filterTags } from "../../actions/tags";
-import { filteredTags } from "../../selectors/tags";
+import {createTag, getTags, errorTag, filterTags} from '../../actions/tags';
+import {filteredTags} from '../../selectors/tags';
 
-import { Button, Input } from "@airyhq/components";
+import {Button, Input} from '@airyhq/components';
 import Dialog from '../../components/Dialog';
 import ColorSelector from '../../components/ColorSelector';
 
-import Tag from '../../pages/Tags/Tag'
+import Tag from '../../pages/Tags/Tag';
 
-import styles from "./SimpleTagForm.module.scss";
-import { RootState } from "../../reducers";
-import { count } from "console";
+import styles from './SimpleTagForm.module.scss';
+import {RootState} from '../../reducers';
 
-const SimpleTagForm = ({
-  errorMessage,
-  createTag,
-  errorTag,
-  onClose,
-  tags
-}) => {
-  const [name, setName] = useState("");
-  const [color, setColor] = useState("tag-blue");
+const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}) => {
+  const [name, setName] = useState('');
+  const [color, setColor] = useState('tag-blue');
   const [showError, setShowError] = useState(true);
   const handleCreate = () => {
     if (name.trim().length) {
       createTag({name: name.trim(), color}).then((success: any) => {
-      // createTag(name.trim(), color).then((success: any) => {
+        // createTag(name.trim(), color).then((success: any) => {
         if (success) {
-          errorTag({ status: "" });
+          errorTag({status: ''});
           onClose();
         } else {
           setShowError(true);
         }
       });
     } else {
-      errorTag({ status: "empty", data: "" });
+      errorTag({status: 'empty', data: ''});
     }
   };
 
@@ -50,10 +43,7 @@ const SimpleTagForm = ({
   };
 
   return (
-    <Dialog
-      close={onClose}
-      style={tags.length ? { right: 0, top: "32px" } : { top: "200px" }}
-    >
+    <Dialog close={onClose} style={tags.length ? {right: 0, top: '32px'} : {top: '200px'}}>
       <div className={styles.tagCreate}>
         <h4 className={styles.headline}>Add a tag</h4>
         <Input
@@ -67,28 +57,22 @@ const SimpleTagForm = ({
           value={name}
           name="tag_name"
           placeholder="Please enter a tag name"
-          className={styles.searchTags}
+          // className={styles.searchTags}
           autoComplete="off"
-          role="presentation"
+          // role="presentation"
           autoFocus={true}
           fontClass="font-m"
           maxLength={50}
         />
-        <p className={styles.errorMessage}>
-          {(!name.length || showError) && errorMessage}
-        </p>
+        <p className={styles.errorMessage}>{(!name.length || showError) && errorMessage}</p>
         {name && (
           <div>
-            <Tag tag={{ color: tags.color, name: tags.name, count: tags.count }} />
+            <Tag tag={{color: tags.color, name: tags.name}} />
           </div>
         )}
         <Fragment>
           <p className={styles.description}>Pick a color</p>
-          <ColorSelector
-            handleUpdate={e => setColor(e.target.value)}
-            color={color}
-            editing={true}
-          />
+          <ColorSelector handleUpdate={e => setColor(e.target.value)} color={color} editing={true} />
           <div className={styles.buttonRow}>
             <Button styleVariant="small" onClick={handleCreate}>
               Create Tag
@@ -103,7 +87,7 @@ const SimpleTagForm = ({
 const mapStateToProps = (state: RootState) => {
   return {
     tags: filteredTags(state),
-    errorMessage: state.data.tags.error
+    errorMessage: state.data.tags.error,
   };
 };
 
@@ -111,7 +95,7 @@ const mapDispatchToProps = {
   createTag,
   errorTag,
   getTags,
-  filterTags
+  filterTags,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

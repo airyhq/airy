@@ -2,7 +2,7 @@ export interface Tag {
   id?: string;
   name: string;
   color: string;
-  count: number;
+  count?: number;
 }
 
 export interface TagPayload {

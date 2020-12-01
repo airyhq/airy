@@ -1,51 +1,42 @@
-import React, { Component } from "react";
-import _, { connect, ConnectedProps } from "react-redux";
-import {ReactSVG} from 'react-svg';
+import React, {Component} from 'react';
+import _, {connect, ConnectedProps} from 'react-redux';
 
-import {
-  SettingsModal,
-  LinkButton,
-  Button,
-  SearchField,
-  Input,
-  plus,
-} from "@airyhq/components";
+import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/components';
 
-import { getTags, deleteTag, filterTags, errorTag } from "../../actions/tags";
-import { filteredTags } from "../../selectors/tags";
+import plus from '@airyhq/components/src/assets/images/icons/plus.svg';
 
-import styles from "./index.module.scss";
-import { TableRow } from "./TableRow";
-import SimpleTagForm from "./SimpleTagForm";
-import EmptyStateTags from "./EmptyStateTags";
-import { RootState } from "../../reducers";
+import {getTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
+import {filteredTags} from '../../selectors/tags';
+
+import styles from './index.module.scss';
+import {TableRow} from './TableRow';
+import SimpleTagForm from './SimpleTagForm';
+import EmptyStateTags from './EmptyStateTags';
+import {RootState} from '../../reducers';
 
 const initialState = {
   modal: {
     type: null,
     tagId: null,
     tagName: null,
-    delete: "",
-    error: ""
+    delete: '',
+    error: '',
   },
-  tagQuery: "",
-  createDrawer: false
+  tagQuery: '',
+  createDrawer: false,
 };
 
-class TagsComponent extends Component<
-  ConnectedProps<typeof connector>,
-  typeof initialState
-> {
+class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof initialState> {
   state = initialState;
 
   componentDidMount() {
     this.props.getTags();
-    this.props.filterTags("");
+    this.props.filterTags('');
   }
 
   handleSearch = value => {
     this.setState({
-      tagQuery: value
+      tagQuery: value,
     });
     this.props.filterTags(value);
   };
@@ -56,17 +47,17 @@ class TagsComponent extends Component<
       return {
         modal: {
           ...state.modal,
-          delete: e.target && e.target.value
-        }
+          delete: e.target && e.target.value,
+        },
       };
     });
   };
 
   handleTagDrawer = () => {
     this.setState({
-      createDrawer: !this.state.createDrawer
+      createDrawer: !this.state.createDrawer,
     });
-    this.props.errorTag({ status: "" });
+    this.props.errorTag({status: ''});
   };
 
   keyPressed = (e: any) => {
@@ -86,9 +77,9 @@ class TagsComponent extends Component<
         type: modalType,
         tagId: id,
         tagName: name,
-        delete: "",
-        error: ""
-      }
+        delete: '',
+        error: '',
+      },
     });
   };
 
@@ -97,15 +88,15 @@ class TagsComponent extends Component<
       modal: {
         type: null,
         tagId: null,
-        tagName: "",
-        delete: "",
-        error: ""
-      }
+        tagName: '',
+        delete: '',
+        error: '',
+      },
     });
   };
 
   confirmDelete = () => {
-    if (this.state.modal.delete.toLowerCase() === "delete") {
+    if (this.state.modal.delete.toLowerCase() === 'delete') {
       this.props.deleteTag(this.state.modal.tagId);
       this.closeModal();
     } else {
@@ -113,31 +104,28 @@ class TagsComponent extends Component<
         return {
           modal: {
             ...state.modal,
-            error: "Please type 'delete' in the input field before deleting"
-          }
+            error: "Please type 'delete' in the input field before deleting",
+          },
         };
       });
     }
   };
 
   renderConfirmDelete = () => {
-    if (this.state.modal.type === "confirmDelete") {
+    if (this.state.modal.type === 'confirmDelete') {
       return (
         <SettingsModal
-          style={{ maxWidth: "480px" }}
+          style={{maxWidth: '480px'}}
           title="Are you sure you want to permanently delete this tag?"
-          close={this.closeModal}
-        >
+          close={this.closeModal}>
           <div className={styles.confirmDelete}>
             <p>
-              You're about to permanently delete{" "}
-              <strong>"{this.state.modal.tagName}"</strong> from your
-              organization's tags.
+              You're about to permanently delete <strong>"{this.state.modal.tagName}"</strong> from your organization's
+              tags.
             </p>
             <p>
-              <strong>This action cannot be undone.</strong> Once you delete the
-              tag, no one in your organization will be able to use it. It will
-              also removed from all corresponding contacts.
+              <strong>This action cannot be undone.</strong> Once you delete the tag, no one in your organization will
+              be able to use it. It will also removed from all corresponding contacts.
             </p>
             <p>
               Type <strong>DELETE</strong> to confirm:
@@ -164,33 +152,22 @@ class TagsComponent extends Component<
   };
 
   renderTagList() {
-    const { tags } = this.props;
+    const {tags} = this.props;
     return (
       <div className={styles.cardRaised}>
         <header>
           <h1 className={styles.organizationSectionHeadline}>Tags</h1>
         </header>
-        
-    <div className={styles.organizationContainer} key="1">
-    <div className={styles.tagsHeader}>
-    <div className={styles.searchContainer}>
-              {/* <SearchField
-                placeholder="Search for tags"
-                value={this.state.tagQuery}
-                setValue={this.handleSearch}
-              /> */}
-    </div>
-    </div>
-    </div>
-  
+        <div className={styles.organizationContainer} key="1">
+          <div className={styles.tagsHeader}>
+            <div className={styles.searchContainer}>
+              <SearchField placeholder="Search for tags" value={this.state.tagQuery} setValue={this.handleSearch} />
+            </div>
             <button onClick={this.handleTagDrawer} className={styles.addButton}>
-              Add tag{" "}
-              <img className={styles.plusButton} src={plus} />
+              Add tag <img className={styles.plusButton} src={plus} />
             </button>
-          {/* </div> */}
-          {this.state.createDrawer && (
-            <SimpleTagForm onClose={this.handleTagDrawer} />
-          )}
+          </div>
+          {this.state.createDrawer && <SimpleTagForm onClose={this.handleTagDrawer} />}
           {tags.length > 0 ? (
             <table className={styles.tagsTable}>
               <tbody>
@@ -202,14 +179,7 @@ class TagsComponent extends Component<
                 </tr>
                 {tags &&
                   tags.map((tag, idx) => {
-                    console.log(tag);
-                    return (
-                      <TableRow
-                        key={idx}
-                        tag={tag}
-                        showModal={this.showModal}
-                      />
-                    );
+                    return <TableRow key={idx} tag={tag} showModal={this.showModal} />;
                   })}
               </tbody>
             </table>
@@ -219,20 +189,15 @@ class TagsComponent extends Component<
               <p>Try to search for a different term.</p>
             </div>
           )}
-        {/* </div> */}
+        </div>
         {this.renderConfirmDelete()}
       </div>
     );
   }
 
   render() {
-    const { allTagsCount } = this.props;
-    console.log(allTagsCount);
-    return (
-      <div className={styles.tagsWrapper}>
-        {allTagsCount == 0 ? <EmptyStateTags /> : this.renderTagList()}
-      </div>
-    );
+    const {allTagsCount} = this.props;
+    return <div className={styles.tagsWrapper}>{allTagsCount == 0 ? <EmptyStateTags /> : this.renderTagList()}</div>;
   }
 }
 
@@ -241,14 +206,14 @@ const mapStateToProps = (state: RootState) => ({
   allTagsCount: state.data.tags.all.length,
   tagQuery: state.data.tags.query,
   errorMessage: state.data.tags.error,
-  userData: state.data.user
+  userData: state.data.user,
 });
 
 const mapDispatchToProps = {
   getTags,
   deleteTag,
   errorTag,
-  filterTags
+  filterTags,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

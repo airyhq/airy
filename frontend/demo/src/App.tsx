@@ -8,10 +8,10 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Sidebar from './components/Sidebar';
 
-import { StateModel } from "./reducers";
-import { LOGIN_ROUTE, ROOT_ROUTE, TAGS_ROUTE } from "./routes/routes";
+import {StateModel} from './reducers';
+import {LOGIN_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 
-import { Tags } from "./pages/Tags";
+import {Tags} from './pages/Tags';
 
 import styles from './App.module.scss';
 

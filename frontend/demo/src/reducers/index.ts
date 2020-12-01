@@ -17,10 +17,7 @@ const applicationReducer = combineReducers<StateModel>({
 
 export type RootState = ReturnType<typeof applicationReducer>;
 
-const rootReducer: (state: any, action: any) => CombinedState<StateModel> = (
-  state,
-  action
-) => {
+const rootReducer: (state: any, action: any) => CombinedState<StateModel> = (state, action) => {
   if (action.type === getType(authActions.logoutUserAction)) {
     clearUserData();
     return applicationReducer(undefined, action);

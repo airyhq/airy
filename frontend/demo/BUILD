@@ -22,8 +22,8 @@ ts_library(
         "@npm//react-svg",
         "@npm//redux",
         "@npm//redux-starter-kit",
-        "@npm//typesafe-actions",
         "@npm//reselect",
+        "@npm//typesafe-actions",
     ],
 )
 

@@ -21,7 +21,7 @@ kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev
 kubectl scale statefulset airy-cp-zookeeper --replicas=1
 
 wait-for-running-pod startup-helper
-wait-for-service startup-helper airy-cp-zookeeper 2181 15 Zookeeper
+wait-for-service startup-helper airy-cp-zookeeper 2181 15 ZooKeeper
 kubectl scale statefulset airy-cp-kafka --replicas=1
 wait-for-service startup-helper airy-cp-kafka 9092 15 Kafka
 kubectl cp provision/create-topics.sh airy-cp-kafka-0:/tmp

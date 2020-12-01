@@ -155,3 +155,16 @@ the following commands:
 cd infrastructure
 vagrant destroy
 ```
+
+## Known Issues
+
+If you have just installed Virtualbox and see this error during the bootstrap you should [give Virtualbox permissions](https://www.howtogeek.com/658047/how-to-fix-virtualboxs-%E2%80%9Ckernel-driver-not-installed-rc-1908-error/).
+
+```
+There was an error while executing `VBoxManage`, a CLI used by Vagrant
+for controlling VirtualBox. The command and stderr is shown below.
+Command: ["hostonlyif", "create"]
+Stderr: 0%...
+Progress state: NS_ERROR_FAILURE
+VBoxManage: error: Failed to create the host-only adapter
+```

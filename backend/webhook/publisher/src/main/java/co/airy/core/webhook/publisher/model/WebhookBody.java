@@ -21,8 +21,9 @@ public class WebhookBody implements Serializable {
     private Postback postback;
 
     @Data
-    @AllArgsConstructor
+    @Builder
     public static class Sender {
-        String id;
+        private String id;
+        private String type;
     }
 }

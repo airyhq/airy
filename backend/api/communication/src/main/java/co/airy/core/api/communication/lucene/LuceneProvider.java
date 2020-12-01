@@ -1,6 +1,7 @@
 package co.airy.core.api.communication.lucene;
 
 import co.airy.core.api.communication.dto.Conversation;
+import co.airy.core.api.communication.dto.ConversationIndex;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.log.AiryLoggerFactory;
 import org.apache.kafka.streams.KeyValue;
@@ -27,7 +28,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class LuceneProvider implements LuceneStore<String, Conversation> {
+public class LuceneProvider implements LuceneStore {
     private static final Logger log = AiryLoggerFactory.getLogger(LuceneDiskStore.class);
 
     final IndexWriter writer;
@@ -44,8 +45,8 @@ public class LuceneProvider implements LuceneStore<String, Conversation> {
     }
 
     @Override
-    public void put(Conversation conversation) throws IOException {
-        final Document document = this.documentMapper.fromConversation(conversation);
+    public void put(ConversationIndex conversation) throws IOException {
+        final Document document = this.documentMapper.fromConversationIndex(conversation);
         writer.updateDocument(new Term("id", conversation.getId()), document);
     }
 
@@ -69,7 +70,7 @@ public class LuceneProvider implements LuceneStore<String, Conversation> {
             final IndexSearcher indexSearcher = new IndexSearcher(reader);
             final TopDocs topDocs = indexSearcher.search(query, Integer.MAX_VALUE);
 
-            List<Conversation> conversations = new ArrayList<>(topDocs.scoreDocs.length);
+            List<ConversationIndex> conversations = new ArrayList<>(topDocs.scoreDocs.length);
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
                 final Document doc = indexSearcher.doc(scoreDoc.doc);
                 conversations.add(documentMapper.fromDocument(doc));

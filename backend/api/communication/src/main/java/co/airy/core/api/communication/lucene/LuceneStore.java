@@ -1,8 +1,10 @@
 package co.airy.core.api.communication.lucene;
 
+import co.airy.core.api.communication.dto.ConversationIndex;
+
 import java.io.IOException;
 
-public interface LuceneStore<K, V> extends ReadOnlyLuceneStore<K, V> {
-    void put(V v) throws IOException;
-    void delete(K k) throws IOException;
+public interface LuceneStore extends ReadOnlyLuceneStore {
+    void put(ConversationIndex conversation) throws IOException;
+    void delete(String id) throws IOException;
 }

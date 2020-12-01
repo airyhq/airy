@@ -184,7 +184,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return streams.acquireLocalStore(messagesStore);
     }
 
-    public ReadOnlyLuceneStore<String, Conversation> getConversationLuceneStore() {
+    public ReadOnlyLuceneStore getConversationLuceneStore() {
         return luceneProvider;
     }
 

@@ -1,6 +1,7 @@
 package co.airy.core.api.communication.lucene;
 
 import co.airy.core.api.communication.dto.Conversation;
+import co.airy.core.api.communication.dto.ConversationIndex;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.log.AiryLoggerFactory;
 import org.apache.kafka.streams.KeyValue;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
-public class LuceneDiskStore implements StateStore, LuceneStore<String, Conversation> {
+public class LuceneDiskStore implements StateStore, LuceneStore {
     private static final Logger log = AiryLoggerFactory.getLogger(LuceneDiskStore.class);
 
     final String name;
@@ -72,8 +73,8 @@ public class LuceneDiskStore implements StateStore, LuceneStore<String, Conversa
     }
 
     @Override
-    public void put(Conversation conversation) throws IOException {
-        lucene.put(conversation);
+    public void put(ConversationIndex conversationIndex) throws IOException {
+        lucene.put(conversationIndex);
     }
 
     public void writeAll(final Collection<KeyValue<byte[], byte[]>> records) {

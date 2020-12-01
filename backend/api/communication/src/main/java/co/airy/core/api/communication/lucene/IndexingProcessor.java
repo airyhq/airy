@@ -1,6 +1,7 @@
 package co.airy.core.api.communication.lucene;
 
 import co.airy.core.api.communication.dto.Conversation;
+import co.airy.core.api.communication.dto.ConversationIndex;
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.ProcessorSupplier;
@@ -10,7 +11,7 @@ import java.io.IOException;
 public class IndexingProcessor implements Processor<String, Conversation> {
 
     private ProcessorContext context;
-    private LuceneStore<String, Conversation> store;
+    private LuceneStore store;
     private final String storeName;
 
     public IndexingProcessor(String storeName) {
@@ -20,7 +21,7 @@ public class IndexingProcessor implements Processor<String, Conversation> {
     @Override
     public void init(ProcessorContext context) {
         this.context = context;
-        this.store = (LuceneStore<String, Conversation>) context.getStateStore(this.storeName);
+        this.store = (LuceneStore) context.getStateStore(this.storeName);
     }
 
     @Override
@@ -29,7 +30,7 @@ public class IndexingProcessor implements Processor<String, Conversation> {
             if (value == null) {
                 store.delete(key);
             } else {
-                store.put(value);
+                store.put(ConversationIndex.fromConversation(value));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

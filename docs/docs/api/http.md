@@ -643,3 +643,22 @@ The response comes in two parts:
   - `total`
 
     The total number of elements across all pages.
+
+### Metadata
+
+Airy provides a mechanism to add metadata to a conversation. A metadata entry consists of a key and a value.
+A key can use the dot notation to represent namespaces.
+
+### Setting metadata
+
+`POST /metadata.set`
+
+```json
+{
+  "conversation_id": "conversation-id",
+  "key": "source.contact.first_name",
+  "value": "Grace"
+}
+```
+
+This endpoint returns `200` if the operation was successful.

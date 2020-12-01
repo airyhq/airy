@@ -74,6 +74,7 @@ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 }" api.airy/channels.connect
 ```
 
+![channels_connect](media/channels_connect.gif)
 The id from the response is the `channel_id`, note it down as it's required in the next steps.
 
 ## Sending messages with the chat plugin
@@ -86,7 +87,11 @@ http://chatplugin.airy/example.html?channel_id=<channel_id>
 
 You can now type a message in the text box and send it 🎉 
 
+![chatplugin](media/chatplugin.gif)
+
 To see how messages are flowing through the system, you can now [list conversations](api/http.md#list-conversations) for the channel you just created which should return the message you just sent.
+
+![conversations.list](media/conversation.list.png)
 
 ```bash
 curl -H "Content-Type: application/json" -H "Authorization: $token" -d "{}" \
@@ -103,3 +108,5 @@ kafka-console-consumer \
 --topic application.communication.messages \
 --from-beginning
 ```
+
+![kafka_topic](media/kafka.gif)

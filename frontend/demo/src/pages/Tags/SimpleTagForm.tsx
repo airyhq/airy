@@ -20,7 +20,6 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}) => {
   const handleCreate = () => {
     if (name.trim().length) {
       createTag({name: name.trim(), color}).then((success: any) => {
-        // createTag(name.trim(), color).then((success: any) => {
         if (success) {
           errorTag({status: ''});
           onClose();

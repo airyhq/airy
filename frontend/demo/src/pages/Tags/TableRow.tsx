@@ -11,7 +11,7 @@ import ColorSelector from '../../components/ColorSelector';
 import {AccessibleSVG} from '../../components/AccessibleSVG';
 
 import Tag from './Tag';
-import {Tag as TagModel} from '../../model/Tag';
+import {Tag as TagModel, colorMapper} from '../../model/Tag';
 
 import styles from './TableRow.module.scss';
 import { RootState } from '../../reducers';
@@ -25,8 +25,6 @@ type TableRowProps = {
 
 const TableRowComponent = (props: TableRowProps) => {
   const {tag, updateTag, tagSettings, showModal} = props;
-
-  console.log(tag);
 
   const [tagState, setTagState] = useState({
     edit: false,
@@ -84,7 +82,7 @@ const TableRowComponent = (props: TableRowProps) => {
   );
 
   const getColorValue = useCallback(
-    color => (tagSettings && tagSettings.colors && tagSettings.colors[color].default) || '1578D4',
+    color => (tagSettings && tagSettings.colors[colorMapper(tag.color)].default) || '1578D4',
     [tagSettings]
   );
 
@@ -127,6 +125,7 @@ const TableRowComponent = (props: TableRowProps) => {
     <tr key={tag.id} className={styles.tableRow} onClick={() => setTagState({...tag, edit: true})}>
       <td style={{width: '30%', maxWidth: '1px'}} className={styles.tableCell}>
         <Tag tag={{color: tag.color, name: tag.name}} />
+
       </td>
       <td style={{width: '30%'}}>
         <span className={styles.tagColor} style={{backgroundColor: `#${getColorValue(tag.color)}`}} />
@@ -135,7 +134,7 @@ const TableRowComponent = (props: TableRowProps) => {
       <td style={{width: '25%'}}>
         <div className={styles.actions}>
           <button type="button" className={styles.actionButton} onClick={() => setTagState({...tag, edit: true})}>
-            {/* {/* <AccessibleSVG src={edit} className={styles.actionSVG} title="Edit tag" /> */}
+            {/* <AccessibleSVG src={edit} className={styles.actionSVG} title="Edit tag" /> */}
             <img className={styles.actionSVG} src={edit} title="Edit tag" />
             {/* <ReactSVG className={styles.actionSVG} src={edit} title="Edit tag" /> */}
           </button>
@@ -152,7 +151,8 @@ const TableRowComponent = (props: TableRowProps) => {
 const mapStateToProps = (state: RootState) => {
   return {
     // tagSettings: state.data.settings && state.data.settings.contact_tags,
-    tagSettings: null,
+    // tagSettings: null,
+    tagSettings: state.data.settings,
   };
 };
 

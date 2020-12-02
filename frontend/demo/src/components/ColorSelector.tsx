@@ -15,7 +15,7 @@ type ColorSelctorState = {
 };
 
 const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSelectorProps & ColorSelctorState) => {
-  const getColorValue = useCallback(color => (tagSettings && tagSettings.colors[color].default) || 'fbbd54', [
+  const getColorValue = useCallback(color => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
     tagSettings,
   ]);
 
@@ -79,7 +79,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSel
 
 const mapStateToProps = state => {
   return {
-    tagSettings: state.data.settings && state.data.settings.contact_tags,
+    tagSettings: state.data.settings,
   };
 };
 

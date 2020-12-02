@@ -13,3 +13,21 @@ export interface CreateTagRequestPayload {
   name: string;
   color: string;
 }
+
+export const colorMapper = (color: string) => {
+    switch(color) {
+      case "BLUE":
+        color = "tag-blue";
+        break;
+      case "RED":
+        color = "tag-red";
+        break;
+      case "GREEN":
+        color = "tag-green";
+        break;
+      case "PURPLE":
+        color = "tag-purple";
+        break;
+    }
+  return color;
+}

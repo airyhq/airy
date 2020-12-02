@@ -49,9 +49,8 @@ url you specified.
 We will be implementing a
 [custom connector](https://rasa.com/docs/rasa/connectors/custom-connectors/) as we want to make use of the Airy Core Platform API.
 
-For this we create a new directory `channels/` in our Rasa project and copy this
-[connector file](https://github.com/airyhq/rasa-demo/blob/master/channels/airy.py) into it. This Airy connector requires two configuration values to be set so that it can communicate
-with the Core Platform API: 
+The first step is to create a new directory `channels/` in our Rasa project and copy this
+[connector file](https://github.com/airyhq/rasa-demo/blob/master/channels/airy.py) into it. The connector requires the following configuration values: 
 
 - `auth_token`  the Airy Core Platform JWT token you used
                 to connect the webhook.

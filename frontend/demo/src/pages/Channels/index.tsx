@@ -60,15 +60,15 @@ const Channels = (props: ChannelsConnectProps) => {
     (channel: Channel) => {
       props.connectChannel({
         source: channel.source,
-        source_channel_id: channel.sourceChannelId,
+        sourceChannelId: channel.sourceChannelId,
         token: facebookToken,
       });
     },
     [facebookToken]
   );
 
-  const disconnectClicked = channel => {
-    props.disconnectChannel({channel_id: channel.source_channel_id});
+  const disconnectClicked = (channel: Channel) => {
+    props.disconnectChannel({channelId: channel.sourceChannelId});
   };
 
   return (

@@ -5,10 +5,12 @@ import {doFetchFromBackend} from '../../api/airyConfig';
 
 import {
   Channel,
-  ChannelPayload,
+  ChannelApiPayload,
   ChannelsPayload,
   channelsMapper,
   channelMapper,
+  connectChannelApiMapper,
+  disconnectChannelApiMapper,
   ConnectChannelRequestPayload,
   ExploreChannelRequestPayload,
   DisconnectChannelRequestPayload,
@@ -53,8 +55,8 @@ export function exploreChannels(requestPayload: ExploreChannelRequestPayload) {
 
 export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return doFetchFromBackend('channels.connect', requestPayload)
-      .then((response: ChannelPayload) => {
+    return doFetchFromBackend('channels.connect', connectChannelApiMapper(requestPayload))
+      .then((response: ChannelApiPayload) => {
         const channel = channelMapper(response);
         dispatch(addChannelsAction([channel]));
         return Promise.resolve(channel);
@@ -67,7 +69,7 @@ export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
 
 export function disconnectChannel(requestPayload: DisconnectChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return doFetchFromBackend('channels.disconnect', requestPayload)
+    return doFetchFromBackend('channels.disconnect', disconnectChannelApiMapper(requestPayload))
       .then((response: ChannelsPayload) => {
         const channels = channelsMapper(response);
         dispatch(setCurrentChannelsAction(channels));

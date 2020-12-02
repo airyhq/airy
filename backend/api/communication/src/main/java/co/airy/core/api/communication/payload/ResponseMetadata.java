@@ -5,16 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.UUID;
-
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class QueryFilterPayload {
-    private List<UUID> conversationIds;
-    private List<String> channelIds;
-    private List<String> displayNames;
+public class ResponseMetadata {
+    private String previousCursor;
+    private String nextCursor;
+    private long filteredTotal;
+    private long total; //total conversation count
 }
-

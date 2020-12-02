@@ -1,13 +1,11 @@
 package co.airy.mapping;
 
 import co.airy.mapping.model.Text;
-import co.airy.mapping.sources.google.GoogleMapper;
 import co.airy.mapping.sources.twilio.TwilioMapper;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TwilioTest {
     private final TwilioMapper mapper = new TwilioMapper();

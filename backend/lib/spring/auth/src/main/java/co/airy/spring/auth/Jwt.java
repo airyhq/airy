@@ -8,20 +8,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.ServletException;
 import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.Charset;
 import java.security.Key;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Component
 public class Jwt {

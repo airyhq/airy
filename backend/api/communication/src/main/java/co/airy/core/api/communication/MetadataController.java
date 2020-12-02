@@ -2,6 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.MetadataAction;
 import co.airy.avro.communication.MetadataActionType;
+import co.airy.core.api.communication.payload.RemoveMetadataRequestPayload;
 import co.airy.core.api.communication.payload.SetMetadataRequestPayload;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestErrorResponsePayload;
@@ -31,6 +32,23 @@ public class MetadataController {
                 .setConversationId(setMetadataRequestPayload.getConversationId())
                 .setValue(setMetadataRequestPayload.getValue())
                 .setKey(USER_NAMESPACE + "." + setMetadataRequestPayload.getKey())
+                .build();
+        try {
+            stores.storeMetadata(metadataAction);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+        return ResponseEntity.ok(new EmptyResponsePayload());
+    }
+
+    @PostMapping("/metadata.remove")
+    ResponseEntity<?> removeMetadata(@RequestBody @Valid RemoveMetadataRequestPayload removeMetadataRequestPayload) {
+        final MetadataAction metadataAction = MetadataAction.newBuilder()
+                .setActionType(MetadataActionType.REMOVE)
+                .setTimestamp(Instant.now().toEpochMilli())
+                .setConversationId(removeMetadataRequestPayload.getConversationId())
+                .setKey(USER_NAMESPACE + "." + removeMetadataRequestPayload.getKey())
+                .setValue("")
                 .build();
         try {
             stores.storeMetadata(metadataAction);

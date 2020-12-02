@@ -651,14 +651,13 @@ information.
 
 ### Setting metadata
 
-Airy provides a mechanism to add metadata to a conversation.
 
 `POST /metadata.set`
 
 ```json
 {
   "conversation_id": "conversation-id",
-  "key": "source.contact.first_name",
+  "key": "ad.id",
   "value": "Grace"
 }
 ```

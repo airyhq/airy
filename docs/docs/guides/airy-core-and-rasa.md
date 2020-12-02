@@ -20,8 +20,8 @@ can use the Airy Core Platform to send and receive messages.
 
 ## Configuring Airy
 
-In this scenario the Airy Core Platform works like a message router: It receives
-messages from your sources (Messenger, WhatsApp etc.) and forwards them to downstream messaging frameworks like Rasa, which can in turn reply using the Airy Core Platform.
+The Airy Core Platform can forward messages from your sources (Messenger, WhatsApp etc.) to downstream messaging
+ frameworks like Rasa, which can in turn reply using the Airy Core Platform API.
 
 To do this we follow the [Webhook documentation](api/webhook.md) to forward in- and
 outbound messages to Rasa. When doing so set the `url` parameter

@@ -1,9 +1,5 @@
 package co.airy.core.api.communication.lucene;
 
-import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.Message;
-import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.ConversationIndex;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.lucene.document.Document;
@@ -14,10 +10,8 @@ import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexableField;
-import org.apache.lucene.util.BytesRef;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;

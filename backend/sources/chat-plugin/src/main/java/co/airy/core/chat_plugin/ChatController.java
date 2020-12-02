@@ -7,7 +7,6 @@ import co.airy.avro.communication.SenderType;
 import co.airy.core.chat_plugin.config.Jwt;
 import co.airy.core.chat_plugin.payload.AuthenticationRequestPayload;
 import co.airy.core.chat_plugin.payload.AuthenticationResponsePayload;
-import co.airy.core.chat_plugin.payload.MessageResponsePayload;
 import co.airy.core.chat_plugin.payload.SendMessageRequestPayload;
 import co.airy.payload.response.RequestErrorResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;

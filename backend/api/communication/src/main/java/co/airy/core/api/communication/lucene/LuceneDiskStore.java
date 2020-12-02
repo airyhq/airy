@@ -1,6 +1,5 @@
 package co.airy.core.api.communication.lucene;
 
-import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.ConversationIndex;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.log.AiryLoggerFactory;

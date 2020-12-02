@@ -20,7 +20,6 @@ import co.airy.payload.response.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

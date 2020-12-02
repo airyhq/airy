@@ -121,7 +121,16 @@ Header data contains information that is important for downstream processing. It
 also includes the message preview and tags that are useful for certain apps like
 automations.
 
-
 # User
 
 A user represents one authorized agent in the Airy Core Platform.
+
+# Metadata
+
+Metadata is data attached to a conversation consisting of a set of Key/Value pairs. A key can use the dot notation to represent namespaces.
+
+e.g.
+  - Key: "sender.id" Value: "123"
+  - Key: "sender.contact.first_name" Value: "Grace"
+
+Keys *cannot* start with `__` or end with `__` (e.g. `__sender__`) for the reason they might be used for internal data storage.

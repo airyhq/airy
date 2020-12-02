@@ -646,10 +646,12 @@ The response comes in two parts:
 
 ### Metadata
 
-Airy provides a mechanism to add metadata to a conversation. A metadata entry consists of a key and a value.
-A key can use the dot notation to represent namespaces.
+Please refer to our [metadata](glossary.md#metadata) definition for more
+information.
 
 ### Setting metadata
+
+Airy provides a mechanism to add metadata to a conversation.
 
 `POST /metadata.set`
 
@@ -661,4 +663,4 @@ A key can use the dot notation to represent namespaces.
 }
 ```
 
-This endpoint returns `200` if the operation was successful.
+This endpoint returns `200` if the operation was successful and `400` otherwise.

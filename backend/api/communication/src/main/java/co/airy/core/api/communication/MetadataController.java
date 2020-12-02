@@ -16,6 +16,7 @@ import java.time.Instant;
 
 @RestController
 public class MetadataController {
+    private static String USER_NAMESPACE = "public";
     private final Stores stores;
 
     public MetadataController(Stores stores) {
@@ -29,7 +30,7 @@ public class MetadataController {
                 .setTimestamp(Instant.now().toEpochMilli())
                 .setConversationId(setMetadataRequestPayload.getConversationId())
                 .setValue(setMetadataRequestPayload.getValue())
-                .setKey(setMetadataRequestPayload.getKey())
+                .setKey(USER_NAMESPACE + "." + setMetadataRequestPayload.getKey())
                 .build();
         try {
             stores.storeMetadata(metadataAction);

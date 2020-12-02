@@ -93,9 +93,9 @@ public class MetadataControllerTest {
 
         retryOnException(
                 () -> webTestHelper.post("/metadata.set",
-                        "{\"conversation_id\":\"" + conversationId + "\", \"key\": \"__private.key__\", \"value\": \"awesome-value\"}",
+                        "{\"conversation_id\":\"" + conversationId + "\", \"key\": \"__key__\", \"value\": \"awesome-value\"}",
                         "user-id")
-                        .andExpect(status().isBadRequest()),
+                        .andExpect(status().isOk()),
                 "Error setting metadata"
         );
     }

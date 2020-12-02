@@ -136,4 +136,3 @@ e.g.
 | "sender.id"                	| "123A"  	|
 | "sender.contact.first_name 	| "Grace" 	|
 
-Keys *cannot* start with `__` or end with `__` (e.g. `__sender__`) for the reason they might be used for internal data storage.

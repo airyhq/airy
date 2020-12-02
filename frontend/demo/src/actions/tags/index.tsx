@@ -2,7 +2,8 @@ import {createAction} from 'typesafe-actions';
 import _, {Dispatch} from 'redux';
 
 import {doFetchFromBackend} from '../../api/airyConfig';
-import {Tag, TagPayload, CreateTagRequestPayload, colorMapper} from '../../model/Tag';
+import {Tag, TagPayload, CreateTagRequestPayload, GetTagsResponse, tagsMapper} from '../../model/Tag';
+import { report } from 'process';
 
 export const UPSERT_TAG = 'UPSERT_TAG';
 export const DELETE_TAG = 'DELETE_TAG';
@@ -57,8 +58,8 @@ export function deleteConversationTag(tagId: string) {
 
 export function getTags(query: string = '') {
   return function(dispatch: Dispatch<any>) {
-    return doFetchFromBackend('tags.list').then((response: Tag[]) => {
-      dispatch(fetchTags(response));
+    return doFetchFromBackend('tags.list').then((response: GetTagsResponse) => {
+      dispatch(fetchTags(tagsMapper(response.data)));
     });
   };
 }

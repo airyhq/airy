@@ -14,7 +14,20 @@ export interface CreateTagRequestPayload {
   color: string;
 }
 
-export const colorMapper = (color: string) => {
+export interface GetTagsResponse {
+  data: Tag[];
+}
+
+export const tagsMapper = (serverTags: Tag[]): Tag[] => {
+  const tags: Tag[] = [];
+  const tags2 = serverTags.map((tag: Tag) => {
+    tag.color = colorMapper(tag.color);
+    tags.push(tag);
+  })
+  return tags;
+}
+
+export const colorMapper = (color: string): string => {
     switch(color) {
       case "BLUE":
         color = "tag-blue";

@@ -56,9 +56,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}) => {
           value={name}
           name="tag_name"
           placeholder="Please enter a tag name"
-          // className={styles.searchTags}
           autoComplete="off"
-          // role="presentation"
           autoFocus={true}
           fontClass="font-m"
           maxLength={50}
@@ -66,7 +64,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}) => {
         <p className={styles.errorMessage}>{(!name.length || showError) && errorMessage}</p>
         {name && (
           <div>
-            <Tag tag={{color: tags.color, name: tags.name}} />
+            <Tag tag={{color: color, name: name}} />
           </div>
         )}
         <Fragment>

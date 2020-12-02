@@ -6,7 +6,7 @@ import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/com
 import plus from '@airyhq/components/src/assets/images/icons/plus.svg';
 
 import {getTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
-import {fetchSettings} from '../../actions/settings';
+import {fakeSettingsAPICall} from '../../actions/settings';
 import {filteredTags} from '../../selectors/tags';
 
 import styles from './index.module.scss';
@@ -32,7 +32,7 @@ class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof i
 
   componentDidMount() {
     this.props.getTags();
-    this.props.fetchSettings();
+    this.props.fakeSettingsAPICall();
     this.props.filterTags('');
   }
 
@@ -176,7 +176,6 @@ class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof i
                 <tr>
                   <th className={styles.tagsTableHeader}>Tag name</th>
                   <th className={styles.tagsTableHeader}>Color</th>
-                  <th className={styles.tagsTableHeader}>Using tag</th>
                   <th />
                 </tr>
                 {tags &&
@@ -216,7 +215,7 @@ const mapDispatchToProps = {
   deleteTag,
   errorTag,
   filterTags,
-  fetchSettings,
+  fakeSettingsAPICall,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

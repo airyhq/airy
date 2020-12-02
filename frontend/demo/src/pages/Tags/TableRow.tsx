@@ -11,7 +11,7 @@ import ColorSelector from '../../components/ColorSelector';
 import {AccessibleSVG} from '../../components/AccessibleSVG';
 
 import Tag from './Tag';
-import {Tag as TagModel, colorMapper} from '../../model/Tag';
+import {Tag as TagModel} from '../../model/Tag';
 
 import styles from './TableRow.module.scss';
 import { RootState } from '../../reducers';
@@ -82,7 +82,7 @@ const TableRowComponent = (props: TableRowProps) => {
   );
 
   const getColorValue = useCallback(
-    color => (tagSettings && tagSettings.colors[colorMapper(tag.color)].default) || '1578D4',
+    color => (tagSettings && tagSettings.colors[color].default) || '1578D4',
     [tagSettings]
   );
 
@@ -106,7 +106,7 @@ const TableRowComponent = (props: TableRowProps) => {
         <td style={{width: '30%'}}>
           <ColorSelector id={tag.id} handleUpdate={handleUpdate} color={tagState.color} editing={isEditing} />
         </td>
-        <td style={{width: '15%'}}>{tag.count}</td>
+        <td style={{width: '15%'}} />
         <td style={{width: '25%'}}>
           <div className={styles.actions}>
             <Button styleVariant={'small'} disabled={!tagState.name.length} onClick={handleTagUpdate}>
@@ -130,7 +130,7 @@ const TableRowComponent = (props: TableRowProps) => {
       <td style={{width: '30%'}}>
         <span className={styles.tagColor} style={{backgroundColor: `#${getColorValue(tag.color)}`}} />
       </td>
-      <td style={{width: '15%'}}>{tag.count}</td>
+      <td style={{width: '15%'}} />
       <td style={{width: '25%'}}>
         <div className={styles.actions}>
           <button type="button" className={styles.actionButton} onClick={() => setTagState({...tag, edit: true})}>
@@ -150,8 +150,6 @@ const TableRowComponent = (props: TableRowProps) => {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    // tagSettings: state.data.settings && state.data.settings.contact_tags,
-    // tagSettings: null,
     tagSettings: state.data.settings,
   };
 };

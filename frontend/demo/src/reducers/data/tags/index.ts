@@ -37,7 +37,7 @@ export default function tagsReducer(state = defaultState, action): Tags {
     case ADD_TAGS_TO_STORE:
       return {
         ...state,
-        all: action.tagData.data,
+        all: action.tagData,
       };
     case DELETE_TAG:
       return {

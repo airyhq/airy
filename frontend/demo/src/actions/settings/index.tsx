@@ -13,8 +13,6 @@ export function fetchSettings() {
 }
 
 export function fakeSettingsAPICall() {
-  console.log("FAKE IT TILL MAKE IT")
-  console.log(fakeData());
   return function(dispatch: Dispatch<any>) {
     dispatch(fetchSettings())
   }

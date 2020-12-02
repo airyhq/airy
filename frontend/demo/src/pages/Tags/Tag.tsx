@@ -58,7 +58,7 @@ export const Tag = ({tag, expanded, variant, onClick, removeTagFromContact, tagS
 
 const mapStateToProps = state => {
   return {
-    tagSettings: state.data.settings && state.data.settings.contact_tags,
+    tagSettings: state.data.settings,
   };
 };
 

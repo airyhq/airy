@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.time.Instant;
 
+import static co.airy.avro.communication.MetadataKeys.PUBLIC;
+
 @RestController
 public class MetadataController {
-    private static String USER_NAMESPACE = "public";
     private final Stores stores;
 
     public MetadataController(Stores stores) {
@@ -30,7 +31,7 @@ public class MetadataController {
                 .setTimestamp(Instant.now().toEpochMilli())
                 .setConversationId(setMetadataRequestPayload.getConversationId())
                 .setValue(setMetadataRequestPayload.getValue())
-                .setKey(USER_NAMESPACE + "." + setMetadataRequestPayload.getKey())
+                .setKey(PUBLIC + "." + setMetadataRequestPayload.getKey())
                 .build();
         try {
             stores.storeMetadata(metadataAction);

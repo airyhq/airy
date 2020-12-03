@@ -120,10 +120,12 @@
 }
 
 .confirmDelete {
+  @include font-base;
   p {
     margin-bottom: 8px;
     max-width: 480px;
     strong {
+      font-weight: 700;
       word-wrap: break-word;
     }
   }

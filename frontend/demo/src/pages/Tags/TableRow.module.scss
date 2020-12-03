@@ -57,15 +57,16 @@
 }
 
 .actionSVG {
-  svg {
-    width: 16px;
-    height: 16px;
+  width: 16px;
+  height: 16px;
+  path {
+    fill: var(--color-dark-elements-gray);
+  }
     &:hover {
       path {
         fill: var(--color-airy-blue);
       }
     }
-  }
 }
 
 .actionButton {

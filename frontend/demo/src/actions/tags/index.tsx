@@ -3,7 +3,6 @@ import _, {Dispatch} from 'redux';
 
 import {doFetchFromBackend} from '../../api/airyConfig';
 import {Tag, TagPayload, CreateTagRequestPayload, GetTagsResponse, tagsMapper} from '../../model/Tag';
-import { report } from 'process';
 
 export const UPSERT_TAG = 'UPSERT_TAG';
 export const DELETE_TAG = 'DELETE_TAG';

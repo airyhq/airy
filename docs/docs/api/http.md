@@ -674,4 +674,4 @@ This endpoint returns `200` if the operation was successful and `400` otherwise.
 }
 ```
 
-This endpoint returns `200` if the operation was successful and `400` otherwise.
+This endpoint returns `200` if the operation was successful and `500` otherwise.

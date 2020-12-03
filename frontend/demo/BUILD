@@ -8,6 +8,7 @@ ts_library(
     name = "app",
     deps = [
         "@npm//@airyhq/components",
+        "@npm//@types/facebook-js-sdk",
         "@npm//@types/node",
         "@npm//@types/prop-types",
         "@npm//@types/react",
@@ -15,6 +16,7 @@ ts_library(
         "@npm//emoji-mart",
         "@npm//lodash-es",
         "@npm//react",
+        "@npm//react-facebook-login",
         "@npm//react-router-dom",
         "@npm//react-svg",
         "@npm//react-window",

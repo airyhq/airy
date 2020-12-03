@@ -5,12 +5,14 @@ import {withRouter, Route, Switch, Redirect, RouteComponentProps} from 'react-ro
 import {AiryLoader} from '@airyhq/components';
 import TopBar from './components/TopBar';
 import Login from './pages/Login';
+import Channels from './pages/Channels';
 import Inbox from './pages/Inbox';
 import NotFound from './pages/NotFound';
 import Sidebar from './components/Sidebar';
 
 import {StateModel} from './reducers';
-import {LOGIN_ROUTE, ROOT_ROUTE, INBOX_ROUTE} from './routes/routes';
+
+import {INBOX_ROUTE, CHANNELS_ROUTE, LOGIN_ROUTE, ROOT_ROUTE} from './routes/routes';
 
 import styles from './App.module.scss';
 
@@ -58,6 +60,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
             </Route>
             <Route exact path={LOGIN_ROUTE} component={Login} />
             <Route exact path={INBOX_ROUTE} component={Inbox} />
+            <Route exact path={CHANNELS_ROUTE} component={Channels} />
             <Route component={NotFound} />
           </Switch>
         </div>

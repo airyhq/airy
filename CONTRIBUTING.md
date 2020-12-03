@@ -1,9 +1,9 @@
 # Contributing
 
-We love every form of contribution. By participating to this project, you
+We love every form of contribution. By participating in this project, you
 agree to abide to the `Airy` [code of conduct](/code_of_conduct.md).
 
-Please read to our [contribuing guide](/docs/docs/contributing.md) to
+Please read our [contributing guide](/docs/docs/guidelines/contributing.md) to
 learn how to develop with the `Airy Core Platform` and what conventions we
 follow.
 

@@ -643,3 +643,35 @@ The response comes in two parts:
   - `total`
 
     The total number of elements across all pages.
+
+### Metadata
+
+Please refer to our [metadata](glossary.md#metadata) definition for more
+information.
+
+### Setting metadata
+
+`POST /metadata.set`
+
+```json
+{
+  "conversation_id": "conversation-id",
+  "key": "ad.id",
+  "value": "Grace"
+}
+```
+
+This endpoint returns `200` if the operation was successful and `400` otherwise.
+
+### Removing metadata
+
+`POST /metadata.remove`
+
+```json
+{
+  "conversation_id": "conversation-id",
+  "key": "ad.id"
+}
+```
+
+This endpoint returns `200` if the operation was successful and `500` otherwise.

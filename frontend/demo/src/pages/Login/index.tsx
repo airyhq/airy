@@ -28,8 +28,11 @@ const Login = (props: LoginConnectProps) => {
         email: formData.get('email') as string,
         password: formData.get('password') as string,
       })
-      .then((success: boolean) => {
-        return success ? props.history.push('/') : setCredentialError(true);
+      .then(() => {
+        props.history.push('/');
+      })
+      .catch(() => {
+        setCredentialError(true);
       });
   };
 
@@ -92,4 +95,4 @@ const Login = (props: LoginConnectProps) => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connector(Login);

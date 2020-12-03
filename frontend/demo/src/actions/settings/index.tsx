@@ -1,4 +1,3 @@
-import {createAction} from 'typesafe-actions';
 import _, {Dispatch} from 'redux';
 
 import {fakeData} from '../../pages/Tags/FAKESETTINGS';

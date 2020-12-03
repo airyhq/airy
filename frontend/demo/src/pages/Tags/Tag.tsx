@@ -4,6 +4,7 @@ import {Tag as TagModel} from '../../model/Tag';
 
 import close from '@airyhq/components/src/assets/images/icons/close.svg';
 import styles from './Tag.module.scss';
+import {RootState} from '../../reducers';
 
 type tagProps = {
   tag: TagModel;
@@ -56,7 +57,7 @@ export const Tag = ({tag, expanded, variant, onClick, removeTagFromContact, tagS
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: RootState) => {
   return {
     tagSettings: state.data.settings,
   };

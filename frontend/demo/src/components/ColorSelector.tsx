@@ -1,5 +1,6 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {connect} from 'react-redux';
+import {RootState} from '../reducers';
 
 import styles from './ColorSelector.module.scss';
 
@@ -77,7 +78,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSel
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: RootState) => {
   return {
     tagSettings: state.data.settings,
   };

@@ -7,9 +7,7 @@ import {Button, LinkButton} from '@airyhq/components';
 import {ReactComponent as EditIcon} from '@airyhq/components/src/assets/images/icons/edit.svg';
 import {ReactComponent as TrashIcon} from '@airyhq/components/src/assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
-import {AccessibleSVG} from '../../components/AccessibleSVG';
 import Tag from './Tag';
-import {Tag as TagModel} from '../../model/Tag';
 import {RootState} from '../../reducers';
 
 type TableRowProps = {
@@ -127,8 +125,6 @@ const TableRowComponent = (props: TableRowProps) => {
       <td style={{width: '25%'}}>
         <div className={styles.actions}>
           <button type="button" className={styles.actionButton} onClick={() => setTagState({...tag, edit: true})}>
-            {/* <img className={styles.actionSVG} src={edit} title="Edit tag" /> */}
-            {/* <AccessibleSVG src={edit} className={styles.actionSVG} title="Edit Tag" /> */}
             <EditIcon className={styles.actionSVG} title="Edit tag" />
           </button>
           <button type="button" className={styles.actionButton} onClick={deleteClicked}>

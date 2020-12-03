@@ -89,7 +89,7 @@ export function updateTag(tagId: string, name: string, color: string, count: num
       id: tagId,
       name: name,
       color: color,
-    }).then(tag => dispatch(editedTag(tagId, name, color, count)));
+    }).then((tag: Tag) => dispatch(editedTag(tagId, name, color, count)));
   };
 }
 
@@ -103,7 +103,7 @@ export function deleteTag(tagId: string) {
   };
 }
 
-export function filterTags(filter) {
+export function filterTags(filter: string) {
   return function(dispatch: Dispatch<any>) {
     dispatch({
       type: SET_TAG_FILTER,

@@ -36,7 +36,7 @@ class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof i
     this.props.filterTags('');
   }
 
-  handleSearch = value => {
+  handleSearch = (value: string) => {
     this.setState({
       tagQuery: value,
     });

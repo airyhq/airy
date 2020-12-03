@@ -5,17 +5,20 @@ import {StateModel} from '../reducers';
 
 export const filteredConversationSelector = createSelector(
   (state: StateModel) => state.data.conversations.all.items,
-  (conversations) => Object.keys(conversations).map(cId => ({...conversations[cId]}))
+  conversations => Object.keys(conversations).map(cId => ({...conversations[cId]}))
 );
 
 export const allConversationSelector = createSelector(
-  (state: StateModel) => state.data.conversations.all.items,  
-  (conversations) => Object.keys(conversations).map(cId => ({...conversations[cId]}))
+  (state: StateModel) => state.data.conversations.all.items,
+  conversations => Object.keys(conversations).map(cId => ({...conversations[cId]}))
 );
 
 export const newestConversationFirst = createSelector(allConversationSelector, conversations => {
   return reverse(
-    sortBy(values(conversations), (conversation: Conversation) => conversation.message && conversation.message.sent_at)
+    sortBy(
+      values(conversations),
+      (conversation: Conversation) => conversation.last_message && conversation.last_message.sent_at
+    )
   );
 });
 
@@ -25,11 +28,11 @@ export const newestConversationFirst = createSelector(allConversationSelector, c
 
 export const newestFilteredConversationFirst = createSelector(
   filteredConversationSelector,
-  (conversations: Conversation[]) => {    
+  (conversations: Conversation[]) => {
     return reverse(
       sortBy(
         conversations,
-        (conversation: Conversation) => conversation.message && conversation.message.sent_at
+        (conversation: Conversation) => conversation.last_message && conversation.last_message.sent_at
       )
     );
   }

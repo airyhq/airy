@@ -15,7 +15,7 @@ const Sidebar = (props: RouteProps) => {
 
   return (
     <nav className={styles.sidebar}>
-      <div className={styles.linkSection}>       
+      <div className={styles.linkSection}>
         <div className={styles.align}>
           <Link to={INBOX_ROUTE} className={`${styles.link} ${isActive(INBOX_ROUTE) ? styles.active : ''}`}>
             <InboxIcon />
@@ -28,7 +28,7 @@ const Sidebar = (props: RouteProps) => {
             <span className={styles.iconText}>Channels</span>
           </Link>
         </div>
-      </div>      
+      </div>
     </nav>
   );
 };

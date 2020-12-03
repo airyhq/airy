@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
-import {VariableSizeList as List} from 'react-window';
+import { ComponentType , Ref} from 'react';
+import {ListChildComponentProps, VariableSizeList as List} from 'react-window';
 import './index.module.scss';
 
 type ResizableWindowProps = {
   itemCount: number;
   itemSize?: number | ((index: number) => number);
   width: string;
-  children: React.ReactNode;
+  children: ComponentType<ListChildComponentProps>;
   onItemsRendered: (event: any) => void;
-  infiniteLoaderRef: (ref: React.RefObject<List>) => void;
+  infiniteLoaderRef: (ref: Ref<any>) => void;
 };
 
 type ResizableWindowState = {
@@ -20,12 +21,12 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
   resizeRef: React.RefObject<HTMLDivElement>;
   listRef: React.MutableRefObject<List>;
 
-  constructor(props) {
+  constructor(props: ResizableWindowProps) {
     super(props);
     this.resizeRef = React.createRef();
     this.listRef = React.createRef();
-    this.state = {height: 200, mounted: true};
-  }
+    this.state = {height: 250, mounted: true};
+  }  
 
   componentDidMount() {
     window.addEventListener('resize', this.resizeToFit);
@@ -45,7 +46,7 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
   resizeToFit = () => {
     if (this.state.mounted) {
       this.setState({
-        height: Math.floor(this.resizeRef.current.getBoundingClientRect().height),
+        height: Math.floor(this.resizeRef.current.getBoundingClientRect().height) + 200,
       });
     }
   };
@@ -54,7 +55,7 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
     this.listRef.current && this.listRef.current.resetAfterIndex(0, true);
   };
 
-  setRef = ref => {
+  setRef = (ref: any) => {
     this.props.infiniteLoaderRef(ref);
     this.listRef.current = ref;
   };
@@ -66,7 +67,6 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
         <List
           ref={this.setRef}
           height={this.state.height}
-          shouldResetStyleCacheOnItemSizeChange={true}
           itemCount={itemCount}
           onItemsRendered={onItemsRendered}
           itemSize={item => (typeof itemSize === 'function' ? itemSize(item) : itemSize)}

@@ -12,12 +12,18 @@ export interface Attachement {
   };
 }
 
+export enum MessageType {
+  text = 'text',
+}
 export interface Message {
   id?: string;
   text: string;
   sent_at: string | Date;
-  attachments?: Attachement[];
-  alignment?: string;
+  content: {
+    text: string;
+    type: MessageType;
+  };
+  alignment: string;
   metadata?: string;
 
   sender?: {

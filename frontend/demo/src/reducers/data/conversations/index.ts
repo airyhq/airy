@@ -37,7 +37,7 @@ export type ErrorState = {
 };
 
 export type ConversationsState = {
-  all: AllConversationsState;  
+  all: AllConversationsState;
   errors: ErrorState;
 };
 
@@ -52,8 +52,8 @@ function mergeConversations(
       }
     }
 
-    if (conversation.message) {
-      conversation.message.sent_at = new Date(conversation.message.sent_at);
+    if (conversation.last_message) {
+      conversation.last_message.sent_at = new Date(conversation.last_message.sent_at);
     }
   });
 
@@ -70,10 +70,10 @@ function mergeConversations(
 }
 
 function getLatestMessage(oldConversation: Conversation, conversation: Conversation) {
-  return ((conversation && conversation.message && new Date(conversation.message.sent_at).getTime()) || 1) >
-    ((oldConversation && oldConversation.message && new Date(oldConversation.message.sent_at).getTime()) || 0)
-    ? conversation.message
-    : oldConversation.message;
+  return ((conversation && conversation.last_message && new Date(conversation.last_message.sent_at).getTime()) || 1) >
+    ((oldConversation && oldConversation.last_message && new Date(oldConversation.last_message.sent_at).getTime()) || 0)
+    ? conversation.last_message
+    : oldConversation.last_message;
 }
 
 function setLoadingOfConversation(items: ConversationMap, conversationId: string, isLoading: boolean): ConversationMap {
@@ -150,7 +150,7 @@ function errorsReducer(state: ErrorState = {}, action: Action): ErrorState {
   }
 }
 
-export default combineReducers({ 
-  all: allReducer,  
+export default combineReducers({
+  all: allReducer,
   errors: errorsReducer,
 });

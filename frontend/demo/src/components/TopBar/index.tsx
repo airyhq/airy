@@ -13,9 +13,9 @@ import {ReactComponent as SpeakBubbleIcon} from '../../assets/images/icons/speak
 import {ReactComponent as AiryLogo} from '../../assets/images/logo/airy_primary_rgb.svg';
 import {ReactComponent as ChevronDownIcon} from '../../assets/images/icons/chevron-down.svg';
 
-import styles from './index.module.scss';
+import { LOGOUT_ROUTE } from '../../routes/routes';
 
-const LOGOUT_ROUTE = '/logout';
+import styles from './index.module.scss';
 
 interface TopBarProps {
   isAdmin: boolean;

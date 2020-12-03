@@ -1,4 +1,4 @@
-@import '../../assets/scss/colors.scss';
+@import '../../../assets/scss/colors.scss';
 
 .Messenger-Container {
   display: flex;
@@ -6,6 +6,7 @@
   width: 100%;
   align-items: stretch;
   overflow: hidden;
+  margin: 72px 90px 0;
 }
 
 .Messenger-ContainerMiddlePanel {

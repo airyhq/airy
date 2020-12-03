@@ -8,20 +8,17 @@ import ResizableWindowList from '../../../components/ResizableWindowList';
 import {newestConversationFirst, newestFilteredConversationFirst} from '../../../selectors/conversations';
 import {isEqual} from 'lodash-es';
 
-// import ConversationListHeader from './ConversationListHeader';
-// import ConversationListItem from './ConversationListItem';
-
-// import {fetchNextConversations} from 'airy-client/actions/conversations';
-// import {fetchNextFilteredConversations} from 'airy-client/actions/conversationsFilter';
+import ConversationListHeader from '../ConversationListHeader';
+import ConversationListItem from '../ConversationListItem';
+import NoConversations from '../NoConversations';
 
 import './index.scss';
 import {SimpleLoader} from '@airyhq/components';
-import NoConversations from './NoConversations';
-import {MESSENGER_ROUTE} from '../../../routes/routes';
+import {StateModel} from '../../../reducers';
 
 const getItems = props => {
-  const {conversations, filteredConversations, filteredMetadata} = props;
-  return filteredMetadata.loaded ? filteredConversations : conversations;
+  const {conversations} = props;
+  return conversations;
 };
 
 const mapDispatchToProps = {
@@ -29,23 +26,20 @@ const mapDispatchToProps = {
   // fetchNextFilteredConversations,
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: StateModel, ownProps) => {
   /*
   This component is outside of the path of the message view and doesn't
   have the params in its props. This will fetch them from the URL.
   Not a super nice solution, I am open to other suggestions :)
   */
   const match: any = matchPath(ownProps.history.location.pathname, {
-    path: '/messenger/conversations/:id',
+    path: '/inbox/conversations/:id',
   });
 
   return {
     currentConversationId: match && match.params.id,
     conversations: newestConversationFirst(state),
-    filteredConversations: newestFilteredConversationFirst(state),
     conversationsMetadata: state.data.conversations.all.metadata,
-    filteredMetadata: state.data.conversations.filtered.metadata,
-    currentFilter: state.data.conversations.filtered.currentFilter,
     loading: state.data.conversations.all.metadata.loading,
     user: state.data.user,
   };
@@ -86,13 +80,12 @@ class ConversationList extends Component<Props, null> {
       );
     }
     return (
-      // <ConversationListItem
-      //   style={style}
-      //   key={conversation.id}
-      //   conversation={conversation}
-      //   active={conversation.id === currentConversationId}
-      // />
-      <div>POTATO</div>
+      <ConversationListItem
+        style={style}
+        key={conversation.id}
+        conversation={conversation}
+        active={conversation.id === currentConversationId}
+      />
     );
   }
 
@@ -124,27 +117,15 @@ class ConversationList extends Component<Props, null> {
     return (
       this.props.currentConversationId !== nextProps.currentConversationId ||
       this.hasDifferences(this.props.conversations, nextProps.conversations) ||
-      this.hasDifferences(this.props.filteredConversations, nextProps.filteredConversations) ||
-      isEqual(this.props.filteredMetadata, nextProps.filteredMetadata) ||
       isEqual(this.props.conversationsMetadata, nextProps.conversationsMetadata)
     );
   }
 
   renderConversationList() {
-    const {
-      conversations,
-      conversationsMetadata,
-      filteredConversations,
-      filteredMetadata,
-      // fetchNextConversations,
-      // fetchNextFilteredConversations,
-      loading,
-      currentFilter,
-    } = this.props;
+    const {conversations, conversationsMetadata, loading} = this.props;
 
-    const hasFilter = Object.keys(currentFilter || {}).length > 0;
-    const items = hasFilter ? filteredConversations : conversations;
-    const metadata = hasFilter ? filteredMetadata : conversationsMetadata;
+    const items = conversations;
+    const metadata = conversationsMetadata;
     const hasMoreData = metadata.next_cursor && metadata.next_cursor.length > 0;
 
     const isItemLoaded = index => index < items.length;
@@ -160,14 +141,6 @@ class ConversationList extends Component<Props, null> {
         this.itemsLoaded = resolve;
       });
     };
-
-    if (filteredMetadata.loading && items.length === 0) {
-      return (
-        <div className="ConversationList-Loading">
-          <SimpleLoader />
-        </div>
-      );
-    }
 
     return (
       <InfiniteLoader isItemLoaded={isItemLoaded} itemCount={itemCount} loadMoreItems={loadMoreItems}>
@@ -214,14 +187,14 @@ class ConversationList extends Component<Props, null> {
   };
 
   render() {
-    if (!this.props.currentConversationId && this.props.conversations.length !== 0) {
-      return <Redirect to={MESSENGER_ROUTE} />;
-    }
+    // if (!this.props.currentConversationId && this.props.conversations.length !== 0) {
+    //   return <Redirect to={INBOX_ROUTE} />;
+    // }
     return (
       <section className="ConversationList-ContainerContacts">
         <div className="ConversationList-Container">
           <section className="ConversationList-ContainerFilterBox">
-            {/* <ConversationListHeader /> */}
+            <ConversationListHeader />
           </section>
         </div>
         <section className="ConversationList-ContactList">{this.renderConversationList()}</section>

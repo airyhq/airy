@@ -14,6 +14,6 @@ export interface Conversation {
   created_at: string;
   channel?: Channel;
   source?: Channel;
-  message: Message;
+  last_message: Message;
   unread_message_count?: number;
 }

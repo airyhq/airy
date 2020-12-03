@@ -2,11 +2,11 @@ import React, {Component, Fragment} from 'react';
 import {Route, withRouter, Redirect, RouteComponentProps} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
-import ConversationList from './ConversationList';
+import ConversationList from '../ConversationList';
 
-import './Messenger.scss';
-import { StateModel } from '../../reducers';
-import { AllConversationsState } from '../../reducers/data/conversations';
+import './index.scss';
+import {StateModel} from '../../../reducers';
+import {AllConversationsState} from '../../../reducers/data/conversations';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -18,10 +18,9 @@ const mapStateToProps = (state: StateModel) => {
 const connector = connect(mapStateToProps);
 
 class Messenger extends Component<ConnectedProps<typeof connector> & RouteComponentProps, null> {
-
   waitForContentAndRedirect(conversations: AllConversationsState) {
     const conversationId = conversations[0].id;
-    const targetPath = `/messenger/conversations/${conversationId}`;
+    const targetPath = `/inbox/conversations/${conversationId}`;
     if (targetPath !== window.location.pathname) {
       return <Redirect to={targetPath} />;
     }
@@ -33,9 +32,11 @@ class Messenger extends Component<ConnectedProps<typeof connector> & RouteCompon
       return this.waitForContentAndRedirect(conversations);
     }
 
+    console.log(!!conversations.items);
+
     return (
       <section className="Messenger-Container">
-        {!!conversations.items.length && (
+        {!!conversations.items && (
           <section className="Messenger-ContainerMiddlePanel">
             <ConversationList />
           </section>
@@ -43,12 +44,7 @@ class Messenger extends Component<ConnectedProps<typeof connector> & RouteCompon
 
         <Route
           path={[`${match.url}/conversations/:conversationId`, `${match.url}`]}
-          render={props => (
-            <Fragment>
-              {/* <ConversationContainer conversations={!!conversations.length} loading={loading} {...props} /> */}
-              {/* {!!conversations.length && <ContactDetails {...props} />} */}
-            </Fragment>
-          )}
+          render={props => <Fragment></Fragment>}
         />
       </section>
     );

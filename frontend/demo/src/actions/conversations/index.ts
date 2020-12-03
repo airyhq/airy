@@ -1,9 +1,9 @@
-import { Dispatch } from "redux";
+import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import { doFetchFromBackend } from "../../api/airyConfig";
+import {doFetchFromBackend} from '../../api/airyConfig';
 
-import { Conversation } from "../../model/Conversation";
-import { ResponseMetadata } from "../../model/ResponseMetadata";
+import {Conversation} from '../../model/Conversation';
+import {ResponseMetadata} from '../../model/ResponseMetadata';
 
 export const CONVERSATION_LOADING = '@@conversation/LOADING';
 export const CONVERSATIONS_LOADING = '@@conversations/LOADING';
@@ -33,14 +33,23 @@ export const removeErrorFromConversationAction = createAction(
   resolve => (conversationId: string) => resolve({conversationId})
 );
 
+export interface FetchConversationsResponse {
+  data: Conversation[];
+  metadata: ResponseMetadata;
+}
+
 export function fetchConversations() {
-    return async (dispatch: Dispatch<any>) => {
-        return doFetchFromBackend('conversations.list', {
-            page_size: 50
-        }).then((response: any) => {
-            return Promise.resolve(true);
-        }).catch((error: Error) => {        
-            return Promise.reject();
-        });
-    };
-};
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(loadingConversationsAction());
+    return doFetchFromBackend('conversations.list', {
+      page_size: 50,
+    })
+      .then((response: FetchConversationsResponse) => {
+        dispatch(mergeConversationsAction(response.data, response.metadata));
+        return Promise.resolve(true);
+      })
+      .catch((error: Error) => {
+        return Promise.reject(error);
+      });
+  };
+}

@@ -31,11 +31,11 @@ export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
     return doFetchFromBackend('users.login', requestPayload)
       .then((response: UserPayload) => {
         dispatch(setCurrentUserAction(userMapper(response)));
-        return true;
+        return Promise.resolve(true);
       })
       .catch((error: Error) => {
         dispatch(userAuthErrorAction(error));
-        return false;
+        return Promise.reject(error);
       });
   };
 }

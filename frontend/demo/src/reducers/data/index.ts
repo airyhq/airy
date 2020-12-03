@@ -2,7 +2,7 @@ import _, {combineReducers, Reducer} from 'redux-starter-kit';
 import {User} from '../../model/User';
 
 import user from './user';
-import conversations, { ConversationsState } from './conversations';
+import conversations, {ConversationsState} from './conversations';
 
 export type DataState = {
   user: User;
@@ -11,7 +11,7 @@ export type DataState = {
 
 const reducers: Reducer = combineReducers<DataState>({
   user,
-  conversations
+  conversations,
 });
 
 export default reducers;

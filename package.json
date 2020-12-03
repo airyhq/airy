@@ -26,7 +26,8 @@
     "lodash-es": "^4.17.15",
     "react-window": "1.8.5",
     "react-window-infinite-loader": "1.0.5",
-    "reselect": "4.0.0"
+    "reselect": "4.0.0",
+    "react-svg": "^11.0.7"
   },
   "scripts": {},
   "devDependencies": {
@@ -35,6 +36,8 @@
     "@bazel/ibazel": "0.12.2",
     "@bazel/typescript": "1.6.0",
     "@svgr/webpack": "^5.4.0",
+    "@types/lodash-es": "^4.17.3",
+    "@types/react-window-infinite-loader": "^1.0.3",
     "babel-loader": "^8.0.6",
     "connect-history-api-fallback": "^1.6.0",
     "copy-webpack-plugin": "^5.1.1",

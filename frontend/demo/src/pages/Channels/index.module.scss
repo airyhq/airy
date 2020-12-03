@@ -1,0 +1,75 @@
+@import '../../assets/scss/fonts';
+@import '../../assets/scss/colors';
+
+.headline {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 64px;
+}
+
+.headlineText {
+  @include font-xl;
+  font-weight: bold;
+}
+
+.channelsWrapper {
+  width: 100%;
+  background: white;
+  padding: 32px;
+  margin: 88px 2.5em 5em 7.5em;
+  border-radius: 10px;
+  box-sizing: border-box;
+  overflow: visible;
+  min-height: calc(100vh - 170px);
+}
+
+.connectButton {
+  @include font-m;
+  font-weight: 700;
+  line-height: 16px;
+  font-size: 20px;
+  height: 40px;
+  background-color: var(--color-airy-blue);
+  color: white;
+  border-radius: 4px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  margin: 0 0;
+  &:hover {
+    background-color: var(--color-airy-blue-hover);
+  }
+
+  &:active {
+    background: var(--color-airy-blue-pressed);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--color-text-gray) !important;
+    background-color: var(--color-light-gray) !important;
+    border: none;
+  }
+}
+
+.channelList {
+  list-style: none;
+}
+
+.channelListEntry {
+  display: flex;
+  border-bottom: 1px solid var(--color-light-gray);
+  align-items: center;
+  padding: 8px 0;
+}
+
+.channelName {
+  padding: 0 16px;
+}
+
+.channelAction {
+  flex-grow: 1;
+  justify-content: right;
+  display: flex;
+}

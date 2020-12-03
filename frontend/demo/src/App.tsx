@@ -9,9 +9,10 @@ import NotFound from './pages/NotFound';
 import Sidebar from './components/Sidebar';
 
 import {StateModel} from './reducers';
-import {LOGIN_ROUTE, ROOT_ROUTE} from './routes/routes';
+import {CHANNELS_ROUTE, LOGIN_ROUTE, ROOT_ROUTE} from './routes/routes';
 
 import styles from './App.module.scss';
+import Channels from './pages/Channels';
 
 const publicRoutes = [LOGIN_ROUTE];
 
@@ -56,6 +57,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
               {this.isAuthSuccess ? <Redirect to={ROOT_ROUTE} /> : <Redirect to={LOGIN_ROUTE} />}
             </Route>
             <Route exact path={LOGIN_ROUTE} component={Login} />
+            <Route exact path={CHANNELS_ROUTE} component={Channels} />
             <Route component={NotFound} />
           </Switch>
         </div>

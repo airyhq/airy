@@ -30,12 +30,13 @@ export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
     return doFetchFromBackend('users.login', requestPayload)
       .then((response: UserPayload) => {
-        dispatch(setCurrentUserAction(userMapper(response)));
-        return true;
+        const user = userMapper(response);
+        dispatch(setCurrentUserAction(user));
+        return Promise.resolve(user);
       })
       .catch((error: Error) => {
         dispatch(userAuthErrorAction(error));
-        return false;
+        return Promise.reject(error);
       });
   };
 }

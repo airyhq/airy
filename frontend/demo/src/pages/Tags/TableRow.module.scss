@@ -62,11 +62,11 @@
   path {
     fill: var(--color-dark-elements-gray);
   }
-    &:hover {
-      path {
-        fill: var(--color-airy-blue);
-      }
+  &:hover {
+    path {
+      fill: var(--color-airy-blue);
     }
+  }
 }
 
 .actionButton {

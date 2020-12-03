@@ -14,6 +14,6 @@ export function fetchSettings() {
 
 export function fakeSettingsAPICall() {
   return function(dispatch: Dispatch<any>) {
-    dispatch(fetchSettings())
-  }
+    dispatch(fetchSettings());
+  };
 }

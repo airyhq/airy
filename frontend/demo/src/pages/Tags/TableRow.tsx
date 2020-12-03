@@ -4,13 +4,13 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './TableRow.module.scss';
 import {updateTag} from '../../actions/tags';
 import {Button, LinkButton} from '@airyhq/components';
-import { ReactComponent as EditIcon } from '@airyhq/components/src/assets/images/icons/edit.svg';
-import { ReactComponent as TrashIcon } from '@airyhq/components/src/assets/images/icons/trash.svg';
+import {ReactComponent as EditIcon} from '@airyhq/components/src/assets/images/icons/edit.svg';
+import {ReactComponent as TrashIcon} from '@airyhq/components/src/assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
-import { AccessibleSVG } from '../../components/AccessibleSVG';
+import {AccessibleSVG} from '../../components/AccessibleSVG';
 import Tag from './Tag';
 import {Tag as TagModel} from '../../model/Tag';
-import { RootState } from '../../reducers'
+import {RootState} from '../../reducers';
 
 type TableRowProps = {
   tag: any;
@@ -76,10 +76,9 @@ const TableRowComponent = (props: TableRowProps) => {
     [showModal, tag]
   );
 
-  const getColorValue = useCallback(
-    color => (tagSettings && tagSettings.colors[color].default) || '1578D4',
-    [tagSettings]
-  );
+  const getColorValue = useCallback(color => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
+    tagSettings,
+  ]);
 
   const isEditing = tagState.edit && tagState.id === tag.id;
 

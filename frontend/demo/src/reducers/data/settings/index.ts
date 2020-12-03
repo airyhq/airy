@@ -6,7 +6,7 @@ export type SettingsState = {
 };
 
 export type Settings = {
-  colors: any[]
+  colors: any[];
 };
 
 const defaultState = {

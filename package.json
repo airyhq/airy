@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@airyhq/components": "^0.4.6",
+    "@airyhq/components": "^0.4.8",
     "@crello/react-lottie": "^0.0.9",
     "@stomp/stompjs": "^6.0.0",
     "@types/node": "12.11.1",

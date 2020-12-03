@@ -91,4 +91,43 @@ public class MetadataControllerTest {
                 "Error setting metadata"
         );
     }
+
+    @Test
+    void canRemoveMetadata() throws Exception {
+        final Channel channel = Channel.newBuilder()
+                .setConnectionState(ChannelConnectionState.CONNECTED)
+                .setId("channel-id")
+                .setName("channel-name")
+                .setSource("facebook")
+                .setSourceChannelId("ps-id")
+                .build();
+        final String conversationId = UUID.randomUUID().toString();
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
+        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
+
+        retryOnException(
+                () -> webTestHelper.post("/metadata.set",
+                        "{\"conversation_id\":\"" + conversationId + "\", \"key\": \"awesome.key\", \"value\": \"awesome-value\"}",
+                        "user-id")
+                        .andExpect(status().isOk()),
+                "Error setting metadata"
+        );
+
+        retryOnException(
+                () -> webTestHelper.post("/metadata.remove",
+                        "{\"conversation_id\":\"" + conversationId + "\", \"key\": \"awesome.key\"}",
+                        "user-id")
+                        .andExpect(status().isOk()),
+                "Error removing metadata"
+        );
+
+        retryOnException(
+                () -> webTestHelper.post("/metadata.remove",
+                        "{\"conversation_id\":\"" + conversationId + "\", \"key\": \"non-existing\"}",
+                        "user-id")
+                        .andExpect(status().isOk()),
+                "Error removing metadata"
+        );
+    }
 }

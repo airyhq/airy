@@ -651,7 +651,6 @@ information.
 
 ### Setting metadata
 
-
 `POST /metadata.set`
 
 ```json
@@ -663,3 +662,16 @@ information.
 ```
 
 This endpoint returns `200` if the operation was successful and `400` otherwise.
+
+### Removing metadata
+
+`POST /metadata.remove`
+
+```json
+{
+  "conversation_id": "conversation-id",
+  "key": "ad.id"
+}
+```
+
+This endpoint returns `200` if the operation was successful and `500` otherwise.

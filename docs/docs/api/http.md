@@ -229,10 +229,10 @@ This is a [paginated](#pagination) endpoint.
     content: {
       text: "{String}",
       type: "text"
-      // Determines the schema of the content 
+      // Determines the schema of the content
     },
     // typed source message model
-    state: "{String}",
+    delivery_state: "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     alignment: "{string/enum}",
     // LEFT, RIGHT, CENTER - horizontal placement of message
@@ -408,6 +408,8 @@ Connecting a channel is source specific by nature, refer to the relevant documen
 
 - [Facebook](../sources/facebook.md#connecting-a-channel)
 - [Google](../sources/google.md#connecting-a-channel)
+- [SMS - Twilio](../sources/sms-twilio.md#connecting-a-channel)
+- [Whatsapp - Twilio](../sources/whatsapp-twilio.md#connecting-a-channel)
 
 #### Disconnecting Channels
 
@@ -641,3 +643,35 @@ The response comes in two parts:
   - `total`
 
     The total number of elements across all pages.
+
+### Metadata
+
+Please refer to our [metadata](glossary.md#metadata) definition for more
+information.
+
+### Setting metadata
+
+`POST /metadata.set`
+
+```json
+{
+  "conversation_id": "conversation-id",
+  "key": "ad.id",
+  "value": "Grace"
+}
+```
+
+This endpoint returns `200` if the operation was successful and `400` otherwise.
+
+### Removing metadata
+
+`POST /metadata.remove`
+
+```json
+{
+  "conversation_id": "conversation-id",
+  "key": "ad.id"
+}
+```
+
+This endpoint returns `200` if the operation was successful and `500` otherwise.

@@ -208,10 +208,12 @@
             w[n] = w[n] || {};
             w[n].cid = search.get("channel_id");
             w[n].h = "chatplugin.airy";
+            // Only to be used for local installations
+            w[n].no_tls = true;
             var f = d.getElementsByTagName(s)[0],
                 j = d.createElement(s);
             j.async = true;
-            j.src = w[n].h + '/s.js';
+            j.src = '//' + w[n].h + '/s.js';
             f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'airy');
     </script>
@@ -232,7 +234,6 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#services">SERVICES</a></li>
-                <li><a href="#portfolio">PORTFOLIO</a></li>
                 <li><a href="#pricing">PRICING</a></li>
                 <li><a href="#contact">CONTACT</a></li>
             </ul>

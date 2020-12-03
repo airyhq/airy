@@ -1,0 +1,26 @@
+{{ $ingressID := randAlphaNum 10 }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sources-config
+data:
+  FACEBOOK_APP_ID: {{ .Values.sources.facebook.appId }}
+  FACEBOOK_APP_SECRET: {{ .Values.sources.facebook.appSecret }}
+  FACEBOOK_WEBHOOK_SECRET: {{ .Values.sources.facebook.webhookSecret }}
+  FACEBOOK_WEBHOOK_PUBLIC_URL: https://fb-{{ $ingressID }}.tunnel.airy.co}}
+  GOOGLE_PARTNER_KEY: {{ .Values.sources.google.partnerKey }}
+  GOOGLE_SA_FILE: {{ .Values.sources.google.saFile }}
+  GOOGLE_WEBHOOK_PUBLIC_URL: https://gl-{{ $ingressID }}.tunnel.airy.co}}
+  TWILIO_AUTH_TOKEN: {{ .Values.sources.twilio.authToken }}
+  TWILIO_ACCOUNT_SID: {{ .Values.sources.twilio.accountSid }}
+  TWILIO_WEBHOOK_PUBLIC_URL: https://tw-{{ $ingressID }}.tunnel.airy.co}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ngrok-client-config
+  namespace: default
+data:
+  config.yml: |
+    server_addr: proxy.tunnel.airy.co:4443
+    trust_host_root_certs: true

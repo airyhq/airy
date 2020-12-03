@@ -4,10 +4,14 @@ import 'regenerator-runtime/runtime';
 // @ts-ignore
 // Default to hostname set by local environment
 const API_HOST = window.airy.h || 'chatplugin.api';
+// @ts-ignore
+// Allow turning off ssl (unsafe!) for local development
+const TLS_PREFIX = window.airy.no_tls === true ? '' : 's';
 
 class Websocket {
   client: Client;
   channel_id: string;
+  token: string;
   onReceive: messageCallbackType;
 
   constructor(channel_id: string, onReceive: messageCallbackType) {
@@ -16,13 +20,15 @@ class Websocket {
   }
 
   connect = (token: string) => {
+    this.token = token;
+
     this.client = new Client({
-      brokerURL: `wss://${API_HOST}/ws.chatplugin`,
+      brokerURL: `ws${TLS_PREFIX}://${API_HOST}/ws.chatplugin`,
       connectHeaders: {
         Authorization: token,
       },
       debug: function(str) {
-        console.log(str);
+        console.info(str);
       },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
@@ -32,8 +38,8 @@ class Websocket {
     this.client.onConnect = this.onConnect;
 
     this.client.onStompError = function(frame: IFrame) {
-      console.log('Broker reported error: ' + frame.headers['message']);
-      console.log('Additional details: ' + frame.body);
+      console.error('Broker reported error: ' + frame.headers['message']);
+      console.error('Additional details: ' + frame.body);
     };
 
     this.client.activate();
@@ -44,18 +50,19 @@ class Websocket {
   };
 
   onSend = (message: string) => {
-    return fetch(`https://${API_HOST}/chatplugin.send`, {
+    return fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.send`, {
       method: 'POST',
       body: message,
       headers: {
         'Content-Type': 'application/json',
+        Authorization: this.token,
       },
     });
   };
 
   async start() {
     try {
-      const response = await fetch(`https://${API_HOST}/chatplugin.authenticate`, {
+      const response = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.authenticate`, {
         method: 'POST',
         body: JSON.stringify({
           channel_id: this.channel_id,

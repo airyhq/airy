@@ -12,7 +12,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class FacebookSource implements Source {
 
-    final FacebookApi api;
+    private final FacebookApi api;
 
     public FacebookSource(FacebookApi api) {
         this.api = api;

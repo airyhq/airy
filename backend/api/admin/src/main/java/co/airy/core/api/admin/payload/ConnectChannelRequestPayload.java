@@ -14,7 +14,6 @@ public class ConnectChannelRequestPayload {
     String source;
     @NotNull
     String sourceChannelId;
-    @NotNull
     String token;
     String name;
     String imageUrl;

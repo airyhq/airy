@@ -2,9 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 function resolveTsconfigPathsToAlias({tsconfigPath, basePath}) {
   const {paths} = require(tsconfigPath).compilerOptions;
@@ -159,11 +157,6 @@ module.exports = (env, argv) => ({
           'url-loader',
         ],
       },
-      {
-        test: /\.js$/,
-        use: ['source-map-loader'],
-        enforce: 'pre',
-      },
     ],
   },
   plugins: [
@@ -186,10 +179,10 @@ module.exports = (env, argv) => ({
       filename: 'index.html',
       minify: {removeComments: true, collapseWhitespace: true},
     }),
-    new BundleAnalyzerPlugin({
+    /* Uncomment to get bundle report
+    new require('webpack-bundle-analyzer').BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
-    }),
-    new OptimizeCSSAssetsPlugin(),
+    }),*/
   ],
 });

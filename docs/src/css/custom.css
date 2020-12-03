@@ -51,8 +51,8 @@
   --ifm-code-font-size: 95%;
 }
 
-.alert--success  h5 {
-    color: white
+.alert--success h5 {
+  color: white;
 }
 
 .footer.footer--dark {

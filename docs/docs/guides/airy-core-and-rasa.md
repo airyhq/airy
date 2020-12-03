@@ -27,7 +27,7 @@ persist your data and make it available for export to anywhere within your organ
 This guide covers how to configure your Rasa installation so that it
 can use the Airy Core Platform to send and receive messages.
   
-:::Prerequisites
+:::note Prerequisites
 - A running Airy Core Platform installation [[Get Started](index.md#bootstrapping-the-airy-core-platform)]
 - A local Rasa setup: For convenience, we recommend the Docker one [[Guide](https://rasa.com/docs/rasa/docker/building-in-docker/ )] or [a demo repository](https://github.com/airyhq/rasa-demo) we created for this guide
 :::
@@ -58,6 +58,8 @@ With the public ngrok url your Webhook subscription payload should look like so:
 Once you have done this, the Airy Core Platform will start sending messages to the
 url you specified.
 
+<img alt="successful webhook connection log" src={useBaseUrl('img/guides/airy-core-and-rasa/webhook_success.jpg')} />
+
 ## Configuring Rasa
 
 We will be implementing a
@@ -78,9 +80,10 @@ channels.airy.AiryInput:
   auth_token: "http://api.airy"
 ``` 
 
-Now you should have a working integration 🎉 . To test the connection write a message to one of your channels: The Airy
+Now you should have a working integration 🎉 .
+ 
+To test the connection write a message to one of your channels: The Airy
 Core Platform will forward it to your Rasa installation, which will respond using the Airy Core Platform API. This
 is what you will see in the logs of the demo repository:
 
-<img alt="successful connection log" src={useBaseUrl('img/guides/airy-core-and-rasa/success.jpg')} />
-
+<img alt="send message successful connection log" src={useBaseUrl('img/guides/airy-core-and-rasa/success.jpg')} />

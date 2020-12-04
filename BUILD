@@ -13,7 +13,6 @@ multirun(
     visibility = ["//visibility:public"],
 )
 
-
 container_image(
     name = "base_image",
     base = "@java_base//image",
@@ -163,6 +162,6 @@ exports_files(
         "package.json",
         ".prettierrc.json",
         "yarn.lock",
-        "tsconfig.json"
+        "tsconfig.json",
     ],
 )

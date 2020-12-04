@@ -7,8 +7,8 @@ lib_deps = [
     "//:lombok",
     "//:spring",
     "//:springboot_security",
-    "//backend/lib/log",
-    "//backend/lib/spring/core:spring-core",
+    "//lib/java/log",
+    "//lib/java/spring/core:spring-core",
     "@maven//:javax_servlet_javax_servlet_api",
     "@maven//:javax_xml_bind_jaxb_api",
 ]

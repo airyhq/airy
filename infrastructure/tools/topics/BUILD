@@ -1,7 +1,7 @@
 load("@rules_java//java:defs.bzl", "java_binary")
 
 app_deps = [
-    "//backend/lib/kafka/schema:all-topics",
+    "//lib/java/kafka/schema:all-topics",
 ]
 
 java_binary(

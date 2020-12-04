@@ -7,7 +7,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 ts_library(
     name = "app",
     deps = [
-        "//frontend/types",
+        "//lib/typescript/types",
         "@npm//@airyhq/components",
         "@npm//@types/facebook-js-sdk",
         "@npm//@types/node",

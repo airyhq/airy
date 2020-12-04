@@ -24,5 +24,5 @@ the content model in
 `backend/lib/mapping/src/main/java/co/airy/mapping/model/`:
 
 ```shell script
-bazel run //backend/lib/mapping:ts-generator
+bazel run //lib/java/mapping:ts-generator
 ```

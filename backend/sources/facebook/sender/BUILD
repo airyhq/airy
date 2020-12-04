@@ -6,9 +6,9 @@ app_deps = [
     "//backend:base_app",
     "//backend:channel",
     "//backend:message",
-    "//backend/lib/log",
-    "//backend/lib/spring/kafka/core:spring-kafka-core",
-    "//backend/lib/spring/kafka/streams:spring-kafka-streams",
+    "//lib/java/log",
+    "//lib/java/spring/kafka/core:spring-kafka-core",
+    "//lib/java/spring/kafka/streams:spring-kafka-streams",
 ]
 
 springboot(
@@ -26,7 +26,7 @@ springboot(
         deps = [
             ":app",
             "//backend:base_test",
-            "//backend/lib/kafka/test:kafka-test",
+            "//lib/java/kafka/test:kafka-test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

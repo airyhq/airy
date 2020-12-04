@@ -5,6 +5,6 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/test/**/*.java"]),
     visibility = ["//visibility:public"],
     deps = [
-        "//backend/lib/log",
+        "//lib/java/log",
     ],
 )

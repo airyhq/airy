@@ -6,9 +6,9 @@ app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
     "@maven//:com_twilio_sdk_twilio",
-    "//backend/lib/kafka/schema:source-twilio-events",
-    "//backend/lib/spring/kafka/core:spring-kafka-core",
-    "//backend/lib/spring/kafka/healthcheck",
+    "//lib/java/kafka/schema:source-twilio-events",
+    "//lib/java/spring/kafka/core:spring-kafka-core",
+    "//lib/java/spring/kafka/healthcheck",
 ]
 
 springboot(
@@ -27,7 +27,7 @@ springboot(
             ":app",
             "//backend:base_test",
             "@maven//:javax_xml_bind_jaxb_api",
-            "//backend/lib/kafka/test:kafka-test",
+            "//lib/java/kafka/test:kafka-test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

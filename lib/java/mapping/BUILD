@@ -6,7 +6,7 @@ lib_deps = [
     "//:lombok",
     "//:spring",
     "//:jackson",
-    "//backend/lib/log",
+    "//lib/java/log",
     "//backend/avro/communication:message",
     "@maven//:javax_validation_validation_api",
 ]
@@ -35,7 +35,7 @@ java_binary(
         deps = lib_deps + [
             ":mapping",
             "//backend:base_test",
-            "//backend/lib/spring/core:spring-core",
+            "//lib/java/spring/core:spring-core",
         ],
     )
     for file in glob(["src/test/java/**/*Test.java"])

@@ -8,7 +8,7 @@ custom_java_library(
     deps = [
         "//:jackson",
         "//:spring",
-        "//backend/lib/log",
+        "//lib/java/log",
         "@maven//:javax_xml_bind_jaxb_api",
         "@maven//:org_springframework_boot_spring_boot",
         "@maven//:org_springframework_boot_spring_boot_autoconfigure",

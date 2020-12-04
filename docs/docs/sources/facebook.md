@@ -17,7 +17,7 @@ The `App Id` information is the first step that you should store. This will be u
 Next step is to obtain a page token, so Airy can send messages on behalf of your page. Fastest way to get one is to use the graph explorer that
 Facebook provides ![Graph Explorer](https://developers.facebook.com/tools/explorer/)
 
-On the 
+On the `User or Page` option, select `Get Page Token` and click on `Generte Access Token`. Use this token to connect your page to Airy.
 
 ![](token.png)
 

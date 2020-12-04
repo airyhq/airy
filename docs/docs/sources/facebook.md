@@ -5,6 +5,22 @@ sidebar_label: Facebook
 
 The Facebook source provides a channel of communication between a Facebook page and your running instance of the Airy Core Platform.
 
+## HM
+
+To connect a page, the first requirement is to have an approved app by Facebook. If you don't have one, you will need to create it.
+
+After creating it, and Facebook approves it you should see it in https://developers.facebook.com/apps/
+
+![Facebook Apps](apps.png)
+
+The `App Id` information is the first step that you should store. This will be used to connect your channel later on.
+Next step is to obtain a page token, so Airy can send messages on behalf of your page. Fastest way to get one is to use the graph explorer that
+Facebook provides ![Graph Explorer](https://developers.facebook.com/tools/explorer/)
+
+On the 
+
+![](token.png)
+
 ## Configuration
 
 For Facebook to start sending events to your local instance, it must first

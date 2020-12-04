@@ -125,15 +125,27 @@ for more information.
 
 This is a [paginated](#pagination) endpoint.
 
+**Filtering**
+
+This endpoint allows you to query conversations using the human readable [Lucene Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html).
+You can query on all fields defined in [this class](https://github.com/airyhq/airy/blob/main/backend/api/communication/src/main/java/co/airy/core/api/communication/dto/ConversationIndex.java).
+
 **Sample Request**
 
-```json
+Find all users with the last name "Lovelace".
+
+```json5
 {
-  "filter": {
-    "conversation_ids": ["uuid"],
-    "channel_ids": ["channel-42"],
-    "display_names": ["Grace Hopper"]
-  },
+  "filters": "display_name:*Lovelace", // optional
+  "cursor": "next-page-uuid",
+  "page_size": 2
+}
+```  
+
+**Sample Request**
+
+```json5
+{
   "cursor": "next-page-uuid",
   "page_size": 2
 }
@@ -509,7 +521,7 @@ The request requires an authentication `token`, which has a different meaning fo
 
 `POST /tags.create`
 
-Example body:
+**Sample Request**
 
 ```json5
 {
@@ -521,7 +533,7 @@ Example body:
 
 If the tag is successfully created the endpoint will return `201` (created) with the tag id in the response body.
 
-Example response:
+**Sample Response**
 
 ```json5
 {
@@ -533,6 +545,8 @@ Example response:
 
 `POST /tags.update`
 
+**Sample Request**
+
 ```json
 {
   "id": "TAG-ID",
@@ -543,7 +557,7 @@ Example response:
 
 If action is successful, returns HTTP status `200`.
 
-Example response:
+**Sample Response**
 
 ```json5
 {}
@@ -554,6 +568,8 @@ Example response:
 
 `POST /tags.delete`
 
+**Sample Request**
+
 ```json
 {
   "id": "ID-OF-THE-TAG"
@@ -562,7 +578,7 @@ Example response:
 
 If action is successful, returns HTTP status `200`.
 
-Example response:
+**Sample Response**
 
 ```json5
 {}
@@ -572,7 +588,7 @@ Example response:
 
 `POST /tags.list`
 
-Example response:
+**Sample Response**
 
 ```json5
 {

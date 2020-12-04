@@ -129,8 +129,8 @@ header.
   },
   state: "{String}",
   // delivery state of message, one of PENDING, FAILED, DELIVERED
-  alignment: "{string/enum}",
-  // LEFT, RIGHT, CENTER - horizontal placement of message
+  sender_type: "{string/enum}",
+  // See glossary
   sent_at: "{string}",
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
 }
@@ -158,8 +158,8 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
       // source content string
       state: "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
-      alignment: "{string/enum}",
-      // LEFT, RIGHT, CENTER - horizontal placement of message
+      sender_type: "{string/enum}",
+      // See glossary
       sent_at: "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   }

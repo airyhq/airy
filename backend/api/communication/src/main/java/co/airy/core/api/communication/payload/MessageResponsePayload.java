@@ -14,16 +14,7 @@ import lombok.NoArgsConstructor;
 public class MessageResponsePayload {
     private String id;
     private Content content;
-    private String alignment;
+    private String senderType;
     private String sentAt;
     private String deliveryState;
-
-    public static String getAlignment(SenderType senderType) {
-        switch (senderType) {
-            case APP_USER:
-            case SOURCE_USER: return "LEFT";
-            case SOURCE_CONTACT: return "RIGHT";
-            default: throw new RuntimeException("Unknown sender type " + senderType);
-        }
-    }
 }

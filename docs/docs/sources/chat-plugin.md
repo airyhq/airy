@@ -8,8 +8,8 @@ that enables conversations with anonymous website visitors through a web chat
 plugin.
 
 This document covers how to connect a chat plugin as as
-[source](/glossary.md#source), how to  install the chat plugin web widget, and the
-HTTP and WebSocket APIs that power it.
+[source](/glossary.md#source), how to install the chat plugin web widget, and
+the HTTP and WebSocket APIs that power it.
 
 ## Connecting a channel
 

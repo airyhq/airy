@@ -23,3 +23,6 @@ Here's an outline of the process:
   - We merge the release branch back into `develop`
   - We archive cards in the done column of the [work in progress](https://github.com/airyhq/airy/projects/1) board
   - We announce the release!
+
+
+You can check out existing releases on [github](https://github.com/airyhq/airy/releases).

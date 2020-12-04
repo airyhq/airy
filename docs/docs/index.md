@@ -39,14 +39,17 @@ cd airy
 
 The bootstrap installation requires
 [Vagrant](https://www.vagrantup.com/downloads) and
-[VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
-found, the script will attempt to install them for you. 
+[VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not found,
+the script will attempt to install them for you. 
 
-If Vagrant or VirtualBox cannot be installed with the `bootstrap.sh` script, you will need to install them manually.
+If Vagrant or VirtualBox cannot be installed with the `bootstrap.sh` script, you
+will need to install them manually.
 
-The script will also ask for your administrative credentials as we are using the 
-[Vagrant Host Manager Plugin](https://github.com/devopsgroup-io/vagrant-hostmanager) to add entries to your hosts file. 
-You can skip this step and add the following lines to your hosts file yourself.
+The script will also ask for your administrative credentials as we are using the
+[Vagrant Host Manager
+Plugin](https://github.com/devopsgroup-io/vagrant-hostmanager) to add entries to
+your hosts file. You can skip this step and add the following lines to your
+hosts file yourself.
 
 ```
 192.168.50.5  demo.airy
@@ -58,9 +61,11 @@ Check out our [guide for running in test environment](guides/airy-core-in-test-e
 
 ## Connecting a chat plugin source
 
-The chat plugin source is well suited for a first integration because it does not require any configuration.
+The chat plugin source is well suited for a first integration because it does
+not require any configuration.
 
-Once you [signed up](api/http#signup), you must [log in](api/http#login) so you can obtain a valid JWT token for the up-coming API calls:
+Once you [signed up](api/http#signup), you must [log in](api/http#login) so you
+can obtain a valid JWT token for the up-coming API calls:
 
 ```bash
 token=$(echo $(curl -H 'Content-Type: application/json' -d \
@@ -78,11 +83,14 @@ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 
 <img alt="channels_connect" src={useBaseUrl('img/channels_connect.gif')} />
 
-The id from the response is the `channel_id`, note it down as it's required in the next steps.
+The id from the response is the `channel_id`, note it down as it's required in
+the next steps.
 
 ## Sending messages with the chat plugin
 
-Pass the `channel_id` as query parameter when opening the demo page in your browser. This will authenticate the chat plugin and enable you to send messages immediately: 
+Pass the `channel_id` as query parameter when opening the demo page in your
+browser. This will authenticate the chat plugin and enable you to send messages
+immediately: 
 
 ```
 http://chatplugin.airy/example.html?channel_id=<channel_id>
@@ -92,7 +100,9 @@ You can now type a message in the text box and send it 🎉
 
 <img alt="chatplugin working" src={useBaseUrl('img/chatplugin.gif')} />
 
-To see how messages are flowing through the system, you can now [list conversations](api/http.md#list-conversations) for the channel you just created which should return the message you just sent.
+To see how messages are flowing through the system, you can now [list
+conversations](api/http.md#list-conversations) for the channel you just created
+which should return the message you just sent.
 
 <img alt="conversations.list" src={useBaseUrl('img/conversation.list.jpg')} />
 
@@ -101,7 +111,8 @@ curl -H "Content-Type: application/json" -H "Authorization: $token" -d "{}" \
 api.airy/conversations.list | jq .
 ```
 
-You can also consume the messages directly from the Kafka `application.communication.messages` topic:
+You can also consume the messages directly from the Kafka
+`application.communication.messages` topic:
 
 ```bash
 cd infrastructure && vagrant ssh

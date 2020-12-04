@@ -102,6 +102,9 @@ WebSocket connection handshake.
 
 #### Send message
 
+You must set the `token` obtained on the [authorization endpoint](#authenticating-web-users) as an `Authorization`
+header.
+
 `POST /chatplugin.send`
 
 **Sample Request**

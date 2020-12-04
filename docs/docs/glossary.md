@@ -77,9 +77,9 @@ Unique message id for deduplication.
 
 What type of actor inserted the message. One of:
 
-    - `SOURCE_CONTACT` sent to the source by a contact
-    - `SOURCE_USER` sent to the source by the user but not via app
-    - `APP_USER` sent to source via app
+    - `source_contact` sent to the source by a contact
+    - `source_user` sent to the source by the user but not via app
+    - `app_user` sent to source via app
 
 - `senderId` string
 
@@ -106,9 +106,9 @@ Identifies the participant that sent the message. Interpretation is based on the
 
     One of:
 
-    - `PENDING` message to be sent out
-    - `DELIVERED` message has been sent to source
-    - `FAILED` message sending has terminally failed
+    - `pending` message to be sent out
+    - `delivered` message has been sent to source
+    - `failed` message sending has terminally failed
 
 - `sentAt` timestamp
 

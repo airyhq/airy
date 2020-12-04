@@ -184,8 +184,8 @@ Find all users with the last name "Lovelace".
         // typed source message model
         state: "{String}",
         // delivery state of message, one of PENDING, FAILED, DELIVERED
-        alignment: "{string/enum}",
-        // LEFT, RIGHT, CENTER - horizontal placement of message
+        sender_type: "{string/enum}",
+        // See glossary
         sent_at: "{string}",
         //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
       },
@@ -237,18 +237,18 @@ Find all users with the last name "Lovelace".
     "f339c325-8614-43cb-a70a-e83d81bf56fc"
   ],
   "last_message": {
-    id: "{UUID}",
-    content: {
-      text: "{String}",
-      type: "text"
+    "id": "{UUID}",
+    "content": {
+      "text": "{String}",
+      "type": "text"
       // Determines the schema of the content
     },
     // typed source message model
-    delivery_state: "{String}",
+    "delivery_state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
-    alignment: "{string/enum}",
-    // LEFT, RIGHT, CENTER - horizontal placement of message
-    sent_at: "{string}",
+    "sender_type": "{string/enum}",
+    // See glossary
+    "sent_at": "{string}",
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   },
   "unread_message_count": 1
@@ -343,18 +343,18 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
 {
   "data": [
     {
-      id: "{UUID}",
-      content: {
-        text: "{String}",
-        type: "text"
+      "id": "{UUID}",
+      "content": {
+        "text": "{String}",
+        "type": "text"
         // Determines the schema of the content
       },
       // typed source message model
-      state: "{String}",
+      "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
-      alignment: "{string/enum}",
-      // LEFT, RIGHT, CENTER - horizontal placement of message
-      sent_at: "{string}",
+      "sender_type": "{string/enum}",
+      // See glossary
+      "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
     }
   ],
@@ -377,9 +377,9 @@ Sends a message to a conversation and returns a payload.
 
 ```json5
 {
-  conversation_id: "a688d36c-a85e-44af-bc02-4248c2c97622",
-  message: {
-    text: "{String}"
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "message": {
+    "text": "{String}"
   }
 }
 ```
@@ -388,18 +388,18 @@ Sends a message to a conversation and returns a payload.
 
 ```json5
 {
-  id: "{UUID}",
-  content: {
-    text: "{String}",
-    type: "text"
+  "id": "{UUID}",
+  "content": {
+    "text": "{String}",
+    "type": "text"
     // Determines the schema of the content
   },
   // typed source message model
-  state: "{String}",
+  "state": "{String}",
   // delivery state of message, one of PENDING, FAILED, DELIVERED
-  alignment: "{string/enum}",
-  // LEFT, RIGHT, CENTER - horizontal placement of message
-  sent_at: "{string}",
+  "sender_type": "{string/enum}",
+  // See glossary
+  "sent_at": "{string}",
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
 }
 ```
@@ -537,7 +537,7 @@ If the tag is successfully created the endpoint will return `201` (created) with
 
 ```json5
 {
-  id: "TAG-UUID"
+  "id": "TAG-UUID"
 }
 ```
 
@@ -592,11 +592,11 @@ If action is successful, returns HTTP status `200`.
 
 ```json5
 {
-  tags: [
+  "tags": [
     {
-      id: "TAG-ID",
-      name: "name of the tag",
-      color: "RED"
+      "id": "TAG-ID",
+      "name": "name of the tag",
+      "color": "RED"
     }
   ]
 }

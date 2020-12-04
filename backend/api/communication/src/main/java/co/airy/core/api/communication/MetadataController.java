@@ -48,7 +48,7 @@ public class MetadataController {
                 .setActionType(MetadataActionType.REMOVE)
                 .setTimestamp(Instant.now().toEpochMilli())
                 .setConversationId(removeMetadataRequestPayload.getConversationId())
-                .setKey(USER_NAMESPACE + "." + removeMetadataRequestPayload.getKey())
+                .setKey(PUBLIC + "." + removeMetadataRequestPayload.getKey())
                 .setValue("")
                 .build();
         try {

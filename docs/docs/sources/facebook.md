@@ -5,7 +5,7 @@ sidebar_label: Facebook
 
 The Facebook source provides a channel of communication between a Facebook page and your running instance of the Airy Core Platform.
 
-## HM
+## Connecting a Facebook Page
 
 To connect a page, the first requirement is to have an approved app by Facebook. If you don't have one, you will need to create it.
 

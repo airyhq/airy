@@ -8,34 +8,20 @@ This document aims to provide an high-level overview of the Airy Core Platform
 technical vocabulary. It provides definition of the most important terms used
 both in the code and in the rest of the documentation.
 
-**Please note this document is constantly being worked on.**
-
-## Introduction
-
-Our Avro schemas provide a machine readable up-to-date version of our backend
-data model. If you are looking for details like null constraints and such, the
-Avro schemas folder is the right place. Furthermore, it is worth underlining
-that the Avro data model and glossary do not correspond exactly. The former is
-the exact machine representation of the data we store and the latter is a
-conceptual artifact we created to discuss and solve problems of a typical
-messaging system.
+Our [Avro schemas](https://github.com/airyhq/airy/tree/main/backend/avro)
+provide a machine readable up-to-date version of our backend data model. If you
+are looking for details like null constraints and such, the Avro schemas folder
+is the right place. Furthermore, it is worth underlining that the Avro data
+model and glossary do not correspond exactly. The former is the exact machine
+representation of the data we store and the latter is a conceptual artifact we
+created to discuss and solve problems.
 
 The Airy Core Platform allows its [users](#user) to process messaging data from
-a variety of [sources](#source), which are integrated via [source providers](#source-provider).
-Users connect to sources via [channels](#channel). Once the channel is connected, 
-the Airy Core Platform ingests source data and transforms them into [conversations](#conversation),
-[contacts](#contact), and [messages](#message).
-
-## Source
-
-A source represents a system that generates messaging data that a user wants to
-process with the Airy Core Platform.
-
-## Source provider
-
-Source providers are API platforms that allow the Airy Core Platform to connect to 
-one or more of their sources typically via a webhook. E.g. Twilio is a source provider
-for the Twilio SMS and Whatsapp sources.
+a variety of [sources](#source), which are integrated via [source
+providers](#provider). Users] connect sources via [channels](#channel).
+Once the channel is connected, the Airy Core Platform ingests source data and
+transforms them into [conversations](#conversation), [contacts](#contact), and
+[messages](#message).
 
 ## Channel
 
@@ -60,8 +46,6 @@ A message wraps the data that is being transferred from and to the
 dependent and it can be plain text, rich media like videos or sound, images, or
 templates.
 
-### Fields
-
 - `id` uuid
 
 Unique message id for deduplication.
@@ -83,7 +67,7 @@ What type of actor inserted the message. One of:
 
 - `senderId` string
 
-Identifies the participant that sent the message. Interpretation is based on the value of `senderType` like so:
+Identifies the participant that sent the message. Interpretation is based on the value of `senderType`:
 
 | senderType     | senderId                                            |
 | -------------- | --------------------------------------------------- |
@@ -114,20 +98,16 @@ Identifies the participant that sent the message. Interpretation is based on the
 
 - `updatedAt` timestamp null for messages that are inserted first time
 
-
-#### Headers
+### Headers
 
 Header data contains information that is important for downstream processing. It
 also includes the message preview and tags that are useful for certain apps like
 automations.
 
-# User
+## Metadata
 
-A user represents one authorized agent in the Airy Core Platform.
-
-# Metadata
-
-Metadata is data attached to a conversation consisting of a set of Key/Value pairs. A key can use the dot notation to represent namespaces.
+Metadata is data attached to a conversation consisting of a set of Key/Value
+pairs. A key can use the dot notation to represent namespaces.
 
 e.g.
 
@@ -136,3 +116,18 @@ e.g.
 | "sender.id"                	| "123A"  	|
 | "sender.contact.first_name 	| "Grace" 	|
 
+
+## Source
+
+A source represents a system that generates messaging data that a user wants to
+process with the Airy Core Platform.
+
+### Provider
+
+Source providers are API platforms that allow the Airy Core Platform to connect to 
+one or more of their sources typically via a webhook. E.g. Twilio is a source provider
+for the Twilio SMS and Whatsapp sources.
+
+## User
+
+A user represents one authorized agent in the Airy Core Platform.

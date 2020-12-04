@@ -12,8 +12,8 @@ custom_java_library(
     visibility = ["//visibility:public"],
     deps = [
         ":healthcheck_schema",
-        "//backend/lib/kafka/core:kafka-core",
-        "//backend/lib/kafka/schema:ops-application-health",
+        "//lib/java/kafka/core:kafka-core",
+        "//lib/java/kafka/schema:ops-application-health",
         "@maven//:org_springframework_spring_context",
     ],
 )

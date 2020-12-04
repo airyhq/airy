@@ -13,7 +13,7 @@ custom_java_library(
     deps = [
         "//:jackson",
         "//:kafka_core",
-        "//backend/lib/log",
+        "//lib/java/log",
         "@maven//:com_fasterxml_jackson_module_jackson_module_afterburner",
     ],
 )

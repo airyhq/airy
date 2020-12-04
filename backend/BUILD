@@ -9,8 +9,8 @@ java_library(
         "//:lombok",
         "//:spring",
         "//:springboot",
-        "//backend/lib/log",
-        "//backend/lib/spring/core:spring-core",
+        "//lib/java/log",
+        "//lib/java/spring/core:spring-core",
     ],
 )
 
@@ -19,7 +19,7 @@ java_library(
     exports = [
         "//:junit",
         "//:springboot_test",
-        "//backend/lib/test",
+        "//lib/java/test",
     ],
 )
 
@@ -27,7 +27,7 @@ java_library(
     name = "channel",
     exports = [
         "//backend/avro/communication:channel",
-        "//backend/lib/kafka/schema:application-communication-channels",
+        "//lib/java/kafka/schema:application-communication-channels",
     ],
 )
 
@@ -35,7 +35,7 @@ java_library(
     name = "message",
     exports = [
         "//backend/avro/communication:message",
-        "//backend/lib/kafka/schema:application-communication-messages",
+        "//lib/java/kafka/schema:application-communication-messages",
     ],
 )
 
@@ -43,7 +43,7 @@ java_library(
     name = "metadata",
     exports = [
         "//backend/avro/communication:metadata-action",
-        "//backend/lib/kafka/schema:application-communication-metadata",
+        "//lib/java/kafka/schema:application-communication-metadata",
     ],
 )
 
@@ -51,7 +51,7 @@ java_library(
     name = "read-receipt",
     exports = [
         "//backend/avro/communication:read-receipt",
-        "//backend/lib/kafka/schema:application-communication-read-receipts",
+        "//lib/java/kafka/schema:application-communication-read-receipts",
     ],
 )
 
@@ -59,7 +59,7 @@ java_library(
     name = "tag",
     exports = [
         "//backend/avro/communication:tag",
-        "//backend/lib/kafka/schema:application-communication-tags",
+        "//lib/java/kafka/schema:application-communication-tags",
     ],
 )
 
@@ -67,6 +67,6 @@ java_library(
     name = "webhook",
     exports = [
         "//backend/avro/communication:webhook",
-        "//backend/lib/kafka/schema:application-communication-webhooks",
+        "//lib/java/kafka/schema:application-communication-webhooks",
     ],
 )

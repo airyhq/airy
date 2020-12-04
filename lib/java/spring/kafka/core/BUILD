@@ -5,11 +5,11 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/spring/kafka/core/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//backend/lib/kafka/core:kafka-core",
+        "//lib/java/kafka/core:kafka-core",
     ],
     deps = [
         "//:spring",
-        "//backend/lib/kafka/core:kafka-core",
-        "//backend/lib/spring/core:spring-core",
+        "//lib/java/kafka/core:kafka-core",
+        "//lib/java/spring/core:spring-core",
     ],
 )

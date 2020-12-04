@@ -28,7 +28,7 @@ ts_library(
     name = "app",
     tsconfig = ":widget_tsconfig",
     deps = [
-        "//frontend/types",
+        "//lib/typescript/types",
         "@npm//@stomp/stompjs",
         "@npm//@types/node",
         "@npm//linkifyjs",

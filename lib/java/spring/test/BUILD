@@ -9,8 +9,8 @@ custom_java_library(
         "//:lombok",
         "//:spring",
         "//:springboot_test",
-        "//backend/lib/log",
-        "//backend/lib/spring/auth:spring-auth",
-        "//backend/lib/test",
+        "//lib/java/log",
+        "//lib/java/spring/auth:spring-auth",
+        "//lib/java/test",
     ],
 )

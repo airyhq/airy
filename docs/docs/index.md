@@ -4,6 +4,8 @@ title: Home
 slug: /
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 The Airy Core Platform is a fully-featured, production ready messaging platform
 that allows its user to process messaging data from a variety of sources (like
 facebook messenger or google business messages). The core platform contains the
@@ -74,7 +76,8 @@ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 }" api.airy/channels.connect
 ```
 
-![channels_connect](media/channels_connect.gif)
+<img alt="channels_connect" src={useBaseUrl('img/channels_connect.gif')} />
+
 The id from the response is the `channel_id`, note it down as it's required in the next steps.
 
 ## Sending messages with the chat plugin
@@ -87,11 +90,11 @@ http://chatplugin.airy/example.html?channel_id=<channel_id>
 
 You can now type a message in the text box and send it 🎉 
 
-![chatplugin](media/chatplugin.gif)
+<img alt="chatplugin working" src={useBaseUrl('img/chatplugin.gif')} />
 
 To see how messages are flowing through the system, you can now [list conversations](api/http.md#list-conversations) for the channel you just created which should return the message you just sent.
 
-![conversations.list](media/conversation.list.png)
+<img alt="conversations.list" src={useBaseUrl('img/conversation.list.jpg')} />
 
 ```bash
 curl -H "Content-Type: application/json" -H "Authorization: $token" -d "{}" \
@@ -109,4 +112,4 @@ kafka-console-consumer \
 --from-beginning
 ```
 
-![kafka_topic](media/kafka.gif)
+<img alt="Kafka Topic" src={useBaseUrl('img/kafka.gif')} />

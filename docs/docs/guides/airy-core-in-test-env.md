@@ -39,6 +39,7 @@ vagrant ssh -c /vagrant/scripts/status.sh
 ```
 
 The status command will print the following information:
+
 ```sh
 "Your public url for the Facebook Webhook is:"
 ${FACEBOOK_WEBHOOK_PUBLIC_URL}/facebook
@@ -55,7 +56,6 @@ ${TWILIO_WEBHOOK_PUBLIC_URL}/twilio
 "Example:"
 "curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}'
 ```
-
 
 ### Inspect Kubernetes
 
@@ -90,7 +90,7 @@ vagrant up
 ## Access the API
 
 The API services are available under the domain `http://api.airy` from your
-local machine. You can see an example  request to the API by running the
+local machine. You can see an example request to the API by running the
 `status` command.
 
 ## Access the frontend UI
@@ -98,7 +98,6 @@ local machine. You can see an example  request to the API by running the
 The frontend UI for the demo app can be accessed through http://demo.airy.
 
 The frontend UI for the Airy chat plugin can be accessed through http://chatplugin.airy/example.html.
-
 
 ## Public webhooks
 
@@ -131,7 +130,7 @@ data:
 ```
 
 If you prefer to use your own Ngrok implementation or point the Ngrok client to
-connect to the service provided by the Ngrok company at  `https://ngrok.io`,
+connect to the service provided by the Ngrok company at `https://ngrok.io`,
 change the setting for `server_addr` in the ConfigMap or in this helm chart
 document
 `infrastructure/helm-chart/charts/apps/charts/airy-config/templates/sources.yaml`.
@@ -139,7 +138,7 @@ document
 The bootstrap process creates a random URL which is then provisioned inside the
 Helm chart. To configure these URLs, you can specify them in the
 `infrastructure/helm-chart/charts/apps/charts/airy-co)fig/values.yaml` document.
-Alternatively  you can edit the `airy.conf` file by setting the following
+Alternatively you can edit the `airy.conf` file by setting the following
 parameter (see `airy.conf.all` for more examples):
 
 ```

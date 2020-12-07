@@ -24,7 +24,7 @@ All of the necessary services exposed with [Traefik](https://traefik.io/) ingres
 Through that ingress controller, the internal services are exposed and can be
 accessed from outside of the Vagrant box.
 
-Since k3os kubernetes clusters are usually not exposed to the public internet, 
+Since k3os kubernetes clusters are usually not exposed to the public internet,
 we included an ngrok client to facilitate the integration of sources (via webhooks).
 
 For the Airy Core Platform to be accessible from the outside (for
@@ -37,6 +37,7 @@ the traffic to the local Facebook webhook pod. When starting, the Airy Core
 Platform prints the public URL for the Facebook webhook. You can also check it
 by running the `/vagrant/scripts/status.sh` script from inside the Airy Core
 Platform box or directly:
+
 ```sh
 vagrant ssh -c /vagrant/scripts/status.sh
 ```

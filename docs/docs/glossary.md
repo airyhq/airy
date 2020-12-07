@@ -31,7 +31,7 @@ Platform.
 ## Contact
 
 A contact represents the [source](#source) participant. A
-[conversation](#conversation) exists *only* if it has *at least one* message
+[conversation](#conversation) exists _only_ if it has _at least one_ message
 from a contact.
 
 ## Conversation
@@ -52,10 +52,10 @@ Unique message id for deduplication.
 
 - `headers` string map
 
-    Optional headers:
+  Optional headers:
 
-    - `postback.payload` string postback payloads used for source automations
-    - `postback.referral` string facebook specific referral identifier
+  - `postback.payload` string postback payloads used for source automations
+  - `postback.referral` string facebook specific referral identifier
 
 - `senderType` string
 
@@ -75,12 +75,11 @@ Identifies the participant that sent the message. Interpretation is based on the
 | SOURCE_USER    | source dependent (e.g. Facebook third party app id) |
 | APP_USER       | app channel id                                      |
 
-
 - `conversationId` uuid
 
 - `channelId` uuid
 
-- `content` string  Immutable string version of the ingested content. APIs dynamically parse and map it to a schema using the mapping library.
+- `content` string Immutable string version of the ingested content. APIs dynamically parse and map it to a schema using the mapping library.
 
 - `offset` long sequence number of message within a conversation
 
@@ -88,11 +87,11 @@ Identifies the participant that sent the message. Interpretation is based on the
 
 - `deliveryState` string
 
-    One of:
+  One of:
 
-    - `pending` message to be sent out
-    - `delivered` message has been sent to source
-    - `failed` message sending has terminally failed
+  - `pending` message to be sent out
+  - `delivered` message has been sent to source
+  - `failed` message sending has terminally failed
 
 - `sentAt` timestamp
 
@@ -111,11 +110,10 @@ pairs. A key can use the dot notation to represent namespaces.
 
 e.g.
 
-| Key                        	| Value   	|
-|----------------------------	|---------	|
-| "sender.id"                	| "123A"  	|
-| "sender.contact.first_name 	| "Grace" 	|
-
+| Key                        | Value   |
+| -------------------------- | ------- |
+| "sender.id"                | "123A"  |
+| "sender.contact.first_name | "Grace" |
 
 ## Source
 
@@ -124,7 +122,7 @@ process with the Airy Core Platform.
 
 ### Provider
 
-Source providers are API platforms that allow the Airy Core Platform to connect to 
+Source providers are API platforms that allow the Airy Core Platform to connect to
 one or more of their sources typically via a webhook. E.g. Twilio is a source provider
 for the Twilio SMS and Whatsapp sources.
 

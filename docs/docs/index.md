@@ -40,7 +40,7 @@ cd airy
 The bootstrap installation requires
 [Vagrant](https://www.vagrantup.com/downloads) and
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not found,
-the script will attempt to install them for you. 
+the script will attempt to install them for you.
 
 If Vagrant or VirtualBox cannot be installed with the `bootstrap.sh` script, you
 will need to install them manually.
@@ -90,13 +90,13 @@ the next steps.
 
 Pass the `channel_id` as query parameter when opening the demo page in your
 browser. This will authenticate the chat plugin and enable you to send messages
-immediately: 
+immediately:
 
 ```
 http://chatplugin.airy/example.html?channel_id=<channel_id>
 ```
 
-You can now type a message in the text box and send it 🎉 
+You can now type a message in the text box and send it 🎉
 
 <img alt="chatplugin working" src={useBaseUrl('img/chatplugin.gif')} />
 

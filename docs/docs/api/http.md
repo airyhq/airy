@@ -140,7 +140,7 @@ Find all users with the last name "Lovelace".
   "cursor": "next-page-uuid",
   "page_size": 2
 }
-```  
+```
 
 **Sample Request**
 
@@ -169,11 +169,9 @@ Find all users with the last name "Lovelace".
         "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
         "first_name": "Airy Support",
         "last_name": null,
-        "id": "36d07b7b-e242-4612-a82c-76832cfd1026",
+        "id": "36d07b7b-e242-4612-a82c-76832cfd1026"
       },
-      "tags": [
-        "f339c325-8614-43cb-a70a-e83d81bf56fc"
-      ],
+      "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
       "last_message": {
         id: "{UUID}",
         content: {
@@ -186,10 +184,10 @@ Find all users with the last name "Lovelace".
         // delivery state of message, one of PENDING, FAILED, DELIVERED
         sender_type: "{string/enum}",
         // See glossary
-        sent_at: "{string}",
+        sent_at: "{string}"
         //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
       },
-      "unread_message_count": 1,
+      "unread_message_count": 1
     }
   ],
   "response_metadata": {
@@ -231,11 +229,9 @@ Find all users with the last name "Lovelace".
     // optional
     "last_name": null,
     // optional
-    "id": "36d07b7b-e242-4612-a82c-76832cfd1026",
+    "id": "36d07b7b-e242-4612-a82c-76832cfd1026"
   },
-  "tags": [
-    "f339c325-8614-43cb-a70a-e83d81bf56fc"
-  ],
+  "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
   "last_message": {
     "id": "{UUID}",
     "content": {
@@ -248,7 +244,7 @@ Find all users with the last name "Lovelace".
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     "sender_type": "{string/enum}",
     // See glossary
-    "sent_at": "{string}",
+    "sent_at": "{string}"
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   },
   "unread_message_count": 1
@@ -286,7 +282,7 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 ```json5
 {
   "conversation_id": "CONVERSATION_ID",
-  "tag_id": "TAG_ID",
+  "tag_id": "TAG_ID"
 }
 ```
 
@@ -298,7 +294,6 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 
 #### Untag a conversation
 
-
 `POST /conversations.untag`
 
 **Sample Request**
@@ -306,7 +301,7 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 ```json5
 {
   "conversation_id": "CONVERSATION_ID",
-  "tag_id": "TAG_ID",
+  "tag_id": "TAG_ID"
 }
 ```
 
@@ -333,7 +328,7 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
 {
   "conversation_id": "4242-4242-4242-424242",
   "cursor": "next-page-uuid", // optional
-  "page_size": 2  // optional
+  "page_size": 2 // optional
 }
 ```
 
@@ -354,7 +349,7 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
       // delivery state of message, one of PENDING, FAILED, DELIVERED
       "sender_type": "{string/enum}",
       // See glossary
-      "sent_at": "{string}",
+      "sent_at": "{string}"
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
     }
   ],
@@ -399,7 +394,7 @@ Sends a message to a conversation and returns a payload.
   // delivery state of message, one of PENDING, FAILED, DELIVERED
   "sender_type": "{string/enum}",
   // See glossary
-  "sent_at": "{string}",
+  "sent_at": "{string}"
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
 }
 ```
@@ -470,21 +465,21 @@ The request requires an authentication `token`, which has a different meaning fo
 
 ```json5
 {
-	"data": [
-		{
-			"name": "my page 1",
-			"source": "facebook",
-			"source_channel_id": "fb-page-id-1",
-			"connected": false,
-			"image_url": "http://example.org/avatar.jpeg" // optional
-		},
-		{
-			"name": "my page 2",
-			"source": "facebook",
-			"source_channel_id": "fb-page-id-2",
-            "connected": true
-		}
-	]
+  "data": [
+    {
+      "name": "my page 1",
+      "source": "facebook",
+      "source_channel_id": "fb-page-id-1",
+      "connected": false,
+      "image_url": "http://example.org/avatar.jpeg" // optional
+    },
+    {
+      "name": "my page 2",
+      "source": "facebook",
+      "source_channel_id": "fb-page-id-2",
+      "connected": true
+    }
+  ]
 }
 ```
 
@@ -496,24 +491,23 @@ The request requires an authentication `token`, which has a different meaning fo
 
 ```json5
 {
-	"data": [
-		{
-			"id": "channel-uuid-1",
-			"name": "my page 1",
-			"source": "facebook",
-			"source_channel_id": "fb-page-id-1",
-            "image_url": "http://example.org/avatar.jpeg" // optional
-		},
-		{
-			"id": "channel-uuid-2",
-			"name": "my page 2",
-			"source": "facebook",
-			"source_channel_id": "fb-page-id-2"
-		}
-	]
+  "data": [
+    {
+      "id": "channel-uuid-1",
+      "name": "my page 1",
+      "source": "facebook",
+      "source_channel_id": "fb-page-id-1",
+      "image_url": "http://example.org/avatar.jpeg" // optional
+    },
+    {
+      "id": "channel-uuid-2",
+      "name": "my page 2",
+      "source": "facebook",
+      "source_channel_id": "fb-page-id-2"
+    }
+  ]
 }
 ```
-
 
 ### Tags
 
@@ -529,7 +523,6 @@ The request requires an authentication `token`, which has a different meaning fo
   "color": "tag-red" // one of tag-red | tag-blue | tag-green | tag-purple
 }
 ```
-
 
 If the tag is successfully created the endpoint will return `201` (created) with the tag id in the response body.
 
@@ -562,7 +555,6 @@ If action is successful, returns HTTP status `200`.
 ```json5
 {}
 ```
-
 
 #### Deleting a tag
 
@@ -600,7 +592,6 @@ If action is successful, returns HTTP status `200`.
     }
   ]
 }
-
 ```
 
 ## Pagination

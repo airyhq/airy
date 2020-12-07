@@ -5,7 +5,7 @@ sidebar_label: Contributing
 
 We ❤️ every form of contribution. The following document aims to provide enough
 context to work with our codebase and to open pull requests that follow our
-convention.  If this document does not provide enough help, open a [new
+convention. If this document does not provide enough help, open a [new
 issue](https://github.com/airyhq/airy/issues/new) and we'll gladly help you get
 started.
 
@@ -59,7 +59,7 @@ Java and prettier are ran as test targets for each package, so you can run:
 
 ```shell script
 bazel test //my/package:checkstyle
-bazel test //my/package:prettier 
+bazel test //my/package:prettier
 ```
 
 To execute the buildifier linter run:
@@ -75,7 +75,6 @@ bazel run //:fix
 ```
 
 to try fixing issues automatically (not supported for checkstyle).
-
 
 ### Managing dependencies
 
@@ -135,7 +134,7 @@ Branches must abide to the following format:
 - `doc` or `docs` for documentation changes
 - `chore` for maintenance tasks on the repo
 
-The `description field` must use kebab case. 
+The `description field` must use kebab case.
 
 Given these conventions here are a few examples:
 

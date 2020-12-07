@@ -19,7 +19,7 @@ Connects a chat plugin source to the Airy Core Platform.
 POST /channels.connect
 ```
 
-- `source` *must* be `chat_plugin`
+- `source` _must_ be `chat_plugin`
 - `source_channel_id` is a unique identifier of your choice
 
 ```json5
@@ -33,10 +33,10 @@ POST /channels.connect
 
 ```json5
 {
-	"id": "channel-uuid-1",
-    "name": "Chat plugin",
-    "source": "chat_plugin",
-    "source_channel_id": "awesome-website-42"
+  "id": "channel-uuid-1",
+  "name": "Chat plugin",
+  "source": "chat_plugin",
+  "source_channel_id": "awesome-website-42"
 }
 ```
 
@@ -46,16 +46,17 @@ To install the chat plugin UI on your website add the following script tag to
 the `<head>` section:
 
 ```html
-<script>(function (w, d, s, n) {
-        w[n] = w[n] || {};
-        w[n].cid = "CHANNEL_ID";
-        w[n].h = "SCRIPT_HOST";
-        var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s);
-        j.async = true;
-        j.src = w[n].h + '/s.js';
-        f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'airy');
+<script>
+  (function(w, d, s, n) {
+    w[n] = w[n] || {};
+    w[n].cid = "CHANNEL_ID";
+    w[n].h = "SCRIPT_HOST";
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s);
+    j.async = true;
+    j.src = w[n].h + "/s.js";
+    f.parentNode.insertBefore(j, f);
+  })(window, document, "script", "airy");
 </script>
 ```
 
@@ -131,7 +132,7 @@ header.
   // delivery state of message, one of PENDING, FAILED, DELIVERED
   sender_type: "{string/enum}",
   // See glossary
-  sent_at: "{string}",
+  sent_at: "{string}"
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
 }
 ```
@@ -153,15 +154,15 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
 ```json5
 {
   message: {
-      id: "{UUID}",
-      content: "{String}",
-      // source content string
-      state: "{String}",
-      // delivery state of message, one of PENDING, FAILED, DELIVERED
-      sender_type: "{string/enum}",
-      // See glossary
-      sent_at: "{string}",
-      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    id: "{UUID}",
+    content: "{String}",
+    // source content string
+    state: "{String}",
+    // delivery state of message, one of PENDING, FAILED, DELIVERED
+    sender_type: "{string/enum}",
+    // See glossary
+    sent_at: "{string}"
+    //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   }
 }
 ```

@@ -1,0 +1,19 @@
+Airy CLI
+
+Usage:
+  airy [command]
+
+Available Commands:
+  app         Manage airy apps
+  help        Help about any command
+  kafka       Execute kafka cluster tasks and commands
+  terraform   Execute terraform commands
+
+Flags:
+  -u, --airyUrl string       The URL of the Airy endpoint (required)
+      --config string        config file (default is $HOME/.airy-prod.yaml)
+  -g, --githubToken string   Github Token for Organization match (required)
+  -h, --help                 help for airy
+  -v, --verbose              Increase verbosity
+
+Use "airy [command] --help" for more information about a command.

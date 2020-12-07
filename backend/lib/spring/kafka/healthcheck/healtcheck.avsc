@@ -1,0 +1,9 @@
+{
+  "namespace": "co.airy.avro.ops",
+  "name": "HealthCheck",
+  "type": "record",
+  "fields": [
+    {"name": "app", "type": "string"},
+    {"name": "time", "type": "long", "logicalType": "timestamp-millis"}
+  ]
+}

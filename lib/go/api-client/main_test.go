@@ -1,4 +1,4 @@
-package main
+package apiclienttest
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetFaces(t *testing.T) {
+func TestSignup(t *testing.T) {
 	c := NewClient()
 
 	ctx := context.Background()

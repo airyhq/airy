@@ -1,4 +1,4 @@
-module cli
+module apiclient
 
 go 1.12
 

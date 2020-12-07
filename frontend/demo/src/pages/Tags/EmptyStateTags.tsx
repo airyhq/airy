@@ -4,7 +4,7 @@ import {ReactSVG} from 'react-svg';
 
 import styles from './index.module.scss';
 import {Button} from '@airyhq/components';
-import emptyImage from '@airyhq/components/src/assets/images/empty-state/tags-empty-state.svg';
+import emptyImage from '../../assets/images/empty-state/tags-empty-state.svg';
 import SimpleTagForm from './SimpleTagForm';
 
 const EmptyStateTags = () => {

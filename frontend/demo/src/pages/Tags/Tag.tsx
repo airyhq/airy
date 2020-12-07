@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Tag as TagModel} from '../../model/Tag';
 
-import close from '@airyhq/components/src/assets/images/icons/close.svg';
+import close from '../../assets/images/icons/close.svg';
 import styles from './Tag.module.scss';
 import {RootState} from '../../reducers';
 

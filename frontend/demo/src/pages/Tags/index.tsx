@@ -3,7 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 
 import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/components';
 
-import plus from '@airyhq/components/src/assets/images/icons/plus.svg';
+import plus from '../../assets/images/icons/plus.svg';
 
 import {getTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
 import {fakeSettingsAPICall} from '../../actions/settings';
@@ -43,7 +43,7 @@ class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof i
     this.props.filterTags(value);
   };
 
-  handleDelete = (e: any) => {
+  handleDelete = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();
     this.setState(state => {
       return {

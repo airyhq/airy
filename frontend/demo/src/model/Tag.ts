@@ -20,7 +20,7 @@ export interface GetTagsResponse {
 
 export const tagsMapper = (serverTags: Tag[]): Tag[] => {
   const tags: Tag[] = [];
-  const tags2 = serverTags.map((tag: Tag) => {
+  const _ = serverTags.map((tag: Tag) => {
     tag.color = colorMapper(tag.color);
     tags.push(tag);
   });
@@ -41,6 +41,8 @@ export const colorMapper = (color: string): string => {
     case 'PURPLE':
       color = 'tag-purple';
       break;
+    default:
+      color = 'tag-blue';
   }
   return color;
 };

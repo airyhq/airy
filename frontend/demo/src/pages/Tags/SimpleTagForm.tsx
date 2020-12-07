@@ -9,17 +9,26 @@ import Dialog from '../../components/Dialog';
 import ColorSelector from '../../components/ColorSelector';
 
 import Tag from '../../pages/Tags/Tag';
+import {Tag as TagModel, CreateTagRequestPayload} from '../../model/Tag';
 
 import styles from './SimpleTagForm.module.scss';
 import {RootState} from '../../reducers';
 
-const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}) => {
+type SimpleTagFormProps = {
+  errorMessage: string;
+  createTag: ({name, color}: CreateTagRequestPayload) => Promise<boolean>;
+  errorTag: (status: any) => void;
+  onClose: () => void;
+  tags: TagModel[];
+};
+
+const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: SimpleTagFormProps) => {
   const [name, setName] = useState('');
   const [color, setColor] = useState('tag-blue');
   const [showError, setShowError] = useState(true);
   const handleCreate = () => {
     if (name.trim().length) {
-      createTag({name: name.trim(), color}).then((success: any) => {
+      createTag({name: name.trim(), color}).then((success: boolean) => {
         if (success) {
           errorTag({status: ''});
           onClose();
@@ -69,7 +78,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}) => {
         )}
         <Fragment>
           <p className={styles.description}>Pick a color</p>
-          <ColorSelector handleUpdate={e => setColor(e.target.value)} color={color} editing={true} />
+          <ColorSelector handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value)} color={color} editing={true} />
           <div className={styles.buttonRow}>
             <Button styleVariant="small" onClick={handleCreate}>
               Create Tag

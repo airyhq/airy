@@ -11,12 +11,12 @@ type ColorSelectorProps = {
   id?: string;
 };
 
-type ColorSelctorState = {
+type ColorSelectorState = {
   tagSettings: any;
 };
 
-const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSelectorProps & ColorSelctorState) => {
-  const getColorValue = useCallback(color => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
+const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSelectorProps & ColorSelectorState) => {
+  const getColorValue = useCallback((color: string) => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
     tagSettings,
   ]);
 
@@ -24,6 +24,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSel
     <div className={`${styles.colorSelector} ${editing ? '' : 'done'}`}>
       <div>
         <input
+          className={styles.colorPicker}
           type="radio"
           onChange={handleUpdate}
           checked={color === 'tag-blue'}
@@ -37,6 +38,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSel
       </div>
       <div>
         <input
+          className={styles.colorPicker}
           type="radio"
           onChange={handleUpdate}
           checked={color === 'tag-red'}
@@ -50,6 +52,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSel
       </div>
       <div>
         <input
+          className={styles.colorPicker}
           type="radio"
           onChange={handleUpdate}
           checked={color === 'tag-green'}
@@ -63,6 +66,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSel
       </div>
       <div>
         <input
+          className={styles.colorPicker}
           type="radio"
           onChange={handleUpdate}
           checked={color === 'tag-purple'}

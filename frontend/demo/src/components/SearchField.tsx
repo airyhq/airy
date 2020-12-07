@@ -4,7 +4,7 @@ import closeIcon from '@airyhq/components/src/assets/images/icons/close.svg';
 import searchIcon from '@airyhq/components/src/assets/images/icons/search.svg';
 import styles from './style.module.scss';
 
-type Props = {
+type SearchFieldProps = {
   id?: string;
   placeholder?: string;
   value: string;
@@ -13,7 +13,7 @@ type Props = {
   autoFocus?: boolean;
 };
 
-export const SearchField = ({id, placeholder, value, setValue, resetClicked, autoFocus}: Props) => {
+export const SearchField = ({id, placeholder, value, setValue, resetClicked, autoFocus}: SearchFieldProps) => {
   const inputRef = createRef<HTMLInputElement>();
   const resetButton = useCallback(() => {
     setValue('');

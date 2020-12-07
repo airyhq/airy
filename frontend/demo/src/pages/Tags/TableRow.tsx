@@ -4,8 +4,8 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './TableRow.module.scss';
 import {updateTag} from '../../actions/tags';
 import {Button, LinkButton} from '@airyhq/components';
-import {ReactComponent as EditIcon} from '@airyhq/components/src/assets/images/icons/edit.svg';
-import {ReactComponent as TrashIcon} from '@airyhq/components/src/assets/images/icons/trash.svg';
+import {ReactComponent as EditIcon} from '../../assets/images/icons/edit.svg';
+import {ReactComponent as TrashIcon} from '../../assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
 import Tag from './Tag';
 import {RootState} from '../../reducers';
@@ -27,7 +27,7 @@ const TableRowComponent = (props: TableRowProps) => {
   });
 
   const handleUpdate = useCallback(
-    e => {
+    (e: React.ChangeEvent<HTMLInputElement>) => {
       e.persist();
       if (e.target.name === 'tag_name') {
         setTagState({...tagState, name: e.target && e.target.value});
@@ -39,7 +39,12 @@ const TableRowComponent = (props: TableRowProps) => {
   );
 
   const handleTagUpdate = useCallback(() => {
-    updateTag(tag.id, tagState.name, tagState.color, tag.count);
+    const currentTag = {
+      id: tag.id,
+      name: tagState.name,
+      color: tagState.color,
+    }
+    updateTag(currentTag);
     setTagState({
       ...tagState,
       edit: false,
@@ -74,7 +79,7 @@ const TableRowComponent = (props: TableRowProps) => {
     [showModal, tag]
   );
 
-  const getColorValue = useCallback(color => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
+  const getColorValue = useCallback((color: string) => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
     tagSettings,
   ]);
 

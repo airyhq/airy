@@ -19,20 +19,3 @@ export const filteredTags = createSelector(
     );
   }
 );
-
-// export const filteredSuggestions = createSelector(
-//   (state: { data: { contacts: any } }, ownProps: string) =>
-//     state.data.contacts &&
-//     state.data.contacts.items &&
-//     state.data.contacts.items[ownProps] &&
-//     state.data.contacts.items[ownProps].tags,
-//   (state: RootState) => filteredTags(state),
-//   (connectedTags, suggestedTags) => {
-//     return (
-//       connectedTags &&
-//       suggestedTags.filter(
-//         (ar: Tag) => !connectedTags.find((rm: Tag) => ar.id === rm.id)
-//       )
-//     );
-//   }
-// );

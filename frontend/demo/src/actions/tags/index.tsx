@@ -1,4 +1,3 @@
-import {createAction} from 'typesafe-actions';
 import _, {Dispatch} from 'redux';
 
 import {doFetchFromBackend} from '../../api/airyConfig';
@@ -25,14 +24,13 @@ export function addTag(tag: Tag) {
   };
 }
 
-export function editedTag(id: string, name: string, color: string, count: number) {
+export function editedTag(tag: Tag) {
   return {
     type: EDIT_TAG,
     tagData: {
-      id,
-      name,
-      color,
-      count,
+      id: tag.id,
+      name: tag.name,
+      color: tag.color,
     },
   };
 }
@@ -46,11 +44,11 @@ export function errorTag({status}) {
   };
 }
 
-export function deleteConversationTag(tagId: string) {
+export function deleteConversationTag(id: string) {
   return {
     type: DELETE_TAG,
     tagData: {
-      tag_id: tagId,
+      tag_id: id,
     },
   };
 }
@@ -71,34 +69,33 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
           id: response.id,
           name: requestPayload.name,
           color: requestPayload.color,
-          count: 0,
         };
         dispatch(addTag(tag));
-        return true;
+        return Promise.resolve(true);
       })
       .catch(error => {
         dispatch(errorTag(error));
-        return false;
+        return Promise.resolve(false);
       });
   };
 }
 
-export function updateTag(tagId: string, name: string, color: string, count: number) {
+export function updateTag(tag: Tag) {
   return function(dispatch: Dispatch<any>) {
     doFetchFromBackend('tags.update', {
-      id: tagId,
-      name: name,
-      color: color,
-    }).then((tag: Tag) => dispatch(editedTag(tagId, name, color, count)));
+      id: tag.id,
+      name: tag.name,
+      color: tag.color,
+    }).then((responseTag: Tag) => dispatch(editedTag(tag)));
   };
 }
 
-export function deleteTag(tagId: string) {
+export function deleteTag(id: string) {
   return function(dispatch: Dispatch<any>) {
     doFetchFromBackend('tags.delete', {
-      id: tagId,
+      id
     }).then(() => {
-      dispatch(deleteConversationTag(tagId));
+      dispatch(deleteConversationTag(id));
     });
   };
 }

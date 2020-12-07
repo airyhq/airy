@@ -20,7 +20,7 @@ start sending events to your Airy Core Platform instance.
 
 ## Connecting a Facebook Page
 
-Please refer to ![](../guides/airy-core-and-facebook.md)
+Please refer to [Airy core and Facebook](../guides/airy-core-and-facebook.md)
 
 ## Connecting a channel
 

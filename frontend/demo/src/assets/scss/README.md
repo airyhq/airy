@@ -1,15 +1,15 @@
 Here is the list of global css definitions like colors and
 other things that might be useful while developing in this app.
 
-If you need to modify third party dependencies, put them into the 
+If you need to modify third party dependencies, put them into the
 `third-party` folder so that we have them isolated in one place.
 
 ### Colors
 
-These are the colors we use in the app. Simply import them with 
+These are the colors we use in the app. Simply import them with
 
 ```css
-@import 'assets/scss/colors.scss';
+@import "assets/scss/colors.scss";
 ```
 
 After that you have the following variables defined:
@@ -114,22 +114,22 @@ These are our font sizes:
 
 ```js
 <ul>
-<li class="font-s">font-s</li>
-<li class="font-base">font-base</li>
-<li class="font-m">font-m</li>
-<li class="font-l">font-l</li>
-<li class="font-xl">font-xl</li>
-<li class="font-xl">font-xxl</li>
+  <li class="font-s">font-s</li>
+  <li class="font-base">font-base</li>
+  <li class="font-m">font-m</li>
+  <li class="font-l">font-l</li>
+  <li class="font-xl">font-xl</li>
+  <li class="font-xl">font-xxl</li>
 </ul>
 ```
 
-You can either use them as mixins via 
+You can either use them as mixins via
 
 ```scss
 .element {
   @include font-s;
 }
-``` 
+```
 
 or directly as class names.
 

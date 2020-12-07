@@ -8,7 +8,6 @@ in production environments. If you are not familiar with the architecture of the
 system, we suggest you read the [Architecture](architecture.md) document before
 proceeding.
 
-
 ## Requirements
 
 The `Airy apps` are the services which comprise the `Airy Core Platform`. They
@@ -17,7 +16,7 @@ place before they can be started:
 
 - `Kafka cluster`: Kafka, Zookeeper and the Confluent Schema registry. These
   three services comprise the Kafka store. They are the default storage system
-  of the Airy Core Platform. Kafka requires Zookeeper to  work. The Confluent
+  of the Airy Core Platform. Kafka requires Zookeeper to work. The Confluent
   Schema registry facilitates Avro typed data pipelines. All our Kafka based
   applications require the registry to work.
 - `PostgreSQL`: Where we store authentication data.
@@ -26,8 +25,8 @@ place before they can be started:
 ### Kafka cluster
 
 The Kafka store requires multiple Kafka brokers, Zookeepers, and Confluent
-Schema registry servers. We recommend using at least five Kafka brokers and  set
-the replication factor of _all_ topics to `3`.  So that even if two brokers
+Schema registry servers. We recommend using at least five Kafka brokers and set
+the replication factor of _all_ topics to `3`. So that even if two brokers
 would become unavailable at the same time, the system would still function.
 
 We also recommend running at least three Zookeepers and two instances of the Confluent Schema registry.
@@ -48,13 +47,13 @@ The Kafka cluster is usually started in the following order:
   how to connect to the zookeeper nodes, through the configuration variable
   `zookeeper.connect`, specified in the `/etc/kafka/server.properties` file.
 - Once Kafka and ZooKeeper are up and running, the confluent Schema registry can
-  be started. It requires Kafka brokers hostnames,  usually through the
+  be started. It requires Kafka brokers hostnames, usually through the
   parameter `kafkastore.bootstrap.server` of the configuration file
   `/etc/schema-registry/schema-registry.properties`.
 
 The location of the configuration files can vary depending on the particular installation.
 
-Once  the Kafka cluster is up and running, the required topics must be created.
+Once the Kafka cluster is up and running, the required topics must be created.
 You can find them in the Bash script
 `infrastructure/scripts/provision/create-topics.sh`. The script requires the
 following environment variables to run:
@@ -68,6 +67,7 @@ However, we provide a way to deploy the whole Kafka cluster on top of Kubernetes
 with Helm as we use this approach for test installations.
 
 To deploy Kafka on Kubernetes with Helm, you can run:
+
 ```sh
 helm install airy infrastructure/helm-chart/charts/kafka/
 ```
@@ -89,7 +89,7 @@ After the server has been provisioned, a database must be created, along with
 username and password which have full privileges on the database. Note down
 these parameters as they are required to start the `Airy apps`.
 
-We provide a Helm chart to deploy a PostgreSQL server Kubernetes.  Set the
+We provide a Helm chart to deploy a PostgreSQL server Kubernetes. Set the
 `pgPassword` variable in `infrastructure/helm-chart/charts/postgres/values.yaml`
 file and run:
 
@@ -104,6 +104,7 @@ for Redis. If deployed on Kubernetes, consider running the app on a StatefulSet
 workload, for persistent storage.
 
 We provided a Helm chart for a Redis cluster as well. You can run:
+
 ```sh
 helm install redis infrastructure/helm-chart/charts/redis/
 ```
@@ -173,6 +174,7 @@ helm install airy-apps ./helm-chart/charts/apps/ --timeout 1000s
 ```
 
 By default, the `Airy apps` deployments start with `replicas=0` so to scale them up, run:
+
 ```sh
 kubectl scale deployment -l type=api --replicas=1
 kubectl scale deployment -l type=frontend --replicas=1
@@ -215,7 +217,7 @@ helm upgrade airy-apps ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY
 ### Sources
 
 The helm chart creates separate NodePort service for every source with the
-naming convention  `sources-SOURCE_NAME-webhook`. These services must be exposed
+naming convention `sources-SOURCE_NAME-webhook`. These services must be exposed
 publicly on the Internet, so that the sources can send messages and events to
 the webhook services, inside the Kubernetes cluster.
 
@@ -235,8 +237,8 @@ To see the hostname for the load balancer, you can run
 ```sh
 kubectl get service -l airy=sources.webhook
 ```
-The public endpoint will be in the `EXTERNAL-IP` column.
 
+The public endpoint will be in the `EXTERNAL-IP` column.
 
 ### Services
 

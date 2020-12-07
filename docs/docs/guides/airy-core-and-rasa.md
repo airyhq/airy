@@ -6,9 +6,10 @@ sidebar_label: Connecting Rasa
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 :::tip What you will learn
+
 - How to forward Airy Core Platform messages to Rasa
 - How to configure Rasa to receive and reply to messages using Airy
-:::
+  :::
 
 > Rasa is an open source machine learning framework for automated text and voice-based conversations.
 > Understand messages, hold conversations, and connect to messaging channels and APIs.
@@ -30,15 +31,16 @@ This guide covers how to configure your Rasa installation so that it can use the
 Airy Core Platform to send and receive messages.
 
 :::note Prerequisites
+
 - A running Airy Core Platform installation [[Get Started](index.md#bootstrapping-the-airy-core-platform)]
-- A local Rasa setup: For convenience, we recommend the Docker one [[Guide](https://rasa.com/docs/rasa/docker/building-in-docker/ )] or [a demo repository](https://github.com/airyhq/rasa-demo) we created for this guide
-:::
+- A local Rasa setup: For convenience, we recommend the Docker one [[Guide](https://rasa.com/docs/rasa/docker/building-in-docker/)] or [a demo repository](https://github.com/airyhq/rasa-demo) we created for this guide
+  :::
 
 ## Configuring Airy
 
 The Airy Core Platform can forward messages from your sources (Messenger,
- WhatsApp etc.) to downstream messaging frameworks like Rasa, which can in turn
- reply using the Airy Core Platform API.
+WhatsApp etc.) to downstream messaging frameworks like Rasa, which can in turn
+reply using the Airy Core Platform API.
 
 To do this we follow the [Webhook documentation](api/webhook.md) to forward in-
 and outbound messages to Rasa. When doing so set the `url` parameter so that it
@@ -75,9 +77,9 @@ copy this [connector
 file](https://github.com/airyhq/rasa-demo/blob/master/channels/airy.py) into it.
 The connector requires the following configuration values:
 
-- `auth_token`  the Airy Core Platform JWT token you used
-                to connect the webhook.
-- `api_host`    The url where you host your Airy Core Platform API (`http://api.airy` for a local installation).
+- `auth_token` the Airy Core Platform JWT token you used
+  to connect the webhook.
+- `api_host` The url where you host your Airy Core Platform API (`http://api.airy` for a local installation).
 
 Add them to your existing Rasa `credentials.yml`:
 

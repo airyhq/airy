@@ -30,8 +30,8 @@ Connects a Google Business Account to the Airy Core Platform.
 POST /channels.connect
 ```
 
-- `source` *must* be `google`
-- `source_channel_id` The id of your Google Business Message [agent](https://developers.google.com/business-communications/business-messages/reference/business-communications/rest/v1/brands.agents#Agent). 
+- `source` _must_ be `google`
+- `source_channel_id` The id of your Google Business Message [agent](https://developers.google.com/business-communications/business-messages/reference/business-communications/rest/v1/brands.agents#Agent).
 - `token` leave empty. To allow authentication you must provide a [Google service account key file](https://developers.google.com/business-communications/business-messages/guides/quickstarts/prerequisite-setup) in your runtime configuration.
 
 ```json5
@@ -47,10 +47,10 @@ POST /channels.connect
 
 ```json5
 {
-    "id": "channel-uuid-1",
-    "name": "My custom name for this location",
-    "image_url": "https://example.com/custom-image.jpg",
-    "source": "google",
-    "source_channel_id": "gbm-id"
+  "id": "channel-uuid-1",
+  "name": "My custom name for this location",
+  "image_url": "https://example.com/custom-image.jpg",
+  "source": "google",
+  "source_channel_id": "gbm-id"
 }
 ```

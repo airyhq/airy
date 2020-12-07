@@ -46,7 +46,7 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
         builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .filter(((messageId, message) ->
                         DeliveryState.DELIVERED.equals(message.getDeliveryState()) && message.getUpdatedAt() == null))
-                .foreach((messageId, message) -> {
+                .peek((messageId, message) -> {
                     try {
                         final ReadOnlyKeyValueStore<String, Webhook> webhookStore = streams.acquireLocalStore(webhooksStore);
                         final Webhook webhook = webhookStore.get(allWebhooksKey);
@@ -59,7 +59,6 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
                                             .body(mapper.fromMessage(message))
                                             .build());
                         }
-                    } catch (NotATextMessage expected) {
                     } catch (Exception e) {
                         log.error("failed to publish webhook", e);
                     }

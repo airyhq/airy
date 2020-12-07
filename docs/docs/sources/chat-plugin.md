@@ -8,8 +8,8 @@ that enables conversations with anonymous website visitors through a web chat
 plugin.
 
 This document covers how to connect a chat plugin as as
-[source](/glossary.md#source), how to install the chat plugin web widget, and
-the HTTP and WebSocket APIs that power it.
+[source](/glossary.md#source), how to  install the chat plugin web widget, and the
+HTTP and WebSocket APIs that power it.
 
 ## Connecting a channel
 
@@ -102,9 +102,6 @@ WebSocket connection handshake.
 
 #### Send message
 
-You must set the `token` obtained on the [authorization endpoint](#authenticating-web-users) as an `Authorization`
-header.
-
 `POST /chatplugin.send`
 
 **Sample Request**
@@ -129,8 +126,8 @@ header.
   },
   state: "{String}",
   // delivery state of message, one of PENDING, FAILED, DELIVERED
-  sender_type: "{string/enum}",
-  // See glossary
+  alignment: "{string/enum}",
+  // LEFT, RIGHT, CENTER - horizontal placement of message
   sent_at: "{string}",
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
 }
@@ -158,8 +155,8 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
       // source content string
       state: "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
-      sender_type: "{string/enum}",
-      // See glossary
+      alignment: "{string/enum}",
+      // LEFT, RIGHT, CENTER - horizontal placement of message
       sent_at: "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   }

@@ -18,6 +18,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class Conversation implements Serializable {
     private Long createdAt;
+    private String channelId;
     private Message lastMessage;
     private String sourceConversationId;
     private Channel channel;

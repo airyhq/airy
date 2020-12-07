@@ -5,9 +5,9 @@ load("//tools/build:container_push.bzl", "container_push")
 app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
-    "//lib/java/kafka/schema:source-facebook-events",
-    "//lib/java/spring/kafka/core:spring-kafka-core",
-    "//lib/java/spring/kafka/healthcheck",
+    "//backend/lib/kafka/schema:source-facebook-events",
+    "//backend/lib/spring/kafka/core:spring-kafka-core",
+    "//backend/lib/spring/kafka/healthcheck",
 ]
 
 springboot(
@@ -25,7 +25,7 @@ springboot(
         deps = [
             ":app",
             "//backend:base_test",
-            "//lib/java/kafka/test:kafka-test",
+            "//backend/lib/kafka/test:kafka-test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

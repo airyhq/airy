@@ -91,13 +91,10 @@ structure:
   "conversation_id": "4242424242",
   "id": "7560bf66-d9c4-48f8-b7f1-27ab6c40a40a",
   "sender": {
-    "id": "adac9220-fe7b-40a8-98e5-2fcfaf4a53b5",
-    "type": "source_contact"
+    "id": "adac9220-fe7b-40a8-98e5-2fcfaf4a53b5"
   },
   "source": "FACEBOOK",
   "sent_at": "2020-07-20T14:18:08.584Z",
   "text": "Message to be sent"
 }
 ```
-
-For possible values of `sender.type` see the [Message model documentation](glossary.md#fields)

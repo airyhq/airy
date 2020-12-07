@@ -1,16 +1,15 @@
 import {getAuthToken} from './webStore';
 
 export class AiryConfig {
-  static API_URL = 'http://api.airy';
+  static API_URL = 'airy.api';
   static NODE_ENV = process.env.NODE_ENV;
-  static FACEBOOK_APP_ID = 'CHANGE_ME';
 }
 
 const headers = {
   Accept: 'application/json',
 };
 
-export const doFetchFromBackend = async (url: string, body?: Object): Promise<any> => {
+export const doFetchFromBackend = async (url: string, body?: Object, retryCount: number = 0): Promise<any> => {
   const token = getAuthToken();
   if (token) {
     headers['Authorization'] = token;
@@ -23,13 +22,17 @@ export const doFetchFromBackend = async (url: string, body?: Object): Promise<an
     headers['Content-Type'] = 'application/json';
   }
 
-  const response: Response = await fetch(`${AiryConfig.API_URL}/${url}`, {
-    method: 'POST',
-    headers: headers,
-    body: body as BodyInit,
-  });
+  try {
+    const response: Response = await fetch(`${AiryConfig.API_URL}/${url}`, {
+      method: 'POST',
+      headers: headers,
+      body: body as BodyInit,
+    });
 
-  return parseBody(response);
+    return parseBody(response);
+  } catch (error) {
+    return error;
+  }
 };
 
 async function parseBody(response: Response): Promise<any> {

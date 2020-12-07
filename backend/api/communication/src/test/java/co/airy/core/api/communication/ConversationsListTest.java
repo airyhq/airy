@@ -13,8 +13,6 @@ import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.payload.format.DateFormat;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -136,34 +134,22 @@ class ConversationsListTest {
 
     @Test
     void canFilterByConversationId() throws Exception {
-        final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
+        String payload = "{\"filter\": {\"conversation_ids\": [\"" + conversationIdToFind + "\"]}}";
 
-        final ObjectNode request = jsonNodeFactory.objectNode();
-        request.put("filters", "id:\"" + conversationIdToFind.replace("-", "\\-") + "\"");
-
-        checkConversationsFound(request.toString(), 1);
+        checkOneConversationExists(payload);
     }
 
     @Test
     void canFilterByDisplayName() throws Exception {
-        String payload = "{\"filters\": \"display_name:" + firstNameToFind + "\"}";
-        checkConversationsFound(payload, 1);
-    }
+        String payload = "{\"filter\": {\"display_names\": [\"" + firstNameToFind + "\"]}}";
 
-    @Test
-    void canFilterByCombinedQueries() throws Exception {
-        final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
-
-        final ObjectNode request = jsonNodeFactory.objectNode();
-        request.put("filters", "display_name:" + firstNameToFind
-                + " OR id:\"" + conversationIdToFind.replace("-", "\\-") + "\"");
-
-        checkConversationsFound(request.toString(), 2);
+        checkOneConversationExists(payload);
     }
 
     @Test
     void canFilterForUnknownNames() throws Exception {
-        String payload = "{\"filters\": \"display_name:Ada\"}";
+        String payload = "{\"filter\": {\"display_names\": [\"Ada\"]}}";
+
         checkNoConversationReturned(payload);
     }
 
@@ -175,12 +161,11 @@ class ConversationsListTest {
                 "Expected no conversations returned");
     }
 
-    private void checkConversationsFound(String payload, int count) throws InterruptedException {
+    private void checkOneConversationExists(String payload) throws InterruptedException {
         retryOnException(
                 () -> webTestHelper.post("/conversations.list", payload, userId)
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(count)))
-                        .andExpect(jsonPath("response_metadata.filtered_total", is(count)))
+                        .andExpect(jsonPath("$.data", hasSize(1)))
                         .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
                 "Expected one conversation returned");
     }

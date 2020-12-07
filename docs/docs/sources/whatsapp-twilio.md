@@ -18,7 +18,7 @@ import TwilioSource from './twilio-source.mdx'
 ## Connecting a channel
 
 After you created a Twilio phone number, you must [point its
-webhook integration](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url)
+webhook integratuion](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url)
 to your Airy Core Platform running instance.
 
 Next call the Airy Core Platform API for connecting channels:

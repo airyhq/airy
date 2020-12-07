@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConversationListRequestPayload {
-    private String filters;
+    private QueryFilterPayload filter;
     private String cursor;
     private int pageSize = 10;
 }

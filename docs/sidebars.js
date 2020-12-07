@@ -24,10 +24,10 @@ module.exports = {
     {
       Guides: [
         'guides/architecture',
+        'guides/airy-cli',
         {
           Deployment: ['guides/airy-core-in-test-env', 'guides/airy-core-in-production'],
         },
-        'guides/airy-core-and-rasa',
       ],
     },
 

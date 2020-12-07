@@ -5,7 +5,7 @@ metadata:
   namespace: default
   labels:
     app: frontend-chat-plugin
-    type: frontend
+    airy: frontend
 spec:
   replicas: 0
   selector:

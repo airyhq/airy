@@ -5,22 +5,18 @@ import co.airy.avro.communication.MetadataActionType;
 import co.airy.avro.communication.MetadataKeys;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.dto.Conversation;
-import co.airy.core.api.communication.dto.ConversationIndex;
-import co.airy.core.api.communication.dto.LuceneQueryResult;
-import co.airy.core.api.communication.lucene.ReadOnlyLuceneStore;
+import co.airy.core.api.communication.filter.Filter;
 import co.airy.core.api.communication.payload.ConversationByIdRequestPayload;
 import co.airy.core.api.communication.payload.ConversationListRequestPayload;
 import co.airy.core.api.communication.payload.ConversationListResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
-import co.airy.core.api.communication.payload.ResponseMetadata;
+import co.airy.core.api.communication.payload.QueryFilterPayload;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
 import co.airy.payload.response.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,62 +34,32 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class ConversationsController {
     private final Stores stores;
+    private final List<Filter<Conversation>> conversationFilters;
     private final Mapper mapper;
 
-    ConversationsController(Stores stores, Mapper mapper) {
+    ConversationsController(Stores stores, List<Filter<Conversation>> conversationFilters, Mapper mapper) {
         this.stores = stores;
+        this.conversationFilters = conversationFilters;
         this.mapper = mapper;
     }
 
     @PostMapping("/conversations.list")
-    ResponseEntity<ConversationListResponsePayload> conversationList(@RequestBody @Valid ConversationListRequestPayload requestPayload) throws Exception {
-        final String queryFilter = requestPayload.getFilters();
-        if (queryFilter == null) {
-            return listConversations(requestPayload);
+    ResponseEntity<ConversationListResponsePayload> conversationList(@RequestBody @Valid ConversationListRequestPayload requestPayload) {
+        List<Conversation> conversations = fetchAllConversations();
+
+        conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessage().getSentAt()).reversed());
+
+        final QueryFilterPayload filterPayload = requestPayload.getFilter();
+
+        final int totalSize = conversations.size();
+
+        if (filterPayload != null) {
+            conversations = conversations.stream()
+                    .filter(conversation -> conversationFilters.stream().allMatch(filter -> filter.filter(conversation, filterPayload)))
+                    .collect(toList());
         }
 
-        return queryConversations(requestPayload);
-    }
-
-    private ResponseEntity<ConversationListResponsePayload> queryConversations(ConversationListRequestPayload requestPayload) throws Exception {
-        final ReadOnlyLuceneStore conversationLuceneStore = stores.getConversationLuceneStore();
-        final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
-
-        final QueryParser simpleQueryParser = new QueryParser("id", new WhitespaceAnalyzer());
-        final LuceneQueryResult queryResult = conversationLuceneStore.query(simpleQueryParser.parse(requestPayload.getFilters()));
-
-        final List<ConversationIndex> conversationIndices = queryResult.getConversations();
-
-        final Paginator<ConversationIndex> paginator = new Paginator<>(conversationIndices, ConversationIndex::getId)
-                .from(requestPayload.getCursor()).perPage(requestPayload.getPageSize());
-
-        final Page<ConversationIndex> page = paginator.page();
-
-        final List<ConversationResponsePayload> response = paginator.page().getData()
-                .stream()
-                .map((conversationIndex -> conversationsStore.get(conversationIndex.getId())))
-                .map(mapper::fromConversation)
-                .collect(toList());
-
-        int totalSize = queryResult.getTotal();
-
-        return ResponseEntity.ok(
-                ConversationListResponsePayload.builder()
-                        .data(response)
-                        .responseMetadata(
-                                ResponseMetadata.builder()
-                                        .filteredTotal(conversationIndices.size())
-                                        .nextCursor(page.getNextCursor())
-                                        .previousCursor(page.getPreviousCursor())
-                                        .total(totalSize)
-                                        .build()
-                        ).build());
-    }
-
-    private ResponseEntity<ConversationListResponsePayload> listConversations(ConversationListRequestPayload requestPayload) {
-        final List<Conversation> conversations = fetchAllConversations();
-        int totalSize = conversations.size();
-        conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessage().getSentAt()).reversed());
+        final int filteredTotal = conversations.size();
 
         final Paginator<Conversation> paginator = new Paginator<>(conversations, Conversation::getId)
                 .from(requestPayload.getCursor()).perPage(requestPayload.getPageSize());
@@ -109,14 +75,15 @@ public class ConversationsController {
                 ConversationListResponsePayload.builder()
                         .data(response)
                         .responseMetadata(
-                                ResponseMetadata.builder()
-                                        .filteredTotal(conversations.size())
+                                ConversationListResponsePayload.ResponseMetadata.builder()
+                                        .filteredTotal(filteredTotal)
                                         .nextCursor(page.getNextCursor())
                                         .previousCursor(page.getPreviousCursor())
                                         .total(totalSize)
                                         .build()
                         ).build());
     }
+
 
     @PostMapping("/conversations.info")
     ResponseEntity<?> conversationInfo(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
@@ -145,7 +112,9 @@ public class ConversationsController {
     @PostMapping("/conversations.read")
     ResponseEntity<?> conversationMarkRead(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+
         final String conversationId = requestPayload.getConversationId().toString();
+
         final Conversation conversation = store.get(conversationId);
 
         if (conversation == null) {

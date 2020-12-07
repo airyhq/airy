@@ -9,7 +9,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 - How to connect Airy Core Platform to Facebook
 :::
 
-In the Airy platform we consider Facebook to be a [Source](../glossary.md#source),
+In the Airy Core Platform we consider Facebook to be a [Source](../glossary.md#source),
 meaning we can connect it to Airy using a [Channel](../glossary.md#channel).
 
 Facebook provides a mechanism that sends messages in a structured format to your local Airy instance.
@@ -42,4 +42,3 @@ On the `User or Page` option, select `Get Page Token` and click on `Generate Acc
 ## Connecting a channel
 
 Please refer to [Source](../sources/facebook.md#connecting-a-channel)
-

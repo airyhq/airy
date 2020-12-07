@@ -3,6 +3,8 @@ title: Facebook
 sidebar_label: Facebook
 ---
 
+The Facebook source provides a channel of communication between a Facebook page and your running instance of the Airy Core Platform.
+
 ## Configuration
 
 For Facebook to start sending events to your local instance, it must first

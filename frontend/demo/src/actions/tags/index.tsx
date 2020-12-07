@@ -35,7 +35,7 @@ export function editedTag(tag: Tag) {
   };
 }
 
-export function errorTag({status}) {
+export function errorTag(status: string) {
   return {
     type: ERROR_TAG,
     tagData: {

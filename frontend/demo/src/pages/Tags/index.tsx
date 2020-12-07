@@ -59,7 +59,7 @@ class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof i
     this.setState({
       createDrawer: !this.state.createDrawer,
     });
-    this.props.errorTag({status: ''});
+    this.props.errorTag('');
   };
 
   keyPressed = (e: any) => {

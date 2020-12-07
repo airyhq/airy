@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, KeyboardEvent} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import styles from './TableRow.module.scss';
@@ -59,7 +59,8 @@ const TableRowComponent = (props: TableRowProps) => {
   }, [setTagState]);
 
   const onTagKeyPressed = useCallback(
-    e => {
+    (e: KeyboardEvent) => {
+      console.log(e)
       const code = e.keyCode || e.which;
       if (code === 13 && tagState.name.length) {
         handleTagUpdate();

@@ -29,7 +29,7 @@ Airy Core Platform to send and receive messages.
 To connect a page, the first requirement is to have an approved app by Facebook. If you don't have one, you will need to create it.
 After creating it, and Facebook approves it you should see it in https://developers.facebook.com/apps/
 
-![Facebook Apps](./apps.png)
+![Facebook Apps](./apps.jpg)
 
 The `App Id` information is the first step that you should store. This will be used to connect your channel later on.
 Next step is to obtain a page token, so Airy can send messages on behalf of your page. Fastest way to get one is to use the graph explorer that
@@ -37,7 +37,7 @@ Facebook provides ![Graph Explorer](https://developers.facebook.com/tools/explor
 
 On the `User or Page` option, select `Get Page Token` and click on `Generate Access Token`. Use this token to connect your page to Airy.
 
-![](./token.png)
+![](./token.jpg)
 
 ## Connecting a channel
 

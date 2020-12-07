@@ -10,11 +10,11 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 :::
 
 In the Airy Core Platform we consider Facebook to be a [Source](../glossary.md#source),
-meaning we can connect it to Airy using a [Channel](../glossary.md#channel).
+meaning we can connect it to Airy using a [Channel](/docs/docs/glossary.md#channel).
 
 Facebook provides a mechanism that sends messages in a structured format to your local Airy instance.
 For us to take advantage of this, we need to connect a local ran instance of Airy to a Facebook App.
-The connection between those two parts is a connected channel. See [Channel](../glossary.md#channel)
+The connection between those two parts is a connected channel. See [Channel](/docs/docs/glossary.md#channel)
 
 :::note Prerequisites
 - A running Airy Core Platform installation [[Get Started](index.md#bootstrapping-the-airy-core-platform)]
@@ -29,7 +29,7 @@ Airy Core Platform to send and receive messages.
 To connect a page, the first requirement is to have an approved app by Facebook. If you don't have one, you will need to create it.
 After creating it, and Facebook approves it you should see it in https://developers.facebook.com/apps/
 
-![Facebook Apps](./apps.jpg)
+![Facebook Apps](apps.jpg)
 
 The `App Id` information is the first step that you should store. This will be used to connect your channel later on.
 Next step is to obtain a page token, so Airy can send messages on behalf of your page. Fastest way to get one is to use the graph explorer that
@@ -41,4 +41,4 @@ On the `User or Page` option, select `Get Page Token` and click on `Generate Acc
 
 ## Connecting a channel
 
-Please refer to [Source](../sources/facebook.md#connecting-a-channel)
+Please refer to [Source](/docs/docs/sources/facebook.md#connecting-a-channel)

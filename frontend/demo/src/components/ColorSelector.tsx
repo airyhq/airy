@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react';
 import {connect} from 'react-redux';
 import {RootState} from '../reducers';
+import {TagSettings} from '../model/Tag';
 
 import styles from './ColorSelector.module.scss';
 
@@ -12,7 +13,7 @@ type ColorSelectorProps = {
 };
 
 type ColorSelectorState = {
-  tagSettings: any;
+  tagSettings: TagSettings;
 };
 
 const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSelectorProps & ColorSelectorState) => {

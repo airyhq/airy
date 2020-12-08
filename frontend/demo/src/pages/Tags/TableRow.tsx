@@ -9,10 +9,11 @@ import {ReactComponent as TrashIcon} from '../../assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
 import Tag from './Tag';
 import {RootState} from '../../reducers';
+import {TagSettings} from '../../model/Tag';
 
 type TableRowProps = {
   tag: any;
-  tagSettings: any;
+  tagSettings: TagSettings;
   showModal(label: string, id: string, name: string): void;
 } & ConnectedProps<typeof connector>;
 
@@ -60,7 +61,6 @@ const TableRowComponent = (props: TableRowProps) => {
 
   const onTagKeyPressed = useCallback(
     (e: KeyboardEvent) => {
-      console.log(e);
       const code = e.keyCode || e.which;
       if (code === 13 && tagState.name.length) {
         handleTagUpdate();

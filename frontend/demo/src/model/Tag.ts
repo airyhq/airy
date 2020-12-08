@@ -18,6 +18,20 @@ export interface GetTagsResponse {
   data: Tag[];
 }
 
+export interface ColorSettings {
+  default: string;
+  background: string;
+  font: string;
+  position: number;
+  border: string;
+}
+
+export interface TagSettings {
+  colors: ColorSettings[];
+  enabled: boolean;
+  channels: Tag[];
+}
+
 export const tagsMapper = (serverTags: Tag[]): Tag[] => {
   const tags: Tag[] = [];
   const _ = serverTags.map((tag: Tag) => {

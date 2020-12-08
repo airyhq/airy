@@ -16,7 +16,7 @@ import {RootState} from '../../reducers';
 
 type SimpleTagFormProps = {
   errorMessage: string;
-  createTag: ({name, color}: CreateTagRequestPayload) => Promise<boolean>;
+  createTag: (CreateTagRequestPayload) => Promise<boolean>;
   errorTag: (status: any) => void;
   onClose: () => void;
   tags: TagModel[];

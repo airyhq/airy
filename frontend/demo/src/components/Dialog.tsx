@@ -11,14 +11,14 @@ type DialogProps = {
   /** Should the dialog be an overlay or a normal div? defaults to true,
    * meaning: overlay. */
   overlay?: boolean;
-  close: (event: React.MouseEvent<HTMLElement>) => void;
+  close: () => void;
 };
 
 const Dialog = ({children, close, style, coverStyle, overlay}: DialogProps) => {
   const keyDown = useCallback(
-    e => {
+    (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        close(e);
+        close();
       }
     },
     [close]

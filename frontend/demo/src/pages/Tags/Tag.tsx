@@ -5,6 +5,7 @@ import {Tag as TagModel} from '../../model/Tag';
 import close from '../../assets/images/icons/close.svg';
 import styles from './Tag.module.scss';
 import {RootState} from '../../reducers';
+import {TagSettings} from '../../model/Tag';
 
 type tagProps = {
   tag: TagModel;
@@ -16,7 +17,7 @@ type tagProps = {
 };
 
 type tagState = {
-  tagSettings: any;
+  tagSettings: TagSettings;
 };
 
 export const Tag = ({tag, expanded, variant, onClick, removeTagFromContact, tagSettings}: tagProps & tagState) => {

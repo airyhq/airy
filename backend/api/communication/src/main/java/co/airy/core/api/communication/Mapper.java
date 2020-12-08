@@ -4,6 +4,7 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataKeys;
 import co.airy.avro.communication.MetadataMapper;
 import co.airy.core.api.communication.dto.Conversation;
+import co.airy.core.api.communication.dto.DisplayName;
 import co.airy.core.api.communication.payload.ContactResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.MessageResponsePayload;
@@ -16,7 +17,6 @@ import java.util.Map;
 import static co.airy.avro.communication.MetadataKeys.PUBLIC;
 import static co.airy.avro.communication.MetadataMapper.filterPrefix;
 import static co.airy.payload.format.DateFormat.isoFromMillis;
-import static org.springframework.util.StringUtils.capitalize;
 
 @Component
 public class Mapper {
@@ -45,33 +45,14 @@ public class Mapper {
 
     private ContactResponsePayload getContact(Conversation conversation) {
         final Map<String, String> metadata = conversation.getMetadata();
-
-        String firstName = metadata.get(MetadataKeys.Source.Contact.FIRST_NAME);
-        String lastName = metadata.get(MetadataKeys.Source.Contact.LAST_NAME);
-
-        // Default to a display name that looks like: "Facebook 4ecb3"
-        if (firstName == null && lastName == null) {
-            firstName = prettifySource(conversation.getChannel().getSource());
-            lastName = conversation.getId().substring(31); // UUIDs have a fixed length of 36
-        }
+        final DisplayName displayName = conversation.getDisplayNameOrDefault();
 
         return ContactResponsePayload.builder()
                 .avatarUrl(metadata.get(MetadataKeys.Source.Contact.AVATAR_URL))
-                .firstName(firstName)
-                .lastName(lastName)
+                .firstName(displayName.getFirstName())
+                .lastName(displayName.getLastName())
                 .info(filterPrefix(metadata, PUBLIC))
                 .build();
-    }
-
-    /**
-     * - Remove the source provider (see docs/docs/glossary.md#source-provider)
-     * - Capitalize first letter
-     * E.g. twilio.sms -> Sms, facebook -> Facebook
-     */
-    private String prettifySource(String source) {
-        final String[] splits = source.split("\\.");
-        source = splits[splits.length - 1];
-        return capitalize(source);
     }
 
     public MessageResponsePayload fromMessage(Message message) {

@@ -19,19 +19,10 @@ import static java.util.stream.Collectors.toMap;
 public class DocumentMapper {
     final ObjectMapper objectMapper = new ObjectMapper();
 
-    public Document fromBytes(byte[] payload) {
-        final ConversationIndex conversation;
-        try {
-            conversation = objectMapper.readValue(payload, ConversationIndex.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return fromConversationIndex(conversation);
-    }
-
     public Document fromConversationIndex(ConversationIndex conversation) {
         final Document document = new Document();
         document.add(new StringField("id", conversation.getId(), Field.Store.YES));
+        document.add(new StringField("channel_id", conversation.getChannelId(), Field.Store.YES));
 
         if (conversation.getDisplayName() != null) {
             document.add(new TextField("display_name", conversation.getDisplayName(), Field.Store.YES));

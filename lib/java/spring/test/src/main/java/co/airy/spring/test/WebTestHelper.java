@@ -1,7 +1,7 @@
 package co.airy.spring.test;
 
 
-import co.airy.spring.auth.Jwt;
+import co.airy.jwt.Jwt;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;

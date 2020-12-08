@@ -9,6 +9,7 @@ lib_deps = [
     "//:springboot_security",
     "//lib/java/log",
     "//lib/java/spring/core:spring-core",
+    "//lib/java/jwt:airy-jwt",
     "@maven//:javax_servlet_javax_servlet_api",
     "@maven//:javax_xml_bind_jaxb_api",
 ]

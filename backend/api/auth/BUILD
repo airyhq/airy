@@ -7,6 +7,7 @@ app_deps = [
     "//:springboot_actuator",
     "//:jdbi",
     "//lib/java/payload",
+    "//lib/java/jwt:airy-jwt",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",
     "//lib/java/pagination",

@@ -1,5 +1,6 @@
 package co.airy.spring.auth;
 
+import co.airy.jwt.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

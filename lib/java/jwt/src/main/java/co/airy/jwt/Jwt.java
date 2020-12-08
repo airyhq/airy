@@ -1,4 +1,4 @@
-package co.airy.spring.auth;
+package co.airy.jwt;
 
 import co.airy.log.AiryLoggerFactory;
 import io.jsonwebtoken.Claims;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Component
 public class Jwt {
-    private static final Logger log = AiryLoggerFactory.getLogger(Jwt.class);
+    private static final Logger log = AiryLoggerFactory.getLogger(co.airy.jwt.Jwt.class);
 
     private final Key signingKey;
     public static final String USER_ID_CLAIM = "user_id";
@@ -89,3 +89,4 @@ public class Jwt {
         return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token).getBody();
     }
 }
+

@@ -41,4 +41,4 @@ On the `User or Page` option, select `Get Page Token` and click on `Generate Acc
 
 ## Connecting a channel
 
-Please refer to [[Source](../sources/facebook.md#connecting-a-channel)]
+Please refer to [[Source](/sources/facebook.md#connecting-a-channel)]

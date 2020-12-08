@@ -9,8 +9,8 @@ custom_java_library(
         "//:lombok",
         "//:spring",
         "//:springboot_test",
-        "//lib/java/log",
         "//lib/java/jwt:airy-jwt",
+        "//lib/java/log",
         "//lib/java/test",
     ],
 )

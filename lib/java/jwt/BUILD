@@ -11,6 +11,7 @@ lib_deps = [
     "@maven//:javax_servlet_javax_servlet_api",
     "@maven//:javax_xml_bind_jaxb_api",
 ]
+
 # Due to a bug in the abbreviation checkstyle rule
 # we need to skip style checking on this lib
 java_library(

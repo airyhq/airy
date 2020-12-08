@@ -11,7 +11,6 @@ app_deps = [
     "//backend:channel",
     "//backend:metadata",
     "//backend:read-receipt",
-    "//lib/java/jwt:airy-jwt",
     "//lib/java/mapping",
     "//lib/java/payload",
     "//lib/java/pagination",

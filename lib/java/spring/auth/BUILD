@@ -20,6 +20,7 @@ custom_java_library(
     visibility = ["//visibility:public"],
     exports = [
         "@maven//:org_springframework_security_spring_security_core",
+        "//lib/java/jwt:airy-jwt",
     ],
     deps = lib_deps,
 )

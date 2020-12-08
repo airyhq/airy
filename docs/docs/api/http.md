@@ -125,15 +125,27 @@ for more information.
 
 This is a [paginated](#pagination) endpoint.
 
+**Filtering**
+
+This endpoint allows you to query conversations using the human readable [Lucene Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html).
+You can query on all fields defined in [this class](https://github.com/airyhq/airy/blob/main/backend/api/communication/src/main/java/co/airy/core/api/communication/dto/ConversationIndex.java).
+
 **Sample Request**
 
-```json
+Find all users with the last name "Lovelace".
+
+```json5
 {
-  "filter": {
-    "conversation_ids": ["uuid"],
-    "channel_ids": ["channel-42"],
-    "display_names": ["Grace Hopper"]
-  },
+  "filters": "display_name:*Lovelace", // optional
+  "cursor": "next-page-uuid",
+  "page_size": 2
+}
+```
+
+**Sample Request**
+
+```json5
+{
   "cursor": "next-page-uuid",
   "page_size": 2
 }
@@ -157,11 +169,9 @@ This is a [paginated](#pagination) endpoint.
         "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
         "first_name": "Airy Support",
         "last_name": null,
-        "id": "36d07b7b-e242-4612-a82c-76832cfd1026",
+        "id": "36d07b7b-e242-4612-a82c-76832cfd1026"
       },
-      "tags": [
-        "f339c325-8614-43cb-a70a-e83d81bf56fc"
-      ],
+      "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
       "last_message": {
         id: "{UUID}",
         content: {
@@ -172,12 +182,12 @@ This is a [paginated](#pagination) endpoint.
         // typed source message model
         state: "{String}",
         // delivery state of message, one of PENDING, FAILED, DELIVERED
-        alignment: "{string/enum}",
-        // LEFT, RIGHT, CENTER - horizontal placement of message
-        sent_at: "{string}",
+        sender_type: "{string/enum}",
+        // See glossary
+        sent_at: "{string}"
         //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
       },
-      "unread_message_count": 1,
+      "unread_message_count": 1
     }
   ],
   "response_metadata": {
@@ -219,24 +229,22 @@ This is a [paginated](#pagination) endpoint.
     // optional
     "last_name": null,
     // optional
-    "id": "36d07b7b-e242-4612-a82c-76832cfd1026",
+    "id": "36d07b7b-e242-4612-a82c-76832cfd1026"
   },
-  "tags": [
-    "f339c325-8614-43cb-a70a-e83d81bf56fc"
-  ],
+  "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
   "last_message": {
-    id: "{UUID}",
-    content: {
-      text: "{String}",
-      type: "text"
+    "id": "{UUID}",
+    "content": {
+      "text": "{String}",
+      "type": "text"
       // Determines the schema of the content
     },
     // typed source message model
-    delivery_state: "{String}",
+    "delivery_state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
-    alignment: "{string/enum}",
-    // LEFT, RIGHT, CENTER - horizontal placement of message
-    sent_at: "{string}",
+    "sender_type": "{string/enum}",
+    // See glossary
+    "sent_at": "{string}"
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   },
   "unread_message_count": 1
@@ -274,7 +282,7 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 ```json5
 {
   "conversation_id": "CONVERSATION_ID",
-  "tag_id": "TAG_ID",
+  "tag_id": "TAG_ID"
 }
 ```
 
@@ -286,7 +294,6 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 
 #### Untag a conversation
 
-
 `POST /conversations.untag`
 
 **Sample Request**
@@ -294,7 +301,7 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 ```json5
 {
   "conversation_id": "CONVERSATION_ID",
-  "tag_id": "TAG_ID",
+  "tag_id": "TAG_ID"
 }
 ```
 
@@ -321,7 +328,7 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
 {
   "conversation_id": "4242-4242-4242-424242",
   "cursor": "next-page-uuid", // optional
-  "page_size": 2  // optional
+  "page_size": 2 // optional
 }
 ```
 
@@ -331,18 +338,18 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
 {
   "data": [
     {
-      id: "{UUID}",
-      content: {
-        text: "{String}",
-        type: "text"
+      "id": "{UUID}",
+      "content": {
+        "text": "{String}",
+        "type": "text"
         // Determines the schema of the content
       },
       // typed source message model
-      state: "{String}",
+      "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
-      alignment: "{string/enum}",
-      // LEFT, RIGHT, CENTER - horizontal placement of message
-      sent_at: "{string}",
+      "sender_type": "{string/enum}",
+      // See glossary
+      "sent_at": "{string}"
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
     }
   ],
@@ -365,9 +372,9 @@ Sends a message to a conversation and returns a payload.
 
 ```json5
 {
-  conversation_id: "a688d36c-a85e-44af-bc02-4248c2c97622",
-  message: {
-    text: "{String}"
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "message": {
+    "text": "{String}"
   }
 }
 ```
@@ -376,18 +383,18 @@ Sends a message to a conversation and returns a payload.
 
 ```json5
 {
-  id: "{UUID}",
-  content: {
-    text: "{String}",
-    type: "text"
+  "id": "{UUID}",
+  "content": {
+    "text": "{String}",
+    "type": "text"
     // Determines the schema of the content
   },
   // typed source message model
-  state: "{String}",
+  "state": "{String}",
   // delivery state of message, one of PENDING, FAILED, DELIVERED
-  alignment: "{string/enum}",
-  // LEFT, RIGHT, CENTER - horizontal placement of message
-  sent_at: "{string}",
+  "sender_type": "{string/enum}",
+  // See glossary
+  "sent_at": "{string}"
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
 }
 ```
@@ -458,21 +465,21 @@ The request requires an authentication `token`, which has a different meaning fo
 
 ```json5
 {
-	"data": [
-		{
-			"name": "my page 1",
-			"source": "facebook",
-			"source_channel_id": "fb-page-id-1",
-			"connected": false,
-			"image_url": "http://example.org/avatar.jpeg" // optional
-		},
-		{
-			"name": "my page 2",
-			"source": "facebook",
-			"source_channel_id": "fb-page-id-2",
-            "connected": true
-		}
-	]
+  "data": [
+    {
+      "name": "my page 1",
+      "source": "facebook",
+      "source_channel_id": "fb-page-id-1",
+      "connected": false,
+      "image_url": "http://example.org/avatar.jpeg" // optional
+    },
+    {
+      "name": "my page 2",
+      "source": "facebook",
+      "source_channel_id": "fb-page-id-2",
+      "connected": true
+    }
+  ]
 }
 ```
 
@@ -484,24 +491,23 @@ The request requires an authentication `token`, which has a different meaning fo
 
 ```json5
 {
-	"data": [
-		{
-			"id": "channel-uuid-1",
-			"name": "my page 1",
-			"source": "facebook",
-			"source_channel_id": "fb-page-id-1",
-            "image_url": "http://example.org/avatar.jpeg" // optional
-		},
-		{
-			"id": "channel-uuid-2",
-			"name": "my page 2",
-			"source": "facebook",
-			"source_channel_id": "fb-page-id-2"
-		}
-	]
+  "data": [
+    {
+      "id": "channel-uuid-1",
+      "name": "my page 1",
+      "source": "facebook",
+      "source_channel_id": "fb-page-id-1",
+      "image_url": "http://example.org/avatar.jpeg" // optional
+    },
+    {
+      "id": "channel-uuid-2",
+      "name": "my page 2",
+      "source": "facebook",
+      "source_channel_id": "fb-page-id-2"
+    }
+  ]
 }
 ```
-
 
 ### Tags
 
@@ -509,7 +515,7 @@ The request requires an authentication `token`, which has a different meaning fo
 
 `POST /tags.create`
 
-Example body:
+**Sample Request**
 
 ```json5
 {
@@ -518,20 +524,21 @@ Example body:
 }
 ```
 
-
 If the tag is successfully created the endpoint will return `201` (created) with the tag id in the response body.
 
-Example response:
+**Sample Response**
 
 ```json5
 {
-  id: "TAG-UUID"
+  "id": "TAG-UUID"
 }
 ```
 
 #### Updating a tag
 
 `POST /tags.update`
+
+**Sample Request**
 
 ```json
 {
@@ -543,16 +550,17 @@ Example response:
 
 If action is successful, returns HTTP status `200`.
 
-Example response:
+**Sample Response**
 
 ```json5
 {}
 ```
 
-
 #### Deleting a tag
 
 `POST /tags.delete`
+
+**Sample Request**
 
 ```json
 {
@@ -562,7 +570,7 @@ Example response:
 
 If action is successful, returns HTTP status `200`.
 
-Example response:
+**Sample Response**
 
 ```json5
 {}
@@ -572,19 +580,18 @@ Example response:
 
 `POST /tags.list`
 
-Example response:
+**Sample Response**
 
 ```json5
 {
-  tags: [
+  "tags": [
     {
-      id: "TAG-ID",
-      name: "name of the tag",
-      color: "RED"
+      "id": "TAG-ID",
+      "name": "name of the tag",
+      "color": "RED"
     }
   ]
 }
-
 ```
 
 ## Pagination

@@ -10,7 +10,7 @@ This document assumes that you have a Twilio account connected to
 [Whatsapp](https://www.twilio.com/whatsapp).
 
 ## Configuration
- 
+
 import TwilioSource from './twilio-source.mdx'
 
 <TwilioSource />
@@ -18,7 +18,7 @@ import TwilioSource from './twilio-source.mdx'
 ## Connecting a channel
 
 After you created a Twilio phone number, you must [point its
-webhook integratuion](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url)
+webhook integration](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url)
 to your Airy Core Platform running instance.
 
 Next call the Airy Core Platform API for connecting channels:
@@ -27,11 +27,11 @@ Next call the Airy Core Platform API for connecting channels:
 POST /channels.connect
 ```
 
-- `source` *must* be `twilio.whatsapp`
-- `source_channel_id`   The phone number as listed in your [Twilio
-                        dashboard](https://www.twilio.com/console/phone-numbers/).
-                        It must *not* have spaces, must include the country
-                        code, and be prefixed by `whatsapp:`
+- `source` _must_ be `twilio.whatsapp`
+- `source_channel_id` The phone number as listed in your [Twilio
+  dashboard](https://www.twilio.com/console/phone-numbers/).
+  It must _not_ have spaces, must include the country
+  code, and be prefixed by `whatsapp:`
 
 **Sample Request**
 
@@ -48,10 +48,10 @@ POST /channels.connect
 
 ```json5
 {
-    "id": "channel-uuid-1",
-    "name": "Whatsapp Marketing",
-    "image_url": "https://example.com/custom-image.jpg",
-    "source": "twilio.whatsapp",
-    "source_channel_id": "whatsapp:+491234567"
+  "id": "channel-uuid-1",
+  "name": "Whatsapp Marketing",
+  "image_url": "https://example.com/custom-image.jpg",
+  "source": "twilio.whatsapp",
+  "source_channel_id": "whatsapp:+491234567"
 }
 ```

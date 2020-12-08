@@ -16,7 +16,7 @@ public class MessageResponsePayload implements Serializable {
     private String id;
     private Content content;
     private String state;
-    private String alignment;
+    private String senderType;
     private String sentAt;
     private String deliveryState;
 }

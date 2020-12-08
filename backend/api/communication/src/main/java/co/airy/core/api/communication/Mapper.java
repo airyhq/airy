@@ -15,7 +15,6 @@ import java.util.Map;
 
 import static co.airy.avro.communication.MetadataKeys.PUBLIC;
 import static co.airy.avro.communication.MetadataMapper.filterPrefix;
-import static co.airy.core.api.communication.payload.MessageResponsePayload.getAlignment;
 import static co.airy.payload.format.DateFormat.isoFromMillis;
 import static org.springframework.util.StringUtils.capitalize;
 
@@ -78,7 +77,7 @@ public class Mapper {
     public MessageResponsePayload fromMessage(Message message) {
         return MessageResponsePayload.builder()
                 .content(contentMapper.renderWithDefaultAndLog(message))
-                .alignment(getAlignment(message.getSenderType()))
+                .senderType(message.getSenderType().toString().toLowerCase())
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))

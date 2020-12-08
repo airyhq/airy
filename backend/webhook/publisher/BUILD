@@ -6,11 +6,11 @@ app_deps = [
     "//backend:base_app",
     "//backend:message",
     "//backend:webhook",
-    "//backend/lib/uuid",
-    "//backend/lib/payload",
-    "//backend/lib/mapping",
-    "//backend/lib/spring/kafka/core:spring-kafka-core",
-    "//backend/lib/spring/kafka/streams:spring-kafka-streams",
+    "//lib/java/uuid",
+    "//lib/java/payload",
+    "//lib/java/mapping",
+    "//lib/java/spring/kafka/core:spring-kafka-core",
+    "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "@maven//:io_lettuce_lettuce_core",
     "@maven//:org_springframework_data_spring_data_redis",
 ]
@@ -30,7 +30,7 @@ springboot(
         deps = [
             ":app",
             "//backend:base_test",
-            "//backend/lib/kafka/test:kafka-test",
+            "//lib/java/kafka/test:kafka-test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

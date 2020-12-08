@@ -19,19 +19,10 @@ public class Mapper {
     public MessageResponsePayload fromMessage(Message message) {
         return MessageResponsePayload.builder()
                 .content(contentMapper.renderWithDefaultAndLog(message))
-                .alignment(getAlignment(message.getSenderType()))
+                .senderType(message.getSenderType().toString().toLowerCase())
                 .state(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
                 .build();
-    }
-
-    public static String getAlignment(SenderType senderType) {
-        switch (senderType) {
-            case APP_USER:
-            case SOURCE_USER: return "LEFT";
-            case SOURCE_CONTACT: return "RIGHT";
-            default: throw new RuntimeException("Unknown sender type " + senderType);
-        }
     }
 }

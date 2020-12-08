@@ -26,7 +26,7 @@ Connects a Facebook page to the Airy Core Platform.
 POST /channels.connect
 ```
 
-- `source` *must* be `facebook`
+- `source` _must_ be `facebook`
 - `source_channel_id` is the Facebook page id
 - `token` is the page Access Token
 
@@ -44,10 +44,10 @@ POST /channels.connect
 
 ```json5
 {
-	"id": "channel-uuid-1",
-    "name": "My custom name for this page",
-    "image_url": "https://example.org/custom-image.jpg", // optional
-    "source": "facebook",
-    "source_channel_id": "fb-page-id-1"
+  "id": "channel-uuid-1",
+  "name": "My custom name for this page",
+  "image_url": "https://example.org/custom-image.jpg", // optional
+  "source": "facebook",
+  "source_channel_id": "fb-page-id-1"
 }
 ```

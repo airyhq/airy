@@ -1,5 +1,5 @@
 ---
-title: WebSocket 
+title: WebSocket
 sidebar_label: Websocket
 ---
 
@@ -26,21 +26,21 @@ Incoming payloads notify connected clients that a message was created or updated
 
 ```json5
 {
-  conversation_id: "{UUID}",
-  channelId: "{UUID}",
-  message: {
-    id: "{UUID}",
-    content: {
-      text: "{String}",
-      type: "text"
+  "conversation_id": "{UUID}",
+  "channel_id": "{UUID}",
+  "message": {
+    "id": "{UUID}",
+    "content": {
+      "text": "{String}",
+      "type": "text"
       // Determines the schema of the content
     },
     // typed source message model
-    state: "{String}",
+    "state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
-    alignment: "{string/enum}",
-    // LEFT, RIGHT, CENTER - horizontal placement of message
-    sent_at: "{string}",
+    "sender_type": "{string/enum}",
+    // See glossary
+    "sent_at": "{string}"
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   }
 }
@@ -78,15 +78,15 @@ Incoming payloads notify connected clients whenever a channel was connected or u
 
 ```json5
 {
-    "id": "{UUID}",
-    "name": "my page 1",
-    "source": "facebook",
-    "source_channel_id": "fb-page-id-1",
-    "image_url": "http://example.org/avatar.jpeg" // optional
+  "id": "{UUID}",
+  "name": "my page 1",
+  "source": "facebook",
+  "source_channel_id": "fb-page-id-1",
+  "image_url": "http://example.org/avatar.jpeg" // optional
 }
 ```
 
-------
+---
 
 ### Channel disconnected
 
@@ -98,9 +98,10 @@ Incoming payloads notify connected clients whenever a channel was disconnected.
 
 ```json5
 {
-    "id": "{UUID}",
-    "name": "my page 1",
-    "source": "facebook",
-    "source_channel_id": "fb-page-id-1",
-    "image_url": "http://example.org/avatar.jpeg" // optional
+  "id": "{UUID}",
+  "name": "my page 1",
+  "source": "facebook",
+  "source_channel_id": "fb-page-id-1",
+  "image_url": "http://example.org/avatar.jpeg" // optional
 }
+```

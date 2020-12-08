@@ -31,15 +31,9 @@ type errorResponse struct {
 	Message string `json:"message"`
 }
 
-type successResponse struct {
-	Code int         `json:"code"`
-	Data interface{} `json:"data"`
-}
-
 func (c *Client) sendRequest(req *http.Request, v interface{}) error {
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Accept", "application/json; charset=utf-8")
-	// req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.apiKey))
 
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
@@ -56,12 +50,7 @@ func (c *Client) sendRequest(req *http.Request, v interface{}) error {
 
 		return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
 	}
-	// result, err := ioutil.ReadAll(res.Body)
-	// fmt.Println(string(result))
 
-	// fullResponse := successResponse{
-	// 	Data: v,
-	// }
 	if err = json.NewDecoder(res.Body).Decode(v); err != nil {
 		return err
 	}

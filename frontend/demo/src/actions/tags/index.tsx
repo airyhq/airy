@@ -93,7 +93,7 @@ export function updateTag(tag: Tag) {
 export function deleteTag(id: string) {
   return function(dispatch: Dispatch<any>) {
     doFetchFromBackend('tags.delete', {
-      id
+      id,
     }).then(() => {
       dispatch(deleteConversationTag(id));
     });

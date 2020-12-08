@@ -78,7 +78,11 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
         )}
         <Fragment>
           <p className={styles.description}>Pick a color</p>
-          <ColorSelector handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value)} color={color} editing={true} />
+          <ColorSelector
+            handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value)}
+            color={color}
+            editing={true}
+          />
           <div className={styles.buttonRow}>
             <Button styleVariant="small" onClick={handleCreate}>
               Create Tag

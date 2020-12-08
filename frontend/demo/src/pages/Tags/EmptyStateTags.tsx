@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 
-import {ReactSVG} from 'react-svg';
-
 import styles from './index.module.scss';
 import {Button} from '@airyhq/components';
 import emptyImage from '../../assets/images/empty-state/tags-empty-state.svg';

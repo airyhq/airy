@@ -43,7 +43,7 @@ const TableRowComponent = (props: TableRowProps) => {
       id: tag.id,
       name: tagState.name,
       color: tagState.color,
-    }
+    };
     updateTag(currentTag);
     setTagState({
       ...tagState,
@@ -60,7 +60,7 @@ const TableRowComponent = (props: TableRowProps) => {
 
   const onTagKeyPressed = useCallback(
     (e: KeyboardEvent) => {
-      console.log(e)
+      console.log(e);
       const code = e.keyCode || e.which;
       if (code === 13 && tagState.name.length) {
         handleTagUpdate();

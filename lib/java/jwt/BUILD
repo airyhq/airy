@@ -12,8 +12,6 @@ lib_deps = [
     "@maven//:javax_xml_bind_jaxb_api",
 ]
 
-# Due to a bug in the abbreviation checkstyle rule
-# we need to skip style checking on this lib
 java_library(
     name = "airy-jwt",
     srcs = glob(["src/main/java/co/airy/jwt/**/*.java"]),

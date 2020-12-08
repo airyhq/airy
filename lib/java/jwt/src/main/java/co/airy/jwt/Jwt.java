@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Component
 public class Jwt {
-    private static final Logger log = AiryLoggerFactory.getLogger(co.airy.jwt.Jwt.class);
+    private static final Logger log = AiryLoggerFactory.getLogger(Jwt.class);
 
     private final Key signingKey;
     public static final String USER_ID_CLAIM = "user_id";

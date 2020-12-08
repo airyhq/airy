@@ -6,7 +6,7 @@ import {TagSettings} from '../model/Tag';
 import styles from './ColorSelector.module.scss';
 
 type ColorSelectorProps = {
-  handleUpdate: (event: any) => void;
+  handleUpdate: (event: React.ChangeEvent<HTMLInputElement>) => void;
   color: string;
   editing?: boolean;
   id?: string;

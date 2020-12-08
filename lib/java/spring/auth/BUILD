@@ -19,8 +19,8 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/spring/auth/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "@maven//:org_springframework_security_spring_security_core",
         "//lib/java/jwt:airy-jwt",
+        "@maven//:org_springframework_security_spring_security_core",
     ],
     deps = lib_deps,
 )

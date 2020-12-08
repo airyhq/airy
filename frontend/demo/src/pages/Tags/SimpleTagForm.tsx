@@ -41,8 +41,8 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
     }
   };
 
-  const keyPressed = (e: any) => {
-    const code = e.keyCode || e.which;
+  const keyPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const code = e.key || e.which;
     if (code === 13) {
       handleCreate();
     } else if (code === 27) {
@@ -73,7 +73,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
         <p className={styles.errorMessage}>{(!name.length || showError) && errorMessage}</p>
         {name && (
           <div>
-            <Tag tag={{color: color, name: name}} />
+            <Tag tag={{id: '', color: color, name: name}} />
           </div>
         )}
         <Fragment>

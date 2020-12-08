@@ -1,8 +1,7 @@
 export interface Tag {
-  id?: string;
+  id: string;
   name: string;
   color: string;
-  count?: number;
 }
 
 export interface TagPayload {

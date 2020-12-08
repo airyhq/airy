@@ -1,4 +1,4 @@
-import React, {useState, useCallback, KeyboardEvent} from 'react';
+import React, {useState, useCallback} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import styles from './TableRow.module.scss';
@@ -8,11 +8,11 @@ import {ReactComponent as EditIcon} from '../../assets/images/icons/edit.svg';
 import {ReactComponent as TrashIcon} from '../../assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
 import Tag from './Tag';
+import {Tag as TagModel, TagSettings} from '../../model/Tag';
 import {RootState} from '../../reducers';
-import {TagSettings} from '../../model/Tag';
 
 type TableRowProps = {
-  tag: any;
+  tag: TagModel;
   tagSettings: TagSettings;
   showModal(label: string, id: string, name: string): void;
 } & ConnectedProps<typeof connector>;
@@ -22,7 +22,7 @@ const TableRowComponent = (props: TableRowProps) => {
 
   const [tagState, setTagState] = useState({
     edit: false,
-    id: null,
+    id: '',
     name: '',
     color: '',
   });
@@ -60,7 +60,7 @@ const TableRowComponent = (props: TableRowProps) => {
   }, [setTagState]);
 
   const onTagKeyPressed = useCallback(
-    (e: KeyboardEvent) => {
+    (e: React.KeyboardEvent) => {
       const code = e.keyCode || e.which;
       if (code === 13 && tagState.name.length) {
         handleTagUpdate();
@@ -72,7 +72,7 @@ const TableRowComponent = (props: TableRowProps) => {
   );
 
   const deleteClicked = useCallback(
-    event => {
+    (event: React.BaseSyntheticEvent) => {
       event.preventDefault();
       event.stopPropagation();
       showModal('confirmDelete', tag.id, tag.name);
@@ -122,7 +122,7 @@ const TableRowComponent = (props: TableRowProps) => {
   return (
     <tr key={tag.id} className={styles.tableRow} onClick={() => setTagState({...tag, edit: true})}>
       <td style={{width: '30%', maxWidth: '1px'}} className={styles.tableCell}>
-        <Tag tag={{color: tag.color, name: tag.name}} />
+        <Tag tag={{id: tag.id, color: tag.color, name: tag.name}} />
       </td>
       <td style={{width: '30%'}}>
         <span className={styles.tagColor} style={{backgroundColor: `#${getColorValue(tag.color)}`}} />

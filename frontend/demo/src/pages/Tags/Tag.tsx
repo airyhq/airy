@@ -10,7 +10,7 @@ import {TagSettings} from '../../model/Tag';
 type tagProps = {
   tag: TagModel;
   expanded?: boolean;
-  onClick?: (event: any) => void;
+  onClick?: () => void;
   removeTagFromContact?: () => void;
   variant?: 'default' | 'light';
   type?: string;

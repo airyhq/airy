@@ -50,6 +50,13 @@ spec:
                 name: api-auth
                 port:
                   number: 80
+          - path: /ws.communication
+            pathType: Prefix
+            backend:
+              service:
+                name: api-communication
+                port:
+                  number: 80
           - path: /conversations.list
             pathType: Prefix
             backend:
@@ -189,6 +196,13 @@ spec:
     - host: "chatplugin.airy"
       http:
         paths:
+          - path: /ws.chatplugin
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-chatplugin
+                port:
+                  number: 80
           - path: /chatplugin.authenticate
             pathType: Prefix
             backend:

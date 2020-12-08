@@ -3,36 +3,25 @@ set -euo pipefail
 IFS=$'\n\t'
 
 source /vagrant/scripts/lib/k8s.sh
-APP_IMAGE_TAG="${APP_IMAGE_TAG:-latest}"
+APP_IMAGE_TAG="${AIRY_VERSION:-latest}"
 
 mkdir -p ~/airy-core
 cd /vagrant
 cp -u airy.conf.tpl airy.conf
 cp -R /vagrant/helm-chart ~/airy-core/
-cp /vagrant/deployments/* ~/airy-core/
-
-# Generate random NGrok ID
-RANDOM_INGRESS_ID=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 16; echo`
-sed -i "s/<ngrok_client_id>/${RANDOM_INGRESS_ID}/" ~/airy-core/public-urls-config.yaml
-kubectl apply -f ~/airy-core/public-urls-config.yaml
-# Generate random Postgress password
-RANDOM_POSTGRES_PASSWORD=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 32; echo`
-sed -i "s/<pg_password>/$RANDOM_POSTGRES_PASSWORD/" ~/airy-core/helm-chart/charts/postgres/values.yaml
-# Generate random JWT secret token
-kubectl create configmap secrets-config --from-literal=JWT_SECRET=`cat /dev/urandom | env LC_CTYPE=C tr -dc a-z0-9 | head -c 128; echo`
 
 echo "Deploying the Airy Core Platform with the ${APP_IMAGE_TAG} image tag"
 
 cd /vagrant/scripts/
 wait-for-service-account
 
-helm install -f ~/airy-core/helm-chart/values.yaml airy ~/airy-core/helm-chart/ --set global.appImageTag=${APP_IMAGE_TAG} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
+helm install airy ~/airy-core/helm-chart/ --set global.appImageTag=${APP_IMAGE_TAG} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
 
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 kubectl scale statefulset airy-cp-zookeeper --replicas=1
 
 wait-for-running-pod startup-helper
-wait-for-service startup-helper airy-cp-zookeeper 2181 15 Zookeeper
+wait-for-service startup-helper airy-cp-zookeeper 2181 15 ZooKeeper
 kubectl scale statefulset airy-cp-kafka --replicas=1
 wait-for-service startup-helper airy-cp-kafka 9092 15 Kafka
 kubectl cp provision/create-topics.sh airy-cp-kafka-0:/tmp

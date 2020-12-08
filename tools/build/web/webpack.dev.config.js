@@ -125,13 +125,6 @@ module.exports = (env, argv) => ({
           'url-loader',
         ],
       },
-      {
-        test: /\.js$/,
-        // Stompjs source maps refer to files ignored in the npm package
-        exclude: /stompjs/,
-        use: ['source-map-loader'],
-        enforce: 'pre',
-      },
     ],
   },
   plugins: [

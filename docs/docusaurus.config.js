@@ -29,6 +29,7 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} Airy, Inc.`,
     },
   },
+  scripts: ['https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js'],
   presets: [
     [
       '@docusaurus/preset-classic',

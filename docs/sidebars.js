@@ -1,19 +1,35 @@
 module.exports = {
   docs: [
     'index',
-    'user-guide',
-    {API: ['api/http', 'api/websocket', 'api/webhook']},
+    {
+      API: ['api/http', 'api/websocket', 'api/webhook'],
+    },
     {
       Sources: [
+        'sources/chat-plugin',
         'sources/facebook',
         'sources/google',
-        'sources/chat-plugin',
         'sources/sms-twilio',
         'sources/whatsapp-twilio',
       ],
     },
-    {Guidelines: ['guidelines/design-principles', 'guidelines/release-process', 'guidelines/kafka']},
-    'developers-manual',
+    {
+      Guidelines: [
+        'guidelines/contributing',
+        'guidelines/design-principles',
+        'guidelines/release-process',
+        'guidelines/kafka',
+      ],
+    },
+    {
+      Guides: [
+        'guides/architecture',
+        {
+          Deployment: ['guides/airy-core-in-test-env', 'guides/airy-core-in-production'],
+        },
+      ],
+    },
+
     'glossary',
   ],
 };

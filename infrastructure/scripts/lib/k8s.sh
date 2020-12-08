@@ -17,16 +17,16 @@ function wait-for-running-pod {
 
     while ! `kubectl get pod --field-selector="metadata.name=${name},status.phase=Running" 2>/dev/null| grep -q ${name}`
     do
-        echo "Waiting for Airy startup helper to start..."
+        echo "Waiting for the Airy startup helper to start..."
         sleep 5
     done
 }
 
-# Waiting for the ingress service to appear 
+# Waiting for the ingress service to appear
 function wait-for-ingress-service {
     while ! `kubectl -n kube-system get service --field-selector="metadata.name=traefik" 2>/dev/null | grep -q "traefik"`
     do
-        echo "Waiting for ingress to start... "
+        echo "Waiting for traefik to start..."
         sleep 5
     done
 }

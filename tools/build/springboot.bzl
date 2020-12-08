@@ -1,6 +1,6 @@
 load("@rules_java//java:defs.bzl", "java_binary")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
-load("//tools/code-format:checkstyle.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//code-format:checkstyle.bzl", "check_pkg")
 
 # Spring Boot Executable JAR Layout specification
 # reverse engineered from the Spring Boot maven plugin

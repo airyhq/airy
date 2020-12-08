@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-twilio-events-router
+  namespace: default
+  labels:
+    app: sources-twilio-events-router
+    type: sources-twilio
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: sources-twilio-events-router
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-twilio-events-router
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_SCHEMA_REGISTRY_URL
+        livenessProbe:
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3

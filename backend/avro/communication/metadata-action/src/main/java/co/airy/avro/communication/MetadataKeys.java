@@ -4,12 +4,8 @@ package co.airy.avro.communication;
  * JSON dot notation keys for pre-defined metadata
  */
 public class MetadataKeys {
-
-    public static String SOURCE = "source";
-
+    public static String PUBLIC = "public";
     public static class Source {
-        public static String CONTACT = "source.contact";
-
         public static class Contact {
             public static final String FIRST_NAME = "source.contact.first_name";
             public static final String LAST_NAME = "source.contact.last_name";

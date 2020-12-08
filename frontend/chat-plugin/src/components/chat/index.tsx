@@ -79,8 +79,7 @@ const Chat = (props: Props) => {
   };
 
   const onReceive = (data: IMessage) => {
-    const message = JSON.parse(data.body);
-    setMessages(messages => [...messages, message]);
+    setMessages(messages => [...messages, JSON.parse(data.body).message]);
   };
 
   const updateScroll = () => {

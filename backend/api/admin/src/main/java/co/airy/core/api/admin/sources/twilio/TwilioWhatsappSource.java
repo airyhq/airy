@@ -1,7 +1,6 @@
 package co.airy.core.api.admin.sources.twilio;
 
 import co.airy.core.api.admin.Source;
-import co.airy.core.api.admin.SourceApiException;
 import co.airy.core.api.admin.dto.ChannelMetadata;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +14,12 @@ public class TwilioWhatsappSource implements Source {
     }
 
     @Override
-    public List<ChannelMetadata> getAvailableChannels(String token) throws SourceApiException {
+    public List<ChannelMetadata> getAvailableChannels(String token) {
         return List.of();
     }
 
     @Override
-    public ChannelMetadata connectChannel(String token, String sourceChannelId) throws SourceApiException {
+    public ChannelMetadata connectChannel(String token, String sourceChannelId) {
         return ChannelMetadata.builder()
                 .name("Twilio Whatsapp Channel")
                 .sourceChannelId(sourceChannelId)
@@ -28,6 +27,6 @@ public class TwilioWhatsappSource implements Source {
     }
 
     @Override
-    public void disconnectChannel(String token, String sourceChannelId) throws SourceApiException {
+    public void disconnectChannel(String token, String sourceChannelId) {
     }
 }

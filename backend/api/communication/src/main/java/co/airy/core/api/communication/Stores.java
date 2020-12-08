@@ -10,6 +10,10 @@ import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.CountAction;
 import co.airy.core.api.communication.dto.MessagesTreeSet;
 import co.airy.core.api.communication.dto.UnreadCountState;
+import co.airy.core.api.communication.lucene.IndexingProcessor;
+import co.airy.core.api.communication.lucene.LuceneDiskStore;
+import co.airy.core.api.communication.lucene.LuceneProvider;
+import co.airy.core.api.communication.lucene.ReadOnlyLuceneStore;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -50,22 +54,29 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final KafkaStreamsWrapper streams;
     private final KafkaProducer<String, SpecificRecordBase> producer;
     private final WebSocketController webSocketController;
+    private final LuceneProvider luceneProvider;
 
     private final String messagesStore = "messages-store";
     private final String conversationsStore = "conversations-store";
+    private final String conversationsLuceneStore = "conversations-lucene-store";
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
     private final String applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts().name();
 
     Stores(KafkaStreamsWrapper streams,
            KafkaProducer<String, SpecificRecordBase> producer,
-           WebSocketController webSocketController) {
+           WebSocketController webSocketController,
+           LuceneProvider luceneProvider
+    ) {
         this.streams = streams;
         this.producer = producer;
         this.webSocketController = webSocketController;
+        this.luceneProvider = luceneProvider;
     }
 
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
+
+        builder.addStateStore(new LuceneDiskStore.Builder(conversationsLuceneStore, luceneProvider));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .selectKey((messageId, message) -> message.getConversationId())
@@ -158,7 +169,9 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                         conversation.setUnreadCount(unreadCountState.getUnreadCount());
                     }
                     return conversation;
-                }, Materialized.as(conversationsStore));
+                }, Materialized.as(conversationsStore))
+                .toStream()
+                .process(IndexingProcessor.getSupplier(conversationsLuceneStore), conversationsLuceneStore);
 
         streams.start(builder.build(), appId);
     }
@@ -169,6 +182,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public ReadOnlyKeyValueStore<String, MessagesTreeSet> getMessagesStore() {
         return streams.acquireLocalStore(messagesStore);
+    }
+
+    public ReadOnlyLuceneStore getConversationLuceneStore() {
+        return luceneProvider;
     }
 
     public void storeReadReceipt(ReadReceipt readReceipt) throws ExecutionException, InterruptedException {

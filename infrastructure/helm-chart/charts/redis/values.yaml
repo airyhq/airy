@@ -1,0 +1,4 @@
+enabled: true
+image: redis
+imageTag: 5.0.1-alpine
+resources: {}

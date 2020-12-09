@@ -54,14 +54,6 @@ public class LuceneProvider implements LuceneStore {
         writer.deleteDocuments(new Term("id", id));
     }
 
-    // Used for restoring data in batches
-    public void writeAll(final Collection<KeyValue<byte[], byte[]>> records) throws IOException {
-        final List<Document> documents = records.stream()
-                .map((kvPair) -> this.documentMapper.fromBytes(kvPair.value)).collect(toList());
-
-        writer.addDocuments(documents);
-    }
-
     @Override
     public LuceneQueryResult query(Query query) {
         try {

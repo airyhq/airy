@@ -14,7 +14,7 @@ lib_deps = [
 
 java_library(
     name = "airy-jwt",
-    srcs = glob(["src/main/java/co/airy/jwt/**/*.java"]),
+    srcs = glob(["src/main/java/co/airy/spring/jwt/**/*.java"]),
     visibility = ["//visibility:public"],
     deps = lib_deps,
 )

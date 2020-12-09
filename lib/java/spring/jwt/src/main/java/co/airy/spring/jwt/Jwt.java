@@ -1,4 +1,4 @@
-package co.airy.jwt;
+package co.airy.spring.jwt;
 
 import co.airy.log.AiryLoggerFactory;
 import io.jsonwebtoken.Claims;

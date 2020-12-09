@@ -1,6 +1,6 @@
 package co.airy.spring.auth;
 
-import co.airy.jwt.Jwt;
+import co.airy.spring.jwt.Jwt;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -5,7 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.core.api.communication.payload.MessageUpsertPayload;
 import co.airy.core.api.communication.payload.UnreadCountPayload;
 import co.airy.core.api.communication.util.TestConversation;
-import co.airy.jwt.Jwt;
+import co.airy.spring.jwt.Jwt;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;

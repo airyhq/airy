@@ -15,7 +15,7 @@ import co.airy.core.api.auth.dto.Invitation;
 import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Mail;
 import co.airy.core.api.auth.services.Password;
-import co.airy.jwt.Jwt;
+import co.airy.spring.jwt.Jwt;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.payload.response.RequestErrorResponsePayload;
 import co.airy.spring.auth.IgnoreAuthPattern;

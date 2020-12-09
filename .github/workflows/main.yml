@@ -36,51 +36,6 @@ jobs:
             common --config=ci
           EOF
 
-      - name: Lint
-        run: |
-          ./scripts/lint.sh
-
       - name: Test
         run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" test --test_tag_filters=-lint //...
-
-      - name: Build all artifacts
-        run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" build //...
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Push beta app images
-        if: ${{github.ref == 'refs/heads/develop'}}
-        run: |
-          echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          release_targets=$(bazel query "filter("beta$", //...)" --output label)
-          for target in $release_targets; do
-            echo "Deploying $target"
-            bazel run $target
-          done
-
-      - name: Push release app images
-        if: startsWith(github.ref, 'refs/heads/release')
-        run: |
-          echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          release_targets=$(bazel query "filter("release$", //...)" --output label)
-          for target in $release_targets; do
-            echo "Deploying $target"
-            bazel run $target
-          done
-
-      - name: Push release app images
-        if: ${{github.ref == 'refs/heads/main'}}
-        run: |
-          echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          release_targets=$(bazel query "filter("latest$", //...)" --output label)
-          for target in $release_targets; do
-            echo "Deploying $target"
-            bazel run $target
-          done
+          "${GITHUB_WORKSPACE}/bin/bazel" clean --expunge

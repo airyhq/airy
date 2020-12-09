@@ -2,23 +2,17 @@ package apiclient
 
 import (
 	"apiclient/payloads"
-	"bytes"
 	"encoding/json"
-	"fmt"
-	"net/http"
 )
 
 func (c *Client) Signup(signupRequestPayload payloads.SignupRequestPayload) (*payloads.SignupResponsePayload, error) {
 	requestDataJSON, err := json.Marshal(signupRequestPayload)
-
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/users.signup", c.BaseURL), bytes.NewBuffer(requestDataJSON))
 	if err != nil {
 		return nil, err
 	}
-
 	res := payloads.SignupResponsePayload{}
 
-	if err := c.sendRequest(req, &res); err != nil {
+	if err := c.sendRequest(requestDataJSON, "users.signup", &res); err != nil {
 		return nil, err
 	}
 
@@ -28,15 +22,12 @@ func (c *Client) Signup(signupRequestPayload payloads.SignupRequestPayload) (*pa
 
 func (c *Client) Login(loginRequestPayload payloads.LoginRequestPayload) (*payloads.LoginResponsePayload, error) {
 	requestDataJSON, err := json.Marshal(loginRequestPayload)
-
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/users.login", c.BaseURL), bytes.NewBuffer(requestDataJSON))
 	if err != nil {
 		return nil, err
 	}
-
 	res := payloads.LoginResponsePayload{}
 
-	if err := c.sendRequest(req, &res); err != nil {
+	if err := c.sendRequest(requestDataJSON, "users.login", &res); err != nil {
 		return nil, err
 	}
 

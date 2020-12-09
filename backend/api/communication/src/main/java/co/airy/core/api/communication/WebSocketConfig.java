@@ -1,7 +1,7 @@
 package co.airy.core.api.communication;
 
+import co.airy.spring.jwt.Jwt;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.spring.auth.Jwt;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

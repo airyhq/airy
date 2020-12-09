@@ -1,4 +1,5 @@
 load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/build:java_library.bzl", "custom_java_library")
 
 lib_deps = [
     "//:jackson",
@@ -12,7 +13,7 @@ lib_deps = [
     "@maven//:javax_xml_bind_jaxb_api",
 ]
 
-java_library(
+custom_java_library(
     name = "airy-jwt",
     srcs = glob(["src/main/java/co/airy/spring/jwt/**/*.java"]),
     visibility = ["//visibility:public"],

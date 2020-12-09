@@ -10,7 +10,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "46d1308f9f1dc5b797dc3ff30c88835da12a584d",
+    commit = "fd79bd3344b9c95a09eaa94597a49069f943e089",
     remote = "https://github.com/airyhq/bazel-tools.git",
     shallow_since = "1607079534 +0100",
 )

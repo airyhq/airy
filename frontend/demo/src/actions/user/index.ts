@@ -16,7 +16,9 @@ export const userAuthErrorAction = createAction(USER_AUTH_ERROR, resolve => (err
 export const logoutUserAction = createAction(USER_LOGOUT);
 
 export const logoutUser = () => {
-  return function(dispatch: Dispatch) {
+  console.log("LOGOUTUSER")
+  return function (dispatch: Dispatch<any>) {
+    console.log("DISPATCHED")
     dispatch(logoutUserAction());
   };
 };

@@ -1,4 +1,4 @@
-package co.airy.spring.auth;
+package co.airy.spring.jwt;
 
 import co.airy.log.AiryLoggerFactory;
 import io.jsonwebtoken.Claims;
@@ -89,3 +89,4 @@ public class Jwt {
         return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token).getBody();
     }
 }
+

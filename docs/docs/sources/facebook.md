@@ -17,9 +17,9 @@ Core Platform instance.
 
 ## Configuration
 
-The Facebook sources requires the following configuration:
+The Facebook source requires the following configuration:
 
-- An App id and an App secret so that the platform can send messages back via
+- An app id and an app secret so that the platform can send messages back via
   your Facebook application
 - A webhook integration so that the platform can ingest messages from your
   Facebook pages
@@ -29,14 +29,14 @@ Let's proceed step by step.
 
 ### Find the app id and secret
 
-To connect a page, you must have an Facebook approved app. If you don't have
+To connect a page, you must have an approved Facebook app. If you don't have
 one, you must to create it before proceeding. Once you are done with the
 configuration, you should see something like this:
 
 <img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/apps.jpg')} />
 
-Note down the `App Id` of your Facebook application and then head to the basic
-settings page. Here you will find your `App secret`:
+Note down the `App ID` of your Facebook application and then head to the basic
+settings page. Here you will find your `App Secret`:
 
 <img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/secret.png')} />
 
@@ -75,8 +75,8 @@ start sending events to your Airy Core Platform instance.
 
 ### Obtain a page token
 
-Next step is to obtain a page token, so the Airy Core Platform can send messages
-on behalf of your page. Fastest way to get one is to use the graph explorer that
+The next step is to obtain a page token, so the Airy Core Platform can send messages
+on behalf of your page. The fastest way to get one is to use the graph explorer that
 Facebook provides [Graph
 Explorer](https://developers.facebook.com/tools/explorer/).
 
@@ -86,7 +86,7 @@ On the `User or Page` option, select `Get Page Token` and click on `Generate Acc
 
 You're now ready to connect a Facebook page to the Airy Core Platform 🎉.
 
-## Connecting a channel
+## Connect a channel
 
 Connects a Facebook page to the Airy Core Platform.
 

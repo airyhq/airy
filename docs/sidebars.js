@@ -28,7 +28,6 @@ module.exports = {
           Deployment: ['guides/airy-core-in-test-env', 'guides/airy-core-in-production'],
         },
         'guides/airy-core-and-rasa',
-        'guides/airy-core-and-facebook',
       ],
     },
 

@@ -3,30 +3,29 @@ title: API
 sidebar_label: HTTP
 ---
 
-This documents aims to offer an high-level overview of the different parts that
-compose our API.
+This document offers a high-level overview of the different parts that
+compose the Airy API.
 
 ## Introduction
 
-Our HTTP endpoints adhere to the following conventions:
+The HTTP endpoints of the Airy API adhere to the following conventions:
 
 - Endpoints only accept `POST` JSON requests.
-- Except for the `/users.login` and `/users.signup` endpoints, communication
-  always requires a valid [JWT token](#authorization).
-- We use dots for name-spacing URLS (eg `/things.add`).
+- Communication always requires a valid [JWT token](#authorization), except for the `/users.login` and `/users.signup` endpoints. 
+- We use dots for namespacing URLs (for example `/users.add`).
 
 ## Authentication
 
-In order to communicate with our API endpoints, you need a valid
-[JWT](https://jwt.io/) token. To get a valid token you need to use the login endpoint
-[login](#login).
+In order to communicate with the API endpoints, you need a valid
+[JWT](https://jwt.io/) token. Use the the login endpoint
+[login](#login) to get one.
 
-The login endpoints returns a short-lived JWT token you can use for API requests
+The login endpoint returns a short-lived JWT token you can use for API requests.
 
 ### Login
 
-As the purpose of this endpoint is to obtain valid JWT tokens, this endpoint
-does not require a valid token to be present in the headers.
+The purpose of this endpoint is to obtain a valid JWT token, so it
+does not require a valid token in the header.
 
 `POST /users.login`
 
@@ -75,7 +74,7 @@ information.
 }
 ```
 
-The password _MUST_ be at least 6 (six) characters long
+The password **must** be at least 6 characters long.
 
 **Sample Response**
 
@@ -88,7 +87,7 @@ The password _MUST_ be at least 6 (six) characters long
 }
 ```
 
-This endpoint returns the same response as the login.
+This endpoint returns the same response as `/users.login`.
 
 #### Reset password
 
@@ -112,7 +111,7 @@ tokens produce errors.
 {}
 ```
 
-The new password _MUST_ be at least 6 (six) characters long
+The new password **must** be at least 6 characters long.
 
 ### Conversations
 
@@ -313,7 +312,7 @@ information.
 
 `POST /messages.list`
 
-This is a [paginated](#pagination) endpoint and messages are sorted from oldest to latest.
+This is a [paginated](#pagination) endpoint. It sorts messages from oldest to latest.
 
 **Sample Request**
 
@@ -401,8 +400,7 @@ Sends a message to a conversation and returns a payload.
 A synchronous endpoint that makes a request to the source on behalf of the user
 to connect the channel.
 
-This action is idempotent, so if the channel is already connected the status
-will be `202`.
+This action is idempotent, so if the channel is already connected, the request returns status code `202`.
 
 Connecting a channel is source specific by nature, refer to the relevant documentation for the correct payload:
 
@@ -419,8 +417,8 @@ A synchronous endpoint that makes a request to the source on behalf of the user
 to disconnect the channel. It marks the channel as disconnected and deletes the
 auth token.
 
-This action is idempotent, so if the channel is disconnected the status will be `202`.
-If the channel is unknown, the response status will be `400`.
+This action is idempotent, so if the channel is disconnected, the request returns status code `202`.
+If the channel is unknown, the request returns status code `400`.
 
 **Sample Request**
 
@@ -519,7 +517,7 @@ Example body:
 ```
 
 
-If the tag is successfully created the endpoint will return `201` (created) with the tag id in the response body.
+If the tag is successfully created, the endpoint returns status code `201` (created) with the tag ID in the response body.
 
 Example response:
 
@@ -541,7 +539,7 @@ Example response:
 }
 ```
 
-If action is successful, returns HTTP status `200`.
+If the action is successful, the request returns status code `200`.
 
 Example response:
 
@@ -560,7 +558,7 @@ Example response:
 }
 ```
 
-If action is successful, returns HTTP status `200`.
+If action is successful, returns status code `200`.
 
 Example response:
 

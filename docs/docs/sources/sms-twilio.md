@@ -6,7 +6,11 @@ sidebar_label: SMS - Twilio
 The Twilio sms source provides a channel for sending and receiving SMS using the
 [Twilio API](https://www.twilio.com/).
 
+:::note
+
 This document assumes that you have a Twilio account.
+
+:::
 
 ## Configuration
 
@@ -14,7 +18,7 @@ import TwilioSource from './twilio-source.mdx'
 
 <TwilioSource />
 
-## Connecting a channel
+## Connect a channel
 
 After you created a Twilio phone number you must [point its webhook
 integration](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url)

@@ -214,7 +214,7 @@ helm upgrade airy-apps ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY
 
 ## Network
 
-### Sources
+### Connect Sources
 
 The helm chart creates separate NodePort service for every source with the
 naming convention `sources-SOURCE_NAME-webhook`. These services must be exposed

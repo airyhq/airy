@@ -7,11 +7,15 @@ The Airy Core chat plugin is a fully-featured [source](/glossary.md#source)
 that enables conversations with anonymous website visitors through a web chat
 plugin.
 
-This document covers how to connect a chat plugin as as
-[source](/glossary.md#source), how to install the chat plugin web widget, and
-the HTTP and WebSocket APIs that power it.
+:::tip What you will learn
 
-## Connecting a channel
+- How to connect a chat plugin
+- How to install the chat plugin web widget
+- How to use the HTTP and WebSocket APIs that power the chat plugin
+
+:::
+
+## Connect a channel
 
 Connects a chat plugin source to the Airy Core Platform.
 
@@ -66,7 +70,9 @@ of your chat plugin server. When using the local vagrant environment
 `SCRIPT_HOST` must be set to `chatplugin.airy`.
 
 :::note
+
 `chatplugin.airy` is not publicly accessible. The setup will only work for local web pages.
+
 :::
 
 To test the setup, replace the `CHANNEL_ID` in the URL

@@ -47,7 +47,7 @@ Now you can use the app id and the app secret for the following environment vari
 
 :::note
 
-Refer to the [test](/guides/airy-core-in-test-env) guide or the [production](/guides/airy-core-in-production) one to set these variables in your Airy Core Platform instance.
+Refer to the [test](/guides/airy-core-in-test-env#connect-sources) guide or the [production](/guides/airy-core-in-production#connect-sources) one to set these variables in your Airy Core Platform instance.
 
 :::
 
@@ -60,7 +60,7 @@ a value of your choice.
 
 :::note
 
-Refer to the [test](/guides/airy-core-in-test-env) guide or the [production](/guides/airy-core-in-production) one to set these variables in your Airy Core Platform instance.
+Refer to the [test](/guides/airy-core-in-test-env#connect-sources) guide or the [production](/guides/airy-core-in-production#connect-sources) one to set these variables in your Airy Core Platform instance.
 
 :::
 

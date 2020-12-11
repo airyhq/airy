@@ -26,13 +26,13 @@ Here's an outline of the process:
   - We merge the release branch into `main`, tag `main` with `x.y.z`and push to `main`:
     - `git checkout main`
     - `git pull origin main`
-    - `git merge release/x.y.z`
+    - `git merge --no-ff release/x.y.z`
     - `git tag x.y.z`
     - `git push origin main`
     - `git push origin x.y.z`
   - We merge the release branch back into `develop`:
     - `git checkout develop`
-    - `git merge release/x.y.z`
+    - `git merge --no-ff release/x.y.z`
     - `git push origin develop`
   - We archive cards in the done column of the [work in progress](https://github.com/airyhq/airy/projects/1) board
   - We rename the current draft release to `x.y.z` and publish it

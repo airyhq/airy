@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"log"
 
 	"apiclient"
 	"apiclient/payloads"
@@ -20,25 +21,29 @@ var AuthCmd = &cobra.Command{
 
 func auth(cmd *cobra.Command, args []string) {
 	url, _ := cmd.Flags().GetString("url")
+	email, _ := cmd.Flags().GetString("email")
+	password, _ := cmd.Flags().GetString("password")
 	c := apiclient.NewClient()
 	c.BaseURL = url
 
-	loginRequestPayload := payloads.LoginRequestPayload{Email: "grace@example.com", Password: "the_answer_is_42"}
+	loginRequestPayload := payloads.LoginRequestPayload{Email: email, Password: password}
 
 	res, err := c.Login(loginRequestPayload)
 	if err != nil {
-		signupRequestPayload := payloads.SignupRequestPayload{FirstName: "Grace", LastName: "Hopper", Email: "grace@example.com", Password: "the_answer_is_42"}
+		signupRequestPayload := payloads.SignupRequestPayload{FirstName: "Firstname", LastName: "Lastname", Email: email, Password: password}
 		res, err := c.Signup(signupRequestPayload)
 		if err != nil {
-			fmt.Println(err)
-			return
+			log.Fatal(err)
 		}
 		fmt.Println(res.Token)
+		return
 	}
 	fmt.Println(res.Token)
 }
 
 func init() {
-	var url string
+	var url, email, password string
 	AuthCmd.Flags().StringVarP(&url, "url", "u", "http://api.airy", "The url of the Airy api")
+	AuthCmd.Flags().StringVarP(&email, "email", "e", "grace@hopper.com", "Email to use for the authentication")
+	AuthCmd.Flags().StringVarP(&password, "password", "p", "the_answer_is_42", "Password to use for the authentication")
 }

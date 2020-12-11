@@ -28,7 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
-@TestPropertySource(value = "classpath:test.properties")
+@TestPropertySource(value = "classpath:test.properties", properties = {
+        "ALLOWED_ORIGINS=origin1,origin2",
+})
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 public class WebhooksControllerTest {

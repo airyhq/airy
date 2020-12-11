@@ -7,3 +7,11 @@ go_library(
     visibility = ["//visibility:public"],
     deps = ["@com_github_go_redis_redis_v8//:go_default_library"],
 )
+
+go_library(
+    name = "go_default_library",
+    srcs = ["queue.go"],
+    importpath = "scheduler/pkg/scheduler/queue",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_go_redis_redis_v8//:go_default_library"],
+)

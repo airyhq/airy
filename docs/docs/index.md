@@ -81,7 +81,7 @@ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 }" api.airy/channels.connect
 ```
 
-<img alt="channels_connect" src={useBaseUrl('img/channels_connect.gif')} />
+<img alt="channels_connect" src={useBaseUrl('img/home/channels_connect.gif')} />
 
 The id from the response is the `channel_id`, note it down as it's required in
 the next steps.
@@ -98,13 +98,13 @@ http://chatplugin.airy/example.html?channel_id=<channel_id>
 
 You can now type a message in the text box and send it 🎉
 
-<img alt="chatplugin working" src={useBaseUrl('img/chatplugin.gif')} />
+<img alt="chatplugin working" src={useBaseUrl('img/home/chatplugin.gif')} />
 
 To see how messages are flowing through the system, you can now [list
 conversations](api/http.md#list-conversations) for the channel you just created
 which should return the message you just sent.
 
-<img alt="conversations.list" src={useBaseUrl('img/conversation.list.jpg')} />
+<img alt="conversations.list" src={useBaseUrl('img/home/conversation.list.jpg')} />
 
 ```bash
 curl -H "Content-Type: application/json" -H "Authorization: $token" -d "{}" \
@@ -123,4 +123,4 @@ kafka-console-consumer \
 --from-beginning
 ```
 
-<img alt="Kafka Topic" src={useBaseUrl('img/kafka.gif')} />
+<img alt="Kafka Topic" src={useBaseUrl('img/home/kafka.gif')} />

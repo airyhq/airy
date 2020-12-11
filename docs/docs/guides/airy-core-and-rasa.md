@@ -1,5 +1,5 @@
 ---
-title: How to connect the Airy Core Platform to Rasa
+title: How to connect the Airy Core Platform and Rasa
 sidebar_label: Connecting Rasa
 ---
 
@@ -9,7 +9,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 - How to forward Airy Core Platform messages to Rasa
 - How to configure Rasa to receive and reply to messages using Airy
-  :::
+
+:::
 
 > Rasa is an open source machine learning framework for automated text and voice-based conversations.
 > Understand messages, hold conversations, and connect to messaging channels and APIs.
@@ -32,9 +33,10 @@ Airy Core Platform to send and receive messages.
 
 :::note Prerequisites
 
-- A running Airy Core Platform installation [[Get Started](index.md#bootstrapping-the-airy-core-platform)]
-- A local Rasa setup: For convenience, we recommend the Docker one [[Guide](https://rasa.com/docs/rasa/docker/building-in-docker/)] or [a demo repository](https://github.com/airyhq/rasa-demo) we created for this guide
-  :::
+- A running Airy Core Platform installation [Get Started](index.md#bootstrapping-the-airy-core-platform)
+- A local Rasa setup: For convenience, we recommend [the Docker setup](https://rasa.com/docs/rasa/docker/building-in-docker/) or [a demo repository](https://github.com/airyhq/rasa-demo) we created for this guide
+
+:::
 
 ## Configuring Airy
 
@@ -42,7 +44,7 @@ The Airy Core Platform can forward messages from your sources (Messenger,
 WhatsApp etc.) to downstream messaging frameworks like Rasa, which can in turn
 reply using the Airy Core Platform API.
 
-To do this we follow the [Webhook documentation](api/webhook.md) to forward in-
+To do this we follow the [webhook documentation](api/webhook.md) to forward in-
 and outbound messages to Rasa. When doing so set the `url` parameter so that it
 points to your Rasa installation. If it is running locally you can obtain a
 public url by using [ngrok](https://ngrok.com/). Run:
@@ -52,7 +54,7 @@ ngrok http 5005
 ```
 
 to get an ngrok URL that points to your local Rasa installation at
-`localhost:5005`. With the public ngrok url your Webhook subscription payload
+`localhost:5005`. With the public ngrok URL your webhook subscription payload
 should look like so:
 
 ```json
@@ -89,7 +91,7 @@ channels.airy.AiryInput:
   auth_token: "http://api.airy"
 ```
 
-Now you should have a working integration 🎉 .
+Now you should have a working integration 🎉.
 
 To test the connection write a message to one of your channels: The Airy Core
 Platform will forward it to your Rasa installation, which will respond using the

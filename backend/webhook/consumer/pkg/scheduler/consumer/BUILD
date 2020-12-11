@@ -11,3 +11,14 @@ go_library(
         "@com_github_go_redis_redis_v8//:go_default_library",
     ],
 )
+
+go_library(
+    name = "go_default_library",
+    srcs = ["consumer.go"],
+    importpath = "scheduler/pkg/scheduler/consumer",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//backend/webhook/consumer/pkg/scheduler/queue",
+        "@com_github_go_redis_redis_v8//:go_default_library",
+    ],
+)

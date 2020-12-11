@@ -43,7 +43,7 @@ func auth(cmd *cobra.Command, args []string) {
 
 func init() {
 	var url, email, password string
-	AuthCmd.Flags().StringVarP(&url, "url", "u", "http://api.airy", "The url of the Airy api")
+	AuthCmd.Flags().StringVarP(&url, "url", "u", "http://api.airy", "The url of the Airy API")
 	AuthCmd.Flags().StringVarP(&email, "email", "e", "grace@hopper.com", "Email to use for the authentication")
 	AuthCmd.Flags().StringVarP(&password, "password", "p", "the_answer_is_42", "Password to use for the authentication")
 }

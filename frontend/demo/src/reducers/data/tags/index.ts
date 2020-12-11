@@ -1,6 +1,9 @@
-import {ADD_TAGS_TO_STORE, UPSERT_TAG, DELETE_TAG, EDIT_TAG, ERROR_TAG, SET_TAG_FILTER} from '../../../actions/tags';
+import {ActionType, getType} from 'typesafe-actions';
+import * as actions from '../../../actions/tags';
 import {Tag} from '../../../model/Tag';
 import {DataState} from '../../data';
+
+type Action = ActionType<typeof actions>;
 
 export type TagState = {
   data: DataState;
@@ -18,7 +21,7 @@ const defaultState = {
   error: '',
 };
 
-const errorMessage = status => {
+const errorMessage = (status: number | string) => {
   switch (status) {
     case 'empty':
       return 'Please enter a name for the tag';
@@ -32,47 +35,45 @@ const errorMessage = status => {
   }
 };
 
-export default function tagsReducer(state = defaultState, action): Tags {
+export default function tagsReducer(state = defaultState, action: Action): any {
   switch (action.type) {
-    case ADD_TAGS_TO_STORE:
+    case getType(actions.fetchTagAction):
       return {
         ...state,
-        all: action.tagData,
+        all: action.payload,
       };
-    case DELETE_TAG:
+    case getType(actions.deleteTagAction):
       return {
         ...state,
-        all: state.all.filter(tag => tag.id !== action.tagData.tag_id),
+        all: state.all.filter((tag: Tag) => tag.id !== action.payload),
       };
-    case UPSERT_TAG:
+    case getType(actions.addTagAction):
       let updatedTag = false;
-      const mappedTags = state.all.map(tag => {
-        if (tag.id === action.tagData.id) {
+      const mappedTags = state.all.map((tag: Tag) => {
+        if (tag.id === action.payload.id) {
           updatedTag = true;
           return {
             ...tag,
-            ...action.tagData,
+            ...action.payload,
           };
         }
-
         return tag;
       });
-
       return {
         ...state,
-        all: updatedTag ? mappedTags : state.all.concat([action.tagData]),
+        all: updatedTag ? mappedTags : state.all.concat([action.payload]),
       };
-    case EDIT_TAG:
+    case getType(actions.editTagAction):
       return {
         ...state,
-        all: state.all.map(tag => (tag.id === action.tagData.id ? action.tagData : tag)),
+        all: state.all.map((tag: Tag) => (tag.id === action.payload.id ? action.payload : tag)),
       };
-    case ERROR_TAG:
+    case getType(actions.errorTagAction):
       return {
         ...state,
-        error: errorMessage(action.tagData.status),
+        error: errorMessage(action.payload),
       };
-    case SET_TAG_FILTER:
+    case getType(actions.filterTagAction):
       return {
         ...state,
         query: action.payload,

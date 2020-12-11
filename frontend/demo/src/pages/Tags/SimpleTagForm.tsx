@@ -9,7 +9,7 @@ import Dialog from '../../components/Dialog';
 import ColorSelector from '../../components/ColorSelector';
 
 import Tag from '../../pages/Tags/Tag';
-import {Tag as TagModel, CreateTagRequestPayload} from '../../model/Tag';
+import {Tag as TagModel, CreateTagRequestPayload, ErrorTag} from '../../model/Tag';
 
 import styles from './SimpleTagForm.module.scss';
 import {RootState} from '../../reducers';
@@ -17,7 +17,7 @@ import {RootState} from '../../reducers';
 type SimpleTagFormProps = {
   errorMessage: string;
   createTag: (CreateTagRequestPayload) => Promise<boolean>;
-  errorTag: (status: any) => void;
+  errorTag: (ErrorTag) => void;
   onClose: () => void;
   tags: TagModel[];
 };
@@ -42,7 +42,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
   };
 
   const keyPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const code = e.key || e.which;
+    const code = e.keyCode || e.which;
     if (code === 13) {
       handleCreate();
     } else if (code === 27) {

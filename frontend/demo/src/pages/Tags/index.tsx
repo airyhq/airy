@@ -8,12 +8,14 @@ import plus from '../../assets/images/icons/plus.svg';
 import {getTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
 import {fakeSettingsAPICall} from '../../actions/settings';
 import {filteredTags} from '../../selectors/tags';
+import {Tag} from '../../model/Tag';
 
 import styles from './index.module.scss';
 import {TableRow} from './TableRow';
 import SimpleTagForm from './SimpleTagForm';
 import EmptyStateTags from './EmptyStateTags';
 import {RootState} from '../../reducers';
+import {ModalType} from '../../model/Tag';
 
 const initialState = {
   modal: {
@@ -45,7 +47,7 @@ class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof i
 
   handleDelete = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();
-    this.setState(state => {
+    this.setState((state: ModalType) => {
       return {
         modal: {
           ...state.modal,
@@ -62,7 +64,7 @@ class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof i
     this.props.errorTag('');
   };
 
-  keyPressed = (e: any) => {
+  keyPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const code = e.keyCode || e.which;
     if (code === 13) {
       e.preventDefault();
@@ -102,7 +104,7 @@ class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof i
       this.props.deleteTag(this.state.modal.tagId);
       this.closeModal();
     } else {
-      this.setState(state => {
+      this.setState((state: ModalType) => {
         return {
           modal: {
             ...state.modal,
@@ -179,7 +181,7 @@ class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof i
                   <th />
                 </tr>
                 {tags &&
-                  tags.map((tag, idx) => {
+                  tags.map((tag: Tag, idx: number) => {
                     return <TableRow key={idx} tag={tag} showModal={this.showModal} />;
                   })}
               </tbody>

@@ -1,7 +1,7 @@
 import React, {createRef, useCallback} from 'react';
 
-import closeIcon from '@airyhq/components/src/assets/images/icons/close.svg';
-import searchIcon from '@airyhq/components/src/assets/images/icons/search.svg';
+import closeIcon from '../assets/images/icons/close.svg';
+import searchIcon from '../assets/images/icons/search.svg';
 import styles from './style.module.scss';
 
 type SearchFieldProps = {

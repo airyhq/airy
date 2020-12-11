@@ -115,14 +115,25 @@ load("@maven//:defs.bzl", "pinned_maven_install")
 pinned_maven_install()
 
 ### Golang tooling
-
 # This needs to come before any rules_docker usage as it brings its own version of Gazelle
+http_archive(
+    name = "bazel_gazelle",
+    sha256 = "b85f48fa105c4403326e9525ad2b2cc437babaa6e15a3fc0b1dbab0ab064bc7c",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.22.2/bazel-gazelle-v0.22.2.tar.gz",
+        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.22.2/bazel-gazelle-v0.22.2.tar.gz",
+    ],
+)
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
 go_rules_dependencies()
 
 go_register_toolchains()
+
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+
+gazelle_dependencies()
 
 git_repository(
     name = "com_google_protobuf",

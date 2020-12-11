@@ -3,34 +3,31 @@ title: API
 sidebar_label: HTTP
 ---
 
-This documents aims to offer an high-level overview of the different parts that
-compose our API.
+This documents offers a high-level overview of the different parts that
+compose the Airy API.
 
 ## Introduction
 
-Our HTTP endpoints adhere to the following conventions:
+The HTTP endpoints adhere to the following conventions:
 
 - Endpoints only accept `POST` JSON requests.
-- Except for the `/users.login` and `/users.signup` endpoints, communication
-  always requires a valid [JWT token](#authorization).
-- We use dots for name-spacing URLS (eg `/things.add`).
+- Communication always requires a valid [JWT token](#authorization), except for `/users.login` and `/users.signup` endpoints. 
+- We use dots for namespacing URLs (eg `/things.add`).
 
 ## Authentication
 
-In order to communicate with our API endpoints, you need a valid
-[JWT](https://jwt.io/) token. To get a valid token you need to use the login endpoint
-[login](#login).
-
-The login endpoints returns a short-lived JWT token you can use for API requests
+In order to communicate with the API endpoints, you need a valid
+[JWT](https://jwt.io/) token. Get a valid token by sending a request to the login endpoint
+[login](#login). It returns short-lived JWT token you can use for API requests.
 
 ### Login
 
-As the purpose of this endpoint is to obtain valid JWT tokens, this endpoint
-does not require a valid token to be present in the headers.
+As the purpose of this endpoint is to obtain valid JWT tokens, it
+does not require a valid token to be present in the header.
 
 `POST /users.login`
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -39,7 +36,7 @@ does not require a valid token to be present in the headers.
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json
 {
@@ -52,7 +49,7 @@ does not require a valid token to be present in the headers.
 
 ## Endpoints
 
-The way we group endpoints reflects the high level entities of the [Airy Core Data
+The grouping of endpoints reflects the high-level entities of the [Airy Core Data
 Model](glossary.md).
 
 ### Users
@@ -64,7 +61,7 @@ information.
 
 `POST /users.signup`
 
-**Sample Request**
+**Sample request**
 
 ```json
 {
@@ -75,9 +72,9 @@ information.
 }
 ```
 
-The password _MUST_ be at least 6 (six) characters long
+The password must be at least 6 characters long.
 
-**Sample Response**
+**Sample response**
 
 ```json
 {
@@ -97,7 +94,7 @@ This endpoint returns the same response as the login.
 This endpoint sets a new password given a valid reset token. Used or expired
 tokens produce errors.
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -106,13 +103,13 @@ tokens produce errors.
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {}
 ```
 
-The new password _MUST_ be at least 6 (six) characters long
+The new password must be at least 6 characters long.
 
 ### Conversations
 
@@ -130,9 +127,9 @@ This is a [paginated](#pagination) endpoint.
 This endpoint allows you to query conversations using the human readable [Lucene Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html).
 You can query on all fields defined in [this class](https://github.com/airyhq/airy/blob/main/backend/api/communication/src/main/java/co/airy/core/api/communication/dto/ConversationIndex.java).
 
-**Sample Request**
+**Sample request**
 
-Find all users with the last name "Lovelace".
+Find all users with the last name "Lovelace":
 
 ```json5
 {
@@ -142,7 +139,7 @@ Find all users with the last name "Lovelace".
 }
 ```
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -151,7 +148,7 @@ Find all users with the last name "Lovelace".
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -204,7 +201,7 @@ Find all users with the last name "Lovelace".
 
 `POST /conversations.info`
 
-**Sample Request**
+**Sample request**
 
 ```json
 {
@@ -212,7 +209,7 @@ Find all users with the last name "Lovelace".
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -255,9 +252,9 @@ Find all users with the last name "Lovelace".
 
 `POST /conversations.read`
 
-Resets the unread count of a conversation and returns `202 (Accepted)`.
+Resets the unread count of a conversation and returns status code `202 (Accepted)`.
 
-**Sample Request**
+**Sample request**
 
 ```json
 {
@@ -265,7 +262,7 @@ Resets the unread count of a conversation and returns `202 (Accepted)`.
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {}
@@ -273,11 +270,11 @@ Resets the unread count of a conversation and returns `202 (Accepted)`.
 
 #### Tag a conversation
 
-Tags an existing conversation with an existing tag. Returns 200 if successful.
+Tags an existing conversation with an existing tag. Returns status code 200 if successful.
 
 `POST /conversations.tag`
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -286,7 +283,7 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {}
@@ -296,7 +293,7 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 
 `POST /conversations.untag`
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -305,7 +302,7 @@ Tags an existing conversation with an existing tag. Returns 200 if successful.
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {}
@@ -320,9 +317,9 @@ information.
 
 `POST /messages.list`
 
-This is a [paginated](#pagination) endpoint and messages are sorted from oldest to latest.
+This is a [paginated](#pagination) endpoint. Messages are sorted from oldest to latest.
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -332,7 +329,7 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -368,7 +365,7 @@ This is a [paginated](#pagination) endpoint and messages are sorted from oldest 
 
 Sends a message to a conversation and returns a payload.
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -379,7 +376,7 @@ Sends a message to a conversation and returns a payload.
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -401,17 +398,16 @@ Sends a message to a conversation and returns a payload.
 
 ### Channels
 
-#### Connecting Channels
+#### Connecting channels
 
 `POST /channels.connect`
 
-A synchronous endpoint that makes a request to the source on behalf of the user
+A synchronous endpoint that makes a request to the source
 to connect the channel.
 
-This action is idempotent, so if the channel is already connected the status
-will be `202`.
+This action is idempotent, so if the channel is already connected, the request returns status code `202`.
 
-Connecting a channel is source specific by nature, refer to the relevant documentation for the correct payload:
+Connecting a channel is source-specific by nature, refer to the relevant documentation for the correct payload:
 
 - [Facebook](../sources/facebook.md#connecting-a-channel)
 - [Google](../sources/google.md#connecting-a-channel)
@@ -422,14 +418,14 @@ Connecting a channel is source specific by nature, refer to the relevant documen
 
 `POST /channels.disconnect`
 
-A synchronous endpoint that makes a request to the source on behalf of the user
+A synchronous endpoint that makes a request to the source
 to disconnect the channel. It marks the channel as disconnected and deletes the
 auth token.
 
-This action is idempotent, so if the channel is disconnected the status will be `202`.
-If the channel is unknown, the response status will be `400`.
+This action is idempotent, so if the channel is disconnected, the request returns status code `202`.
+If the channel is unknown, the request returns status code `400`.
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -437,14 +433,14 @@ If the channel is unknown, the response status will be `400`.
 }
 ```
 
-#### Explore Channels
+#### Explore channels
 
 `POST /channels.explore`
 
-A synchronous endpoint that makes a request to the source on behalf of the user
-to list all the channels that are available. Some of those channels may already
+A synchronous endpoint that makes a request to the source
+to list all the available channels. Some of those channels may already
 be connected, which is accounted for in the boolean field `connected`. Due to
-the nature of the request, response time may vary.
+the nature of the request, the response time may vary.
 
 <!-- TODO move this section to source specific documentation -->
 
@@ -452,7 +448,7 @@ The request requires an authentication `token`, which has a different meaning fo
 
 - `facebook` The user access token
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -461,7 +457,7 @@ The request requires an authentication `token`, which has a different meaning fo
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -483,11 +479,11 @@ The request requires an authentication `token`, which has a different meaning fo
 }
 ```
 
-#### List Channels
+#### List channels
 
 `POST /channels.list`
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -515,7 +511,7 @@ The request requires an authentication `token`, which has a different meaning fo
 
 `POST /tags.create`
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -524,9 +520,9 @@ The request requires an authentication `token`, which has a different meaning fo
 }
 ```
 
-If the tag is successfully created the endpoint will return `201` (created) with the tag id in the response body.
+If the tag is successfully created, the request returns status code `201` (created) with the tag ID in the response body.
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -538,7 +534,7 @@ If the tag is successfully created the endpoint will return `201` (created) with
 
 `POST /tags.update`
 
-**Sample Request**
+**Sample request**
 
 ```json
 {
@@ -548,9 +544,9 @@ If the tag is successfully created the endpoint will return `201` (created) with
 }
 ```
 
-If action is successful, returns HTTP status `200`.
+If action is successful, the request returns status code `200`.
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {}
@@ -560,7 +556,7 @@ If action is successful, returns HTTP status `200`.
 
 `POST /tags.delete`
 
-**Sample Request**
+**Sample request**
 
 ```json
 {
@@ -570,7 +566,7 @@ If action is successful, returns HTTP status `200`.
 
 If action is successful, returns HTTP status `200`.
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {}
@@ -580,7 +576,7 @@ If action is successful, returns HTTP status `200`.
 
 `POST /tags.list`
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -596,9 +592,9 @@ If action is successful, returns HTTP status `200`.
 
 ## Pagination
 
-By default, paginated endpoints return at max 20 elements of the first page.
+By default, paginated endpoints return a maximum of 20 elements on the first page.
 
-The size of the returned page can be controller via the `page_size` field of the
+The size of the returned page can be controlled by the `page_size` field of the
 body. You can move back and forth between pages using the `cursor` field of the
 body.
 
@@ -633,12 +629,12 @@ The response comes in two parts:
 
   - `previous_cursor`
 
-    The id of first elements in the previous page of data. Empty if the returned
+    The ID of first elements in the previous page of data. Empty if the returned
     page is the first one.
 
   - `next_cursor`
 
-    The id of first elements in the next page of data. Empty if the returned
+    The ID of first elements in the next page of data. Empty if the returned
     page is the last one.
 
   - `filtered_total`
@@ -653,7 +649,7 @@ The response comes in two parts:
 
 ### Metadata
 
-Please refer to our [metadata](glossary.md#metadata) definition for more
+Refer to our [metadata](glossary.md#metadata) definition for more
 information.
 
 ### Setting metadata
@@ -668,7 +664,7 @@ information.
 }
 ```
 
-This endpoint returns `200` if the operation was successful and `400` otherwise.
+The endpoint returns status code `200` if the operation was successful, and `400` if not.
 
 ### Removing metadata
 
@@ -681,4 +677,4 @@ This endpoint returns `200` if the operation was successful and `400` otherwise.
 }
 ```
 
-This endpoint returns `200` if the operation was successful and `500` otherwise.
+This endpoint returns status code `200` if the operation was successful, and `500` if not.

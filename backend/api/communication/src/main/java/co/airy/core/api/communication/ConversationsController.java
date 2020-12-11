@@ -20,7 +20,9 @@ import co.airy.payload.response.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +48,7 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.list")
-    ResponseEntity<ConversationListResponsePayload> conversationList(@RequestBody @Valid ConversationListRequestPayload requestPayload) throws Exception {
+    ResponseEntity<?> conversationList(@RequestBody @Valid ConversationListRequestPayload requestPayload) throws Exception {
         final String queryFilter = requestPayload.getFilters();
         if (queryFilter == null) {
             return listConversations(requestPayload);
@@ -55,12 +57,21 @@ public class ConversationsController {
         return queryConversations(requestPayload);
     }
 
-    private ResponseEntity<ConversationListResponsePayload> queryConversations(ConversationListRequestPayload requestPayload) throws Exception {
+    private ResponseEntity<?> queryConversations(ConversationListRequestPayload requestPayload) throws Exception {
         final ReadOnlyLuceneStore conversationLuceneStore = stores.getConversationLuceneStore();
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
 
         final QueryParser simpleQueryParser = new QueryParser("id", new WhitespaceAnalyzer());
-        final LuceneQueryResult queryResult = conversationLuceneStore.query(simpleQueryParser.parse(requestPayload.getFilters()));
+
+        final Query query;
+        try {
+            query = simpleQueryParser.parse(requestPayload.getFilters());
+        } catch (ParseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new RequestErrorResponsePayload("Failed to parse Lucene query: " + e.getMessage()));
+        }
+
+        final LuceneQueryResult queryResult = conversationLuceneStore.query(query);
 
         final List<ConversationIndex> conversationIndices = queryResult.getConversations();
 

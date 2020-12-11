@@ -5,7 +5,7 @@ import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dao.UserDAO;
 import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Mail;
-import co.airy.spring.auth.Jwt;
+import co.airy.spring.jwt.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.JsonNode;

@@ -1,39 +1,8 @@
 #!/bin/bash
-
 set -euo pipefail
 IFS=$'\n\t'
-
-content_type='Content-Type: application/json'
-
-
-function apiCall {
-  local endpoint=${1}
-  local request_payload=${2}
-  local expected_http_response_code=${3}
-  local token=${4:-no-auth}
-  local host=${5:-api}
-  local url="${host}.airy/${endpoint}"
-
-  if [ "$token" = "no-auth" ]; then
-      response=$(curl -H ${content_type} -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
-    else
-      response=$(curl -H ${content_type} -H "Authorization: $token" -s -w "%{stderr}%{http_code}\n" ${url} -d ${request_payload} 2>&1)
-  fi
-  response_http_code=$(head -1 <<< "${response}")
-  response_payload=$(tail -1 <<< "${response}")
-
-  if [ "${response_http_code}" != "${expected_http_response_code}" ]; then
-    >&2 echo "${url} response code was ${response_http_code}. expected: ${expected_http_response_code}"
-    exit
-  fi
-
-  echo ${response_payload}
-}
-
-function extractFromPayload {
-  local payload=$(tail -1 <<< "${1}")
-  echo ${payload} | jq -r ".${2}"
-}
+SCRIPT_PATH=$(dirname ${BASH_SOURCE[0]})
+source ${SCRIPT_PATH}/lib/api.sh
 
 login_response=$(apiCall "users.login" '{"email":"grace@example.com","password":"the_answer_is_42"}' 200)
 

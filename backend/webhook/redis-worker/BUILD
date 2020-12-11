@@ -12,19 +12,12 @@ go_binary(
 
 go_image(
     name = "image",
-    embed = [":go_default_library"],
+    embed = [":redis-worker_lib"],
 )
 
 container_push(
     registry = "ghcr.io/airyhq/webhook",
     repository = "consumer",
-)
-
-go_library(
-    name = "scheduler_lib",
-    srcs = ["main.go"],
-    importpath = "scheduler",
-    visibility = ["//visibility:private"],
 )
 
 go_library(

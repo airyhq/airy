@@ -6,7 +6,6 @@ ARCH=$(uname -m)
 OS=$(uname)
 SCRIPT_PATH=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
-AIRY_VERSION=${AIRY_VERSION:-latest}
 infra_path=""
 infra_path+=$( dirname $SCRIPT_PATH )
 infra_path+="/infrastructure"
@@ -124,4 +123,23 @@ fi
 
 cd $infra_path
 vagrant destroy -f
+
+if [ -z ${AIRY_VERSION+x} ]; then
+    branch_name="$(git symbolic-ref HEAD 2>/dev/null)" ||
+    branch_name="(unnamed branch)"     # detached HEAD
+
+    branch_name=${branch_name##refs/heads/}
+    case "$branch_name" in
+        develop )
+            AIRY_VERSION=beta
+            ;;
+        release* )
+            AIRY_VERSION=release
+            ;;
+        * )
+            AIRY_VERSION=latest
+            ;;
+    esac
+fi
+
 AIRY_VERSION=${AIRY_VERSION} vagrant up

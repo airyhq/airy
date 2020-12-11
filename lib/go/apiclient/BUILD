@@ -3,7 +3,7 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "go_default_library",
+    name = "apiclient",
     srcs = [
         "apiclient.go",
         "users.go",
@@ -11,5 +11,5 @@ go_library(
     importmap = "lib/go",
     importpath = "apiclient",
     visibility = ["//visibility:public"],
-    deps = ["//lib/go/apiclient/payloads:go_default_library"],
+    deps = ["//lib/go/apiclient/payloads"],
 )

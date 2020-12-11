@@ -38,7 +38,7 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
         dispatch(addTagAction(tag));
         return Promise.resolve(true);
       })
-      .catch(error => {
+      .catch((error: string) => {
         dispatch(errorTagAction(error));
         return Promise.resolve(false);
       });

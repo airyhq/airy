@@ -7,7 +7,7 @@ import styles from './Tag.module.scss';
 import {RootState} from '../../reducers';
 import {TagSettings} from '../../model/Tag';
 
-type tagProps = {
+type TagProps = {
   tag: TagModel;
   expanded?: boolean;
   onClick?: () => void;
@@ -20,7 +20,7 @@ type tagState = {
   tagSettings: TagSettings;
 };
 
-export const Tag = ({tag, expanded, variant, onClick, removeTagFromContact, tagSettings}: tagProps & tagState) => {
+export const Tag = ({tag, expanded, variant, onClick, removeTagFromContact, tagSettings}: TagProps & tagState) => {
   const tagColor = (tagSettings && tagSettings.colors[tag.color]) || {
     background: 'F1FAFF',
     border: '1578D4',

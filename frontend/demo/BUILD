@@ -21,6 +21,7 @@ ts_library(
         "@npm//react-router-dom",
         "@npm//redux",
         "@npm//redux-starter-kit",
+        "@npm//reselect",
         "@npm//typesafe-actions",
     ],
 )

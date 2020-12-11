@@ -15,6 +15,8 @@ const applicationReducer = combineReducers<StateModel>({
   data,
 });
 
+export type RootState = ReturnType<typeof applicationReducer>;
+
 const rootReducer: (state: any, action: any) => CombinedState<StateModel> = (state, action) => {
   if (action.type === getType(authActions.logoutUserAction)) {
     clearUserData();

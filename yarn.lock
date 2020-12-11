@@ -3,9 +3,9 @@
 
 
 "@airyhq/components@latest":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@airyhq/components/-/components-0.4.4.tgz#10a6461eeecf63e9f47a0701b29efefaaf4ef10f"
-  integrity sha512-zgb2uYtffZiD4/gzPmfbe0kHT2cGyTrK7jcgXIFQg23zHmZaIy0zCcBkCP29yuTr60w3Y0J+RPTruqLFfP6QPA==
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/@airyhq/components/-/components-0.4.8.tgz#5fca05ebbcd1195d70075b35c1f48cc32b3b0056"
+  integrity sha512-qxdNLgMukxHq5cFacdOTPRC/Km8zHrJf0y2UoE0KcCfPMc7dzh1ziM5EFoHtxsIQJkhPlzcYyNaZxA6IpTdBLQ==
   dependencies:
     "@crello/react-lottie" "^0.0.9"
     emoji-mart "^3.0.0"
@@ -6697,7 +6697,7 @@ require-main-filename@^2.0.0:
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-2.0.0.tgz#d0b329ecc7cc0f61649f62215be69af54aa8989b"
   integrity sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
 
-reselect@^4.0.0:
+reselect@4.0.0, reselect@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.0.0.tgz#f2529830e5d3d0e021408b246a206ef4ea4437f7"
   integrity sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA==

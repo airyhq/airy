@@ -5,19 +5,19 @@ sidebar_label: Architecture
 
 ## Overview
 
-The Airy Core Platform is a messaging platform comprised of a backend and frontend system.
+The Airy Core Platform is a messaging platform that contains a backend and frontend system.
 
-The `backend` system is a streaming platform and its role is to:
+The `backend` system is a streaming platform. Its role is to:
 
 - Ingest conversational events from different sources (mostly via webhook
-  integrations), process them and store them in an Apache Kafka cluster
-- Once processed, the events are available and accessible through an [API](api/http.md)
-- Expose conversational events via a [webhook](api/webhook.md) integration
-- Manage authentication and authorization features
+  integrations), process them, and store them in an Apache Kafka cluster.
+- Make the processed events available and accessible through the Airy [API](api/http.md).
+- Expose conversational events via a [webhook](api/webhook.md) integration.
+- Manage authentication and authorization features.
 
-The `frontend` system is comprised of a demo application and the JavaScript integration of the [Chat Plugin](sources/chat-plugin.md).
+The `frontend` system contains a demo application and the JavaScript integration of the [Chat Plugin](sources/chat-plugin.md).
 
-Having that in mind, these are the docker containers or the `Airy apps` which run as part of the Airy Core Platform:
+Having that in mind, these are the docker containers – or the `Airy apps` – which run as part of the Airy Core Platform:
 
 ## Sources
 

@@ -5,7 +5,7 @@ sidebar_label: Contributing
 
 We ❤️ every form of contribution. The following document aims to provide enough
 context to work with our codebase and to open pull requests that follow our
-convention. If this document does not provide enough help, open a [new
+conventions. If this document does not provide enough help, open a [new
 issue](https://github.com/airyhq/airy/issues/new) and we'll gladly help you get
 started.
 

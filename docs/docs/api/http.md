@@ -1,5 +1,5 @@
 ---
-title: API
+title: HTTP
 sidebar_label: HTTP
 ---
 
@@ -11,19 +11,21 @@ compose the Airy API.
 The HTTP endpoints adhere to the following conventions:
 
 - Endpoints only accept `POST` JSON requests.
-- Communication always requires a valid [JWT token](#authorization), except for `/users.login` and `/users.signup` endpoints. 
+- Communication always requires a valid [JWT token](#authorization), except for
+  `/users.login` and `/users.signup` endpoints.
 - We use dots for namespacing URLs (eg `/things.add`).
 
 ## Authentication
 
 In order to communicate with the API endpoints, you need a valid
-[JWT](https://jwt.io/) token. Get a valid token by sending a request to the login endpoint
-[login](#login). It returns short-lived JWT token you can use for API requests.
+[JWT](https://jwt.io/) token. Get a valid token by sending a request to the
+login endpoint [login](#login). It returns short-lived JWT token you can use for
+API requests.
 
 ### Login
 
 As the purpose of this endpoint is to obtain valid JWT tokens, it
-does not require a valid token to be present in the header.
+does not require a valid token to be present in the headers.
 
 `POST /users.login`
 
@@ -49,8 +51,8 @@ does not require a valid token to be present in the header.
 
 ## Endpoints
 
-The grouping of endpoints reflects the high-level entities of the [Airy Core Data
-Model](glossary.md).
+The grouping of endpoints reflects the high-level entities of the [Airy Core
+Data Model](glossary.md).
 
 ### Users
 
@@ -72,7 +74,7 @@ information.
 }
 ```
 
-The password must be at least 6 characters long.
+The password **must** be at least 6 characters long.
 
 **Sample response**
 
@@ -87,30 +89,6 @@ The password must be at least 6 characters long.
 
 This endpoint returns the same response as the login.
 
-#### Reset password
-
-`POST /users.password-reset`
-
-This endpoint sets a new password given a valid reset token. Used or expired
-tokens produce errors.
-
-**Sample request**
-
-```json5
-{
-  token: "a-valid-reset-token",
-  new_password: "i-hope-i-will-remember-this-one"
-}
-```
-
-**Sample response**
-
-```json5
-{}
-```
-
-The new password must be at least 6 characters long.
-
 ### Conversations
 
 Please refer to our [conversation](glossary.md#conversation) definition
@@ -124,8 +102,10 @@ This is a [paginated](#pagination) endpoint.
 
 **Filtering**
 
-This endpoint allows you to query conversations using the human readable [Lucene Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html).
-You can query on all fields defined in [this class](https://github.com/airyhq/airy/blob/main/backend/api/communication/src/main/java/co/airy/core/api/communication/dto/ConversationIndex.java).
+This endpoint allows you to query conversations using the human readable [Lucene
+Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html). You
+can query on all fields defined in [this
+class](https://github.com/airyhq/airy/blob/main/backend/api/communication/src/main/java/co/airy/core/api/communication/dto/ConversationIndex.java).
 
 **Sample request**
 
@@ -270,7 +250,7 @@ Resets the unread count of a conversation and returns status code `202 (Accepted
 
 #### Tag a conversation
 
-Tags an existing conversation with an existing tag. Returns status code 200 if successful.
+Tags an existing conversation with an existing tag. Returns status code `200` if successful.
 
 `POST /conversations.tag`
 
@@ -409,10 +389,10 @@ This action is idempotent, so if the channel is already connected, the request r
 
 Connecting a channel is source-specific by nature, refer to the relevant documentation for the correct payload:
 
-- [Facebook](../sources/facebook.md#connecting-a-channel)
-- [Google](../sources/google.md#connecting-a-channel)
-- [SMS - Twilio](../sources/sms-twilio.md#connecting-a-channel)
-- [Whatsapp - Twilio](../sources/whatsapp-twilio.md#connecting-a-channel)
+- [Facebook](/sources/facebook.md#connecting-a-channel)
+- [Google](/sources/google.md#connecting-a-channel)
+- [SMS - Twilio](/sources/sms-twilio.md#connecting-a-channel)
+- [WhatsApp - Twilio](/sources/whatsapp-twilio.md#connecting-a-channel)
 
 #### Disconnecting Channels
 

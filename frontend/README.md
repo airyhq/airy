@@ -1,32 +1,31 @@
+<p align="center">
+    <img src="./assets/airy_primary_rgb.svg" alt="Airy Logo" />
+</p>
+
+# [Airy](https://airy.co/)- A Conversational Data Platform to drive sales, improve marketing and provide better service
+
+
 # Frontend
 
-The `frontend` top-level folder of the Airy Core Platform
-[monorepo](https://en.wikipedia.org/wiki/Monorepo) contains the UI related code
-of the platform.
+The Frontend` section of the Airy core platform contains the user interaction(UI) related code.
 
-Here is a quick introduction to the frontend projects:
+They are grouped into four frontend sub-projects:
 
-- `components`
+- `Components`
 
-  Here you can find the [Airy
-  Components Library](https://www.npmjs.com/package/@airyhq/components library. We are open-sourcing
-  (it's a work in progress) the critical components necessary to build a
-  messaging application. We use this library to power our commercial offering.
+  The [Airy Components Library](https://www.npmjs.com/package/@airyhq/components) which we are open-sourcing(work in progress) is a the critical components necessary to build a messaging application. We use this library to power our commercial offering.
 
-- `showcase`
+- `Showcase`
 
   This directory contains a small React application that showcases the
-  components of the [Airy Components
-  Library](https://www.npmjs.com/package/@airyhq/components), we host the `main`
+  components of the [Airy Components Library](https://www.npmjs.com/package/@airyhq/components), we host the `main`
   branch version at [https://components.airy.co](https://components.airy.co).
 
-- `demo`
+- `Demo`
 
-  This project is a minimum UI implementation of the provided [Airy Core Platform API](https://docs.airy.co/api/http).
-  Unlike `showcase` it does not use the `npm` version of the `components` library, but instead uses the
-  local repository version.
+  The [Demo project](https://github.com/airyhq/airy/tree/develop/frontend/demo) is a minimum UI implementation of the provided [Airy Core Platform API](https://docs.airy.co/api/http). Unlike `showcase` it does not use the `npm` version of the `components` library, but instead uses the local repository version.
 
-- `chat_plugin`
+- `Chat_Plugin`
 
   This project is implements a UI for the [Chat Plugin Source](https://docs.airy.co/sources/chat-plugin) that can
   be installed as Javascript tag on websites.

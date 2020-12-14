@@ -1,5 +1,6 @@
 <p align="center">
     <img width="350" src="./assets/airy_primary_rgb.svg" alt="Airy Logo" />
+
 </p>
 
 # [Airy](https://airy.co/)- A Conversational Data Platform to drive sales, improve marketing and provide better service

@@ -1,0 +1,10 @@
+backend/ @codeowners-backend
+docs/ @codeowners-backend @codeowners-frontend @codeowners-infrastructure
+frontend/ @codeowners-frontend
+infrastructure/ @codeowners-infrastructure
+lib/go/ @codeowners-infrastructure
+lib/java/ @codeowners-backend
+lib/typescript/ @codeowners-frontend
+scripts/ @codeowners-infrastructure
+*.bzl @lucapette @chrismatix
+BUILD @lucapette @chrismatix

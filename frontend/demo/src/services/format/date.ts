@@ -38,7 +38,7 @@ export function dateFormat(date: Date) {
 
 export function formatTimeOfMessage(message: Message) {
   if (message) {
-    const sentAtDate = new Date(message.sent_at);
+    const sentAtDate = new Date(message.sentAt);
     if (isToday(sentAtDate)) {
       return sentAtDate.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
     } else if (isThisWeek(sentAtDate)) {
@@ -63,7 +63,7 @@ export function formatTimeOfMessage(message: Message) {
 
 export function formatTimeOfMessageWithHours(message: Message) {
   if (message) {
-    const sentAtDate = new Date(message.sent_at);
+    const sentAtDate = new Date(message.sentAt);
     if (isToday(sentAtDate)) {
       return sentAtDate.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
     } else if (isThisWeek(sentAtDate)) {
@@ -99,7 +99,7 @@ export function formatDateOfMessage(message: Message) {
     return '';
   }
 
-  const sentAtDate = new Date(message.sent_at);
+  const sentAtDate = new Date(message.sentAt);
   if (isToday(sentAtDate)) {
     return 'Today';
   } else if (isYesterday(sentAtDate)) {

@@ -47,13 +47,13 @@ function mergeConversations(
 ) {
   newConversations.forEach(conversation => {
     if (conversation.contact) {
-      if (!conversation.contact.display_name) {
-        conversation.contact.display_name = `${conversation.contact.first_name} ${conversation.contact.last_name}`;
+      if (!conversation.contact.displayName) {
+        conversation.contact.displayName = `${conversation.contact.firstName} ${conversation.contact.lastName}`;
       }
     }
 
-    if (conversation.last_message) {
-      conversation.last_message.sent_at = new Date(conversation.last_message.sent_at);
+    if (conversation.lastMessage) {
+      conversation.lastMessage.sentAt = new Date(conversation.lastMessage.sentAt);
     }
   });
 
@@ -70,10 +70,10 @@ function mergeConversations(
 }
 
 function getLatestMessage(oldConversation: Conversation, conversation: Conversation) {
-  return ((conversation && conversation.last_message && new Date(conversation.last_message.sent_at).getTime()) || 1) >
-    ((oldConversation && oldConversation.last_message && new Date(oldConversation.last_message.sent_at).getTime()) || 0)
-    ? conversation.last_message
-    : oldConversation.last_message;
+  return ((conversation && conversation.lastMessage && new Date(conversation.lastMessage.sentAt).getTime()) || 1) >
+    ((oldConversation && oldConversation.lastMessage && new Date(oldConversation.lastMessage.sentAt).getTime()) || 0)
+    ? conversation.lastMessage
+    : oldConversation.lastMessage;
 }
 
 function setLoadingOfConversation(items: ConversationMap, conversationId: string, isLoading: boolean): ConversationMap {

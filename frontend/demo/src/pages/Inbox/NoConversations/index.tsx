@@ -4,13 +4,13 @@ import styles from './index.module.scss';
 const NoConversations = () => {
   return Object.keys({}).length === 0 ? (
     <div className={styles.component}>
-      <strong>{'messenger.emptyState.headline'}</strong>
-      <p>{'messenger.emptyState.description'}</p>
+      <strong>Your new messages will appear here</strong>
+      <p>We start showing messages from the moment you connect a channel. Your conversations will appear here as soon as your contacts message you.</p>
     </div>
   ) : (
     <div className={styles.component}>
-      <strong>{'messenger.noResult.headline'}</strong>
-      <p>{'messenger.noResult.description'}</p>
+      <strong>Nothing found</strong>
+      <p>We could not find a conversation matching your criterias.</p>
     </div>
   );
 };

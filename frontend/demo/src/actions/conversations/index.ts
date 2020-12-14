@@ -42,7 +42,7 @@ export function fetchConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
     return doFetchFromBackend('conversations.list', {
-      page_size: 50,
+      page_size: 10,
     })
       .then((response: FetchConversationsResponse) => {
         dispatch(mergeConversationsAction(response.data, response.metadata));
@@ -53,3 +53,19 @@ export function fetchConversations() {
       });
   };
 }
+
+export function fetchNextConversations() {
+  return async (dispatch: Dispatch<any>, state: any) => {
+    const cursor = state().data.conversations.all.metadata.next_cursor;
+    dispatch(loadingConversationsAction());
+    return doFetchFromBackend('conversations.list', {
+      cursor,
+    }).then((response: FetchConversationsResponse) => {      
+      dispatch(mergeConversationsAction(response.data, response.metadata));
+      return Promise.resolve(true);
+    })
+    .catch((error: Error) => {
+      return Promise.reject(error);
+    });
+  }
+};

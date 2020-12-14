@@ -4,7 +4,7 @@ export interface Attachement {
     url?: string;
     title?: string;
     name?: string;
-    template_type?: string;
+    templateType?: string;
     text?: string;
   };
   sender?: {
@@ -15,18 +15,48 @@ export interface Attachement {
 export enum MessageType {
   text = 'text',
 }
+
+export enum MessageAlignment {
+  left = 'LEFT',
+  right = 'RIGHT',
+  center = 'CENTER',
+}
+
+export enum MessageState {
+  pending = 'PENDING',
+  failed = 'FAILED',
+  delivered = 'DELIVERED',
+}
+
 export interface Message {
-  id?: string;
-  text: string;
-  sent_at: string | Date;
+  id: string;
   content: {
     text: string;
     type: MessageType;
   };
-  alignment: string;
-  metadata?: string;
-
-  sender?: {
-    id: string;
-  };
+  state: MessageState;
+  alignment: MessageAlignment;  
+  sentAt: string | Date;
 }
+
+export interface MessagePayload {
+  id: string;
+  content: {
+    text: string;
+    type: MessageType;
+  };  
+  state: MessageState;  
+  alignment: MessageAlignment;    
+  sent_at: string | Date;  
+}
+
+export const messageMapper = (payload: MessagePayload): Message => {
+  const message: Message = {
+    id: payload.id,
+    content: payload.content,
+    state: payload.state,    
+    alignment: payload.alignment,
+    sentAt: payload.sent_at
+  };
+  return message;
+};

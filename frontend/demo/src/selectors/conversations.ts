@@ -17,7 +17,7 @@ export const newestConversationFirst = createSelector(allConversationSelector, c
   return reverse(
     sortBy(
       values(conversations),
-      (conversation: Conversation) => conversation.last_message && conversation.last_message.sent_at
+      (conversation: Conversation) => conversation.lastMessage && conversation.lastMessage.sentAt
     )
   );
 });
@@ -32,7 +32,7 @@ export const newestFilteredConversationFirst = createSelector(
     return reverse(
       sortBy(
         conversations,
-        (conversation: Conversation) => conversation.last_message && conversation.last_message.sent_at
+        (conversation: Conversation) => conversation.lastMessage && conversation.lastMessage.sentAt
       )
     );
   }

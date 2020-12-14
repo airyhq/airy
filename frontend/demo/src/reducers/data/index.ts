@@ -8,14 +8,14 @@ import channels from './channels';
 
 export type DataState = {
   user: User;
-  conversations: ConversationsState;  
+  conversations: ConversationsState;
   channels: Channel[];
 };
 
 const reducers: Reducer = combineReducers<DataState>({
   user,
   conversations,
-  channels
+  channels,
 });
 
 export default reducers;

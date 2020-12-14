@@ -13,7 +13,7 @@ import {ReactComponent as SpeakBubbleIcon} from '../../assets/images/icons/speak
 import {ReactComponent as AiryLogo} from '../../assets/images/logo/airy_primary_rgb.svg';
 import {ReactComponent as ChevronDownIcon} from '../../assets/images/icons/chevron-down.svg';
 
-import { LOGOUT_ROUTE } from '../../routes/routes';
+import {LOGOUT_ROUTE} from '../../routes/routes';
 
 import styles from './index.module.scss';
 

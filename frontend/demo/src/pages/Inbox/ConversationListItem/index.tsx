@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, CSSProperties} from 'react';
 import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 // import ReactGA from 'react-ga';
@@ -32,22 +32,22 @@ const mapStateToProps = (state: StateModel) => {
 const connector = connect(mapStateToProps, null);
 
 type Props = {
-  conversation: Conversation & {unread_message_count: number; message?: Message};
+  conversation: Conversation;
   active: boolean;
-  style: any;
+  style: CSSProperties;
 } & ConnectedProps<typeof connector>;
 class ConversationListItem extends Component<Props, null> {
   render() {
     const {conversation, active, style} = this.props;
 
     const participant = {
-      avatar_url: 'https://microhealth.com/assets/images/illustrations/personal-user-illustration-@2x.png',
+      avatar_url: 'https://lh3.googleusercontent.com/fRQ5i4a5A0ETKJU9acF2zV5REvGD0DXltaRO5uduFnnAeYYzX_Xr0XlWi8tTJq2DGdQ',
       first_name: 'Random',
       last_name: 'User',
       display_name: 'Random User',
       info: {},
     };
-    const unread = conversation.unread_message_count > 0;
+    const unread = conversation.unreadMessageCount > 0;
 
     return (
       <div className={styles.clickableListItem} style={style}>
@@ -70,13 +70,13 @@ class ConversationListItem extends Component<Props, null> {
                 </div>
               </div>
               <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
-                <FormattedMessage message={conversation.last_message} />
+                <FormattedMessage message={conversation.lastMessage} />
               </div>
               <div className={styles.bottomRow}>
                 <div className={styles.source}>
                   <IconChannel channel={conversation.channel} avatar={true} name={true} />
                 </div>
-                <div className={styles.contactLastMessageDate}>{formatTimeOfMessage(conversation.last_message)}</div>
+                <div className={styles.contactLastMessageDate}>{formatTimeOfMessage(conversation.lastMessage)}</div>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 ---
-title: Architecture of the Airy Core Plaform
+title: The Airy Core Plaform architecture
 sidebar_label: Architecture
 ---
 
@@ -15,9 +15,11 @@ The `backend` system is a streaming platform. Its role is to:
 - Expose conversational events via a [webhook](api/webhook.md) integration.
 - Manage authentication and authorization features.
 
-The `frontend` system contains a demo application and the JavaScript integration of the [Chat Plugin](sources/chat-plugin.md).
+The `frontend` system contains a demo application and the JavaScript integration
+of the [Chat Plugin](sources/chat-plugin.md).
 
-Having that in mind, these are the docker containers – or the `Airy apps` – which run as part of the Airy Core Platform:
+Having that in mind, these are the docker containers – or the `Airy apps` –
+which run as part of the Airy Core Platform:
 
 ## Sources
 

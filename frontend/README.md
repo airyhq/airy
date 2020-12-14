@@ -8,13 +8,13 @@
 
 # Frontend
 
-The Frontend` section of the Airy core platform contains the user interaction(UI) related code.
+The Frontend section of the Airy core platform contains the user interaction(UI) related code.
 
 They are grouped into four frontend sub-projects:
 
-- `Components`
+- `Components` [![npm version](https://badge.fury.io/js/name-suggestion-index.svg)](https://www.npmjs.com/package/@airyhq/components)
 
-  The [Airy Components Library](https://www.npmjs.com/package/@airyhq/components) which we are open-sourcing(work in progress) is a the critical components necessary to build a messaging application. We use this library to power our commercial offering.
+  Here you can find the Airy Component Library. We are open-sourcing (it's a work in progress) the critical components necessary to build a messaging application. We use this library to power our commercial offering.
 
 - `Showcase`
 

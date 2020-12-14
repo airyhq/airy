@@ -25,8 +25,8 @@ $ AIRY_VERSION=beta ./scripts/bootstrap.sh
 The bootstrap installation requires
 [Vagrant](https://www.vagrantup.com/downloads) and
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
-found, the script will attempt to install them for you. Check out our [user
-guide](/docs/docs/user-guide.md) for detailed information.
+found, the script will attempt to install them for you. Check out our [test
+deployment guide](/docs/docs/guides/airy-core-in-test-env.md) for detailed information.
 
 ## Components
 

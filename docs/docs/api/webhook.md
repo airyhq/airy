@@ -21,7 +21,7 @@ events uniqueness.
 
 Subscribes the webhook for the first time or update its parameters.
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -32,7 +32,7 @@ Subscribes the webhook for the first time or update its parameters.
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -49,7 +49,7 @@ Subscribes the webhook for the first time or update its parameters.
 
 `POST /webhooks.unsubscribe`
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -66,7 +66,7 @@ Subscribes the webhook for the first time or update its parameters.
 
 `POST /webhooks.info`
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -80,9 +80,9 @@ Subscribes the webhook for the first time or update its parameters.
 
 ## Event Payload
 
-After [subscribing](#subscribing-to-a-webhook) to an Airy webhook, you will start receiving events on your
-URL of choice. The event will _always_ be a POST request with the following
-structure:
+After [subscribing](#subscribing-to-a-webhook) to an Airy webhook, you will
+start receiving events on your URL of choice. The event will _always_ be a POST
+request with the following structure:
 
 ```json5
 {
@@ -98,4 +98,5 @@ structure:
 }
 ```
 
-For possible values of `sender.type` see the [Message model documentation](glossary.md#fields)
+For possible values of `sender.type` see the [Message model
+documentation](glossary.md#fields)

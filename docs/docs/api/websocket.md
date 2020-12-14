@@ -1,6 +1,6 @@
 ---
 title: WebSocket
-sidebar_label: Websocket
+sidebar_label: WebSocket
 ---
 
 ## Introduction
@@ -22,7 +22,7 @@ deliver JSON encoded payloads.
 
 Incoming payloads notify connected clients that a message was created or updated.
 
-**Sample Payload**
+**Sample payload**
 
 ```json5
 {
@@ -55,7 +55,7 @@ specific conversation at the time of delivery. Clients should keep track of the
 latest time the unread count for a specific conversation was updated and update
 the value only for a more recent count.
 
-**Sample Payload**
+**Sample payload**
 
 ```json5
 {
@@ -74,7 +74,7 @@ the value only for a more recent count.
 
 Incoming payloads notify connected clients whenever a channel was connected or updated.
 
-**Sample Payload**
+**Sample payload**
 
 ```json5
 {
@@ -94,7 +94,7 @@ Incoming payloads notify connected clients whenever a channel was disconnected.
 
 `/queue/channel/disconnected`
 
-**Sample Payload**
+**Sample payload**
 
 ```json5
 {

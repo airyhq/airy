@@ -15,7 +15,7 @@ They are grouped into four frontend sub-projects:
 
 - `Components` [![npm version](https://badge.fury.io/js/name-suggestion-index.svg)](https://www.npmjs.com/package/@airyhq/components)
 
-  Here you can find the Airy Component Library. We are open-sourcing (it's a work in progress) the critical components necessary to build a messaging application. We use this library to power our commercial offering.
+  Here you can find the Airy Component Library. We are open-sourcing the critical components necessary to build a messaging application (it's a work in progress). We use this library to power our commercial offering.
 
 - `Showcase`
 

@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="350" src="../assets/airy_demo_login.png" alt="Airy Login" />
+    <img width="850" src="../assets/airy_demo_login.png" alt="Airy Login" />
     </a>
 </p>
 
@@ -20,7 +20,7 @@ The Airy Demo UI is a minimal user interactive frontend project that showcases t
 ### Prerequisites
 
 * [Node.js](https://nodejs.org/) version 10 or newer
-* [`git`](https://www.atlassian.com/git/tutorials/install-git/) for your platform
+* [Git](https://www.atlassian.com/git/tutorials/install-git/) for your platform
 * [Bazel](https://docs.bazel.build/versions/3.7.0/install.html)
 
 

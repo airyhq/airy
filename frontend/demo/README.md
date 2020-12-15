@@ -6,7 +6,7 @@
 
 ### Airy Demo UI
 
-The Airy Demo UI is a minimal user interactive frontend project that showcases the Airy Core Platform API.It enables users who are not too familiar with backend technicalities to experience the functionalities of our Airy Core Platform.
+The Airy Demo UI is a minimal user interactive frontend project that showcases the Airy Core Platform API.It enables users to experience the functionalities of our Airy Core Platform.
 
 
 - [Prerequities](#prerequities)
@@ -21,7 +21,7 @@ The Airy Demo UI is a minimal user interactive frontend project that showcases t
 
 * [Node.js](https://nodejs.org/) version 10 or newer
 * [`git`](https://www.atlassian.com/git/tutorials/install-git/) for your platform
-* [Bazel](https://docs.bazel.build/versions/3.7.0/install.html)
+* [Bazel](https://docs.bazel.build/versions/3.7.0/install.html) for building and testing the app
 
 
 ### Building Airy Demo UI

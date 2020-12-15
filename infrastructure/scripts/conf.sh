@@ -5,6 +5,7 @@ IFS=$'\n\t'
 source /vagrant/scripts/lib/k8s.sh
 APP_IMAGE_TAG=${AIRY_VERSION:-latest}
 
+kubectl delete pod startup-helper --force 2>/dev/null || true
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 cd /vagrant/scripts
 

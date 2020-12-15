@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 source /vagrant/scripts/lib/k8s.sh
 
+kubectl delete pod startup-helper --force 2>/dev/null || true
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 
 wait-for-ingress-service

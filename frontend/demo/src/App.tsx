@@ -31,9 +31,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     return this.props.user.token && this.props.user.token !== '';
   }
 
-  shouldShowSidebar = (path: string) => {
-    return this.isAuthSuccess;
-  };
+  shouldShowSidebar = () => this.isAuthSuccess;
 
   render() {
     if (!this.props.user.id) {

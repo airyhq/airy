@@ -123,9 +123,10 @@ const Chat = (props: Props) => {
           <HeaderBarProp render={headerBar} />
           <div className={style.chat}>
             <div id="messages" className={style.messages}>
-              {messages.map(message => {
-                return (
+              {messages.map((message, key) => {
+              return (
                   <MessageProp
+                   key={key}
                     render={
                       props.airyMessageProp
                         ? () => props.airyMessageProp(ctrl)

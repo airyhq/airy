@@ -76,7 +76,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
                       </span>
                       <span>Contact us</span>
                     </a>
-                    <a href="https://airy.co/faq" target="_blank" className={styles.dropdownLine}>
+                    <a href="https://airy.co/faq" target="_blank" rel="noreferrer" className={styles.dropdownLine}>
                       <span className={styles.dropdownIcon}>
                         <ShortcutIcon />
                       </span>
@@ -103,14 +103,14 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
                 {isAccountDropdownOn && (
                   <div className={styles.dropdown}>
                     {props.isAdmin ? (
-                      <a href="https://app.airy.co" target="_blank" className={styles.dropdownLine}>
+                      <a href="https://app.airy.co" target="_blank" rel="noreferrer" className={styles.dropdownLine}>
                         <span className={styles.dropdownIcon}>
                           <SpeakBubbleIcon />
                         </span>
                         <span>Go to Inbox</span>
                       </a>
                     ) : (
-                      <a href="https://admin.airy.co" target="_blank" className={styles.dropdownLine}>
+                      <a href="https://admin.airy.co" target="_blank" rel="noreferrer" className={styles.dropdownLine}>
                         <span className={styles.dropdownIcon}>
                           <CogIcon />
                         </span>

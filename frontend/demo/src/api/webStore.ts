@@ -22,7 +22,6 @@ export function storeUserData(data: User) {
 }
 
 export function clearUserData() {
-  console.log("CLEARUSERDATA")
   localStorage.clear();
   setAuthToken('');
   setUserId('');

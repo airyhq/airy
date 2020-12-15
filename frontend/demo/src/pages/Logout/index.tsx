@@ -3,24 +3,25 @@ import {connect} from 'react-redux';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import {Redirect} from 'react-router-dom';
-import {logoutUser} from '../../actions/user/index';
+import {logoutUser} from '../../actions/user';
 import {LOGIN_ROUTE} from '../../routes/routes';
-import {clearUserData} from '../../api/webStore';
 
 type LogoutConnectProps = {
-    history: History;
-}
+  history: History;
+  logoutUser: () => void;
+};
 
-const Logout = ({history}: LogoutConnectProps & RouteComponentProps) => {
+const Logout = ({history, logoutUser}: LogoutConnectProps & RouteComponentProps) => {
   useEffect(() => {
-    clearUserData();
     logoutUser();
     history.push(LOGIN_ROUTE);
   }, []);
   return <Redirect to={LOGIN_ROUTE} />;
 };
 
-const mapDispatchToProps = {logoutUser};
+const mapDispatchToProps = {
+  logoutUser,
+};
 
 const connector = connect(null, mapDispatchToProps);
 

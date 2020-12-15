@@ -31,7 +31,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     return this.props.user.token && this.props.user.token !== '';
   }
 
-  shouldShowSidebar = (path: string) => {
+  shouldShowSidebar = () => {
     return this.isAuthSuccess;
   };
 
@@ -47,7 +47,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     return (
       <div className={styles.Container}>
         <div className={`${this.isAuthSuccess ? styles.ContainerApp : styles.ContainerAppNotLogin}`}>
-          {this.shouldShowSidebar(this.props.location.pathname) ? (
+          {this.shouldShowSidebar() ? (
             <>
               <TopBar isAdmin={true} />
               <Sidebar />

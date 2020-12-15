@@ -1,0 +1,166 @@
+@import '../assets/scss/colors.scss';
+
+.colorSelector {
+  position: relative;
+  overflow: hidden;
+  div {
+    display: inline-block;
+    width: 24px;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    margin: 0 16px 0 0;
+  }
+
+  .colorPicker {
+    display: none;
+
+    + label {
+      margin-bottom: 0;
+      span {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+        cursor: pointer;
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        background-position: center;
+        text-align: center;
+        line-height: 44px;
+        img {
+          opacity: 0;
+          transition: all 0.3s ease;
+        }
+      }
+    }
+
+    &.colorRed + label span {
+      background-color: var(--color-tag-red);
+    }
+
+    &.colorBlue + label span {
+      background-color: var(--color-airy-blue);
+    }
+
+    &.colorGreen + label span {
+      background-color: var(--color-tag-green);
+    }
+
+    &.colorPurple + label span {
+      background-color: var(--color-tag-purple);
+    }
+
+    &:checked + label span {
+      background-position: center;
+      background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg');
+      background-size: 51%;
+    }
+  }
+  &.done {
+    div {
+      left: 6px !important;
+    }
+    div:nth-child(2) {
+      animation: ellipse5 0.6s;
+    }
+
+    div:nth-child(3) {
+      animation: ellipse6 0.6s;
+    }
+
+    div:nth-child(4) {
+      animation: ellipse7 0.6s;
+    }
+  }
+  div {
+    animation-direction: normal;
+  }
+  div:nth-child(1) {
+    left: 6px;
+    animation: ellipse1 0.6s;
+  }
+
+  div:nth-child(2) {
+    left: 42px;
+    animation: ellipse2 0.6s;
+  }
+
+  div:nth-child(3) {
+    left: 68px;
+    animation: ellipse2 0.6s;
+  }
+
+  div:nth-child(4) {
+    left: 94px;
+    animation: ellipse4 0.6s;
+  }
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+/* Tag color selector animations */
+
+@keyframes ellipse1 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes ellipse2 {
+  0% {
+    transform: translate(-42px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes ellipse3 {
+  0% {
+    transform: translate(-68px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes ellipse4 {
+  0% {
+    transform: translate(-94px, 0);
+  }
+  100% {
+    transform: translate(0px, 0);
+  }
+}
+
+@keyframes ellipse5 {
+  0% {
+    transform: translate(42px, 0);
+  }
+  100% {
+    transform: translate(0px, 0);
+  }
+}
+
+@keyframes ellipse6 {
+  0% {
+    transform: translate(68px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes ellipse7 {
+  0% {
+    transform: translate(94px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}

@@ -3,8 +3,6 @@ kind: Service
 metadata:
   name: sources-facebook-webhook
   namespace: default
-  labels:
-    airy: sources.webhook
 spec:
   ports:
     - port: 80

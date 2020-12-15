@@ -1,11 +1,17 @@
 load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
+load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
+load("@bazel_gazelle//:def.bzl", "gazelle")
 
 package(default_visibility = ["//visibility:public"])
 
-alias(
+multirun(
     name = "fix",
-    actual = "//tools/code-format:fix",
+    commands = [
+        "@com_github_airyhq_bazel_tools//code-format:fix_prettier",
+        "@com_github_airyhq_bazel_tools//code-format:fix_buildifier",
+    ],
+    visibility = ["//visibility:public"],
 )
 
 container_image(
@@ -158,6 +164,9 @@ exports_files(
         ".prettierrc.json",
         "yarn.lock",
         "tsconfig.json",
-        "checkstyle.xml",
     ],
 )
+
+# gazelle:build_file_name BUILD
+# gazelle:prefix
+gazelle(name = "gazelle")

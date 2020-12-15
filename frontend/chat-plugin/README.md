@@ -4,9 +4,8 @@ This app demos a minimal frontend that allows contacts to communicate with the [
 
 ## Develop
 
-Run with [Bazelisk](https://github.com/bazelbuild/bazelisk)  
+Run with [Bazelisk](https://github.com/bazelbuild/bazelisk)
 
 ```bash
 ibazel run //frontend/chat-plugin:bundle_server
-``` 
- 
+```

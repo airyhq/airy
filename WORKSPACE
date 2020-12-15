@@ -6,43 +6,31 @@ workspace(
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
-http_archive(
-    name = "bazel_skylib",
-    sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
-    urls = [
-        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
-    ],
+# Airy Bazel tools
+
+git_repository(
+    name = "com_github_airyhq_bazel_tools",
+    commit = "fd79bd3344b9c95a09eaa94597a49069f943e089",
+    remote = "https://github.com/airyhq/bazel-tools.git",
+    shallow_since = "1607079534 +0100",
 )
 
-load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
 
-bazel_skylib_workspace()
+airy_bazel_tools_dependencies()
 
 ### Java tooling
-
-RULES_JVM_EXTERNAL_TAG = "3.2"
-
-RULES_JVM_EXTERNAL_SHA = "82262ff4223c5fda6fb7ff8bd63db8131b51b413d26eb49e3131037e79e324af"
-
-http_archive(
-    name = "rules_jvm_external",
-    sha256 = RULES_JVM_EXTERNAL_SHA,
-    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
-    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
-)
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
-    artifacts = [
+    artifacts = airy_jvm_deps + [
         "com.fasterxml.jackson.core:jackson-annotations:2.10.0",
         "com.fasterxml.jackson.core:jackson-core:2.10.0",
         "com.fasterxml.jackson.core:jackson-databind:2.10.0",
         "com.fasterxml.jackson.module:jackson-module-afterburner:2.10.0",
         "com.google.auth:google-auth-library-oauth2-http:0.20.0",
         "com.jayway.jsonpath:json-path:2.4.0",
-        "com.puppycrawl.tools:checkstyle:8.37",
         "com.twilio.sdk:twilio:7.51.0",
         "cz.habarta.typescript-generator:typescript-generator-core:2.26.723",
         "io.confluent:kafka-avro-serializer:5.5.1",
@@ -60,8 +48,8 @@ maven_install(
         "org.apache.logging.log4j:log4j-core:2.12.1",
         "org.apache.logging.log4j:log4j-slf4j-impl:2.12.1",
         "org.slf4j:slf4j-api:1.7.29",
-        "org.apache.avro:avro-tools:1.9.1",
-        "org.apache.avro:avro:1.9.1",
+        "org.apache.avro:avro-tools:1.10.0",
+        "org.apache.avro:avro:1.10.0",
         "org.apache.curator:curator-test:4.2.0",
         "org.apache.kafka:connect-api:2.5.1",
         "org.apache.kafka:connect-transforms:2.5.1",
@@ -69,6 +57,9 @@ maven_install(
         "org.apache.kafka:kafka-clients:jar:test:2.5.1",
         "org.apache.kafka:kafka-streams:2.5.1",
         "org.apache.kafka:kafka_2.12:2.5.1",
+        "org.apache.lucene:lucene-queryparser:8.7.0",
+        "org.apache.lucene:lucene-analyzers-common:8.7.0",
+        "org.apache.lucene:lucene-core:8.7.0",
         "org.bouncycastle:bcpkix-jdk15on:1.63",
         "org.flywaydb:flyway-core:5.2.4",
         "org.hamcrest:hamcrest-library:2.1",
@@ -124,15 +115,13 @@ load("@maven//:defs.bzl", "pinned_maven_install")
 pinned_maven_install()
 
 ### Golang tooling
-
 # This needs to come before any rules_docker usage as it brings its own version of Gazelle
-
 http_archive(
-    name = "io_bazel_rules_go",
-    sha256 = "a8d6b1b354d371a646d2f7927319974e0f9e52f73a2452d2b3877118169eb6bb",
+    name = "bazel_gazelle",
+    sha256 = "b85f48fa105c4403326e9525ad2b2cc437babaa6e15a3fc0b1dbab0ab064bc7c",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.23.3/rules_go-v0.23.3.tar.gz",
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.23.3/rules_go-v0.23.3.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.22.2/bazel-gazelle-v0.22.2.tar.gz",
+        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.22.2/bazel-gazelle-v0.22.2.tar.gz",
     ],
 )
 
@@ -141,6 +130,10 @@ load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_depe
 go_rules_dependencies()
 
 go_register_toolchains()
+
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+
+gazelle_dependencies()
 
 git_repository(
     name = "com_google_protobuf",
@@ -207,12 +200,6 @@ _go_image_repos()
 
 ### Frontend build tooling
 
-http_archive(
-    name = "build_bazel_rules_nodejs",
-    sha256 = "f9e7b9f42ae202cc2d2ce6d698ccb49a9f7f7ea572a78fd451696d03ef2ee116",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/1.6.0/rules_nodejs-1.6.0.tar.gz"],
-)
-
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
 
 node_repositories()
@@ -232,12 +219,6 @@ load("@npm_bazel_typescript//:index.bzl", "ts_setup_workspace")
 ts_setup_workspace()
 
 ### Bazel tooling
-
-http_archive(
-    name = "com_github_bazelbuild_buildtools",
-    strip_prefix = "buildtools-master",
-    url = "https://github.com/bazelbuild/buildtools/archive/master.zip",
-)
 
 git_repository(
     name = "com_github_atlassian_bazel_tools",

@@ -41,3 +41,4 @@ apps:
     mailUsername: "changeme"
     mailPassword: "changeme"
     jwtSecret: "long-random-generated-jwt-secret"
+    allowedOrigins: "*"

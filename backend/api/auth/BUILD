@@ -6,10 +6,10 @@ app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
     "//:jdbi",
-    "//backend/lib/payload",
-    "//backend/lib/spring/auth:spring-auth",
-    "//backend/lib/spring/web:spring-web",
-    "//backend/lib/pagination",
+    "//lib/java/payload",
+    "//lib/java/spring/auth:spring-auth",
+    "//lib/java/spring/web:spring-web",
+    "//lib/java/pagination",
     "@maven//:org_bouncycastle_bcpkix_jdk15on",
     "@maven//:org_flywaydb_flyway_core",
     "@maven//:org_postgresql_postgresql",
@@ -35,7 +35,7 @@ springboot(
         deps = [
             ":app",
             "//backend:base_test",
-            "//backend/lib/spring/test:spring-test",
+            "//lib/java/spring/test:spring-test",
             "@maven//:io_zonky_test_embedded_database_spring_test",
         ] + app_deps,
     )

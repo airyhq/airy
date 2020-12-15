@@ -5,7 +5,7 @@ import style from './index.module.scss';
 
 type Props = {
   message: {
-    alignment: string;
+    sender_type: string;
     content: {
       text: string;
     };
@@ -13,7 +13,7 @@ type Props = {
 };
 
 const AiryMessage = ({message}: Props) => {
-  const isInbound = message.alignment === 'LEFT';
+  const isInbound = message.sender_type === 'source_contact';
   const messageDisplay = linkifyString(message.content.text, {
     className: `${isInbound ? style.messageLinkRight : style.messageLinkLeft}`,
   });

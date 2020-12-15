@@ -11,14 +11,17 @@ app_deps = [
     "//backend:channel",
     "//backend:metadata",
     "//backend:read-receipt",
-    "//backend/lib/mapping",
-    "//backend/lib/payload",
-    "//backend/lib/pagination",
-    "//backend/lib/spring/auth:spring-auth",
-    "//backend/lib/spring/web:spring-web",
-    "//backend/lib/spring/kafka/core:spring-kafka-core",
-    "//backend/lib/spring/kafka/streams:spring-kafka-streams",
+    "//lib/java/mapping",
+    "//lib/java/payload",
+    "//lib/java/pagination",
+    "//lib/java/spring/auth:spring-auth",
+    "//lib/java/spring/web:spring-web",
+    "//lib/java/spring/kafka/core:spring-kafka-core",
+    "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "@maven//:org_springframework_security_spring_security_core",
+    "@maven//:org_apache_lucene_lucene_queryparser",
+    "@maven//:org_apache_lucene_lucene_analyzers_common",
+    "@maven//:org_apache_lucene_lucene_core",
 ]
 
 springboot(
@@ -43,8 +46,8 @@ java_library(
             ":app",
             ":test-util",
             "//backend:base_test",
-            "//backend/lib/kafka/test:kafka-test",
-            "//backend/lib/spring/test:spring-test",
+            "//lib/java/kafka/test:kafka-test",
+            "//lib/java/spring/test:spring-test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

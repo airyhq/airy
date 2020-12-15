@@ -1,0 +1,17 @@
+Airy CLI
+
+Usage:
+  airy [command]
+
+Available Commands:
+  auth        Create a default user and return a JWT token
+  bootstrap   Bootstrap Airy Core Platform locally
+  config      Reloads configuration based on airy.conf
+  demo        Opens the demo page in the browser
+  help        Help about any command
+  version     Return current version
+
+Flags:
+  -h, --help   help for airy
+
+Use "airy [command] --help" for more information about a command.

@@ -1,3 +1,14 @@
-load("//tools/code-format:prettier.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//code-format:prettier.bzl", "prettier")
 
-check_pkg()
+prettier(
+    srcs = glob([
+        "**/*.md",
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.scss",
+        "**/*.css",
+    ]),
+    config = "//:.prettierrc.json",
+)

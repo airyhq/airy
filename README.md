@@ -25,8 +25,8 @@ $ AIRY_VERSION=beta ./scripts/bootstrap.sh
 The bootstrap installation requires
 [Vagrant](https://www.vagrantup.com/downloads) and
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
-found, the script will attempt to install them for you. Check out our [user
-guide](/docs/docs/user-guide.md) for detailed information.
+found, the script will attempt to install them for you. Check out our [test
+deployment guide](/docs/docs/guides/airy-core-in-test-env.md) for detailed information.
 
 ## Components
 
@@ -97,7 +97,7 @@ read more about it [here](/docs/docs/guidelines/design-principles.md)
 We welcome (and love) every form of contribution! Good entry points to the
 project are:
 
-- Our [contributing guidelines](/docs/docs/guidelines/contributing.md)
+- Our [contributing guide](/docs/docs/guides/contributing.md)
 - Issues with the tag
   [gardening](https://github.com/airyhq/airy/issues?q=is%3Aissue+is%3Aopen+label%3Agardening)
 - Issues with the tag [good first

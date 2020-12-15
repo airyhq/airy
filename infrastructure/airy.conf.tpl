@@ -20,3 +20,4 @@ apps:
     mailUrl: "changeme"
     mailUsername: "changeme"
     mailPassword: "changeme"
+    allowedOrigins: "*"

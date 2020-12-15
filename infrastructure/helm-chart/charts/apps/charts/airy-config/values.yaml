@@ -28,3 +28,4 @@ api:
   mailUsername: "changeme"
   mailPassword: "changeme"
   jwtSecret: "<jwt_secret>"
+  allowedOrigins: "*"

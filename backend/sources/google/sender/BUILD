@@ -5,8 +5,8 @@ load("//tools/build:container_push.bzl", "container_push")
 app_deps = [
     "//backend:base_app",
     "//backend:message",
-    "//backend/lib/spring/kafka/core:spring-kafka-core",
-    "//backend/lib/spring/kafka/streams:spring-kafka-streams",
+    "//lib/java/spring/kafka/core:spring-kafka-core",
+    "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "@maven//:com_google_auth_google_auth_library_oauth2_http",
 ]
 
@@ -25,7 +25,7 @@ springboot(
         deps = [
             ":app",
             "//backend:base_test",
-            "//backend/lib/kafka/test:kafka-test",
+            "//lib/java/kafka/test:kafka-test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

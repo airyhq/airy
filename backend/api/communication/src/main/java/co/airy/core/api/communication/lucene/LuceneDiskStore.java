@@ -2,17 +2,24 @@ package co.airy.core.api.communication.lucene;
 
 import co.airy.core.api.communication.dto.ConversationIndex;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
+import co.airy.kafka.core.serdes.KafkaHybridSerde;
+import co.airy.kafka.core.serializer.KafkaJacksonSerializer;
 import co.airy.log.AiryLoggerFactory;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.processor.AbstractNotifyingBatchingRestoreCallback;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.processor.StateStore;
+import org.apache.kafka.streams.processor.internals.ProcessorStateManager;
+import org.apache.kafka.streams.state.StateSerdes;
 import org.apache.kafka.streams.state.StoreBuilder;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.search.Query;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
@@ -22,6 +29,7 @@ public class LuceneDiskStore implements StateStore, LuceneStore {
     final String name;
     final LuceneProvider lucene;
     ProcessorContext initialProcessorContext;
+    StoreChangeLogger<String, Serializable> changeLogger;
 
     public LuceneDiskStore(String name, LuceneProvider provider) {
         this.name = name;
@@ -39,8 +47,28 @@ public class LuceneDiskStore implements StateStore, LuceneStore {
 
     @Override
     public void init(ProcessorContext context, StateStore stateStore) {
+        final String topic = ProcessorStateManager.storeChangelogTopic(context.applicationId(), name());
+        changeLogger = new StoreChangeLogger<>(
+                name(),
+                context,
+                new StateSerdes<>(topic, Serdes.String(), new KafkaHybridSerde()));
+
         initialProcessorContext = context;
-        context.register(stateStore, new LuceneRestoreCallback(this));
+
+        context.register(stateStore, (key, value) -> {
+            // Restoration callback
+            try {
+                final ConversationIndex conversation = (ConversationIndex) context.valueSerde().deserializer().deserialize(topic, value);
+                lucene.put(conversation);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    void log(final String key,
+             final Serializable value) {
+        changeLogger.logChange(key, value);
     }
 
     @Override
@@ -74,39 +102,18 @@ public class LuceneDiskStore implements StateStore, LuceneStore {
     @Override
     public void put(ConversationIndex conversationIndex) throws IOException {
         lucene.put(conversationIndex);
-    }
-
-    public void writeAll(final Collection<KeyValue<byte[], byte[]>> records) {
-        try {
-            lucene.writeAll(records);
-        } catch (IOException e) {
-            log.error("Failed to batch index Lucene document", e);
-            throw new RuntimeException(e);
-        }
+        log(conversationIndex.getId(), conversationIndex);
     }
 
     @Override
     public void delete(String id) throws IOException {
         lucene.delete(id);
+        log(id, null);
     }
 
     @Override
     public LuceneQueryResult query(Query query) {
         return lucene.query(query);
-    }
-
-    static class LuceneRestoreCallback extends AbstractNotifyingBatchingRestoreCallback {
-
-        private final LuceneDiskStore luceneDiskStore;
-
-        LuceneRestoreCallback(final LuceneDiskStore luceneDiskStore) {
-            this.luceneDiskStore = luceneDiskStore;
-        }
-
-        @Override
-        public void restoreAll(final Collection<KeyValue<byte[], byte[]>> records) {
-            luceneDiskStore.writeAll(records);
-        }
     }
 
     public static class Builder implements StoreBuilder<LuceneDiskStore> {
@@ -150,7 +157,7 @@ public class LuceneDiskStore implements StateStore, LuceneStore {
 
         @Override
         public boolean loggingEnabled() {
-            return false;
+            return true;
         }
 
         @Override

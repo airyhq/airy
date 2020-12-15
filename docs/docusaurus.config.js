@@ -12,6 +12,7 @@ module.exports = {
       apiKey: '768788b65303eb29ca1f195847ed1e78',
       indexName: 'airy',
     },
+    hideableSidebar: true,
     prism: {
       theme: require('prism-react-renderer/themes/github'),
       darkTheme: require('./src/plugins/prism_themes/monokai'),
@@ -29,6 +30,7 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} Airy, Inc.`,
     },
   },
+  plugins: ['plugin-image-zoom'],
   scripts: ['https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js'],
   presets: [
     [

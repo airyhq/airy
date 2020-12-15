@@ -2,7 +2,7 @@ module.exports = {
   docs: [
     'index',
     {
-      API: ['api/http', 'api/websocket', 'api/webhook'],
+      Overview: ['overview/architecture', 'overview/design-principles', 'overview/release-process', 'overview/kafka'],
     },
     {
       Sources: [
@@ -14,22 +14,17 @@ module.exports = {
       ],
     },
     {
-      Guidelines: [
-        'guidelines/contributing',
-        'guidelines/design-principles',
-        'guidelines/release-process',
-        'guidelines/kafka',
-      ],
-    },
-    {
       Guides: [
-        'guides/architecture',
+        'guides/contributing',
         {
           Deployment: ['guides/airy-core-in-test-env', 'guides/airy-core-in-production'],
         },
+        'guides/airy-core-and-rasa',
       ],
     },
-
+    {
+      'API Reference': ['api/http', 'api/websocket', 'api/webhook'],
+    },
     'glossary',
   ],
 };

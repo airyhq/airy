@@ -1,12 +1,12 @@
 load("@npm_bazel_typescript//:index.bzl", "ts_config")
-load("//tools/build/web:typescript.bzl", "ts_library")
-load("//tools/build/web:webapp.bzl", "webapp")
-load("//tools/build/web:web_library.bzl", "web_library")
+load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_library")
+load("@com_github_airyhq_bazel_tools//web:web_app.bzl", "web_app")
+load("@com_github_airyhq_bazel_tools//web:web_library.bzl", "web_library")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/build:container_push.bzl", "container_push")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
-webapp(
+web_app(
     name = "bundle",
     app_lib = ":app",
     entry = "frontend/chat-plugin/src/iframe.js",
@@ -28,6 +28,7 @@ ts_library(
     name = "app",
     tsconfig = ":widget_tsconfig",
     deps = [
+        "//lib/typescript/types",
         "@npm//@stomp/stompjs",
         "@npm//@types/node",
         "@npm//linkifyjs",

@@ -9,7 +9,7 @@ import {formatTimeOfMessage} from '../../../services/format/date';
 import {Conversation} from '../../../model/Conversation';
 import {Message} from '../../../model/Message';
 import {StateModel} from '../../../reducers';
-import {MESSENGER_CONVERSATIONS_ROUTE} from '../../../routes/routes';
+import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 
 import styles from './index.module.scss';
 
@@ -48,7 +48,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
 
   return (
     <div className={styles.clickableListItem} style={style}>
-      <Link to={`${MESSENGER_CONVERSATIONS_ROUTE}/${conversation.id}`}>
+      <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${
             unread ? styles.unread : ''

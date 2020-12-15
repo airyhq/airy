@@ -1,4 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
+set -eo pipefail
+IFS=$'\n\t'
+
 echo "Running Bazel lint"
 bazel run @com_github_airyhq_bazel_tools//code-format:check_buildifier
 echo

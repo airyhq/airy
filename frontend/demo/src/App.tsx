@@ -7,12 +7,13 @@ import TopBar from './components/TopBar';
 import Login from './pages/Login';
 import Channels from './pages/Channels';
 import Inbox from './pages/Inbox';
+import {Tags} from './pages/Tags';
 import NotFound from './pages/NotFound';
 import Sidebar from './components/Sidebar';
 
 import {StateModel} from './reducers';
 
-import {INBOX_ROUTE, CHANNELS_ROUTE, LOGIN_ROUTE, ROOT_ROUTE} from './routes/routes';
+import {INBOX_ROUTE, CHANNELS_ROUTE, LOGIN_ROUTE, TAGS_ROUTE, ROOT_ROUTE} from './routes/routes';
 
 import styles from './App.module.scss';
 
@@ -58,6 +59,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
             <Route exact path={ROOT_ROUTE}>
               {this.isAuthSuccess ? <Redirect to={INBOX_ROUTE} /> : <Redirect to={LOGIN_ROUTE} />}
             </Route>
+            <Route exact path={TAGS_ROUTE} component={Tags} />
             <Route exact path={LOGIN_ROUTE} component={Login} />
             <Route exact path={INBOX_ROUTE} component={Inbox} />
             <Route exact path={CHANNELS_ROUTE} component={Channels} />

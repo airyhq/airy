@@ -21,7 +21,7 @@ They are grouped into four frontend sub-projects:
 
   This directory contains a small React application that showcases the
   components of the [Airy Components Library](https://www.npmjs.com/package/@airyhq/components), we host the `main`
-  branch version at [https://components.airy.co](https://components.airy.co).
+  branch version [here](https://components.airy.co).
 
 - `Demo`
 

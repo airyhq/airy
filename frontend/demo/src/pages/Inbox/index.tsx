@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import {User} from '../../model/User';
@@ -11,14 +11,12 @@ interface InboxProps {
   user: User;
 }
 
-class MessengerContainer extends Component<InboxProps & ConnectedProps<typeof connector>, null> {
-  componentDidMount() {
-    this.props.fetchConversations();
-  }
+const MessengerContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
+  useEffect(() => {
+    props.fetchConversations();
+  });
 
-  render() {
-    return <Messenger />;
-  }
+  return <Messenger />;
 }
 
 const mapStateToProps = (state: StateModel) => {

@@ -5,13 +5,13 @@ import {cloneDeep} from 'lodash-es';
 import {ResponseMetadata} from '../../../model/ResponseMetadata';
 import {Conversation} from '../../../model/Conversation';
 import * as actions from '../../../actions/conversations';
+import { Message } from '../../../model/Message';
 
 type Action = ActionType<typeof actions>;
 
 type MergedConversation = Conversation & {
   blocked?: boolean;
-  unread_message_count?: number;
-  metadata: ResponseMetadata & {
+  metadata?: ResponseMetadata & {
     loading: boolean;
   };
 };
@@ -19,8 +19,8 @@ type MergedConversation = Conversation & {
 export type AllConversationMetadata = ResponseMetadata & {
   loading?: boolean;
   loaded?: boolean;
-  filtered_total?: number;
-  badge_unread_count?: number;
+  filteredTotal?: number;
+  badgeUnreadCount?: number;
 };
 
 export type ConversationMap = {
@@ -42,10 +42,10 @@ export type ConversationsState = {
 };
 
 function mergeConversations(
-  oldConversation: {[conversation_id: string]: Conversation},
-  newConversations: Conversation[]
-) {
-  newConversations.forEach(conversation => {
+  oldConversation: {[conversation_id: string]: MergedConversation},
+  newConversations: MergedConversation[]
+): ConversationMap {
+  newConversations.forEach((conversation: MergedConversation) => {
     if (conversation.contact) {
       if (!conversation.contact.displayName) {
         conversation.contact.displayName = `${conversation.contact.firstName} ${conversation.contact.lastName}`;
@@ -58,7 +58,7 @@ function mergeConversations(
   });
 
   const conversations = cloneDeep(oldConversation);
-  newConversations.forEach(conversation => {
+  newConversations.forEach((conversation: MergedConversation) => {
     conversations[conversation.id] = {
       ...newConversations[conversation.id],
       ...conversation,
@@ -69,7 +69,7 @@ function mergeConversations(
   return conversations;
 }
 
-function getLatestMessage(oldConversation: Conversation, conversation: Conversation) {
+function getLatestMessage(oldConversation: Conversation, conversation: Conversation): Message {
   return ((conversation && conversation.lastMessage && new Date(conversation.lastMessage.sentAt).getTime()) || 1) >
     ((oldConversation && oldConversation.lastMessage && new Date(oldConversation.lastMessage.sentAt).getTime()) || 0)
     ? conversation.lastMessage
@@ -100,8 +100,8 @@ const initialState: AllConversationsState = {
     previous_cursor: null,
     next_cursor: null,
     total: 0,
-    filtered_total: 0,
-    badge_unread_count: 0,
+    filteredTotal: 0,
+    badgeUnreadCount: 0,
   },
 };
 
@@ -110,7 +110,7 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
     case getType(actions.mergeConversationsAction):
       return {
         ...state,
-        items: mergeConversations(state.items, action.payload.conversations),
+        items: mergeConversations(state.items, action.payload.conversations as MergedConversation[]),
         metadata: {...state.metadata, ...action.payload.responseMetadata, loading: false, loaded: true},
       };
     case getType(actions.loadingConversationsAction):

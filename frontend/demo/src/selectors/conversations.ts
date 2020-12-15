@@ -2,18 +2,19 @@ import _, {createSelector} from 'reselect';
 import {reverse, sortBy, values} from 'lodash-es';
 import {Conversation} from '../model/Conversation';
 import {StateModel} from '../reducers';
+import { ConversationMap } from '../reducers/data/conversations';
 
 export const filteredConversationSelector = createSelector(
   (state: StateModel) => state.data.conversations.all.items,
-  conversations => Object.keys(conversations).map(cId => ({...conversations[cId]}))
+  (conversations: ConversationMap) => Object.keys(conversations).map((cId: string) => ({...conversations[cId]}))
 );
 
 export const allConversationSelector = createSelector(
   (state: StateModel) => state.data.conversations.all.items,
-  conversations => Object.keys(conversations).map(cId => ({...conversations[cId]}))
+  (conversations: ConversationMap) => Object.keys(conversations).map((cId: string) => ({...conversations[cId]}))
 );
 
-export const newestConversationFirst = createSelector(allConversationSelector, conversations => {
+export const newestConversationFirst = createSelector(allConversationSelector, (conversations: Conversation[]) => {
   return reverse(
     sortBy(
       values(conversations),
@@ -21,10 +22,6 @@ export const newestConversationFirst = createSelector(allConversationSelector, c
     )
   );
 });
-
-// const filterConversationsByState = (conversations, state) => {
-//   return conversations.filter(item => item.state === state);
-// };
 
 export const newestFilteredConversationFirst = createSelector(
   filteredConversationSelector,

@@ -29,15 +29,19 @@ avro_java_library(
 )
 
 custom_java_library(
-    name = "metadata-action",
-    srcs = glob(["metadata-action/src/main/**/*.java"]),
-    exports = [":metadata-action-avro"],
-    deps = [":metadata-action-avro"],
+    name = "metadata",
+    srcs = glob(["metadata/src/main/**/*.java"]),
+    exports = [":metadata-avro"],
+    deps = [
+        ":metadata-avro",
+        "//:lombok",
+        "//lib/java/uuid",
+    ],
 )
 
 avro_java_library(
-    name = "metadata-action-avro",
-    srcs = ["metadata-action.avsc"],
+    name = "metadata-avro",
+    srcs = ["metadata.avsc"],
     visibility = ["//visibility:private"],
 )
 

@@ -6,7 +6,7 @@ import InfiniteLoader from 'react-window-infinite-loader';
 import ResizableWindowList from '../../../components/ResizableWindowList';
 
 import {newestConversationFirst} from '../../../selectors/conversations';
-import { fetchNextConversations } from '../../../actions/conversations';
+import {fetchNextConversations} from '../../../actions/conversations';
 
 import ConversationListHeader from '../ConversationListHeader';
 import ConversationListItem from '../ConversationListItem';
@@ -14,14 +14,13 @@ import NoConversations from '../NoConversations';
 import {SimpleLoader} from '@airyhq/components';
 
 import {StateModel} from '../../../reducers';
-import { Conversation } from '../../../model/Conversation';
+import {Conversation} from '../../../model/Conversation';
 
 import './index.scss';
 
 type ConversationListProps = ConnectedProps<typeof connector>;
 
 const ConversationList = (props: ConversationListProps) => {
-  
   const listRef: RefObject<any> = React.createRef();
 
   const renderConversationItem = (conversation: Conversation, style: CSSProperties) => {
@@ -41,10 +40,9 @@ const ConversationList = (props: ConversationListProps) => {
         active={conversation.id === currentConversationId}
       />
     );
-  }
+  };
 
   const renderConversationList = () => {
-
     const {conversations, conversationsMetadata, loading} = props;
 
     const items = conversations;
@@ -80,8 +78,8 @@ const ConversationList = (props: ConversationListProps) => {
         )}
       </InfiniteLoader>
     );
-  }
-   
+  };
+
   return (
     <section className="ConversationList-ContainerContacts">
       <div className="ConversationList-Container">
@@ -91,15 +89,14 @@ const ConversationList = (props: ConversationListProps) => {
       </div>
       <section className="ConversationList-ContactList">{renderConversationList()}</section>
     </section>
-  );  
-}
+  );
+};
 
 const mapDispatchToProps = {
   fetchNextConversations,
 };
 
 const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
-
   const match: any = matchPath(ownProps.history.location.pathname, {
     path: '/inbox/conversations/:id',
   });

@@ -17,7 +17,7 @@ const MessengerContainer = (props: InboxProps & ConnectedProps<typeof connector>
   });
 
   return <Messenger />;
-}
+};
 
 const mapStateToProps = (state: StateModel) => {
   return {

@@ -10,17 +10,16 @@ import {AllConversationsState} from '../../../reducers/data/conversations';
 import './index.scss';
 
 const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps) => {
-
   const {conversations, loading, match} = props;
 
-  const waitForContentAndRedirect  = (conversations: AllConversationsState) => {
+  const waitForContentAndRedirect = (conversations: AllConversationsState) => {
     const conversationId = conversations[0].id;
     const targetPath = `/inbox/conversations/${conversationId}`;
     if (targetPath !== window.location.pathname) {
       return <Redirect to={targetPath} />;
     }
-  }
-   
+  };
+
   if (match.isExact && conversations.items.length) {
     return waitForContentAndRedirect(conversations);
   }
@@ -39,7 +38,7 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
       />
     </section>
   );
-}
+};
 
 const mapStateToProps = (state: StateModel) => {
   return {

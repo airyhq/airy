@@ -35,7 +35,7 @@ export interface Message {
     type: MessageType;
   };
   state: MessageState;
-  alignment: MessageAlignment;  
+  alignment: MessageAlignment;
   sentAt: string | Date;
 }
 
@@ -44,19 +44,19 @@ export interface MessagePayload {
   content: {
     text: string;
     type: MessageType;
-  };  
-  state: MessageState;  
-  alignment: MessageAlignment;    
-  sent_at: string | Date;  
+  };
+  state: MessageState;
+  alignment: MessageAlignment;
+  sent_at: string | Date;
 }
 
 export const messageMapper = (payload: MessagePayload): Message => {
   const message: Message = {
     id: payload.id,
     content: payload.content,
-    state: payload.state,    
+    state: payload.state,
     alignment: payload.alignment,
-    sentAt: payload.sent_at
+    sentAt: payload.sent_at,
   };
   return message;
 };

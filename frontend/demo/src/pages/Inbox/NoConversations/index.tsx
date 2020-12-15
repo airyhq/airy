@@ -5,7 +5,10 @@ const NoConversations = () => {
   return Object.keys({}).length === 0 ? (
     <div className={styles.component}>
       <strong>Your new messages will appear here</strong>
-      <p>We start showing messages from the moment you connect a channel. Your conversations will appear here as soon as your contacts message you.</p>
+      <p>
+        We start showing messages from the moment you connect a channel. Your conversations will appear here as soon as
+        your contacts message you.
+      </p>
     </div>
   ) : (
     <div className={styles.component}>

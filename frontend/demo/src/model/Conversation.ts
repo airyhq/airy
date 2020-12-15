@@ -1,9 +1,9 @@
-import { Channel } from './Channel';
+import {Channel} from './Channel';
 import {Message, messageMapper, MessagePayload} from './Message';
 
 export interface Conversation {
   id: string;
-  channel: Channel
+  channel: Channel;
   createdAt: string;
   contact: {
     avatarUrl: string;
@@ -12,7 +12,7 @@ export interface Conversation {
     displayName: string;
     id: string;
   };
-  tags: string[];  
+  tags: string[];
   lastMessage: Message;
   unreadMessageCount?: number;
 }
@@ -36,16 +36,16 @@ export const conversationMapper = (payload: ConversationPayload): Conversation =
   const conversation: Conversation = {
     id: payload.id,
     channel: payload.channel,
-    createdAt: payload.created_at,    
+    createdAt: payload.created_at,
     contact: {
       avatarUrl: payload.contact.avatar_url,
       firstName: payload.contact.first_name,
       lastName: payload.contact.last_name,
-      displayName: payload.contact.first_name + " " + payload.contact.last_name, 
-      id: payload.contact.id
+      displayName: payload.contact.first_name + ' ' + payload.contact.last_name,
+      id: payload.contact.id,
     },
     tags: payload.tags,
-    lastMessage: messageMapper(payload.last_message),    
+    lastMessage: messageMapper(payload.last_message),
     unreadMessageCount: payload.unread_message_count,
   };
   return conversation;

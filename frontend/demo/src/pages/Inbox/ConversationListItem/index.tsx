@@ -31,7 +31,6 @@ type ConversationListItemProps = {
 } & ConnectedProps<typeof connector>;
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  
   const {conversation, active, style} = props;
 
   const participant = {
@@ -76,8 +75,8 @@ const ConversationListItem = (props: ConversationListItemProps) => {
         </div>
       </Link>
     </div>
-  );  
-}
+  );
+};
 
 const mapStateToProps = (state: StateModel) => {
   return {

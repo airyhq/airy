@@ -28,7 +28,7 @@ const PlaceholderChannelData = {
   name: 'Retriving Data...',
   source: 'FACEBOOK',
   sourceChannelId: 'external_channel_id',
-  connected: true
+  connected: true,
 };
 
 const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {

@@ -60,12 +60,13 @@ export function fetchNextConversations() {
     dispatch(loadingConversationsAction());
     return doFetchFromBackend('conversations.list', {
       cursor,
-    }).then((response: FetchConversationsResponse) => {      
-      dispatch(mergeConversationsAction(response.data, response.metadata));
-      return Promise.resolve(true);
     })
-    .catch((error: Error) => {
-      return Promise.reject(error);
-    });
-  }
-};
+      .then((response: FetchConversationsResponse) => {
+        dispatch(mergeConversationsAction(response.data, response.metadata));
+        return Promise.resolve(true);
+      })
+      .catch((error: Error) => {
+        return Promise.reject(error);
+      });
+  };
+}

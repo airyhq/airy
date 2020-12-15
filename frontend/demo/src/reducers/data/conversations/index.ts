@@ -5,7 +5,7 @@ import {cloneDeep} from 'lodash-es';
 import {ResponseMetadata} from '../../../model/ResponseMetadata';
 import {Conversation} from '../../../model/Conversation';
 import * as actions from '../../../actions/conversations';
-import { Message } from '../../../model/Message';
+import {Message} from '../../../model/Message';
 
 type Action = ActionType<typeof actions>;
 

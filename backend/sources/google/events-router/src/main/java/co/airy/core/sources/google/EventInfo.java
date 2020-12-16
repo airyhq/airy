@@ -12,10 +12,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class GoogleEventInfo implements Serializable {
+public class EventInfo implements Serializable {
     private String agentId;
-    private String conversationId;
-    private String eventPayload;
+    private String sourceConversationId;
+    private WebhookEvent event;
     private Channel channel;
     private Long timestamp;
     private boolean isMessage;

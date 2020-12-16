@@ -5,6 +5,7 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
 import co.airy.core.webhook.publisher.model.QueueMessage;
+import co.airy.core.webhook.publisher.model.WebhookBody;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.streams.KafkaStreamsWrapper;

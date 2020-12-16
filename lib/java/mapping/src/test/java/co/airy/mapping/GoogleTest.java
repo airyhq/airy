@@ -27,7 +27,7 @@ public class GoogleTest {
                 "  \"agent\": \"brands/af0ef816-cef8-479e-b4b6-650d5e8b90b1/agents/31a8d3e0-490f-4ecc-887b-42df4dd1952e\"\n" +
                 "}";
 
-        final Text message = (Text) mapper.render(content);
+        final Text message = (Text) mapper.render(content).get(0);
         assertThat(message.getText(), equalTo("Yes confirmed"));
     }
 }

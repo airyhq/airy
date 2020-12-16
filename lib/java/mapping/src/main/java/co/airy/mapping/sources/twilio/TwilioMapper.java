@@ -23,9 +23,9 @@ public class TwilioMapper implements SourceMapper {
     }
 
     @Override
-    public Content render(String payload) {
+    public List<Content> render(String payload) {
         Map<String, String> decodedPayload = parseUrlEncoded(payload);
-        return new Text(decodedPayload.get("Body"));
+        return List.of(new Text(decodedPayload.get("Body")));
     }
 
     private static Map<String, String> parseUrlEncoded(String payload) {

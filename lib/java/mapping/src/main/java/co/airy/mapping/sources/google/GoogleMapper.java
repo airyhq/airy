@@ -23,9 +23,9 @@ public class GoogleMapper implements SourceMapper {
     }
 
     @Override
-    public Content render(String payload) throws Exception {
+    public List<Content> render(String payload) throws Exception {
         final JsonNode jsonNode = objectMapper.readTree(payload);
         final JsonNode messageNode = jsonNode.get("message");
-        return new Text(messageNode.get("text").textValue());
+        return List.of(new Text(messageNode.get("text").textValue()));
     }
 }

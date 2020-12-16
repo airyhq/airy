@@ -19,7 +19,7 @@ public class TwilioTest {
                 "&From=whatsapp%3A%2B&MessageSid=SMbc31b6419de618d65076200c54676476" +
                 "&Body=" + body + "&AccountSid=AC64c9ab479b849275b7b50bd19540c602&NumMedia=0";
 
-        final Text message = (Text) mapper.render(event);
+        final Text message = (Text) mapper.render(event).get(0);
         assertThat(message.getText(), equalTo(body));
     }
 }

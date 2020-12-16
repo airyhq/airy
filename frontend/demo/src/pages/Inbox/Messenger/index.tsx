@@ -25,9 +25,9 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
   }
 
   return (
-    <section className="Messenger-Container">
+    <section className="messengerContainer">
       {!!conversations.items && (
-        <section className="Messenger-ContainerMiddlePanel">
+        <section className="messengerContainerMiddlePanel">
           <ConversationList />
         </section>
       )}

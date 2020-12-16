@@ -27,7 +27,7 @@ const ConversationList = (props: ConversationListProps) => {
     const {currentConversationId} = props;
     if (conversation == null) {
       return (
-        <div className="ConversationList-Loading" style={style}>
+        <div className="conversationListLoading" style={style}>
           <SimpleLoader />
         </div>
       );
@@ -61,7 +61,7 @@ const ConversationList = (props: ConversationListProps) => {
     return (
       <InfiniteLoader isItemLoaded={isItemLoaded} itemCount={itemCount} loadMoreItems={loadMoreItems}>
         {({onItemsRendered, ref}) => (
-          <div className="ConversationList-PaginationWrapper">
+          <div className="conversationListPaginationWrapper">
             {!items.length && !loading ? (
               <NoConversations />
             ) : (
@@ -81,13 +81,13 @@ const ConversationList = (props: ConversationListProps) => {
   };
 
   return (
-    <section className="ConversationList-ContainerContacts">
-      <div className="ConversationList-Container">
-        <section className="ConversationList-ContainerFilterBox">
+    <section className="conversationListContainerContacts">
+      <div className="conversationListContainer">
+        <section className="conversationListContainerFilterBox">
           <ConversationListHeader />
         </section>
       </div>
-      <section className="ConversationList-ContactList">{renderConversationList()}</section>
+      <section className="conversationListContactList">{renderConversationList()}</section>
     </section>
   );
 };

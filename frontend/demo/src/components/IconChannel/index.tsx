@@ -1,17 +1,16 @@
 import React from 'react';
-import {ReactSVG} from 'react-svg';
 import {Channel} from '../../model/Channel';
 
-import fbIcon from '../../assets/images/icons/facebook_rounded.svg';
-import googleIcon from '../../assets/images/icons/google-messages.svg';
-import smsIcon from '../../assets/images/icons/sms-icon.svg';
-import whatsappIcon from '../../assets/images/icons/whatsapp-icon.svg';
-import messengerAvatar from '../../assets/images/icons/messenger_avatar.svg';
-import googleAvatar from '../../assets/images/icons/google_avatar.svg';
-import smsAvatar from '../../assets/images/icons/sms_avatar.svg';
-import whatsappAvatar from '../../assets/images/icons/whatsapp_avatar.svg';
-import airyAvatar from '../../assets/images/icons/airy_avatar.svg';
-import airyIcon from '../../assets/images/icons/airy-icon.svg';
+import {ReactComponent as FacebookIcon} from '../../assets/images/icons/facebook_rounded.svg';
+import {ReactComponent as GoogleIcon} from '../../assets/images/icons/google-messages.svg';
+import {ReactComponent as SmsIcon} from '../../assets/images/icons/sms-icon.svg';
+import {ReactComponent as WhatsappIcon} from '../../assets/images/icons/whatsapp-icon.svg';
+import {ReactComponent as MessengerAvatar} from '../../assets/images/icons/messenger_avatar.svg';
+import {ReactComponent as GoogleAvatar} from '../../assets/images/icons/google_avatar.svg';
+import {ReactComponent as SmsAvatar} from '../../assets/images/icons/sms_avatar.svg';
+import {ReactComponent as WhatsappAvatar} from '../../assets/images/icons/whatsapp_avatar.svg';
+import {ReactComponent as AiryAvatar} from '../../assets/images/icons/airy_avatar.svg';
+import {ReactComponent as AiryIcon} from '../../assets/images/icons/airy-icon.svg';
 
 import styles from './style.module.scss';
 
@@ -37,11 +36,11 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
   }
 
   const SOURCE_INFO = {
-    FACEBOOK: {text: 'Facebook page', icon: fbIcon, avatar: messengerAvatar, name: channel.name},
-    GOOGLE: {text: 'Google page', icon: googleIcon, avatar: googleAvatar, name: channel.name},
-    SMS_TWILIO: {text: 'SMS page', icon: smsIcon, avatar: smsAvatar, name: channel.name},
-    WHATSAPP_TWILIO: {text: 'Whatsapp page', icon: whatsappIcon, avatar: whatsappAvatar, name: channel.name},
-    SELF: {text: 'Airy Chat plugin', icon: airyIcon, avatar: airyAvatar, name: channel.name},
+    FACEBOOK: {text: 'Facebook page', icon: function() { return <FacebookIcon /> }, avatar: function() { return <MessengerAvatar /> }, name: channel.name},
+    GOOGLE: {text: 'Google page', icon: function() { return <GoogleIcon /> }, avatar: function() { return <GoogleAvatar /> }, name: channel.name},
+    SMS_TWILIO: {text: 'SMS page', icon: function() { return <SmsIcon /> }, avatar: function() { return <SmsAvatar /> }, name: channel.name},
+    WHATSAPP_TWILIO: {text: 'Whatsapp page', icon: function() { return <WhatsappIcon /> }, avatar: function() { return <WhatsappAvatar /> }, name: channel.name},
+    SELF: {text: 'Airy Chat plugin', icon: function() { return <AiryIcon /> }, avatar: function() { return <AiryAvatar /> }, name: channel.name},
   };
 
   const channelInfo = SOURCE_INFO[channel.source];
@@ -50,7 +49,7 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
   if (!channelInfo) {
     return (
       <>
-        <ReactSVG src={fbFallback.icon} /> {fbFallback.text}
+        {fbFallback.icon()} {fbFallback.text}
       </>
     );
   }
@@ -58,47 +57,47 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
   if (icon && name) {
     return (
       <div className={styles.iconName}>
-        <ReactSVG src={channelInfo.icon} />
+        {channelInfo.icon()}
         <p>{channelInfo.name}</p>
       </div>
     );
   } else if (avatar && name) {
     return (
       <div className={styles.avatarName}>
-        <ReactSVG src={channelInfo.avatar} />
+        {channelInfo.avatar()}
         <p>{channelInfo.name}</p>
       </div>
     );
   } else if (icon && text) {
     return (
       <div className={styles.iconText}>
-        <ReactSVG src={channelInfo.icon} />
+        {channelInfo.icon()}
         <p>{channelInfo.text}</p>
       </div>
     );
   } else if (avatar && text) {
     return (
       <div className={styles.avatarText}>
-        <ReactSVG src={channelInfo.avatar} />
+        {channelInfo.avatar()}
         <p>{channelInfo.text}</p>
       </div>
     );
   } else if (icon) {
     return (
       <>
-        <ReactSVG src={channelInfo.icon} />
+        {channelInfo.icon()}
       </>
     );
   } else if (avatar) {
     return (
       <>
-        <ReactSVG src={channelInfo.avatar} />
+        {channelInfo.avatar()}
       </>
     );
   }
   return (
     <>
-      <ReactSVG src={fbFallback.icon} /> {fbFallback.text}
+      {fbFallback.icon()} {fbFallback.text}
     </>
   );
 };

@@ -16,12 +16,10 @@
   border: 1px solid rgba(0, 0, 0, 0);
 }
 
-.containerListItem:hover {
-  svg {
-    path {
-      fill: var(--color-dark-elements-gray);
-    }
-  }
+.containerListItem:hover {  
+  path {
+    fill: var(--color-dark-elements-gray);
+  } 
 }
 
 .containerListItem.unread {
@@ -47,12 +45,10 @@
   }
 }
 
-.containerListItemActive:hover {
-  svg {
-    path {
-      fill: var(--color-dark-elements-gray);
-    }
-  }
+.containerListItemActive:hover {  
+  path {
+    fill: var(--color-dark-elements-gray);
+  }  
 }
 
 .profileImage {

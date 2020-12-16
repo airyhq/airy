@@ -43,8 +43,6 @@ const ConversationListItem = (props: ConversationListItemProps) => {
 
   const unread = conversation.unreadMessageCount > 0;
 
-  console.log(conversation);
-
   return (
     <div className={styles.clickableListItem} style={style}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>

@@ -1,6 +1,6 @@
 @import '../../../assets/scss/colors.scss';
 
-.Messenger-Container {
+.messengerContainer {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -9,7 +9,7 @@
   margin: 72px 90px 0;
 }
 
-.Messenger-ContainerMiddlePanel {
+.messengerContainerMiddlePanel {
   background: var(--color-background-gray);
   display: flex;
   flex-direction: column;

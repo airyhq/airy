@@ -20,6 +20,26 @@ import './index.scss';
 
 type ConversationListProps = ConnectedProps<typeof connector>;
 
+const mapDispatchToProps = {
+  fetchNextConversations,
+};
+
+const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
+  const match: any = matchPath(ownProps.history.location.pathname, {
+    path: '/inbox/conversations/:id',
+  });
+
+  return {
+    currentConversationId: match && match.params.id,
+    conversations: newestConversationFirst(state),
+    conversationsMetadata: state.data.conversations.all.metadata,
+    loading: state.data.conversations.all.metadata.loading,
+    user: state.data.user,
+  };
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
 const ConversationList = (props: ConversationListProps) => {
   const listRef: RefObject<any> = React.createRef();
 
@@ -91,25 +111,5 @@ const ConversationList = (props: ConversationListProps) => {
     </section>
   );
 };
-
-const mapDispatchToProps = {
-  fetchNextConversations,
-};
-
-const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
-  const match: any = matchPath(ownProps.history.location.pathname, {
-    path: '/inbox/conversations/:id',
-  });
-
-  return {
-    currentConversationId: match && match.params.id,
-    conversations: newestConversationFirst(state),
-    conversationsMetadata: state.data.conversations.all.metadata,
-    loading: state.data.conversations.all.metadata.loading,
-    user: state.data.user,
-  };
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export default withRouter(connector(ConversationList));

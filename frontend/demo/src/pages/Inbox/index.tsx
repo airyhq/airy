@@ -11,14 +11,6 @@ interface InboxProps {
   user: User;
 }
 
-const MessengerContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
-  useEffect(() => {
-    props.fetchConversations();
-  });
-
-  return <Messenger />;
-};
-
 const mapStateToProps = (state: StateModel) => {
   return {
     user: state.data.user,
@@ -30,5 +22,13 @@ const mapDispatchToProps = {
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
+
+const MessengerContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
+  useEffect(() => {
+    props.fetchConversations();
+  });
+
+  return <Messenger />;
+};
 
 export default connector(MessengerContainer);

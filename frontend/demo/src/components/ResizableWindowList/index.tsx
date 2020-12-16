@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {ComponentType, Ref} from 'react';
-import {ListChildComponentProps, VariableSizeList as List} from 'react-window';
+import {ComponentType} from 'react';
+import {ListOnItemsRenderedProps, ListChildComponentProps, VariableSizeList as List} from 'react-window';
 import './index.module.scss';
 
 type ResizableWindowProps = {
@@ -8,7 +8,7 @@ type ResizableWindowProps = {
   itemSize?: number | ((index: number) => number);
   width: string;
   children: ComponentType<ListChildComponentProps>;
-  onItemsRendered: (event: any) => void;
+  onItemsRendered: (event: ListOnItemsRenderedProps) => void;
 };
 
 type ResizableWindowState = {
@@ -54,7 +54,7 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
     this.listRef.current && this.listRef.current.resetAfterIndex(0, true);
   };
 
-  setRef = (ref: any) => {
+  setRef = (ref: List) => {
     this.listRef.current = ref;
   };
 

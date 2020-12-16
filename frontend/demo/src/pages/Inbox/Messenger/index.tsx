@@ -9,6 +9,15 @@ import {AllConversationsState} from '../../../reducers/data/conversations';
 
 import './index.scss';
 
+const mapStateToProps = (state: StateModel) => {
+  return {
+    loading: state.data.conversations.all.metadata.loading,
+    conversations: state.data.conversations.all,
+  };
+};
+
+const connector = connect(mapStateToProps);
+
 const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps) => {
   const {conversations, loading, match} = props;
 
@@ -39,14 +48,5 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
     </section>
   );
 };
-
-const mapStateToProps = (state: StateModel) => {
-  return {
-    loading: state.data.conversations.all.metadata.loading,
-    conversations: state.data.conversations.all,
-  };
-};
-
-const connector = connect(mapStateToProps);
 
 export default withRouter(connector(Messenger));

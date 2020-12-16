@@ -35,8 +35,6 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
     channel = PlaceholderChannelData;
   }
 
-  console.log(channel);
-
   const SOURCE_INFO = {
     facebook: {
       text: 'Facebook page',

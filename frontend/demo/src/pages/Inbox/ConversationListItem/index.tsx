@@ -17,18 +17,26 @@ interface FormattedMessageProps {
   message: Message;
 }
 
+type ConversationListItemProps = {
+  conversation: Conversation;
+  active: boolean;
+  style: CSSProperties;
+} & ConnectedProps<typeof connector>;
+
+const mapStateToProps = (state: StateModel) => {
+  return {
+    channels: state.data.channels,
+  };
+};
+
+const connector = connect(mapStateToProps, null);
+
 const FormattedMessage = ({message}: FormattedMessageProps) => {
   if (message && message.content) {
     return <>{message.content.text}</>;
   }
   return <div />;
 };
-
-type ConversationListItemProps = {
-  conversation: Conversation;
-  active: boolean;
-  style: CSSProperties;
-} & ConnectedProps<typeof connector>;
 
 const ConversationListItem = (props: ConversationListItemProps) => {
   const {conversation, active, style} = props;
@@ -70,13 +78,5 @@ const ConversationListItem = (props: ConversationListItemProps) => {
     </div>
   );
 };
-
-const mapStateToProps = (state: StateModel) => {
-  return {
-    channels: state.data.channels,
-  };
-};
-
-const connector = connect(mapStateToProps, null);
 
 export default connector(ConversationListItem);

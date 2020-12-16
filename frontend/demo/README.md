@@ -14,8 +14,7 @@ The Airy Demo UI is a minimal user interactive frontend project that showcases t
 - [Installation](#installation)
 - [Authentication](#authentication)
 - [Endpoints](#endpoints)
-- [How to contribute](#how-to-contribute)
-- [Code of Conduct](#code-of-conduct)
+
 
 ### Prerequisites
 

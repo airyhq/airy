@@ -3,8 +3,6 @@ kind: Service
 metadata:
   name: sources-google-webhook
   namespace: default
-  labels:
-    airy: sources.webhook
 spec:
   ports:
     - port: 80

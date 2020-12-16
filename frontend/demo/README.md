@@ -15,7 +15,6 @@ The Airy Demo UI is a minimal user interactive frontend project that showcases t
 - [Authentication](#authentication)
 - [Endpoints](#endpoints)
 
-
 ### Prerequisites
 
 * [Node.js](https://nodejs.org/) version 10 or newer

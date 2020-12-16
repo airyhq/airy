@@ -12,6 +12,7 @@ module.exports = {
       apiKey: '768788b65303eb29ca1f195847ed1e78',
       indexName: 'airy',
     },
+    hideableSidebar: true,
     prism: {
       theme: require('prism-react-renderer/themes/github'),
       darkTheme: require('./src/plugins/prism_themes/monokai'),

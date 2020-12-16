@@ -5,12 +5,12 @@ import {withRouter, Route, Switch, Redirect, RouteComponentProps} from 'react-ro
 import {AiryLoader} from '@airyhq/components';
 import TopBar from './components/TopBar';
 import Login from './pages/Login';
+import Logout from './pages/Logout';
 import NotFound from './pages/NotFound';
 import Sidebar from './components/Sidebar';
 
 import {StateModel} from './reducers';
-
-import {CHANNELS_ROUTE, LOGIN_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
+import {CHANNELS_ROUTE, LOGIN_ROUTE, LOGOUT_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 
 import {Tags} from './pages/Tags';
 import Channels from './pages/Channels';
@@ -31,7 +31,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     return this.props.user.token && this.props.user.token !== '';
   }
 
-  shouldShowSidebar = (path: string) => {
+  shouldShowSidebar = () => {
     return this.isAuthSuccess;
   };
 
@@ -47,7 +47,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     return (
       <div className={styles.Container}>
         <div className={`${this.isAuthSuccess ? styles.ContainerApp : styles.ContainerAppNotLogin}`}>
-          {this.shouldShowSidebar(this.props.location.pathname) ? (
+          {this.shouldShowSidebar() ? (
             <>
               <TopBar isAdmin={true} />
               <Sidebar />
@@ -61,6 +61,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
             </Route>
             <Route exact path={TAGS_ROUTE} component={Tags} />
             <Route exact path={LOGIN_ROUTE} component={Login} />
+            <Route exact path={LOGOUT_ROUTE} component={Logout} />
             <Route exact path={CHANNELS_ROUTE} component={Channels} />
             <Route component={NotFound} />
           </Switch>

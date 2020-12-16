@@ -1,7 +1,7 @@
 package co.airy.core.api.communication;
 
-import co.airy.avro.communication.MetadataAction;
-import co.airy.avro.communication.MetadataActionType;
+import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.Subject;
 import co.airy.core.api.communication.payload.RemoveMetadataRequestPayload;
 import co.airy.core.api.communication.payload.SetMetadataRequestPayload;
 import co.airy.payload.response.EmptyResponsePayload;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.time.Instant;
 
 import static co.airy.avro.communication.MetadataKeys.PUBLIC;
+import static co.airy.avro.communication.MetadataRepository.newConversationMetadata;
 
 @RestController
 public class MetadataController {
@@ -26,16 +26,12 @@ public class MetadataController {
     }
 
     @PostMapping("/metadata.set")
-    ResponseEntity<?> setMetadata(@RequestBody @Valid SetMetadataRequestPayload setMetadataRequestPayload) {
-        final MetadataAction metadataAction = MetadataAction.newBuilder()
-                .setActionType(MetadataActionType.SET)
-                .setTimestamp(Instant.now().toEpochMilli())
-                .setConversationId(setMetadataRequestPayload.getConversationId())
-                .setValue(setMetadataRequestPayload.getValue())
-                .setKey(PUBLIC + "." + setMetadataRequestPayload.getKey())
-                .build();
+    ResponseEntity<?> setMetadata(@RequestBody @Valid SetMetadataRequestPayload requestPayload) {
+        final Metadata metadata = newConversationMetadata(requestPayload.getConversationId(),
+                PUBLIC + "." + requestPayload.getKey(),
+                requestPayload.getValue());
         try {
-            stores.storeMetadata(metadataAction);
+            stores.storeMetadata(metadata);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
@@ -43,16 +39,12 @@ public class MetadataController {
     }
 
     @PostMapping("/metadata.remove")
-    ResponseEntity<?> removeMetadata(@RequestBody @Valid RemoveMetadataRequestPayload removeMetadataRequestPayload) {
-        final MetadataAction metadataAction = MetadataAction.newBuilder()
-                .setActionType(MetadataActionType.REMOVE)
-                .setTimestamp(Instant.now().toEpochMilli())
-                .setConversationId(removeMetadataRequestPayload.getConversationId())
-                .setKey(PUBLIC + "." + removeMetadataRequestPayload.getKey())
-                .setValue("")
-                .build();
+    ResponseEntity<?> removeMetadata(@RequestBody @Valid RemoveMetadataRequestPayload requestPayload) {
+        final Subject subject = new Subject("conversation", requestPayload.getConversationId());
+        final String metadataKey = PUBLIC + "." + requestPayload.getKey();
+
         try {
-            stores.storeMetadata(metadataAction);
+            stores.deleteMetadata(subject, metadataKey);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

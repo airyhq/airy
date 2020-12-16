@@ -3,8 +3,25 @@ set -eo pipefail
 IFS=$'\n\t'
 
 source /vagrant/scripts/lib/k8s.sh
-APP_IMAGE_TAG=${AIRY_VERSION:-latest}
+if [ -z ${AIRY_VERSION+x} ]; then
+    branch_name="$(git symbolic-ref HEAD 2>/dev/null)" ||
+    branch_name="(unnamed branch)"     # detached HEAD
 
+    branch_name=${branch_name##refs/heads/}
+    case "$branch_name" in
+        develop )
+            AIRY_VERSION=beta
+            ;;
+        release* )
+            AIRY_VERSION=release
+            ;;
+        * )
+            AIRY_VERSION=latest
+            ;;
+    esac
+fi
+
+kubectl delete pod startup-helper --force 2>/dev/null || true
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 cd /vagrant/scripts
 
@@ -12,7 +29,7 @@ if [ -f "/vagrant/airy.conf" ]; then
     cp /vagrant/airy.conf ~/airy-core/helm-chart/charts/apps/values.yaml
 fi
 
-helm upgrade airy ~/airy-core/helm-chart/ --set global.appImageTag=${APP_IMAGE_TAG} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
+helm upgrade airy ~/airy-core/helm-chart/ --set global.appImageTag=${AIRY_VERSION} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
 
 kubectl scale deployment airy-cp-schema-registry --replicas=1
 

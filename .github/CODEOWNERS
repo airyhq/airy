@@ -1,0 +1,10 @@
+backend/ @airyhq/codeowners-backend
+docs/ @airyhq/codeowners-backend @airyhq/codeowners-frontend @airyhq/codeowners-infrastructure
+frontend/ @airyhq/codeowners-frontend
+infrastructure/ @airyhq/codeowners-infrastructure
+lib/go/ @airyhq/codeowners-infrastructure
+lib/java/ @airyhq/codeowners-backend
+lib/typescript/ @airyhq/codeowners-frontend
+scripts/ @airyhq/codeowners-infrastructure
+*.bzl @lucapette @chrismatix
+BUILD @lucapette @chrismatix

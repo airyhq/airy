@@ -3,8 +3,7 @@ package co.airy.core.api.communication.util;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.MetadataAction;
-import co.airy.avro.communication.MetadataActionType;
+import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -20,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+
+import static co.airy.avro.communication.MetadataRepository.newConversationMetadata;
 
 @Data
 @NoArgsConstructor
@@ -67,13 +68,7 @@ public class TestConversation {
         if (metadata != null) {
             metadata.forEach((metadataKey, metadataValue) ->
                     records.add(new ProducerRecord<>(applicationCommunicationMetadata, conversationId,
-                            MetadataAction.newBuilder()
-                                    .setKey(metadataKey)
-                                    .setValue(metadataValue)
-                                    .setConversationId(conversationId)
-                                    .setActionType(MetadataActionType.SET)
-                                    .setTimestamp(Instant.now().toEpochMilli())
-                                    .build()
+                            newConversationMetadata(conversationId, metadataKey, metadataValue)
                     )));
         }
 

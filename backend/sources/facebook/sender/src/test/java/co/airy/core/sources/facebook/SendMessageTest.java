@@ -10,6 +10,7 @@ import co.airy.core.sources.facebook.services.Api;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -53,6 +54,7 @@ class SendMessageTest {
 
     private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
+    private static final Topic applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
 
     @MockBean
     private Api api;
@@ -67,7 +69,8 @@ class SendMessageTest {
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationChannels,
-                applicationCommunicationMessages
+                applicationCommunicationMessages,
+                applicationCommunicationMetadata
         );
 
         kafkaTestHelper.beforeAll();

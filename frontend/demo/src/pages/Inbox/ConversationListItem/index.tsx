@@ -33,13 +33,8 @@ type ConversationListItemProps = {
 const ConversationListItem = (props: ConversationListItemProps) => {
   const {conversation, active, style} = props;
 
-  const participant = {
-    avatar_url: 'https://lh3.googleusercontent.com/fRQ5i4a5A0ETKJU9acF2zV5REvGD0DXltaRO5uduFnnAeYYzX_Xr0XlWi8tTJq2DGdQ',
-    first_name: 'Random',
-    last_name: 'User',
-    display_name: 'Random User',
-    info: {},
-  };
+  const participant = conversation.contact;
+  const fallbackAvatar = 'https://s3.amazonaws.com/assets.airy.co/unknown.png';
 
   const unread = conversation.unreadMessageCount > 0;
 
@@ -52,12 +47,12 @@ const ConversationListItem = (props: ConversationListItemProps) => {
           }`}>
           <div
             className={styles.profileImage}
-            style={{backgroundImage: `url(${participant && participant.avatar_url})`}}
+            style={{backgroundImage: `url(${(participant && participant.avatarUrl) || fallbackAvatar})`}}
           />
           <div className={styles.contactDetails}>
             <div className={styles.topRow}>
               <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>
-                {participant && participant.display_name}
+                {participant && participant.displayName}
               </div>
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>

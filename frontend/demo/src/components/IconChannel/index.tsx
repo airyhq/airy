@@ -35,8 +35,10 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
     channel = PlaceholderChannelData;
   }
 
+  console.log(channel);
+
   const SOURCE_INFO = {
-    FACEBOOK: {
+    facebook: {
       text: 'Facebook page',
       icon: function() {
         return <FacebookIcon />;
@@ -46,7 +48,7 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
       },
       name: channel.name,
     },
-    GOOGLE: {
+    google: {
       text: 'Google page',
       icon: function() {
         return <GoogleIcon />;
@@ -56,7 +58,7 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
       },
       name: channel.name,
     },
-    SMS_TWILIO: {
+    'twilio.sms': {
       text: 'SMS page',
       icon: function() {
         return <SmsIcon />;
@@ -66,7 +68,7 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
       },
       name: channel.name,
     },
-    WHATSAPP_TWILIO: {
+    'twilio.whatsapp': {
       text: 'Whatsapp page',
       icon: function() {
         return <WhatsappIcon />;
@@ -76,7 +78,7 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
       },
       name: channel.name,
     },
-    SELF: {
+    chat_plugin: {
       text: 'Airy Chat plugin',
       icon: function() {
         return <AiryIcon />;
@@ -88,7 +90,8 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
     },
   };
 
-  const channelInfo = SOURCE_INFO[channel.source];
+  //TODO: This has to go once the backend returns the source
+  const channelInfo = SOURCE_INFO[channel.source || 'chat_plugin'];
   const fbFallback = SOURCE_INFO['FACEBOOK'];
 
   if (!channelInfo) {

@@ -2,7 +2,7 @@ import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
 import {doFetchFromBackend} from '../../api/airyConfig';
 
-import {Conversation} from '../../model/Conversation';
+import {Conversation, ConversationPayload, conversationsMapper} from '../../model/Conversation';
 import {ResponseMetadata} from '../../model/ResponseMetadata';
 
 export const CONVERSATION_LOADING = '@@conversation/LOADING';
@@ -34,7 +34,7 @@ export const removeErrorFromConversationAction = createAction(
 );
 
 export interface FetchConversationsResponse {
-  data: Conversation[];
+  data: ConversationPayload[];
   metadata: ResponseMetadata;
 }
 
@@ -45,7 +45,7 @@ export function fetchConversations() {
       page_size: 10,
     })
       .then((response: FetchConversationsResponse) => {
-        dispatch(mergeConversationsAction(response.data, response.metadata));
+        dispatch(mergeConversationsAction(conversationsMapper(response.data), response.metadata));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {
@@ -62,7 +62,7 @@ export function fetchNextConversations() {
       cursor,
     })
       .then((response: FetchConversationsResponse) => {
-        dispatch(mergeConversationsAction(response.data, response.metadata));
+        dispatch(mergeConversationsAction(conversationsMapper(response.data), response.metadata));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {

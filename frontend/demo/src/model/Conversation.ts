@@ -50,3 +50,11 @@ export const conversationMapper = (payload: ConversationPayload): Conversation =
   };
   return conversation;
 };
+
+export const conversationsMapper = (payloadArray: ConversationPayload[]): Conversation[] => {
+  const conversations: Conversation[] = [];
+  payloadArray.forEach((conversation: ConversationPayload) => {
+    conversations.push(conversationMapper(conversation));
+  });
+  return conversations;
+};

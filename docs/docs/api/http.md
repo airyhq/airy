@@ -136,8 +136,8 @@ Find all users with the last name "Lovelace":
     {
       "id": "a688d36c-a85e-44af-bc02-4248c2c97622",
       "channel": {
-        "name": "facebook",
-        // name of the source
+        "name": "Facebook page name",
+        "source": "facebook",
         "id": "318efa04-7cc1-4200-988e-50699d0dd6e3"
       },
       "created_at": "2019-01-07T09:01:44.000Z",

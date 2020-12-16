@@ -52,24 +52,3 @@ In order to communicate with our API endpoints, you need a valid [JWT](https://j
 Aside from Curl, [PostMan](https://www.postman.com/downloads/) and other API testing tools could also be used to access the endpoints.
 
 
-### How To Contribute
-
-We welcome (and love) every form of contribution! Good entry points to the
-project are:
-
-- Our [contributing guide](/docs/docs/guides/contributing.md)
-- Issues with the tag
-  [gardening](https://github.com/airyhq/airy/issues?q=is%3Aissue+is%3Aopen+label%3Agardening)
-- Issues with the tag [good first
-  patch](https://github.com/airyhq/airy/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+patch%22)
-
-If you're still not sure where to start, open a [new
-issue](https://github.com/airyhq/airy/issues/new) and we'll gladly help you get
-started.
-
-### Code of Conduct
-
-To ensure a safe experience and a welcoming community, the Airy Core Platform
-project adheres to the [contributor
-convenant](https://www.contributor-covenant.org/) [code of
-conduct](/code_of_conduct.md).

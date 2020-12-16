@@ -6,6 +6,7 @@ app_deps = [
     "//backend:base_app",
     "//backend:channel",
     "//backend:message",
+    "//backend:metadata",
     "//lib/java/log",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",

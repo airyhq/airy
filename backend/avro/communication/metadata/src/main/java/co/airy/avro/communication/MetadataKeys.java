@@ -11,6 +11,7 @@ public class MetadataKeys {
             public static final String LAST_NAME = "source.contact.last_name";
             public static final String AVATAR_URL = "source.contact.avatar_url";
         }
+        public static final String CONTACT_FETCH_STATE = "source.contact_fetch_state";
     }
 
     public static final String TAGS = "tags";

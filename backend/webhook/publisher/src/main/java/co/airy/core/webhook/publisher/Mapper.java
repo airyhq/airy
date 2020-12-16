@@ -8,6 +8,7 @@ import co.airy.mapping.model.Content;
 import co.airy.mapping.model.Text;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 import static co.airy.payload.format.DateFormat.isoFromMillis;
@@ -21,16 +22,21 @@ public class Mapper {
     }
 
     public WebhookBody fromMessage(Message message) throws Exception {
-        final Content content = contentMapper.renderWithDefaultAndLog(message);
+        final List<Content> content = contentMapper.renderWithDefaultAndLog(message);
 
-        if (!(content instanceof Text)) {
+        final Text textContent = (Text) content.stream()
+                .filter(c -> (c instanceof Text))
+                .findFirst()
+                .orElse(null);
+
+        if (textContent == null) {
             throw new NotATextMessage();
         }
 
         return WebhookBody.builder()
                 .conversationId(message.getConversationId())
                 .id(message.getId())
-                .text(((Text) content).getText())
+                .text(textContent.getText())
                 .source(message.getSource())
                 .postback(buildPostback(message))
                 .sentAt(isoFromMillis(message.getSentAt()))

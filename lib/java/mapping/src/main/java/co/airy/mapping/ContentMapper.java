@@ -27,7 +27,7 @@ public class ContentMapper {
         this.outboundMapper = outboundMapper;
     }
 
-    public Content render(Message message) throws Exception {
+    public List<Content> render(Message message) throws Exception {
         if (SenderType.APP_USER.equals(message.getSenderType()) || "chat_plugin".equals(message.getSource())) {
             return outboundMapper.render(message.getContent());
         }
@@ -40,12 +40,12 @@ public class ContentMapper {
         return sourceMapper.render(message.getContent());
     }
 
-    public Content renderWithDefaultAndLog(Message message) {
+    public List<Content> renderWithDefaultAndLog(Message message) {
         try {
             return this.render(message);
         } catch (Exception e) {
             log.error("Failed to render message {}", message, e);
-            return new Text("This content cannot be displayed");
+            return List.of(new Text("This content cannot be displayed"));
         }
     }
 }

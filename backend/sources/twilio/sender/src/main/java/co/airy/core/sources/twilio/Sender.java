@@ -88,7 +88,8 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
 
         try {
             // TODO Figure out how we can let clients know which outbound message types are supported
-            final Text content = (Text) mapper.render(message);
+            // TODO Only text messages?
+            final Text content = (Text) mapper.render(message).get(0);
             api.sendMessage(from, to, content.getText());
 
             updateDeliveryState(message, DeliveryState.DELIVERED);

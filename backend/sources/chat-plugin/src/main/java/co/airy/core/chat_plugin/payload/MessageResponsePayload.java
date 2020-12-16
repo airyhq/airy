@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class MessageResponsePayload implements Serializable {
     private String id;
-    private Content content;
+    private List<Content> content;
     private String state;
     private String senderType;
     private String sentAt;

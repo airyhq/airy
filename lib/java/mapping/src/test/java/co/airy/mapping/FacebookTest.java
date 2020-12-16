@@ -19,7 +19,7 @@ public class FacebookTest {
         final String text = "Hello world";
         final String sourceContent = String.format(StreamUtils.copyToString(getClass().getClassLoader().getResourceAsStream("facebook/text.json"), StandardCharsets.UTF_8), text);
 
-        final Text message = (Text) mapper.render(sourceContent);
+        final Text message = (Text) mapper.render(sourceContent).get(0);
 
         assertThat(message.getText(), equalTo(text));
     }

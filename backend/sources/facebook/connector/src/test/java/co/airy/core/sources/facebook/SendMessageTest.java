@@ -61,9 +61,7 @@ class SendMessageTest {
 
     @Autowired
     @InjectMocks
-    private Sender worker;
-
-    private static boolean streamInitialized = false;
+    private Connector worker;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -84,12 +82,7 @@ class SendMessageTest {
     @BeforeEach
     void beforeEach() throws InterruptedException {
         MockitoAnnotations.initMocks(this);
-
-        if (!streamInitialized) {
-            retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
-
-            streamInitialized = true;
-        }
+        retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test

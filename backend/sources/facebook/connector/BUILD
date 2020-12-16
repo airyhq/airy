@@ -13,7 +13,7 @@ app_deps = [
 ]
 
 springboot(
-    name = "sender",
+    name = "connector",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,
@@ -35,5 +35,5 @@ springboot(
 
 container_push(
     registry = "ghcr.io/airyhq/sources",
-    repository = "facebook-sender",
+    repository = "facebook-connector",
 )

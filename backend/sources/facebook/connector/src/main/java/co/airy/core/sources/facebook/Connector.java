@@ -44,15 +44,15 @@ import static co.airy.avro.communication.MetadataRepository.isConversationMetada
 import static co.airy.avro.communication.MetadataRepository.newConversationMetadata;
 
 @Component
-public class Sender implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
-    private static final Logger log = AiryLoggerFactory.getLogger(Sender.class);
-    private static final String appId = "sources.facebook.Sender";
+public class Connector implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
+    private static final Logger log = AiryLoggerFactory.getLogger(Connector.class);
+    private static final String appId = "sources.facebook.Connector";
 
     private final KafkaStreamsWrapper streams;
     private final Api api;
     private final Mapper mapper;
 
-    Sender(KafkaStreamsWrapper streams, Api api, Mapper mapper) {
+    Connector(KafkaStreamsWrapper streams, Api api, Mapper mapper) {
         this.streams = streams;
         this.api = api;
         this.mapper = mapper;
@@ -115,7 +115,7 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
                 .suppress(Suppressed.untilTimeLimit(Duration.ofMillis(streams.getSuppressIntervalInMs()), Suppressed.BufferConfig.unbounded()))
                 .toStream()
                 .leftJoin(metadataTable, (conversation, metadataMap) -> {
-                    conversation.setMetadata(new HashMap<>(Optional.of(metadataMap).orElse(Map.of())));
+                    conversation.setMetadata(new HashMap<>(Optional.ofNullable(metadataMap).orElse(Map.of())));
                     return conversation;
                 })
                 .filter(this::needsMetadataFetched)
@@ -157,6 +157,7 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
 
     private List<KeyValue<String, Metadata>> fetchMetadata(String conversationId, Conversation conversation) {
         final UserProfile profile = getProfile(conversation);
+
         final List<KeyValue<String, Metadata>> recordList = new ArrayList<>();
 
         if (profile.getFirstName() != null) {
@@ -174,9 +175,14 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
             recordList.add(KeyValue.pair(getId(avatarUrl).toString(), avatarUrl));
         }
 
-        final String fetchSuccessState = recordList.size() > 0 ? "ok" : "failed";
-        final Metadata fetchState = newConversationMetadata(conversationId, MetadataKeys.Source.Contact.FIRST_NAME, fetchSuccessState);
-        recordList.add(KeyValue.pair(getId(fetchState).toString(), fetchState));
+        final String newFetchState = recordList.size() > 0 ? "ok" : "failed";
+        final String oldFetchState = conversation.getMetadata().get(MetadataKeys.Source.CONTACT_FETCH_STATE);
+
+        // Only update fetch state if there has been a change
+        if (!newFetchState.equals(oldFetchState)) {
+            final Metadata fetchState = newConversationMetadata(conversationId, MetadataKeys.Source.CONTACT_FETCH_STATE, newFetchState);
+            recordList.add(KeyValue.pair(getId(fetchState).toString(), fetchState));
+        }
 
         return recordList;
     }
@@ -187,9 +193,14 @@ public class Sender implements DisposableBean, ApplicationListener<ApplicationRe
         final String token = conversation.getChannel().getToken();
         try {
             return api.getProfileFromContact(sourceConversationId, token);
-        } catch (Exception e) {
-            log.error("Failed to retrieve using contact api", e);
-            return api.getProfileFromParticipants(sourceConversationId, token);
+        } catch (Exception profileApiException) {
+            log.error("Profile api failed", profileApiException);
+            try {
+                return api.getProfileFromParticipants(sourceConversationId, token);
+            } catch (Exception participantApiException) {
+                log.error("Participant api failed", participantApiException);
+                return new UserProfile();
+            }
         }
     }
 

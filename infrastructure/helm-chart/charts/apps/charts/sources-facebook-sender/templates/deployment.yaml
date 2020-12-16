@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sources-facebook-sender
+  name: sources-facebook-connector
   namespace: default
   labels:
-    app: sources-facebook-sender
+    app: sources-facebook-connector
     type: sources-facebook
 spec:
   replicas: 0
   selector:
     matchLabels:
-      app: sources-facebook-sender
+      app: sources-facebook-connector
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       labels:
-        app: sources-facebook-sender
+        app: sources-facebook-connector
     spec:
       containers:
       - name: app
@@ -37,7 +37,7 @@ spec:
               name: kafka-config
               key: KAFKA_SCHEMA_REGISTRY_URL
         - name: SERVICE_NAME
-          value: facebook-sender
+          value: facebook-connector
         livenessProbe:
           tcpSocket:
             port: 6000

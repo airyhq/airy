@@ -36,11 +36,56 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
   }
 
   const SOURCE_INFO = {
-    FACEBOOK: {text: 'Facebook page', icon: function() { return <FacebookIcon /> }, avatar: function() { return <MessengerAvatar /> }, name: channel.name},
-    GOOGLE: {text: 'Google page', icon: function() { return <GoogleIcon /> }, avatar: function() { return <GoogleAvatar /> }, name: channel.name},
-    SMS_TWILIO: {text: 'SMS page', icon: function() { return <SmsIcon /> }, avatar: function() { return <SmsAvatar /> }, name: channel.name},
-    WHATSAPP_TWILIO: {text: 'Whatsapp page', icon: function() { return <WhatsappIcon /> }, avatar: function() { return <WhatsappAvatar /> }, name: channel.name},
-    SELF: {text: 'Airy Chat plugin', icon: function() { return <AiryIcon /> }, avatar: function() { return <AiryAvatar /> }, name: channel.name},
+    FACEBOOK: {
+      text: 'Facebook page',
+      icon: function() {
+        return <FacebookIcon />;
+      },
+      avatar: function() {
+        return <MessengerAvatar />;
+      },
+      name: channel.name,
+    },
+    GOOGLE: {
+      text: 'Google page',
+      icon: function() {
+        return <GoogleIcon />;
+      },
+      avatar: function() {
+        return <GoogleAvatar />;
+      },
+      name: channel.name,
+    },
+    SMS_TWILIO: {
+      text: 'SMS page',
+      icon: function() {
+        return <SmsIcon />;
+      },
+      avatar: function() {
+        return <SmsAvatar />;
+      },
+      name: channel.name,
+    },
+    WHATSAPP_TWILIO: {
+      text: 'Whatsapp page',
+      icon: function() {
+        return <WhatsappIcon />;
+      },
+      avatar: function() {
+        return <WhatsappAvatar />;
+      },
+      name: channel.name,
+    },
+    SELF: {
+      text: 'Airy Chat plugin',
+      icon: function() {
+        return <AiryIcon />;
+      },
+      avatar: function() {
+        return <AiryAvatar />;
+      },
+      name: channel.name,
+    },
   };
 
   const channelInfo = SOURCE_INFO[channel.source];
@@ -83,17 +128,9 @@ const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
       </div>
     );
   } else if (icon) {
-    return (
-      <>
-        {channelInfo.icon()}
-      </>
-    );
+    return <>{channelInfo.icon()}</>;
   } else if (avatar) {
-    return (
-      <>
-        {channelInfo.avatar()}
-      </>
-    );
+    return <>{channelInfo.avatar()}</>;
   }
   return (
     <>

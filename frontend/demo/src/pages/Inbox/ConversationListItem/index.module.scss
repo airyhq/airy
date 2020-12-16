@@ -16,10 +16,10 @@
   border: 1px solid rgba(0, 0, 0, 0);
 }
 
-.containerListItem:hover {  
+.containerListItem:hover {
   path {
     fill: var(--color-dark-elements-gray);
-  } 
+  }
 }
 
 .containerListItem.unread {
@@ -45,10 +45,10 @@
   }
 }
 
-.containerListItemActive:hover {  
+.containerListItemActive:hover {
   path {
     fill: var(--color-dark-elements-gray);
-  }  
+  }
 }
 
 .profileImage {

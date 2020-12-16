@@ -17,6 +17,7 @@ public class ConversationIndex implements Serializable {
     private String id;
     private String displayName;
     private String channelId;
+    private String source;
     private Long createdAt;
     private Integer unreadCount;
 
@@ -27,6 +28,7 @@ public class ConversationIndex implements Serializable {
         return ConversationIndex.builder()
                 .id(conversation.getId())
                 .channelId(conversation.getChannelId())
+                .source(conversation.getChannel().getSource())
                 .displayName(conversation.getDisplayNameOrDefault().toString())
                 .metadata(new HashMap<>(conversation.getMetadata()))
                 .createdAt(conversation.getCreatedAt())

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static co.airy.core.api.admin.Mapper.fromChannel;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -113,7 +114,7 @@ public class ChannelsController {
         final Channel existingChannel = channelsMap.get(channelId);
 
         if (existingChannel != null && ChannelConnectionState.CONNECTED.equals(existingChannel.getConnectionState())) {
-            return ResponseEntity.ok(Mapper.fromChannel(existingChannel));
+            return ResponseEntity.ok(fromChannel(existingChannel));
         }
 
         final ChannelMetadata channelMetadata;
@@ -140,7 +141,7 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
 
-        return ResponseEntity.ok(Mapper.fromChannel(channel));
+        return ResponseEntity.ok(fromChannel(channel));
     }
 
     @PostMapping("/channels.disconnect")

@@ -33,6 +33,7 @@ public class Mapper {
                 .channel(ChannelPayload.builder()
                         .id(conversation.getChannelId())
                         .name(conversation.getChannel().getName())
+                        .source(conversation.getChannel().getSource())
                         .build())
                 .id(conversation.getId())
                 .unreadMessageCount(conversation.getUnreadCount())

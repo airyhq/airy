@@ -35,18 +35,22 @@ public class GoogleMapper implements SourceMapper {
         final JsonNode messageNode = jsonNode.get("message");
 
         final String messageNodeValue = messageNode.get("text").textValue();
-        if(isGoogleSignedUrl(messageNodeValue)) {
+        if(isGoogleStorageUrl(messageNodeValue)) {
             return List.of(new Image(messageNodeValue));
         } else {
             return List.of(new Text(messageNodeValue));
         }
     }
 
-    private boolean isGoogleSignedUrl(final String url) {
+    private boolean isGoogleStorageUrl(final String url) {
         URI uri;
         try {
             uri = new URI(url);
         } catch (URISyntaxException e) {
+            return false;
+        }
+
+        if(!uri.getHost().startsWith("storage.googleapis.com")) {
             return false;
         }
 

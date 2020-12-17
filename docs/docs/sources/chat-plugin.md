@@ -33,7 +33,7 @@ POST /channels.connect
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -91,7 +91,10 @@ API](api/http.md#introduction).
 The request returns an authentication token that needs to be included in the
 WebSocket connection handshake.
 
-**Sample Request**
+You can either pass the `channel_id` for a new conversation or a `resume_token` that was obtained in a
+previous conversation using the [resume endpoint](#get-a-resume-token).
+
+**Sample request**
 
 ```json5
 {
@@ -99,11 +102,60 @@ WebSocket connection handshake.
 }
 ```
 
-**Sample Response**
+**Sample response (New conversation)**
 
 ```json5
 {
-  "token": "jwt auth token"
+  "token": "jwt",
+  "messages": []
+}
+```
+
+**Sample response (Resumed conversation)**
+
+```json5
+{
+  "token": "jwt",
+  "messages": [
+    {
+      "id": "{UUID}",
+      "content": [
+        {
+          "text": "{String}",
+          "type": "text"
+          // Determines the schema of the content
+        }
+      ],
+      // typed source message model
+      "state": "{String}",
+      // delivery state of message, one of PENDING, FAILED, DELIVERED
+      "sender_type": "{string/enum}",
+      // See glossary
+      "sent_at": "{string}"
+      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    }
+  ]
+}
+```
+
+### Get a resume token
+
+`POST /chatplugin.resumeToken`
+
+You must set the `token` obtained on the [authorization endpoint](#authenticating-web-users) as an `Authorization`
+header.
+
+**Sample request**
+
+```json5
+{}
+```
+
+**Sample response**
+
+```json5
+{
+  "resume_token": "jwt auth token"
 }
 ```
 
@@ -114,7 +166,7 @@ header.
 
 `POST /chatplugin.send`
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -124,7 +176,7 @@ header.
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -155,7 +207,7 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
 
 `/user/queue/message`
 
-**Sample Payload**
+**Sample payload**
 
 ```json5
 {

@@ -4,6 +4,7 @@ import {doFetchFromBackend} from '../../api/airyConfig';
 
 import {Conversation, ConversationPayload, conversationsMapper} from '../../model/Conversation';
 import {ResponseMetadata} from '../../model/ResponseMetadata';
+import {RootState, StateModel} from '../../reducers';
 
 export const CONVERSATION_LOADING = '@@conversation/LOADING';
 export const CONVERSATIONS_LOADING = '@@conversations/LOADING';
@@ -55,8 +56,8 @@ export function fetchConversations() {
 }
 
 export function fetchNextConversations() {
-  return async (dispatch: Dispatch<any>, state: any) => {
-    const cursor = state().data.conversations.all.metadata.next_cursor;
+  return async (dispatch: Dispatch<any>, state: StateModel) => {
+    const cursor = state.data.conversations.all.metadata.next_cursor;
     dispatch(loadingConversationsAction());
     return doFetchFromBackend('conversations.list', {
       cursor,

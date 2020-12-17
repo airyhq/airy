@@ -1,5 +1,5 @@
 import React, {CSSProperties, RefObject} from 'react';
-import {withRouter, matchPath, RouteComponentProps} from 'react-router-dom';
+import {withRouter, matchPath, RouteComponentProps, match} from 'react-router-dom';
 import {connect, ConnectedProps} from 'react-redux';
 
 import InfiniteLoader from 'react-window-infinite-loader';
@@ -20,12 +20,16 @@ import './index.scss';
 
 type ConversationListProps = ConnectedProps<typeof connector>;
 
+type MatchParams = {
+  id: string;
+};
+
 const mapDispatchToProps = {
   fetchNextConversations,
 };
 
 const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
-  const match: any = matchPath(ownProps.history.location.pathname, {
+  const match: match<MatchParams> = matchPath(ownProps.history.location.pathname, {
     path: '/inbox/conversations/:id',
   });
 
@@ -63,7 +67,7 @@ const ConversationList = (props: ConversationListProps) => {
   };
 
   const renderConversationList = () => {
-    const {conversations, conversationsMetadata, loading} = props;
+    const {conversations, conversationsMetadata, loading, fetchNextConversations} = props;
 
     const items = conversations;
     const metadata = conversationsMetadata;

@@ -25,7 +25,11 @@
     "redux-starter-kit": "^0.8.1",
     "redux": "^4.0.5",
     "regenerator-runtime": "^0.13.5",
-    "typesafe-actions": "^4.4.2"
+    "typesafe-actions": "^4.4.2",
+    "lodash-es": "^4.17.15",
+    "react-window": "1.8.5",
+    "react-window-infinite-loader": "1.0.5",
+    "reselect": "4.0.0"
   },
   "scripts": {},
   "devDependencies": {
@@ -34,6 +38,8 @@
     "@bazel/ibazel": "0.12.2",
     "@bazel/typescript": "1.6.0",
     "@svgr/webpack": "^5.4.0",
+    "@types/lodash-es": "^4.17.3",
+    "@types/react-window-infinite-loader": "^1.0.3",
     "babel-loader": "^8.0.6",
     "connect-history-api-fallback": "^1.6.0",
     "copy-webpack-plugin": "^5.1.1",

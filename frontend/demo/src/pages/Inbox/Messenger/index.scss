@@ -1,0 +1,22 @@
+@import '../../../assets/scss/colors.scss';
+
+.messengerContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: stretch;
+  overflow: hidden;
+  margin: 72px 90px 0;
+}
+
+.messengerContainerMiddlePanel {
+  background: var(--color-background-gray);
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+  max-width: 320px;
+  overflow: hidden;
+  margin: 16px 8px 0 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}

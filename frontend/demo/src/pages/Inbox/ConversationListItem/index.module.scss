@@ -1,0 +1,176 @@
+@import '../../../assets/scss/colors.scss';
+@import '../../../assets/scss/fonts.scss';
+
+.clickableListItem {
+  padding: 0px 8px;
+
+  > a {
+    text-decoration: none;
+  }
+}
+
+.containerListItem {
+  padding: 16px 8px 0 16px;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.containerListItem:hover {
+  path {
+    fill: var(--color-dark-elements-gray);
+  }
+}
+
+.containerListItem.unread {
+  &:before {
+    content: '•';
+    color: var(--color-airy-blue);
+    padding-top: 3px;
+    margin-left: -20px;
+    margin-right: 10px;
+  }
+}
+
+.containerListItemActive {
+  padding: 16px 8px 16px 16px;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid var(--color-airy-logo-blue);
+  border-radius: 8px;
+  background-color: var(--color-background-blue);
+  .contactDetails {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.containerListItemActive:hover {
+  path {
+    fill: var(--color-dark-elements-gray);
+  }
+}
+
+.profileImage {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  margin-right: 16px;
+  border-radius: 50%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.contactDetails {
+  width: 100%;
+  border-bottom: 1px solid var(--color-background-gray);
+  overflow: hidden;
+  padding-bottom: 16px;
+}
+
+.topRow {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profileName {
+  color: var(--color-text-contrast);
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profileName.unread {
+  color: var(--color-airy-blue);
+  font-weight: 700;
+}
+
+.contactLastMessage {
+  @include font-base;
+  color: var(--color-text-gray);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.contactLastMessage.unread {
+  @include font-base;
+  font-weight: 700;
+  color: var(--color-text-contrast);
+}
+
+.bottomRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.contactLastMessageDate {
+  @include font-s;
+  color: var(--color-text-gray);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.conversationIcon svg {
+  width: 12px;
+  height: 12px;
+
+  path {
+    fill: var(--color-text-gray);
+  }
+}
+
+.source {
+  @include font-s;
+  color: var(--color-text-gray);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+  margin-right: 4px;
+  svg {
+    path {
+      fill: var(--color-dark-elements-gray);
+    }
+  }
+  div {
+    margin-right: 3px;
+  }
+}
+
+.statusIcon {
+  height: 24px;
+}
+
+.doneIcon {
+  svg {
+    width: 24px;
+    height: 24px;
+    path {
+      fill: var(--color-soft-green);
+    }
+  }
+}
+
+.openIcon {
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: 1px solid #bf1a2f;
+  border-radius: 50%;
+  margin: 2px 2px 0 0;
+}
+
+.openDoneToggle {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+}

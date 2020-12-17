@@ -29,7 +29,7 @@ const initialState = {
   createDrawer: false,
 };
 
-class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof initialState> {
+class Tags extends Component<ConnectedProps<typeof connector>, typeof initialState> {
   state = initialState;
 
   componentDidMount() {
@@ -222,4 +222,4 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export const Tags = connector(TagsComponent);
+export default connector(Tags);

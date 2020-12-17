@@ -1,0 +1,45 @@
+.iconName {
+  display: flex;
+  align-items: center;
+  min-width: 0px;
+  div {
+    height: 20px;
+    width: 20px;
+  }
+  svg {
+    height: 20px;
+    width: 20px;
+  }
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.avatarName {
+  display: flex;
+  align-items: center;
+  min-width: 0px;
+  div {
+    height: 20px;
+    width: 20px;
+  }
+  svg {
+    height: 20px;
+    width: 20px;
+  }
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.iconText {
+  display: flex;
+  align-items: center;
+}
+
+.avatarText {
+  display: flex;
+  align-items: center;
+}

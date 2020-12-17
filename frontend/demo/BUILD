@@ -19,6 +19,8 @@ ts_library(
         "@npm//react",
         "@npm//react-facebook-login",
         "@npm//react-router-dom",
+        "@npm//react-window",
+        "@npm//react-window-infinite-loader",
         "@npm//redux",
         "@npm//redux-starter-kit",
         "@npm//reselect",

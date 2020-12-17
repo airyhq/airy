@@ -5,15 +5,16 @@ import {withRouter, Route, Switch, Redirect, RouteComponentProps} from 'react-ro
 import {AiryLoader} from '@airyhq/components';
 import TopBar from './components/TopBar';
 import Login from './pages/Login';
+import Channels from './pages/Channels';
+import Inbox from './pages/Inbox';
+import Tags from './pages/Tags';
 import Logout from './pages/Logout';
 import NotFound from './pages/NotFound';
 import Sidebar from './components/Sidebar';
 
 import {StateModel} from './reducers';
-import {CHANNELS_ROUTE, LOGIN_ROUTE, LOGOUT_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 
-import {Tags} from './pages/Tags';
-import Channels from './pages/Channels';
+import {INBOX_ROUTE, CHANNELS_ROUTE, LOGIN_ROUTE, LOGOUT_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 
 import styles from './App.module.scss';
 
@@ -57,10 +58,11 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
           )}
           <Switch>
             <Route exact path={ROOT_ROUTE}>
-              {this.isAuthSuccess ? <Redirect to={ROOT_ROUTE} /> : <Redirect to={LOGIN_ROUTE} />}
+              {this.isAuthSuccess ? <Redirect to={INBOX_ROUTE} /> : <Redirect to={LOGIN_ROUTE} />}
             </Route>
             <Route exact path={TAGS_ROUTE} component={Tags} />
             <Route exact path={LOGIN_ROUTE} component={Login} />
+            <Route exact path={INBOX_ROUTE} component={Inbox} />
             <Route exact path={LOGOUT_ROUTE} component={Logout} />
             <Route exact path={CHANNELS_ROUTE} component={Channels} />
             <Route component={NotFound} />

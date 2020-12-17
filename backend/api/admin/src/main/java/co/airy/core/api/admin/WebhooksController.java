@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -19,10 +18,9 @@ import java.util.concurrent.ExecutionException;
 @RestController
 public class WebhooksController {
     private final Stores stores;
-    private final List<String> allowedOrigins;
-    public WebhooksController(Stores stores, List<String> allowedOrigins) {
+
+    public WebhooksController(Stores stores) {
         this.stores = stores;
-        this.allowedOrigins = allowedOrigins;
     }
 
     @PostMapping("/webhooks.subscribe")

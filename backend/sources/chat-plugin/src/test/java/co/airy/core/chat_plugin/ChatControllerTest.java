@@ -7,6 +7,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.mapping.model.Content;
 import co.airy.mapping.model.Text;
 import co.airy.spring.core.AirySpringBootApplication;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -130,14 +131,15 @@ public class ChatControllerTest {
                                 .headers(buildHeaders(token))
                                 .content(sendMessagePayload))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.content.text", containsString(messageText))),
+                                .andExpect(jsonPath("$.content[0].text", containsString(messageText))),
                 "Message was not sent"
         );
 
         final MessageUpsertPayload messageUpsertPayload = messageFuture.get();
 
         assertNotNull(messageUpsertPayload);
-        assertThat(((Text) messageUpsertPayload.getMessage().getContent()).getText(), containsString(messageText));
+        final Text text = (Text) messageUpsertPayload.getMessage().getContent().get(0);
+        assertThat(text.getText(), containsString(messageText));
     }
 
     private HttpHeaders buildHeaders(String jwtToken) {

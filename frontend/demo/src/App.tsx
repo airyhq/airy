@@ -7,13 +7,14 @@ import TopBar from './components/TopBar';
 import Login from './pages/Login';
 import Channels from './pages/Channels';
 import Inbox from './pages/Inbox';
-import {Tags} from './pages/Tags';
+import Tags from './pages/Tags';
+import Logout from './pages/Logout';
 import NotFound from './pages/NotFound';
 import Sidebar from './components/Sidebar';
 
 import {StateModel} from './reducers';
 
-import {INBOX_ROUTE, CHANNELS_ROUTE, LOGIN_ROUTE, TAGS_ROUTE, ROOT_ROUTE} from './routes/routes';
+import {INBOX_ROUTE, CHANNELS_ROUTE, LOGIN_ROUTE, LOGOUT_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 
 import styles from './App.module.scss';
 
@@ -31,7 +32,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     return this.props.user.token && this.props.user.token !== '';
   }
 
-  shouldShowSidebar = (path: string) => {
+  shouldShowSidebar = () => {
     return this.isAuthSuccess;
   };
 
@@ -47,7 +48,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     return (
       <div className={styles.Container}>
         <div className={`${this.isAuthSuccess ? styles.ContainerApp : styles.ContainerAppNotLogin}`}>
-          {this.shouldShowSidebar(this.props.location.pathname) ? (
+          {this.shouldShowSidebar() ? (
             <>
               <TopBar isAdmin={true} />
               <Sidebar />
@@ -62,6 +63,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
             <Route exact path={TAGS_ROUTE} component={Tags} />
             <Route exact path={LOGIN_ROUTE} component={Login} />
             <Route exact path={INBOX_ROUTE} component={Inbox} />
+            <Route exact path={LOGOUT_ROUTE} component={Logout} />
             <Route exact path={CHANNELS_ROUTE} component={Channels} />
             <Route component={NotFound} />
           </Switch>

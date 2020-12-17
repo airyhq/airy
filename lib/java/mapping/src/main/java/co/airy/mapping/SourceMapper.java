@@ -7,5 +7,5 @@ import java.util.List;
 public interface SourceMapper {
     List<String> getIdentifiers();
 
-    Content render(String payload) throws Exception;
+    List<Content> render(String payload) throws Exception;
 }

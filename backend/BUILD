@@ -42,7 +42,7 @@ java_library(
 java_library(
     name = "metadata",
     exports = [
-        "//backend/avro/communication:metadata-action",
+        "//backend/avro/communication:metadata",
         "//lib/java/kafka/schema:application-communication-metadata",
     ],
 )

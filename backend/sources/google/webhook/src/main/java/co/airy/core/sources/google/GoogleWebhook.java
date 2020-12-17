@@ -73,7 +73,7 @@ public class GoogleWebhook implements HealthIndicator, DisposableBean {
     }
 
     @PostMapping("/google")
-    ResponseEntity<?> accept(@RequestBody String event, @RequestHeader("X-Goog-Signature") String signature) throws NoSuchAlgorithmException, InvalidKeyException {
+    ResponseEntity<?> accept(@RequestBody String event, @RequestHeader("X-Goog-Signature") String signature) {
         if(!validRequest(event, signature)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new EmptyResponsePayload());
         }
@@ -86,7 +86,6 @@ public class GoogleWebhook implements HealthIndicator, DisposableBean {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
-
     }
 
     private boolean validRequest(String payload, String signature) {

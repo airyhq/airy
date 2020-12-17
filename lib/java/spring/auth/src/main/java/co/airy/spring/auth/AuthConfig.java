@@ -3,6 +3,7 @@ package co.airy.spring.auth;
 import co.airy.spring.jwt.Jwt;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -49,10 +50,11 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource corsConfigurationSource(final Environment environment) {
+        final String allowed = environment.getProperty("ALLOWED_ORIGINS", "");
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*"); // TODO should come from env
+        config.addAllowedOrigin(allowed);
         config.addAllowedHeader("*");
         config.setAllowedMethods(List.of("GET", "POST"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

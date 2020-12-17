@@ -12,5 +12,5 @@ public class IgnoreAuthPattern {
     public IgnoreAuthPattern(String... patterns) {
         this.ignorePattern = Arrays.asList(patterns);
     }
-    private List<String> ignorePattern;
+    private final List<String> ignorePattern;
 }

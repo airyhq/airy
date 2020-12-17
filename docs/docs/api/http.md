@@ -136,8 +136,8 @@ Find all users with the last name "Lovelace":
     {
       "id": "a688d36c-a85e-44af-bc02-4248c2c97622",
       "channel": {
-        "name": "facebook",
-        // name of the source
+        "name": "Facebook page name",
+        "source": "facebook",
         "id": "318efa04-7cc1-4200-988e-50699d0dd6e3"
       },
       "created_at": "2019-01-07T09:01:44.000Z",
@@ -151,11 +151,13 @@ Find all users with the last name "Lovelace":
       "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
       "last_message": {
         id: "{UUID}",
-        content: {
-          text: "{String}",
-          type: "text"
-          // Determines the schema of the content
-        },
+        content: [
+          {
+            text: "{String}",
+            type: "text"
+            // Determines the schema of the content
+          },
+        ]
         // typed source message model
         state: "{String}",
         // delivery state of message, one of PENDING, FAILED, DELIVERED
@@ -211,11 +213,13 @@ Find all users with the last name "Lovelace":
   "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
   "last_message": {
     "id": "{UUID}",
-    "content": {
-      "text": "{String}",
-      "type": "text"
-      // Determines the schema of the content
-    },
+    "content": [
+      {
+        "text": "{String}",
+        "type": "text"
+        // Determines the schema of the content
+      }
+    ],
     // typed source message model
     "delivery_state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
@@ -316,11 +320,13 @@ This is a [paginated](#pagination) endpoint. Messages are sorted from oldest to 
   "data": [
     {
       "id": "{UUID}",
-      "content": {
-        "text": "{String}",
-        "type": "text"
-        // Determines the schema of the content
-      },
+      "content": [
+        {
+          "text": "{String}",
+          "type": "text"
+          // Determines the schema of the content
+        }
+      ],
       // typed source message model
       "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
@@ -361,11 +367,13 @@ Sends a message to a conversation and returns a payload.
 ```json5
 {
   "id": "{UUID}",
-  "content": {
-    "text": "{String}",
-    "type": "text"
-    // Determines the schema of the content
-  },
+  "content": [
+    {
+      "text": "{String}",
+      "type": "text"
+      // Determines the schema of the content
+    }
+  ],
   // typed source message model
   "state": "{String}",
   // delivery state of message, one of PENDING, FAILED, DELIVERED

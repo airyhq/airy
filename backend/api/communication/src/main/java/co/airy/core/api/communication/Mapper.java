@@ -2,7 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataKeys;
-import co.airy.avro.communication.MetadataMapper;
+import co.airy.avro.communication.MetadataRepository;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.DisplayName;
 import co.airy.core.api.communication.payload.ContactResponsePayload;
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static co.airy.avro.communication.MetadataKeys.PUBLIC;
-import static co.airy.avro.communication.MetadataMapper.filterPrefix;
+import static co.airy.avro.communication.MetadataRepository.getConversationInfo;
 import static co.airy.payload.format.DateFormat.isoFromMillis;
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class Mapper {
@@ -36,7 +36,13 @@ public class Mapper {
                         .build())
                 .id(conversation.getId())
                 .unreadMessageCount(conversation.getUnreadCount())
-                .tags(MetadataMapper.getTags(metadata))
+                .tags(
+                        MetadataRepository.filterPrefix(metadata, MetadataKeys.TAGS)
+                        .keySet()
+                                .stream()
+                                .map(s -> s.split("\\.")[1])
+                                .collect(toList())
+                )
                 .createdAt(isoFromMillis(conversation.getCreatedAt()))
                 .contact(getContact(conversation))
                 .lastMessage(fromMessage(conversation.getLastMessage()))
@@ -51,7 +57,7 @@ public class Mapper {
                 .avatarUrl(metadata.get(MetadataKeys.Source.Contact.AVATAR_URL))
                 .firstName(displayName.getFirstName())
                 .lastName(displayName.getLastName())
-                .info(filterPrefix(metadata, PUBLIC))
+                .info(getConversationInfo(metadata))
                 .build();
     }
 

@@ -38,6 +38,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
+import static co.airy.avro.communication.MetadataKeys.Source.ContactFetchState.failed;
+import static co.airy.avro.communication.MetadataKeys.Source.ContactFetchState.ok;
 import static co.airy.avro.communication.MetadataRepository.getId;
 import static co.airy.avro.communication.MetadataRepository.getSubject;
 import static co.airy.avro.communication.MetadataRepository.isConversationMetadata;
@@ -150,9 +152,9 @@ public class Connector implements DisposableBean, ApplicationListener<Applicatio
 
     private boolean needsMetadataFetched(String conversationId, Conversation conversation) {
         final Map<String, String> metadata = conversation.getMetadata();
-        final String fetchState = metadata.get(MetadataKeys.Source.CONTACT_FETCH_STATE);
+        final String fetchState = metadata.get(MetadataKeys.Source.Contact.FETCH_STATE);
 
-        return !"ok".equals(fetchState) && !"failed".equals(fetchState);
+        return !ok.toString().equals(fetchState) && !failed.toString().equals(fetchState);
     }
 
     private List<KeyValue<String, Metadata>> fetchMetadata(String conversationId, Conversation conversation) {
@@ -175,12 +177,12 @@ public class Connector implements DisposableBean, ApplicationListener<Applicatio
             recordList.add(KeyValue.pair(getId(avatarUrl).toString(), avatarUrl));
         }
 
-        final String newFetchState = recordList.size() > 0 ? "ok" : "failed";
-        final String oldFetchState = conversation.getMetadata().get(MetadataKeys.Source.CONTACT_FETCH_STATE);
+        final String newFetchState = recordList.size() > 0 ? ok.toString() : failed.toString();
+        final String oldFetchState = conversation.getMetadata().get(MetadataKeys.Source.Contact.FETCH_STATE);
 
         // Only update fetch state if there has been a change
         if (!newFetchState.equals(oldFetchState)) {
-            final Metadata fetchState = newConversationMetadata(conversationId, MetadataKeys.Source.CONTACT_FETCH_STATE, newFetchState);
+            final Metadata fetchState = newConversationMetadata(conversationId, MetadataKeys.Source.Contact.FETCH_STATE, newFetchState);
             recordList.add(KeyValue.pair(getId(fetchState).toString(), fetchState));
         }
 

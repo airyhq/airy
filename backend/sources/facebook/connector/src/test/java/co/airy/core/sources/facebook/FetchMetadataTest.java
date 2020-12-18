@@ -145,7 +145,7 @@ class FetchMetadataTest {
                         metadata.getValue().equals(avatarUrl)
         )));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.CONTACT_FETCH_STATE) &&
+                metadata.getKey().equals(MetadataKeys.Source.Contact.FETCH_STATE) &&
                         metadata.getValue().equals("ok")
         )));
 

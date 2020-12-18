@@ -10,8 +10,24 @@ public class MetadataKeys {
             public static final String FIRST_NAME = "source.contact.first_name";
             public static final String LAST_NAME = "source.contact.last_name";
             public static final String AVATAR_URL = "source.contact.avatar_url";
+            public static final String FETCH_STATE = "source.contact.fetch_state";
         }
-        public static final String CONTACT_FETCH_STATE = "source.contact_fetch_state";
+
+        public enum ContactFetchState {
+            ok("ok"),
+            failed("failed");
+
+            private final String state;
+
+            ContactFetchState(final String state) {
+                this.state = state;
+            }
+
+            @Override
+            public String toString() {
+                return state;
+            }
+        }
     }
 
     public static final String TAGS = "tags";

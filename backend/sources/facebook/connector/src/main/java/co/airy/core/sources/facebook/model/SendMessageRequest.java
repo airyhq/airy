@@ -1,6 +1,5 @@
 package co.airy.core.sources.facebook.model;
 
-import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,8 +13,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SendMessageRequest implements Serializable {
-    private String sourceConversationId;
-    private String channelId;
+    private Conversation conversation;
     private Message message;
-    private Channel channel;
 }

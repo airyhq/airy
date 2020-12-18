@@ -28,7 +28,7 @@ public class Mapper {
 
         SendMessagePayload.SendMessagePayloadBuilder builder = SendMessagePayload.builder()
                 .recipient(SendMessagePayload.MessageRecipient.builder()
-                        .id(sendMessageRequest.getSourceConversationId())
+                        .id(sendMessageRequest.getConversation().getSourceConversationId())
                         .build())
                 .message(messagePayload);
 

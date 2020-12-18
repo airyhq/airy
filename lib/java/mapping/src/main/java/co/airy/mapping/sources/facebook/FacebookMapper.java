@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 public class FacebookMapper implements SourceMapper {
@@ -34,7 +32,7 @@ public class FacebookMapper implements SourceMapper {
 
         List<Content> contents = new ArrayList<>();
 
-        if(messageNode.get("text") != null) {
+        if (messageNode.get("text") != null) {
             contents.add(new Text(messageNode.get("text").textValue()));
         }
 

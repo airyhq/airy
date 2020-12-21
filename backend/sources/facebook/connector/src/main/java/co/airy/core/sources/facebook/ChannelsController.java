@@ -1,7 +1,12 @@
 package co.airy.core.sources.facebook;
 
+import co.airy.core.sources.facebook.dto.ChannelData;
+import co.airy.core.sources.facebook.dto.ExploreRequestPayload;
+import co.airy.core.sources.facebook.dto.ExploreResponsePayload;
 import co.airy.core.sources.facebook.services.Api;
 import co.airy.core.sources.facebook.services.PageWithConnectInfo;
+import co.airy.payload.response.RequestErrorResponsePayload;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,12 +25,26 @@ public class ChannelsController {
 
     @PostMapping("/facebook.explore")
     ResponseEntity<?> explore(@RequestBody @Valid ExploreRequestPayload requestPayload) {
+        List<FacebookMetadata> availableChannels;
         try {
-            getAvailableChannels(requestPayload.getPageToken());
+            availableChannels = getAvailableChannels(requestPayload.getPageToken());
         } catch (ApiException e) {
-            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
-        return null;
+
+        return ResponseEntity.ok(
+                new ExploreResponsePayload(
+                        availableChannels.stream()
+                                .map((channel) -> ChannelData.builder()
+                                        .sourceChannelId(channel.getSourceChannelId())
+                                        .name(channel.getName())
+                                        .imageUrl(channel.getImageUrl())
+                                        .connected(true)
+                                        .build()
+                                )
+                                .collect(toList())
+                )
+        );
     }
 
     public List<FacebookMetadata> getAvailableChannels(String token) throws ApiException {

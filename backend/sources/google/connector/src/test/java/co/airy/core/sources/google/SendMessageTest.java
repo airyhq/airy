@@ -6,6 +6,7 @@ import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.google.model.SendMessagePayload;
 import co.airy.core.sources.google.services.Api;
 import co.airy.kafka.schema.Topic;
+import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -46,6 +47,7 @@ class SendMessageTest {
     private static KafkaTestHelper kafkaTestHelper;
 
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
+    private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
 
     @MockBean
     private Api api;
@@ -61,7 +63,10 @@ class SendMessageTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, applicationCommunicationMessages);
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
+                applicationCommunicationMessages,
+                applicationCommunicationChannels
+        );
         kafkaTestHelper.beforeAll();
     }
 

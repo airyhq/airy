@@ -10,6 +10,8 @@ app_deps = [
     "//lib/java/log",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
+    "//lib/java/spring/kafka/healthcheck",
+    "//lib/java/kafka/schema:source-facebook-events",
 ]
 
 springboot(

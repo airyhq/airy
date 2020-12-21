@@ -1,5 +1,6 @@
-package co.airy.payload.response;
+package co.airy.channel;
 
+import co.airy.avro.communication.Channel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,4 +27,14 @@ public class ChannelPayload {
 
     @JsonInclude(NON_NULL)
     private String imageUrl;
+
+    public static ChannelPayload fromChannel(Channel channel) {
+        return ChannelPayload.builder()
+                .name(channel.getName())
+                .id(channel.getId())
+                .imageUrl(channel.getImageUrl())
+                .source(channel.getSource())
+                .sourceChannelId(channel.getSourceChannelId())
+                .build();
+    }
 }

@@ -9,7 +9,6 @@ import co.airy.core.sources.facebook.dto.ExploreResponsePayload;
 import co.airy.core.sources.facebook.dto.FacebookMetadata;
 import co.airy.core.sources.facebook.services.Api;
 import co.airy.core.sources.facebook.services.PageWithConnectInfo;
-import co.airy.payload.response.ChannelPayload;
 import co.airy.payload.response.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
 import org.apache.kafka.streams.state.KeyValueIterator;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static co.airy.channel.ChannelPayload.fromChannel;
 import static java.util.stream.Collectors.toList;
 
 public class ChannelsController {
@@ -130,14 +130,5 @@ public class ChannelsController {
         }
     }
 
-    private ChannelPayload fromChannel(Channel channel) {
-        return ChannelPayload.builder()
-                .name(channel.getName())
-                .id(channel.getId())
-                .imageUrl(channel.getImageUrl())
-                .source(channel.getSource())
-                .sourceChannelId(channel.getSourceChannelId())
-                .build();
-    }
 
 }

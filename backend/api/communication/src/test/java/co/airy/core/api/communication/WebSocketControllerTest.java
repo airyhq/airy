@@ -2,6 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.channel.ChannelPayload;
 import co.airy.core.api.communication.payload.MessageUpsertPayload;
 import co.airy.core.api.communication.payload.UnreadCountPayload;
 import co.airy.core.api.communication.util.TestConversation;
@@ -11,7 +12,6 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.payload.response.ChannelPayload;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.jwt.Jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;

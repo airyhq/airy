@@ -24,14 +24,6 @@ java_library(
 )
 
 java_library(
-    name = "channel",
-    exports = [
-        "//backend/avro/communication:channel",
-        "//lib/java/kafka/schema:application-communication-channels",
-    ],
-)
-
-java_library(
     name = "message",
     exports = [
         "//backend/avro/communication:message",

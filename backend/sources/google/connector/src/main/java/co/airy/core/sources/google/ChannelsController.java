@@ -3,7 +3,6 @@ package co.airy.core.sources.google;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.payload.response.ChannelPayload;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
 import lombok.AllArgsConstructor;
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
+
+import static co.airy.channel.ChannelPayload.fromChannel;
 
 
 @RestController
@@ -55,13 +56,7 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
 
-        return ResponseEntity.ok(ChannelPayload.builder()
-                .name(channel.getName())
-                .id(channel.getId())
-                .imageUrl(channel.getImageUrl())
-                .source(channel.getSource())
-                .sourceChannelId(channel.getSourceChannelId())
-                .build());
+        return ResponseEntity.ok(fromChannel(channel));
     }
 
     @PostMapping("/google.disconnect")

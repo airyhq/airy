@@ -1,4 +1,4 @@
-package co.airy.core.sources.twilio;
+package co.airy.core.sources.google;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
@@ -25,7 +25,6 @@ import java.util.UUID;
 
 @RestController
 public class ChannelsController {
-
     private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
 
     private final Stores stores;
@@ -36,18 +35,12 @@ public class ChannelsController {
         this.producer = producer;
     }
 
-    @PostMapping("/twilio.sms.connect")
-    ResponseEntity<?> connectSms(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        return connectChannel(requestPayload, "twilio.sms");
-    }
+    @PostMapping("/google.connect")
+    ResponseEntity<?> connect(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
+        final String sourceChannelId = requestPayload.getSourceChannelId();
+        final String sourceIdentifier = "google";
 
-    @PostMapping("/twilio.whatsapp.connect")
-    ResponseEntity<?> connectWhatsapp(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        return connectChannel(requestPayload, "twilio.whatsapp");
-    }
-
-    private ResponseEntity<?> connectChannel(ConnectChannelRequestPayload requestPayload, String sourceIdentifier) {
-        final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, requestPayload.getSourceChannelId()).toString();
+        final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, sourceChannelId).toString();
 
         final Map<String, Channel> channelsMap = stores.getChannels();
         final Channel existingChannel = channelsMap.get(channelId);
@@ -66,7 +59,7 @@ public class ChannelsController {
                 .setId(channelId)
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setSource(sourceIdentifier)
-                .setSourceChannelId(requestPayload.getSourceChannelId())
+                .setSourceChannelId(sourceChannelId)
                 .setName(requestPayload.getName())
                 .build();
 
@@ -85,17 +78,8 @@ public class ChannelsController {
                 .build());
     }
 
-    @PostMapping("/twilio.sms.disconnect")
-    ResponseEntity<?> disconnectSms(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
-        return disconnect(requestPayload);
-    }
-
-    @PostMapping("/twilio.whatsapp.disconnect")
-    ResponseEntity<?> disconnectWhatsapp(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
-        return disconnect(requestPayload);
-    }
-
-    private ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
+    @PostMapping("/google.disconnect")
+    ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
         final String channelId = requestPayload.getChannelId().toString();
 
         final Map<String, Channel> channelsMap = stores.getChannels();

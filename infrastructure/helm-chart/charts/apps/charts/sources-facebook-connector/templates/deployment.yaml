@@ -38,6 +38,11 @@ spec:
               key: KAFKA_SCHEMA_REGISTRY_URL
         - name: SERVICE_NAME
           value: facebook-connector
+        - name: FACEBOOK_WEBHOOK_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: sources-config
+              key: FACEBOOK_WEBHOOK_SECRET
         livenessProbe:
           tcpSocket:
             port: 6000

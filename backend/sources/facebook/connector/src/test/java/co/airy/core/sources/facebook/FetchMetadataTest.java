@@ -87,7 +87,6 @@ class FetchMetadataTest {
     @BeforeEach
     void beforeEach() throws InterruptedException {
         MockitoAnnotations.initMocks(this);
-        retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test

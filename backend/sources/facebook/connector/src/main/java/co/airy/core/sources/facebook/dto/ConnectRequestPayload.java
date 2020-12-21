@@ -1,4 +1,4 @@
-package co.airy.core.api.admin.payload;
+package co.airy.core.sources.facebook.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +9,10 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AvailableChannelsRequestPayload {
+public class ConnectRequestPayload {
     @NotNull
-    String source;
-    @NotNull
+    String sourceChannelId;
     String token;
+    String name;
+    String imageUrl;
 }

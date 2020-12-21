@@ -3,9 +3,6 @@ package co.airy.core.api.admin;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.core.api.admin.dto.ChannelMetadata;
-import co.airy.core.api.admin.payload.AvailableChannelPayload;
-import co.airy.core.api.admin.payload.AvailableChannelsRequestPayload;
-import co.airy.core.api.admin.payload.AvailableChannelsResponsePayload;
 import co.airy.core.api.admin.payload.ChannelsResponsePayload;
 import co.airy.core.api.admin.payload.ConnectChannelRequestPayload;
 import co.airy.core.api.admin.payload.DisconnectChannelRequestPayload;
@@ -51,46 +48,6 @@ public class ChannelsController {
                                 .stream()
                                 .filter((channel -> ChannelConnectionState.CONNECTED.equals(channel.getConnectionState())))
                                 .map(Mapper::fromChannel)
-                                .collect(toList())
-                )
-        );
-    }
-
-    @PostMapping("/channels.explore")
-    ResponseEntity<?> listChannels(@RequestBody @Valid AvailableChannelsRequestPayload requestPayload) {
-        final String sourceIdentifier = requestPayload.getSource();
-
-        final Source source = sourceMap.get(sourceIdentifier);
-
-        if (source == null) {
-            return ResponseEntity.badRequest().body(new RequestErrorResponsePayload(String.format("source %s not implemented", sourceIdentifier)));
-        }
-
-        final List<ChannelMetadata> availableChannels;
-
-        try {
-            availableChannels = source.getAvailableChannels(requestPayload.getToken());
-        } catch (SourceApiException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
-        }
-
-        final Map<String, Channel> channelsMap = stores.getChannelsMap();
-        final List<String> connectedSourceIds = channelsMap.values()
-                .stream()
-                .filter((channel -> ChannelConnectionState.CONNECTED.equals(channel.getConnectionState())))
-                .map(Channel::getSourceChannelId)
-                .collect(toList());
-
-        return ResponseEntity.ok(
-                new AvailableChannelsResponsePayload(
-                        availableChannels.stream()
-                                .map((channel) -> AvailableChannelPayload.builder()
-                                        .sourceChannelId(channel.getSourceChannelId())
-                                        .name(channel.getName())
-                                        .imageUrl(channel.getImageUrl())
-                                        .connected(connectedSourceIds.contains(channel.getSourceChannelId()))
-                                        .build()
-                                )
                                 .collect(toList())
                 )
         );

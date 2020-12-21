@@ -34,7 +34,7 @@ public class GoogleMapper implements SourceMapper {
         final JsonNode messageNode = jsonNode.get("message");
 
         final String messageNodeValue = messageNode.get("text").textValue();
-        if(isGoogleStorageUrl(messageNodeValue)) {
+        if (isGoogleStorageUrl(messageNodeValue)) {
             return List.of(new Image(messageNodeValue));
         } else {
             return List.of(new Text(messageNodeValue));
@@ -49,7 +49,7 @@ public class GoogleMapper implements SourceMapper {
             return false;
         }
 
-        if(!uri.getHost().startsWith("storage.googleapis.com")) {
+        if (!uri.getHost().startsWith("storage.googleapis.com")) {
             return false;
         }
 

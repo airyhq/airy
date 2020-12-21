@@ -32,7 +32,7 @@ public class TwilioMapper implements SourceMapper {
         contents.add(new Text(decodedPayload.get("Body")));
 
         final String mediaUrl = decodedPayload.get("MediaUrl");
-        if(mediaUrl != null && !mediaUrl.isBlank()) {
+        if (mediaUrl != null && !mediaUrl.isBlank()) {
             contents.add(new Image(mediaUrl));
         }
 
@@ -56,10 +56,6 @@ public class TwilioMapper implements SourceMapper {
                     return List.of(name, value);
                 })
                 .filter(Objects::nonNull)
-                .collect(toMap(
-                        (tuple) -> tuple.get(0),
-                        (tuple) -> tuple.get(1)
-                ));
+                .collect(toMap((tuple) -> tuple.get(0), (tuple) -> tuple.get(1)));
     }
-
 }

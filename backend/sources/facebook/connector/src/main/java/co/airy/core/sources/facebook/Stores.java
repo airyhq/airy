@@ -15,6 +15,7 @@ import co.airy.kafka.streams.KafkaStreamsWrapper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
@@ -62,7 +63,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 }, Materialized.as(channelsStore));
 
         // Channels table
-        KTable<String, Channel> channelsTable = builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
+        KTable<String, Channel> channelsTable = builder.<String, Channel>table(applicationCommunicationChannels)
                 .filter((sourceChannelId, channel) -> "facebook".equalsIgnoreCase(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
@@ -148,5 +149,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     @Override
     public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
         startStream();
+    }
+
+    // visible for testing
+    KafkaStreams.State getStreamState() {
+        return streams.state();
     }
 }

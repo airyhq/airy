@@ -6,8 +6,8 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.sources.facebook.model.Conversation;
 import co.airy.core.sources.facebook.dto.SendMessageRequest;
+import co.airy.core.sources.facebook.model.Conversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -43,7 +43,6 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
     private final KafkaStreamsWrapper streams;
     private final String channelsStore = "channels-store";
-    private final String allChannelsKey = "ALL";
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
     private final KafkaProducer<String, SpecificRecordBase> producer;
     private final Connector connector;
@@ -54,17 +53,13 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         this.connector = connector;
     }
 
-    private void startStream() {
+    @Override
+    public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
         final StreamsBuilder builder = new StreamsBuilder();
 
         KStream<String, Channel> channelStream = builder.<String, Channel>stream(applicationCommunicationChannels);
 
-        channelStream.groupBy((k, v) -> allChannelsKey)
-                .aggregate(HashMap::new, (allKey, channel, channelsMap) -> {
-                    // An external channel id may only be connected once
-                    channelsMap.put(channel.getId(), channel);
-                    return channelsMap;
-                }, Materialized.as(channelsStore));
+        channelStream.toTable(Materialized.as(channelsStore));
 
         // Channels table
         KTable<String, Channel> channelsTable = channelStream
@@ -118,10 +113,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 // be higher than the timeout of the Facebook API
                 .suppress(Suppressed.untilTimeLimit(Duration.ofMillis(streams.getSuppressIntervalInMs()), Suppressed.BufferConfig.unbounded()))
                 .toStream()
-                .leftJoin(metadataTable, (conversation, metadataMap) -> {
-                    conversation.setMetadata(new HashMap<>(Optional.ofNullable(metadataMap).orElse(Map.of())));
-                    return conversation;
-                })
+                .leftJoin(metadataTable, (conversation, metadataMap) -> conversation
+                        .toBuilder()
+                        .metadata(new HashMap<>(Optional.ofNullable(metadataMap).orElse(Map.of())))
+                        .build())
                 .filter((k, v) -> connector.needsMetadataFetched(v))
                 .flatMap(connector::fetchMetadata)
                 .to(new ApplicationCommunicationMetadata().name());
@@ -129,14 +124,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         streams.start(builder.build(), appId);
     }
 
-    private ReadOnlyKeyValueStore<String, Map<String, Channel>> getChannelsStore() {
+    public ReadOnlyKeyValueStore<String, Channel> getChannelsStore() {
         return streams.acquireLocalStore(channelsStore);
-    }
-
-    public Map<String, Channel> getChannels() {
-        final ReadOnlyKeyValueStore<String, Map<String, Channel>> channelsStore = getChannelsStore();
-
-        return Optional.ofNullable(channelsStore.get(allChannelsKey)).orElse(Map.of());
     }
 
     public void storeChannel(Channel channel) throws ExecutionException, InterruptedException {
@@ -148,11 +137,6 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         if (streams != null) {
             streams.close();
         }
-    }
-
-    @Override
-    public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
-        startStream();
     }
 
     // visible for testing

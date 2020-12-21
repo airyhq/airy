@@ -20,17 +20,12 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 @Component
 public class Stores implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
 
     private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
 
     private static final String appId = "sources.twilio.ConnectorStores";
-    private final String allChannelsKey = "ALL";
     private final String channelsStore = "channels-store";
 
     private final KafkaStreamsWrapper streams;
@@ -52,13 +47,7 @@ public class Stores implements DisposableBean, ApplicationListener<ApplicationRe
                 .filter((sourceChannelId, channel) -> channel.getSource().startsWith("twilio")
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable();
 
-        channelStream
-                .groupBy((k, v) -> allChannelsKey)
-                .aggregate(HashMap::new, (allKey, channel, channelsMap) -> {
-                    // An external channel id may only be connected once
-                    channelsMap.put(channel.getId(), channel);
-                    return channelsMap;
-                }, Materialized.as(channelsStore));
+        channelStream.toTable(Materialized.as(channelsStore));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .filter((messageId, message) -> message.getSource().startsWith("twilio"))
@@ -68,18 +57,17 @@ public class Stores implements DisposableBean, ApplicationListener<ApplicationRe
                 .groupByKey()
                 .aggregate(SendMessageRequest::new,
                         (conversationId, message, aggregate) -> {
+                           SendMessageRequest.SendMessageRequestBuilder sendMessageRequestBuilder = aggregate.toBuilder();
                             if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
-                                aggregate.setSourceConversationId(message.getSenderId());
+                                sendMessageRequestBuilder.sourceConversationId(message.getSenderId());
                             }
 
-                            aggregate.setChannelId(message.getChannelId());
+                            sendMessageRequestBuilder.channelId(message.getChannelId());
 
-                            return aggregate;
+                            return sendMessageRequestBuilder.build();
                         })
-                .join(channelsTable, SendMessageRequest::getChannelId, (aggregate, channel) -> {
-                    aggregate.setChannel(channel);
-                    return aggregate;
-                });
+                .join(channelsTable, SendMessageRequest::getChannelId,
+                        (aggregate, channel) -> aggregate.toBuilder().channel(channel).build());
 
         messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, sendMessageRequest) -> sendMessageRequest.toBuilder().message(message).build())
@@ -89,14 +77,8 @@ public class Stores implements DisposableBean, ApplicationListener<ApplicationRe
         streams.start(builder.build(), appId);
     }
 
-    private ReadOnlyKeyValueStore<String, Map<String, Channel>> getChannelsStore() {
+    public ReadOnlyKeyValueStore<String, Channel> getChannelsStore() {
         return streams.acquireLocalStore(channelsStore);
-    }
-
-    public Map<String, Channel> getChannels() {
-        final ReadOnlyKeyValueStore<String, Map<String, Channel>> channelsStore = getChannelsStore();
-
-        return Optional.ofNullable(channelsStore.get(allChannelsKey)).orElse(Map.of());
     }
 
     @Override

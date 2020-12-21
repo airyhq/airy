@@ -50,7 +50,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         this.producer = producer;
     }
 
-    private void startStream() {
+    @Override
+    public void onApplicationEvent(ApplicationStartedEvent event) {
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.<String, Channel>table(applicationCommunicationChannels)
@@ -112,11 +113,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         if (streams != null) {
             streams.close();
         }
-    }
-
-    @Override
-    public void onApplicationEvent(ApplicationStartedEvent event) {
-        startStream();
     }
 
     @Override

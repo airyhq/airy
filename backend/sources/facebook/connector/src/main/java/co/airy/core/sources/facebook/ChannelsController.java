@@ -12,12 +12,14 @@ import co.airy.core.sources.facebook.services.PageWithConnectInfo;
 import co.airy.payload.response.ChannelPayload;
 import co.airy.payload.response.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
+import org.apache.kafka.streams.state.KeyValueIterator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,8 +45,12 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
-        final Map<String, Channel> channelsMap = stores.getChannels();
-        final List<String> connectedSourceIds = channelsMap.values()
+        final KeyValueIterator<String, Channel> iterator = stores.getChannelsStore().all();
+
+        List<Channel> channels = new ArrayList<>();
+        iterator.forEachRemaining(kv -> channels.add(kv.value));
+
+        final List<String> connectedSourceIds = channels
                 .stream()
                 .filter((channel -> ChannelConnectionState.CONNECTED.equals(channel.getConnectionState())))
                 .map(Channel::getSourceChannelId)
@@ -59,8 +65,7 @@ public class ChannelsController {
                                         .imageUrl(channel.getImageUrl())
                                         .connected(connectedSourceIds.contains(channel.getSourceChannelId()))
                                         .build()
-                                )
-                                .collect(toList())
+                                ).collect(toList())
                 )
         );
     }
@@ -71,12 +76,6 @@ public class ChannelsController {
         final String sourceChannelId = requestPayload.getSourceChannelId();
 
         final String channelId = UUIDv5.fromNamespaceAndName("facebook", sourceChannelId).toString();
-        final Map<String, Channel> channelsMap = stores.getChannels();
-        final Channel existingChannel = channelsMap.get(channelId);
-
-        if (existingChannel != null && ChannelConnectionState.CONNECTED.equals(existingChannel.getConnectionState())) {
-            return ResponseEntity.ok(fromChannel(existingChannel));
-        }
 
         final FacebookMetadata facebookMetadata = connectChannel(token, sourceChannelId);
 

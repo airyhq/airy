@@ -26,7 +26,6 @@ import java.util.Optional;
 @Component
 public class Stores implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final String appId = "sources.google.ConnectorStores";
-    private final String allChannelsKey = "ALL";
     private final String channelsStore = "channels-store";
     private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
 
@@ -41,13 +40,7 @@ public class Stores implements DisposableBean, ApplicationListener<ApplicationRe
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        builder.<String, Channel>stream(applicationCommunicationChannels)
-                .groupBy((k, v) -> allChannelsKey)
-                .aggregate(HashMap::new, (allKey, channel, channelsMap) -> {
-                    // An external channel id may only be connected once
-                    channelsMap.put(channel.getId(), channel);
-                    return channelsMap;
-                }, Materialized.as(channelsStore));
+        builder.<String, Channel>table(applicationCommunicationChannels, Materialized.as(channelsStore));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .filter((messageId, message) -> "google".equalsIgnoreCase(message.getSource()))
@@ -71,14 +64,8 @@ public class Stores implements DisposableBean, ApplicationListener<ApplicationRe
         streams.start(builder.build(), appId);
     }
 
-    private ReadOnlyKeyValueStore<String, Map<String, Channel>> getChannelsStore() {
+    public ReadOnlyKeyValueStore<String,Channel> getChannelsStore() {
         return streams.acquireLocalStore(channelsStore);
-    }
-
-    public Map<String, Channel> getChannels() {
-        final ReadOnlyKeyValueStore<String, Map<String, Channel>> channelsStore = getChannelsStore();
-
-        return Optional.ofNullable(channelsStore.get(allChannelsKey)).orElse(Map.of());
     }
 
     @Override

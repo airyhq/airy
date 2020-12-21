@@ -19,13 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
 import java.util.UUID;
 
 
 @RestController
 public class ChannelsController {
-
     private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
 
     private final Stores stores;
@@ -49,18 +47,6 @@ public class ChannelsController {
     private ResponseEntity<?> connectChannel(ConnectChannelRequestPayload requestPayload, String sourceIdentifier) {
         final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, requestPayload.getSourceChannelId()).toString();
 
-        final Map<String, Channel> channelsMap = stores.getChannels();
-        final Channel existingChannel = channelsMap.get(channelId);
-
-        if (existingChannel != null && ChannelConnectionState.CONNECTED.equals(existingChannel.getConnectionState())) {
-            return ResponseEntity.ok(ChannelPayload.builder()
-                    .name(existingChannel.getName())
-                    .id(existingChannel.getId())
-                    .imageUrl(existingChannel.getImageUrl())
-                    .source(existingChannel.getSource())
-                    .sourceChannelId(existingChannel.getSourceChannelId())
-                    .build());
-        }
 
         final Channel channel = Channel.newBuilder()
                 .setId(channelId)
@@ -98,8 +84,7 @@ public class ChannelsController {
     private ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
         final String channelId = requestPayload.getChannelId().toString();
 
-        final Map<String, Channel> channelsMap = stores.getChannels();
-        final Channel channel = channelsMap.get(channelId);
+        final Channel channel = stores.getChannelsStore().get(channelId);
 
         if (channel == null) {
             return ResponseEntity.notFound().build();

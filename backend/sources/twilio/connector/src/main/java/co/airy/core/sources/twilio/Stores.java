@@ -13,14 +13,25 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
+import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 @Component
 public class Stores implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
+
+    private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
+
     private static final String appId = "sources.twilio.ConnectorStores";
+    private final String allChannelsKey = "ALL";
+    private final String channelsStore = "channels-store";
 
     private final KafkaStreamsWrapper streams;
     private final Connector connector;
@@ -34,10 +45,20 @@ public class Stores implements DisposableBean, ApplicationListener<ApplicationRe
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         final StreamsBuilder builder = new StreamsBuilder();
 
+        KStream<String, Channel> channelStream = builder.stream(applicationCommunicationChannels);
+
         // Channels table
-        KTable<String, Channel> channelsTable = builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
+        KTable<String, Channel> channelsTable = channelStream
                 .filter((sourceChannelId, channel) -> channel.getSource().startsWith("twilio")
-                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
+                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable();
+
+        channelStream
+                .groupBy((k, v) -> allChannelsKey)
+                .aggregate(HashMap::new, (allKey, channel, channelsMap) -> {
+                    // An external channel id may only be connected once
+                    channelsMap.put(channel.getId(), channel);
+                    return channelsMap;
+                }, Materialized.as(channelsStore));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .filter((messageId, message) -> message.getSource().startsWith("twilio"))
@@ -66,6 +87,16 @@ public class Stores implements DisposableBean, ApplicationListener<ApplicationRe
                 .to(new ApplicationCommunicationMessages().name());
 
         streams.start(builder.build(), appId);
+    }
+
+    private ReadOnlyKeyValueStore<String, Map<String, Channel>> getChannelsStore() {
+        return streams.acquireLocalStore(channelsStore);
+    }
+
+    public Map<String, Channel> getChannels() {
+        final ReadOnlyKeyValueStore<String, Map<String, Channel>> channelsStore = getChannelsStore();
+
+        return Optional.ofNullable(channelsStore.get(allChannelsKey)).orElse(Map.of());
     }
 
     @Override

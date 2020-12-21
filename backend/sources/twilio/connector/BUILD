@@ -8,6 +8,8 @@ app_deps = [
     "//backend:message",
     "//lib/java/log",
     "//lib/java/mapping",
+    "//lib/java/uuid",
+    "//lib/java/payload",
     "@maven//:com_twilio_sdk_twilio",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",

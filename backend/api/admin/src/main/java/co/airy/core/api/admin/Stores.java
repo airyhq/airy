@@ -16,7 +16,6 @@ import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -130,6 +129,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         getWebhookStore();
         getTagsStore();
 
-        return Health.status(Status.UP).build();
+        return Health.up().build();
     }
 }

@@ -177,10 +177,9 @@ load(
 
 container_pull(
     name = "java_base",
-    digest = "sha256:9f080b14f9d2c42b7a753169daf5ee7f6c0cbaa36d51ab4390a132941df0b111",
-    registry = "index.docker.io",
-    repository = "library/openjdk",
-    tag = "11.0.3-jre-slim",
+    registry = "gcr.io",
+    repository = "distroless/java",
+    tag = "11",
 )
 
 container_pull(

@@ -100,8 +100,9 @@ class SendMessageTest {
         final String token = "token";
         final String text = "Hello World";
 
-        ArgumentCaptor<SendMessageRequest> payloadCaptor = ArgumentCaptor.forClass(SendMessageRequest.class);
-        doNothing().when(connector).sendMessage(payloadCaptor.capture());
+        ArgumentCaptor<SendMessagePayload> payloadCaptor = ArgumentCaptor.forClass(SendMessagePayload.class);
+        ArgumentCaptor<String> tokenCaptor = ArgumentCaptor.forClass(String.class);
+        doNothing().when(api).sendMessage(tokenCaptor.capture(), payloadCaptor.capture());
 
         kafkaTestHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
@@ -144,13 +145,11 @@ class SendMessageTest {
         );
 
         retryOnException(() -> {
-            final SendMessageRequest sendMessagePayload = payloadCaptor.getValue();
-            assertThat(sendMessagePayload.getMessage().getId(), equalTo(messageId));
+            final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
+            assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));
+            assertThat(sendMessagePayload.getMessage().getText(), equalTo(text));
 
-//            assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));
-//            assertThat(sendMessagePayload.getMessage().getText(), equalTo(text));
-//
-//            assertThat(tokenCaptor.getValue(), equalTo(token));
+            assertThat(tokenCaptor.getValue(), equalTo(token));
         }, "Facebook API was not called");
     }
 }

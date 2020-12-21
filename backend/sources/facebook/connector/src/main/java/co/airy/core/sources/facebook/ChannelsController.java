@@ -6,6 +6,7 @@ import co.airy.core.sources.facebook.dto.ChannelData;
 import co.airy.core.sources.facebook.dto.ConnectRequestPayload;
 import co.airy.core.sources.facebook.dto.ExploreRequestPayload;
 import co.airy.core.sources.facebook.dto.ExploreResponsePayload;
+import co.airy.core.sources.facebook.dto.FacebookMetadata;
 import co.airy.core.sources.facebook.services.Api;
 import co.airy.core.sources.facebook.services.PageWithConnectInfo;
 import co.airy.payload.response.ChannelPayload;

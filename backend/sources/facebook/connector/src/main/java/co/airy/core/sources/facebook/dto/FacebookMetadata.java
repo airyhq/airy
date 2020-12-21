@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook;
+package co.airy.core.sources.facebook.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

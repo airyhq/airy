@@ -1,7 +1,6 @@
 package co.airy.core.sources.facebook;
 
 import co.airy.kafka.schema.source.SourceFacebookEvents;
-import co.airy.spring.kafka.healthcheck.ProducerHealthCheck;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -27,12 +26,9 @@ public class WebhookController implements DisposableBean {
     private final String webhookSecret;
 
     private final Producer<String, String> producer;
-    private final ProducerHealthCheck producerHealthCheck;
 
-    WebhookController(ProducerHealthCheck producerHealthCheck,
-                      @Value("${kafka.brokers}") String brokers,
+    WebhookController(@Value("${kafka.brokers}") String brokers,
                       @Value("${facebook.webhook-secret}") String webhookSecret) {
-        this.producerHealthCheck = producerHealthCheck;
         this.webhookSecret = webhookSecret;
         final Properties props = new Properties();
 

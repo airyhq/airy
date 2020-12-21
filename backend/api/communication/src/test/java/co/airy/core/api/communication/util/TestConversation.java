@@ -3,7 +3,6 @@ package co.airy.core.api.communication.util;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;

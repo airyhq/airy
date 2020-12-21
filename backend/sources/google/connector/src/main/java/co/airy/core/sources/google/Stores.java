@@ -19,10 +19,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 @Component
 public class Stores implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final String appId = "sources.google.ConnectorStores";
@@ -64,7 +60,7 @@ public class Stores implements DisposableBean, ApplicationListener<ApplicationRe
         streams.start(builder.build(), appId);
     }
 
-    public ReadOnlyKeyValueStore<String,Channel> getChannelsStore() {
+    public ReadOnlyKeyValueStore<String, Channel> getChannelsStore() {
         return streams.acquireLocalStore(channelsStore);
     }
 

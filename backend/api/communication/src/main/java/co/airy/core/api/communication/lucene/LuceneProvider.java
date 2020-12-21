@@ -3,7 +3,6 @@ package co.airy.core.api.communication.lucene;
 import co.airy.core.api.communication.dto.ConversationIndex;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.log.AiryLoggerFactory;
-import org.apache.kafka.streams.KeyValue;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -21,10 +20,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class LuceneProvider implements LuceneStore {

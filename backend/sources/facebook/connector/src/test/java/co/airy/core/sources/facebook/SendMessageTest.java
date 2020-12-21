@@ -43,6 +43,7 @@ import static org.mockito.Mockito.doNothing;
 @SpringBootTest(properties = {
         "kafka.cleanup=true",
         "kafka.commit-interval-ms=100",
+        "facebook.webhook-secret=theansweris42",
         "facebook.app-id=12345"
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)

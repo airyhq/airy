@@ -47,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         "kafka.cleanup=true",
         "kafka.commit-interval-ms=100",
         "kafka.suppress-interval-ms=0",
+        "facebook.webhook-secret=theansweris42",
         "facebook.app-id=12345"
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)

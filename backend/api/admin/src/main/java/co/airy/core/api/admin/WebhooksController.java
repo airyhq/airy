@@ -43,14 +43,7 @@ public class WebhooksController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        final GetWebhookResponse webhookResponse = GetWebhookResponse.builder()
-                .headers(webhook.getHeaders())
-                .apiSecret(apiSecret)
-                .status(webhook.getStatus().toString())
-                .url(webhook.getEndpoint())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.OK).body(webhookResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(fromWebhook(webhook));
     }
 
     @PostMapping("/webhooks.unsubscribe")
@@ -69,14 +62,7 @@ public class WebhooksController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        final GetWebhookResponse webhookResponse = GetWebhookResponse.builder()
-                .headers(webhook.getHeaders())
-                .apiSecret(webhook.getApiSecret())
-                .status(webhook.getStatus().toString())
-                .url(webhook.getEndpoint())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.OK).body(webhookResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(fromWebhook(webhook));
     }
 
     @PostMapping("/webhooks.info")
@@ -87,13 +73,15 @@ public class WebhooksController {
             return ResponseEntity.notFound().build();
         }
 
-        final GetWebhookResponse webhookResponse = GetWebhookResponse.builder()
+        return ResponseEntity.status(HttpStatus.OK).body(fromWebhook(webhook));
+    }
+
+    private GetWebhookResponse fromWebhook(Webhook webhook) {
+        return GetWebhookResponse.builder()
                 .headers(webhook.getHeaders())
                 .apiSecret(webhook.getApiSecret())
                 .status(webhook.getStatus().toString())
                 .url(webhook.getEndpoint())
                 .build();
-
-        return ResponseEntity.status(HttpStatus.OK).body(webhookResponse);
     }
 }

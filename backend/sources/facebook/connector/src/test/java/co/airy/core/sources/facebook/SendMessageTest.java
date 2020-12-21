@@ -59,11 +59,15 @@ class SendMessageTest {
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final Topic applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
 
-    @MockBean
+    @Autowired
+    @InjectMocks
     private Connector connector;
 
-    @InjectMocks
-    private Stores worker;
+    @Autowired
+    private Stores stores;
+
+    @MockBean
+    private Api api;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -84,7 +88,7 @@ class SendMessageTest {
     @BeforeEach
     void beforeEach() throws InterruptedException {
         MockitoAnnotations.initMocks(this);
-        retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
+        retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test

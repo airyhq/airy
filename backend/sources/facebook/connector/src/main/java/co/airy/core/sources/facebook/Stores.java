@@ -26,6 +26,7 @@ import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import java.util.concurrent.ExecutionException;
 import static co.airy.avro.communication.MetadataRepository.getSubject;
 import static co.airy.avro.communication.MetadataRepository.isConversationMetadata;
 
+@Service
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "sources.facebook.ConnectorStores";
 
@@ -54,8 +56,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
-        builder.<String, Channel>stream(applicationCommunicationChannels)
-                .groupBy((k, v) -> allChannelsKey)
+
+        KStream<String, Channel> channelStream = builder.<String, Channel>stream(applicationCommunicationChannels);
+
+        channelStream.groupBy((k, v) -> allChannelsKey)
                 .aggregate(HashMap::new, (allKey, channel, channelsMap) -> {
                     // An external channel id may only be connected once
                     channelsMap.put(channel.getId(), channel);
@@ -63,9 +67,9 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 }, Materialized.as(channelsStore));
 
         // Channels table
-        KTable<String, Channel> channelsTable = builder.<String, Channel>table(applicationCommunicationChannels)
+        KTable<String, Channel> channelsTable = channelStream
                 .filter((sourceChannelId, channel) -> "facebook".equalsIgnoreCase(channel.getSource())
-                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
+                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable();
 
         // Facebook messaging stream by conversation-id
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())

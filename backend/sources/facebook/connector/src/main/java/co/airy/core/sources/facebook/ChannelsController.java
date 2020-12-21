@@ -1,21 +1,13 @@
 package co.airy.core.sources.facebook;
 
-import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.core.api.admin.SourceApiException;
-import co.airy.core.api.admin.payload.AvailableChannelPayload;
-import co.airy.core.api.admin.payload.AvailableChannelsResponsePayload;
 import co.airy.core.sources.facebook.services.Api;
 import co.airy.core.sources.facebook.services.PageWithConnectInfo;
-import co.airy.payload.response.RequestErrorResponsePayload;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -30,13 +22,13 @@ public class ChannelsController {
     ResponseEntity<?> explore(@RequestBody @Valid ExploreRequestPayload requestPayload) {
         try {
             getAvailableChannels(requestPayload.getPageToken());
-        } catch (SourceApiException e) {
+        } catch (ApiException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public List<FacebookMetadata> getAvailableChannels(String token) throws SourceApiException {
+    public List<FacebookMetadata> getAvailableChannels(String token) throws ApiException {
         try {
             final List<PageWithConnectInfo> allPagesForUser = api.getAllPagesForUser(token);
 
@@ -48,11 +40,11 @@ public class ChannelsController {
                             .build()
                     ).collect(toList());
         } catch (Exception e) {
-            throw new SourceApiException(e.getMessage());
+            throw new ApiException(e.getMessage());
         }
     }
 
-    public FacebookMetadata connectChannel(String token, String sourceChannelId) throws SourceApiException {
+    public FacebookMetadata connectChannel(String token, String sourceChannelId) throws ApiException {
         try {
             final String longLivingUserToken = api.exchangeToLongLivingUserAccessToken(token);
             final PageWithConnectInfo fbPageWithConnectInfo = api.getPageForUser(sourceChannelId, longLivingUserToken);
@@ -65,7 +57,7 @@ public class ChannelsController {
                     .imageUrl(fbPageWithConnectInfo.getPicture().getData().getUrl())
                     .build();
         } catch (Exception e) {
-            throw new SourceApiException(e.getMessage());
+            throw new ApiException(e.getMessage());
         }
     }
 

@@ -1,6 +1,7 @@
-package co.airy.core.sources.facebook.model;
+package co.airy.core.sources.facebook.dto;
 
 import co.airy.avro.communication.Message;
+import co.airy.core.sources.facebook.model.Conversation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

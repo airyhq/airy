@@ -6,7 +6,7 @@ import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.MetadataKeys;
 import co.airy.core.sources.facebook.model.Conversation;
 import co.airy.core.sources.facebook.model.SendMessagePayload;
-import co.airy.core.sources.facebook.model.SendMessageRequest;
+import co.airy.core.sources.facebook.dto.SendMessageRequest;
 import co.airy.core.sources.facebook.model.UserProfile;
 import co.airy.core.sources.facebook.services.Api;
 import co.airy.core.sources.facebook.services.Mapper;
@@ -59,7 +59,7 @@ public class Connector {
         return message;
     }
 
-    public boolean needsMetadataFetched(String conversationId, Conversation conversation) {
+    public boolean needsMetadataFetched(Conversation conversation) {
         final Map<String, String> metadata = conversation.getMetadata();
         final String fetchState = metadata.get(MetadataKeys.Source.Contact.FETCH_STATE);
 

@@ -2,7 +2,7 @@ package co.airy.core.sources.facebook.services;
 
 import co.airy.avro.communication.Message;
 import co.airy.core.sources.facebook.model.SendMessagePayload;
-import co.airy.core.sources.facebook.model.SendMessageRequest;
+import co.airy.core.sources.facebook.dto.SendMessageRequest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;

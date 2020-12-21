@@ -7,7 +7,7 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.facebook.model.Conversation;
-import co.airy.core.sources.facebook.model.SendMessageRequest;
+import co.airy.core.sources.facebook.dto.SendMessageRequest;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -122,18 +122,18 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                     conversation.setMetadata(new HashMap<>(Optional.ofNullable(metadataMap).orElse(Map.of())));
                     return conversation;
                 })
-                .filter(connector::needsMetadataFetched)
+                .filter((k, v) -> connector.needsMetadataFetched(v))
                 .flatMap(connector::fetchMetadata)
                 .to(new ApplicationCommunicationMetadata().name());
 
         streams.start(builder.build(), appId);
     }
 
-    public ReadOnlyKeyValueStore<String, Map<String, Channel>> getChannelsStore() {
+    private ReadOnlyKeyValueStore<String, Map<String, Channel>> getChannelsStore() {
         return streams.acquireLocalStore(channelsStore);
     }
 
-    public Map<String, Channel> getChannelsMap() {
+    public Map<String, Channel> getChannels() {
         final ReadOnlyKeyValueStore<String, Map<String, Channel>> channelsStore = getChannelsStore();
 
         return Optional.ofNullable(channelsStore.get(allChannelsKey)).orElse(Map.of());

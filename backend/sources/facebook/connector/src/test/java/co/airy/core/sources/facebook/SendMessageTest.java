@@ -6,7 +6,6 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.facebook.model.SendMessagePayload;
-import co.airy.core.sources.facebook.model.SendMessageRequest;
 import co.airy.core.sources.facebook.services.Api;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;

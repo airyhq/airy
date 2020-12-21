@@ -43,7 +43,7 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
-        final Map<String, Channel> channelsMap = stores.getChannelsMap();
+        final Map<String, Channel> channelsMap = stores.getChannels();
         final List<String> connectedSourceIds = channelsMap.values()
                 .stream()
                 .filter((channel -> ChannelConnectionState.CONNECTED.equals(channel.getConnectionState())))
@@ -71,7 +71,7 @@ public class ChannelsController {
         final String sourceChannelId = requestPayload.getSourceChannelId();
 
         final String channelId = UUIDv5.fromNamespaceAndName("facebook", sourceChannelId).toString();
-        final Map<String, Channel> channelsMap = stores.getChannelsMap();
+        final Map<String, Channel> channelsMap = stores.getChannels();
         final Channel existingChannel = channelsMap.get(channelId);
 
         if (existingChannel != null && ChannelConnectionState.CONNECTED.equals(existingChannel.getConnectionState())) {

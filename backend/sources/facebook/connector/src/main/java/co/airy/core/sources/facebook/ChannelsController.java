@@ -1,5 +1,7 @@
 package co.airy.core.sources.facebook;
 
+import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.core.sources.facebook.dto.ChannelData;
 import co.airy.core.sources.facebook.dto.ExploreRequestPayload;
 import co.airy.core.sources.facebook.dto.ExploreResponsePayload;
@@ -13,14 +15,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
 public class ChannelsController {
 
     private final Api api;
-    public ChannelsController(Api api) {
+    private final Stores stores;
+
+    public ChannelsController(Api api, Stores stores) {
         this.api = api;
+        this.stores = stores;
     }
 
     @PostMapping("/facebook.explore")
@@ -32,6 +38,13 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
+        final Map<String, Channel> channelsMap = stores.getChannelsMap();
+        final List<String> connectedSourceIds = channelsMap.values()
+                .stream()
+                .filter((channel -> ChannelConnectionState.CONNECTED.equals(channel.getConnectionState())))
+                .map(Channel::getSourceChannelId)
+                .collect(toList());
+
         return ResponseEntity.ok(
                 new ExploreResponsePayload(
                         availableChannels.stream()
@@ -39,7 +52,7 @@ public class ChannelsController {
                                         .sourceChannelId(channel.getSourceChannelId())
                                         .name(channel.getName())
                                         .imageUrl(channel.getImageUrl())
-                                        .connected(true)
+                                        .connected(connectedSourceIds.contains(channel.getSourceChannelId()))
                                         .build()
                                 )
                                 .collect(toList())

@@ -386,41 +386,6 @@ Sends a message to a conversation and returns a payload.
 
 ### Channels
 
-#### Connecting channels
-
-`POST /channels.connect`
-
-A synchronous endpoint that makes a request to the source
-to connect the channel.
-
-This action is idempotent, so if the channel is already connected, the request returns status code `202`.
-
-Connecting a channel is source-specific by nature, refer to the relevant documentation for the correct payload:
-
-- [Facebook](/sources/facebook.md#connecting-a-channel)
-- [Google](/sources/google.md#connecting-a-channel)
-- [SMS - Twilio](/sources/sms-twilio.md#connecting-a-channel)
-- [WhatsApp - Twilio](/sources/whatsapp-twilio.md#connecting-a-channel)
-
-#### Disconnecting Channels
-
-`POST /channels.disconnect`
-
-A synchronous endpoint that makes a request to the source
-to disconnect the channel. It marks the channel as disconnected and deletes the
-auth token.
-
-This action is idempotent, so if the channel is disconnected, the request returns status code `202`.
-If the channel is unknown, the request returns status code `400`.
-
-**Sample request**
-
-```json5
-{
-  "channel_id": "uuid"
-}
-```
-
 #### List channels
 
 `POST /channels.list`

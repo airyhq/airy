@@ -158,15 +158,13 @@ the nature of the request, the response time may vary.
   "data": [
     {
       "name": "my page 1",
-      "source": "facebook",
-      "source_channel_id": "fb-page-id-1",
+      "page_id": "fb-page-id-1",
       "connected": false,
       "image_url": "http://example.org/avatar.jpeg" // optional
     },
     {
       "name": "my page 2",
-      "source": "facebook",
-      "source_channel_id": "fb-page-id-2",
+      "page_id": "fb-page-id-2",
       "connected": true
     }
   ]

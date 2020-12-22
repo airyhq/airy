@@ -37,17 +37,18 @@ public class ChannelsController {
 
     @PostMapping("/google.connect")
     ResponseEntity<?> connect(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        final String sourceChannelId = requestPayload.getSourceChannelId();
+        final String gbmId = requestPayload.getGbmId();
         final String sourceIdentifier = "google";
 
-        final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, sourceChannelId).toString();
+        final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, gbmId).toString();
 
         final Channel channel = Channel.newBuilder()
                 .setId(channelId)
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setSource(sourceIdentifier)
-                .setSourceChannelId(sourceChannelId)
+                .setSourceChannelId(gbmId)
                 .setName(requestPayload.getName())
+                .setImageUrl(requestPayload.getImageUrl())
                 .build();
 
         try {
@@ -91,10 +92,12 @@ public class ChannelsController {
 @AllArgsConstructor
 class ConnectChannelRequestPayload {
     @NotNull
-    private String sourceChannelId;
+    private String gbmId;
 
     @NotNull
     private String name;
+
+    private String imageUrl;
 }
 
 @Data

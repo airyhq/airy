@@ -37,11 +37,13 @@ Connects a Google Business Account to the Airy Core Platform.
 POST /google.connect
 ```
 
-- `source_channel_id` The id of your Google Business Message [agent](https://developers.google.com/business-communications/business-messages/reference/business-communications/rest/v1/brands.agents#Agent).
+- `gbm_id` The id of your Google Business Message [agent](https://developers.google.com/business-communications/business-messages/reference/business-communications/rest/v1/brands.agents#Agent).
+- `name` Custom name for the connected business
+- `image_url` Custom image URL
 
 ```json5
 {
-  "source_channel_id": "gbm-id",
+  "gbm_id": "gbm-id",
   "name": "My custom name for this location",
   "image_url": "https://example.com/custom-image.jpg" // optional
 }

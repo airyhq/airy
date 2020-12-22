@@ -11,8 +11,10 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class ConnectRequestPayload {
     @NotNull
-    String sourceChannelId;
-    String token;
-    String name;
-    String imageUrl;
+    private String pageId;
+    @NotNull
+    private String pageToken;
+    @NotNull
+    private String name;
+    private String imageUrl;
 }

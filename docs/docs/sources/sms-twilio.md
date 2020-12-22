@@ -30,16 +30,17 @@ Next call the Platform API:
 POST /twilio.sms.connect
 ```
 
-- `source_channel_id` The phone number as listed in your [Twilio
+- `phone_number` The phone number as listed in your [Twilio
   dashboard](https://www.twilio.com/console/phone-numbers/). It must _not_ contain
   spaces and must include the country code.
+- `name` Custom name for the connected phone number
+- `image_url` Custom image URL
 
 **Sample request**
 
 ```json5
 {
-  "source": "twilio.sms",
-  "source_channel_id": "+491234567",
+  "phone_number": "+491234567",
   "name": "SMS for receipts",
   "image_url": "https://example.com/custom-image.jpg" // optional
 }

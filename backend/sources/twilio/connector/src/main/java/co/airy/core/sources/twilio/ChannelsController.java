@@ -30,33 +30,44 @@ public class ChannelsController {
     private final Stores stores;
     private final KafkaProducer<String, Channel> producer;
 
-    public ChannelsController(Stores stores, KafkaProducer<String, Channel> producer) {
-        this.stores = stores;
+    public ChannelsController(Stores stores, KafkaProducer<String, Channel> producer) { this.stores = stores;
         this.producer = producer;
     }
 
     @PostMapping("/twilio.sms.connect")
     ResponseEntity<?> connectSms(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        return connectChannel(requestPayload, "twilio.sms");
-    }
-
-    @PostMapping("/twilio.whatsapp.connect")
-    ResponseEntity<?> connectWhatsapp(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        return connectChannel(requestPayload, "twilio.whatsapp");
-    }
-
-    private ResponseEntity<?> connectChannel(ConnectChannelRequestPayload requestPayload, String sourceIdentifier) {
-        final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, requestPayload.getSourceChannelId()).toString();
-
+        final String channelId = UUIDv5.fromNamespaceAndName("twilio.sms", requestPayload.getPhoneNumber()).toString();
 
         final Channel channel = Channel.newBuilder()
                 .setId(channelId)
                 .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setSource(sourceIdentifier)
-                .setSourceChannelId(requestPayload.getSourceChannelId())
+                .setSource("twilio.sms")
+                .setSourceChannelId(requestPayload.getPhoneNumber())
                 .setName(requestPayload.getName())
+                .setImageUrl(requestPayload.getImageUrl())
                 .build();
 
+        return connectChannel(channel);
+    }
+
+    @PostMapping("/twilio.whatsapp.connect")
+    ResponseEntity<?> connectWhatsapp(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
+        final String phoneNumber = "whatsapp:" + requestPayload.getPhoneNumber();
+        final String channelId = UUIDv5.fromNamespaceAndName("twilio.whatsapp", phoneNumber).toString();
+
+        final Channel channel = Channel.newBuilder()
+                .setId(channelId)
+                .setConnectionState(ChannelConnectionState.CONNECTED)
+                .setSource("twilio.whatsapp")
+                .setSourceChannelId(phoneNumber)
+                .setName(requestPayload.getName())
+                .setImageUrl(requestPayload.getImageUrl())
+                .build();
+
+        return connectChannel(channel);
+    }
+
+    private ResponseEntity<?> connectChannel(Channel channel) {
         try {
             producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
         } catch (Exception e) {
@@ -107,10 +118,12 @@ public class ChannelsController {
 @AllArgsConstructor
 class ConnectChannelRequestPayload {
     @NotNull
-    private String sourceChannelId;
+    private String phoneNumber;
 
     @NotNull
     private String name;
+
+    private String imageUrl;
 }
 
 @Data

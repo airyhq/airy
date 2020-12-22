@@ -71,12 +71,12 @@ public class ChannelsController {
 
     @PostMapping("/facebook.connect")
     ResponseEntity<?> connect(@RequestBody @Valid ConnectRequestPayload requestPayload) {
-        final String token = requestPayload.getToken();
-        final String sourceChannelId = requestPayload.getSourceChannelId();
+        final String token = requestPayload.getPageToken();
+        final String pageId = requestPayload.getPageId();
 
-        final String channelId = UUIDv5.fromNamespaceAndName("facebook", sourceChannelId).toString();
+        final String channelId = UUIDv5.fromNamespaceAndName("facebook", pageId).toString();
 
-        final FacebookMetadata facebookMetadata = connectChannel(token, sourceChannelId);
+        final FacebookMetadata facebookMetadata = connectChannel(token, pageId);
 
         final Channel channel = Channel.newBuilder()
                 .setId(channelId)
@@ -84,7 +84,7 @@ public class ChannelsController {
                 .setImageUrl(Optional.ofNullable(requestPayload.getImageUrl()).orElse(facebookMetadata.getImageUrl()))
                 .setName(Optional.ofNullable(requestPayload.getName()).orElse(facebookMetadata.getName()))
                 .setSource("facebook")
-                .setSourceChannelId(sourceChannelId)
+                .setSourceChannelId(pageId)
                 .setToken(token)
                 .build();
 

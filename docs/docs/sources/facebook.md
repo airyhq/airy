@@ -94,17 +94,18 @@ Connects a Facebook page to the Airy Core Platform.
 POST /facebook.connect
 ```
 
-- `source_channel_id` is the Facebook page id
-- `token` is the page Access Token
+- `page_id` is the Facebook page id
+- `page_token` is the page Access Token
+- `name` Custom name for the connected page
+- `image_url` Custom image URL
 
 **Sample request**
 
 ```json5
 {
-  "source": "facebook",
-  "source_channel_id": "fb-page-id-1",
-  "token": "authentication token",
-  "name": "My custom name for this page", // optional
+  "page_id": "fb-page-id-1",
+  "page_token": "authentication token",
+  "name": "My custom name for this page",
   "image_url": "https://example.org/custom-image.jpg" // optional
 }
 ```
@@ -115,7 +116,7 @@ POST /facebook.connect
 {
   "id": "channel-uuid-1",
   "name": "My custom name for this page",
-  "image_url": "https://example.org/custom-image.jpg", // optional
+  "image_url": "https://example.org/custom-image.jpg",
   "source": "facebook",
   "source_channel_id": "fb-page-id-1"
 }

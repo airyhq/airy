@@ -51,7 +51,6 @@ import ChannelDisconnect from './channel-disconnect.mdx'
 
 <ChannelDisconnect />
 
-
 ## Installation
 
 To install the Chat Plugin UI on your website add the following script tag to

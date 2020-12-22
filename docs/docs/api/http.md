@@ -421,7 +421,6 @@ If the channel is unknown, the request returns status code `400`.
 }
 ```
 
-
 #### List channels
 
 `POST /channels.list`

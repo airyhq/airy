@@ -1,6 +1,6 @@
 ---
-title: Whatsapp via Twilio
-sidebar_label: Whatsapp - Twilio
+title: WhatsApp via Twilio
+sidebar_label: WhatsApp - Twilio
 ---
 
 The Twilio WhatsApp source provides a channel for sending and receiving WhatsApp
@@ -28,27 +28,25 @@ to your Airy Core Platform running instance.
 Next call the Airy Core Platform API for connecting channels:
 
 ```
-POST /channels.connect
+POST /twilio.whatsapp.connect
 ```
 
-- `source` _must_ be `twilio.whatsapp`
 - `source_channel_id` The phone number as listed in your [Twilio
   dashboard](https://www.twilio.com/console/phone-numbers/).
   It must _not_ have spaces, must include the country
   code, and be prefixed by `whatsapp:`
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
-  "source": "twilio.whatsapp",
   "source_channel_id": "whatsapp:+491234567",
   "name": "WhatsApp Marketing",
   "image_url": "https://example.com/custom-image.jpg" // optional
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -59,3 +57,13 @@ POST /channels.connect
   "source_channel_id": "whatsapp:+491234567"
 }
 ```
+
+## Disconnect
+
+```
+POST /twilio.whatsapp.disconnect
+```
+
+import ChannelDisconnect from './channel-disconnect.mdx'
+
+<ChannelDisconnect />

@@ -18,7 +18,7 @@ import TwilioSource from './twilio-source.mdx'
 
 <TwilioSource />
 
-## Connect a channel
+## Connect
 
 After you created a Twilio phone number you must [point its webhook
 integration](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url)
@@ -27,15 +27,14 @@ to your running Airy Core Platform instance.
 Next call the Platform API:
 
 ```
-POST /channels.connect
+POST /twilio.sms.connect
 ```
 
-- `source` _must_ be `twilio.sms`
 - `source_channel_id` The phone number as listed in your [Twilio
   dashboard](https://www.twilio.com/console/phone-numbers/). It must _not_ contain
   spaces and must include the country code.
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -46,7 +45,7 @@ POST /channels.connect
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -57,3 +56,13 @@ POST /channels.connect
   "source_channel_id": "+491234567"
 }
 ```
+
+## Disconnect
+
+```
+POST /twilio.sms.disconnect
+```
+
+import ChannelDisconnect from './channel-disconnect.mdx'
+
+<ChannelDisconnect />

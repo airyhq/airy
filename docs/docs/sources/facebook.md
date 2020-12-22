@@ -51,7 +51,7 @@ Refer to the [test](/guides/airy-core-in-test-env#connect-sources) guide or the 
 
 :::
 
-### Configure the webook integration
+### Configure the webhook integration
 
 For Facebook to start sending events to your running instance, it must first
 verify your integration with a challenge. To verify your Facebook webhook
@@ -86,17 +86,18 @@ On the `User or Page` option, select `Get Page Token` and click on `Generate Acc
 
 You're now ready to connect a Facebook page to the Airy Core Platform 🎉.
 
-## Connect a channel
+## Connect
 
 Connects a Facebook page to the Airy Core Platform.
 
 ```
-POST /channels.connect
+POST /facebook.connect
 ```
 
-- `source` _must_ be `facebook`
 - `source_channel_id` is the Facebook page id
 - `token` is the page Access Token
+
+**Sample request**
 
 ```json5
 {
@@ -108,7 +109,7 @@ POST /channels.connect
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -119,3 +120,15 @@ POST /channels.connect
   "source_channel_id": "fb-page-id-1"
 }
 ```
+
+## Disconnect
+
+Disconnects a Facebook page from the Airy Core Platform
+
+```
+POST /facebook.disconnect
+```
+
+import ChannelDisconnect from './channel-disconnect.mdx'
+
+<ChannelDisconnect />

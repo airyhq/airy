@@ -84,7 +84,7 @@ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 The ID from the response is the `channel_id`. It is required for
 the next steps, so note it down.
 
-## Send messages with the Chat Plugin
+## Send messages via the Chat Plugin
 
 Pass the `channel_id` as a query parameter when opening the demo page in your
 browser. This authenticates the chat plugin and enables you to send messages

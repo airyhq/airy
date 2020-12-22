@@ -1,5 +1,5 @@
 ---
-title: The Airy Core Plaform architecture
+title: The Airy Core Platform architecture
 sidebar_label: Architecture
 ---
 
@@ -25,7 +25,7 @@ which run as part of the Airy Core Platform:
 
 - sources-`SOURCE_NAME`-webhook - Ingest events from the `SOURCE_NAME` source
 - sources-`SOURCE_NAME`-events-router - Process messages from a `SOURCE_NAME` source
-- sources-`SOURCE_NAME`-sender - Send events (mostly messages) to a `SOURCE_NAME` source
+- sources-`SOURCE_NAME`-connector - Send events (mostly messages) to a `SOURCE_NAME` source and extracts metadata
 
 ## API
 
@@ -35,8 +35,9 @@ which run as part of the Airy Core Platform:
 
 ## Webhook
 
-- webhook-publisher - Process conversational data and write in Redis the events to be exposed to external parties.
-- webhook-consumer - Read from Redis and send events to external webhooks
+- webhook-publisher - Processes conversational data and write in Redis the events
+  to be exposed to external parties.
+- webhook-consumer - Reads from Redis and send events to external webhooks
 
 ## Frontend
 

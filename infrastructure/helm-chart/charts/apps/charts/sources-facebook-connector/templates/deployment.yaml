@@ -22,34 +22,33 @@ spec:
         app: sources-facebook-connector
     spec:
       containers:
-      - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
-        imagePullPolicy: Always
-        env:
-        - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_BROKERS
-        - name: KAFKA_SCHEMA_REGISTRY_URL
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_SCHEMA_REGISTRY_URL
-        - name: SERVICE_NAME
-          value: facebook-connector
-        - name: FACEBOOK_WEBHOOK_SECRET
-          valueFrom:
-            configMapKeyRef:
-              name: sources-config
-              key: FACEBOOK_WEBHOOK_SECRET
-        livenessProbe:
-          tcpSocket:
-            port: 6000
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          failureThreshold: 3
-          
+        - name: app
+          image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+          imagePullPolicy: Always
+          env:
+          - name: KAFKA_BROKERS
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_BROKERS
+          - name: KAFKA_SCHEMA_REGISTRY_URL
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_SCHEMA_REGISTRY_URL
+          - name: SERVICE_NAME
+            value: facebook-connector
+          - name: FACEBOOK_WEBHOOK_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: sources-config
+                key: FACEBOOK_WEBHOOK_SECRET
+          livenessProbe:
+            tcpSocket:
+              port: 6000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3  
         - name: ngrok
           command:
             - /bin/bash
@@ -61,7 +60,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: sources-config
-                  key: TWILIO_WEBHOOK_PUBLIC_URL
+                  key: FACEBOOK_WEBHOOK_PUBLIC_URL
           imagePullPolicy: Always
           resources:
             limits:

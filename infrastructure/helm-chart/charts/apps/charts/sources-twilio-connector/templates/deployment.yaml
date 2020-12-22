@@ -22,37 +22,36 @@ spec:
         app: sources-twilio-connector
     spec:
       containers:
-      - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
-        imagePullPolicy: Always
-        env:
-        - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_BROKERS
-        - name: KAFKA_SCHEMA_REGISTRY_URL
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_SCHEMA_REGISTRY_URL
-        - name: TWILIO_AUTH_TOKEN
-          valueFrom:
-           configMapKeyRef:
-             name: sources-config
-             key: TWILIO_AUTH_TOKEN
-        - name: TWILIO_ACCOUNT_SID
-          valueFrom:
-           configMapKeyRef:
-             name: sources-config
-             key: TWILIO_ACCOUNT_SID
-        livenessProbe:
-          tcpSocket:
-            port: 6000
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          failureThreshold: 3
-
+        - name: app
+          image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+          imagePullPolicy: Always
+          env:
+          - name: KAFKA_BROKERS
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_BROKERS
+          - name: KAFKA_SCHEMA_REGISTRY_URL
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_SCHEMA_REGISTRY_URL
+          - name: TWILIO_AUTH_TOKEN
+            valueFrom:
+              configMapKeyRef:
+                name: sources-config
+                key: TWILIO_AUTH_TOKEN
+          - name: TWILIO_ACCOUNT_SID
+            valueFrom:
+              configMapKeyRef:
+                name: sources-config
+                key: TWILIO_ACCOUNT_SID
+          livenessProbe:
+            tcpSocket:
+              port: 6000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
         - name: ngrok
           command:
             - /bin/bash

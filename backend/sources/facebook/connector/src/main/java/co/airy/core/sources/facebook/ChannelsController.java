@@ -39,7 +39,7 @@ public class ChannelsController {
     ResponseEntity<?> explore(@RequestBody @Valid ExploreRequestPayload requestPayload) {
         List<FacebookMetadata> availableChannels;
         try {
-            availableChannels = getAvailableChannels(requestPayload.getPageToken());
+            availableChannels = getAvailableChannels(requestPayload.getAuthToken());
         } catch (ApiException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

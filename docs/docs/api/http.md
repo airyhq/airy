@@ -421,51 +421,6 @@ If the channel is unknown, the request returns status code `400`.
 }
 ```
 
-#### Explore channels
-
-`POST /channels.explore`
-
-A synchronous endpoint that makes a request to the source
-to list all the available channels. Some of those channels may already
-be connected, which is accounted for in the boolean field `connected`. Due to
-the nature of the request, the response time may vary.
-
-<!-- TODO move this section to source specific documentation -->
-
-The request requires an authentication `token`, which has a different meaning for each source:
-
-- `facebook` The user access token
-
-**Sample request**
-
-```json5
-{
-  "source": "facebook",
-  "token": "authentication token"
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "data": [
-    {
-      "name": "my page 1",
-      "source": "facebook",
-      "source_channel_id": "fb-page-id-1",
-      "connected": false,
-      "image_url": "http://example.org/avatar.jpeg" // optional
-    },
-    {
-      "name": "my page 2",
-      "source": "facebook",
-      "source_channel_id": "fb-page-id-2",
-      "connected": true
-    }
-  ]
-}
-```
 
 #### List channels
 

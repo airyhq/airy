@@ -11,5 +11,5 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class ExploreRequestPayload {
     @NotNull
-    String pageToken;
+    String authToken;
 }

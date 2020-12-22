@@ -7,7 +7,7 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.facebook.dto.SendMessageRequest;
-import co.airy.core.sources.facebook.model.Conversation;
+import co.airy.core.sources.facebook.dto.Conversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;

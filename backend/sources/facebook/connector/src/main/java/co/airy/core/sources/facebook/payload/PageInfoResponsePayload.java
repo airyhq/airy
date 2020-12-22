@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.dto;
+package co.airy.core.sources.facebook.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FacebookMetadata {
-    private String sourceChannelId;
+public class PageInfoResponsePayload {
+    private String pageId;
     private String name;
     private String imageUrl;
+    private boolean connected;
 }

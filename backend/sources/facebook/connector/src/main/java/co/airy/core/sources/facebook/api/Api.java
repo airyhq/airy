@@ -1,9 +1,11 @@
-package co.airy.core.sources.facebook.services;
+package co.airy.core.sources.facebook.api;
 
-import co.airy.core.sources.facebook.ApiException;
-import co.airy.core.sources.facebook.model.Participants;
-import co.airy.core.sources.facebook.model.SendMessagePayload;
-import co.airy.core.sources.facebook.model.UserProfile;
+import co.airy.core.sources.facebook.api.model.LongLivingUserAccessToken;
+import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
+import co.airy.core.sources.facebook.api.model.Pages;
+import co.airy.core.sources.facebook.api.model.Participants;
+import co.airy.core.sources.facebook.api.model.SendMessagePayload;
+import co.airy.core.sources.facebook.api.model.UserProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -67,14 +69,13 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
         this.apiSecret = apiSecret;
     }
 
-
     public void sendMessage(final String pageToken, SendMessagePayload sendMessagePayload) {
         String fbReqUrl = String.format(requestTemplate, pageToken);
 
         restTemplate.postForEntity(fbReqUrl, new HttpEntity<>(sendMessagePayload, httpHeaders), FbSendMessageResponse.class);
     }
 
-    public List<PageWithConnectInfo> getAllPagesForUser(String accessToken) throws Exception {
+    public List<PageWithConnectInfo> getPagesInfo(String accessToken) throws Exception {
         String pagesUrl = String.format(baseUrl + "/me/accounts?%s&access_token=%s", pageFields, accessToken);
 
         boolean hasMorePages = true;
@@ -100,7 +101,7 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
 
     // See "Retrieving a Person's Profile" in https://developers.facebook.com/docs/messenger-platform/identity/user-profile
     public UserProfile getProfileFromContact(String sourceConversationId, String token) {
-        String reqUrl = String.format("https://graph.facebook.com/v3.2/%s?fields=first_name,last_name,profile_pic&access_token=%s",
+        String reqUrl = String.format(baseUrl + "/%s?fields=first_name,last_name,profile_pic&access_token=%s",
                 sourceConversationId, token);
         ResponseEntity<UserProfile> responseEntity = restTemplate.getForEntity(reqUrl, UserProfile.class);
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
@@ -115,8 +116,8 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
                 sourceConversationId, token);
 
         ResponseEntity<Participants> responseEntity = restTemplate.getForEntity(reqUrl, Participants.class);
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            throw new ApiException("Call unsuccessful, received HTTP status " + responseEntity.getStatusCodeValue());
+        if (responseEntity.getBody() == null || responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new ApiException("Call unsuccessful");
         }
 
         return fromParticipants(responseEntity.getBody(), sourceConversationId);
@@ -153,10 +154,7 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
                     splits.remove(0);
                     String lastName = String.join(" ", splits);
 
-                    return UserProfile.builder()
-                            .firstName(firstName)
-                            .lastName(lastName)
-                            .build();
+                    return UserProfile.builder().firstName(firstName).lastName(lastName).build();
                 })
                 .findFirst()
                 .get();

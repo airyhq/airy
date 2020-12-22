@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.dto;
+package co.airy.core.sources.facebook.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExploreResponsePayload {
-    private List<ChannelData> data;
+    private List<PageInfoResponsePayload> data;
 }
 

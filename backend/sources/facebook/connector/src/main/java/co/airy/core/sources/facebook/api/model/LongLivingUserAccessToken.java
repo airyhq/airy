@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.services;
+package co.airy.core.sources.facebook.api.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class LongLivingUserAccessToken {
+public class LongLivingUserAccessToken {
     private String accessToken;
 }
 

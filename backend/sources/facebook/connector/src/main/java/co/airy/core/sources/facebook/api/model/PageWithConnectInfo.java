@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.services;
+package co.airy.core.sources.facebook.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

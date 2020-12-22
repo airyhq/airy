@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.model;
+package co.airy.core.sources.facebook.api.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

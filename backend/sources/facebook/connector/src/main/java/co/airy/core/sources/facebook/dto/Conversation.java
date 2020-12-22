@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.model;
+package co.airy.core.sources.facebook.dto;
 
 import co.airy.avro.communication.Channel;
 import lombok.AllArgsConstructor;

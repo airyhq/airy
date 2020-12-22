@@ -1,4 +1,4 @@
-package co.airy.core.sources.facebook.dto;
+package co.airy.core.sources.facebook.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,6 @@ public class ConnectRequestPayload {
     private String pageId;
     @NotNull
     private String pageToken;
-    @NotNull
     private String name;
     private String imageUrl;
 }

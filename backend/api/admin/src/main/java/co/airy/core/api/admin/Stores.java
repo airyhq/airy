@@ -87,7 +87,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationTags, tag.getId(), null));
     }
 
-    private ReadOnlyKeyValueStore<String, Channel> getConnectedChannelsStore() {
+    public ReadOnlyKeyValueStore<String, Channel> getConnectedChannelsStore() {
         return streams.acquireLocalStore(connectedChannelsStore);
     }
 

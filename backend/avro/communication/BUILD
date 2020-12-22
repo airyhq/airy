@@ -4,7 +4,8 @@ load("//tools/build:java_library.bzl", "custom_java_library")
 package(default_visibility = ["//visibility:public"])
 
 avro_java_library(
-    name = "channel",
+    name = "channel-avro",
+    srcs = ["channel.avsc"],
 )
 
 avro_java_library(

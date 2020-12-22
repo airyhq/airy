@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-import static co.airy.channel.ChannelPayload.fromChannel;
+import static co.airy.model.channel.ChannelPayload.fromChannel;
 
 
 @RestController

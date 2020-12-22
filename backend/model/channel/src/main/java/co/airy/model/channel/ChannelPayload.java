@@ -1,4 +1,4 @@
-package co.airy.channel;
+package co.airy.model.channel;
 
 import co.airy.avro.communication.Channel;
 import com.fasterxml.jackson.annotation.JsonInclude;

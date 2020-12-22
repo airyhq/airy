@@ -8,7 +8,7 @@ app_deps = [
     "//:springboot_actuator",
     "//:springboot_websocket",
     "//:springboot_security",
-    "//backend/lib/channel:channel",
+    "//backend/model/channel:channel",
     "//backend:message",
     "//lib/java/uuid",
     "//lib/java/payload",

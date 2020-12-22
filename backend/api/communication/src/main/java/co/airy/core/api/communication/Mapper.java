@@ -3,7 +3,7 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataKeys;
 import co.airy.avro.communication.MetadataRepository;
-import co.airy.channel.ChannelPayload;
+import co.airy.model.channel.ChannelPayload;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.DisplayName;
 import co.airy.core.api.communication.payload.ContactResponsePayload;

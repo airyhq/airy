@@ -5,7 +5,7 @@ load("//tools/build:container_push.bzl", "container_push")
 app_deps = [
     "//backend:base_app",
     "//backend:message",
-    "//backend/lib/channel:channel",
+    "//backend/model/channel:channel",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/payload",

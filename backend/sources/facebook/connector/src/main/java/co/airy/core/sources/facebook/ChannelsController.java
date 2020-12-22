@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static co.airy.channel.ChannelPayload.fromChannel;
+import static co.airy.model.channel.ChannelPayload.fromChannel;
 import static java.util.stream.Collectors.toList;
 
 public class ChannelsController {

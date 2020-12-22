@@ -1,7 +1,7 @@
 package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
-import co.airy.channel.ChannelPayload;
+import co.airy.model.channel.ChannelPayload;
 import co.airy.core.api.admin.payload.ChannelsResponsePayload;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

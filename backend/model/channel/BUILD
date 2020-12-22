@@ -2,7 +2,7 @@ load("//tools/build:java_library.bzl", "custom_java_library")
 
 custom_java_library(
     name = "channel",
-    srcs = glob(["src/main/java/co/airy/channel/**/*.java"]),
+    srcs = glob(["src/main/java/co/airy/model/channel/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
         "//backend/avro/communication:channel",

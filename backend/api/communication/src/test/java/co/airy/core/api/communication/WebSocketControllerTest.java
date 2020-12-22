@@ -2,7 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.channel.ChannelPayload;
+import co.airy.model.channel.ChannelPayload;
 import co.airy.core.api.communication.payload.MessageUpsertPayload;
 import co.airy.core.api.communication.payload.UnreadCountPayload;
 import co.airy.core.api.communication.util.TestConversation;

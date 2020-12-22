@@ -2,7 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
-import co.airy.channel.ChannelPayload;
+import co.airy.model.channel.ChannelPayload;
 import co.airy.core.api.communication.dto.UnreadCountState;
 import co.airy.core.api.communication.payload.MessageUpsertPayload;
 import co.airy.core.api.communication.payload.UnreadCountPayload;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 
 import static co.airy.avro.communication.ChannelConnectionState.CONNECTED;
-import static co.airy.channel.ChannelPayload.fromChannel;
+import static co.airy.model.channel.ChannelPayload.fromChannel;
 import static co.airy.payload.format.DateFormat.isoFromMillis;
 
 @Service

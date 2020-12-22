@@ -1,6 +1,6 @@
 package co.airy.core.api.admin.payload;
 
-import co.airy.channel.ChannelPayload;
+import co.airy.model.channel.ChannelPayload;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

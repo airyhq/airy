@@ -2,7 +2,6 @@ package co.airy.core.sources.twilio;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.channel.ChannelPayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.payload.response.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
@@ -21,7 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-import static co.airy.channel.ChannelPayload.fromChannel;
+import static co.airy.model.channel.ChannelPayload.fromChannel;
 
 
 @RestController

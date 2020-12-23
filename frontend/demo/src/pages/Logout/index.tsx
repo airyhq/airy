@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import {Redirect} from 'react-router-dom';
-import {logoutUser} from '../../actions/user';
+import {logoutUser} from 'httpclient';
 import {LOGIN_ROUTE} from '../../routes/routes';
 
 type LogoutConnectProps = {

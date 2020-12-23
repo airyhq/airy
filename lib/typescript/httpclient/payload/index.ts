@@ -7,6 +7,8 @@ import {clearUserData} from '../api/webStore';
 
 import data, {DataState} from './data';
 
+export * from './data';
+
 type Action = ActionType<typeof authActions>;
 
 export type StateModel = {

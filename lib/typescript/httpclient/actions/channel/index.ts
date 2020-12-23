@@ -1,7 +1,7 @@
 import {createAction} from 'typesafe-actions';
 import _, {Dispatch} from 'redux';
 
-import {doFetchFromBackend} from '../../api/airyConfig';
+import {doFetchFromBackend} from '../../api';
 
 import {
   Channel,

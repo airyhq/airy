@@ -6,15 +6,15 @@ import InfiniteLoader from 'react-window-infinite-loader';
 import ResizableWindowList from '../../../components/ResizableWindowList';
 
 import {newestConversationFirst} from '../../../selectors/conversations';
-import {fetchNextConversations} from '../../../actions/conversations';
+import {fetchNextConversations} from 'httpclient';
 
 import ConversationListHeader from '../ConversationListHeader';
 import ConversationListItem from '../ConversationListItem';
 import NoConversations from '../NoConversations';
 import {SimpleLoader} from '@airyhq/components';
 
-import {StateModel} from '../../../reducers';
-import {Conversation} from '../../../model/Conversation';
+import {StateModel} from 'httpclient';
+import {Conversation} from 'httpclient';
 
 import './index.scss';
 

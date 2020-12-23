@@ -1,7 +1,7 @@
 import React, {useState, Fragment} from 'react';
 import {connect} from 'react-redux';
 
-import {createTag, getTags, errorTag, filterTags} from '../../actions/tags';
+import {createTag, getTags, errorTag, filterTags} from 'httpclient';
 import {filteredTags} from '../../selectors/tags';
 
 import {Button, Input} from '@airyhq/components';
@@ -9,10 +9,10 @@ import Dialog from '../../components/Dialog';
 import ColorSelector from '../../components/ColorSelector';
 
 import Tag from '../../pages/Tags/Tag';
-import {Tag as TagModel, CreateTagRequestPayload, ErrorTag} from '../../model/Tag';
+import {Tag as TagModel, CreateTagRequestPayload, ErrorTag} from 'httpclient';
 
 import styles from './SimpleTagForm.module.scss';
-import {RootState} from '../../reducers';
+import {RootState} from 'httpclient';
 
 type SimpleTagFormProps = {
   errorMessage: string;

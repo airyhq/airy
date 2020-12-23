@@ -1,4 +1,4 @@
-import {Message} from '../../model/Message';
+import {Message} from 'httpclient';
 
 export function dateFormat(date: Date) {
   let now = new Date();

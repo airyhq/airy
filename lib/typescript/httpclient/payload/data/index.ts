@@ -10,6 +10,12 @@ import tags from './tags';
 import settings from './settings';
 import channels from './channels';
 
+export * from './channels';
+export * from './conversations';
+export * from './settings';
+export * from './tags';
+export {initialState} from './user';
+
 export type DataState = {
   user: User;
   conversations: ConversationsState;

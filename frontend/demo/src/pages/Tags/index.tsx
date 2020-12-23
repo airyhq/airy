@@ -5,17 +5,17 @@ import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/com
 
 import plus from '../../assets/images/icons/plus.svg';
 
-import {getTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
-import {fakeSettingsAPICall} from '../../actions/settings';
+import {getTags, deleteTag, filterTags, errorTag} from 'httpclient';
+import {fakeSettingsAPICall} from 'httpclient';
 import {filteredTags} from '../../selectors/tags';
-import {Tag} from '../../model/Tag';
+import {Tag} from 'httpclient';
 
 import styles from './index.module.scss';
 import {TableRow} from './TableRow';
 import SimpleTagForm from './SimpleTagForm';
 import EmptyStateTags from './EmptyStateTags';
-import {RootState} from '../../reducers';
-import {ModalType} from '../../model/Tag';
+import {RootState} from 'httpclient';
+import {ModalType} from 'httpclient';
 
 const initialState = {
   modal: {

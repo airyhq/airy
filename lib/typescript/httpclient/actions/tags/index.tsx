@@ -1,7 +1,7 @@
 import _, {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
 
-import {doFetchFromBackend} from '../../api/airyConfig';
+import {doFetchFromBackend} from '../../api';
 import {Tag, TagPayload, CreateTagRequestPayload, GetTagsResponse, tagsMapper} from '../../model/Tag';
 
 const UPSERT_TAG = 'UPSERT_TAG';

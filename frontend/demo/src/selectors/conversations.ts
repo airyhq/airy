@@ -1,8 +1,8 @@
 import _, {createSelector} from 'reselect';
 import {reverse, sortBy, values} from 'lodash-es';
-import {Conversation} from '../model/Conversation';
-import {StateModel} from '../reducers';
-import {ConversationMap} from '../reducers/data/conversations';
+import {Conversation} from 'httpclient';
+import {StateModel} from 'httpclient';
+import {ConversationMap} from 'httpclient';
 
 export const filteredConversationSelector = createSelector(
   (state: StateModel) => state.data.conversations.all.items,

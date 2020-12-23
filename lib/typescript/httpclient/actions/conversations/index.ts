@@ -1,10 +1,10 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {doFetchFromBackend} from '../../api/airyConfig';
+import {doFetchFromBackend} from '../../api';
 
 import {Conversation, ConversationPayload, conversationsMapper} from '../../model/Conversation';
 import {ResponseMetadata} from '../../model/ResponseMetadata';
-import {RootState, StateModel} from '../../reducers';
+import {RootState, StateModel} from '../../payload';
 
 export const CONVERSATION_LOADING = '@@conversation/LOADING';
 export const CONVERSATIONS_LOADING = '@@conversations/LOADING';

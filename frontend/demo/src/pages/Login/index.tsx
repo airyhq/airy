@@ -4,10 +4,11 @@ import {RouteComponentProps} from 'react-router-dom';
 
 import {ErrorNotice, Input, Button} from '@airyhq/components';
 
-import {loginViaEmail} from '../../actions/user';
+import {loginViaEmail} from 'httpclient';
 
 import logo from '../../assets/images/logo/airy_primary_rgb.svg';
 import styles from './index.module.scss';
+
 
 const mapDispatchToProps = {
   loginViaEmail,

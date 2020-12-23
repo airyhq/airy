@@ -6,9 +6,9 @@ import IconChannel from '../../../components/IconChannel';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
-import {Conversation} from '../../../model/Conversation';
-import {Message} from '../../../model/Message';
-import {StateModel} from '../../../reducers';
+import {Conversation} from 'httpclient';
+import {Message} from 'httpclient';
+import {StateModel} from 'httpclient';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 
 import styles from './index.module.scss';

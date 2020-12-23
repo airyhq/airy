@@ -1,6 +1,6 @@
 import _, {configureStore, getDefaultMiddleware} from 'redux-starter-kit';
 
-import rootReducer from './reducers';
+import rootReducer from 'httpclient/payload';
 
 export const store = configureStore({
   reducer: rootReducer,
@@ -14,8 +14,8 @@ export const store = configureStore({
 declare const module: any;
 
 if (module.hot) {
-  module.hot.accept('./reducers', () => {
-    const newRootReducer = require('./reducers').default;
+  module.hot.accept('httpclient/payload', () => {
+    const newRootReducer = require('httpclient/payload').default;
     store.replaceReducer(newRootReducer);
   });
 }

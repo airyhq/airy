@@ -53,6 +53,4 @@ tags_update_response=$(apiCall "tags.update" "{\"id\":\"$tag_id\", \"name\": \"t
 tags_list_response=$(apiCall "tags.list" '{}' 200 ${token})
 tags_delete_response=$(apiCall "tags.delete" "{\"id\": \"$tag_id\"}" 200 ${token})
 
-webhooks_subscribe_response=$(apiCall "webhooks.subscribe" '{}' 200 ${token})
-webhooks_unsubscribe_response=$(apiCall "webhooks.unsubscribe" '{}' 200 ${token})
-webhooks_info_response=$(apiCall "webhooks.info" '{}' 200 ${token})
+webhooks_subscribe_response=$(apiCall "webhooks.subscribe" "{\"url\": \"http://localhost:4567\"}" 200 ${token})

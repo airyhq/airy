@@ -14,6 +14,7 @@ app_deps = [
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/kafka/schema:source-twilio-events",
+    "//lib/java/spring/web:spring-web",
 ]
 
 springboot(

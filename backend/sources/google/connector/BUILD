@@ -11,6 +11,7 @@ app_deps = [
     "//lib/java/payload",
     "//lib/java/uuid",
     "//lib/java/kafka/schema:source-google-events",
+    "//lib/java/spring/web:spring-web",
     "@maven//:com_google_auth_google_auth_library_oauth2_http",
 ]
 

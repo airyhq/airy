@@ -10,6 +10,7 @@ app_deps = [
     "//lib/java/uuid",
     "//lib/java/payload",
     "//lib/java/log",
+    "//lib/java/spring/web:spring-web",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/kafka/schema:source-facebook-events",

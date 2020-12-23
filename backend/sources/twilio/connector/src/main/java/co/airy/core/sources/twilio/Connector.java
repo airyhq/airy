@@ -7,8 +7,10 @@ import co.airy.core.sources.twilio.services.Api;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.mapping.ContentMapper;
 import co.airy.mapping.model.Text;
+import co.airy.spring.auth.IgnoreAuthPattern;
 import com.twilio.exception.ApiException;
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
@@ -49,6 +51,11 @@ public class Connector {
 
         updateDeliveryState(message, DeliveryState.FAILED);
         return message;
+    }
+
+    @Bean
+    public IgnoreAuthPattern ignoreAuthPattern() {
+        return new IgnoreAuthPattern("/twilio");
     }
 
 }

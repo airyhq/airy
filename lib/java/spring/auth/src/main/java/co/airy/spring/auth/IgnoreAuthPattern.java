@@ -9,8 +9,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class IgnoreAuthPattern {
+    private final List<String> ignorePattern;
+
     public IgnoreAuthPattern(String... patterns) {
         this.ignorePattern = Arrays.asList(patterns);
     }
-    private final List<String> ignorePattern;
 }

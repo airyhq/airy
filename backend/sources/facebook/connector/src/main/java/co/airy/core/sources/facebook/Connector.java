@@ -12,8 +12,10 @@ import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.api.ApiException;
 import co.airy.core.sources.facebook.api.Mapper;
 import co.airy.log.AiryLoggerFactory;
+import co.airy.spring.auth.IgnoreAuthPattern;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -113,5 +115,10 @@ public class Connector {
                 return new UserProfile();
             }
         }
+    }
+
+    @Bean
+    public IgnoreAuthPattern ignoreAuthPattern() {
+        return new IgnoreAuthPattern("/facebook");
     }
 }

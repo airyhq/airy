@@ -7,7 +7,9 @@ import co.airy.core.sources.google.model.SendMessageRequest;
 import co.airy.core.sources.google.services.Api;
 import co.airy.core.sources.google.services.Mapper;
 import co.airy.log.AiryLoggerFactory;
+import co.airy.spring.auth.IgnoreAuthPattern;
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
@@ -42,6 +44,11 @@ public class Connector {
 
         updateDeliveryState(message, DeliveryState.FAILED);
         return message;
+    }
+
+    @Bean
+    public IgnoreAuthPattern ignoreAuthPattern() {
+        return new IgnoreAuthPattern("/google");
     }
 
 }

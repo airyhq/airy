@@ -22,7 +22,6 @@ import java.util.UUID;
 
 import static co.airy.model.channel.ChannelPayload.fromChannel;
 
-
 @RestController
 public class ChannelsController {
     private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();

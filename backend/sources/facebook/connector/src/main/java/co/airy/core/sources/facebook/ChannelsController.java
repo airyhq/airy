@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import static co.airy.model.channel.ChannelPayload.fromChannel;
 import static java.util.stream.Collectors.toList;
 
+@RestController
 public class ChannelsController {
 
     private final Api api;

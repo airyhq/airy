@@ -22,7 +22,6 @@ import java.util.UUID;
 
 import static co.airy.model.channel.ChannelPayload.fromChannel;
 
-
 @RestController
 public class ChannelsController {
     private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
@@ -30,7 +29,8 @@ public class ChannelsController {
     private final Stores stores;
     private final KafkaProducer<String, Channel> producer;
 
-    public ChannelsController(Stores stores, KafkaProducer<String, Channel> producer) { this.stores = stores;
+    public ChannelsController(Stores stores, KafkaProducer<String, Channel> producer) {
+        this.stores = stores;
         this.producer = producer;
     }
 

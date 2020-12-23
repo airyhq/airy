@@ -43,12 +43,22 @@ spec:
               configMapKeyRef:
                 name: sources-config
                 key: FACEBOOK_WEBHOOK_SECRET
+          - name: FACEBOOK_APP_ID
+            valueFrom:
+              configMapKeyRef:
+                name: sources-config
+                key: FACEBOOK_APP_ID
+          - name: FACEBOOK_APP_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: sources-config
+                key: FACEBOOK_APP_SECRET
           livenessProbe:
             tcpSocket:
               port: 6000
             initialDelaySeconds: 60
             periodSeconds: 10
-            failureThreshold: 3  
+            failureThreshold: 3
         - name: ngrok
           command:
             - /bin/bash

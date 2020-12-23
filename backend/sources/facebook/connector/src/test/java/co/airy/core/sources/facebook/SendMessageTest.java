@@ -45,7 +45,8 @@ import static org.mockito.Mockito.doNothing;
         "kafka.commit-interval-ms=100",
         "facebook.webhook-secret=theansweris42",
         "facebook.app-id=12345",
-        "facebook.app-secret=secret"
+        "facebook.app-secret=secret",
+        "auth.jwt-secret=42424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242"
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
 class SendMessageTest {

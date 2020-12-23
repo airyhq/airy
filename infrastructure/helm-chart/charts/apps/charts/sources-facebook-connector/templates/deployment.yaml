@@ -53,6 +53,11 @@ spec:
               configMapKeyRef:
                 name: sources-config
                 key: FACEBOOK_APP_SECRET
+          - name: JWT_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: api-config
+                key: JWT_SECRET
           livenessProbe:
             tcpSocket:
               port: 6000

@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         properties = {
                 "twilio.auth-token=whatever",
                 "twilio.account-sid=12345",
+                "auth.jwt-secret=42424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242"
         })
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)

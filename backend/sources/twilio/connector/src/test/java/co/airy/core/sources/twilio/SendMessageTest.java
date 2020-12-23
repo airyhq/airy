@@ -41,7 +41,8 @@ import static org.mockito.Mockito.doNothing;
         "kafka.cleanup=true",
         "kafka.commit-interval-ms=100",
         "twilio.account-sid=42",
-        "twilio.auth-token=token"
+        "twilio.auth-token=token",
+        "auth.jwt-secret=42424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242"
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
 class SendMessageTest {

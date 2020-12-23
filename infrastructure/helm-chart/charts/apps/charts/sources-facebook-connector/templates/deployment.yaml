@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-facebook-connector
+  namespace: default
+  labels:
+    app: sources-facebook-connector
+    type: sources-facebook
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: sources-facebook-connector
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-facebook-connector
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+          imagePullPolicy: Always
+          env:
+          - name: KAFKA_BROKERS
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_BROKERS
+          - name: KAFKA_SCHEMA_REGISTRY_URL
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_SCHEMA_REGISTRY_URL
+          - name: SERVICE_NAME
+            value: facebook-connector
+          - name: FACEBOOK_WEBHOOK_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: sources-config
+                key: FACEBOOK_WEBHOOK_SECRET
+          - name: FACEBOOK_APP_ID
+            valueFrom:
+              configMapKeyRef:
+                name: sources-config
+                key: FACEBOOK_APP_ID
+          - name: FACEBOOK_APP_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: sources-config
+                key: FACEBOOK_APP_SECRET
+          - name: JWT_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: api-config
+                key: JWT_SECRET
+          livenessProbe:
+            tcpSocket:
+              port: 6000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
+        - name: ngrok
+          command:
+            - /bin/bash
+            - -c
+            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="${WEBHOOK:8:13}" 8080
+          image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
+          env:
+            - name: WEBHOOK
+              valueFrom:
+                configMapKeyRef:
+                  name: sources-config
+                  key: FACEBOOK_WEBHOOK_PUBLIC_URL
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 50m
+              memory: 64Mi
+          volumeMounts:
+            - mountPath: /etc/ngrok
+              name: ngrok-client-config
+      volumes:
+        - name: ngrok-client-config
+          configMap:
+            name: ngrok-client-config

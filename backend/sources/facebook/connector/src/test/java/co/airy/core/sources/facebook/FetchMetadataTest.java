@@ -7,8 +7,8 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.MetadataKeys;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.sources.facebook.model.UserProfile;
-import co.airy.core.sources.facebook.services.Api;
+import co.airy.core.sources.facebook.api.model.UserProfile;
+import co.airy.core.sources.facebook.api.Api;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -35,19 +35,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.Instant;
 import java.util.List;
 
-import static co.airy.test.Timing.retryOnException;
-import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(properties = {
         "kafka.cleanup=true",
         "kafka.commit-interval-ms=100",
         "kafka.suppress-interval-ms=0",
-        "facebook.app-id=12345"
+        "facebook.webhook-secret=theansweris42",
+        "facebook.app-id=12345",
+        "auth.jwt-secret=42424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242"
 }, classes = AirySpringBootApplication.class)
 @ExtendWith(SpringExtension.class)
 class FetchMetadataTest {
@@ -86,7 +85,6 @@ class FetchMetadataTest {
     @BeforeEach
     void beforeEach() throws InterruptedException {
         MockitoAnnotations.initMocks(this);
-        retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test

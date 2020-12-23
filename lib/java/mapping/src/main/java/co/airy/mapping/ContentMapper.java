@@ -20,9 +20,7 @@ public class ContentMapper {
 
     public ContentMapper(List<SourceMapper> sourceMappers, OutboundMapper outboundMapper) {
         for (SourceMapper mapper : sourceMappers) {
-            mapper.getIdentifiers().forEach((identifier) -> {
-                mappers.put(identifier, mapper);
-            });
+            mapper.getIdentifiers().forEach((identifier) -> mappers.put(identifier, mapper));
         }
         this.outboundMapper = outboundMapper;
     }

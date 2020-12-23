@@ -95,7 +95,7 @@ Now you should have a working integration 🎉.
 
 To test the connection write a message to one of your channels: The Airy Core
 Platform will forward it to your Rasa installation, which will respond using the
-Airy Core Platform API. This is what you will see in the logs of the demo
+Airy Core Platform API. This is what you should see in the logs of the demo
 repository:
 
 <img alt="send message successful connection log" src={useBaseUrl('img/guides/airy-core-and-rasa/success.jpg')} />

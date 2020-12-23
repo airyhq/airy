@@ -3,13 +3,13 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.MetadataKeys;
 import co.airy.avro.communication.MetadataRepository;
+import co.airy.model.channel.ChannelPayload;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.DisplayName;
 import co.airy.core.api.communication.payload.ContactResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.MessageResponsePayload;
 import co.airy.mapping.ContentMapper;
-import co.airy.payload.response.ChannelPayload;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

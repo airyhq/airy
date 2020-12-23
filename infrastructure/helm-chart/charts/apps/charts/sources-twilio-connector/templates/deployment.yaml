@@ -46,6 +46,11 @@ spec:
               configMapKeyRef:
                 name: sources-config
                 key: TWILIO_ACCOUNT_SID
+          - name: JWT_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: api-config
+                key: JWT_SECRET
           livenessProbe:
             tcpSocket:
               port: 6000
@@ -64,11 +69,6 @@ spec:
                 configMapKeyRef:
                   name: sources-config
                   key: TWILIO_WEBHOOK_PUBLIC_URL
-            - name: JWT_SECRET
-              valueFrom:
-                configMapKeyRef:
-                  name: api-config
-                  key: JWT_SECRET
           imagePullPolicy: Always
           resources:
             limits:

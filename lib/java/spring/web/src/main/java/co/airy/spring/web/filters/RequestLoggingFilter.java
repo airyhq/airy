@@ -112,4 +112,12 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
             return null;
         }
     }
+
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        if (request.getRequestURI().equals("/facebook")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -58,7 +58,7 @@ the `<head>` section:
 
 ```html
 <script>
-  (function(w, d, s, n) {
+  (function (w, d, s, n) {
     w[n] = w[n] || {};
     w[n].cid = "CHANNEL_ID";
     w[n].h = "SCRIPT_HOST";

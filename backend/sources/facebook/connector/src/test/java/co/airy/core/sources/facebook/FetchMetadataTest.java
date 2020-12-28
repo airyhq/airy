@@ -5,7 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.MetadataKeys;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.facebook.api.model.UserProfile;
 import co.airy.core.sources.facebook.api.Api;

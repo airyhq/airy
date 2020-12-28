@@ -31,8 +31,8 @@ Platform.
 ## Contact
 
 A contact represents the [source](#source) participant. A
-[conversation](#conversation) exists _only_ if it has _at least one_ message
-from a contact.
+[conversation](#conversation) exists _only_ if it has _at least one_
+[message](#message) from a contact.
 
 ## Conversation
 
@@ -115,6 +115,13 @@ e.g.
 | "sender.id"                | "123A"  |
 | "sender.contact.first_name | "Grace" |
 
+### Tag
+
+A tag is a specialized metadata, which is used to tag
+[conversations](#conversation). As the use case of tagging conversations is so
+common, the Airy Core Platform provides specialized endpoints and filters for
+tagging conversations.
+
 ## Source
 
 A source represents a system that generates messaging data that a user wants to
@@ -122,9 +129,9 @@ process with the Airy Core Platform.
 
 ### Provider
 
-Source providers are API platforms that allow the Airy Core Platform to connect to
-one or more of their sources typically via a webhook. E.g. Twilio is a source provider
-for the Twilio SMS and Whatsapp sources.
+Source providers are API platforms that allow the Airy Core Platform to connect
+to one or more of their sources typically via a webhook. E.g. Twilio is a source
+provider for the Twilio SMS and WhatsApp sources.
 
 ## User
 

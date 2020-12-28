@@ -13,6 +13,7 @@ import co.airy.core.sources.facebook.api.ApiException;
 import co.airy.core.sources.facebook.api.Mapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.spring.auth.IgnoreAuthPattern;
+import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
@@ -120,5 +121,10 @@ public class Connector {
     @Bean
     public IgnoreAuthPattern ignoreAuthPattern() {
         return new IgnoreAuthPattern("/facebook");
+    }
+
+    @Bean
+    public RequestLoggingIgnorePatterns requestLoggingIgnorePatterns() {
+        return new RequestLoggingIgnorePatterns(List.of("/facebook"));
     }
 }

@@ -8,10 +8,13 @@ import co.airy.log.AiryLoggerFactory;
 import co.airy.mapping.ContentMapper;
 import co.airy.mapping.model.Text;
 import co.airy.spring.auth.IgnoreAuthPattern;
+import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
 import com.twilio.exception.ApiException;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
 
@@ -56,6 +59,11 @@ public class Connector {
     @Bean
     public IgnoreAuthPattern ignoreAuthPattern() {
         return new IgnoreAuthPattern("/twilio");
+    }
+
+    @Bean
+    public RequestLoggingIgnorePatterns requestLoggingIgnorePatterns() {
+        return new RequestLoggingIgnorePatterns(List.of("/twilio"));
     }
 
 }

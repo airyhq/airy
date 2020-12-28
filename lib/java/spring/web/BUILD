@@ -13,6 +13,7 @@ custom_java_library(
         "//lib/java/spring/core:spring-core",
         "@maven//:javax_servlet_javax_servlet_api",
         "@maven//:javax_xml_bind_jaxb_api",
+        "@maven//:org_springframework_boot_spring_boot_autoconfigure",
         "@maven//:org_springframework_spring_web",
         "@maven//:org_springframework_spring_webmvc",
     ],

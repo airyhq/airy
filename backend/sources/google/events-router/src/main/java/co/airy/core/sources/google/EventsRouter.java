@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static co.airy.avro.communication.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.core.sources.google.InfoExtractor.getMetadataFromContext;
 
 @Component

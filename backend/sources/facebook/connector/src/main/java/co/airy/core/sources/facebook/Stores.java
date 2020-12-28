@@ -34,8 +34,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import static co.airy.avro.communication.MetadataRepository.getSubject;
-import static co.airy.avro.communication.MetadataRepository.isConversationMetadata;
+import static co.airy.model.metadata.MetadataRepository.getSubject;
+import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
 
 @Service
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {

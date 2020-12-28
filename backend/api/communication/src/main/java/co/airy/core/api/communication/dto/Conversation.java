@@ -2,7 +2,7 @@ package co.airy.core.api.communication.dto;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.MetadataKeys;
+import co.airy.model.metadata.MetadataKeys;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

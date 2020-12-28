@@ -6,7 +6,7 @@ app_deps = [
     "//backend:base_app",
     "//backend/model/channel:channel",
     "//backend/model/message:message",
-    "//backend:metadata",
+    "//backend/model/metadata:metadata",
     "//lib/java/uuid",
     "//lib/java/payload",
     "//lib/java/kafka/schema:source-google-events",

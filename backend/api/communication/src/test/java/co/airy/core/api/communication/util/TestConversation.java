@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import static co.airy.avro.communication.MetadataRepository.newConversationMetadata;
+import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 
 @Data
 @NoArgsConstructor

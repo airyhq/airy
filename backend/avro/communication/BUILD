@@ -21,21 +21,20 @@ avro_java_library(
     srcs = ["message.avsc"],
 )
 
-custom_java_library(
-    name = "metadata",
-    srcs = glob(["metadata/src/main/**/*.java"]),
-    exports = [":metadata-avro"],
-    deps = [
-        ":metadata-avro",
-        "//:lombok",
-        "//lib/java/uuid",
-    ],
-)
+#custom_java_library(
+#    name = "metadata",
+#    srcs = glob(["metadata/src/main/**/*.java"]),
+#    exports = [":metadata-avro"],
+#    deps = [
+#        ":metadata-avro",
+#        "//:lombok",
+#        "//lib/java/uuid",
+#    ],
+#)
 
 avro_java_library(
     name = "metadata-avro",
     srcs = ["metadata.avsc"],
-    visibility = ["//visibility:private"],
 )
 
 avro_java_library(

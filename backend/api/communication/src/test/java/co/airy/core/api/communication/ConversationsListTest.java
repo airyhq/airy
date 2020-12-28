@@ -2,7 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.MetadataKeys;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;

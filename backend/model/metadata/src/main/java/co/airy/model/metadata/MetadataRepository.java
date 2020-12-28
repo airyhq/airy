@@ -1,12 +1,13 @@
-package co.airy.avro.communication;
+package co.airy.model.metadata;
 
+import co.airy.avro.communication.Metadata;
 import co.airy.uuid.UUIDv5;
 
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.avro.communication.MetadataKeys.PUBLIC;
+import static co.airy.model.metadata.MetadataKeys.PUBLIC;
 import static java.util.stream.Collectors.toMap;
 
 public class MetadataRepository {
@@ -65,4 +66,5 @@ public class MetadataRepository {
     public static UUID getId(Subject subject, String key) {
         return UUIDv5.fromNamespaceAndName(subject.toString(), key);
     }
+
 }

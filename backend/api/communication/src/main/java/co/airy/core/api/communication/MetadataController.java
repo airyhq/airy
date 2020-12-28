@@ -1,7 +1,7 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.Subject;
+import co.airy.model.metadata.Subject;
 import co.airy.core.api.communication.payload.RemoveMetadataRequestPayload;
 import co.airy.core.api.communication.payload.SetMetadataRequestPayload;
 import co.airy.payload.response.EmptyResponsePayload;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static co.airy.avro.communication.MetadataKeys.PUBLIC;
-import static co.airy.avro.communication.MetadataRepository.newConversationMetadata;
+import static co.airy.model.metadata.MetadataKeys.PUBLIC;
+import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 
 @RestController
 public class MetadataController {

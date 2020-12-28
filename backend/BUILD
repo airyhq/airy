@@ -24,14 +24,6 @@ java_library(
 )
 
 java_library(
-    name = "metadata",
-    exports = [
-        "//backend/avro/communication:metadata",
-        "//lib/java/kafka/schema:application-communication-metadata",
-    ],
-)
-
-java_library(
     name = "read-receipt",
     exports = [
         "//backend/avro/communication:read-receipt",

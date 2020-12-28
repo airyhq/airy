@@ -39,6 +39,7 @@ jobs:
       - name: Lint
         run: |
           ./scripts/lint.sh
+          yarn eslint
 
       - name: Test
         run: |

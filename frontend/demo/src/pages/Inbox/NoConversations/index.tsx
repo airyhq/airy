@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 
-const NoConversations = () => {
+const NoConversations: React.FC = (): JSX.Element => {
   return Object.keys({}).length === 0 ? (
     <div className={styles.component}>
       <strong>Your new messages will appear here</strong>

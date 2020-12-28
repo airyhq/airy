@@ -1,7 +1,7 @@
 import {h, render} from 'preact';
 
-const renderMethod = () => {
-  const App = require('./App').default;
+const renderMethod = async () => {
+  const App = (await import('./App')).default;
   render(<App />, document.getElementById('root'));
 };
 

@@ -82,11 +82,11 @@ const Login = (props: LoginConnectProps) => {
       </div>
       <p className={styles.footer}>
         By signing up, you agree to our{' '}
-        <a href="https://airy.co/terms-of-service" target="_blank">
+        <a href="https://airy.co/terms-of-service" target="_blank" rel="noopener noreferrer">
           Terms and Conditions
         </a>{' '}
         and{' '}
-        <a href="https://airy.co/privacy-policy" target="_blank">
+        <a href="https://airy.co/privacy-policy" target="_blank" rel="noopener noreferrer">
           Privacy Policy
         </a>
         .

@@ -18,7 +18,7 @@ export const deleteTagAction = createAction(DELETE_TAG, resolve => (id: string) 
 export const filterTagAction = createAction(SET_TAG_FILTER, resolve => (filter: string) => resolve(filter));
 export const errorTagAction = createAction(ERROR_TAG, resolve => (status: string) => resolve(status));
 
-export function getTags(query: string = '') {
+export function getTags() {
   return function(dispatch: Dispatch<any>) {
     return doFetchFromBackend('tags.list').then((response: GetTagsResponse) => {
       dispatch(fetchTagAction(tagsMapper(response.data)));
@@ -51,7 +51,7 @@ export function updateTag(tag: Tag) {
       id: tag.id,
       name: tag.name,
       color: tag.color,
-    }).then((responseTag: Tag) => dispatch(editTagAction(tag)));
+    }).then(() => dispatch(editTagAction(tag)));
   };
 }
 
@@ -71,7 +71,7 @@ export function filterTags(filter: string) {
   };
 }
 
-export function errorTag(status: string, data?: string) {
+export function errorTag(status: string) {
   return function(dispatch: Dispatch<any>) {
     dispatch(errorTagAction(status));
   };

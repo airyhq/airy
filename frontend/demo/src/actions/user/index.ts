@@ -13,8 +13,8 @@ export const setCurrentUserAction = createAction(SET_CURRENT_USER, resolve => (u
 export const userAuthErrorAction = createAction(USER_AUTH_ERROR, resolve => (error: Error) => resolve(error));
 export const logoutUserAction = createAction(USER_LOGOUT);
 export interface LoginViaEmailRequestPayload {
-  email: String;
-  password: String;
+  email: string;
+  password: string;
 }
 
 export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {

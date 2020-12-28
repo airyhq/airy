@@ -1,7 +1,7 @@
 import {Message} from '../../model/Message';
 
 export function dateFormat(date: Date) {
-  let now = new Date();
+  const now = new Date();
   if (!date)
     return now.toLocaleDateString('en-GB', {
       weekday: 'long',

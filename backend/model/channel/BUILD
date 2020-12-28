@@ -14,4 +14,3 @@ custom_java_library(
         "//backend/avro/communication:channel-avro",
     ],
 )
-

@@ -9,8 +9,8 @@ custom_java_library(
         "//lib/java/kafka/schema:application-communication-metadata",
     ],
     deps = [
-        "//backend/avro/communication:metadata-avro",
         "//:lombok",
+        "//backend/avro/communication:metadata-avro",
         "//lib/java/uuid",
     ],
 )

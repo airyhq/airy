@@ -1,5 +1,4 @@
 load("//tools/build:avro.bzl", "avro_java_library")
-load("//tools/build:java_library.bzl", "custom_java_library")
 
 package(default_visibility = ["//visibility:public"])
 

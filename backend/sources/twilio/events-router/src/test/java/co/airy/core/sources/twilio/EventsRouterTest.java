@@ -9,7 +9,6 @@ import co.airy.kafka.schema.source.SourceTwilioEvents;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -29,11 +29,8 @@ import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Slf4j
-@SpringBootTest(properties = {
-        "kafka.cleanup=true",
-        "kafka.commit-interval-ms=100"
-}, classes = AirySpringBootApplication.class)
+@SpringBootTest(classes = AirySpringBootApplication.class)
+@TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 class EventsRouterTest {
     @RegisterExtension
@@ -96,10 +93,9 @@ class EventsRouterTest {
 
         String broken = "{\"wait\":\"this isn't url encoded ._.\"}";
 
-        testHelper.produceRecords(
-                List.of(
-                        new ProducerRecord<>(sourceTwilioEvents.name(), UUID.randomUUID().toString(), event),
-                        new ProducerRecord<>(sourceTwilioEvents.name(), UUID.randomUUID().toString(), broken)
+        testHelper.produceRecords(List.of(
+                new ProducerRecord<>(sourceTwilioEvents.name(), UUID.randomUUID().toString(), event),
+                new ProducerRecord<>(sourceTwilioEvents.name(), UUID.randomUUID().toString(), broken)
                 )
         );
 

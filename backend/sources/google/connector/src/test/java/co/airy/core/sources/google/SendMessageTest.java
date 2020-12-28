@@ -59,8 +59,6 @@ class SendMessageTest {
     @Autowired
     private Stores stores;
 
-    private static boolean streamInitialized = false;
-
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
@@ -79,10 +77,7 @@ class SendMessageTest {
     void beforeEach() throws InterruptedException {
         MockitoAnnotations.initMocks(this);
 
-        if (!streamInitialized) {
-            retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
-            streamInitialized = true;
-        }
+        retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test

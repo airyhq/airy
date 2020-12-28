@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,12 +32,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class,
-        properties = {
-                "twilio.auth-token=whatever",
-                "twilio.account-sid=12345",
-                "auth.jwt-secret=42424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242"
-        })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
+@TestPropertySource(value = "classpath:test.properties")
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 class WebhookControllerTest {
@@ -55,6 +52,11 @@ class WebhookControllerTest {
     static void beforeAll() throws Exception {
         testHelper = new KafkaTestHelper(sharedKafkaTestResource, sourceTwilioEvents);
         testHelper.beforeAll();
+    }
+
+    @AfterAll
+    static void afterAll() throws Exception {
+        testHelper.afterAll();
     }
 
     @Test
@@ -123,10 +125,5 @@ class WebhookControllerTest {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    @AfterAll
-    static void afterAll() throws Exception {
-        testHelper.afterAll();
     }
 }

@@ -8,9 +8,12 @@ import co.airy.core.sources.google.services.Api;
 import co.airy.core.sources.google.services.Mapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.spring.auth.IgnoreAuthPattern;
+import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
 
@@ -51,4 +54,8 @@ public class Connector {
         return new IgnoreAuthPattern("/google");
     }
 
+    @Bean
+    public RequestLoggingIgnorePatterns requestLoggingIgnorePatterns() {
+        return new RequestLoggingIgnorePatterns(List.of("/google"));
+    }
 }

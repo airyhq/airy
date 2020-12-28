@@ -29,9 +29,11 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
     private static final int MAX_JSON_LENGTH = 2048;
 
     private final ObjectMapper objectMapper;
+    private final RequestLoggingIgnorePatterns requestLoggingIgnorePatterns;
 
-    RequestLoggingFilter(ObjectMapper objectMapper) {
+    RequestLoggingFilter(ObjectMapper objectMapper, RequestLoggingIgnorePatterns requestLoggingIgnorePatterns) {
         this.objectMapper = objectMapper;
+        this.requestLoggingIgnorePatterns = requestLoggingIgnorePatterns;
     }
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -111,5 +113,9 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
         } catch (Exception ignored) {
             return null;
         }
+    }
+
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return requestLoggingIgnorePatterns.getPatterns().contains(request.getRequestURI());
     }
 }

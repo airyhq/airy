@@ -3,7 +3,7 @@ package co.airy.core.sources.google;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.payload.response.EmptyResponsePayload;
+import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
 import lombok.AllArgsConstructor;
 import lombok.Data;

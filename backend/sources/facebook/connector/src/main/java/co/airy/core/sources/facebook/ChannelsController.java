@@ -9,7 +9,7 @@ import co.airy.core.sources.facebook.payload.ExploreResponsePayload;
 import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.api.ApiException;
 import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
-import co.airy.payload.response.RequestErrorResponsePayload;
+import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.springframework.http.HttpStatus;

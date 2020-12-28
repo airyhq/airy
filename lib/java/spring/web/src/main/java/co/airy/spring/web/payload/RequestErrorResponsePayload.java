@@ -1,4 +1,4 @@
-package co.airy.payload.response;
+package co.airy.spring.web.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

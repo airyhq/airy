@@ -8,7 +8,6 @@ app_deps = [
     "//backend/model/message:message",
     "//backend/model/metadata:metadata",
     "//lib/java/uuid",
-    "//lib/java/payload",
     "//lib/java/log",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/auth:spring-auth",

@@ -8,7 +8,6 @@ app_deps = [
     "//backend/model/message:message",
     "//backend/model/metadata:metadata",
     "//lib/java/uuid",
-    "//lib/java/payload",
     "//lib/java/kafka/schema:source-google-events",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",

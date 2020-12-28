@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 import static co.airy.model.metadata.MetadataRepository.getConversationInfo;
-import static co.airy.payload.format.DateFormat.isoFromMillis;
+import static co.airy.date.format.DateFormat.isoFromMillis;
 import static java.util.stream.Collectors.toList;
 
 @Component

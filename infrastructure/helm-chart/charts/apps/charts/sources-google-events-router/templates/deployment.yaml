@@ -36,6 +36,11 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_SCHEMA_REGISTRY_URL
+        - name: KAFKA_COMMIT_INTERVAL_MS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_COMMIT_INTERVAL_MS
         livenessProbe:
           tcpSocket:
             port: 6000

@@ -15,7 +15,6 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -26,6 +25,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Instant;
@@ -39,14 +39,8 @@ import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
 
-@Tag("kafka-integration")
-@SpringBootTest(properties = {
-        "kafka.cleanup=true",
-        "kafka.cache.max.bytes=0",
-        "kafka.commit-interval-ms=100",
-        "redis.url=no",
-        "redis.port=10",
-}, classes = AirySpringBootApplication.class)
+@SpringBootTest(classes = AirySpringBootApplication.class)
+@TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 public class PublisherTest {
     @RegisterExtension
@@ -121,8 +115,7 @@ public class PublisherTest {
                             .setConversationId("conversationId")
                             .setChannelId("channelId")
                             .setContent("{\"text\":\"hello world\"}")
-                            .build())
-            );
+                            .build()));
 
             // Don't publish the message update
             messages.add(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
@@ -143,9 +136,6 @@ public class PublisherTest {
 
         kafkaTestHelper.produceRecords(messages);
 
-        retryOnException(() -> {
-            final List<QueueMessage> allMessages = batchCaptor.getAllValues();
-            assertEquals(4, allMessages.size());
-        }, "Number of delivered message is incorrect");
+        retryOnException(() -> assertEquals(4, batchCaptor.getAllValues().size()), "Number of delivered message is incorrect");
     }
 }

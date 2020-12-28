@@ -16,7 +16,7 @@ app_deps = [
 ]
 
 springboot(
-    name = "events-router",
+    name = "webhook-publisher",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,

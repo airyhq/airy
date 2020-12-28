@@ -73,7 +73,6 @@ public class ChatControllerTest {
     private static KafkaTestHelper kafkaTestHelper;
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static boolean testDataInitialized = false;
 
     private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
@@ -91,6 +90,8 @@ public class ChatControllerTest {
         );
 
         kafkaTestHelper.beforeAll();
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
     }
 
     @AfterAll
@@ -100,12 +101,6 @@ public class ChatControllerTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        if (testDataInitialized) {
-            return;
-        }
-        testDataInitialized = true;
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-
         retryOnException(() -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()), "Application is not healthy");
     }
 
@@ -127,14 +122,12 @@ public class ChatControllerTest {
 
         final String messageText = "answer is 42";
         String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\" }}";
-        retryOnException(() ->
-                        mvc.perform(post("/chatplugin.send")
+        retryOnException(() -> mvc.perform(post("/chatplugin.send")
                                 .headers(buildHeaders(token))
                                 .content(sendMessagePayload))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.content[0].text", containsString(messageText))),
-                "Message was not sent"
-        );
+                "Message was not sent");
 
         final MessageUpsertPayload messageUpsertPayload = messageFuture.get();
 
@@ -206,8 +199,7 @@ public class ChatControllerTest {
 
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
 
-        return stompClient.connect("ws://localhost:" + port + "/ws.chatplugin", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
-        }).get();
+        return stompClient.connect("ws://localhost:" + port + "/ws.chatplugin", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {}).get();
     }
 
     public <T> CompletableFuture<T> subscribe(String jwtToken, int port, Class<T> payloadType, String topic) throws ExecutionException, InterruptedException {

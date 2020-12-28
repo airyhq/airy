@@ -32,6 +32,7 @@ springboot(
     junit5(
         size = "medium",
         file = file,
+        resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
             "//backend:base_test",

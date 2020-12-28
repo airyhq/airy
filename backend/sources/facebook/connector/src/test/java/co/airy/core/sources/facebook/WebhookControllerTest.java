@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,14 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(
-        properties = {
-                "facebook.webhook-secret=theansweris42",
-                "facebook.app-id=12345",
-                "facebook.app-secret=secret",
-                "auth.jwt-secret=42424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242"
-        },
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
+@TestPropertySource(value = "classpath:test.properties")
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 class WebhookControllerTest {
@@ -52,20 +47,18 @@ class WebhookControllerTest {
         kafkaTestHelper.beforeAll();
     }
 
+    @AfterAll
+    static void afterAll() throws Exception {
+        kafkaTestHelper.afterAll();
+    }
+
     @Test
-    void returns200() throws Exception {
-        mvc.perform(post("/facebook")
-                .content("whatever"))
-                .andExpect(status().isOk());
+    void canAcceptAnything() throws Exception {
+        mvc.perform(post("/facebook").content("whatever")).andExpect(status().isOk());
 
         List<String> records = kafkaTestHelper.consumeValues(1, sourceFacebookEvents.name());
 
         assertThat(records, hasSize(1));
         assertEquals("whatever", records.get(0));
-    }
-
-    @AfterAll
-    static void afterAll() throws Exception {
-        kafkaTestHelper.afterAll();
     }
 }

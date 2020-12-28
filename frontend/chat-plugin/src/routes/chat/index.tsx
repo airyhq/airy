@@ -6,7 +6,7 @@ import Chat from '../../components/chat';
 
 type Props = Partial<AuthConfiguration> & RoutableProps;
 
-export default ({channel_id}: Props): JSX.Element => {
+export default ({channel_id}: Props) => {
   if (!channel_id) {
     return <span style={{color: 'red'}}>Widget authorization failed. Please check your installation.</span>;
   }

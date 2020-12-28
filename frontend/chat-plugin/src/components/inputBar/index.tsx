@@ -4,7 +4,7 @@ type Props = {
   render: any;
 };
 
-const InputBarProp: React.FC<Props> = (props: Props): JSX.Element => {
+const InputBarProp = (props: Props) => {
   return <div>{props.render()}</div>;
 };
 

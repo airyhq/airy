@@ -5,7 +5,7 @@ type Props = {
   toggleHideChat: () => void;
 };
 
-const AiryHeaderBar: React.FC<Props> = (props: Props): JSX.Element => {
+const AiryHeaderBar = (props: Props) => {
   return (
     <div className={style.header}>
       <div className={style.headerInfo}>

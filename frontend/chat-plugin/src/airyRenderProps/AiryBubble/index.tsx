@@ -6,7 +6,7 @@ type Props = {
   toggleHideChat: () => void;
 };
 
-const AiryBubble: React.FC<Props> = (props: Props): JSX.Element => {
+const AiryBubble = (props: Props) => {
   return (
     <div className={style.hideBubble} onClick={() => props.toggleHideChat()}>
       {!props.isChatHidden ? (

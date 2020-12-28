@@ -5,4 +5,4 @@ metadata:
 data:
   KAFKA_BROKERS: {{ .Values.kafka.brokers }}
   KAFKA_SCHEMA_REGISTRY_URL: {{ .Values.kafka.schemaRegistryUrl }}
-  KAFKA_COMMIT_INTERVAL_MS: {{ .Values.kafka.commitInterval }}
+  KAFKA_COMMIT_INTERVAL_MS: {{ .Values.kafka.commitInterval | default 30000 }}

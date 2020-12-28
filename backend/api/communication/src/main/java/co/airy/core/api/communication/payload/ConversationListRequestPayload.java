@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class ConversationListRequestPayload {
     private String filters;
     private String cursor;
-    private int pageSize = 10;
+    private int pageSize = 20;
 }

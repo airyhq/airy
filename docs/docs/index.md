@@ -17,15 +17,15 @@ following components:
   independent contacts, conversations, and messages (see our
   [glossary](glossary.md) for formal definitions).
 
-- An [HTTP api](api/http.md) that allows to manage the data sets the platform
-  handles.
+- An [HTTP API](api/http.md) that allows you to manage the data sets the
+  platform handles.
 
 - A [webhook](api/webhook) integration server that allows to programmatically
   participate in conversations by sending messages. The webhook integration
-  exposes events users can "listen" to and react programmatically.
+  exposes events you can "listen" to and react programmatically.
 
-- A [WebSocket](api/websocket) server that allows to receive near real-time updates about
-  the data flowing through the system.
+- A [WebSocket](api/websocket) server that allows you to receive near real-time
+  updates about the data flowing through the system.
 
 ## Bootstrap the Airy Core Platform
 

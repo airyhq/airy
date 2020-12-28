@@ -19,7 +19,7 @@ const mapStateToProps = (state: StateModel) => {
 const connector = connect(mapStateToProps);
 
 const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps) => {
-  const {conversations, loading, match} = props;
+  const {conversations, match} = props;
 
   const waitForContentAndRedirect = (conversations: AllConversationsState) => {
     const conversationId = conversations[0].id;
@@ -43,7 +43,7 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
 
       <Route
         path={[`${match.url}/conversations/:conversationId`, `${match.url}`]}
-        render={props => <Fragment></Fragment>}
+        render={() => <Fragment></Fragment>}
       />
     </section>
   );

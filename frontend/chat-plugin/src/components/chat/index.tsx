@@ -29,7 +29,7 @@ const welcomeMessage = {
 
 type Props = AiryWidgetConfiguration & RoutableProps;
 
-const Chat = (props: Props) => {
+const Chat: React.FC<Props> = (props: Props): JSX.Element => {
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(true);
@@ -126,6 +126,7 @@ const Chat = (props: Props) => {
               {messages.map(message => {
                 return (
                   <MessageProp
+                    key
                     render={
                       props.airyMessageProp
                         ? () => props.airyMessageProp(ctrl)

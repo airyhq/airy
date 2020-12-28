@@ -47,7 +47,7 @@ export default function tagsReducer(state = defaultState, action: Action): any {
         ...state,
         all: state.all.filter((tag: Tag) => tag.id !== action.payload),
       };
-    case getType(actions.addTagAction):
+    case getType(actions.addTagAction):{
       let updatedTag = false;
       const mappedTags = state.all.map((tag: Tag) => {
         if (tag.id === action.payload.id) {
@@ -59,10 +59,12 @@ export default function tagsReducer(state = defaultState, action: Action): any {
         }
         return tag;
       });
+  
       return {
         ...state,
         all: updatedTag ? mappedTags : state.all.concat([action.payload]),
       };
+    }
     case getType(actions.editTagAction):
       return {
         ...state,

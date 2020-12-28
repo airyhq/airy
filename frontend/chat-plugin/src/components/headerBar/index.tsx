@@ -5,7 +5,7 @@ type Props = {
   render: RenderProp;
 };
 
-const HeaderBarProp = (props: Props) => {
+const HeaderBarProp: React.FC<Props> = (props: Props): JSX.Element => {
   return <div>{props.render()}</div>;
 };
 

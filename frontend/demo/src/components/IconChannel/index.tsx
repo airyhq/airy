@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React from 'react';
 import {Channel} from '../../model/Channel';
 
@@ -30,7 +31,13 @@ const PlaceholderChannelData = {
   connected: true,
 };
 
-const IconChannel = ({channel, icon, avatar, name, text}: IconChannelProps) => {
+const IconChannel: React.FC<IconChannelProps> = ({
+  channel,
+  icon,
+  avatar,
+  name,
+  text,
+}: IconChannelProps): JSX.Element => {
   if (!channel) {
     channel = PlaceholderChannelData;
   }

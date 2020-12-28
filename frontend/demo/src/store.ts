@@ -14,8 +14,8 @@ export const store = configureStore({
 declare const module: any;
 
 if (module.hot) {
-  module.hot.accept('./reducers', () => {
-    const newRootReducer = require('./reducers').default;
+  module.hot.accept('./reducers', async () => {
+    const newRootReducer = (await import('./reducers')).default;
     store.replaceReducer(newRootReducer);
   });
 }

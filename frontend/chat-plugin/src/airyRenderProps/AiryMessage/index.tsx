@@ -12,7 +12,7 @@ type Props = {
   };
 };
 
-const AiryMessage = ({message}: Props) => {
+const AiryMessage: React.FC<Props> = ({message}: Props): JSX.Element => {
   const isInbound = message.sender_type === 'source_contact';
   const messageDisplay = linkifyString(message.content.text, {
     className: `${isInbound ? style.messageLinkRight : style.messageLinkLeft}`,

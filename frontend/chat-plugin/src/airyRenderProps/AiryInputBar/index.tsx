@@ -6,7 +6,7 @@ type Props = {
   sendMessage: (text: string) => void;
 };
 
-const AiryInputBar = (props: Props) => {
+const AiryInputBar: React.FC<Props> = (props: Props): JSX.Element => {
   const [messageString, setMessageString] = useState('');
 
   useEffect(() => {

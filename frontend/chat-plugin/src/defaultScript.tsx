@@ -23,6 +23,5 @@ color: #444;
 body.appendChild(anchor);
 
 new AiryWidget({
-  // @ts-ignore
   channel_id: window.airy.cid,
 }).render(anchor);

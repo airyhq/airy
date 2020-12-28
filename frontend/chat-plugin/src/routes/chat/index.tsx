@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import {h} from 'preact';
 import {AuthConfiguration} from '../../config';
 import {RoutableProps} from 'preact-router';
@@ -5,7 +6,7 @@ import Chat from '../../components/chat';
 
 type Props = Partial<AuthConfiguration> & RoutableProps;
 
-export default ({channel_id}: Props) => {
+export default ({channel_id}: Props): JSX.Element => {
   if (!channel_id) {
     return <span style={{color: 'red'}}>Widget authorization failed. Please check your installation.</span>;
   }

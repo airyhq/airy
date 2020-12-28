@@ -4,7 +4,7 @@ import {doFetchFromBackend} from '../../api/airyConfig';
 
 import {Conversation, ConversationPayload, conversationsMapper} from '../../model/Conversation';
 import {ResponseMetadata} from '../../model/ResponseMetadata';
-import {RootState, StateModel} from '../../reducers';
+import { StateModel} from '../../reducers';
 
 export const CONVERSATION_LOADING = '@@conversation/LOADING';
 export const CONVERSATIONS_LOADING = '@@conversations/LOADING';

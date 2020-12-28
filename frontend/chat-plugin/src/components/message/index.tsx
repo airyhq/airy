@@ -4,7 +4,7 @@ type Props = {
   render: any;
 };
 
-const MessageProp = (props: Props) => {
+const MessageProp: React.FC<Props> = (props: Props): JSX.Element => {
   return <div>{props.render()}</div>;
 };
 

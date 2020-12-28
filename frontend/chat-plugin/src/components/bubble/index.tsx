@@ -5,7 +5,7 @@ type Props = {
   render: RenderProp;
 };
 
-const BubbleProp = (props: Props) => {
+const BubbleProp: React.FC<Props> = (props: Props): JSX.Element => {
   return <div>{props.render()}</div>;
 };
 

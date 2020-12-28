@@ -13,7 +13,7 @@ import java.time.Instant;
 
 import static co.airy.avro.communication.ChannelConnectionState.CONNECTED;
 import static co.airy.model.channel.ChannelPayload.fromChannel;
-import static co.airy.payload.format.DateFormat.isoFromMillis;
+import static co.airy.date.format.DateFormat.isoFromMillis;
 
 @Service
 public class WebSocketController {

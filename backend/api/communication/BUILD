@@ -12,7 +12,7 @@ app_deps = [
     "//backend/model/metadata:metadata",
     "//backend:read-receipt",
     "//lib/java/mapping",
-    "//lib/java/payload",
+    "//lib/java/date",
     "//lib/java/pagination",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",

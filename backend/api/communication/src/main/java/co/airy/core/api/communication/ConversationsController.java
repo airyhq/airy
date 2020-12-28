@@ -16,7 +16,7 @@ import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.ResponseMetadata;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
-import co.airy.payload.response.RequestErrorResponsePayload;
+import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;

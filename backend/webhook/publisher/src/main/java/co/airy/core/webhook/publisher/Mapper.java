@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
-import static co.airy.payload.format.DateFormat.isoFromMillis;
+import static co.airy.date.format.DateFormat.isoFromMillis;
 
 @Component
 public class Mapper {

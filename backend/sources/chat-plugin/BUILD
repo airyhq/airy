@@ -11,7 +11,7 @@ app_deps = [
     "//backend/model/channel:channel",
     "//backend/model/message:message",
     "//lib/java/uuid",
-    "//lib/java/payload",
+    "//lib/java/date",
     "//lib/java/mapping",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/kafka/core:spring-kafka-core",

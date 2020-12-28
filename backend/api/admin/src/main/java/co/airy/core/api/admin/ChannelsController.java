@@ -5,7 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.core.api.admin.payload.ChannelsResponsePayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.model.channel.ChannelPayload;
-import co.airy.payload.response.EmptyResponsePayload;
+import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
 import lombok.Data;
 import lombok.NoArgsConstructor;

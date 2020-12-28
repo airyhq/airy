@@ -1,4 +1,4 @@
-package co.airy.payload.response;
+package co.airy.spring.web.payload;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 

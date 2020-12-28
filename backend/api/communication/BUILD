@@ -7,7 +7,7 @@ app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
     "//:springboot_websocket",
-    "//backend:message",
+    "//backend/model/message:message",
     "//backend/model/channel:channel",
     "//backend:metadata",
     "//backend:read-receipt",

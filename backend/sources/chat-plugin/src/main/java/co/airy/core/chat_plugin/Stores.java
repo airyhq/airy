@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
+import static co.airy.model.message.MessageRepository.updateDeliveryState;
 
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {

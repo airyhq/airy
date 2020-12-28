@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
+import static co.airy.model.message.MessageRepository.updateDeliveryState;
 
 @Component
 public class Connector {

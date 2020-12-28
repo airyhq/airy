@@ -1,3 +1,4 @@
+load("//tools/build:avro.bzl", "avro_java_library")
 load("//tools/build:java_library.bzl", "custom_java_library")
 
 custom_java_library(
@@ -14,3 +15,4 @@ custom_java_library(
         "//backend/avro/communication:channel-avro",
     ],
 )
+

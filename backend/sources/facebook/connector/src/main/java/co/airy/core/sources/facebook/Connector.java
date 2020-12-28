@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
+import static co.airy.model.message.MessageRepository.updateDeliveryState;
 import static co.airy.avro.communication.MetadataKeys.Source.ContactFetchState.failed;
 import static co.airy.avro.communication.MetadataKeys.Source.ContactFetchState.ok;
 import static co.airy.avro.communication.MetadataRepository.getId;

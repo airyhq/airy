@@ -16,9 +16,6 @@ public class KafkaStreamsConfig {
     @Value("${kafka.cache.max.bytes:1048576000}") // 1000 * 1024 * 1024
     private long cacheMaxBytes;
 
-    @Value("${kafka.commit-interval-ms:30000}")
-    private long commitIntervalMs;
-
     @Value("${kafka.suppress-interval-ms:0}")
     private long suppressIntervalMs;
 
@@ -60,7 +57,7 @@ public class KafkaStreamsConfig {
 
     @Bean
     @Lazy
-    public KafkaStreamsWrapper airyKafkaStreams(@Value("${kafka.brokers}") final String brokers, @Value("${kafka.schema-registry-url}") final String schemaRegistryUrl) {
+    public KafkaStreamsWrapper airyKafkaStreams(@Value("${kafka.brokers}") final String brokers, @Value("${kafka.schema-registry-url}") final String schemaRegistryUrl, @Value("${kafka.commit-interval-ms}") final long commitIntervalMs) {
         return new KafkaStreamsWrapper(brokers, schemaRegistryUrl)
                 .withCommitIntervalInMs(commitIntervalMs)
                 .withSuppressIntervalInMs(suppressIntervalMs)
@@ -82,8 +79,8 @@ public class KafkaStreamsConfig {
 
     @Bean
     @Lazy
-    public MetadataService metadataService(@Value("${kafka.brokers}") final String brokers, @Value("${kafka.schema-registry-url}") final String schemaRegistryUrl) {
-        return new MetadataService(airyKafkaStreams(brokers, schemaRegistryUrl));
+    public MetadataService metadataService(@Value("${kafka.brokers}") final String brokers, @Value("${kafka.schema-registry-url}") final String schemaRegistryUrl, @Value("${kafka.commit-interval-ms}") final long commitIntervalMs) {
+        return new MetadataService(airyKafkaStreams(brokers, schemaRegistryUrl,commitIntervalMs));
     }
 
 }

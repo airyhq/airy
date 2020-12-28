@@ -1,7 +1,6 @@
 import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 
-
 // Default to hostname set by local environment
 
 const API_HOST = window.airy.h || 'chatplugin.api';

@@ -1,6 +1,5 @@
 import {Message} from '../../model/Message';
 
-
 export function dateFormat(date: Date) {
   const now = new Date();
   if (!date)

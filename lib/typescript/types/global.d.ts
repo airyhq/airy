@@ -37,7 +37,7 @@ interface CustomSVGRProps {
   title?: string; // https://react-svgr.com/docs/options/#title
 }
 
-type SvgrComponent = React.FunctionComponent<React.SVGAttributes<SVGElement> & CustomSVGRProps>
+type SvgrComponent = React.FunctionComponent<React.SVGAttributes<SVGElement> & CustomSVGRProps>;
 
 declare module '*.svg' {
   const src: string;

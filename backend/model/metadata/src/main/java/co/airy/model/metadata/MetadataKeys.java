@@ -1,4 +1,4 @@
-package co.airy.avro.communication;
+package co.airy.model.metadata;
 
 /**
  * JSON dot notation keys for pre-defined metadata

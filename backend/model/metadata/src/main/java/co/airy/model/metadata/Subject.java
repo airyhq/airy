@@ -1,4 +1,4 @@
-package co.airy.avro.communication;
+package co.airy.model.metadata;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

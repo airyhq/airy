@@ -1,7 +1,7 @@
 package co.airy.core.sources.google;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.MetadataKeys;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static co.airy.avro.communication.MetadataRepository.newConversationMetadata;
+import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 
 public class InfoExtractor {
     private static final Logger log = AiryLoggerFactory.getLogger(InfoExtractor.class);

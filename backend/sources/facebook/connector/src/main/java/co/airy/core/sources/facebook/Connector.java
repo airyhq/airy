@@ -3,7 +3,7 @@ package co.airy.core.sources.facebook;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.MetadataKeys;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.core.sources.facebook.dto.SendMessageRequest;
 import co.airy.core.sources.facebook.dto.Conversation;
 import co.airy.core.sources.facebook.api.model.SendMessagePayload;
@@ -22,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
-import static co.airy.avro.communication.MetadataKeys.Source.ContactFetchState.failed;
-import static co.airy.avro.communication.MetadataKeys.Source.ContactFetchState.ok;
-import static co.airy.avro.communication.MetadataRepository.getId;
-import static co.airy.avro.communication.MetadataRepository.newConversationMetadata;
+import static co.airy.model.message.MessageRepository.updateDeliveryState;
+import static co.airy.model.metadata.MetadataKeys.Source.ContactFetchState.failed;
+import static co.airy.model.metadata.MetadataKeys.Source.ContactFetchState.ok;
+import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 
 @Component
 public class Connector {

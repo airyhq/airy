@@ -1,4 +1,7 @@
-package co.airy.avro.communication;
+package co.airy.model.message;
+
+import co.airy.avro.communication.DeliveryState;
+import co.airy.avro.communication.Message;
 
 import java.time.Instant;
 

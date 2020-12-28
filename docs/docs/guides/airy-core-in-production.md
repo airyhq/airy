@@ -69,9 +69,8 @@ with Helm as we use this approach for test installations.
 
 The default commit interval is set to 1000 ms (1 second). This is *not* recommended
 for production usage.
-You change the default value to a more suitable amount on the configuration file
-`infrastructure/helm-chart/charts/apps/charts/airy-config/values.yaml` by changing
-the `commitInterval` value.
+You change the `commitInterval` to a more suitable production value in the configuration file
+`infrastructure/helm-chart/charts/apps/charts/airy-config/values.yaml`.
 
 To deploy Kafka on Kubernetes with Helm, you can run:
 

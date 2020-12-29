@@ -1,6 +1,7 @@
 kafka:
   brokers: "airy-cp-kafka-headless:9092"
   schemaRegistryUrl: "http://airy-cp-schema-registry:8081"
+  commitInterval: 1000
 redis:
   hostname: "redis-cluster"
   port: 6379

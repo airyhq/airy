@@ -36,6 +36,11 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_SCHEMA_REGISTRY_URL
+        - name: KAFKA_COMMIT_INTERVAL_MS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_COMMIT_INTERVAL_MS
         - name: SERVICE_NAME
           value: webhook-consumer
         - name: REDIS_HOSTNAME

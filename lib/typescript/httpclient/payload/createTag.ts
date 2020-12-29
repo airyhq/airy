@@ -1,5 +1,5 @@
-import { doFetchFromBackend } from '../api';
-import { CreateTagRequestPayload, TagPayload, Tag } from '../model';
+import {doFetchFromBackend} from '../api';
+import {CreateTagRequestPayload, TagPayload, Tag} from '../model';
 
 export function createTag(requestPayload: CreateTagRequestPayload) {
   return doFetchFromBackend('tags.create', requestPayload)
@@ -14,4 +14,4 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
     .catch((error: Error) => {
       return error;
     });
-};
+}

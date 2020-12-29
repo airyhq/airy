@@ -9,7 +9,7 @@ import Dialog from '../../components/Dialog';
 import ColorSelector from '../../components/ColorSelector';
 
 import Tag from '../../pages/Tags/Tag';
-import {Tag as TagModel, CreateTagRequestPayload, ErrorTag} from 'httpclient';
+import {Tag as TagModel} from 'httpclient';
 
 import styles from './SimpleTagForm.module.scss';
 import {RootState} from '../../reducers';

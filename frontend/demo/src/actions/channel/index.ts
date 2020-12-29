@@ -1,12 +1,12 @@
-import { createAction } from 'typesafe-actions';
-import _, { Dispatch } from 'redux';
+import {createAction} from 'typesafe-actions';
+import _, {Dispatch} from 'redux';
 
 import {
   Channel,
   ConnectChannelRequestPayload,
   ExploreChannelRequestPayload,
   DisconnectChannelRequestPayload,
-  AiryHttpClient
+  AiryHttpClient,
 } from 'httpclient';
 
 const SET_CURRENT_CHANNELS = '@@channel/SET_CHANNELS';
@@ -67,5 +67,5 @@ export function disconnectChannel(requestPayload: DisconnectChannelRequestPayloa
       .catch((error: Error) => {
         return Promise.reject(error);
       });
-  }
+  };
 }

@@ -1,6 +1,5 @@
-import { doFetchFromBackend } from '../api';
-import { ConversationPayload, ResponseMetadata, FetchConversationsResponse } from "../model";
-
+import {doFetchFromBackend} from '../api';
+import {ConversationPayload, ResponseMetadata, FetchConversationsResponse} from '../model';
 
 export function fetchConversations() {
   return doFetchFromBackend('conversations.list', {
@@ -12,4 +11,4 @@ export function fetchConversations() {
     .catch((error: Error) => {
       return error;
     });
-};
+}

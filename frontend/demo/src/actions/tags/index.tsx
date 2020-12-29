@@ -19,11 +19,13 @@ export const errorTagAction = createAction(ERROR_TAG, resolve => (status: string
 
 export function getTags() {
   return function(dispatch: Dispatch<any>) {
-    return AiryHttpClient.getTags().then((response:GetTagsResponse) => {
-      dispatch(fetchTagAction(tagsMapper(response.data)));
-    }).catch((error: Error) => {
-      return error;
-    })
+    return AiryHttpClient.getTags()
+      .then((response: GetTagsResponse) => {
+        dispatch(fetchTagAction(tagsMapper(response.data)));
+      })
+      .catch((error: Error) => {
+        return error;
+      });
   };
 }
 
@@ -31,7 +33,7 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
     return AiryHttpClient.createTag(requestPayload)
       .then((response: Tag) => {
-         dispatch(addTagAction(response));
+        dispatch(addTagAction(response));
         return Promise.resolve(true);
       })
       .catch((error: string) => {
@@ -43,31 +45,23 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
 
 export function updateTag(tag: Tag) {
   return function(dispatch: Dispatch<any>) {
-<<<<<<< HEAD
     AiryHttpClient.updateTag(tag)
-    .then(() => dispatch(editTagAction(tag)))
-    .catch((error:Error) => {
-      return error;
-    });
-=======
-    doFetchFromBackend('tags.update', {
-      id: tag.id,
-      name: tag.name,
-      color: tag.color,
-    }).then(() => dispatch(editTagAction(tag)));
->>>>>>> develop
+      .then(() => dispatch(editTagAction(tag)))
+      .catch((error: Error) => {
+        return error;
+      });
   };
 }
 
 export function deleteTag(id: string) {
   return function(dispatch: Dispatch<any>) {
     AiryHttpClient.deleteTag(id)
-    .then(() => {
-      dispatch(deleteTagAction(id));
-    })
-    .catch((error:Error) => {
-      return error;
-    });
+      .then(() => {
+        dispatch(deleteTagAction(id));
+      })
+      .catch((error: Error) => {
+        return error;
+      });
   };
 }
 

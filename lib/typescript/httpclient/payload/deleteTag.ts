@@ -1,9 +1,9 @@
-import { doFetchFromBackend } from '../api';
+import {doFetchFromBackend} from '../api';
 
 export function deleteTag(id: string) {
   return doFetchFromBackend('tags.delete', {
     id,
   })
-  .then(() => Promise.resolve(true))
-  .catch((error: Error) => Promise.reject(error))
-};
+    .then(() => Promise.resolve(true))
+    .catch((error: Error) => Promise.reject(error));
+}

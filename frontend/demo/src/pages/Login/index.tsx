@@ -9,7 +9,6 @@ import {loginViaEmail} from '../../actions/user';
 import logo from '../../assets/images/logo/airy_primary_rgb.svg';
 import styles from './index.module.scss';
 
-
 const mapDispatchToProps = {
   loginViaEmail,
 };

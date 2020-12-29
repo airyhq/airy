@@ -1,6 +1,6 @@
 import _, {Dispatch} from 'redux';
 
- const fakeData = () => {
+const fakeData = () => {
   return {
     colors: {
       'tag-green': {default: '0E764F', background: 'F5FFFB', font: '0E764F', position: 3, border: '0E764F'},

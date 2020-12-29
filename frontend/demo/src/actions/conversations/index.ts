@@ -1,6 +1,12 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import { AiryHttpClient, Conversation, conversationsMapper, FetchConversationsResponse, ResponseMetadata} from 'httpclient';
+import {
+  AiryHttpClient,
+  Conversation,
+  conversationsMapper,
+  FetchConversationsResponse,
+  ResponseMetadata,
+} from 'httpclient';
 import {StateModel} from '../../reducers';
 
 export const CONVERSATION_LOADING = '@@conversation/LOADING';

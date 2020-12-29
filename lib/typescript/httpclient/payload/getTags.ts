@@ -1,5 +1,5 @@
-import { doFetchFromBackend } from '../api';
-import { GetTagsResponse } from '../model';
+import {doFetchFromBackend} from '../api';
+import {GetTagsResponse} from '../model';
 
 export function getTags() {
   return doFetchFromBackend('tags.list')

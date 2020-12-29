@@ -5,8 +5,7 @@ import {RouteComponentProps} from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import {Button} from '@airyhq/components';
 
-import {AiryConfig} from 'httpclient';
-import {Channel} from 'httpclient';
+import {AiryConfig, Channel} from 'httpclient';
 import {getChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
 import {StateModel} from '../../reducers/index';
 

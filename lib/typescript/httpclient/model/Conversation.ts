@@ -64,5 +64,3 @@ export const conversationsMapper = (payloadArray: ConversationPayload[]): Conver
   });
   return conversations;
 };
-
-

@@ -1,6 +1,6 @@
-import { promises } from 'dns';
-import { doFetchFromBackend } from '../api';
-import { Tag } from '../model';
+import {promises} from 'dns';
+import {doFetchFromBackend} from '../api';
+import {Tag} from '../model';
 
 export function updateTag(tag: Tag) {
   return doFetchFromBackend('tags.update', {
@@ -9,5 +9,5 @@ export function updateTag(tag: Tag) {
     color: tag.color,
   })
     .then(() => Promise.resolve(true))
-    .catch((error: Error) => Promise.reject(error))
+    .catch((error: Error) => Promise.reject(error));
 }

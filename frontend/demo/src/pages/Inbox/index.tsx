@@ -23,7 +23,7 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const MessengerContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
+const ConversationContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
   useEffect(() => {
     props.fetchConversations();
   });
@@ -31,4 +31,4 @@ const MessengerContainer = (props: InboxProps & ConnectedProps<typeof connector>
   return <Messenger />;
 };
 
-export default connector(MessengerContainer);
+export default connector(ConversationContainer);

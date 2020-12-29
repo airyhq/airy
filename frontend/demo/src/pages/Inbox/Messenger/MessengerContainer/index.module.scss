@@ -1,0 +1,39 @@
+.messengerContainer {
+    display: flex;
+    flex: 1;
+    height: auto;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: #fff;
+    margin: 16px 8px 0 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.emptyState {
+    align-self: center;
+    margin-top: 8%;
+    margin-bottom: auto;
+    max-width: 440px;
+    h1 {
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: bold;
+      color: var(--color-airy-blue);
+      margin-bottom: 8px;
+    }
+    p {
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 400;
+      color: var(--color-text-gray);
+      margin-bottom: 32px;
+    }
+    svg {
+      margin-left: 50px;
+    }
+}
+
+.notSelectedState {
+  
+}

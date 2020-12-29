@@ -32,8 +32,8 @@ const mapStateToProps = (state: StateModel) => {
 const connector = connect(mapStateToProps, null);
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
-  if (message && message.content) {
-    return <>{message.content.text}</>;
+  if (message && message.content[0]) {
+    return <>{message.content[0].text}</>;
   }
   return <div />;
 };

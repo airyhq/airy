@@ -3,6 +3,7 @@ package co.airy.core.sources.facebook;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -34,6 +35,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static co.airy.test.Timing.retryOnException;
+import static org.hamcrest.CoreMatchers.is;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -135,5 +137,34 @@ class EventsRouterTest {
         messagesPerContact.forEach((conversationId, expectedCount) ->
                 assertEquals(messages.stream().filter(m -> m.getConversationId().equals(conversationId)).count(), expectedCount.longValue())
         );
+    }
+
+    @Test
+    void parsesPageMessagesCorrectly() throws Exception {
+        final String channelId = "channel-id";
+        final String pageId = "page-id";
+
+        final String payload = "{\"object\":\"page\",\"entry\":[{\"id\":\"%s\",\"time\":1609250136582," +
+                "\"messaging\":[{\"sender\":{\"id\":\"%s\"},\"recipient\":{\"id\":\"1912214878880084\"},\"timestamp\":1609250136503,\"message\":" +
+                "{\"mid\":\"<message_id>\",\"is_echo\":true,\"text\":\"text of the message\"}}]}]}";
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
+                .setId(channelId)
+                .setConnectionState(ChannelConnectionState.CONNECTED)
+                .setSourceChannelId(pageId)
+                .setName("fb-page-a")
+                .setSource("facebook")
+                .setToken("")
+                .build()));
+
+        final String webhookPayload = String.format(payload, pageId, pageId);
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(sourceFacebookEvents.name(), UUID.randomUUID().toString(), webhookPayload));
+
+        TimeUnit.SECONDS.sleep(5);
+        List<Message> messages = kafkaTestHelper.consumeValues(1, applicationCommunicationMessages.name());
+        assertThat(messages, hasSize(1));
+
+        Message message = messages.get(0);
+        assertThat(message.getSenderType(), is(SenderType.APP_USER));
     }
 }

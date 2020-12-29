@@ -4,11 +4,11 @@ load("//tools/build:container_push.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
-    "//backend:message",
+    "//backend/model/message:message",
     "//backend:webhook",
     "//lib/java/uuid",
-    "//lib/java/payload",
     "//lib/java/mapping",
+    "//lib/java/date",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "@maven//:io_lettuce_lettuce_core",
@@ -16,7 +16,7 @@ app_deps = [
 ]
 
 springboot(
-    name = "events-router",
+    name = "webhook-publisher",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,

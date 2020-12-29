@@ -9,8 +9,8 @@ import co.airy.core.chat_plugin.payload.AuthenticationRequestPayload;
 import co.airy.core.chat_plugin.payload.AuthenticationResponsePayload;
 import co.airy.core.chat_plugin.payload.ResumeTokenResponsePayload;
 import co.airy.core.chat_plugin.payload.SendMessageRequestPayload;
-import co.airy.payload.response.EmptyResponsePayload;
-import co.airy.payload.response.RequestErrorResponsePayload;
+import co.airy.spring.web.payload.EmptyResponsePayload;
+import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestController
 public class ChatController {

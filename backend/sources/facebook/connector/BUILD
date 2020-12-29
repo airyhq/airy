@@ -4,12 +4,16 @@ load("//tools/build:container_push.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
-    "//backend:channel",
-    "//backend:message",
-    "//backend:metadata",
+    "//backend/model/channel:channel",
+    "//backend/model/message:message",
+    "//backend/model/metadata:metadata",
+    "//lib/java/uuid",
     "//lib/java/log",
+    "//lib/java/spring/web:spring-web",
+    "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
+    "//lib/java/kafka/schema:source-facebook-events",
 ]
 
 springboot(

@@ -12,6 +12,7 @@ public class ApplicationCommunicationReadReceipts extends ApplicationCommunicati
 
     @Override
     public Map<String, String> config() {
-        return Map.of();
+        return Map.of("cleanup.policy", "compact", "segment.bytes", "10485760", "min.compaction.lag.ms", "86400000");
     }
+
 }

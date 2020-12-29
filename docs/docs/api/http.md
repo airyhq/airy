@@ -19,8 +19,8 @@ The HTTP endpoints adhere to the following conventions:
 
 In order to communicate with the API endpoints, you need a valid
 [JWT](https://jwt.io/) token. Get a valid token by sending a request to the
-login endpoint [login](#login). It returns short-lived JWT token you can use for
-API requests.
+login endpoint [login](#login). It returns a short-lived JWT token you can use
+for HTTP requests.
 
 ### Login
 
@@ -87,7 +87,7 @@ The password **must** be at least 6 characters long.
 }
 ```
 
-This endpoint returns the same response as the login.
+This endpoint returns the same response as `POST /login`.
 
 ### Conversations
 
@@ -109,7 +109,7 @@ class](https://github.com/airyhq/airy/blob/main/backend/api/communication/src/ma
 
 **Sample request**
 
-Find all users with the last name "Lovelace":
+Find users whose name ends with "Lovelace":
 
 ```json5
 {
@@ -254,7 +254,8 @@ Resets the unread count of a conversation and returns status code `202 (Accepted
 
 #### Tag a conversation
 
-Tags an existing conversation with an existing tag. Returns status code `200` if successful.
+Tags an existing conversation with [an existing tag](#creating-a-tag). Returns
+status code `200` if successful.
 
 `POST /conversations.tag`
 
@@ -386,86 +387,8 @@ Sends a message to a conversation and returns a payload.
 
 ### Channels
 
-#### Connecting channels
-
-`POST /channels.connect`
-
-A synchronous endpoint that makes a request to the source
-to connect the channel.
-
-This action is idempotent, so if the channel is already connected, the request returns status code `202`.
-
-Connecting a channel is source-specific by nature, refer to the relevant documentation for the correct payload:
-
-- [Facebook](/sources/facebook.md#connecting-a-channel)
-- [Google](/sources/google.md#connecting-a-channel)
-- [SMS - Twilio](/sources/sms-twilio.md#connecting-a-channel)
-- [WhatsApp - Twilio](/sources/whatsapp-twilio.md#connecting-a-channel)
-
-#### Disconnecting Channels
-
-`POST /channels.disconnect`
-
-A synchronous endpoint that makes a request to the source
-to disconnect the channel. It marks the channel as disconnected and deletes the
-auth token.
-
-This action is idempotent, so if the channel is disconnected, the request returns status code `202`.
-If the channel is unknown, the request returns status code `400`.
-
-**Sample request**
-
-```json5
-{
-  "channel_id": "uuid"
-}
-```
-
-#### Explore channels
-
-`POST /channels.explore`
-
-A synchronous endpoint that makes a request to the source
-to list all the available channels. Some of those channels may already
-be connected, which is accounted for in the boolean field `connected`. Due to
-the nature of the request, the response time may vary.
-
-<!-- TODO move this section to source specific documentation -->
-
-The request requires an authentication `token`, which has a different meaning for each source:
-
-- `facebook` The user access token
-
-**Sample request**
-
-```json5
-{
-  "source": "facebook",
-  "token": "authentication token"
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "data": [
-    {
-      "name": "my page 1",
-      "source": "facebook",
-      "source_channel_id": "fb-page-id-1",
-      "connected": false,
-      "image_url": "http://example.org/avatar.jpeg" // optional
-    },
-    {
-      "name": "my page 2",
-      "source": "facebook",
-      "source_channel_id": "fb-page-id-2",
-      "connected": true
-    }
-  ]
-}
-```
+Please refer to our [channel](glossary.md#channel) definition for more
+information.
 
 #### List channels
 
@@ -494,6 +417,9 @@ The request requires an authentication `token`, which has a different meaning fo
 ```
 
 ### Tags
+
+Please refer to our [tag](glossary.md#tag) definition for more
+information.
 
 #### Creating a tag
 
@@ -578,6 +504,38 @@ If action is successful, returns HTTP status `200`.
 }
 ```
 
+### Metadata
+
+Refer to our [metadata](glossary.md#metadata) definition for more
+information.
+
+### Setting metadata
+
+`POST /metadata.set`
+
+```json
+{
+  "conversation_id": "conversation-id",
+  "key": "ad.id",
+  "value": "Grace"
+}
+```
+
+The endpoint returns status code `200` if the operation was successful, and `400` if not.
+
+### Removing metadata
+
+`POST /metadata.remove`
+
+```json
+{
+  "conversation_id": "conversation-id",
+  "key": "ad.id"
+}
+```
+
+This endpoint returns status code `200` if the operation was successful, and `500` if not.
+
 ## Pagination
 
 By default, paginated endpoints return a maximum of 20 elements on the first page.
@@ -628,41 +586,9 @@ The response comes in two parts:
   - `filtered_total`
 
     The total number of elements across pages in the context of the current
-    filter selection. Only applicable to paginated endpoints that accept filter
-    input.
+    filter selection. Only applicable to paginated endpoints that can filter
+    data.
 
   - `total`
 
     The total number of elements across all pages.
-
-### Metadata
-
-Refer to our [metadata](glossary.md#metadata) definition for more
-information.
-
-### Setting metadata
-
-`POST /metadata.set`
-
-```json
-{
-  "conversation_id": "conversation-id",
-  "key": "ad.id",
-  "value": "Grace"
-}
-```
-
-The endpoint returns status code `200` if the operation was successful, and `400` if not.
-
-### Removing metadata
-
-`POST /metadata.remove`
-
-```json
-{
-  "conversation_id": "conversation-id",
-  "key": "ad.id"
-}
-```
-
-This endpoint returns status code `200` if the operation was successful, and `500` if not.

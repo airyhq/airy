@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {connect} from 'react-redux';
 import {RootState} from '../reducers';
 import {TagSettings} from 'httpclient';

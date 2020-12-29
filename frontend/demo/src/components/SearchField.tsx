@@ -13,7 +13,14 @@ type SearchFieldProps = {
   autoFocus?: boolean;
 };
 
-export const SearchField = ({id, placeholder, value, setValue, resetClicked, autoFocus}: SearchFieldProps) => {
+export const SearchField: React.FC<SearchFieldProps> = ({
+  id,
+  placeholder,
+  value,
+  setValue,
+  resetClicked,
+  autoFocus,
+}: SearchFieldProps): JSX.Element => {
   const inputRef = createRef<HTMLInputElement>();
   const resetButton = useCallback(() => {
     setValue('');

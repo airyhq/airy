@@ -5,7 +5,7 @@ import {Button} from '@airyhq/components';
 import emptyImage from '../../assets/images/empty-state/tags-empty-state.svg';
 import SimpleTagForm from './SimpleTagForm';
 
-const EmptyStateTags = () => {
+const EmptyStateTags: React.FC = (): JSX.Element => {
   const [show, setShow] = useState(false);
 
   return (
@@ -13,7 +13,7 @@ const EmptyStateTags = () => {
       {!show && (
         <div className={styles.cardRaised}>
           <div className={styles.emptyStateTitle}>
-            <h1>You don't have tags yet.</h1>
+            <h1>You don&#39;t have tags yet.</h1>
             <p>
               Tags provide a useful way to group related conversations together and to quickly filter and search them.
             </p>

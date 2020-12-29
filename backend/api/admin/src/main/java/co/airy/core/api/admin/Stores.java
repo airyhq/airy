@@ -1,6 +1,7 @@
 package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Tag;
 import co.airy.avro.communication.Webhook;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
@@ -12,18 +13,17 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Component
@@ -33,10 +33,9 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final KafkaStreamsWrapper streams;
     private final KafkaProducer<String, SpecificRecordBase> producer;
 
-    private final String channelsStore = "channels-store";
+    private final String connectedChannelsStore = "connected-channels-store";
     private final String tagsStore = "tags-store";
     private final String webhooksStore = "webhook-store";
-    private final String allChannelsKey = "ALL";
 
     // Using a UUID as the default key for the webhook will make it easier
     // to add multiple webhooks if that ever becomes a requirement
@@ -51,16 +50,12 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         this.producer = producer;
     }
 
-    private void startStream() {
+    @Override
+    public void onApplicationEvent(ApplicationStartedEvent event) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        builder.<String, Channel>stream(applicationCommunicationChannels)
-                .groupBy((k, v) -> allChannelsKey)
-                .aggregate(HashMap::new, (allKey, channel, channelsMap) -> {
-                    // An external channel id may only be connected once
-                    channelsMap.put(channel.getId(), channel);
-                    return channelsMap;
-                }, Materialized.as(channelsStore));
+        builder.<String, Channel>table(applicationCommunicationChannels)
+                .filter((k, v) -> v.getConnectionState().equals(ChannelConnectionState.CONNECTED), Materialized.as(connectedChannelsStore));
 
         builder.<String, Webhook>stream(applicationCommunicationWebhooks)
                 .groupBy((webhookId, webhook) -> allWebhooksKey)
@@ -71,20 +66,12 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         streams.start(builder.build(), appId);
     }
 
-    public ReadOnlyKeyValueStore<String, Map<String, Channel>> getChannelsStore() {
-        return streams.acquireLocalStore(channelsStore);
-    }
-
     public ReadOnlyKeyValueStore<String, Webhook> getWebhookStore() {
         return streams.acquireLocalStore(webhooksStore);
     }
 
     public ReadOnlyKeyValueStore<String, Tag> getTagsStore() {
         return streams.acquireLocalStore(tagsStore);
-    }
-
-    public void storeChannel(Channel channel) throws ExecutionException, InterruptedException {
-        producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
     }
 
     public void storeWebhook(Webhook webhook) throws ExecutionException, InterruptedException {
@@ -100,10 +87,19 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationTags, tag.getId(), null));
     }
 
-    public Map<String, Channel> getChannelsMap() {
-        final ReadOnlyKeyValueStore<String, Map<String, Channel>> channelsStore = getChannelsStore();
+    public ReadOnlyKeyValueStore<String, Channel> getConnectedChannelsStore() {
+        return streams.acquireLocalStore(connectedChannelsStore);
+    }
 
-        return Optional.ofNullable(channelsStore.get(allChannelsKey)).orElse(Map.of());
+    public List<Channel> getChannels() {
+        final ReadOnlyKeyValueStore<String, Channel> store = getConnectedChannelsStore();
+
+        final KeyValueIterator<String, Channel> iterator = store.all();
+
+        List<Channel> channels = new ArrayList<>();
+        iterator.forEachRemaining(kv -> channels.add(kv.value));
+
+        return channels;
     }
 
     public Webhook getWebhook() {
@@ -120,16 +116,11 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     @Override
-    public void onApplicationEvent(ApplicationStartedEvent event) {
-        startStream();
-    }
-
-    @Override
     public Health health() {
-        getChannelsStore();
+        getConnectedChannelsStore();
         getWebhookStore();
         getTagsStore();
 
-        return Health.status(Status.UP).build();
+        return Health.up().build();
     }
 }

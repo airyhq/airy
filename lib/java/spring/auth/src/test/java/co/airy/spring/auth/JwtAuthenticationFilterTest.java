@@ -1,7 +1,7 @@
 package co.airy.spring.auth;
 
-import co.airy.spring.jwt.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.jwt.Jwt;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +46,7 @@ public class JwtAuthenticationFilterTest {
 
         mvc.perform(options("/jwt.get")
                 .header("Access-Control-Request-Method", "GET")
-                .header("Origin", origin)
-        )
+                .header("Origin", origin))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Access-Control-Allow-Origin", origin));
     }
@@ -68,8 +67,7 @@ public class JwtAuthenticationFilterTest {
 
         mvc.perform(post("/jwt.get")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, token)
-        )
+                .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.user_id", equalTo(userId)));
     }

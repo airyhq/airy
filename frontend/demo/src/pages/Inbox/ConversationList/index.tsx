@@ -84,7 +84,7 @@ const ConversationList = (props: ConversationListProps) => {
 
     return (
       <InfiniteLoader isItemLoaded={isItemLoaded} itemCount={itemCount} loadMoreItems={loadMoreItems}>
-        {({onItemsRendered, ref}) => (
+        {({onItemsRendered}) => (
           <div className="conversationListPaginationWrapper">
             {!items.length && !loading ? (
               <NoConversations />

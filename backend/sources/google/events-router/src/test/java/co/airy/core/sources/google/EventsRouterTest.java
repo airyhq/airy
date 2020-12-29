@@ -4,7 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.MetadataKeys;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -22,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -35,10 +36,8 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(properties = {
-        "kafka.cleanup=true",
-        "kafka.commit-interval-ms=100",
-}, classes = AirySpringBootApplication.class)
+@SpringBootTest(classes = AirySpringBootApplication.class)
+@TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 public class EventsRouterTest {
     @RegisterExtension

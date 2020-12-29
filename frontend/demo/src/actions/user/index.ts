@@ -11,7 +11,6 @@ export const setCurrentUserAction = createAction(SET_CURRENT_USER, resolve => (u
 export const userAuthErrorAction = createAction(USER_AUTH_ERROR, resolve => (error: Error) => resolve(error));
 export const logoutUserAction = createAction(USER_LOGOUT);
 
-
 export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
     return AiryHttpClient.loginViaEmail(requestPayload)

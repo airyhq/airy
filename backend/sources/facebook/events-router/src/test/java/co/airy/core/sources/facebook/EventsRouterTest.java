@@ -20,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -38,11 +39,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(properties = {
-        "kafka.cleanup=true",
-        "kafka.commit-interval-ms=100",
-        "facebook.app-id=12345"
-}, classes = AirySpringBootApplication.class)
+@SpringBootTest(classes = AirySpringBootApplication.class)
+@TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 class EventsRouterTest {
 
@@ -56,8 +54,6 @@ class EventsRouterTest {
 
     @Autowired
     private EventsRouter worker;
-
-    private static boolean streamInitialized = false;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -77,11 +73,7 @@ class EventsRouterTest {
 
     @BeforeEach
     void beforeEach() throws InterruptedException {
-        if (!streamInitialized) {
-            retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
-
-            streamInitialized = true;
-        }
+        retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     private final String eventTemplate = "{\"object\":\"page\",\"entry\":[{\"id\":\"%s\",\"time\":1550050754198," +
@@ -140,8 +132,8 @@ class EventsRouterTest {
         List<Message> messages = kafkaTestHelper.consumeValues(totalMessages, applicationCommunicationMessages.name());
         assertThat(messages, hasSize(totalMessages));
 
-        messagesPerContact.forEach((conversationId, expectedCount) -> {
-            assertEquals(messages.stream().filter(m -> m.getConversationId().equals(conversationId)).count(), expectedCount.longValue());
-        });
+        messagesPerContact.forEach((conversationId, expectedCount) ->
+                assertEquals(messages.stream().filter(m -> m.getConversationId().equals(conversationId)).count(), expectedCount.longValue())
+        );
     }
 }

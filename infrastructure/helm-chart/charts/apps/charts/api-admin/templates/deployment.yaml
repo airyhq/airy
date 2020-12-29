@@ -36,16 +36,11 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_SCHEMA_REGISTRY_URL
-        - name: FACEBOOK_APP_ID
+        - name: KAFKA_COMMIT_INTERVAL_MS
           valueFrom:
             configMapKeyRef:
-              name: sources-config
-              key: FACEBOOK_APP_ID
-        - name: FACEBOOK_APP_SECRET
-          valueFrom:
-            configMapKeyRef:
-              name: sources-config
-              key: FACEBOOK_APP_SECRET
+              name: kafka-config
+              key: KAFKA_COMMIT_INTERVAL_MS
         - name: SERVICE_NAME
           value: api-admin
         - name: JWT_SECRET

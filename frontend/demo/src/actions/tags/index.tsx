@@ -43,11 +43,19 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
 
 export function updateTag(tag: Tag) {
   return function(dispatch: Dispatch<any>) {
+<<<<<<< HEAD
     AiryHttpClient.updateTag(tag)
     .then(() => dispatch(editTagAction(tag)))
     .catch((error:Error) => {
       return error;
     });
+=======
+    doFetchFromBackend('tags.update', {
+      id: tag.id,
+      name: tag.name,
+      color: tag.color,
+    }).then(() => dispatch(editTagAction(tag)));
+>>>>>>> develop
   };
 }
 
@@ -69,7 +77,7 @@ export function filterTags(filter: string) {
   };
 }
 
-export function errorTag(status: string, data?: string) {
+export function errorTag(status: string) {
   return function(dispatch: Dispatch<any>) {
     dispatch(errorTagAction(status));
   };

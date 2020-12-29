@@ -5,8 +5,8 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.sources.facebook.model.SendMessagePayload;
-import co.airy.core.sources.facebook.services.Api;
+import co.airy.core.sources.facebook.api.model.SendMessagePayload;
+import co.airy.core.sources.facebook.api.Api;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -27,6 +27,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Instant;
@@ -40,11 +41,8 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
 
-@SpringBootTest(properties = {
-        "kafka.cleanup=true",
-        "kafka.commit-interval-ms=100",
-        "facebook.app-id=12345"
-}, classes = AirySpringBootApplication.class)
+@SpringBootTest(classes = AirySpringBootApplication.class)
+@TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 class SendMessageTest {
 
@@ -56,12 +54,15 @@ class SendMessageTest {
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final Topic applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
 
-    @MockBean
-    private Api api;
-
     @Autowired
     @InjectMocks
-    private Connector worker;
+    private Connector connector;
+
+    @Autowired
+    private Stores stores;
+
+    @MockBean
+    private Api api;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -82,7 +83,7 @@ class SendMessageTest {
     @BeforeEach
     void beforeEach() throws InterruptedException {
         MockitoAnnotations.initMocks(this);
-        retryOnException(() -> assertEquals(worker.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
+        retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
     @Test
@@ -140,7 +141,6 @@ class SendMessageTest {
 
         retryOnException(() -> {
             final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
-
             assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));
             assertThat(sendMessagePayload.getMessage().getText(), equalTo(text));
 

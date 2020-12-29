@@ -9,7 +9,7 @@ the Airy Core Platform.
 ## Topic naming conventions
 
 Inspired by [this
-article](https://medium.com/@criccomini/how-to-paint-a-bike-shed-kafka-topic-naming-conventions-1b7259790073),
+article](https://riccomini.name/how-paint-bike-shed-kafka-topic-naming-conventions),
 our naming conventions follow these rules:
 
 - A topic has a three-part name: `<kind>.<domain>.<dataset>`
@@ -21,19 +21,14 @@ Each part defines a more granular scope:
 - `kind` is the type of data the topic contains at the highest level possible.
   Valid examples are: `etl`, `logging`, `tracking`.
 - `domain` is what you would call a database name in a traditional
-  rdms.
-- `dataset` is what you would call a database table in a traditional rdms.
+  RDMS.
+- `dataset` is what you would call a database table in a traditional RDMS.
 
 Given these rules, here are a few examples:
 
 ```
-tracking.user.clicks
-tracking.page.views
-
-etl.billing.invalid-cc-cards
-etl.billing.frauds
-
-application.entity.organizations
-application.communication.conversations
 application.communication.messages
+application.communication.metadata
+
+ops.application.health-checks
 ```

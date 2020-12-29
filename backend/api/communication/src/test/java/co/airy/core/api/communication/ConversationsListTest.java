@@ -2,7 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.MetadataKeys;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -10,7 +10,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.payload.format.DateFormat;
+import co.airy.date.format.DateFormat;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;

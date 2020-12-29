@@ -5,7 +5,6 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.avro.communication.SenderType;
-import co.airy.avro.communication.Subject;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.CountAction;
 import co.airy.core.api.communication.dto.MessagesTreeSet;
@@ -19,6 +18,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
+import co.airy.model.metadata.Subject;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -45,9 +45,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import static co.airy.avro.communication.MetadataRepository.getId;
-import static co.airy.avro.communication.MetadataRepository.getSubject;
-import static co.airy.avro.communication.MetadataRepository.isConversationMetadata;
+import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.getSubject;
+import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
 import static java.util.stream.Collectors.toCollection;
 
 @Component

@@ -1,9 +1,9 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.MetadataKeys;
+import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.Subject;
 import co.airy.avro.communication.ReadReceipt;
-import co.airy.avro.communication.Subject;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.ConversationIndex;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
@@ -16,7 +16,7 @@ import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.ResponseMetadata;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
-import co.airy.payload.response.RequestErrorResponsePayload;
+import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
@@ -34,7 +34,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static co.airy.avro.communication.MetadataRepository.newConversationTag;
+import static co.airy.model.metadata.MetadataRepository.newConversationTag;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 

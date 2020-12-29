@@ -4,7 +4,7 @@ entries:
   - apiVersion: v1
     appVersion: "1.0"
     created: "2020-10-13T16:53:28.361356+02:00"
-    description: A Helm chart for Airy Platform
+    description: A Helm chart for the Airy Core Platform
     digest: 80af25ce350f4da8d1ad9ad8f779de7717052d5e9bb0e216c208c20a29cb5dd2
     name: helm-charts
     urls:

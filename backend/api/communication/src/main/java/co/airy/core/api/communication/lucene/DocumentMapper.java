@@ -11,7 +11,6 @@ import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexableField;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;

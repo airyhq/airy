@@ -126,6 +126,7 @@ const Chat = (props: Props) => {
               {messages.map(message => {
                 return (
                   <MessageProp
+                    key
                     render={
                       props.airyMessageProp
                         ? () => props.airyMessageProp(ctrl)

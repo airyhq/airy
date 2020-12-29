@@ -1,4 +1,4 @@
-module apiclient
+module github.com/airyhq/airy/lib/go/apiclient
 
 go 1.12
 

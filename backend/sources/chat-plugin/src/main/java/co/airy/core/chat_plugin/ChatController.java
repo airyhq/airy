@@ -7,8 +7,10 @@ import co.airy.avro.communication.SenderType;
 import co.airy.core.chat_plugin.config.Jwt;
 import co.airy.core.chat_plugin.payload.AuthenticationRequestPayload;
 import co.airy.core.chat_plugin.payload.AuthenticationResponsePayload;
+import co.airy.core.chat_plugin.payload.ResumeTokenResponsePayload;
 import co.airy.core.chat_plugin.payload.SendMessageRequestPayload;
-import co.airy.payload.response.RequestErrorResponsePayload;
+import co.airy.spring.web.payload.EmptyResponsePayload;
+import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -17,11 +19,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
+import java.nio.charset.Charset;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 public class ChatController {
@@ -38,18 +46,47 @@ public class ChatController {
     }
 
     @PostMapping("/chatplugin.authenticate")
-    ResponseEntity<AuthenticationResponsePayload> authenticateVisitor(@RequestBody @Valid AuthenticationRequestPayload requestPayload) {
-        final String channelId = requestPayload.getChannelId().toString();
+    ResponseEntity<?> authenticateVisitor(@RequestBody @Valid AuthenticationRequestPayload requestPayload) {
+        final UUID channelId = requestPayload.getChannelId();
+        final String resumeToken = requestPayload.getResumeToken();
+
+        Principal principal;
+        List<Message> messages = List.of();
+        if (resumeToken != null) {
+            principal = resumeConversation(resumeToken);
+            messages = stores.getMessages(principal.getConversationId());
+        } else if (channelId != null) {
+            principal = createConversation(channelId.toString());
+        } else {
+            return ResponseEntity.badRequest().body(new EmptyResponsePayload());
+        }
+
+        final String authToken = jwt.getAuthToken(principal.getSessionId(), principal.getChannelId());
+
+        return ResponseEntity.ok(new AuthenticationResponsePayload(authToken,
+                messages.stream().map(mapper::fromMessage).collect(Collectors.toList())));
+    }
+
+    private Principal resumeConversation(String resumeToken) {
+        return jwt.authenticateResume(resumeToken);
+    }
+
+    private Principal createConversation(String channelId) {
         final Channel channel = stores.getChannel(channelId);
 
         if (channel == null) {
-            return ResponseEntity.notFound().build();
+            throw new HttpClientErrorException(NOT_FOUND, "Not Found", null, null, Charset.defaultCharset());
         }
 
         final String sessionId = UUID.randomUUID().toString();
-        final String token = jwt.tokenFor(sessionId, channelId);
+        return new Principal(channelId, sessionId);
+    }
 
-        return ResponseEntity.ok(new AuthenticationResponsePayload(token));
+    @PostMapping("/chatplugin.resumeToken")
+    ResponseEntity<ResumeTokenResponsePayload> getResumeToken(Authentication authentication) {
+        final Principal principal = (Principal) authentication.getPrincipal();
+        final String resumeToken = jwt.getResumeToken(principal.getSessionId(), principal.getChannelId());
+        return ResponseEntity.ok(new ResumeTokenResponsePayload(resumeToken));
     }
 
     @PostMapping("/chatplugin.send")

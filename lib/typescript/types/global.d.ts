@@ -6,7 +6,7 @@ interface CustomNodeModule extends NodeModule {
 }
 
 // Hot Module Replacement
-declare var module: CustomNodeModule;
+declare let module: CustomNodeModule;
 
 declare module '*.gif' {
   const src: string;
@@ -37,7 +37,7 @@ interface CustomSVGRProps {
   title?: string; // https://react-svgr.com/docs/options/#title
 }
 
-interface SvgrComponent extends React.FunctionComponent<React.SVGAttributes<SVGElement> & CustomSVGRProps> {}
+type SvgrComponent = React.FunctionComponent<React.SVGAttributes<SVGElement> & CustomSVGRProps>;
 
 declare module '*.svg' {
   const src: string;
@@ -51,12 +51,12 @@ declare module '*.css' {
 }
 
 declare module '*.scss' {
-  const classes: {readonly [key: string]: string};
-  export default classes;
+  const content: {[className: string]: string};
+  export = content;
 }
 
 declare module '*.json';
 
-declare type Dict<T> = {
+declare type Dictionary<T> = {
   [key: string]: T;
 };

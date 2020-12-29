@@ -3,50 +3,57 @@ title: Chat Plugin
 sidebar_label: Chat Plugin
 ---
 
-The Airy Core chat plugin is a fully-featured [source](/glossary.md#source)
-that enables conversations with anonymous website visitors through a web chat
-plugin.
+The Airy Core Chat Plugin is a fully-featured [source](/glossary.md#source) that
+enables conversations with anonymous website visitors through a web chat plugin.
 
 :::tip What you will learn
 
-- How to connect a chat plugin
-- How to install the chat plugin web widget
-- How to use the HTTP and WebSocket APIs that power the chat plugin
+- How to connect a Chat Plugin
+- How to install the Chat Plugin web widget
+- How to use the HTTP and WebSocket APIs that power the Chat Plugin
 
 :::
 
-## Connect a channel
+## Connect
 
-Connects a chat plugin source to the Airy Core Platform.
+Connects a Chat Plugin source to the Airy Core Platform.
 
 ```
-POST /channels.connect
+POST /chatplugin.connect
 ```
 
-- `source` _must_ be `chat_plugin`
-- `source_channel_id` is a unique identifier of your choice
+- `name` is a unique identifier of your choice
 
 ```json5
 {
+  "name": "website-identifier-42"
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "id": "1F679227-76C2-4302-BB12-703B2ADB0F66",
+  "name": "website-identifier-42",
   "source": "chat_plugin",
   "source_channel_id": "website-identifier-42"
 }
 ```
 
-**Sample Response**
+## Disconnect
 
-```json5
-{
-  "id": "channel-uuid-1",
-  "name": "Chat plugin",
-  "source": "chat_plugin",
-  "source_channel_id": "awesome-website-42"
-}
 ```
+POST /chatplugin.disconnect
+```
+
+import ChannelDisconnect from './channel-disconnect.mdx'
+
+<ChannelDisconnect />
 
 ## Installation
 
-To install the chat plugin UI on your website add the following script tag to
+To install the Chat Plugin UI on your website add the following script tag to
 the `<head>` section:
 
 ```html
@@ -66,7 +73,7 @@ the `<head>` section:
 
 You must replace `CHANNEL_ID` with the channel id obtained when
 [connecting](#connecting-a-channel) the source and `SCRIPT_HOST` with the host
-of your chat plugin server. When using the local vagrant environment
+of your Chat Plugin server. When using the local vagrant environment
 `SCRIPT_HOST` must be set to `chatplugin.airy`.
 
 :::note
@@ -91,7 +98,10 @@ API](api/http.md#introduction).
 The request returns an authentication token that needs to be included in the
 WebSocket connection handshake.
 
-**Sample Request**
+You can either pass the `channel_id` for a new conversation or a `resume_token` that was obtained in a
+previous conversation using the [resume endpoint](#get-a-resume-token).
+
+**Sample request**
 
 ```json5
 {
@@ -99,11 +109,60 @@ WebSocket connection handshake.
 }
 ```
 
-**Sample Response**
+**Sample response (New conversation)**
 
 ```json5
 {
-  "token": "jwt auth token"
+  "token": "jwt",
+  "messages": []
+}
+```
+
+**Sample response (Resumed conversation)**
+
+```json5
+{
+  "token": "jwt",
+  "messages": [
+    {
+      "id": "{UUID}",
+      "content": [
+        {
+          "text": "{String}",
+          "type": "text"
+          // Determines the schema of the content
+        }
+      ],
+      // typed source message model
+      "state": "{String}",
+      // delivery state of message, one of PENDING, FAILED, DELIVERED
+      "sender_type": "{string/enum}",
+      // See glossary
+      "sent_at": "{string}"
+      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    }
+  ]
+}
+```
+
+### Get a resume token
+
+`POST /chatplugin.resumeToken`
+
+You must set the `token` obtained on the [authorization endpoint](#authenticating-web-users) as an `Authorization`
+header.
+
+**Sample request**
+
+```json5
+{}
+```
+
+**Sample response**
+
+```json5
+{
+  "resume_token": "jwt auth token"
 }
 ```
 
@@ -114,7 +173,7 @@ header.
 
 `POST /chatplugin.send`
 
-**Sample Request**
+**Sample request**
 
 ```json5
 {
@@ -124,7 +183,7 @@ header.
 }
 ```
 
-**Sample Response**
+**Sample response**
 
 ```json5
 {
@@ -155,7 +214,7 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
 
 `/user/queue/message`
 
-**Sample Payload**
+**Sample payload**
 
 ```json5
 {

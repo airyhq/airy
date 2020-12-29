@@ -5,8 +5,8 @@ import co.airy.core.api.auth.dao.InvitationDAO;
 import co.airy.core.api.auth.dao.UserDAO;
 import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Mail;
-import co.airy.spring.jwt.Jwt;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.jwt.Jwt;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,19 +38,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureEmbeddedDatabase(beanName = "dataSource")
-@SpringBootTest(properties = {
-        "db.debug=true"
-}, classes = AirySpringBootApplication.class)
+@SpringBootTest(classes = AirySpringBootApplication.class)
 @AutoConfigureMockMvc
 @FlywayDataSource
-@TestPropertySource(properties = {
-        "mail.host.url=localhost",
-        "mail.host.port=25",
-        "mail.sender.from=snasa@snasa.gov",
-        "mail.auth.username=snasa",
-        "mail.auth.password=extreme-secure-pass",
-        "auth.jwt-secret=this-needs-to-be-replaced-in-production-buffer:424242424242424242424242424242"
-})
+@TestPropertySource(value = "classpath:test.properties")
 public class UsersControllerTest {
     @Autowired
     private ObjectMapper objectMapper;

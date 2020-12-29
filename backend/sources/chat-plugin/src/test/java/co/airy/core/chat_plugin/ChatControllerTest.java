@@ -44,6 +44,8 @@ import java.util.concurrent.ExecutionException;
 import static co.airy.core.chat_plugin.WebSocketController.QUEUE_MESSAGE;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
@@ -71,9 +73,8 @@ public class ChatControllerTest {
     private static KafkaTestHelper kafkaTestHelper;
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static boolean testDataInitialized = false;
 
-    private final Channel channel = Channel.newBuilder()
+    private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(UUID.randomUUID().toString())
             .setName("Chat Plugin")
@@ -89,6 +90,8 @@ public class ChatControllerTest {
         );
 
         kafkaTestHelper.beforeAll();
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
     }
 
     @AfterAll
@@ -98,12 +101,6 @@ public class ChatControllerTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        if (testDataInitialized) {
-            return;
-        }
-        testDataInitialized = true;
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-
         retryOnException(() -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()), "Application is not healthy");
     }
 
@@ -125,19 +122,61 @@ public class ChatControllerTest {
 
         final String messageText = "answer is 42";
         String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\" }}";
-        retryOnException(() ->
-                        mvc.perform(post("/chatplugin.send")
+        retryOnException(() -> mvc.perform(post("/chatplugin.send")
                                 .headers(buildHeaders(token))
                                 .content(sendMessagePayload))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.content.text", containsString(messageText))),
-                "Message was not sent"
-        );
+                                .andExpect(jsonPath("$.content[0].text", containsString(messageText))),
+                "Message was not sent");
 
         final MessageUpsertPayload messageUpsertPayload = messageFuture.get();
 
         assertNotNull(messageUpsertPayload);
-        assertThat(((Text) messageUpsertPayload.getMessage().getContent()).getText(), containsString(messageText));
+        final Text text = (Text) messageUpsertPayload.getMessage().getContent().get(0);
+        assertThat(text.getText(), containsString(messageText));
+    }
+
+    @Test
+    void canResumeConversation() throws Exception {
+        final String authPayload = "{\"channel_id\":\"" + channel.getId() + "\"}";
+
+        String response = mvc.perform(post("/chatplugin.authenticate")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .content(authPayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token", is(not(nullValue()))))
+                .andReturn().getResponse().getContentAsString();
+        JsonNode jsonNode = new ObjectMapper().readTree(response);
+        final String authToken = jsonNode.get("token").textValue();
+
+        final String messageText = "Talk to you later!";
+        final String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\" }}";
+        mvc.perform(post("/chatplugin.send")
+                .headers(buildHeaders(authToken))
+                .content(sendMessagePayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].text", containsString(messageText)));
+
+        response = mvc.perform(post("/chatplugin.resumeToken")
+                .headers(buildHeaders(authToken))
+                .content("{}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resume_token", is(not(nullValue()))))
+                .andReturn().getResponse().getContentAsString();
+        jsonNode = new ObjectMapper().readTree(response);
+        final String resumeToken = jsonNode.get("resume_token").textValue();
+
+
+        retryOnException(() -> {
+            final String resumePayload = "{\"resume_token\":\"" + resumeToken + "\"}";
+            mvc.perform(post("/chatplugin.authenticate")
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .content(resumePayload))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.token", is(not(nullValue()))))
+                    .andExpect(jsonPath("$.messages", hasSize(1)))
+                    .andExpect(jsonPath("$.messages[0].content[0].text", equalTo(messageText)));
+        }, "Did not resume conversation");
     }
 
     private HttpHeaders buildHeaders(String jwtToken) {
@@ -160,8 +199,7 @@ public class ChatControllerTest {
 
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
 
-        return stompClient.connect("ws://localhost:" + port + "/ws.chatplugin", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
-        }).get();
+        return stompClient.connect("ws://localhost:" + port + "/ws.chatplugin", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {}).get();
     }
 
     public <T> CompletableFuture<T> subscribe(String jwtToken, int port, Class<T> payloadType, String topic) throws ExecutionException, InterruptedException {

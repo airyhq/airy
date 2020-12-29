@@ -5,10 +5,9 @@ load("//tools/build:container_push.bzl", "container_push")
 app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
-    "//backend:channel",
+    "//backend/model/channel:channel",
     "//backend:tag",
     "//backend:webhook",
-    "//lib/java/payload",
     "//lib/java/uuid",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",

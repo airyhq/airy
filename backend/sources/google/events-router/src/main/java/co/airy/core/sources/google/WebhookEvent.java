@@ -1,5 +1,6 @@
 package co.airy.core.sources.google;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class WebhookEvent {
 
     private String sendTime;
 
+    @JsonIgnore
     public JsonNode getPayload() {
         return Stream.of(this.message, this.suggestionResponse, this.surveyResponse, this.receipts, this.userStatus)
                 .filter(Objects::nonNull)
@@ -32,7 +34,13 @@ public class WebhookEvent {
                 .get();
     }
 
-    public boolean isMessage() {
+    @JsonIgnore
+    public boolean hasMessage() {
         return this.message != null;
+    }
+
+    @JsonIgnore
+    public boolean hasContext() {
+        return this.context != null && !this.context.isEmpty();
     }
 }

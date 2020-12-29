@@ -6,7 +6,11 @@ type ListenOutsideClickProps = {
   onOuterClick: (event: React.MouseEvent<HTMLElement>) => void;
 };
 
-const ListenOutsideClick = ({children, className, onOuterClick}: ListenOutsideClickProps) => {
+const ListenOutsideClick: React.FC<ListenOutsideClickProps> = ({
+  children,
+  className,
+  onOuterClick,
+}: ListenOutsideClickProps): JSX.Element => {
   const innerRef = useRef(null);
 
   useEffect(() => {

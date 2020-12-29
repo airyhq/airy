@@ -1,8 +1,8 @@
 package co.airy.core.api.communication;
 
-import co.airy.avro.communication.MetadataAction;
-import co.airy.avro.communication.MetadataActionType;
-import co.airy.avro.communication.MetadataKeys;
+import co.airy.avro.communication.Metadata;
+import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.Subject;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.ConversationIndex;
@@ -16,7 +16,7 @@ import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.ResponseMetadata;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
-import co.airy.payload.response.RequestErrorResponsePayload;
+import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
@@ -34,6 +34,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import static co.airy.model.metadata.MetadataRepository.newConversationTag;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
@@ -57,7 +58,7 @@ public class ConversationsController {
         return queryConversations(requestPayload);
     }
 
-    private ResponseEntity<?> queryConversations(ConversationListRequestPayload requestPayload) throws Exception {
+    private ResponseEntity<?> queryConversations(ConversationListRequestPayload requestPayload) {
         final ReadOnlyLuceneStore conversationLuceneStore = stores.getConversationLuceneStore();
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
 
@@ -179,15 +180,6 @@ public class ConversationsController {
 
     @PostMapping("/conversations.tag")
     ResponseEntity<?> conversationTag(@RequestBody @Valid ConversationTagRequestPayload requestPayload) {
-        return setConversationTag(requestPayload, MetadataActionType.SET);
-    }
-
-    @PostMapping("/conversations.untag")
-    ResponseEntity<?> conversationUntag(@RequestBody @Valid ConversationTagRequestPayload requestPayload) {
-        return setConversationTag(requestPayload, MetadataActionType.REMOVE);
-    }
-
-    private ResponseEntity<?> setConversationTag(ConversationTagRequestPayload requestPayload, MetadataActionType actionType) {
         final String conversationId = requestPayload.getConversationId().toString();
         final String tagId = requestPayload.getTagId().toString();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
@@ -197,16 +189,32 @@ public class ConversationsController {
             return ResponseEntity.notFound().build();
         }
 
-        final MetadataAction metadataAction = MetadataAction.newBuilder()
-                .setActionType(actionType)
-                .setTimestamp(Instant.now().toEpochMilli())
-                .setConversationId(conversationId)
-                .setValue("")
-                .setKey(String.format("%s.%s", MetadataKeys.TAGS, tagId))
-                .build();
+        final Metadata metadata = newConversationTag(conversationId, tagId);
 
         try {
-            stores.storeMetadata(metadataAction);
+            stores.storeMetadata(metadata);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        return ResponseEntity.accepted().build();
+    }
+
+    @PostMapping("/conversations.untag")
+    ResponseEntity<?> conversationUntag(@RequestBody @Valid ConversationTagRequestPayload requestPayload) {
+        final String conversationId = requestPayload.getConversationId().toString();
+        final String tagId = requestPayload.getTagId().toString();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            final Subject subject = new Subject("conversation", conversationId);
+            final String metadataKey = String.format("%s.%s", MetadataKeys.TAGS, tagId);
+            stores.deleteMetadata(subject, metadataKey);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

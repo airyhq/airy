@@ -1,0 +1,14 @@
+A synchronous endpoint that makes a request to the source to disconnect the
+channel. It marks the channel as disconnected and deletes the auth token.
+
+This action is idempotent, so if the channel is disconnected, the request
+returns status code `202`. If the channel is unknown, the request returns status
+code `400`.
+
+**Sample request**
+
+```json5
+{
+  channel_id: 'uuid',
+}
+```

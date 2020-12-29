@@ -115,7 +115,7 @@ then provides a reversed proxy connectivity back to the webhook services,
 running inside the Kubernetes cluster.
 
 By default, the ngrok client is configured to use the ngrok server created by
-Airy and running on https://tunnel.airy.co. This configuration is specified in
+Airy and run on https://tunnel.airy.co. This configuration is specified in
 the `ngrok-client-config` ConfigMap.
 
 ```
@@ -183,8 +183,8 @@ vagrant destroy
 
 ## Known Issues
 
-If you have just installed Virtualbox and see this error during the bootstrap
-you should [give Virtualbox
+If you have just installed VirtualBox and see this error during the bootstrap
+you should [give VirtualBox
 permissions](https://www.howtogeek.com/658047/how-to-fix-virtualboxs-%E2%80%9Ckernel-driver-not-installed-rc-1908-error/).
 
 ```

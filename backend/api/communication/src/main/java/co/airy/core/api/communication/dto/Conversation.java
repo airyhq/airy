@@ -2,8 +2,7 @@ package co.airy.core.api.communication.dto;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.MetadataKeys;
-import co.airy.core.api.communication.payload.ContactResponsePayload;
+import co.airy.model.metadata.MetadataKeys;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,8 +13,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static co.airy.avro.communication.MetadataKeys.PUBLIC;
-import static co.airy.avro.communication.MetadataMapper.filterPrefix;
 import static org.springframework.util.StringUtils.capitalize;
 
 @Data

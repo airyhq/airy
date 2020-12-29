@@ -29,7 +29,7 @@ const initialState = {
   createDrawer: false,
 };
 
-class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof initialState> {
+class Tags extends Component<ConnectedProps<typeof connector>, typeof initialState> {
   state = initialState;
 
   componentDidMount() {
@@ -124,8 +124,8 @@ class TagsComponent extends Component<ConnectedProps<typeof connector>, typeof i
           close={this.closeModal}>
           <div className={styles.confirmDelete}>
             <p>
-              You're about to permanently delete <strong>"{this.state.modal.tagName}"</strong> from your organization's
-              tags.
+              You&#39;re about to permanently delete <strong>&#34;{this.state.modal.tagName}&#34;</strong> from your
+              organization&#39;s tags.
             </p>
             <p>
               <strong>This action cannot be undone.</strong> Once you delete the tag, no one in your organization will
@@ -222,4 +222,4 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export const Tags = connector(TagsComponent);
+export default connector(Tags);

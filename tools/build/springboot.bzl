@@ -160,12 +160,10 @@ def springboot(name, main_class, deps, srcs, resources = []):
         base = "//:base_image",
         files = [":genjar"],
         cmd = [
-            "java",
+            "app_springboot.jar",
             "-XshowSettings:vm",
             "-XX:MaxRAMPercentage=70",
             "-XX:-UseCompressedOops",
-            "-jar",
-            "app_springboot.jar",
             "-Dsun.net.inetaddr.ttl=0",
         ],
     )

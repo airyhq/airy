@@ -1,0 +1,11 @@
+{
+  "namespace": "co.airy.avro.communication",
+  "name": "Metadata",
+  "type": "record",
+  "fields": [
+    {"name": "subject", "type": "string"},
+    {"name": "key", "type": "string"},
+    {"name": "value", "type": "string"},
+    {"name": "timestamp", "type": "long", "logicalType": "timestamp-millis"}
+  ]
+}

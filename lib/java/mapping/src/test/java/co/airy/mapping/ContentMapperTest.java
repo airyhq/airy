@@ -42,7 +42,7 @@ public class ContentMapperTest {
                 .setContent("{\"text\":\"" + text + "\"}")
                 .build();
 
-        final Text textMessage = (Text) mapper.render(message);
+        final Text textMessage = (Text) mapper.render(message).get(0);
 
         assertThat(textMessage.getText(), equalTo(text));
         Mockito.verify(outboundMapper).render(Mockito.anyString());

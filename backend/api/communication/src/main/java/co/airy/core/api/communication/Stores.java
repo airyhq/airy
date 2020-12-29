@@ -2,8 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.MetadataAction;
-import co.airy.avro.communication.MetadataActionType;
+import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
@@ -19,9 +18,11 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
+import co.airy.model.metadata.Subject;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KGroupedStream;
 import org.apache.kafka.streams.kstream.KStream;
@@ -44,6 +45,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.getSubject;
+import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
 import static java.util.stream.Collectors.toCollection;
 
 @Component
@@ -86,15 +90,14 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .peek((channelId, channel) -> webSocketController.onChannelUpdate(channel))
                 .toTable();
 
-        final KTable<String, Map<String, String>> metadataTable = builder.<String, MetadataAction>stream(applicationCommunicationMetadata)
-                .groupByKey()
-                .aggregate(HashMap::new, (conversationId, metadataAction, aggregate) -> {
-                    if (metadataAction.getActionType().equals(MetadataActionType.SET)) {
-                        aggregate.put(metadataAction.getKey(), metadataAction.getValue());
-                    } else {
-                        aggregate.remove(metadataAction.getKey());
-                    }
-
+        final KTable<String, Map<String, String>> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
+                .filter((metadataId, metadata) -> isConversationMetadata(metadata))
+                .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
+                .aggregate(HashMap::new, (conversationId, metadata, aggregate) -> {
+                    aggregate.put(metadata.getKey(), metadata.getValue());
+                    return aggregate;
+                }, (conversationId, metadata, aggregate) -> {
+                    aggregate.remove(metadata.getKey());
                     return aggregate;
                 });
 
@@ -192,8 +195,12 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationReadReceipts, readReceipt.getConversationId(), readReceipt)).get();
     }
 
-    public void storeMetadata(MetadataAction metadataAction) throws ExecutionException, InterruptedException {
-        producer.send(new ProducerRecord<>(applicationCommunicationMetadata, metadataAction.getConversationId(), metadataAction)).get();
+    public void storeMetadata(Metadata metadata) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(metadata).toString(), metadata)).get();
+    }
+
+    public void deleteMetadata(Subject subject, String key) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(subject, key).toString(), null)).get();
     }
 
     public List<Message> getMessages(String conversationId) {

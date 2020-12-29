@@ -1,12 +1,11 @@
 package co.airy.core.chat_plugin;
 
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.chat_plugin.payload.MessageResponsePayload;
 import co.airy.mapping.ContentMapper;
 import org.springframework.stereotype.Component;
 
-import static co.airy.payload.format.DateFormat.isoFromMillis;
+import static co.airy.date.format.DateFormat.isoFromMillis;
 
 @Component
 public class Mapper {

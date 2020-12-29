@@ -5,6 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
+import co.airy.core.chat_plugin.dto.MessagesTreeSet;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
@@ -24,9 +25,11 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static co.airy.avro.communication.MessageRepository.updateDeliveryState;
+import static co.airy.model.message.MessageRepository.updateDeliveryState;
 
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
@@ -38,6 +41,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final WebSocketController webSocketController;
     private final KafkaProducer<String, Message> producer;
     private final String channelStore = "channel-store";
+    private final String messagesStore = "messages-store";
 
     Stores(KafkaStreamsWrapper streams,
            KafkaProducer<String, Message> producer,
@@ -52,6 +56,14 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(applicationCommunicationMessages)
                 .filter((messageId, message) -> "chat_plugin".equals(message.getSource()));
+
+        // Messages store
+        messageStream
+                .groupBy((messageId, message) -> message.getConversationId())
+                .aggregate(MessagesTreeSet::new, ((key, value, aggregate) -> {
+                    aggregate.add(value);
+                    return aggregate;
+                }), Materialized.as(messagesStore));
 
         // Client Echoes
         messageStream.filter((messageId, message) -> message.getSenderType().equals(SenderType.SOURCE_CONTACT))
@@ -89,9 +101,21 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return streams.acquireLocalStore(channelStore);
     }
 
+    public ReadOnlyKeyValueStore<String, MessagesTreeSet> getMessagesStore() {
+        return streams.acquireLocalStore(messagesStore);
+    }
+
     public Channel getChannel(String channelId) {
         final ReadOnlyKeyValueStore<String, Channel> store = getChannelsStore();
         return store.get(channelId);
+    }
+
+    public List<Message> getMessages(String conversationId) {
+        final ReadOnlyKeyValueStore<String, MessagesTreeSet> messagesStore = getMessagesStore();
+
+        final MessagesTreeSet messagesTreeSet = messagesStore.get(conversationId);
+
+        return messagesTreeSet == null ? List.of() : new ArrayList<>(messagesTreeSet);
     }
 
     @Override

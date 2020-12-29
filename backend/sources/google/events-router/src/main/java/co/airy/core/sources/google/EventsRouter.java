@@ -4,14 +4,17 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.source.SourceGoogleEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.uuid.UUIDv5;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -24,7 +27,12 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.core.sources.google.InfoExtractor.getMetadataFromContext;
 
 @Component
 public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
@@ -40,7 +48,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     }
 
     @Override
-    public void destroy() throws Exception {
+    public void destroy() {
         if (streams != null) {
             streams.close();
         }
@@ -53,6 +61,8 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
 
     private void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
+        final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
+        final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
 
         // Channels table
         KTable<String, Channel> channelsTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
@@ -75,51 +85,78 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                         return KeyValue.pair("skip", null);
                     }
 
-                    GoogleEventInfo googleEventInfo = GoogleInfoExtractor.extract(webhookEvent);
-                    googleEventInfo.setEventPayload(sourceEvent);
-                    googleEventInfo.setTimestamp(Instant.parse(webhookEvent.getSendTime()).toEpochMilli());
+                    final EventInfo eventInfo = InfoExtractor.extract(webhookEvent);
+                    eventInfo.setEvent(webhookEvent);
+                    eventInfo.setTimestamp(Instant.parse(webhookEvent.getSendTime()).toEpochMilli());
 
-                    if (!webhookEvent.isMessage()) {
-                        return KeyValue.pair(googleEventInfo.getAgentId(), null);
+                    if (!webhookEvent.hasMessage() && !webhookEvent.hasContext()) {
+                        return KeyValue.pair(eventInfo.getAgentId(), null);
                     }
 
-                    return KeyValue.pair(googleEventInfo.getAgentId(), googleEventInfo);
+                    return KeyValue.pair(eventInfo.getAgentId(), eventInfo);
                 })
                 .filter((agentId, event) -> event != null)
                 .join(channelsTable, (event, channel) -> event.toBuilder().channel(channel).build())
-                .map((agentId, event) -> {
+                .flatMap((agentId, event) -> {
                     final Channel channel = event.getChannel();
-                    final String payload = event.getEventPayload();
+                    final WebhookEvent webhookEvent = event.getEvent();
 
-                    final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
-                    final String conversationId = UUIDv5.fromNamespaceAndName(channel.getId(), event.getConversationId()).toString();
-                    final String sourceConversationId = event.getConversationId();
+                    String payload;
+                    try {
+                        payload = objectMapper.writeValueAsString(webhookEvent);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
 
-                    Message.Builder messageBuilder = Message.newBuilder();
-                    return KeyValue.pair(
-                            messageId,
-                            messageBuilder
-                                    .setSource(channel.getSource())
-                                    .setDeliveryState(DeliveryState.DELIVERED)
-                                    .setId(messageId)
-                                    .setChannelId(channel.getId())
-                                    .setConversationId(conversationId)
-                                    .setSenderType(SenderType.SOURCE_CONTACT)
-                                    .setContent(payload)
-                                    .setSenderId(sourceConversationId)
-                                    .setHeaders(Map.of()) // TODO we can add place Id
-                                    .setSentAt(event.getTimestamp())
-                                    .setUpdatedAt(null)
-                                    .build()
-                    );
+                    final String sourceConversationId = event.getSourceConversationId();
+                    final String conversationId = UUIDv5.fromNamespaceAndName(channel.getId(), sourceConversationId).toString();
+                    final List<KeyValue<String, SpecificRecordBase>> records = new ArrayList<>();
+
+                    if (webhookEvent.hasMessage()) {
+                        final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
+                        records.add(KeyValue.pair(messageId,
+                                Message.newBuilder()
+                                        .setSource(channel.getSource())
+                                        .setDeliveryState(DeliveryState.DELIVERED)
+                                        .setId(messageId)
+                                        .setChannelId(channel.getId())
+                                        .setConversationId(conversationId)
+                                        .setSenderType(SenderType.SOURCE_CONTACT)
+                                        .setContent(payload)
+                                        .setSenderId(sourceConversationId)
+                                        .setHeaders(Map.of())
+                                        .setSentAt(event.getTimestamp())
+                                        .setUpdatedAt(null)
+                                        .build()
+                        ));
+                    }
+
+                    if (webhookEvent.hasContext()) {
+                        final List<Metadata> metadataFromContext = getMetadataFromContext(conversationId, webhookEvent);
+
+                        for (Metadata metadata : metadataFromContext) {
+                            records.add(KeyValue.pair(getId(metadata).toString(), metadata));
+                        }
+                    }
+
+                    return records;
                 })
-                .filter((messageId, message) -> message != null)
-                .to(new ApplicationCommunicationMessages().name());
+                .filter((recordId, record) -> record != null)
+                .to((recordId, record, context) -> {
+                    if (record instanceof Metadata) {
+                        return applicationCommunicationMetadata;
+                    }
+                    if (record instanceof Message) {
+                        return applicationCommunicationMessages;
+                    }
+
+                    throw new IllegalStateException("Unknown type for record " + record);
+                });
 
         streams.start(builder.build(), appId);
     }
 
-    // visible for testing
+    // Visible for testing
     KafkaStreams.State getStreamState() {
         return streams.state();
     }

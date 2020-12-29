@@ -23,7 +23,7 @@ public class TwilioInfoExtractor {
     }
 
     static Map<String, String> parseUrlEncoded(String payload) {
-        List<String> kvPairs = Arrays.asList(payload.split("\\&"));
+        List<String> kvPairs = Arrays.asList(payload.split("&"));
 
         return kvPairs.stream()
                 .map((kvPair) -> {
@@ -39,9 +39,6 @@ public class TwilioInfoExtractor {
                     return List.of(name, value);
                 })
                 .filter(Objects::nonNull)
-                .collect(toMap(
-                        (tuple) -> tuple.get(0),
-                        (tuple) -> tuple.get(1)
-                ));
+                .collect(toMap((tuple) -> tuple.get(0), (tuple) -> tuple.get(1)));
     }
 }

@@ -7,7 +7,7 @@ lib_deps = [
     "//:spring",
     "//:jackson",
     "//lib/java/log",
-    "//backend/avro/communication:message",
+    "//backend/model/message:message",
     "@maven//:javax_validation_validation_api",
 ]
 

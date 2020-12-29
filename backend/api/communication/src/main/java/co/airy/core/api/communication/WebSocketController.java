@@ -1,18 +1,19 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
+import co.airy.model.channel.ChannelPayload;
 import co.airy.core.api.communication.dto.UnreadCountState;
 import co.airy.core.api.communication.payload.MessageUpsertPayload;
 import co.airy.core.api.communication.payload.UnreadCountPayload;
-import co.airy.payload.response.ChannelPayload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
-import static co.airy.payload.format.DateFormat.isoFromMillis;
+import static co.airy.avro.communication.ChannelConnectionState.CONNECTED;
+import static co.airy.model.channel.ChannelPayload.fromChannel;
+import static co.airy.date.format.DateFormat.isoFromMillis;
 
 @Service
 public class WebSocketController {
@@ -49,18 +50,11 @@ public class WebSocketController {
     }
 
     public void onChannelUpdate(Channel channel) {
-        final ChannelPayload channelPayload = ChannelPayload.builder()
-                .imageUrl(channel.getImageUrl())
-                .source(channel.getSource())
-                .sourceChannelId(channel.getSourceChannelId())
-                .name(channel.getName())
-                .id(channel.getId())
-                .build();
+        final ChannelPayload channelPayload = fromChannel(channel);
+        final String queue = CONNECTED.equals(channel.getConnectionState()) ?
+                QUEUE_CHANNEL_CONNECTED :
+                QUEUE_CHANNEL_DISCONNECTED;
 
-        if (ChannelConnectionState.CONNECTED.equals(channel.getConnectionState())) {
-            messagingTemplate.convertAndSend(QUEUE_CHANNEL_CONNECTED, channelPayload);
-        } else {
-            messagingTemplate.convertAndSend(QUEUE_CHANNEL_DISCONNECTED, channelPayload);
-        }
+        messagingTemplate.convertAndSend(queue, channelPayload);
     }
 }

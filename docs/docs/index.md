@@ -17,17 +17,17 @@ following components:
   independent contacts, conversations, and messages (see our
   [glossary](glossary.md) for formal definitions).
 
-- An [HTTP api](api/http.md) that allows to manage the data sets the platform
-  handles.
+- An [HTTP API](api/http.md) that allows you to manage the data sets the
+  platform handles.
 
 - A [webhook](api/webhook) integration server that allows to programmatically
   participate in conversations by sending messages. The webhook integration
-  exposes events users can "listen" to and react programmatically.
+  exposes events you can "listen" to and react programmatically.
 
-- A [WebSocket](api/websocket) server that allows to receive near real-time updates about
-  the data flowing through the system.
+- A [WebSocket](api/websocket) server that allows you to receive near real-time
+  updates about the data flowing through the system.
 
-## Bootstrapping the Airy Core Platform
+## Bootstrap the Airy Core Platform
 
 Run the Airy Core Platform locally by entering the following commands:
 
@@ -59,7 +59,7 @@ hosts file yourself.
 
 Check out our [guide for running in test environment](guides/airy-core-in-test-env.md) for detailed information.
 
-## Connecting a chat plugin source
+## Connect a Chat Plugin source
 
 The chat plugin source is well suited for a first integration because it does
 not require any configuration.
@@ -74,11 +74,9 @@ token=$(echo $(curl -H 'Content-Type: application/json' -d \
 \"password\":\"the_answer_is_42\" \
 }" api.airy/users.login) | jq -r '.token')
 curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
-"{ \
-    \"source\": \"chat_plugin\", \
-    \"source_channel_id\": \"my-chat-channel-1\", \
+"{
     \"name\": \"chat plugin source\"
-}" api.airy/channels.connect
+}" api.airy/chatplugin.connect
 ```
 
 <img alt="channels_connect" src={useBaseUrl('img/home/channels_connect.gif')} />
@@ -86,7 +84,7 @@ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 The ID from the response is the `channel_id`. It is required for
 the next steps, so note it down.
 
-## Sending messages with the chat plugin
+## Send messages via the Chat Plugin
 
 Pass the `channel_id` as a query parameter when opening the demo page in your
 browser. This authenticates the chat plugin and enables you to send messages

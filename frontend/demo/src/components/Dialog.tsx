@@ -14,7 +14,7 @@ type DialogProps = {
   close: () => void;
 };
 
-const Dialog = ({children, close, style, coverStyle, overlay}: DialogProps) => {
+const Dialog: React.FC<DialogProps> = ({children, close, style, coverStyle, overlay}: DialogProps): JSX.Element => {
   const keyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') {

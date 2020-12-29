@@ -6,7 +6,6 @@ app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
     "//:jdbi",
-    "//lib/java/payload",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",
     "//lib/java/pagination",
@@ -32,6 +31,7 @@ springboot(
     junit5(
         size = "medium",
         file = file,
+        resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
             "//backend:base_test",

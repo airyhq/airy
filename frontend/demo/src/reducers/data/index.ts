@@ -1,8 +1,8 @@
 import _, {combineReducers, Reducer} from 'redux-starter-kit';
-import {User} from '../../model/User';
+import {User} from 'httpclient';
 import {Tags} from './tags';
 import {Settings} from './settings';
-import {Channel} from '../../model/Channel';
+import {Channel} from 'httpclient';
 
 import user from './user';
 import conversations, {ConversationsState} from './conversations';

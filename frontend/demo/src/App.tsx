@@ -12,7 +12,7 @@ import Logout from './pages/Logout';
 import NotFound from './pages/NotFound';
 import Sidebar from './components/Sidebar';
 
-import {StateModel} from 'httpclient';
+import {StateModel} from './reducers';
 
 import {INBOX_ROUTE, CHANNELS_ROUTE, LOGIN_ROUTE, LOGOUT_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 

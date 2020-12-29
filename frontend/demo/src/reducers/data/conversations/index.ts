@@ -2,10 +2,10 @@ import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
 import {cloneDeep} from 'lodash-es';
 
-import {ResponseMetadata} from '../../../model/ResponseMetadata';
-import {Conversation} from '../../../model/Conversation';
+import {ResponseMetadata} from 'httpclient';
+import {Conversation} from 'httpclient';
 import * as actions from '../../../actions/conversations';
-import {Message} from '../../../model/Message';
+import {Message} from 'httpclient';
 
 type Action = ActionType<typeof actions>;
 

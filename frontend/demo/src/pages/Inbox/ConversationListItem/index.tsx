@@ -8,7 +8,7 @@ import {formatTimeOfMessage} from '../../../services/format/date';
 
 import {Conversation} from 'httpclient';
 import {Message} from 'httpclient';
-import {StateModel} from 'httpclient';
+import {StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 
 import styles from './index.module.scss';

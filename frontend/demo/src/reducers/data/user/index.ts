@@ -1,7 +1,7 @@
 import {ActionType, getType} from 'typesafe-actions';
-import {User} from '../../../model/User';
+import {User} from 'httpclient';
 import * as actions from '../../../actions/user';
-import {getUserFromStore, storeUserData} from '../../../api/webStore';
+import {getUserFromStore, storeUserData} from 'httpclient';
 
 type Action = ActionType<typeof actions>;
 

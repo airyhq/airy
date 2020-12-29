@@ -3,7 +3,7 @@ import {getAuthToken} from './webStore';
 export class AiryConfig {
   static API_URL = 'http://api.airy';
   static NODE_ENV = process.env.NODE_ENV;
-  static FACEBOOK_APP_ID = 'CHANGE_ME';
+  static FACEBOOK_APP_ID = '406942053758497';
 }
 
 const headers = {

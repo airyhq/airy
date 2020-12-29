@@ -17,6 +17,11 @@ export interface UserPayload {
   token: string;
 }
 
+export interface LoginViaEmailRequestPayload {
+  email: String;
+  password: String;
+}
+
 export const userMapper = (payload: UserPayload): User => {
   const user: User = {
     id: payload.id,

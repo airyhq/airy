@@ -1,8 +1,7 @@
 import _, {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
 
-import {doFetchFromBackend} from '../../api';
-import {Tag, TagPayload, CreateTagRequestPayload, GetTagsResponse, tagsMapper} from '../../model/Tag';
+import {AiryHttpClient, Tag, CreateTagRequestPayload, GetTagsResponse, tagsMapper} from 'httpclient';
 
 const UPSERT_TAG = 'UPSERT_TAG';
 const DELETE_TAG = 'DELETE_TAG';
@@ -18,24 +17,21 @@ export const deleteTagAction = createAction(DELETE_TAG, resolve => (id: string) 
 export const filterTagAction = createAction(SET_TAG_FILTER, resolve => (filter: string) => resolve(filter));
 export const errorTagAction = createAction(ERROR_TAG, resolve => (status: string) => resolve(status));
 
-export function getTags(query: string = '') {
+export function getTags() {
   return function(dispatch: Dispatch<any>) {
-    return doFetchFromBackend('tags.list').then((response: GetTagsResponse) => {
+    return AiryHttpClient.getTags().then((response:GetTagsResponse) => {
       dispatch(fetchTagAction(tagsMapper(response.data)));
-    });
+    }).catch((error: Error) => {
+      return error;
+    })
   };
 }
 
 export function createTag(requestPayload: CreateTagRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return doFetchFromBackend('tags.create', requestPayload)
-      .then((response: TagPayload) => {
-        const tag: Tag = {
-          id: response.id,
-          name: requestPayload.name,
-          color: requestPayload.color,
-        };
-        dispatch(addTagAction(tag));
+    return AiryHttpClient.createTag(requestPayload)
+      .then((response: Tag) => {
+         dispatch(addTagAction(response));
         return Promise.resolve(true);
       })
       .catch((error: string) => {
@@ -47,20 +43,22 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
 
 export function updateTag(tag: Tag) {
   return function(dispatch: Dispatch<any>) {
-    doFetchFromBackend('tags.update', {
-      id: tag.id,
-      name: tag.name,
-      color: tag.color,
-    }).then((responseTag: Tag) => dispatch(editTagAction(tag)));
+    AiryHttpClient.updateTag(tag)
+    .then(() => dispatch(editTagAction(tag)))
+    .catch((error:Error) => {
+      return error;
+    });
   };
 }
 
 export function deleteTag(id: string) {
   return function(dispatch: Dispatch<any>) {
-    doFetchFromBackend('tags.delete', {
-      id,
-    }).then(() => {
+    AiryHttpClient.deleteTag(id)
+    .then(() => {
       dispatch(deleteTagAction(id));
+    })
+    .catch((error:Error) => {
+      return error;
     });
   };
 }

@@ -2,14 +2,14 @@ import React, {useState, useCallback} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import styles from './TableRow.module.scss';
-import {updateTag} from 'httpclient';
+import {updateTag} from '../../actions/tags';
 import {Button, LinkButton} from '@airyhq/components';
 import {ReactComponent as EditIcon} from '../../assets/images/icons/edit.svg';
 import {ReactComponent as TrashIcon} from '../../assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
 import Tag from './Tag';
 import {Tag as TagModel, TagSettings} from 'httpclient';
-import {RootState} from 'httpclient';
+import {RootState} from '../../reducers';
 
 type TableRowProps = {
   tag: TagModel;

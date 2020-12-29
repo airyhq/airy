@@ -1,5 +1,6 @@
 import {Channel} from './Channel';
 import {Message, messageMapper, MessagePayload} from './Message';
+import {ResponseMetadata} from './ResponseMetadata';
 
 export interface Conversation {
   id: string;
@@ -32,6 +33,11 @@ export interface ConversationPayload {
   unread_message_count?: number;
 }
 
+export interface FetchConversationsResponse {
+  data: ConversationPayload[];
+  metadata: ResponseMetadata;
+}
+
 export const conversationMapper = (payload: ConversationPayload): Conversation => {
   const conversation: Conversation = {
     id: payload.id,
@@ -58,3 +64,5 @@ export const conversationsMapper = (payloadArray: ConversationPayload[]): Conver
   });
   return conversations;
 };
+
+

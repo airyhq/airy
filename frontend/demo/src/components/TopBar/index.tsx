@@ -2,7 +2,7 @@ import React, {useState, useCallback} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, Link, RouteComponentProps} from 'react-router-dom';
 
-import {StateModel} from 'httpclient';
+import {StateModel} from '../../reducers';
 
 import ListenOutsideClick from '../ListenOutsideClick';
 

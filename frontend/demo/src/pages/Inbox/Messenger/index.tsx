@@ -4,8 +4,8 @@ import _, {connect, ConnectedProps} from 'react-redux';
 
 import ConversationList from '../ConversationList';
 
-import {StateModel} from 'httpclient';
-import {AllConversationsState} from 'httpclient/payload';
+import {StateModel} from '../../../reducers';
+import {AllConversationsState} from '../../../reducers/data/conversations';
 
 import './index.scss';
 

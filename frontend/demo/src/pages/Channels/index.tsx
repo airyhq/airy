@@ -7,8 +7,8 @@ import {Button} from '@airyhq/components';
 
 import {AiryConfig} from 'httpclient';
 import {Channel} from 'httpclient';
-import {getChannels, exploreChannels, connectChannel, disconnectChannel} from 'httpclient';
-import {StateModel} from 'httpclient';
+import {getChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
+import {StateModel} from '../../reducers/index';
 
 import styles from './index.module.scss';
 

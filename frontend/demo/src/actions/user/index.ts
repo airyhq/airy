@@ -1,9 +1,7 @@
 import {createAction} from 'typesafe-actions';
 import _, {Dispatch} from 'redux';
 
-import {doFetchFromBackend} from '../../api';
-
-import {User, userMapper, UserPayload} from '../../model/User';
+import {User, userMapper, UserPayload, AiryHttpClient, LoginViaEmailRequestPayload} from 'httpclient';
 
 const SET_CURRENT_USER = '@@auth/SET_CURRENT_USER';
 const USER_AUTH_ERROR = '@@auth/ERROR';
@@ -13,14 +11,10 @@ export const setCurrentUserAction = createAction(SET_CURRENT_USER, resolve => (u
 export const userAuthErrorAction = createAction(USER_AUTH_ERROR, resolve => (error: Error) => resolve(error));
 export const logoutUserAction = createAction(USER_LOGOUT);
 
-export interface LoginViaEmailRequestPayload {
-  email: String;
-  password: String;
-}
 
 export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return doFetchFromBackend('users.login', requestPayload)
+    return AiryHttpClient.loginViaEmail(requestPayload)
       .then((response: UserPayload) => {
         dispatch(setCurrentUserAction(userMapper(response)));
         return Promise.resolve(true);

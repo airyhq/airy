@@ -1,7 +1,7 @@
 import _redux from 'redux';
 import _, {createSelector} from 'reselect';
 import {Tag} from 'httpclient';
-import {RootState} from 'httpclient';
+import {RootState} from '../reducers';
 
 const tags = (state: RootState) => state.data.tags.all;
 const queries = (state: RootState) => state.data.tags.query;

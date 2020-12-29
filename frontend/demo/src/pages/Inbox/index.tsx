@@ -2,8 +2,8 @@ import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import {User} from 'httpclient';
-import {fetchConversations} from 'httpclient';
-import {StateModel} from 'httpclient';
+import {fetchConversations} from '../../actions/conversations';
+import {StateModel} from '../../reducers';
 
 import Messenger from './Messenger';
 

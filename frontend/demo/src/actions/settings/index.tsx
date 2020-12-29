@@ -1,6 +1,5 @@
 import _, {Dispatch} from 'redux';
 
-
  const fakeData = () => {
   return {
     colors: {

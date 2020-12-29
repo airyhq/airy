@@ -4,7 +4,7 @@ import {Tag as TagModel} from 'httpclient';
 
 import close from '../../assets/images/icons/close.svg';
 import styles from './Tag.module.scss';
-import {RootState} from 'httpclient';
+import {RootState} from '../../reducers';
 import {TagSettings} from 'httpclient';
 
 type TagProps = {

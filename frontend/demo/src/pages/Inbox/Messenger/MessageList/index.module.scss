@@ -1,0 +1,10 @@
+.messageList {
+    display: flex;
+    flex-direction: column;
+    padding-left: 25px;
+    padding-right: 25px;
+    height: 100%;
+    overflow-y: scroll;
+    flex-grow: 1;
+    overflow-x: hidden;
+}

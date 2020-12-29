@@ -21,23 +21,23 @@ then
 fi
 
 
-kafka-topics --create --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.channels"  1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.channels"  1>/dev/null
 
-kafka-topics --create --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.messages" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.messages" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
 
-kafka-topics --create --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.metadata" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.metadata" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
 
-kafka-topics --create --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.read-receipt"  1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.read-receipt"  1>/dev/null
 
-kafka-topics --create --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.tags" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.tags" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
 
-kafka-topics --create --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.webhooks"  1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.webhooks"  1>/dev/null
 
-kafka-topics --create --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}ops.application.health" --config retention.ms=3600000 1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}ops.application.health" --config retention.ms=3600000 1>/dev/null
 
-kafka-topics --create --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}source.facebook.events"  1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}source.facebook.events"  1>/dev/null
 
-kafka-topics --create --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}source.google.events"  1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}source.google.events"  1>/dev/null
 
-kafka-topics --create --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}source.twilio.events"  1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}source.twilio.events"  1>/dev/null
 

@@ -1,4 +1,3 @@
-import {promises} from 'dns';
 import {doFetchFromBackend} from '../api';
 import {Tag} from '../model';
 

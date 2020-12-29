@@ -19,13 +19,9 @@ export const errorTagAction = createAction(ERROR_TAG, resolve => (status: string
 
 export function getTags() {
   return function(dispatch: Dispatch<any>) {
-    return AiryHttpClient.getTags()
-      .then((response: GetTagsResponse) => {
-        dispatch(fetchTagAction(tagsMapper(response.data)));
-      })
-      .catch((error: Error) => {
-        return error;
-      });
+    return AiryHttpClient.getTags().then((response: GetTagsResponse) => {
+      dispatch(fetchTagAction(tagsMapper(response.data)));
+    });
   };
 }
 
@@ -45,23 +41,15 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
 
 export function updateTag(tag: Tag) {
   return function(dispatch: Dispatch<any>) {
-    AiryHttpClient.updateTag(tag)
-      .then(() => dispatch(editTagAction(tag)))
-      .catch((error: Error) => {
-        return error;
-      });
+    AiryHttpClient.updateTag(tag).then(() => dispatch(editTagAction(tag)));
   };
 }
 
 export function deleteTag(id: string) {
   return function(dispatch: Dispatch<any>) {
-    AiryHttpClient.deleteTag(id)
-      .then(() => {
-        dispatch(deleteTagAction(id));
-      })
-      .catch((error: Error) => {
-        return error;
-      });
+    AiryHttpClient.deleteTag(id).then(() => {
+      dispatch(deleteTagAction(id));
+    });
   };
 }
 

@@ -11,6 +11,6 @@ ts_library(
         "@npm//react",
         "@npm//redux",
         "@npm//redux-starter-kit",
-        "@npm//typesafe-actions"
+        "@npm//typesafe-actions",
     ],
 )

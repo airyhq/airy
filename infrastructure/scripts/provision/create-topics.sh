@@ -27,7 +27,7 @@ kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-fac
 
 kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.metadata" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
 
-kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.read-receipt"  1>/dev/null
+kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.read-receipt" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
 
 kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic "${AIRY_CORE_NAMESPACE}application.communication.tags" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
 

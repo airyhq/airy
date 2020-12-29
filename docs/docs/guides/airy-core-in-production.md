@@ -29,7 +29,8 @@ Schema registry servers. We recommend using at least five Kafka brokers and set
 the replication factor of _all_ topics to `3`. So that even if two brokers
 would become unavailable at the same time, the system would still function.
 
-We also recommend running at least three Zookeepers and two instances of the Confluent Schema registry.
+We also recommend running at least three Zookeepers and two instances of the
+Confluent Schema registry.
 
 If you decide to run the Kafka cluster on Kubernetes, we recommend running Kafka
 and Zookeeper as StatefulSet workloads, for persistent storage. The Confluent
@@ -51,7 +52,8 @@ The Kafka cluster is usually started in the following order:
   parameter `kafkastore.bootstrap.server` of the configuration file
   `/etc/schema-registry/schema-registry.properties`.
 
-The location of the configuration files can vary depending on the particular installation.
+The location of the configuration files can vary depending on the particular
+installation.
 
 Once the Kafka cluster is up and running, the required topics must be created.
 You can find them in the Bash script
@@ -61,6 +63,8 @@ following environment variables to run:
 - `ZOOKEEPER` (default: airy-cp-zookeeper:2181)
 - `PARTITIONS` (default: 10)
 - `REPLICAS` (default: 1)
+- `AIRY_CORE_NAMESPACE` (default: ''). Helpful to namespace your topics in case
+  you are installing the Airy Core Platform in an existing Kafka cluster
 
 We do not recommend running Kafka on docker for production environments.
 However, we provide a way to deploy the whole Kafka cluster on top of Kubernetes

@@ -1,5 +1,6 @@
 import {doFetchFromBackend} from '../api';
-import {CreateTagRequestPayload, TagPayload, Tag} from '../model';
+import {Tag} from '../model';
+import {CreateTagRequestPayload, TagPayload} from '../payload';
 
 export function createTag(requestPayload: CreateTagRequestPayload) {
   return doFetchFromBackend('tags.create', requestPayload)

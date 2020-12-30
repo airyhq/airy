@@ -1,12 +1,6 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {
-  AiryHttpClient,
-  Conversation,
-  conversationsMapper,
-  FetchConversationsResponse,
-  ResponseMetadata,
-} from 'httpclient';
+import {HttpClient, Conversation, ResponseMetadata} from 'httpclient';
 import {StateModel} from '../../reducers';
 
 export const CONVERSATION_LOADING = '@@conversation/LOADING';
@@ -40,9 +34,9 @@ export const removeErrorFromConversationAction = createAction(
 export function fetchConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
-    return AiryHttpClient.fetchConversations()
-      .then((response: FetchConversationsResponse) => {
-        dispatch(mergeConversationsAction(conversationsMapper(response.data), response.metadata));
+    return HttpClient.fetchConversations()
+      .then((response: {data: Conversation[]; metadata: ResponseMetadata}) => {
+        dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {
@@ -55,9 +49,9 @@ export function fetchNextConversations() {
   return async (dispatch: Dispatch<any>, state: StateModel) => {
     const cursor = state.data.conversations.all.metadata.next_cursor;
     dispatch(loadingConversationsAction());
-    return AiryHttpClient.fetchNextConversations(cursor)
-      .then((response: FetchConversationsResponse) => {
-        dispatch(mergeConversationsAction(conversationsMapper(response.data), response.metadata));
+    return HttpClient.fetchNextConversations(cursor)
+      .then((response: {data: Conversation[]; metadata: ResponseMetadata}) => {
+        dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {

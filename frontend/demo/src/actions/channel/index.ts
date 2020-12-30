@@ -6,7 +6,7 @@ import {
   ConnectChannelRequestPayload,
   ExploreChannelRequestPayload,
   DisconnectChannelRequestPayload,
-  AiryHttpClient,
+  HttpClient,
 } from 'httpclient';
 
 const SET_CURRENT_CHANNELS = '@@channel/SET_CHANNELS';
@@ -20,7 +20,7 @@ export const addChannelsAction = createAction(ADD_CHANNELS, resolve => (channels
 
 export function getChannels() {
   return async (dispatch: Dispatch<any>) => {
-    return AiryHttpClient.getChannels()
+    return HttpClient.getChannels()
       .then((response: Channel[]) => {
         dispatch(setCurrentChannelsAction(response));
         return Promise.resolve(response);
@@ -33,7 +33,7 @@ export function getChannels() {
 
 export function exploreChannels(requestPayload: ExploreChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return AiryHttpClient.exploreChannels(requestPayload)
+    return HttpClient.exploreChannels(requestPayload)
       .then((response: Channel[]) => {
         dispatch(addChannelsAction(response));
         return Promise.resolve(response);
@@ -46,7 +46,7 @@ export function exploreChannels(requestPayload: ExploreChannelRequestPayload) {
 
 export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return AiryHttpClient.connectChannel(requestPayload)
+    return HttpClient.connectChannel(requestPayload)
       .then((response: Channel) => {
         dispatch(addChannelsAction([response]));
         return Promise.resolve(response);
@@ -59,7 +59,7 @@ export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
 
 export function disconnectChannel(requestPayload: DisconnectChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return AiryHttpClient.disconnectChannel(requestPayload)
+    return HttpClient.disconnectChannel(requestPayload)
       .then((response: Channel[]) => {
         dispatch(setCurrentChannelsAction(response));
         return Promise.resolve(response);

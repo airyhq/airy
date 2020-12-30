@@ -7,10 +7,5 @@ ts_library(
     deps = [
         "//lib/typescript/types",
         "@npm//@types/node",
-        "@npm//lodash-es",
-        "@npm//react",
-        "@npm//redux",
-        "@npm//redux-starter-kit",
-        "@npm//typesafe-actions",
     ],
 )

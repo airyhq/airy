@@ -10,9 +10,9 @@ import {
   updateTag,
   deleteTag,
   loginViaEmail,
-} from './payload';
+} from './endpoints';
 
-export const AiryHttpClient = (function() {
+export const HttpClient = (function() {
   return {
     getChannels: getChannels,
     exploreChannels: exploreChannels,
@@ -30,3 +30,5 @@ export const AiryHttpClient = (function() {
 
 export * from './api';
 export * from './model';
+export * from './endpoints';
+export * from './payload';

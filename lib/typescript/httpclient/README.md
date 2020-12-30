@@ -24,8 +24,8 @@ CHANNELS
 - disconnectChannel 
 
 CONVERSATIONS 
-- fetchConversations
-- fetchNextConversations
+- listConversations
+- listNextConversations
 
 TAGS 
 - getTags

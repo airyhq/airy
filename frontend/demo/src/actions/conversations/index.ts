@@ -31,10 +31,10 @@ export const removeErrorFromConversationAction = createAction(
   resolve => (conversationId: string) => resolve({conversationId})
 );
 
-export function fetchConversations() {
+export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
-    return HttpClient.fetchConversations()
+    return HttpClient.listConversations({page_size: 10})
       .then((response: {data: Conversation[]; metadata: ResponseMetadata}) => {
         dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);
@@ -45,11 +45,11 @@ export function fetchConversations() {
   };
 }
 
-export function fetchNextConversations() {
+export function listNextConversations() {
   return async (dispatch: Dispatch<any>, state: StateModel) => {
     const cursor = state.data.conversations.all.metadata.next_cursor;
     dispatch(loadingConversationsAction());
-    return HttpClient.fetchNextConversations(cursor)
+    return HttpClient.listNextConversations({cursor: cursor})
       .then((response: {data: Conversation[]; metadata: ResponseMetadata}) => {
         dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);

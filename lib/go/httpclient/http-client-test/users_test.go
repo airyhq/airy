@@ -2,11 +2,12 @@ package tests
 
 import (
 	"fmt"
-	"httpclient"
-	"httpclient/payloads"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"httpclient"
+	"payloads"
 
 	"github.com/stretchr/testify/assert"
 )

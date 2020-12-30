@@ -8,7 +8,7 @@ go_library(
         "signup_request.go",
         "signup_response.go",
     ],
-    importmap = "lib/go/payloads",
-    importpath = "httpclient/payloads",
+    importmap = "lib/go/httpclient",
+    importpath = "payloads",
     visibility = ["//visibility:public"],
 )

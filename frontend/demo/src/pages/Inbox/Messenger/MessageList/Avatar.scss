@@ -1,0 +1,39 @@
+.DisplayName {
+    display: block;
+  }
+  
+  .AvatarDiv {
+    align-self: flex-end;
+    margin-bottom: 28px;
+    margin-right: 7px;
+  }
+  
+  .AvatarDiv.hideProfileImg {
+    margin-right: 0;
+  }
+  
+  .ProfileImage {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0;
+    margin-right: 0;
+    display: block;
+    border-radius: 50%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-right: 4px;
+    background-size: cover;
+  }
+  
+  .ProfileImage.top {
+    margin-bottom: -20px;
+  }
+  
+  .ProfileImage.hideProfileImg {
+    display: none;
+  }
+  
+  .DisplayName.hideProfileImg {
+    display: none;
+  }
+  

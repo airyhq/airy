@@ -44,14 +44,10 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
       
       <Route
         path={[`${match.url}/conversations/:conversationId`, `${match.url}`]}
-<<<<<<< HEAD
-        render={() => <Fragment></Fragment>}
-=======
         render={props => 
         <Fragment>
           <MessengerContainer {...props} />
         </Fragment>}
->>>>>>> added structure
       />
     </section>
   );

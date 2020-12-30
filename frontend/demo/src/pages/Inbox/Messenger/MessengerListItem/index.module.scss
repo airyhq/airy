@@ -1,0 +1,40 @@
+@import '../../../../assets//scss/colors.scss';
+
+.messageListItemContainer {
+    display: flex;
+    flex: none;
+}
+
+.messageListItem {
+    p {
+        display: flex;
+        align-self: flex-end;
+        padding: 10px;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+}
+
+.messageListItemUser {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-top: 5px;
+    margin-left: 42px;
+    background: var(--color-background-blue);
+    color: #212428;
+    position: relative;
+    text-align: left;
+    border-radius: 8px;
+}
+
+.messageListItemMember {
+    display: inline-flex;
+    align-self: flex-end;
+    position: relative;
+    background: var(--color-airy-blue);
+    color: white;
+    position: relative;
+    text-align: left;
+    border-radius: 8px;
+}

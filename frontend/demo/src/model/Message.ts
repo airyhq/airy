@@ -39,6 +39,10 @@ export interface Message {
   sentAt: string | Date;
 }
 
+export interface MessagePayloadData {
+  data: Message[]
+}
+
 export interface MessagePayload {
   id: string;
   content: {

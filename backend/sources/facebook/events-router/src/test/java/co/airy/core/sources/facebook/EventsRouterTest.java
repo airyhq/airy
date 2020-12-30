@@ -165,6 +165,6 @@ class EventsRouterTest {
         assertThat(messages, hasSize(1));
 
         Message message = messages.get(0);
-        assertThat(message.getSenderType(), is(SenderType.APP_USER));
+        assertThat(message.getSenderType(), is(SenderType.SOURCE_USER));
     }
 }

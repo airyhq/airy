@@ -1,4 +1,4 @@
 export interface ConversationListRequestPayload {
-  cursor?: string;
+  cursor?: string | null;
   page_size?: number;
 }

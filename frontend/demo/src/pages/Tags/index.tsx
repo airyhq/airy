@@ -5,10 +5,11 @@ import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/com
 
 import plus from '../../assets/images/icons/plus.svg';
 
-import {getTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
+import {listTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
 import {fakeSettingsAPICall} from '../../actions/settings';
 import {filteredTags} from '../../selectors/tags';
-import {Tag, ModalType} from 'httpclient';
+import {Tag} from 'httpclient';
+import {ModalType} from '../../types';
 
 import styles from './index.module.scss';
 import {TableRow} from './TableRow';
@@ -32,7 +33,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   state = initialState;
 
   componentDidMount() {
-    this.props.getTags();
+    this.props.listTags();
     this.props.fakeSettingsAPICall();
     this.props.filterTags('');
   }
@@ -212,7 +213,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = {
-  getTags,
+  listTags,
   deleteTag,
   errorTag,
   filterTags,

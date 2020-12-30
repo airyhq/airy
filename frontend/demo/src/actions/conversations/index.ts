@@ -49,7 +49,7 @@ export function listNextConversations() {
   return async (dispatch: Dispatch<any>, state: StateModel) => {
     const cursor = state.data.conversations.all.metadata.next_cursor;
     dispatch(loadingConversationsAction());
-    return HttpClient.listNextConversations({cursor: cursor})
+    return HttpClient.listConversations({cursor: cursor})
       .then((response: {data: Conversation[]; metadata: ResponseMetadata}) => {
         dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);

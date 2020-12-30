@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Tag as TagModel, TagSettings} from 'httpclient';
+import {Tag as TagModel } from 'httpclient';
+import {TagSettings} from '../../types';
 
 import close from '../../assets/images/icons/close.svg';
 import styles from './Tag.module.scss';

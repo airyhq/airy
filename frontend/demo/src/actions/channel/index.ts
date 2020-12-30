@@ -18,9 +18,9 @@ export const setCurrentChannelsAction = createAction(SET_CURRENT_CHANNELS, resol
 
 export const addChannelsAction = createAction(ADD_CHANNELS, resolve => (channels: Channel[]) => resolve(channels));
 
-export function getChannels() {
+export function listChannels() {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClient.getChannels()
+    return HttpClient.listChannels()
       .then((response: Channel[]) => {
         dispatch(setCurrentChannelsAction(response));
         return Promise.resolve(response);

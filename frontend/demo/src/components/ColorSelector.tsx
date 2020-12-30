@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {connect} from 'react-redux';
 import {RootState} from '../reducers';
-import {TagSettings} from 'httpclient';
+import {TagSettings} from '../types';
 
 import styles from './ColorSelector.module.scss';
 

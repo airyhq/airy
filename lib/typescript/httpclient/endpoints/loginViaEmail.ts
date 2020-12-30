@@ -16,8 +16,7 @@ const userMapper = (payload: UserPayload): User => {
 export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
   return doFetchFromBackend('users.login', requestPayload)
     .then((response: UserPayload) => {
-      const userInfo = userMapper(response);
-      return userInfo;
+      return userMapper(response);
     })
     .catch((error: Error) => {
       return error;

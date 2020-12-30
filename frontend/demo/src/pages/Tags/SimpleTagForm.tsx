@@ -1,7 +1,7 @@
 import React, {useState, Fragment} from 'react';
 import {connect} from 'react-redux';
 
-import {createTag, getTags, errorTag, filterTags} from '../../actions/tags';
+import {createTag, listTags, errorTag, filterTags} from '../../actions/tags';
 import {filteredTags} from '../../selectors/tags';
 
 import {Button, Input} from '@airyhq/components';
@@ -9,7 +9,7 @@ import Dialog from '../../components/Dialog';
 import ColorSelector from '../../components/ColorSelector';
 
 import Tag from '../../pages/Tags/Tag';
-import {Tag as TagModel} from 'httpclient';
+import {Tag as TagModel, ColorTag} from 'httpclient';
 
 import styles from './SimpleTagForm.module.scss';
 import {RootState} from '../../reducers';
@@ -73,7 +73,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
         <p className={styles.errorMessage}>{(!name.length || showError) && errorMessage}</p>
         {name && (
           <div>
-            <Tag tag={{id: '', color: color, name: name}} />
+            <Tag tag={{id: '', color: color as  ColorTag, name: name}} />
           </div>
         )}
         <Fragment>
@@ -104,7 +104,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = {
   createTag,
   errorTag,
-  getTags,
+  listTags,
   filterTags,
 };
 

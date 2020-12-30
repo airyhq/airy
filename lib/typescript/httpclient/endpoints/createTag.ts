@@ -1,5 +1,5 @@
 import {doFetchFromBackend} from '../api';
-import {Tag} from '../model';
+import {Tag, ColorTag} from '../model';
 import {CreateTagRequestPayload, TagPayload} from '../payload';
 
 export function createTag(requestPayload: CreateTagRequestPayload) {
@@ -8,7 +8,7 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
       const tag: Tag = {
         id: response.id,
         name: requestPayload.name,
-        color: requestPayload.color,
+        color: requestPayload.color as ColorTag,
       };
       return tag;
     })

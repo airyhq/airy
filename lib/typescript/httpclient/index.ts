@@ -1,11 +1,10 @@
 import {
-  getChannels,
+  listChannels,
   exploreChannels,
   connectChannel,
   disconnectChannel,
   listConversations,
-  listNextConversations,
-  getTags,
+  listTags,
   createTag,
   updateTag,
   deleteTag,
@@ -14,13 +13,12 @@ import {
 
 export const HttpClient = (function() {
   return {
-    getChannels: getChannels,
+    listChannels: listChannels,
     exploreChannels: exploreChannels,
     connectChannel: connectChannel,
     disconnectChannel: disconnectChannel,
     listConversations: listConversations,
-    listNextConversations: listNextConversations,
-    getTags: getTags,
+    listTags: listTags,
     createTag: createTag,
     updateTag: updateTag,
     deleteTag: deleteTag,

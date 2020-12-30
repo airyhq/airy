@@ -17,9 +17,9 @@ export const deleteTagAction = createAction(DELETE_TAG, resolve => (id: string) 
 export const filterTagAction = createAction(SET_TAG_FILTER, resolve => (filter: string) => resolve(filter));
 export const errorTagAction = createAction(ERROR_TAG, resolve => (status: string) => resolve(status));
 
-export function getTags() {
+export function listTags() {
   return function(dispatch: Dispatch<any>) {
-    return HttpClient.getTags().then((response: Tag[]) => {
+    return HttpClient.listTags().then((response: Tag[]) => {
       dispatch(fetchTagAction(response));
     });
   };

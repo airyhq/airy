@@ -13,7 +13,7 @@ const channelsMapper = (payload: ChannelsPayload, source?: string): Channel[] =>
   );
 };
 
-export function getChannels() {
+export function listChannels() {
   return doFetchFromBackend('channels.list')
     .then((response: ChannelsPayload) => {
       const channels = channelsMapper(response);

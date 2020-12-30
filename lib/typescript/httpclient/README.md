@@ -11,24 +11,23 @@ For example:
 ``` 
 import { HttpClient} from 'httpclient';
 
-HttpClient.getChannels()
+HttpClient.listChannels()
 
 ``` 
 
 Here is a list of the functions it includes: 
 
 CHANNELS
-- getChannels 
+- listChannels
 - exploreChannels 
 - connectChannel
 - disconnectChannel 
 
 CONVERSATIONS 
 - listConversations
-- listNextConversations
 
 TAGS 
-- getTags
+- listTags
 - createTag
 - updateTag
 - deleteTag

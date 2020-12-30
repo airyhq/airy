@@ -8,7 +8,8 @@ import {ReactComponent as EditIcon} from '../../assets/images/icons/edit.svg';
 import {ReactComponent as TrashIcon} from '../../assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
 import Tag from './Tag';
-import {Tag as TagModel, TagSettings} from 'httpclient';
+import {Tag as TagModel, ColorTag} from 'httpclient';
+import {TagSettings} from '../../types';
 import {RootState} from '../../reducers';
 
 type TableRowProps = {
@@ -24,7 +25,7 @@ const TableRowComponent = (props: TableRowProps) => {
     edit: false,
     id: '',
     name: '',
-    color: '',
+    color: '' as ColorTag,
   });
 
   const handleUpdate = useCallback(
@@ -43,7 +44,7 @@ const TableRowComponent = (props: TableRowProps) => {
     const currentTag = {
       id: tag.id,
       name: tagState.name,
-      color: tagState.color,
+      color: tagState.color as ColorTag,
     };
     updateTag(currentTag);
     setTagState({

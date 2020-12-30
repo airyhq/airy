@@ -1,5 +1,5 @@
 import {Tag} from '../model';
 
-export interface GetTagsResponse {
+export interface ListTagsResponsePayload {
   data: Tag[];
 }

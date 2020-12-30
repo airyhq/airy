@@ -1,6 +1,6 @@
 import {doFetchFromBackend} from '../api';
 import {
-  ListConversationsResponse,
+  ListConversationsResponsePayload,
   ConversationPayload,
   MessagePayload,
   ConversationListRequestPayload,
@@ -38,19 +38,15 @@ const conversationMapper = (payload: ConversationPayload): Conversation => {
 };
 
 const conversationsMapper = (payloadArray: ConversationPayload[]): Conversation[] => {
-  const conversations: Conversation[] = [];
-  payloadArray.forEach((conversation: ConversationPayload) => {
-    conversations.push(conversationMapper(conversation));
-  });
-  return conversations;
-};
+  return (payloadArray  || []).map(conversation => conversationMapper(conversation))
+}
 
 export function listConversations(conversationListRequest: ConversationListRequestPayload) {
   conversationListRequest.page_size = conversationListRequest.page_size ?? 10;
-  conversationListRequest.cursor = conversationListRequest.cursor ?? 'next-page-uuid';
+  conversationListRequest.cursor = conversationListRequest.cursor ?? null;
 
   return doFetchFromBackend('conversations.list', conversationListRequest)
-    .then((response: ListConversationsResponse) => {
+    .then((response: ListConversationsResponsePayload) => {
       const {response_metadata} = response;
       return {data: conversationsMapper(response.data), metadata: response_metadata};
     })

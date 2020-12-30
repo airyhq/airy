@@ -5,4 +5,3 @@ export interface Tag {
   name: string;
   color: ColorTag;
 }
-

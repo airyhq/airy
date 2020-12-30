@@ -38,8 +38,8 @@ const conversationMapper = (payload: ConversationPayload): Conversation => {
 };
 
 const conversationsMapper = (payloadArray: ConversationPayload[]): Conversation[] => {
-  return (payloadArray  || []).map(conversation => conversationMapper(conversation))
-}
+  return (payloadArray || []).map(conversation => conversationMapper(conversation));
+};
 
 export function listConversations(conversationListRequest: ConversationListRequestPayload) {
   conversationListRequest.page_size = conversationListRequest.page_size ?? 10;

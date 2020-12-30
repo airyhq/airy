@@ -73,7 +73,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
         <p className={styles.errorMessage}>{(!name.length || showError) && errorMessage}</p>
         {name && (
           <div>
-            <Tag tag={{id: '', color: color as  ColorTag, name: name}} />
+            <Tag tag={{id: '', color: color as ColorTag, name: name}} />
           </div>
         )}
         <Fragment>

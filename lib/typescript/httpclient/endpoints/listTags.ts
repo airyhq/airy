@@ -4,7 +4,7 @@ import {ListTagsResponsePayload} from '../payload';
 
 const colorMapper = (color: string): ColorTag => {
   const colors = ['BLUE', 'RED', 'GREEN', 'PURPLE'];
-  if(colors.includes(color)){
+  if (colors.includes(color)) {
     return `tag-${color.toLowerCase()}` as ColorTag;
   } else {
     return 'tag-blue' as ColorTag;
@@ -13,8 +13,8 @@ const colorMapper = (color: string): ColorTag => {
 
 const tagsMapper = (serverTags: Tag[]): Tag[] => {
   return serverTags.map(tag => {
-    return {id: tag.id, name: tag.name, color: colorMapper(tag.color)}
-  })
+    return {id: tag.id, name: tag.name, color: colorMapper(tag.color)};
+  });
 };
 
 export function listTags() {

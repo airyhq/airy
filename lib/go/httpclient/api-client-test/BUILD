@@ -4,8 +4,8 @@ go_test(
     name = "api-client-test_test",
     srcs = ["users_test.go"],
     deps = [
-        "//lib/go/apiclient",
-        "//lib/go/apiclient/payloads",
+        "//lib/go/httpclient",
+        "//lib/go/httpclient/payloads",
         "@com_github_stretchr_testify//assert",
     ],
 )

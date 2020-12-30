@@ -1,8 +1,8 @@
-package apiclient
+package httpclient
 
 import (
-	"apiclient/payloads"
 	"encoding/json"
+	"httpclient/payloads"
 )
 
 func (c *Client) Signup(signupRequestPayload payloads.SignupRequestPayload) (*payloads.SignupResponsePayload, error) {

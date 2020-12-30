@@ -9,6 +9,6 @@ go_library(
         "signup_response.go",
     ],
     importmap = "lib/go/payloads",
-    importpath = "apiclient/payloads",
+    importpath = "httpclient/payloads",
     visibility = ["//visibility:public"],
 )

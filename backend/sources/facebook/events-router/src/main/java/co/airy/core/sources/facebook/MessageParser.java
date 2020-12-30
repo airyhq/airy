@@ -54,7 +54,7 @@ public class MessageParser {
             senderType = SenderType.SOURCE_USER;
             senderId = appId;
         } else if(isEcho && appId == null) {
-            senderType = SenderType.APP_USER;
+            senderType = SenderType.SOURCE_USER;
             senderId = getSourceConversationId(webhookMessaging);
         } else {
             // Filter out echoes coming from this app

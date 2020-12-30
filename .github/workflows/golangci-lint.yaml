@@ -4,7 +4,6 @@ on:
     tags:
       - v*
     branches:
-      - master
       - main
       - feature/446-go-linter
   pull_request:
@@ -21,7 +20,7 @@ jobs:
           version: v1.29
 
           # Optional: working directory, useful for monorepos
-          # working-directory: somedir
+          working-directory: lib/go/apiclient
 
           # Optional: golangci-lint command line arguments.
           # args: --issues-exit-code=0

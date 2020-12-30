@@ -12,11 +12,11 @@ export type MessagesState = {
 };
 
 export type Messages = {
-  items: Message[];
+  all: Message[];
 };
 
 const initialState = {
-  items: [],
+  all: [],
 };
 
 export default function messagesReducer(state = initialState, action: Action): any {
@@ -24,7 +24,7 @@ export default function messagesReducer(state = initialState, action: Action): a
     case getType(actions.loadingMessagesAction):
       return {
         ...state,
-        items: action.payload
+        all: action.payload
       };
     default:
       return state;

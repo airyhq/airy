@@ -1,14 +1,14 @@
 import React from 'react';
 import _redux from 'redux';
 import _, {connect, ConnectedProps} from 'react-redux';
-import { Message, MessageAlignment } from '../../../../model/Message';
+import { Message, MessageSenderType } from '../../../../model/Message';
 import { StateModel } from '../../../../reducers';
 
 import styles from './index.module.scss';
 
 type MessengerListItemProps = {
     message: string,
-    messageAlignment?: string,
+    messageSenderType?: string,
 } & ConnectedProps <typeof connector>
 
 const mapStateToProps = (state: StateModel) => {
@@ -23,12 +23,11 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const MessengerListItem = ({message, messageAlignment}: MessengerListItemProps) => {
+const MessengerListItem = ({message, messageSenderType}: MessengerListItemProps) => {
 
-    const isMember = messageAlignment !== MessageAlignment.left;
+    const isMember = messageSenderType !== MessageSenderType.appUser;
 
-    console.log(messageAlignment)
-    console.log(isMember);
+    console.log(messageSenderType)
 
     return (
         <div className={styles.messageListItemContainer}>

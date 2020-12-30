@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Route, withRouter, Redirect, RouteComponentProps, useParams} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
@@ -23,6 +23,7 @@ type MessageListProps = {
 const mapStateToProps = (state: StateModel, ownProps: any) => {
     return {
         conversations: allConversationSelector(state),
+        messages: state.data.messages.all,
     }
 }
 
@@ -32,25 +33,42 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
+
+
 const MessageList = (props: MessageListProps) => {
-    const {conversations, fetchMessages, message} = props;
+    const {conversations, fetchMessages, message, messages} = props;
     const conversationIdParams = useParams();
     const currentConversationId = conversationIdParams[Object.keys(conversationIdParams)[0]];
     let messageArray = [];
 
-    const getMessages = (conversationId: string): Message[] => {
-        if (conversations !== undefined) 
-            {conversations.map((conversation: Conversation) => {
-                if (conversationId === conversation.id) {
-                    fetchMessages(currentConversationId);
-                    messageArray.push(conversation.lastMessage);
-                    console.log(messageArray);
-                    return message;
-                } 
-            })
-        }
-        return messageArray
+    
+    useEffect(() => {
+        fetchMessages(currentConversationId);
+    });    
+
+    // const getMessages = (conversationId: string): Message[] => {
+    //     if (conversations !== undefined) 
+    //         {conversations.map((conversation: Conversation) => {
+    //             if (conversationId === conversation.id) {
+    //                 fetchMessages(currentConversationId);
+    //                 messageArray.push(conversation.lastMessage);
+    //                 console.log(messageArray);
+    //                 return message;
+    //             } 
+    //         })
+    //     }
+    //     return messageArray
+    // }
+
+    const getMessages = (conversationId: string) => {
+        messages.map((message: Message) => {
+            if (message.id === conversationId) {
+                fetchMessages(currentConversationId);
+            }
+        })
+
     }
+
 
     getMessages(currentConversationId)
 
@@ -64,12 +82,12 @@ const MessageList = (props: MessageListProps) => {
 
     return (
         <div className={styles.messageList}>
-            {messageArray.map((message: Message) => {
+            {messages.map((message: Message) => {
                 return (
                 <MessageListItem 
                 key={message.id}
                 message={message.content[0].text}
-                messageAlignment={message.alignment}
+                messageSenderType={message.senderType}
                 />
                 )
             })}

@@ -28,6 +28,11 @@ export enum MessageState {
   delivered = 'DELIVERED',
 }
 
+export enum MessageSenderType {
+  sourceContact = 'source_contact',
+  sourceUser = 'source_user',
+  appUser = 'app_user'
+}
 export interface Message {
   id: string;
   content: {
@@ -35,14 +40,13 @@ export interface Message {
     type: MessageType;
   };
   state: MessageState;
-  alignment: MessageAlignment;
+  senderType: MessageSenderType;
   sentAt: string | Date;
 }
 
 export interface MessagePayloadData {
   data: Message[]
 }
-
 export interface MessagePayload {
   id: string;
   content: {
@@ -50,7 +54,7 @@ export interface MessagePayload {
     type: MessageType;
   };
   state: MessageState;
-  alignment: MessageAlignment;
+  senderType: MessageSenderType;
   sent_at: string | Date;
 }
 
@@ -59,7 +63,7 @@ export const messageMapper = (payload: MessagePayload): Message => {
     id: payload.id,
     content: payload.content,
     state: payload.state,
-    alignment: payload.alignment,
+    senderType: payload.senderType,
     sentAt: payload.sent_at,
   };
   return message;

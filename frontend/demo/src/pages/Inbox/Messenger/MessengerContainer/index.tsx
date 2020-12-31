@@ -1,12 +1,9 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { StateModel } from '../../../../reducers';
-import conversations from '../../../../reducers/data/conversations';
 import MessageList from '../MessageList';
-import { Conversation } from '../../../../model/Conversation';
 import {ReactComponent as EmptyStateImage} from '../../../../assets/images/empty-state/inbox-empty-state.svg';
 import styles from './index.module.scss';
-import { RouteComponentProps } from 'react-router-dom';
 
 const mapStateToProps = (state: StateModel) => {
     return {
@@ -14,11 +11,7 @@ const mapStateToProps = (state: StateModel) => {
     };
 };
 
-const mapDispatchToProps = {
-
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps, null);
 
 type MessengerContainerProps = {
 } & ConnectedProps<typeof connector>

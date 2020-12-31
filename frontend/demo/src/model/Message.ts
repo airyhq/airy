@@ -39,9 +39,9 @@ export interface Message {
     text: string;
     type: MessageType;
   };
-  state: MessageState;
+  deliveryState: MessageState;
   senderType: MessageSenderType;
-  sentAt: string | Date;
+  sentAt: Date;
 }
 
 export interface MessagePayloadData {
@@ -53,18 +53,33 @@ export interface MessagePayload {
     text: string;
     type: MessageType;
   };
-  state: MessageState;
-  senderType: MessageSenderType;
-  sent_at: string | Date;
+  delivery_state: MessageState;
+  sender_type: MessageSenderType;
+  sent_at: Date;
 }
 
 export const messageMapper = (payload: MessagePayload): Message => {
   const message: Message = {
     id: payload.id,
     content: payload.content,
-    state: payload.state,
-    senderType: payload.senderType,
+    deliveryState: payload.delivery_state,
+    senderType: payload.sender_type,
     sentAt: payload.sent_at,
   };
   return message;
+};
+
+export const messageMapperData = (payload: MessagePayloadData): Message[] => {
+  let messages = [];
+  payload.data.forEach((messagePayload: any) => {
+    const message: Message = {
+      id: messagePayload.id,
+      content: messagePayload.content,
+      deliveryState: messagePayload.delivery_state,
+      senderType: messagePayload.sender_type,
+      sentAt: messagePayload.sent_at,
+    };
+    messages.push(message)
+  })
+  return messages;
 };

@@ -6,19 +6,17 @@
 }
 
 .messageListItem {
-    p {
-        display: flex;
-        align-self: flex-end;
-        padding: 10px;
-        max-width: 100%;
-        overflow-wrap: break-word;
-        word-break: break-word;
-    }
+    display: flex;
+    align-self: flex-end;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .messageListItemUser {
     display: inline-flex;
     align-self: flex-start;
+    padding: 10px;
     margin-top: 5px;
     margin-left: 42px;
     background: var(--color-background-blue);
@@ -32,6 +30,7 @@
     margin-top: 5px;
     display: inline-flex;
     align-self: flex-end;
+    padding: 10px;
     position: relative;
     background: var(--color-airy-blue);
     color: white;

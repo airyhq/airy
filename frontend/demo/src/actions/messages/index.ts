@@ -1,7 +1,7 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
 import {doFetchFromBackend} from '../../api/airyConfig';
-import {Message, MessagePayloadData} from '../../model/Message';
+import {Message, MessagePayloadData, messageMapperData} from '../../model/Message';
 
 export const MESSAGES_LOADING = '@@messages/LOADING';
 
@@ -14,7 +14,7 @@ export function fetchMessages(conversation_id: string) {
         return doFetchFromBackend('messages.list', {
             conversation_id
         }).then((response: MessagePayloadData) => {
-            dispatch(loadingMessagesAction(response.data));
+            dispatch(loadingMessagesAction(messageMapperData(response)));
         })
     }
 }

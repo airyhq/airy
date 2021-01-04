@@ -11,13 +11,10 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Every.everyItem;
-import static org.hamcrest.core.Is.isA;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.AnyOf.anyOf;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.hamcrest.core.Every.everyItem;
+import static org.hamcrest.core.Is.isA;
 
 public class TwilioTest {
     private final TwilioMapper mapper = new TwilioMapper();

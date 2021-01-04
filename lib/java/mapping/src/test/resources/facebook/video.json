@@ -1,0 +1,20 @@
+{
+  "sender": {
+    "id": "3448289328620117"
+  },
+  "recipient": {
+    "id": "569078233236402"
+  },
+  "timestamp": 1608240605982,
+  "message": {
+    "mid": "m_b42WdoNzwv4d_UL-vuRmVwoQrkTsoIshZoEKAiAARYac6QzyDxKM3qnHXt5JifI5x86p7_Q2SPQM-8bBRFLbdA",
+    "attachments": [
+      {
+        "type": "video",
+        "payload": {
+          "url": "%s"
+        }
+      }
+    ]
+  }
+}

@@ -5,12 +5,14 @@ import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
+import co.airy.mapping.model.Video;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class FacebookMapper implements SourceMapper {
@@ -20,6 +22,11 @@ public class FacebookMapper implements SourceMapper {
     public FacebookMapper() {
         this.objectMapper = new ObjectMapper();
     }
+
+    private static final Map<String, ? extends Class<? extends Content>> attachmentClassMapper = Map.of(
+            "image", Image.class,
+            "video", Video.class,
+            "audio", Audio.class);
 
     @Override
     public List<String> getIdentifiers() {
@@ -41,11 +48,14 @@ public class FacebookMapper implements SourceMapper {
             messageNode.get("attachments")
                     .elements()
                     .forEachRemaining(attachmentNode -> {
-                        if ("image".equalsIgnoreCase(attachmentNode.get("type").textValue())) {
-                            contents.add(new Image(attachmentNode.get("payload").get("url").textValue()));
-                        }
-                        if ("audio".equalsIgnoreCase(attachmentNode.get("type").textValue())) {
-                            contents.add(new Audio(attachmentNode.get("payload").get("url").textValue()));
+                        final String attachmentType = attachmentNode.get("type").textValue();
+                        final Class<? extends Content> contentClass = attachmentClassMapper.get(attachmentType);
+                        final String url = attachmentNode.get("payload").get("url").textValue();
+
+                        try {
+                            contents.add(contentClass.getConstructor(String.class).newInstance(url));
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     });
         }

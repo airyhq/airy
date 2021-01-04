@@ -37,10 +37,10 @@ public class TwilioMapper implements SourceMapper {
             final String[] mediaUrlParts = mediaUrl.split("\\.");
             final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1].toLowerCase();
 
-            if(isImage(mediaExtension)) {
+            if(mediaExtension.equals("jpg") || mediaExtension.equals("jpeg") || mediaExtension.equals("png")) {
                 contents.add(new Text(decodedPayload.get("Body")));
                 contents.add(new Image(mediaUrl));
-            } else if(isVideo(mediaExtension)) {
+            } else if(mediaExtension.equals("mp4")) {
                 contents.add(new Video(mediaUrl));
             } else {
                 contents.add(new Audio(mediaUrl));
@@ -50,14 +50,6 @@ public class TwilioMapper implements SourceMapper {
         }
 
         return contents;
-    }
-
-    private boolean isImage(String mediaExtension) {
-        return (mediaExtension.equals("jpg") || mediaExtension.equals("jpeg") || mediaExtension.equals("png"));
-    }
-
-    private boolean isVideo(String mediaExtension) {
-        return mediaExtension.equals("mp4");
     }
 
     private static Map<String, String> parseUrlEncoded(String payload) {

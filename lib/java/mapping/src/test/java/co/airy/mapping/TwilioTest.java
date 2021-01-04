@@ -13,7 +13,6 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Every.everyItem;
 import static org.hamcrest.core.Is.isA;
@@ -48,13 +47,12 @@ public class TwilioTest {
 
         final List<Content> message = mapper.render(event);
         assertThat(message, hasItem(isA(Text.class)));
-        final Image image = (Image) message.stream().filter(c -> c instanceof Image).findFirst().get();
-        assertThat(image.getUrl(), is(imageUrl));
+        assertThat(message, hasItem(isA(Image.class)));
+        assertThat(message, hasItem(hasProperty("url", equalTo(imageUrl))));
     }
 
     @Test
     void canRenderAudio() throws Exception {
-        final String body = "Heres an audio!";
         final String audioUrl = "https://demo.twilio.com/owl.mp3";
 
         String event = "ApiVersion=2010-04-01&SmsSid=SMbc31b6419de618d65076200c54676476&SmsStatus=received" +
@@ -64,7 +62,6 @@ public class TwilioTest {
         final List<Content> message = mapper.render(event);
 
         assertThat(message, everyItem(isA(Audio.class)));
-        final Audio audio = (Audio) message.stream().filter(c -> c instanceof Audio).findFirst().get();
-        assertThat(audio.getUrl(), is(audioUrl));
+        assertThat(message, everyItem(hasProperty("url", equalTo(audioUrl))));
     }
 }

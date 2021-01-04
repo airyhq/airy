@@ -1,6 +1,7 @@
 import {doFetchFromBackend} from '../api';
-import {ConnectChannelRequestPayload, ChannelApiPayload, ConnectChannelRequestApiPayload} from '../payload';
+import {ConnectChannelRequestPayload, ConnectChannelRequestApiPayload} from '../payload';
 import {Channel} from '../model';
+import {ChannelApiPayload} from '../payload/ChannelApiPayload';
 
 const connectChannelApiMapper = (payload: ConnectChannelRequestPayload): ConnectChannelRequestApiPayload => {
   return {

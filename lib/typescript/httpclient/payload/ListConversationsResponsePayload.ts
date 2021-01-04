@@ -1,7 +1,7 @@
 import {ConversationPayload} from './ConversationPayload';
-import {ResponseMetadata} from './ResponseMetadata';
+import {ResponseMetadataPayload} from './ResponseMetadataPayload';
 
 export interface ListConversationsResponsePayload {
   data: ConversationPayload[];
-  response_metadata: ResponseMetadata;
+  response_metadata: ResponseMetadataPayload;
 }

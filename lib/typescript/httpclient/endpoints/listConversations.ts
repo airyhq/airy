@@ -1,11 +1,8 @@
 import {doFetchFromBackend} from '../api';
-import {
-  ListConversationsResponsePayload,
-  ConversationPayload,
-  MessagePayload,
-  ConversationListRequestPayload,
-} from '../payload';
+import {ListConversationsResponsePayload, ListConversationsRequestPayload} from '../payload';
 import {Conversation, Message} from '../model';
+import {ConversationPayload} from '../payload/ConversationPayload';
+import {MessagePayload} from '../payload/MessagePayload';
 
 const messageMapper = (payload: MessagePayload): Message => {
   const message: Message = {
@@ -41,7 +38,7 @@ const conversationsMapper = (payloadArray: ConversationPayload[]): Conversation[
   return (payloadArray || []).map(conversation => conversationMapper(conversation));
 };
 
-export function listConversations(conversationListRequest: ConversationListRequestPayload) {
+export function listConversations(conversationListRequest: ListConversationsRequestPayload) {
   conversationListRequest.page_size = conversationListRequest.page_size ?? 10;
   conversationListRequest.cursor = conversationListRequest.cursor ?? null;
 

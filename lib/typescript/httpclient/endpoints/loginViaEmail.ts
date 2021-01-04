@@ -1,16 +1,16 @@
 import {doFetchFromBackend} from '../api';
 import {User} from '../model';
-import {UserPayload, LoginViaEmailRequestPayload} from '../payload';
+import {LoginViaEmailRequestPayload} from '../payload';
+import {UserPayload} from '../payload/UserPayload';
 
 const userMapper = (payload: UserPayload): User => {
-  const user: User = {
+  return {
     id: payload.id,
     firstName: payload.first_name,
     lastName: payload.last_name,
     displayName: payload.first_name + ' ' + payload.last_name,
     token: payload.token,
   };
-  return user;
 };
 
 export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {

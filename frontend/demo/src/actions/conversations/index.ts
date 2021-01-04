@@ -1,6 +1,7 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {HttpClient, Conversation, ResponseMetadata} from 'httpclient';
+import {HttpClient, Conversation} from 'httpclient';
+import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
 import {StateModel} from '../../reducers';
 
 export const CONVERSATION_LOADING = '@@conversation/LOADING';
@@ -17,7 +18,7 @@ export const loadingConversationsAction = createAction(CONVERSATIONS_LOADING, re
 
 export const mergeConversationsAction = createAction(
   CONVERSATIONS_MERGE,
-  resolve => (conversations: Conversation[], responseMetadata: ResponseMetadata) =>
+  resolve => (conversations: Conversation[], responseMetadata: ResponseMetadataPayload) =>
     resolve({conversations, responseMetadata})
 );
 
@@ -35,7 +36,7 @@ export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
     return HttpClient.listConversations({page_size: 10})
-      .then((response: {data: Conversation[]; metadata: ResponseMetadata}) => {
+      .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
         dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);
       })
@@ -50,7 +51,7 @@ export function listNextConversations() {
     const cursor = state.data.conversations.all.metadata.next_cursor;
     dispatch(loadingConversationsAction());
     return HttpClient.listConversations({cursor: cursor})
-      .then((response: {data: Conversation[]; metadata: ResponseMetadata}) => {
+      .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
         dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);
       })

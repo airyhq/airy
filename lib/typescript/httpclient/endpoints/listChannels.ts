@@ -1,6 +1,6 @@
 import {doFetchFromBackend} from '../api';
 import {Channel} from '../model';
-import {ChannelsPayload} from '../payload';
+import {ChannelsPayload} from '../payload/ChannelsPayload';
 
 const channelsMapper = (payload: ChannelsPayload, source?: string): Channel[] => {
   return payload.data.map(

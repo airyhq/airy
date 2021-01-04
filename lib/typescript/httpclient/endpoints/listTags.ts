@@ -1,20 +1,16 @@
 import {doFetchFromBackend} from '../api';
-import {Tag, ColorTag} from '../model';
+import {Tag} from '../model';
 import {ListTagsResponsePayload} from '../payload';
 
-const colorMapper = (color: string): ColorTag => {
-  const colors = ['BLUE', 'RED', 'GREEN', 'PURPLE'];
-  if (colors.includes(color)) {
-    return `tag-${color.toLowerCase()}` as ColorTag;
-  } else {
-    return 'tag-blue';
-  }
+const tagMapper = {
+  BLUE: 'tag-blue',
+  RED: 'tag-red',
+  GREEN: 'tag-green',
+  PURPLE: 'tag-purple',
 };
 
 const tagsMapper = (serverTags: Tag[]): Tag[] => {
-  return serverTags.map(t => {
-    return {id: t.id, name: t.name, color: colorMapper(t.color)};
-  });
+  return serverTags.map(t => ({id: t.id, name: t.name, color: tagMapper[t.color] || 'tag-blue'}));
 };
 
 export function listTags() {

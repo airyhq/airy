@@ -2,19 +2,20 @@ import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
 import {cloneDeep} from 'lodash-es';
 
-import {ResponseMetadata, Conversation, Message} from 'httpclient';
+import {Conversation, Message} from 'httpclient';
+import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
 import * as actions from '../../../actions/conversations';
 
 type Action = ActionType<typeof actions>;
 
 type MergedConversation = Conversation & {
   blocked?: boolean;
-  metadata?: ResponseMetadata & {
+  metadata?: ResponseMetadataPayload & {
     loading: boolean;
   };
 };
 
-export type AllConversationMetadata = ResponseMetadata & {
+export type AllConversationMetadata = ResponseMetadataPayload & {
   loading?: boolean;
   loaded?: boolean;
   filteredTotal?: number;

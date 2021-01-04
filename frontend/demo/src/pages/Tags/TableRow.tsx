@@ -8,7 +8,7 @@ import {ReactComponent as EditIcon} from '../../assets/images/icons/edit.svg';
 import {ReactComponent as TrashIcon} from '../../assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
 import Tag from './Tag';
-import {Tag as TagModel, ColorTag} from 'httpclient';
+import {Tag as TagModel, TagColor} from 'httpclient';
 import {TagSettings} from '../../types';
 import {RootState} from '../../reducers';
 
@@ -34,7 +34,7 @@ const TableRowComponent = (props: TableRowProps) => {
       if (e.target.name === 'tag_name') {
         setTagState({...tagState, name: e.target && e.target.value});
       } else {
-        setTagState({...tagState, color: e.target && (e.target.value as ColorTag)});
+        setTagState({...tagState, color: e.target && (e.target.value as TagColor)});
       }
     },
     [tagState, setTagState]
@@ -44,7 +44,7 @@ const TableRowComponent = (props: TableRowProps) => {
     const currentTag = {
       id: tag.id,
       name: tagState.name,
-      color: tagState.color as ColorTag,
+      color: tagState.color as TagColor,
     };
     updateTag(currentTag);
     setTagState({
@@ -123,7 +123,7 @@ const TableRowComponent = (props: TableRowProps) => {
   return (
     <tr key={tag.id} className={styles.tableRow} onClick={() => setTagState({...tag, edit: true})}>
       <td style={{width: '30%', maxWidth: '1px'}} className={styles.tableCell}>
-        <Tag tag={{id: tag.id, color: tag.color as ColorTag, name: tag.name}} />
+        <Tag tag={{id: tag.id, color: tag.color as TagColor, name: tag.name}} />
       </td>
       <td style={{width: '30%'}}>
         <span className={styles.tagColor} style={{backgroundColor: `#${getColorValue(tag.color)}`}} />

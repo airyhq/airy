@@ -81,7 +81,7 @@ const TableRowComponent = (props: TableRowProps) => {
     [showModal, tag]
   );
 
-  const getColorValue = useCallback(color => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
+  const getColorValue = useCallback((color: string) => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
     tagSettings,
   ]);
 

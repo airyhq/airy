@@ -9,10 +9,15 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Every.everyItem;
+import static org.hamcrest.core.Is.isA;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.AnyOf.anyOf;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 public class TwilioTest {
     private final TwilioMapper mapper = new TwilioMapper();
@@ -42,7 +47,7 @@ public class TwilioTest {
                 "&MediaUrl=" + imageUrl;
 
         final List<Content> message = mapper.render(event);
-        assertTrue(message.stream().anyMatch(c -> c instanceof Text));
+        assertThat(message, hasItem(isA(Text.class)));
         final Image image = (Image) message.stream().filter(c -> c instanceof Image).findFirst().get();
         assertThat(image.getUrl(), is(imageUrl));
     }
@@ -58,7 +63,7 @@ public class TwilioTest {
                 "&MediaUrl=" + audioUrl;
         final List<Content> message = mapper.render(event);
 
-        assertTrue(message.stream().filter(c -> c instanceof Text).findAny().isEmpty());
+        assertThat(message, everyItem(isA(Audio.class)));
         final Audio audio = (Audio) message.stream().filter(c -> c instanceof Audio).findFirst().get();
         assertThat(audio.getUrl(), is(audioUrl));
     }

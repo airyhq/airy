@@ -12,7 +12,9 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Every.everyItem;
 import static org.hamcrest.core.Is.isA;
 
@@ -28,8 +30,9 @@ public class TwilioTest {
                 "&From=whatsapp%3A%2B&MessageSid=SMbc31b6419de618d65076200c54676476" +
                 "&Body=" + body + "&AccountSid=AC64c9ab479b849275b7b50bd19540c602&NumMedia=0";
 
-        final Text message = (Text) mapper.render(event).get(0);
-        assertThat(message.getText(), equalTo(body));
+        final List<Content> contents = mapper.render(event);
+        assertThat(contents, hasSize(1));
+        assertThat(contents, everyItem(hasProperty("text", equalTo(body))));
     }
 
     @Test

@@ -5,6 +5,7 @@ import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
+import co.airy.mapping.model.Video;
 import org.springframework.stereotype.Component;
 
 import java.net.URLDecoder;
@@ -36,6 +37,8 @@ public class TwilioMapper implements SourceMapper {
             if(isImage(mediaUrl)) {
                 contents.add(new Text(decodedPayload.get("Body")));
                 contents.add(new Image(mediaUrl));
+            } else if(isVideo(mediaUrl)) {
+                contents.add(new Video(mediaUrl));
             } else {
                 contents.add(new Audio(mediaUrl));
             }
@@ -53,6 +56,12 @@ public class TwilioMapper implements SourceMapper {
             return true;
         }
         return false;
+    }
+
+    private boolean isVideo(String mediaUrl) {
+        final String[] mediaUrlParts = mediaUrl.split("\\.");
+        final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1];
+        return mediaExtension.equalsIgnoreCase("mp4");
     }
 
     private static Map<String, String> parseUrlEncoded(String payload) {

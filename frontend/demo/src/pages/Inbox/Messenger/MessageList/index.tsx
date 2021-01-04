@@ -43,9 +43,10 @@ const MessageList = (props: MessageListProps) => {
                 return (
                     <MessageListItem 
                     key={message.id}
-                    message={message.content[0].text}
+                    messageText={message.content[0].text}
                     messageSenderType={message.senderType}
                     messageDate={message.sentAt}
+                    message={message}
                 />
                 )
             })}

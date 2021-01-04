@@ -3,7 +3,6 @@ export * from './ConnectChannelRequestPayload';
 export * from './DisconnectChannelRequestApiPayload';
 export * from './DisconnectChannelRequestPayload';
 export * from './ExploreChannelRequestPayload';
-export * from './ListConversationsResponsePayload';
 export * from './LoginViaEmailRequestPayload';
 export * from './ListTagsResponsePayload';
 export * from './CreateTagRequestPayload';

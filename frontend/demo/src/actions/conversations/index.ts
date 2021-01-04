@@ -48,7 +48,7 @@ export function listConversations() {
 
 export function listNextConversations() {
   return async (dispatch: Dispatch<any>, state: StateModel) => {
-    const cursor = state.data.conversations.all.metadata.next_cursor;
+    const cursor = state.data.conversations.all.metadata.nextCursor;
     dispatch(loadingConversationsAction());
     return HttpClient.listConversations({cursor: cursor})
       .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {

@@ -1,8 +1,9 @@
 import {doFetchFromBackend} from '../api';
-import {ListConversationsResponsePayload, ListConversationsRequestPayload} from '../payload';
+import {ListConversationsRequestPayload} from '../payload';
 import {Conversation, Message} from '../model';
 import {ConversationPayload} from '../payload/ConversationPayload';
 import {MessagePayload} from '../payload/MessagePayload';
+import {PaginatedPayload} from '../payload/PaginatedPayload';
 
 const messageMapper = (payload: MessagePayload): Message => {
   const message: Message = {
@@ -43,9 +44,9 @@ export function listConversations(conversationListRequest: ListConversationsRequ
   conversationListRequest.cursor = conversationListRequest.cursor ?? null;
 
   return doFetchFromBackend('conversations.list', conversationListRequest)
-    .then((response: ListConversationsResponsePayload) => {
-      const {response_metadata} = response;
-      return {data: conversationsMapper(response.data), metadata: response_metadata};
+    .then((response: PaginatedPayload<ConversationPayload>) => {
+      const {responseMetadata} = response;
+      return {data: conversationsMapper(response.data), metadata: responseMetadata};
     })
     .catch((error: Error) => {
       return error;

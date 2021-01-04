@@ -1,5 +1,5 @@
 export interface ResponseMetadataPayload {
-  previous_cursor: string;
-  next_cursor: string;
+  previousCursor: string;
+  nextCursor: string;
   total: number;
 }

@@ -1,6 +1,7 @@
 package co.airy.mapping.sources.facebook;
 
 import co.airy.mapping.SourceMapper;
+import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
@@ -42,6 +43,9 @@ public class FacebookMapper implements SourceMapper {
                     .forEachRemaining(attachmentNode -> {
                         if ("image".equalsIgnoreCase(attachmentNode.get("type").textValue())) {
                             contents.add(new Image(attachmentNode.get("payload").get("url").textValue()));
+                        }
+                        if ("audio".equalsIgnoreCase(attachmentNode.get("type").textValue())) {
+                            contents.add(new Audio(attachmentNode.get("payload").get("url").textValue()));
                         }
                     });
         }

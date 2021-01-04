@@ -34,10 +34,13 @@ public class TwilioMapper implements SourceMapper {
         final String mediaUrl = decodedPayload.get("MediaUrl");
 
         if (mediaUrl != null && !mediaUrl.isBlank()) {
-            if(isImage(mediaUrl)) {
+            final String[] mediaUrlParts = mediaUrl.split("\\.");
+            final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1].toLowerCase();
+
+            if(isImage(mediaExtension)) {
                 contents.add(new Text(decodedPayload.get("Body")));
                 contents.add(new Image(mediaUrl));
-            } else if(isVideo(mediaUrl)) {
+            } else if(isVideo(mediaExtension)) {
                 contents.add(new Video(mediaUrl));
             } else {
                 contents.add(new Audio(mediaUrl));
@@ -49,19 +52,12 @@ public class TwilioMapper implements SourceMapper {
         return contents;
     }
 
-    private boolean isImage(String mediaUrl) {
-        final String[] mediaUrlParts = mediaUrl.split("\\.");
-        final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1];
-        if (mediaExtension.equalsIgnoreCase("jpg") || mediaExtension.equalsIgnoreCase("jpeg") || mediaExtension.equalsIgnoreCase("png")) {
-            return true;
-        }
-        return false;
+    private boolean isImage(String mediaExtension) {
+        return (mediaExtension.equals("jpg") || mediaExtension.equals("jpeg") || mediaExtension.equals("png"));
     }
 
-    private boolean isVideo(String mediaUrl) {
-        final String[] mediaUrlParts = mediaUrl.split("\\.");
-        final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1];
-        return mediaExtension.equalsIgnoreCase("mp4");
+    private boolean isVideo(String mediaExtension) {
+        return mediaExtension.equals("mp4");
     }
 
     private static Map<String, String> parseUrlEncoded(String payload) {

@@ -24,7 +24,7 @@ type SimpleTagFormProps = {
 
 const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: SimpleTagFormProps) => {
   const [name, setName] = useState('');
-  const [color, setColor] = useState('tag-blue');
+  const [color, setColor] = useState<ColorTag>('tag-blue');
   const [showError, setShowError] = useState(true);
   const handleCreate = () => {
     if (name.trim().length) {
@@ -79,7 +79,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
         <Fragment>
           <p className={styles.description}>Pick a color</p>
           <ColorSelector
-            handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value)}
+            handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value as ColorTag)}
             color={color}
             editing={true}
           />

@@ -25,7 +25,7 @@ const TableRowComponent = (props: TableRowProps) => {
     edit: false,
     id: '',
     name: '',
-    color: '' as ColorTag,
+    color: '',
   });
 
   const handleUpdate = useCallback(
@@ -34,7 +34,7 @@ const TableRowComponent = (props: TableRowProps) => {
       if (e.target.name === 'tag_name') {
         setTagState({...tagState, name: e.target && e.target.value});
       } else {
-        setTagState({...tagState, color: e.target && e.target.value});
+        setTagState({...tagState, color: e.target && (e.target.value as ColorTag)});
       }
     },
     [tagState, setTagState]
@@ -81,7 +81,7 @@ const TableRowComponent = (props: TableRowProps) => {
     [showModal, tag]
   );
 
-  const getColorValue = useCallback((color: string) => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
+  const getColorValue = useCallback(color => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
     tagSettings,
   ]);
 
@@ -123,7 +123,7 @@ const TableRowComponent = (props: TableRowProps) => {
   return (
     <tr key={tag.id} className={styles.tableRow} onClick={() => setTagState({...tag, edit: true})}>
       <td style={{width: '30%', maxWidth: '1px'}} className={styles.tableCell}>
-        <Tag tag={{id: tag.id, color: tag.color, name: tag.name}} />
+        <Tag tag={{id: tag.id, color: tag.color as ColorTag, name: tag.name}} />
       </td>
       <td style={{width: '30%'}}>
         <span className={styles.tagColor} style={{backgroundColor: `#${getColorValue(tag.color)}`}} />

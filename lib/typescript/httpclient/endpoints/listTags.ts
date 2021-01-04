@@ -7,13 +7,13 @@ const colorMapper = (color: string): ColorTag => {
   if (colors.includes(color)) {
     return `tag-${color.toLowerCase()}` as ColorTag;
   } else {
-    return 'tag-blue' as ColorTag;
+    return 'tag-blue';
   }
 };
 
 const tagsMapper = (serverTags: Tag[]): Tag[] => {
-  return serverTags.map(tag => {
-    return {id: tag.id, name: tag.name, color: colorMapper(tag.color)};
+  return serverTags.map(t => {
+    return {id: t.id, name: t.name, color: colorMapper(t.color)};
   });
 };
 

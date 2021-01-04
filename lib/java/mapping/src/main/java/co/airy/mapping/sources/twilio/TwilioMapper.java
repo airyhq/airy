@@ -1,6 +1,7 @@
 package co.airy.mapping.sources.twilio;
 
 import co.airy.mapping.SourceMapper;
+import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
@@ -29,14 +30,29 @@ public class TwilioMapper implements SourceMapper {
         Map<String, String> decodedPayload = parseUrlEncoded(payload);
         List<Content> contents = new ArrayList<>();
 
-        contents.add(new Text(decodedPayload.get("Body")));
-
         final String mediaUrl = decodedPayload.get("MediaUrl");
+
         if (mediaUrl != null && !mediaUrl.isBlank()) {
-            contents.add(new Image(mediaUrl));
+            if(isImage(mediaUrl)) {
+                contents.add(new Text(decodedPayload.get("Body")));
+                contents.add(new Image(mediaUrl));
+            } else {
+                contents.add(new Audio(mediaUrl));
+            }
+        } else {
+            contents.add(new Text(decodedPayload.get("Body")));
         }
 
         return contents;
+    }
+
+    private boolean isImage(String mediaUrl) {
+        final String[] mediaUrlParts = mediaUrl.split("\\.");
+        final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1];
+        if (mediaExtension.equalsIgnoreCase("jpg") || mediaExtension.equalsIgnoreCase("jpeg") || mediaExtension.equalsIgnoreCase("png")) {
+            return true;
+        }
+        return false;
     }
 
     private static Map<String, String> parseUrlEncoded(String payload) {

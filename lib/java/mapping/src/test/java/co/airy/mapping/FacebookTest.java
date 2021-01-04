@@ -1,5 +1,6 @@
 package co.airy.mapping;
 
+import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
@@ -35,5 +36,15 @@ public class FacebookTest {
         final List<Content> contents = mapper.render(sourceContent);
         final Image image = (Image) contents.get(0);
         assertThat(image.getUrl(), equalTo(imageUrl));
+    }
+
+    @Test
+    void canRenderAudio() throws Exception {
+        final String imageUrl = "https://url-from-facebook-cdn.com/123-id.mp4";
+        final String sourceContent = String.format(StreamUtils.copyToString(getClass().getClassLoader().getResourceAsStream("facebook/audio.json"), StandardCharsets.UTF_8), imageUrl);
+
+        final List<Content> contents = mapper.render(sourceContent);
+        final Audio audio = (Audio) contents.get(0);
+        assertThat(audio.getUrl(), equalTo(imageUrl));
     }
 }

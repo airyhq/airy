@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"httpclient"
-	"httpclient/payloads"
+	"github.com/airyhq/airy/lib/go/httpclient"
+	"github.com/airyhq/airy/lib/go/httpclient/payloads"
 
 	"github.com/spf13/cobra"
 )

@@ -8,8 +8,7 @@ go_library(
         "httpclient.go",
         "users.go",
     ],
-    importmap = "lib/go",
-    importpath = "httpclient",
+    importpath = "github.com/airyhq/airy/lib/go/httpclient",
     visibility = ["//visibility:public"],
     deps = ["//lib/go/httpclient/payloads"],
 )

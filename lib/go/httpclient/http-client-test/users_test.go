@@ -6,8 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"httpclient"
-	"payloads"
+	"github.com/airyhq/airy/lib/go/httpclient"
+	"github.com/airyhq/airy/lib/go/httpclient/payloads"
 
 	"github.com/stretchr/testify/assert"
 )

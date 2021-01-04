@@ -8,7 +8,6 @@ go_library(
         "signup_request.go",
         "signup_response.go",
     ],
-    importmap = "lib/go/httpclient",
-    importpath = "payloads",
+    importpath = "github.com/airyhq/airy/lib/go/httpclient/payloads",
     visibility = ["//visibility:public"],
 )

@@ -3,7 +3,7 @@ package httpclient
 import (
 	"encoding/json"
 
-	"payloads"
+	"github.com/airyhq/airy/lib/go/httpclient/payloads"
 )
 
 func (c *Client) Signup(signupRequestPayload payloads.SignupRequestPayload) (*payloads.SignupResponsePayload, error) {

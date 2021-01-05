@@ -1,182 +1,218 @@
 {
     "unusedresult": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "unsafeptr": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": "",
         }
     },
     "unreachable": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "unmarshal": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "tests": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "testinggoroutine": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "structtag": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "stringintconv": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "stdmethods": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "sortslice": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "shift": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "shadow": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "printf": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "pkgfact": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "nilness": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "nilfunc": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "lostcancel": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "loopclosure": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "ifaceassert": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "httpresponse": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "findcall": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "errorsas": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "deepequalerrors": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "ctrlflow": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "copylocks": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "composites": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "cgocall": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "buildtag": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "buildssa": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "bools": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "atomicalign": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "atomic": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "assign": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "inspect": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "asmdecl": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "analysisutil ": {
         "exclude_files": {
-            "airy_core/external/.*": ""
+            "airy_core/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     }
 }

@@ -29,12 +29,12 @@ if [ -f "/vagrant/airy.conf" ]; then
     cp /vagrant/airy.conf ~/airy-core/helm-chart/charts/apps/values.yaml
 fi
 
-helm upgrade airy ~/airy-core/helm-chart/ --set global.appImageTag=${AIRY_VERSION} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
+helm upgrade core ~/airy-core/helm-chart/ --set global.appImageTag=${AIRY_VERSION} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
 
-kubectl scale deployment airy-cp-schema-registry --replicas=1
+kubectl scale deployment core-schema-registry --replicas=1
 
 wait-for-running-pod startup-helper
-wait-for-service startup-helper airy-cp-schema-registry 8081 15 Schema-registry
+wait-for-service startup-helper core-schema-registry 8081 15 Schema-registry
 
 kubectl scale deployment -l type=api --replicas=1
 kubectl scale deployment -l type=sources-chatplugin --replicas=1

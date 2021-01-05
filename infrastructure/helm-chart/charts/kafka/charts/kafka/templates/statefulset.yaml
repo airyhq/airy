@@ -79,35 +79,21 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: AIRY_LISTENERS
+          value: PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:AIRY_BROKER_PORT
+        - name: AIRY_ADVERTISED_LISTENERS
+          value: PLAINTEXT://AIRY_POD_NAME.{{ template "cp-kafka.fullname" . }}-headless.AIRY_NAMESPACE:9092,EXTERNAL://AIRY_HOST_IP:AIRY_BROKER_PORT
+        - name: AIRY_FIRST_LISTENER_PORT
+          value: "{{ .Values.firstListenerPort }}"
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: {{ include "cp-kafka.cp-zookeeper.service-name" . | quote }}
-        - name: KAFKA_LOG_DIRS
-          value: {{ include "cp-kafka.log.dirs" . | quote }}
-        - name: KAFKA_METRIC_REPORTERS
-          value: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
-        - name: CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS
-          value: {{ printf "PLAINTEXT://%s:9092" (include "cp-kafka.cp-kafka-headless.fullname" .) | quote }}
         {{- range $key, $value := .Values.configurationOverrides }}
         - name: {{ printf "KAFKA_%s" $key | replace "." "_" | upper | quote }}
           value: {{ $value | quote }}
         {{- end }}
-        {{- range $key, $value := .Values.customEnv }}
-        - name: {{ $key | quote }}
-          value: {{ $value | quote }}
-        {{- end }}
-        # This is required because the Downward API does not yet support identification of
-        # pod numbering in statefulsets. Thus, we are required to specify a command which
-        # allows us to extract the pod ID for usage as the Kafka Broker ID.
-        # See: https://github.com/kubernetes/kubernetes/issues/31218
-        command:
-        - sh
-        - -exc
-        - |
-          export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
-          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.{{ template "cp-kafka.fullname" . }}-headless.${POD_NAMESPACE}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
-          exec /etc/confluent/docker/run
+        args: ["kafka-server-start.sh", "/etc/kafka/server.properties"]
         volumeMounts:
         {{- if .Values.persistence.enabled }}
           {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}

@@ -22,6 +22,20 @@ import static java.util.stream.Collectors.toMap;
 @Component
 public class TwilioMapper implements SourceMapper {
 
+    private final Map<String, BiFunction<String, String, List<Content>>> mediaProcessFunctions = Map.of(
+            "jpg", processImageFun,
+            "jpeg", processImageFun,
+            "png", processImageFun,
+            "mp4", processVideoFun,
+            "mp3", processAudioFun,
+            "ogg", processAudioFun,
+            "amr", processAudioFun
+    );
+
+    private static final BiFunction<String, String, List<Content>> processImageFun = (mediaUrl, body) -> List.of(new Text(body), new Image(mediaUrl));
+    private static final BiFunction<String, String, List<Content>> processVideoFun = (mediaUrl, body) -> List.of(new Video(mediaUrl));
+    private static final BiFunction<String, String, List<Content>> processAudioFun = (mediaUrl, body) -> List.of(new Audio(mediaUrl));
+
     @Override
     public List<String> getIdentifiers() {
         return List.of("twilio.sms", "twilio.whatsapp");
@@ -37,31 +51,13 @@ public class TwilioMapper implements SourceMapper {
         if (mediaUrl != null && !mediaUrl.isBlank()) {
             final String[] mediaUrlParts = mediaUrl.split("\\.");
             final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1].toLowerCase();
-            final BiFunction<String, String, List<Content>> processMediaFunction = getMediaFunction(mediaExtension);
+            final BiFunction<String, String, List<Content>> processMediaFunction = mediaProcessFunctions.get(mediaExtension);
             contents = processMediaFunction.apply(mediaUrl, decodedPayload.get("Body"));
         } else {
             contents.add(new Text(decodedPayload.get("Body")));
         }
 
         return contents;
-    }
-
-    private BiFunction<String, String, List<Content>> getMediaFunction(final String extension) {
-        BiFunction<String, String, List<Content>> processImageFun = (mediaUrl, body) -> List.of(new Text(body), new Image(mediaUrl));
-        BiFunction<String, String, List<Content>> processVideoFun = (mediaUrl, body) -> List.of(new Video(mediaUrl));
-        BiFunction<String, String, List<Content>> processAudioFun = (mediaUrl, body) -> List.of(new Audio(mediaUrl));
-
-        final Map<String, BiFunction<String, String, List<Content>>> map = Map.of(
-                "jpg", processImageFun,
-                "jpeg", processImageFun,
-                "png", processImageFun,
-                "mp4", processVideoFun,
-                "mp3", processAudioFun,
-                "ogg", processAudioFun,
-                "amr", processAudioFun
-        );
-
-        return map.get(extension);
     }
 
     private static Map<String, String> parseUrlEncoded(String payload) {

@@ -174,7 +174,7 @@ gazelle(name = "gazelle")
 
 nogo(
     name = "airy_nogo",
-    config = "//tools/build:config.json",
+    config = "//tools/build:nogo_config.json",
     visibility = ["//visibility:public"],
     deps = TOOLS_NOGO + [
     ],

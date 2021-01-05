@@ -2,6 +2,7 @@ package co.airy.mapping;
 
 import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
+import co.airy.mapping.model.File;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
 import co.airy.mapping.model.Video;
@@ -78,5 +79,19 @@ public class TwilioTest {
 
         assertThat(message, everyItem(isA(Video.class)));
         assertThat(message, everyItem(hasProperty("url", equalTo(videoUrl))));
+    }
+
+    @Test
+    void canRenderFile() {
+        final String fileUrl = "https://demo.twilio.com/file.pdf";
+
+        String event = "ApiVersion=2010-04-01&SmsSid=SMbc31b6419de618d65076200c54676476&SmsStatus=received" +
+                "&SmsMessageSid=SMbc31b6419de618d65076200c54676476&NumSegments=1&To=whatsapp%3A%2B" +
+                "&From=whatsapp%3A%2B&MessageSid=SMbc31b6419de618d65076200c54676476" +
+                "&MediaUrl=" + fileUrl;
+        final List<Content> message = mapper.render(event);
+
+        assertThat(message, everyItem(isA(File.class)));
+        assertThat(message, everyItem(hasProperty("url", equalTo(fileUrl))));
     }
 }

@@ -79,7 +79,7 @@ curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
 }" api.airy/chatplugin.connect
 ```
 
-<img alt="channels_connect" src={useBaseUrl('img/home/channels_connect.gif')} />
+<img alt="channels_connect" src={useBaseUrl('img/home/connect_chatplugin_channel.gif')} />
 
 The ID from the response is the `channel_id`. It is required for
 the next steps, so note it down.
@@ -102,7 +102,7 @@ To see how messages are flowing through the system, [list
 conversations](api/http.md#list-conversations) for the channel you have just created.
 it should return the message you have just sent.
 
-<img alt="conversations.list" src={useBaseUrl('img/home/conversation.list.jpg')} />
+<img alt="conversations.list" src={useBaseUrl('img/home/conversation_list.gif')} />
 
 ```bash
 curl -H "Content-Type: application/json" -H "Authorization: $token" -d "{}" \

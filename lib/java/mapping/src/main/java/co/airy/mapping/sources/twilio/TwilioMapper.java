@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -36,20 +37,31 @@ public class TwilioMapper implements SourceMapper {
         if (mediaUrl != null && !mediaUrl.isBlank()) {
             final String[] mediaUrlParts = mediaUrl.split("\\.");
             final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1].toLowerCase();
-
-            if(mediaExtension.equals("jpg") || mediaExtension.equals("jpeg") || mediaExtension.equals("png")) {
-                contents.add(new Text(decodedPayload.get("Body")));
-                contents.add(new Image(mediaUrl));
-            } else if(mediaExtension.equals("mp4")) {
-                contents.add(new Video(mediaUrl));
-            } else {
-                contents.add(new Audio(mediaUrl));
-            }
+            final BiFunction<String, String, List<Content>> processMediaFunction = getMediaFunction(mediaExtension);
+            contents = processMediaFunction.apply(mediaUrl, decodedPayload.get("Body"));
         } else {
             contents.add(new Text(decodedPayload.get("Body")));
         }
 
         return contents;
+    }
+
+    private BiFunction<String, String, List<Content>> getMediaFunction(final String extension) {
+        BiFunction<String, String, List<Content>> processImageFun = (mediaUrl, body) -> List.of(new Text(body), new Image(mediaUrl));
+        BiFunction<String, String, List<Content>> processVideoFun = (mediaUrl, body) -> List.of(new Video(mediaUrl));
+        BiFunction<String, String, List<Content>> processAudioFun = (mediaUrl, body) -> List.of(new Audio(mediaUrl));
+
+        final Map<String, BiFunction<String, String, List<Content>>> map = Map.of(
+                "jpg", processImageFun,
+                "jpeg", processImageFun,
+                "png", processImageFun,
+                "mp4", processVideoFun,
+                "mp3", processAudioFun,
+                "ogg", processAudioFun,
+                "amr", processAudioFun
+        );
+
+        return map.get(extension);
     }
 
     private static Map<String, String> parseUrlEncoded(String payload) {

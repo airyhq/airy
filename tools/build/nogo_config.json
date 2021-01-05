@@ -1,254 +1,182 @@
 {
     "unusedresult": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "unsafeptr": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "unreachable": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "unmarshal": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "tests": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "testinggoroutine": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "structtag": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "stringintconv": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "stdmethods": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "sortslice": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "shift": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "shadow": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "printf": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "pkgfact": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "nilness": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "nilfunc": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "lostcancel": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "loopclosure": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "ifaceassert": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "httpresponse": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "findcall": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "errorsas": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "deepequalerrors": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "ctrlflow": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "copylocks": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "composites": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "cgocall": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "buildtag": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "buildssa": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "bools": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "atomicalign": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "atomic": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "assign": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "inspect": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "asmdecl": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     },
     "analysisutil ": {
-        "only_files": {
-            "airy_core/backend/.*": "",
-            "airy_core/lib/go/.*": "",
-            "airy_core/infrastructure/.*": ""
+        "exclude_files": {
+            "airy_core/external/.*": ""
         }
     }
 }

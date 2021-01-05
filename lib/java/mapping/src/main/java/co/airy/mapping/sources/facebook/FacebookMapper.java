@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 @Component
 public class FacebookMapper implements SourceMapper {
@@ -23,11 +25,11 @@ public class FacebookMapper implements SourceMapper {
         this.objectMapper = new ObjectMapper();
     }
 
-    private static final Map<String, ? extends Class<? extends Content>> attachmentClassMapper = Map.of(
-            "image", Image.class,
-            "video", Video.class,
-            "audio", Audio.class);
-
+    private final Map<String, Function<String, List<Content>>> mediaProcessFunctions = Map.of(
+            "image", (url) -> List.of(new Image(url)),
+            "video", (url) -> List.of(new Video(url)),
+            "audio", (url) -> List.of(new Audio(url))
+    );
     @Override
     public List<String> getIdentifiers() {
         return List.of("facebook");
@@ -49,14 +51,10 @@ public class FacebookMapper implements SourceMapper {
                     .elements()
                     .forEachRemaining(attachmentNode -> {
                         final String attachmentType = attachmentNode.get("type").textValue();
-                        final Class<? extends Content> contentClass = attachmentClassMapper.get(attachmentType);
                         final String url = attachmentNode.get("payload").get("url").textValue();
 
-                        try {
-                            contents.add(contentClass.getConstructor(String.class).newInstance(url));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        final List<Content> mediaContents = mediaProcessFunctions.get(attachmentType).apply(url);
+                        contents.addAll(mediaContents);
                     });
         }
 

@@ -4,6 +4,7 @@ import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
+import co.airy.mapping.model.Video;
 import co.airy.mapping.sources.twilio.TwilioMapper;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +36,7 @@ public class TwilioTest {
     }
 
     @Test
-    void canRenderImage() throws Exception {
+    void canRenderImage() {
         final String body = "Heres a picture of an owl!";
         final String imageUrl = "https://demo.twilio.com/owl.png";
 
@@ -52,7 +53,7 @@ public class TwilioTest {
     }
 
     @Test
-    void canRenderAudio() throws Exception {
+    void canRenderAudio() {
         final String audioUrl = "https://demo.twilio.com/owl.mp3";
 
         String event = "ApiVersion=2010-04-01&SmsSid=SMbc31b6419de618d65076200c54676476&SmsStatus=received" +
@@ -63,5 +64,19 @@ public class TwilioTest {
 
         assertThat(message, everyItem(isA(Audio.class)));
         assertThat(message, everyItem(hasProperty("url", equalTo(audioUrl))));
+    }
+
+    @Test
+    void canRenderVideo() {
+        final String videoUrl = "https://demo.twilio.com/owl.mp4";
+
+        String event = "ApiVersion=2010-04-01&SmsSid=SMbc31b6419de618d65076200c54676476&SmsStatus=received" +
+                "&SmsMessageSid=SMbc31b6419de618d65076200c54676476&NumSegments=1&To=whatsapp%3A%2B" +
+                "&From=whatsapp%3A%2B&MessageSid=SMbc31b6419de618d65076200c54676476" +
+                "&MediaUrl=" + videoUrl;
+        final List<Content> message = mapper.render(event);
+
+        assertThat(message, everyItem(isA(Video.class)));
+        assertThat(message, everyItem(hasProperty("url", equalTo(videoUrl))));
     }
 }

@@ -5,6 +5,7 @@ import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
+import co.airy.mapping.model.Video;
 import org.springframework.stereotype.Component;
 
 import java.net.URLDecoder;
@@ -14,11 +15,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 import static java.util.stream.Collectors.toMap;
 
 @Component
 public class TwilioMapper implements SourceMapper {
+
+    private final Map<String, BiFunction<String, String, List<Content>>> mediaProcessFunctions = Map.of(
+            "jpg", processImageFun,
+            "jpeg", processImageFun,
+            "png", processImageFun,
+            "mp4", processVideoFun,
+            "mp3", processAudioFun,
+            "ogg", processAudioFun,
+            "amr", processAudioFun
+    );
+
+    private static final BiFunction<String, String, List<Content>> processImageFun = (mediaUrl, body) -> List.of(new Text(body), new Image(mediaUrl));
+    private static final BiFunction<String, String, List<Content>> processVideoFun = (mediaUrl, body) -> List.of(new Video(mediaUrl));
+    private static final BiFunction<String, String, List<Content>> processAudioFun = (mediaUrl, body) -> List.of(new Audio(mediaUrl));
 
     @Override
     public List<String> getIdentifiers() {
@@ -33,26 +49,15 @@ public class TwilioMapper implements SourceMapper {
         final String mediaUrl = decodedPayload.get("MediaUrl");
 
         if (mediaUrl != null && !mediaUrl.isBlank()) {
-            if(isImage(mediaUrl)) {
-                contents.add(new Text(decodedPayload.get("Body")));
-                contents.add(new Image(mediaUrl));
-            } else {
-                contents.add(new Audio(mediaUrl));
-            }
+            final String[] mediaUrlParts = mediaUrl.split("\\.");
+            final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1].toLowerCase();
+            final BiFunction<String, String, List<Content>> processMediaFunction = mediaProcessFunctions.get(mediaExtension);
+            contents = processMediaFunction.apply(mediaUrl, decodedPayload.get("Body"));
         } else {
             contents.add(new Text(decodedPayload.get("Body")));
         }
 
         return contents;
-    }
-
-    private boolean isImage(String mediaUrl) {
-        final String[] mediaUrlParts = mediaUrl.split("\\.");
-        final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1];
-        if (mediaExtension.equalsIgnoreCase("jpg") || mediaExtension.equalsIgnoreCase("jpeg") || mediaExtension.equalsIgnoreCase("png")) {
-            return true;
-        }
-        return false;
     }
 
     private static Map<String, String> parseUrlEncoded(String payload) {

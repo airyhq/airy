@@ -1,6 +1,8 @@
 package co.airy.mapping;
 
+import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
+import co.airy.mapping.model.Video;
 import co.airy.mapping.sources.facebook.FacebookMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.StreamUtils;
@@ -13,6 +15,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.isA;
 
 public class FacebookTest {
 
@@ -40,11 +43,23 @@ public class FacebookTest {
 
     @Test
     void canRenderAudio() throws Exception {
-        final String imageUrl = "https://url-from-facebook-cdn.com/123-id.mp4";
-        final String sourceContent = String.format(StreamUtils.copyToString(getClass().getClassLoader().getResourceAsStream("facebook/audio.json"), StandardCharsets.UTF_8), imageUrl);
+        final String audioUrl = "https://url-from-facebook-cdn.com/123-id.mp4";
+        final String sourceContent = String.format(StreamUtils.copyToString(getClass().getClassLoader().getResourceAsStream("facebook/audio.json"), StandardCharsets.UTF_8), audioUrl);
 
         final List<Content> contents = mapper.render(sourceContent);
         assertThat(contents, hasSize(1));
-        assertThat(contents, everyItem(hasProperty("url", equalTo(imageUrl))));
+        assertThat(contents, everyItem(isA(Audio.class)));
+        assertThat(contents, everyItem(hasProperty("url", equalTo(audioUrl))));
+    }
+
+    @Test
+    void canRenderVideo() throws Exception {
+        final String videoUrl = "https://video.xx.fbcdn.net/v/t42.3356-2/10000000_3670351823059679_8252233555063215828_n.mp4/video-1608240605.mp4?_nc_cat=110&ccb=2&_nc_sid=060d78&_nc_ohc=o7KPshTGwGwAX9xsWIT&vabr=1741655&_nc_ht=video.xx&oh=76581365554981fa6e343c3b2fa65aef&oe=5FDD193B";
+        final String sourceContent = String.format(StreamUtils.copyToString(getClass().getClassLoader().getResourceAsStream("facebook/video.json"), StandardCharsets.UTF_8), videoUrl);
+
+        final List<Content> contents = mapper.render(sourceContent);
+        assertThat(contents, hasSize(1));
+        assertThat(contents, everyItem(isA(Video.class)));
+        assertThat(contents, everyItem(hasProperty("url", equalTo(videoUrl))));
     }
 }

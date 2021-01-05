@@ -36,7 +36,7 @@ public class TwilioTest {
     }
 
     @Test
-    void canRenderImage() throws Exception {
+    void canRenderImage() {
         final String body = "Heres a picture of an owl!";
         final String imageUrl = "https://demo.twilio.com/owl.png";
 
@@ -53,7 +53,7 @@ public class TwilioTest {
     }
 
     @Test
-    void canRenderAudio() throws Exception {
+    void canRenderAudio() {
         final String audioUrl = "https://demo.twilio.com/owl.mp3";
 
         String event = "ApiVersion=2010-04-01&SmsSid=SMbc31b6419de618d65076200c54676476&SmsStatus=received" +
@@ -67,7 +67,7 @@ public class TwilioTest {
     }
 
     @Test
-    void canRenderVideo() throws Exception {
+    void canRenderVideo() {
         final String videoUrl = "https://demo.twilio.com/owl.mp4";
 
         String event = "ApiVersion=2010-04-01&SmsSid=SMbc31b6419de618d65076200c54676476&SmsStatus=received" +

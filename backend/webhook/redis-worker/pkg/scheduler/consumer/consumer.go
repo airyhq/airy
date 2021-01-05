@@ -111,7 +111,7 @@ func (t *Task) Run() {
 
 	result, err := q.Dequeue(processingQueue)
 	if err != nil {
-		t.logError(fmt.Errorf("failed to dequeue", err))
+		t.logError(fmt.Errorf("Failed to dequeue \n%w", err))
 		return
 	}
 

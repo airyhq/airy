@@ -14,3 +14,12 @@ def container_push(registry, repository):
         )
         for tag in tags_to_push
     ]
+
+    lib_push(
+        name = "local",
+        format = "Docker",
+        image = ":image",
+        registry = registry,
+        repository = repository,
+        tag = "{BUILD_USER}",
+    )

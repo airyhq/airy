@@ -2,6 +2,7 @@ package co.airy.mapping;
 
 import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
+import co.airy.mapping.model.File;
 import co.airy.mapping.model.Video;
 import co.airy.mapping.sources.facebook.FacebookMapper;
 import org.junit.jupiter.api.Test;
@@ -61,5 +62,16 @@ public class FacebookTest {
         assertThat(contents, hasSize(1));
         assertThat(contents, everyItem(isA(Video.class)));
         assertThat(contents, everyItem(hasProperty("url", equalTo(videoUrl))));
+    }
+
+    @Test
+    void canRenderFile() throws Exception {
+        final String fileUrl = "https://cdn.fbsbx.com/v/t59.2708-21/file_identifier.pdf/file_name.pdf";
+        final String sourceContent = String.format(StreamUtils.copyToString(getClass().getClassLoader().getResourceAsStream("facebook/file.json"), StandardCharsets.UTF_8), fileUrl);
+
+        final List<Content> contents = mapper.render(sourceContent);
+        assertThat(contents, hasSize(1));
+        assertThat(contents, everyItem(isA(File.class)));
+        assertThat(contents, everyItem(hasProperty("url", equalTo(fileUrl))));
     }
 }

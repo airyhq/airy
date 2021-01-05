@@ -12,7 +12,6 @@ import (
 
 type Task struct {
 	ticker    *time.Ticker
-	queueName string
 	queue     queue.Queue
 	consumers map[string]consumer.Task
 }
@@ -26,11 +25,8 @@ func Start(hostname, port string) *Task {
 
 	go func() {
 		t.updateConsumers(t.queue)
-		for {
-			select {
-			case <-t.ticker.C:
-				t.updateConsumers(t.queue)
-			}
+		for range t.ticker.C {
+			t.updateConsumers(t.queue)
 		}
 	}()
 

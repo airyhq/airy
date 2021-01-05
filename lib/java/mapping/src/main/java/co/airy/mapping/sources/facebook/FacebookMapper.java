@@ -24,7 +24,7 @@ public class FacebookMapper implements SourceMapper {
         this.objectMapper = new ObjectMapper();
     }
 
-    private final Map<String, Function<String, Content>> mediaProcessFunctions = Map.of(
+    private final Map<String, Function<String, Content>> mediaContentFactory = Map.of(
             "image", Image::new,
             "video", Video::new,
             "audio", Audio::new
@@ -52,7 +52,7 @@ public class FacebookMapper implements SourceMapper {
                         final String attachmentType = attachmentNode.get("type").textValue();
                         final String url = attachmentNode.get("payload").get("url").textValue();
 
-                        final Content mediaContent = mediaProcessFunctions.get(attachmentType).apply(url);
+                        final Content mediaContent = mediaContentFactory.get(attachmentType).apply(url);
                         contents.add(mediaContent);
                     });
         }

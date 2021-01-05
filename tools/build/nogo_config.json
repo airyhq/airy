@@ -8,7 +8,7 @@
     "unsafeptr": {
         "exclude_files": {
             "airy_core/external/.*": "",
-            "airy_core/bazel-out/host/bin/external/.*": "",
+            "airy_core/bazel-out/host/bin/external/.*": ""
         }
     },
     "unreachable": {

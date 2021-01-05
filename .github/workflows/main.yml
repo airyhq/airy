@@ -75,7 +75,7 @@ jobs:
             bazel run $target
           done
 
-      - name: Push release app images
+      - name: Push latest app images
         if: ${{github.ref == 'refs/heads/main'}}
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin

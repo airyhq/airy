@@ -2,7 +2,6 @@ package tests
 
 import (
 	"io/ioutil"
-	"os"
 	"path/filepath"
 	"testing"
 
@@ -29,23 +28,6 @@ func NewGoldenFile(t *testing.T, name string) *TestFile {
 func (tf *TestFile) path() string {
 	tf.t.Helper()
 	return filepath.Join(tf.dir, tf.name)
-}
-
-func (tf *TestFile) write(content string) {
-	tf.t.Helper()
-	err := ioutil.WriteFile(tf.path(), []byte(content), 0644)
-	if err != nil {
-		tf.t.Fatalf("could not write %s: %v", tf.name, err)
-	}
-}
-
-func (tf *TestFile) asFile() *os.File {
-	tf.t.Helper()
-	file, err := os.Open(tf.path())
-	if err != nil {
-		tf.t.Fatalf("could not open %s: %v", tf.name, err)
-	}
-	return file
 }
 
 // Load method

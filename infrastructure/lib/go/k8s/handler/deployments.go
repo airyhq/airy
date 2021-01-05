@@ -85,15 +85,15 @@ func ReloadDeployment(clientset kubernetes.Interface, namespace string, deployme
 	// If currentReplicas is 0 - don't do anything
 	if *currentReplicas != 0 {
 		retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
-			result, getErr := deploymentsClient.Get(context.TODO(), deploymentName, meta_v1.GetOptions{})
+			deployment, getErr = deploymentsClient.Get(context.TODO(), deploymentName, meta_v1.GetOptions{})
 			if getErr != nil {
 				klog.Errorf("Failed to get latest version of Deployment: %v", getErr)
 				return getErr
 			}
-			result.Spec.Replicas = util.Int32Ptr(0) // reduce replica count
-			_, updateErr := deploymentsClient.Update(context.TODO(), result, meta_v1.UpdateOptions{})
-			result.Spec.Replicas = currentReplicas // increase replica count
-			_, updateErr = deploymentsClient.Update(context.TODO(), result, meta_v1.UpdateOptions{})
+			deployment.Spec.Replicas = util.Int32Ptr(0) // reduce replica count
+			_, updateErr := deploymentsClient.Update(context.TODO(), deployment, meta_v1.UpdateOptions{})
+			deployment.Spec.Replicas = currentReplicas // increase replica count
+			_, updateErr = deploymentsClient.Update(context.TODO(), deployment, meta_v1.UpdateOptions{})
 			return updateErr
 		})
 		if retryErr != nil {

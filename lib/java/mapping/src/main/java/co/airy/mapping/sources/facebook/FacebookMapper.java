@@ -3,6 +3,7 @@ package co.airy.mapping.sources.facebook;
 import co.airy.mapping.SourceMapper;
 import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
+import co.airy.mapping.model.File;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
 import co.airy.mapping.model.Video;
@@ -27,7 +28,8 @@ public class FacebookMapper implements SourceMapper {
     private final Map<String, Function<String, Content>> mediaContentFactory = Map.of(
             "image", Image::new,
             "video", Video::new,
-            "audio", Audio::new
+            "audio", Audio::new,
+            "file", File::new
     );
     @Override
     public List<String> getIdentifiers() {

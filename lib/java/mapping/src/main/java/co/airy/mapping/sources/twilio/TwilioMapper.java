@@ -3,6 +3,7 @@ package co.airy.mapping.sources.twilio;
 import co.airy.mapping.SourceMapper;
 import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
+import co.airy.mapping.model.File;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
 import co.airy.mapping.model.Video;
@@ -29,12 +30,13 @@ public class TwilioMapper implements SourceMapper {
             "mp4", processVideoFun,
             "mp3", processAudioFun,
             "ogg", processAudioFun,
-            "amr", processAudioFun
-    );
+            "pdf", processFileFun
+   );
 
     private static final BiFunction<String, String, List<Content>> processImageFun = (mediaUrl, body) -> List.of(new Text(body), new Image(mediaUrl));
     private static final BiFunction<String, String, List<Content>> processVideoFun = (mediaUrl, body) -> List.of(new Video(mediaUrl));
     private static final BiFunction<String, String, List<Content>> processAudioFun = (mediaUrl, body) -> List.of(new Audio(mediaUrl));
+    private static final BiFunction<String, String, List<Content>> processFileFun = (mediaUrl, body) -> List.of(new File(mediaUrl));
 
     @Override
     public List<String> getIdentifiers() {

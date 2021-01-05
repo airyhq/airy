@@ -7,5 +7,5 @@ exports_files([
     "springboot_pkg.sh",
     "helper.bzl",
     "log4j2.properties",
-    "config.json",
+    "nogo_config.json",
 ])

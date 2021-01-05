@@ -173,10 +173,9 @@ exports_files(
 gazelle(name = "gazelle")
 
 nogo(
-    name = "my_nogo",
+    name = "airy_nogo",
     config = "//tools/build:config.json",
-    visibility = ["//visibility:public"],  # must have public visibility
+    visibility = ["//visibility:public"],
     deps = TOOLS_NOGO + [
-        # analyzer from a remote repository
     ],
 )

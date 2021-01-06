@@ -20,6 +20,7 @@ create_release_branch() {
     command git checkout develop
     command git pull origin develop
     command git checkout -b release/${release_number}
+    command git push origin release/${release_number}
 }
 
 finish() {

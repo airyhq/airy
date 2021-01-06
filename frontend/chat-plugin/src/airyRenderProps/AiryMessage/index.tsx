@@ -3,17 +3,17 @@ import linkifyString from 'linkifyjs/string';
 
 import style from './index.module.scss';
 
-type AiryMessageProps = {  
+type AiryMessageProps = {
   message: {
-    id: string,
+    id: string;
     sender_type: string;
     content: {
       text: string;
       type: string;
     }[];
-    delivery_state: string,
-    sent_at: string,
-    state: string,
+    delivery_state: string;
+    sent_at: string;
+    state: string;
   };
 };
 

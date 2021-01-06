@@ -22,7 +22,14 @@ color: #444;
 
 body.appendChild(anchor);
 
+declare const window: {
+  airy: {
+    h: string;
+    cid: string;
+    no_tls: boolean;
+  };
+};
+
 new AiryWidget({
-  // @ts-ignore
   channel_id: window.airy.cid,
 }).render(anchor);

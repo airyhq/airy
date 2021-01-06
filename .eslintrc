@@ -26,5 +26,20 @@
     "react": {
       "version": "16.12"
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["frontend/chat-plugin/**/*.tsx"],
+      "settings": {
+        "react": {
+          "pragma": "h"
+        },
+        "import/resolver": {
+          "node": {
+            "extensions": [".ts", ".tsx"]
+          }
+        }
+      }
+    }
+  ]
 }

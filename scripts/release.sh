@@ -1,4 +1,6 @@
 #!/bin/bash
+set -eo pipefail
+IFS=$'\n\t'
 
 start() {
     release_number=$1

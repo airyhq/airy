@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import {h} from 'preact';
 import {AuthConfiguration} from '../../config';
 import {RoutableProps} from 'preact-router';

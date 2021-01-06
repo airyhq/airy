@@ -5,54 +5,55 @@ import _redux from 'redux';
 import {StateModel} from '../../../../reducers';
 import styles from './index.module.scss';
 import MessageListItem from '../MessengerListItem';
-import { Message } from '../../../../model/Message';
-import { fetchMessages } from '../../../../actions/messages';
-import { allConversationSelector } from '../../../../selectors/conversations';
+import {Message} from '../../../../model/Message';
+import {fetchMessages} from '../../../../actions/messages';
+import {allConversationSelector} from '../../../../selectors/conversations';
+import {MessageMap} from '../../../../reducers/data/messages';
 
+type MessageListProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<{conversationId: string}>;
 
-type MessageListProps = {
-} & ConnectedProps<typeof connector> & RouteComponentProps<{conversationId: string}>
+const messagesMapToArray = (messageInfo: {[conversationId: string]: MessageMap}, id: string): Message[] => {
+  const messageMap = messageInfo[id];
+  return Object.keys(messageMap).map((cId: string) => ({...messageMap[cId]}));
+};
 
 const mapStateToProps = (state: StateModel, ownProps: any) => {
-    return {
-        conversations: allConversationSelector(state),
-        messages: state.data.messages.all,
-    }
-}
+  return {
+    conversations: allConversationSelector(state),
+    messages: messagesMapToArray(state.data.messages.all, 'a960ef14-9f3b-5903-8bc2-5e4d14f2b89a'),
+  };
+};
 
 const mapDispatchToProps = {
-    fetchMessages
-}
+  fetchMessages,
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-
-
 const MessageList = (props: MessageListProps) => {
-    const {fetchMessages, messages} = props;
-    const conversationIdParams = useParams();
-    const currentConversationId = conversationIdParams[Object.keys(conversationIdParams)[0]];
+  const {fetchMessages, messages} = props;
+  const conversationIdParams = useParams();
+  const currentConversationId = conversationIdParams[Object.keys(conversationIdParams)[0]];
 
-    useEffect(() => {
-        currentConversationId && fetchMessages(currentConversationId);
-    },[currentConversationId]);    
+  useEffect(() => {
+    currentConversationId && fetchMessages(currentConversationId);
+  }, [currentConversationId]);
 
-    return (
-        <div className={styles.messageList}>
-            {messages.map((message: Message) => {
-                return (
-                    <MessageListItem 
-                    key={message.id}
-                    messageText={message.content[0].text}
-                    messageSenderType={message.senderType}
-                    messageDate={message.sentAt}
-                    message={message}
-                />
-                )
-            })}
-        </div>
-    )
+  return (
+    <div className={styles.messageList}>
+      {messages.map((message: Message) => {
+        return (
+          <MessageListItem
+            key={message.id}
+            messageText={message.content[0].text}
+            messageSenderType={message.senderType}
+            messageDate={message.sentAt}
+            message={message}
+          />
+        );
+      })}
+    </div>
+  );
 };
-
 
 export default connector(MessageList);

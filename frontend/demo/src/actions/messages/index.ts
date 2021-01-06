@@ -5,16 +5,22 @@ import {Message, MessagePayloadData, messageMapperData} from '../../model/Messag
 
 export const MESSAGES_LOADING = '@@messages/LOADING';
 
-export const loadingMessagesAction = createAction(MESSAGES_LOADING, resolve => (messages: Message[]) =>
-  resolve(messages)
+export const loadingMessagesAction = createAction(
+  MESSAGES_LOADING,
+  resolve => (messagesInfo: {conversationId: string; messages: Message[]}) => resolve(messagesInfo)
 );
 
-export function fetchMessages(conversation_id: string) {
-    return async (dispatch: Dispatch<any>) => {
-        return doFetchFromBackend('messages.list', {
-            conversation_id
-        }).then((response: MessagePayloadData) => {
-            dispatch(loadingMessagesAction(messageMapperData(response)));
+export function fetchMessages(conversationId: string) {
+  return async (dispatch: Dispatch<any>) => {
+    return doFetchFromBackend('messages.list', {
+      conversation_id: conversationId,
+    }).then((response: MessagePayloadData) => {
+      dispatch(
+        loadingMessagesAction({
+          conversationId,
+          messages: messageMapperData(response),
         })
-    }
+      );
+    });
+  };
 }

@@ -8,9 +8,9 @@ import {Message} from '../../model/Message';
 import user from './user';
 import conversations, {ConversationsState} from './conversations';
 import tags from './tags';
-import settings, { SettingsState } from './settings';
+import settings, {SettingsState} from './settings';
 import channels from './channels';
-import messages, { Messages, MessagesState } from './messages';
+import messages, {Messages, MessagesState} from './messages';
 
 export type DataState = {
   user: User;

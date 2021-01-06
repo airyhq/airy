@@ -31,7 +31,7 @@ export enum MessageState {
 export enum MessageSenderType {
   sourceContact = 'source_contact',
   sourceUser = 'source_user',
-  appUser = 'app_user'
+  appUser = 'app_user',
 }
 export interface Message {
   id: string;
@@ -45,7 +45,7 @@ export interface Message {
 }
 
 export interface MessagePayloadData {
-  data: Message[]
+  data: Message[];
 }
 export interface MessagePayload {
   id: string;
@@ -79,7 +79,7 @@ export const messageMapperData = (payload: MessagePayloadData): Message[] => {
       senderType: messagePayload.sender_type,
       sentAt: messagePayload.sent_at,
     };
-    messages.push(message)
-  })
+    messages.push(message);
+  });
   return messages;
 };

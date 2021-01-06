@@ -1,12 +1,16 @@
 import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 
-// Default to hostname set by local environment
-declare const window: any;
-const API_HOST = window.airy.h || 'chatplugin.api';
+declare const window: {
+  airy: {
+    h: string;
+    cid: string;
+    no_tls: boolean;
+  };
+};
 
-// Allow turning off ssl (unsafe!) for local development
-const TLS_PREFIX = window.airy.no_tls === true ? '' : 's';
+const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
+const TLS_PREFIX = window.airy ? (window.airy.no_tls === true ? '' : 's') : '';
 
 class Websocket {
   client: Client;

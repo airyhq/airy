@@ -14,10 +14,12 @@ apps:
     port: 6379
   # Configuration for the PostgreSQL database
   postgresql:
-    dbEndpoint: "postgres:5432"
+    endpoint: "postgres:5432"
     dbName: "admin"
-    dbUsername: "postgresadmin"  
-    dbPassword: "long-random-generated-password"
+    username: "postgresadmin"  
+    password: "long-random-generated-password"
+
+
   # Specific configurations for sources
   sources:
     facebook:

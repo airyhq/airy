@@ -6,10 +6,10 @@ redis:
   hostname: "redis-cluster"
   port: 6379
 postgresql:
-  dbEndpoint: "postgres:5432"
+  endpoint: "postgres:5432"
   dbName: "admin"
-  dbUsername: "postgresadmin"  
-  dbPassword: "changeme"
+  username: "postgresadmin"  
+  password: "changeme"
 sources:
   facebook:
     appId: "changeme"

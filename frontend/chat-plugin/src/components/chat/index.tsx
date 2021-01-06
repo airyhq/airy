@@ -19,12 +19,16 @@ import AiryBubble from '../../airyRenderProps/AiryBubble';
 let ws: Websocket;
 
 const welcomeMessage = {
-  sender_type: 'app_user',
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
-  sent_at: 'undefined',
-  content: {
+  sender_type: 'app_user',  
+  content: [{
     text: 'Hello! How can we help you?',
-  },
+    type: 'text',
+  }],
+  delivery_state: 'undefined',
+  sent_at: 'undefined',
+  state: 'delivered'
+  
 };
 
 type Props = AiryWidgetConfiguration & RoutableProps;

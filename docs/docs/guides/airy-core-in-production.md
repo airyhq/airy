@@ -172,6 +172,8 @@ apps:
     ...
 ```
 
+We recommend to create a new database if you are reusing a PostgreSQL server to avoid name collisions.
+
 ### Deployment
 
 We provided a Helm chart to deploy the `Airy apps`. Before you can run helm, you

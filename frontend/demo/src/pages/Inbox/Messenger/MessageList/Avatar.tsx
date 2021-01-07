@@ -1,7 +1,6 @@
 import React from 'react';
 
 import './Avatar.scss';
-import {Contact} from '../../../../model/Contact';
 import airyAvatarImage from '../../../../assets/images/icons/airy_avatar.svg';
 
 type AvatarProps = {

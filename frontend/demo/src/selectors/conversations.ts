@@ -3,7 +3,6 @@ import {reverse, sortBy, values} from 'lodash-es';
 import {Conversation} from '../model/Conversation';
 import {StateModel} from '../reducers';
 import {ConversationMap} from '../reducers/data/conversations';
-import {MessageMap} from '../reducers/data/messages';
 
 export const filteredConversationSelector = createSelector(
   (state: StateModel) => state.data.conversations.all.items,

@@ -3,14 +3,13 @@ import {User} from '../../model/User';
 import {Tags} from './tags';
 import {Settings} from './settings';
 import {Channel} from '../../model/Channel';
-import {Message} from '../../model/Message';
 
 import user from './user';
 import conversations, {ConversationsState} from './conversations';
 import tags from './tags';
-import settings, {SettingsState} from './settings';
+import settings from './settings';
 import channels from './channels';
-import messages, {Messages, MessagesState} from './messages';
+import messages, {Messages} from './messages';
 
 export type DataState = {
   user: User;

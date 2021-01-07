@@ -70,7 +70,7 @@ export const messageMapper = (payload: MessagePayload): Message => {
 };
 
 export const messageMapperData = (payload: MessagePayloadData): Message[] => {
-  let messages = [];
+  const messages = [];
   payload.data.forEach((messagePayload: any) => {
     const message: Message = {
       id: messagePayload.id,

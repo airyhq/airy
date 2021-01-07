@@ -10,14 +10,15 @@ import {fetchMessages} from '../../../../actions/messages';
 import {allConversationSelector} from '../../../../selectors/conversations';
 import {MessageMap} from '../../../../reducers/data/messages';
 
-type MessageListProps = {conversationId: string} & ConnectedProps<typeof connector> & RouteComponentProps<{conversationId: string}>;
+type MessageListProps = {conversationId: string} & ConnectedProps<typeof connector> &
+  RouteComponentProps<{conversationId: string}>;
 
-const messagesMapToArray = (messageInfo: {[conversationId: string]: MessageMap}, conversationId: string): Message[] => {  
+const messagesMapToArray = (messageInfo: {[conversationId: string]: MessageMap}, conversationId: string): Message[] => {
   const messageMap = messageInfo[conversationId];
-  if (messageMap) {    
-    return Object.keys(messageMap).map((cId: string) => ({...messageMap[cId]}));    
+  if (messageMap) {
+    return Object.keys(messageMap).map((cId: string) => ({...messageMap[cId]}));
   }
-  return [];  
+  return [];
 };
 
 const mapStateToProps = (state: StateModel, ownProps: {conversationId: string}) => {

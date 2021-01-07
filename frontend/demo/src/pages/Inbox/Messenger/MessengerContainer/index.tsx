@@ -27,7 +27,7 @@ const MessengerContainer = (props: MessengerContainerProps) => {
           <EmptyStateImage />
         </div>
       ) : (
-        <MessageList conversationId={match.params.conversationId}/>
+        <MessageList conversationId={match.params.conversationId} />
       )}
     </div>
   );

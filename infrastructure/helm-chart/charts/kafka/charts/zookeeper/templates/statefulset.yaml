@@ -59,6 +59,10 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         - name : KAFKA_HEAP_OPTS
           value: "{{ .Values.heapOptions }}"
         - name : ZOOKEEPER_TICK_TIME
@@ -83,14 +87,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        command:
-        - "bash"
-        - "-c"
-        - |
-          ZK_FIX_HOST_REGEX="s/${HOSTNAME}\.[^:]*:/0.0.0.0:/g"
-          ZOOKEEPER_SERVER_ID=$((${HOSTNAME##*-}+1)) \
-          ZOOKEEPER_SERVERS=`echo $ZOOKEEPER_SERVERS | sed -e "$ZK_FIX_HOST_REGEX"` \
-          /etc/confluent/docker/run
+        args: ["zookeeper-server-start.sh", "/etc/kafka/zookeeper.properties"]
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/zookeeper/data

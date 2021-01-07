@@ -78,7 +78,7 @@ You change the `commitInterval` to a more suitable production value in the confi
 To deploy Kafka on Kubernetes with Helm, you can run:
 
 ```sh
-helm install airy infrastructure/helm-chart/charts/kafka/
+helm install kafka infrastructure/helm-chart/charts/kafka/
 ```
 
 By default, the `Confluent Schema registry` deployment is created with
@@ -181,7 +181,7 @@ must configure the system via the `airy.conf` file, then you can proceed:
 
 ```sh
 cp airy.conf ./helm-chart/charts/apps/values.yaml
-helm install airy-apps ./helm-chart/charts/apps/ --timeout 1000s
+helm install core ./helm-chart/charts/apps/ --timeout 1000s
 ```
 
 By default, the `Airy apps` deployments start with `replicas=0` so to scale them up, run:
@@ -203,7 +203,7 @@ branch), you can run:
 
 ```sh
 export AIRY_VERSION=beta
-helm install airy-apps ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
+helm install core ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
 ```
 
 If afterwards you need to modify or add other config parameters in the
@@ -211,7 +211,7 @@ If afterwards you need to modify or add other config parameters in the
 
 ```sh
 cp airy.conf ./helm-chart/charts/apps/values.yaml
-helm upgrade airy-apps ./helm-chart/charts/apps/ --timeout 1000s
+helm upgrade core ./helm-chart/charts/apps/ --timeout 1000s
 ```
 
 If you deploy the Airy Core Platform with a specific version tag, you must
@@ -220,7 +220,7 @@ export the `AIRY_VERSION` variable before running `helm upgrade`:
 ```sh
 cp airy.conf ./helm-chart/charts/apps/values.yaml
 export AIRY_VERSION=beta
-helm upgrade airy-apps ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
+helm upgrade core ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
 ```
 
 ## Network

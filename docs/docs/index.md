@@ -114,7 +114,7 @@ You can also consume the messages directly from the Kafka
 
 ```bash
 cd infrastructure && vagrant ssh
-kubectl exec -it core-kafka-0 -- /bin/bash
+kubectl exec -it kafka-0 -- /bin/bash
 kafka-console-consumer \
 --bootstrap-server airy-cp-kafka:9092 \
 --topic application.communication.messages \

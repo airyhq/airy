@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import _, {connect, ConnectedProps} from 'react-redux';
 import {StateModel} from '../../../../reducers';
 import MessageList from '../MessageList';
 import {ReactComponent as EmptyStateImage} from '../../../../assets/images/empty-state/inbox-empty-state.svg';
@@ -19,7 +19,7 @@ const MessengerContainer = (props: MessengerContainerProps) => {
   const {conversations, match} = props;
 
   return (
-    <div className={styles.messengerContainer} {...match.params.conversationId}>
+    <div className={styles.messengerContainer}>
       {!conversations ? (
         <div className={styles.emptyState}>
           <h1>Your conversations will appear here as soon as a contact messages you.</h1>
@@ -27,7 +27,7 @@ const MessengerContainer = (props: MessengerContainerProps) => {
           <EmptyStateImage />
         </div>
       ) : (
-        <MessageList />
+        <MessageList conversationId={match.params.conversationId}/>
       )}
     </div>
   );

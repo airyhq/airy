@@ -59,7 +59,7 @@ merge_main() {
     command git tag ${release_number}
     command git push origin main
     command git push origin ${release_number}
-    echo -e "Sucesfully merged into main branch\n"
+    echo -e "Successfully merged into main branch\n"
 }
 
 merge_develop() {
@@ -67,7 +67,7 @@ merge_develop() {
     command git pull origin develop
     command git merge --no-ff release/${release_number}
     command git push origin develop
-    echo -e "Sucesfully merged into develop branch\n"
+    echo -e "Successfully merged into develop branch\n"
 }
 
 if [[ -b $1 ]] && [[ -b $2 ]];
@@ -84,5 +84,4 @@ else
     echo -ne "Expected syntax: release.sh <start | finish> <version_number>\n"
     exit 1
 fi
-
 

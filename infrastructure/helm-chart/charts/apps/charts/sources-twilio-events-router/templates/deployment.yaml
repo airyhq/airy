@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-twilio-events-router
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: sources-twilio-events-router
     type: sources-twilio

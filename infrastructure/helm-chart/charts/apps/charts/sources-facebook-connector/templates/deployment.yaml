@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-facebook-connector
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: sources-facebook-connector
     type: sources-facebook

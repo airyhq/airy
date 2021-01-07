@@ -2,7 +2,7 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: 'airy-core'
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
 spec:
   rules:
     - host: 'api.airy'

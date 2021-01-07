@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-auth
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: api-auth
     type: api

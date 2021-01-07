@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-twilio-connector
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: sources-twilio-connector
     type: sources-twilio

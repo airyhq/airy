@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: kafka-client
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
 spec:
   containers:
   - name: kafka-client

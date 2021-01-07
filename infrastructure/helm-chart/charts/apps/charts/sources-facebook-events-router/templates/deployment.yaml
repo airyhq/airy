@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-facebook-events-router
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: sources-facebook-events-router
     type: sources-facebook

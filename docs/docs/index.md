@@ -114,11 +114,11 @@ You can also consume the messages directly from the Kafka
 
 ```bash
 cd infrastructure && vagrant ssh
-kubectl exec -it airy-cp-kafka-0 -- /bin/bash
+kubectl exec -it core-kafka-0 -- /bin/bash
 kafka-console-consumer \
 --bootstrap-server airy-cp-kafka:9092 \
 --topic application.communication.messages \
 --from-beginning
 ```
 
-<img alt="Kafka Topic" src={useBaseUrl('img/home/kafka.gif')} />
+<img alt="Kafka Topic" src={useBaseUrl('img/home/messages_topic.gif')} />

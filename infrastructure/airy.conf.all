@@ -6,7 +6,7 @@ global:
 apps:
   kafka:
     brokers: "airy-cp-kafka-headless:9092"
-    schemaRegistryUrl: "http://airy-cp-schema-registry:8081"
+    schemaRegistryUrl: "http://schema-registry:8081"
     commitInterval: 30000
   # Configuration for the Redis database
   redis:

@@ -11,7 +11,7 @@ kubectl scale deployment -l type=sources-chatplugin --replicas=0
 kubectl scale deployment -l type=webhook --replicas=0
 kubectl scale deployment -l type=sources-chatplugin --replicas=0
 kubectl scale deployment -l type=api --replicas=0
-kubectl scale deployment core-schema-registry --replicas=0
+kubectl scale deployment schema-registry --replicas=0
 kubectl scale statefulset kafka --replicas=0
 kubectl scale statefulset zookeeper --replicas=0
 kubectl scale deployment postgres --replicas=0

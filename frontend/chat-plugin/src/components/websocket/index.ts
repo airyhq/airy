@@ -16,11 +16,13 @@ class Websocket {
   client: Client;
   channel_id: string;
   token: string;
+  getUrlParam: any;
   onReceive: messageCallbackType;
 
-  constructor(channel_id: string, onReceive: messageCallbackType) {
+  constructor(channel_id: string, getUrlParam: any, onReceive: messageCallbackType) {
     this.channel_id = channel_id;
     this.onReceive = onReceive;
+    this.getUrlParam = getUrlParam;
   }
 
   connect = (token: string) => {

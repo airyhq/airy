@@ -32,6 +32,22 @@ const welcomeMessage = {
   state: 'delivered',
 };
 
+function setResumeToken(key, value) {
+  const queryParams = new URLSearchParams(window.location.search);
+  if (queryParams.has('channel_id')) {
+    //queryParams.delete('channel_id');
+
+    queryParams.set(key, value);
+    window.history.replaceState({}, '', `${location.pathname}?${queryParams.toString()}`);
+    localStorage.setItem('resumeChat', queryParams.toString());
+    if (localStorage.getItem('resumeChat') != null) {
+      localStorage.getItem('resumeChat');
+    }
+  }
+  return queryParams;
+}
+setResumeToken('resume_Token', '46891035656324536');
+
 type Props = AiryWidgetConfiguration & RoutableProps;
 
 const Chat = (props: Props) => {
@@ -41,7 +57,7 @@ const Chat = (props: Props) => {
   const [messages, setMessages] = useState([welcomeMessage]);
 
   useEffect(() => {
-    ws = new Websocket(props.channel_id, onReceive);
+    ws = new Websocket(props.channel_id, setResumeToken, onReceive);
     ws.start().catch(error => {
       console.error(error);
       setInstallError(error.message);

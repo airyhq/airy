@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import {RouteComponentProps, useParams} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
@@ -9,7 +9,7 @@ import {Message} from '../../../../model/Message';
 import {fetchMessages} from '../../../../actions/messages';
 import {allConversationSelector} from '../../../../selectors/conversations';
 import {MessageMap} from '../../../../reducers/data/messages';
-import { createRef } from 'react';
+import {createRef} from 'react';
 
 type MessageListProps = {conversationId: string} & ConnectedProps<typeof connector> &
   RouteComponentProps<{conversationId: string}>;
@@ -41,7 +41,6 @@ const MessageList = (props: MessageListProps) => {
   const currentConversationId = conversationIdParams[Object.keys(conversationIdParams)[0]];
 
   const messageListRef = createRef<HTMLDivElement>();
-
 
   useEffect(() => {
     currentConversationId && fetchMessages(currentConversationId);

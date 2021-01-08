@@ -28,7 +28,9 @@ const MessengerListItem = (props: MessengerListItemProps) => {
 
   const messageAvatar = (messageId: string) => {
     Object.values(lastMessages).forEach(lastMessage => {
-      return <Avatar isLastMessage={messageId === lastMessage.lastMessage.id} avatarUrl={lastMessage.contact.avatarUrl} />;      
+      return (
+        <Avatar isLastMessage={messageId === lastMessage.lastMessage.id} avatarUrl={lastMessage.contact.avatarUrl} />
+      );
     });
   };
 
@@ -41,7 +43,7 @@ const MessengerListItem = (props: MessengerListItemProps) => {
             {messageAvatar(message.id)}
           </div>
         ) : (
-          <div className={styles.messageListUserContainer}>            
+          <div className={styles.messageListUserContainer}>
             {messageAvatar(message.id)}
             <div className={styles.messageListItemUser}>{messageText}</div>
           </div>

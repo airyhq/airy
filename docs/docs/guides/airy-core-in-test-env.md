@@ -155,7 +155,7 @@ cd infrastructure
 vagrant ssh
 sudo -i
 cp /vagrant/airy.conf ~/airy-core/helm-chart/charts/apps/values.yaml
-helm upgrade airy ~/airy-core/helm-chart/charts/apps/ --timeout 1000s
+helm upgrade core ~/airy-core/helm-chart/charts/apps/ --timeout 1000s
 ```
 
 ## Connect sources

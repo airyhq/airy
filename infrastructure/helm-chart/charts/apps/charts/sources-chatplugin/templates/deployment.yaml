@@ -26,6 +26,11 @@ spec:
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
+        - name: ALLOWED_ORIGINS
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: ALLOWED_ORIGINS
         - name: JWT_SECRET
           valueFrom:
             configMapKeyRef:

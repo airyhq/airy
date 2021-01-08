@@ -1,5 +1,5 @@
 import {ActionType, getType} from 'typesafe-actions';
-import {Channel} from '../../../model/Channel';
+import {Channel} from 'httpclient';
 import * as actions from '../../../actions/channel';
 import {unionWith} from 'lodash-es';
 

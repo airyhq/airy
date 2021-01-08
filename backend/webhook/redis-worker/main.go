@@ -19,7 +19,10 @@ func main() {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		w.Write(errors)
+		_, err = w.Write(errors)
+		if err != nil {
+			log.Println(err)
+		}
 	})
 
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {

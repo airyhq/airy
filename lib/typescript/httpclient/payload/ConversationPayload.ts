@@ -1,0 +1,17 @@
+import {Channel} from '../model';
+import {MessagePayload} from './MessagePayload';
+
+export interface ConversationPayload {
+  id: string;
+  channel: Channel;
+  created_at: string;
+  contact: {
+    avatar_url: string;
+    first_name: string;
+    last_name: string;
+    id: string;
+  };
+  tags: string[];
+  last_message: MessagePayload;
+  unread_message_count?: number;
+}

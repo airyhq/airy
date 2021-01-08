@@ -1,8 +1,7 @@
 import _, {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
 
-import {doFetchFromBackend} from '../../api/airyConfig';
-import {Tag, TagPayload, CreateTagRequestPayload, GetTagsResponse, tagsMapper} from '../../model/Tag';
+import {HttpClient, Tag, CreateTagRequestPayload} from 'httpclient';
 
 const UPSERT_TAG = 'UPSERT_TAG';
 const DELETE_TAG = 'DELETE_TAG';
@@ -18,24 +17,19 @@ export const deleteTagAction = createAction(DELETE_TAG, resolve => (id: string) 
 export const filterTagAction = createAction(SET_TAG_FILTER, resolve => (filter: string) => resolve(filter));
 export const errorTagAction = createAction(ERROR_TAG, resolve => (status: string) => resolve(status));
 
-export function getTags() {
+export function listTags() {
   return function(dispatch: Dispatch<any>) {
-    return doFetchFromBackend('tags.list').then((response: GetTagsResponse) => {
-      dispatch(fetchTagAction(tagsMapper(response.data)));
+    return HttpClient.listTags().then((response: Tag[]) => {
+      dispatch(fetchTagAction(response));
     });
   };
 }
 
 export function createTag(requestPayload: CreateTagRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return doFetchFromBackend('tags.create', requestPayload)
-      .then((response: TagPayload) => {
-        const tag: Tag = {
-          id: response.id,
-          name: requestPayload.name,
-          color: requestPayload.color,
-        };
-        dispatch(addTagAction(tag));
+    return HttpClient.createTag(requestPayload)
+      .then((response: Tag) => {
+        dispatch(addTagAction(response));
         return Promise.resolve(true);
       })
       .catch((error: string) => {
@@ -47,19 +41,13 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
 
 export function updateTag(tag: Tag) {
   return function(dispatch: Dispatch<any>) {
-    doFetchFromBackend('tags.update', {
-      id: tag.id,
-      name: tag.name,
-      color: tag.color,
-    }).then(() => dispatch(editTagAction(tag)));
+    HttpClient.updateTag(tag).then(() => dispatch(editTagAction(tag)));
   };
 }
 
 export function deleteTag(id: string) {
   return function(dispatch: Dispatch<any>) {
-    doFetchFromBackend('tags.delete', {
-      id,
-    }).then(() => {
+    HttpClient.deleteTag(id).then(() => {
       dispatch(deleteTagAction(id));
     });
   };

@@ -1,9 +1,7 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {doFetchFromBackend} from '../../api/airyConfig';
-
-import {Conversation, ConversationPayload, conversationsMapper} from '../../model/Conversation';
-import {ResponseMetadata} from '../../model/ResponseMetadata';
+import {HttpClient, Conversation} from 'httpclient';
+import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
 import {StateModel} from '../../reducers';
 
 export const CONVERSATION_LOADING = '@@conversation/LOADING';
@@ -20,7 +18,7 @@ export const loadingConversationsAction = createAction(CONVERSATIONS_LOADING, re
 
 export const mergeConversationsAction = createAction(
   CONVERSATIONS_MERGE,
-  resolve => (conversations: Conversation[], responseMetadata: ResponseMetadata) =>
+  resolve => (conversations: Conversation[], responseMetadata: ResponseMetadataPayload) =>
     resolve({conversations, responseMetadata})
 );
 
@@ -34,19 +32,12 @@ export const removeErrorFromConversationAction = createAction(
   resolve => (conversationId: string) => resolve({conversationId})
 );
 
-export interface FetchConversationsResponse {
-  data: ConversationPayload[];
-  metadata: ResponseMetadata;
-}
-
-export function fetchConversations() {
+export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
-    return doFetchFromBackend('conversations.list', {
-      page_size: 50,
-    })
-      .then((response: FetchConversationsResponse) => {
-        dispatch(mergeConversationsAction(conversationsMapper(response.data), response.metadata));
+    return HttpClient.listConversations({page_size: 10})
+      .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
+        dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {
@@ -55,15 +46,13 @@ export function fetchConversations() {
   };
 }
 
-export function fetchNextConversations() {
+export function listNextConversations() {
   return async (dispatch: Dispatch<any>, state: StateModel) => {
-    const cursor = state.data.conversations.all.metadata.next_cursor;
+    const cursor = state.data.conversations.all.metadata.nextCursor;
     dispatch(loadingConversationsAction());
-    return doFetchFromBackend('conversations.list', {
-      cursor,
-    })
-      .then((response: FetchConversationsResponse) => {
-        dispatch(mergeConversationsAction(conversationsMapper(response.data), response.metadata));
+    return HttpClient.listConversations({cursor: cursor})
+      .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
+        dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {

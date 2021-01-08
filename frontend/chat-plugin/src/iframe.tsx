@@ -1,3 +1,6 @@
+import 'core-js';
+import 'regenerator-runtime/runtime';
+
 import {h, render} from 'preact';
 
 const renderMethod = async () => {

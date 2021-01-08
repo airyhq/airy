@@ -1,4 +1,4 @@
-{{ $ingressID := randAlphaNum 10 }}
+{{ $ingressID := randAlphaNum 10 | lower }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

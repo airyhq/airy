@@ -6,7 +6,7 @@ import InfiniteLoader from 'react-window-infinite-loader';
 import ResizableWindowList from '../../../components/ResizableWindowList';
 
 import {newestConversationFirst} from '../../../selectors/conversations';
-import {fetchNextConversations} from '../../../actions/conversations';
+import {listNextConversations} from '../../../actions/conversations';
 
 import ConversationListHeader from '../ConversationListHeader';
 import ConversationListItem from '../ConversationListItem';
@@ -14,7 +14,7 @@ import NoConversations from '../NoConversations';
 import {SimpleLoader} from '@airyhq/components';
 
 import {StateModel} from '../../../reducers';
-import {Conversation} from '../../../model/Conversation';
+import {Conversation} from 'httpclient';
 
 import './index.scss';
 
@@ -25,7 +25,7 @@ type MatchParams = {
 };
 
 const mapDispatchToProps = {
-  fetchNextConversations,
+  listNextConversations,
 };
 
 const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
@@ -67,17 +67,17 @@ const ConversationList = (props: ConversationListProps) => {
   };
 
   const renderConversationList = () => {
-    const {conversations, conversationsMetadata, loading, fetchNextConversations} = props;
+    const {conversations, conversationsMetadata, loading, listNextConversations} = props;
 
     const items = conversations;
     const metadata = conversationsMetadata;
-    const hasMoreData = metadata.next_cursor && metadata.next_cursor.length > 0;
+    const hasMoreData = metadata.nextCursor && metadata.nextCursor.length > 0;
 
     const isItemLoaded = (index: number) => index < items.length;
     const itemCount = hasMoreData ? items.length + 1 : items.length;
     const loadMoreItems = () => {
       if (!metadata.loading) {
-        fetchNextConversations();
+        listNextConversations();
       }
       return Promise.resolve(true);
     };

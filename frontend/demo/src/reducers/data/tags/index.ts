@@ -1,6 +1,6 @@
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/tags';
-import {Tag} from '../../../model/Tag';
+import {Tag} from 'httpclient';
 import {DataState} from '../../data';
 
 type Action = ActionType<typeof actions>;

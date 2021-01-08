@@ -48,32 +48,8 @@ jobs:
         run: |
           "${GITHUB_WORKSPACE}/bin/bazel" build //...
 
-      - name: Push beta app images
-        if: ${{github.ref == 'refs/heads/develop'}}
+      - name: Push images
+        if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          release_targets=$(bazel query "filter("beta$", //...)" --output label)
-          for target in $release_targets; do
-            echo "Deploying $target"
-            bazel run $target
-          done
-
-      - name: Push release app images
-        if: startsWith(github.ref, 'refs/heads/release')
-        run: |
-          echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          release_targets=$(bazel query "filter("release$", //...)" --output label)
-          for target in $release_targets; do
-            echo "Deploying $target"
-            bazel run $target
-          done
-
-      - name: Push latest app images
-        if: ${{github.ref == 'refs/heads/main'}}
-        run: |
-          echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          release_targets=$(bazel query "filter("latest$", //...)" --output label)
-          for target in $release_targets; do
-            echo "Deploying $target"
-            bazel run $target
-          done
+          ./scripts/push-images.sh {{ github.ref }}

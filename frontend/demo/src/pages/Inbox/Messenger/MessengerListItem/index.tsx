@@ -28,11 +28,7 @@ const MessengerListItem = (props: MessengerListItemProps) => {
 
   const messageAvatar = (messageId: string) => {
     Object.values(lastMessages).forEach(lastMessage => {
-      if (messageId === lastMessage.lastMessage.id) {
-        return <Avatar isLastMessage={true} avatarUrl={lastMessage.contact.avatarUrl} />;
-      } else {
-        return <Avatar isLastMessage={false} />;
-      }
+      return <Avatar isLastMessage={messageId === lastMessage.lastMessage.id} avatarUrl={lastMessage.contact.avatarUrl} />;      
     });
   };
 
@@ -41,13 +37,11 @@ const MessengerListItem = (props: MessengerListItemProps) => {
       <div className={styles.messageListItem}>
         {!isUser ? (
           <div className={styles.messageListItemMember}>
-            {/* {messageText} */}
-            {/* {messageAvatar(message.id)} */}
+            {messageText}
+            {messageAvatar(message.id)}
           </div>
         ) : (
-          <div className={styles.messageListUserContainer}>
-            {console.log(messageAvatar(message.id))}
-
+          <div className={styles.messageListUserContainer}>            
             {messageAvatar(message.id)}
             <div className={styles.messageListItemUser}>{messageText}</div>
           </div>

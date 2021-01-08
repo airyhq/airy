@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "cp-kafka.fullname" . }}-headless
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: {{ template "cp-kafka.name" . }}
     chart: {{ template "cp-kafka.chart" . }}

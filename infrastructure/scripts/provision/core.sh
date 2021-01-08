@@ -15,7 +15,12 @@ echo "Deploying the Airy Core Platform with the ${APP_IMAGE_TAG} image tag"
 cd /vagrant/scripts/
 wait-for-service-account
 
-helm install core ~/airy-core/helm-chart/ --set global.appImageTag=${APP_IMAGE_TAG} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
+if [ -f "/vagrant/airy.conf" ]; then
+    cp /vagrant/airy.conf ~/airy-core/helm-chart/values.yaml
+    
+fi
+
+helm install core ~/airy-core/helm-chart/ -f ~/airy-core/helm-chart/values.yaml --version 0.5.0 --timeout 1000s
 
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 

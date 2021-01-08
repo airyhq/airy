@@ -31,16 +31,16 @@ fi
 
 helm upgrade core ~/airy-core/helm-chart/ --set global.appImageTag=${AIRY_VERSION} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
 
-kubectl scale deployment core-schema-registry --replicas=1
+kubectl scale deployment schema-registry --replicas=1
 
 wait-for-running-pod startup-helper
-wait-for-service startup-helper core-schema-registry 8081 15 Schema-registry
+wait-for-service startup-helper schema-registry 8081 15 "Schema registry"
 
 kubectl scale deployment -l type=api --replicas=1
 kubectl scale deployment -l type=sources-chatplugin --replicas=1
 kubectl scale deployment -l type=frontend --replicas=1
 
-wait-for-service startup-helper api-auth 80 10 Airy-auth
+wait-for-service startup-helper api-auth 80 10 api-auth
 
 kubectl scale deployment -l type=sources-twilio --replicas=1
 kubectl scale deployment -l type=sources-google --replicas=1

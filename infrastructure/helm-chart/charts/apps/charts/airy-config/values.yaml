@@ -1,13 +1,12 @@
 kafka:
   brokers: "kafka-headless:9092"
-  schemaRegistryUrl: "http://core-schema-registry:8081"
+  schemaRegistryUrl: "http://schema-registry:8081"
   commitInterval: 1000
 redis:
   hostname: "redis-cluster"
   port: 6379
 postgresql:
   endpoint: "postgres:5432"
-  dbName: "admin"
   username: "postgresadmin"  
   password: "changeme"
 sources:

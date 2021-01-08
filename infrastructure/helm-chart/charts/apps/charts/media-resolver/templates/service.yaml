@@ -1,0 +1,15 @@
+{{ if gt (keys .Values.storage | len) 0 }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: media-resolver
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: media-resolver
+{{ end }}

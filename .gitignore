@@ -1,11 +1,14 @@
 # Editors and IDE's
+
+!.ijwb/.bazelproject
+!.ijwb/.idea/fileTemplates/
+
 .idea/
 .code/
 .vscode/
 .ijwb/
 
-# Bazel
-!.ijwb/.bazelproject
+
 dist/
 bazel-*
 

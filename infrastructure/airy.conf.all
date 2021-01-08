@@ -16,7 +16,7 @@ apps:
   postgresql:
     endpoint: "postgres:5432"
     dbName: "admin"
-    username: "postgresadmin"  
+    username: "postgresadmin"
     password: "long-random-generated-password"
 
 
@@ -45,3 +45,10 @@ apps:
     mailPassword: "changeme"
     jwtSecret: "long-random-generated-jwt-secret"
     allowedOrigins: "*"
+  storage:
+    s3:
+      key: "changeme"
+      secret: "changeme"
+      bucket: "changeme"
+      region: "changeme"
+      path: "path"

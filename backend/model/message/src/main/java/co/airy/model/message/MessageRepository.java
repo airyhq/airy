@@ -11,4 +11,8 @@ public class MessageRepository {
         message.setUpdatedAt(Instant.now().toEpochMilli());
         return message;
     }
+
+    public static boolean isMessageNew(Message message) {
+        return message.getUpdatedAt() == null;
+    }
 }

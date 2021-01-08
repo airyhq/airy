@@ -102,7 +102,6 @@ public class ContentMapperTest {
         final String persistentUrl = "http://storage.org/path/data";
         final Map<String, String> messageMetadata = Map.of("data_" + originalUrl, persistentUrl);
 
-        // No replacement without metadata
         audioMessage = (Audio) mapper.render(message, messageMetadata).get(0);
         assertThat(audioMessage.getUrl(), equalTo(persistentUrl));
     }

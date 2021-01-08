@@ -9,7 +9,7 @@ kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev
 
 wait-for-ingress-service
 wait-for-running-pod startup-helper
-wait-for-service startup-helper api-auth 80 10 Airy-auth
+wait-for-service startup-helper api-auth 80 10 api-auth
 
 FACEBOOK_WEBHOOK_PUBLIC_URL=`kubectl get configmap sources-config -o jsonpath='{.data.FACEBOOK_WEBHOOK_PUBLIC_URL}'`
 GOOGLE_WEBHOOK_PUBLIC_URL=`kubectl get configmap sources-config -o jsonpath='{.data.GOOGLE_WEBHOOK_PUBLIC_URL}'`

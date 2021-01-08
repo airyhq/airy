@@ -16,15 +16,15 @@ kubectl scale statefulset redis-cluster --replicas=1
 wait-for-service startup-helper redis-cluster 6379 10 Redis
 kubectl scale deployment postgres --replicas=1
 wait-for-service startup-helper postgres 5432 10 Postgres
-kubectl scale deployment core-schema-registry --replicas=1
-wait-for-service startup-helper core-schema-registry 8081 15 Schema-registry
+kubectl scale deployment schema-registry --replicas=1
+wait-for-service startup-helper schema-registry 8081 15 "Schema registry"
 
 echo "Starting up Airy Core Platform appplications"
 kubectl scale deployment -l type=api --replicas=1
 kubectl scale deployment -l type=sources-chatplugin --replicas=1
 kubectl scale deployment -l type=frontend --replicas=1
 
-wait-for-service startup-helper api-auth 80 10 Airy-auth
+wait-for-service startup-helper api-auth 80 10 api-auth
 
 kubectl scale deployment -l type=sources-twilio --replicas=1
 kubectl scale deployment -l type=sources-google --replicas=1

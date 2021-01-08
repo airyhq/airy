@@ -43,7 +43,7 @@ export function fetchConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
     return doFetchFromBackend('conversations.list', {
-      page_size: 10,
+      page_size: 50,
     })
       .then((response: FetchConversationsResponse) => {
         dispatch(mergeConversationsAction(conversationsMapper(response.data), response.metadata));

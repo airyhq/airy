@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {RouteComponentProps, useParams} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
@@ -9,6 +9,7 @@ import {Message} from '../../../../model/Message';
 import {fetchMessages} from '../../../../actions/messages';
 import {allConversationSelector} from '../../../../selectors/conversations';
 import {MessageMap} from '../../../../reducers/data/messages';
+import { createRef } from 'react';
 
 type MessageListProps = {conversationId: string} & ConnectedProps<typeof connector> &
   RouteComponentProps<{conversationId: string}>;
@@ -39,12 +40,20 @@ const MessageList = (props: MessageListProps) => {
   const conversationIdParams = useParams();
   const currentConversationId = conversationIdParams[Object.keys(conversationIdParams)[0]];
 
+  const messageListRef = createRef<HTMLDivElement>();
+
+
   useEffect(() => {
     currentConversationId && fetchMessages(currentConversationId);
+    scrollBottom();
   }, [currentConversationId]);
 
+  const scrollBottom = () => {
+    messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+  };
+
   return (
-    <div className={styles.messageList}>
+    <div className={styles.messageList} ref={messageListRef}>
       {messages.map((message: Message) => {
         return (
           <MessageListItem

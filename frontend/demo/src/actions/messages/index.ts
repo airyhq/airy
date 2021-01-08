@@ -14,6 +14,7 @@ export function fetchMessages(conversationId: string) {
   return async (dispatch: Dispatch<any>) => {
     return doFetchFromBackend('messages.list', {
       conversation_id: conversationId,
+      page_size: 10,
     }).then((response: MessagePayloadData) => {
       dispatch(
         loadingMessagesAction({

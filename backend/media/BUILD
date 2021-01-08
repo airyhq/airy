@@ -4,20 +4,18 @@ load("//tools/build:container_push.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
-    "//backend/model/channel",
     "//backend/model/message",
     "//backend/model/metadata",
     "//lib/java/uuid",
-    "//lib/java/log",
-    "//lib/java/spring/web:spring-web",
-    "//lib/java/spring/auth:spring-auth",
+    "//lib/java/mapping",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
-    "//lib/java/kafka/schema:source-facebook-events",
+    "@maven//:io_lettuce_lettuce_core",
+    "@maven//:org_springframework_data_spring_data_redis",
 ]
 
 springboot(
-    name = "connector",
+    name = "media-resolver",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "co.airy.spring.core.AirySpringBootApplication",
     deps = app_deps,
@@ -38,6 +36,6 @@ springboot(
 ]
 
 container_push(
-    registry = "ghcr.io/airyhq/sources",
-    repository = "facebook-connector",
+    registry = "ghcr.io/airyhq/media",
+    repository = "resolver",
 )

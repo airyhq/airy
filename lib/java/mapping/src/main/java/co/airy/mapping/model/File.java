@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class File extends Content implements Serializable {
+public class File extends Content implements DataUrl, Serializable {
     @NotNull
     private String url;
 }

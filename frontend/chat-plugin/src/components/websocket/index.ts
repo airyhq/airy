@@ -9,7 +9,7 @@ declare const window: {
   };
 };
 
-interface Auth {
+interface AuthProps{
   channel_id?: string;
   resume_token?: string;
 }
@@ -72,7 +72,7 @@ class Websocket {
   };
 
   async start() {
-    let authenticateChannelAndResumeToken: Auth = {
+    let authenticateChannelAndResumeToken: AuthProps = {
       channel_id: this.channel_id,
     };
 

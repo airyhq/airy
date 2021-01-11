@@ -8,11 +8,6 @@ INFRASTRUCTURE_PATH=$( cd ${SCRIPT_PATH}/../../; pwd -P)
 source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
 APP_IMAGE_TAG="${AIRY_VERSION:-latest}"
 
-echo "Which kubectl"
-which kubectl
-grep root /etc/passwd
-ls -lah /usr/local/bin/
-kubectl get nodes
 echo "Deploying the Airy Core Platform with the ${APP_IMAGE_TAG} image tag"
 
 cd ${INFRASTRUCTURE_PATH}/scripts/

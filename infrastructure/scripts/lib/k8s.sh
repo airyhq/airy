@@ -35,13 +35,6 @@ function wait-for-ingress-service {
 function wait-for-service-account {
     while ! `kubectl get sa default 2>/dev/null| grep -q default`
     do
-        echo kubectl get sa default
-        kubectl get sa default
-        echo With grep
-        kubectl get sa default 2>/dev/null| grep default
-        echo get exit code
-        kubectl get sa default 2>/dev/null| grep -q default
-        echo $?
         echo "Waiting for default ServiceAccount to be created..."
         sleep 5
     done

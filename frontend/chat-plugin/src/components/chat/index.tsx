@@ -40,8 +40,17 @@ const Chat = (props: Props) => {
   const [isChatHidden, setIsChatHidden] = useState(true);
   const [messages, setMessages] = useState([welcomeMessage]);
 
+  const getResumeToken = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.has('resume_token')) {
+      queryParams.get('resume_token');
+      return 'resume_token';
+    }
+    return null;
+  };
+
   useEffect(() => {
-    ws = new Websocket(props.channel_id, onReceive);
+    ws = new Websocket(props.channel_id, onReceive, getResumeToken());
     ws.start().catch(error => {
       console.error(error);
       setInstallError(error.message);

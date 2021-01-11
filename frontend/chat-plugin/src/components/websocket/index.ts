@@ -16,11 +16,13 @@ class Websocket {
   client: Client;
   channel_id: string;
   token: string;
+  resume_token: string;
   onReceive: messageCallbackType;
 
-  constructor(channel_id: string, onReceive: messageCallbackType) {
+  constructor(channel_id: string, onReceive: messageCallbackType, resume_token?: string) {
     this.channel_id = channel_id;
     this.onReceive = onReceive;
+    this.resume_token = resume_token;
   }
 
   connect = (token: string) => {
@@ -65,12 +67,20 @@ class Websocket {
   };
 
   async start() {
+    let authenticateChannelAndResumeToken: any = {
+      channel_id: this.channel_id,
+    };
+
+    if (this.resume_token) {
+      authenticateChannelAndResumeToken = {
+        resume_token: this.resume_token,
+      };
+    }
+
     try {
       const response = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.authenticate`, {
         method: 'POST',
-        body: JSON.stringify({
-          channel_id: this.channel_id,
-        }),
+        body: JSON.stringify(authenticateChannelAndResumeToken),
         headers: {
           'Content-Type': 'application/json',
         },

@@ -9,7 +9,7 @@ declare const window: {
   };
 };
 
-interface AuthProps{
+interface AuthProps {
   channel_id?: string;
   resume_token?: string;
 }

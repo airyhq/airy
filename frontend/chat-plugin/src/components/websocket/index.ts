@@ -9,10 +9,9 @@ declare const window: {
   };
 };
 
-interface Auth{
+interface Auth {
   channel_id?: string;
-  resume_token?:string;
-  
+  resume_token?: string;
 }
 
 const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';

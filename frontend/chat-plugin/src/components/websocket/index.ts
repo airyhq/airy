@@ -9,6 +9,12 @@ declare const window: {
   };
 };
 
+interface Auth{
+  channel_id?: string;
+  resume_token?:string;
+  
+}
+
 const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
 const TLS_PREFIX = window.airy ? (window.airy.no_tls === true ? '' : 's') : '';
 
@@ -67,7 +73,7 @@ class Websocket {
   };
 
   async start() {
-    let authenticateChannelAndResumeToken: any = {
+    let authenticateChannelAndResumeToken: Auth = {
       channel_id: this.channel_id,
     };
 

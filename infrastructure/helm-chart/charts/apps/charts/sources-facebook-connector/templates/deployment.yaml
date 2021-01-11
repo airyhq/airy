@@ -46,17 +46,17 @@ spec:
           - name: FACEBOOK_WEBHOOK_SECRET
             valueFrom:
               configMapKeyRef:
-                name: sources-config
+                name: sources-facebook
                 key: FACEBOOK_WEBHOOK_SECRET
           - name: FACEBOOK_APP_ID
             valueFrom:
               configMapKeyRef:
-                name: sources-config
+                name: sources-facebook
                 key: FACEBOOK_APP_ID
           - name: FACEBOOK_APP_SECRET
             valueFrom:
               configMapKeyRef:
-                name: sources-config
+                name: sources-facebook
                 key: FACEBOOK_APP_SECRET
           - name: JWT_SECRET
             valueFrom:
@@ -73,14 +73,14 @@ spec:
           command:
             - /bin/bash
             - -c
-            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="${WEBHOOK:8:13}" 8080
+            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="fb-${CORE_ID}" 8080
           image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
           env:
-            - name: WEBHOOK
+            - name: CORE_ID
               valueFrom:
                 configMapKeyRef:
-                  name: sources-config
-                  key: FACEBOOK_WEBHOOK_PUBLIC_URL
+                  name: core-config
+                  key: CORE_ID
           imagePullPolicy: Always
           resources:
             limits:

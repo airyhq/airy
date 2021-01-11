@@ -1,20 +1,31 @@
-{{ $ingressID := randAlphaNum 10 | lower }}
+{{ $coreID := randAlphaNum 10 | lower }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: sources-config
+  name: sources-facebook
   namespace: {{ .Values.global.namespace }}
 data:
   FACEBOOK_APP_ID: {{ .Values.sources.facebook.appId | quote }}
   FACEBOOK_APP_SECRET: {{ .Values.sources.facebook.appSecret | quote }}
   FACEBOOK_WEBHOOK_SECRET: {{ .Values.sources.facebook.webhookSecret | quote }}
-  FACEBOOK_WEBHOOK_PUBLIC_URL: https://fb-{{ $ingressID }}.tunnel.airy.co
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sources-google
+  namespace: {{ .Values.global.namespace }}
+data:
   GOOGLE_PARTNER_KEY: {{ .Values.sources.google.partnerKey }}
   GOOGLE_SA_FILE: {{ .Values.sources.google.saFile }}
-  GOOGLE_WEBHOOK_PUBLIC_URL: https://gl-{{ $ingressID }}.tunnel.airy.co
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sources-twilio
+  namespace: {{ .Values.global.namespace }}
+data:
   TWILIO_AUTH_TOKEN: {{ .Values.sources.twilio.authToken }}
   TWILIO_ACCOUNT_SID: {{ .Values.sources.twilio.accountSid }}
-  TWILIO_WEBHOOK_PUBLIC_URL: https://tw-{{ $ingressID }}.tunnel.airy.co
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -25,3 +36,12 @@ data:
   config.yml: |
     server_addr: proxy.tunnel.airy.co:4443
     trust_host_root_certs: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: core-config
+  namespace: {{ .Values.global.namespace }}
+data:
+  APP_IMAGE_TAG: {{ .Values.global.appImageTag }}
+  CORE_ID: {{ $coreID }}

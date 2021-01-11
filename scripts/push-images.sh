@@ -7,14 +7,21 @@ BRANCH_TARGET=$(echo $1 | cut -d'/' -f3)
 
 echo "Branch target: ${BRANCH_TARGET}"
 
-if [[ ${BRANCH_TARGET} == "develop" ]]; then
-  cd "$(git rev-parse --show-toplevel)"
-  files=$(git diff-tree --no-commit-id --name-only -r ${GITHUB_SHA})
-  release_targets=$(bazel query --keep_going "filter("beta$", rdeps(//..., set(${files[*]})))" --output label)
-else
-  [[ ${BRANCH_TARGET} == "main" ]] && tag="latest" || tag="release"
-  release_targets=$(bazel query "filter("${tag}$", //...)" --output label)
-fi
+case ${BRANCH_TARGET} in
+  develop)
+    tag="beta"
+    ;;
+
+  main)
+    tag="latest"
+    ;;
+
+  release)
+    tag="release"
+    ;;
+esac
+
+release_targets=$(bazel query "filter("${tag}$", //...)" --output label)
 
 for target in $release_targets; do
   echo "Deploying $target"

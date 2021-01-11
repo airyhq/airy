@@ -43,8 +43,7 @@ const Chat = (props: Props) => {
   const getResumeToken = () => {
     const queryParams = new URLSearchParams(window.location.search);
     if (queryParams.has('resume_token')) {
-      queryParams.get('resume_token');
-      return 'resume_token';
+      return queryParams.get('resume_token');
     }
     return null;
   };

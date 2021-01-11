@@ -1,15 +1,19 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, createRef} from 'react';
 import {RouteComponentProps, useParams} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
+
+import {Message} from 'httpclient';
+
 import {StateModel} from '../../../../reducers';
-import styles from './index.module.scss';
-import MessageListItem from '../MessengerListItem';
-import {Message} from '../../../../model/Message';
-import {fetchMessages} from '../../../../actions/messages';
-import {allConversationSelector} from '../../../../selectors/conversations';
 import {MessageMap} from '../../../../reducers/data/messages';
-import {createRef} from 'react';
+
+import MessageListItem from '../MessengerListItem';
+
+import {listMessages} from '../../../../actions/messages';
+import {allConversationSelector} from '../../../../selectors/conversations';
+
+import styles from './index.module.scss';
 
 type MessageListProps = {conversationId: string} & ConnectedProps<typeof connector> &
   RouteComponentProps<{conversationId: string}>;
@@ -30,20 +34,20 @@ const mapStateToProps = (state: StateModel, ownProps: {conversationId: string}) 
 };
 
 const mapDispatchToProps = {
-  fetchMessages,
+  listMessages,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const MessageList = (props: MessageListProps) => {
-  const {fetchMessages, messages} = props;
+  const {listMessages, messages} = props;
   const conversationIdParams = useParams();
   const currentConversationId = conversationIdParams[Object.keys(conversationIdParams)[0]];
 
   const messageListRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    currentConversationId && fetchMessages(currentConversationId);
+    currentConversationId && listMessages(currentConversationId);
     scrollBottom();
   }, [currentConversationId]);
 

@@ -1,3 +1,5 @@
+import {MessagePayload} from '../payload/MessagePayload';
+
 export interface Attachement {
   type: string;
   payload: {
@@ -44,33 +46,12 @@ export interface Message {
   sentAt: Date;
 }
 export interface MessagePayloadData {
-  data: Message[];
+  data: MessagePayload[];
 }
-export interface MessagePayload {
-  id: string;
-  content: {
-    text: string;
-    type: MessageType;
-  };
-  delivery_state: MessageState;
-  sender_type: MessageSenderType;
-  sent_at: Date;
-}
-
-export const messageMapper = (payload: MessagePayload): Message => {
-  const message: Message = {
-    id: payload.id,
-    content: payload.content,
-    deliveryState: payload.delivery_state,
-    senderType: payload.sender_type,
-    sentAt: payload.sent_at,
-  };
-  return message;
-};
 
 export const messageMapperData = (payload: MessagePayloadData): Message[] => {
   const messages = [];
-  payload.data.forEach((messagePayload: any) => {
+  payload.data.forEach((messagePayload: MessagePayload) => {
     const message: Message = {
       id: messagePayload.id,
       content: messagePayload.content,

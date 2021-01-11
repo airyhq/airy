@@ -5,12 +5,12 @@ import {ConversationPayload} from '../payload/ConversationPayload';
 import {MessagePayload} from '../payload/MessagePayload';
 import {PaginatedPayload} from '../payload/PaginatedPayload';
 
-const messageMapper = (payload: MessagePayload): Message => {
+export const messageMapper = (payload: MessagePayload): Message => {
   const message: Message = {
     id: payload.id,
     content: payload.content,
-    state: payload.state,
-    alignment: payload.alignment,
+    deliveryState: payload.delivery_state,
+    senderType: payload.sender_type,
     sentAt: payload.sent_at,
   };
   return message;

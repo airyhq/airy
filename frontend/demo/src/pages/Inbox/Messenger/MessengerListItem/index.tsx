@@ -1,7 +1,7 @@
 import React from 'react';
 import _redux from 'redux';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {Message, MessageSenderType} from '../../../../model/Message';
+import {Message, MessageSenderType} from 'httpclient';
 import {StateModel} from '../../../../reducers';
 import Avatar from '../MessageList/Avatar';
 

@@ -9,7 +9,7 @@ echo "Branch target: ${BRANCH_TARGET}"
 
 if [[ ${BRANCH_TARGET} == "develop" ]]; then
   cd "$(git rev-parse --show-toplevel)"
-  files=$(git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT})
+  files=$(git diff-tree --no-commit-id --name-only -r ${GITHUB_SHA})
   release_targets=$(bazel query --keep_going "filter("beta$", rdeps(//..., set(${files[*]})))" --output label)
 else
   [[ ${BRANCH_TARGET} == "main" ]] && tag="latest" || tag="release"

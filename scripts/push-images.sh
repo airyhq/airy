@@ -5,6 +5,8 @@ IFS=$'\n\t'
 
 BRANCH_TARGET=$(echo $1 | cut -d'/' -f3)
 
+echo "Branch target: ${BRANCH_TARGET}"
+
 if [[ ${BRANCH_TARGET} == "develop" ]]; then
   cd "$(git rev-parse --show-toplevel)"
   files=$(git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT})

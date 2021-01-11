@@ -42,14 +42,14 @@ jobs:
 
       - name: Test
         run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" test --test_tag_filters=-lint //...
+          bazel test --test_tag_filters=-lint //...
 
       - name: Build all artifacts
         run: |
-          "${GITHUB_WORKSPACE}/bin/bazel" build //...
+          bazel build //...
 
       - name: Push images
         if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          ./scripts/push-images.sh {{ github.ref }}
+          ./scripts/push-images.sh ${{ github.ref }}

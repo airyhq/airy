@@ -2,6 +2,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: postgres-pv-volume
+  namespace: {{ .Values.global.namespace }}
   labels:
     type: local
     app: postgres

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-communication
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: api-communication
     type: api

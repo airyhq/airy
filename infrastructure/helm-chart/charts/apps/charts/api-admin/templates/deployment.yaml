@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-admin
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: api-admin
     type: api

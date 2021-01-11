@@ -1,6 +1,7 @@
 global:
   appImageTag: latest
   containerRegistry: ghcr.io/airyhq
+  namespace: default
 apps:
   sources:
     facebook:

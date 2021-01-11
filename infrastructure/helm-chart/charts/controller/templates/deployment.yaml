@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: airy-controller
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: airy-controller
 spec:

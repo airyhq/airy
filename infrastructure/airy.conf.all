@@ -2,6 +2,7 @@
 global:
   appImageTag: latest
   containerRegistry: ghcr.io/airyhq
+  namespace: default
 # Configuration for the Kafka cluster
 apps:
   kafka:

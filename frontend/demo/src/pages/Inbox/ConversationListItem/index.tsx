@@ -9,6 +9,7 @@ import {formatTimeOfMessage} from '../../../services/format/date';
 import {Conversation, Message} from 'httpclient';
 import {StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
+import {readConversations} from '../../../actions/conversations';
 
 import styles from './index.module.scss';
 
@@ -46,7 +47,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   const unread = conversation.unreadMessageCount > 0;
 
   return (
-    <div className={styles.clickableListItem} style={style}>
+    <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${

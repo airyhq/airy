@@ -8,3 +8,4 @@ export * from './createTag';
 export * from './updateTag';
 export * from './deleteTag';
 export * from './loginViaEmail';
+export * from './readConversations';

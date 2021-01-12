@@ -12,7 +12,7 @@ import (
 var BootstrapCmd = &cobra.Command{
 	Use:              "bootstrap",
 	TraverseChildren: true,
-	Short:            "Bootstrap Airy Core Platform locally",
+	Short:            "Bootstrap the Airy Core Platform locally",
 	Long: `This will install the Airy Core Platform in the current directory unless you choose a different one.
 	It will also try to install Vagrant and VirtualBox.`,
 	Run: bootstrap,

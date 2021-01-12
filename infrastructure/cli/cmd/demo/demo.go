@@ -9,13 +9,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// ResponsePayload for receiving the request
-
-// DemoCmd subcommand for Airy Core
+// DemoCmd subcommand
 var DemoCmd = &cobra.Command{
 	Use:              "demo",
 	TraverseChildren: true,
-	Short:            "Opens the demo page in the browser",
+	Short:            "Opens the core UI in your local browser",
 	Long:             ``,
 	Run:              demo,
 }
@@ -41,7 +39,4 @@ func demo(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 
-}
-
-func init() {
 }

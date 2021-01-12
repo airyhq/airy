@@ -6,8 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// ResponsePayload for receiving the request
-
 // ConfigCmd subcommand for Airy Core
 var ConfigCmd = &cobra.Command{
 	Use:              "config",

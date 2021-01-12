@@ -34,7 +34,12 @@ export const doFetchFromBackend = async (url: string, body?: Object): Promise<an
 
 async function parseBody(response: Response): Promise<any> {
   if (response.ok) {
-    return response.json();
+    try {
+      let jsonResponse = await response.json();
+      return jsonResponse;
+    } catch {
+      return {};
+    }
   }
 
   let body = await response.text();

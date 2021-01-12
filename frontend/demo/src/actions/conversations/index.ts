@@ -68,6 +68,8 @@ export function listNextConversations() {
 
 export function readConversations(id: string) {
   return function(dispatch: Dispatch<any>) {
-    return HttpClient.readConversations(id).then(() => dispatch(readConversationsAction(id)));
+    return HttpClient.readConversations(id).then(() => {
+      return dispatch(readConversationsAction(id));
+    });
   };
 }

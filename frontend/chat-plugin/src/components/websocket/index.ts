@@ -17,7 +17,7 @@ interface AuthProps {
 const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
 const TLS_PREFIX = window.airy ? (window.airy.no_tls === true ? '' : 's') : '';
 
-class Websocket {
+class WebSocket {
   client: Client;
   channel_id: string;
   token: string;
@@ -81,7 +81,6 @@ class Websocket {
         resume_token: this.resume_token,
       };
     }
-
     try {
       const response = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.authenticate`, {
         method: 'POST',
@@ -99,4 +98,4 @@ class Websocket {
   }
 }
 
-export default Websocket;
+export default WebSocket;

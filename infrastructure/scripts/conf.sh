@@ -12,12 +12,23 @@ fi
 
 source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
 
-CORE_VERSION=`kubectl get configmap core-config -o jsonpath='{.data.APP_IMAGE_TAG}'`
+DEPLOYED_AIRY_VERSION=`kubectl get configmap core-config -o jsonpath='{.data.APP_IMAGE_TAG}'`
+if $(grep -q "  appImageTag" ${INFRASTRUCTURE_PATH}/airy.conf); then
+    CONFIGURED_AIRY_VERSION=$(grep "  appImageTag" ${INFRASTRUCTURE_PATH}/airy.conf | head -n 1 | awk '{ print $2}')
+else
+    CONFIGURED_AIRY_VERSION=""
+fi
+
+if [ -z ${CONFIGURED_AIRY_VERSION} ]; then
+    AIRY_VERSION=${DEPLOYED_AIRY_VERSION}
+else
+    AIRY_VERSION=${CONFIGURED_AIRY_VERSION}
+fi
 
 kubectl delete pod startup-helper --force 2>/dev/null || true
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 
-helm upgrade core ${INFRASTRUCTURE_PATH}/helm-chart/ --values ${INFRASTRUCTURE_PATH}/airy.conf --set global.appImageTag=${CORE_VERSION} --timeout 1000s > /dev/null 2>&1
+helm upgrade core ${INFRASTRUCTURE_PATH}/helm-chart/ --values ${INFRASTRUCTURE_PATH}/airy.conf --set global.appImageTag=${AIRY_VERSION} --timeout 1000s > /dev/null 2>&1
 
 kubectl scale deployment schema-registry --replicas=1
 

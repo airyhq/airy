@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: webhook-publisher
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
 spec:
   ports:
     - port: 80

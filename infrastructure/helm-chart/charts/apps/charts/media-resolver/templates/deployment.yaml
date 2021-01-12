@@ -1,4 +1,3 @@
-{{ if gt (keys .Values.storage | len) 0 }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,7 +5,7 @@ metadata:
   namespace: default
   labels:
     app: media-resolver
-    type: api
+    type: media
 spec:
   replicas: 0
   selector:
@@ -57,4 +56,3 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 3
-{{ end }}

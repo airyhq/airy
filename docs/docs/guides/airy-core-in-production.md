@@ -168,7 +168,7 @@ apps:
   postgresql: ...
 ```
 
-We recommend creating a new database if you are reusing a PostgreSQL server to avoid name collisions.
+We recommend that you create a new database if you are reusing a PostgreSQL server to avoid name collisions.
 
 ## Source media storage
 

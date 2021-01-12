@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.time.Instant;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,10 +46,6 @@ public class MetadataResolver {
 
         try {
             dataUrl = new URL(metadata.getValue());
-
-            if (mediaUpload.isUserStorageUrl(dataUrl)) {
-                return false;
-            }
         } catch (Exception ignored) {
             return false;
         }
@@ -85,17 +82,15 @@ public class MetadataResolver {
                     .setValue(userStorageUrl)
                     .setTimestamp(Instant.now().toEpochMilli())
                     .build());
+        } catch (ExecutionException | InterruptedException exception) {
+            throw new RuntimeException(exception);
         } catch (Exception exception) {
             log.error("Failed to upload metadata data url {}", metadata, exception);
         }
     }
 
-    private void storeMetadata(Metadata metadata) {
+    private void storeMetadata(Metadata metadata) throws ExecutionException, InterruptedException {
         final String metadataKey = getId(metadata).toString();
-        try {
-            producer.send(new ProducerRecord<>(applicationCommunicationMetadata, metadataKey, metadata)).get();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        producer.send(new ProducerRecord<>(applicationCommunicationMetadata, metadataKey, metadata)).get();
     }
 }

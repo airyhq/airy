@@ -2,20 +2,18 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-source /vagrant/scripts/lib/k8s.sh
-APP_IMAGE_TAG="${AIRY_VERSION:-latest}"
+SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)
+INFRASTRUCTURE_PATH=$(cd ${SCRIPT_PATH}/../../; pwd -P)
 
-mkdir -p ~/airy-core
-cd /vagrant
-cp -u airy.conf.tpl airy.conf
-cp -R /vagrant/helm-chart ~/airy-core/
+source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
+APP_IMAGE_TAG="${AIRY_VERSION:-latest}"
 
 echo "Deploying the Airy Core Platform with the ${APP_IMAGE_TAG} image tag"
 
-cd /vagrant/scripts/
+cd ${INFRASTRUCTURE_PATH}/scripts/
 wait-for-service-account
 
-helm install core ~/airy-core/helm-chart/ --set global.appImageTag=${APP_IMAGE_TAG} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
+helm install core ${INFRASTRUCTURE_PATH}/helm-chart/ --set global.appImageTag=${APP_IMAGE_TAG} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
 
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 

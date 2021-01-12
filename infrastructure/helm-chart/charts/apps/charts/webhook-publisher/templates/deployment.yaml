@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webhook-publisher
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: webhook-publisher
     type: webhook

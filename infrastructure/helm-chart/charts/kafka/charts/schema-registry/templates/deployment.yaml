@@ -6,6 +6,7 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: schema-registry
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: schema-registry
     release: {{ .Release.Name }}

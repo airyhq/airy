@@ -6,6 +6,7 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: {{ template "cp-kafka.fullname" . }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: {{ template "cp-kafka.name" . }}
     chart: {{ template "cp-kafka.chart" . }}

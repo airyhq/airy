@@ -1,4 +1,4 @@
-{{ if gt (keys .Values.storage | len) 0 }}
+{{ if .Values.storage }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

@@ -12,14 +12,12 @@ import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.Suppressed;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,11 +32,11 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     private static final String appId = "media.Resolver";
     private final KafkaStreamsWrapper streams;
     private final MetadataResolver metadataResolver;
-    private final MessageDataResolver messageResolver;
+    private final MessageMediaResolver messageResolver;
 
     public Stores(KafkaStreamsWrapper streams,
                   MetadataResolver metadataResolver,
-                  MessageDataResolver messageResolver) {
+                  MessageMediaResolver messageResolver) {
         this.streams = streams;
         this.metadataResolver = metadataResolver;
         this.messageResolver = messageResolver;

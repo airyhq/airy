@@ -8,18 +8,26 @@ type AvatarProps = {
   isLastMessage: boolean;
 };
 
-const Avatar = (props: AvatarProps) => {
-  const {avatarUrl, isLastMessage} = props;
-
-  return avatarUrl && isLastMessage ? (
-    <div className={'avatarImage'}>
-      <img src={airyAvatarImage} />
-    </div>
-  ) : (
+const NoAvatar = () => {
+  return (
     <div className={'noAvatar'}>
       <img />
     </div>
   );
+};
+
+const Avatar = (props: AvatarProps) => {
+  const {avatarUrl, isLastMessage} = props;
+
+  if (avatarUrl && isLastMessage) {
+    return (
+      <div className={'avatarImage'}>
+        <img src={airyAvatarImage} />
+      </div>
+    );
+  }
+
+  return <NoAvatar />;
 };
 
 export default Avatar;

@@ -12,8 +12,8 @@ export const loadingMessagesAction = createAction(
 export function listMessages(conversationId: string) {
   return async (dispatch: Dispatch<any>) => {
     return HttpClient.listMessages({
-      conversation_id: conversationId,
-      page_size: 10,
+      conversationId,
+      pageSize: 10,
     })
       .then((response: {data: Message[]; metadata: ResponseMetadataPayload}) => {
         dispatch(

@@ -6,7 +6,7 @@ import _redux from 'redux';
 import {Message} from 'httpclient';
 
 import {StateModel} from '../../../../reducers';
-import {MessageMap} from '../../../../reducers/data/messages';
+import {MessageById} from '../../../../reducers/data/messages';
 
 import MessageListItem from '../MessengerListItem';
 
@@ -18,10 +18,13 @@ import styles from './index.module.scss';
 type MessageListProps = {conversationId: string} & ConnectedProps<typeof connector> &
   RouteComponentProps<{conversationId: string}>;
 
-const messagesMapToArray = (messageInfo: {[conversationId: string]: MessageMap}, conversationId: string): Message[] => {
-  const messageMap = messageInfo[conversationId];
-  if (messageMap) {
-    return Object.keys(messageMap).map((cId: string) => ({...messageMap[cId]}));
+const messagesMapToArray = (
+  messageInfo: {[conversationId: string]: MessageById},
+  conversationId: string
+): Message[] => {
+  const messageById = messageInfo[conversationId];
+  if (messageById) {
+    return Object.keys(messageById).map((cId: string) => ({...messageById[cId]}));
   }
   return [];
 };

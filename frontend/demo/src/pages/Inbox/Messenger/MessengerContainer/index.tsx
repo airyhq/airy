@@ -23,7 +23,7 @@ const MessengerContainer = (props: MessengerContainerProps) => {
       {!conversations ? (
         <div className={styles.emptyState}>
           <h1>Your conversations will appear here as soon as a contact messages you.</h1>
-          <p>Airy Messenger only shows new conversations from the moment you connect your Facebook Pages.</p>
+          <p>Airy Messenger only shows new conversations from the moment you connect at least one channel.</p>
           <EmptyStateImage />
         </div>
       ) : (

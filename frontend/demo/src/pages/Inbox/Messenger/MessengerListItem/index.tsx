@@ -1,7 +1,7 @@
 import React from 'react';
 import _redux from 'redux';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {Message, MessageSenderType} from 'httpclient';
+import {Message, SenderType} from 'httpclient';
 import {StateModel} from '../../../../reducers';
 import Avatar from '../MessageList/Avatar';
 
@@ -24,7 +24,7 @@ const connector = connect(mapStateToProps, null);
 
 const MessengerListItem = (props: MessengerListItemProps) => {
   const {messageText, messageSenderType, message, lastMessages} = props;
-  const isUser = messageSenderType !== MessageSenderType.appUser;
+  const isUser = messageSenderType !== SenderType.appUser;
 
   const messageAvatar = (messageId: string) => {
     Object.values(lastMessages).forEach(lastMessage => {

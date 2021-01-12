@@ -30,7 +30,7 @@ export enum MessageState {
   delivered = 'DELIVERED',
 }
 
-export enum MessageSenderType {
+export enum SenderType {
   sourceContact = 'source_contact',
   sourceUser = 'source_user',
   appUser = 'app_user',
@@ -42,24 +42,9 @@ export interface Message {
     type: MessageType;
   };
   deliveryState: MessageState;
-  senderType: MessageSenderType;
+  senderType: SenderType;
   sentAt: Date;
 }
 export interface MessagePayloadData {
   data: MessagePayload[];
 }
-
-export const messageMapperData = (payload: MessagePayloadData): Message[] => {
-  const messages = [];
-  payload.data.forEach((messagePayload: MessagePayload) => {
-    const message: Message = {
-      id: messagePayload.id,
-      content: messagePayload.content,
-      deliveryState: messagePayload.delivery_state,
-      senderType: messagePayload.sender_type,
-      sentAt: messagePayload.sent_at,
-    };
-    messages.push(message);
-  });
-  return messages;
-};

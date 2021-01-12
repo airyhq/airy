@@ -1,0 +1,6 @@
+replicaCount: 0
+image: infrastructure/schema-registry
+imagePullPolicy: Always
+servicePort: 8081
+kafka:
+  bootstrapServers: kafka-headless:9092

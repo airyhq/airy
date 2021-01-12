@@ -1,15 +1,20 @@
 package co.airy.mapping.sources.facebook;
 
 import co.airy.mapping.SourceMapper;
+import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
+import co.airy.mapping.model.File;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
+import co.airy.mapping.model.Video;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class FacebookMapper implements SourceMapper {
@@ -20,6 +25,12 @@ public class FacebookMapper implements SourceMapper {
         this.objectMapper = new ObjectMapper();
     }
 
+    private final Map<String, Function<String, Content>> mediaContentFactory = Map.of(
+            "image", Image::new,
+            "video", Video::new,
+            "audio", Audio::new,
+            "file", File::new
+    );
     @Override
     public List<String> getIdentifiers() {
         return List.of("facebook");
@@ -40,9 +51,11 @@ public class FacebookMapper implements SourceMapper {
             messageNode.get("attachments")
                     .elements()
                     .forEachRemaining(attachmentNode -> {
-                        if ("image".equalsIgnoreCase(attachmentNode.get("type").textValue())) {
-                            contents.add(new Image(attachmentNode.get("payload").get("url").textValue()));
-                        }
+                        final String attachmentType = attachmentNode.get("type").textValue();
+                        final String url = attachmentNode.get("payload").get("url").textValue();
+
+                        final Content mediaContent = mediaContentFactory.get(attachmentType).apply(url);
+                        contents.add(mediaContent);
                     });
         }
 

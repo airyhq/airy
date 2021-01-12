@@ -2,45 +2,44 @@
 set -eo pipefail
 IFS=$'\n\t'
 
-source /vagrant/scripts/lib/k8s.sh
-if [ -z ${AIRY_VERSION+x} ]; then
-    branch_name="$(git symbolic-ref HEAD 2>/dev/null)" ||
-    branch_name="(unnamed branch)"     # detached HEAD
+SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)
+INFRASTRUCTURE_PATH=$(cd ${SCRIPT_PATH}/../; pwd -P)
 
-    branch_name=${branch_name##refs/heads/}
-    case "$branch_name" in
-        develop )
-            AIRY_VERSION=beta
-            ;;
-        release* )
-            AIRY_VERSION=release
-            ;;
-        * )
-            AIRY_VERSION=latest
-            ;;
-    esac
+if [[ ! -f ${INFRASTRUCTURE_PATH}/airy.conf ]]; then
+    echo "No airy.conf config file found"
+    exit 0
+fi
+
+source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
+
+DEPLOYED_AIRY_VERSION=`kubectl get configmap core-config -o jsonpath='{.data.APP_IMAGE_TAG}'`
+if $(grep -q "  appImageTag" ${INFRASTRUCTURE_PATH}/airy.conf); then
+    CONFIGURED_AIRY_VERSION=$(grep "  appImageTag" ${INFRASTRUCTURE_PATH}/airy.conf | head -n 1 | awk '{ print $2}')
+else
+    CONFIGURED_AIRY_VERSION=""
+fi
+
+if [ -z ${CONFIGURED_AIRY_VERSION} ]; then
+    AIRY_VERSION=${DEPLOYED_AIRY_VERSION}
+else
+    AIRY_VERSION=${CONFIGURED_AIRY_VERSION}
 fi
 
 kubectl delete pod startup-helper --force 2>/dev/null || true
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
-cd /vagrant/scripts
 
-if [ -f "/vagrant/airy.conf" ]; then
-    cp /vagrant/airy.conf ~/airy-core/helm-chart/charts/apps/values.yaml
-fi
+helm upgrade core ${INFRASTRUCTURE_PATH}/helm-chart/ --values ${INFRASTRUCTURE_PATH}/airy.conf --set global.appImageTag=${AIRY_VERSION} --timeout 1000s > /dev/null 2>&1
 
-helm upgrade airy ~/airy-core/helm-chart/ --set global.appImageTag=${AIRY_VERSION} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
-
-kubectl scale deployment airy-cp-schema-registry --replicas=1
+kubectl scale deployment schema-registry --replicas=1
 
 wait-for-running-pod startup-helper
-wait-for-service startup-helper airy-cp-schema-registry 8081 15 Schema-registry
+wait-for-service startup-helper schema-registry 8081 15 "Schema registry"
 
 kubectl scale deployment -l type=api --replicas=1
 kubectl scale deployment -l type=sources-chatplugin --replicas=1
 kubectl scale deployment -l type=frontend --replicas=1
 
-wait-for-service startup-helper api-auth 80 10 Airy-auth
+wait-for-service startup-helper api-auth 80 10 api-auth
 
 kubectl scale deployment -l type=sources-twilio --replicas=1
 kubectl scale deployment -l type=sources-google --replicas=1

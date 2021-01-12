@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-facebook-events-router
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: sources-facebook-events-router
     type: sources-facebook
@@ -44,7 +44,7 @@ spec:
         - name: FACEBOOK_APP_ID
           valueFrom:
             configMapKeyRef:
-              name: sources-config
+              name: sources-facebook
               key: FACEBOOK_APP_ID
         - name: SERVICE_NAME
           value: facebook-events-router

@@ -24,7 +24,10 @@ func MockServer() {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
-	s.ListenAndServe()
+	err := s.ListenAndServe()
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func mockUserSignupHandler(w http.ResponseWriter, r *http.Request) {
@@ -32,7 +35,10 @@ func mockUserSignupHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprint(w, err)
 	}
-	w.Write(data)
+	_, err = w.Write(data)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func mockUserLoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -40,9 +46,8 @@ func mockUserLoginHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprint(w, err)
 	}
-	w.Write(data)
-}
-
-func main() {
-	MockServer()
+	_, err = w.Write(data)
+	if err != nil {
+		log.Println(err)
+	}
 }

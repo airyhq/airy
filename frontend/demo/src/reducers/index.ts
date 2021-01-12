@@ -3,9 +3,11 @@ import {ActionType, getType} from 'typesafe-actions';
 import _, {CombinedState} from 'redux';
 
 import * as authActions from '../actions/user';
-import {clearUserData} from '../api/webStore';
+import {clearUserData} from 'httpclient';
 
 import data, {DataState} from './data';
+
+export * from './data';
 
 type Action = ActionType<typeof authActions>;
 

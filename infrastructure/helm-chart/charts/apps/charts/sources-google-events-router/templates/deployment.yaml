@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-google-events-router
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: sources-google-events-router
     type: sources-google

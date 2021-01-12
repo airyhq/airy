@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"apiclient"
-	"apiclient/payloads"
+	"github.com/airyhq/airy/lib/go/httpclient"
+	"github.com/airyhq/airy/lib/go/httpclient/payloads"
 
 	"github.com/spf13/cobra"
 )
@@ -23,7 +23,7 @@ func auth(cmd *cobra.Command, args []string) {
 	url, _ := cmd.Flags().GetString("url")
 	email, _ := cmd.Flags().GetString("email")
 	password, _ := cmd.Flags().GetString("password")
-	c := apiclient.NewClient()
+	c := httpclient.NewClient()
 	c.BaseURL = url
 
 	loginRequestPayload := payloads.LoginRequestPayload{Email: email, Password: password}

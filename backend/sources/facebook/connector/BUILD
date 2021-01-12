@@ -4,9 +4,9 @@ load("//tools/build:container_push.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
-    "//backend/model/channel:channel",
-    "//backend/model/message:message",
-    "//backend/model/metadata:metadata",
+    "//backend/model/channel",
+    "//backend/model/message",
+    "//backend/model/metadata",
     "//lib/java/uuid",
     "//lib/java/log",
     "//lib/java/spring/web:spring-web",

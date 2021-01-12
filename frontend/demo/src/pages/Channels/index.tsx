@@ -5,15 +5,14 @@ import {RouteComponentProps} from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import {Button} from '@airyhq/components';
 
-import {AiryConfig} from '../../api/airyConfig';
-import {Channel} from '../../model/Channel';
-import {getChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
+import {AiryConfig, Channel} from 'httpclient';
+import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
 import {StateModel} from '../../reducers/index';
 
 import styles from './index.module.scss';
 
 const mapDispatchToProps = {
-  getChannels,
+  listChannels,
   exploreChannels,
   connectChannel,
   disconnectChannel,
@@ -32,7 +31,7 @@ type ChannelsConnectProps = {} & ConnectedProps<typeof connector> & RouteCompone
 const Channels = (props: ChannelsConnectProps) => {
   const [facebookToken, setFacebookToken] = useState('');
   useEffect(() => {
-    props.getChannels();
+    props.listChannels();
   }, []);
 
   const connect = (token: string) => {

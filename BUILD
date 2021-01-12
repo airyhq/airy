@@ -2,6 +2,7 @@ load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 load("@bazel_gazelle//:def.bzl", "gazelle")
+load("@io_bazel_rules_go//go:def.bzl", "TOOLS_NOGO", "nogo")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -170,3 +171,10 @@ exports_files(
 # gazelle:build_file_name BUILD
 # gazelle:prefix
 gazelle(name = "gazelle")
+
+nogo(
+    name = "airy_nogo",
+    config = "//tools/build:nogo_config.json",
+    visibility = ["//visibility:public"],
+    deps = TOOLS_NOGO,
+)

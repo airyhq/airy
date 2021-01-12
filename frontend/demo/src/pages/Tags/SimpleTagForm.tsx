@@ -1,7 +1,7 @@
 import React, {useState, Fragment} from 'react';
 import {connect} from 'react-redux';
 
-import {createTag, getTags, errorTag, filterTags} from '../../actions/tags';
+import {createTag, listTags, errorTag, filterTags} from '../../actions/tags';
 import {filteredTags} from '../../selectors/tags';
 
 import {Button, Input} from '@airyhq/components';
@@ -9,7 +9,7 @@ import Dialog from '../../components/Dialog';
 import ColorSelector from '../../components/ColorSelector';
 
 import Tag from '../../pages/Tags/Tag';
-import {Tag as TagModel} from '../../model/Tag';
+import {Tag as TagModel, TagColor} from 'httpclient';
 
 import styles from './SimpleTagForm.module.scss';
 import {RootState} from '../../reducers';
@@ -24,7 +24,7 @@ type SimpleTagFormProps = {
 
 const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: SimpleTagFormProps) => {
   const [name, setName] = useState('');
-  const [color, setColor] = useState('tag-blue');
+  const [color, setColor] = useState<TagColor>('tag-blue');
   const [showError, setShowError] = useState(true);
   const handleCreate = () => {
     if (name.trim().length) {
@@ -73,13 +73,13 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
         <p className={styles.errorMessage}>{(!name.length || showError) && errorMessage}</p>
         {name && (
           <div>
-            <Tag tag={{id: '', color: color, name: name}} />
+            <Tag tag={{id: '', color: color as TagColor, name: name}} />
           </div>
         )}
         <Fragment>
           <p className={styles.description}>Pick a color</p>
           <ColorSelector
-            handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value)}
+            handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value as TagColor)}
             color={color}
             editing={true}
           />
@@ -104,7 +104,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = {
   createTag,
   errorTag,
-  getTags,
+  listTags,
   filterTags,
 };
 

@@ -1,3 +1,0 @@
-global:
-  appImageTag: latest
-  containerRegistry: ghcr.io/airyhq

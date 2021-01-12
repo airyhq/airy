@@ -1,9 +1,12 @@
 package co.airy.mapping.sources.twilio;
 
 import co.airy.mapping.SourceMapper;
+import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
+import co.airy.mapping.model.File;
 import co.airy.mapping.model.Image;
 import co.airy.mapping.model.Text;
+import co.airy.mapping.model.Video;
 import org.springframework.stereotype.Component;
 
 import java.net.URLDecoder;
@@ -13,11 +16,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 import static java.util.stream.Collectors.toMap;
 
 @Component
 public class TwilioMapper implements SourceMapper {
+
+    private final Map<String, BiFunction<String, String, List<Content>>> mediaProcessFunctions = Map.of(
+            "jpg", processImageFun,
+            "jpeg", processImageFun,
+            "png", processImageFun,
+            "mp4", processVideoFun,
+            "mp3", processAudioFun,
+            "ogg", processAudioFun,
+            "pdf", processFileFun
+   );
+
+    private static final BiFunction<String, String, List<Content>> processImageFun = (mediaUrl, body) -> List.of(new Text(body), new Image(mediaUrl));
+    private static final BiFunction<String, String, List<Content>> processVideoFun = (mediaUrl, body) -> List.of(new Video(mediaUrl));
+    private static final BiFunction<String, String, List<Content>> processAudioFun = (mediaUrl, body) -> List.of(new Audio(mediaUrl));
+    private static final BiFunction<String, String, List<Content>> processFileFun = (mediaUrl, body) -> List.of(new File(mediaUrl));
 
     @Override
     public List<String> getIdentifiers() {
@@ -29,11 +48,15 @@ public class TwilioMapper implements SourceMapper {
         Map<String, String> decodedPayload = parseUrlEncoded(payload);
         List<Content> contents = new ArrayList<>();
 
-        contents.add(new Text(decodedPayload.get("Body")));
-
         final String mediaUrl = decodedPayload.get("MediaUrl");
+
         if (mediaUrl != null && !mediaUrl.isBlank()) {
-            contents.add(new Image(mediaUrl));
+            final String[] mediaUrlParts = mediaUrl.split("\\.");
+            final String mediaExtension = mediaUrlParts[mediaUrlParts.length - 1].toLowerCase();
+            final BiFunction<String, String, List<Content>> processMediaFunction = mediaProcessFunctions.get(mediaExtension);
+            contents = processMediaFunction.apply(mediaUrl, decodedPayload.get("Body"));
+        } else {
+            contents.add(new Text(decodedPayload.get("Body")));
         }
 
         return contents;

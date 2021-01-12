@@ -12,7 +12,7 @@ import static java.util.stream.Collectors.joining;
 public class Application {
 
     public static void main(String[] args) {
-        String createTopicTemplate = "kafka-topics --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic \"${AIRY_CORE_NAMESPACE}%s\" %s 1>/dev/null";
+        String createTopicTemplate = "kafka-topics.sh --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic \"${AIRY_CORE_NAMESPACE}%s\" %s 1>/dev/null";
         String headerTemplate = "#!/bin/bash\n" +
                 "\n" +
                 "##########################################################################\n" +
@@ -22,7 +22,7 @@ public class Application {
                 "set -euo pipefail\n" +
                 "IFS=$'\\n\\t'\n" +
                 "\n" +
-                "ZOOKEEPER=airy-cp-zookeeper:2181\n" +
+                "ZOOKEEPER=zookeeper:2181\n" +
                 "PARTITIONS=${PARTITIONS:-10}\n" +
                 "REPLICAS=${REPLICAS:-1}\n" +
                 "AIRY_CORE_NAMESPACE=${AIRY_CORE_NAMESPACE:-}\n" +

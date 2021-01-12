@@ -4,8 +4,8 @@ load("//tools/build:container_push.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
-    "//backend/model/channel:channel",
-    "//backend/model/message:message",
+    "//backend/model/channel",
+    "//backend/model/message",
     "//lib/java/log",
     "//lib/java/mapping",
     "//lib/java/uuid",

@@ -8,6 +8,7 @@ import conversations, {ConversationsState} from './conversations';
 import tags from './tags';
 import settings from './settings';
 import channels from './channels';
+import messages, {Messages} from './messages';
 
 export * from './channels';
 export * from './conversations';
@@ -18,6 +19,7 @@ export {initialState} from './user';
 export type DataState = {
   user: User;
   conversations: ConversationsState;
+  messages: Messages;
   tags: Tags;
   settings: Settings;
   channels: Channel[];
@@ -26,6 +28,7 @@ export type DataState = {
 const reducers: Reducer = combineReducers<DataState>({
   user,
   conversations,
+  messages,
   tags,
   settings,
   channels,

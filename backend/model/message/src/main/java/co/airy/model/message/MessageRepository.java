@@ -12,7 +12,7 @@ public class MessageRepository {
         return message;
     }
 
-    public static boolean isMessageNew(Message message) {
+    public static boolean isNewMessage(Message message) {
         return message.getUpdatedAt() == null;
     }
 }

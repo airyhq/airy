@@ -177,8 +177,7 @@ the Urls that host this data expire which is why after some time you may find th
 content.
 
 The Airy Core Platform allows you to persist this data to a storage of your choice. To take advantage of this
-you need to provide access credentials to your storage. The platform currently only supports
-[s3](https://aws.amazon.com/s3/):
+you must provide access credentials to your storage. The platform currently supports [s3](https://aws.amazon.com/s3/):
 
 ```yaml
 apps:

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-import static co.airy.model.message.MessageRepository.isMessageNew;
+import static co.airy.model.message.MessageRepository.isNewMessage;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.model.metadata.MetadataRepository.isMessageMetadata;
 
@@ -66,7 +66,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 // Since the message content is immutable we only have to fetch
                 // the media for new messages
-                .filter((messageId, message) -> isMessageNew(message))
+                .filter((messageId, message) -> isNewMessage(message))
                 .leftJoin(messageMetadataTable, MessageMediaRequest::new)
                 .foreach(messageResolver::onMessageMediaRequest);
 

@@ -35,10 +35,10 @@ export const doFetchFromBackend = async (url: string, body?: Object): Promise<an
 async function parseBody(response: Response): Promise<any> {
   if (response.ok) {
     try {
-      let jsonResponse = await response.json();
-      return jsonResponse;
+      return await response.json();
     } catch {
-      return {};
+      {
+      }
     }
   }
 

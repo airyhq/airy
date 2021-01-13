@@ -1,4 +1,5 @@
-@import '../../../../assets//scss/colors.scss';
+@import '../../../../assets/scss/colors.scss';
+@import '../../../../assets/scss/fonts.scss';
 
 .messageListItemContainer {
   display: flex;
@@ -8,38 +9,46 @@
 .messageListItem {
   display: flex;
   align-self: flex-end;
-  max-width: 100%;
+  width: 100%;
   overflow-wrap: break-word;
   word-break: break-word;
+}
+
+.messageAvatar {
+  width: 40px;
+  height: 40px;
+  margin: 6px 8px 0 0;
 }
 
 .messageListUserContainer {
   display: flex;
   flex-direction: row;
-
-  img {
-    height: 40px;
-    width: 40px;
-    margin-top: 5px;
-  }
 }
 
 .messageListItemUser {
-  display: inline-flex;
   align-self: flex-start;
+  text-align: left;
+  position: relative;
+}
+
+.messageListItemUserText {
+  display: inline-flex;
   padding: 10px;
   margin-top: 5px;
   background: var(--color-background-blue);
   color: #212428;
-  position: relative;
-  text-align: left;
   border-radius: 8px;
 }
 
 .messageListItemMember {
   margin-top: 5px;
+  justify-content: flex-end;
+  width: 100%;
+  text-align: right;
+}
+
+.messageListItemMemberText {
   display: inline-flex;
-  align-self: flex-end;
   padding: 10px;
   position: relative;
   background: var(--color-airy-blue);
@@ -47,4 +56,10 @@
   position: relative;
   text-align: left;
   border-radius: 8px;
+}
+
+.messageTime {
+  @include font-s;
+  color: var(--color-text-gray);
+  margin: 4px 10px;
 }

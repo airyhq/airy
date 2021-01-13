@@ -162,7 +162,7 @@ helm upgrade core ~/airy-core/helm-chart/charts/apps/ --values /vagrant/airy.yam
 Integrating sources into the `Airy Core Platform` often requires specific
 configuration settings, refer to the source specific docs for details. You must
 provide the settings in `infrastructure/airy.yaml` configuration file. An
-example of the configuration can be found in `airy.tpl.yml`.
+example of the configuration can be found in `airy.tpl.yaml`.
 
 After setting the configuration run:
 

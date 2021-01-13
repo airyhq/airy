@@ -73,7 +73,7 @@ with Helm as we use this approach for test installations.
 The default commit interval is set to 1000 ms (1 second). This is _not_ recommended
 for production usage.
 You change the `commitInterval` to a more suitable production value in the configuration file
-`infrastructure/helm-chart/charts/apps/charts/airy.yaml/values.yaml`.
+`infrastructure/helm-chart/charts/apps/charts/airy-config/values.yaml`.
 
 To deploy Kafka on Kubernetes with Helm, you can run:
 
@@ -149,13 +149,13 @@ Kafka cluster, PostgreSQL and Redis can be done by creating a configuration
 file, prior to deploying the apps. Make sure that the `Airy apps` also have
 network connectivity to the required services.
 
-The file `infrastructure/airy.tpl.yml` contains an example of all possible
+The file `infrastructure/airy.tpl.yaml` contains an example of all possible
 configuration parameters. This file should be copied to `airy.yaml` and edited
 according to your environment:
 
 ```sh
 cd infrastructure
-cp airy.tpl.yml airy.yaml
+cp airy.tpl.yaml airy.yaml
 ```
 
 Edit the file to configure connections to the base services. Make sure that the

@@ -80,7 +80,21 @@ class WebSocket {
       authenticateChannelAndResumeToken = {
         resume_token: this.resume_token,
       };
+    } else {
+      this.connect = async (token: string) => {
+        const resumeChat = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.resumeToken`, {
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        });
+        const jsonResumeToken = await resumeChat.json();
+        localStorage.setItem('resume_token', JSON.stringify(jsonResumeToken));
+      };
     }
+
     try {
       const response = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.authenticate`, {
         method: 'POST',
@@ -91,6 +105,7 @@ class WebSocket {
       });
 
       const jsonResponse = await response.json();
+
       this.connect(jsonResponse.token);
     } catch (e) {
       return Promise.reject(new Error('Widget authorization failed. Please check your installation.'));

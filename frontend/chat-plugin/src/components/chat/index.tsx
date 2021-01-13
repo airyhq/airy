@@ -42,7 +42,7 @@ const Chat = (props: Props) => {
 
   const getResumeToken = () => {
     const queryParams = new URLSearchParams(window.location.search);
-    return queryParams.has('resume_token') ? queryParams.get('resume_token') : null;
+    return queryParams.get('resume_token') ? localStorage.getItem('resume_token') : null;
   };
 
   useEffect(() => {

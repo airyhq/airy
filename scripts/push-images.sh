@@ -9,15 +9,11 @@ echo "Branch target: ${BRANCH_TARGET}"
 
 case ${BRANCH_TARGET} in
   develop)
-    tag="beta"
+    tag="develop"
     ;;
 
-  main)
-    tag="latest"
-    ;;
-
-  release)
-    tag="release"
+  main|release)
+    tag=`(cat ../VERSION)`
     ;;
 esac
 

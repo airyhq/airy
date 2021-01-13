@@ -198,11 +198,11 @@ kubectl scale deployment -l type=sources-twilio --replicas=1
 
 At this point you should have a running `Airy Core Platform` in your environment 🎉.
 
-To deploy with a different `image tag` (for example `beta` from the `develop`
+To deploy with a different `image tag` (for example `develop` from the `develop`
 branch), you can run:
 
 ```sh
-export AIRY_VERSION=beta
+export AIRY_VERSION=develop
 helm install core ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
 ```
 
@@ -219,7 +219,7 @@ export the `AIRY_VERSION` variable before running `helm upgrade`:
 
 ```sh
 cp airy.conf ./helm-chart/charts/apps/values.yaml
-export AIRY_VERSION=beta
+export AIRY_VERSION=develop
 helm upgrade core ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
 ```
 

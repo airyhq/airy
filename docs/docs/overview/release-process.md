@@ -13,17 +13,17 @@ Here's an outline of the process:
 - We branch from `develop` unless it's a hot-fix (we'd use `main` in that case)
 - Once release days comes, we execute the following steps:
   - We create an issue "Release x.y.z"
-  - We create a release branch `release/x.y.z` from the latest `develop` and push it:
+  - We create a release branch `release/x.y.z` from the latest `develop` :
     - `git checkout develop`
     - `git pull origin develop`
     - `git checkout -b release/x.y.z`
-    - `git push origin release/x.y.z`
-  - We test our release (`AIRY_VERSION=release ./scripts/bootstrap.sh`) and any
-    additional hot-fix is committed directly to the release branch
-  - Once we're satisfied with the release, we update the `VERSION` file with the
+  - We update the `VERSION` file with the
     current release number. The commit message must be `Fixes #issue-number`
-    where `issue-number` is the number of the current release issue
-  - We merge the release branch into `main`, tag `main` with `x.y.z`and push to `main`:
+    where `issue-number` is the number of the current release issue and push it
+    - `git push origin release/x.y.z`
+  - We wait until the images with the new version have been pushed and test our release (`./scripts/bootstrap.sh`) and any
+    additional hot-fix is committed directly to the release branch
+  - Once we're satisfied with the release, we merge the release branch into `main`, tag `main` with `x.y.z`and push to `main`:
     - `git checkout main`
     - `git pull origin main`
     - `git merge --no-ff release/x.y.z`

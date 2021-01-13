@@ -36,10 +36,7 @@ async function parseBody(response: Response): Promise<any> {
   if (response.ok) {
     try {
       return await response.json();
-    } catch {
-      {
-      }
-    }
+    } catch {}
   }
 
   let body = await response.text();

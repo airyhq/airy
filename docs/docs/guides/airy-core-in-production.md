@@ -73,7 +73,7 @@ with Helm as we use this approach for test installations.
 The default commit interval is set to 1000 ms (1 second). This is _not_ recommended
 for production usage.
 You change the `commitInterval` to a more suitable production value in the configuration file
-`infrastructure/helm-chart/charts/apps/charts/airy.yml/values.yaml`.
+`infrastructure/helm-chart/charts/apps/charts/airy.yaml/values.yaml`.
 
 To deploy Kafka on Kubernetes with Helm, you can run:
 
@@ -150,12 +150,12 @@ file, prior to deploying the apps. Make sure that the `Airy apps` also have
 network connectivity to the required services.
 
 The file `infrastructure/airy.tpl.yml` contains an example of all possible
-configuration parameters. This file should be copied to `airy.yml` and edited
+configuration parameters. This file should be copied to `airy.yaml` and edited
 according to your environment:
 
 ```sh
 cd infrastructure
-cp airy.tpl.yml airy.yml
+cp airy.tpl.yml airy.yaml
 ```
 
 Edit the file to configure connections to the base services. Make sure to configure the
@@ -193,10 +193,10 @@ apps:
 ### Deployment
 
 We provided a Helm chart to deploy the `Airy apps`. Before you can run helm, you
-must configure the system via the `airy.yml` file, then you can proceed:
+must configure the system via the `airy.yaml` file, then you can proceed:
 
 ```sh
-cp airy.yml ./helm-chart/charts/apps/values.yaml
+cp airy.yaml ./helm-chart/charts/apps/values.yaml
 helm install core ./helm-chart/charts/apps/ --timeout 1000s
 ```
 
@@ -215,10 +215,10 @@ kubectl scale deployment -l type=sources-twilio --replicas=1
 At this point you should have a running `Airy Core Platform` in your environment 🎉.
 
 If afterwards you need to modify or add other config parameters in the
-`airy.yml` file, after editing the file run:
+`airy.yaml` file, after editing the file run:
 
 ```sh
-cp airy.yml ./helm-chart/charts/apps/values.yaml
+cp airy.yaml ./helm-chart/charts/apps/values.yaml
 helm upgrade core ./helm-chart/charts/apps/ --timeout 1000s
 ```
 
@@ -226,7 +226,7 @@ If you deploy the Airy Core Platform with a specific version tag, you must
 export the `AIRY_VERSION` variable before running `helm upgrade`:
 
 ```sh
-cp airy.yml ./helm-chart/charts/apps/values.yaml
+cp airy.yaml ./helm-chart/charts/apps/values.yaml
 export AIRY_VERSION=develop
 helm upgrade core ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
 ```

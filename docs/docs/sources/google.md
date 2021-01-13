@@ -16,7 +16,7 @@ Business Location and your running instance of the Airy Core Platform.
 ## Configuration
 
 The first step is to copy the Google Service Account file provided by Google to
-`infrastructure/airy.yml` as a one line string
+`infrastructure/airy.yaml` as a one line string
 
 ```
 GOOGLE_SA_FILE=<CONTENT OF THE FILE>

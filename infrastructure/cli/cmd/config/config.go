@@ -12,7 +12,7 @@ import (
 var ConfigCmd = &cobra.Command{
 	Use:              "config",
 	TraverseChildren: true,
-	Short:            "Reloads configuration based on airy.yml",
+	Short:            "Reloads configuration based on airy.yaml",
 	Long:             ``,
 	Run:              config,
 }

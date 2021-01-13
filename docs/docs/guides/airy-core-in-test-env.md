@@ -154,16 +154,15 @@ After preparing the configuration, run the following commands to apply the chang
 cd infrastructure
 vagrant ssh
 sudo -i
-cp /vagrant/airy.conf ~/airy-core/helm-chart/charts/apps/values.yaml
-helm upgrade core ~/airy-core/helm-chart/charts/apps/ --timeout 1000s
+helm upgrade core ~/airy-core/helm-chart/charts/apps/ --values /vagrant/airy.yml  --timeout 1000s
 ```
 
 ## Connect sources
 
 Integrating sources into the `Airy Core Platform` often requires specific
 configuration settings, refer to the source specific docs for details. You must
-provide the settings in `infrastructure/airy.conf` configuration file. An
-example of the configuration can be found in `airy.conf.all`.
+provide the settings in `infrastructure/airy.yml` configuration file. An
+example of the configuration can be found in `airy.tpl.yml`.
 
 After setting the configuration run:
 

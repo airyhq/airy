@@ -18,8 +18,8 @@ func TestCli(t *testing.T) {
 		wantErr bool
 	}{
 		{"no args", []string{}, "cli.no-args", false},
-		{"login", []string{"api", "login", "--config", "pkg/tests/golden/cli.yaml"}, "cli.login", false},
-		{"version", []string{"version", "--config", "pkg/tests/golden/cli.yaml"}, "cli.version", false},
+		{"login", []string{"api", "login", "--cli-config", "pkg/tests/golden/airycli.yaml"}, "cli.login", false},
+		{"version", []string{"version", "--cli-config", "pkg/tests/golden/airycli.yaml"}, "cli.version", false},
 	}
 
 	go func() {

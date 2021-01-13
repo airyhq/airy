@@ -1,3 +1,5 @@
+import {MessagePayload} from '../payload/MessagePayload';
+
 export interface Attachement {
   type: string;
   payload: {
@@ -28,13 +30,21 @@ export enum MessageState {
   delivered = 'DELIVERED',
 }
 
+export enum SenderType {
+  sourceContact = 'source_contact',
+  sourceUser = 'source_user',
+  appUser = 'app_user',
+}
 export interface Message {
   id: string;
   content: {
     text: string;
     type: MessageType;
   };
-  state: MessageState;
-  alignment: MessageAlignment;
-  sentAt: string | Date;
+  deliveryState: MessageState;
+  senderType: SenderType;
+  sentAt: Date;
+}
+export interface MessagePayloadData {
+  data: MessagePayload[];
 }

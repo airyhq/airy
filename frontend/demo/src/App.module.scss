@@ -5,7 +5,7 @@
   text-align: center;
   flex-grow: 1;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   margin-left: 250px;
   overflow: visible;
   background: var(--color-blue-white);
@@ -29,8 +29,8 @@
   @include font-base;
   display: flex;
   width: 100vw;
+  height: 100vh;
   min-width: 550px;
-  min-height: 100vh;
   justify-content: center;
   flex-direction: column;
 }

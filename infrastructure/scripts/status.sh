@@ -2,7 +2,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-source /vagrant/scripts/lib/k8s.sh
+SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)
+INFRASTRUCTURE_PATH=$(cd ${SCRIPT_PATH}/../; pwd -P)
+
+source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
 
 kubectl delete pod startup-helper --force 2>/dev/null || true
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
@@ -11,9 +14,10 @@ wait-for-ingress-service
 wait-for-running-pod startup-helper
 wait-for-service startup-helper api-auth 80 10 api-auth
 
-FACEBOOK_WEBHOOK_PUBLIC_URL=`kubectl get configmap sources-config -o jsonpath='{.data.FACEBOOK_WEBHOOK_PUBLIC_URL}'`
-GOOGLE_WEBHOOK_PUBLIC_URL=`kubectl get configmap sources-config -o jsonpath='{.data.GOOGLE_WEBHOOK_PUBLIC_URL}'`
-TWILIO_WEBHOOK_PUBLIC_URL=`kubectl get configmap sources-config -o jsonpath='{.data.TWILIO_WEBHOOK_PUBLIC_URL}'`
+CORE_ID=`kubectl get configmap core-config -o jsonpath='{.data.CORE_ID}'`
+FACEBOOK_WEBHOOK_PUBLIC_URL="https://fb-${CORE_ID}.tunnel.airy.co"
+GOOGLE_WEBHOOK_PUBLIC_URL="https://gl-${CORE_ID}.tunnel.airy.co"
+TWILIO_WEBHOOK_PUBLIC_URL="https://tw-${CORE_ID}.tunnel.airy.co"
 
 echo
 echo "Your public url for the Facebook Webhook is:"

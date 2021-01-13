@@ -7,3 +7,4 @@ export * from './LoginViaEmailRequestPayload';
 export * from './ListTagsResponsePayload';
 export * from './CreateTagRequestPayload';
 export * from './ListConversationsRequestPayload';
+export * from './ResponseMetadataPayload';

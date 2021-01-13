@@ -44,12 +44,12 @@ spec:
           - name: TWILIO_AUTH_TOKEN
             valueFrom:
               configMapKeyRef:
-                name: sources-config
+                name: sources-twilio
                 key: TWILIO_AUTH_TOKEN
           - name: TWILIO_ACCOUNT_SID
             valueFrom:
               configMapKeyRef:
-                name: sources-config
+                name: sources-twilio
                 key: TWILIO_ACCOUNT_SID
           - name: JWT_SECRET
             valueFrom:
@@ -66,14 +66,14 @@ spec:
           command:
             - /bin/bash
             - -c
-            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="${WEBHOOK:8:13}" 8080
+            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="tw-${CORE_ID}" 8080
           image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
           env:
-            - name: WEBHOOK
+            - name: CORE_ID
               valueFrom:
                 configMapKeyRef:
-                  name: sources-config
-                  key: TWILIO_WEBHOOK_PUBLIC_URL
+                  name: core-config
+                  key: CORE_ID
           imagePullPolicy: Always
           resources:
             limits:

@@ -16,11 +16,6 @@ var ConfigCmd = &cobra.Command{
 }
 
 func config(cmd *cobra.Command, args []string) {
-	// Initialize the api request
-
 	fmt.Println("ConfigCmd called")
 
-}
-
-func init() {
 }

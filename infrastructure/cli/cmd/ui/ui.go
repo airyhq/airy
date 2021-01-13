@@ -1,4 +1,4 @@
-package demo
+package ui
 
 import (
 	"fmt"
@@ -9,11 +9,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// DemoCmd subcommand
-var DemoCmd = &cobra.Command{
-	Use:              "demo",
+// UICmd opens the Airy Core Platform UI
+var UICmd = &cobra.Command{
+	Use:              "ui",
 	TraverseChildren: true,
-	Short:            "Opens the core UI in your local browser",
+	Short:            "Opens the Airy Core Platform UI in your local browser",
 	Long:             ``,
 	Run:              demo,
 }
@@ -21,7 +21,7 @@ var DemoCmd = &cobra.Command{
 func demo(cmd *cobra.Command, args []string) {
 	// Initialize the api request
 
-	url := "http://chatplugin.airy/example.html"
+	url := "http://ui.airy/"
 
 	var err error
 

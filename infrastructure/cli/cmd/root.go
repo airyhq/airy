@@ -3,50 +3,51 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"cli/cmd/auth"
-	"cli/cmd/bootstrap"
 	"cli/cmd/config"
-	"cli/cmd/demo"
+	"cli/cmd/ui"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+const configFileName = ".airycli"
+
+var Version string
+var CommitSHA1 string
 
 // RootCmd represents the base command when called without any subcommands
-var RootCmd = &cobra.Command{
+var rootCmd = &cobra.Command{
 	Use:              "airy",
 	Short:            "airy controls your Airy Core Platform instance",
 	Long:             ``,
 	TraverseChildren: true,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		if cmd.Name() != "init" {
+			initConfig()
+		}
+	},
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() {
-	if err := RootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+// Version command
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Prints version information",
+	Long:  ``,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("Version: %s, GitCommit: %s", Version, CommitSHA1)
+	},
 }
 
-func init() {
-	RootCmd.AddCommand(bootstrap.BootstrapCmd)
-	RootCmd.AddCommand(auth.AuthCmd)
-	RootCmd.AddCommand(config.ConfigCmd)
-	RootCmd.AddCommand(demo.DemoCmd)
-}
-
-func initConfig() {
-	// Don't forget to read config either from cfgFile or from home directory!
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
+// Version command
+var initCmd = &cobra.Command{
+	Use:   "init",
+	Short: "Inits your Airy CLI configuration",
+	Long:  ``,
+	Run: func(cmd *cobra.Command, args []string) {
 		home, err := homedir.Dir()
 		if err != nil {
 			fmt.Println(err)
@@ -54,11 +55,53 @@ func initConfig() {
 		}
 
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".airycli")
-	}
+		viper.SetConfigName(configFileName)
 
-	if err := viper.ReadInConfig(); err != nil {
-		fmt.Println("Can't read config:", err)
+		viper.WriteConfigAs(path.Join(home, configFileName))
+	},
+}
+
+// Execute adds all child commands to the root command and sets flags
+// appropriately. This is called by main.main(). It only needs to happen once to
+// the rootCmd.
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func initConfig() {
+	home, err := homedir.Dir()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	viper.AddConfigPath(home)
+	viper.SetConfigName(configFileName)
+
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			fmt.Println(err)
+			fmt.Println("please run airy init")
+		} else {
+			fmt.Println("invalid configuration: ", err)
+		}
+
+		os.Exit(1)
+	}
+}
+
+func init() {
+	apiHost := ""
+	rootCmd.PersistentFlags().StringVar(&apiHost, "apihost", "http://api.airy", "Airy Core Platform HTTP API host")
+	viper.BindPFlag("apihost", rootCmd.PersistentFlags().Lookup("apihost"))
+	viper.SetDefault("apihost", "http://api.airy")
+
+	rootCmd.AddCommand(auth.AuthCmd)
+	rootCmd.AddCommand(config.ConfigCmd)
+	rootCmd.AddCommand(ui.UICmd)
+	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(initCmd)
 }

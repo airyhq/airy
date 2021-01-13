@@ -43,6 +43,7 @@ async function parseBody(response: Response): Promise<any> {
   }
 
   let body = await response.text();
+
   if (body.length > 0) {
     body = JSON.parse(body);
   }

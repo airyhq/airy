@@ -66,10 +66,8 @@ export function listNextConversations() {
   };
 }
 
-export function readConversations(id: string) {
+export function readConversations(conversationId: string) {
   return function(dispatch: Dispatch<any>) {
-    return HttpClient.readConversations(id).then(() => {
-      return dispatch(readConversationsAction(id));
-    });
+    HttpClient.readConversations(conversationId).then(() => dispatch(readConversationsAction(conversationId)));
   };
 }

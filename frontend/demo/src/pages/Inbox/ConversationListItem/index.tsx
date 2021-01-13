@@ -1,4 +1,5 @@
 import React, {CSSProperties} from 'react';
+import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
@@ -51,31 +52,33 @@ const ConversationListItem = (props: ConversationListItemProps) => {
 
   return (
     <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>
-      <div
-        className={`${active ? styles.containerListItemActive : styles.containerListItem} ${
-          unread ? styles.unread : ''
-        }`}>
+      <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
-          className={styles.profileImage}
-          style={{backgroundImage: `url(${(participant && participant.avatarUrl) || fallbackAvatar})`}}
-        />
-        <div className={styles.contactDetails}>
-          <div className={styles.topRow}>
-            <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>
-              {participant && participant.displayName}
+          className={`${active ? styles.containerListItemActive : styles.containerListItem} ${
+            unread ? styles.unread : ''
+          }`}>
+          <div
+            className={styles.profileImage}
+            style={{backgroundImage: `url(${(participant && participant.avatarUrl) || fallbackAvatar})`}}
+          />
+          <div className={styles.contactDetails}>
+            <div className={styles.topRow}>
+              <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>
+                {participant && participant.displayName}
+              </div>
             </div>
-          </div>
-          <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
-            <FormattedMessage message={conversation.lastMessage} />
-          </div>
-          <div className={styles.bottomRow}>
-            <div className={styles.source}>
-              <IconChannel channel={conversation.channel} avatar={true} name={true} />
+            <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
+              <FormattedMessage message={conversation.lastMessage} />
             </div>
-            <div className={styles.contactLastMessageDate}>{formatTimeOfMessage(conversation.lastMessage)}</div>
+            <div className={styles.bottomRow}>
+              <div className={styles.source}>
+                <IconChannel channel={conversation.channel} avatar={true} name={true} />
+              </div>
+              <div className={styles.contactLastMessageDate}>{formatTimeOfMessage(conversation.lastMessage)}</div>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 };

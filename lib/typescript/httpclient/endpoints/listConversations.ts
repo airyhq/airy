@@ -11,7 +11,7 @@ const messageMapper = (payload: MessagePayload): Message => {
     content: payload.content,
     deliveryState: payload.delivery_state,
     senderType: payload.sender_type,
-    sentAt: payload.sent_at,
+    sentAt: new Date(payload.sent_at),
   };
   return message;
 };

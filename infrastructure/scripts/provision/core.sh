@@ -28,7 +28,7 @@ fi
 
 echo "Deploying the Airy Core Platform with the ${AIRY_VERSION} image tag"
 
-helm install core ${INFRASTRUCTURE_PATH}/helm-chart/ --values ${INFRASTRUCTURE_PATH}/airy.yaml --set global.appImageTag=${AIRY_VERSION} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
+helm install core ${INFRASTRUCTURE_PATH}/helm-chart/ --set global.appImageTag=${AIRY_VERSION} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
 
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 

@@ -71,18 +71,17 @@ merge_develop() {
     echo -e "Successfully merged into develop branch\n"
 }
 
-if [[ -b $1 ]] && [[ -b $2 ]];
-then
-    case $1 in
-        "start")
-            start $2
-            ;;
-        "finish")
-            finish $2
-    esac
-else
+if [[ -z ${1+x} || -z ${2+x} ]]; then
     echo -ne "Error executing script\n"
     echo -ne "Expected syntax: release.sh <start | finish> <version_number>\n"
     exit 1
 fi
+
+case $1 in
+    "start")
+        start $2
+        ;;
+    "finish")
+        finish $2
+esac
 

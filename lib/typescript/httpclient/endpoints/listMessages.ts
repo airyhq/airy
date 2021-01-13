@@ -29,7 +29,7 @@ const messageMapperData = (payload: MessagePayloadData): Message[] => {
       content: messagePayload.content,
       deliveryState: messagePayload.delivery_state,
       senderType: messagePayload.sender_type,
-      sentAt: messagePayload.sent_at,
+      sentAt: new Date(messagePayload.sent_at),
     };
     return message;
   });

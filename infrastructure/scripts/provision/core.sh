@@ -6,14 +6,29 @@ SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)
 INFRASTRUCTURE_PATH=$(cd ${SCRIPT_PATH}/../../; pwd -P)
 
 source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
-APP_IMAGE_TAG="${AIRY_VERSION:-latest}"
 
-echo "Deploying the Airy Core Platform with the ${APP_IMAGE_TAG} image tag"
 
 cd ${INFRASTRUCTURE_PATH}/scripts/
 wait-for-service-account
 
-helm install core ${INFRASTRUCTURE_PATH}/helm-chart/ --set global.appImageTag=${APP_IMAGE_TAG} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
+if [ -z ${AIRY_VERSION+x} ]; then
+    branch_name="$(git symbolic-ref HEAD 2>/dev/null)" ||
+    branch_name="(unnamed branch)"     # detached HEAD
+
+    branch_name=${branch_name##refs/heads/}
+    case "$branch_name" in
+        main|release* )
+            AIRY_VERSION=(`cat ../../VERSION`)
+            ;;
+        * )
+            AIRY_VERSION=develop
+            ;;
+    esac
+fi
+
+echo "Deploying the Airy Core Platform with the ${AIRY_VERSION} image tag"
+
+helm install core ${INFRASTRUCTURE_PATH}/helm-chart/ --set global.appImageTag=${AIRY_VERSION} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
 
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 

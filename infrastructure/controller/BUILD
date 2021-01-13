@@ -22,7 +22,7 @@ go_library(
 go_binary(
     name = "controller",
     out = "controller",
-    embed = [":controller_lib"],
+    embed = [":kubernetes_lib"],
     visibility = ["//visibility:public"],
 )
 
@@ -34,4 +34,17 @@ go_image(
 container_push(
     registry = "ghcr.io/airyhq/infrastructure",
     repository = "controller",
+)
+
+go_library(
+    name = "kubernetes_lib",
+    srcs = ["main.go"],
+    importpath = "k8s.io/kubernetes",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//infrastructure/controller/pkg/configmap-controller",
+        "@io_k8s_client_go//kubernetes",
+        "@io_k8s_client_go//tools/clientcmd",
+        "@io_k8s_klog//:klog",
+    ],
 )

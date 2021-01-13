@@ -7,8 +7,8 @@ go_library(
     importpath = "cli/cmd/auth",
     visibility = ["//visibility:public"],
     deps = [
-        "//lib/go/httpclient:httpclient",
-        "//lib/go/httpclient/payloads:payloads",
+        "//lib/go/httpclient",
+        "//lib/go/httpclient/payloads",
         "@com_github_spf13_cobra//:cobra",
     ],
 )

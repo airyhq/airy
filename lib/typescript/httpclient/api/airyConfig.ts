@@ -56,6 +56,7 @@ async function parseBody(response: Response): Promise<any> {
   throw errorResponse;
 }
 
+
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
 }

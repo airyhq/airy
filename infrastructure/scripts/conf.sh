@@ -5,8 +5,8 @@ IFS=$'\n\t'
 SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)
 INFRASTRUCTURE_PATH=$(cd ${SCRIPT_PATH}/../; pwd -P)
 
-if [[ ! -f ${INFRASTRUCTURE_PATH}/airy.yml ]]; then
-    echo "No airy.yml config file found"
+if [[ ! -f ${INFRASTRUCTURE_PATH}/airy.yaml ]]; then
+    echo "No airy.yaml config file found"
     exit 0
 fi
 
@@ -33,7 +33,7 @@ source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
 kubectl delete pod startup-helper --force 2>/dev/null || true
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 
-helm upgrade core ${INFRASTRUCTURE_PATH}/helm-chart/ --values ${INFRASTRUCTURE_PATH}/airy.yml --set global.appImageTag=${AIRY_VERSION} --timeout 1000s #> /dev/null 2>&1
+helm upgrade core ${INFRASTRUCTURE_PATH}/helm-chart/ --values ${INFRASTRUCTURE_PATH}/airy.yaml --set global.appImageTag=${AIRY_VERSION} --timeout 1000s > /dev/null 2>&1
 
 kubectl scale deployment schema-registry --replicas=1
 

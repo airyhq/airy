@@ -18,7 +18,7 @@ core:
       endpoint: "postgres:5432"
       dbName: "admin"
       username: "postgresadmin"  
-      password: "long-random-generated-password"
+      password: "changeme"
     # Specific configurations for sources
     sources:
       facebook:

@@ -4,7 +4,12 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "configmap-controller",
-    srcs = ["configmap-controller.go"],
+    srcs = [
+        "controller.go",
+        "create.go",
+        "delete.go",
+        "update.go",
+    ],
     importpath = "github.com/airyhq/airy/infrastructure/controller/pkg/configmap-controller",
     visibility = ["//visibility:public"],
     deps = [

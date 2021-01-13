@@ -13,7 +13,7 @@ Here's an outline of the process:
 - We need a `GITHUB_TOKEN` environment variable with write permission to the org
 - We run `./scripts/release.sh start x.y.z`
 - Once release days comes, we execute the following steps:
-  - We test our release (`AIRY_VERSION=release ./scripts/bootstrap.sh`) and any
+  - We test our release (`./scripts/bootstrap.sh`) and any
     additional hot-fix is committed directly to the release branch
   - Once we're satisfied with the release, we finish the release by running `./scripts/release.sh finish x.y.z`
   - We archive cards in the done column of the [work in progress](https://github.com/airyhq/airy/projects/1) board

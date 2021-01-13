@@ -59,7 +59,7 @@ read -p "Do you want to add the vagrant box to the host file so you can access i
 echo
 if [[ $REPLY =~ ^[Yy]$ ]];
 then
-    vagrant plugin install vagrant-hostsupdater --plugin-clean-sources --plugin-source https://gems.ruby-china.com
+    vagrant plugin install vagrant-hostsupdater || vagrant plugin install vagrant-hostsupdater --plugin-clean-sources --plugin-source https://gems.ruby-china.com
 fi
 
 if ! command -v VBoxManage &> /dev/null
@@ -130,14 +130,11 @@ if [ -z ${AIRY_VERSION+x} ]; then
 
     branch_name=${branch_name##refs/heads/}
     case "$branch_name" in
-        develop )
-            AIRY_VERSION=beta
-            ;;
-        release* )
-            AIRY_VERSION=release
+        main|release* )
+            AIRY_VERSION=(`cat ../VERSION`)
             ;;
         * )
-            AIRY_VERSION=latest
+            AIRY_VERSION=develop
             ;;
     esac
 fi

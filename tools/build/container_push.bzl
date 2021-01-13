@@ -1,19 +1,14 @@
 load("@io_bazel_rules_docker//container:container.bzl", lib_push = "container_push")
 
-tags_to_push = ["release", "latest", "beta"]
-
 def container_push(registry, repository):
-    [
-        lib_push(
-            name = tag,
-            format = "Docker",
-            image = ":image",
-            registry = registry,
-            repository = repository,
-            tag = tag,
-        )
-        for tag in tags_to_push
-    ]
+    lib_push(
+        name = "develop",
+        format = "Docker",
+        image = ":image",
+        registry = registry,
+        repository = repository,
+        tag = "develop",
+    )
 
     lib_push(
         name = "local",
@@ -22,4 +17,13 @@ def container_push(registry, repository):
         registry = registry,
         repository = repository,
         tag = "{BUILD_USER}",
+    )
+
+    lib_push(
+        name = "release",
+        format = "Docker",
+        image = ":image",
+        registry = registry,
+        repository = repository,
+        tag = "{STABLE_VERSION}",
     )

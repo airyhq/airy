@@ -8,6 +8,8 @@ start() {
     echo -e "Starting release ${release_number}\n"
     create_issue
     create_release_branch
+    increase_version
+    commit_version
 }
 
 create_issue() {
@@ -31,8 +33,6 @@ create_release_branch() {
 finish() {
     release_number=$1
     echo -e "Finishing release ${release_number}\n"
-    increase_version
-    commit_version
     merge_main
     merge_develop
     echo -e "Release ${release_number} is finished\n"

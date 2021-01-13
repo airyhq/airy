@@ -9,11 +9,6 @@ declare const window: {
   };
 };
 
-interface AuthProps {
-  channel_id?: string;
-  resume_token?: string;
-}
-
 const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
 const TLS_PREFIX = window.airy ? (window.airy.no_tls === true ? '' : 's') : '';
 
@@ -71,42 +66,39 @@ class WebSocket {
     });
   };
 
+  getResumeToken = async (token: string) => {
+    const resumeChat = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.resumeToken`, {
+      method: 'POST',
+      body: JSON.stringify({}),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    });
+    const jsonResumeToken = await resumeChat.json();
+    localStorage.setItem('resume_token', JSON.stringify(jsonResumeToken));
+  };
+
   async start() {
-    let authenticateChannelAndResumeToken: AuthProps = {
-      channel_id: this.channel_id,
-    };
-
-    if (this.resume_token) {
-      authenticateChannelAndResumeToken = {
-        resume_token: this.resume_token,
-      };
-    } else {
-      this.connect = async (token: string) => {
-        const resumeChat = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.resumeToken`, {
-          method: 'POST',
-          body: JSON.stringify({}),
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-        });
-        const jsonResumeToken = await resumeChat.json();
-        localStorage.setItem('resume_token', JSON.stringify(jsonResumeToken));
-      };
-    }
-
     try {
       const response = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.authenticate`, {
         method: 'POST',
-        body: JSON.stringify(authenticateChannelAndResumeToken),
+        body: JSON.stringify({
+          channel_id: this.channel_id,
+          ...(this.resume_token && {
+            resume_token: this.resume_token,
+          }),
+        }),
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
       const jsonResponse = await response.json();
-
       this.connect(jsonResponse.token);
+      if (!this.resume_token) {
+        await this.getResumeToken(jsonResponse.token);
+      }
     } catch (e) {
       return Promise.reject(new Error('Widget authorization failed. Please check your installation.'));
     }

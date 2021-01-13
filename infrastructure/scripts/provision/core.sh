@@ -34,6 +34,3 @@ wait-for-service startup-helper postgres 5432 10 Postgres
 kubectl scale statefulset redis-cluster --replicas=1
 wait-for-service startup-helper redis-cluster 6379 10 Redis
 kubectl delete pod startup-helper --force 2>/dev/null
-
-echo "Deploying ingress controller"
-kubectl apply -f ../network/ingress.yaml

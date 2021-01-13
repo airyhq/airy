@@ -9,8 +9,8 @@ const messageMapper = (payload: MessagePayload): Message => {
   const message: Message = {
     id: payload.id,
     content: payload.content,
-    state: payload.state,
-    alignment: payload.alignment,
+    deliveryState: payload.delivery_state,
+    senderType: payload.sender_type,
     sentAt: payload.sent_at,
   };
   return message;

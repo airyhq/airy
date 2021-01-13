@@ -8,6 +8,7 @@ import {StateModel} from '../../../reducers';
 import {AllConversationsState} from '../../../reducers/data/conversations';
 
 import './index.scss';
+import MessengerContainer from './MessengerContainer';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -43,7 +44,11 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
 
       <Route
         path={[`${match.url}/conversations/:conversationId`, `${match.url}`]}
-        render={() => <Fragment></Fragment>}
+        render={props => (
+          <Fragment>
+            <MessengerContainer {...props} />
+          </Fragment>
+        )}
       />
     </section>
   );

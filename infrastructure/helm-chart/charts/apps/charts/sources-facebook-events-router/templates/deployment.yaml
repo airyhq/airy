@@ -44,7 +44,7 @@ spec:
         - name: FACEBOOK_APP_ID
           valueFrom:
             configMapKeyRef:
-              name: sources-config
+              name: sources-facebook
               key: FACEBOOK_APP_ID
         - name: SERVICE_NAME
           value: facebook-events-router

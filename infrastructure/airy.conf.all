@@ -4,45 +4,41 @@ global:
   containerRegistry: ghcr.io/airyhq
   namespace: default
 # Configuration for the Kafka cluster
-apps:
-  kafka:
-    brokers: "airy-cp-kafka-headless:9092"
-    schemaRegistryUrl: "http://schema-registry:8081"
-    commitInterval: 30000
-  # Configuration for the Redis database
-  redis:
-    hostname: "redis-cluster"
-    port: 6379
-  # Configuration for the PostgreSQL database
-  postgresql:
-    endpoint: "postgres:5432"
-    dbName: "admin"
-    username: "postgresadmin"  
-    password: "long-random-generated-password"
-
-
-  # Specific configurations for sources
-  sources:
-    facebook:
-      appId: "changeme"
-      appSecret: "changeme"
-      webhookSecret: "changeme"
-      webhookPublicUrl: https://public.tunnel.example.com
-    google:
-      partnerKey: "changeme"
-      saFile: >
-        '{"type":"service_account","project_id":"airy","private_key_id":"no","private_key":"nokey","client_email":"no","client_id":"no","auth_uri":"no","token_uri":"no","no":"no","client_x509_cert_url":"no"}'
-      webhookPublicUrl: https://public.tunnel.example.com
-    twilio:
-      authToken: "changeme"
-      accountSid: "changeme"
-      webhookPublicUrl: https://public.tunnel.example.com
-  # Specific configuration for the API apps
-  api:
-    mailFrom: "changeme"
-    mailPort: 587
-    mailUrl: "changeme"
-    mailUsername: "changeme"
-    mailPassword: "changeme"
-    jwtSecret: "long-random-generated-jwt-secret"
-    allowedOrigins: "*"
+core:
+  apps:
+    kafka:
+      brokers: "kafka-headless:9092"
+      schemaRegistryUrl: "http://schema-registry:8081"
+      commitInterval: 30000
+    # Configuration for the Redis database
+    redis:
+      hostname: "redis-cluster"
+      port: 6379
+    # Configuration for the PostgreSQL database
+    postgresql:
+      endpoint: "postgres:5432"
+      dbName: "admin"
+      username: "postgresadmin"  
+      password: "long-random-generated-password"
+    # Specific configurations for sources
+    sources:
+      facebook:
+        appId: "changeme"
+        appSecret: "changeme"
+        webhookSecret: "changeme"
+      google:
+        partnerKey: "changeme"
+        saFile: >
+          '{"type":"service_account","project_id":"airy","private_key_id":"no","private_key":"nokey","client_email":"no","client_id":"no","auth_uri":"no","token_uri":"no","no":"no","client_x509_cert_url":"no"}'
+      twilio:
+        authToken: "changeme"
+        accountSid: "changeme"
+    # Specific configuration for the API apps
+    api:
+      mailFrom: "changeme"
+      mailPort: 587
+      mailUrl: "changeme"
+      mailUsername: "changeme"
+      mailPassword: "changeme"
+      jwtSecret: "long-random-generated-jwt-secret"
+      allowedOrigins: "*"

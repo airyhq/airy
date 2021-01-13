@@ -24,7 +24,7 @@
       },
       {
         "scripts": [
-          "../scripts/airy-conf.sh"
+          "../scripts/airy.yml.sh"
         ],
         "type": "shell"
       }

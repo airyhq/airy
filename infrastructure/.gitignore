@@ -2,4 +2,4 @@
 .vagrant-out/
 images/.vagrant/
 images/.vagrant-out/
-airy.conf
+airy.yml

@@ -43,9 +43,10 @@ const Chat = (props: Props) => {
   const getResumeToken = () => {
     const queryParams = new URLSearchParams(window.location.search);
     if (queryParams.has('resume_token')) {
-      localStorage.setItem('resume_token', 'resume_token');
+      localStorage.setItem('resume_token', queryParams.get('resume_token'));
     }
-    return queryParams.get('resume_token') ? localStorage.getItem('resume_token') : null;
+
+    return queryParams.get('resume_token') ? queryParams.get('resume_token') : localStorage.getItem('resume_token');
   };
 
   useEffect(() => {

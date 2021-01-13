@@ -76,7 +76,7 @@ class WebSocket {
       },
     });
     const jsonResumeToken = await resumeChat.json();
-    localStorage.setItem('resume_token', JSON.stringify(jsonResumeToken));
+    localStorage.setItem('resume_token', jsonResumeToken.resume_token);
   };
 
   async start() {

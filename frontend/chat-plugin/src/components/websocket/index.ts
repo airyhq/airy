@@ -1,5 +1,6 @@
 import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
+import {start, getResumeToken, sendMessage} from '../api';
 
 declare const window: {
   airy: {
@@ -51,58 +52,21 @@ class WebSocket {
     this.client.activate();
   };
 
+  onSend = (message: string) => {
+    sendMessage(message, this.token);
+  };
+
+  start = async () => {
+    this.token = (await start(this.channel_id, this.resume_token)).token;
+    this.connect(this.token);
+    if (!this.resume_token) {
+      await getResumeToken(this.token);
+    }
+  };
+
   onConnect = () => {
     this.client.subscribe('/user/queue/message', this.onReceive);
   };
-
-  onSend = (message: string) => {
-    return fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.send`, {
-      method: 'POST',
-      body: message,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: this.token,
-      },
-    });
-  };
-
-  getResumeToken = async (token: string) => {
-    const resumeChat = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.resumeToken`, {
-      method: 'POST',
-      body: JSON.stringify({}),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-    });
-    const jsonResumeToken = await resumeChat.json();
-    localStorage.setItem('resume_token', jsonResumeToken.resume_token);
-  };
-
-  async start() {
-    try {
-      const response = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.authenticate`, {
-        method: 'POST',
-        body: JSON.stringify({
-          channel_id: this.channel_id,
-          ...(this.resume_token && {
-            resume_token: this.resume_token,
-          }),
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const jsonResponse = await response.json();
-      this.connect(jsonResponse.token);
-      if (!this.resume_token) {
-        await this.getResumeToken(jsonResponse.token);
-      }
-    } catch (e) {
-      return Promise.reject(new Error('Widget authorization failed. Please check your installation.'));
-    }
-  }
 }
 
 export default WebSocket;

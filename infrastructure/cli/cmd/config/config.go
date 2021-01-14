@@ -6,8 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// ResponsePayload for receiving the request
-
 // ConfigCmd subcommand for Airy Core
 var ConfigCmd = &cobra.Command{
 	Use:              "config",
@@ -18,11 +16,6 @@ var ConfigCmd = &cobra.Command{
 }
 
 func config(cmd *cobra.Command, args []string) {
-	// Initialize the api request
-
 	fmt.Println("ConfigCmd called")
 
-}
-
-func init() {
 }

@@ -1,17 +1,19 @@
-Airy CLI
+airy controls your Airy Core Platform instance
 
 Usage:
   airy [command]
 
 Available Commands:
   auth        Create a default user and return a JWT token
-  bootstrap   Bootstrap Airy Core Platform locally
-  config      Reloads configuration based on airy.yaml
-  demo        Opens the demo page in the browser
+  config      Reloads configuration based on airy.conf
   help        Help about any command
-  version     Return current version
+  init        Inits your Airy CLI configuration
+  ui          Opens the Airy Core Platform UI in your local browser
+  version     Prints version information
 
 Flags:
-  -h, --help   help for airy
+      --apihost string   Airy Core Platform HTTP API host (default "http://api.airy")
+      --config string    config file (default is $HOME/.airycli.yaml)
+  -h, --help             help for airy
 
 Use "airy [command] --help" for more information about a command.

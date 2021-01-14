@@ -9,5 +9,6 @@ go_library(
         "//lib/go/httpclient",
         "//lib/go/httpclient/payloads",
         "@com_github_spf13_cobra//:cobra",
+        "@com_github_spf13_viper//:viper",
     ],
 )

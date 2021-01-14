@@ -16,6 +16,7 @@ import (
 
 const configFileName = ".airycli"
 
+var configFile string
 var Version string
 var CommitSHA1 string
 
@@ -54,6 +55,7 @@ var initCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		//TODO let users choose a different name
 		viper.AddConfigPath(home)
 		viper.SetConfigName(configFileName)
 
@@ -72,14 +74,20 @@ func Execute() {
 }
 
 func initConfig() {
-	home, err := homedir.Dir()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	if configFile != "" {
+		viper.SetConfigFile(configFile)
+	} else {
+		home, err := homedir.Dir()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		viper.AddConfigPath(home)
+		viper.SetConfigName(configFileName)
 	}
 
-	viper.AddConfigPath(home)
-	viper.SetConfigName(configFileName)
+	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
@@ -99,6 +107,7 @@ func init() {
 	viper.BindPFlag("apihost", rootCmd.PersistentFlags().Lookup("apihost"))
 	viper.SetDefault("apihost", "http://api.airy")
 
+	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.airycli.yaml)")
 	rootCmd.AddCommand(auth.AuthCmd)
 	rootCmd.AddCommand(config.ConfigCmd)
 	rootCmd.AddCommand(ui.UICmd)

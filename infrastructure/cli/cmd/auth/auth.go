@@ -8,6 +8,7 @@ import (
 	"github.com/airyhq/airy/lib/go/httpclient/payloads"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // AuthCmd subcommand for Airy Core
@@ -20,7 +21,7 @@ var AuthCmd = &cobra.Command{
 }
 
 func auth(cmd *cobra.Command, args []string) {
-	url, _ := cmd.Flags().GetString("apihost")
+	url := viper.GetString("apihost")
 	email, _ := cmd.Flags().GetString("email")
 	password, _ := cmd.Flags().GetString("password")
 	c := httpclient.NewClient()

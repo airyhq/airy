@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
+import AvatarImage from '../../../components/AvatarImage';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
@@ -46,8 +47,6 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   const {conversation, active, style, readConversations} = props;
 
   const participant = conversation.contact;
-  const fallbackAvatar = 'https://s3.amazonaws.com/assets.airy.co/unknown.png';
-
   const unread = conversation.unreadMessageCount > 0;
 
   return (
@@ -57,10 +56,9 @@ const ConversationListItem = (props: ConversationListItemProps) => {
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${
             unread ? styles.unread : ''
           }`}>
-          <div
-            className={styles.profileImage}
-            style={{backgroundImage: `url(${(participant && participant.avatarUrl) || fallbackAvatar})`}}
-          />
+          <div className={styles.profileImage}>
+            <AvatarImage contact={participant} />
+          </div>
           <div className={styles.contactDetails}>
             <div className={styles.topRow}>
               <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>

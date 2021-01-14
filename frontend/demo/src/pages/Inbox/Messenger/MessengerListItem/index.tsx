@@ -1,51 +1,43 @@
 import React from 'react';
-import _redux from 'redux';
-import _, {connect, ConnectedProps} from 'react-redux';
-import {Message, SenderType} from 'httpclient';
-import {StateModel} from '../../../../reducers';
-import Avatar from '../MessageList/Avatar';
+import _ from 'redux';
+import {Message, Conversation, SenderType} from 'httpclient';
+import AvatarImage from '../../../../components/AvatarImage';
 
 import styles from './index.module.scss';
+import {formatTimeOfMessage} from '../../../../services/format/date';
 
 type MessengerListItemProps = {
-  messageText: string;
-  messageSenderType: string;
-  messageDate: Date;
   message: Message;
-} & ConnectedProps<typeof connector>;
-
-const mapStateToProps = (state: StateModel) => {
-  return {
-    lastMessages: state.data.conversations.all.items,
-  };
+  conversation: Conversation;
+  showAvatar: boolean;
+  showSentAt: boolean;
 };
 
-const connector = connect(mapStateToProps, null);
-
 const MessengerListItem = (props: MessengerListItemProps) => {
-  const {messageText, messageSenderType, message, lastMessages} = props;
-  const isUser = messageSenderType !== SenderType.appUser;
+  const {conversation, showAvatar, showSentAt, message} = props;
+  const isUser = message.senderType !== SenderType.appUser;
 
-  const messageAvatar = (messageId: string) => {
-    Object.values(lastMessages).forEach(lastMessage => {
-      return (
-        <Avatar isLastMessage={messageId === lastMessage.lastMessage.id} avatarUrl={lastMessage.contact.avatarUrl} />
-      );
-    });
+  const messageAvatar = () => {
+    return conversation && <AvatarImage contact={conversation.contact} />;
   };
+
+  const messageText = message.content[0].text;
 
   return (
     <div className={styles.messageListItemContainer}>
       <div className={styles.messageListItem}>
         {!isUser ? (
           <div className={styles.messageListItemMember}>
-            {messageText}
-            {messageAvatar(message.id)}
+            <div className={styles.messageListItemMemberText}>{messageText}</div>
+            {showSentAt && <div className={styles.messageTime}>{formatTimeOfMessage(message)}</div>}
           </div>
         ) : (
           <div className={styles.messageListUserContainer}>
-            {messageAvatar(message.id)}
-            <div className={styles.messageListItemUser}>{messageText}</div>
+            <div className={styles.messageAvatar}>{showAvatar && messageAvatar()}</div>
+            <div className={styles.messageListItemUser}>
+              <div className={styles.messageListItemUserText}>{messageText}</div>
+              {showSentAt && <div className={styles.messageTime}>{formatTimeOfMessage(message)}</div>}
+            </div>
           </div>
         )}
       </div>
@@ -53,4 +45,4 @@ const MessengerListItem = (props: MessengerListItemProps) => {
   );
 };
 
-export default connector(MessengerListItem);
+export default MessengerListItem;

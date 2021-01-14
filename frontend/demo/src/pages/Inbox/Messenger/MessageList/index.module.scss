@@ -1,3 +1,6 @@
+@import '../../../../assets/scss/colors.scss';
+@import '../../../../assets/scss/fonts.scss';
+
 .messageList {
   display: flex;
   flex-direction: column;
@@ -6,4 +9,13 @@
   overflow-y: scroll;
   flex-grow: 1;
   overflow-x: hidden;
+}
+
+.dateHeader {
+  @include font-s;
+  margin: 8px auto;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: var(--color-background-gray);
+  color: var(--color-text-gray);
 }

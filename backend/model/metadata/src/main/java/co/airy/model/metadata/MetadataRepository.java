@@ -21,7 +21,16 @@ public class MetadataRepository {
 
     public static Metadata newConversationMetadata(String conversationId, String key, String value) {
         return Metadata.newBuilder()
-                .setSubject(new Subject("conversation",conversationId).toString())
+                .setSubject(new Subject("conversation", conversationId).toString())
+                .setKey(key)
+                .setValue(value)
+                .setTimestamp(Instant.now().toEpochMilli())
+                .build();
+    }
+
+    public static Metadata newMessageMetadata(String messageId, String key, String value) {
+        return Metadata.newBuilder()
+                .setSubject(new Subject("message", messageId).toString())
                 .setKey(key)
                 .setValue(value)
                 .setTimestamp(Instant.now().toEpochMilli())
@@ -30,6 +39,10 @@ public class MetadataRepository {
 
     public static boolean isConversationMetadata(Metadata metadata) {
         return metadata.getSubject().startsWith("conversation:");
+    }
+
+    public static boolean isMessageMetadata(Metadata metadata) {
+        return metadata.getSubject().startsWith("message:");
     }
 
     public static Map<String, String> getConversationInfo(Map<String, String> metadataMap) {

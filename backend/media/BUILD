@@ -6,12 +6,15 @@ app_deps = [
     "//backend:base_app",
     "//backend/model/message",
     "//backend/model/metadata",
-    "//lib/java/uuid",
     "//lib/java/mapping",
+    "//lib/java/url",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
-    "@maven//:io_lettuce_lettuce_core",
-    "@maven//:org_springframework_data_spring_data_redis",
+    "@maven//:javax_xml_bind_jaxb_api",
+    "@maven//:org_springframework_retry_spring_retry",
+    "@maven//:org_aspectj_aspectjweaver",
+    "@maven//:com_amazonaws_aws_java_sdk_core",
+    "@maven//:com_amazonaws_aws_java_sdk_s3",
 ]
 
 springboot(

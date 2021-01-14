@@ -69,7 +69,6 @@ func (c *Controller) Handle(key string) error {
 		for _, affectedDeployment := range affectedDeployments {
 			klog.Infof("Scheduling reload for deployment: %s", affectedDeployment)
 			handler.ReloadDeployment(c.clientset, "default", affectedDeployment)
-
 		}
 	}
 	return nil

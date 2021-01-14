@@ -11,22 +11,12 @@ source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
 cd ${INFRASTRUCTURE_PATH}/scripts/
 wait-for-service-account
 
-if [ -z ${AIRY_VERSION+x} ]; then
-    branch_name="$(git symbolic-ref HEAD 2>/dev/null)" ||
-    branch_name="(unnamed branch)"     # detached HEAD
-
-    branch_name=${branch_name##refs/heads/}
-    case "$branch_name" in
-        main|release* )
-            AIRY_VERSION=(`cat ../../VERSION`)
-            ;;
-        * )
-            AIRY_VERSION=develop
-            ;;
-    esac
-fi
 
 echo "Deploying the Airy Core Platform with the ${AIRY_VERSION} image tag"
+
+if [[ -f ${INFRASTRUCTURE_PATH}/airy.yaml ]]; then
+    yq w -i ${INFRASTRUCTURE_PATH}/airy.yaml global.appImageTag ${AIRY_VERSION} 
+fi
 
 helm install core ${INFRASTRUCTURE_PATH}/helm-chart/ --set global.appImageTag=${AIRY_VERSION} --version 0.5.0 --timeout 1000s > /dev/null 2>&1
 

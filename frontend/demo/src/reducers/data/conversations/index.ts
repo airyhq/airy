@@ -122,6 +122,22 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
         items: setLoadingOfConversation(state.items, action.payload, true),
       };
 
+    case getType(actions.readConversationsAction):
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [action.payload.conversationId]: {
+            ...state.items[action.payload.conversationId],
+            unreadMessageCount: 0,
+          },
+        },
+        metadata: {
+          ...state.metadata,
+          loading: false,
+        },
+      };
+
     default:
       return state;
   }

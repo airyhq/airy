@@ -17,7 +17,6 @@ func MockServer() {
 	mux.HandleFunc(pat.Post("/users.signup"), mockUserSignupHandler)
 	mux.HandleFunc(pat.Post("/users.login"), mockUserLoginHandler)
 
-	log.Println("starting mock server on port localhost:3001")
 	s := &http.Server{
 		Addr:         ":3001",
 		Handler:      mux,

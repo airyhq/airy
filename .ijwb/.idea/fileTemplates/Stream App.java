@@ -1,4 +1,4 @@
-package co.airy.core.media;
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
 
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
@@ -11,20 +11,19 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Resolver implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+public class ${NAME} implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private final Logger log = AiryLoggerFactory.getLogger(Resolver.class);
-
-    private static final String appId = "media.Resolver";
+    private static final String appId = "#[[$AppId$]]#";
     private final KafkaStreamsWrapper streams;
 
-    public Resolver(KafkaStreamsWrapper streams) {
+    public ${NAME}(KafkaStreamsWrapper streams) {
         this.streams = streams;
     }
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
         final StreamsBuilder builder = new StreamsBuilder();
-
+        #[[$END$]]#
         streams.start(builder.build(), appId);
     }
 
@@ -35,8 +34,7 @@ public class Resolver implements ApplicationListener<ApplicationStartedEvent>, D
         }
     }
 
-
-    // visible for testing
+    // Visible for testing
     KafkaStreams.State getStreamState() {
         return streams.state();
     }

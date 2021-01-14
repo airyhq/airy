@@ -19,12 +19,10 @@ func TestCli(t *testing.T) {
 		wantErr bool
 	}{
 		{"no args", []string{}, "cli.no-args.golden", false},
-		{"auth", []string{"auth", "--url", "http://localhost:3001"}, "cli.auth.golden", false},
-		{"auth", []string{"auth", "--url", "http://localhost:3001", "--email", "example@email.com"}, "cli.auth.golden", false},
-		{"auth", []string{"auth", "--url", "http://localhost:3001", "--email", "example@email.com", "--password", "examplepassword"}, "cli.auth.golden", false},
-		// {"bootstrap", []string{"bootstrap"}, "cli.bootstrap.golden", false},
-		// {"config", []string{"config"}, "cli.config.no-args.golden", true},
-		{"version", []string{"version"}, "cli.version.golden", false},
+		{"auth", []string{"auth", "--config", "pkg/tests/golden/airycli.yaml"}, "cli.auth.golden", false},
+		{"auth", []string{"auth", "--config", "pkg/tests/golden/airycli.yaml", "--email", "grace@example.com"}, "cli.auth.golden", false},
+		{"auth", []string{"auth", "--config", "pkg/tests/golden/airycli.yaml", "--email", "grace@example.com", "--password", "examplepassword"}, "cli.auth.golden", false},
+		{"version", []string{"version", "--config", "pkg/tests/golden/airycli.yaml"}, "cli.version.golden", false},
 	}
 
 	go func() {

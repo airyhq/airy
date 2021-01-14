@@ -158,21 +158,37 @@ cd infrastructure
 cp airy.conf.all airy.conf
 ```
 
-Edit the file to configure connections to the base services. Make sure that the
-following sections are configured correctly, so that the `Airy apps` to start
-properly:
+Edit the file to configure connections to the base services. Make sure to configure the
+following sections correctly, so that the `Airy apps` start properly:
 
-```
+```yaml
 apps:
-  kafka:
-    ...
-  redis:
-    ...
-  postgresql:
-    ...
+  kafka: ...
+  redis: ...
+  postgresql: ...
 ```
 
-We recommend to create a new database if you are reusing a PostgreSQL server to avoid name collisions.
+We recommend that you create a new database if you are reusing a PostgreSQL server to avoid name collisions.
+
+## Source media storage
+
+Most message sources allow users to send rich data such as images, videos and audio files. For some sources
+the Urls that host this data expire which is why after some time you may find that conversations have inaccessible
+content.
+
+The Airy Core Platform allows you to persist this data to a storage of your choice. To take advantage of this
+you must provide access credentials to your storage. The platform currently supports [s3](https://aws.amazon.com/s3/):
+
+```yaml
+apps:
+  storage:
+    s3:
+      key: <your aws iam access key id>
+      secret: <your aws iam access key secret>
+      bucket: <the target bucket>
+      region: <the bucket's aws region>
+      path: <(optional) defaults to the bucket root>
+```
 
 ### Deployment
 

@@ -27,7 +27,7 @@ public class Main {
         parameters.debug = false;
         parameters.classNamePatterns = List.of("co.airy.mapping.model.**");
 
-        final File output = new File(System.getenv().get("BUILD_WORKSPACE_DIRECTORY") + "/frontend/types/content.ts");
+        final File output = new File(System.getenv().get("BUILD_WORKSPACE_DIRECTORY") + "/lib/typescript/types/content.ts");
         settings.validateFileName(output);
 
         generator.generateTypeScript(Input.from(parameters), Output.to(output));

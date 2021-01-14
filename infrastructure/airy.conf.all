@@ -3,9 +3,9 @@ global:
   appImageTag: latest
   containerRegistry: ghcr.io/airyhq
   namespace: default
-# Configuration for the Kafka cluster
 core:
   apps:
+    # Configuration for the Kafka cluster
     kafka:
       brokers: "kafka-headless:9092"
       schemaRegistryUrl: "http://schema-registry:8081"
@@ -18,7 +18,7 @@ core:
     postgresql:
       endpoint: "postgres:5432"
       dbName: "admin"
-      username: "postgresadmin"  
+      username: "postgresadmin"
       password: "long-random-generated-password"
     # Specific configurations for sources
     sources:
@@ -42,3 +42,10 @@ core:
       mailPassword: "changeme"
       jwtSecret: "long-random-generated-jwt-secret"
       allowedOrigins: "*"
+  storage:
+    s3:
+      key: "changeme"
+      secret: "changeme"
+      bucket: "changeme"
+      region: "changeme"
+      path: "path"

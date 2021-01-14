@@ -1,4 +1,5 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
 # gazelle:prefix github.com/airyhq/airy/lib/go/httpclient
 
 go_library(

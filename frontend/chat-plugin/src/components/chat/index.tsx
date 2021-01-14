@@ -46,7 +46,7 @@ const Chat = (props: Props) => {
       localStorage.setItem('resume_token', queryParams.get('resume_token'));
     }
 
-    return queryParams.get('resume_token') ? queryParams.get('resume_token') : localStorage.getItem('resume_token');
+    return queryParams.get('resume_token') || localStorage.getItem('resume_token');
   };
 
   useEffect(() => {

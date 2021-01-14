@@ -21,7 +21,6 @@ build:ci --test_env=ROOT_LOG_LEVEL=ERROR
 
 build:ci --noshow_progress
 build:ci --verbose_failures
-build:ci --disk_cache=~/.cache/bazel
-build:ci --repository_cache==~/.cache/bazel_external
+build:ci --remote_cache=https://storage.googleapis.com/airy-ci-cache
 
 test:ci --flaky_test_attempts=2

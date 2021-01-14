@@ -12,28 +12,13 @@ fi
 
 source /vagrant/scripts/lib/k8s.sh
 
-if [ -z ${AIRY_VERSION+x} ]; then
-    branch_name="$(git symbolic-ref HEAD 2>/dev/null)" ||
-    branch_name="(unnamed branch)"     # detached HEAD
-
-    branch_name=${branch_name##refs/heads/}
-    case "$branch_name" in
-        main|release* )
-            AIRY_VERSION=(`cat ../../VERSION`)
-            ;;
-        * )
-            AIRY_VERSION=develop
-            ;;
-    esac
-fi
-
 source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
 
 
 kubectl delete pod startup-helper --force 2>/dev/null || true
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
 
-helm upgrade core ${INFRASTRUCTURE_PATH}/helm-chart/ --values ${INFRASTRUCTURE_PATH}/airy.yaml --set global.appImageTag=${AIRY_VERSION} --timeout 1000s > /dev/null 2>&1
+helm upgrade core ${INFRASTRUCTURE_PATH}/helm-chart/ --values ${INFRASTRUCTURE_PATH}/airy.yaml --timeout 1000s > /dev/null 2>&1
 
 kubectl scale deployment schema-registry --replicas=1
 

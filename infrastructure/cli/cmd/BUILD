@@ -3,7 +3,6 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "cmd",
     srcs = ["root.go"],
-    importmap = "infrastructure/cmd",
     importpath = "cli/cmd",
     visibility = ["//visibility:public"],
     x_defs = {

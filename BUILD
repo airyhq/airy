@@ -4,8 +4,6 @@ load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@io_bazel_rules_go//go:def.bzl", "TOOLS_NOGO", "nogo")
 
-# gazelle:proto disable_global
-
 package(default_visibility = ["//visibility:public"])
 
 multirun(
@@ -170,6 +168,7 @@ exports_files(
     ],
 )
 
+# gazelle:proto disable_global
 # gazelle:build_file_name BUILD
 # gazelle:prefix
 gazelle(name = "gazelle")

@@ -1,6 +1,6 @@
 # Global configuration
 global:
-  appImageTag: latest
+  appImageTag: develop
   containerRegistry: ghcr.io/airyhq
   namespace: default
 core:
@@ -18,8 +18,8 @@ core:
     postgresql:
       endpoint: "postgres:5432"
       dbName: "admin"
-      username: "postgresadmin"
-      password: "long-random-generated-password"
+      username: "postgresadmin"  
+      password: "changeme"
     # Specific configurations for sources
     sources:
       facebook:

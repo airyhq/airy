@@ -5,7 +5,7 @@ Usage:
 
 Available Commands:
   auth        Create a default user and return a JWT token
-  config      Reloads configuration based on airy.conf
+  config      Reloads configuration based on airy.yaml
   help        Help about any command
   init        Inits your Airy CLI configuration
   ui          Opens the Airy Core Platform UI in your local browser

@@ -139,8 +139,8 @@ document
 The bootstrap process creates a random URL which is then provisioned inside the
 Helm chart. To configure these URLs, you can specify them in the
 `infrastructure/helm-chart/charts/apps/charts/airy-co)fig/values.yaml` document.
-Alternatively you can edit the `airy.conf` file by setting the following
-parameter (see `airy.conf.all` for more examples):
+Alternatively you can edit the `airy.yaml` file by setting the following
+parameter (see `airy.tpl.yaml` for more examples):
 
 ```
 sources:
@@ -154,16 +154,15 @@ After preparing the configuration, run the following commands to apply the chang
 cd infrastructure
 vagrant ssh
 sudo -i
-cp /vagrant/airy.conf ~/airy-core/helm-chart/charts/apps/values.yaml
-helm upgrade core ~/airy-core/helm-chart/charts/apps/ --timeout 1000s
+helm upgrade core ~/airy-core/helm-chart/charts/apps/ --values /vagrant/airy.yaml  --timeout 1000s
 ```
 
 ## Connect sources
 
 Integrating sources into the `Airy Core Platform` often requires specific
 configuration settings, refer to the source specific docs for details. You must
-provide the settings in `infrastructure/airy.conf` configuration file. An
-example of the configuration can be found in `airy.conf.all`.
+provide the settings in `infrastructure/airy.yaml` configuration file. An
+example of the configuration can be found in `airy.tpl.yaml`.
 
 After setting the configuration run:
 

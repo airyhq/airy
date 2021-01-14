@@ -139,8 +139,8 @@ document
 The bootstrap process creates a random URL which is then provisioned inside the
 Helm chart. To configure these URLs, you can specify them in the
 `infrastructure/helm-chart/charts/apps/charts/airy-co)fig/values.yaml` document.
-Alternatively you can edit the `airy.conf` file by setting the following
-parameter (see `airy.conf.all` for more examples):
+Alternatively you can edit the `airy.yaml` file by setting the following
+parameter (see `airy.tpl.yaml` for more examples):
 
 ```
 sources:

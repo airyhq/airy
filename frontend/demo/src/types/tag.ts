@@ -1,19 +1,3 @@
-import {Tag} from 'httpclient';
-
-export interface ColorSettings {
-  default: string;
-  background: string;
-  font: string;
-  position: number;
-  border: string;
-}
-
-export interface TagSettings {
-  colors: ColorSettings[];
-  enabled: boolean;
-  channels: Tag[];
-}
-
 export interface ErrorTag {
   status: string;
   data?: string;

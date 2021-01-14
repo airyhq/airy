@@ -1,6 +1,6 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
-import {cloneDeep} from 'lodash-es';
+import {cloneDeep, uniq} from 'lodash-es';
 
 import {Conversation, Message} from 'httpclient';
 import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
@@ -99,6 +99,45 @@ const initialState: AllConversationsState = {
   },
 };
 
+const addTagToConversation = (state: AllConversationsState, conversationId, tagId) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (conversation) {
+    const tags: string[] = [...state.items[conversationId].tags];
+    tags.push(tagId);
+
+    return {
+      ...state,
+      items: {
+        ...state.items,
+        [conversation.id]: {
+          ...conversation,
+          tags: uniq(tags),
+        },
+      },
+    };
+  }
+
+  return state;
+};
+
+const removeTagFromConversation = (state: AllConversationsState, conversationId, tagId) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (conversation) {
+    return {
+      ...state,
+      items: {
+        ...state.items,
+        [conversation.id]: {
+          ...conversation,
+          tags: conversation.tags.filter(tag => tag !== tagId),
+        },
+      },
+    };
+  }
+
+  return state;
+};
+
 function allReducer(state: AllConversationsState = initialState, action: Action): AllConversationsState {
   switch (action.type) {
     case getType(actions.mergeConversationsAction):
@@ -137,6 +176,12 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
           loading: false,
         },
       };
+
+    case getType(actions.addTagToConversationAction):
+      return addTagToConversation(state, action.payload.conversationId, action.payload.tagId);
+
+    case getType(actions.removeTagFromConversationAction):
+      return removeTagFromConversation(state, action.payload.conversationId, action.payload.tagId);
 
     default:
       return state;

@@ -8,7 +8,7 @@ import {Button, Input} from '@airyhq/components';
 import Dialog from '../../components/Dialog';
 import ColorSelector from '../../components/ColorSelector';
 
-import Tag from '../../pages/Tags/Tag';
+import Tag from '../../components/Tag';
 import {Tag as TagModel, TagColor} from 'httpclient';
 
 import styles from './SimpleTagForm.module.scss';

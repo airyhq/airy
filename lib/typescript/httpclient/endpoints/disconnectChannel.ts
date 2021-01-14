@@ -1,24 +1,8 @@
 import {doFetchFromBackend} from '../api';
-import {DisconnectChannelRequestPayload, DisconnectChannelRequestApiPayload} from '../payload';
-import {Channel} from '../model';
+import {DisconnectChannelRequestPayload} from '../payload';
 import {ChannelsPayload} from '../payload/ChannelsPayload';
-
-const channelsMapper = (payload: ChannelsPayload, source?: string): Channel[] => {
-  return payload.data.map(
-    (entry: Channel): Channel => {
-      return {
-        source,
-        ...entry,
-      };
-    }
-  );
-};
-
-const disconnectChannelApiMapper = (payload: DisconnectChannelRequestPayload): DisconnectChannelRequestApiPayload => {
-  return {
-    channel_id: payload.channelId,
-  };
-};
+import {channelsMapper} from '../mappers/channelsMapper';
+import {disconnectChannelApiMapper} from '../mappers/disconnectChannelApiMapper';
 
 export function disconnectChannel(requestPayload: DisconnectChannelRequestPayload) {
   return doFetchFromBackend('channels.disconnect', disconnectChannelApiMapper(requestPayload))

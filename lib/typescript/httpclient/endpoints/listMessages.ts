@@ -1,8 +1,8 @@
 import {doFetchFromBackend} from '../api';
-import {Message, MessagePayloadData} from '../model';
 import {ListMessagesRequestPayload} from '../payload/ListMessagesRequestPayload';
 import {MessagePayload} from '../payload/MessagePayload';
 import {PaginatedPayload} from '../payload/PaginatedPayload';
+import {messageMapperData} from '../mappers/messageMapperData';
 
 export function listMessages(conversationListRequest: ListMessagesRequestPayload) {
   conversationListRequest.pageSize = conversationListRequest.pageSize ?? 10;
@@ -21,16 +21,3 @@ export function listMessages(conversationListRequest: ListMessagesRequestPayload
       return error;
     });
 }
-
-const messageMapperData = (payload: MessagePayloadData): Message[] => {
-  return payload.data.map((messagePayload: MessagePayload) => {
-    const message: Message = {
-      id: messagePayload.id,
-      content: messagePayload.content,
-      deliveryState: messagePayload.delivery_state,
-      senderType: messagePayload.sender_type,
-      sentAt: new Date(messagePayload.sent_at),
-    };
-    return message;
-  });
-};

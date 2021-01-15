@@ -16,6 +16,33 @@ go_binary(
     visibility = ["//visibility:public"],
 )
 
+go_binary(
+    name = "airy_darwin",
+    out = "airy_darwin",
+    goos = "darwin",
+    goarch = "amd64",
+    embed = [":cli_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "airy_windows",
+    out = "airy_windows",
+    goos = "windows",
+    goarch = "amd64",
+    embed = [":cli_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "airy_linux",
+    out = "airy_linux",
+    goos = "linux",
+    goarch = "amd64",
+    embed = [":cli_lib"],
+    visibility = ["//visibility:public"],
+)
+
 go_test(
     name = "cli_test",
     srcs = ["main_test.go"],

@@ -1,5 +1,5 @@
 import {getCookie, setCookie} from './cookie';
-import {User} from '../model/User';
+import {User} from 'httpclient';
 
 export const storeDomainCookie = (key: string) => (token: string) => {
   setCookie(key, token, document.domain);

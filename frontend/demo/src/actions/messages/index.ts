@@ -1,6 +1,7 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {HttpClient, Message, ResponseMetadataPayload} from 'httpclient';
+import {Message, ResponseMetadataPayload} from 'httpclient';
+import {HttpClientInstance} from '../../InitializeAiryApi';
 
 export const MESSAGES_LOADING = '@@messages/LOADING';
 
@@ -11,7 +12,7 @@ export const loadingMessagesAction = createAction(
 
 export function listMessages(conversationId: string) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClient.listMessages({
+    return HttpClientInstance.listMessages({
       conversationId,
       pageSize: 10,
     })

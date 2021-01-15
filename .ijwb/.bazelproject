@@ -13,7 +13,7 @@ additional_languages:
   # Uncomment any additional languages you want supported
   # android
   # dart
-  go
+  # go
   javascript
   # kotlin
   python

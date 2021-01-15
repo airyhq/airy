@@ -1,7 +1,8 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {HttpClient, Conversation} from 'httpclient';
+import {Conversation} from 'httpclient';
 import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
+import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
 
 export const CONVERSATION_LOADING = '@@conversation/LOADING';
@@ -40,7 +41,7 @@ export const removeErrorFromConversationAction = createAction(
 export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
-    return HttpClient.listConversations({page_size: 10})
+    return HttpClientInstance.listConversations({page_size: 10})
       .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
         dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);
@@ -55,7 +56,7 @@ export function listNextConversations() {
   return async (dispatch: Dispatch<any>, state: StateModel) => {
     const cursor = state.data.conversations.all.metadata.nextCursor;
     dispatch(loadingConversationsAction());
-    return HttpClient.listConversations({cursor: cursor})
+    return HttpClientInstance.listConversations({cursor: cursor})
       .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
         dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);
@@ -68,6 +69,6 @@ export function listNextConversations() {
 
 export function readConversations(conversationId: string) {
   return function(dispatch: Dispatch<any>) {
-    HttpClient.readConversations(conversationId).then(() => dispatch(readConversationsAction(conversationId)));
+    HttpClientInstance.readConversations(conversationId).then(() => dispatch(readConversationsAction(conversationId)));
   };
 }

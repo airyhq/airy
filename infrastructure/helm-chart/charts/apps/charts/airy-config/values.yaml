@@ -7,7 +7,7 @@ redis:
   port: 6379
 postgresql:
   endpoint: "postgres:5432"
-  username: "postgresadmin"
+  username: "postgresadmin"  
   password: "changeme"
 sources:
   facebook:

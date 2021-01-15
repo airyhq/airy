@@ -5,12 +5,13 @@ messaging platform to process conversational data from a variety of sources
 (like Facebook Messenger, Google Business Messages, Website Live Chat, and
 more).
 
-- [Getting Started](#getting-started)
-- [Components](#components)
-- [Organization of this Repo](#organization-of-the-repository)
-- [Design Principles](#design-principles)
-- [How to contribute](#how-to-contribute)
-- [Code of Conduct](#code-of-conduct)
+- [Airy Core Platform](#airy-core-platform)
+  - [Getting started](#getting-started)
+  - [Components](#components)
+  - [Organization of the Repository](#organization-of-the-repository)
+  - [Design Principles](#design-principles)
+  - [How to contribute](#how-to-contribute)
+  - [Code of Conduct](#code-of-conduct)
 
 ## Getting started
 
@@ -19,7 +20,7 @@ You can run the Airy Core Platform locally by running the following commands:
 ```sh
 $ git clone https://github.com/airyhq/airy
 $ cd airy
-$ AIRY_VERSION=beta ./scripts/bootstrap.sh
+$ ./scripts/bootstrap.sh
 ```
 
 The bootstrap installation requires

@@ -149,13 +149,13 @@ Kafka cluster, PostgreSQL and Redis can be done by creating a configuration
 file, prior to deploying the apps. Make sure that the `Airy apps` also have
 network connectivity to the required services.
 
-The file `infrastructure/airy.conf.all` contains an example of all possible
-configuration parameters. This file should be copied to `airy.conf` and edited
+The file `infrastructure/airy.tpl.yaml` contains an example of all possible
+configuration parameters. This file should be copied to `airy.yaml` and edited
 according to your environment:
 
 ```sh
 cd infrastructure
-cp airy.conf.all airy.conf
+cp airy.tpl.yaml airy.yaml
 ```
 
 Edit the file to configure connections to the base services. Make sure to configure the
@@ -193,10 +193,10 @@ apps:
 ### Deployment
 
 We provided a Helm chart to deploy the `Airy apps`. Before you can run helm, you
-must configure the system via the `airy.conf` file, then you can proceed:
+must configure the system via the `airy.yaml` file, then you can proceed:
 
 ```sh
-cp airy.conf ./helm-chart/charts/apps/values.yaml
+cp airy.yaml ./helm-chart/charts/apps/values.yaml
 helm install core ./helm-chart/charts/apps/ --timeout 1000s
 ```
 
@@ -214,19 +214,11 @@ kubectl scale deployment -l type=sources-twilio --replicas=1
 
 At this point you should have a running `Airy Core Platform` in your environment 🎉.
 
-To deploy with a different `image tag` (for example `beta` from the `develop`
-branch), you can run:
-
-```sh
-export AIRY_VERSION=beta
-helm install core ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
-```
-
 If afterwards you need to modify or add other config parameters in the
-`airy.conf` file, after editing the file run:
+`airy.yaml` file, after editing the file run:
 
 ```sh
-cp airy.conf ./helm-chart/charts/apps/values.yaml
+cp airy.yaml ./helm-chart/charts/apps/values.yaml
 helm upgrade core ./helm-chart/charts/apps/ --timeout 1000s
 ```
 
@@ -234,8 +226,8 @@ If you deploy the Airy Core Platform with a specific version tag, you must
 export the `AIRY_VERSION` variable before running `helm upgrade`:
 
 ```sh
-cp airy.conf ./helm-chart/charts/apps/values.yaml
-export AIRY_VERSION=beta
+cp airy.yaml ./helm-chart/charts/apps/values.yaml
+export AIRY_VERSION=develop
 helm upgrade core ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
 ```
 

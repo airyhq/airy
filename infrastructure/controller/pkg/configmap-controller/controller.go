@@ -1,4 +1,4 @@
-package configmapController
+package cmcontroller
 
 import (
 	"fmt"
@@ -17,23 +17,20 @@ import (
 )
 
 type Controller struct {
-	indexer   cache.Indexer
-	queue     workqueue.RateLimitingInterface
-	informer  cache.Controller
-	clientSet kubernetes.Interface
+	indexer  cache.Indexer
+	queue    workqueue.RateLimitingInterface
+	informer cache.Controller
+	context  Context
+}
+
+type Context struct {
+	ClientSet     kubernetes.Interface
+	Namespace     string
+	LabelSelector string
 }
 
 type ResourceHandler interface {
-	Handle(clientSet kubernetes.Interface) error
-}
-
-func NewController(queue workqueue.RateLimitingInterface, indexer cache.Indexer, informer cache.Controller, clientset kubernetes.Interface) *Controller {
-	return &Controller{
-		informer:  informer,
-		indexer:   indexer,
-		queue:     queue,
-		clientSet: clientset,
-	}
+	Handle(context Context) error
 }
 
 func (c *Controller) processNextItem() bool {
@@ -44,7 +41,7 @@ func (c *Controller) processNextItem() bool {
 	}
 	defer c.queue.Done(handler)
 	// Invoke the method containing the business logic
-	err := handler.(ResourceHandler).Handle(c.clientSet)
+	err := handler.(ResourceHandler).Handle(c.context)
 	// Handle the error if something went wrong during the execution of the business logic
 	c.handleErr(err, handler)
 	return true
@@ -67,7 +64,7 @@ func (c *Controller) handleErr(err error, key interface{}) {
 	c.queue.Forget(key)
 	// Report to an external entity that, even after several retries, we could not successfully process this key
 	runtime.HandleError(err)
-	klog.Infof("Dropping pod %q out of the queue: %v", key, err)
+	klog.Infof("Dropping configmap %q out of the queue: %v", key, err)
 }
 
 func (c *Controller) Run(threadiness int, stopCh chan struct{}) {
@@ -98,10 +95,8 @@ func (c *Controller) runWorker() {
 	}
 }
 
-// ConfigMapController for monitoring the configmaps
-func ConfigMapController(clientset kubernetes.Interface) *Controller {
-
-	configMapListWatcher := cache.NewListWatchFromClient(clientset.CoreV1().RESTClient(), "configmaps", v1.NamespaceDefault, fields.Everything())
+func ConfigMapController(context Context) *Controller {
+	configMapListWatcher := cache.NewListWatchFromClient(context.ClientSet.CoreV1().RESTClient(), "configmaps", context.Namespace, fields.Everything())
 	queue := workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
 	indexer, informer := cache.NewIndexerInformer(configMapListWatcher, &v1.ConfigMap{}, 0, cache.ResourceEventHandlerFuncs{
 		AddFunc: func(obj interface{}) {
@@ -111,7 +106,7 @@ func ConfigMapController(clientset kubernetes.Interface) *Controller {
 		},
 		UpdateFunc: func(old interface{}, new interface{}) {
 			queue.Add(&ResourceUpdatedHandler{
-				ConfigMap: new.(*v1.ConfigMap),
+				ConfigMap:    new.(*v1.ConfigMap),
 				OldConfigMap: old.(*v1.ConfigMap),
 			})
 		},
@@ -119,9 +114,13 @@ func ConfigMapController(clientset kubernetes.Interface) *Controller {
 			queue.Add(&ResourceDeleteHandler{
 				ConfigMap: obj.(*v1.ConfigMap),
 			})
-			// Currently we do nothing when a new configMap is deleted
-			klog.Infof("Deleted configMap %s", obj.(*v1.ConfigMap).GetName())
 		},
 	}, cache.Indexers{})
-	return NewController(queue, indexer, informer, clientset)
+
+	return &Controller{
+		informer: informer,
+		indexer:  indexer,
+		queue:    queue,
+		context:  context,
+	}
 }

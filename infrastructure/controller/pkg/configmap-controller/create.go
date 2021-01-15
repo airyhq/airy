@@ -1,40 +1,42 @@
-package configmapController
+package cmcontroller
 
 import (
 	"github.com/airyhq/airy/infrastructure/lib/go/k8s/handler"
 	"github.com/airyhq/airy/infrastructure/lib/go/k8s/util"
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/client-go/kubernetes"
 	"k8s.io/klog"
 )
 
-// ResourceCreatedHandler contains new objects
 type ResourceCreatedHandler struct {
 	ConfigMap   *v1.ConfigMap
 }
 
-// Handle processes the newly created resource
-func (r ResourceCreatedHandler) Handle(clientSet kubernetes.Interface) error {
+func (r ResourceCreatedHandler) Handle(ctx Context) error {
 	klog.Infof("Added configMap: %s , sha: %s", r.ConfigMap.GetName(), util.GetSHAfromConfigmap(r.ConfigMap))
-	affectedDeployments, errGetDeployments := handler.GetAffectedDeploymentsConfigmap(clientSet,
-		r.ConfigMap.Name, "default", "")
+	deployments, errGetDeployments := handler.GetDeploymentsReferencingCm(ctx.ClientSet,
+		r.ConfigMap.Name, ctx.Namespace, ctx.LabelSelector)
 	if errGetDeployments != nil {
 		klog.Errorf("Error retrieving affected deployments %v", errGetDeployments)
 		return errGetDeployments
 	}
 
-	for _, affectedDeployment := range affectedDeployments {
-		klog.Infof("Scheduling start for deployment: %s", affectedDeployment)
+	for _, deployment := range deployments {
+		if !handler.CanBeStarted(deployment, ctx.ClientSet) {
+			klog.Infof("Skipping deployment %s because it is missing config maps", deployment.Name)
+			continue
+		}
+
+		klog.Infof("Scheduling start for deployment: %s", deployment.Name)
 		if err := handler.ScaleDeployment(handler.ScaleCommand{
-			ClientSet: clientSet,
-			Namespace: "default",
-			DeploymentName: affectedDeployment,
+			ClientSet:       ctx.ClientSet,
+			Namespace:       ctx.Namespace,
+			DeploymentName:  deployment.Name,
 			DesiredReplicas: 1, //TODO extract from annotation
 		}); err != nil {
 			klog.Errorf("Starting deployment failed: %v", err)
 			return err
 		}
-		klog.Infof("Started deployment: %s", affectedDeployment)
+		klog.Infof("Started deployment: %s", deployment.Name)
 	}
 	return nil
 }

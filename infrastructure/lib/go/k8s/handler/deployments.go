@@ -2,21 +2,22 @@ package handler
 
 import (
 	"context"
+	apps_v1 "k8s.io/api/apps/v1"
 
 	"github.com/airyhq/airy/infrastructure/lib/go/k8s/util"
 
 	v1 "k8s.io/api/core/v1"
-	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/util/retry"
 	"k8s.io/klog"
 )
 
-func GetAffectedDeploymentsConfigmap(clientset kubernetes.Interface, configmapName string, namespace string, labelSelector string) ([]string, error) {
-	deploymentsClient := clientset.AppsV1().Deployments(namespace)
-	var affectedDeployments []string
+func GetDeploymentsReferencingCm(clientSet kubernetes.Interface, configMapName string, namespace string, labelSelector string) ([]apps_v1.Deployment, error) {
+	deploymentsClient := clientSet.AppsV1().Deployments(namespace)
+	var deployments []apps_v1.Deployment
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
-		result, getErr := deploymentsClient.List(context.TODO(), meta_v1.ListOptions{LabelSelector: labelSelector})
+		result, getErr := deploymentsClient.List(context.TODO(), metav1.ListOptions{LabelSelector: labelSelector})
 		if getErr != nil {
 			klog.Errorf("Failed to get latest version of the Deployments: %v", getErr)
 			return getErr
@@ -27,64 +28,59 @@ func GetAffectedDeploymentsConfigmap(clientset kubernetes.Interface, configmapNa
 			initContainers := GetDeploymentInitContainers(deploymentItem)
 
 			// Check the containers which have an EnvReference
-			container = getContainerWithEnvReference(containers, configmapName, "CONFIGMAP")
+			container = getContainerWithEnvReference(containers, configMapName, ConfigmapEnvVarPostfix)
 			if container != nil {
 				klog.Infof("Found affected container in deployment: %s", deploymentItem.Name)
-				affectedDeployments = append(affectedDeployments, deploymentItem.Name)
+				deployments = append(deployments, deploymentItem)
 			} else {
-				container = getContainerWithEnvReference(initContainers, configmapName, "CONFIGMAP")
+				container = getContainerWithEnvReference(initContainers, configMapName, ConfigmapEnvVarPostfix)
 				if container != nil {
 					klog.Infof("Found affected initContainer in deployment: %s", deploymentItem.Name)
-					affectedDeployments = append(affectedDeployments, deploymentItem.Name)
+					deployments = append(deployments, deploymentItem)
 				}
 			}
 
 			// Check the containers which have a VolumeMount
 			volumes := GetDeploymentVolumes(deploymentItem)
-			volumeMountName := getVolumeMountName(volumes, "CONFIGMAP", configmapName)
+			volumeMountName := getVolumeMountName(volumes, ConfigmapEnvVarPostfix, configMapName)
 			if volumeMountName != "" {
 				container = getContainerWithVolumeMount(containers, volumeMountName)
 				if container == nil && len(initContainers) > 0 {
 					container = getContainerWithVolumeMount(initContainers, volumeMountName)
 					if container != nil {
 						// if configmap/secret is being used in init container then return the first Pod container to save reloader env
-						affectedDeployments = append(affectedDeployments, deploymentItem.Name)
+						deployments = append(deployments, deploymentItem)
 					}
 				} else if container != nil {
-					affectedDeployments = append(affectedDeployments, deploymentItem.Name)
+					deployments = append(deployments, deploymentItem)
 				}
 			}
 		}
 
 		return nil
 	})
-	return affectedDeployments, retryErr
+	return deployments, retryErr
 }
 
-func ReloadDeployment(clientSet kubernetes.Interface, namespace string, deploymentName string) error {
-	deploymentsClient := clientSet.AppsV1().Deployments(namespace)
-	deployment, err := deploymentsClient.Get(context.TODO(), deploymentName, meta_v1.GetOptions{})
-	if err != nil {
-		return err
-	}
+// Won't do anything for replicas that are scaled down
+func ReloadDeployment(deployment apps_v1.Deployment, clientSet kubernetes.Interface) error {
+	deploymentsClient := clientSet.AppsV1().Deployments(deployment.Namespace)
 
 	currentReplicas := deployment.Spec.Replicas
-
-	// If replica is scaled down, don't do anything
 	if *currentReplicas == 0 {
 		return nil
 	}
 
 	return retry.RetryOnConflict(retry.DefaultRetry, func() error {
-		deployment, err = deploymentsClient.Get(context.TODO(), deploymentName, meta_v1.GetOptions{})
+		deployment, err := deploymentsClient.Get(context.TODO(), deployment.Name, metav1.GetOptions{})
 		if err != nil {
 			klog.Errorf("Failed to get latest version of Deployment: %v", err)
 			return err
 		}
 		deployment.Spec.Replicas = util.Int32Ptr(0) // reduce replica count
-		_, updateErr := deploymentsClient.Update(context.TODO(), deployment, meta_v1.UpdateOptions{})
+		_, updateErr := deploymentsClient.Update(context.TODO(), deployment, metav1.UpdateOptions{})
 		deployment.Spec.Replicas = currentReplicas // increase replica count
-		_, updateErr = deploymentsClient.Update(context.TODO(), deployment, meta_v1.UpdateOptions{})
+		_, updateErr = deploymentsClient.Update(context.TODO(), deployment, metav1.UpdateOptions{})
 		return updateErr
 	})
 }
@@ -99,9 +95,9 @@ type ScaleCommand struct {
 func ScaleDeployment(command ScaleCommand) error {
 	deploymentsClient := command.ClientSet.AppsV1().Deployments(command.Namespace)
 	return retry.RetryOnConflict(retry.DefaultRetry, func() error {
-		deployment, err := deploymentsClient.Get(context.TODO(), command.DeploymentName, meta_v1.GetOptions{})
+		deployment, err := deploymentsClient.Get(context.TODO(), command.DeploymentName, metav1.GetOptions{})
 		if err != nil {
-			klog.Errorf("Failed to get latest version of Deployment: %v", err)
+			klog.Errorf("failed to get latest version of Deployment: %v", err)
 			return err
 		}
 
@@ -110,7 +106,29 @@ func ScaleDeployment(command ScaleCommand) error {
 		}
 
 		deployment.Spec.Replicas = util.Int32Ptr(command.DesiredReplicas)
-		_, updateErr := deploymentsClient.Update(context.TODO(), deployment, meta_v1.UpdateOptions{})
+		_, updateErr := deploymentsClient.Update(context.TODO(), deployment, metav1.UpdateOptions{})
 		return updateErr
 	})
 }
+
+func CanBeStarted(deployment apps_v1.Deployment, clientSet kubernetes.Interface) bool {
+	containers := GetDeploymentContainers(deployment)
+
+	// Check that all referenced configMaps are present
+	checkedConfigMaps := make(map[string]bool)
+	for _, container := range containers {
+		configMaps := GetReferencedConfigMaps(container)
+
+		for _, configMapName := range configMaps {
+			if !checkedConfigMaps[configMapName] {
+				if !ConfigMapExists(configMapName, clientSet, deployment.Namespace) {
+					return false
+				}
+				checkedConfigMaps[configMapName] = true
+			}
+		}
+	}
+
+	return true
+}
+

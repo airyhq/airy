@@ -13,3 +13,7 @@ template: |
   ## Changes
 
   $CHANGES
+
+  ## Airy CLI
+
+  s3://airy-core-binaries/$RESOLVED_VERSION/darwin/airy

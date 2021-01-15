@@ -29,7 +29,7 @@ func (r ResourceCreatedHandler) Handle(clientSet kubernetes.Interface) error {
 			ClientSet: clientSet,
 			Namespace: "default",
 			DeploymentName: affectedDeployment,
-			DesiredReplicas: 1,
+			DesiredReplicas: 1, //TODO extract from annotation
 		}); err != nil {
 			klog.Errorf("Starting deployment failed: %v", err)
 			return err

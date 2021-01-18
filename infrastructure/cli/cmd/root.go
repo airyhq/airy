@@ -14,7 +14,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-const configFileName = ".airycli.yaml"
+const configFileName = "cli.yaml"
+const configDirName = ".airy"
 
 var configFile string
 var Version string
@@ -55,7 +56,17 @@ var initCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		err = viper.WriteConfigAs(path.Join(home, configFileName))
+		configDirPath := path.Join(home, configDirName)
+
+		if _, errConfigDir := os.Stat(configDirPath); os.IsNotExist(errConfigDir) {
+			errDir := os.MkdirAll(configDirPath, 0700)
+			if errDir != nil {
+				fmt.Println(errDir)
+				os.Exit(1)
+			}
+		}
+
+		err = viper.WriteConfigAs(path.Join(home, configDirName, configFileName))
 		if err != nil {
 			fmt.Println("cannot write config: ", err)
 		}
@@ -82,7 +93,7 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		viper.AddConfigPath(home)
+		viper.AddConfigPath(path.Join(home, configDirName))
 		viper.SetConfigType("yaml")
 		viper.SetConfigName(configFileName)
 	}
@@ -105,7 +116,7 @@ func init() {
 	viper.BindPFlag("apihost", rootCmd.PersistentFlags().Lookup("apihost"))
 	viper.SetDefault("apihost", "http://api.airy")
 
-	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.airycli.yaml)")
+	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.airy/cli.yaml)")
 	rootCmd.AddCommand(auth.AuthCmd)
 	rootCmd.AddCommand(config.ConfigCmd)
 	rootCmd.AddCommand(ui.UICmd)

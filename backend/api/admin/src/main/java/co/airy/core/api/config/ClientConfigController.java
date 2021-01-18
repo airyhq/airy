@@ -30,9 +30,12 @@ public class ClientConfigController {
         List<Map<String, Map<String, String>>> components = new ArrayList<>();
 
         for (String service : serviceDiscovery.getServices()) {
-            ResponseEntity<Object> response = restTemplate.exchange(String.format("http://%s.%s/actuator/health", service, namespace), HttpMethod.GET, null, Object.class);
-
-            components.add(Map.of(service.replace("-connector", ""), Map.of("enabled", Boolean.toString(response.getStatusCode().is2xxSuccessful()))));
+            try {
+                ResponseEntity<Object> response = restTemplate.exchange(String.format("http://%s.%s/actuator/health", service, namespace), HttpMethod.GET, null, Object.class);
+                components.add(Map.of(service.replace("-connector", ""), Map.of("enabled", Boolean.toString(response.getStatusCode().is2xxSuccessful()))));
+            } catch (Exception e) {
+                components.add(Map.of(service.replace("-connector", ""), Map.of("enabled", Boolean.toString(false))));
+            }
         }
 
         return ResponseEntity.ok(ClientConfigResponsePayload.builder()

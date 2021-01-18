@@ -17,6 +17,15 @@ go_binary(
 )
 
 go_binary(
+    name = "airy_linux",
+    out = "airy_linux",
+    embed = [":cli_lib"],
+    goarch = "amd64",
+    goos = "linux",
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
     name = "airy_darwin",
     out = "airy_darwin",
     embed = [":cli_lib"],
@@ -34,15 +43,6 @@ go_binary(
     visibility = ["//visibility:public"],
 )
 
-go_binary(
-    name = "airy_linux",
-    out = "airy_linux",
-    embed = [":cli_lib"],
-    goarch = "amd64",
-    goos = "linux",
-    visibility = ["//visibility:public"],
-)
-
 go_test(
     name = "cli_test",
     srcs = ["main_test.go"],
@@ -52,4 +52,25 @@ go_test(
     ],
     embed = [":cli_lib"],
     deps = ["//infrastructure/cli/pkg/tests"],
+)
+
+genrule(
+    name = "airy_linux_bin",
+    srcs = [":airy_linux"],
+    outs = ["airy_linux_bin"],
+    cmd = "cp $(SRCS) $@",
+)
+
+genrule(
+    name = "airy_darwin_bin",
+    srcs = [":airy_darwin"],
+    outs = ["airy_darwin_bin"],
+    cmd = "cp $(SRCS) $@",
+)
+
+genrule(
+    name = "airy_windows_bin",
+    srcs = [":airy_windows"],
+    outs = ["airy_windows_bin"],
+    cmd = "cp $(SRCS) $@",
 )

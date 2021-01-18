@@ -16,4 +16,6 @@ template: |
 
   ## Airy CLI
 
-  s3://airy-core-binaries/$RESOLVED_VERSION/darwin/airy
+  [MacOs](s3://airy-core-binaries/$RESOLVED_VERSION/darwin/airy)
+  [Linux](s3://airy-core-binaries/$RESOLVED_VERSION/linux/airy)
+  [Windows](s3://airy-core-binaries/$RESOLVED_VERSION/windows/airy)

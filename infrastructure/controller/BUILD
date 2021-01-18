@@ -10,6 +10,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//infrastructure/controller/pkg/configmap-controller",
+        "@io_k8s_api//core/v1:core",
         "@io_k8s_client_go//kubernetes",
         "@io_k8s_client_go//tools/clientcmd",
         "@io_k8s_klog//:klog",

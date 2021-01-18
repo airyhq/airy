@@ -25,6 +25,9 @@ spec:
       - name: app
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: frontend-config
         livenessProbe:
           httpGet:
             path: /health

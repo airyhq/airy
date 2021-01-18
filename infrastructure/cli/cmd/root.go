@@ -14,7 +14,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-const configFileName = ".airycli"
+const configFileName = ".airycli.yaml"
 
 var configFile string
 var Version string
@@ -55,11 +55,10 @@ var initCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		//TODO let users choose a different name
-		viper.AddConfigPath(home)
-		viper.SetConfigName(configFileName)
-
-		viper.WriteConfigAs(path.Join(home, configFileName))
+		err = viper.WriteConfigAs(path.Join(home, configFileName))
+		if err != nil {
+			fmt.Println("cannot write config: ", err)
+		}
 	},
 }
 
@@ -84,10 +83,9 @@ func initConfig() {
 		}
 
 		viper.AddConfigPath(home)
+		viper.SetConfigType("yaml")
 		viper.SetConfigName(configFileName)
 	}
-
-	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {

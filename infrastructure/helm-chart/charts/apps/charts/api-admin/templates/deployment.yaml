@@ -26,6 +26,10 @@ spec:
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         - name: KAFKA_BROKERS
           valueFrom:
             configMapKeyRef:

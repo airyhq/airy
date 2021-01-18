@@ -24,6 +24,8 @@ import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Suppressed;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,7 @@ import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
 
 @Service
-public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean, HealthIndicator {
     private static final String appId = "sources.facebook.ConnectorStores";
 
     private final KafkaStreamsWrapper streams;
@@ -137,6 +139,12 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         if (streams != null) {
             streams.close();
         }
+    }
+
+    @Override
+    public Health health() {
+        getChannelsStore();
+        return Health.up().build();
     }
 
     // visible for testing

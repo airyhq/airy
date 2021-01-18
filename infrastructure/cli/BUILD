@@ -16,32 +16,23 @@ go_binary(
     visibility = ["//visibility:public"],
 )
 
-go_binary(
-    name = "airy_linux",
-    out = "airy_linux",
-    embed = [":cli_lib"],
-    goarch = "amd64",
-    goos = "linux",
-    visibility = ["//visibility:public"],
-)
+os_list = [
+    "linux",
+    "darwin",
+    "windows",
+]
 
-go_binary(
-    name = "airy_darwin",
-    out = "airy_darwin",
-    embed = [":cli_lib"],
-    goarch = "amd64",
-    goos = "darwin",
-    visibility = ["//visibility:public"],
-)
-
-go_binary(
-    name = "airy_windows",
-    out = "airy_windows",
-    embed = [":cli_lib"],
-    goarch = "amd64",
-    goos = "windows",
-    visibility = ["//visibility:public"],
-)
+[
+    go_binary(
+        name = "airy_" + os,
+        out = "airy_" + os,
+        embed = [":cli_lib"],
+        goarch = "amd64",
+        goos = os,
+        visibility = ["//visibility:public"],
+    )
+    for os in os_list
+]
 
 go_test(
     name = "cli_test",
@@ -54,23 +45,12 @@ go_test(
     deps = ["//infrastructure/cli/pkg/tests"],
 )
 
-genrule(
-    name = "airy_linux_bin",
-    srcs = [":airy_linux"],
-    outs = ["airy_linux_bin"],
-    cmd = "cp $(SRCS) $@",
-)
-
-genrule(
-    name = "airy_darwin_bin",
-    srcs = [":airy_darwin"],
-    outs = ["airy_darwin_bin"],
-    cmd = "cp $(SRCS) $@",
-)
-
-genrule(
-    name = "airy_windows_bin",
-    srcs = [":airy_windows"],
-    outs = ["airy_windows_bin"],
-    cmd = "cp $(SRCS) $@",
-)
+[
+    genrule(
+        name = "airy_" + os + "_bin_rule",
+        srcs = [":airy_" + os],
+        outs = ["airy_" + os + "_bin"],
+        cmd = "cp $(SRCS) $@",
+    )
+    for os in os_list
+]

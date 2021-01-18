@@ -16,6 +16,8 @@ template: |
 
   ## Airy CLI
 
-  [MacOs](s3://airy-core-binaries/$RESOLVED_VERSION/darwin/airy)
-  [Linux](s3://airy-core-binaries/$RESOLVED_VERSION/linux/airy)
-  [Windows](s3://airy-core-binaries/$RESOLVED_VERSION/windows/airy)
+  You can download the Airy CLI for your operating system from the following links:
+
+  [MacOS](https://airy-core-binaries.s3.amazonaws.com/$RESOLVED_VERSION/darwin/amd64/airy)
+  [Linux](https://airy-core-binaries.s3.amazonaws.com/$RESOLVED_VERSION/linux/amd64/airy)
+  [Windows](https://airy-core-binaries.s3.amazonaws.com/$RESOLVED_VERSION/windows/amd64/airy.exe)

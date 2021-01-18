@@ -16,6 +16,24 @@ go_binary(
     visibility = ["//visibility:public"],
 )
 
+os_list = [
+    "linux",
+    "darwin",
+    "windows",
+]
+
+[
+    go_binary(
+        name = "airy_" + os,
+        out = "airy_" + os,
+        embed = [":cli_lib"],
+        goarch = "amd64",
+        goos = os,
+        visibility = ["//visibility:public"],
+    )
+    for os in os_list
+]
+
 go_test(
     name = "cli_test",
     srcs = ["main_test.go"],
@@ -26,3 +44,13 @@ go_test(
     embed = [":cli_lib"],
     deps = ["//infrastructure/cli/pkg/tests"],
 )
+
+[
+    genrule(
+        name = "airy_" + os + "_bin_rule",
+        srcs = [":airy_" + os],
+        outs = ["airy_" + os + "_bin"],
+        cmd = "cp $(SRCS) $@",
+    )
+    for os in os_list
+]

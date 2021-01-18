@@ -78,6 +78,13 @@ spec:
                 name: api-communication
                 port:
                   number: 80
+          - path: /client.config
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
           - path: /channels.list
             pathType: Prefix
             backend:

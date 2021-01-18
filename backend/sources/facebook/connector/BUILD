@@ -4,6 +4,7 @@ load("//tools/build:container_push.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
+    "//:springboot_actuator",
     "//backend/model/channel",
     "//backend/model/message",
     "//backend/model/metadata",

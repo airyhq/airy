@@ -14,7 +14,8 @@ wait-for-ingress-service
 wait-for-running-pod startup-helper
 wait-for-service startup-helper api-auth 80 10 api-auth
 
-CORE_ID=`kubectl get configmap core-config -o jsonpath='{.data.CORE_ID}'`
+CORE_ID=$(kubectl get configmap core-config -o jsonpath='{.data.CORE_ID}')
+API_HOSTNAME=$(kubectl get ingress airy-core -o jsonpath='{.spec.rules[0].host}')
 FACEBOOK_WEBHOOK_PUBLIC_URL="https://fb-${CORE_ID}.tunnel.airy.co"
 GOOGLE_WEBHOOK_PUBLIC_URL="https://gl-${CORE_ID}.tunnel.airy.co"
 TWILIO_WEBHOOK_PUBLIC_URL="https://tw-${CORE_ID}.tunnel.airy.co"
@@ -30,9 +31,9 @@ echo "Your public url for the Twilio Webhook is:"
 echo ${TWILIO_WEBHOOK_PUBLIC_URL}/twilio
 echo
 echo "You can access the API of the Airy Core Platform at:"
-echo "http://api.airy/"
+echo "http://${API_HOSTNAME}"
 echo
 echo "Example:"
-echo "curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}' http://api.airy/users.signup"
+echo "curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}' http://${API_HOSTNAME}/users.signup"
 
 kubectl delete pod startup-helper --force 2>/dev/null

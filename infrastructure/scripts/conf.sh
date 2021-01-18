@@ -10,8 +10,6 @@ if [[ ! -f ${INFRASTRUCTURE_PATH}/airy.yaml ]]; then
     exit 0
 fi
 
-source /vagrant/scripts/lib/k8s.sh
-
 source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
 
 

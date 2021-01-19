@@ -13,7 +13,11 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.mapping.model.SourceTemplate;
 import co.airy.spring.core.AirySpringBootApplication;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -125,6 +129,9 @@ class SendMessageTest {
 
         TimeUnit.SECONDS.sleep(5);
 
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final JsonNode attachmentPayload = objectMapper.readTree("{\"a\":\"template payload\"}");
+
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                 Message.newBuilder()
                         .setId(messageId)
@@ -135,14 +142,14 @@ class SendMessageTest {
                         .setConversationId(conversationId)
                         .setChannelId(channelId)
                         .setSource("facebook")
-                        .setContent("{\"text\":\"" + text + "\"}")
+                        .setContent(objectMapper.writeValueAsString(new SourceTemplate(attachmentPayload)))
                         .build())
         );
 
         retryOnException(() -> {
             final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
             assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));
-            assertThat(sendMessagePayload.getMessage().getText(), equalTo(text));
+            assertThat(sendMessagePayload.getMessage().getAttachment().getPayload(), equalTo(attachmentPayload));
 
             assertThat(tokenCaptor.getValue(), equalTo(token));
         }, "Facebook API was not called");

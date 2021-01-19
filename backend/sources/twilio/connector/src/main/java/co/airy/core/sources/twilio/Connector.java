@@ -40,14 +40,14 @@ public class Connector {
                     .stream()
                     .filter(c -> c instanceof Text)
                     .findFirst()
-                    .orElse(null);
+                    .orElseThrow(() -> new Exception("twilio only supports text messages"));
 
             api.sendMessage(from, to, text.getText());
 
             updateDeliveryState(message, DeliveryState.DELIVERED);
             return message;
         } catch (ApiException e) {
-            log.error(String.format("Failed to send a message to Twilio \n SendMessageRequest: %s \n Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
+            log.error(String.format("Twilio Api Exception for SendMessageRequest:\n%s", sendMessageRequest), e);
         } catch (Exception e) {
             log.error(String.format("Failed to send a message to Twilio \n SendMessageRequest: %s", sendMessageRequest), e);
         }

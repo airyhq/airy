@@ -60,8 +60,7 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
 
     public Api(ObjectMapper objectMapper, RestTemplateBuilder restTemplateBuilder,
                @Value("${facebook.app-id}") String appId,
-               @Value("${facebook.app-secret}") String apiSecret
-               ) {
+               @Value("${facebook.app-secret}") String apiSecret) {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         this.objectMapper = objectMapper;
         this.restTemplateBuilder = restTemplateBuilder;
@@ -71,7 +70,6 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
 
     public void sendMessage(final String pageToken, SendMessagePayload sendMessagePayload) {
         String fbReqUrl = String.format(requestTemplate, pageToken);
-
         restTemplate.postForEntity(fbReqUrl, new HttpEntity<>(sendMessagePayload, httpHeaders), FbSendMessageResponse.class);
     }
 
@@ -94,7 +92,6 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
 
     private <T> T apiResponse(String url, HttpMethod method, Class<T> clazz) throws Exception {
         ResponseEntity<String> responseEntity = restTemplate.exchange(url, method, null, String.class);
-
         return objectMapper.readValue(responseEntity.getBody(), clazz);
     }
 

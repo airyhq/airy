@@ -1,3 +1,5 @@
+import {Text} from 'types';
+
 declare const window: {
   airy: {
     h: string;
@@ -9,10 +11,12 @@ declare const window: {
 const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
 const TLS_PREFIX = window.airy ? (window.airy.no_tls === true ? '' : 's') : '';
 
-export const sendMessage = (message: string, token: string) => {
+export const sendMessage = (message: Text, token: string) => {
   return fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.send`, {
     method: 'POST',
-    body: message,
+    body: JSON.stringify({
+      message,
+    }),
     headers: {
       'Content-Type': 'application/json',
       Authorization: token,

@@ -40,9 +40,9 @@ public class Connector {
             updateDeliveryState(message, DeliveryState.DELIVERED);
             return message;
         } catch (ApiException e) {
-            log.error(String.format("Failed to send a message to Google \n SendMessageRequest: %s \n Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
+            log.error(String.format("Google Api Exception for SendMessageRequest:\n%s", sendMessageRequest), e);
         } catch (Exception e) {
-            log.error(String.format("Failed to send a message to Google \n SendMessageRequest: %s", sendMessageRequest), e);
+            log.error(String.format("Failed to send a message to Google \nSendMessageRequest: %s", sendMessageRequest), e);
         }
 
         updateDeliveryState(message, DeliveryState.FAILED);

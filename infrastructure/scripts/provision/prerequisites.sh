@@ -2,7 +2,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-apk add --no-cache wget unzip jq bash-completion
+echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+apk update
+apk add --no-cache wget unzip jq yq bash-completion
 
 curl -sfL https://get.k3s.io | sh -
 

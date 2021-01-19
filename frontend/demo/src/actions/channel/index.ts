@@ -6,8 +6,8 @@ import {
   ConnectChannelRequestPayload,
   ExploreChannelRequestPayload,
   DisconnectChannelRequestPayload,
-  HttpClient,
 } from 'httpclient';
+import {HttpClientInstance} from '../../InitializeAiryApi';
 
 const SET_CURRENT_CHANNELS = '@@channel/SET_CHANNELS';
 const ADD_CHANNELS = '@@channel/ADD_CHANNELS';
@@ -20,7 +20,7 @@ export const addChannelsAction = createAction(ADD_CHANNELS, resolve => (channels
 
 export function listChannels() {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClient.listChannels()
+    return HttpClientInstance.listChannels()
       .then((response: Channel[]) => {
         dispatch(setCurrentChannelsAction(response));
         return Promise.resolve(response);
@@ -33,7 +33,7 @@ export function listChannels() {
 
 export function exploreChannels(requestPayload: ExploreChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClient.exploreChannels(requestPayload)
+    return HttpClientInstance.exploreChannels(requestPayload)
       .then((response: Channel[]) => {
         dispatch(addChannelsAction(response));
         return Promise.resolve(response);
@@ -46,7 +46,7 @@ export function exploreChannels(requestPayload: ExploreChannelRequestPayload) {
 
 export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClient.connectChannel(requestPayload)
+    return HttpClientInstance.connectChannel(requestPayload)
       .then((response: Channel) => {
         dispatch(addChannelsAction([response]));
         return Promise.resolve(response);
@@ -59,7 +59,7 @@ export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
 
 export function disconnectChannel(requestPayload: DisconnectChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClient.disconnectChannel(requestPayload)
+    return HttpClientInstance.disconnectChannel(requestPayload)
       .then((response: Channel[]) => {
         dispatch(setCurrentChannelsAction(response));
         return Promise.resolve(response);

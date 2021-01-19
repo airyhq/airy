@@ -19,19 +19,19 @@ const Sidebar = (props: RouteProps) => {
       <div className={styles.linkSection}>
         <div className={styles.align}>
           <Link to={INBOX_ROUTE} className={`${styles.link} ${isActive(INBOX_ROUTE) ? styles.active : ''}`}>
-            <InboxIcon />
+            <InboxIcon width={'24px'} height={'24px'} />
             <span className={styles.iconText}>Inbox</span>
           </Link>
         </div>
         <div className={styles.align}>
           <Link to={CHANNELS_ROUTE} className={`${styles.link} ${isActive(CHANNELS_ROUTE) ? styles.active : ''}`}>
-            <PlugIcon />
+            <PlugIcon width={'24px'} height={'24px'} />
             <span className={styles.iconText}>Channels</span>
           </Link>
         </div>
         <div className={styles.align}>
           <Link to={TAGS_ROUTE} className={`${styles.link} ${isActive(TAGS_ROUTE) ? styles.active : ''}`}>
-            <TagIcon />
+            <TagIcon width={'24px'} height={'24px'} />
             <span className={styles.iconText}>Tags</span>
           </Link>
         </div>

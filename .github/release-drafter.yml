@@ -13,3 +13,11 @@ template: |
   ## Changes
 
   $CHANGES
+
+  ## Airy CLI
+
+  You can download the Airy CLI for your operating system from the following links:
+
+  [MacOS](https://airy-core-binaries.s3.amazonaws.com/$RESOLVED_VERSION/darwin/amd64/airy)
+  [Linux](https://airy-core-binaries.s3.amazonaws.com/$RESOLVED_VERSION/linux/amd64/airy)
+  [Windows](https://airy-core-binaries.s3.amazonaws.com/$RESOLVED_VERSION/windows/amd64/airy.exe)

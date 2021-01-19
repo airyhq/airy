@@ -149,38 +149,54 @@ Kafka cluster, PostgreSQL and Redis can be done by creating a configuration
 file, prior to deploying the apps. Make sure that the `Airy apps` also have
 network connectivity to the required services.
 
-The file `infrastructure/airy.conf.all` contains an example of all possible
-configuration parameters. This file should be copied to `airy.conf` and edited
+The file `infrastructure/airy.tpl.yaml` contains an example of all possible
+configuration parameters. This file should be copied to `airy.yaml` and edited
 according to your environment:
 
 ```sh
 cd infrastructure
-cp airy.conf.all airy.conf
+cp airy.tpl.yaml airy.yaml
 ```
 
-Edit the file to configure connections to the base services. Make sure that the
-following sections are configured correctly, so that the `Airy apps` to start
-properly:
+Edit the file to configure connections to the base services. Make sure to configure the
+following sections correctly, so that the `Airy apps` start properly:
 
-```
+```yaml
 apps:
-  kafka:
-    ...
-  redis:
-    ...
-  postgresql:
-    ...
+  kafka: ...
+  redis: ...
+  postgresql: ...
 ```
 
-We recommend to create a new database if you are reusing a PostgreSQL server to avoid name collisions.
+We recommend that you create a new database if you are reusing a PostgreSQL server to avoid name collisions.
+
+## Source media storage
+
+Most message sources allow users to send rich data such as images, videos and audio files. For some sources
+the Urls that host this data expire which is why after some time you may find that conversations have inaccessible
+content.
+
+The Airy Core Platform allows you to persist this data to a storage of your choice. To take advantage of this
+you must provide access credentials to your storage. The platform currently supports [s3](https://aws.amazon.com/s3/):
+
+```yaml
+apps:
+  storage:
+    s3:
+      key: <your aws iam access key id>
+      secret: <your aws iam access key secret>
+      bucket: <the target bucket>
+      region: <the bucket's aws region>
+      path: <(optional) defaults to the bucket root>
+```
 
 ### Deployment
 
 We provided a Helm chart to deploy the `Airy apps`. Before you can run helm, you
-must configure the system via the `airy.conf` file, then you can proceed:
+must configure the system via the `airy.yaml` file, then you can proceed:
 
 ```sh
-cp airy.conf ./helm-chart/charts/apps/values.yaml
+cp airy.yaml ./helm-chart/charts/apps/values.yaml
 helm install core ./helm-chart/charts/apps/ --timeout 1000s
 ```
 
@@ -198,19 +214,11 @@ kubectl scale deployment -l type=sources-twilio --replicas=1
 
 At this point you should have a running `Airy Core Platform` in your environment 🎉.
 
-To deploy with a different `image tag` (for example `beta` from the `develop`
-branch), you can run:
-
-```sh
-export AIRY_VERSION=beta
-helm install core ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
-```
-
 If afterwards you need to modify or add other config parameters in the
-`airy.conf` file, after editing the file run:
+`airy.yaml` file, after editing the file run:
 
 ```sh
-cp airy.conf ./helm-chart/charts/apps/values.yaml
+cp airy.yaml ./helm-chart/charts/apps/values.yaml
 helm upgrade core ./helm-chart/charts/apps/ --timeout 1000s
 ```
 
@@ -218,8 +226,8 @@ If you deploy the Airy Core Platform with a specific version tag, you must
 export the `AIRY_VERSION` variable before running `helm upgrade`:
 
 ```sh
-cp airy.conf ./helm-chart/charts/apps/values.yaml
-export AIRY_VERSION=beta
+cp airy.yaml ./helm-chart/charts/apps/values.yaml
+export AIRY_VERSION=develop
 helm upgrade core ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
 ```
 
@@ -260,21 +268,20 @@ Ingress resources. You can choose an [Kubernetes ingress
 controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 in accordance to your needs or preferences. If you are using the
 [Traefik](https://traefik.io/) ingress controller, you can edit the
-`infrastructure/network/ingress.yaml` file to modify the `host` records and
-directly apply it to your Kubernetes cluster.
+`infrastructure/helm-chart/charts/ingress/templates/ingress.yaml` file to modify the `host` records and apply the ingress helm chart, which is already included in the repository:
 
 ```sh
-kubectl apply -f infrastructure/network/ingress.yaml
+helm install ingress infrastructure/helm-chart/charts/ingress/
 ```
 
-You must set different `host` attributes for the following:
+You must set appropriate `host` attributes in the rules for:
 
 - API endpoints (defaults to `api.airy`)
 - Demo (defaults to `demo.airy`)
 - Chat plugin (defaults to `chatplugin.airy`)
 
 If you are not using Traefik, you can use the
-`infrastructure/network/ingress.yaml` file as a guide to create your own
+`infrastructure/helm-chart/charts/ingress/templates/ingress.yaml` file as a guide to create your own
 Kubernetes manifest for your preferred ingress controller.
 
 If your Kubernetes cluster is not directly reachable on the Internet, you will

@@ -1,5 +1,4 @@
-# gazelle:prefix controller
-# gazelle:prefix k8s.io/kubernetes
+# gazelle:prefix github.com/airyhq/airy/infrastructure/controller
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 load("//tools/build:container_push.bzl", "container_push")
@@ -11,8 +10,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//infrastructure/controller/pkg/configmap-controller",
-        "//infrastructure/lib/go/k8s/handler",
-        "//infrastructure/lib/go/k8s/util",
+        "@io_k8s_api//core/v1:core",
         "@io_k8s_client_go//kubernetes",
         "@io_k8s_client_go//tools/clientcmd",
         "@io_k8s_klog//:klog",

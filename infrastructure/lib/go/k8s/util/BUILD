@@ -1,5 +1,4 @@
-# gazelle:prefix util
-# gazelle:prefix k8s.io/kubernetes
+# gazelle:prefix github.com/airyhq/airy/infrastructure/lib/go/k8s/util
 
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 

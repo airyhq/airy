@@ -1,7 +1,8 @@
 import _, {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
 
-import {HttpClient, Tag, CreateTagRequestPayload} from 'httpclient';
+import {Tag, CreateTagRequestPayload} from 'httpclient';
+import {HttpClientInstance} from '../../InitializeAiryApi';
 
 const UPSERT_TAG = 'UPSERT_TAG';
 const DELETE_TAG = 'DELETE_TAG';
@@ -19,7 +20,7 @@ export const errorTagAction = createAction(ERROR_TAG, resolve => (status: string
 
 export function listTags() {
   return function(dispatch: Dispatch<any>) {
-    return HttpClient.listTags().then((response: Tag[]) => {
+    return HttpClientInstance.listTags().then((response: Tag[]) => {
       dispatch(fetchTagAction(response));
     });
   };
@@ -27,7 +28,7 @@ export function listTags() {
 
 export function createTag(requestPayload: CreateTagRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClient.createTag(requestPayload)
+    return HttpClientInstance.createTag(requestPayload)
       .then((response: Tag) => {
         dispatch(addTagAction(response));
         return Promise.resolve(true);
@@ -41,13 +42,13 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
 
 export function updateTag(tag: Tag) {
   return function(dispatch: Dispatch<any>) {
-    HttpClient.updateTag(tag).then(() => dispatch(editTagAction(tag)));
+    HttpClientInstance.updateTag(tag).then(() => dispatch(editTagAction(tag)));
   };
 }
 
 export function deleteTag(id: string) {
   return function(dispatch: Dispatch<any>) {
-    HttpClient.deleteTag(id).then(() => {
+    HttpClientInstance.deleteTag(id).then(() => {
       dispatch(deleteTagAction(id));
     });
   };

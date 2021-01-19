@@ -168,6 +168,7 @@ exports_files(
     ],
 )
 
+# gazelle:proto disable_global
 # gazelle:build_file_name BUILD
 # gazelle:prefix
 gazelle(name = "gazelle")

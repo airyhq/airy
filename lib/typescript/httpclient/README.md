@@ -1,23 +1,22 @@
 
 ### HttpClient Library 
 
-The HttpClient Library includes helper functions for using Airy's endpoints on the frontend.
+The HttpClient Library includes a HTTP client for making requests to Airy's API.
 
-Each function performs an http request and returns a promise.
-
-To use the library's functions, import the library and call the module's methods.
-
+The library exports a HttpClient class. To use the library, you need to instantiate the class with the authentification token and your api url. Both the authentification token and api url are optional (the default api url is "http://api.airy"), but communication with the endpoints always requires a token, except for /users.login and /users.signup endpoints.
 
 For example:
 
 ``` 
 import { HttpClient} from 'httpclient';
 
-HttpClient.listChannels()
+const myInstance = new HttpClient(authtoken, apiUrl);
+
+myInstance.listChannels()
 
 ``` 
 
-Here is a list of the functions it includes: 
+Here is a list of the public methods the library's class includes: 
 
 CHANNELS
 - listChannels
@@ -27,6 +26,10 @@ CHANNELS
 
 CONVERSATIONS 
 - listConversations
+- readConversations 
+
+MESSAGES 
+- listMessages 
 
 TAGS 
 - listTags

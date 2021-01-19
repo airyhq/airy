@@ -8,7 +8,6 @@ go_library(
         "golden.go",
         "mockserver.go",
     ],
-    importmap = "infrastructure/pkg/tests",
     importpath = "cli/pkg/tests",
     deps = [
         "@com_github_kr_pretty//:pretty",

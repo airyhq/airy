@@ -66,6 +66,7 @@ const MessageList = (props: MessageListProps) => {
   const [lastLoadedMessageId, setLastLoadedMessageId] = useState('');
   const prevLoadedMessages = usePrevious(loadedMessages);
   const prevMessages = usePrevious(messages);
+  const prevCurrentConversationId = usePrevious(currentConversationId);
 
   const messageListRef = createRef<HTMLDivElement>();
 
@@ -85,7 +86,7 @@ const MessageList = (props: MessageListProps) => {
   }, [stickBottom]);
 
   useEffect(() => {
-    if (currentConversationId && !loadedMessages) {
+    if (currentConversationId) {
       if (messages.length > 10) {
         const latestMessages = messages.slice(-10);
         setLastLoadedMessageId(latestMessages[0].id);
@@ -94,23 +95,23 @@ const MessageList = (props: MessageListProps) => {
         setLoadedMessages(messages);
       }
     }
-  }, [currentConversationId, loadedMessages, messages]);
+  }, [currentConversationId, messages]);
 
   useEffect(() => {
-    if (messages.length !== 0 && prevMessages && prevMessages.length !== 0 && messages.length > prevMessages.length) {
+    if (prevMessages && messages.length > prevMessages.length) {
       debouncedLoadPreviousMessages();
     }
   }, [messages, loadedMessages, lastLoadedMessageId]);
 
   useEffect(() => {
     if (loadedMessages && prevLoadedMessages !== null && prevLoadedMessages.length < loadedMessages.length) {
-      if (prevLoadedMessages[0].id !== loadedMessages[0].id) {
+      if (prevCurrentConversationId === currentConversationId && prevLoadedMessages[0].id !== loadedMessages[0].id) {
         scrollToMessage(prevLoadedMessages[0].id);
       } else {
         scrollBottom();
       }
     }
-  }, [loadedMessages]);
+  }, [loadedMessages, currentConversationId]);
 
   useEffect(() => {
     if (!scrollbarVisible()) {

@@ -30,6 +30,9 @@ func login(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 	fmt.Printf("logged in correctly: %s\n", res.Token)
+
+	viper.Set("apiJWTToken", res.Token)
+	viper.WriteConfig()
 }
 
 func init() {

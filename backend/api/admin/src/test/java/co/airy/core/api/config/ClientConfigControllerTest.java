@@ -7,7 +7,6 @@ import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
@@ -32,7 +30,6 @@ import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.web.client.ExpectedCount.manyTimes;
 import static org.springframework.test.web.client.ExpectedCount.min;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -104,12 +101,11 @@ public class ClientConfigControllerTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK));
 
-        retryOnException(() ->
-                webTestHelper.post("/client.config", "{}", "user-id")
+        retryOnException(() -> webTestHelper.post("/client.config", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.components.*", hasSize(4)))
-                .andExpect(jsonPath("$.components.*.enabled", everyItem(is(true))))
-        , "client.config call failed");
+                        .andExpect(jsonPath("$.components.*.enabled", everyItem(is(true)))),
+                "client.config call failed");
     }
 
 }

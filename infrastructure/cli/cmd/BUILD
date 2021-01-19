@@ -12,6 +12,7 @@ go_library(
     deps = [
         "//infrastructure/cli/cmd/api",
         "//infrastructure/cli/cmd/config",
+        "//infrastructure/cli/cmd/status",
         "//infrastructure/cli/cmd/ui",
         "@com_github_mitchellh_go_homedir//:go-homedir",
         "@com_github_spf13_cobra//:cobra",

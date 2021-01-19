@@ -1,6 +1,9 @@
 package status
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/airyhq/airy/lib/go/httpclient"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -17,5 +20,14 @@ var StatusCmd = &cobra.Command{
 func status(cmd *cobra.Command, args []string) {
 	c := httpclient.NewClient(viper.GetString("apihost"))
 
-	c.Config()
+	c.JWTToken = viper.GetString("apiJWTToken")
+
+	res, err := c.Config()
+
+	if err != nil {
+		fmt.Println("could not read status: ", err)
+		os.Exit(1)
+	}
+
+	fmt.Println(res.Components)
 }

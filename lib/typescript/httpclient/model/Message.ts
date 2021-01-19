@@ -15,7 +15,11 @@ export interface Attachement {
 }
 
 export enum MessageType {
+  audio = 'audio',
+  file = 'file',
+  image = 'image',
   text = 'text',
+  video = 'video',
 }
 
 export enum MessageAlignment {

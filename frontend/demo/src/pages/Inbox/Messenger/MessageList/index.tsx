@@ -4,11 +4,10 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 
 import {Message, SenderType} from 'httpclient';
+import RenderLibrary from 'RenderLibrary';
 
 import {StateModel} from '../../../../reducers';
 import {MessageById} from '../../../../reducers/data/messages';
-
-import MessageListItem from '../MessengerListItem';
 
 import {listMessages} from '../../../../actions/messages';
 import {allConversationSelector} from '../../../../selectors/conversations';
@@ -91,12 +90,12 @@ const MessageList = (props: MessageListProps) => {
             {hasDateChanged(prevMessage, message) && (
               <div className={styles.dateHeader}>{formatDateOfMessage(message)}</div>
             )}
-            <MessageListItem
-              key={message.id}
-              conversation={currentConversation}
+            <RenderLibrary
               message={message}
-              showAvatar={!prevWasContact && isContact(message)}
-              showSentAt={!nextIsSameUser}
+              currentConversation={currentConversation}
+              prevWasContact={prevWasContact}
+              nextIsSameUser={nextIsSameUser}
+              isContact={() => isContact(message)}
             />
           </>
         );

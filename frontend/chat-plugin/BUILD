@@ -28,6 +28,7 @@ ts_library(
     name = "app",
     tsconfig = ":widget_tsconfig",
     deps = [
+        "//lib/typescript/RenderLibrary",
         "//lib/typescript/types",
         "@npm//@stomp/stompjs",
         "@npm//@types/node",

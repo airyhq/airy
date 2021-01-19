@@ -65,7 +65,7 @@ const MessageList = (props: MessageListProps) => {
   const [loadedMessages, setLoadedMessages] = useState(null);
   const [lastLoadedMessageId, setLastLoadedMessageId] = useState('');
   const prevLoadedMessages = usePrevious(loadedMessages);
-  const prevCurrentConversationId = usePrevious(currentConversationId);
+  const prevMessages = usePrevious(messages);
 
   const messageListRef = createRef<HTMLDivElement>();
 
@@ -79,22 +79,28 @@ const MessageList = (props: MessageListProps) => {
   }, [currentConversationId, conversations]);
 
   useEffect(() => {
-    if (messageListRef && stickBottom) {
+    if (stickBottom) {
       scrollBottom();
     }
   }, [stickBottom]);
 
   useEffect(() => {
-    if (currentConversationId && prevCurrentConversationId !== currentConversationId) {
+    if (currentConversationId && !loadedMessages) {
       if (messages.length > 10) {
-        const latestMessages = messages.slice(messages.length - 11);
+        const latestMessages = messages.slice(-10);
         setLastLoadedMessageId(latestMessages[0].id);
         setLoadedMessages(latestMessages);
       } else {
         setLoadedMessages(messages);
       }
     }
-  }, [messages, currentConversationId]);
+  }, [currentConversationId, loadedMessages, messages]);
+
+  useEffect(() => {
+    if (messages.length !== 0 && prevMessages && prevMessages.length !== 0 && messages.length > prevMessages.length) {
+      debouncedLoadPreviousMessages();
+    }
+  }, [messages, loadedMessages, lastLoadedMessageId]);
 
   useEffect(() => {
     if (loadedMessages && prevLoadedMessages !== null && prevLoadedMessages.length < loadedMessages.length) {
@@ -119,12 +125,10 @@ const MessageList = (props: MessageListProps) => {
         debouncedLoadPreviousMessages();
       }
     }
-  }, [props.item, loadedMessages, messages]);
+  }, [props.item, loadedMessages, messages, lastLoadedMessageId]);
 
   const scrollBottom = () => {
-    if (messageListRef) {
-      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-    }
+    messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
   };
 
   const isContact = (message: Message) => message.senderType !== SenderType.appUser;
@@ -150,9 +154,7 @@ const MessageList = (props: MessageListProps) => {
   };
 
   const scrollbarVisible = () => {
-    if (messageListRef) {
-      return messageListRef.current.scrollHeight > messageListRef.current.clientHeight;
-    }
+    return messageListRef.current.scrollHeight > messageListRef.current.clientHeight;
   };
 
   const scrollToMessage = id => {

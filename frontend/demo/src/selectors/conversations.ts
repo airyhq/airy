@@ -1,5 +1,5 @@
 import _, {createSelector} from 'reselect';
-import {reverse, sortBy, values} from 'lodash-es';
+import {filter, reverse, sortBy, values} from 'lodash-es';
 import {Conversation} from 'httpclient';
 import {StateModel} from '../reducers';
 import {ConversationMap} from '../reducers/data/conversations';
@@ -31,3 +31,7 @@ export const newestFilteredConversationFirst = createSelector(
     );
   }
 );
+
+export const isFilterActive = (state: StateModel) =>
+  filter(Object.keys(state.data.conversations.filtered.currentFilter), element => element !== 'display_name').length >
+  0;

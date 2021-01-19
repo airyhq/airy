@@ -2,11 +2,14 @@ import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
 import {cloneDeep} from 'lodash-es';
 
-import {Conversation, Message} from 'httpclient';
-import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
+import {Conversation, Message, ConversationFilter, ResponseMetadataPayload} from 'httpclient';
+
 import * as actions from '../../../actions/conversations';
+import * as filterActions from '../../../actions/conversationsFilter';
+
 
 type Action = ActionType<typeof actions>;
+type FilterAction = ActionType<typeof filterActions>;
 
 type MergedConversation = Conversation & {
   blocked?: boolean;
@@ -30,13 +33,20 @@ export type AllConversationsState = {
   metadata: AllConversationMetadata;
 };
 
+export type FilteredState = {
+  items: ConversationMap;
+  currentFilter: ConversationFilter;
+  metadata: AllConversationMetadata;
+};
+
 export type ErrorState = {
   [conversationId: string]: string;
 };
 
 export type ConversationsState = {
-  all: AllConversationsState;
-  errors: ErrorState;
+  all?: AllConversationsState;
+  filtered?: FilteredState;
+  errors?: ErrorState;
 };
 
 function mergeConversations(
@@ -127,6 +137,63 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
   }
 }
 
+function filteredReducer(
+  state: FilteredState = {
+    items: {},
+    metadata: {previousCursor: null, nextCursor: null, total: 0},
+    currentFilter: {},
+  },
+  action: FilterAction | Action
+): FilteredState {
+  switch (action.type) {
+    // case getType(filterActions.setFilteredConversationsAction):
+    //   return {
+    //     currentFilter: action.payload.filter,
+    //     items: mergeConversations({}, action.payload.conversations),
+    //     metadata: action.payload.metadata,
+    //   };
+    case getType(filterActions.mergeFilteredConversationsAction):
+      return {
+        currentFilter: action.payload.filter,
+        items: mergeConversations(state.items, action.payload.conversations),
+        metadata: action.payload.metadata,
+      };
+    case getType(filterActions.resetFilteredConversationAction):
+      return {items: {}, metadata: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: {}};
+    case getType(filterActions.updateFilteredConversationsAction):
+      return {
+        ...state,
+        currentFilter: action.payload.filter,
+      };
+    // case getType(filterActions.loadingFilteredConversationsAction):
+    //   return {
+    //     ...state,
+    //     metadata: {
+    //       ...state.metadata,
+    //       loading: true,
+    //     },
+    //   };
+
+    // case getType(actions.updateConversationStateAction):
+    //   if (!state.items[action.payload.conversationId]) {
+    //     return state;
+    //   }
+    //   return {
+    //     ...state,
+    //     items: {
+    //       ...state.items,
+    //       [action.payload.conversationId]: {
+    //         ...state.items[action.payload.conversationId],
+    //         state: action.payload.state,
+    //       },
+    //     },
+    //   };
+
+    default:
+      return state;
+  }
+}
+
 function errorsReducer(state: ErrorState = {}, action: Action): ErrorState {
   switch (action.type) {
     case getType(actions.addErrorToConversationAction):
@@ -146,5 +213,6 @@ function errorsReducer(state: ErrorState = {}, action: Action): ErrorState {
 
 export default combineReducers({
   all: allReducer,
+  filtered: filteredReducer,
   errors: errorsReducer,
 });

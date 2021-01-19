@@ -1,11 +1,13 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import _, {connect, ConnectedProps} from 'react-redux';
+
 import {Tag as TagModel} from 'httpclient';
-import {TagSettings} from '../../types';
+
+import {StateModel} from '../../reducers';
 
 import close from '../../assets/images/icons/close.svg';
+
 import styles from './Tag.module.scss';
-import {RootState} from '../../reducers';
 
 type TagProps = {
   tag: TagModel;
@@ -13,21 +15,27 @@ type TagProps = {
   onClick?: () => void;
   removeTagFromContact?: () => void;
   variant?: 'default' | 'light';
-  type?: string;
+} & ConnectedProps<typeof connector>;
+
+const mapStateToProps = (state: StateModel) => {
+  return {
+    tagSettings: state.data.settings,
+  };
 };
 
-type tagState = {
-  tagSettings: TagSettings;
-};
+const connector = connect(mapStateToProps, null);
 
-export const Tag = ({
-  tag,
-  expanded,
-  variant,
-  onClick,
-  removeTagFromContact,
-  tagSettings,
-}: TagProps & tagState): JSX.Element => {
+const Tag = (props: TagProps) => {
+  
+  const {
+    tag,
+    expanded,
+    variant,
+    onClick,
+    removeTagFromContact,
+    tagSettings,
+  } = props;
+
   const tagColor = (tagSettings && tagSettings.colors[tag.color]) || {
     background: 'F1FAFF',
     border: '1578D4',
@@ -65,10 +73,4 @@ export const Tag = ({
   );
 };
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    tagSettings: state.data.settings,
-  };
-};
-
-export default connect(mapStateToProps)(Tag);
+export default connector(Tag);

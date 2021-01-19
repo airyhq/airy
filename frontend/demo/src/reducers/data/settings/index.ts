@@ -1,19 +1,14 @@
 import {ActionType} from 'typesafe-actions';
 import * as actions from '../../../actions/settings';
-import {DataState} from '../../data';
 
 type Action = ActionType<typeof actions>;
-
-export type SettingsState = {
-  data: DataState;
-};
 
 export type Settings = {
   colors: {};
 };
 
 const defaultState = {
-  colors: [],
+  colors: {},
 };
 
 export default function tagsReducer(state = defaultState, action: Action): Settings {

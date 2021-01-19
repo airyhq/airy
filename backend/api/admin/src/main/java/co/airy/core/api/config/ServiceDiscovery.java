@@ -39,17 +39,12 @@ public class ServiceDiscovery {
     @Scheduled(fixedRate = 1_000)
     private void updateComponentsStatus() {
         for (String service : services) {
-            fetchServiceInfo(service);
-        }
-    }
-
-    @Async
-    private void fetchServiceInfo(String service) {
-        try {
-            ResponseEntity<Object> response = restTemplate.exchange(String.format("http://%s.%s/actuator/health", service, namespace), HttpMethod.GET, null, Object.class);
-            components.put(service.replace("-connector", ""), Map.of("enabled", response.getStatusCode().is2xxSuccessful()));
-        } catch (Exception e) {
-            components.put(service.replace("-connector", ""), Map.of("enabled",false));
+            try {
+                ResponseEntity<Object> response = restTemplate.exchange(String.format("http://%s.%s/actuator/health", service, namespace), HttpMethod.GET, null, Object.class);
+                components.put(service.replace("-connector", ""), Map.of("enabled", response.getStatusCode().is2xxSuccessful()));
+            } catch (Exception e) {
+                components.put(service.replace("-connector", ""), Map.of("enabled",false));
+            }
         }
     }
 }

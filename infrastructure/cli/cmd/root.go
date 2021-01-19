@@ -5,7 +5,7 @@ import (
 	"os"
 	"path"
 
-	"cli/cmd/auth"
+	"cli/cmd/api"
 	"cli/cmd/config"
 	"cli/cmd/ui"
 
@@ -117,7 +117,7 @@ func init() {
 	viper.SetDefault("apihost", "http://api.airy")
 
 	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.airy/cli.yaml)")
-	rootCmd.AddCommand(auth.AuthCmd)
+	rootCmd.AddCommand(api.APICmd)
 	rootCmd.AddCommand(config.ConfigCmd)
 	rootCmd.AddCommand(ui.UICmd)
 	rootCmd.AddCommand(versionCmd)

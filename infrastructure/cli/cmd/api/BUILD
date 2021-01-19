@@ -1,9 +1,13 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "auth",
-    srcs = ["auth.go"],
-    importpath = "cli/cmd/auth",
+    name = "api",
+    srcs = [
+        "api.go",
+        "login.go",
+        "signup.go",
+    ],
+    importpath = "cli/cmd/api",
     visibility = ["//visibility:public"],
     deps = [
         "//lib/go/httpclient",

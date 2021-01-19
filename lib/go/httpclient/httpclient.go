@@ -32,34 +32,29 @@ type errorResponse struct {
 	Message string `json:"message"`
 }
 
-func (c *Client) sendRequest(requestDataJSON []byte, endpoint string, v interface{}) error {
-
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/%s", c.BaseURL, endpoint), bytes.NewBuffer(requestDataJSON))
+func (c *Client) post(endpoint string, payload []byte, res interface{}) error {
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/%s", c.BaseURL, endpoint), bytes.NewBuffer(payload))
 	if err != nil {
 		return err
 	}
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Accept", "application/json; charset=utf-8")
 
-	res, err := c.HTTPClient.Do(req)
+	r, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return err
 	}
 
-	defer res.Body.Close()
+	defer r.Body.Close()
 
-	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
+	if r.StatusCode < http.StatusOK || r.StatusCode >= http.StatusBadRequest {
 		var errRes errorResponse
-		if err = json.NewDecoder(res.Body).Decode(&errRes); err == nil {
+		if err = json.NewDecoder(r.Body).Decode(&errRes); err == nil {
 			return errors.New(errRes.Message)
 		}
 
-		return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
+		return fmt.Errorf("unknown error, status code: %d", r.StatusCode)
 	}
 
-	if err = json.NewDecoder(res.Body).Decode(v); err != nil {
-		return err
-	}
-
-	return nil
+	return json.NewDecoder(r.Body).Decode(&res)
 }

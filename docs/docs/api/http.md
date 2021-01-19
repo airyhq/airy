@@ -352,13 +352,45 @@ This is a [paginated](#pagination) endpoint. Messages are sorted from oldest to 
 
 Sends a message to a conversation and returns a payload.
 
-**Sample request**
+**Sending a text message**
 
 ```json5
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "text": "{String}"
+    "text": "Hello World",
+    "type": "text"
+  }
+}
+```
+
+**Sending an attachment message**
+
+```json5
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "message": {
+    "url": "http://example.org/myfile",
+    "type": "image|video|audio|file"
+  }
+}
+```
+
+**Sending source templates**
+
+Some sources support sending templates, which can be used to display rich content such as buttons or cards. You
+can send source templates by setting the type to `source.template`. Please refer to the source documentation
+to see the expected values for the `payload` field.
+
+```json5
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "message": {
+    "payload": {
+      "template_type": "buttons",
+      "buttons": ["Welcome to our shop"]
+    },
+    "type": "source.template"
   }
 }
 ```
@@ -372,12 +404,9 @@ Sends a message to a conversation and returns a payload.
     {
       "text": "{String}",
       "type": "text"
-      // Determines the schema of the content
     }
   ],
-  // typed source message model
-  "state": "{String}",
-  // delivery state of message, one of PENDING, FAILED, DELIVERED
+  "state": "pending|failed|delivered",
   "sender_type": "{string/enum}",
   // See glossary
   "sent_at": "{string}"

@@ -2,16 +2,12 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.model.channel.ChannelPayload;
 import co.airy.core.api.communication.payload.MessageUpsertPayload;
 import co.airy.core.api.communication.payload.UnreadCountPayload;
 import co.airy.core.api.communication.util.TestConversation;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.channel.ChannelPayload;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.jwt.Jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +42,8 @@ import java.util.concurrent.TimeUnit;
 import static co.airy.core.api.communication.WebSocketController.QUEUE_CHANNEL_CONNECTED;
 import static co.airy.core.api.communication.WebSocketController.QUEUE_MESSAGE;
 import static co.airy.core.api.communication.WebSocketController.QUEUE_UNREAD_COUNT;
+import static co.airy.core.api.communication.util.Topics.getTopics;
+import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -61,12 +59,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class WebSocketControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
-
-    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
-    private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
-
     private static KafkaTestHelper kafkaTestHelper;
 
     private static boolean testDataInitialized = false;
@@ -93,12 +85,7 @@ public class WebSocketControllerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationMetadata,
-                applicationCommunicationMessages,
-                applicationCommunicationChannels,
-                applicationCommunicationReadReceipts
-        );
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
         kafkaTestHelper.beforeAll();
     }
 

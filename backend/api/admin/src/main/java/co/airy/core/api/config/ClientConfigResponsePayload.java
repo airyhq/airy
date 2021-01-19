@@ -1,11 +1,10 @@
-package co.airy.core.api.admin.payload;
+package co.airy.core.api.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Map;
 
 @Builder
@@ -13,6 +12,6 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClientConfigResponsePayload {
-    private List<Map<String, Map<String, String>>> components;
-    private List<Map<String, String>> features;
+    private Map<String, Map<String, Object>> components;
+    private Map<String, String> features;
 }

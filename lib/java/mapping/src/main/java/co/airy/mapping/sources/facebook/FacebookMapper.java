@@ -56,7 +56,7 @@ public class FacebookMapper implements SourceMapper {
                         final String attachmentType = attachmentNode.get("type").textValue();
 
                         if (attachmentType.equals("template")) {
-                            contents.add(new SourceTemplate(attachmentNode.get("payload").toString()));
+                            contents.add(new SourceTemplate(attachmentNode.get("payload")));
                             return;
                         }
 

@@ -2,15 +2,11 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.model.metadata.MetadataKeys;
 import co.airy.core.api.communication.util.TestConversation;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
+import co.airy.date.format.DateFormat;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.date.format.DateFormat;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -33,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static co.airy.core.api.communication.util.Topics.getTopics;
+import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.test.Timing.retryOnException;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
@@ -54,11 +52,6 @@ class ConversationsListTest {
 
     @Autowired
     private WebTestHelper webTestHelper;
-
-    private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
-    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
-    private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
 
     private static final String firstNameToFind = "Grace";
 
@@ -92,15 +85,9 @@ class ConversationsListTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationMessages,
-                applicationCommunicationChannels,
-                applicationCommunicationMetadata,
-                applicationCommunicationReadReceipts
-        );
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
 
         kafkaTestHelper.beforeAll();
-
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), defaultChannel.getId(), defaultChannel));
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelToFind.getId(), channelToFind));

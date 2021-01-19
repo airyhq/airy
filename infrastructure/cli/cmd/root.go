@@ -7,6 +7,7 @@ import (
 
 	"cli/cmd/api"
 	"cli/cmd/config"
+	"cli/cmd/status"
 	"cli/cmd/ui"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -119,6 +120,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.airy/cli.yaml)")
 	rootCmd.AddCommand(api.APICmd)
 	rootCmd.AddCommand(config.ConfigCmd)
+	rootCmd.AddCommand(status.StatusCmd)
 	rootCmd.AddCommand(ui.UICmd)
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(initCmd)

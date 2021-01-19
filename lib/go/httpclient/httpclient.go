@@ -9,19 +9,15 @@ import (
 	"time"
 )
 
-const (
-	BaseURL = "http://api.airy"
-)
-
 type Client struct {
-	BaseURL    string
-	HTTPClient *http.Client
+	BaseURL string
+	c       *http.Client
 }
 
-func NewClient() *Client {
+func NewClient(baseURL string) *Client {
 	return &Client{
-		BaseURL: BaseURL,
-		HTTPClient: &http.Client{
+		BaseURL: baseURL,
+		c: &http.Client{
 			Timeout: time.Minute,
 		},
 	}
@@ -40,7 +36,7 @@ func (c *Client) post(endpoint string, payload []byte, res interface{}) error {
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Accept", "application/json; charset=utf-8")
 
-	r, err := c.HTTPClient.Do(req)
+	r, err := c.c.Do(req)
 	if err != nil {
 		return err
 	}

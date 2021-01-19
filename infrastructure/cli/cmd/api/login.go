@@ -19,11 +19,9 @@ var loginCmd = &cobra.Command{
 }
 
 func login(cmd *cobra.Command, args []string) {
-	url := viper.GetString("apihost")
 	email, _ := cmd.Flags().GetString("email")
 	password, _ := cmd.Flags().GetString("password")
-	c := httpclient.NewClient()
-	c.BaseURL = url
+	c := httpclient.NewClient(viper.GetString("apihost"))
 
 	loginRequestPayload := payloads.LoginRequestPayload{Email: email, Password: password}
 	res, err := c.Login(loginRequestPayload)

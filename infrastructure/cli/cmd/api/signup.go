@@ -11,8 +11,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// SignupCmd subcommand for Airy Core
-var SignupCmd = &cobra.Command{
+var signupCmd = &cobra.Command{
 	Use:   "signup",
 	Short: "Signs users up in the Airy Core Platform",
 	Long:  ``,
@@ -20,13 +19,11 @@ var SignupCmd = &cobra.Command{
 }
 
 func signup(cmd *cobra.Command, args []string) {
-	url := viper.GetString("apihost")
 	firstName, _ := cmd.Flags().GetString("firstName")
 	lastName, _ := cmd.Flags().GetString("lastName")
 	email, _ := cmd.Flags().GetString("email")
 	password, _ := cmd.Flags().GetString("password")
-	c := httpclient.NewClient()
-	c.BaseURL = url
+	c := httpclient.NewClient(viper.GetString("apihost"))
 
 	signupRequestPayload := payloads.SignupRequestPayload{FirstName: firstName, LastName: lastName, Email: email, Password: password}
 	res, err := c.Signup(signupRequestPayload)
@@ -39,8 +36,8 @@ func signup(cmd *cobra.Command, args []string) {
 
 func init() {
 	var firstName, lastName, email, password string
-	SignupCmd.Flags().StringVarP(&firstName, "firstName", "f", "Grace", "First name")
-	SignupCmd.Flags().StringVarP(&lastName, "lastName", "l", "Hopper", "Last name")
-	SignupCmd.Flags().StringVarP(&email, "email", "e", "grace@hopper.com", "Email")
-	SignupCmd.Flags().StringVarP(&password, "password", "p", "the_answer_is_42", "Password")
+	signupCmd.Flags().StringVarP(&firstName, "firstName", "f", "Grace", "First name")
+	signupCmd.Flags().StringVarP(&lastName, "lastName", "l", "Hopper", "Last name")
+	signupCmd.Flags().StringVarP(&email, "email", "e", "grace@hopper.com", "Email")
+	signupCmd.Flags().StringVarP(&password, "password", "p", "the_answer_is_42", "Password")
 }

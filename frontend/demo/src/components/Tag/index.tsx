@@ -1,5 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import _, {connect, ConnectedProps} from 'react-redux';
+
 import {Tag as TagModel} from 'httpclient';
 import {Settings} from '../../reducers/data/settings';
 
@@ -13,8 +14,7 @@ type TagProps = {
   onClick?: () => void;
   removeTag?: () => void;
   variant?: 'default' | 'light';
-  type?: string;
-};
+} & ConnectedProps<typeof connector>;
 
 type tagState = {
   settings: Settings;

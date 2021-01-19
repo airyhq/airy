@@ -27,7 +27,7 @@ function organiseMessages(messages: Message[]): MessageById {
   return _.keyBy(messages, 'id');
 }
 
-export default function messagesReducer(state = initialState, action: Action): any {
+export default function messagesReducer(state = initialState, action: Action): Messages {
   switch (action.type) {
     case getType(actions.loadingMessagesAction):
       return {

@@ -64,6 +64,8 @@ public class ConversationsController {
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
 
         final QueryParser simpleQueryParser = new QueryParser("id", new WhitespaceAnalyzer());
+        // TODO Index display names more efficiently
+        simpleQueryParser.setAllowLeadingWildcard(true);
 
         final Query query;
         try {

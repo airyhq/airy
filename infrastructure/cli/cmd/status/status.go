@@ -3,6 +3,7 @@ package status
 import (
 	"fmt"
 	"os"
+	"text/tabwriter"
 
 	"github.com/airyhq/airy/lib/go/httpclient"
 	"github.com/spf13/cobra"
@@ -29,5 +30,15 @@ func status(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	fmt.Println(res.Components)
+	w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
+
+	for k, v := range res.Components {
+		if v["enabled"].(bool) {
+			fmt.Fprintf(w, "%s\t\u2713\n", k)
+		} else {
+			fmt.Fprintf(w, "%s\t\u2717\n", k)
+		}
+	}
+
+	w.Flush()
 }

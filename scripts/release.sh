@@ -64,9 +64,9 @@ create_alpha_version() {
     alpha_version=$(printf "%s.%s.%s.alpha\n" $major $((minor+1)) $patch)
     command echo ${alpha_version}> VERSION
     command git add VERSION
-    command git commit -m "Creates alpha VERSION file"
+    command git commit -m "Bump version to ${alpha_version}"
     command git push origin develop
-    echo -e "Created VERSION file with ${alpha_version}\n"
+    echo -e "Updated VERSION file to ${alpha_version}\n"
 }
 
 merge_main() {

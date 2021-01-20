@@ -44,7 +44,6 @@ increase_version() {
                        -H "Accept: application/vnd.github.v3+json" \
                        "https://api.github.com/repos/airyhq/airy/issues?labels=release" | jq '.[0].number')
     command echo ${release_number}> VERSION
-    echo -e "Updated VERSION file\n"
     command git add VERSION
     command git commit -m "Fixes #${issue_number}"
     command git push origin develop

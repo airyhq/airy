@@ -6,7 +6,7 @@ metadata:
   labels:
     app: sources-twilio-events-router
     type: sources-twilio
-    core.airy.co/scalable: "true"
+    core.airy.co/managed: "true"
 spec:
   replicas: 0
   selector:

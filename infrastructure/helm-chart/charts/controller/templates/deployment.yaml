@@ -28,4 +28,4 @@ spec:
         imagePullPolicy: Always
         env:
         - name: LABEL_SELECTOR
-          value: "core.airy.co/scalable=true"
+          value: "core.airy.co/managed=true"

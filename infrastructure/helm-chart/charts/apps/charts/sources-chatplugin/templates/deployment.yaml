@@ -6,7 +6,7 @@ metadata:
   labels:
     app: sources-chatplugin
     type: sources-chatplugin
-    core.airy.co/scalable: "true"
+    core.airy.co/managed: "true"
 spec:
   replicas: 0
   selector:

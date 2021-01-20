@@ -5,8 +5,9 @@ load("//tools/build:container_push.bzl", "container_push")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 module_deps = [
-    "//lib/typescript/types",
     "//lib/typescript/httpclient",
+    "//lib/typescript/types",
+    "//lib/typescript/websocketclient",
 ]
 
 ts_library(
@@ -14,6 +15,7 @@ ts_library(
     deps = [
         "//lib/typescript/httpclient",
         "//lib/typescript/types",
+        "//lib/typescript/websocketclient",
         "@npm//@airyhq/components",
         "@npm//@types/facebook-js-sdk",
         "@npm//@types/node",

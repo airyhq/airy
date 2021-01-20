@@ -11,6 +11,7 @@ import Tags from './pages/Tags';
 import Logout from './pages/Logout';
 import NotFound from './pages/NotFound';
 import Sidebar from './components/Sidebar';
+import AiryWebSocket from './components/AiryWebsocket';
 import {fakeSettingsAPICall} from './actions/settings';
 import {StateModel} from './reducers';
 
@@ -63,29 +64,31 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     }
 
     return (
-      <div className={styles.Container}>
-        <div className={`${this.isAuthSuccess ? styles.ContainerApp : styles.ContainerAppNotLogin}`}>
-          {this.shouldShowSidebar() ? (
-            <>
-              <TopBar isAdmin={true} />
-              <Sidebar />
-            </>
-          ) : (
-            <div />
-          )}
-          <Switch>
-            <Route exact path={ROOT_ROUTE}>
-              {this.isAuthSuccess ? <Redirect to={INBOX_ROUTE} /> : <Redirect to={LOGIN_ROUTE} />}
-            </Route>
-            <Route exact path={TAGS_ROUTE} component={Tags} />
-            <Route exact path={LOGIN_ROUTE} component={Login} />
-            <Route path={INBOX_ROUTE} component={Inbox} />
-            <Route exact path={LOGOUT_ROUTE} component={Logout} />
-            <Route exact path={CHANNELS_ROUTE} component={Channels} />
-            <Route component={NotFound} />
-          </Switch>
+      <AiryWebSocket>
+        <div className={styles.Container}>
+          <div className={`${this.isAuthSuccess ? styles.ContainerApp : styles.ContainerAppNotLogin}`}>
+            {this.shouldShowSidebar() ? (
+              <>
+                <TopBar isAdmin={true} />
+                <Sidebar />
+              </>
+            ) : (
+              <div />
+            )}
+            <Switch>
+              <Route exact path={ROOT_ROUTE}>
+                {this.isAuthSuccess ? <Redirect to={INBOX_ROUTE} /> : <Redirect to={LOGIN_ROUTE} />}
+              </Route>
+              <Route exact path={TAGS_ROUTE} component={Tags} />
+              <Route exact path={LOGIN_ROUTE} component={Login} />
+              <Route path={INBOX_ROUTE} component={Inbox} />
+              <Route exact path={LOGOUT_ROUTE} component={Logout} />
+              <Route exact path={CHANNELS_ROUTE} component={Channels} />
+              <Route component={NotFound} />
+            </Switch>
+          </div>
         </div>
-      </div>
+      </AiryWebSocket>
     );
   }
 }

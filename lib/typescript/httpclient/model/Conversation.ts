@@ -5,7 +5,7 @@ import {Message} from './Message';
 export interface Conversation {
   id: string;
   channel: Channel;
-  createdAt: string;
+  createdAt: Date;
   contact: Contact;
   tags: string[];
   lastMessage: Message;

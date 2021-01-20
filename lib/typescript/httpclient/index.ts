@@ -27,6 +27,7 @@ import {TagColor, Tag} from './model';
 import {TagPayload} from './payload/TagPayload';
 import {userMapper} from './mappers/userMapper';
 import {messageMapper} from './mappers/messageMapper';
+import {conversationMapper} from './mappers/conversationMapper';
 
 const headers = {
   Accept: 'application/json',
@@ -143,6 +144,13 @@ export class HttpClient {
     } catch (error) {
       return error;
     }
+  }
+
+  public async getConversationInfo(conversationId: string) {
+    const conversation: ConversationPayload = await this.doFetchFromBackend('conversations.info', {
+      conversation_id: conversationId,
+    });
+    return Promise.resolve(conversationMapper(conversation));
   }
 
   public async readConversations(conversationId: string) {

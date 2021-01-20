@@ -1,6 +1,5 @@
-package co.airy.core.api.admin;
+package co.airy.core.api.config;
 
-import co.airy.core.api.config.ClientConfigController;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
@@ -22,15 +21,20 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 
+import static co.airy.test.Timing.retryOnException;
+import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.springframework.test.web.client.ExpectedCount.min;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
@@ -81,23 +85,27 @@ public class ClientConfigControllerTest {
 
     @Test
     public void canReturnConfig() throws Exception {
-        mockServer.expect(requestTo(new URI("http://sources-chatplugin.default/actuator/health")))
+        mockServer.expect(min(1), requestTo(new URI("http://sources-chatplugin.default/actuator/health")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK));
 
-        mockServer.expect(requestTo(new URI("http://sources-facebook-connector.default/actuator/health")))
+        mockServer.expect(min(1), requestTo(new URI("http://sources-facebook-connector.default/actuator/health")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK));
 
-        mockServer.expect(requestTo(new URI("http://sources-twilio-connector.default/actuator/health")))
+        mockServer.expect(min(1), requestTo(new URI("http://sources-twilio-connector.default/actuator/health")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK));
 
-        mockServer.expect(requestTo(new URI("http://sources-google-connector.default/actuator/health")))
+        mockServer.expect(min(1), requestTo(new URI("http://sources-google-connector.default/actuator/health")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.OK));
 
-        webTestHelper.post("/client.config", "{}", "user-id").andExpect(status().isOk());
+        retryOnException(() -> webTestHelper.post("/client.config", "{}", "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.components.*", hasSize(4)))
+                        .andExpect(jsonPath("$.components.*.enabled", everyItem(is(true)))),
+                "client.config call failed");
     }
 
 }

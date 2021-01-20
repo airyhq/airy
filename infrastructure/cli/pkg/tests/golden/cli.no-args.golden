@@ -4,10 +4,11 @@ Usage:
   airy [command]
 
 Available Commands:
-  auth        Create a default user and return a JWT token
+  api         Interacts with the Airy Core Platform HTTP API
   config      Reloads configuration based on airy.yaml
   help        Help about any command
   init        Inits your Airy CLI configuration
+  status      Reports the status of your Airy Core Platform
   ui          Opens the Airy Core Platform UI in your local browser
   version     Prints version information
 

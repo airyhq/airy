@@ -4,10 +4,12 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "payloads",
     srcs = [
-        "login_request.go",
-        "login_response.go",
-        "signup_request.go",
-        "signup_response.go",
+        "client_config_request_payload.go",
+        "client_config_response_payload.go",
+        "login_request_payload.go",
+        "login_response_payload.go",
+        "signup_request_payload.go",
+        "signup_response_payload.go",
     ],
     importpath = "github.com/airyhq/airy/lib/go/httpclient/payloads",
     visibility = ["//visibility:public"],

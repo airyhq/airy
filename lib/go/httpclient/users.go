@@ -7,31 +7,30 @@ import (
 )
 
 func (c *Client) Signup(signupRequestPayload payloads.SignupRequestPayload) (*payloads.SignupResponsePayload, error) {
-	requestDataJSON, err := json.Marshal(signupRequestPayload)
+	payload, err := json.Marshal(signupRequestPayload)
 	if err != nil {
 		return nil, err
 	}
+
 	res := payloads.SignupResponsePayload{}
 
-	if err := c.sendRequest(requestDataJSON, "users.signup", &res); err != nil {
-		return nil, err
+	e := c.post("users.signup", payload, &res)
+	if e != nil {
+		return nil, e
 	}
 
 	return &res, nil
-
 }
 
 func (c *Client) Login(loginRequestPayload payloads.LoginRequestPayload) (*payloads.LoginResponsePayload, error) {
-	requestDataJSON, err := json.Marshal(loginRequestPayload)
+	payload, err := json.Marshal(loginRequestPayload)
 	if err != nil {
 		return nil, err
 	}
 	res := payloads.LoginResponsePayload{}
-
-	if err := c.sendRequest(requestDataJSON, "users.login", &res); err != nil {
-		return nil, err
+	e := c.post("users.login", payload, &res)
+	if e != nil {
+		return nil, e
 	}
-
 	return &res, nil
-
 }

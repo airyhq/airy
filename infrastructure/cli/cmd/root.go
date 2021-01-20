@@ -5,8 +5,9 @@ import (
 	"os"
 	"path"
 
-	"cli/cmd/auth"
+	"cli/cmd/api"
 	"cli/cmd/config"
+	"cli/cmd/status"
 	"cli/cmd/ui"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -116,9 +117,15 @@ func init() {
 	viper.BindPFlag("apihost", rootCmd.PersistentFlags().Lookup("apihost"))
 	viper.SetDefault("apihost", "http://api.airy")
 
+	apiJWTToken := ""
+	rootCmd.PersistentFlags().StringVarP(&apiJWTToken, "apiJWTToken", "", "", "apiJWTToken")
+	rootCmd.PersistentFlags().MarkHidden("apiJWTToken")
+	viper.BindPFlag("apiJWTToken", rootCmd.PersistentFlags().Lookup("apiJWTToken"))
+
 	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.airy/cli.yaml)")
-	rootCmd.AddCommand(auth.AuthCmd)
+	rootCmd.AddCommand(api.APICmd)
 	rootCmd.AddCommand(config.ConfigCmd)
+	rootCmd.AddCommand(status.StatusCmd)
 	rootCmd.AddCommand(ui.UICmd)
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(initCmd)

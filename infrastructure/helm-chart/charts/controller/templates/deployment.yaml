@@ -27,5 +27,5 @@ spec:
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
         env:
-          - name: LABEL_SELECTOR
+        - name: LABEL_SELECTOR
           value: "core.airy.co/scalable=true"

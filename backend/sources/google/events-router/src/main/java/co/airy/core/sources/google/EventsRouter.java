@@ -89,7 +89,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     eventInfo.setEvent(webhookEvent);
                     eventInfo.setTimestamp(Instant.parse(webhookEvent.getSendTime()).toEpochMilli());
 
-                    if (!webhookEvent.hasMessage() && !webhookEvent.hasContext()) {
+                    if (!webhookEvent.isMessage() && !webhookEvent.hasContext()) {
                         return KeyValue.pair(eventInfo.getAgentId(), null);
                     }
 
@@ -112,8 +112,8 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     final String conversationId = UUIDv5.fromNamespaceAndName(channel.getId(), sourceConversationId).toString();
                     final List<KeyValue<String, SpecificRecordBase>> records = new ArrayList<>();
 
-                    if (webhookEvent.hasMessage()) {
-                        final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
+                    final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
+                    if (webhookEvent.isMessage()) {
                         records.add(KeyValue.pair(messageId,
                                 Message.newBuilder()
                                         .setSource(channel.getSource())
@@ -124,7 +124,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                                         .setSenderType(SenderType.SOURCE_CONTACT)
                                         .setContent(payload)
                                         .setSenderId(sourceConversationId)
-                                        .setHeaders(Map.of())
+                                        .setHeaders(event.getMessageHeaders())
                                         .setSentAt(event.getTimestamp())
                                         .setUpdatedAt(null)
                                         .build()

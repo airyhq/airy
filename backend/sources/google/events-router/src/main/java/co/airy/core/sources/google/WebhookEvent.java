@@ -35,8 +35,8 @@ public class WebhookEvent {
     }
 
     @JsonIgnore
-    public boolean hasMessage() {
-        return this.message != null;
+    public boolean isMessage() {
+        return this.message != null || this.suggestionResponse != null;
     }
 
     @JsonIgnore

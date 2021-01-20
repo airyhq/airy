@@ -6,6 +6,7 @@ metadata:
   labels:
     app: sources-twilio-connector
     type: sources-twilio
+    core.airy.co/scalable: "true"
 spec:
   replicas: 0
   selector:

@@ -6,6 +6,7 @@ metadata:
   labels:
     app: sources-facebook-connector
     type: sources-facebook
+    core.airy.co/scalable: "true"
 spec:
   replicas: 0
   selector:

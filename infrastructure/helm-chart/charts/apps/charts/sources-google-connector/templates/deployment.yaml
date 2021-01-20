@@ -6,6 +6,7 @@ metadata:
   labels:
     app: sources-google-connector
     type: sources-google
+    core.airy.co/scalable: "true"
 spec:
   replicas: 0
   selector:

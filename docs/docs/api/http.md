@@ -11,7 +11,7 @@ compose the Airy API.
 The HTTP endpoints adhere to the following conventions:
 
 - Endpoints only accept `POST` JSON requests.
-- Communication always requires a valid [JWT token](#authorization), except for
+- Communication always requires a valid [JWT token](#authentication), except for
   `/users.login` and `/users.signup` endpoints.
 - We use dots for namespacing URLs (eg `/things.add`).
 

@@ -11,6 +11,9 @@ uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
 protocol endpoint at `/ws.communication`.
 
+To execute the handshake with `/ws.communicaiton` you need to set an `Authorization` header where the
+value is the authorization token obtained [from the API](http.md#authentication).
+
 ## Outbound Queues
 
 Outbound queues follow the pattern `/queue/:event_type[/:action}]` and

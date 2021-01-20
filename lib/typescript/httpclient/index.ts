@@ -17,6 +17,8 @@ import {ConversationPayload} from './payload/ConversationPayload';
 import {PaginatedPayload} from './payload/PaginatedPayload';
 import {conversationsMapper} from './mappers/conversationsMapper';
 import {ListMessagesRequestPayload} from './payload/ListMessagesRequestPayload';
+import {TagConversationRequestPayload} from './payload/TagConversationRequestPayload';
+import {UntagConversationRequestPayload} from './payload/UntagConversationRequestPayload';
 import {MessagePayload} from './payload/MessagePayload';
 import {messageMapperData} from './mappers/messageMapperData';
 import {tagsMapper} from './mappers/tagsMapper';
@@ -32,7 +34,9 @@ export async function parseBody(response: Response): Promise<any> {
   if (response.ok) {
     try {
       return await response.json();
-    } catch {}
+    } catch {
+      // NOP
+    }
   }
 
   let body = await response.text();
@@ -140,7 +144,7 @@ export class HttpClient {
   }
 
   public async readConversations(conversationId: string) {
-    const response = await this.doFetchFromBackend('conversations.read', {conversation_id: conversationId});
+    await this.doFetchFromBackend('conversations.read', {conversation_id: conversationId});
     return Promise.resolve(true);
   }
 
@@ -185,7 +189,7 @@ export class HttpClient {
 
   public async updateTag(tag: Tag) {
     try {
-      const response = await this.doFetchFromBackend('tags.update', {...tag});
+      await this.doFetchFromBackend('tags.update', {...tag});
       return Promise.resolve(true);
     } catch (error) {
       return error;
@@ -194,7 +198,7 @@ export class HttpClient {
 
   public async deleteTag(id: string) {
     try {
-      const response = await this.doFetchFromBackend('tags.delete', {id});
+      await this.doFetchFromBackend('tags.delete', {id});
       return Promise.resolve(true);
     } catch (error) {
       return error;
@@ -205,6 +209,30 @@ export class HttpClient {
     try {
       const response = await this.doFetchFromBackend('users.login', requestPayload);
       return userMapper(response);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public async tagConversation(requestPayload: TagConversationRequestPayload) {
+    try {
+      await this.doFetchFromBackend('conversations.tag', {
+        conversation_id: requestPayload.conversationId,
+        tag_id: requestPayload.tagId,
+      });
+      return Promise.resolve(true);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public async untagConversation(requestPayload: UntagConversationRequestPayload) {
+    try {
+      await this.doFetchFromBackend('conversations.untag', {
+        conversation_id: requestPayload.conversationId,
+        tag_id: requestPayload.tagId,
+      });
+      return Promise.resolve(true);
     } catch (error) {
       return error;
     }

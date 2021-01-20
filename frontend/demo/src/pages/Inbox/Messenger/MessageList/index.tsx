@@ -1,9 +1,8 @@
-import React, {useEffect, useState, createRef} from 'react';
-import {RouteComponentProps, useParams} from 'react-router-dom';
+import React, {useEffect, createRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 
-import {Message, SenderType} from 'httpclient';
+import {Conversation, Message, SenderType} from 'httpclient';
 
 import {StateModel} from '../../../../reducers';
 import {MessageById} from '../../../../reducers/data/messages';
@@ -11,13 +10,11 @@ import {MessageById} from '../../../../reducers/data/messages';
 import MessageListItem from '../MessengerListItem';
 
 import {listMessages} from '../../../../actions/messages';
-import {allConversationSelector} from '../../../../selectors/conversations';
 
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
 
-type MessageListProps = {conversationId: string} & ConnectedProps<typeof connector> &
-  RouteComponentProps<{conversationId: string}>;
+type MessageListProps = {conversation: Conversation} & ConnectedProps<typeof connector>;
 
 const messagesMapToArray = (
   messageInfo: {[conversationId: string]: MessageById},
@@ -30,10 +27,9 @@ const messagesMapToArray = (
   return [];
 };
 
-const mapStateToProps = (state: StateModel, ownProps: {conversationId: string}) => {
+const mapStateToProps = (state: StateModel, ownProps: {conversation: Conversation}) => {
   return {
-    conversations: allConversationSelector(state),
-    messages: messagesMapToArray(state.data.messages.all, ownProps.conversationId),
+    messages: messagesMapToArray(state.data.messages.all, ownProps.conversation && ownProps.conversation.id),
   };
 };
 
@@ -44,21 +40,13 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const MessageList = (props: MessageListProps) => {
-  const {conversations, listMessages, messages} = props;
-  const conversationIdParams = useParams();
-  const currentConversationId = conversationIdParams[Object.keys(conversationIdParams)[0]];
-  const [currentConversation, setCurrentConversation] = useState(null);
-
+  const {listMessages, messages, conversation} = props;
   const messageListRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    currentConversationId && listMessages(currentConversationId);
+    conversation && listMessages(conversation.id);
     scrollBottom();
-  }, [currentConversationId]);
-
-  useEffect(() => {
-    setCurrentConversation(conversations.find(item => item && item.id === currentConversationId));
-  }, [currentConversationId, conversations]);
+  }, [conversation && conversation.id]);
 
   const scrollBottom = () => {
     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
@@ -87,18 +75,19 @@ const MessageList = (props: MessageListProps) => {
         const nextIsSameUser = nextMessage ? isContact(message) == isContact(nextMessage) : false;
 
         return (
-          <>
+          <div key={message.id}>
             {hasDateChanged(prevMessage, message) && (
-              <div className={styles.dateHeader}>{formatDateOfMessage(message)}</div>
+              <div key={`date-${message.id}`} className={styles.dateHeader}>
+                {formatDateOfMessage(message)}
+              </div>
             )}
             <MessageListItem
-              key={message.id}
-              conversation={currentConversation}
+              conversation={conversation}
               message={message}
               showAvatar={!prevWasContact && isContact(message)}
               showSentAt={!nextIsSameUser}
             />
-          </>
+          </div>
         );
       })}
     </div>

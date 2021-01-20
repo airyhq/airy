@@ -1,34 +1,27 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Tag as TagModel} from 'httpclient';
-import {TagSettings} from '../../types';
+import {Settings} from '../../reducers/data/settings';
 
-import close from '../../assets/images/icons/close.svg';
-import styles from './Tag.module.scss';
+import {ReactComponent as Close} from '../../assets/images/icons/close.svg';
+import styles from './index.module.scss';
 import {RootState} from '../../reducers';
 
 type TagProps = {
   tag: TagModel;
   expanded?: boolean;
   onClick?: () => void;
-  removeTagFromContact?: () => void;
+  removeTag?: () => void;
   variant?: 'default' | 'light';
   type?: string;
 };
 
 type tagState = {
-  tagSettings: TagSettings;
+  settings: Settings;
 };
 
-export const Tag = ({
-  tag,
-  expanded,
-  variant,
-  onClick,
-  removeTagFromContact,
-  tagSettings,
-}: TagProps & tagState): JSX.Element => {
-  const tagColor = (tagSettings && tagSettings.colors[tag.color]) || {
+export const Tag = ({tag, expanded, variant, onClick, removeTag, settings}: TagProps & tagState): JSX.Element => {
+  const tagColor = (settings && settings.colors[tag.color]) || {
     background: 'F1FAFF',
     border: '1578D4',
     default: '1578D4',
@@ -50,14 +43,12 @@ export const Tag = ({
   return (
     <div className={styles.tag} onClick={onClick}>
       <div
-        className={`${styles.tagInner} ${onClick ? styles.clickable : ''} ${
-          removeTagFromContact ? styles.isRemovable : ''
-        }`}
+        className={`${styles.tagInner} ${onClick ? styles.clickable : ''} ${removeTag ? styles.isRemovable : ''}`}
         style={tagStyle()}>
         <span className={`${expanded === true ? styles.tagNameExpanded : styles.tagName}`}>{tag.name}</span>
-        {removeTagFromContact && (
-          <span className={styles.removeTag} onClick={removeTagFromContact}>
-            <img className={styles.closeButton} src={close} title="Delete" />
+        {removeTag && (
+          <span className={styles.removeTag} onClick={removeTag}>
+            <Close className={styles.closeButton} title="Delete" />
           </span>
         )}
       </div>
@@ -67,7 +58,7 @@ export const Tag = ({
 
 const mapStateToProps = (state: RootState) => {
   return {
-    tagSettings: state.data.settings,
+    settings: state.data.settings,
   };
 };
 

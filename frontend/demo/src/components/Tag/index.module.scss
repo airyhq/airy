@@ -34,13 +34,9 @@
 }
 
 .closeButton {
-  display: inline-block;
-  padding-left: 4px;
-
-  svg {
-    path {
-      fill: #fff;
-    }
+  margin-left: 4px;
+  path {
+    fill: #fff;
   }
 }
 

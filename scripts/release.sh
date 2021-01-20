@@ -65,6 +65,7 @@ merge_develop() {
     command git pull origin develop
     command git merge --no-ff release/${release_number}
     command git push origin develop
+    command git push origin release/${release_number}
     echo -e "Successfully merged into develop branch\n"
 }
 

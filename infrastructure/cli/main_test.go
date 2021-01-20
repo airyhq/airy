@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os/exec"
 	"testing"
 
@@ -18,11 +17,9 @@ func TestCli(t *testing.T) {
 		golden  string
 		wantErr bool
 	}{
-		{"no args", []string{}, "cli.no-args.golden", false},
-		{"auth", []string{"auth", "--config", "pkg/tests/golden/airycli.yaml"}, "cli.auth.golden", false},
-		{"auth", []string{"auth", "--config", "pkg/tests/golden/airycli.yaml", "--email", "grace@example.com"}, "cli.auth.golden", false},
-		{"auth", []string{"auth", "--config", "pkg/tests/golden/airycli.yaml", "--email", "grace@example.com", "--password", "examplepassword"}, "cli.auth.golden", false},
-		{"version", []string{"version", "--config", "pkg/tests/golden/airycli.yaml"}, "cli.version.golden", false},
+		{"no args", []string{}, "cli.no-args", false},
+		{"login", []string{"api", "login", "--config", "pkg/tests/golden/cli.yaml"}, "cli.login", false},
+		{"version", []string{"version", "--config", "pkg/tests/golden/cli.yaml"}, "cli.version", false},
 	}
 
 	go func() {
@@ -33,13 +30,10 @@ func TestCli(t *testing.T) {
 		t.Run(tt.name, func(testing *testing.T) {
 			cmd := exec.Command(binaryName, tt.args...)
 			output, err := cmd.CombinedOutput()
-
-			if (err != nil) != tt.wantErr {
-				t.Fatalf("Test expected to fail: %t. Did the test pass: %t. Error message: %v\n", tt.wantErr, err == nil, err)
-			}
-			fmt.Println(output)
-
 			actual := string(output)
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("Test %s expected to fail: %t. Did the test pass: %t. Error message: %v Output: %s\n", tt.name, tt.wantErr, err == nil, err, actual)
+			}
 			golden := airytests.NewGoldenFile(t, tt.golden)
 			expected := golden.Load()
 

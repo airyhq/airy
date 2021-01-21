@@ -14,7 +14,7 @@ func TestVersion(t *testing.T) {
 		golden  string
 		wantErr bool
 	}{
-		{"version", []string{"version", "--config", "golden/cli.yaml"}, "cli.version", false},
+		{"version", []string{"version", "--cli-config", "golden/cli.yaml"}, "cli.version", false},
 	}
 
 	for _, tt := range tests {

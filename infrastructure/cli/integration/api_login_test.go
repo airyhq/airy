@@ -14,7 +14,7 @@ func TestApiLogin(t *testing.T) {
 		golden  string
 		wantErr bool
 	}{
-		{"login", []string{"api", "login", "--config", "golden/cli.yaml"}, "cli.login", false},
+		{"login", []string{"api", "login", "--cli-config", "golden/cli.yaml"}, "cli.login", false},
 	}
 	ms := NewMockServer(t)
 

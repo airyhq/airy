@@ -2,6 +2,7 @@ package co.airy.core.sources.google;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.stream.Stream;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class WebhookEvent {
     private String agent;
 
@@ -36,7 +38,8 @@ public class WebhookEvent {
 
     @JsonIgnore
     public boolean hasMessage() {
-        return this.message != null;
+        // since suggestion responses can be rendered, we consider them messages
+        return this.message != null || this.suggestionResponse != null;
     }
 
     @JsonIgnore

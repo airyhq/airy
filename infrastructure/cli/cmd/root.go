@@ -15,14 +15,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-const configFileName = "cli.yaml"
-const configDirName = ".airy"
+const cliConfigFileName = "cli.yaml"
+const cliConfigDirName = ".airy"
 
-var configFile string
+var cliConfigFile string
 var Version string
 var CommitSHA1 string
 
-// RootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:              "airy",
 	Short:            "airy controls your Airy Core Platform instance",
@@ -35,7 +34,6 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-// Version command
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Prints version information",
@@ -45,7 +43,6 @@ var versionCmd = &cobra.Command{
 	},
 }
 
-// Version command
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Inits your Airy CLI configuration",
@@ -57,7 +54,7 @@ var initCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		configDirPath := path.Join(home, configDirName)
+		configDirPath := path.Join(home, cliConfigDirName)
 
 		if _, errConfigDir := os.Stat(configDirPath); os.IsNotExist(errConfigDir) {
 			errDir := os.MkdirAll(configDirPath, 0700)
@@ -67,16 +64,13 @@ var initCmd = &cobra.Command{
 			}
 		}
 
-		err = viper.WriteConfigAs(path.Join(home, configDirName, configFileName))
+		err = viper.WriteConfigAs(path.Join(home, cliConfigDirName, cliConfigFileName))
 		if err != nil {
 			fmt.Println("cannot write config: ", err)
 		}
 	},
 }
 
-// Execute adds all child commands to the root command and sets flags
-// appropriately. This is called by main.main(). It only needs to happen once to
-// the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -85,8 +79,8 @@ func Execute() {
 }
 
 func initConfig() {
-	if configFile != "" {
-		viper.SetConfigFile(configFile)
+	if cliConfigFile != "" {
+		viper.SetConfigFile(cliConfigFile)
 	} else {
 		home, err := homedir.Dir()
 		if err != nil {
@@ -94,9 +88,9 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		viper.AddConfigPath(path.Join(home, configDirName))
+		viper.AddConfigPath(path.Join(home, cliConfigDirName))
 		viper.SetConfigType("yaml")
-		viper.SetConfigName(configFileName)
+		viper.SetConfigName(cliConfigFileName)
 	}
 
 	if err := viper.ReadInConfig(); err != nil {
@@ -121,8 +115,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&apiJWTToken, "apiJWTToken", "", "", "apiJWTToken")
 	rootCmd.PersistentFlags().MarkHidden("apiJWTToken")
 	viper.BindPFlag("apiJWTToken", rootCmd.PersistentFlags().Lookup("apiJWTToken"))
-
-	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.airy/cli.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cliConfigFile, "cli-config", "", "config file (default is $HOME/.airy/cli.yaml)")
 	rootCmd.AddCommand(api.APICmd)
 	rootCmd.AddCommand(config.ConfigCmd)
 	rootCmd.AddCommand(status.StatusCmd)

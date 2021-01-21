@@ -37,6 +37,14 @@ export default function messagesReducer(state = initialState, action: Action): a
           [action.payload.conversationId]: organiseMessages(action.payload.messages),
         },
       };
+      case getType(actions.sendMessagesAction):
+      return {
+        ...state,
+        all: {
+          ...state.all,
+          [action.payload.conversationId]: action.payload.message,
+        },
+      };
     default:
       return state;
   }

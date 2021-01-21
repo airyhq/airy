@@ -1,4 +1,4 @@
-package tests
+package integration
 
 import (
 	"io/ioutil"
@@ -22,7 +22,7 @@ func Diff(expected, actual interface{}) []string {
 
 // NewGoldenFile function
 func NewGoldenFile(t *testing.T, name string) *TestFile {
-	return &TestFile{t: t, name: name + ".golden", dir: "./pkg/tests/golden/"}
+	return &TestFile{t: t, name: name + ".golden", dir: "./golden/"}
 }
 
 func (tf *TestFile) path() string {

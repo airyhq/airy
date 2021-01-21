@@ -1,5 +1,5 @@
 # gazelle:prefix cli
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "cli_lib",
@@ -33,17 +33,6 @@ os_list = [
     )
     for os in os_list
 ]
-
-go_test(
-    name = "cli_test",
-    srcs = ["main_test.go"],
-    data = [
-        "airy",
-        "//infrastructure/cli/pkg/tests/golden:golden_files",
-    ],
-    embed = [":cli_lib"],
-    deps = ["//infrastructure/cli/pkg/tests"],
-)
 
 [
     genrule(

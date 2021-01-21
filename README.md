@@ -37,7 +37,7 @@ You can then use Airy to:
  - **Mediate open requests with Agents via our messaging UI**
  - **Analyze your conversations**
 
-Since Airy's infrastructue is built around Apache Kafka, it can process a large amount of conversations and messages simultaneously and stream the relevant conversational data to wherever you need it. 
+Since Airy's infrastructure is built around Apache Kafka, it can process a large amount of conversations and messages simultaneously and stream the relevant conversational data to wherever you need it. 
 
 Learn more about what we open-sourced in the 
 [announcement blog post](https://airy.co/blog/what-we-open-sourced).

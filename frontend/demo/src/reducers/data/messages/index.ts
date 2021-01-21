@@ -42,7 +42,10 @@ export default function messagesReducer(state = initialState, action: Action): a
         ...state,
         all: {
           ...state.all,
-          [action.payload.conversationId]: action.payload.message,
+          [action.payload.conversationId]: {
+            ...state.all[action.payload.conversationId],
+            ...organiseMessages([action.payload.message])
+          },
         },
       };
     default:

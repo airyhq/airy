@@ -1,10 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
+import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styles from './index.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import {ReactComponent as Paperplane} from '../../../assets/images/icons/paperplane.svg';
 
-const InputBar = () => {
+const mapDispatchToProps = {sendMessages};
+const InputBar = props => {
   const [input, setInput] = useState('');
   const textareaRef = useRef(null);
 
@@ -37,7 +39,7 @@ const InputBar = () => {
           type="submit"
           onClick={e => {
             e.preventDefault();
-            sendMessages(currentConversationId, {text: input, type: 'text'});
+            props.sendMessages(currentConversationId, {text: input, type: 'text'}).then(() => setInput(''));
           }}>
           <div className={styles.sendButtonText}>
             <Paperplane />
@@ -47,4 +49,4 @@ const InputBar = () => {
     </form>
   );
 };
-export default InputBar;
+export default connect(null, mapDispatchToProps)(InputBar);

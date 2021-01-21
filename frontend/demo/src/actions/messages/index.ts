@@ -38,10 +38,10 @@ export function listMessages(conversationId: string) {
 }
 export function sendMessages(conversationId:string, message: {text: string, type: string}) {
   return async (dispatch: Dispatch<any>) => {
+    debugger;
     const requestPayload: SendMessagesRequestPayload = {conversation_id: conversationId, message }
     return HttpClientInstance.sendMessages(requestPayload)
       .then((response: Message) => {
-        debugger;
         dispatch(
           sendMessagesAction({
             conversationId,
@@ -54,4 +54,5 @@ export function sendMessages(conversationId:string, message: {text: string, type
         return Promise.reject(error);
       });
   };
-}
+} 
+

@@ -1,13 +1,10 @@
 export interface ConversationFilter {
-  channelIds?: Array<String>;
-  contactTagIds?: Array<String>;
-  state?: ConversationStateEnum;
-  minUnreadMessageCount?: number;
-  maxUnreadMessageCount?: number;
-  displayName?: string;
-}
-
-export enum ConversationStateEnum {
-  open = 'OPEN',
-  closed = 'CLOSED',
-}
+    readOnly?: boolean;   
+    unreadOnly?: boolean;   
+    displayName?: string;
+    createdAt?: string;
+    byTags?: Array<string>;
+    byChannel?: Array<string>;
+    bySource?: Array<string>
+  }
+  

@@ -157,7 +157,7 @@ function filteredReducer(
   state: FilteredState = {
     items: {},
     metadata: {previousCursor: null, nextCursor: null, total: 0},
-    currentFilter: {},
+    currentFilter: '',
   },
   action: FilterAction | Action
 ): FilteredState {
@@ -175,7 +175,7 @@ function filteredReducer(
         metadata: action.payload.metadata,
       };
     case getType(filterActions.resetFilteredConversationAction):
-      return {items: {}, metadata: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: {}};
+      return {items: {}, metadata: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: ''};
     case getType(filterActions.updateFilteredConversationsAction):
       return {
         ...state,

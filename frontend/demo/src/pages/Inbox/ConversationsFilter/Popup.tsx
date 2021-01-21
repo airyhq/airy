@@ -3,7 +3,9 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {sortBy} from 'lodash-es';
 
 import {SearchField, LinkButton, Button} from '@airyhq/components';
-import {Tag as TagModel, Channel, listTags} from 'httpclient';
+import {Tag as TagModel, Channel} from 'httpclient';
+
+import {listTags} from '../../../actions/tags'
 
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
 
@@ -14,10 +16,8 @@ import DialogCustomizable from '../../../components/DialogCustomizable';
 import Tag from '../../Tags/Tag';
 
 import {ReactComponent as CheckmarkIcon} from '../../../assets/images/icons/checkmark.svg';
-import {ReactComponent as ConversationDone} from '../../../assets/images/icons/checkmark-circle.svg';
 
 import styles from './Popup.module.scss';
-import { ConversationStateEnum } from '../../../../../../lib/typescript/httpclient/model/ConversationFilter';
 
 function mapStateToProps(state: StateModel) {
   return {
@@ -62,65 +62,49 @@ const PopUpFilter = (props: PopUpFilterProps) => {
 
   const toggleReadOnly = e => {
     e.stopPropagation();
-    if (filter.maxUnreadMessageCount !== 0) {
-      setFilter({maxUnreadMessageCount: 0, minUnreadMessageCount: undefined});
+    if (!filter.includes('unread_count:0')) {
+      setFilter('unread_count:<0');
     } else {
-      setFilter({maxUnreadMessageCount: undefined, minUnreadMessageCount: undefined});
+      setFilter('unread_count:0');
     }
   };
 
   const toggleUnreadOnly = e => {
     e.stopPropagation();
-    if (filter.minUnreadMessageCount !== 1) {
-      setFilter({maxUnreadMessageCount: undefined, minUnreadMessageCount: 1});
-    } else {
-      setFilter({maxUnreadMessageCount: undefined, minUnreadMessageCount: undefined});
-    }
-  };
-
-  const toggleOpenOnly = e => {
     e.stopPropagation();
-    if (filter.state !== ConversationStateEnum.open) {
-      setFilter({state: ConversationStateEnum.open});
+    if (filter.includes('unread_count:0')) {
+      setFilter('unread_count:<0');
     } else {
-      setFilter({state: undefined});
+      setFilter('unread_count:0');
     }
   };
 
-  const toggleDoneOnly = e => {
-    e.stopPropagation();
-    if (filter.state !== ConversationStateEnum.closed) {
-      setFilter({state: ConversationStateEnum.closed});
-    } else {
-      setFilter({state: undefined});
-    }
-  };
-
-  const isChannelSelected = (channel: Channel) => (filter.channelIds || []).includes(channel.id);
+  const isChannelSelected = (channel: Channel) => false;
 
   const toggleChannel = (e, channel: Channel) => {
     e.stopPropagation();
-    const channels = filter.channelIds || [];
-    if (isChannelSelected(channel)) {
-      channels.splice(channels.indexOf(channel.id), 1);
-    } else {
-      channels.push(channel.id);
-    }
-    setFilter({channelIds: channels});
+    // const channels = filter.channelIds || [];
+    // if (isChannelSelected(channel)) {
+    //   channels.splice(channels.indexOf(channel.id), 1);
+    // } else {
+    //   channels.push(channel.id);
+    // }
+    // setFilter({channelIds: channels});
   };
 
   const isTagSelected = (tag: TagModel) => {
-    return (filter.contactTagIds || []).includes(tag.id);
+    // return (filter.contactTagIds || []).includes(tag.id);
+    return false;
   };
 
   const toggleTag = (tag: TagModel) => {    
-    const contactTags = filter.contactTagIds || [];
-    if (isTagSelected(tag)) {
-      contactTags.splice(contactTags.indexOf(tag.id), 1);
-    } else {
-      contactTags.push(tag.id);
-    }
-    setFilter({contactTagIds: contactTags});
+    // const contactTags = filter.contactTagIds || [];
+    // if (isTagSelected(tag)) {
+    //   contactTags.splice(contactTags.indexOf(tag.id), 1);
+    // } else {
+    //   contactTags.push(tag.id);
+    // }
+    // setFilter({contactTagIds: contactTags});
   };
 
   return (
@@ -134,34 +118,17 @@ const PopUpFilter = (props: PopUpFilterProps) => {
             <h3>Read/Unread</h3>
             <div className={styles.filterRow}>
               <button
-                className={filter.maxUnreadMessageCount === 0 ? styles.filterButtonSelected : styles.filterButton}
+                className={filter.includes('unread_count:0') ? styles.filterButtonSelected : styles.filterButton}
                 onClick={e => toggleReadOnly(e)}>
                 Read Only
               </button>
               <button
-                className={filter.minUnreadMessageCount === 1 ? styles.filterButtonSelected : styles.filterButton}
+                className={filter.includes('unread_count:<0') ? styles.filterButtonSelected : styles.filterButton}
                 onClick={e => toggleUnreadOnly(e)}>
                 Unread Only
               </button>
             </div>
-          </div>
-          <div className={styles.filterItem}>
-            <h3>State</h3>
-            <div className={styles.filterRow}>
-              <button
-                className={filter.state === 'OPEN' ? styles.filterButtonSelected : styles.filterButton}
-                onClick={e => toggleOpenOnly(e)}>
-                <div className={styles.openIcon} />
-                Open
-              </button>
-              <button
-                className={filter.state === 'CLOSED' ? styles.filterButtonSelected : styles.filterButton}
-                onClick={e => toggleDoneOnly(e)}>
-                <ConversationDone aria-hidden />
-                Done
-              </button>
-            </div>
-          </div>
+          </div>          
         </div>
         <div className={styles.filterColumn}>
           <h3>By Tags</h3>

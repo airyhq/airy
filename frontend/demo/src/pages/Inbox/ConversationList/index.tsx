@@ -74,17 +74,22 @@ const ConversationList = (props: ConversationListProps) => {
   };
 
   const renderConversationList = () => {
-    const {conversations, filteredConversations, conversationsMetadata, filteredMetadata, loading, listNextConversations} = props;
+    const {conversations, filteredConversations, conversationsMetadata, filteredMetadata, currentFilter, loading, listNextConversations} = props;
 
-    const items = filteredMetadata.loaded ? filteredConversations : conversations;;
-    const metadata = filteredMetadata.loaded ? filteredMetadata : conversationsMetadata;
+    const hasFilter = Object.keys(currentFilter || {}).length > 0;
+    const items = hasFilter ? filteredConversations : conversations;;
+    const metadata = hasFilter ? filteredMetadata : conversationsMetadata;
     const hasMoreData = metadata.nextCursor && metadata.nextCursor.length > 0;
+
+    console.log(hasFilter);
 
     const isItemLoaded = (index: number) => index < items.length;
     const itemCount = hasMoreData ? items.length + 1 : items.length;
     const loadMoreItems = () => {
       if (!metadata.loading) {
-        listNextConversations();
+        hasFilter 
+        ? () => {}
+        : listNextConversations();
       }
       return Promise.resolve(true);
     };

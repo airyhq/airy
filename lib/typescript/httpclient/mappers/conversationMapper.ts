@@ -8,9 +8,7 @@ export const conversationMapper = (payload: ConversationPayload): Conversation =
   createdAt: payload.created_at,
   contact: {
     avatarUrl: payload.contact.avatar_url,
-    firstName: payload.contact.first_name,
-    lastName: payload.contact.last_name,
-    displayName: payload.contact.first_name + ' ' + payload.contact.last_name,
+    displayName: payload.contact.display_name,
     id: payload.contact.id,
   },
   tags: payload.tags,

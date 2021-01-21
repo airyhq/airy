@@ -44,9 +44,6 @@ function mergeConversations(
   newConversations: MergedConversation[]
 ): ConversationMap {
   newConversations.forEach((conversation: MergedConversation) => {
-    if (conversation.contact && !conversation.contact.displayName) {
-      conversation.contact.displayName = `${conversation.contact.firstName} ${conversation.contact.lastName}`;
-    }
     if (conversation.lastMessage) {
       conversation.lastMessage.sentAt = new Date(conversation.lastMessage.sentAt);
     }

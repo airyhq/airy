@@ -36,7 +36,7 @@ Incoming payloads notify connected clients that a message was created or updated
       // Determines the schema of the content
     },
     // typed source message model
-    "state": "{String}",
+    "delivery_state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     "sender_type": "{string/enum}",
     // See glossary

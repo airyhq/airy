@@ -5,6 +5,10 @@ package(default_visibility = ["//visibility:public"])
 ts_library(
     name = "types",
     srcs = glob([
-        "**/*.d.ts",
+        "**/*.ts",
     ]),
+    deps = [
+        "@npm//@types/react",
+        "@npm//@types/react-dom",
+    ],
 )

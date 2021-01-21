@@ -121,7 +121,7 @@ public class ChatControllerTest {
         final CompletableFuture<MessageUpsertPayload> messageFuture = subscribe(token, port, MessageUpsertPayload.class, QUEUE_MESSAGE);
 
         final String messageText = "answer is 42";
-        String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\" }}";
+        String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\", \"type\":\"text\" }}";
         retryOnException(() -> mvc.perform(post("/chatplugin.send")
                                 .headers(buildHeaders(token))
                                 .content(sendMessagePayload))
@@ -150,7 +150,7 @@ public class ChatControllerTest {
         final String authToken = jsonNode.get("token").textValue();
 
         final String messageText = "Talk to you later!";
-        final String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\" }}";
+        final String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\", \"type\":\"text\" }}";
         mvc.perform(post("/chatplugin.send")
                 .headers(buildHeaders(authToken))
                 .content(sendMessagePayload))

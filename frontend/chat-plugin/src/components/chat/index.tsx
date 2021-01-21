@@ -78,13 +78,10 @@ const Chat = (props: Props) => {
       }
     },
     sendMessage: (text: string) => {
-      ws.onSend(
-        JSON.stringify({
-          message: {
-            text,
-          },
-        })
-      );
+      ws.onSend({
+        text,
+        type: 'text',
+      });
     },
   };
 

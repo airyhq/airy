@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {filter} from 'lodash-es';
 
-import {ConversationFilter, ConversationStateEnum} from 'httpclient';
 import {StateModel} from '../../../reducers';
 
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
@@ -57,51 +56,38 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     return getActiveFilterCount() === 1;
   };
 
-  const isFilterOpenActive = () => {
-    return conversationsFilter.state === 'OPEN' && isOnlyOneFilterActive();
-  };
-
   const isFilterUnreadActive = () => {
-    return conversationsFilter.minUnreadMessageCount > 0 && isOnlyOneFilterActive();
+    return conversationsFilter.includes('unread_count:<0') && isOnlyOneFilterActive();
   };
 
   const isFilterButtonActive = () => {
     return (
-      getActiveFilterCount() > 1 ||
-      conversationsFilter.state === 'CLOSED' ||
-      conversationsFilter.maxUnreadMessageCount === 0 ||
-      (conversationsFilter.contactTagIds && conversationsFilter.contactTagIds.length > 0) ||
-      (conversationsFilter.channelIds && conversationsFilter.channelIds.length > 0)
+      getActiveFilterCount() > 1 ||      
+      conversationsFilter.includes('unread_count:0') 
+      // (conversationsFilter.contactTagIds && conversationsFilter.contactTagIds.length > 0) ||
+      // (conversationsFilter.channelIds && conversationsFilter.channelIds.length > 0)
     );
   };
 
   const activateUnreadFilter = () => {
     resetFilter();
-    setFilter({minUnreadMessageCount: 1});
-  };
-
-  const activateOpenFilter = () => {
-    resetFilter();
-    setFilter({state: ConversationStateEnum.open});
+    setFilter('unread_count:<0');
   };
 
   const renderFilterStatus = () => {
     const activeFilters = [];
-    if (conversationsFilter.maxUnreadMessageCount === 0) {
+    if (conversationsFilter.readOnly) {
       activeFilters.push('Read');
     }
-    if (conversationsFilter.minUnreadMessageCount === 1) {
+    if (conversationsFilter.unreadOnly) {
       activeFilters.push('Unread');
     }
-    if (conversationsFilter.state) {
-      activeFilters.push(conversationsFilter.state === 'OPEN' ? 'Open' : 'Done');
-    }
-    if (conversationsFilter.contactTagIds && conversationsFilter.contactTagIds.length > 0) {
-      activeFilters.push('Tags', {count: conversationsFilter.contactTagIds.length});
-    }
-    if (conversationsFilter.channelIds && conversationsFilter.channelIds.length > 0) {
-      activeFilters.push('Channels', {count: conversationsFilter.channelIds.length});
-    }
+    // if (conversationsFilter.contactTagIds && conversationsFilter.contactTagIds.length > 0) {
+    //   activeFilters.push('Tags', {count: conversationsFilter.contactTagIds.length});
+    // }
+    // if (conversationsFilter.channelIds && conversationsFilter.channelIds.length > 0) {
+    //   activeFilters.push('Channels', {count: conversationsFilter.channelIds.length});
+    // }
 
     return (
       <div className={styles.filterHintRow}>
@@ -133,9 +119,9 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
 
     if (conversationsMetadata.total) {
       return (
-        <div className={styles.filterCount}>
-          "messenger.filter.countUnfiltered"
-          {formatter.format(filteredMetadata.filteredTotal || conversationsMetadata.total)}
+        <div className={styles.filterCount}>          
+          {formatter.format(filteredMetadata.filteredTotal || conversationsMetadata.total)} 
+          Conversations
         </div>
       );
     }
@@ -160,11 +146,6 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
               onClick={activateUnreadFilter}
               className={`${styles.shortcutButton} ${isFilterUnreadActive() ? styles.shortcutButtonActive : ''}`}>
               Unread
-            </button>
-            <button
-              onClick={activateOpenFilter}
-              className={`${styles.shortcutButton} ${isFilterOpenActive() ? styles.shortcutButtonActive : ''}`}>
-              Open
             </button>
           </div>
         )}

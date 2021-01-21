@@ -64,6 +64,7 @@ public class Connector {
     }
 
     public boolean needsMetadataFetched(Conversation conversation) {
+        log.info("Should fetch metadata for conversation {}", conversation);
         final Map<String, String> metadata = conversation.getMetadata();
         final String fetchState = metadata.get(MetadataKeys.Source.Contact.FETCH_STATE);
 
@@ -71,6 +72,7 @@ public class Connector {
     }
 
     public List<KeyValue<String, Metadata>> fetchMetadata(String conversationId, Conversation conversation) {
+        log.info("Fetch metadata for conversation {}", conversation);
         final UserProfile profile = getProfile(conversation);
 
         final List<KeyValue<String, Metadata>> recordList = new ArrayList<>();

@@ -56,8 +56,7 @@ public class Mapper {
 
         return ContactResponsePayload.builder()
                 .avatarUrl(metadata.get(MetadataKeys.Source.Contact.AVATAR_URL))
-                .firstName(displayName.getFirstName())
-                .lastName(displayName.getLastName())
+                .displayName(displayName.toString())
                 .info(getConversationInfo(metadata))
                 .build();
     }

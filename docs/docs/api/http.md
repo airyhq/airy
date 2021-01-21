@@ -144,9 +144,7 @@ Find users whose name ends with "Lovelace":
       "contact": {
         // Additional data on the contact
         "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
-        "first_name": "Airy Support",
-        "last_name": null,
-        "id": "36d07b7b-e242-4612-a82c-76832cfd1026"
+        "display_name": "Airy Support"
       },
       "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
       "last_message": {
@@ -202,13 +200,8 @@ Find users whose name ends with "Lovelace":
   },
   "created_at": "2019-01-07T09:01:44.000Z",
   "contact": {
-    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
-    // optional
-    "first_name": "Airy Support",
-    // optional
-    "last_name": null,
-    // optional
-    "id": "36d07b7b-e242-4612-a82c-76832cfd1026"
+    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg", // optional
+    "display_name": "Airy Support" // optional
   },
   "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
   "last_message": {

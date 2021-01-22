@@ -14,7 +14,7 @@ web_app(
     name = "bundle",
     app_lib = ":app",
     entry = "frontend/chat-plugin/src/iframe.js",
-    index = ":index.html",
+    index = ":development.html",
     module_deps = module_deps,
 )
 

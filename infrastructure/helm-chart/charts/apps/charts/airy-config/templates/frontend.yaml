@@ -1,9 +1,0 @@
-# Dummy configmap so that frontend deployments can be started by the controller
-# TODO remove once there is an annotation
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: frontend-config
-  namespace: {{ .Values.global.namespace }}
-data:
-  dummy: "blank"

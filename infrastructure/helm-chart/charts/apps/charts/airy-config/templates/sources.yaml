@@ -2,6 +2,14 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: sources-chatplugin
+  namespace: {{ .Values.global.namespace }}
+data:
+  JWT_SECRET: {{ randAlphaNum 128 | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: sources-facebook
   namespace: {{ .Values.global.namespace }}
 data:

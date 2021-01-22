@@ -1,11 +1,68 @@
+<p align="center">
+  <img src="https://global-uploads.webflow.com/5e9d5014fb5d85233d05fa23/5ea6ab4327484b79bdb4cea4_airy_primary_rgb.svg" alt="Airy-logo" width="240">
+
+
+  <div align="center">The open source, fully-featured, production ready</div>
+  <div align="center">Messaging platform</div>
+</p>
+
+
+
 # Airy Core Platform
 
-The Airy Core Platform is an open source, fully-featured, production ready
-messaging platform to process conversational data from a variety of sources
-(like Facebook Messenger, Google Business Messages, Website Live Chat, and
-more).
+[![Join the chat on Airy community](https://img.shields.io/badge/forum-join%20discussions-brightgreen.svg)](https://airy.co/community/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Documentation Status](https://img.shields.io/badge/docs-stable-brightgreen.svg)](https://docs.airy.co/)
+[![Commit Frequency](https://img.shields.io/github/commit-activity/m/airyhq/airy)](https://docs.airy.co/)
+[![License](https://img.shields.io/github/license/airyhq/airy)](https://docs.airy.co/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/airyhq/airy/projects)
 
-- [Airy Core Platform](#airy-core-platform)
+
+The Airy Core Platform is an open source, fully-featured, production ready
+messaging platform.
+With Airy you can process conversational data from a variety of sources:
+
+ - **Facebook**
+ - **WhatsApp**
+ - **Google's Business Messages**
+ - **SMS**
+ - **Website Chat Plugins**
+ - **Twilio**
+ - **Your own conversational channels**
+
+You can then use Airy to:
+
+ - **Unify your messaging channels**
+ - **Stream your conversational data wherever you want**
+ - **Integrate with different NLP frameworks**
+ - **Mediate open requests with Agents via our messaging UI**
+ - **Analyze your conversations**
+
+Since Airy's infrastructure is built around Apache Kafka, it can process a
+large amount of conversations and messages simultaneously and stream the
+relevant conversational data to wherever you need it.
+
+Learn more about what we open-sourced in the
+[announcement blog post](https://airy.co/blog/what-we-open-sourced).
+
+## About Airy
+
+- **What does Airy do? 🚀**
+  [Learn more on our Website](https://airy.co/developers)
+
+- **I'm new to Airy 😄**
+  [Get Started with Airy](https://docs.airy.co/)
+
+- **I'd like to read the detailed docs 📖**
+  [Read The Docs](https://docs.airy.co/)
+
+- **I'm ready to install Airy ✨**
+  [Installation](https://docs.airy.co/)
+
+- **I have a question ❓**
+  [The Airy Community will help](https://airy.co/community)
+
+- **Or continue reading the Read Me**
+
   - [Getting started](#getting-started)
   - [Components](#components)
   - [Organization of the Repository](#organization-of-the-repository)

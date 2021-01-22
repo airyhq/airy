@@ -16,8 +16,6 @@ import java.util.Map;
 import static java.util.stream.Collectors.toMap;
 
 public class DocumentMapper {
-    final ObjectMapper objectMapper = new ObjectMapper();
-
     public Document fromConversationIndex(ConversationIndex conversation) {
         final Document document = new Document();
         document.add(new StringField("id", conversation.getId(), Field.Store.YES));

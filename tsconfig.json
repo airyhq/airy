@@ -22,6 +22,18 @@
       "components/*": [
         "./frontend/components/src/*"
       ],
+      "types": [
+        "./lib/typescript/types"
+      ],
+      "types/*": [
+        "./lib/typescript/types/*"
+      ],
+      "httpclient": [
+        "./lib/typescript/httpclient"
+      ],
+      "httpclient/*": [
+        "./lib/typescript/httpclient/*"
+      ],
       "*": [
         "./*"
       ]

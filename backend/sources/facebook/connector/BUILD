@@ -4,11 +4,13 @@ load("//tools/build:container_push.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
+    "//:springboot_actuator",
     "//backend/model/channel",
     "//backend/model/message",
     "//backend/model/metadata",
     "//lib/java/uuid",
     "//lib/java/log",
+    "//lib/java/mapping",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/kafka/core:spring-kafka-core",

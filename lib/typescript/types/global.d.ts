@@ -1,13 +1,6 @@
 /// <reference types="react" />
 /// <reference types="react-dom" />
 
-interface CustomNodeModule extends NodeModule {
-  hot: any;
-}
-
-// Hot Module Replacement
-declare let module: CustomNodeModule;
-
 declare module '*.gif' {
   const src: string;
   export default src;

@@ -1,0 +1,33 @@
+{
+  "sender": {
+    "id": "4616529495039079"
+  },
+  "recipient": {
+    "id": "778234505682382"
+  },
+  "timestamp": 1550050473934,
+  "message": {
+    "is_echo": true,
+    "app_id": 123,
+    "mid": "l9sIeXHGFbkAL5m62DbqF2nKw8PPGcoZ0ruggAoYBrnyu8w-rcnEazyvqHqp3VeTu8k3NK-N1fCnAdzcs9kcUw",
+    "seq": 85083,
+    "attachments": [
+      {
+        "title": "test",
+        "url": null,
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "sharable": true,
+          "elements": [
+            {
+              "title": "awdadw",
+              "image_url": "https://airy-layer-production.s3.amazonaws.com/templates/8787c530-2f72-11e9-867e-f7de52fd949f.jpeg",
+              "subtitle": "adww"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

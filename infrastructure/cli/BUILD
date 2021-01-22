@@ -1,5 +1,5 @@
 # gazelle:prefix cli
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_library(
     name = "cli_lib",
@@ -16,13 +16,30 @@ go_binary(
     visibility = ["//visibility:public"],
 )
 
-go_test(
-    name = "cli_test",
-    srcs = ["main_test.go"],
-    data = [
-        "airy",
-        "//infrastructure/cli/pkg/tests/golden:golden_files",
-    ],
-    embed = [":cli_lib"],
-    deps = ["//infrastructure/cli/pkg/tests"],
-)
+os_list = [
+    "linux",
+    "darwin",
+    "windows",
+]
+
+[
+    go_binary(
+        name = "airy_" + os,
+        out = "airy_" + os,
+        embed = [":cli_lib"],
+        goarch = "amd64",
+        goos = os,
+        visibility = ["//visibility:public"],
+    )
+    for os in os_list
+]
+
+[
+    genrule(
+        name = "airy_" + os + "_bin_rule",
+        srcs = [":airy_" + os],
+        outs = ["airy_" + os + "_bin"],
+        cmd = "cp $(SRCS) $@",
+    )
+    for os in os_list
+]

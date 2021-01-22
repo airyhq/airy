@@ -5,6 +5,7 @@ import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.File;
 import co.airy.mapping.model.Image;
+import co.airy.mapping.model.SourceTemplate;
 import co.airy.mapping.model.Text;
 import co.airy.mapping.model.Video;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -31,6 +32,7 @@ public class FacebookMapper implements SourceMapper {
             "audio", Audio::new,
             "file", File::new
     );
+
     @Override
     public List<String> getIdentifiers() {
         return List.of("facebook");
@@ -52,6 +54,12 @@ public class FacebookMapper implements SourceMapper {
                     .elements()
                     .forEachRemaining(attachmentNode -> {
                         final String attachmentType = attachmentNode.get("type").textValue();
+
+                        if (attachmentType.equals("template")) {
+                            contents.add(new SourceTemplate(attachmentNode.get("payload")));
+                            return;
+                        }
+
                         final String url = attachmentNode.get("payload").get("url").textValue();
 
                         final Content mediaContent = mediaContentFactory.get(attachmentType).apply(url);

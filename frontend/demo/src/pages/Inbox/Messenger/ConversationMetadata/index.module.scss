@@ -1,0 +1,66 @@
+@import '../../../../assets/scss/colors.scss';
+@import '../../../../assets/scss/fonts.scss';
+
+.content {
+  display: flex;
+  width: 290px;
+  height: auto;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #fff;
+  margin: 16px 8px 0 8px;
+  padding: 16px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.contact {
+  border-bottom: 1px solid var(--color-light-gray);
+  padding-bottom: 16px;
+}
+
+.avatarImage {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px auto;
+}
+
+.displayName {
+  @include font-m;
+  text-align: center;
+  color: var(--color-text-contrast);
+}
+
+.tags {
+  border-bottom: 1px solid var(--color-light-gray);
+  padding-bottom: 16px;
+}
+
+.tagsHeader {
+  display: flex;
+  margin: 8px 0;
+  justify-content: space-between;
+}
+
+.tagsHeaderTitle {
+  font-weight: bold;
+}
+
+.addTags {
+  padding: 8px;
+  width: 260px;
+}
+
+.addTagsRow {
+  display: flex;
+  margin: 4px 0;
+  justify-content: space-between;
+}
+
+.addTagsDescription {
+  margin: 8px 0;
+}
+
+.addTagsButtonRow {
+  margin: 8px 0;
+}

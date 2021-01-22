@@ -1,10 +1,9 @@
 import React, {useEffect, useState, createRef, useRef} from 'react';
-import {RouteComponentProps, useParams} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 import {debounce} from 'lodash-es';
 
-import {Message, SenderType} from 'httpclient';
+import {Conversation, Message, SenderType} from 'httpclient';
 
 import {StateModel} from '../../../../reducers';
 import {MessageById} from '../../../../reducers/data/messages';
@@ -12,13 +11,11 @@ import {MessageById} from '../../../../reducers/data/messages';
 import MessageListItem from '../MessengerListItem';
 
 import {listMessages, listPreviousMessages} from '../../../../actions/messages';
-import {allConversationSelector} from '../../../../selectors/conversations';
 
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
 
-type MessageListProps = {conversationId: string} & ConnectedProps<typeof connector> &
-  RouteComponentProps<{conversationId: string}>;
+type MessageListProps = {conversation: Conversation} & ConnectedProps<typeof connector>;
 
 const messagesMapToArray = (
   messageInfo: {[conversationId: string]: MessageById},
@@ -31,11 +28,10 @@ const messagesMapToArray = (
   return [];
 };
 
-const mapStateToProps = (state: StateModel, ownProps: {conversationId: string}) => {
+const mapStateToProps = (state: StateModel, ownProps: {conversation: Conversation}) => {
   return {
-    conversations: allConversationSelector(state),
-    messages: messagesMapToArray(state.data.messages.all, ownProps.conversationId),
-    item: state.data.conversations.all.items[ownProps.conversationId],
+    messages: messagesMapToArray(state.data.messages.all, ownProps.conversation && ownProps.conversation.id),
+    item: state.data.conversations.all.items[ownProps.conversation && ownProps.conversation.id],
   };
 };
 
@@ -55,28 +51,19 @@ function usePrevious(value) {
 }
 
 const MessageList = (props: MessageListProps) => {
-  const {conversations, listMessages, messages} = props;
+  const {listMessages, messages, conversation, item} = props;
 
-  const conversationIdParams = useParams();
-  const currentConversationId = conversationIdParams[Object.keys(conversationIdParams)[0]];
-  const [currentConversation, setCurrentConversation] = useState(null);
   const [stickBottom, setStickBottom] = useState(true);
 
   const prevMessages = usePrevious(messages);
-  //const prevLastLoadedMessageId = usePrevious(lastLoadedMessageId);
-  const prevCurrentConversationId = usePrevious(currentConversationId);
-
+  const prevCurrentConversationId = usePrevious(conversation && conversation.id);
 
   const messageListRef = createRef<HTMLDivElement>();
  
   useEffect(() => {
-    currentConversationId && listMessages(currentConversationId);
+    conversation && listMessages(conversation.id);
     scrollBottom();
-  }, [currentConversationId]);
-
-  useEffect(() => {
-    setCurrentConversation(conversations.find(item => item && item.id === currentConversationId));
-  }, [currentConversationId, conversations]);
+  }, [conversation && conversation.id]);
 
   useEffect(() => {
     if (stickBottom) {
@@ -89,14 +76,14 @@ const MessageList = (props: MessageListProps) => {
     if (!scrollbarVisible() && !isLoadingConversation() && messages && messages.length > 0) {
       handleScroll()
     }
-  }, [props.item, messages]);
+  }, [item, messages]);
 
 
   useEffect(() => {
     if (prevMessages && messages && prevMessages.length < messages.length) {
   
       if (
-        prevCurrentConversationId === currentConversationId &&
+        prevCurrentConversationId === conversation.id &&
         prevMessages[0] &&
         prevMessages[0].id !== messages[0].id
       ) {
@@ -105,7 +92,7 @@ const MessageList = (props: MessageListProps) => {
         scrollBottom();
       }
     }
-  }, [messages, currentConversationId]);
+  }, [messages, prevMessages, conversation && conversation.id]);
 
 
   const scrollBottom = () => {
@@ -158,7 +145,7 @@ const MessageList = (props: MessageListProps) => {
       if (messageListRef) {
 
         if (hasPreviousMessages() && messageListRef.current.scrollTop === 0 && !isLoadingConversation()) {
-          debouncedListPreviousMessages(currentConversationId);
+          debouncedListPreviousMessages(conversation.id);
         }
 
         const entireHeightScrolled =
@@ -177,26 +164,27 @@ const MessageList = (props: MessageListProps) => {
    return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll}>
       {messages.map((message: Message, index: number) => {
-          const prevMessage = messages[index - 1];
-          const nextMessage = messages[index + 1];
-          const prevWasContact = prevMessage ? isContact(prevMessage) : false;
-          const nextIsSameUser = nextMessage ? isContact(message) == isContact(nextMessage) : false;
+        const prevMessage = messages[index - 1];
+        const nextMessage = messages[index + 1];
+        const prevWasContact = prevMessage ? isContact(prevMessage) : false;
+        const nextIsSameUser = nextMessage ? isContact(message) == isContact(nextMessage) : false;
 
-          return (
-            <>
-              {hasDateChanged(prevMessage, message) && (
-                <div className={styles.dateHeader}>{formatDateOfMessage(message)}</div>
-              )}
-              <MessageListItem
-                key={message.id}
-                conversation={currentConversation}
-                message={message}
-                showAvatar={!prevWasContact && isContact(message)}
-                showSentAt={!nextIsSameUser}
-              />
-            </>
-          );
-        })}
+        return (
+          <div key={message.id}>
+            {hasDateChanged(prevMessage, message) && (
+              <div key={`date-${message.id}`} className={styles.dateHeader}>
+                {formatDateOfMessage(message)}
+              </div>
+            )}
+            <MessageListItem
+              conversation={conversation}
+              message={message}
+              showAvatar={!prevWasContact && isContact(message)}
+              showSentAt={!nextIsSameUser}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 };

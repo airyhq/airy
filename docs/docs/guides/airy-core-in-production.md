@@ -268,21 +268,20 @@ Ingress resources. You can choose an [Kubernetes ingress
 controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 in accordance to your needs or preferences. If you are using the
 [Traefik](https://traefik.io/) ingress controller, you can edit the
-`infrastructure/network/ingress.yaml` file to modify the `host` records and
-directly apply it to your Kubernetes cluster.
+`infrastructure/helm-chart/charts/ingress/templates/ingress.yaml` file to modify the `host` records and apply the ingress helm chart, which is already included in the repository:
 
 ```sh
-kubectl apply -f infrastructure/network/ingress.yaml
+helm install ingress infrastructure/helm-chart/charts/ingress/
 ```
 
-You must set different `host` attributes for the following:
+You must set appropriate `host` attributes in the rules for:
 
 - API endpoints (defaults to `api.airy`)
 - Demo (defaults to `demo.airy`)
 - Chat plugin (defaults to `chatplugin.airy`)
 
 If you are not using Traefik, you can use the
-`infrastructure/network/ingress.yaml` file as a guide to create your own
+`infrastructure/helm-chart/charts/ingress/templates/ingress.yaml` file as a guide to create your own
 Kubernetes manifest for your preferred ingress controller.
 
 If your Kubernetes cluster is not directly reachable on the Internet, you will

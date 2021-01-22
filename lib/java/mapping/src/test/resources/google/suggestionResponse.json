@@ -1,0 +1,15 @@
+{
+  "suggestionResponse": {
+    "message": "conversations/11ab7bf3-0410-46a6-bcce-1877ca6957b0/messages/11ab7bf3-0410-46a6-bcce-1877ca6957b0",
+    "postbackData": "postback-data",
+    "createTime": "2020-07-13T12:54:50.479632Z",
+    "text": "%s",
+    "type": "REPLY"
+  },
+  "context": {},
+  "sendTime": "2020-05-14T12:45:55.302Z",
+  "conversationId": "11ab7bf3-0410-46a6-bcce-1877ca6957b0",
+  "customAgentId": "11ab7bf3-0410-46a6-bcce-1877ca6957b0",
+  "requestId": "11ab7bf3-0410-46a6-bcce-1877ca6957b0",
+  "agent": "brands/11ab7bf3-0410-46a6-bcce-1877ca6957b0/agents/11ab7bf3-0410-46a6-bcce-1877ca6957b0"
+}

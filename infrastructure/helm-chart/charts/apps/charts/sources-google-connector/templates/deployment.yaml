@@ -6,6 +6,7 @@ metadata:
   labels:
     app: sources-google-connector
     type: sources-google
+    core.airy.co/managed: "true"
 spec:
   replicas: 0
   selector:
@@ -57,11 +58,13 @@ spec:
                   name: api-config
                   key: JWT_SECRET
           livenessProbe:
-            tcpSocket:
-              port: 6000
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+              - name: Health-Check
+                value: health-check
             initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
         - name: ngrok
           command:
             - /bin/bash

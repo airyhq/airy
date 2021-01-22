@@ -11,6 +11,9 @@ uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
 protocol endpoint at `/ws.communication`.
 
+To execute the handshake with `/ws.communicaiton` you need to set an `Authorization` header where the
+value is the authorization token obtained [from the API](http.md#authentication).
+
 ## Outbound Queues
 
 Outbound queues follow the pattern `/queue/:event_type[/:action}]` and
@@ -36,7 +39,7 @@ Incoming payloads notify connected clients that a message was created or updated
       // Determines the schema of the content
     },
     // typed source message model
-    "state": "{String}",
+    "delivery_state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     "sender_type": "{string/enum}",
     // See glossary

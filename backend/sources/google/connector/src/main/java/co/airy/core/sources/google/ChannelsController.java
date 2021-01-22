@@ -70,7 +70,7 @@ public class ChannelsController {
         }
 
         if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-            return ResponseEntity.accepted().build();
+            return ResponseEntity.accepted().body(new EmptyResponsePayload());
         }
 
         channel.setConnectionState(ChannelConnectionState.DISCONNECTED);

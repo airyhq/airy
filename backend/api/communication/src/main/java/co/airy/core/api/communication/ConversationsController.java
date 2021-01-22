@@ -16,6 +16,7 @@ import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.ResponseMetadata;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
+import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
@@ -63,6 +64,8 @@ public class ConversationsController {
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
 
         final QueryParser simpleQueryParser = new QueryParser("id", new WhitespaceAnalyzer());
+        // TODO Index display names more efficiently
+        simpleQueryParser.setAllowLeadingWildcard(true);
 
         final Query query;
         try {
@@ -175,7 +178,7 @@ public class ConversationsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.accepted().body(new EmptyResponsePayload());
     }
 
     @PostMapping("/conversations.tag")
@@ -197,7 +200,7 @@ public class ConversationsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.accepted().body(new EmptyResponsePayload());
     }
 
     @PostMapping("/conversations.untag")
@@ -219,6 +222,6 @@ public class ConversationsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.accepted().body(new EmptyResponsePayload());
     }
 }

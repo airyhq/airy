@@ -188,10 +188,10 @@ container_pull(
 
 container_pull(
     name = "nginx_base",
-    digest = "sha256:0df7ba5cdbd2d9682c5fe3176774e6a113444aba6c4fce2af54ed9e859d92e64",
-    registry = "index.docker.io",
-    repository = "openresty/openresty",
-    tag = "1.19.3.1-2-alpine",
+    digest = "sha256:0340d329672fb3f0192754e4e1ccd7518ecc83f6644e8f0c317012bbc4d06d24",
+    registry = "ghcr.io",
+    repository = "airyhq/frontend/nginx-lua",
+    tag = "1.0.0",
 )
 
 load(

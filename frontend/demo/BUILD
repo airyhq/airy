@@ -54,13 +54,12 @@ pkg_tar(
 pkg_tar(
     name = "conf_tar",
     srcs = [":nginx.conf"],
-    package_dir = "/usr/local/openresty/nginx/conf/",
+    package_dir = "/etc/nginx",
 )
 
-load("//infrastructure/images/nginx:lua_nginx.bzl", "lua_nginx")
-
-lua_nginx(
+container_image(
     name = "image",
+    base = "@nginx_base//image",
     tars = [
         ":bundle_tar",
         ":conf_tar",

@@ -14,7 +14,7 @@ web_app(
     name = "bundle",
     app_lib = ":app",
     entry = "frontend/chat-plugin/src/iframe.js",
-    index = ":index.html",
+    index = ":development.html",
     module_deps = module_deps,
 )
 
@@ -67,10 +67,9 @@ pkg_tar(
     package_dir = "/etc/nginx",
 )
 
-load("//infrastructure/images/nginx:lua_nginx.bzl", "lua_nginx")
-
-lua_nginx(
+container_image(
     name = "image",
+    base = "@nginx_base//image",
     tars = [
         ":bundle_tar",
         ":example_tar",

@@ -40,7 +40,7 @@ const ConversationMetadata = (props: ConversationMetadataProps) => {
     if (tags.length == 0) {
       listTags();
     }
-  });
+  }, []);
 
   const showAddTags = () => {
     setTagName('');

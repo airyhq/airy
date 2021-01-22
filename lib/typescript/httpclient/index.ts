@@ -8,7 +8,6 @@ import {
   ListTagsResponsePayload,
   CreateTagRequestPayload,
   LoginViaEmailRequestPayload,
- 
 } from './payload';
 import {SendMessagesRequestPayload} from './payload/SendMessagesRequestPayload';
 import {ChannelApiPayload} from './payload/ChannelApiPayload';
@@ -241,7 +240,6 @@ export class HttpClient {
     }
   }
 
-
   public async sendMessages(requestPayload: SendMessagesRequestPayload) {
     try {
       const response: MessagePayload = await this.doFetchFromBackend('messages.send', requestPayload);
@@ -250,7 +248,6 @@ export class HttpClient {
       return error;
     }
   }
-
 }
 
 export * from './model';

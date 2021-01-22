@@ -31,10 +31,10 @@ const initialState = {
 class Tags extends Component<ConnectedProps<typeof connector>, typeof initialState> {
   state = initialState;
 
-  // componentDidMount() {
-  //   this.props.listTags();
-  //   this.props.filterTags('');
-  // }
+  componentDidMount() {
+    this.props.listTags();
+    this.props.filterTags('');
+  }
 
   handleSearch = (value: string) => {
     this.setState({
@@ -197,9 +197,8 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   }
 
   render() {
-    return null;
-    // const {allTagsCount} = this.props;
-    // return <div className={styles.tagsWrapper}>{allTagsCount == 0 ? <EmptyStateTags /> : this.renderTagList()}</div>;
+    const {allTagsCount} = this.props;
+    return <div className={styles.tagsWrapper}>{allTagsCount == 0 ? <EmptyStateTags /> : this.renderTagList()}</div>;
   }
 }
 

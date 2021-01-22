@@ -38,9 +38,9 @@ const ConversationMetadata = (props: ConversationMetadataProps) => {
 
   useEffect(() => {
     if (tags.length == 0) {
-      // listTags();
+      listTags();
     }
-  });
+  }, []);
 
   const showAddTags = () => {
     setTagName('');

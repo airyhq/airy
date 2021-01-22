@@ -13,7 +13,7 @@ export const loadingMessagesAction = createAction(
 );
 export const sendMessagesAction = createAction(
   SEND_MESSAGE,
-  resolve => (sendMessageInfo: {conversationId:string, message: Message}) => resolve(sendMessageInfo)
+  resolve => (sendMessageInfo: {conversationId: string; message: Message}) => resolve(sendMessageInfo)
 );
 
 export function listMessages(conversationId: string) {
@@ -36,10 +36,9 @@ export function listMessages(conversationId: string) {
       });
   };
 }
-export function sendMessages(conversationId:string, message: {text: string, type: string}) {
+export function sendMessages(conversationId: string, message: {text: string; type: string}) {
   return async (dispatch: Dispatch<any>) => {
-    debugger;
-    const requestPayload: SendMessagesRequestPayload = {conversation_id: conversationId, message }
+    const requestPayload: SendMessagesRequestPayload = {conversation_id: conversationId, message};
     return HttpClientInstance.sendMessages(requestPayload)
       .then((response: Message) => {
         dispatch(
@@ -54,5 +53,4 @@ export function sendMessages(conversationId:string, message: {text: string, type
         return Promise.reject(error);
       });
   };
-} 
-
+}

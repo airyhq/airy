@@ -5,19 +5,24 @@ import styles from './index.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import {ReactComponent as Paperplane} from '../../../assets/images/icons/paperplane.svg';
 
+type MessageInputProps = {
+  sendMessages: (currentConversationId: string, sendMessagesRequestPayload: any) => Promise<boolean>;
+};
+
 const mapDispatchToProps = {sendMessages};
-const InputBar = props => {
+
+const MessageInput = (props: MessageInputProps) => {
   const [input, setInput] = useState('');
-  const textareaRef = useRef(null);
+  const textAreaAdjust = useRef(null);
 
   const handleChange = event => {
     setInput(event.target.value);
   };
 
   useEffect(() => {
-    textareaRef.current.style.height = '0px';
-    const scrollHeight = textareaRef.current.scrollHeight;
-    textareaRef.current.style.height = scrollHeight + 'px';
+    textAreaAdjust.current.style.height = '0px';
+    const scrollHeight = textAreaAdjust.current.scrollHeight;
+    textAreaAdjust.current.style.height = scrollHeight + 'px';
   }, [input]);
 
   const conversationIdParams = useParams();
@@ -27,7 +32,7 @@ const InputBar = props => {
     <form className={styles.container}>
       <textarea
         className={styles.textArea}
-        ref={textareaRef}
+        ref={textAreaAdjust}
         name="inputBar"
         placeholder="Enter a message..."
         autoFocus={true}
@@ -49,4 +54,4 @@ const InputBar = props => {
     </form>
   );
 };
-export default connect(null, mapDispatchToProps)(InputBar);
+export default connect(null, mapDispatchToProps)(MessageInput);

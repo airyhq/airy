@@ -59,7 +59,7 @@ const MessageList = (props: MessageListProps) => {
   const prevCurrentConversationId = usePrevious(conversation && conversation.id);
 
   const messageListRef = createRef<HTMLDivElement>();
- 
+
   useEffect(() => {
     conversation && listMessages(conversation.id);
     scrollBottom();
@@ -71,22 +71,15 @@ const MessageList = (props: MessageListProps) => {
     }
   }, [stickBottom]);
 
-
   useEffect(() => {
     if (!scrollbarVisible() && !isLoadingConversation() && messages && messages.length > 0) {
-      handleScroll()
+      handleScroll();
     }
   }, [item, messages]);
 
-
   useEffect(() => {
     if (prevMessages && messages && prevMessages.length < messages.length) {
-  
-      if (
-        prevCurrentConversationId === conversation.id &&
-        prevMessages[0] &&
-        prevMessages[0].id !== messages[0].id
-      ) {
+      if (prevCurrentConversationId === conversation.id && prevMessages[0] && prevMessages[0].id !== messages[0].id) {
         scrollToMessage(prevMessages[0].id);
       } else {
         scrollBottom();
@@ -94,9 +87,8 @@ const MessageList = (props: MessageListProps) => {
     }
   }, [messages, prevMessages, conversation && conversation.id]);
 
-
   const scrollBottom = () => {
-    if(messageListRef){
+    if (messageListRef) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
   };
@@ -135,21 +127,20 @@ const MessageList = (props: MessageListProps) => {
     }
   };
 
-  const debouncedListPreviousMessages = debounce((currentConversationId) => {
+  const debouncedListPreviousMessages = debounce(currentConversationId => {
     listPreviousMessages(currentConversationId);
   }, 200);
-
 
   const handleScroll = debounce(
     () => {
       if (messageListRef) {
-
         if (hasPreviousMessages() && messageListRef.current.scrollTop === 0 && !isLoadingConversation()) {
           debouncedListPreviousMessages(conversation.id);
         }
 
         const entireHeightScrolled =
-        messageListRef.current.scrollHeight - 1 <= messageListRef.current.clientHeight + messageListRef.current.scrollTop;
+          messageListRef.current.scrollHeight - 1 <=
+          messageListRef.current.clientHeight + messageListRef.current.scrollTop;
 
         if (stickBottom !== entireHeightScrolled) {
           setStickBottom(entireHeightScrolled);
@@ -160,8 +151,7 @@ const MessageList = (props: MessageListProps) => {
     {leading: true}
   );
 
-
-   return (
+  return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll}>
       {messages.map((message: Message, index: number) => {
         const prevMessage = messages[index - 1];

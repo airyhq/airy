@@ -193,15 +193,6 @@ container_pull(
     repository = "openresty/openresty",
     tag = "1.19.3.1-2-alpine",
 )
-#
-#container_pull(
-#    name = "nginx_base",
-#    digest = "sha256:2e9ae3f7ee35a5873e02260878983b58b0060eb3c6aeece7983e02e56ec91010",
-#    registry = "index.docker.io",
-#    repository = "fabiocicerchia/nginx-lua",
-#    tag = "1.19.6-alpine",
-#)
-
 
 load(
     "@io_bazel_rules_docker//go:image.bzl",

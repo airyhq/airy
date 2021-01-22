@@ -188,11 +188,20 @@ container_pull(
 
 container_pull(
     name = "nginx_base",
-    digest = "sha256:662a0c5a8677063c27b0ddd42f1c801be643b9502f7b1a4e2e727cb2bc3808a8",
+    digest = "sha256:0df7ba5cdbd2d9682c5fe3176774e6a113444aba6c4fce2af54ed9e859d92e64",
     registry = "index.docker.io",
-    repository = "nginx",
-    tag = "stable-alpine",
+    repository = "openresty/openresty",
+    tag = "1.19.3.1-2-alpine",
 )
+#
+#container_pull(
+#    name = "nginx_base",
+#    digest = "sha256:2e9ae3f7ee35a5873e02260878983b58b0060eb3c6aeece7983e02e56ec91010",
+#    registry = "index.docker.io",
+#    repository = "fabiocicerchia/nginx-lua",
+#    tag = "1.19.6-alpine",
+#)
+
 
 load(
     "@io_bazel_rules_docker//go:image.bzl",

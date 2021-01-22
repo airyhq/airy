@@ -35,7 +35,7 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             configMapKeyRef:
-              name: api-config
+              name: sources-chatplugin
               key: JWT_SECRET
         - name: KAFKA_BROKERS
           valueFrom:

@@ -25,9 +25,12 @@ spec:
       - name: app
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
-        envFrom:
-        - configMapRef:
-            name: frontend-config
+        env:
+        - name: API_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: HOST
         livenessProbe:
           httpGet:
             path: /health

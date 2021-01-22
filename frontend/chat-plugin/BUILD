@@ -67,9 +67,10 @@ pkg_tar(
     package_dir = "/etc/nginx",
 )
 
-container_image(
+load("//infrastructure/images/nginx:lua_nginx.bzl", "lua_nginx")
+
+lua_nginx(
     name = "image",
-    base = "@nginx_base//image",
     tars = [
         ":bundle_tar",
         ":example_tar",

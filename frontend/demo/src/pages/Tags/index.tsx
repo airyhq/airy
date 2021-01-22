@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-
 import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/components';
-
 import plus from '../../assets/images/icons/plus.svg';
-
 import {listTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
 import {filteredTags} from '../../selectors/tags';
 import {Tag} from 'httpclient';
 import {ModalType} from '../../types';
-
 import styles from './index.module.scss';
 import {TableRow} from './TableRow';
 import SimpleTagForm from './SimpleTagForm';

@@ -1,5 +1,4 @@
 import {ActionType, getType} from 'typesafe-actions';
-
 import * as actions from '../../../actions/messages';
 import {Message} from 'httpclient';
 import {DataState} from '..';

@@ -62,14 +62,13 @@ const MessageList = (props: MessageListProps) => {
   const [currentConversation, setCurrentConversation] = useState(null);
   const [stickBottom, setStickBottom] = useState(true);
 
-  const [loadedMessages, setLoadedMessages] = useState(null);
-  const [lastLoadedMessageId, setLastLoadedMessageId] = useState(null);
-  const prevLoadedMessages = usePrevious(loadedMessages);
   const prevMessages = usePrevious(messages);
+  //const prevLastLoadedMessageId = usePrevious(lastLoadedMessageId);
   const prevCurrentConversationId = usePrevious(currentConversationId);
 
-  const messageListRef = createRef<HTMLDivElement>();
 
+  const messageListRef = createRef<HTMLDivElement>();
+ 
   useEffect(() => {
     currentConversationId && listMessages(currentConversationId);
     scrollBottom();
@@ -85,59 +84,34 @@ const MessageList = (props: MessageListProps) => {
     }
   }, [stickBottom]);
 
-  useEffect(() => {
-    if (currentConversationId && prevMessages && prevMessages.length !== 0 && prevMessages.length === messages.length) {
-      if (messages.length > 10) {
-        const latestMessages = messages.slice(-10);
-        setLastLoadedMessageId(latestMessages[0].id);
-        setLoadedMessages(latestMessages);
-      } else if (messages.length > 0) {
-        setLoadedMessages(messages);
-        setLastLoadedMessageId(messages[0].id);
-      }
 
-      scrollBottom();
+  useEffect(() => {
+    if (!scrollbarVisible() && !isLoadingConversation() && messages && messages.length > 0) {
+      handleScroll()
     }
-  }, [currentConversationId, messages]);
+  }, [props.item, messages]);
+
 
   useEffect(() => {
-    if (prevMessages && messages.length > prevMessages.length) {
-      debouncedLoadPreviousMessages();
-    }
-  }, [messages, loadedMessages, lastLoadedMessageId]);
-
-  useEffect(() => {
-    if (loadedMessages && prevLoadedMessages !== null && prevLoadedMessages.length < loadedMessages.length) {
+    if (prevMessages && messages && prevMessages.length < messages.length) {
+  
       if (
         prevCurrentConversationId === currentConversationId &&
-        prevLoadedMessages &&
-        prevLoadedMessages[0] &&
-        prevLoadedMessages[0].id !== loadedMessages[0].id
+        prevMessages[0] &&
+        prevMessages[0].id !== messages[0].id
       ) {
-        scrollToMessage(prevLoadedMessages[0].id);
+        scrollToMessage(prevMessages[0].id);
       } else {
         scrollBottom();
       }
     }
-  }, [loadedMessages, currentConversationId]);
+  }, [messages, currentConversationId]);
 
-  useEffect(() => {
-    if (!scrollbarVisible()) {
-      if (
-        hasPreviousMessages() &&
-        loadedMessages &&
-        loadedMessages.length === messages.length &&
-        !isLoadingConversation()
-      ) {
-        debouncedListPreviousMessages();
-      } else if (loadedMessages && loadedMessages.length < messages.length && !isLoadingConversation()) {
-        debouncedLoadPreviousMessages();
-      }
-    }
-  }, [props.item, loadedMessages, messages]);
 
   const scrollBottom = () => {
-    messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    if(messageListRef){
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
   };
 
   const isContact = (message: Message) => message.senderType !== SenderType.appUser;
@@ -174,56 +148,21 @@ const MessageList = (props: MessageListProps) => {
     }
   };
 
-  const loadPreviousMessages = () => {
-    if (loadedMessages && lastLoadedMessageId && loadedMessages < messages) {
-      const findLastLoadedMessageIdx = message => message.id === lastLoadedMessageId;
-      const lastLoadedMessageIdx = messages.findIndex(findLastLoadedMessageIdx);
-
-      let previousMessages;
-
-      if (!(lastLoadedMessageIdx <= 0)) {
-        if (messages[lastLoadedMessageIdx - 10]) {
-          previousMessages = messages.slice(lastLoadedMessageIdx - 10, lastLoadedMessageIdx);
-          setLastLoadedMessageId(previousMessages[0].id);
-        } else {
-          previousMessages = messages.slice(0, lastLoadedMessageIdx);
-          setLastLoadedMessageId(previousMessages[0].id);
-        }
-
-        setLoadedMessages([...previousMessages, ...loadedMessages]);
-      }
-    }
-  };
-
-  const debouncedLoadPreviousMessages = debounce(() => {
-    loadPreviousMessages();
-  }, 200);
-
-  const debouncedListPreviousMessages = debounce(() => {
+  const debouncedListPreviousMessages = debounce((currentConversationId) => {
     listPreviousMessages(currentConversationId);
   }, 200);
+
 
   const handleScroll = debounce(
     () => {
       if (messageListRef) {
-        if (
-          hasPreviousMessages() &&
-          loadedMessages.length === messages.length &&
-          !isLoadingConversation() &&
-          messageListRef.current.scrollTop === 0
-        ) {
-          debouncedListPreviousMessages();
-        } else if (
-          loadedMessages.length < messages.length &&
-          !isLoadingConversation() &&
-          messageListRef.current.scrollTop === 0
-        ) {
-          debouncedLoadPreviousMessages();
+
+        if (hasPreviousMessages() && messageListRef.current.scrollTop === 0 && !isLoadingConversation()) {
+          debouncedListPreviousMessages(currentConversationId);
         }
 
         const entireHeightScrolled =
-          messageListRef.current.scrollHeight - 1 <=
-          messageListRef.current.clientHeight + messageListRef.current.scrollTop;
+        messageListRef.current.scrollHeight - 1 <= messageListRef.current.clientHeight + messageListRef.current.scrollTop;
 
         if (stickBottom !== entireHeightScrolled) {
           setStickBottom(entireHeightScrolled);
@@ -234,12 +173,12 @@ const MessageList = (props: MessageListProps) => {
     {leading: true}
   );
 
-  return (
+
+   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll}>
-      {loadedMessages &&
-        loadedMessages.map((message: Message, index: number) => {
-          const prevMessage = loadedMessages[index - 1];
-          const nextMessage = loadedMessages[index + 1];
+      {messages.map((message: Message, index: number) => {
+          const prevMessage = messages[index - 1];
+          const nextMessage = messages[index + 1];
           const prevWasContact = prevMessage ? isContact(prevMessage) : false;
           const nextIsSameUser = nextMessage ? isContact(message) == isContact(nextMessage) : false;
 

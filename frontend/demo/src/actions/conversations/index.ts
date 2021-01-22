@@ -41,7 +41,7 @@ export const removeErrorFromConversationAction = createAction(
 export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
-    return HttpClientInstance.listConversations({page_size: 10})
+    return HttpClientInstance.listConversations({page_size: 1})
       .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
         dispatch(mergeConversationsAction(response.data, response.metadata));
         return Promise.resolve(true);

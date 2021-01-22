@@ -72,3 +72,82 @@
   width: 100%;
   height: 100%;
 }
+
+.container {
+  background-color: transparent;
+}
+
+.containerLeft {
+  @extend .container;
+  text-align: left;
+}
+
+.containerRight {
+  @extend .container;
+  text-align: right;
+  text-align: -webkit-right;
+  text-align: -moz-right;
+}
+
+@keyframes messageInRight {
+  0% {
+    margin-left: 300px;
+  }
+  100% {
+    margin-left: 0;
+  }
+}
+
+@keyframes messageInLeft {
+  0% {
+    margin-left: -300px;
+  }
+  100% {
+    margin-left: 8px;
+  }
+}
+
+.bubble {
+  max-width: 70%;
+  width: fit-content;
+  width: -moz-fit-content;
+  overflow-wrap: break-word;
+  margin: 8px;
+  padding: 8px 12px 8px 12px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  text-align: left;
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+
+.bubbleLeft {
+  @extend .bubble;
+  background-color: white;
+  border-bottom-right-radius: 8px;
+  animation-name: messageInLeft;
+  animation-duration: 100ms;
+  animation-fill-mode: forwards;
+}
+
+.bubbleRight {
+  @extend .bubble;
+  background-color: #1578d4;
+  color: white;
+  border-bottom-left-radius: 8px;
+  animation-name: messageInRight;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+.messageLinkLeft {
+  color: #444;
+  text-decoration: underline;
+}
+
+.messageLinkRight {
+  color: white;
+  text-decoration: underline;
+}

@@ -7,14 +7,14 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 module_deps = [
     "//lib/typescript/types",
     "//lib/typescript/httpclient",
-    "//lib/typescript/RenderLibrary",
+    "//lib/typescript/renderLibrary",
 ]
 
 ts_library(
     name = "app",
     deps = [
-        "//lib/typescript/RenderLibrary",
         "//lib/typescript/httpclient",
+        "//lib/typescript/renderLibrary",
         "//lib/typescript/types",
         "@npm//@airyhq/components",
         "@npm//@types/facebook-js-sdk",

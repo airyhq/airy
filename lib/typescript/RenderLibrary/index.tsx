@@ -1,9 +1,13 @@
 import React from 'react';
 import {Message, MessageType, Conversation, SenderType, Contact} from 'httpclient';
 import styles from './index.module.scss';
+import linkifyString from 'linkifyjs/string';
+import { MessagePayload } from '../httpclient/payload/MessagePayload';
+import {isToday, isThisWeek, formatTimeOfMessage} from 'services';
 
 type RenderLibraryProps = {
   message: Message;
+  isChatPlugin: boolean;
   currentConversation?: Conversation;
   prevWasContact?: boolean;
   isContact?: (message: Message) => boolean;
@@ -21,6 +25,44 @@ type AvatarProps = {
   contact: Contact;
 };
 
+// type ChatPluginTextRenderProps = {
+//     message: {
+//       id: string;
+//       sender_type: string;
+//       content: {
+//         text: string;
+//         type: string;
+//       }[];
+//       delivery_state: string;
+//       sent_at: string;
+//       state: string;
+//     };
+// };
+
+type ChatPluginTextRenderProps = {
+    message: Message;
+};
+
+// Chat Plugin Render
+
+const ChatPluginTextRender = (props: ChatPluginTextRenderProps) => {
+  const {message} = props;
+  const isInbound = message.senderType === 'source_contact';
+  const messageDisplay = linkifyString(message.content[0].text, {
+    className: `${isInbound ? styles.messageLinkRight : styles.messageLinkLeft}`,
+  });
+
+  return (
+    <div className={`${isInbound ? styles.containerRight : styles.containerLeft}`}>
+      <div className={`${isInbound ? styles.bubbleRight : styles.bubbleLeft}`}>
+        <div dangerouslySetInnerHTML={{__html: messageDisplay}} />
+      </div>
+    </div>
+  );
+};
+
+// UI render
+
 const fallbackAvatar = 'https://s3.amazonaws.com/assets.airy.co/unknown.png';
 
 const AvatarImage = (props: AvatarProps) => {
@@ -32,42 +74,6 @@ const AvatarImage = (props: AvatarProps) => {
     </div>
   );
 };
-
-function isToday(date: Date) {
-  return new Date().setHours(0, 0, 0, 0) === new Date(date).setHours(0, 0, 0, 0);
-}
-
-function isThisWeek(date: Date) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const beginningOfWeek = new Date(today.getTime() - today.getDay() * 24 * 60 * 60 * 1000);
-  return date > beginningOfWeek;
-}
-
-function formatTimeOfMessage(message: Message) {
-  if (message) {
-    const sentAtDate = new Date(message.sentAt);
-    if (isToday(sentAtDate)) {
-      return sentAtDate.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
-    } else if (isThisWeek(sentAtDate)) {
-      return sentAtDate.toLocaleDateString('en-GB', {
-        weekday: 'short',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      });
-    } else {
-      return sentAtDate.toLocaleDateString('en-GB', {
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      });
-    }
-  }
-  return '';
-}
 
 const TextRender = (props: TextRenderProps) => {
   const {conversation, showAvatar, showSentAt, message} = props;
@@ -102,7 +108,7 @@ const TextRender = (props: TextRenderProps) => {
 };
 
 const RenderLibrary = (props: RenderLibraryProps) => {
-  const {message, currentConversation, prevWasContact, isContact, nextIsSameUser} = props;
+  const {message, currentConversation, prevWasContact, isContact, nextIsSameUser, isChatPlugin} = props;
 
   switch (message.content[0].type) {
     case MessageType.audio:
@@ -115,15 +121,19 @@ const RenderLibrary = (props: RenderLibraryProps) => {
       console.log('IMAGE');
       break;
     case MessageType.text:
-      return (
-        <TextRender
-          key={message.id}
-          conversation={currentConversation}
-          message={message}
-          showAvatar={!prevWasContact && isContact(message)}
-          showSentAt={!nextIsSameUser}
-        />
-      );
+      if (isChatPlugin) {
+        return <ChatPluginTextRender message={message} />;
+      } else {
+        return (
+          <TextRender
+            key={message.id}
+            conversation={currentConversation}
+            message={message}
+            showAvatar={!prevWasContact && isContact(message)}
+            showSentAt={!nextIsSameUser}
+          />
+        );
+      }
     case MessageType.video:
       console.log('VIDEO');
       break;

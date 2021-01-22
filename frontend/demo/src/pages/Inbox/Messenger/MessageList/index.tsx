@@ -4,7 +4,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 
 import {Message, SenderType} from 'httpclient';
-import RenderLibrary from 'RenderLibrary';
+import RenderLibrary from 'renderLibrary';
 
 import {StateModel} from '../../../../reducers';
 import {MessageById} from '../../../../reducers/data/messages';
@@ -91,6 +91,7 @@ const MessageList = (props: MessageListProps) => {
               <div className={styles.dateHeader}>{formatDateOfMessage(message)}</div>
             )}
             <RenderLibrary
+              isChatPlugin={false}
               message={message}
               currentConversation={currentConversation}
               prevWasContact={prevWasContact}

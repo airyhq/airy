@@ -15,7 +15,8 @@ wait-for-service-account
 echo "Deploying the Airy Core Platform with the ${AIRY_VERSION} image tag"
 
 if [[ -f ${INFRASTRUCTURE_PATH}/airy.yaml ]]; then
-    yq w -i ${INFRASTRUCTURE_PATH}/airy.yaml global.appImageTag ${AIRY_VERSION} 
+    yq eval '.global.appImageTag="'${AIRY_VERSION}'"' -i ${INFRASTRUCTURE_PATH}/airy.yaml
+    
 fi
 
 helm install core ${INFRASTRUCTURE_PATH}/helm-chart/ --set global.appImageTag=${AIRY_VERSION} --version 0.5.0 --timeout 1000s > /dev/null 2>&1

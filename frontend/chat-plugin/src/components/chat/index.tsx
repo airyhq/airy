@@ -15,6 +15,7 @@ import {AiryWidgetConfiguration} from '../../config';
 import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
+import RenderLibrary from 'renderLibrary';
 
 let ws: WebSocket;
 
@@ -82,6 +83,7 @@ const Chat = (props: Props) => {
         JSON.stringify({
           message: {
             text,
+            type: 'text',
           },
         })
       );
@@ -138,13 +140,15 @@ const Chat = (props: Props) => {
           <div className={style.chat}>
             <div id="messages" className={style.messages}>
               {messages.map(message => {
+                console.log(message)
                 return (
                   <MessageProp
                     key
                     render={
                       props.airyMessageProp
                         ? () => props.airyMessageProp(ctrl)
-                        : () => <AiryMessage message={message} />
+                        : <RenderLibrary isChatPlugin={true} message={message} />
+                        // : () => <AiryMessage message={message} />
                     }
                   />
                 );

@@ -3,13 +3,9 @@ load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_library")
 package(default_visibility = ["//visibility:public"])
 
 ts_library(
-    name = "renderLibrary",
+    name = "services",
     deps = [
         "//lib/typescript/httpclient",
         "//lib/typescript/types",
-        "//lib/typescript/services",
-        "@npm//@types/node",
-        "@npm//@types/react",
-        "@npm//linkifyjs",
     ],
 )

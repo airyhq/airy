@@ -52,3 +52,7 @@ core:
       bucket: "changeme"
       region: "changeme"
       path: "path"
+ingress:
+  apiHost: api.airy
+  uiHost: demo.airy
+  chatpluginHost: chatplugin.airy

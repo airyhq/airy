@@ -6,7 +6,6 @@ metadata:
   namespace: {{ .Values.global.namespace }}
 data:
   JWT_SECRET: {{ randAlphaNum 128 | quote }}
-  HOST: {{ .Values.sources.chatPlugin.host }}
 ---
 apiVersion: v1
 kind: ConfigMap

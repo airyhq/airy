@@ -29,8 +29,8 @@ spec:
           - name: API_HOST
             valueFrom:
               configMapKeyRef:
-                name: sources-chatplugin
-                key: HOST
+                name: hostnames
+                key: CHATPLUGIN_HOST
         livenessProbe:
           httpGet:
             path: /health

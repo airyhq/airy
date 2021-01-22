@@ -10,5 +10,4 @@ data:
   MAIL_USERNAME: {{ .Values.api.mailUsername }}
   MAIL_PASSWORD: {{ .Values.api.mailPassword }}
   JWT_SECRET: {{ randAlphaNum 128 | quote }}
-  HOST: {{ .Values.api.host }}
   ALLOWED_ORIGINS: {{ .Values.api.allowedOrigins | quote }}

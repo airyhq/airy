@@ -29,8 +29,8 @@ spec:
         - name: API_HOST
           valueFrom:
             configMapKeyRef:
-              name: api-config
-              key: HOST
+              name: hostnames
+              key: API_HOST
         livenessProbe:
           httpGet:
             path: /health

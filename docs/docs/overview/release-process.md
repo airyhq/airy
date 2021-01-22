@@ -20,4 +20,6 @@ Here's an outline of the process:
   - We rename the current draft release to `x.y.z` and publish it
   - We announce the release!
 
+As part of the release process we are also releasing a command line client - the `Airy CLI`.
+
 You can check out existing releases on [GitHub](https://github.com/airyhq/airy/releases).

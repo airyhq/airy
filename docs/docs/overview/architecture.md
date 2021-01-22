@@ -43,3 +43,13 @@ which run as part of the Airy Core Platform:
 
 - frontend-demo - Web application for viewing messages
 - frontend-chat-plugin - Web chat plugin
+
+## Airy Controller
+
+The Airy Core Platform ships with a Kubernetes controller, which is responsible for starting and reloading the appropriate Airy apps based on the provided configuration.
+The controller as a deployment named `airy-controller`.
+
+## Airy CLI
+
+Every release features a command line binary, used to configure and fetch status information from the Airy Core Platform.
+This tool is referred to as the `Airy CLI` throughout the documentation.

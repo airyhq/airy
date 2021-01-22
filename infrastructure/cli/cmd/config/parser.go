@@ -31,6 +31,9 @@ type coreConf struct {
 				SaFile     string `yaml:"saFile"`
 			}
 		}
+		Webhooks struct {
+			Name string `yaml:"name"`
+		}
 	}
 }
 

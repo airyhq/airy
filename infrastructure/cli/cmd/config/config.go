@@ -37,6 +37,10 @@ func applyConfig(cmd *cobra.Command, args []string) {
 	if googleApply(conf, kubeConfigFile) {
 		fmt.Println("Google configuration applied.")
 	}
+
+	if webhooksApply(conf, kubeConfigFile) {
+		fmt.Println("Webhooks configuration applied.")
+	}
 }
 
 var applyConfigCmd = &cobra.Command{

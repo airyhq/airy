@@ -1,15 +1,14 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styles from './index.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import {ReactComponent as Paperplane} from '../../../assets/images/icons/paperplane.svg';
 
-type MessageInputProps = {
-  sendMessages: (currentConversationId: string, sendMessagesRequestPayload: any) => Promise<boolean>;
-};
-
 const mapDispatchToProps = {sendMessages};
+
+const connector = connect(null, mapDispatchToProps);
+type MessageInputProps = ConnectedProps<typeof connector>;
 
 const MessageInput = (props: MessageInputProps) => {
   const [input, setInput] = useState('');
@@ -54,4 +53,5 @@ const MessageInput = (props: MessageInputProps) => {
     </form>
   );
 };
-export default connect(null, mapDispatchToProps)(MessageInput);
+
+export default connector(MessageInput);

@@ -39,8 +39,8 @@ export function listMessages(conversationId: string) {
 }
 
 export function listPreviousMessages(conversationId: string) {
-  return async (dispatch: Dispatch<any>, state: StateModel) => {
-    const metadata = state.data.conversations.all.items[conversationId].metadata;
+  return async (dispatch: Dispatch<any>, state: () => StateModel) => {
+    const metadata = state().data.conversations.all.items[conversationId].metadata;
     const cursor = metadata && metadata.next_cursor;
 
     return HttpClientInstance.listMessages({

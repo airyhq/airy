@@ -72,25 +72,30 @@ const MessageList = (props: MessageListProps) => {
   }, [stickBottom]);
 
   useEffect(() => {
-    if (!scrollbarVisible() && !isLoadingConversation() && messages && messages.length > 0) {
-      handleScroll();
+    if (hasPreviousMessages() && !scrollbarVisible() && !isLoadingConversation() && messages && messages.length > 0) {
+      debouncedListPreviousMessages(conversation.id);
     }
-  }, [item, messages]);
+  }, [item, messages, conversation && conversation.id]);
 
   useEffect(() => {
     if (prevMessages && messages && prevMessages.length < messages.length) {
-      if (prevCurrentConversationId === conversation.id && prevMessages[0] && prevMessages[0].id !== messages[0].id) {
+      if (
+        conversation &&
+        conversation.id &&
+        prevCurrentConversationId &&
+        prevCurrentConversationId === conversation.id &&
+        prevMessages[0] &&
+        prevMessages[0].id !== messages[0].id
+      ) {
         scrollToMessage(prevMessages[0].id);
       } else {
         scrollBottom();
       }
     }
-  }, [messages, prevMessages, conversation && conversation.id]);
+  }, [messages, conversation && conversation.id]);
 
   const scrollBottom = () => {
-    if (messageListRef) {
-      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-    }
+    messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
   };
 
   const isContact = (message: Message) => message.senderType !== SenderType.appUser;
@@ -108,11 +113,11 @@ const MessageList = (props: MessageListProps) => {
   };
 
   const isLoadingConversation = () => {
-    return props.item && props.item.metadata && props.item.metadata.loading;
+    return item && item.metadata && item.metadata.loading;
   };
 
   const hasPreviousMessages = () => {
-    return !!(props.item && props.item.metadata && props.item.metadata.next_cursor);
+    return !!(item && item.metadata && item.metadata.next_cursor);
   };
 
   const scrollbarVisible = () => {

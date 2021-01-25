@@ -12,6 +12,7 @@
 
 [![Join the chat on Airy community](https://img.shields.io/badge/forum-join%20discussions-brightgreen.svg)](https://airy.co/community/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Documentation Status](https://img.shields.io/badge/docs-stable-brightgreen.svg)](https://docs.airy.co/)
+[![CI](https://github.com/airyhq/airy/workflows/CI/badge.svg)](https://github.com/airyhq/airy/actions?query=workflow%3ACI)
 [![Commit Frequency](https://img.shields.io/github/commit-activity/m/airyhq/airy)](https://docs.airy.co/)
 [![License](https://img.shields.io/github/license/airyhq/airy)](https://docs.airy.co/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/airyhq/airy/projects)

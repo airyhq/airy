@@ -16,7 +16,7 @@ export function listMessages(conversationId: string) {
   return async (dispatch: Dispatch<any>) => {
     return HttpClientInstance.listMessages({
       conversationId,
-      pageSize: 1,
+      pageSize: 10,
     })
       .then((response: {data: Message[]; metadata: ResponseMetadataPayload}) => {
         dispatch(
@@ -41,10 +41,10 @@ export function listMessages(conversationId: string) {
 export function listPreviousMessages(conversationId: string) {
   return async (dispatch: Dispatch<any>, state: StateModel) => {
     const metadata = state.data.conversations.all.items[conversationId].metadata;
-    const cursor = metadata && metadata.nextCursor;
+    const cursor = metadata && metadata.next_cursor;
 
     return HttpClientInstance.listMessages({
-      conversationId: conversationId,
+      conversationId,
       pageSize: 10,
       cursor: cursor,
     })

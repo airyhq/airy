@@ -89,8 +89,8 @@ const initialState: AllConversationsState = {
   metadata: {
     loading: false,
     loaded: false,
-    previousCursor: null,
-    nextCursor: null,
+    previous_cursor: null,
+    next_cursor: null,
     total: 0,
     filteredTotal: 0,
   },

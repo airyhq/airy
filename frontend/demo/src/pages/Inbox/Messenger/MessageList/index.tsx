@@ -51,7 +51,7 @@ function usePrevious(value) {
 }
 
 const MessageList = (props: MessageListProps) => {
-  const {listMessages, messages, conversation, item} = props;
+  const {listMessages, listPreviousMessages, messages, conversation, item} = props;
 
   const [stickBottom, setStickBottom] = useState(true);
 
@@ -112,7 +112,7 @@ const MessageList = (props: MessageListProps) => {
   };
 
   const hasPreviousMessages = () => {
-    return !!(props.item && props.item.metadata && props.item.metadata.nextCursor);
+    return !!(props.item && props.item.metadata && props.item.metadata.next_cursor);
   };
 
   const scrollbarVisible = () => {

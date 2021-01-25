@@ -1,7 +1,6 @@
 package co.airy.core.api.communication.lucene;
 
 import co.airy.core.api.communication.dto.ConversationIndex;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntPoint;

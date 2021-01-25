@@ -1,8 +1,6 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.model.metadata.MetadataKeys;
-import co.airy.model.metadata.Subject;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.ConversationIndex;
@@ -14,6 +12,8 @@ import co.airy.core.api.communication.payload.ConversationListResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.ResponseMetadata;
+import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.Subject;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
 import co.airy.spring.web.payload.EmptyResponsePayload;

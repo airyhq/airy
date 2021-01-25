@@ -91,7 +91,7 @@ browser. This authenticates the chat plugin and enables you to send messages
 immediately:
 
 ```
-http://chatplugin.airy/example.html?channel_id=<channel_id>
+http://chatplugin.airy/example?channel_id=<channel_id>
 ```
 
 You can now type a message in the text box and send it 🎉

@@ -43,7 +43,6 @@ import java.util.concurrent.ExecutionException;
 import static co.airy.core.chat_plugin.WebSocketController.QUEUE_MESSAGE;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;

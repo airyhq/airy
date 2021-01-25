@@ -35,8 +35,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static co.airy.test.Timing.retryOnException;
-import static org.hamcrest.CoreMatchers.is;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;

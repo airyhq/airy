@@ -3,7 +3,6 @@ package co.airy.core.sources.google;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.sources.google.model.SendMessagePayload;
 import co.airy.core.sources.google.services.Api;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
@@ -11,6 +10,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -89,7 +89,7 @@ class SendMessageTest {
         final String channelId = UUID.randomUUID().toString();
         final String textPayload = "{\"text\":\"Hi world\",\"fallback\":\"bye world\"}";
 
-        ArgumentCaptor<SendMessagePayload> payloadCaptor = ArgumentCaptor.forClass(SendMessagePayload.class);
+        ArgumentCaptor<JsonNode> payloadCaptor = ArgumentCaptor.forClass(JsonNode.class);
         ArgumentCaptor<String> googleIdCaptor = ArgumentCaptor.forClass(String.class);
         doNothing().when(api).sendMessage(googleIdCaptor.capture(), payloadCaptor.capture());
 
@@ -111,7 +111,6 @@ class SendMessageTest {
 
         TimeUnit.SECONDS.sleep(5);
 
-        final ObjectMapper objectMapper = new ObjectMapper();
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                 Message.newBuilder()
                         .setId(messageId)
@@ -127,10 +126,10 @@ class SendMessageTest {
         );
 
         retryOnException(() -> {
-            final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
+            final JsonNode sendMessagePayload = payloadCaptor.getValue();
 
-            assertThat(sendMessagePayload.getText(), equalTo(textPayload));
-            assertThat(sendMessagePayload.getMessageId(), equalTo(messageId));
+            assertThat(sendMessagePayload.get("text").textValue(), equalTo("Hi world"));
+            assertThat(sendMessagePayload.get("messageId").textValue(), equalTo(messageId));
             assertThat(googleIdCaptor.getValue(), equalTo(sourceConversationId));
         }, "google API was not called");
     }

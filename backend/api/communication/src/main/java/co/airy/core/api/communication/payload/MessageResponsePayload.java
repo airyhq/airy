@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MessageResponsePayload {
     private String id;
-    private List<Content> content;
+    private String content;
     private String senderType;
     private String sentAt;
     private String deliveryState;

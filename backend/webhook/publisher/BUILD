@@ -7,7 +7,6 @@ app_deps = [
     "//backend/model/message",
     "//backend:webhook",
     "//lib/java/uuid",
-    "//lib/java/mapping",
     "//lib/java/date",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",

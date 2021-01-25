@@ -63,7 +63,7 @@ public class Mapper {
 
     public MessageResponsePayload fromMessage(Message message) {
         return MessageResponsePayload.builder()
-                .content(contentMapper.renderWithDefaultAndLog(message))
+                .content(message.getContent())
                 .senderType(message.getSenderType().toString().toLowerCase())
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())

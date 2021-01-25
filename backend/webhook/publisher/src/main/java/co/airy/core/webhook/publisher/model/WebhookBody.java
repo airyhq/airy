@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class WebhookBody implements Serializable {
     private String conversationId;
     private String id;
-    private String text;
+    private String content;
     private Sender sender;
     private String sentAt;
     private String source;

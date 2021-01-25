@@ -5,7 +5,7 @@ Usage:
 
 Available Commands:
   api         Interacts with the Airy Core Platform HTTP API
-  config      Reloads configuration based on airy.yaml
+  config      Manages your Airy Core Platform instance via airy.yaml
   help        Help about any command
   init        Inits your Airy CLI configuration
   status      Reports the status of your Airy Core Platform

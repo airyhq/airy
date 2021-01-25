@@ -4,6 +4,7 @@ go_library(
     name = "integration",
     srcs = [
         "mockserver.go",
+        "runner.go",
         "test_file.go",
     ],
     importpath = "cli/integration",

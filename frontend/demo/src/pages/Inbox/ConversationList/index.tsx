@@ -77,11 +77,13 @@ const ConversationList = (props: ConversationListProps) => {
     const {conversations, filteredConversations, conversationsMetadata, filteredMetadata, currentFilter, loading, listNextConversations} = props;
 
     const hasFilter = Object.keys(currentFilter || {}).length > 0;
-    const items = hasFilter ? filteredConversations : conversations;;
+    const items = hasFilter ? filteredConversations : conversations;
     const metadata = hasFilter ? filteredMetadata : conversationsMetadata;
-    const hasMoreData = metadata.nextCursor && metadata.nextCursor.length > 0;
 
     console.log(hasFilter);
+    console.log(items);
+
+    const hasMoreData = metadata.nextCursor && metadata.nextCursor.length > 0;
 
     const isItemLoaded = (index: number) => index < items.length;
     const itemCount = hasMoreData ? items.length + 1 : items.length;

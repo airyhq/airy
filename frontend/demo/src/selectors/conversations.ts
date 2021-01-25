@@ -5,7 +5,7 @@ import {StateModel} from '../reducers';
 import {ConversationMap} from '../reducers/data/conversations';
 
 export const filteredConversationSelector = createSelector(
-  (state: StateModel) => state.data.conversations.all.items,
+  (state: StateModel) => state.data.conversations.filtered.items,
   (conversations: ConversationMap) => Object.keys(conversations).map((cId: string) => ({...conversations[cId]}))
 );
 

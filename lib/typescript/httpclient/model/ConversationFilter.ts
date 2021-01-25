@@ -4,7 +4,7 @@ export interface ConversationFilter {
     displayName?: string;
     createdAt?: string;
     byTags?: Array<string>;
-    byChannel?: Array<string>;
-    bySource?: Array<string>
+    byChannels?: Array<string>;
+    bySources?: Array<string>
   }
   

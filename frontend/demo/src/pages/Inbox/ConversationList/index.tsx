@@ -16,7 +16,7 @@ import {SimpleLoader} from '@airyhq/components';
 import {StateModel} from '../../../reducers';
 import {Conversation} from 'httpclient';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 type ConversationListProps = ConnectedProps<typeof connector>;
 
@@ -85,7 +85,7 @@ const ConversationList = (props: ConversationListProps) => {
     return (
       <InfiniteLoader isItemLoaded={isItemLoaded} itemCount={itemCount} loadMoreItems={loadMoreItems}>
         {({onItemsRendered}) => (
-          <div className="conversationListPaginationWrapper">
+          <div className={styles.conversationListPaginationWrapper}>
             {!items.length && !loading ? (
               <NoConversations />
             ) : (
@@ -105,13 +105,13 @@ const ConversationList = (props: ConversationListProps) => {
   };
 
   return (
-    <section className="conversationListContainerContacts">
-      <div className="conversationListContainer">
-        <section className="conversationListContainerFilterBox">
+    <section className={styles.conversationListContainerContacts}>
+      <div className={styles.conversationListContainer}>
+        <section className={styles.conversationListContainerFilterBox}>
           <ConversationListHeader />
         </section>
       </div>
-      <section className="conversationListContactList">{renderConversationList()}</section>
+      <section className={styles.conversationListContactList}>{renderConversationList()}</section>
     </section>
   );
 };

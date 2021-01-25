@@ -16,13 +16,7 @@ var configFile string
 var ConfigCmd = &cobra.Command{
 	Use:              "config",
 	TraverseChildren: true,
-	Short:            "Reloads configuration based on airy.yaml",
-	Long:             `Reloads configuration based on airy.yaml`,
-	Run:              config,
-}
-
-func config(cmd *cobra.Command, args []string) {
-	fmt.Println("config called")
+	Short:            "Manages your Airy Core Platform instance via airy.yaml",
 }
 
 func applyConfig(cmd *cobra.Command, args []string) {
@@ -48,14 +42,13 @@ func applyConfig(cmd *cobra.Command, args []string) {
 var applyConfigCmd = &cobra.Command{
 	Use:              "apply",
 	TraverseChildren: true,
-	Short:            "Applies configuration based on airy.yaml",
-	Long:             `Applies configuration based on airy.yaml`,
+	Short:            "Applies configuration values from airy.yaml configuration to the Airy Core Platform",
 	Run:              applyConfig,
 }
 
 func init() {
-	ConfigCmd.PersistentFlags().StringVar(&kubeConfigFile, "kube-config", "", "Kubernetes config file for the cluster where Airy is running (default \"~/.airy/kube.conf\")")
-	ConfigCmd.PersistentFlags().StringVar(&configFile, "config", "../airy.yaml", "Configuration file for the Airy platform")
+	ConfigCmd.PersistentFlags().StringVar(&kubeConfigFile, "kube-config", "", "Kubernetes config file for the cluster where the Airy Core Platform is running (default \"~/.airy/kube.conf\")")
+	ConfigCmd.PersistentFlags().StringVar(&configFile, "config", "./airy.yaml", "Configuration file for the Airy Core Platform")
 	if kubeConfigFile == "" {
 		home, err := homedir.Dir()
 		if err != nil {

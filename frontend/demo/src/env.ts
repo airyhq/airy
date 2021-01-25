@@ -1,5 +1,9 @@
 export interface Env {
-  apiHost?: string;
+  API_HOST?: string;
 }
 
-export const env = (window as any).airy || {};
+const templatedState: Env = (window as any).AIRY_TEMPLATED_STATE || {};
+
+export const env: Env = {
+  API_HOST: templatedState.API_HOST || 'api.airy',
+};

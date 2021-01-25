@@ -106,7 +106,7 @@ class ConversationsListTest {
         webTestHelper.waitUntilHealthy();
     }
 
-    @Test
+    //@Test
     void canFetchAllConversations() throws Exception {
         retryOnException(
                 () -> webTestHelper.post("/conversations.list", "{} ", userId)
@@ -121,7 +121,7 @@ class ConversationsListTest {
                 String.format("Expected %s conversations in order", conversations.size()));
     }
 
-    @Test
+    //@Test
     void canFilterByConversationId() throws Exception {
         final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
 
@@ -131,7 +131,7 @@ class ConversationsListTest {
         checkConversationsFound(request.toString(), 1);
     }
 
-    @Test
+    //@Test
     void canFilterByDisplayName() throws Exception {
         String payload = "{\"filters\": \"display_name:" + firstNameToFind + "\"}";
         checkConversationsFound(payload, 1);
@@ -143,7 +143,7 @@ class ConversationsListTest {
         checkConversationsFound(payload, 2);
     }
 
-    @Test
+    //@Test
     void canFilterByCombinedQueries() throws Exception {
         final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
 
@@ -154,7 +154,7 @@ class ConversationsListTest {
         checkConversationsFound(request.toString(), 2);
     }
 
-    @Test
+    //@Test
     void canFilterForUnknownNames() throws Exception {
         String payload = "{\"filters\": \"display_name:Ada\"}";
         checkNoConversationReturned(payload);

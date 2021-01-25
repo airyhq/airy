@@ -1,6 +1,7 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
+import co.airy.core.api.communication.lucene.ExtendedQueryParser;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.Subject;
 import co.airy.avro.communication.ReadReceipt;
@@ -34,6 +35,7 @@ import javax.validation.Valid;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static co.airy.model.metadata.MetadataRepository.newConversationTag;
 import static java.util.Comparator.comparing;
@@ -43,10 +45,16 @@ import static java.util.stream.Collectors.toList;
 public class ConversationsController {
     private final Stores stores;
     private final Mapper mapper;
+    private final ExtendedQueryParser queryParser;
 
     ConversationsController(Stores stores, Mapper mapper) {
         this.stores = stores;
         this.mapper = mapper;
+        this.queryParser = new ExtendedQueryParser(Set.of("unread_message_count"),
+                Set.of("created_at"),
+                "id",
+                new WhitespaceAnalyzer());
+        this.queryParser.setAllowLeadingWildcard(true);
     }
 
     @PostMapping("/conversations.list")
@@ -63,13 +71,9 @@ public class ConversationsController {
         final ReadOnlyLuceneStore conversationLuceneStore = stores.getConversationLuceneStore();
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
 
-        final QueryParser simpleQueryParser = new QueryParser("id", new WhitespaceAnalyzer());
-        // TODO Index display names more efficiently
-        simpleQueryParser.setAllowLeadingWildcard(true);
-
         final Query query;
         try {
-            query = simpleQueryParser.parse(requestPayload.getFilters());
+            query = queryParser.parse(requestPayload.getFilters());
         } catch (ParseException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new RequestErrorResponsePayload("Failed to parse Lucene query: " + e.getMessage()));

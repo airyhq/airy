@@ -196,7 +196,7 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
           },
         };
       }
-    return state;
+      return state;
 
     default:
       return state;

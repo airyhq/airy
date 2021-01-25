@@ -3,6 +3,7 @@ import {createAction} from 'typesafe-actions';
 import {Message, ResponseMetadataPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
+import {updateMessagesMetadataAction} from '../conversations';
 
 export const MESSAGES_LOADING = '@@messages/LOADING';
 
@@ -15,7 +16,7 @@ export function listMessages(conversationId: string) {
   return async (dispatch: Dispatch<any>) => {
     return HttpClientInstance.listMessages({
       conversationId,
-      pageSize: 10,
+      pageSize: 1,
     })
       .then((response: {data: Message[]; metadata: ResponseMetadataPayload}) => {
         dispatch(
@@ -24,6 +25,11 @@ export function listMessages(conversationId: string) {
             messages: response.data,
           })
         );
+
+        if (response.metadata) {
+          dispatch(updateMessagesMetadataAction(conversationId, response.metadata));
+        }
+
         return Promise.resolve(true);
       })
       .catch((error: Error) => {
@@ -49,6 +55,11 @@ export function listPreviousMessages(conversationId: string) {
             messages: response.data,
           })
         );
+
+        if (response.metadata) {
+          dispatch(updateMessagesMetadataAction(conversationId, response.metadata));
+        }
+
         return Promise.resolve(true);
       })
       .catch((error: Error) => {

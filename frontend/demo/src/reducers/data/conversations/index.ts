@@ -180,6 +180,24 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
     case getType(actions.removeTagFromConversationAction):
       return removeTagFromConversation(state, action.payload.conversationId, action.payload.tagId);
 
+    case getType(actions.updateMessagesMetadataAction):
+      if (state.items[action.payload.conversationId]) {
+        return {
+          ...state,
+          items: {
+            ...state.items,
+            [action.payload.conversationId]: {
+              ...state.items[action.payload.conversationId],
+              metadata: {
+                ...state.items[action.payload.conversationId].metadata,
+                ...action.payload.metadata,
+              },
+            },
+          },
+        };
+      }
+    return state;
+
     default:
       return state;
   }

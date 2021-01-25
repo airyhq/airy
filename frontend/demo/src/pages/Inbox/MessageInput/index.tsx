@@ -38,9 +38,9 @@ const MessageInput = (props: MessageInputProps) => {
         value={input}
         onChange={handleChange}
       />
-      <span className={styles.buttonSubmit}>
+      <div className={styles.buttonSubmit}>
         <button
-          type="submit"
+          type="button"
           onClick={e => {
             e.preventDefault();
             props.sendMessages(currentConversationId, {text: input, type: 'text'}).then(() => setInput(''));
@@ -49,7 +49,7 @@ const MessageInput = (props: MessageInputProps) => {
             <Paperplane />
           </div>{' '}
         </button>
-      </span>
+      </div>
     </form>
   );
 };

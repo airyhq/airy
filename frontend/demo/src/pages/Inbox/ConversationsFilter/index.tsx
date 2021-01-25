@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {filter} from 'lodash-es';
+import {ConversationFilter} from 'httpclient';
+
 
 import {StateModel} from '../../../reducers';
 
@@ -57,21 +59,24 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   };
 
   const isFilterUnreadActive = () => {
-    return conversationsFilter.includes('unread_count:<0') && isOnlyOneFilterActive();
+    return conversationsFilter.unreadOnly && isOnlyOneFilterActive();
   };
 
   const isFilterButtonActive = () => {
     return (
       getActiveFilterCount() > 1 ||      
-      conversationsFilter.includes('unread_count:0') 
-      // (conversationsFilter.contactTagIds && conversationsFilter.contactTagIds.length > 0) ||
-      // (conversationsFilter.channelIds && conversationsFilter.channelIds.length > 0)
+      conversationsFilter.unreadOnly ||
+      (conversationsFilter.byTags && conversationsFilter.byTags.length > 0) ||
+      (conversationsFilter.byChannels && conversationsFilter.byChannels.length > 0)
     );
   };
 
   const activateUnreadFilter = () => {
     resetFilter();
-    setFilter('unread_count:<0');
+    const filter: ConversationFilter = {...conversationsFilter};
+    filter.unreadOnly = true;
+    filter.readOnly = false;
+    setFilter(filter);
   };
 
   const renderFilterStatus = () => {
@@ -82,12 +87,12 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     if (conversationsFilter.unreadOnly) {
       activeFilters.push('Unread');
     }
-    // if (conversationsFilter.contactTagIds && conversationsFilter.contactTagIds.length > 0) {
-    //   activeFilters.push('Tags', {count: conversationsFilter.contactTagIds.length});
-    // }
-    // if (conversationsFilter.channelIds && conversationsFilter.channelIds.length > 0) {
-    //   activeFilters.push('Channels', {count: conversationsFilter.channelIds.length});
-    // }
+    if (conversationsFilter.byTags && conversationsFilter.byTags.length > 0) {
+      activeFilters.push(`${conversationsFilter.byTags.length} Tags`);
+    }
+    if (conversationsFilter.byChannels && conversationsFilter.byChannels.length > 0) {
+      activeFilters.push(`${conversationsFilter.byChannels.length} Channels`);
+    }
 
     return (
       <div className={styles.filterHintRow}>
@@ -119,9 +124,8 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
 
     if (conversationsMetadata.total) {
       return (
-        <div className={styles.filterCount}>          
-          {formatter.format(filteredMetadata.filteredTotal || conversationsMetadata.total)} 
-          Conversations
+        <div className={styles.filterCount}>                    
+          {`${formatter.format(filteredMetadata.filteredTotal || conversationsMetadata.total)} Conversations`}
         </div>
       );
     }

@@ -55,7 +55,7 @@ function mergeConversations(
 ): ConversationMap {
   newConversations.forEach((conversation: MergedConversation) => {
     if (conversation.contact && !conversation.contact.displayName) {
-      conversation.contact.displayName = `${conversation.contact.firstName} ${conversation.contact.lastName}`;
+      conversation.contact.displayName = conversation.contact.displayName;
     }
     if (conversation.lastMessage) {
       conversation.lastMessage.sentAt = new Date(conversation.lastMessage.sentAt);
@@ -157,7 +157,7 @@ function filteredReducer(
   state: FilteredState = {
     items: {},
     metadata: {previousCursor: null, nextCursor: null, total: 0},
-    currentFilter: '',
+    currentFilter: {},
   },
   action: FilterAction | Action
 ): FilteredState {
@@ -175,8 +175,11 @@ function filteredReducer(
         metadata: action.payload.metadata,
       };
     case getType(filterActions.resetFilteredConversationAction):
-      return {items: {}, metadata: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: ''};
-    case getType(filterActions.updateFilteredConversationsAction):
+      return {items: {}, metadata: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: {}};
+    case getType(filterActions.updateFilteredConversationsAction):    
+    
+      console.log("a");
+      console.log(action);
       return {
         ...state,
         currentFilter: action.payload.filter,

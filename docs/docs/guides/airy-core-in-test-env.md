@@ -98,7 +98,8 @@ local machine. You can see an example request to the API by running the
 
 The frontend UI for the demo app can be accessed through http://demo.airy.
 
-The frontend UI for the Airy chat plugin can be accessed through http://chatplugin.airy/example.html.
+The frontend UI for the Airy chat plugin can be accessed through
+http://chatplugin.airy/example.
 
 ## Public webhooks
 

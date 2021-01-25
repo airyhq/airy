@@ -97,15 +97,14 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                             if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
                                 conversationBuilder.sourceConversationId(message.getSenderId());
                             }
-                            log.info("Agg message {}", message);
                             conversationBuilder.channelId(message.getChannelId());
 
                             return conversationBuilder.build();
                         })
                 .join(channelsTable, Conversation::getChannelId, (conversation, channel) -> {
-                    log.info("Join conversation {} channel {}", conversation, channel);
                     return conversation.toBuilder()
                             .channelId(conversation.getChannelId())
+                            .channel(channel)
                             .sourceConversationId(conversation.getSourceConversationId())
                             .build();
                 });
@@ -118,9 +117,6 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         // Fetch missing metadata
         conversationTable
-                // To avoid any redundant fetch contact operations the suppression interval should
-                // be higher than the timeout of the Facebook API
-                .suppress(Suppressed.untilTimeLimit(Duration.ofMillis(streams.getSuppressIntervalInMs()), Suppressed.BufferConfig.unbounded()))
                 .toStream()
                 .leftJoin(metadataTable, (conversation, metadataMap) -> conversation
                         .toBuilder()

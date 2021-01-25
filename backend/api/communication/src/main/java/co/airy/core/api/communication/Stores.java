@@ -155,10 +155,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
                             return aggregate;
                         })
-                .join(channelTable, Conversation::getChannelId, (conversation, channel) -> {
-                    conversation.setChannel(channel);
-                    return conversation;
-                })
+                .join(channelTable, Conversation::getChannelId,
+                        (conversation, channel) -> conversation.toBuilder().channel(channel).build())
                 .leftJoin(metadataTable, (conversation, metadataMap) -> {
                     if (metadataMap != null) {
                         return conversation.toBuilder()
@@ -169,7 +167,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 })
                 .leftJoin(unreadCountTable, (conversation, unreadCountState) -> {
                     if (unreadCountState != null) {
-                        conversation.setUnreadMessageCount(unreadCountState.getUnreadCount());
+                        return conversation.toBuilder().unreadMessageCount(unreadCountState.getUnreadCount()).build();
                     }
                     return conversation;
                 }, Materialized.as(conversationsStore))

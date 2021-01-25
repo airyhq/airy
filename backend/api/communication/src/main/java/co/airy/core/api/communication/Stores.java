@@ -169,7 +169,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 })
                 .leftJoin(unreadCountTable, (conversation, unreadCountState) -> {
                     if (unreadCountState != null) {
-                        conversation.setUnreadCount(unreadCountState.getUnreadCount());
+                        conversation.setUnreadMessageCount(unreadCountState.getUnreadCount());
                     }
                     return conversation;
                 }, Materialized.as(conversationsStore))

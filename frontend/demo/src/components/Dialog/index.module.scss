@@ -1,22 +1,22 @@
 .dialog {
-    position: absolute;
-    background-color: white;
-    border: 1px solid var(--color-light-gray);
-    border-radius: 4px;
-    z-index: 4;
-  }
-  
-  .nonOverlayDialog {
-    @extend .dialog;
-    position: relative;
-    width: 233px;
-  }
-  
-  .clickCover {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-  }
+  position: absolute;
+  background-color: white;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 4px;
+  z-index: 4;
+}
+
+.nonOverlayDialog {
+  @extend .dialog;
+  position: relative;
+  width: 233px;
+}
+
+.clickCover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}

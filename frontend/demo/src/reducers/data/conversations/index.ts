@@ -217,7 +217,7 @@ function filteredReducer(
       };
     case getType(filterActions.resetFilteredConversationAction):
       return {items: {}, metadata: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: {}};
-    case getType(filterActions.updateFilteredConversationsAction):      
+    case getType(filterActions.updateFilteredConversationsAction):
       return {
         ...state,
         currentFilter: action.payload.filter,

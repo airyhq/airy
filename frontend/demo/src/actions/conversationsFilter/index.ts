@@ -72,17 +72,17 @@ const filterToLuceneSyntax = (filter: ConversationFilter): string | null => {
   } else if (filter.readOnly) {
     filterQuery.push('unread_count:0');
   }
-  if (filter.displayName) {    
-    filterQuery.push('display_name:*' + filter.displayName + '*');    
+  if (filter.displayName) {
+    filterQuery.push('display_name:*' + filter.displayName + '*');
   }
-  if (filter.byTags && filter.byTags.length > 0) {    
-    filterQuery.push('tag_id:(' + filter.byTags.join(' ') + ')');    
+  if (filter.byTags && filter.byTags.length > 0) {
+    filterQuery.push('tag_id:(' + filter.byTags.join(' ') + ')');
   }
-  if (filter.byChannels && filter.byChannels.length > 0) {    
-    filterQuery.push('channel_id:(' + filter.byChannels.join(' ') + ')');    
+  if (filter.byChannels && filter.byChannels.length > 0) {
+    filterQuery.push('channel_id:(' + filter.byChannels.join(' ') + ')');
   }
-  if (filter.bySources && filter.bySources.length > 0) {    
-    filterQuery.push('source:(' + filter.bySources.join(' ') + ')');    
+  if (filter.bySources && filter.bySources.length > 0) {
+    filterQuery.push('source:(' + filter.bySources.join(' ') + ')');
   }
   return !filterQuery.length ? null : filterQuery.join(' AND ');
 };

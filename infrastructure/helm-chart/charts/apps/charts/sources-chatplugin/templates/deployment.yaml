@@ -52,11 +52,6 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_COMMIT_INTERVAL_MS
-        - name: CHATPLUGIN_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: sources-chatplugin
-              key: NAME
         livenessProbe:
           httpGet:
             path: /actuator/health

@@ -5,7 +5,7 @@ export interface MessagePayload {
   content: {
     text: string;
     type: MessageType;
-  };
+  }[];
   delivery_state: MessageState;
   sender_type: SenderType;
   sent_at: Date;

@@ -91,12 +91,11 @@ const MessageList = (props: MessageListProps) => {
               <div className={styles.dateHeader}>{formatDateOfMessage(message)}</div>
             )}
             <RenderLibrary
-              isChatPlugin={false}
               message={message}
               currentConversation={currentConversation}
               prevWasContact={prevWasContact}
               nextIsSameUser={nextIsSameUser}
-              isContact={() => isContact(message)}
+              isContact={isContact(message)}
             />
           </>
         );

@@ -16,21 +16,21 @@ import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 import RenderLibrary from 'renderLibrary';
+import {messageMapper, MessagePayload, SenderType, MessageState, MessageType} from 'httpclient';
 
 let ws: WebSocket;
 
-const welcomeMessage = {
+const welcomeMessage: MessagePayload = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
-  sender_type: 'app_user',
+  sender_type: SenderType.appUser,
   content: [
     {
       text: 'Hello! How can we help you?',
-      type: 'text',
+      type: MessageType.text,
     },
   ],
-  delivery_state: 'undefined',
-  sent_at: 'undefined',
-  state: 'delivered',
+  delivery_state: MessageState.delivered,
+  sent_at: new Date(),
 };
 
 type Props = AiryWidgetConfiguration & RoutableProps;
@@ -39,7 +39,7 @@ const Chat = (props: Props) => {
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(true);
-  const [messages, setMessages] = useState([welcomeMessage]);
+  const [messages, setMessages] = useState<MessagePayload[]>([welcomeMessage]);
 
   const getResumeToken = () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -95,7 +95,7 @@ const Chat = (props: Props) => {
   };
 
   const onReceive = (data: IMessage) => {
-    setMessages(messages => [...messages, JSON.parse(data.body).message]);
+    setMessages((messages: MessagePayload[]) => [...messages, JSON.parse(data.body).message]);
   };
 
   const updateScroll = () => {
@@ -139,16 +139,16 @@ const Chat = (props: Props) => {
           <HeaderBarProp render={headerBar} />
           <div className={style.chat}>
             <div id="messages" className={style.messages}>
-              {messages.map(message => {
-                console.log(message)
+              {messages.map((message: MessagePayload) => {
                 return (
                   <MessageProp
                     key
                     render={
                       props.airyMessageProp
                         ? () => props.airyMessageProp(ctrl)
-                        : <RenderLibrary isChatPlugin={true} message={message} />
-                        // : () => <AiryMessage message={message} />
+                        : () => <RenderLibrary message={messageMapper(message)} isContact={true} />
+                      // : () => <AiryMessage message={message} />
+                      // : () => <div></div>
                     }
                   />
                 );

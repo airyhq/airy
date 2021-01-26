@@ -44,7 +44,7 @@ export interface Message {
   content: {
     text: string;
     type: MessageType;
-  };
+  }[];
   deliveryState: MessageState;
   senderType: SenderType;
   sentAt: Date;

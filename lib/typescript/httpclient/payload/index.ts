@@ -8,3 +8,4 @@ export * from './ListTagsResponsePayload';
 export * from './CreateTagRequestPayload';
 export * from './ListConversationsRequestPayload';
 export * from './ResponseMetadataPayload';
+export * from './MessagePayload';

@@ -6,10 +6,10 @@ ts_library(
     name = "renderLibrary",
     deps = [
         "//lib/typescript/httpclient",
-        "//lib/typescript/types",
         "//lib/typescript/services",
+        "//lib/typescript/types",
         "@npm//@types/node",
-        "@npm//@types/react",
         "@npm//linkifyjs",
+        "@npm//react",
     ],
 )

@@ -26,15 +26,7 @@ const mapStateToProps = (state: StateModel) => {
 const connector = connect(mapStateToProps, null);
 
 const Tag = (props: TagProps) => {
-  
-  const {
-    tag,
-    expanded,
-    variant,
-    onClick,
-    removeTagFromContact,
-    tagSettings,
-  } = props;
+  const {tag, expanded, variant, onClick, removeTagFromContact, tagSettings} = props;
 
   const tagColor = (tagSettings && tagSettings.colors[tag.color]) || {
     background: 'F1FAFF',

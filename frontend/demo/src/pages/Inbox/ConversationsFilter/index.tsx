@@ -3,7 +3,6 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {filter} from 'lodash-es';
 import {ConversationFilter} from 'httpclient';
 
-
 import {StateModel} from '../../../reducers';
 
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
@@ -64,7 +63,7 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
 
   const isFilterButtonActive = () => {
     return (
-      getActiveFilterCount() > 1 ||      
+      getActiveFilterCount() > 1 ||
       conversationsFilter.unreadOnly ||
       (conversationsFilter.byTags && conversationsFilter.byTags.length > 0) ||
       (conversationsFilter.byChannels && conversationsFilter.byChannels.length > 0)
@@ -73,9 +72,7 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
 
   const activateUnreadFilter = () => {
     resetFilter();
-    const filter: ConversationFilter = {...conversationsFilter};
-    filter.unreadOnly = true;
-    filter.readOnly = false;
+    const filter: ConversationFilter = {unreadOnly: true};
     setFilter(filter);
   };
 
@@ -114,17 +111,14 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     if (filteredMetadata.loaded) {
       return (
         <div className={styles.filterCount}>
-          "messenger.filter.countFiltered"
-          {/* {
-            formatter.format(filteredMetadata.filtered_total),
-            formatter.format(conversationsMetadata.total) */}
+          {`Filtered: ${filteredMetadata.filtered_total} Total: ${filteredMetadata.total}`}
         </div>
       );
     }
 
     if (conversationsMetadata.total) {
       return (
-        <div className={styles.filterCount}>                    
+        <div className={styles.filterCount}>
           {`${formatter.format(filteredMetadata.filteredTotal || conversationsMetadata.total)} Conversations`}
         </div>
       );

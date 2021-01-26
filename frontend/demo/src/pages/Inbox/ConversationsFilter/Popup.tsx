@@ -5,7 +5,7 @@ import {sortBy} from 'lodash-es';
 import {SearchField, LinkButton, Button} from '@airyhq/components';
 import {Tag as TagModel, Channel, ConversationFilter} from 'httpclient';
 
-import {listTags} from '../../../actions/tags'
+import {listTags} from '../../../actions/tags';
 
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
 
@@ -48,7 +48,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
 
   useEffect(() => {
     listTags();
-  });
+  }, [listTags]);
 
   const applyPressed = () => {
     closeCallback();
@@ -62,15 +62,18 @@ const PopUpFilter = (props: PopUpFilterProps) => {
 
   const toggleReadOnly = e => {
     e.stopPropagation();
-    filter.readOnly = !filter.readOnly;
-    setFilter(filter);    
+    const newFilter: ConversationFilter = {...filter};
+    newFilter.readOnly = !filter.readOnly;
+    newFilter.unreadOnly = filter.readOnly;
+    setFilter(newFilter);
   };
 
   const toggleUnreadOnly = e => {
     e.stopPropagation();
     const newFilter: ConversationFilter = {...filter};
-    newFilter.unreadOnly = !filter.unreadOnly;    
-    setFilter(newFilter);    
+    newFilter.unreadOnly = !filter.unreadOnly;
+    newFilter.readOnly = filter.unreadOnly;
+    setFilter(newFilter);
   };
 
   const isChannelSelected = (channelsList: Array<string>, channel: Channel) => {
@@ -80,24 +83,24 @@ const PopUpFilter = (props: PopUpFilterProps) => {
   const toggleChannel = (e, channel: Channel) => {
     e.stopPropagation();
     const channels = filter.byChannels ? [...filter.byChannels] : [];
-    isChannelSelected(channels, channel) ? channels.splice(channels.indexOf(channel.id), 1) : channels.push(channel.id);    
+    isChannelSelected(channels, channel) ? channels.splice(channels.indexOf(channel.id), 1) : channels.push(channel.id);
     setFilter({
       ...filter,
-      byChannels: channels
-    }); 
+      byChannels: channels,
+    });
   };
 
   const isTagSelected = (tagList: Array<string>, tag: TagModel) => {
     return (tagList || []).includes(tag.id);
   };
 
-  const toggleTag = (tag: TagModel) => {    
+  const toggleTag = (tag: TagModel) => {
     const tags = filter.byTags ? [...filter.byTags] : [];
-    isTagSelected(tags, tag) ? tags.splice(tags.indexOf(tag.id), 1) : tags.push(tag.id);    
+    isTagSelected(tags, tag) ? tags.splice(tags.indexOf(tag.id), 1) : tags.push(tag.id);
     setFilter({
       ...filter,
-      byTags: tags
-    });    
+      byTags: tags,
+    });
   };
 
   return (
@@ -111,17 +114,17 @@ const PopUpFilter = (props: PopUpFilterProps) => {
             <h3>Read/Unread</h3>
             <div className={styles.filterRow}>
               <button
-                className={filter.unreadOnly ? styles.filterButtonSelected : styles.filterButton}
+                className={filter.readOnly ? styles.filterButtonSelected : styles.filterButton}
                 onClick={e => toggleReadOnly(e)}>
                 Read Only
               </button>
               <button
-                className={filter.readOnly ? styles.filterButtonSelected : styles.filterButton}
+                className={filter.unreadOnly ? styles.filterButtonSelected : styles.filterButton}
                 onClick={e => toggleUnreadOnly(e)}>
                 Unread Only
               </button>
             </div>
-          </div>          
+          </div>
         </div>
         <div className={styles.filterColumn}>
           <h3>By Tags</h3>
@@ -141,7 +144,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                   tag={tag}
                   variant={isTagSelected(filter.byTags, tag) ? 'default' : 'light'}
                   onClick={() => toggleTag(tag)}
-                />                
+                />
               ))}
           </div>
         </div>
@@ -162,7 +165,9 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                 .map((channel, key) => (
                   <div
                     key={key}
-                    className={`${styles.sourceEntry} ${isChannelSelected(filter.byChannels, channel) ? styles.sourceSelected : ''}`}
+                    className={`${styles.sourceEntry} ${
+                      isChannelSelected(filter.byChannels, channel) ? styles.sourceSelected : ''
+                    }`}
                     onClick={event => toggleChannel(event, channel)}>
                     {isChannelSelected(filter.byChannels, channel) ? (
                       <div className={styles.checkmarkIcon}>

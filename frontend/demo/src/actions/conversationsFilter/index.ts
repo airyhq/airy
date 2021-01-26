@@ -1,10 +1,10 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import { Conversation, Tag, ConversationFilter, ResponseMetadataPayload } from 'httpclient';
-import { HttpClientInstance } from '../../InitializeAiryApi';
+import {Conversation, ConversationFilter, ResponseMetadataPayload} from 'httpclient';
+import {HttpClientInstance} from '../../InitializeAiryApi';
 
 import {StateModel} from '../../reducers';
-import { loadingConversationsAction, mergeConversationsAction } from '../conversations';
+import {loadingConversationsAction} from '../conversations';
 
 export const RESET_FILTERED_CONVERSATIONS = '@@conversations/RESET_FILTEREDS';
 export const MERGE_FILTERED_CONVERSATIONS = '@@conversations/MERGE_FILTERED';
@@ -16,33 +16,35 @@ export const mergeFilteredConversationsAction = createAction(
   resolve => (conversations: Conversation[], filter: ConversationFilter, metadata: ResponseMetadataPayload) =>
     resolve({conversations, filter, metadata})
 );
-export const updateFilteredConversationsAction = createAction(UPDATE_CONVERSATION_FILTER, resolve => (filter: ConversationFilter) =>
-  resolve({filter})
+export const updateFilteredConversationsAction = createAction(
+  UPDATE_CONVERSATION_FILTER,
+  resolve => (filter: ConversationFilter) => resolve({filter})
 );
 
+export const setSearch = (currentFilter: ConversationFilter, displayName: string) => {
+  return setFilter({
+    ...currentFilter,
+    displayName,
+  });
+};
+
 export const setFilter = (filter: ConversationFilter) => {
-  return (dispatch: Dispatch<any>, state: () => StateModel) => {  
+  return (dispatch: Dispatch<any>, state: () => StateModel) => {
     executeFilter(filter, dispatch, state);
   };
 };
 
 export const resetFilter = () => {
   return function(dispatch: Dispatch<any>, state: () => StateModel) {
-    dispatch(resetFilteredConversationAction());    
+    dispatch(resetFilteredConversationAction());
     const currentFilter = state().data.conversations.filtered.currentFilter;
-    const newFilter: ConversationFilter = {displayName: currentFilter.displayName};    
-    executeFilter(
-      newFilter,
-      dispatch,
-      state
-    );
+    const newFilter: ConversationFilter = {displayName: currentFilter.displayName};
+    executeFilter(newFilter, dispatch, state);
   };
 };
 
 const executeFilter = (filter: ConversationFilter, dispatch: Dispatch<any>, state: () => StateModel) => {
-  dispatch(    
-    updateFilteredConversationsAction(filter)
-  );
+  dispatch(updateFilteredConversationsAction(filter));
   refetchConversations(dispatch, state);
 };
 
@@ -51,54 +53,55 @@ const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, 
   const filter = state().data.conversations.filtered.currentFilter;
   return HttpClientInstance.listConversations({
     page_size: 10,
-    filters: filterToLuceneSyntax(filter)
+    cursor,
+    filters: filterToLuceneSyntax(filter),
   })
-  .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
-    dispatch(mergeFilteredConversationsAction(response.data, filter, response.metadata));
-    return Promise.resolve(true);
-  })
-  .catch((error: Error) => {
-    return Promise.reject(error);
-  });
+    .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
+      dispatch(mergeFilteredConversationsAction(response.data, filter, response.metadata));
+      return Promise.resolve(true);
+    })
+    .catch((error: Error) => {
+      return Promise.reject(error);
+    });
 };
 
 const filterToLuceneSyntax = (filter: ConversationFilter): string | null => {
-  let filterQuery = "";
+  let filterQuery = '';
   if (filter.unreadOnly) {
-    filterQuery = "unread_count:>0";
+    filterQuery = 'unread_count:[1 TO *]';
   } else if (filter.readOnly) {
-    filterQuery = "unread_count:0";
+    filterQuery = 'unread_count:0';
   }
   if (filter.displayName) {
     if (filterQuery === '') {
-      filterQuery = "display_name:*" + filter.displayName + "*";
+      filterQuery = 'display_name:*' + filter.displayName + '*';
     } else {
-      filterQuery += " AND display_name:*" + filter.displayName + "*";
-    }    
+      filterQuery += ' AND display_name:*' + filter.displayName + '*';
+    }
   }
   if (filter.byTags && filter.byTags.length > 0) {
     if (filterQuery === '') {
-      filterQuery = "tagId:(" + filter.byTags.join(" ") +")";
+      filterQuery = 'tagId:(' + filter.byTags.join(' ') + ')';
     } else {
-      filterQuery = "AND tagId:(" + filter.byTags.join(" ") +")";
-    }    
+      filterQuery += ' AND tagId:(' + filter.byTags.join(' ') + ')';
+    }
   }
   if (filter.byChannels && filter.byChannels.length > 0) {
     if (filterQuery === '') {
-      filterQuery = "channelId:(" + filter.byChannels.join(" ") +")";
+      filterQuery = 'channelId:(' + filter.byChannels.join(' ') + ')';
     } else {
-      filterQuery = "AND channelId:(" + filter.byChannels.join(" ") +")";
-    }     
+      filterQuery += ' AND channelId:(' + filter.byChannels.join(' ') + ')';
+    }
   }
   if (filter.bySources && filter.bySources.length > 0) {
     if (filterQuery === '') {
-      filterQuery = "source:(" + filter.bySources.join(" ") +")";
+      filterQuery = 'source:(' + filter.bySources.join(' ') + ')';
     } else {
-      filterQuery = "AND source:(" + filter.bySources.join(" ") +")";
-    }     
+      filterQuery += ' AND source:(' + filter.bySources.join(' ') + ')';
+    }
   }
 
   console.log(filterQuery);
 
-  return filterQuery === "" ? null : filterQuery;
-}
+  return filterQuery === '' ? null : filterQuery;
+};

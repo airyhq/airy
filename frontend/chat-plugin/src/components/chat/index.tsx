@@ -82,7 +82,7 @@ const Chat = (props: Props) => {
         JSON.stringify({
           message: {
             text,
-            type: "text"
+            type: 'text',
           },
         })
       );

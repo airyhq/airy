@@ -1,8 +1,6 @@
 import React, {createRef} from 'react';
 import {withRouter, matchPath, RouteComponentProps, match} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {VariableSizeList as List} from 'react-window';
-
 
 import InfiniteLoader from 'react-window-infinite-loader';
 import ResizableWindowList from '../../../components/ResizableWindowList';
@@ -51,7 +49,6 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationList = (props: ConversationListProps) => {
-  
   const listRef: any = createRef();
 
   const renderConversationItem = (conversation: Conversation, style: React.CSSProperties) => {
@@ -74,7 +71,15 @@ const ConversationList = (props: ConversationListProps) => {
   };
 
   const renderConversationList = () => {
-    const {conversations, filteredConversations, conversationsMetadata, filteredMetadata, currentFilter, loading, listNextConversations} = props;
+    const {
+      conversations,
+      filteredConversations,
+      conversationsMetadata,
+      filteredMetadata,
+      currentFilter,
+      loading,
+      listNextConversations,
+    } = props;
 
     const hasFilter = Object.keys(currentFilter || {}).length > 0;
     const items = hasFilter ? filteredConversations : conversations;
@@ -89,9 +94,7 @@ const ConversationList = (props: ConversationListProps) => {
     const itemCount = hasMoreData ? items.length + 1 : items.length;
     const loadMoreItems = () => {
       if (!metadata.loading) {
-        hasFilter 
-        ? () => {}
-        : listNextConversations();
+        hasFilter ? listNextConversations() : listNextConversations();
       }
       return Promise.resolve(true);
     };

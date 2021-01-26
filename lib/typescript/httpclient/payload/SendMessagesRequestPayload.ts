@@ -1,5 +1,5 @@
 export interface SendMessagesRequestPayload {
-  conversation_id: string;
+  conversationId: string;
   message: {
     text: string;
     type: string;

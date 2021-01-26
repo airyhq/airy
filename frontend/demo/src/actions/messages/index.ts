@@ -2,7 +2,6 @@ import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
 import {Message, ResponseMetadataPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
-import {SendMessagesRequestPayload} from 'httpclient/payload/SendMessagesRequestPayload';
 
 export const MESSAGES_LOADING = '@@messages/LOADING';
 export const SEND_MESSAGE = '@@messages/SEND_MESSAGE';
@@ -38,8 +37,10 @@ export function listMessages(conversationId: string) {
 }
 export function sendMessages(conversationId: string, message: {text: string; type: string}) {
   return async (dispatch: Dispatch<any>) => {
-    const requestPayload: SendMessagesRequestPayload = {conversation_id: conversationId, message};
-    return HttpClientInstance.sendMessages(requestPayload)
+    return HttpClientInstance.sendMessages({
+      conversationId,
+      message,
+    })
       .then((response: Message) => {
         dispatch(
           sendMessagesAction({

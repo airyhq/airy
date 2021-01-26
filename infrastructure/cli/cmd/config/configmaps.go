@@ -11,8 +11,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-func applyConfigMap(source string, newCmData map[string]string, kubeConfigFile string, namespace string) error {
-	configMapName := "sources-" + source
+func applyConfigMap(configMapName string, newCmData map[string]string, kubeConfigFile string, namespace string) error {
 	config, kubeConfigErr := clientcmd.BuildConfigFromFlags("", kubeConfigFile)
 	if kubeConfigErr != nil {
 		return kubeConfigErr
@@ -50,7 +49,7 @@ func facebookApply(airyConf airyConf, kubeConfigFile string) bool {
 		configMapData["FACEBOOK_APP_ID"] = facebookConfig.AppID
 		configMapData["FACEBOOK_APP_SECRET"] = facebookConfig.AppSecret
 		configMapData["FACEBOOK_WEBHOOK_SECRET"] = facebookConfig.WebhookSecret
-		err := applyConfigMap("facebook", configMapData, kubeConfigFile, airyConf.Global.Namespace)
+		err := applyConfigMap("sources-facebook", configMapData, kubeConfigFile, airyConf.Global.Namespace)
 
 		if err != nil {
 			fmt.Println("unable to update configMap: ", err)
@@ -70,7 +69,7 @@ func googleApply(airyConf airyConf, kubeConfigFile string) bool {
 		configMapData["GOOGLE_PARTNER_KEY"] = googleConfig.PartnerKey
 		configMapData["GOOGLE_SA_FILE"] = googleConfig.SaFile
 
-		err := applyConfigMap("google", configMapData, kubeConfigFile, airyConf.Global.Namespace)
+		err := applyConfigMap("sources-google", configMapData, kubeConfigFile, airyConf.Global.Namespace)
 
 		if err != nil {
 			fmt.Println("unable to update configMap: ", err)
@@ -90,7 +89,26 @@ func twilioApply(airyConf airyConf, kubeConfigFile string) bool {
 		configMapData["TWILIO_ACCOUNT_SID"] = twilioConfig.AccountSid
 		configMapData["TWILIO_AUTH_TOKEN"] = twilioConfig.AuthToken
 
-		err := applyConfigMap("twilio", configMapData, kubeConfigFile, airyConf.Global.Namespace)
+		err := applyConfigMap("sources-twilio", configMapData, kubeConfigFile, airyConf.Global.Namespace)
+
+		if err != nil {
+			fmt.Println("unable to update configMap: ", err)
+			os.Exit(1)
+		}
+
+		return true
+	}
+
+	return false
+}
+
+func webhooksApply(airyConf airyConf, kubeConfigFile string) bool {
+	webhooksConfig := airyConf.Core.Apps.Webhooks
+	if webhooksConfig.Name != "" {
+		configMapData := make(map[string]string, 0)
+		configMapData["NAME"] = webhooksConfig.Name
+
+		err := applyConfigMap("webhooks-config", configMapData, kubeConfigFile, airyConf.Global.Namespace)
 
 		if err != nil {
 			fmt.Println("unable to update configMap: ", err)

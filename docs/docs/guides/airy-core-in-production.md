@@ -141,6 +141,10 @@ features. In order to proceed with deploying the apps, we assume that you have a
 running Kubernetes cluster, properly configured KUBECONF file and properly set
 context.
 
+The Airy Core Platform ships with a Kubernetes controller, which is responsible for
+starting and reloading the appropriate Airy apps based on the provided configuration.
+The controller as a deployment named `airy-controller`.
+
 ### Configuration
 
 After the [required services](#requirements) are deployed, you're ready to start
@@ -196,21 +200,10 @@ We provided a Helm chart to deploy the `Airy apps`. Before you can run helm, you
 must configure the system via the `airy.yaml` file, then you can proceed:
 
 ```sh
-cp airy.yaml ./helm-chart/charts/apps/values.yaml
-helm install core ./helm-chart/charts/apps/ --timeout 1000s
+helm install core ./helm-chart/charts/apps/ --values ./airy.yaml --timeout 1000s
 ```
 
-By default, the `Airy apps` deployments start with `replicas=0` so to scale them up, run:
-
-```sh
-kubectl scale deployment -l type=api --replicas=1
-kubectl scale deployment -l type=frontend --replicas=1
-kubectl scale deployment -l type=webhook --replicas=1
-kubectl scale deployment -l type=sources-chatplugin --replicas=1
-kubectl scale deployment -l type=sources-facebook --replicas=1
-kubectl scale deployment -l type=sources-google --replicas=1
-kubectl scale deployment -l type=sources-twilio --replicas=1
-```
+The API `Airy apps`, the Frontend UI and the Frontend Chatplugin start by default, while all the other apps are optional and are started if there is provided configuration for them in the `airy.yaml` file.
 
 At this point you should have a running `Airy Core Platform` in your environment 🎉.
 
@@ -218,18 +211,13 @@ If afterwards you need to modify or add other config parameters in the
 `airy.yaml` file, after editing the file run:
 
 ```sh
-cp airy.yaml ./helm-chart/charts/apps/values.yaml
-helm upgrade core ./helm-chart/charts/apps/ --timeout 1000s
+airy config apply --config ./airy.yaml --kube-config /path/to/your/kube.conf
 ```
 
-If you deploy the Airy Core Platform with a specific version tag, you must
-export the `AIRY_VERSION` variable before running `helm upgrade`:
+Make sure you point the `--kube-config` flag to your Kubernetes configuration file.
 
-```sh
-cp airy.yaml ./helm-chart/charts/apps/values.yaml
-export AIRY_VERSION=develop
-helm upgrade core ./helm-chart/charts/apps/ --set global.appImageTag=${AIRY_VERSION} --timeout 1000s
-```
+If you want to deploy the Airy Core Platform with a specific version, you must set the version in your
+`airy.yaml` file, under the `global.appImageTag` configuration key.
 
 ## Network
 

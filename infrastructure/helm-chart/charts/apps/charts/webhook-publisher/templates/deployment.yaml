@@ -6,6 +6,7 @@ metadata:
   labels:
     app: webhook-publisher
     type: webhook
+    core.airy.co/managed: "true"
 spec:
   replicas: 0
   selector:
@@ -53,6 +54,11 @@ spec:
             configMapKeyRef:
               name: redis-config
               key: REDIS_PORT
+        - name: WEBHOOK_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: webhooks-config
+              key: NAME
         livenessProbe:
           tcpSocket:
             port: 6000

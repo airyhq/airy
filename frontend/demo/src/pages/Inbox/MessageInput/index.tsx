@@ -5,6 +5,7 @@ import styles from './index.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import {ReactComponent as Paperplane} from '../../../assets/images/icons/paperplane.svg';
 import {RootState} from '../../../reducers';
+
 const mapDispatchToProps = {sendMessages};
 
 const mapStateToProps = (state: RootState) => {

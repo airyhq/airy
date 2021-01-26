@@ -138,9 +138,15 @@ class ConversationsListTest {
     }
 
     @Test
-    void canFilterByUnreadMessageCount() throws Exception {
+    void canFilterByUnreadMessageCountRange() throws Exception {
         String payload = "{\"filters\": \"unread_message_count:[2 TO *]\"}";
         checkConversationsFound(payload, 2);
+    }
+
+    @Test
+    void canFilterByUnreadMessageCount() throws Exception {
+        String payload = "{\"filters\": \"unread_message_count:2\"}";
+        checkConversationsFound(payload, 1);
     }
 
     @Test

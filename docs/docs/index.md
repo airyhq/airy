@@ -57,6 +57,14 @@ hosts file yourself.
 192.168.50.5  chatplugin.airy
 ```
 
+After the bootstrap process finishes, it will download the Kubernetes configiration file to the local host machine under `~/.airy/kube.conf`.
+That file is required for the Airy Command Line tool (Airy CLI), in order to access the Kubernetes cluster where the Airy Core Platform is running.
+You can also use that configuration file with the `kubectl` utility, for example:
+
+```sh
+kubectl --kubeconfig ~/.airy/kube.conf get pods
+```
+
 Check out our [guide for running in test environment](guides/airy-core-in-test-env.md) for detailed information.
 
 ## Connect a Chat Plugin source
@@ -91,7 +99,7 @@ browser. This authenticates the chat plugin and enables you to send messages
 immediately:
 
 ```
-http://chatplugin.airy/example.html?channel_id=<channel_id>
+http://chatplugin.airy/example?channel_id=<channel_id>
 ```
 
 You can now type a message in the text box and send it 🎉

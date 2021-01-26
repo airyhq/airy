@@ -8,7 +8,7 @@ metadata:
     type: sources-chatplugin
     core.airy.co/managed: "true"
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: sources-chatplugin
@@ -35,8 +35,8 @@ spec:
         - name: JWT_SECRET
           valueFrom:
             configMapKeyRef:
-              name: sources-chatplugin
-              key: JWT_SECRET
+              name: core-config
+              key: CHATPLUGIN_JWT_SECRET
         - name: KAFKA_BROKERS
           valueFrom:
             configMapKeyRef:

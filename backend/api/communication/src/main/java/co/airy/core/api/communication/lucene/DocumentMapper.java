@@ -24,10 +24,10 @@ public class DocumentMapper {
             document.add(new TextField("display_name", conversation.getDisplayName(), Field.Store.YES));
         }
 
-        document.add(new LongPoint("createdAt", conversation.getCreatedAt()));
-        document.add(new StoredField("createdAt", conversation.getCreatedAt()));
-        document.add(new IntPoint("unreadCount", conversation.getUnreadCount()));
-        document.add(new StoredField("unreadCount", conversation.getUnreadCount()));
+        document.add(new LongPoint("created_at", conversation.getCreatedAt()));
+        document.add(new StoredField("created_at", conversation.getCreatedAt()));
+        document.add(new IntPoint("unread_message_count", conversation.getUnreadMessageCount()));
+        document.add(new StoredField("unread_message_count", conversation.getUnreadMessageCount()));
 
         for (Map.Entry<String, String> entry : conversation.getMetadata().entrySet()) {
             document.add(new TextField("metadata." + entry.getKey(), entry.getValue(), Field.Store.YES));
@@ -37,9 +37,8 @@ public class DocumentMapper {
     }
 
     public ConversationIndex fromDocument(Document document) {
-
-        final Long createdAt = document.getField("createdAt").numericValue().longValue();
-        final Integer unreadCount = document.getField("unreadCount").numericValue().intValue();
+        final Long createdAt = document.getField("created_at").numericValue().longValue();
+        final Integer unreadCount = document.getField("unread_message_count").numericValue().intValue();
 
         final Map<String, String> metadata = document.getFields().stream()
                 .filter((field) -> field.name().startsWith("metadata"))
@@ -50,10 +49,10 @@ public class DocumentMapper {
 
         return ConversationIndex.builder()
                 .id(document.get("id"))
-                .unreadCount(unreadCount)
+                .unreadMessageCount(unreadCount)
                 .createdAt(createdAt)
                 .metadata(metadata)
-                .displayName(document.get("displayName"))
+                .displayName(document.get("display_name"))
                 .build();
     }
 }

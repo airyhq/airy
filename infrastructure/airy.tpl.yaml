@@ -33,11 +33,10 @@ core:
       twilio:
         authToken: "changeme"
         accountSid: "changeme"
-      chatPlugin:
-        host: "http://chatplugin.airy"
+    webhooks:
+      name: "Airy-web"
     # Specific configuration for the API apps
     api:
-      host: "http://api.airy"
       mailFrom: "changeme"
       mailPort: 587
       mailUrl: "changeme"

@@ -13,7 +13,7 @@ case ${BRANCH_TARGET} in
     ;;
 
   main|release)
-    tag=`(cat ../VERSION)`
+    tag=$(cat ./VERSION)
     ;;
 esac
 

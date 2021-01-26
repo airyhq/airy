@@ -7,7 +7,6 @@ import {Conversation, Message, ConversationFilter, ResponseMetadataPayload} from
 import * as actions from '../../../actions/conversations';
 import * as filterActions from '../../../actions/conversationsFilter';
 
-
 type Action = ActionType<typeof actions>;
 type FilterAction = ActionType<typeof filterActions>;
 
@@ -218,9 +217,8 @@ function filteredReducer(
       };
     case getType(filterActions.resetFilteredConversationAction):
       return {items: {}, metadata: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: {}};
-    case getType(filterActions.updateFilteredConversationsAction):    
-    
-      console.log("a");
+    case getType(filterActions.updateFilteredConversationsAction):
+      console.log('a');
       console.log(action);
       return {
         ...state,

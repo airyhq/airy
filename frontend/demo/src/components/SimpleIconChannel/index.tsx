@@ -8,7 +8,7 @@ import {useState} from 'react';
 
 import styles from './index.module.scss';
 
-const FB_GRAPH_API_URL = "AiryConfig.FB_GRAPH_API_URL";
+const FB_GRAPH_API_URL = 'AiryConfig.FB_GRAPH_API_URL';
 
 const getInitials = channelName => {
   const tokens = channelName.split(' ');

@@ -242,7 +242,7 @@ export class HttpClient {
 
   public async sendMessages(requestPayload: SendMessagesRequestPayload) {
     try {
-      const response = await this.doFetchFromBackend('messages.send', {
+      const response: MessagePayload = await this.doFetchFromBackend('messages.send', {
         conversation_id: requestPayload.conversationId,
         message: requestPayload.message,
       });

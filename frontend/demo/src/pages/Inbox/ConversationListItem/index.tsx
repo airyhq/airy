@@ -3,12 +3,14 @@ import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
+import AvatarImage from '../../../components/AvatarImage';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
 import {Conversation, Message} from 'httpclient';
 import {StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
+import {readConversations} from '../../../actions/conversations';
 
 import styles from './index.module.scss';
 
@@ -28,34 +30,35 @@ const mapStateToProps = (state: StateModel) => {
   };
 };
 
-const connector = connect(mapStateToProps, null);
+const mapDispatchToProps = {
+  readConversations,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
-  if (message && message.content) {
-    return <>{message.content.text}</>;
+  if (message && message.content[0]) {
+    return <>{message.content[0].text}</>;
   }
   return <div />;
 };
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, style} = props;
+  const {conversation, active, style, readConversations} = props;
 
   const participant = conversation.contact;
-  const fallbackAvatar = 'https://s3.amazonaws.com/assets.airy.co/unknown.png';
-
   const unread = conversation.unreadMessageCount > 0;
 
   return (
-    <div className={styles.clickableListItem} style={style}>
+    <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${
             unread ? styles.unread : ''
           }`}>
-          <div
-            className={styles.profileImage}
-            style={{backgroundImage: `url(${(participant && participant.avatarUrl) || fallbackAvatar})`}}
-          />
+          <div className={styles.profileImage}>
+            <AvatarImage contact={participant} />
+          </div>
           <div className={styles.contactDetails}>
             <div className={styles.topRow}>
               <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>

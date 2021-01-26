@@ -13,8 +13,7 @@ import java.util.Map;
 @Data
 public class ContactResponsePayload {
     private String avatarUrl;
-    private String firstName;
-    private String lastName;
+    private String displayName;
     private Map<String, String> info;
 }
 

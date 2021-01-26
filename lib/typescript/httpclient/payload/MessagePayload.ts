@@ -1,4 +1,4 @@
-import {MessageType, MessageState, MessageAlignment} from '../model';
+import {MessageType, MessageState, SenderType} from '../model';
 
 export interface MessagePayload {
   id: string;
@@ -6,7 +6,7 @@ export interface MessagePayload {
     text: string;
     type: MessageType;
   };
-  state: MessageState;
-  alignment: MessageAlignment;
-  sent_at: string | Date;
+  delivery_state: MessageState;
+  sender_type: SenderType;
+  sent_at: Date;
 }

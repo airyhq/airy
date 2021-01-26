@@ -11,7 +11,7 @@ compose the Airy API.
 The HTTP endpoints adhere to the following conventions:
 
 - Endpoints only accept `POST` JSON requests.
-- Communication always requires a valid [JWT token](#authorization), except for
+- Communication always requires a valid [JWT token](#authentication), except for
   `/users.login` and `/users.signup` endpoints.
 - We use dots for namespacing URLs (eg `/things.add`).
 
@@ -144,9 +144,7 @@ Find users whose name ends with "Lovelace":
       "contact": {
         // Additional data on the contact
         "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
-        "first_name": "Airy Support",
-        "last_name": null,
-        "id": "36d07b7b-e242-4612-a82c-76832cfd1026"
+        "display_name": "Airy Support"
       },
       "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
       "last_message": {
@@ -202,13 +200,8 @@ Find users whose name ends with "Lovelace":
   },
   "created_at": "2019-01-07T09:01:44.000Z",
   "contact": {
-    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
-    // optional
-    "first_name": "Airy Support",
-    // optional
-    "last_name": null,
-    // optional
-    "id": "36d07b7b-e242-4612-a82c-76832cfd1026"
+    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg", // optional
+    "display_name": "Airy Support" // optional
   },
   "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
   "last_message": {
@@ -352,13 +345,45 @@ This is a [paginated](#pagination) endpoint. Messages are sorted from oldest to 
 
 Sends a message to a conversation and returns a payload.
 
-**Sample request**
+**Sending a text message**
 
 ```json5
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "text": "{String}"
+    "text": "Hello World",
+    "type": "text"
+  }
+}
+```
+
+**Sending an attachment message**
+
+```json5
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "message": {
+    "url": "http://example.org/myfile",
+    "type": "image|video|audio|file"
+  }
+}
+```
+
+**Sending source templates**
+
+Some sources support sending templates, which can be used to display rich content such as buttons or cards. You
+can send source templates by setting the type to `source.template`. Please refer to the source documentation
+to see the expected values for the `payload` field.
+
+```json5
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "message": {
+    "payload": {
+      "template_type": "buttons",
+      "buttons": ["Welcome to our shop"]
+    },
+    "type": "source.template"
   }
 }
 ```
@@ -372,12 +397,9 @@ Sends a message to a conversation and returns a payload.
     {
       "text": "{String}",
       "type": "text"
-      // Determines the schema of the content
     }
   ],
-  // typed source message model
-  "state": "{String}",
-  // delivery state of message, one of PENDING, FAILED, DELIVERED
+  "state": "pending|failed|delivered",
   "sender_type": "{string/enum}",
   // See glossary
   "sent_at": "{string}"

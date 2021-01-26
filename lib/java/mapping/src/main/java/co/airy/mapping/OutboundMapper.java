@@ -18,7 +18,7 @@ public class OutboundMapper {
     }
 
     public List<Content> render(String payload) throws Exception {
-        final JsonNode jsonNode = objectMapper.readTree(payload);
-        return List.of(new Text(jsonNode.get("text").textValue()));
+        final Content content = objectMapper.readValue(payload, Content.class);
+        return List.of(content);
     }
 }

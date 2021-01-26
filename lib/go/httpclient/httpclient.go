@@ -3,63 +3,48 @@ package httpclient
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"time"
 )
 
-const (
-	BaseURL = "http://api.airy"
-)
-
 type Client struct {
-	BaseURL    string
-	HTTPClient *http.Client
+	BaseURL  string
+	JWTToken string
+	c        *http.Client
 }
 
-func NewClient() *Client {
+func NewClient(baseURL string) *Client {
 	return &Client{
-		BaseURL: BaseURL,
-		HTTPClient: &http.Client{
+		BaseURL: baseURL,
+		c: &http.Client{
 			Timeout: time.Minute,
 		},
 	}
 }
 
-type errorResponse struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
-
-func (c *Client) sendRequest(requestDataJSON []byte, endpoint string, v interface{}) error {
-
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/%s", c.BaseURL, endpoint), bytes.NewBuffer(requestDataJSON))
+func (c *Client) post(endpoint string, payload []byte, res interface{}) error {
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/%s", c.BaseURL, endpoint), bytes.NewBuffer(payload))
 	if err != nil {
 		return err
 	}
+
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Accept", "application/json; charset=utf-8")
+	if c.JWTToken != "" {
+		req.Header.Set("Authorization", c.JWTToken)
+	}
 
-	res, err := c.HTTPClient.Do(req)
+	r, err := c.c.Do(req)
 	if err != nil {
 		return err
 	}
 
-	defer res.Body.Close()
+	defer r.Body.Close()
 
-	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
-		var errRes errorResponse
-		if err = json.NewDecoder(res.Body).Decode(&errRes); err == nil {
-			return errors.New(errRes.Message)
-		}
-
-		return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
+	if r.StatusCode < http.StatusOK || r.StatusCode >= http.StatusBadRequest {
+		return fmt.Errorf("request was unsuccessful. Status code: %d", r.StatusCode)
 	}
 
-	if err = json.NewDecoder(res.Body).Decode(v); err != nil {
-		return err
-	}
-
-	return nil
+	return json.NewDecoder(r.Body).Decode(&res)
 }

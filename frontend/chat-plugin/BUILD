@@ -6,17 +6,23 @@ load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/build:container_push.bzl", "container_push")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
+module_deps = [
+    "//lib/typescript/types",
+]
+
 web_app(
     name = "bundle",
     app_lib = ":app",
     entry = "frontend/chat-plugin/src/iframe.js",
-    index = ":index.html",
+    index = ":development.html",
+    module_deps = module_deps,
 )
 
 web_library(
     name = "library",
     app_lib = ":app",
     entry = "frontend/chat-plugin/src/defaultScript.js",
+    module_deps = module_deps,
     output = {
         "libraryExport": "AiryWidget",
         "publicPath": "/",
@@ -27,8 +33,7 @@ web_library(
 ts_library(
     name = "app",
     tsconfig = ":widget_tsconfig",
-    deps = [
-        "//lib/typescript/types",
+    deps = module_deps + [
         "@npm//@stomp/stompjs",
         "@npm//@types/node",
         "@npm//linkifyjs",

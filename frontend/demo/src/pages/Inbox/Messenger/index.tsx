@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {Route, withRouter, Redirect, RouteComponentProps} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
@@ -7,7 +7,8 @@ import ConversationList from '../ConversationList';
 import {StateModel} from '../../../reducers';
 import {AllConversationsState} from '../../../reducers/data/conversations';
 
-import './index.scss';
+import styles from './index.module.scss';
+import MessengerContainer from './MessengerContainer';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -34,16 +35,16 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
   }
 
   return (
-    <section className="messengerContainer">
+    <section className={styles.messengerContainer}>
       {!!conversations.items && (
-        <section className="messengerContainerMiddlePanel">
+        <section className={styles.messengerContainerMiddlePanel}>
           <ConversationList />
         </section>
       )}
 
       <Route
         path={[`${match.url}/conversations/:conversationId`, `${match.url}`]}
-        render={() => <Fragment></Fragment>}
+        render={props => <MessengerContainer {...props} />}
       />
     </section>
   );

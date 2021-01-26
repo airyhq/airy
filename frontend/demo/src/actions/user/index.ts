@@ -1,7 +1,8 @@
 import {createAction} from 'typesafe-actions';
 import _, {Dispatch} from 'redux';
 
-import {User, HttpClient, LoginViaEmailRequestPayload} from 'httpclient';
+import {User, LoginViaEmailRequestPayload} from 'httpclient';
+import {HttpClientInstance} from '../../InitializeAiryApi';
 
 const SET_CURRENT_USER = '@@auth/SET_CURRENT_USER';
 const USER_AUTH_ERROR = '@@auth/ERROR';
@@ -13,7 +14,7 @@ export const logoutUserAction = createAction(USER_LOGOUT);
 
 export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClient.loginViaEmail(requestPayload)
+    return HttpClientInstance.loginViaEmail(requestPayload)
       .then((response: User) => {
         dispatch(setCurrentUserAction(response));
         return Promise.resolve(true);

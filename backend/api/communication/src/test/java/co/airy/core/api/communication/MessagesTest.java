@@ -4,13 +4,9 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.core.api.communication.util.TestConversation;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
+import co.airy.date.format.DateFormat;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.date.format.DateFormat;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import org.apache.avro.specific.SpecificRecordBase;
@@ -27,10 +23,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import static co.airy.core.api.communication.util.Topics.getTopics;
+import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.test.Timing.retryOnException;
+import static java.util.Comparator.reverseOrder;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,19 +49,9 @@ public class MessagesTest {
     @Autowired
     private WebTestHelper webTestHelper;
 
-    private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
-    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
-    private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
-
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationMessages,
-                applicationCommunicationChannels,
-                applicationCommunicationMetadata,
-                applicationCommunicationReadReceipts
-        );
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
 
         kafkaTestHelper.beforeAll();
     }
@@ -106,7 +96,7 @@ public class MessagesTest {
                                 records.stream()
                                         .map((record) -> ((Message) record.value()).getSentAt())
                                         .map(DateFormat::isoFromMillis)
-                                        .sorted().toArray()))),
+                                        .sorted(reverseOrder()).toArray()))),
                 "/messages.list endpoint error");
     }
 

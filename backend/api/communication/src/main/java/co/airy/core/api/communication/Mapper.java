@@ -36,7 +36,7 @@ public class Mapper {
                         .source(conversation.getChannel().getSource())
                         .build())
                 .id(conversation.getId())
-                .unreadMessageCount(conversation.getUnreadCount())
+                .unreadMessageCount(conversation.getUnreadMessageCount())
                 .tags(
                         MetadataRepository.filterPrefix(metadata, MetadataKeys.TAGS)
                         .keySet()
@@ -56,8 +56,7 @@ public class Mapper {
 
         return ContactResponsePayload.builder()
                 .avatarUrl(metadata.get(MetadataKeys.Source.Contact.AVATAR_URL))
-                .firstName(displayName.getFirstName())
-                .lastName(displayName.getLastName())
+                .displayName(displayName.toString())
                 .info(getConversationInfo(metadata))
                 .build();
     }

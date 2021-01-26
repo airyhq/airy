@@ -15,12 +15,14 @@ import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Stores implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
+public class Stores implements ApplicationListener<ApplicationReadyEvent>, DisposableBean, HealthIndicator {
     private static final String appId = "sources.google.ConnectorStores";
     private final String channelsStore = "channels-store";
     private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
@@ -69,6 +71,14 @@ public class Stores implements DisposableBean, ApplicationListener<ApplicationRe
         if (streams != null) {
             streams.close();
         }
+    }
+
+
+    @Override
+    public Health health() {
+        getChannelsStore();
+
+        return Health.up().build();
     }
 
     // visible for testing

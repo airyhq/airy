@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {connect} from 'react-redux';
 import {RootState} from '../reducers';
-import {TagSettings} from '../types';
+import {Settings} from '../reducers/data/settings';
 
 import styles from './ColorSelector.module.scss';
 
@@ -13,12 +13,12 @@ type ColorSelectorProps = {
 };
 
 type ColorSelectorState = {
-  tagSettings: TagSettings;
+  settings: Settings;
 };
 
-const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSelectorProps & ColorSelectorState) => {
-  const getColorValue = useCallback((color: string) => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
-    tagSettings,
+const ColorSelector = ({handleUpdate, color, editing, id, settings}: ColorSelectorProps & ColorSelectorState) => {
+  const getColorValue = useCallback((color: string) => (settings && settings.colors[color].default) || '1578D4', [
+    settings,
   ]);
 
   return (
@@ -85,7 +85,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, tagSettings}: ColorSel
 
 const mapStateToProps = (state: RootState) => {
   return {
-    tagSettings: state.data.settings,
+    settings: state.data.settings,
   };
 };
 

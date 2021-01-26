@@ -9,11 +9,13 @@
 The Airy Demo UI is a minimal user interactive frontend project that showcases the Airy Core Platform API.It enables users to experience the functionalities of our Airy Core Platform.
 
 
-- [Prerequities](#prerequities)
+- [Airy Demo UI](#airy-demo-ui)
+- [Prerequisites](#prerequisites)
 - [Building Airy Demo UI](#building-airy-demo-ui)
 - [Installation](#installation)
 - [Authentication](#authentication)
 - [Endpoints](#endpoints)
+- [Development](#development)
 
 ### Prerequisites
 
@@ -29,14 +31,14 @@ You can run the Airy Demo UI locally by running the following commands:
 ```
 $ git clone https://github.com/airyhq/airy
 $ cd airy
-$ AIRY_VERSION=beta ./scripts/bootstrap.sh (Takes a few minutes)
+$ ./scripts/bootstrap.sh (Takes a few minutes)
 ```
 When the bootstrap process finishes, open another terminal and run ``` $ ibazel run //frontend/demo:bundle_server ```
 Then open `http://localhost:8080/` in a web browser to access the Airy Demo UI
 
 ### Installation
 The bootstrap installation requires [Vagrant](https://www.vagrantup.com/downloads) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
-found, the script ```$ AIRY_VERSION=beta ./scripts/bootstrap.sh``` will attempt to install them for you. Check out our [test deployment guide](/docs/docs/guides/airy-core-in-test-env.md) for detailed information.
+found, the script ```$ ./scripts/bootstrap.sh``` will attempt to install them for you. Check out our [test deployment guide](/docs/docs/guides/airy-core-in-test-env.md) for detailed information.
 
 ### Authentication
 
@@ -49,4 +51,13 @@ In order to communicate with our API endpoints, you need a valid [JWT](https://j
 
 Aside from Curl, [PostMan](https://www.postman.com/downloads/) and other API testing tools could also be used to access the endpoints.
 
+### Development
 
+To start the app in development mode, run these commands:
+
+```
+yarn
+yarn ibazel run //frontend/demo:bundle_server
+```
+
+After it started, open a web browser to [`localhost:8080`](http://localhost:8080). Login with the user you created above.

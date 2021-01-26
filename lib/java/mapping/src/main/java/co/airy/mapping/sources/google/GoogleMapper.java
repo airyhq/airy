@@ -32,13 +32,29 @@ public class GoogleMapper implements SourceMapper {
     public List<Content> render(String payload) throws Exception {
         final JsonNode jsonNode = objectMapper.readTree(payload);
         final JsonNode messageNode = jsonNode.get("message");
+        if (messageNode != null) {
+            return renderMessage(messageNode);
+        }
+        final JsonNode suggestionResponseNode = jsonNode.get("suggestionResponse");
+        if (suggestionResponseNode != null) {
+            return renderSuggestionResponse(suggestionResponseNode);
+        }
 
+        throw new Exception("google mapper only supports `message` and `suggestionResponse`");
+    }
+
+    private List<Content> renderMessage(JsonNode messageNode) {
         final String messageNodeValue = messageNode.get("text").textValue();
         if (isGoogleStorageUrl(messageNodeValue)) {
             return List.of(new Image(messageNodeValue));
         } else {
             return List.of(new Text(messageNodeValue));
         }
+    }
+
+    private List<Content> renderSuggestionResponse(JsonNode suggestionResponseNode) {
+        final String textContent = suggestionResponseNode.get("text").textValue();
+        return List.of(new Text(textContent));
     }
 
     private boolean isGoogleStorageUrl(final String url) {

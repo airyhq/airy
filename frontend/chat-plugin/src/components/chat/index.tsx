@@ -2,7 +2,7 @@ import {h} from 'preact';
 import {useState, useEffect} from 'preact/hooks';
 import {IMessage} from '@stomp/stompjs';
 
-import Websocket from '../../components/websocket';
+import WebSocket from '../../components/websocket';
 import MessageProp from '../../components/message';
 import InputBarProp from '../../components/inputBar';
 import AiryInputBar from '../../airyRenderProps/AiryInputBar';
@@ -16,7 +16,7 @@ import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 
-let ws: Websocket;
+let ws: WebSocket;
 
 const welcomeMessage = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
@@ -40,8 +40,17 @@ const Chat = (props: Props) => {
   const [isChatHidden, setIsChatHidden] = useState(true);
   const [messages, setMessages] = useState([welcomeMessage]);
 
+  const getResumeToken = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.has('resume_token')) {
+      localStorage.setItem('resume_token', queryParams.get('resume_token'));
+    }
+
+    return queryParams.get('resume_token') || localStorage.getItem('resume_token');
+  };
+
   useEffect(() => {
-    ws = new Websocket(props.channel_id, onReceive);
+    ws = new WebSocket(props.channel_id, onReceive, getResumeToken());
     ws.start().catch(error => {
       console.error(error);
       setInstallError(error.message);
@@ -69,13 +78,10 @@ const Chat = (props: Props) => {
       }
     },
     sendMessage: (text: string) => {
-      ws.onSend(
-        JSON.stringify({
-          message: {
-            text,
-          },
-        })
-      );
+      ws.onSend({
+        text,
+        type: 'text',
+      });
     },
   };
 

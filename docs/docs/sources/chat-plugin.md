@@ -83,7 +83,7 @@ of your Chat Plugin server. When using the local vagrant environment
 :::
 
 To test the setup, replace the `CHANNEL_ID` in the URL
-`http://chatplugin.airy/example.html?channel_id=CHANNEL_ID` and open it in your
+`http://chatplugin.airy/example?channel_id=CHANNEL_ID` and open it in your
 browser.
 
 ## HTTP API
@@ -179,6 +179,7 @@ header.
 {
   "message": {
     "text": "{String}"
+    "type": "text"
   }
 }
 ```

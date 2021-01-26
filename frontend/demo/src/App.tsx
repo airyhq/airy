@@ -11,12 +11,26 @@ import Tags from './pages/Tags';
 import Logout from './pages/Logout';
 import NotFound from './pages/NotFound';
 import Sidebar from './components/Sidebar';
-
+import {fakeSettingsAPICall} from './actions/settings';
 import {StateModel} from './reducers';
 
 import {INBOX_ROUTE, CHANNELS_ROUTE, LOGIN_ROUTE, LOGOUT_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 
 import styles from './App.module.scss';
+
+const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
+  return {
+    user: state.data.user,
+    pathname: ownProps.location.pathname,
+    token: state.data.user.token,
+  };
+};
+
+const mapDispatchToProps = {
+  fakeSettingsAPICall,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const publicRoutes = [LOGIN_ROUTE];
 
@@ -26,6 +40,9 @@ const shouldRedirect = (path: string) =>
 class App extends Component<ConnectedProps<typeof connector> & RouteComponentProps> {
   constructor(props: ConnectedProps<typeof connector> & RouteComponentProps) {
     super(props);
+  }
+  componentDidMount() {
+    this.props.fakeSettingsAPICall();
   }
 
   get isAuthSuccess() {
@@ -62,7 +79,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
             </Route>
             <Route exact path={TAGS_ROUTE} component={Tags} />
             <Route exact path={LOGIN_ROUTE} component={Login} />
-            <Route exact path={INBOX_ROUTE} component={Inbox} />
+            <Route path={INBOX_ROUTE} component={Inbox} />
             <Route exact path={LOGOUT_ROUTE} component={Logout} />
             <Route exact path={CHANNELS_ROUTE} component={Channels} />
             <Route component={NotFound} />
@@ -72,15 +89,5 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     );
   }
 }
-
-const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
-  return {
-    user: state.data.user,
-    pathname: ownProps.location.pathname,
-    token: state.data.user.token,
-  };
-};
-
-const connector = connect(mapStateToProps, null);
 
 export default withRouter(connector(App));

@@ -4,11 +4,13 @@ load("//tools/build:container_push.bzl", "container_push")
 
 app_deps = [
     "//backend:base_app",
+    "//:springboot_actuator",
     "//backend/model/channel",
     "//backend/model/message",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/uuid",
+    "//lib/java/mapping",
     "//lib/java/kafka/schema:source-google-events",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/auth:spring-auth",

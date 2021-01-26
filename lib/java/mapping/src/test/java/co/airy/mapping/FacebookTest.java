@@ -3,13 +3,16 @@ package co.airy.mapping;
 import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.File;
+import co.airy.mapping.model.SourceTemplate;
 import co.airy.mapping.model.Video;
 import co.airy.mapping.sources.facebook.FacebookMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.StreamUtils;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -73,5 +76,17 @@ public class FacebookTest {
         assertThat(contents, hasSize(1));
         assertThat(contents, everyItem(isA(File.class)));
         assertThat(contents, everyItem(hasProperty("url", equalTo(fileUrl))));
+    }
+
+    @Test
+    void canRenderTemplates() throws Exception {
+        final List<String> templateTypes = List.of("generic");
+
+        for (String templateType : templateTypes) {
+            final String content = StreamUtils.copyToString(getClass().getClassLoader().getResourceAsStream(String.format("facebook/template_%s.json", templateType)), StandardCharsets.UTF_8);
+            final List<Content> contents = mapper.render(content);
+            assertThat(contents, hasSize(1));
+            assertThat(contents, everyItem(isA(SourceTemplate.class)));
+        }
     }
 }

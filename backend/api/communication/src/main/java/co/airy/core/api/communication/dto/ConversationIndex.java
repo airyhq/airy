@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -19,7 +20,7 @@ public class ConversationIndex implements Serializable {
     private String channelId;
     private String source;
     private Long createdAt;
-    private Integer unreadCount;
+    private Integer unreadMessageCount;
 
     @Builder.Default
     private Map<String, String> metadata = new HashMap<>();
@@ -32,7 +33,7 @@ public class ConversationIndex implements Serializable {
                 .displayName(conversation.getDisplayNameOrDefault().toString())
                 .metadata(new HashMap<>(conversation.getMetadata()))
                 .createdAt(conversation.getCreatedAt())
-                .unreadCount(conversation.getUnreadCount())
+                .unreadMessageCount(conversation.getUnreadMessageCount())
                 .build();
     }
 }

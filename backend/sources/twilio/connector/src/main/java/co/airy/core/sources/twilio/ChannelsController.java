@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -97,7 +99,7 @@ public class ChannelsController {
         }
 
         if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-            return ResponseEntity.accepted().build();
+            return ResponseEntity.accepted().body(new EmptyResponsePayload());
         }
 
         channel.setConnectionState(ChannelConnectionState.DISCONNECTED);
@@ -111,6 +113,7 @@ public class ChannelsController {
 
         return ResponseEntity.ok(new EmptyResponsePayload());
     }
+
 }
 
 @Data

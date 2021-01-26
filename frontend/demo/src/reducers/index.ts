@@ -3,7 +3,7 @@ import {ActionType, getType} from 'typesafe-actions';
 import _, {CombinedState} from 'redux';
 
 import * as authActions from '../actions/user';
-import {clearUserData} from 'httpclient';
+import {clearUserData} from '../cookies';
 
 import data, {DataState} from './data';
 

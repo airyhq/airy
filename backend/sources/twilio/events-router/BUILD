@@ -8,6 +8,7 @@ app_deps = [
     "//backend/model/message",
     "//lib/java/uuid",
     "//lib/java/log",
+    "//lib/java/url",
     "//lib/java/kafka/schema:source-twilio-events",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",

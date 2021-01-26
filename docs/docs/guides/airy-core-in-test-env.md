@@ -98,7 +98,8 @@ local machine. You can see an example request to the API by running the
 
 The frontend UI for the demo app can be accessed through http://demo.airy.
 
-The frontend UI for the Airy chat plugin can be accessed through http://chatplugin.airy/example.html.
+The frontend UI for the Airy chat plugin can be accessed through
+http://chatplugin.airy/example.
 
 ## Public webhooks
 
@@ -138,9 +139,9 @@ document
 
 The bootstrap process creates a random URL which is then provisioned inside the
 Helm chart. To configure these URLs, you can specify them in the
-`infrastructure/helm-chart/charts/apps/charts/airy-co)fig/values.yaml` document.
-Alternatively you can edit the `airy.conf` file by setting the following
-parameter (see `airy.conf.all` for more examples):
+`infrastructure/helm-chart/charts/apps/charts/airy-config/values.yaml` document.
+Alternatively you can edit the `airy.yaml` file by setting the following
+parameter (see `airy.tpl.yaml` for more examples):
 
 ```
 sources:
@@ -154,22 +155,31 @@ After preparing the configuration, run the following commands to apply the chang
 cd infrastructure
 vagrant ssh
 sudo -i
-cp /vagrant/airy.conf ~/airy-core/helm-chart/charts/apps/values.yaml
-helm upgrade core ~/airy-core/helm-chart/charts/apps/ --timeout 1000s
+helm upgrade core ~/airy-core/helm-chart/charts/apps/ --values /vagrant/airy.yaml  --timeout 1000s
 ```
 
 ## Connect sources
 
 Integrating sources into the `Airy Core Platform` often requires specific
 configuration settings, refer to the source specific docs for details. You must
-provide the settings in `infrastructure/airy.conf` configuration file. An
-example of the configuration can be found in `airy.conf.all`.
+provide the settings in `infrastructure/airy.yaml` configuration file. An
+example of the configuration can be found in `airy.tpl.yaml`.
 
-After setting the configuration run:
+After setting the configuration, you need the Airy command line binary (Airy CLI), to communicate with the core installation and apply the installation.
+Building and releasing the Airy CLI is part of the regular release process of the Airy Core Platform.
+You can download the Airy CLI from the releases page on Github https://github.com/airyhq/airy/releases.
+
+After downloading, run the following commands:
 
 ```sh
-vagrant provision --provision-with=conf
+airy init
+airy apply config --config ./airy.yaml
 ```
+
+Make sure that the argument `` points to your `airy.yaml` configuration file.
+
+The Airy CLI considers that the kubernetes configuration file is located under `~/.airy/kube.conf`.
+If you modified the location of the file, make sure to set the appropriate path with the `--kube-config` flag.
 
 ## Uninstall the Airy Core Platform
 

@@ -35,7 +35,9 @@ public class ContentMapperTest {
 
     @Test
     void rendersOutbound() throws Exception {
-        final String text = "Hello World";
+        final String textContent = "Hello World";
+        final Text text = new Text(textContent);
+
         final Message message = Message.newBuilder()
                 .setId("other-message-id")
                 .setSource("facebook")
@@ -45,12 +47,12 @@ public class ContentMapperTest {
                 .setDeliveryState(DeliveryState.DELIVERED)
                 .setConversationId("conversationId")
                 .setChannelId("channelId")
-                .setContent("{\"text\":\"" + text + "\"}")
+                .setContent((new ObjectMapper()).writeValueAsString(text))
                 .build();
 
         final Text textMessage = (Text) mapper.render(message).get(0);
 
-        assertThat(textMessage.getText(), equalTo(text));
+        assertThat(textMessage.getText(), equalTo(textContent));
         Mockito.verify(outboundMapper).render(Mockito.anyString());
     }
 
@@ -102,7 +104,6 @@ public class ContentMapperTest {
         final String persistentUrl = "http://storage.org/path/data";
         final Map<String, String> messageMetadata = Map.of("data_" + originalUrl, persistentUrl);
 
-        // No replacement without metadata
         audioMessage = (Audio) mapper.render(message, messageMetadata).get(0);
         assertThat(audioMessage.getUrl(), equalTo(persistentUrl));
     }

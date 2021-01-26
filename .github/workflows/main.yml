@@ -15,14 +15,6 @@ jobs:
           java-version: '11'
           architecture: 'x64'
 
-      - name: Mount bazel cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            /home/runner/.cache/bazel
-            /home/runner/.cache/bazel_external
-          key: bazel
-
       - name: Install bazelisk
         run: |
           curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.1.0/bazelisk-linux-amd64"
@@ -32,9 +24,13 @@ jobs:
 
       - name: Enable CI settings
         run: |
+          echo "$GCS_SA_KEY" > key.json
           cat <<EOF >>.bazelrc
             common --config=ci
+            build:ci --google_credentials=key.json
           EOF
+        env:
+          GCS_SA_KEY: ${{secrets.GCS_SA_KEY}}
 
       - name: Lint
         run: |
@@ -53,3 +49,16 @@ jobs:
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
           ./scripts/push-images.sh ${{ github.ref }}
+      - name: Install aws cli
+        uses: chrislennon/action-aws-cli@v1.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      - name: Upload airy binary to S3
+        if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
+        run: |
+          aws s3 cp bazel-bin/infrastructure/cli/airy_linux_bin s3://airy-core-binaries/`cat ./VERSION`/linux/amd64/airy
+          aws s3 cp bazel-bin/infrastructure/cli/airy_darwin_bin s3://airy-core-binaries/`cat ./VERSION`/darwin/amd64/airy
+          aws s3 cp bazel-bin/infrastructure/cli/airy_windows_bin s3://airy-core-binaries/`cat ./VERSION`/windows/amd64/airy.exe
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

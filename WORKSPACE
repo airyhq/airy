@@ -25,6 +25,8 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
     artifacts = airy_jvm_deps + [
+        "com.amazonaws:aws-java-sdk-core:1.11.933",
+        "com.amazonaws:aws-java-sdk-s3:1.11.933",
         "com.fasterxml.jackson.core:jackson-annotations:2.10.0",
         "com.fasterxml.jackson.core:jackson-core:2.10.0",
         "com.fasterxml.jackson.core:jackson-databind:2.10.0",
@@ -60,6 +62,7 @@ maven_install(
         "org.apache.lucene:lucene-queryparser:8.7.0",
         "org.apache.lucene:lucene-analyzers-common:8.7.0",
         "org.apache.lucene:lucene-core:8.7.0",
+        "org.aspectj:aspectjweaver:1.8.10",
         "org.bouncycastle:bcpkix-jdk15on:1.63",
         "org.flywaydb:flyway-core:5.2.4",
         "org.hamcrest:hamcrest-library:2.1",
@@ -84,6 +87,7 @@ maven_install(
         "org.springframework.boot:spring-boot-starter-web:2.3.1.RELEASE",
         "org.springframework.boot:spring-boot-starter-websocket:2.3.1.RELEASE",
         "org.springframework.boot:spring-boot-starter-security:2.3.1.RELEASE",
+        "org.springframework.retry:spring-retry:1.2.5.RELEASE",
         "org.springframework:spring-aop:4.1.4.RELEASE",
         "org.springframework:spring-jdbc:4.1.4.RELEASE",
         "org.springframework:spring-context-support:5.2.0.RELEASE",
@@ -184,10 +188,10 @@ container_pull(
 
 container_pull(
     name = "nginx_base",
-    digest = "sha256:662a0c5a8677063c27b0ddd42f1c801be643b9502f7b1a4e2e727cb2bc3808a8",
-    registry = "index.docker.io",
-    repository = "nginx",
-    tag = "stable-alpine",
+    digest = "sha256:0340d329672fb3f0192754e4e1ccd7518ecc83f6644e8f0c317012bbc4d06d24",
+    registry = "ghcr.io",
+    repository = "airyhq/frontend/nginx-lua",
+    tag = "1.0.0",
 )
 
 load(

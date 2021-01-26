@@ -13,7 +13,7 @@ import {StateModel} from '../../../reducers';
 
 import {IconChannelFilter} from '../../../components/SimpleIconChannel';
 import DialogCustomizable from '../../../components/DialogCustomizable';
-import Tag from '../../Tags/Tag';
+import Tag from '../../../components/Tag';
 
 import {ReactComponent as CheckmarkIcon} from '../../../assets/images/icons/checkmark.svg';
 

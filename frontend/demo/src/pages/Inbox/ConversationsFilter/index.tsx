@@ -111,7 +111,7 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     if (filteredMetadata.loaded) {
       return (
         <div className={styles.filterCount}>
-          {`Filtered: ${filteredMetadata.filtered_total} Total: ${filteredMetadata.total}`}
+          {`Filtered: ${filteredMetadata.filteredTotal} Total: ${filteredMetadata.total}`}
         </div>
       );
     }

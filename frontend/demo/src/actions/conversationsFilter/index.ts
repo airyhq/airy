@@ -66,42 +66,23 @@ const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, 
 };
 
 const filterToLuceneSyntax = (filter: ConversationFilter): string | null => {
-  let filterQuery = '';
+  const filterQuery: Array<string> = [];
   if (filter.unreadOnly) {
-    filterQuery = 'unread_count:[1 TO *]';
+    filterQuery.push('unread_count:[1 TO *]');
   } else if (filter.readOnly) {
-    filterQuery = 'unread_count:0';
+    filterQuery.push('unread_count:0');
   }
-  if (filter.displayName) {
-    if (filterQuery === '') {
-      filterQuery = 'display_name:*' + filter.displayName + '*';
-    } else {
-      filterQuery += ' AND display_name:*' + filter.displayName + '*';
-    }
+  if (filter.displayName) {    
+    filterQuery.push('display_name:*' + filter.displayName + '*');    
   }
-  if (filter.byTags && filter.byTags.length > 0) {
-    if (filterQuery === '') {
-      filterQuery = 'tag_id:(' + filter.byTags.join(' ') + ')';
-    } else {
-      filterQuery += ' AND tag_id:(' + filter.byTags.join(' ') + ')';
-    }
+  if (filter.byTags && filter.byTags.length > 0) {    
+    filterQuery.push('tag_id:(' + filter.byTags.join(' ') + ')');    
   }
-  if (filter.byChannels && filter.byChannels.length > 0) {
-    if (filterQuery === '') {
-      filterQuery = 'channel_id:(' + filter.byChannels.join(' ') + ')';
-    } else {
-      filterQuery += ' AND channel_id:(' + filter.byChannels.join(' ') + ')';
-    }
+  if (filter.byChannels && filter.byChannels.length > 0) {    
+    filterQuery.push('channel_id:(' + filter.byChannels.join(' ') + ')');    
   }
-  if (filter.bySources && filter.bySources.length > 0) {
-    if (filterQuery === '') {
-      filterQuery = 'source:(' + filter.bySources.join(' ') + ')';
-    } else {
-      filterQuery += ' AND source:(' + filter.bySources.join(' ') + ')';
-    }
+  if (filter.bySources && filter.bySources.length > 0) {    
+    filterQuery.push('source:(' + filter.bySources.join(' ') + ')');    
   }
-
-  console.log(filterQuery);
-
-  return filterQuery === '' ? null : filterQuery;
+  return !filterQuery.length ? null : filterQuery.join(' AND ');
 };

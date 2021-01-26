@@ -16,6 +16,14 @@ type TagProps = {
   variant?: 'default' | 'light';
 } & ConnectedProps<typeof connector>;
 
+const mapStateToProps = (state: RootState) => {
+  return {
+    settings: state.data.settings,
+  };
+};
+
+const connector = connect(mapStateToProps, null);
+
 type tagState = {
   settings: Settings;
 };
@@ -56,10 +64,4 @@ export const Tag = ({tag, expanded, variant, onClick, removeTag, settings}: TagP
   );
 };
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    settings: state.data.settings,
-  };
-};
-
-export default connect(mapStateToProps)(Tag);
+export default connector(Tag);

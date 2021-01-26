@@ -38,6 +38,7 @@ ts_library(
 web_app(
     name = "bundle",
     app_lib = ":app",
+    dev_index = "development.html",
     entry = "frontend/demo/src/index.js",
     index = ":index.html",
     module_deps = module_deps,

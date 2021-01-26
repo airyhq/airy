@@ -191,6 +191,7 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
               metadata: {
                 ...state.items[action.payload.conversationId].metadata,
                 ...action.payload.metadata,
+                loading: false,
               },
             },
           },

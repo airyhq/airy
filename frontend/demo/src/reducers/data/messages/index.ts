@@ -23,20 +23,38 @@ const initialState = {
   all: {},
 };
 
+function organiseMessagesWithPrevious(messages: Message[], previousMessages: MessageById): MessageById {
+  return {...organiseMessages(messages), ...previousMessages};
+}
+
 function organiseMessages(messages: Message[]): MessageById {
-  return _.keyBy(messages, 'id');
+  return _.keyBy(messages.reverse(), 'id');
 }
 
 export default function messagesReducer(state = initialState, action: Action): any {
   switch (action.type) {
     case getType(actions.loadingMessagesAction):
-      return {
-        ...state,
-        all: {
-          ...state.all,
-          [action.payload.conversationId]: organiseMessages(action.payload.messages),
-        },
-      };
+      if (state.all[action.payload.conversationId]) {
+        return {
+          ...state,
+          all: {
+            ...state.all,
+            [action.payload.conversationId]: organiseMessagesWithPrevious(
+              [...action.payload.messages],
+              state.all[action.payload.conversationId]
+            ),
+          },
+        };
+      } else {
+        return {
+          ...state,
+          all: {
+            ...state.all,
+            [action.payload.conversationId]: organiseMessages([...action.payload.messages]),
+          },
+        };
+      }
+
     default:
       return state;
   }

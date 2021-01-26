@@ -72,10 +72,10 @@ const MessageList = (props: MessageListProps) => {
   }, [stickBottom]);
 
   useEffect(() => {
-    if (hasPreviousMessages() && !scrollbarVisible() && !isLoadingConversation() && messages && messages.length > 0) {
+    if (hasPreviousMessages() && !scrollbarVisible() && !isLoadingConversation()) {
       debouncedListPreviousMessages(conversation.id);
     }
-  }, [item, messages, conversation && conversation.id]);
+  }, [item]);
 
   useEffect(() => {
     if (prevMessages && messages && prevMessages.length < messages.length) {
@@ -84,6 +84,8 @@ const MessageList = (props: MessageListProps) => {
         conversation.id &&
         prevCurrentConversationId &&
         prevCurrentConversationId === conversation.id &&
+        messages &&
+        prevMessages &&
         prevMessages[0] &&
         prevMessages[0].id !== messages[0].id
       ) {

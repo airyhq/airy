@@ -1,5 +1,5 @@
 import {ActionType} from 'typesafe-actions';
-import { DataState } from '../..';
+import {DataState} from '../..';
 import * as actions from '../../../actions/settings';
 
 type Action = ActionType<typeof actions>;

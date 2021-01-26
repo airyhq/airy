@@ -4,18 +4,24 @@ import {useParams} from 'react-router-dom';
 import styles from './index.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import {ReactComponent as Paperplane} from '../../../assets/images/icons/paperplane.svg';
-
+import {RootState} from '../../../reducers';
 const mapDispatchToProps = {sendMessages};
 
-const connector = connect(null, mapDispatchToProps);
+const mapStateToProps = (state: RootState) => {
+  return {
+    messages: state.data.messages.all,
+  };
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 type MessageInputProps = ConnectedProps<typeof connector>;
 
 const MessageInput = (props: MessageInputProps) => {
   const [input, setInput] = useState('');
   const textAreaAdjust = useRef(null);
 
-  const handleChange = event => {
-    setInput(event.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    setInput(e.target.value);
   };
 
   useEffect(() => {
@@ -41,7 +47,7 @@ const MessageInput = (props: MessageInputProps) => {
       <div className={styles.buttonSubmit}>
         <button
           type="button"
-          onClick={e => {
+          onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault();
             props.sendMessages(currentConversationId, {text: input, type: 'text'}).then(() => setInput(''));
           }}>

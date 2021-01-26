@@ -6,6 +6,7 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
+import co.airy.core.api.communication.dto.MessageMetadata;
 import co.airy.core.api.communication.payload.SendMessageRequestPayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.spring.web.payload.EmptyResponsePayload;
@@ -72,6 +73,6 @@ public class SendMessageController {
 
         producer.send(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message)).get();
 
-        return ResponseEntity.ok(mapper.fromMessage(message));
+        return ResponseEntity.ok(mapper.fromMessage(new MessageMetadata(message, Map.of())));
     }
 }

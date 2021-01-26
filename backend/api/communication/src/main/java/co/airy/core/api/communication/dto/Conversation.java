@@ -1,7 +1,6 @@
 package co.airy.core.api.communication.dto;
 
 import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.Message;
 import co.airy.model.metadata.MetadataKeys;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,7 @@ import static org.springframework.util.StringUtils.capitalize;
 @AllArgsConstructor
 public class Conversation implements Serializable {
     private Long createdAt;
-    private Message lastMessage;
+    private MessageMetadata lastMessage;
     private String sourceConversationId;
     private Channel channel;
 
@@ -57,11 +56,11 @@ public class Conversation implements Serializable {
 
     @JsonIgnore
     public String getId() {
-        return this.lastMessage.getConversationId();
+        return this.lastMessage.getMessage().getConversationId();
     }
 
     @JsonIgnore
     public String getChannelId() {
-        return this.lastMessage.getChannelId();
+        return this.lastMessage.getMessage().getChannelId();
     }
 }

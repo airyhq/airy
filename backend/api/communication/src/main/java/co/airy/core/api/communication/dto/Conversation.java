@@ -25,7 +25,7 @@ public class Conversation implements Serializable {
     private String sourceConversationId;
     private Channel channel;
 
-    private Integer unreadCount;
+    private Integer unreadMessageCount;
 
     @Builder.Default
     private Map<String, String> metadata = new HashMap<>();

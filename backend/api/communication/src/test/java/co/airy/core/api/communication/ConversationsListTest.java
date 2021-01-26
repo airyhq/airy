@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
+import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
@@ -78,8 +78,8 @@ class ConversationsListTest {
             TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.Source.Contact.FIRST_NAME, firstNameToFind), 1),
             TestConversation.from(UUID.randomUUID().toString(), channelToFind, 1),
             TestConversation.from(conversationIdToFind, defaultChannel, 1),
-            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1),
-            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1)
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 2),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 5)
     );
 
 
@@ -138,6 +138,12 @@ class ConversationsListTest {
     }
 
     @Test
+    void canFilterByUnreadMessageCount() throws Exception {
+        String payload = "{\"filters\": \"unread_message_count:[2 TO *]\"}";
+        checkConversationsFound(payload, 2);
+    }
+
+    @Test
     void canFilterByCombinedQueries() throws Exception {
         final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
 
@@ -169,6 +175,6 @@ class ConversationsListTest {
                         .andExpect(jsonPath("$.data", hasSize(count)))
                         .andExpect(jsonPath("response_metadata.filtered_total", is(count)))
                         .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
-                "Expected one conversation returned");
+                String.format("Expected %d conversation returned", count));
     }
 }

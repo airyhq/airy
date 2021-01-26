@@ -20,17 +20,8 @@ type tagState = {
   settings: Settings;
 };
 
-<<<<<<< HEAD:frontend/demo/src/components/Tag/index.tsx
 export const Tag = ({tag, expanded, variant, onClick, removeTag, settings}: TagProps & tagState): JSX.Element => {
   const tagColor = (settings && settings.colors[tag.color]) || {
-=======
-const connector = connect(mapStateToProps, null);
-
-const Tag = (props: TagProps) => {
-  const {tag, expanded, variant, onClick, removeTagFromContact, tagSettings} = props;
-
-  const tagColor = (tagSettings && tagSettings.colors[tag.color]) || {
->>>>>>> Filter working:frontend/demo/src/pages/Tags/Tag.tsx
     background: 'F1FAFF',
     border: '1578D4',
     default: '1578D4',

@@ -78,21 +78,10 @@ const Chat = (props: Props) => {
       }
     },
     sendMessage: (text: string) => {
-<<<<<<< HEAD
       ws.onSend({
         text,
         type: 'text',
       });
-=======
-      ws.onSend(
-        JSON.stringify({
-          message: {
-            text,
-            type: 'text',
-          },
-        })
-      );
->>>>>>> Filter working
     },
   };
 

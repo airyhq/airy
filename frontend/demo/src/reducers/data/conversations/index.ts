@@ -50,12 +50,22 @@ function mergeConversations(
   });
 
   const conversations = cloneDeep(oldConversation);
+
   newConversations.forEach((conversation: MergedConversation) => {
-    conversations[conversation.id] = {
-      ...newConversations[conversation.id],
-      ...conversation,
-      message: getLatestMessage(newConversations[conversation.id], conversation),
-    };
+    if (conversations[conversation.id] && conversations[conversation.id].metadata) {
+      conversations[conversation.id] = {
+        ...newConversations[conversation.id],
+        ...conversation,
+        message: getLatestMessage(newConversations[conversation.id], conversation),
+        metadata: conversations[conversation.id].metadata,
+      };
+    } else {
+      conversations[conversation.id] = {
+        ...newConversations[conversation.id],
+        ...conversation,
+        message: getLatestMessage(newConversations[conversation.id], conversation),
+      };
+    }
   });
 
   return conversations;
@@ -143,6 +153,7 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
         items: mergeConversations(state.items, action.payload.conversations as MergedConversation[]),
         metadata: {...state.metadata, ...action.payload.responseMetadata, loading: false, loaded: true},
       };
+
     case getType(actions.loadingConversationsAction):
       return {
         ...state,
@@ -156,6 +167,10 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
       return {
         ...state,
         items: setLoadingOfConversation(state.items, action.payload, true),
+        metadata: {
+          ...state.metadata,
+          loading: true,
+        },
       };
 
     case getType(actions.readConversationsAction):

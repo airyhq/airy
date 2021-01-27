@@ -3,7 +3,7 @@ import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/messages';
 import {Message} from 'httpclient';
 import {DataState} from '..';
-import _ from 'lodash-es';
+import {sortBy} from 'lodash-es';
 
 type Action = ActionType<typeof actions>;
 
@@ -16,19 +16,15 @@ export type MessageById = {
 };
 
 export type Messages = {
-  all: {[conversationId: string]: MessageById};
+  all: Message[];
 };
 
 const initialState = {
-  all: {},
+  all: [],
 };
 
-function organiseMessagesWithPrevious(messages: Message[], previousMessages: MessageById): MessageById {
-  return {...organiseMessages(messages), ...previousMessages};
-}
-
-function organiseMessages(messages: Message[]): MessageById {
-  return _.keyBy(messages.reverse(), 'id');
+function organiseMessages(messages: Message[]): Message[] {
+  return sortBy(messages, message => message.sentAt);
 }
 
 export default function messagesReducer(state = initialState, action: Action): any {
@@ -39,10 +35,10 @@ export default function messagesReducer(state = initialState, action: Action): a
           ...state,
           all: {
             ...state.all,
-            [action.payload.conversationId]: organiseMessagesWithPrevious(
-              [...action.payload.messages],
-              state.all[action.payload.conversationId]
-            ),
+            [action.payload.conversationId]: [
+              ...organiseMessages([...action.payload.messages]),
+              ...state.all[action.payload.conversationId],
+            ],
           },
         };
       } else {
@@ -50,7 +46,7 @@ export default function messagesReducer(state = initialState, action: Action): a
           ...state,
           all: {
             ...state.all,
-            [action.payload.conversationId]: organiseMessages([...action.payload.messages]),
+            [action.payload.conversationId]: [...organiseMessages([...action.payload.messages])],
           },
         };
       }

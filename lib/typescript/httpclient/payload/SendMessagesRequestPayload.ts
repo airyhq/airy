@@ -1,7 +1,7 @@
 export interface SendMessagesRequestPayload {
-    conversationId: string;
-    message: {
-      text: string;
-      type: string;
-    };
-  }
+  conversationId: string;
+  message: {
+    text: string;
+    type: string;
+  };
+}

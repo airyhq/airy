@@ -42,7 +42,7 @@ public class Mapper {
                 )
                 .createdAt(isoFromMillis(conversation.getCreatedAt()))
                 .contact(getContact(conversation))
-                .lastMessage(fromMessage(conversation.getLastMessage()))
+                .lastMessage(fromMessage(conversation.getLastMessageWrapper()))
                 .build();
     }
 

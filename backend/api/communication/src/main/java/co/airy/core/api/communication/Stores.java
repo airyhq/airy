@@ -150,16 +150,16 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         messageGroupedStream
                 .aggregate(Conversation::new,
                         (conversationId, wrapper, aggregate) -> {
-                            if (aggregate.getLastMessage() == null) {
+                            if (aggregate.getLastMessageWrapper() == null) {
                                 aggregate = Conversation.builder()
-                                        .lastMessage(wrapper)
+                                        .lastMessageWrapper(wrapper)
                                         .createdAt(wrapper.getMessage().getSentAt()) // Set this only once for the sent time of the first message
                                         .build();
                             }
 
                             // equals because messages can be updated
-                            if (wrapper.getMessage().getSentAt() >= aggregate.getLastMessage().getMessage().getSentAt()) {
-                                aggregate.setLastMessage(wrapper);
+                            if (wrapper.getMessage().getSentAt() >= aggregate.getLastMessageWrapper().getMessage().getSentAt()) {
+                                aggregate.setLastMessageWrapper(wrapper);
                             }
 
                             if (SenderType.SOURCE_CONTACT.equals(wrapper.getMessage().getSenderType())) {

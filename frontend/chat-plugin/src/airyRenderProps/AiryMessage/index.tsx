@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import React from 'react';
 import linkifyString from 'linkifyjs/string';
 
 import style from './index.module.scss';

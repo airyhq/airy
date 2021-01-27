@@ -1,4 +1,4 @@
-import {h, Component} from 'preact';
+import React, {Component} from 'react';
 import {Router} from 'preact-router';
 
 import ChatRoute from './routes/chat';

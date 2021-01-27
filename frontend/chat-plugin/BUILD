@@ -9,7 +9,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 module_deps = [
     "//lib/typescript/types",
     "//lib/typescript/httpclient",
-    "//lib/typescript/renderLibrary",
+    "//lib/typescript/render",
     "//lib/typescript/services",
 ]
 
@@ -30,16 +30,13 @@ web_library(
         "publicPath": "/",
         "filename": "s.js",
     },
+    module_deps = module_deps,
 )
 
 ts_library(
     name = "app",
     tsconfig = ":widget_tsconfig",
-    deps = [
-        "//lib/typescript/httpclient",
-        "//lib/typescript/renderLibrary",
-        "//lib/typescript/services",
-        "//lib/typescript/types",
+    deps = module_deps + [
         "@npm//@stomp/stompjs",
         "@npm//@types/node",
         "@npm//linkifyjs",

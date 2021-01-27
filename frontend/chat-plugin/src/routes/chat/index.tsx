@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 
-import {h} from 'preact';
+import React from 'react';
 import {AuthConfiguration} from '../../config';
 import {RoutableProps} from 'preact-router';
 import Chat from '../../components/chat';

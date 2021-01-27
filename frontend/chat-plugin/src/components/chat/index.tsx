@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import React from 'react';
 import {useState, useEffect} from 'preact/hooks';
 import {IMessage} from '@stomp/stompjs';
 
@@ -15,7 +15,7 @@ import {AiryWidgetConfiguration} from '../../config';
 import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import RenderLibrary from 'renderLibrary';
+import RenderLibrary from 'render';
 import {messageMapper, MessagePayload, SenderType, MessageState, MessageType} from 'httpclient';
 
 let ws: WebSocket;
@@ -142,7 +142,6 @@ const Chat = (props: Props) => {
               {messages.map((message: MessagePayload) => {
                 return (
                   <MessageProp
-                    key
                     render={
                       props.airyMessageProp
                         ? () => props.airyMessageProp(ctrl)

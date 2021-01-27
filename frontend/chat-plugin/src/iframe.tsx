@@ -1,7 +1,8 @@
 import 'core-js';
 import 'regenerator-runtime/runtime';
 
-import {h, render} from 'preact';
+import React from 'react';
+import {render} from 'react-dom';
 
 const renderMethod = async () => {
   const App = (await import('./App')).default;

@@ -22,6 +22,12 @@
       "components/*": [
         "./frontend/components/src/*"
       ],
+      "render": [
+        "./lib/typescript/render"
+      ],
+      "render/*": [
+        "./lib/typescript/render/*"
+      ],
       "*": [
         "./*"
       ]

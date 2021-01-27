@@ -5,7 +5,7 @@ import styles from './index.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import {ReactComponent as Paperplane} from '../../../assets/images/icons/paperplane.svg';
 import {RootState} from '../../../reducers';
-import {getTextMesssagePayload} from 'httpclient';
+import {getTextMessagePayload} from 'httpclient';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -52,7 +52,7 @@ const MessageInput = (props: MessageInputProps) => {
           onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault();
             props
-              .sendMessages(getTextMesssagePayload('chat_plugin', currentConversationId, input))
+              .sendMessages(getTextMessagePayload('chat_plugin', currentConversationId, input))
               .then(() => setInput(''));
           }}>
           <div className={styles.sendButtonText}>

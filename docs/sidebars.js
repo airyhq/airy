@@ -1,10 +1,9 @@
 module.exports = {
   docs: [
     {
-      Home: 'index.md',
       '🚀 Getting Started': [
         {
-          Introduction: ['getting-started/introduction/what-airy-is', 'getting-started/introduction/components'],
+          Introduction: ['getting-started/introduction/index'],
         },
         'getting-started/installation',
         {

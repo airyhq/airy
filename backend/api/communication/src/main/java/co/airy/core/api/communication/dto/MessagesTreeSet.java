@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-public class MessagesTreeSet extends TreeSet<MessageMetadata> {
+public class MessagesTreeSet extends TreeSet<MessageWrapper> {
     @JsonCreator
     public MessagesTreeSet() {
-        super(Comparator.comparing((MessageMetadata message) -> message.getMessage().getSentAt()).reversed());
+        super(Comparator.comparing((MessageWrapper wrapper) -> wrapper.getMessage().getSentAt()).reversed());
     }
 }

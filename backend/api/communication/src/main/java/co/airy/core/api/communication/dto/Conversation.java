@@ -20,7 +20,7 @@ import static org.springframework.util.StringUtils.capitalize;
 @AllArgsConstructor
 public class Conversation implements Serializable {
     private Long createdAt;
-    private MessageMetadata lastMessage;
+    private MessageWrapper lastMessage;
     private String sourceConversationId;
     private Channel channel;
 

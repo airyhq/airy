@@ -3,7 +3,7 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Message;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.DisplayName;
-import co.airy.core.api.communication.dto.MessageMetadata;
+import co.airy.core.api.communication.dto.MessageWrapper;
 import co.airy.core.api.communication.payload.ContactResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.MessageResponsePayload;
@@ -57,7 +57,7 @@ public class Mapper {
                 .build();
     }
 
-    public MessageResponsePayload fromMessage(MessageMetadata messageWithMetadata) {
+    public MessageResponsePayload fromMessage(MessageWrapper messageWithMetadata) {
         final Message message = messageWithMetadata.getMessage();
         return MessageResponsePayload.builder()
                 .content(getContent(message, messageWithMetadata.getMetadataMap()))

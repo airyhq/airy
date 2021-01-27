@@ -13,7 +13,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageMetadata implements Serializable {
+public class MessageWrapper implements Serializable {
     private Message message;
     private Map<String, String> metadataMap;
 }

@@ -1,9 +1,8 @@
 package co.airy.core.api.communication;
 
-import co.airy.core.api.communication.dto.MessageMetadata;
+import co.airy.core.api.communication.dto.MessageWrapper;
 import co.airy.core.api.communication.payload.MessageListRequestPayload;
 import co.airy.core.api.communication.payload.MessageListResponsePayload;
-import co.airy.core.api.communication.dto.MessageMetadata;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
 import org.springframework.http.ResponseEntity;
@@ -42,16 +41,16 @@ public class MessagesController {
     }
 
     private MessageListResponsePayload fetchMessages(String conversationId, int pageSize, String cursor) {
-        final List<MessageMetadata> messages = stores.getMessages(conversationId);
+        final List<MessageWrapper> messages = stores.getMessages(conversationId);
 
         if (messages == null) {
             return null;
         }
 
-        Paginator<MessageMetadata> paginator = new Paginator<>(messages, (message) -> message.getMessage().getId())
+        Paginator<MessageWrapper> paginator = new Paginator<>(messages, (message) -> message.getMessage().getId())
                 .perPage(pageSize).from(cursor);
 
-        Page<MessageMetadata> page = paginator.page();
+        Page<MessageWrapper> page = paginator.page();
 
         return MessageListResponsePayload.builder()
                 .data(page.getData().stream().map(mapper::fromMessage).collect(toList()))

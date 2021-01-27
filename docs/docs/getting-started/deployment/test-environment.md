@@ -136,11 +136,17 @@ If you prefer to use your own ngrok implementation or point the ngrok client to
 connect to the service provided by the ngrok company at `https://ngrok.io`,
 change the setting for `server_addr` in the ConfigMap or in this helm chart
 document
-`infrastructure/helm-chart/charts/apps/charts/airy-config/templates/sources.yaml`.
+`infrastructure/helm-chart/templates/ngrok.yaml`.
+
+Ngrok can be disabled during the bootstrap process, by running
+
+```bash
+NGROK_ENABLED=false ./scripts/bootstrap.sh
+```
 
 The bootstrap process creates a random URL which is then provisioned inside the
 Helm chart. To configure these URLs, you can specify them in the
-`infrastructure/helm-chart/charts/apps/charts/airy-config/values.yaml` document.
+`infrastructure/helm-chart/values.yaml` document.
 Alternatively you can edit the `airy.yaml` file by setting the following
 parameter (see `airy.tpl.yaml` for more examples):
 

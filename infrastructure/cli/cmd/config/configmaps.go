@@ -43,7 +43,7 @@ func applyConfigMap(configMapName string, newCmData map[string]string, kubeConfi
 }
 
 func facebookApply(airyConf airyConf, kubeConfigFile string) bool {
-	facebookConfig := airyConf.Core.Apps.Sources.Facebook
+	facebookConfig := airyConf.Apps.Sources.Facebook
 	if facebookConfig.AppID != "" || facebookConfig.AppSecret != "" || facebookConfig.WebhookSecret != "" {
 		configMapData := make(map[string]string, 0)
 		configMapData["FACEBOOK_APP_ID"] = facebookConfig.AppID
@@ -63,7 +63,7 @@ func facebookApply(airyConf airyConf, kubeConfigFile string) bool {
 }
 
 func googleApply(airyConf airyConf, kubeConfigFile string) bool {
-	googleConfig := airyConf.Core.Apps.Sources.Google
+	googleConfig := airyConf.Apps.Sources.Google
 	if googleConfig.PartnerKey != "" || googleConfig.SaFile != "" {
 		configMapData := make(map[string]string, 0)
 		configMapData["GOOGLE_PARTNER_KEY"] = googleConfig.PartnerKey
@@ -83,7 +83,7 @@ func googleApply(airyConf airyConf, kubeConfigFile string) bool {
 }
 
 func twilioApply(airyConf airyConf, kubeConfigFile string) bool {
-	twilioConfig := airyConf.Core.Apps.Sources.Twilio
+	twilioConfig := airyConf.Apps.Sources.Twilio
 	if twilioConfig.AccountSid != "" || twilioConfig.AuthToken != "" {
 		configMapData := make(map[string]string, 0)
 		configMapData["TWILIO_ACCOUNT_SID"] = twilioConfig.AccountSid
@@ -103,7 +103,7 @@ func twilioApply(airyConf airyConf, kubeConfigFile string) bool {
 }
 
 func webhooksApply(airyConf airyConf, kubeConfigFile string) bool {
-	webhooksConfig := airyConf.Core.Apps.Webhooks
+	webhooksConfig := airyConf.Apps.Webhooks
 	if webhooksConfig.Name != "" {
 		configMapData := make(map[string]string, 0)
 		configMapData["NAME"] = webhooksConfig.Name

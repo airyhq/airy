@@ -1,0 +1,7 @@
+mailFrom: "changeme"
+mailPort: 587
+mailUrl: "changeme"
+mailUsername: "changeme"
+mailPassword: "changeme"
+jwtSecret: "<jwt_secret>"
+allowedOrigins: "*"

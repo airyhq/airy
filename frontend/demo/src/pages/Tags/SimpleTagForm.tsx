@@ -12,7 +12,7 @@ import Tag from '../../components/Tag';
 import {Tag as TagModel, TagColor} from 'httpclient';
 
 import styles from './SimpleTagForm.module.scss';
-import {RootState} from '../../reducers';
+import {StateModel} from '../../reducers';
 
 type SimpleTagFormProps = {
   errorMessage: string;
@@ -94,7 +94,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
   );
 };
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: StateModel) => {
   return {
     tags: filteredTags(state),
     errorMessage: state.data.tags.error,

@@ -13,7 +13,7 @@ const AiryInputBar = (props: Props) => {
     setMessageString('');
   }, []);
 
-  const resizeTextarea = e => {
+  const resizeTextarea = (e: any) => {
     if (e.target.style) {
       e.target.style.height = '32px';
       e.target.style.height = `${Math.min(e.target.scrollHeight, 128)}px`;
@@ -33,17 +33,17 @@ const AiryInputBar = (props: Props) => {
     setMessageString(localValue);
   };
 
-  const handleLocalChange = e => {
+  const handleLocalChange = (e: any) => {
     resizeTextarea(e);
     handleInputAndChange(e);
   };
 
-  const handleLocalOnInput = e => {
+  const handleLocalOnInput = (e: any) => {
     resizeTextarea(e);
     handleInputAndChange(e);
   };
 
-  const handleLocalKeyDown = e => {
+  const handleLocalKeyDown = (e: any) => {
     resizeTextarea(e);
     const localValue = e.target.value;
     if (e.key === 'Enter') {

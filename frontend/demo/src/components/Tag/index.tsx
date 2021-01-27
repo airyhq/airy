@@ -6,7 +6,7 @@ import {Settings} from '../../reducers/data/settings';
 
 import {ReactComponent as Close} from '../../assets/images/icons/close.svg';
 import styles from './index.module.scss';
-import {RootState} from '../../reducers';
+import {StateModel} from '../../reducers';
 
 type TagProps = {
   tag: TagModel;
@@ -16,7 +16,7 @@ type TagProps = {
   variant?: 'default' | 'light';
 } & ConnectedProps<typeof connector>;
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: StateModel) => {
   return {
     settings: state.data.settings,
   };

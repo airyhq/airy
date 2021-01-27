@@ -1,30 +1,24 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Message;
-import co.airy.model.metadata.MetadataKeys;
-import co.airy.model.metadata.MetadataRepository;
-import co.airy.model.channel.ChannelPayload;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.DisplayName;
 import co.airy.core.api.communication.payload.ContactResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.MessageResponsePayload;
-import co.airy.mapping.ContentMapper;
+import co.airy.model.channel.ChannelPayload;
+import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.MetadataRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static co.airy.model.metadata.MetadataRepository.getConversationInfo;
 import static co.airy.date.format.DateFormat.isoFromMillis;
+import static co.airy.model.metadata.MetadataRepository.getConversationInfo;
 import static java.util.stream.Collectors.toList;
 
 @Component
 public class Mapper {
-    private final ContentMapper contentMapper;
-
-    Mapper(ContentMapper contentMapper) {
-        this.contentMapper = contentMapper;
-    }
 
     public ConversationResponsePayload fromConversation(Conversation conversation) {
         final Map<String, String> metadata = conversation.getMetadata();
@@ -63,7 +57,7 @@ public class Mapper {
 
     public MessageResponsePayload fromMessage(Message message) {
         return MessageResponsePayload.builder()
-                .content(contentMapper.renderWithDefaultAndLog(message))
+                .content(message.getContent())
                 .senderType(message.getSenderType().toString().toLowerCase())
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())

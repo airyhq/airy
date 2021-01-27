@@ -1,6 +1,5 @@
 package co.airy.core.sources.facebook.api.model;
 
-import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

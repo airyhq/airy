@@ -30,8 +30,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.core.sources.google.InfoExtractor.getMetadataFromContext;
+import static co.airy.model.metadata.MetadataRepository.getId;
 
 @Component
 public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {

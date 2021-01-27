@@ -33,12 +33,8 @@ Incoming payloads notify connected clients that a message was created or updated
   "channel_id": "{UUID}",
   "message": {
     "id": "{UUID}",
-    "content": {
-      "text": "{String}",
-      "type": "text"
-      // Determines the schema of the content
-    },
-    // typed source message model
+    "content": '{"text":"Hello World"}',
+    // source message payload
     "delivery_state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     "sender_type": "{string/enum}",

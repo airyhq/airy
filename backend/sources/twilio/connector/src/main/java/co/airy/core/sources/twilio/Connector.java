@@ -5,10 +5,10 @@ import co.airy.avro.communication.Message;
 import co.airy.core.sources.twilio.dto.SendMessageRequest;
 import co.airy.core.sources.twilio.services.Api;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.mapping.ContentMapper;
-import co.airy.mapping.model.Text;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twilio.exception.ApiException;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
@@ -23,11 +23,10 @@ public class Connector {
     private static final Logger log = AiryLoggerFactory.getLogger(Connector.class);
 
     private final Api api;
-    private final ContentMapper mapper;
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    Connector(Api api, ContentMapper mapper) {
+    Connector(Api api) {
         this.api = api;
-        this.mapper = mapper;
     }
 
     public Message sendMessage(SendMessageRequest sendMessageRequest) {
@@ -35,14 +34,8 @@ public class Connector {
         final String from = sendMessageRequest.getChannel().getSourceChannelId();
         final String to = sendMessageRequest.getSourceConversationId();
         try {
-            // TODO Figure out how we can let clients know which outbound message types are supported
-            final Text text = (Text) mapper.render(message)
-                    .stream()
-                    .filter(c -> c instanceof Text)
-                    .findFirst()
-                    .orElseThrow(() -> new Exception("twilio only supports text messages"));
-
-            api.sendMessage(from, to, text.getText());
+            final JsonNode messageNode = mapper.readTree(message.getContent());
+            api.sendMessage(from, to, messageNode.get("text").textValue());
 
             updateDeliveryState(message, DeliveryState.DELIVERED);
             return message;

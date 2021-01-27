@@ -2,7 +2,7 @@ package co.airy.core.sources.google.services;
 
 import co.airy.core.sources.google.ApiException;
 import co.airy.core.sources.google.model.GoogleServiceAccount;
-import co.airy.core.sources.google.model.SendMessagePayload;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -42,7 +42,7 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
         this.serviceAccount = serviceAccount;
     }
 
-    public void sendMessage(final String conversationId, SendMessagePayload sendMessagePayload) throws Exception {
+    public void sendMessage(final String conversationId, JsonNode sendMessagePayload) throws Exception {
         String reqUrl = String.format(requestTemplate, conversationId);
 
         final byte[] serializedServiceAccount = objectMapper.writeValueAsString(serviceAccount).getBytes();

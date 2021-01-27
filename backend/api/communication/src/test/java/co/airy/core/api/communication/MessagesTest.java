@@ -27,8 +27,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
+import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
 import static java.util.Comparator.reverseOrder;
 import static org.hamcrest.Matchers.contains;

@@ -2,6 +2,7 @@ package co.airy.core.api.communication.dto;
 
 import co.airy.avro.communication.Channel;
 import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.MetadataRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +11,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.toList;
 import static org.springframework.util.StringUtils.capitalize;
 
 @Data
@@ -52,6 +55,15 @@ public class Conversation implements Serializable {
         final String[] splits = source.split("\\.");
         source = splits[splits.length - 1];
         return capitalize(source);
+    }
+
+    @JsonIgnore
+    public List<String> getTagIds() {
+        return MetadataRepository.filterPrefix(metadata, MetadataKeys.TAGS)
+                .keySet()
+                .stream()
+                .map(s -> s.split("\\.")[1])
+                .collect(toList());
     }
 
     @JsonIgnore

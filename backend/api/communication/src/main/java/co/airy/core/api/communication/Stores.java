@@ -142,7 +142,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         // messages store
         messageGroupedStream.aggregate(MessagesTreeSet::new,
                 ((key, value, aggregate) -> {
-                    aggregate.add(value);
+                    aggregate.update(value);
                     return aggregate;
                 }), Materialized.as(messagesStore));
 

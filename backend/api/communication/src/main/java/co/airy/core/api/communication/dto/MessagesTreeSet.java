@@ -10,4 +10,10 @@ public class MessagesTreeSet extends TreeSet<MessageWrapper> {
     public MessagesTreeSet() {
         super(Comparator.comparing((MessageWrapper wrapper) -> wrapper.getMessage().getSentAt()).reversed());
     }
+
+    // TreeSet does not support updating objects
+    public void update(MessageWrapper wrapper) {
+        remove(wrapper);
+        add(wrapper);
+    }
 }

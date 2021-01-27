@@ -85,7 +85,7 @@ public class MessagesTest {
         webTestHelper.waitUntilHealthy();
     }
 
-    // @Test
+    @Test
     void canFetchMessages() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
 
@@ -115,8 +115,6 @@ public class MessagesTest {
 
         final String messageId = UUID.randomUUID().toString();
         kafkaTestHelper.produceRecords(List.of(
-                new ProducerRecord<>(applicationCommunicationMetadata.name(), "metadata-id",
-                        newMessageMetadata(messageId, "data_" + sourceUrl, persistentUrl)),
                 new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, Message.newBuilder()
                         .setId(messageId)
                         .setSentAt(Instant.now().toEpochMilli())
@@ -128,10 +126,10 @@ public class MessagesTest {
                         .setHeaders(Map.of())
                         .setChannelId(channel.getId())
                         .setContent(String.format("{\"url\":\"%s\"}", sourceUrl))
-                        .build())
+                        .build()),
+                new ProducerRecord<>(applicationCommunicationMetadata.name(), "metadata-id",
+                        newMessageMetadata(messageId, "data_" + sourceUrl, persistentUrl))
         ));
-
-        TimeUnit.SECONDS.sleep(30);
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
         retryOnException(

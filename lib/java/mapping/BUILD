@@ -18,16 +18,6 @@ custom_java_library(
     deps = lib_deps,
 )
 
-java_binary(
-    name = "ts-generator",
-    srcs = glob(["src/ts-generator/**/*.java"]),
-    main_class = "co.airy.ts_generator.Main",
-    deps = [
-        ":mapping",
-        "@maven//:cz_habarta_typescript_generator_typescript_generator_core",
-    ],
-)
-
 [
     junit5(
         file = file,

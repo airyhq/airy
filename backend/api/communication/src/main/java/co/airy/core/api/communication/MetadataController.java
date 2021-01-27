@@ -1,9 +1,9 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.model.metadata.Subject;
 import co.airy.core.api.communication.payload.RemoveMetadataRequestPayload;
 import co.airy.core.api.communication.payload.SetMetadataRequestPayload;
+import co.airy.model.metadata.Subject;
 import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.springframework.http.HttpStatus;

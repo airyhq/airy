@@ -11,7 +11,6 @@ app_deps = [
     "//backend/model/channel",
     "//backend/model/metadata",
     "//backend:read-receipt",
-    "//lib/java/mapping",
     "//lib/java/date",
     "//lib/java/pagination",
     "//lib/java/spring/auth:spring-auth",

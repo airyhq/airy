@@ -11,18 +11,3 @@ and map the content to a usable schema dynamically.
 
 This gives us the ability to address mapping bugs by fixing code (cheap)
 rather than fixing streaming data (expensive).
-
-## Typescript definitions
-
-To allow web clients an easy way of mapping this payload structure, we provide
-automatically generated Typescript definitions using this [Typescript
-generator](https://github.com/vojtechhabarta/typescript-generator).
-
-The following command puts the generated definitions in
-`frontend/components/src/content.ts` and has to be run after every change to
-the content model in
-`backend/lib/mapping/src/main/java/co/airy/mapping/model/`:
-
-```shell script
-bazel run //lib/java/mapping:ts-generator
-```

@@ -2,13 +2,13 @@ package co.airy.core.sources.google;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.core.sources.google.model.SendMessagePayload;
 import co.airy.core.sources.google.model.SendMessageRequest;
 import co.airy.core.sources.google.services.Api;
 import co.airy.core.sources.google.services.Mapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ public class Connector {
         final Message message = sendMessageRequest.getMessage();
 
         try {
-            final SendMessagePayload sendMessagePayload = mapper.fromSendMessageRequest(sendMessageRequest);
+            final JsonNode sendMessagePayload = mapper.fromSendMessageRequest(sendMessageRequest);
 
             api.sendMessage(sendMessageRequest.getSourceConversationId(), sendMessagePayload);
 

@@ -11,9 +11,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.mapping.model.Text;
 import co.airy.spring.core.AirySpringBootApplication;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -124,7 +122,6 @@ class SendMessageTest {
 
         TimeUnit.SECONDS.sleep(5);
 
-        final ObjectMapper objectMapper = new ObjectMapper();
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                 Message.newBuilder()
                         .setId(messageId)
@@ -135,7 +132,7 @@ class SendMessageTest {
                         .setConversationId(conversationId)
                         .setChannelId(channelId)
                         .setSource("twilio.sms")
-                        .setContent(objectMapper.writeValueAsString(new Text(text)))
+                        .setContent("{\"text\":\"" + text + "\"}")
                         .build())
         );
 

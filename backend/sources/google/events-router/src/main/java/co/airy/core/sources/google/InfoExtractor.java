@@ -1,14 +1,13 @@
 package co.airy.core.sources.google;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.model.metadata.MetadataKeys;
 import co.airy.log.AiryLoggerFactory;
+import co.airy.model.metadata.MetadataKeys;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

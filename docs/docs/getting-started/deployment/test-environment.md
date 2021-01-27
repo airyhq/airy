@@ -16,7 +16,7 @@ Platform. components.
 
 ## Getting started
 
-To bootstrap a test installation, refer to the [bootstrapping](/index.md#bootstrapping-the-airy-core-platform) document.
+To bootstrap a test installation, refer to the [bootstrapping](getting-started/installation.md) document.
 
 ## Manage your Vagrant box
 

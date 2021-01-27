@@ -8,21 +8,17 @@ import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.MessageResponsePayload;
 import co.airy.model.channel.ChannelPayload;
 import co.airy.model.metadata.MetadataKeys;
-import co.airy.model.metadata.MetadataRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 import static co.airy.date.format.DateFormat.isoFromMillis;
 import static co.airy.model.metadata.MetadataRepository.getConversationInfo;
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class Mapper {
 
     public ConversationResponsePayload fromConversation(Conversation conversation) {
-        final Map<String, String> metadata = conversation.getMetadata();
-
         return ConversationResponsePayload.builder()
                 .channel(ChannelPayload.builder()
                         .id(conversation.getChannelId())
@@ -31,13 +27,7 @@ public class Mapper {
                         .build())
                 .id(conversation.getId())
                 .unreadMessageCount(conversation.getUnreadMessageCount())
-                .tags(
-                        MetadataRepository.filterPrefix(metadata, MetadataKeys.TAGS)
-                        .keySet()
-                                .stream()
-                                .map(s -> s.split("\\.")[1])
-                                .collect(toList())
-                )
+                .tags(conversation.getTagIds())
                 .createdAt(isoFromMillis(conversation.getCreatedAt()))
                 .contact(getContact(conversation))
                 .lastMessage(fromMessage(conversation.getLastMessage()))

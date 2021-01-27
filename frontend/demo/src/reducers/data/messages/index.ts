@@ -1,5 +1,4 @@
 import {ActionType, getType} from 'typesafe-actions';
-
 import * as actions from '../../../actions/messages';
 import {Message} from 'httpclient';
 import {DataState} from '..';
@@ -35,6 +34,17 @@ export default function messagesReducer(state = initialState, action: Action): a
         all: {
           ...state.all,
           [action.payload.conversationId]: organiseMessages(action.payload.messages),
+        },
+      };
+    case getType(actions.sendMessagesAction):
+      return {
+        ...state,
+        all: {
+          ...state.all,
+          [action.payload.conversationId]: {
+            ...state.all[action.payload.conversationId],
+            ...organiseMessages([action.payload.message]),
+          },
         },
       };
     default:

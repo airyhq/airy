@@ -18,7 +18,7 @@ type MergedConversation = Conversation & {
 export type AllConversationMetadata = ResponseMetadataPayload & {
   loading?: boolean;
   loaded?: boolean;
-  filteredTotal?: number;
+  filtered_total?: number;
 };
 
 export type ConversationMap = {
@@ -102,7 +102,7 @@ const initialState: AllConversationsState = {
     previous_cursor: null,
     next_cursor: null,
     total: 0,
-    filteredTotal: 0,
+    filtered_total: 0,
   },
 };
 

@@ -255,3 +255,4 @@ export class HttpClient {
 
 export * from './model';
 export * from './payload';
+export * from './messagesForChannels';

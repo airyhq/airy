@@ -35,7 +35,7 @@ export function listMessages(conversationId: string) {
       });
   };
 }
-export function sendMessages(conversationId: string, message: {text: string; type: string}) {
+export function sendMessages(conversationId: string, message: {text: string;}) {
   return async (dispatch: Dispatch<any>) => {
     return HttpClientInstance.sendMessages({
       conversationId,

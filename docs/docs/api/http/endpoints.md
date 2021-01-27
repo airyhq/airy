@@ -1,62 +1,16 @@
 ---
-title: HTTP
-sidebar_label: HTTP
+title: Endpoints
+sidebar_label: Endpoints
 ---
-
-This documents offers a high-level overview of the different parts that
-compose the Airy API.
-
-## Introduction
-
-The HTTP endpoints adhere to the following conventions:
-
-- Endpoints only accept `POST` JSON requests.
-- Communication always requires a valid [JWT token](#authentication), except for
-  `/users.login` and `/users.signup` endpoints.
-- We use dots for namespacing URLs (eg `/things.add`).
-
-## Authentication
-
-In order to communicate with the API endpoints, you need a valid
-[JWT](https://jwt.io/) token. Get a valid token by sending a request to the
-login endpoint [login](#login). It returns a short-lived JWT token you can use
-for HTTP requests.
-
-### Login
-
-As the purpose of this endpoint is to obtain valid JWT tokens, it
-does not require a valid token to be present in the headers.
-
-`POST /users.login`
-
-**Sample request**
-
-```json5
-{
-  "email": "grace@example.com",
-  "password": "avalidpassword"
-}
-```
-
-**Sample response**
-
-```json
-{
-  "id": "424242-4242-42-4242-4242",
-  "first_name": "Grace",
-  "last_name": "Hopper",
-  "token": "JWT_TOKEN"
-}
-```
 
 ## Endpoints
 
 The grouping of endpoints reflects the high-level entities of the [Airy Core
-Data Model](glossary.md).
+Data Model](getting-started/glossary.md).
 
 ### Users
 
-Please refer to our [user](glossary.md#users) definition for more
+Please refer to our [user](getting-started/glossary.md#users) definition for more
 information.
 
 #### Signup
@@ -91,7 +45,7 @@ This endpoint returns the same response as `POST /login`.
 
 ### Conversations
 
-Please refer to our [conversation](glossary.md#conversation) definition
+Please refer to our [conversation](getting-started/glossary.md#conversation) definition
 for more information.
 
 #### List conversations
@@ -278,7 +232,7 @@ status code `200` if successful.
 
 ### Messages
 
-Please refer to our [messages](glossary.md#message) definition for more
+Please refer to our [messages](getting-started/glossary.md#message) definition for more
 information.
 
 #### List messages
@@ -358,7 +312,7 @@ Sends a message to a conversation and returns a payload. Whatever is put on the 
 
 ### Channels
 
-Please refer to our [channel](glossary.md#channel) definition for more
+Please refer to our [channel](getting-started/glossary.md#channel) definition for more
 information.
 
 #### List channels
@@ -389,7 +343,7 @@ information.
 
 ### Tags
 
-Please refer to our [tag](glossary.md#tag) definition for more
+Please refer to our [tag](getting-started/glossary.md#tag) definition for more
 information.
 
 #### Creating a tag
@@ -477,7 +431,7 @@ If action is successful, returns HTTP status `200`.
 
 ### Metadata
 
-Refer to our [metadata](glossary.md#metadata) definition for more
+Refer to our [metadata](getting-started/glossary.md#metadata) definition for more
 information.
 
 ### Setting metadata

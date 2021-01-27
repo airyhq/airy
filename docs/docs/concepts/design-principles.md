@@ -28,7 +28,7 @@ And here's the second principle:
 What we mean is that we do not allow services to talk to each other and share
 state via internal HTTP calls. Let's use an example to clarify: imagine we have
 a service dealing with `conversations` data that needs `channels` data (see our
-[glossary](glossary.md) for more information) to build a JSON response. Many
+[glossary](getting-started/glossary.md) for more information) to build a JSON response. Many
 systems would work like this:
 
 - A client asks for `conversations`

@@ -85,7 +85,7 @@ The bootstrap installation requires
 [Vagrant](https://www.vagrantup.com/downloads) and
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
 found, the script will attempt to install them for you. Check out our [test
-deployment guide](/docs/docs/guides/airy-core-in-test-env.md) for detailed information.
+deployment guide](/docs/docs/getting-started/deployment/test-environment.md) for detailed information.
 
 ## Components
 
@@ -95,9 +95,9 @@ The Airy Core Platform contains the following components:
   Kafka](https://kafka.apache.org) to process incoming webhook data from
   different sources. We make sense of the data and reshape it into source
   independent contacts, conversations, and messages (see our
-  [glossary](/docs/docs/glossary.md) for formal definitions).
+  [glossary](/docs/getting-started/glossary.md) for formal definitions).
 
-- An [API](/docs/docs/api/http.md) to manage the data sets the platform
+- An [API](/docs/docs/api/http/introduction.md) to manage the data sets the platform
   handles.
 
 - A webhook integration server that allows its users to programmatically

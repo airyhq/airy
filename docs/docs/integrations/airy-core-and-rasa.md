@@ -1,6 +1,6 @@
 ---
 title: How to connect the Airy Core Platform and Rasa
-sidebar_label: Connecting Rasa
+sidebar_label: Rasa
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';

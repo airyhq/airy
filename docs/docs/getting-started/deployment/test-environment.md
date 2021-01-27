@@ -1,6 +1,6 @@
 ---
 title: Running the Airy Core Platform in a test environment
-sidebar_label: Test
+sidebar_label: Test Environment
 ---
 
 The goal of this document is to provide an overview of how to run the Airy Core

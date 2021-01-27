@@ -12,7 +12,7 @@ uses the
 protocol endpoint at `/ws.communication`.
 
 To execute the handshake with `/ws.communicaiton` you need to set an `Authorization` header where the
-value is the authorization token obtained [from the API](http.md#authentication).
+value is the authorization token obtained [from the API](api/http/introduction.md#authentication).
 
 ## Outbound Queues
 

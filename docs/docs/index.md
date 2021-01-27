@@ -15,9 +15,9 @@ following components:
   Kafka](https://kafka.apache.org) to process incoming webhook data from
   different sources. We make sense of the data and reshape it into source
   independent contacts, conversations, and messages (see our
-  [glossary](glossary.md) for formal definitions).
+  [glossary](getting-started/glossary.md) for formal definitions).
 
-- An [HTTP API](api/http.md) that allows you to manage the data sets the
+- An [HTTP API](api/http/introduction.md) that allows you to manage the data sets the
   platform handles.
 
 - A [webhook](api/webhook) integration server that allows to programmatically
@@ -65,14 +65,14 @@ You can also use that configuration file with the `kubectl` utility, for example
 kubectl --kubeconfig ~/.airy/kube.conf get pods
 ```
 
-Check out our [guide for running in test environment](guides/airy-core-in-test-env.md) for detailed information.
+Check out our [guide for running in test environment](getting-started/deployment/test-environment.md) for detailed information.
 
 ## Connect a Chat Plugin source
 
 The chat plugin source is well suited for a first integration because it does
 not require any configuration.
 
-Once you [signed up](api/http#signup), you must [log in](api/http#login) so you
+Once you [signed up](api/http/endpoints#signup), you must [log in](api/http/introduction.md#login) so you
 can obtain a valid JWT token for the upcoming API calls:
 
 ```bash
@@ -107,7 +107,7 @@ You can now type a message in the text box and send it 🎉
 <img alt="chatplugin working" src={useBaseUrl('img/home/chatplugin.gif')} />
 
 To see how messages are flowing through the system, [list
-conversations](api/http.md#list-conversations) for the channel you have just created.
+conversations](api/http/endpoints.md#list-conversations) for the channel you have just created.
 it should return the message you have just sent.
 
 <img alt="conversations.list" src={useBaseUrl('img/home/conversation_list.gif')} />

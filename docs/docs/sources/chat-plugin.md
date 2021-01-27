@@ -3,7 +3,7 @@ title: Chat Plugin
 sidebar_label: Chat Plugin
 ---
 
-The Airy Core Chat Plugin is a fully-featured [source](/glossary.md#source) that
+The Airy Core Chat Plugin is a fully-featured [source](/getting-started/glossary.md#source) that
 enables conversations with anonymous website visitors through a web chat plugin.
 
 :::tip What you will learn
@@ -89,7 +89,7 @@ browser.
 ## HTTP API
 
 The HTTP api adheres to standards laid out in the [core
-API](api/http.md#introduction).
+API](api/http/endpoints.md#introduction).
 
 ### Authenticating web users
 

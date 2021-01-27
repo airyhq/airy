@@ -45,7 +45,7 @@ public class Conversation implements Serializable {
     }
 
     /**
-     * - Remove the source provider (see docs/docs/glossary.md#source-provider)
+     * - Remove the source provider (see docs/getting-started/glossary.md#source-provider)
      * - Capitalize first letter
      * E.g. twilio.sms -> Sms, facebook -> Facebook
      */

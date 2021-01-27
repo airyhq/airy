@@ -149,13 +149,8 @@ Find users whose name ends with "Lovelace":
       "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
       "last_message": {
         id: "{UUID}",
-        content: [
-          {
-            text: "{String}",
-            type: "text"
-            // Determines the schema of the content
-          },
-        ]
+        "content": '{"text":"Hello World"}',
+        // source message payload
         // typed source message model
         state: "{String}",
         // delivery state of message, one of PENDING, FAILED, DELIVERED
@@ -206,13 +201,8 @@ Find users whose name ends with "Lovelace":
   "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
   "last_message": {
     "id": "{UUID}",
-    "content": [
-      {
-        "text": "{String}",
-        "type": "text"
-        // Determines the schema of the content
-      }
-    ],
+    "content": '{"text":"Hello World"}',
+    // source message payload
     // typed source message model
     "delivery_state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
@@ -314,13 +304,8 @@ This is a [paginated](#pagination) endpoint. Messages are sorted from oldest to 
   "data": [
     {
       "id": "{UUID}",
-      "content": [
-        {
-          "text": "{String}",
-          "type": "text"
-          // Determines the schema of the content
-        }
-      ],
+      "content": '{"text":"Hello World"}',
+      // source message payload
       // typed source message model
       "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
@@ -343,7 +328,8 @@ This is a [paginated](#pagination) endpoint. Messages are sorted from oldest to 
 
 `POST /messages.send`
 
-Sends a message to a conversation and returns a payload.
+Sends a message to a conversation and returns a payload. Whatever is put on the `message` field will be forwarded
+"as-is" to the source's message endpoint.
 
 **Sending a text message**
 
@@ -351,39 +337,7 @@ Sends a message to a conversation and returns a payload.
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "text": "Hello World",
-    "type": "text"
-  }
-}
-```
-
-**Sending an attachment message**
-
-```json5
-{
-  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
-  "message": {
-    "url": "http://example.org/myfile",
-    "type": "image|video|audio|file"
-  }
-}
-```
-
-**Sending source templates**
-
-Some sources support sending templates, which can be used to display rich content such as buttons or cards. You
-can send source templates by setting the type to `source.template`. Please refer to the source documentation
-to see the expected values for the `payload` field.
-
-```json5
-{
-  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
-  "message": {
-    "payload": {
-      "template_type": "buttons",
-      "buttons": ["Welcome to our shop"]
-    },
-    "type": "source.template"
+    "text": "Hello World"
   }
 }
 ```
@@ -393,12 +347,7 @@ to see the expected values for the `payload` field.
 ```json5
 {
   "id": "{UUID}",
-  "content": [
-    {
-      "text": "{String}",
-      "type": "text"
-    }
-  ],
+  "content": '{"text":"Hello"}',
   "state": "pending|failed|delivered",
   "sender_type": "{string/enum}",
   // See glossary

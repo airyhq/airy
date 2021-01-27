@@ -79,7 +79,7 @@ Identifies the participant that sent the message. Interpretation is based on the
 
 - `channelId` uuid
 
-- `content` string Immutable string version of the ingested content. APIs dynamically parse and map it to a schema using the mapping library.
+- `content` string Immutable string version of the ingested content.
 
 - `offset` long sequence number of message within a conversation
 

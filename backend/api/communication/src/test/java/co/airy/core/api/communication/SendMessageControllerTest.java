@@ -7,10 +7,6 @@ import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.mapping.ContentMapper;
-import co.airy.mapping.model.Audio;
-import co.airy.mapping.model.Content;
-import co.airy.mapping.model.Text;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,12 +32,9 @@ import java.util.UUID;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationMessages;
 import static co.airy.core.api.communication.util.Topics.getTopics;
-import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.Is.isA;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -68,9 +61,6 @@ public class SendMessageControllerTest {
     @Autowired
     private WebTestHelper webTestHelper;
 
-    @Autowired
-    private ContentMapper contentMapper;
-
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
@@ -91,45 +81,23 @@ public class SendMessageControllerTest {
         webTestHelper.waitUntilHealthy();
     }
 
-
-    @Test
-    void failsForUnknownContentSchema() throws Exception {
-        String payload = String.format("{\"conversation_id\":\"%s\"," +
-                        "\"message\":{\"text\":\"answeris42\",\"type\":\"unknown\"}}",
-                conversationId);
-        final String userId = "user-id";
-
-        webTestHelper.post("/messages.send", payload, userId)
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void canSendTemplateMessages() throws Exception {
-        String payload = String.format("{\"conversation_id\":\"%s\"," +
-                        "\"message\":{\"payload\":{\"a nested\":\"structure\"},\"type\":\"source.template\"}}",
-                conversationId);
-        final String userId = "user-id";
-
-        webTestHelper.post("/messages.send", payload, userId)
-                .andExpect(status().isOk());
-    }
-
     @Test
     void canSendTextMessages() throws Exception {
-        String payload = String.format("{\"conversation_id\":\"%s\"," +
-                        "\"message\":{\"text\":\"answeris42\",\"type\":\"text\"}}",
-                conversationId);
+        final String messagePayload = "{\"text\":\"answeris42\"}";
+        final String requestPayload = String.format("{\"conversation_id\":\"%s\"," +
+                        "\"message\":%s}",
+                conversationId, messagePayload);
         final String userId = "user-id";
 
-        final String response = webTestHelper.post("/messages.send", payload, userId)
+        final String response = webTestHelper.post("/messages.send", requestPayload, userId)
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
         final JsonNode responseNode = new ObjectMapper().readTree(response);
         final String messageId = responseNode.get("id").textValue();
 
-        List<ConsumerRecord<String, Message>> records = kafkaTestHelper.consumeRecords(3, applicationCommunicationMessages.name());
-        assertThat(records, hasSize(3));
+        List<ConsumerRecord<String, Message>> records = kafkaTestHelper.consumeRecords(2, applicationCommunicationMessages.name());
+        assertThat(records, hasSize(2));
 
         final Optional<Message> maybeMessage = records.stream()
                 .map(ConsumerRecord::value)
@@ -141,9 +109,6 @@ public class SendMessageControllerTest {
         }
 
         final Message message = maybeMessage.get();
-        final List<Content> contents = contentMapper.render(message);
-        assertThat(contents, hasSize(1));
-        assertThat(contents, everyItem(isA(Text.class)));
-        assertThat(message.getSenderId(), is(userId));
+        assertThat(message.getContent(), equalTo(messagePayload));
     }
 }

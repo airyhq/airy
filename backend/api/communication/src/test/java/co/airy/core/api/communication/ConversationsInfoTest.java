@@ -22,8 +22,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.UUID;
 
-import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
+import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

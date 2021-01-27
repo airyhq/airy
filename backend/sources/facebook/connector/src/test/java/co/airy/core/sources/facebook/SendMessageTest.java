@@ -5,19 +5,17 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.sources.facebook.api.model.SendMessagePayload;
 import co.airy.core.sources.facebook.api.Api;
+import co.airy.core.sources.facebook.api.model.SendMessagePayload;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.mapping.model.SourceTemplate;
 import co.airy.spring.core.AirySpringBootApplication;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -130,7 +128,7 @@ class SendMessageTest {
         TimeUnit.SECONDS.sleep(5);
 
         final ObjectMapper objectMapper = new ObjectMapper();
-        final JsonNode attachmentPayload = objectMapper.readTree("{\"a\":\"template payload\"}");
+        final JsonNode messagePayload = objectMapper.readTree("{\"text\":\"Hello Facebook\"}");
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                 Message.newBuilder()
@@ -142,14 +140,14 @@ class SendMessageTest {
                         .setConversationId(conversationId)
                         .setChannelId(channelId)
                         .setSource("facebook")
-                        .setContent(objectMapper.writeValueAsString(new SourceTemplate(attachmentPayload)))
+                        .setContent(objectMapper.writeValueAsString(messagePayload))
                         .build())
         );
 
         retryOnException(() -> {
             final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
             assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));
-            assertThat(sendMessagePayload.getMessage().getAttachment().getPayload(), equalTo(attachmentPayload));
+            assertThat(sendMessagePayload.getMessage(), equalTo(messagePayload));
 
             assertThat(tokenCaptor.getValue(), equalTo(token));
         }, "Facebook API was not called");

@@ -2,6 +2,7 @@ import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
 import {Message, ResponseMetadataPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
+import { SendMessagesRequestPayload } from '../../../../../lib/typescript/httpclient/payload/SendMessagesRequestPayload';
 
 export const MESSAGES_LOADING = '@@messages/LOADING';
 export const SEND_MESSAGE = '@@messages/SEND_MESSAGE';
@@ -35,16 +36,13 @@ export function listMessages(conversationId: string) {
       });
   };
 }
-export function sendMessages(conversationId: string, message: {text: string;}) {
+export function sendMessages(messagePayload: SendMessagesRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.sendMessages({
-      conversationId,
-      message,
-    })
+    return HttpClientInstance.sendMessages(messagePayload)
       .then((response: Message) => {
         dispatch(
           sendMessagesAction({
-            conversationId,
+            conversationId: messagePayload.conversationId,
             message: response,
           })
         );

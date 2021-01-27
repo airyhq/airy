@@ -1,11 +1,22 @@
 module.exports = {
   docs: [
-    'index',
     {
-      Overview: ['overview/architecture', 'overview/design-principles', 'overview/release-process', 'overview/kafka'],
+      '🚀 Getting Started': [
+        {
+          Introduction: ['getting-started/introduction/index'],
+        },
+        'getting-started/installation',
+        {
+          Deployment: ['getting-started/deployment/test-environment', 'getting-started/deployment/prod-environment'],
+        },
+        'getting-started/quickstart',
+        'getting-started/cli',
+        'getting-started/troubleshooting',
+        'getting-started/glossary',
+      ],
     },
     {
-      Sources: [
+      '💬 Sources': [
         'sources/chat-plugin',
         'sources/facebook',
         'sources/google',
@@ -14,17 +25,34 @@ module.exports = {
       ],
     },
     {
-      Guides: [
-        'guides/contributing',
+      '🔌 API': [
         {
-          Deployment: ['guides/airy-core-in-test-env', 'guides/airy-core-in-production'],
+          HTTP: ['api/http/introduction', 'api/http/endpoints'],
         },
-        'guides/airy-core-and-rasa',
+        'api/websocket',
+        'api/webhook',
       ],
     },
     {
-      'API Reference': ['api/http', 'api/websocket', 'api/webhook'],
+      '✨ Apps': ['apps/ui'],
     },
-    'glossary',
+    {
+      '🛠️ Integrations': [
+        {
+          'Conversational AI /NLP': ['integrations/airy-core-and-rasa'],
+        },
+      ],
+    },
+    {
+      '⚙️ Concepts': [
+        'concepts/architecture',
+        'concepts/design-principles',
+        'concepts/release-process',
+        'concepts/kafka',
+      ],
+    },
+    {
+      '📚 Guides': ['guides/contributing'],
+    },
   ],
 };

@@ -1,11 +1,11 @@
 ---
 title: Running the Airy Core Platform in production
-sidebar_label: Production
+sidebar_label: Prod Environment
 ---
 
 This document provides our recommendations on how to run the Airy Core Platform
 in production environments. If you are not familiar with the architecture of the
-system, we suggest you read the [Architecture](/overview/architecture.md) document before
+system, we suggest you read the [Architecture](/concepts/architecture.md) document before
 proceeding.
 
 ## Requirements

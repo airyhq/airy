@@ -1,6 +1,6 @@
 ---
 title: How to connect the Airy Core Platform and Rasa
-sidebar_label: Connecting Rasa
+sidebar_label: Rasa
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -33,7 +33,7 @@ Airy Core Platform to send and receive messages.
 
 :::note Prerequisites
 
-- A running Airy Core Platform installation [Get Started](index.md#bootstrapping-the-airy-core-platform)
+- A running Airy Core Platform installation [Get Started](getting-started/installation.md)
 - A local Rasa setup: For convenience, we recommend [the Docker setup](https://rasa.com/docs/rasa/docker/building-in-docker/) or [a demo repository](https://github.com/airyhq/rasa-demo) we created for this guide
 
 :::

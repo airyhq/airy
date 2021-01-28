@@ -178,8 +178,8 @@ class ConversationsListTest {
                 () -> webTestHelper.post("/conversations.list", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(count)))
-                        .andExpect(jsonPath("paginated_data.filtered_total", is(count)))
-                        .andExpect(jsonPath("paginated_data.total", is(conversations.size()))),
+                        .andExpect(jsonPath("pagination_data.filtered_total", is(count)))
+                        .andExpect(jsonPath("pagination_data.total", is(conversations.size()))),
                 String.format("Expected %d conversation returned", count));
     }
 }

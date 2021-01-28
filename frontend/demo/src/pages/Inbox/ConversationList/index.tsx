@@ -119,30 +119,9 @@ const ConversationList = (props: ConversationListProps) => {
     );
   };
 
-  /////////
-
-  const doResizeList = () => {
-    if (listRef.current) {
-      listRef.current.resizeToFit();
-    }
-  };
-
   const resizeList = () => {
-    /*
-     This makes sure the div is resized and fit to the height of the
-     final size of the conversation list. Otherwise it would have two
-     scrollbars. One for the content of the conversation list and one for
-     the outer div that contains the conversation list. Sadly on some
-     render engine 20ms is not enough, but 200 works fine. BUT we want
-     to remove the scrollbar as soon as possible to remove flicker. Because
-     of that we calculate it twice, the 2nd one just to be sure it is really
-     gone even on slower machines.
-    */
-    setTimeout(doResizeList, 20);
-    setTimeout(doResizeList, 200);
+    //TODO
   };
-
-  ////////
 
   return (
     <section className={styles.conversationListContainerContacts}>

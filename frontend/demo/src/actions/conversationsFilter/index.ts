@@ -10,7 +10,7 @@ import {delay, isEqual} from 'lodash-es';
 export const RESET_FILTERED_CONVERSATIONS = '@@conversations/RESET_FILTEREDS';
 export const SET_FILTERED_CONVERSATIONS = '@@conversations/SET_FILTERED';
 export const MERGE_FILTERED_CONVERSATIONS = '@@conversations/MERGE_FILTERED';
-export const UPDATE_CONVERSATION_FILTER = '@@conversation/update_filter';
+export const UPDATE_CONVERSATION_FILTER = '@@conversation/UPDATE_FILTER';
 
 export const resetFilteredConversationAction = createAction(RESET_FILTERED_CONVERSATIONS);
 export const setFilteredConversationsAction = createAction(
@@ -65,20 +65,16 @@ const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, 
           page_size: 10,
           cursor,
           filters: filterToLuceneSyntax(filter),
-        })
-          .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
-            if (isEqual(filter, state().data.conversations.filtered.currentFilter)) {
-              if (cursor) {
-                dispatch(mergeFilteredConversationsAction(response.data, filter, response.metadata));
-              } else {
-                dispatch(setFilteredConversationsAction(response.data, filter, response.metadata));
-              }
-              return Promise.resolve(true);
+        }).then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
+          if (isEqual(filter, state().data.conversations.filtered.currentFilter)) {
+            if (cursor) {
+              dispatch(mergeFilteredConversationsAction(response.data, filter, response.metadata));
+            } else {
+              dispatch(setFilteredConversationsAction(response.data, filter, response.metadata));
             }
-          })
-          .catch((error: Error) => {
-            return Promise.reject(error);
-          });
+            return Promise.resolve(true);
+          }
+        });
       }
     }, 100);
   } else {

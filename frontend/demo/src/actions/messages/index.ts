@@ -2,7 +2,7 @@ import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
 import {Message, ResponseMetadataPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
-import { SendMessagesRequestPayload } from '../../../../../lib/typescript/httpclient/payload/SendMessagesRequestPayload';
+import {SendMessagesRequestPayload} from '../../../../../lib/typescript/httpclient/payload/SendMessagesRequestPayload';
 
 export const MESSAGES_LOADING = '@@messages/LOADING';
 export const SEND_MESSAGE = '@@messages/SEND_MESSAGE';

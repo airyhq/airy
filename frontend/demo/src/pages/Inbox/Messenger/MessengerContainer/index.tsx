@@ -40,7 +40,7 @@ const MessengerContainer = (props: MessengerContainerProps) => {
         ) : (
           <div className={styles.messageDisplay}>
             <MessageList conversation={currentConversation} />
-            <MessageInput />
+            <MessageInput channelSource={currentConversation && currentConversation.channel.source} />
           </div>
         )}
       </div>

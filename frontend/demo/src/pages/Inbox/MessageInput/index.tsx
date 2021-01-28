@@ -16,9 +16,10 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-type MessageInputProps = ConnectedProps<typeof connector>;
+type MessageInputProps = {channelSource: string};
 
-const MessageInput = (props: MessageInputProps) => {
+const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
+  const {channelSource} = props;
   const [input, setInput] = useState('');
   const textAreaAdjust = useRef(null);
 
@@ -46,13 +47,14 @@ const MessageInput = (props: MessageInputProps) => {
         value={input}
         onChange={handleChange}
       />
+
       <div className={styles.buttonSubmit}>
         <button
           type="button"
           onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault();
             props
-              .sendMessages(getTextMessagePayload('chat_plugin', currentConversationId, input))
+              .sendMessages(getTextMessagePayload(channelSource, currentConversationId, input))
               .then(() => setInput(''));
           }}>
           <div className={styles.sendButtonText}>

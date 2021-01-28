@@ -70,6 +70,28 @@ function mergeConversations(
   return conversations;
 }
 
+function mergeFilteredConversations(
+  oldConversation: {[conversation_id: string]: MergedConversation},
+  newConversations: MergedConversation[]
+): ConversationMap {
+  newConversations.forEach((conversation: MergedConversation) => {
+    if (conversation.lastMessage) {
+      conversation.lastMessage.sentAt = new Date(conversation.lastMessage.sentAt);
+    }
+  });
+
+  const conversations = cloneDeep(oldConversation);
+  newConversations.forEach((conversation: MergedConversation) => {
+    conversations[conversation.id] = {
+      ...newConversations[conversation.id],
+      ...conversation,
+      message: getLatestMessage(newConversations[conversation.id], conversation),
+    };
+  });
+
+  return conversations;
+}
+
 function getLatestMessage(oldConversation: Conversation, conversation: Conversation): Message {
   return ((conversation && conversation.lastMessage && new Date(conversation.lastMessage.sentAt).getTime()) || 1) >
     ((oldConversation && oldConversation.lastMessage && new Date(oldConversation.lastMessage.sentAt).getTime()) || 0)
@@ -203,16 +225,16 @@ function filteredReducer(
   action: FilterAction | Action
 ): FilteredState {
   switch (action.type) {
-    // case getType(filterActions.setFilteredConversationsAction):
-    //   return {
-    //     currentFilter: action.payload.filter,
-    //     items: mergeConversations({}, action.payload.conversations),
-    //     metadata: action.payload.metadata,
-    //   };
+    case getType(filterActions.setFilteredConversationsAction):
+      return {
+        currentFilter: action.payload.filter,
+        items: mergeConversations({}, action.payload.conversations),
+        metadata: action.payload.metadata,
+      };
     case getType(filterActions.mergeFilteredConversationsAction):
       return {
         currentFilter: action.payload.filter,
-        items: mergeConversations(state.items, action.payload.conversations),
+        items: mergeFilteredConversations(state.items, action.payload.conversations),
         metadata: action.payload.metadata,
       };
     case getType(filterActions.resetFilteredConversationAction):
@@ -222,30 +244,6 @@ function filteredReducer(
         ...state,
         currentFilter: action.payload.filter,
       };
-    // case getType(filterActions.loadingFilteredConversationsAction):
-    //   return {
-    //     ...state,
-    //     metadata: {
-    //       ...state.metadata,
-    //       loading: true,
-    //     },
-    //   };
-
-    // case getType(actions.updateConversationStateAction):
-    //   if (!state.items[action.payload.conversationId]) {
-    //     return state;
-    //   }
-    //   return {
-    //     ...state,
-    //     items: {
-    //       ...state.items,
-    //       [action.payload.conversationId]: {
-    //         ...state.items[action.payload.conversationId],
-    //         state: action.payload.state,
-    //       },
-    //     },
-    //   };
-
     default:
       return state;
   }

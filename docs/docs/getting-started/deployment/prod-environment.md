@@ -1,24 +1,24 @@
 ---
-title: Running the Airy Core Platform in production
-sidebar_label: Prod Environment
+title: Running Airy Core in production
+sidebar_label: Production
 ---
 
-This document provides our recommendations on how to run the Airy Core Platform
+This document provides our recommendations on how to run the Airy Core
 in production environments. If you are not familiar with the architecture of the
 system, we suggest you read the [Architecture](/concepts/architecture.md) document before
 proceeding.
 
 ## Requirements
 
-The `Airy apps` are the services which comprise the `Airy Core Platform`. They
-run as docker containers and require access to several other services to be in
-place before they can be started:
+The `Airy apps` are the services which comprise `Airy Core`. They run as docker
+containers and require access to several other services to be in place before
+they can be started:
 
 - `Kafka cluster`: Kafka, Zookeeper and the Confluent Schema registry. These
   three services comprise the Kafka store. They are the default storage system
-  of the Airy Core Platform. Kafka requires Zookeeper to work. The Confluent
-  Schema registry facilitates Avro typed data pipelines. All our Kafka based
-  applications require the registry to work.
+  of Airy Core. Kafka requires Zookeeper to work. The Confluent Schema registry
+  facilitates Avro typed data pipelines. All our Kafka based applications
+  require the registry to work.
 - `PostgreSQL`: Where we store authentication data.
 - `Redis`: The queuing system used by our webhook system relies on Redis.
 
@@ -64,7 +64,7 @@ following environment variables to run:
 - `PARTITIONS` (default: 10)
 - `REPLICAS` (default: 1)
 - `AIRY_CORE_NAMESPACE` (default: ''). Helpful to namespace your topics in case
-  you are installing the Airy Core Platform in an existing Kafka cluster
+  you are installing the Airy Core in an existing Kafka cluster
 
 We do not recommend running Kafka on docker for production environments.
 However, we provide a way to deploy the whole Kafka cluster on top of Kubernetes
@@ -134,16 +134,15 @@ helm template ./infrastructure/helm-chart
 
 ## Running the Airy apps
 
-So far the Airy Core Platform has been tested on K3s, Minikube and AWS EKS. The
-following configuration and deployment instructions are applicable to any
-Kubernetes implementation as they depend on widely supported Kubernetes
-features. In order to proceed with deploying the apps, we assume that you have a
-running Kubernetes cluster, properly configured KUBECONF file and properly set
-context.
+So far Airy Core has been tested on K3s, Minikube and AWS EKS. The following
+configuration and deployment instructions are applicable to any Kubernetes
+implementation as they depend on widely supported Kubernetes features. In order
+to proceed with deploying the apps, we assume that you have a running Kubernetes
+cluster, properly configured KUBECONF file and properly set context.
 
-The Airy Core Platform ships with a Kubernetes controller, which is responsible for
-starting and reloading the appropriate Airy apps based on the provided configuration.
-The controller as a deployment named `airy-controller`.
+Airy Core ships with a Kubernetes controller, which is responsible for starting
+and reloading the appropriate Airy apps based on the provided configuration. The
+controller as a deployment named `airy-controller`.
 
 ### Configuration
 
@@ -180,8 +179,9 @@ Most message sources allow users to send rich data such as images, videos and au
 the Urls that host this data expire which is why after some time you may find that conversations have inaccessible
 content.
 
-The Airy Core Platform allows you to persist this data to a storage of your choice. To take advantage of this
-you must provide access credentials to your storage. The platform currently supports [s3](https://aws.amazon.com/s3/):
+Airy Core allows you to persist this data to a storage of your choice. To take
+advantage of this you must provide access credentials to your storage. The
+platform currently supports [s3](https://aws.amazon.com/s3/):
 
 ```yaml
 apps:
@@ -205,7 +205,7 @@ helm install core ./helm-chart/charts/apps/ --values ./airy.yaml --timeout 1000s
 
 The API `Airy apps`, the Frontend UI and the Frontend Chatplugin start by default, while all the other apps are optional and are started if there is provided configuration for them in the `airy.yaml` file.
 
-At this point you should have a running `Airy Core Platform` in your environment 🎉.
+At this point you should have a running `Airy Core` in your environment 🎉.
 
 If afterwards you need to modify or add other config parameters in the
 `airy.yaml` file, after editing the file run:
@@ -216,7 +216,7 @@ airy config apply --config ./airy.yaml --kube-config /path/to/your/kube.conf
 
 Make sure you point the `--kube-config` flag to your Kubernetes configuration file.
 
-If you want to deploy the Airy Core Platform with a specific version, you must set the version in your
+If you want to deploy the Airy Core with a specific version, you must set the version in your
 `airy.yaml` file, under the `global.appImageTag` configuration key.
 
 ## Network

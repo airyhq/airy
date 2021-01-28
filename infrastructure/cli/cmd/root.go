@@ -24,7 +24,7 @@ var CommitSHA1 string
 
 var rootCmd = &cobra.Command{
 	Use:              "airy",
-	Short:            "airy controls your Airy Core Platform instance",
+	Short:            "airy controls an Airy Core instance",
 	Long:             ``,
 	TraverseChildren: true,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
@@ -45,7 +45,7 @@ var versionCmd = &cobra.Command{
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Inits your Airy CLI configuration",
+	Short: "Inits your airy configuration",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		home, err := homedir.Dir()
@@ -107,7 +107,7 @@ func initConfig() {
 
 func init() {
 	apiHost := ""
-	rootCmd.PersistentFlags().StringVar(&apiHost, "apihost", "http://api.airy", "Airy Core Platform HTTP API host")
+	rootCmd.PersistentFlags().StringVar(&apiHost, "apihost", "http://api.airy", "Airy Core HTTP API host")
 	viper.BindPFlag("apihost", rootCmd.PersistentFlags().Lookup("apihost"))
 	viper.SetDefault("apihost", "http://api.airy")
 

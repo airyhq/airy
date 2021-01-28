@@ -2,9 +2,7 @@ module.exports = {
   docs: [
     {
       '🚀 Getting Started': [
-        {
-          Introduction: ['getting-started/introduction/index'],
-        },
+        'getting-started/introduction',
         'getting-started/installation',
         {
           Deployment: ['getting-started/deployment/test-environment', 'getting-started/deployment/prod-environment'],
@@ -39,7 +37,7 @@ module.exports = {
     {
       '🛠️ Integrations': [
         {
-          'Conversational AI /NLP': ['integrations/airy-core-and-rasa'],
+          'Conversational AI /NLP': ['integrations/rasa'],
         },
       ],
     },

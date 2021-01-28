@@ -1,9 +1,9 @@
 ---
-title: Chat Plugin
-sidebar_label: Chat Plugin
+title: Airy Live Chat Plugin
+sidebar_label: Airy LIve Chat Plugin
 ---
 
-The Airy Core Chat Plugin is a fully-featured [source](/getting-started/glossary.md#source) that
+The Airy Live Chat Plugin is a fully-featured [source](/getting-started/glossary.md#source) that
 enables conversations with anonymous website visitors through a web chat plugin.
 
 :::tip What you will learn
@@ -16,7 +16,7 @@ enables conversations with anonymous website visitors through a web chat plugin.
 
 ## Connect
 
-Connects a Chat Plugin source to the Airy Core Platform.
+Connects a Chat Plugin source to Airy Core.
 
 ```
 POST /chatplugin.connect

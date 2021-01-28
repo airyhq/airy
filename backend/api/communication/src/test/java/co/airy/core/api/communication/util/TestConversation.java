@@ -3,6 +3,7 @@ package co.airy.core.api.communication.util;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 
 @Data
@@ -30,7 +32,6 @@ public class TestConversation {
     private Channel channel;
     private String conversationId;
     private Map<String, String> metadata;
-    private int messageCount;
     private long lastMessageSentAt;
     private List<ProducerRecord<String, SpecificRecordBase>> records;
 
@@ -38,8 +39,7 @@ public class TestConversation {
         TestConversation testConversation = new TestConversation();
         testConversation.setConversationId(conversationId);
         testConversation.setChannel(channel);
-        testConversation.setMessageCount(messageCount);
-        testConversation.setRecords(testConversation.generateRecords());
+        testConversation.setRecords(testConversation.generateRecords(messageCount));
 
         return testConversation;
     }
@@ -48,33 +48,32 @@ public class TestConversation {
         TestConversation testConversation = new TestConversation();
         testConversation.setConversationId(conversationId);
         testConversation.setChannel(channel);
-        testConversation.setMessageCount(messageCount);
         testConversation.setMetadata(metadata);
-        testConversation.setRecords(testConversation.generateRecords());
+        testConversation.setRecords(testConversation.generateRecords(messageCount));
 
         return testConversation;
     }
 
     public static List<ProducerRecord<String, SpecificRecordBase>> generateRecords(String conversationId, Channel channel, int messageCount) {
-        return TestConversation.from(conversationId, channel, messageCount).generateRecords();
+        return TestConversation.from(conversationId, channel, messageCount).generateRecords(messageCount);
     }
 
-    private List<ProducerRecord<String, SpecificRecordBase>> generateRecords() {
-        final List<ProducerRecord<String, SpecificRecordBase>> messages = getMessages();
+    private List<ProducerRecord<String, SpecificRecordBase>> generateRecords(int messageCount) {
+        final List<ProducerRecord<String, SpecificRecordBase>> messages = getMessages(messageCount);
         this.lastMessageSentAt = ((Message) messages.get(messages.size() - 1).value()).getSentAt();
         List<ProducerRecord<String, SpecificRecordBase>> records = new ArrayList<>(messages);
 
         if (metadata != null) {
-            metadata.forEach((metadataKey, metadataValue) ->
-                    records.add(new ProducerRecord<>(applicationCommunicationMetadata, conversationId,
-                            newConversationMetadata(conversationId, metadataKey, metadataValue)
-                    )));
+            metadata.forEach((metadataKey, metadataValue) -> {
+                final Metadata metadata = newConversationMetadata(conversationId, metadataKey, metadataValue);
+                records.add(new ProducerRecord<>(applicationCommunicationMetadata, getId(metadata).toString(), metadata));
+            });
         }
 
         return records;
     }
 
-    private List<ProducerRecord<String, SpecificRecordBase>> getMessages() {
+    private List<ProducerRecord<String, SpecificRecordBase>> getMessages(int messageCount) {
         List<ProducerRecord<String, SpecificRecordBase>> records = new ArrayList<>();
         Random random = new Random();
         Instant startDate = Instant.now().minus(Duration.ofDays(random.nextInt(365)));

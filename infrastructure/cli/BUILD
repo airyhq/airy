@@ -14,6 +14,10 @@ go_binary(
     out = "airy",
     embed = [":cli_lib"],
     visibility = ["//visibility:public"],
+    x_defs = {
+        "cmd.CommitSHA1": "{STABLE_GIT_COMMIT}",
+        "cmd.Version": "{STABLE_VERSION}",
+    },
 )
 
 os_list = [
@@ -30,6 +34,10 @@ os_list = [
         goarch = "amd64",
         goos = os,
         visibility = ["//visibility:public"],
+        x_defs = {
+            "cmd.CommitSHA1": "{STABLE_GIT_COMMIT}",
+            "cmd.Version": "{STABLE_VERSION}",
+        },
     )
     for os in os_list
 ]

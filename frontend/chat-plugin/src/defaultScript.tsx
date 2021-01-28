@@ -30,6 +30,12 @@ declare const window: {
   };
 };
 
-new AiryWidget({
-  channel_id: window.airy.cid,
-}).render(anchor);
+if (window.airy.cid.length) {
+  new AiryWidget({
+    channel_id: window.airy.cid,
+  }).render(anchor);
+} else {
+  console.log(
+    'The Airy Chat Plugin is missing the channel id parameter. Please check the docs at http://docs.airy.co to find out more.'
+  );
+}

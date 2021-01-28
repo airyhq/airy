@@ -61,7 +61,7 @@ create_alpha_version() {
         minor="${BASH_REMATCH[2]}"
         patch="${BASH_REMATCH[3]}"
     fi
-    alpha_version=$(printf "%s.%s.%s.alpha\n" $major $((minor+1)) $patch)
+    alpha_version=$(printf "%s.%s.%s-alpha\n" $major $((minor+1)) $patch)
     command echo ${alpha_version}> VERSION
     command git add VERSION
     command git commit -m "Bump version to ${alpha_version}"

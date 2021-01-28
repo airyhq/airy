@@ -13,7 +13,7 @@ import (
 
 var signupCmd = &cobra.Command{
 	Use:   "signup",
-	Short: "Signs users up in the Airy Core Platform",
+	Short: "Signs users up in Airy Core",
 	Long:  ``,
 	Run:   signup,
 }

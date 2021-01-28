@@ -25,7 +25,7 @@ const MessengerListItem = (props: MessengerListItemProps) => {
 
   return (
     <div className={styles.messageListItemContainer}>
-      <div className={styles.messageListItem}>
+      <div className={styles.messageListItem} id={`message-item-${message.id}`}>
         {!isUser ? (
           <div className={styles.messageListItemMember}>
             <div className={styles.messageListItemMemberText}>{messageText}</div>

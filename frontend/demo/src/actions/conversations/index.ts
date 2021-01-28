@@ -13,6 +13,7 @@ export const CONVERSATION_REMOVE_ERROR = '@@conversations/REMOVE_ERROR_FROM_CONV
 export const CONVERSATION_READ = '@@conversations/CONVERSATION_READ';
 export const CONVERSATION_ADD_TAG = '@@conversations/CONVERSATION_ADD_TAG';
 export const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
+export const CONVERSATION_UPDATE_METADATA = '@@conversation/UPDATE_METADATA';
 
 export const loadingConversationAction = createAction(CONVERSATION_LOADING, resolve => (conversationId: string) =>
   resolve(conversationId)
@@ -50,6 +51,11 @@ export const removeTagFromConversationAction = createAction(
   resolve => (conversationId: string, tagId: string) => resolve({conversationId, tagId})
 );
 
+export const updateMessagesMetadataAction = createAction(
+  CONVERSATION_UPDATE_METADATA,
+  resolve => (conversationId: string, metadata: ResponseMetadataPayload) => resolve({conversationId, metadata})
+);
+
 export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
@@ -65,8 +71,9 @@ export function listConversations() {
 }
 
 export function listNextConversations() {
-  return async (dispatch: Dispatch<any>, state: StateModel) => {
-    const cursor = state.data.conversations.all.metadata.nextCursor;
+  return async (dispatch: Dispatch<any>, state: () => StateModel) => {
+    const cursor = state().data.conversations.all.metadata.next_cursor;
+
     dispatch(loadingConversationsAction());
     return HttpClientInstance.listConversations({cursor: cursor})
       .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {

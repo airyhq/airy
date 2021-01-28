@@ -3,22 +3,22 @@ title: Design Principles
 sidebar_label: Design Principles
 ---
 
-The design of the Airy Core Platform heavily relies on a few core ideas. The
+The design of the Airy Core platform heavily relies on a few core ideas. The
 goal of this document is to provide context about these ideas and how they
 affected the way the platform is built.
 
 ## One source of truth, no shared state
 
-The most central idea behind the design of the Airy Core Platform is composed of
+The most central idea behind the Airy Core design is composed of
 two connected principles. Here's the first one:
 
 > There's one source of truth for data and that place is a [Apache
 > Kafka](https://kafka.apache.org).
 
-We mean that _all_ of the data the Airy Core Platform lives in Kafka. One way of
-thinking about the Airy Core Platform as a strongly typed (via
-[Avro](https://avro.apache.org)) data pipeline. The HTTP endpoints the platform
-provide also solely rely on Kafka via a feature called [interactive
+We mean _all_ of the data of an Airy Core instance lives in Kafka. One way of
+thinking about it: as a strongly typed (via [Avro](https://avro.apache.org))
+data pipeline. The HTTP endpoints the platform provide also solely rely on Kafka
+via a feature called [interactive
 queries](https://kafka.apache.org/documentation/streams/developer-guide/interactive-queries.html).
 
 And here's the second principle:
@@ -36,7 +36,7 @@ systems would work like this:
 - Once it obtains a response, it merges the data with the `conversations`
 - It returns the data to the client
 
-In the Airy Core Platform, it works like this:
+In Airy Core, it works like this:
 
 - A client asks for `conversations`
 - the service in charge has both `conversations` and `channels` data
@@ -51,11 +51,11 @@ we avoid any dependencies between services.
 
 Our _default_ choice for testing is high-level integration tests. As
 "integration tests" may mean different things to different people, we explain in
-the following what it means for the Airy Core Platform.
+the following what it means for us.
 
-Most components of the Airy Core Platform have multiple dependencies. For
-example, our HTTP endpoints are Kafka Streams applications that expose data via
-interactive queries. These endpoints depend on:
+Most components of Airy Core have multiple dependencies. For example, our HTTP
+endpoints are Kafka Streams applications that expose data via interactive
+queries. These endpoints depend on:
 
 - Apache Kafka
 - Apache Zookeeper (indirectly as Kafka depends on it)

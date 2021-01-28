@@ -3,10 +3,10 @@ title: Release Process
 sidebar_label: Release Process
 ---
 
-The Airy Core Platform follows a scheduled release process: we release a new
-version every two-weeks. This approach allows us to ship smaller releases which
-ease the risk of breaking changes and brings new features and bug-fixes to our
-users in a timely manner.
+Airy Core follows a scheduled release process: we release a new version every
+two-weeks. This approach allows us to ship smaller releases which ease the risk
+of breaking changes and brings new features and bug-fixes to our users in a
+timely manner.
 
 Here's an outline of the process:
 

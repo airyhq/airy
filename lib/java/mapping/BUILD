@@ -1,5 +1,4 @@
 load("//tools/build:java_library.bzl", "custom_java_library")
-load("@rules_java//java:defs.bzl", "java_binary")
 load("//tools/build:junit5.bzl", "junit5")
 
 lib_deps = [

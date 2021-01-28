@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseMetadata {
+public class PaginationData {
     private String previousCursor;
     private String nextCursor;
     private long filteredTotal;

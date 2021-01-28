@@ -12,7 +12,7 @@ import co.airy.core.api.communication.payload.ConversationListRequestPayload;
 import co.airy.core.api.communication.payload.ConversationListResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
-import co.airy.core.api.communication.payload.ResponseMetadata;
+import co.airy.core.api.communication.payload.PaginationData;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.Subject;
 import co.airy.pagination.Page;
@@ -98,8 +98,8 @@ public class ConversationsController {
         return ResponseEntity.ok(
                 ConversationListResponsePayload.builder()
                         .data(response)
-                        .responseMetadata(
-                                ResponseMetadata.builder()
+                        .paginationData(
+                                PaginationData.builder()
                                         .filteredTotal(conversationIndices.size())
                                         .nextCursor(page.getNextCursor())
                                         .previousCursor(page.getPreviousCursor())
@@ -126,8 +126,8 @@ public class ConversationsController {
         return ResponseEntity.ok(
                 ConversationListResponsePayload.builder()
                         .data(response)
-                        .responseMetadata(
-                                ResponseMetadata.builder()
+                        .paginationData(
+                                PaginationData.builder()
                                         .filteredTotal(conversations.size())
                                         .nextCursor(page.getNextCursor())
                                         .previousCursor(page.getPreviousCursor())

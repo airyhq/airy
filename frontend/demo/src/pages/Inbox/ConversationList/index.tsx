@@ -36,8 +36,8 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
   return {
     currentConversationId: match && match.params.id,
     conversations: newestConversationFirst(state),
-    conversationsMetadata: state.data.conversations.all.metadata,
-    loading: state.data.conversations.all.metadata.loading,
+    conversationsPaginationData: state.data.conversations.all.paginationData,
+    loading: state.data.conversations.all.paginationData.loading,
     user: state.data.user,
   };
 };
@@ -67,18 +67,18 @@ const ConversationList = (props: ConversationListProps) => {
   };
 
   const renderConversationList = () => {
-    const {conversations, conversationsMetadata, loading, listNextConversations} = props;
+    const {conversations, conversationsPaginationData, loading, listNextConversations} = props;
 
-    const {next_cursor: nextCursor} = conversationsMetadata;
+    const {next_cursor: nextCursor} = conversationsPaginationData;
 
     const items = conversations;
-    const metadata = conversationsMetadata;
+    const paginationData = conversationsPaginationData;
     const hasMoreData = nextCursor && nextCursor.length > 0;
 
     const isItemLoaded = (index: number) => index < items.length;
     const itemCount = hasMoreData ? items.length + 1 : items.length;
     const loadMoreItems = () => {
-      if (!metadata.loading) {
+      if (!paginationData.loading) {
         listNextConversations();
       }
       return Promise.resolve(true);

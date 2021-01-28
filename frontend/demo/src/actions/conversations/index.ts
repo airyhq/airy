@@ -1,7 +1,6 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {Conversation} from 'httpclient';
-import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
+import {Conversation, PaginatedPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
 
@@ -13,7 +12,7 @@ export const CONVERSATION_REMOVE_ERROR = '@@conversations/REMOVE_ERROR_FROM_CONV
 export const CONVERSATION_READ = '@@conversations/CONVERSATION_READ';
 export const CONVERSATION_ADD_TAG = '@@conversations/CONVERSATION_ADD_TAG';
 export const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
-export const CONVERSATION_UPDATE_METADATA = '@@conversation/UPDATE_METADATA';
+export const CONVERSATION_UPDATE_PAGINATION_DATA = '@@conversation/UPDATE_PAGINATION_DATA';
 
 export const loadingConversationAction = createAction(CONVERSATION_LOADING, resolve => (conversationId: string) =>
   resolve(conversationId)
@@ -23,8 +22,7 @@ export const loadingConversationsAction = createAction(CONVERSATIONS_LOADING, re
 
 export const mergeConversationsAction = createAction(
   CONVERSATIONS_MERGE,
-  resolve => (conversations: Conversation[], responseMetadata: ResponseMetadataPayload) =>
-    resolve({conversations, responseMetadata})
+  resolve => (conversations: PaginatedPayload<Conversation>) => resolve({conversations})
 );
 
 export const readConversationsAction = createAction(CONVERSATION_READ, resolve => (conversationId: string) =>
@@ -51,17 +49,18 @@ export const removeTagFromConversationAction = createAction(
   resolve => (conversationId: string, tagId: string) => resolve({conversationId, tagId})
 );
 
-export const updateMessagesMetadataAction = createAction(
-  CONVERSATION_UPDATE_METADATA,
-  resolve => (conversationId: string, metadata: ResponseMetadataPayload) => resolve({conversationId, metadata})
+export const updateMessagesPaginationDataAction = createAction(
+  CONVERSATION_UPDATE_PAGINATION_DATA,
+  resolve => (conversationId: string, pagination_data: {previous_cursor: string; next_cursor: string; total: number}) =>
+    resolve({conversationId, pagination_data})
 );
 
 export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
     return HttpClientInstance.listConversations({page_size: 10})
-      .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
-        dispatch(mergeConversationsAction(response.data, response.metadata));
+      .then((response: PaginatedPayload<Conversation>) => {
+        dispatch(mergeConversationsAction(response));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {
@@ -72,12 +71,12 @@ export function listConversations() {
 
 export function listNextConversations() {
   return async (dispatch: Dispatch<any>, state: () => StateModel) => {
-    const cursor = state().data.conversations.all.metadata.next_cursor;
+    const cursor = state().data.conversations.all.paginationData.next_cursor;
 
     dispatch(loadingConversationsAction());
     return HttpClientInstance.listConversations({cursor: cursor})
-      .then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
-        dispatch(mergeConversationsAction(response.data, response.metadata));
+      .then((response: PaginatedPayload<Conversation>) => {
+        dispatch(mergeConversationsAction(response));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {

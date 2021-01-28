@@ -3,19 +3,24 @@ import {combineReducers} from 'redux';
 import {cloneDeep, uniq} from 'lodash-es';
 
 import {Conversation, Message} from 'httpclient';
-import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
 import * as actions from '../../../actions/conversations';
 
 type Action = ActionType<typeof actions>;
 
 type MergedConversation = Conversation & {
   blocked?: boolean;
-  metadata?: ResponseMetadataPayload & {
+  paginationData?: {
+    previous_cursor: string;
+    next_cursor: string;
+    total: number;
     loading: boolean;
   };
 };
 
-export type AllConversationMetadata = ResponseMetadataPayload & {
+export type AllConversationPaginationData = {
+  previous_cursor: string;
+  next_cursor: string;
+  total: number;
   loading?: boolean;
   loaded?: boolean;
   filtered_total?: number;
@@ -27,7 +32,7 @@ export type ConversationMap = {
 
 export type AllConversationsState = {
   items: ConversationMap;
-  metadata: AllConversationMetadata;
+  paginationData: AllConversationPaginationData;
 };
 
 export type ErrorState = {
@@ -52,12 +57,12 @@ function mergeConversations(
   const conversations = cloneDeep(oldConversation);
 
   newConversations.forEach((conversation: MergedConversation) => {
-    if (conversations[conversation.id] && conversations[conversation.id].metadata) {
+    if (conversations[conversation.id] && conversations[conversation.id].paginationData) {
       conversations[conversation.id] = {
         ...newConversations[conversation.id],
         ...conversation,
         message: getLatestMessage(newConversations[conversation.id], conversation),
-        metadata: conversations[conversation.id].metadata,
+        paginationData: conversations[conversation.id].paginationData,
       };
     } else {
       conversations[conversation.id] = {
@@ -84,8 +89,8 @@ function setLoadingOfConversation(items: ConversationMap, conversationId: string
       ...items,
       [conversationId]: {
         ...items[conversationId],
-        metadata: {
-          ...items[conversationId].metadata,
+        paginationData: {
+          ...items[conversationId].paginationData,
           loading: isLoading,
         },
       },
@@ -96,7 +101,7 @@ function setLoadingOfConversation(items: ConversationMap, conversationId: string
 
 const initialState: AllConversationsState = {
   items: {},
-  metadata: {
+  paginationData: {
     loading: false,
     loaded: false,
     previous_cursor: null,
@@ -150,15 +155,20 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
     case getType(actions.mergeConversationsAction):
       return {
         ...state,
-        items: mergeConversations(state.items, action.payload.conversations as MergedConversation[]),
-        metadata: {...state.metadata, ...action.payload.responseMetadata, loading: false, loaded: true},
+        items: mergeConversations(state.items, action.payload.conversations.data as MergedConversation[]),
+        paginationData: {
+          ...state.paginationData,
+          ...action.payload.conversations.pagination_data,
+          loading: false,
+          loaded: true,
+        },
       };
 
     case getType(actions.loadingConversationsAction):
       return {
         ...state,
-        metadata: {
-          ...state.metadata,
+        paginationData: {
+          ...state.paginationData,
           loading: true,
         },
       };
@@ -167,8 +177,8 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
       return {
         ...state,
         items: setLoadingOfConversation(state.items, action.payload, true),
-        metadata: {
-          ...state.metadata,
+        paginationData: {
+          ...state.paginationData,
           loading: true,
         },
       };
@@ -183,8 +193,8 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
             unreadMessageCount: 0,
           },
         },
-        metadata: {
-          ...state.metadata,
+        paginationData: {
+          ...state.paginationData,
           loading: false,
         },
       };
@@ -195,7 +205,7 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
     case getType(actions.removeTagFromConversationAction):
       return removeTagFromConversation(state, action.payload.conversationId, action.payload.tagId);
 
-    case getType(actions.updateMessagesMetadataAction):
+    case getType(actions.updateMessagesPaginationDataAction):
       if (state.items[action.payload.conversationId]) {
         return {
           ...state,
@@ -203,9 +213,9 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
             ...state.items,
             [action.payload.conversationId]: {
               ...state.items[action.payload.conversationId],
-              metadata: {
-                ...state.items[action.payload.conversationId].metadata,
-                ...action.payload.metadata,
+              paginationData: {
+                ...state.items[action.payload.conversationId].paginationData,
+                ...action.payload.pagination_data,
                 loading: false,
               },
             },

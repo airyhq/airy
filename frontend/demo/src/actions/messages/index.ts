@@ -6,7 +6,6 @@ import {SendMessagesRequestPayload} from '../../../../../lib/typescript/httpclie
 import {StateModel} from '../../reducers';
 import {updateMessagesMetadataAction, loadingConversationAction} from '../conversations';
 
-
 export const MESSAGES_LOADING = '@@messages/LOADING';
 export const SEND_MESSAGE = '@@messages/SEND_MESSAGE';
 
@@ -60,7 +59,8 @@ export function sendMessages(messagePayload: SendMessagesRequestPayload) {
       .catch((error: Error) => {
         return Promise.reject(error);
       });
-
+  };
+}
 
 export function listPreviousMessages(conversationId: string) {
   return async (dispatch: Dispatch<any>, state: () => StateModel) => {
@@ -93,6 +93,5 @@ export function listPreviousMessages(conversationId: string) {
           return Promise.reject(error);
         });
     }
-
   };
 }

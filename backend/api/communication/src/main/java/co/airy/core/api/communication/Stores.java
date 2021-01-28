@@ -7,7 +7,7 @@ import co.airy.avro.communication.ReadReceipt;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.CountAction;
-import co.airy.core.api.communication.dto.MessageWrapper;
+import co.airy.core.api.communication.dto.MessageContainer;
 import co.airy.core.api.communication.dto.MessagesTreeSet;
 import co.airy.core.api.communication.dto.UnreadCountState;
 import co.airy.core.api.communication.lucene.IndexingProcessor;
@@ -129,14 +129,14 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         unreadCountTable.toStream().peek(webSocketController::onUnreadCount);
 
-        final KGroupedStream<String, MessageWrapper> messageGroupedStream = messageStream.toTable()
-                .leftJoin(metadataTable, (message, metadataMap) -> MessageWrapper.builder()
+        final KGroupedStream<String, MessageContainer> messageGroupedStream = messageStream.toTable()
+                .leftJoin(metadataTable, (message, metadataMap) -> MessageContainer.builder()
                         .message(message)
                         .metadataMap(Optional.ofNullable(metadataMap).orElse(new HashMap<>()))
                         .build())
                 .toStream()
-                .filter((messageId, messageWrapper) -> messageWrapper != null)
-                .groupBy((messageId, wrapper) -> wrapper.getMessage().getConversationId());
+                .filter((messageId, messageContainer) -> messageContainer != null)
+                .groupBy((messageId, messageContainer) -> messageContainer.getMessage().getConversationId());
 
 
         // messages store
@@ -149,21 +149,21 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         // conversations store
         messageGroupedStream
                 .aggregate(Conversation::new,
-                        (conversationId, wrapper, aggregate) -> {
-                            if (aggregate.getLastMessageWrapper() == null) {
+                        (conversationId, container, aggregate) -> {
+                            if (aggregate.getLastMessageContainer() == null) {
                                 aggregate = Conversation.builder()
-                                        .lastMessageWrapper(wrapper)
-                                        .createdAt(wrapper.getMessage().getSentAt()) // Set this only once for the sent time of the first message
+                                        .lastMessageContainer(container)
+                                        .createdAt(container.getMessage().getSentAt()) // Set this only once for the sent time of the first message
                                         .build();
                             }
 
                             // equals because messages can be updated
-                            if (wrapper.getMessage().getSentAt() >= aggregate.getLastMessageWrapper().getMessage().getSentAt()) {
-                                aggregate.setLastMessageWrapper(wrapper);
+                            if (container.getMessage().getSentAt() >= aggregate.getLastMessageContainer().getMessage().getSentAt()) {
+                                aggregate.setLastMessageContainer(container);
                             }
 
-                            if (SenderType.SOURCE_CONTACT.equals(wrapper.getMessage().getSenderType())) {
-                                aggregate.setSourceConversationId(wrapper.getMessage().getSenderId());
+                            if (SenderType.SOURCE_CONTACT.equals(container.getMessage().getSenderType())) {
+                                aggregate.setSourceConversationId(container.getMessage().getSenderId());
                             }
 
                             return aggregate;
@@ -212,7 +212,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(subject, key).toString(), null)).get();
     }
 
-    public List<MessageWrapper> getMessages(String conversationId) {
+    public List<MessageContainer> getMessages(String conversationId) {
         final ReadOnlyKeyValueStore<String, MessagesTreeSet> messagesStore = getMessagesStore();
         final MessagesTreeSet messagesTreeSet = messagesStore.get(conversationId);
 

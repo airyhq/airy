@@ -23,7 +23,7 @@ import static org.springframework.util.StringUtils.capitalize;
 @AllArgsConstructor
 public class Conversation implements Serializable {
     private Long createdAt;
-    private MessageWrapper lastMessageWrapper;
+    private MessageContainer lastMessageContainer;
     private String sourceConversationId;
     private Channel channel;
 
@@ -68,11 +68,11 @@ public class Conversation implements Serializable {
 
     @JsonIgnore
     public String getId() {
-        return this.lastMessageWrapper.getMessage().getConversationId();
+        return this.lastMessageContainer.getMessage().getConversationId();
     }
 
     @JsonIgnore
     public String getChannelId() {
-        return this.lastMessageWrapper.getMessage().getChannelId();
+        return this.lastMessageContainer.getMessage().getChannelId();
     }
 }

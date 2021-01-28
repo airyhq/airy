@@ -17,7 +17,7 @@ public class MessageRepository {
         return message.getUpdatedAt() == null;
     }
 
-    public static String getContent(Message message, Map<String, String> metadata) {
+    public static String resolveContent(Message message, Map<String, String> metadata) {
         final String content = message.getContent();
 
         return metadata.entrySet()

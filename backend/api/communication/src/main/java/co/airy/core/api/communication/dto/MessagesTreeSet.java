@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-public class MessagesTreeSet extends TreeSet<MessageWrapper> {
+public class MessagesTreeSet extends TreeSet<MessageContainer> {
     @JsonCreator
     public MessagesTreeSet() {
-        super(Comparator.comparing((MessageWrapper wrapper) -> wrapper.getMessage().getSentAt()).reversed());
+        super(Comparator.comparing((MessageContainer container) -> container.getMessage().getSentAt()).reversed());
     }
 
     // TreeSet does not support updating objects
-    public void update(MessageWrapper wrapper) {
-        remove(wrapper);
-        add(wrapper);
+    public void update(MessageContainer container) {
+        remove(container);
+        add(container);
     }
 }

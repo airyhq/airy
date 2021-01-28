@@ -3,7 +3,7 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.model.channel.ChannelPayload;
-import co.airy.core.api.communication.dto.MessageWrapper;
+import co.airy.core.api.communication.dto.MessageContainer;
 import co.airy.core.api.communication.dto.UnreadCountState;
 import co.airy.core.api.communication.payload.MessageUpsertPayload;
 import co.airy.core.api.communication.payload.UnreadCountPayload;
@@ -36,7 +36,7 @@ public class WebSocketController {
         final MessageUpsertPayload messageUpsertPayload = MessageUpsertPayload.builder()
                 .channelId(message.getChannelId())
                 .conversationId(message.getConversationId())
-                .message(mapper.fromMessage(new MessageWrapper(message, Map.of())))
+                .message(mapper.fromMessageContainer(new MessageContainer(message, Map.of())))
                 .build();
         messagingTemplate.convertAndSend(QUEUE_MESSAGE, messageUpsertPayload);
     }

@@ -3,7 +3,7 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Message;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.DisplayName;
-import co.airy.core.api.communication.dto.MessageWrapper;
+import co.airy.core.api.communication.dto.MessageContainer;
 import co.airy.core.api.communication.payload.ContactResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.MessageResponsePayload;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static co.airy.date.format.DateFormat.isoFromMillis;
 import static co.airy.model.metadata.MetadataRepository.getConversationInfo;
-import static co.airy.model.message.MessageRepository.getContent;
+import static co.airy.model.message.MessageRepository.resolveContent;
 
 @Component
 public class Mapper {
@@ -32,7 +32,7 @@ public class Mapper {
                 .tags(conversation.getTagIds())
                 .createdAt(isoFromMillis(conversation.getCreatedAt()))
                 .contact(getContact(conversation))
-                .lastMessage(fromMessage(conversation.getLastMessageWrapper()))
+                .lastMessage(fromMessageContainer(conversation.getLastMessageContainer()))
                 .build();
     }
 
@@ -47,10 +47,10 @@ public class Mapper {
                 .build();
     }
 
-    public MessageResponsePayload fromMessage(MessageWrapper messageWithMetadata) {
-        final Message message = messageWithMetadata.getMessage();
+    public MessageResponsePayload fromMessageContainer(MessageContainer messageContainer) {
+        final Message message = messageContainer.getMessage();
         return MessageResponsePayload.builder()
-                .content(getContent(message, messageWithMetadata.getMetadataMap()))
+                .content(resolveContent(message, messageContainer.getMetadataMap()))
                 .senderType(message.getSenderType().toString().toLowerCase())
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())

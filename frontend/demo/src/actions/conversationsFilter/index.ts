@@ -85,9 +85,9 @@ const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, 
 const filterToLuceneSyntax = (filter: ConversationFilter): string | null => {
   const filterQuery: Array<string> = [];
   if (filter.unreadOnly) {
-    filterQuery.push('unread_count:[1 TO *]');
+    filterQuery.push('unread_message_count:[1 TO *]');
   } else if (filter.readOnly) {
-    filterQuery.push('unread_count:0');
+    filterQuery.push('unread_message_count:0');
   }
   if (filter.displayName) {
     filterQuery.push('display_name:*' + filter.displayName + '*');

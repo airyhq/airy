@@ -45,7 +45,7 @@ const Chat = (props: Props) => {
   };
 
   useEffect(() => {
-    ws = new WebSocket(props.channel_id, onReceive, getResumeToken());
+    ws = new WebSocket(props.channel_id, onReceive, setMessages, getResumeToken());
     ws.start().catch(error => {
       console.error(error);
       setInstallError(error.message);

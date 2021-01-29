@@ -14,17 +14,34 @@ declare const window: {
 const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
 const TLS_PREFIX = window.airy ? (window.airy.no_tls === true ? '' : 's') : '';
 
+interface Message {
+  id: string;
+  sender_type: string;
+  content: string;
+  delivery_state: string;
+  sent_at: string;
+  state: string;
+}
+
 class WebSocket {
   client: Client;
   channel_id: string;
   token: string;
   resume_token: string;
+  messages: [];
+  setMessages: (messages: Array<Message>) => void;
   onReceive: messageCallbackType;
 
-  constructor(channel_id: string, onReceive: messageCallbackType, resume_token?: string) {
+  constructor(
+    channel_id: string,
+    onReceive: messageCallbackType,
+    setMessages: (messages: Array<Message>) => void,
+    resume_token?: string
+  ) {
     this.channel_id = channel_id;
     this.onReceive = onReceive;
     this.resume_token = resume_token;
+    this.setMessages = setMessages;
   }
 
   connect = (token: string) => {
@@ -56,8 +73,10 @@ class WebSocket {
   onSend = (message: Text) => sendMessage(message, this.token);
 
   start = async () => {
-    this.token = (await start(this.channel_id, this.resume_token)).token;
-    this.connect(this.token);
+    const response = await start(this.channel_id, this.resume_token);
+    this.connect(response.token);
+    this.setMessages(response.messages);
+
     if (!this.resume_token) {
       await getResumeToken(this.token);
     }

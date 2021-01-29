@@ -1,4 +1,4 @@
-import React from 'react';
+import {h} from 'preact';
 import style from './index.module.scss';
 
 type Props = {

@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = Audio.class, name = "audio"),
         @JsonSubTypes.Type(value = File.class, name = "file"),
         @JsonSubTypes.Type(value = Image.class, name = "image"),
-        @JsonSubTypes.Type(value = Video.class, name = "video")
+        @JsonSubTypes.Type(value = Video.class, name = "video"),
+        @JsonSubTypes.Type(value = SourceTemplate.class, name = "source.template")
 })
 public abstract class Content {
 }

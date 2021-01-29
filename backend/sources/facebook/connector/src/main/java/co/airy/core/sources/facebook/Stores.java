@@ -6,12 +6,13 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.sources.facebook.dto.SendMessageRequest;
 import co.airy.core.sources.facebook.dto.Conversation;
+import co.airy.core.sources.facebook.dto.SendMessageRequest;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
+import co.airy.log.AiryLoggerFactory;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -23,6 +24,7 @@ import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Suppressed;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -41,6 +43,7 @@ import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
 
 @Service
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean, HealthIndicator {
+    private static final Logger log = AiryLoggerFactory.getLogger(Stores.class);
     private static final String appId = "sources.facebook.ConnectorStores";
 
     private final KafkaStreamsWrapper streams;
@@ -89,18 +92,21 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         final KTable<String, Conversation> conversationTable = messageStream
                 .groupByKey()
                 .aggregate(Conversation::new,
-                        (conversationId, message, aggregate) -> {
+                        (conversationId, message, conversation) -> {
+                            final Conversation.ConversationBuilder conversationBuilder = conversation.toBuilder();
                             if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
-                                aggregate.setSourceConversationId(message.getSenderId());
+                                conversationBuilder.sourceConversationId(message.getSenderId());
                             }
+                            conversationBuilder.channelId(message.getChannelId());
 
-                            aggregate.setChannelId(message.getChannelId());
-
-                            return aggregate;
+                            return conversationBuilder.build();
                         })
-                .join(channelsTable, Conversation::getChannelId, (aggregate, channel) -> {
-                    aggregate.setChannel(channel);
-                    return aggregate;
+                .join(channelsTable, Conversation::getChannelId, (conversation, channel) -> {
+                    return conversation.toBuilder()
+                            .channelId(conversation.getChannelId())
+                            .channel(channel)
+                            .sourceConversationId(conversation.getSourceConversationId())
+                            .build();
                 });
 
         // Send outbound messages
@@ -111,9 +117,6 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         // Fetch missing metadata
         conversationTable
-                // To avoid any redundant fetch contact operations the suppression interval should
-                // be higher than the timeout of the Facebook API
-                .suppress(Suppressed.untilTimeLimit(Duration.ofMillis(streams.getSuppressIntervalInMs()), Suppressed.BufferConfig.unbounded()))
                 .toStream()
                 .leftJoin(metadataTable, (conversation, metadataMap) -> conversation
                         .toBuilder()

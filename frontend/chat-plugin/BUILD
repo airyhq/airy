@@ -17,7 +17,7 @@ web_app(
     name = "bundle",
     app_lib = ":app",
     entry = "frontend/chat-plugin/src/iframe.js",
-    index = ":index.html",
+    index = ":development.html",
     module_deps = module_deps,
 )
 
@@ -25,12 +25,12 @@ web_library(
     name = "library",
     app_lib = ":app",
     entry = "frontend/chat-plugin/src/defaultScript.js",
+    module_deps = module_deps,
     output = {
         "libraryExport": "AiryWidget",
         "publicPath": "/",
         "filename": "s.js",
     },
-    module_deps = module_deps,
 )
 
 ts_library(

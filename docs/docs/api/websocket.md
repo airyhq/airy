@@ -5,22 +5,27 @@ sidebar_label: WebSocket
 
 ## Introduction
 
-The Airy Core Platform offers a WebSocket server that allows clients to connect
+The Airy Core offers a WebSocket server that allows clients to connect
 and receive near real-time updates on communication data. The WebSocket server
 uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
 protocol endpoint at `/ws.communication`.
 
+To execute the handshake with `/ws.communicaiton` you need to set an
+`Authorization` header where the value is the authorization token obtained [from
+the API](api/http/introduction.md#authentication).
+
 ## Outbound Queues
 
-Outbound queues follow the pattern `/queue/:event_type[/:action}]` and
-deliver JSON encoded payloads.
+Outbound queues follow the pattern `/queue/:event_type[/:action}]` and deliver
+JSON encoded payloads.
 
 ### Message
 
 `/queue/message`
 
-Incoming payloads notify connected clients that a message was created or updated.
+Incoming payloads notify connected clients that a message was created or
+updated.
 
 **Sample payload**
 
@@ -30,13 +35,9 @@ Incoming payloads notify connected clients that a message was created or updated
   "channel_id": "{UUID}",
   "message": {
     "id": "{UUID}",
-    "content": {
-      "text": "{String}",
-      "type": "text"
-      // Determines the schema of the content
-    },
-    // typed source message model
-    "state": "{String}",
+    "content": '{"text":"Hello World"}',
+    // source message payload
+    "delivery_state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     "sender_type": "{string/enum}",
     // See glossary
@@ -72,7 +73,8 @@ the value only for a more recent count.
 
 `/queue/channel/connected`
 
-Incoming payloads notify connected clients whenever a channel was connected or updated.
+Incoming payloads notify connected clients whenever a channel was connected or
+updated.
 
 **Sample payload**
 

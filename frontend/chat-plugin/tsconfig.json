@@ -1,11 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-<<<<<<< HEAD
-=======
     "jsx": "react",
     "jsxFactory": "h",
->>>>>>> c9a9ef7947b2b7715b898d66e3fbd0c62d869d81
     "paths": {
       "react": [
         "preact/compat"
@@ -13,10 +10,6 @@
       "react-dom":[
         "preact/compat"
       ],
-<<<<<<< HEAD
-
-=======
->>>>>>> c9a9ef7947b2b7715b898d66e3fbd0c62d869d81
     }
   }
 }

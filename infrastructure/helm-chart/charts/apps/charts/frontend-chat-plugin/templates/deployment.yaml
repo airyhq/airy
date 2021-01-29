@@ -7,7 +7,7 @@ metadata:
     app: frontend-chat-plugin
     type: frontend
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: frontend-chat-plugin
@@ -25,6 +25,12 @@ spec:
       - name: app
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
+        env:
+          - name: API_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: hostnames
+                key: CHATPLUGIN_HOST
         livenessProbe:
           httpGet:
             path: /health

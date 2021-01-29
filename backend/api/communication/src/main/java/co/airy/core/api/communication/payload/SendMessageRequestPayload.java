@@ -1,5 +1,6 @@
 package co.airy.core.api.communication.payload;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,5 @@ public class SendMessageRequestPayload {
     private UUID conversationId;
     @Valid
     @NotNull
-    private MessagePayload message;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class MessagePayload {
-        private String text;
-    }
+    private JsonNode message;
 }

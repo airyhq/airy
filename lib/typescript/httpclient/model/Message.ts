@@ -49,9 +49,7 @@ export enum SenderType {
 }
 export interface Message {
   id: string;
-  content: {
-    text: {text: string};
-  };
+  content: string;
   deliveryState: MessageState;
   senderType: SenderType;
   sentAt: Date;

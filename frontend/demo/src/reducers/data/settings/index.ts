@@ -8,12 +8,20 @@ export type SettingsState = {
   data: DataState;
 };
 
+export interface ColorSettings {
+  default: string;
+  background: string;
+  font: string;
+  position: number;
+  border: string;
+}
+
 export type Settings = {
-  colors: {};
+  colors: {[id: string]: ColorSettings};
 };
 
 const defaultState = {
-  colors: [],
+  colors: {},
 };
 
 export default function tagsReducer(state = defaultState, action: Action): Settings {

@@ -1,6 +1,7 @@
 import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 import {start, getResumeToken, sendMessage} from '../api';
+import {Text} from 'types';
 
 declare const window: {
   airy: {
@@ -52,9 +53,7 @@ class WebSocket {
     this.client.activate();
   };
 
-  onSend = (message: string) => {
-    sendMessage(message, this.token);
-  };
+  onSend = (message: Text) => sendMessage(message, this.token);
 
   start = async () => {
     this.token = (await start(this.channel_id, this.resume_token)).token;

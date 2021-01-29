@@ -10,28 +10,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Mapper {
-
-    private final ObjectMapper objectMapper;
-
-    Mapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public SendMessagePayload fromSendMessageRequest(SendMessageRequest sendMessageRequest) throws Exception {
         final Message message = sendMessageRequest.getMessage();
-
-        final SendMessagePayload.MessagePayload messagePayload = new SendMessagePayload.MessagePayload();
-
-        final JsonNode messageRequest = objectMapper.readTree(message.getContent());
-
-        messagePayload.setText(messageRequest.get("text").textValue());
-
+        final JsonNode messagePayload = objectMapper.readTree(message.getContent());
         SendMessagePayload.SendMessagePayloadBuilder builder = SendMessagePayload.builder()
                 .recipient(SendMessagePayload.MessageRecipient.builder()
                         .id(sendMessageRequest.getConversation().getSourceConversationId())
                         .build())
                 .message(messagePayload);
-
         return builder.build();
     }
 }

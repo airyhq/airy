@@ -6,6 +6,7 @@ metadata:
   labels:
     app: sources-twilio-events-router
     type: sources-twilio
+    core.airy.co/managed: "true"
 spec:
   replicas: 0
   selector:
@@ -41,6 +42,16 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_COMMIT_INTERVAL_MS
+        - name: TWILIO_AUTH_TOKEN
+          valueFrom:
+            configMapKeyRef:
+              name: sources-twilio
+              key: TWILIO_AUTH_TOKEN
+        - name: TWILIO_ACCOUNT_SID
+          valueFrom:
+            configMapKeyRef:
+              name: sources-twilio
+              key: TWILIO_ACCOUNT_SID
         livenessProbe:
           tcpSocket:
             port: 6000

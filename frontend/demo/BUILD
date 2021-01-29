@@ -7,7 +7,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 module_deps = [
     "//lib/typescript/types",
     "//lib/typescript/httpclient",
-    "//lib/typescript/renderLibrary",
+    "//lib/typescript/render",
     "//lib/typescript/services",
 ]
 
@@ -15,7 +15,7 @@ ts_library(
     name = "app",
     deps = [
         "//lib/typescript/httpclient",
-        "//lib/typescript/renderLibrary",
+        "//lib/typescript/render",
         "//lib/typescript/types",
         "//lib/typescript/services",
         "@npm//@airyhq/components",
@@ -23,6 +23,7 @@ ts_library(
         "@npm//@types/node",
         "@npm//@types/prop-types",
         "@npm//@types/react",
+        "@npm//@types/react-dom",
         "@npm//@types/react-redux",
         "@npm//emoji-mart",
         "@npm//lodash-es",
@@ -41,6 +42,7 @@ ts_library(
 web_app(
     name = "bundle",
     app_lib = ":app",
+    dev_index = "development.html",
     entry = "frontend/demo/src/index.js",
     index = ":index.html",
     module_deps = module_deps,

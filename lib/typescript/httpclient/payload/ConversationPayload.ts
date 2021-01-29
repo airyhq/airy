@@ -7,8 +7,7 @@ export interface ConversationPayload {
   created_at: string;
   contact: {
     avatar_url: string;
-    first_name: string;
-    last_name: string;
+    display_name: string;
     id: string;
   };
   tags: string[];

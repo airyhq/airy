@@ -74,3 +74,26 @@ func getContainerWithEnvReference(containers []v1.Container, resourceName string
 	}
 	return nil
 }
+
+// Does not return config maps whose only use is marked "optional"
+func GetReferencedConfigMaps(container v1.Container) []string {
+	envs := container.Env
+	var configMaps []string
+	for j := range envs {
+		envVarSource := envs[j].ValueFrom
+		if envVarSource != nil && envVarSource.ConfigMapKeyRef != nil &&
+			(envVarSource.ConfigMapKeyRef.Optional == nil || *envVarSource.ConfigMapKeyRef.Optional != true) {
+			configMaps = append(configMaps, envVarSource.ConfigMapKeyRef.LocalObjectReference.Name)
+		}
+	}
+
+	envsFrom := container.EnvFrom
+	for j := range envsFrom {
+		if envsFrom[j].ConfigMapRef != nil &&
+			(envsFrom[j].ConfigMapRef.Optional == nil || *envsFrom[j].ConfigMapRef.Optional != true) {
+			configMaps = append(configMaps, envsFrom[j].ConfigMapRef.LocalObjectReference.Name)
+		}
+	}
+
+	return configMaps
+}

@@ -22,7 +22,7 @@ import TwilioSource from './twilio-source.mdx'
 
 After you created a Twilio phone number you must [point its webhook
 integration](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url)
-to your running Airy Core Platform instance.
+to your running Airy Core instance.
 
 Next call the Platform API:
 

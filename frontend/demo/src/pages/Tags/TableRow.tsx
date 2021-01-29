@@ -7,19 +7,19 @@ import {Button, LinkButton} from '@airyhq/components';
 import {ReactComponent as EditIcon} from '../../assets/images/icons/edit.svg';
 import {ReactComponent as TrashIcon} from '../../assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
-import Tag from './Tag';
+import Tag from '../../components/Tag';
 import {Tag as TagModel, TagColor} from 'httpclient';
-import {TagSettings} from '../../types';
+import {Settings} from '../../reducers/data/settings';
 import {RootState} from '../../reducers';
 
 type TableRowProps = {
   tag: TagModel;
-  tagSettings: TagSettings;
+  settings: Settings;
   showModal(label: string, id: string, name: string): void;
 } & ConnectedProps<typeof connector>;
 
 const TableRowComponent = (props: TableRowProps) => {
-  const {tag, updateTag, tagSettings, showModal} = props;
+  const {tag, updateTag, settings, showModal} = props;
 
   const [tagState, setTagState] = useState({
     edit: false,
@@ -81,9 +81,11 @@ const TableRowComponent = (props: TableRowProps) => {
     [showModal, tag]
   );
 
-  const getColorValue = useCallback((color: string) => (tagSettings && tagSettings.colors[color].default) || '1578D4', [
-    tagSettings,
-  ]);
+  const getColorValue = useCallback(
+    (color: string) =>
+      (settings && settings.colors && settings.colors[color] && settings.colors[color].default) || '1578D4',
+    [settings]
+  );
 
   const isEditing = tagState.edit && tagState.id === tag.id;
 
@@ -145,7 +147,7 @@ const TableRowComponent = (props: TableRowProps) => {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    tagSettings: state.data.settings,
+    settings: state.data.settings,
   };
 };
 

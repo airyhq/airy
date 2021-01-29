@@ -1,13 +1,11 @@
 package co.airy.core.sources.facebook.api.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Data
 @Builder
@@ -15,36 +13,16 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SendMessagePayload {
-
-    @JsonProperty("messaging_type")
     private String messagingType;
-
-    @JsonProperty("recipient")
     private MessageRecipient recipient;
-
-    @JsonProperty("message")
-    private MessagePayload message;
-
-    @JsonProperty("tag")
+    private JsonNode message;
     private String tag;
 
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class MessageRecipient {
-
-        @JsonProperty("id")
         private String id;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public static class MessagePayload implements Serializable {
-        @JsonProperty("text")
-        public String text;
     }
 }

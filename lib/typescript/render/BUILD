@@ -9,6 +9,7 @@ ts_library(
         "//lib/typescript/services",
         "//lib/typescript/types",
         "@npm//@types/node",
+        "@npm//@types/react",
         "@npm//linkifyjs",
         "@npm//react",
     ],

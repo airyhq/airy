@@ -10,8 +10,9 @@ package main
 
 import (
 	"flag"
-
 	cm "github.com/airyhq/airy/infrastructure/controller/pkg/configmap-controller"
+	v1 "k8s.io/api/core/v1"
+	"os"
 
 	"k8s.io/klog"
 
@@ -20,28 +21,39 @@ import (
 )
 
 func main() {
-	var kubeconfig string
+	var kubeConfig string
 	var master string
 
 	// Check if kubernetes configuration is provided, otherwise use serviceAccount
-	flag.StringVar(&kubeconfig, "kubeconfig", "", "absolute path to the kubeconfig file")
+	flag.StringVar(&kubeConfig, "kubeconfig", "", "absolute path to the kubeConfig file")
 	flag.StringVar(&master, "master", "", "master url")
 	flag.Parse()
 
 	// Create connection
-	config, err := clientcmd.BuildConfigFromFlags(master, kubeconfig)
+	config, err := clientcmd.BuildConfigFromFlags(master, kubeConfig)
 	if err != nil {
 		klog.Fatal(err)
 	}
 
-	// Create clientset client
-	clientset, err := kubernetes.NewForConfig(config)
+	clientSet, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		klog.Fatal(err)
 	}
+
+	namespace, present := os.LookupEnv("NAMESPACE")
+	if present != true {
+		klog.Infof("Namespace not set. Defaulting to: %s", v1.NamespaceDefault)
+		namespace = v1.NamespaceDefault
+	}
+
+	labelSelector := os.Getenv("LABEL_SELECTOR")
 
 	// Create configMap controller
-	configMapController := cm.ConfigMapController(clientset)
+	configMapController := cm.ConfigMapController(cm.Context{
+		ClientSet:     clientSet,
+		Namespace:     namespace,
+		LabelSelector: labelSelector,
+	})
 	stop := make(chan struct{})
 	defer close(stop)
 	go configMapController.Run(1, stop)

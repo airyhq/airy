@@ -1,0 +1,70 @@
+.tag {
+  display: inline-block;
+  padding: 4px;
+  max-width: 100%;
+}
+
+.tagInner {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 8px;
+  background: var(--color-airy-blue);
+  color: #fff;
+  border-radius: 16px;
+  line-height: 24px;
+  max-width: 100%;
+  white-space: nowrap;
+
+  &:hover {
+    word-break: break-all;
+    white-space: normal;
+    line-height: 16px;
+    padding: 4px 8px;
+  }
+
+  &.clickable {
+    cursor: pointer;
+  }
+}
+
+.removeTag {
+  cursor: pointer;
+  margin-bottom: auto;
+}
+
+.closeButton {
+  margin-left: 4px;
+  path {
+    fill: #fff;
+  }
+}
+
+.tagName {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tagNameExpanded {
+  @extend .tagName;
+  white-space: unset;
+  overflow-wrap: break-word;
+  margin-right: 4px;
+}
+
+.#{tag-} {
+  &green {
+    background-color: var(--color-tag-green);
+  }
+  &blue {
+    background-color: var(--color-airy-blue);
+  }
+  &red {
+    background-color: var(--color-tag-red);
+  }
+  &purple {
+    background-color: var(--color-tag-purple);
+  }
+}

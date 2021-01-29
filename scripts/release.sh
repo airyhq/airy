@@ -8,7 +8,7 @@ start() {
     echo -e "Starting release ${release_number}\n"
     create_issue
     create_release_branch
-    increase_version
+    update_release_version
     commit_version
 }
 
@@ -36,9 +36,10 @@ finish() {
     merge_main
     merge_develop
     echo -e "Release ${release_number} is finished\n"
+    create_alpha_version
 }
 
-increase_version() {
+update_release_version() {
     issue_number=$(curl -s\
                        -H "Accept: application/vnd.github.v3+json" \
                        "https://api.github.com/repos/airyhq/airy/issues?labels=release" | jq '.[0].number')
@@ -51,6 +52,21 @@ commit_version() {
     command git commit -m "Fixes #${issue_number}"
     command git push origin release/${release_number}
     echo -e "Updated VERSION file\n"
+}
+
+create_alpha_version() {
+    regex="([0-9]+).([0-9]+).([0-9]+)"
+    if [[ $release_number =~ $regex ]]; then
+        major="${BASH_REMATCH[1]}"
+        minor="${BASH_REMATCH[2]}"
+        patch="${BASH_REMATCH[3]}"
+    fi
+    alpha_version=$(printf "%s.%s.%s-alpha\n" $major $((minor+1)) $patch)
+    command echo ${alpha_version}> VERSION
+    command git add VERSION
+    command git commit -m "Bump version to ${alpha_version}"
+    command git push origin develop
+    echo -e "Updated VERSION file to ${alpha_version}\n"
 }
 
 merge_main() {
@@ -84,4 +100,3 @@ case $1 in
     "finish")
         finish $2
 esac
-

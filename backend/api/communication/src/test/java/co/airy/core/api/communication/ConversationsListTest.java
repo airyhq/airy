@@ -2,15 +2,11 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.model.metadata.MetadataKeys;
 import co.airy.core.api.communication.util.TestConversation;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
+import co.airy.date.format.DateFormat;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.date.format.DateFormat;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -33,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
+import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
@@ -55,11 +53,6 @@ class ConversationsListTest {
     @Autowired
     private WebTestHelper webTestHelper;
 
-    private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
-    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
-    private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
-
     private static final String firstNameToFind = "Grace";
 
     private static final Channel defaultChannel = Channel.newBuilder()
@@ -79,28 +72,26 @@ class ConversationsListTest {
             .build();
 
     private static final String conversationIdToFind = UUID.randomUUID().toString();
+    private static final String tagId = UUID.randomUUID().toString();
+    private static final String anotherTagId = UUID.randomUUID().toString();
+
     private static final String userId = "user-id";
 
     private static final List<TestConversation> conversations = List.of(
             TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.Source.Contact.FIRST_NAME, firstNameToFind), 1),
-            TestConversation.from(UUID.randomUUID().toString(), channelToFind, 1),
-            TestConversation.from(conversationIdToFind, defaultChannel, 1),
-            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1),
-            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 1)
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind,
+                    Map.of(MetadataKeys.TAGS + "." + tagId, "", MetadataKeys.TAGS + "." + anotherTagId, ""),
+                    1),
+            TestConversation.from(conversationIdToFind, defaultChannel, Map.of(MetadataKeys.TAGS + "." + tagId, ""), 1),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 2),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 5)
     );
-
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationMessages,
-                applicationCommunicationChannels,
-                applicationCommunicationMetadata,
-                applicationCommunicationReadReceipts
-        );
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
 
         kafkaTestHelper.beforeAll();
-
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), defaultChannel.getId(), defaultChannel));
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelToFind.getId(), channelToFind));
@@ -112,7 +103,6 @@ class ConversationsListTest {
     static void afterAll() throws Exception {
         kafkaTestHelper.afterAll();
     }
-
 
     @BeforeEach
     void beforeEach() throws Exception {
@@ -151,6 +141,23 @@ class ConversationsListTest {
     }
 
     @Test
+    void canFilterByTagIds() throws Exception {
+        checkConversationsFound("{\"filters\": \"tag_ids:(" + tagId + ")\"}", 2);
+
+        checkConversationsFound("{\"filters\": \"tag_ids:(" + tagId + " AND " + anotherTagId + ")\"}", 1);
+    }
+
+    @Test
+    void canFilterByUnreadMessageCountRange() throws Exception {
+        checkConversationsFound("{\"filters\": \"unread_message_count:[2 TO *]\"}", 2);
+    }
+
+    @Test
+    void canFilterByUnreadMessageCount() throws Exception {
+        checkConversationsFound("{\"filters\": \"unread_message_count:2\"}", 1);
+    }
+
+    @Test
     void canFilterByCombinedQueries() throws Exception {
         final JsonNodeFactory jsonNodeFactory = JsonNodeFactory.instance;
 
@@ -163,16 +170,7 @@ class ConversationsListTest {
 
     @Test
     void canFilterForUnknownNames() throws Exception {
-        String payload = "{\"filters\": \"display_name:Ada\"}";
-        checkNoConversationReturned(payload);
-    }
-
-    private void checkNoConversationReturned(String payload) throws Exception {
-        retryOnException(
-                () -> webTestHelper.post("/conversations.list", payload, userId)
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(0))),
-                "Expected no conversations returned");
+        checkConversationsFound("{\"filters\": \"display_name:Ada\"}", 0);
     }
 
     private void checkConversationsFound(String payload, int count) throws InterruptedException {
@@ -182,6 +180,6 @@ class ConversationsListTest {
                         .andExpect(jsonPath("$.data", hasSize(count)))
                         .andExpect(jsonPath("response_metadata.filtered_total", is(count)))
                         .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
-                "Expected one conversation returned");
+                String.format("Expected %d conversation returned", count));
     }
 }

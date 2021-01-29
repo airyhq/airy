@@ -10,7 +10,7 @@ integration pattern:
 - Call the [subscribe](#subscribing) endpoint
 - Consume on your URL of choice [events](#event-payload)
 - React to those events by calling the [send
-  message](api/http.md#send-a-message) endpoint
+  message](api/http/endpoints.md#send-a-message) endpoint
 
 You must de-duplicate messages on arrival as the webhook _does not_ guarantee
 events uniqueness.
@@ -80,7 +80,7 @@ Subscribes the webhook for the first time or update its parameters.
 
 ## Event Payload
 
-After [subscribing](#subscribing-to-a-webhook) to an Airy webhook, you will
+After [subscribing](#subscribing) to an Airy webhook, you will
 start receiving events on your URL of choice. The event will _always_ be a POST
 request with the following structure:
 
@@ -92,11 +92,11 @@ request with the following structure:
     "id": "adac9220-fe7b-40a8-98e5-2fcfaf4a53b5",
     "type": "source_contact"
   },
-  "source": "FACEBOOK",
+  "source": "facebook",
   "sent_at": "2020-07-20T14:18:08.584Z",
-  "text": "Message to be sent"
+  "content": '{"text":"Hello World"}'
 }
 ```
 
 For possible values of `sender.type` see the [Message model
-documentation](glossary.md#fields)
+documentation](getting-started/glossary.md#fields)

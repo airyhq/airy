@@ -35,7 +35,9 @@ public class ContentMapperTest {
 
     @Test
     void rendersOutbound() throws Exception {
-        final String text = "Hello World";
+        final String textContent = "Hello World";
+        final Text text = new Text(textContent);
+
         final Message message = Message.newBuilder()
                 .setId("other-message-id")
                 .setSource("facebook")
@@ -45,12 +47,12 @@ public class ContentMapperTest {
                 .setDeliveryState(DeliveryState.DELIVERED)
                 .setConversationId("conversationId")
                 .setChannelId("channelId")
-                .setContent("{\"text\":\"" + text + "\"}")
+                .setContent((new ObjectMapper()).writeValueAsString(text))
                 .build();
 
         final Text textMessage = (Text) mapper.render(message).get(0);
 
-        assertThat(textMessage.getText(), equalTo(text));
+        assertThat(textMessage.getText(), equalTo(textContent));
         Mockito.verify(outboundMapper).render(Mockito.anyString());
     }
 

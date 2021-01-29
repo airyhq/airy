@@ -2,7 +2,7 @@ import React, {createRef, useCallback} from 'react';
 
 import closeIcon from '../assets/images/icons/close.svg';
 import searchIcon from '../assets/images/icons/search.svg';
-import styles from './style.module.scss';
+import styles from './index.module.scss';
 
 type SearchFieldProps = {
   id?: string;

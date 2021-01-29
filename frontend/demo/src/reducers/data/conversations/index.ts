@@ -1,6 +1,6 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
-import {cloneDeep} from 'lodash-es';
+import {cloneDeep, uniq} from 'lodash-es';
 
 import {Conversation, Message} from 'httpclient';
 import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
@@ -18,7 +18,7 @@ type MergedConversation = Conversation & {
 export type AllConversationMetadata = ResponseMetadataPayload & {
   loading?: boolean;
   loaded?: boolean;
-  filteredTotal?: number;
+  filtered_total?: number;
 };
 
 export type ConversationMap = {
@@ -44,21 +44,28 @@ function mergeConversations(
   newConversations: MergedConversation[]
 ): ConversationMap {
   newConversations.forEach((conversation: MergedConversation) => {
-    if (conversation.contact && !conversation.contact.displayName) {
-      conversation.contact.displayName = `${conversation.contact.firstName} ${conversation.contact.lastName}`;
-    }
     if (conversation.lastMessage) {
       conversation.lastMessage.sentAt = new Date(conversation.lastMessage.sentAt);
     }
   });
 
   const conversations = cloneDeep(oldConversation);
+
   newConversations.forEach((conversation: MergedConversation) => {
-    conversations[conversation.id] = {
-      ...newConversations[conversation.id],
-      ...conversation,
-      message: getLatestMessage(newConversations[conversation.id], conversation),
-    };
+    if (conversations[conversation.id] && conversations[conversation.id].metadata) {
+      conversations[conversation.id] = {
+        ...newConversations[conversation.id],
+        ...conversation,
+        message: getLatestMessage(newConversations[conversation.id], conversation),
+        metadata: conversations[conversation.id].metadata,
+      };
+    } else {
+      conversations[conversation.id] = {
+        ...newConversations[conversation.id],
+        ...conversation,
+        message: getLatestMessage(newConversations[conversation.id], conversation),
+      };
+    }
   });
 
   return conversations;
@@ -92,11 +99,50 @@ const initialState: AllConversationsState = {
   metadata: {
     loading: false,
     loaded: false,
-    previousCursor: null,
-    nextCursor: null,
+    previous_cursor: null,
+    next_cursor: null,
     total: 0,
-    filteredTotal: 0,
+    filtered_total: 0,
   },
+};
+
+const addTagToConversation = (state: AllConversationsState, conversationId, tagId) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (conversation) {
+    const tags: string[] = [...state.items[conversationId].tags];
+    tags.push(tagId);
+
+    return {
+      ...state,
+      items: {
+        ...state.items,
+        [conversation.id]: {
+          ...conversation,
+          tags: uniq(tags),
+        },
+      },
+    };
+  }
+
+  return state;
+};
+
+const removeTagFromConversation = (state: AllConversationsState, conversationId, tagId) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (conversation) {
+    return {
+      ...state,
+      items: {
+        ...state.items,
+        [conversation.id]: {
+          ...conversation,
+          tags: conversation.tags.filter(tag => tag !== tagId),
+        },
+      },
+    };
+  }
+
+  return state;
 };
 
 function allReducer(state: AllConversationsState = initialState, action: Action): AllConversationsState {
@@ -107,6 +153,7 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
         items: mergeConversations(state.items, action.payload.conversations as MergedConversation[]),
         metadata: {...state.metadata, ...action.payload.responseMetadata, loading: false, loaded: true},
       };
+
     case getType(actions.loadingConversationsAction):
       return {
         ...state,
@@ -120,6 +167,10 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
       return {
         ...state,
         items: setLoadingOfConversation(state.items, action.payload, true),
+        metadata: {
+          ...state.metadata,
+          loading: true,
+        },
       };
 
     case getType(actions.readConversationsAction):
@@ -137,6 +188,31 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
           loading: false,
         },
       };
+
+    case getType(actions.addTagToConversationAction):
+      return addTagToConversation(state, action.payload.conversationId, action.payload.tagId);
+
+    case getType(actions.removeTagFromConversationAction):
+      return removeTagFromConversation(state, action.payload.conversationId, action.payload.tagId);
+
+    case getType(actions.updateMessagesMetadataAction):
+      if (state.items[action.payload.conversationId]) {
+        return {
+          ...state,
+          items: {
+            ...state.items,
+            [action.payload.conversationId]: {
+              ...state.items[action.payload.conversationId],
+              metadata: {
+                ...state.items[action.payload.conversationId].metadata,
+                ...action.payload.metadata,
+                loading: false,
+              },
+            },
+          },
+        };
+      }
+      return state;
 
     default:
       return state;

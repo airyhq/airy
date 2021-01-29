@@ -5,14 +5,12 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.util.TestConversation;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -31,9 +29,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static co.airy.test.Timing.retryOnException;
+import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
+import static co.airy.core.api.communication.util.Topics.applicationCommunicationMessages;
+import static co.airy.core.api.communication.util.Topics.getTopics;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,11 +47,11 @@ public class SendMessageControllerTest {
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
     private static KafkaTestHelper kafkaTestHelper;
-    private static final String facebookConversationId = UUID.randomUUID().toString();
+    private static final String conversationId = UUID.randomUUID().toString();
 
-    private static final Channel facebookChannel = Channel.newBuilder()
+    private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("facebook-channel-id")
+            .setId("channel-id")
             .setName("channel-name")
             .setSource("facebook")
             .setSourceChannelId("ps-id")
@@ -61,24 +61,14 @@ public class SendMessageControllerTest {
     @Autowired
     private WebTestHelper webTestHelper;
 
-    private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
-    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
-    private static final ApplicationCommunicationReadReceipts applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts();
-
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationMessages,
-                applicationCommunicationChannels,
-                applicationCommunicationMetadata,
-                applicationCommunicationReadReceipts
-        );
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
 
         kafkaTestHelper.beforeAll();
 
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), facebookChannel.getId(), facebookChannel));
-        kafkaTestHelper.produceRecords(TestConversation.generateRecords(facebookConversationId, facebookChannel, 1));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
+        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
     }
 
     @AfterAll
@@ -92,18 +82,26 @@ public class SendMessageControllerTest {
     }
 
     @Test
-    void canSendMessages() throws Exception {
-        String payload = "{\"conversation_id\": \"" + facebookConversationId + "\", \"message\": { \"text\": \"answer is 42\" }}";
+    void canSendTextMessages() throws Exception {
+        final String messagePayload = "{\"text\":\"answeris42\"}";
+        final String requestPayload = String.format("{\"conversation_id\":\"%s\"," +
+                        "\"message\":%s}",
+                conversationId, messagePayload);
         final String userId = "user-id";
 
-        retryOnException(() -> webTestHelper.post("/messages.send", payload, userId).andExpect(status().isOk()), "Facebook Message was not sent");
+        final String response = webTestHelper.post("/messages.send", requestPayload, userId)
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        final JsonNode responseNode = new ObjectMapper().readTree(response);
+        final String messageId = responseNode.get("id").textValue();
 
         List<ConsumerRecord<String, Message>> records = kafkaTestHelper.consumeRecords(2, applicationCommunicationMessages.name());
         assertThat(records, hasSize(2));
 
         final Optional<Message> maybeMessage = records.stream()
                 .map(ConsumerRecord::value)
-                .filter(m -> m.getSenderType().equals(SenderType.APP_USER))
+                .filter(m -> m.getSenderType().equals(SenderType.APP_USER) && m.getId().equals(messageId))
                 .findFirst();
 
         if (maybeMessage.isEmpty()) {
@@ -111,7 +109,6 @@ public class SendMessageControllerTest {
         }
 
         final Message message = maybeMessage.get();
-        assertThat(message.getContent(), is("{\"text\":\"answer is 42\"}"));
-        assertThat(message.getSenderId(), is(userId));
+        assertThat(message.getContent(), equalTo(messagePayload));
     }
 }

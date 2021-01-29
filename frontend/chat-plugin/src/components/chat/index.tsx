@@ -1,4 +1,4 @@
-import React from 'react';
+import {h} from 'preact';
 import {useState, useEffect} from 'preact/hooks';
 import {IMessage} from '@stomp/stompjs';
 
@@ -10,28 +10,19 @@ import AiryInputBar from '../../airyRenderProps/AiryInputBar';
 import style from './index.module.scss';
 import HeaderBarProp from '../../components/headerBar';
 import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
-import AiryMessage from '../../airyRenderProps/AiryMessage';
 import {AiryWidgetConfiguration} from '../../config';
 import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-<<<<<<< HEAD
 import RenderLibrary from 'render';
-import {messageMapper, MessagePayload, SenderType, MessageState, MessageType} from 'httpclient';
-=======
-import RenderLibrary from 'renderLibrary';
-import {messageMapper, MessagePayload, SenderType, MessageState, MessageSource} from 'httpclient';
->>>>>>> c9a9ef7947b2b7715b898d66e3fbd0c62d869d81
+import {messageMapper, MessagePayload, SenderType, MessageState, MessageSource, MessageType} from 'httpclient';
 
 let ws: WebSocket;
 
 const welcomeMessage: MessagePayload = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   sender_type: SenderType.appUser,
-  content:
-    {
-      text: {text: 'Hello! How can we help you?'},
-    },
+  content: JSON.stringify({text: 'Hello! How can we help you?'}),
   delivery_state: MessageState.delivered,
   sent_at: new Date(),
 };
@@ -83,12 +74,9 @@ const Chat = (props: Props) => {
     },
     sendMessage: (text: string) => {
       ws.onSend(
-        JSON.stringify({
-          message: {
-              text,
-              type: 'text'
-          },
-        })
+        {
+          text,
+        }
       );
     },
   };

@@ -140,3 +140,7 @@ if [ -z ${AIRY_VERSION+x} ]; then
 fi
 
 AIRY_VERSION=${AIRY_VERSION} vagrant up
+
+mkdir -p ~/.airy
+cd $infra_path
+vagrant ssh -c "cat /etc/rancher/k3s/k3s.yaml" 2>/dev/null | sed "s/127.0.0.1/192.168.50.5/g" > ~/.airy/kube.conf

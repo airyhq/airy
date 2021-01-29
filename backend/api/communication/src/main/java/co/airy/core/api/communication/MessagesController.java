@@ -1,6 +1,6 @@
 package co.airy.core.api.communication;
 
-import co.airy.avro.communication.Message;
+import co.airy.core.api.communication.dto.MessageContainer;
 import co.airy.core.api.communication.payload.MessageListRequestPayload;
 import co.airy.core.api.communication.payload.MessageListResponsePayload;
 import co.airy.pagination.Page;
@@ -41,18 +41,19 @@ public class MessagesController {
     }
 
     private MessageListResponsePayload fetchMessages(String conversationId, int pageSize, String cursor) {
-        final List<Message> messages = stores.getMessages(conversationId);
+        final List<MessageContainer> messages = stores.getMessages(conversationId);
 
         if (messages == null) {
             return null;
         }
 
-        Paginator<Message> paginator = new Paginator<>(messages, Message::getId).perPage(pageSize).from(cursor);
+        Paginator<MessageContainer> paginator = new Paginator<>(messages, (message) -> message.getMessage().getId())
+                .perPage(pageSize).from(cursor);
 
-        Page<Message> page = paginator.page();
+        Page<MessageContainer> page = paginator.page();
 
         return MessageListResponsePayload.builder()
-                .data(messages.stream().map(mapper::fromMessage).collect(toList()))
+                .data(page.getData().stream().map(mapper::fromMessageContainer).collect(toList()))
                 .responseMetadata(MessageListResponsePayload.ResponseMetadata.builder()
                         .nextCursor(page.getNextCursor())
                         .previousCursor(cursor)

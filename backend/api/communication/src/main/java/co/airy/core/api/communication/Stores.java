@@ -7,6 +7,7 @@ import co.airy.avro.communication.ReadReceipt;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.CountAction;
+import co.airy.core.api.communication.dto.MessageContainer;
 import co.airy.core.api.communication.dto.MessagesTreeSet;
 import co.airy.core.api.communication.dto.UnreadCountState;
 import co.airy.core.api.communication.lucene.IndexingProcessor;
@@ -43,11 +44,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
+import static co.airy.model.metadata.MetadataRepository.isMessageMetadata;
 import static java.util.stream.Collectors.toCollection;
 
 @Component
@@ -82,16 +85,16 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         builder.addStateStore(new LuceneDiskStore.Builder(conversationsLuceneStore, luceneProvider));
 
-        final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .selectKey((messageId, message) -> message.getConversationId())
-                .peek((conversationId, message) -> webSocketController.onNewMessage(message));
+        final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
 
         final KTable<String, Channel> channelTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
                 .peek((channelId, channel) -> webSocketController.onChannelUpdate(channel))
                 .toTable();
 
+        // conversation/message metadata keyed by conversation/message id
         final KTable<String, Map<String, String>> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
-                .filter((metadataId, metadata) -> isConversationMetadata(metadata))
+                .filter((metadataId, metadata) -> isConversationMetadata(metadata)
+                        || isMessageMetadata(metadata))
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 .aggregate(HashMap::new, (conversationId, metadata, aggregate) -> {
                     aggregate.put(metadata.getKey(), metadata.getValue());
@@ -106,6 +109,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         // unread counts
         final KTable<String, UnreadCountState> unreadCountTable = messageStream
+                .selectKey((messageId, message) -> message.getConversationId())
+                .peek((conversationId, message) -> webSocketController.onNewMessage(message))
                 .mapValues(message -> CountAction.increment(message.getSentAt()))
                 .merge(resetStream)
                 .groupByKey()
@@ -124,41 +129,47 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         unreadCountTable.toStream().peek(webSocketController::onUnreadCount);
 
-        final KGroupedStream<String, Message> messageGroupedStream = messageStream.groupByKey();
+        final KGroupedStream<String, MessageContainer> messageGroupedStream = messageStream.toTable()
+                .leftJoin(metadataTable, (message, metadataMap) -> MessageContainer.builder()
+                        .message(message)
+                        .metadataMap(Optional.ofNullable(metadataMap).orElse(new HashMap<>()))
+                        .build())
+                .toStream()
+                .filter((messageId, messageContainer) -> messageContainer != null)
+                .groupBy((messageId, messageContainer) -> messageContainer.getMessage().getConversationId());
+
 
         // messages store
         messageGroupedStream.aggregate(MessagesTreeSet::new,
                 ((key, value, aggregate) -> {
-                    aggregate.add(value);
+                    aggregate.update(value);
                     return aggregate;
                 }), Materialized.as(messagesStore));
 
         // conversations store
         messageGroupedStream
                 .aggregate(Conversation::new,
-                        (conversationId, message, aggregate) -> {
-                            if (aggregate.getLastMessage() == null) {
+                        (conversationId, container, aggregate) -> {
+                            if (aggregate.getLastMessageContainer() == null) {
                                 aggregate = Conversation.builder()
-                                        .lastMessage(message)
-                                        .createdAt(message.getSentAt()) // Set this only once for the sent time of the first message
+                                        .lastMessageContainer(container)
+                                        .createdAt(container.getMessage().getSentAt()) // Set this only once for the sent time of the first message
                                         .build();
                             }
 
                             // equals because messages can be updated
-                            if (message.getSentAt() >= aggregate.getLastMessage().getSentAt()) {
-                                aggregate.setLastMessage(message);
+                            if (container.getMessage().getSentAt() >= aggregate.getLastMessageContainer().getMessage().getSentAt()) {
+                                aggregate.setLastMessageContainer(container);
                             }
 
-                            if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
-                                aggregate.setSourceConversationId(message.getSenderId());
+                            if (SenderType.SOURCE_CONTACT.equals(container.getMessage().getSenderType())) {
+                                aggregate.setSourceConversationId(container.getMessage().getSenderId());
                             }
 
                             return aggregate;
                         })
-                .join(channelTable, Conversation::getChannelId, (conversation, channel) -> {
-                    conversation.setChannel(channel);
-                    return conversation;
-                })
+                .join(channelTable, Conversation::getChannelId,
+                        (conversation, channel) -> conversation.toBuilder().channel(channel).build())
                 .leftJoin(metadataTable, (conversation, metadataMap) -> {
                     if (metadataMap != null) {
                         return conversation.toBuilder()
@@ -167,12 +178,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                     }
                     return conversation;
                 })
-                .leftJoin(unreadCountTable, (conversation, unreadCountState) -> {
-                    if (unreadCountState != null) {
-                        conversation.setUnreadCount(unreadCountState.getUnreadCount());
-                    }
-                    return conversation;
-                }, Materialized.as(conversationsStore))
+                .leftJoin(unreadCountTable, (conversation, unreadCountState) -> conversation.toBuilder()
+                        .unreadMessageCount(Optional.ofNullable(unreadCountState)
+                                .map(UnreadCountState::getUnreadCount).orElse(0)
+                        ).build(), Materialized.as(conversationsStore))
                 .toStream()
                 .process(IndexingProcessor.getSupplier(conversationsLuceneStore), conversationsLuceneStore);
 
@@ -203,9 +212,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(subject, key).toString(), null)).get();
     }
 
-    public List<Message> getMessages(String conversationId) {
+    public List<MessageContainer> getMessages(String conversationId) {
         final ReadOnlyKeyValueStore<String, MessagesTreeSet> messagesStore = getMessagesStore();
-
         final MessagesTreeSet messagesTreeSet = messagesStore.get(conversationId);
 
         return messagesTreeSet == null ? null : new ArrayList<>(messagesTreeSet);

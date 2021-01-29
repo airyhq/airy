@@ -34,7 +34,6 @@ maven_install(
         "com.google.auth:google-auth-library-oauth2-http:0.20.0",
         "com.jayway.jsonpath:json-path:2.4.0",
         "com.twilio.sdk:twilio:7.51.0",
-        "cz.habarta.typescript-generator:typescript-generator-core:2.26.723",
         "io.confluent:kafka-avro-serializer:5.5.1",
         "io.confluent:kafka-schema-registry-client:5.5.1",
         "io.confluent:kafka-schema-registry:5.5.1",
@@ -188,10 +187,10 @@ container_pull(
 
 container_pull(
     name = "nginx_base",
-    digest = "sha256:662a0c5a8677063c27b0ddd42f1c801be643b9502f7b1a4e2e727cb2bc3808a8",
-    registry = "index.docker.io",
-    repository = "nginx",
-    tag = "stable-alpine",
+    digest = "sha256:0340d329672fb3f0192754e4e1ccd7518ecc83f6644e8f0c317012bbc4d06d24",
+    registry = "ghcr.io",
+    repository = "airyhq/frontend/nginx-lua",
+    tag = "1.0.0",
 )
 
 load(

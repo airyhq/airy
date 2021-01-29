@@ -1,34 +1,26 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Message;
-import co.airy.model.metadata.MetadataKeys;
-import co.airy.model.metadata.MetadataRepository;
-import co.airy.model.channel.ChannelPayload;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.DisplayName;
+import co.airy.core.api.communication.dto.MessageContainer;
 import co.airy.core.api.communication.payload.ContactResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.MessageResponsePayload;
-import co.airy.mapping.ContentMapper;
+import co.airy.model.channel.ChannelPayload;
+import co.airy.model.metadata.MetadataKeys;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static co.airy.model.metadata.MetadataRepository.getConversationInfo;
 import static co.airy.date.format.DateFormat.isoFromMillis;
-import static java.util.stream.Collectors.toList;
+import static co.airy.model.metadata.MetadataRepository.getConversationInfo;
+import static co.airy.model.message.MessageRepository.resolveContent;
 
 @Component
 public class Mapper {
-    private final ContentMapper contentMapper;
-
-    Mapper(ContentMapper contentMapper) {
-        this.contentMapper = contentMapper;
-    }
 
     public ConversationResponsePayload fromConversation(Conversation conversation) {
-        final Map<String, String> metadata = conversation.getMetadata();
-
         return ConversationResponsePayload.builder()
                 .channel(ChannelPayload.builder()
                         .id(conversation.getChannelId())
@@ -36,17 +28,11 @@ public class Mapper {
                         .source(conversation.getChannel().getSource())
                         .build())
                 .id(conversation.getId())
-                .unreadMessageCount(conversation.getUnreadCount())
-                .tags(
-                        MetadataRepository.filterPrefix(metadata, MetadataKeys.TAGS)
-                        .keySet()
-                                .stream()
-                                .map(s -> s.split("\\.")[1])
-                                .collect(toList())
-                )
+                .unreadMessageCount(conversation.getUnreadMessageCount())
+                .tags(conversation.getTagIds())
                 .createdAt(isoFromMillis(conversation.getCreatedAt()))
                 .contact(getContact(conversation))
-                .lastMessage(fromMessage(conversation.getLastMessage()))
+                .lastMessage(fromMessageContainer(conversation.getLastMessageContainer()))
                 .build();
     }
 
@@ -56,15 +42,15 @@ public class Mapper {
 
         return ContactResponsePayload.builder()
                 .avatarUrl(metadata.get(MetadataKeys.Source.Contact.AVATAR_URL))
-                .firstName(displayName.getFirstName())
-                .lastName(displayName.getLastName())
+                .displayName(displayName.toString())
                 .info(getConversationInfo(metadata))
                 .build();
     }
 
-    public MessageResponsePayload fromMessage(Message message) {
+    public MessageResponsePayload fromMessageContainer(MessageContainer messageContainer) {
+        final Message message = messageContainer.getMessage();
         return MessageResponsePayload.builder()
-                .content(contentMapper.renderWithDefaultAndLog(message))
+                .content(resolveContent(message, messageContainer.getMetadataMap()))
                 .senderType(message.getSenderType().toString().toLowerCase())
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())

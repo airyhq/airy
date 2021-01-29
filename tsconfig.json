@@ -28,6 +28,18 @@
       "render/*": [
         "./lib/typescript/render/*"
       ],
+      "types": [
+        "./lib/typescript/types"
+      ],
+      "types/*": [
+        "./lib/typescript/types/*"
+      ],
+      "httpclient": [
+        "./lib/typescript/httpclient"
+      ],
+      "httpclient/*": [
+        "./lib/typescript/httpclient/*"
+      ],
       "*": [
         "./*"
       ]

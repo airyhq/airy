@@ -29,10 +29,9 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.core.sources.google.InfoExtractor.getMetadataFromContext;
+import static co.airy.model.metadata.MetadataRepository.getId;
 
 @Component
 public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
@@ -112,8 +111,8 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     final String conversationId = UUIDv5.fromNamespaceAndName(channel.getId(), sourceConversationId).toString();
                     final List<KeyValue<String, SpecificRecordBase>> records = new ArrayList<>();
 
+                    final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
                     if (webhookEvent.hasMessage()) {
-                        final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
                         records.add(KeyValue.pair(messageId,
                                 Message.newBuilder()
                                         .setSource(channel.getSource())
@@ -124,7 +123,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                                         .setSenderType(SenderType.SOURCE_CONTACT)
                                         .setContent(payload)
                                         .setSenderId(sourceConversationId)
-                                        .setHeaders(Map.of())
+                                        .setHeaders(event.getMessageHeaders())
                                         .setSentAt(event.getTimestamp())
                                         .setUpdatedAt(null)
                                         .build()

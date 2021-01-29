@@ -7,7 +7,6 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.mapping.model.Text;
 import co.airy.spring.core.AirySpringBootApplication;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +43,6 @@ import java.util.concurrent.ExecutionException;
 import static co.airy.core.chat_plugin.WebSocketController.QUEUE_MESSAGE;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -121,19 +119,18 @@ public class ChatControllerTest {
         final CompletableFuture<MessageUpsertPayload> messageFuture = subscribe(token, port, MessageUpsertPayload.class, QUEUE_MESSAGE);
 
         final String messageText = "answer is 42";
-        String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\" }}";
+        String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\", \"type\":\"text\" }}";
         retryOnException(() -> mvc.perform(post("/chatplugin.send")
                                 .headers(buildHeaders(token))
                                 .content(sendMessagePayload))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.content[0].text", containsString(messageText))),
+                                .andExpect(jsonPath("$.content", containsString(messageText))),
                 "Message was not sent");
 
         final MessageUpsertPayload messageUpsertPayload = messageFuture.get();
 
         assertNotNull(messageUpsertPayload);
-        final Text text = (Text) messageUpsertPayload.getMessage().getContent().get(0);
-        assertThat(text.getText(), containsString(messageText));
+        assertThat(messageUpsertPayload.getMessage().getContent(), containsString(messageText));
     }
 
     @Test
@@ -150,12 +147,12 @@ public class ChatControllerTest {
         final String authToken = jsonNode.get("token").textValue();
 
         final String messageText = "Talk to you later!";
-        final String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\" }}";
+        final String sendMessagePayload = "{\"message\":{\"text\":\"" + messageText + "\"}}";
         mvc.perform(post("/chatplugin.send")
                 .headers(buildHeaders(authToken))
                 .content(sendMessagePayload))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].text", containsString(messageText)));
+                .andExpect(jsonPath("$.content", containsString(messageText)));
 
         response = mvc.perform(post("/chatplugin.resumeToken")
                 .headers(buildHeaders(authToken))
@@ -175,7 +172,7 @@ public class ChatControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.token", is(not(nullValue()))))
                     .andExpect(jsonPath("$.messages", hasSize(1)))
-                    .andExpect(jsonPath("$.messages[0].content[0].text", equalTo(messageText)));
+                    .andExpect(jsonPath("$.messages[0].content", containsString(messageText)));
         }, "Did not resume conversation");
     }
 

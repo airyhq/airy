@@ -3,17 +3,19 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.model.channel.ChannelPayload;
+import co.airy.core.api.communication.dto.MessageContainer;
 import co.airy.core.api.communication.dto.UnreadCountState;
 import co.airy.core.api.communication.payload.MessageUpsertPayload;
 import co.airy.core.api.communication.payload.UnreadCountPayload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.time.Instant;
 
 import static co.airy.avro.communication.ChannelConnectionState.CONNECTED;
-import static co.airy.model.channel.ChannelPayload.fromChannel;
 import static co.airy.date.format.DateFormat.isoFromMillis;
+import static co.airy.model.channel.ChannelPayload.fromChannel;
 
 @Service
 public class WebSocketController {
@@ -34,7 +36,7 @@ public class WebSocketController {
         final MessageUpsertPayload messageUpsertPayload = MessageUpsertPayload.builder()
                 .channelId(message.getChannelId())
                 .conversationId(message.getConversationId())
-                .message(mapper.fromMessage(message))
+                .message(mapper.fromMessageContainer(new MessageContainer(message, Map.of())))
                 .build();
         messagingTemplate.convertAndSend(QUEUE_MESSAGE, messageUpsertPayload);
     }

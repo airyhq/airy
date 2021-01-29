@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.model.metadata.MetadataKeys;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -12,6 +11,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.source.SourceGoogleEvents;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -118,12 +118,12 @@ public class EventsRouterTest {
         final String singleName = "hal9000";
 
         // Two different event types that both carry context
-        final String messagePayload = "{ \"agent\": \"brands/somebrand/agents/%s\", \"conversationId\": \"CONVERSATION_ID\"," +
-                " \"customAgentId\": \"CUSTOM_AGENT_ID\", \"message\": { \"messageId\": \"MESSAGE_ID\", \"name\": \"conversations/CONVERSATION_ID/messages/MESSAGE_ID\", \"text\": \"MESSAGE_TEXT\", \"createTime\": \"MESSAGE_CREATE_TIME\" }," +
-                " \"context\": { \"userInfo\": { \"displayName\": \"%s\" } }, \"sendTime\": \"2014-10-02T15:01:23.045123456Z\" }";
-        final String userStatusPayload = "{ \"agent\": \"brands/somebrand/agents/%s\", \"conversationId\": \"CONVERSATION_ID\", " +
-                "\"customAgentId\": \"CUSTOM_AGENT_ID\", \"userStatus\": { \"isTyping\": true }, " +
-                "\"context\": { \"userInfo\": { \"displayName\": \"%s\" } }, \"sendTime\": \"2014-10-02T15:01:23.045123456Z\" }";
+        final String messagePayload = "{\"agent\":\"brands/somebrand/agents/%s\",\"conversationId\":\"CONVERSATION_ID\"," +
+                "\"customAgentId\":\"CUSTOM_AGENT_ID\",\"message\":{\"messageId\":\"MESSAGE_ID\",\"name\":\"conversations/CONVERSATION_ID/messages/MESSAGE_ID\",\"text\":\"MESSAGE_TEXT\",\"createTime\":\"MESSAGE_CREATE_TIME\"}," +
+                "\"context\":{\"userInfo\":{\"displayName\":\"%s\"}},\"sendTime\":\"2014-10-02T15:01:23.045123456Z\"}";
+        final String userStatusPayload = "{\"agent\":\"brands/somebrand/agents/%s\",\"conversationId\":\"CONVERSATION_ID\"," +
+                "\"customAgentId\":\"CUSTOM_AGENT_ID\",\"userStatus\":{\"isTyping\":true}," +
+                "\"context\":{\"userInfo\":{\"displayName\":\"%s\"}},\"sendTime\":\"2014-10-02T15:01:23.045123456Z\"}";
 
         List<ProducerRecord<String, String>> events = List.of(
                 new ProducerRecord<>(sourceGoogleEvents.name(), UUID.randomUUID().toString(), String.format(messagePayload, agentId, displayName)),

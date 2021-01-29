@@ -31,7 +31,7 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
     return HttpClientInstance.createTag(requestPayload)
       .then((response: Tag) => {
         dispatch(addTagAction(response));
-        return Promise.resolve(true);
+        return Promise.resolve(response);
       })
       .catch((error: string) => {
         dispatch(errorTagAction(error));

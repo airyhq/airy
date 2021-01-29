@@ -13,14 +13,14 @@ const AiryInputBar = (props: Props) => {
     setMessageString('');
   }, []);
 
-  const resizeTextarea = (e: any) => {
+  const resizeTextarea = e => {
     if (e.target.style) {
       e.target.style.height = '32px';
       e.target.style.height = `${Math.min(e.target.scrollHeight, 128)}px`;
     }
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = e => {
     e.preventDefault();
     if (messageString.length) {
       setMessageString('');
@@ -28,22 +28,22 @@ const AiryInputBar = (props: Props) => {
     }
   };
 
-  const handleInputAndChange = (e: any) => {
+  const handleInputAndChange = e => {
     const localValue = e.target.value;
     setMessageString(localValue);
   };
 
-  const handleLocalChange = (e: any) => {
+  const handleLocalChange = e => {
     resizeTextarea(e);
     handleInputAndChange(e);
   };
 
-  const handleLocalOnInput = (e: h.JSX.GenericEventHandler<HTMLTextAreaElement>) => {
+  const handleLocalOnInput = e => {
     resizeTextarea(e);
     handleInputAndChange(e);
   };
 
-  const handleLocalKeyDown = (e: any) => {
+  const handleLocalKeyDown = e => {
     resizeTextarea(e);
     const localValue = e.target.value;
     if (e.key === 'Enter') {
@@ -56,7 +56,7 @@ const AiryInputBar = (props: Props) => {
   };
 
   return (
-    <form className={style.inputBar} onSubmit={(e: any) => onSubmit(e)}>
+    <form className={style.inputBar} onSubmit={e => onSubmit(e)}>
       <textarea
         className={style.textArea}
         placeholder={'Enter a message...'}

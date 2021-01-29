@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+cpus = ENV['AIRY_CORE_CPUS'] || 4
+memory = ENV['AIRY_CORE_MEMORY'] || 7168
+
 Vagrant.configure("2") do |config|
   config.vm.define "airy-core", autostart: true do |airy_core|
     airy_core.vm.box = "generic/alpine310"
@@ -9,8 +12,8 @@ Vagrant.configure("2") do |config|
     airy_core.vm.network "private_network", ip: "192.168.50.5"
     config.hostsupdater.aliases = %w[chatplugin.airy demo.airy api.airy]
     airy_core.vm.provider "virtualbox" do |vbox|
-      vbox.cpus = 4
-      vbox.memory = 7168
+      vbox.cpus = cpus
+      vbox.memory = memory
       vbox.customize [ "modifyvm", :id, "--audio", "none" ]
     end
     airy_core.vm.synced_folder "./", "/vagrant", disabled: false

@@ -161,6 +161,7 @@ const MessageList = (props: MessageListProps) => {
                 <div className={styles.dateHeader}>{formatDateOfMessage(message)}</div>
               )}
               <RenderLibrary
+                key={message.id}
                 message={message}
                 source={item.channel.source}
                 currentConversation={item}

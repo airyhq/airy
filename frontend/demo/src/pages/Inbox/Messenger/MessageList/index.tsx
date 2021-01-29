@@ -147,7 +147,7 @@ const MessageList = (props: MessageListProps) => {
   );
 
   return (
-    <div className={styles.messageList} ref={messageListRef}>
+    <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll}>
       {messages &&
         messages.map((message: Message, index: number) => {
           const prevMessage = messages[index - 1];
@@ -156,9 +156,11 @@ const MessageList = (props: MessageListProps) => {
           const nextIsSameUser = nextMessage ? isContact(message) == isContact(nextMessage) : false;
 
           return (
-            <>
+            <div key={message.id}>
               {hasDateChanged(prevMessage, message) && (
-                <div className={styles.dateHeader}>{formatDateOfMessage(message)}</div>
+                <div key={`date-${message.id}`} className={styles.dateHeader}>
+                  {formatDateOfMessage(message)}
+                </div>
               )}
               <RenderLibrary
                 key={message.id}
@@ -169,7 +171,7 @@ const MessageList = (props: MessageListProps) => {
                 nextIsSameUser={nextIsSameUser}
                 isContact={isContact(message)}
               />
-            </>
+            </div>
           );
         })}
     </div>

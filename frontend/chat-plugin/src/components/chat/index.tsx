@@ -87,8 +87,6 @@ const Chat = (props: Props) => {
     setMessages((messages: MessagePayload[]) => [...messages, JSON.parse(data.body).message]);
   };
 
-  console.log(messages);
-
   const updateScroll = () => {
     const element = document.getElementById('messages');
     if (element) {
@@ -146,8 +144,6 @@ const Chat = (props: Props) => {
                               isContact={true}
                             />
                           )
-                      // : () => <AiryMessage message={message} />
-                      // : () => <div></div>
                     }
                   />
                 );

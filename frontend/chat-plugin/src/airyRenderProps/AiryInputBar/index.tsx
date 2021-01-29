@@ -38,7 +38,7 @@ const AiryInputBar = (props: Props) => {
     handleInputAndChange(e);
   };
 
-  const handleLocalOnInput = (e: any) => {
+  const handleLocalOnInput = (e: h.JSX.GenericEventHandler<HTMLTextAreaElement>) => {
     resizeTextarea(e);
     handleInputAndChange(e);
   };

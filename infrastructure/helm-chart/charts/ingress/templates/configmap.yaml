@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: hostnames
-  namespace: {{ .Values.global.namespace }}
-data:
-  API_HOST: {{ .Values.apiHost }}
-  UI_HOST: {{ .Values.uiHost }}
-  CHATPLUGIN_HOST: {{ .Values.chatpluginHost }}

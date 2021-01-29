@@ -36,6 +36,10 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const conversationIdParams = useParams();
   const currentConversationId: string = conversationIdParams[Object.keys(conversationIdParams)[0]];
 
+  function handleClick() {
+    props.sendMessages(getTextMessagePayload(channelSource, currentConversationId, input)).then(() => setInput(''));
+  }
+
   return (
     <form className={styles.container}>
       <textarea
@@ -49,13 +53,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       />
 
       <div className={styles.buttonSubmit}>
-        <button
-          type="button"
-          onClick={() => {
-            props
-              .sendMessages(getTextMessagePayload(channelSource, currentConversationId, input))
-              .then(() => setInput(''));
-          }}>
+        <button type="button" onClick={handleClick}>
           <div className={styles.sendButtonText}>
             <Paperplane />
           </div>{' '}

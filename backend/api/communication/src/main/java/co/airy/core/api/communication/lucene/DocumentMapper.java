@@ -10,9 +10,9 @@ import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexableField;
 
-import java.util.Map;
+import java.util.List;
 
-import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toList;
 
 public class DocumentMapper {
     public Document fromConversationIndex(ConversationIndex conversation) {
@@ -29,8 +29,8 @@ public class DocumentMapper {
         document.add(new IntPoint("unread_message_count", conversation.getUnreadMessageCount()));
         document.add(new StoredField("unread_message_count", conversation.getUnreadMessageCount()));
 
-        for (Map.Entry<String, String> entry : conversation.getMetadata().entrySet()) {
-            document.add(new TextField("metadata." + entry.getKey(), entry.getValue(), Field.Store.YES));
+        for (String tagId : conversation.getTagIds()) {
+            document.add(new TextField("tag_ids", tagId, Field.Store.YES));
         }
 
         return document;
@@ -40,18 +40,16 @@ public class DocumentMapper {
         final Long createdAt = document.getField("created_at").numericValue().longValue();
         final Integer unreadCount = document.getField("unread_message_count").numericValue().intValue();
 
-        final Map<String, String> metadata = document.getFields().stream()
-                .filter((field) -> field.name().startsWith("metadata"))
-                .collect(toMap(
-                        (field) -> field.name().replace("metadata.", ""),
-                        IndexableField::stringValue
-                ));
+        final List<String> tagIds = document.getFields().stream()
+                .filter((field) -> field.name().equals("tag_ids"))
+                .map(IndexableField::stringValue)
+                .collect(toList());
 
         return ConversationIndex.builder()
                 .id(document.get("id"))
                 .unreadMessageCount(unreadCount)
                 .createdAt(createdAt)
-                .metadata(metadata)
+                .tagIds(tagIds)
                 .displayName(document.get("display_name"))
                 .build();
     }

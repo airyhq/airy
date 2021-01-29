@@ -13,12 +13,18 @@ type test struct {
 	wantErr bool
 }
 
+func runCLI(args []string) (string, error) {
+	cmd := exec.Command("../airy", args...)
+	output, err := cmd.CombinedOutput()
+	actual := string(output)
+
+	return actual, err
+}
+
 func runner(t *testing.T, tests []test) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(testing *testing.T) {
-			cmd := exec.Command("../airy", tt.args...)
-			output, err := cmd.CombinedOutput()
-			actual := string(output)
+			actual, err := runCLI(tt.args)
 			if (err != nil) != tt.wantErr {
 				if tt.wantErr {
 					t.Fatalf("Test %s expected to fail but did not. Error message: %v Output: %s\n", tt.name, err, actual)

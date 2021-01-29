@@ -12,6 +12,9 @@ module.exports = {
       apiKey: '768788b65303eb29ca1f195847ed1e78',
       indexName: 'airy',
     },
+    googleAnalytics: {
+      trackingID: 'UA-74312428-5',
+    },
     hideableSidebar: true,
     prism: {
       theme: require('prism-react-renderer/themes/github'),
@@ -39,7 +42,6 @@ module.exports = {
         docs: {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/airyhq/airy/edit/main/docs/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

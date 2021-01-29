@@ -13,7 +13,7 @@ import (
 
 var loginCmd = &cobra.Command{
 	Use:   "login",
-	Short: "Logs you in in the Airy Core Platform",
+	Short: "Login into an Airy Core instance",
 	Long:  ``,
 	Run:   login,
 }

@@ -10,10 +10,10 @@ import (
 	"github.com/spf13/viper"
 )
 
-// StatusCmd reports the status of your Airy Core Platform
+// StatusCmd reports the status of an Airy Core instance
 var StatusCmd = &cobra.Command{
 	Use:   "status",
-	Short: "Reports the status of your Airy Core Platform",
+	Short: "Reports the status of an Airy Core instance",
 	Long:  ``,
 	Run:   status,
 }

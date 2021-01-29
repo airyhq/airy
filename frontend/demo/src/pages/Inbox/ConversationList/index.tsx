@@ -85,7 +85,11 @@ const ConversationList = (props: ConversationListProps) => {
     const items = hasFilter ? filteredConversations : conversations;
     const metadata = hasFilter ? filteredMetadata : conversationsMetadata;
 
-    const hasMoreData = metadata.nextCursor && metadata.nextCursor.length > 0;
+    const {next_cursor: nextCursor} = conversationsMetadata;
+
+    const items = conversations;
+    const metadata = conversationsMetadata;
+    const hasMoreData = nextCursor && nextCursor.length > 0;
 
     const isItemLoaded = (index: number) => index < items.length;
     const itemCount = hasMoreData ? items.length + 1 : items.length;

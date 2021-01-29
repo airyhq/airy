@@ -3,7 +3,7 @@ import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/messages';
 import {Message} from 'httpclient';
 import {DataState} from '..';
-import _ from 'lodash-es';
+import {sortBy} from 'lodash-es';
 
 type Action = ActionType<typeof actions>;
 
@@ -16,27 +16,41 @@ export type MessageById = {
 };
 
 export type Messages = {
-  all: {[conversationId: string]: MessageById};
+  all: Message[];
 };
 
 const initialState = {
-  all: {},
+  all: [],
 };
 
-function organiseMessages(messages: Message[]): MessageById {
-  return _.keyBy(messages, 'id');
+function organiseMessages(messages: Message[]): Message[] {
+  return sortBy(messages, message => message.sentAt);
 }
 
 export default function messagesReducer(state = initialState, action: Action): Messages {
   switch (action.type) {
     case getType(actions.loadingMessagesAction):
-      return {
-        ...state,
-        all: {
-          ...state.all,
-          [action.payload.conversationId]: organiseMessages(action.payload.messages),
-        },
-      };
+      if (state.all[action.payload.conversationId]) {
+        return {
+          ...state,
+          all: {
+            ...state.all,
+            [action.payload.conversationId]: [
+              ...organiseMessages([...action.payload.messages]),
+              ...state.all[action.payload.conversationId],
+            ],
+          },
+        };
+      } else {
+        return {
+          ...state,
+          all: {
+            ...state.all,
+            [action.payload.conversationId]: [...organiseMessages([...action.payload.messages])],
+          },
+        };
+      }
+
     default:
       return state;
   }

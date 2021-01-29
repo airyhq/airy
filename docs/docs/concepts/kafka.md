@@ -4,7 +4,7 @@ sidebar_label: Kafka
 ---
 
 The goal of this document is to provide information about how we use Kafka in
-the Airy Core Platform.
+Airy Core.
 
 ## Topic naming conventions
 

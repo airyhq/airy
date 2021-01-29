@@ -21,12 +21,7 @@ let ws: WebSocket;
 const welcomeMessage = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   sender_type: 'app_user',
-  content: [
-    {
-      text: 'Hello! How can we help you?',
-      type: 'text',
-    },
-  ],
+  content: JSON.stringify({text: 'Hello! How can we help you?'}),
   delivery_state: 'undefined',
   sent_at: 'undefined',
   state: 'delivered',
@@ -80,7 +75,6 @@ const Chat = (props: Props) => {
     sendMessage: (text: string) => {
       ws.onSend({
         text,
-        type: 'text',
       });
     },
   };

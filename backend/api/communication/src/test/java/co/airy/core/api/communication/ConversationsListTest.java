@@ -72,16 +72,20 @@ class ConversationsListTest {
             .build();
 
     private static final String conversationIdToFind = UUID.randomUUID().toString();
+    private static final String tagId = UUID.randomUUID().toString();
+    private static final String anotherTagId = UUID.randomUUID().toString();
+
     private static final String userId = "user-id";
 
     private static final List<TestConversation> conversations = List.of(
             TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.Source.Contact.FIRST_NAME, firstNameToFind), 1),
-            TestConversation.from(UUID.randomUUID().toString(), channelToFind, 1),
-            TestConversation.from(conversationIdToFind, defaultChannel, 1),
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind,
+                    Map.of(MetadataKeys.TAGS + "." + tagId, "", MetadataKeys.TAGS + "." + anotherTagId, ""),
+                    1),
+            TestConversation.from(conversationIdToFind, defaultChannel, Map.of(MetadataKeys.TAGS + "." + tagId, ""), 1),
             TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 2),
             TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 5)
     );
-
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -99,7 +103,6 @@ class ConversationsListTest {
     static void afterAll() throws Exception {
         kafkaTestHelper.afterAll();
     }
-
 
     @BeforeEach
     void beforeEach() throws Exception {
@@ -138,15 +141,20 @@ class ConversationsListTest {
     }
 
     @Test
+    void canFilterByTagIds() throws Exception {
+        checkConversationsFound("{\"filters\": \"tag_ids:(" + tagId + ")\"}", 2);
+
+        checkConversationsFound("{\"filters\": \"tag_ids:(" + tagId + " AND " + anotherTagId + ")\"}", 1);
+    }
+
+    @Test
     void canFilterByUnreadMessageCountRange() throws Exception {
-        String payload = "{\"filters\": \"unread_message_count:[2 TO *]\"}";
-        checkConversationsFound(payload, 2);
+        checkConversationsFound("{\"filters\": \"unread_message_count:[2 TO *]\"}", 2);
     }
 
     @Test
     void canFilterByUnreadMessageCount() throws Exception {
-        String payload = "{\"filters\": \"unread_message_count:2\"}";
-        checkConversationsFound(payload, 1);
+        checkConversationsFound("{\"filters\": \"unread_message_count:2\"}", 1);
     }
 
     @Test
@@ -162,16 +170,7 @@ class ConversationsListTest {
 
     @Test
     void canFilterForUnknownNames() throws Exception {
-        String payload = "{\"filters\": \"display_name:Ada\"}";
-        checkNoConversationReturned(payload);
-    }
-
-    private void checkNoConversationReturned(String payload) throws Exception {
-        retryOnException(
-                () -> webTestHelper.post("/conversations.list", payload, userId)
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(0))),
-                "Expected no conversations returned");
+        checkConversationsFound("{\"filters\": \"display_name:Ada\"}", 0);
     }
 
     private void checkConversationsFound(String payload, int count) throws InterruptedException {

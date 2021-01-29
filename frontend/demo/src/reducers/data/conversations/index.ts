@@ -20,7 +20,7 @@ type MergedConversation = Conversation & {
 export type AllConversationMetadata = ResponseMetadataPayload & {
   loading?: boolean;
   loaded?: boolean;
-  filteredTotal?: number;
+  filtered_total?: number;
 };
 
 export type ConversationMap = {
@@ -59,12 +59,22 @@ function mergeConversations(
   });
 
   const conversations = cloneDeep(oldConversation);
+
   newConversations.forEach((conversation: MergedConversation) => {
-    conversations[conversation.id] = {
-      ...newConversations[conversation.id],
-      ...conversation,
-      message: getLatestMessage(newConversations[conversation.id], conversation),
-    };
+    if (conversations[conversation.id] && conversations[conversation.id].metadata) {
+      conversations[conversation.id] = {
+        ...newConversations[conversation.id],
+        ...conversation,
+        message: getLatestMessage(newConversations[conversation.id], conversation),
+        metadata: conversations[conversation.id].metadata,
+      };
+    } else {
+      conversations[conversation.id] = {
+        ...newConversations[conversation.id],
+        ...conversation,
+        message: getLatestMessage(newConversations[conversation.id], conversation),
+      };
+    }
   });
 
   return conversations;
@@ -120,10 +130,10 @@ const initialState: AllConversationsState = {
   metadata: {
     loading: false,
     loaded: false,
-    previousCursor: null,
-    nextCursor: null,
+    previous_cursor: null,
+    next_cursor: null,
     total: 0,
-    filteredTotal: 0,
+    filtered_total: 0,
   },
 };
 
@@ -174,6 +184,7 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
         items: mergeConversations(state.items, action.payload.conversations as MergedConversation[]),
         metadata: {...state.metadata, ...action.payload.responseMetadata, loading: false, loaded: true},
       };
+
     case getType(actions.loadingConversationsAction):
       return {
         ...state,
@@ -187,6 +198,10 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
       return {
         ...state,
         items: setLoadingOfConversation(state.items, action.payload, true),
+        metadata: {
+          ...state.metadata,
+          loading: true,
+        },
       };
 
     case getType(actions.readConversationsAction):
@@ -210,6 +225,25 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
 
     case getType(actions.removeTagFromConversationAction):
       return removeTagFromConversation(state, action.payload.conversationId, action.payload.tagId);
+
+    case getType(actions.updateMessagesMetadataAction):
+      if (state.items[action.payload.conversationId]) {
+        return {
+          ...state,
+          items: {
+            ...state.items,
+            [action.payload.conversationId]: {
+              ...state.items[action.payload.conversationId],
+              metadata: {
+                ...state.items[action.payload.conversationId].metadata,
+                ...action.payload.metadata,
+                loading: false,
+              },
+            },
+          },
+        };
+      }
+      return state;
 
     default:
       return state;

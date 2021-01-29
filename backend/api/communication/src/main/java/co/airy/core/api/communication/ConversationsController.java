@@ -111,7 +111,7 @@ public class ConversationsController {
     private ResponseEntity<ConversationListResponsePayload> listConversations(ConversationListRequestPayload requestPayload) {
         final List<Conversation> conversations = fetchAllConversations();
         int totalSize = conversations.size();
-        conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessage().getSentAt()).reversed());
+        conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessageContainer().getMessage().getSentAt()).reversed());
 
         final Paginator<Conversation> paginator = new Paginator<>(conversations, Conversation::getId)
                 .from(requestPayload.getCursor()).perPage(requestPayload.getPageSize());

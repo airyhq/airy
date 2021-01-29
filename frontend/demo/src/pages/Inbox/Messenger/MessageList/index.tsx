@@ -47,6 +47,7 @@ const MessageList = (props: MessageListProps) => {
   const conversationIdParams = useParams();
   const currentConversationId = conversationIdParams[Object.keys(conversationIdParams)[0]];
   const [currentConversation, setCurrentConversation] = useState(null);
+  const [currentSource, setCurrentSource] = useState('');
 
   const messageListRef = createRef<HTMLDivElement>();
 
@@ -57,6 +58,7 @@ const MessageList = (props: MessageListProps) => {
 
   useEffect(() => {
     setCurrentConversation(conversations.find(item => item && item.id === currentConversationId));
+    currentConversation && setCurrentSource(currentConversation.channel.source)
   }, [currentConversationId, conversations]);
 
   const scrollBottom = () => {
@@ -92,6 +94,7 @@ const MessageList = (props: MessageListProps) => {
             )}
             <RenderLibrary
               message={message}
+              source={currentSource}
               currentConversation={currentConversation}
               prevWasContact={prevWasContact}
               nextIsSameUser={nextIsSameUser}

@@ -2,6 +2,14 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react",
-    "jsxFactory": "h"
+    "jsxFactory": "h",
+    "paths": {
+      "react": [
+        "preact/compat"
+      ],
+      "react-dom":[
+        "preact/compat"
+      ],
+    }
   }
 }

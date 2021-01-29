@@ -16,19 +16,17 @@ import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 import RenderLibrary from 'renderLibrary';
-import {messageMapper, MessagePayload, SenderType, MessageState, MessageType} from 'httpclient';
+import {messageMapper, MessagePayload, SenderType, MessageState, MessageSource} from 'httpclient';
 
 let ws: WebSocket;
 
 const welcomeMessage: MessagePayload = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   sender_type: SenderType.appUser,
-  content: [
+  content:
     {
-      text: 'Hello! How can we help you?',
-      type: MessageType.text,
+      text: {text: 'Hello! How can we help you?'},
     },
-  ],
   delivery_state: MessageState.delivered,
   sent_at: new Date(),
 };
@@ -82,8 +80,8 @@ const Chat = (props: Props) => {
       ws.onSend(
         JSON.stringify({
           message: {
-            text,
-            type: 'text',
+              text,
+              type: 'text'
           },
         })
       );
@@ -95,8 +93,10 @@ const Chat = (props: Props) => {
   };
 
   const onReceive = (data: IMessage) => {
-    setMessages((messages: MessagePayload[]) => [...messages, JSON.parse(data.body).message]);
+    setMessages((messages: MessagePayload[]) => [...messages, JSON.parse(data.body).message])
   };
+
+  console.log(messages)
 
   const updateScroll = () => {
     const element = document.getElementById('messages');
@@ -140,13 +140,15 @@ const Chat = (props: Props) => {
           <div className={style.chat}>
             <div id="messages" className={style.messages}>
               {messages.map((message: MessagePayload) => {
+                const mess = messageMapper(message)
+                console.log(mess)
                 return (
                   <MessageProp
                     key
                     render={
                       props.airyMessageProp
                         ? () => props.airyMessageProp(ctrl)
-                        : () => <RenderLibrary message={messageMapper(message)} isContact={true} />
+                        : () => <RenderLibrary message={messageMapper(message)} source={MessageSource.chatplugin} isContact={true} />
                       // : () => <AiryMessage message={message} />
                       // : () => <div></div>
                     }

@@ -10,8 +10,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 The chat plugin source is well suited for a first integration because it does
 not require any configuration.
 
-Once you [signed up](api/http/endpoints.md#signup), you must [log in](api/http/introduction.md#login) so you
-can obtain a valid JWT token for the upcoming API calls:
+Once you [signed up](/api/endpoints/users.md#signup), you must [log
+in](/api/authentication.md#login) so you can obtain a valid JWT token for the
+upcoming API calls:
 
 ```bash
 token=$(echo $(curl -H 'Content-Type: application/json' -d \
@@ -45,8 +46,8 @@ You can now type a message in the text box and send it 🎉
 <img alt="chatplugin working" src={useBaseUrl('img/home/chatplugin.gif')} />
 
 To see how messages are flowing through the system, [list
-conversations](api/http/endpoints.md#list-conversations) for the channel you have just created.
-it should return the message you have just sent.
+conversations](/api/endpoints/conversations.md#list) for the channel you have just
+created. it should return the message you have just sent.
 
 <img alt="conversations.list" src={useBaseUrl('img/home/conversation_list.gif')} />
 

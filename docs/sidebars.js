@@ -24,8 +24,18 @@ module.exports = {
     },
     {
       '🔌 API': [
+        'api/introduction',
+        'api/authentication',
         {
-          HTTP: ['api/http/introduction', 'api/http/endpoints'],
+          'HTTP Endpoints': [
+            'api/endpoints/introduction',
+            'api/endpoints/channels',
+            'api/endpoints/conversations',
+            'api/endpoints/messages',
+            'api/endpoints/metadata',
+            'api/endpoints/tags',
+            'api/endpoints/users',
+          ],
         },
         'api/websocket',
         'api/webhook',

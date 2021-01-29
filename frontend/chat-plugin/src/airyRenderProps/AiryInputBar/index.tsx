@@ -20,7 +20,7 @@ const AiryInputBar = (props: Props) => {
     }
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = e => {
     e.preventDefault();
     if (messageString.length) {
       setMessageString('');
@@ -28,7 +28,7 @@ const AiryInputBar = (props: Props) => {
     }
   };
 
-  const handleInputAndChange = (e: any) => {
+  const handleInputAndChange = e => {
     const localValue = e.target.value;
     setMessageString(localValue);
   };
@@ -56,7 +56,7 @@ const AiryInputBar = (props: Props) => {
   };
 
   return (
-    <form className={style.inputBar} onSubmit={(e: any) => onSubmit(e)}>
+    <form className={style.inputBar} onSubmit={e => onSubmit(e)}>
       <textarea
         className={style.textArea}
         placeholder={'Enter a message...'}

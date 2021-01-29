@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 
 import {ErrorNotice, Input, Button} from '@airyhq/components';

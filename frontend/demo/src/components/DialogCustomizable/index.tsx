@@ -1,8 +1,8 @@
 import React, {Fragment, useEffect, useCallback} from 'react';
 
-import styles from './Dialog.module.scss';
+import styles from './index.module.scss';
 
-type DialogProps = {
+type DialogCustomizableProps = {
   children: React.ReactNode;
   /** Additional style paramaters, for example top/bottom/left/right for positioning of the dialog */
   style?: React.CSSProperties;
@@ -14,7 +14,13 @@ type DialogProps = {
   close: () => void;
 };
 
-const Dialog: React.FC<DialogProps> = ({children, close, style, coverStyle, overlay}: DialogProps): JSX.Element => {
+const DialogCustomizable: React.FC<DialogCustomizableProps> = ({
+  children,
+  close,
+  style,
+  coverStyle,
+  overlay,
+}: DialogCustomizableProps): JSX.Element => {
   const keyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -42,4 +48,4 @@ const Dialog: React.FC<DialogProps> = ({children, close, style, coverStyle, over
   );
 };
 
-export default Dialog;
+export default DialogCustomizable;

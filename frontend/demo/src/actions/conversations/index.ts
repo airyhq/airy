@@ -1,7 +1,6 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {Conversation} from 'httpclient';
-import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
+import {Conversation, ResponseMetadataPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
 

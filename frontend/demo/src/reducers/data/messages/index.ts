@@ -27,7 +27,7 @@ function organiseMessages(messages: Message[]): Message[] {
   return sortBy(messages, message => message.sentAt);
 }
 
-export default function messagesReducer(state = initialState, action: Action): any {
+export default function messagesReducer(state = initialState, action: Action): Messages {
   switch (action.type) {
     case getType(actions.loadingMessagesAction):
       if (state.all[action.payload.conversationId]) {

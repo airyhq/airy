@@ -1,11 +1,11 @@
 import _, {createSelector} from 'reselect';
-import {reverse, sortBy, values} from 'lodash-es';
+import {filter, reverse, sortBy, values} from 'lodash-es';
 import {Conversation} from 'httpclient';
 import {StateModel} from '../reducers';
 import {ConversationMap} from '../reducers/data/conversations';
 
 export const filteredConversationSelector = createSelector(
-  (state: StateModel) => state.data.conversations.all.items,
+  (state: StateModel) => state.data.conversations.filtered.items,
   (conversations: ConversationMap) => Object.keys(conversations).map((cId: string) => ({...conversations[cId]}))
 );
 
@@ -31,3 +31,7 @@ export const newestFilteredConversationFirst = createSelector(
     );
   }
 );
+
+export const isFilterActive = (state: StateModel) =>
+  filter(Object.keys(state.data.conversations.filtered.currentFilter), element => element !== 'display_name').length >
+  0;

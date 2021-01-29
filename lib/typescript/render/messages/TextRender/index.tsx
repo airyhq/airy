@@ -1,17 +1,17 @@
-import React from 'react'
+import React from 'react';
 import {Message, Conversation, SenderType, Contact} from 'httpclient';
 import styles from './index.module.scss';
 import {formatTimeOfMessage} from 'services';
 
 type TextRenderProps = {
-    message: Message;
-    conversation: Conversation;
-    showAvatar: boolean;
-    showSentAt: boolean;
+  message: Message;
+  conversation: Conversation;
+  showAvatar: boolean;
+  showSentAt: boolean;
 };
 
 type AvatarProps = {
-    contact: Contact;
+  contact: Contact;
 };
 
 const fallbackAvatar = 'https://s3.amazonaws.com/assets.airy.co/unknown.png';
@@ -34,8 +34,8 @@ const TextRender = (props: TextRenderProps) => {
     return conversation && <AvatarImage contact={conversation.contact} />;
   };
 
-  const messageJSON = JSON.parse(`${message.content}`)
-  const messageText = messageJSON && messageJSON.text
+  const messageJSON = JSON.parse(`${message.content}`);
+  const messageText = messageJSON && messageJSON.text;
 
   return (
     <div className={styles.messageListItemContainer} key={message.id}>

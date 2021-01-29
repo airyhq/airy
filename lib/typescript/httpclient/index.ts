@@ -9,6 +9,7 @@ import {
   CreateTagRequestPayload,
   LoginViaEmailRequestPayload,
 } from './payload';
+import {SendMessagesRequestPayload} from './payload/SendMessagesRequestPayload';
 import {ChannelApiPayload} from './payload/ChannelApiPayload';
 import {connectChannelApiMapper} from './mappers/connectChannelApiMapper';
 import {channelMapper} from './mappers/channelMapper';
@@ -25,6 +26,7 @@ import {tagsMapper} from './mappers/tagsMapper';
 import {TagColor, Tag} from './model';
 import {TagPayload} from './payload/TagPayload';
 import {userMapper} from './mappers/userMapper';
+import {messageMapper} from './mappers/messageMapper';
 
 const headers = {
   Accept: 'application/json',
@@ -237,7 +239,20 @@ export class HttpClient {
       return error;
     }
   }
+
+  public async sendMessages(requestPayload: SendMessagesRequestPayload) {
+    try {
+      const response: MessagePayload = await this.doFetchFromBackend('messages.send', {
+        conversation_id: requestPayload.conversationId,
+        message: requestPayload.message,
+      });
+      return messageMapper(response);
+    } catch (error) {
+      return error;
+    }
+  }
 }
 
 export * from './model';
 export * from './payload';
+export * from './messagesForChannels';

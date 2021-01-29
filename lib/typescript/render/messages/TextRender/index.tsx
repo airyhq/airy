@@ -38,7 +38,7 @@ const TextRender = (props: TextRenderProps) => {
   const messageText = messageJSON && messageJSON.text;
 
   return (
-    <div className={styles.messageListItemContainer} key={message.id}>
+    <div className={styles.messageListItemContainer}>
       <div className={styles.messageListItem} id={`message-item-${message.id}`}>
         {!isUser ? (
           <div className={styles.messageListItemMember}>

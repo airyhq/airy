@@ -163,7 +163,6 @@ const MessageList = (props: MessageListProps) => {
                 </div>
               )}
               <RenderLibrary
-                key={message.id}
                 message={message}
                 source={item.channel.source}
                 currentConversation={item}

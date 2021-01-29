@@ -5,7 +5,7 @@ global:
   namespace: default
   ingress:
     apiHost: api.airy
-    webhooksHost: "webhooks.airy"
+    webhooksHost: webhooks.airy
     uiHost: ui.airy
     chatpluginHost: chatplugin.airy
 prerequisites:
@@ -56,3 +56,6 @@ apps:
         bucket: "changeme"
         region: "changeme"
         path: "path"
+tools:
+  akhq:
+    enabled: false

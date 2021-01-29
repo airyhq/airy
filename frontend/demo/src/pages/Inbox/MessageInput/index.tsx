@@ -4,12 +4,12 @@ import {useParams} from 'react-router-dom';
 import styles from './index.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import {ReactComponent as Paperplane} from '../../../assets/images/icons/paperplane.svg';
-import {RootState} from '../../../reducers';
+import {StateModel} from '../../../reducers';
 import {getTextMessagePayload} from 'httpclient';
 
 const mapDispatchToProps = {sendMessages};
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: StateModel) => {
   return {
     messages: state.data.messages.all,
   };

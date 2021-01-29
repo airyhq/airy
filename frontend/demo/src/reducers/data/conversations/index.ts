@@ -253,7 +253,7 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
 function filteredReducer(
   state: FilteredState = {
     items: {},
-    metadata: {previousCursor: null, nextCursor: null, total: 0},
+    metadata: {previous_cursor: null, next_cursor: null, total: 0},
     currentFilter: {},
   },
   action: FilterAction | Action
@@ -272,7 +272,7 @@ function filteredReducer(
         metadata: action.payload.metadata,
       };
     case getType(filterActions.resetFilteredConversationAction):
-      return {items: {}, metadata: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: {}};
+      return {items: {}, metadata: {previous_cursor: null, next_cursor: null, total: 0}, currentFilter: {}};
     case getType(filterActions.updateFilteredConversationsAction):
       return {
         ...state,

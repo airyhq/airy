@@ -87,8 +87,6 @@ const ConversationList = (props: ConversationListProps) => {
 
     const {next_cursor: nextCursor} = conversationsMetadata;
 
-    const items = conversations;
-    const metadata = conversationsMetadata;
     const hasMoreData = nextCursor && nextCursor.length > 0;
 
     const isItemLoaded = (index: number) => index < items.length;

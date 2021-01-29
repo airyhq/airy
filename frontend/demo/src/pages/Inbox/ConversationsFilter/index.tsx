@@ -111,7 +111,7 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     if (filteredMetadata.loaded) {
       return (
         <div className={styles.filterCount}>
-          {`Filtered: ${filteredMetadata.filteredTotal} Total: ${filteredMetadata.total}`}
+          {`Filtered: ${filteredMetadata.filtered_total} Total: ${filteredMetadata.total}`}
         </div>
       );
     }
@@ -119,7 +119,7 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     if (conversationsMetadata.total) {
       return (
         <div className={styles.filterCount}>
-          {`${formatter.format(filteredMetadata.filteredTotal || conversationsMetadata.total)} Conversations`}
+          {`${formatter.format(filteredMetadata.filtered_total || conversationsMetadata.total)} Conversations`}
         </div>
       );
     }

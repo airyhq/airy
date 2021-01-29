@@ -54,7 +54,7 @@ public class MessagesController {
         Page<MessageContainer> page = paginator.page();
 
         return MessageListResponsePayload.builder()
-                .data(page.getData().stream().map(mapper::fromMessage).collect(toList()))
+                .data(page.getData().stream().map(mapper::fromMessageContainer).collect(toList()))
                 .paginationData(PaginationData.builder()
                         .nextCursor(page.getNextCursor())
                         .previousCursor(cursor)

@@ -69,11 +69,9 @@ const ConversationList = (props: ConversationListProps) => {
   const renderConversationList = () => {
     const {conversations, conversationsPaginationData, loading, listNextConversations} = props;
 
-    const {next_cursor: nextCursor} = conversationsPaginationData;
-
     const items = conversations;
     const paginationData = conversationsPaginationData;
-    const hasMoreData = nextCursor && nextCursor.length > 0;
+    const hasMoreData = paginationData.nextCursor && paginationData.nextCursor.length > 0;
 
     const isItemLoaded = (index: number) => index < items.length;
     const itemCount = hasMoreData ? items.length + 1 : items.length;

@@ -1,5 +1,6 @@
 import {ChannelsPayload} from './payload/ChannelsPayload';
 import {channelsMapper} from './mappers/channelsMapper';
+import {paginatedPayloadMapper} from './mappers/paginatedPayloadMapper';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelRequestPayload,
@@ -8,8 +9,8 @@ import {
   ListTagsResponsePayload,
   CreateTagRequestPayload,
   LoginViaEmailRequestPayload,
-  PaginatedPayload,
 } from './payload';
+import {PaginatedPayload} from './payload/PaginatedPayload';
 import {ChannelApiPayload} from './payload/ChannelApiPayload';
 import {connectChannelApiMapper} from './mappers/connectChannelApiMapper';
 import {channelMapper} from './mappers/channelMapper';
@@ -137,7 +138,8 @@ export class HttpClient {
         conversationListRequest
       );
       const {pagination_data} = response;
-      return {data: conversationsMapper(response.data), pagination_data: pagination_data};
+
+      return paginatedPayloadMapper({data: conversationsMapper(response.data), pagination_data: pagination_data});
     } catch (error) {
       return error;
     }
@@ -159,7 +161,8 @@ export class HttpClient {
         page_size: conversationListRequest.pageSize,
       });
       const {pagination_data} = response;
-      return {data: messageMapperData(response), pagination_data: pagination_data};
+
+      return paginatedPayloadMapper({data: messageMapperData(response), pagination_data: pagination_data});
     } catch (error) {
       return error;
     }

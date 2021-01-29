@@ -1,6 +1,6 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {Message, PaginatedPayload} from 'httpclient';
+import {Message, PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
 import {updateMessagesPaginationDataAction, loadingConversationAction} from '../conversations';
@@ -18,7 +18,7 @@ export function listMessages(conversationId: string) {
       conversationId,
       pageSize: 10,
     })
-      .then((response: PaginatedPayload<Message>) => {
+      .then((response: PaginatedResponse<Message>) => {
         dispatch(
           loadingMessagesAction({
             conversationId,
@@ -26,8 +26,8 @@ export function listMessages(conversationId: string) {
           })
         );
 
-        if (response.pagination_data) {
-          dispatch(updateMessagesPaginationDataAction(conversationId, response.pagination_data));
+        if (response.paginationData) {
+          dispatch(updateMessagesPaginationDataAction(conversationId, response.paginationData));
         }
 
         return Promise.resolve(true);
@@ -41,7 +41,7 @@ export function listMessages(conversationId: string) {
 export function listPreviousMessages(conversationId: string) {
   return async (dispatch: Dispatch<any>, state: () => StateModel) => {
     const paginationData = state().data.conversations.all.items[conversationId].paginationData;
-    const cursor = paginationData && paginationData.next_cursor;
+    const cursor = paginationData && paginationData.nextCursor;
     const loading = paginationData && paginationData.loading;
 
     if (cursor && !loading) {
@@ -51,7 +51,7 @@ export function listPreviousMessages(conversationId: string) {
         pageSize: 10,
         cursor: cursor,
       })
-        .then((response: PaginatedPayload<Message>) => {
+        .then((response: PaginatedResponse<Message>) => {
           dispatch(
             loadingMessagesAction({
               conversationId,
@@ -59,8 +59,8 @@ export function listPreviousMessages(conversationId: string) {
             })
           );
 
-          if (response.pagination_data) {
-            dispatch(updateMessagesPaginationDataAction(conversationId, response.pagination_data));
+          if (response.paginationData) {
+            dispatch(updateMessagesPaginationDataAction(conversationId, response.paginationData));
           }
 
           return Promise.resolve(true);

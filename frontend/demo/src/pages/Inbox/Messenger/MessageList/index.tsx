@@ -109,7 +109,7 @@ const MessageList = (props: MessageListProps) => {
   };
 
   const hasPreviousMessages = () => {
-    return !!(item && item.paginationData && item.paginationData.next_cursor);
+    return !!(item && item.paginationData && item.paginationData.nextCursor);
   };
 
   const scrollbarVisible = () => {

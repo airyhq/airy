@@ -1,6 +1,6 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {Conversation, PaginatedPayload} from 'httpclient';
+import {Conversation, PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
 
@@ -22,7 +22,7 @@ export const loadingConversationsAction = createAction(CONVERSATIONS_LOADING, re
 
 export const mergeConversationsAction = createAction(
   CONVERSATIONS_MERGE,
-  resolve => (conversations: PaginatedPayload<Conversation>) => resolve({conversations})
+  resolve => (conversations: PaginatedResponse<Conversation>) => resolve({conversations})
 );
 
 export const readConversationsAction = createAction(CONVERSATION_READ, resolve => (conversationId: string) =>
@@ -51,15 +51,15 @@ export const removeTagFromConversationAction = createAction(
 
 export const updateMessagesPaginationDataAction = createAction(
   CONVERSATION_UPDATE_PAGINATION_DATA,
-  resolve => (conversationId: string, pagination_data: {previous_cursor: string; next_cursor: string; total: number}) =>
-    resolve({conversationId, pagination_data})
+  resolve => (conversationId: string, paginationData: {previousCursor: string; nextCursor: string; total: number}) =>
+    resolve({conversationId, paginationData})
 );
 
 export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
     return HttpClientInstance.listConversations({page_size: 10})
-      .then((response: PaginatedPayload<Conversation>) => {
+      .then((response: PaginatedResponse<Conversation>) => {
         dispatch(mergeConversationsAction(response));
         return Promise.resolve(true);
       })
@@ -71,11 +71,11 @@ export function listConversations() {
 
 export function listNextConversations() {
   return async (dispatch: Dispatch<any>, state: () => StateModel) => {
-    const cursor = state().data.conversations.all.paginationData.next_cursor;
+    const cursor = state().data.conversations.all.paginationData.nextCursor;
 
     dispatch(loadingConversationsAction());
     return HttpClientInstance.listConversations({cursor: cursor})
-      .then((response: PaginatedPayload<Conversation>) => {
+      .then((response: PaginatedResponse<Conversation>) => {
         dispatch(mergeConversationsAction(response));
         return Promise.resolve(true);
       })

@@ -10,16 +10,16 @@ type Action = ActionType<typeof actions>;
 type MergedConversation = Conversation & {
   blocked?: boolean;
   paginationData?: {
-    previous_cursor: string;
-    next_cursor: string;
+    previousCursor: string;
+    nextCursor: string;
     total: number;
     loading: boolean;
   };
 };
 
 export type AllConversationPaginationData = {
-  previous_cursor: string;
-  next_cursor: string;
+  previousCursor: string;
+  nextCursor: string;
   total: number;
   loading?: boolean;
   loaded?: boolean;
@@ -104,8 +104,8 @@ const initialState: AllConversationsState = {
   paginationData: {
     loading: false,
     loaded: false,
-    previous_cursor: null,
-    next_cursor: null,
+    previousCursor: null,
+    nextCursor: null,
     total: 0,
     filtered_total: 0,
   },
@@ -158,7 +158,7 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
         items: mergeConversations(state.items, action.payload.conversations.data as MergedConversation[]),
         paginationData: {
           ...state.paginationData,
-          ...action.payload.conversations.pagination_data,
+          ...action.payload.conversations.paginationData,
           loading: false,
           loaded: true,
         },
@@ -215,7 +215,7 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
               ...state.items[action.payload.conversationId],
               paginationData: {
                 ...state.items[action.payload.conversationId].paginationData,
-                ...action.payload.pagination_data,
+                ...action.payload.paginationData,
                 loading: false,
               },
             },

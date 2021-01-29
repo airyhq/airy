@@ -73,11 +73,9 @@ const Chat = (props: Props) => {
       }
     },
     sendMessage: (text: string) => {
-      ws.onSend(
-        {
-          text,
-        }
-      );
+      ws.onSend({
+        text,
+      });
     },
   };
 
@@ -86,10 +84,10 @@ const Chat = (props: Props) => {
   };
 
   const onReceive = (data: IMessage) => {
-    setMessages((messages: MessagePayload[]) => [...messages, JSON.parse(data.body).message])
+    setMessages((messages: MessagePayload[]) => [...messages, JSON.parse(data.body).message]);
   };
 
-  console.log(messages)
+  console.log(messages);
 
   const updateScroll = () => {
     const element = document.getElementById('messages');
@@ -133,14 +131,20 @@ const Chat = (props: Props) => {
           <div className={style.chat}>
             <div id="messages" className={style.messages}>
               {messages.map((message: MessagePayload) => {
-                const mess = messageMapper(message)
-                console.log(mess)
+                const mess = messageMapper(message);
+                console.log(mess);
                 return (
                   <MessageProp
                     render={
                       props.airyMessageProp
                         ? () => props.airyMessageProp(ctrl)
-                        : () => <RenderLibrary message={messageMapper(message)} source={MessageSource.chatplugin} isContact={true} />
+                        : () => (
+                            <RenderLibrary
+                              message={messageMapper(message)}
+                              source={MessageSource.chatplugin}
+                              isContact={true}
+                            />
+                          )
                       // : () => <AiryMessage message={message} />
                       // : () => <div></div>
                     }

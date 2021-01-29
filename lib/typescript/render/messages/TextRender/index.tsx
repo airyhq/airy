@@ -4,7 +4,6 @@ import styles from './index.module.scss';
 import {formatTimeOfMessage} from 'services';
 
 type TextRenderProps = {
-    key: string;
     message: Message;
     conversation: Conversation;
     showAvatar: boolean;
@@ -39,7 +38,7 @@ const TextRender = (props: TextRenderProps) => {
   const messageText = messageJSON && messageJSON.text
 
   return (
-    <div className={styles.messageListItemContainer}>
+    <div className={styles.messageListItemContainer} key={message.id}>
       <div className={styles.messageListItem} id={`message-item-${message.id}`}>
         {!isUser ? (
           <div className={styles.messageListItemMember}>

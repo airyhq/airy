@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {Message, MessageSource, Conversation} from 'httpclient';
 import TextRender from './messages/TextRender/index';
 
@@ -15,10 +15,13 @@ const RenderLibrary = (props: RenderLibraryProps) => {
   const {message, currentConversation, prevWasContact, isContact, nextIsSameUser, source} = props;
 
   switch (source) {
-    case MessageSource.facebook || MessageSource.google || MessageSource.chatplugin || MessageSource.whatsappTwilio || MessageSource.smsTwilio:
+    case MessageSource.facebook ||
+      MessageSource.google ||
+      MessageSource.chatplugin ||
+      MessageSource.whatsappTwilio ||
+      MessageSource.smsTwilio:
       return (
         <TextRender
-          key={message.id}
           conversation={currentConversation}
           message={message}
           showAvatar={!prevWasContact && isContact}
@@ -28,7 +31,6 @@ const RenderLibrary = (props: RenderLibraryProps) => {
     default:
       return (
         <TextRender
-          key={message.id}
           conversation={currentConversation}
           message={message}
           showAvatar={!prevWasContact && isContact}

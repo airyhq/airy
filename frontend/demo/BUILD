@@ -16,8 +16,8 @@ ts_library(
     deps = [
         "//lib/typescript/httpclient",
         "//lib/typescript/render",
-        "//lib/typescript/types",
         "//lib/typescript/services",
+        "//lib/typescript/types",
         "@npm//@airyhq/components",
         "@npm//@types/facebook-js-sdk",
         "@npm//@types/node",

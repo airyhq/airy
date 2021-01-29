@@ -19,7 +19,7 @@ export enum MessageSource {
   google = 'google',
   chatplugin = 'chat_plugin',
   smsTwilio = 'twilio.sms',
-  whatsappTwilio = 'twilio.whatsapp'
+  whatsappTwilio = 'twilio.whatsapp',
 }
 
 export enum MessageType {

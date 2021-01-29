@@ -148,28 +148,29 @@ const MessageList = (props: MessageListProps) => {
 
   return (
     <div className={styles.messageList} ref={messageListRef}>
-      {messages && messages.map((message: Message, index: number) => {
-        const prevMessage = messages[index - 1];
-        const nextMessage = messages[index + 1];
-        const prevWasContact = prevMessage ? isContact(prevMessage) : false;
-        const nextIsSameUser = nextMessage ? isContact(message) == isContact(nextMessage) : false;
+      {messages &&
+        messages.map((message: Message, index: number) => {
+          const prevMessage = messages[index - 1];
+          const nextMessage = messages[index + 1];
+          const prevWasContact = prevMessage ? isContact(prevMessage) : false;
+          const nextIsSameUser = nextMessage ? isContact(message) == isContact(nextMessage) : false;
 
-        return (
-          <>
-            {hasDateChanged(prevMessage, message) && (
-              <div className={styles.dateHeader}>{formatDateOfMessage(message)}</div>
-            )}
-            <RenderLibrary
-              message={message}
-              source={item.channel.source}
-              currentConversation={item}
-              prevWasContact={prevWasContact}
-              nextIsSameUser={nextIsSameUser}
-              isContact={isContact(message)}
-            />
-          </>
-        );
-      })}
+          return (
+            <>
+              {hasDateChanged(prevMessage, message) && (
+                <div className={styles.dateHeader}>{formatDateOfMessage(message)}</div>
+              )}
+              <RenderLibrary
+                message={message}
+                source={item.channel.source}
+                currentConversation={item}
+                prevWasContact={prevWasContact}
+                nextIsSameUser={nextIsSameUser}
+                isContact={isContact(message)}
+              />
+            </>
+          );
+        })}
     </div>
   );
 };

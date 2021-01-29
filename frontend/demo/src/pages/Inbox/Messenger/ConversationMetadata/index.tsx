@@ -13,7 +13,7 @@ import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
 import {Button, Input, LinkButton} from '@airyhq/components';
 
-type ConversationPaginationDataProps = {conversation: Conversation} & ConnectedProps<typeof connector>;
+type ConversationMetadataProps = {conversation: Conversation} & ConnectedProps<typeof connector>;
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -30,7 +30,7 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const ConversationPaginationData = (props: ConversationPaginationDataProps) => {
+const ConversationMetadata = (props: ConversationMetadataProps) => {
   const {tags, createTag, conversation, listTags, addTagToConversation, removeTagFromConversation} = props;
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
@@ -203,4 +203,4 @@ const ConversationPaginationData = (props: ConversationPaginationDataProps) => {
   );
 };
 
-export default connector(ConversationPaginationData);
+export default connector(ConversationMetadata);

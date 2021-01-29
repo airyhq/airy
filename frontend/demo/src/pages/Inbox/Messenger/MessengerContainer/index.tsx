@@ -6,7 +6,7 @@ import {StateModel} from '../../../../reducers';
 import MessageList from '../MessageList';
 import {ReactComponent as EmptyStateImage} from '../../../../assets/images/empty-state/inbox-empty-state.svg';
 import styles from './index.module.scss';
-import ConversationPaginationData from '../ConversationPaginationData';
+import ConversationMetadata from '../ConversationMetadata';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -40,7 +40,7 @@ const MessengerContainer = (props: MessengerContainerProps) => {
           <MessageList conversation={currentConversation} />
         )}
       </div>
-      <ConversationPaginationData conversation={currentConversation} />
+      <ConversationMetadata conversation={currentConversation} />
     </>
   );
 };

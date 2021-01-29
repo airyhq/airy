@@ -39,6 +39,7 @@ export interface Message {
   id: string;
   content: {
     text: string;
+    type: MessageType;
   };
   deliveryState: MessageState;
   senderType: SenderType;

@@ -51,8 +51,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       <div className={styles.buttonSubmit}>
         <button
           type="button"
-          onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-            e.preventDefault();
+          onClick={() => {
             props
               .sendMessages(getTextMessagePayload(channelSource, currentConversationId, input))
               .then(() => setInput(''));

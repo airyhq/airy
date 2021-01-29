@@ -46,19 +46,15 @@ export function listMessages(conversationId: string) {
 
 export function sendMessages(messagePayload: SendMessagesRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.sendMessages(messagePayload)
-      .then((response: Message) => {
-        dispatch(
-          sendMessagesAction({
-            conversationId: messagePayload.conversationId,
-            message: response,
-          })
-        );
-        return Promise.resolve(true);
-      })
-      .catch((error: Error) => {
-        return Promise.reject(error);
-      });
+    return HttpClientInstance.sendMessages(messagePayload).then((response: Message) => {
+      dispatch(
+        sendMessagesAction({
+          conversationId: messagePayload.conversationId,
+          message: response,
+        })
+      );
+      return Promise.resolve(true);
+    });
   };
 }
 

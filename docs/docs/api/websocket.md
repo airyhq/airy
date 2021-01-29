@@ -3,17 +3,14 @@ title: WebSocket
 sidebar_label: WebSocket
 ---
 
-## Introduction
-
-The Airy Core offers a WebSocket server that allows clients to connect
-and receive near real-time updates on communication data. The WebSocket server
-uses the
+Airy Core offers a WebSocket server that allows clients to connect and receive
+near real-time updates on communication data. The WebSocket server uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
 protocol endpoint at `/ws.communication`.
 
-To execute the handshake with `/ws.communicaiton` you need to set an
+To execute the handshake with `/ws.communication` you must set an
 `Authorization` header where the value is the authorization token obtained [from
-the API](api/http/introduction.md#authentication).
+the API](/api/introduction#authentication).
 
 ## Outbound Queues
 

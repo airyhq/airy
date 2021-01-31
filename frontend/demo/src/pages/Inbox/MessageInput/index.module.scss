@@ -20,7 +20,8 @@
   display: flex;
   flex-direction: column;
   align-items: normal;
-  margin: 16px 19px 30px 30px;
+  margin-left: 20px;
+  
 }
 
 .inputWrap {
@@ -39,7 +40,7 @@
   padding: 8px;
   line-height: 24px;
   height: 40px;
-  font-family: 'Lato', sans-serif;
+  @include font-base;
 }
 
 .sendDiv {
@@ -85,3 +86,5 @@
 .sendButtonText svg {
   position: relative;
 }
+
+

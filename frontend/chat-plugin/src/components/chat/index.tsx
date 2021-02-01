@@ -15,16 +15,16 @@ import {AiryWidgetConfiguration} from '../../config';
 import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
+import {MessageState, SenderType} from 'httpclient';
 
 let ws: WebSocket;
 
 const welcomeMessage = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
-  sender_type: 'app_user',
   content: JSON.stringify({text: 'Hello! How can we help you?'}),
-  delivery_state: 'undefined',
-  sent_at: 'undefined',
-  state: 'delivered',
+  delivery_state: MessageState.delivered,
+  sender_type: SenderType.appUser,
+  sent_at: new Date(),
 };
 
 type Props = AiryWidgetConfiguration & RoutableProps;

@@ -2,6 +2,7 @@ import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 import {start, getResumeToken, sendMessage} from '../api';
 import {Text} from 'types';
+import {MessagePayload} from 'httpclient/payload/MessagePayload';
 
 declare const window: {
   airy: {
@@ -14,28 +15,19 @@ declare const window: {
 const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
 const TLS_PREFIX = window.airy ? (window.airy.no_tls === true ? '' : 's') : '';
 
-interface Message {
-  id: string;
-  sender_type: string;
-  content: string;
-  delivery_state: string;
-  sent_at: string;
-  state: string;
-}
-
 class WebSocket {
   client: Client;
   channel_id: string;
   token: string;
   resume_token: string;
   messages: [];
-  setMessages: (messages: Array<Message>) => void;
+  setMessages: (messages: Array<MessagePayload>) => void;
   onReceive: messageCallbackType;
 
   constructor(
     channel_id: string,
     onReceive: messageCallbackType,
-    setMessages: (messages: Array<Message>) => void,
+    setMessages: (messages: Array<MessagePayload>) => void,
     resume_token?: string
   ) {
     this.channel_id = channel_id;

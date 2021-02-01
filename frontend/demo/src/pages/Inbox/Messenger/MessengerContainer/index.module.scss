@@ -34,7 +34,12 @@
   }
 }
 
-.notSelectedState {
+.container {
+  display: flex;
+  overflow: hidden;
+  flex-basis: auto;
+  flex-grow: 1;
+  position: relative;
 }
 
 .messageDisplay {

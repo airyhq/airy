@@ -17,6 +17,7 @@ export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
     return HttpClientInstance.loginViaEmail(requestPayload)
       .then((response: User) => {
         dispatch(setCurrentUserAction(response));
+        HttpClientInstance.token = response.token;
         return Promise.resolve(true);
       })
       .catch((error: Error) => {
@@ -28,6 +29,7 @@ export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
 
 export function logoutUser() {
   return async (dispatch: Dispatch<any>) => {
+    HttpClientInstance.token = null;
     dispatch(logoutUserAction());
   };
 }

@@ -274,6 +274,11 @@ def go_repositories():
         version = "v2.0.0-20190314233015-f79a8a8ca69d",
     )
     go_repository(
+        name = "com_github_cpuguy83_go_md2man",
+        importpath = "github.com/cpuguy83/go-md2man",
+        commit = "7762f7e404f8416dfa1d9bb6a8c192aa9acb4d19",
+    )
+    go_repository(
         name = "com_github_creack_pty",
         importpath = "github.com/creack/pty",
         sum = "h1:6pwm8kMQKCmgUg0ZHTm5+/YvRK0s3THD/28+T6/kk4A=",

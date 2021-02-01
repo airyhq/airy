@@ -1,19 +1,32 @@
 import React from 'react';
-import _ from 'redux';
-import {Message, Conversation, SenderType} from 'httpclient';
-import AvatarImage from '../../../../components/AvatarImage';
-
+import {Message, Conversation, SenderType, Contact} from 'httpclient';
 import styles from './index.module.scss';
-import {formatTimeOfMessage} from '../../../../services/format/date';
+import {formatTimeOfMessage} from 'dates';
 
-type MessengerListItemProps = {
+type TextRenderProps = {
   message: Message;
   conversation: Conversation;
   showAvatar: boolean;
   showSentAt: boolean;
 };
 
-const MessengerListItem = (props: MessengerListItemProps) => {
+type AvatarProps = {
+  contact: Contact;
+};
+
+const fallbackAvatar = 'https://s3.amazonaws.com/assets.airy.co/unknown.png';
+
+const AvatarImage = (props: AvatarProps) => {
+  const {contact} = props;
+
+  return (
+    <div className={styles.avatar}>
+      <img className={styles.avatarImage} src={contact.avatarUrl || fallbackAvatar} />
+    </div>
+  );
+};
+
+const TextRender = (props: TextRenderProps) => {
   const {conversation, showAvatar, showSentAt, message} = props;
   const isUser = message.senderType !== SenderType.appUser;
 
@@ -21,7 +34,8 @@ const MessengerListItem = (props: MessengerListItemProps) => {
     return conversation && <AvatarImage contact={conversation.contact} />;
   };
 
-  const messageText = message.content;
+  const messageJSON = JSON.parse(message.content);
+  const messageText = messageJSON && messageJSON.text;
 
   return (
     <div className={styles.messageListItemContainer}>
@@ -45,4 +59,4 @@ const MessengerListItem = (props: MessengerListItemProps) => {
   );
 };
 
-export default MessengerListItem;
+export default TextRender;

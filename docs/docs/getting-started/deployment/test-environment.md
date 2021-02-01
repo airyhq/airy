@@ -59,6 +59,14 @@ ${TWILIO_WEBHOOK_PUBLIC_URL}/twilio
 "curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}'
 ```
 
+### Overwrite default CPUs and memory
+
+You can specify number of CPU and memory (in MB) you want to use for your Airy Core box with the following ENV variables:
+
+```sh
+AIRY_CORE_CPUS=2 AIRY_CORE_MEMORY=4096 ./scripts/bootstrap.sh
+```
+
 ### Inspect Kubernetes
 
 ```sh
@@ -78,6 +86,18 @@ vagrant halt
 vagrant up
 vagrant reload
 ```
+
+:::note
+
+If you bootstrapped your Airy Core with custom CPU/RAM values, you must specify them again when you restart your box.
+
+```sh
+cd infrastructure
+vagrant halt
+AIRY_CORE_CPUS=2 AIRY_CORE_MEMORY=4096 vagrant up
+```
+
+:::
 
 ### Re-create the environment
 

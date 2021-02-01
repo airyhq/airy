@@ -6,6 +6,11 @@ load("@io_bazel_rules_go//go:def.bzl", "TOOLS_NOGO", "nogo")
 
 package(default_visibility = ["//visibility:public"])
 
+alias(
+    name = "tsconfig.json",
+    actual = "//:bazel.tsconfig.json",
+)
+
 multirun(
     name = "fix",
     commands = [
@@ -163,8 +168,8 @@ exports_files(
     [
         "package.json",
         ".prettierrc.json",
+        ".prettierignore",
         "yarn.lock",
-        "tsconfig.json",
     ],
 )
 

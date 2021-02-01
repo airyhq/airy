@@ -1,6 +1,6 @@
 ---
-title: Facebook
-sidebar_label: Facebook
+title: Facebook Messenger
+sidebar_label: Facebook Messenger
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';

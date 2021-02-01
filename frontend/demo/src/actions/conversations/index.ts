@@ -1,7 +1,6 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {Conversation} from 'httpclient';
-import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
+import {Conversation, ResponseMetadataPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
 
@@ -14,6 +13,7 @@ export const CONVERSATION_READ = '@@conversations/CONVERSATION_READ';
 export const CONVERSATION_ADD_TAG = '@@conversations/CONVERSATION_ADD_TAG';
 export const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
 export const CONVERSATION_UPDATE_METADATA = '@@conversation/UPDATE_METADATA';
+export const CONVERSATION_SET_UNREAD_MESSAGE_COUNT = '@@conversations/CONVERSATION_SET_UNREAD_MESSAGE_COUNT';
 
 export const loadingConversationAction = createAction(CONVERSATION_LOADING, resolve => (conversationId: string) =>
   resolve(conversationId)
@@ -23,7 +23,7 @@ export const loadingConversationsAction = createAction(CONVERSATIONS_LOADING, re
 
 export const mergeConversationsAction = createAction(
   CONVERSATIONS_MERGE,
-  resolve => (conversations: Conversation[], responseMetadata: ResponseMetadataPayload) =>
+  resolve => (conversations: Conversation[], responseMetadata?: ResponseMetadataPayload) =>
     resolve({conversations, responseMetadata})
 );
 
@@ -56,6 +56,11 @@ export const updateMessagesMetadataAction = createAction(
   resolve => (conversationId: string, metadata: ResponseMetadataPayload) => resolve({conversationId, metadata})
 );
 
+export const setConversationUnreadMessageCount = createAction(
+  CONVERSATION_SET_UNREAD_MESSAGE_COUNT,
+  resolve => (conversationId: string, unreadMessageCount: number) => resolve({conversationId, unreadMessageCount})
+);
+
 export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
@@ -82,6 +87,28 @@ export function listNextConversations() {
       })
       .catch((error: Error) => {
         return Promise.reject(error);
+      });
+  };
+}
+
+function sleep(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
+export function getConversationInfo(conversationId: string, retries?: number) {
+  return async (dispatch: Dispatch<any>) => {
+    return HttpClientInstance.getConversationInfo(conversationId)
+      .then((response: Conversation) => {
+        dispatch(mergeConversationsAction([response]));
+        return Promise.resolve(true);
+      })
+      .catch(async (error: Error) => {
+        if (retries > 5) {
+          return Promise.reject(error);
+        } else {
+          await sleep(1000);
+          return getConversationInfo(conversationId, retries ? retries + 1 : 1)(dispatch);
+        }
       });
   };
 }

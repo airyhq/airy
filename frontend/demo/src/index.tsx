@@ -1,7 +1,7 @@
 import 'core-js';
 import 'regenerator-runtime/runtime';
 
-import * as React from 'react';
+import React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';

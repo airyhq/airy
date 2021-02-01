@@ -44,8 +44,8 @@ ts_library(
 
 ts_config(
     name = "widget_tsconfig",
-    src = "tsconfig.json",
-    deps = ["//:tsconfig.json"],
+    src = "bazel.tsconfig.json",
+    deps = ["//:bazel.tsconfig.json"],
 )
 
 pkg_tar(

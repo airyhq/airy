@@ -173,7 +173,6 @@ header.
 {
   "message": {
     "text": "{String}"
-    "type": "text"
   }
 }
 ```

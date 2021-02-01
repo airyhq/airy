@@ -1,4 +1,4 @@
-import {MessageType, MessageState, SenderType} from '../model';
+import {MessageState, SenderType} from '../model';
 
 export interface MessagePayload {
   id: string;

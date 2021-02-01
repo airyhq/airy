@@ -2,6 +2,7 @@ import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 import {start, getResumeToken, sendMessage} from '../api';
 import {Text} from 'types';
+import {MessagePayload} from 'httpclient';
 
 declare const window: {
   airy: {
@@ -19,12 +20,19 @@ class WebSocket {
   channel_id: string;
   token: string;
   resume_token: string;
+  setInitialMessages: (messages: Array<MessagePayload>) => void;
   onReceive: messageCallbackType;
 
-  constructor(channel_id: string, onReceive: messageCallbackType, resume_token?: string) {
+  constructor(
+    channel_id: string,
+    onReceive: messageCallbackType,
+    setInitialMessages: (messages: Array<MessagePayload>) => void,
+    resume_token?: string
+  ) {
     this.channel_id = channel_id;
     this.onReceive = onReceive;
     this.resume_token = resume_token;
+    this.setInitialMessages = setInitialMessages;
   }
 
   connect = (token: string) => {
@@ -56,10 +64,15 @@ class WebSocket {
   onSend = (message: Text) => sendMessage(message, this.token);
 
   start = async () => {
-    this.token = (await start(this.channel_id, this.resume_token)).token;
-    this.connect(this.token);
-    if (!this.resume_token) {
-      await getResumeToken(this.token);
+    const response = await start(this.channel_id, this.resume_token);
+    if (response.token && response.messages) {
+      this.connect(response.token);
+      this.setInitialMessages(response.messages);
+      if (!this.resume_token) {
+        await getResumeToken(this.token);
+      }
+    } else {
+      localStorage.clear();
     }
   };
 

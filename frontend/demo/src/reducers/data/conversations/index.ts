@@ -272,16 +272,20 @@ function allReducer(
       return state;
 
     case getType(actions.setConversationUnreadMessageCount):
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [action.payload.conversationId]: {
-            ...state.items[action.payload.conversationId],
-            unreadMessageCount: action.payload.unreadMessageCount,
+      if (state.items[action.payload.conversationId]) {
+        return {
+          ...state,
+          items: {
+            ...state.items,
+            [action.payload.conversationId]: {
+              ...state.items[action.payload.conversationId],
+              unreadMessageCount: action.payload.unreadMessageCount,
+            },
           },
-        },
-      };
+        };
+      } else {
+        return state;
+      }
 
     case getType(messageActions.addMessagesAction):
       return mergeMessages(state, action.payload.conversationId, action.payload.messages);

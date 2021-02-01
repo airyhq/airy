@@ -1,12 +1,16 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
-import {cloneDeep, uniq} from 'lodash-es';
+import {cloneDeep, uniq, sortBy} from 'lodash-es';
 
-import {Conversation, Message} from 'httpclient';
-import {ResponseMetadataPayload} from 'httpclient/payload/ResponseMetadataPayload';
+import {Conversation, Message, ConversationFilter, ResponseMetadataPayload} from 'httpclient';
+
 import * as actions from '../../../actions/conversations';
+import * as filterActions from '../../../actions/conversationsFilter';
+import * as messageActions from '../../../actions/messages';
 
 type Action = ActionType<typeof actions>;
+type FilterAction = ActionType<typeof filterActions>;
+type MessageAction = ActionType<typeof messageActions>;
 
 type MergedConversation = Conversation & {
   blocked?: boolean;
@@ -30,13 +34,20 @@ export type AllConversationsState = {
   metadata: AllConversationMetadata;
 };
 
+export type FilteredState = {
+  items: ConversationMap;
+  currentFilter: ConversationFilter;
+  metadata: AllConversationMetadata;
+};
+
 export type ErrorState = {
   [conversationId: string]: string;
 };
 
 export type ConversationsState = {
-  all: AllConversationsState;
-  errors: ErrorState;
+  all?: AllConversationsState;
+  filtered?: FilteredState;
+  errors?: ErrorState;
 };
 
 function mergeConversations(
@@ -66,6 +77,28 @@ function mergeConversations(
         message: getLatestMessage(newConversations[conversation.id], conversation),
       };
     }
+  });
+
+  return conversations;
+}
+
+function mergeFilteredConversations(
+  oldConversation: {[conversation_id: string]: MergedConversation},
+  newConversations: MergedConversation[]
+): ConversationMap {
+  newConversations.forEach((conversation: MergedConversation) => {
+    if (conversation.lastMessage) {
+      conversation.lastMessage.sentAt = new Date(conversation.lastMessage.sentAt);
+    }
+  });
+
+  const conversations = cloneDeep(oldConversation);
+  newConversations.forEach((conversation: MergedConversation) => {
+    conversations[conversation.id] = {
+      ...newConversations[conversation.id],
+      ...conversation,
+      message: getLatestMessage(newConversations[conversation.id], conversation),
+    };
   });
 
   return conversations;
@@ -145,7 +178,31 @@ const removeTagFromConversation = (state: AllConversationsState, conversationId,
   return state;
 };
 
-function allReducer(state: AllConversationsState = initialState, action: Action): AllConversationsState {
+const lastMessageOf = (messages: Message[]): Message => {
+  return sortBy(messages, message => message.sentAt).pop();
+};
+
+const mergeMessages = (state: AllConversationsState, conversationId: string, messages: Message[]) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (conversation) {
+    return {
+      ...state,
+      items: {
+        ...state.items,
+        [conversation.id]: {
+          ...conversation,
+          lastMessage: lastMessageOf(messages.concat([conversation.lastMessage])),
+        },
+      },
+    };
+  }
+  return state;
+};
+
+function allReducer(
+  state: AllConversationsState = initialState,
+  action: Action | MessageAction
+): AllConversationsState {
   switch (action.type) {
     case getType(actions.mergeConversationsAction):
       return {
@@ -214,6 +271,57 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
       }
       return state;
 
+    case getType(actions.setConversationUnreadMessageCount):
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [action.payload.conversationId]: {
+            ...state.items[action.payload.conversationId],
+            unreadMessageCount: action.payload.unreadMessageCount,
+          },
+        },
+      };
+
+    case getType(messageActions.addMessagesAction):
+      return mergeMessages(state, action.payload.conversationId, action.payload.messages);
+
+    case getType(messageActions.loadingMessagesAction):
+      return mergeMessages(state, action.payload.conversationId, action.payload.messages);
+
+    default:
+      return state;
+  }
+}
+
+function filteredReducer(
+  state: FilteredState = {
+    items: {},
+    metadata: {previous_cursor: null, next_cursor: null, total: 0},
+    currentFilter: {},
+  },
+  action: FilterAction | Action
+): FilteredState {
+  switch (action.type) {
+    case getType(filterActions.setFilteredConversationsAction):
+      return {
+        currentFilter: action.payload.filter,
+        items: mergeConversations({}, action.payload.conversations),
+        metadata: action.payload.metadata,
+      };
+    case getType(filterActions.mergeFilteredConversationsAction):
+      return {
+        currentFilter: action.payload.filter,
+        items: mergeFilteredConversations(state.items, action.payload.conversations),
+        metadata: action.payload.metadata,
+      };
+    case getType(filterActions.resetFilteredConversationAction):
+      return {items: {}, metadata: {previous_cursor: null, next_cursor: null, total: 0}, currentFilter: {}};
+    case getType(filterActions.updateFilteredConversationsAction):
+      return {
+        ...state,
+        currentFilter: action.payload.filter,
+      };
     default:
       return state;
   }
@@ -238,5 +346,6 @@ function errorsReducer(state: ErrorState = {}, action: Action): ErrorState {
 
 export default combineReducers({
   all: allReducer,
+  filtered: filteredReducer,
   errors: errorsReducer,
 });

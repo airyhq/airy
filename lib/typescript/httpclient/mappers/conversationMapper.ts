@@ -5,7 +5,7 @@ import {messageMapper} from './messageMapper';
 export const conversationMapper = (payload: ConversationPayload): Conversation => ({
   id: payload.id,
   channel: payload.channel,
-  createdAt: payload.created_at,
+  createdAt: new Date(payload.created_at),
   contact: {
     avatarUrl: payload.contact.avatar_url,
     displayName: payload.contact.display_name,

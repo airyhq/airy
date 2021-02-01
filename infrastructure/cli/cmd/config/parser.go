@@ -14,32 +14,30 @@ type globalConf struct {
 	Namespace         string `yaml:"namespace"`
 }
 
-type coreConf struct {
-	Apps struct {
-		Sources struct {
-			Twilio struct {
-				AuthToken  string `yaml:"authToken"`
-				AccountSid string `yaml:"accountSid"`
-			}
-			Facebook struct {
-				AppID         string `yaml:"appId"`
-				AppSecret     string `yaml:"appSecret"`
-				WebhookSecret string `yaml:"webhookSecret"`
-			}
-			Google struct {
-				PartnerKey string `yaml:"partnerKey"`
-				SaFile     string `yaml:"saFile"`
-			}
+type appsConf struct {
+	Sources struct {
+		Twilio struct {
+			AuthToken  string `yaml:"authToken"`
+			AccountSid string `yaml:"accountSid"`
 		}
-		Webhooks struct {
-			Name string `yaml:"name"`
+		Facebook struct {
+			AppID         string `yaml:"appId"`
+			AppSecret     string `yaml:"appSecret"`
+			WebhookSecret string `yaml:"webhookSecret"`
 		}
+		Google struct {
+			PartnerKey string `yaml:"partnerKey"`
+			SaFile     string `yaml:"saFile"`
+		}
+	}
+	Webhooks struct {
+		Name string `yaml:"name"`
 	}
 }
 
 type airyConf struct {
 	Global globalConf
-	Core   coreConf
+	Apps   appsConf
 }
 
 func parseConf(configFile string) (airyConf, error) {

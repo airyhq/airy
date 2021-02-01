@@ -1,6 +1,6 @@
 ---
 title: Command Line Interface
-sidebar_label: CLI
+sidebar_label: Overview
 ---
 
 CLI

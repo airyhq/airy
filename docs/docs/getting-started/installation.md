@@ -5,9 +5,9 @@ sidebar_label: Installation
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-## Bootstrap the Airy Core Platform
+## Bootstrap Airy Core
 
-Run the Airy Core Platform locally by entering the following commands:
+Create an Airy Core instance locally by entering the following commands:
 
 ```bash
 git clone -b main https://github.com/airyhq/airy
@@ -35,12 +35,16 @@ hosts file yourself.
 192.168.50.5  chatplugin.airy
 ```
 
-After the bootstrap process finishes, it will download the Kubernetes configiration file to the local host machine under `~/.airy/kube.conf`.
-That file is required for the Airy Command Line tool (Airy CLI), in order to access the Kubernetes cluster where the Airy Core Platform is running.
-You can also use that configuration file with the `kubectl` utility, for example:
+After the bootstrap process finishes, it will download the Kubernetes
+configuration file to the local host machine under `~/.airy/kube.conf`. That
+file is required for the Airy Command Line tool (Airy CLI), in order to access
+the Kubernetes cluster where your Airy Core instance is running. You can also
+use that configuration file with the `kubectl` utility, for example:
 
 ```sh
 kubectl --kubeconfig ~/.airy/kube.conf get pods
 ```
 
-Check out our [guide for running in test environment](getting-started/deployment/test-environment.md) for detailed information.
+Check out our [guide for running in test
+environment](getting-started/deployment/test-environment.md) for detailed
+information.

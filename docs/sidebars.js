@@ -2,15 +2,26 @@ module.exports = {
   docs: [
     {
       '🚀 Getting Started': [
-        {
-          Introduction: ['getting-started/introduction/index'],
-        },
+        'getting-started/introduction',
         'getting-started/installation',
         {
           Deployment: ['getting-started/deployment/test-environment', 'getting-started/deployment/prod-environment'],
         },
         'getting-started/quickstart',
-        'getting-started/cli',
+        {
+          CLI: [
+            'getting-started/cli',
+            'cli/airy',
+            'cli/airy_version',
+            'cli/airy_init',
+            'cli/airy_config',
+            'cli/airy_config_apply',
+            'cli/airy_api',
+            'cli/airy_api_signup',
+            'cli/airy_api_login',
+            'cli/airy_status',
+          ],
+        },
         'getting-started/troubleshooting',
         'getting-started/glossary',
       ],
@@ -26,8 +37,18 @@ module.exports = {
     },
     {
       '🔌 API': [
+        'api/introduction',
+        'api/authentication',
         {
-          HTTP: ['api/http/introduction', 'api/http/endpoints'],
+          'HTTP Endpoints': [
+            'api/endpoints/introduction',
+            'api/endpoints/channels',
+            'api/endpoints/conversations',
+            'api/endpoints/messages',
+            'api/endpoints/metadata',
+            'api/endpoints/tags',
+            'api/endpoints/users',
+          ],
         },
         'api/websocket',
         'api/webhook',
@@ -39,7 +60,7 @@ module.exports = {
     {
       '🛠️ Integrations': [
         {
-          'Conversational AI /NLP': ['integrations/airy-core-and-rasa'],
+          'Conversational AI /NLP': ['integrations/rasa'],
         },
       ],
     },

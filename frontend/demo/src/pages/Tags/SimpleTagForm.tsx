@@ -5,14 +5,14 @@ import {createTag, listTags, errorTag, filterTags} from '../../actions/tags';
 import {filteredTags} from '../../selectors/tags';
 
 import {Button, Input} from '@airyhq/components';
-import Dialog from '../../components/Dialog';
+import DialogCustomizable from '../../components/DialogCustomizable';
 import ColorSelector from '../../components/ColorSelector';
 
 import Tag from '../../components/Tag';
 import {Tag as TagModel, TagColor} from 'httpclient';
 
 import styles from './SimpleTagForm.module.scss';
-import {RootState} from '../../reducers';
+import {StateModel} from '../../reducers';
 
 type SimpleTagFormProps = {
   errorMessage: string;
@@ -51,7 +51,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
   };
 
   return (
-    <Dialog close={onClose} style={tags.length ? {right: 0, top: '32px'} : {top: '200px'}}>
+    <DialogCustomizable close={onClose} style={tags.length ? {right: 0, top: '32px'} : {top: '200px'}}>
       <div className={styles.tagCreate}>
         <h4 className={styles.headline}>Add a tag</h4>
         <Input
@@ -90,11 +90,11 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
           </div>
         </Fragment>
       </div>
-    </Dialog>
+    </DialogCustomizable>
   );
 };
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: StateModel) => {
   return {
     tags: filteredTags(state),
     errorMessage: state.data.tags.error,

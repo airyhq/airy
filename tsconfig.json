@@ -34,10 +34,18 @@
       "httpclient/*": [
         "./lib/typescript/httpclient/*"
       ],
+      "websocketclient": [
+        "./lib/typescript/websocketclient"
+      ],
+      "websocketclient/*": [
+        "./lib/typescript/websocketclient/*"
+      ],
       "*": [
         "./*"
       ]
     }
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

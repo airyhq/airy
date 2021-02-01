@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hostnames
+  namespace: {{ .Values.global.namespace }}
+data:
+  API_HOST: {{ .Values.global.ingress.apiHost }}
+  WEBHOOKS_HOST: {{ .Values.global.ingress.webhooksHost }}
+  UI_HOST: {{ .Values.global.ingress.uiHost }}
+  CHATPLUGIN_HOST: {{ .Values.global.ingress.chatpluginHost }}

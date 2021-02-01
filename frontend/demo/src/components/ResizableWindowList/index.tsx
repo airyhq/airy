@@ -9,6 +9,7 @@ type ResizableWindowProps = {
   width: string;
   children: ComponentType<ListChildComponentProps>;
   onItemsRendered: (event: ListOnItemsRenderedProps) => void;
+  infiniteLoaderRef: (ref: React.RefObject<List>) => void;
 };
 
 type ResizableWindowState = {
@@ -54,7 +55,8 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
     this.listRef.current && this.listRef.current.resetAfterIndex(0, true);
   };
 
-  setRef = (ref: List) => {
+  setRef = (ref: any) => {
+    this.props.infiniteLoaderRef(ref);
     this.listRef.current = ref;
   };
 

@@ -10,7 +10,7 @@ import ColorSelector from '../../components/ColorSelector';
 import Tag from '../../components/Tag';
 import {Tag as TagModel, TagColor} from 'httpclient';
 import {Settings} from '../../reducers/data/settings';
-import {RootState} from '../../reducers';
+import {StateModel} from '../../reducers';
 
 type TableRowProps = {
   tag: TagModel;
@@ -145,7 +145,7 @@ const TableRowComponent = (props: TableRowProps) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: StateModel) => {
   return {
     settings: state.data.settings,
   };

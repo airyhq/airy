@@ -1,27 +1,28 @@
 ---
-title: Running the Airy Core Platform in a test environment
+title: Running Airy Core in a test environment
 sidebar_label: Test Environment
 ---
 
-The goal of this document is to provide an overview of how to run the Airy Core
-Platform on your local machine.
+The goal of this document is to provide an overview of how to run Airy Core on
+your local machine.
 
-To facilitate bootstrapping the Airy Core Platform on a single machine, we
-included a [Vagrant](https://www.vagrantup.com) configuration, inside the
-`infrastructure` directory.
+To facilitate bootstrapping Airy Core on a single machine, we included a
+[Vagrant](https://www.vagrantup.com) configuration, inside the `infrastructure`
+directory.
 
 The Vagrant box is based on Alpine Linux and contains a pre-configured
-Kubernetes cluster [K3OS](https://k3os.io/) to deploy and run the Airy Core
-Platform. components.
+Kubernetes cluster [K3OS](https://k3os.io/) to deploy and run Airy Core
+components.
 
 ## Getting started
 
-To bootstrap a test installation, refer to the [bootstrapping](getting-started/installation.md) document.
+To bootstrap a test installation, refer to the
+[bootstrapping](getting-started/installation.md) document.
 
 ## Manage your Vagrant box
 
-You can ssh inside the Airy Core Platform box for testing and debugging purposes
-with `vagrant ssh` or run commands directly with `vagrant ssh -c COMMAND`
+You can ssh inside the Airy Core box for testing and debugging purposes with
+`vagrant ssh` or run commands directly with `vagrant ssh -c COMMAND`
 
 ### Status
 
@@ -51,11 +52,19 @@ ${GOOGLE_WEBHOOK_PUBLIC_URL}/google
 "Your public url for the Twilio Webhook is:"
 ${TWILIO_WEBHOOK_PUBLIC_URL}/twilio
 
-"You can access the API of the Airy Core Platform at:"
+"You can access the API of Airy Core at:"
 "http://api.airy/"
 
 "Example:"
 "curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}'
+```
+
+### Overwrite default CPUs and memory
+
+You can specify number of CPU and memory (in MB) you want to use for your Airy Core box with the following ENV variables:
+
+```sh
+AIRY_CORE_CPUS=2 AIRY_CORE_MEMORY=4096 ./scripts/bootstrap.sh
 ```
 
 ### Inspect Kubernetes
@@ -68,7 +77,7 @@ kubectl get pods
 
 ### Start, stop, restart
 
-You can stop, start or restart the Airy Core Platform box with the following
+You can stop, start or restart the Airy Core box with the following
 commands:
 
 ```sh
@@ -77,6 +86,18 @@ vagrant halt
 vagrant up
 vagrant reload
 ```
+
+:::note
+
+If you bootstrapped your Airy Core with custom CPU/RAM values, you must specify them again when you restart your box.
+
+```sh
+cd infrastructure
+vagrant halt
+AIRY_CORE_CPUS=2 AIRY_CORE_MEMORY=4096 vagrant up
+```
+
+:::
 
 ### Re-create the environment
 
@@ -135,11 +156,17 @@ If you prefer to use your own ngrok implementation or point the ngrok client to
 connect to the service provided by the ngrok company at `https://ngrok.io`,
 change the setting for `server_addr` in the ConfigMap or in this helm chart
 document
-`infrastructure/helm-chart/charts/apps/charts/airy-config/templates/sources.yaml`.
+`infrastructure/helm-chart/templates/ngrok.yaml`.
+
+Ngrok can be disabled during the bootstrap process, by running
+
+```bash
+NGROK_ENABLED=false ./scripts/bootstrap.sh
+```
 
 The bootstrap process creates a random URL which is then provisioned inside the
 Helm chart. To configure these URLs, you can specify them in the
-`infrastructure/helm-chart/charts/apps/charts/airy-config/values.yaml` document.
+`infrastructure/helm-chart/values.yaml` document.
 Alternatively you can edit the `airy.yaml` file by setting the following
 parameter (see `airy.tpl.yaml` for more examples):
 
@@ -160,13 +187,13 @@ helm upgrade core ~/airy-core/helm-chart/charts/apps/ --values /vagrant/airy.yam
 
 ## Connect sources
 
-Integrating sources into the `Airy Core Platform` often requires specific
+Integrating sources into the `Airy Core` often requires specific
 configuration settings, refer to the source specific docs for details. You must
 provide the settings in `infrastructure/airy.yaml` configuration file. An
 example of the configuration can be found in `airy.tpl.yaml`.
 
 After setting the configuration, you need the Airy command line binary (Airy CLI), to communicate with the core installation and apply the installation.
-Building and releasing the Airy CLI is part of the regular release process of the Airy Core Platform.
+Building and releasing the Airy CLI is part of the regular release process of the Airy Core.
 You can download the Airy CLI from the releases page on Github https://github.com/airyhq/airy/releases.
 
 After downloading, run the following commands:
@@ -178,13 +205,14 @@ airy apply config --config ./airy.yaml
 
 Make sure that the argument `` points to your `airy.yaml` configuration file.
 
-The Airy CLI considers that the kubernetes configuration file is located under `~/.airy/kube.conf`.
-If you modified the location of the file, make sure to set the appropriate path with the `--kube-config` flag.
+The Airy CLI considers that the Kubernetes configuration file is located under
+`~/.airy/kube.conf`. If you modified the location of the file, make sure to set
+the appropriate path with the `--kube-config` flag.
 
-## Uninstall the Airy Core Platform
+## Uninstall Airy Core
 
-You can remove the Airy Core Platform Box from your machine completely running
-the following commands:
+You can remove Airy Core Box from your machine completely running the following
+commands:
 
 ```sh
 cd infrastructure

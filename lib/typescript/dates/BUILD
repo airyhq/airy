@@ -3,15 +3,9 @@ load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_library")
 package(default_visibility = ["//visibility:public"])
 
 ts_library(
-    name = "render",
+    name = "dates",
     deps = [
         "//lib/typescript/httpclient",
-        "//lib/typescript/dates",
         "//lib/typescript/types",
-        "//frontend/assets",
-        "@npm//@types/node",
-        "@npm//@types/react",
-        "@npm//linkifyjs",
-        "@npm//react",
     ],
 )

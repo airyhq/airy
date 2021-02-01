@@ -8,7 +8,7 @@ module_deps = [
     "//lib/typescript/types",
     "//lib/typescript/httpclient",
     "//lib/typescript/render",
-    "//lib/typescript/services",
+    "//lib/typescript/dates",
 ]
 
 ts_library(
@@ -16,7 +16,7 @@ ts_library(
     deps = [
         "//lib/typescript/httpclient",
         "//lib/typescript/render",
-        "//lib/typescript/services",
+        "//lib/typescript/dates",
         "//lib/typescript/types",
         "@npm//@airyhq/components",
         "@npm//@types/facebook-js-sdk",

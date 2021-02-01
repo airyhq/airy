@@ -10,7 +10,7 @@ module_deps = [
     "//lib/typescript/types",
     "//lib/typescript/httpclient",
     "//lib/typescript/render",
-    "//lib/typescript/services",
+    "//lib/typescript/dates",
 ]
 
 web_app(

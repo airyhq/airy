@@ -40,6 +40,12 @@
       "httpclient/*": [
         "./lib/typescript/httpclient/*"
       ],
+      "assets": [
+        "./frontend/assets"
+      ],
+      "assets/*": [
+        "./frontend/assets/*"
+      ],
       "*": [
         "./*"
       ]

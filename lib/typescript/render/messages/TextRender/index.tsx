@@ -1,7 +1,7 @@
 import React from 'react';
 import {Message, Conversation, SenderType, Contact} from 'httpclient';
 import styles from './index.module.scss';
-import {formatTimeOfMessage} from 'services';
+import {formatTimeOfMessage} from 'dates';
 
 type TextRenderProps = {
   message: Message;
@@ -34,7 +34,7 @@ const TextRender = (props: TextRenderProps) => {
     return conversation && <AvatarImage contact={conversation.contact} />;
   };
 
-  const messageJSON = JSON.parse(`${message.content}`);
+  const messageJSON = JSON.parse(message.content);
   const messageText = messageJSON && messageJSON.text;
 
   return (

@@ -41,7 +41,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   return (
-    <div className={`${styles.container} ${styles.flexWrap}`}>
+    <form className={`${styles.container} ${styles.flexWrap}`}>
       <div className={`${styles.messageWrap} ${styles.flexWrap}`}>
         <div className={styles.inputWrap}>
           <textarea
@@ -63,7 +63,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           </div>
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

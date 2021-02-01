@@ -56,7 +56,7 @@ export default function messagesReducer(state = initialState, action: Action): M
         all: {
           ...state.all,
           [action.payload.conversationId]: [
-            ...organiseMessages(state.all[action.payload.conversationId].concat(action.payload.messages)),
+            ...organiseMessages((state.all[action.payload.conversationId] || []).concat(action.payload.messages)),
           ],
         },
       };

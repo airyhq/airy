@@ -11,3 +11,4 @@ export * from './ResponseMetadataPayload';
 export * from './MessagePayload';
 export * from './TagConversationRequestPayload';
 export * from './UntagConversationRequestPayload';
+export * from './SendMessagesRequestPayload';

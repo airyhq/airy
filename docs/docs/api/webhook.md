@@ -10,7 +10,7 @@ integration pattern:
 - Call the [subscribe](#subscribing) endpoint
 - Consume on your URL of choice [events](#event-payload)
 - React to those events by calling the [send
-  message](api/http/endpoints.md#send-a-message) endpoint
+  message](/api/endpoints/messages.md#send) endpoint
 
 You must de-duplicate messages on arrival as the webhook _does not_ guarantee
 events uniqueness.
@@ -99,4 +99,4 @@ request with the following structure:
 ```
 
 For possible values of `sender.type` see the [Message model
-documentation](getting-started/glossary.md#fields)
+documentation](/getting-started/glossary.md#fields)

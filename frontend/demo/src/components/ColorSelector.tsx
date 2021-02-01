@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {connect} from 'react-redux';
-import {RootState} from '../reducers';
+import {StateModel} from '../reducers';
 import {Settings} from '../reducers/data/settings';
 
 import styles from './ColorSelector.module.scss';
@@ -83,7 +83,7 @@ const ColorSelector = ({handleUpdate, color, editing, id, settings}: ColorSelect
   );
 };
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: StateModel) => {
   return {
     settings: state.data.settings,
   };

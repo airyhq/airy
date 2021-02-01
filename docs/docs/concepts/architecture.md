@@ -11,8 +11,8 @@ The `backend` system is a streaming platform. Its role is to:
 
 - Ingest conversational events from different sources (mostly via webhook
   integrations), process them, and store them in an Apache Kafka cluster.
-- Make the processed events available and accessible through the Airy [API](api/http/introduction.md).
-- Expose conversational events via a [webhook](api/webhook.md) integration.
+- Make the processed events available and accessible through the [Core API](/api/introduction).
+- Expose conversational events via a [webhook](/api/webhook) integration.
 - Manage authentication and authorization features.
 
 The `frontend` system contains a demo application and the JavaScript integration

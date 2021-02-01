@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, Link, RouteComponentProps} from 'react-router-dom';
 
 import {StateModel} from '../../reducers';

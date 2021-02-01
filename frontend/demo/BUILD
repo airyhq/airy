@@ -10,6 +10,7 @@ module_deps = [
     "//lib/typescript/httpclient",
     "//lib/typescript/render",
     "//lib/typescript/dates",
+    "//lib/typescript/websocketclient",
 ]
 
 ts_library(

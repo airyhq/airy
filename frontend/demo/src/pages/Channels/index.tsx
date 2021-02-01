@@ -1,6 +1,6 @@
 /* global FB */
 import React, {useCallback, useEffect, useState} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import {Button} from '@airyhq/components';

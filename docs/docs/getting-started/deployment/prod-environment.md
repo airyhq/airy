@@ -73,7 +73,7 @@ with Helm as we use this approach for test installations.
 The default commit interval is set to 1000 ms (1 second). This is _not_ recommended
 for production usage.
 You change the `commitInterval` to a more suitable production value in the configuration file
-`infrastructure/helm-chart/charts/apps/charts/airy-config/values.yaml`.
+`infrastructure/helm-chart/charts/prerequisites/values.yaml`.
 
 To deploy Kafka on Kubernetes with Helm, you can run:
 
@@ -256,20 +256,21 @@ Ingress resources. You can choose an [Kubernetes ingress
 controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 in accordance to your needs or preferences. If you are using the
 [Traefik](https://traefik.io/) ingress controller, you can edit the
-`infrastructure/helm-chart/charts/ingress/templates/ingress.yaml` file to modify the `host` records and apply the ingress helm chart, which is already included in the repository:
+`infrastructure/helm-chart/templates/ingress.yaml` file to modify the `host` records and apply the Kubernetes manifest:
 
-```sh
-helm install ingress infrastructure/helm-chart/charts/ingress/
+```bash script
+kubectl apply -f infrastructure/helm-chart/templates/ingress.yaml
 ```
 
 You must set appropriate `host` attributes in the rules for:
 
 - API endpoints (defaults to `api.airy`)
+- Webhooks endpoints (defaults to `webhooks.airy`)
 - Demo (defaults to `demo.airy`)
 - Chat plugin (defaults to `chatplugin.airy`)
 
 If you are not using Traefik, you can use the
-`infrastructure/helm-chart/charts/ingress/templates/ingress.yaml` file as a guide to create your own
+`infrastructure/helm-chart/templates/ingress.yaml` file as a guide to create your own
 Kubernetes manifest for your preferred ingress controller.
 
 If your Kubernetes cluster is not directly reachable on the Internet, you will

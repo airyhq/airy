@@ -59,6 +59,14 @@ ${TWILIO_WEBHOOK_PUBLIC_URL}/twilio
 "curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}'
 ```
 
+### Overwrite default CPUs and memory
+
+You can specify number of CPU and memory (in MB) you want to use for your Airy Core box with the following ENV variables:
+
+```sh
+AIRY_CORE_CPUS=2 AIRY_CORE_MEMORY=4096 ./scripts/bootstrap.sh
+```
+
 ### Inspect Kubernetes
 
 ```sh
@@ -78,6 +86,18 @@ vagrant halt
 vagrant up
 vagrant reload
 ```
+
+:::note
+
+If you bootstrapped your Airy Core with custom CPU/RAM values, you must specify them again when you restart your box.
+
+```sh
+cd infrastructure
+vagrant halt
+AIRY_CORE_CPUS=2 AIRY_CORE_MEMORY=4096 vagrant up
+```
+
+:::
 
 ### Re-create the environment
 
@@ -136,11 +156,17 @@ If you prefer to use your own ngrok implementation or point the ngrok client to
 connect to the service provided by the ngrok company at `https://ngrok.io`,
 change the setting for `server_addr` in the ConfigMap or in this helm chart
 document
-`infrastructure/helm-chart/charts/apps/charts/airy-config/templates/sources.yaml`.
+`infrastructure/helm-chart/templates/ngrok.yaml`.
+
+Ngrok can be disabled during the bootstrap process, by running
+
+```bash
+NGROK_ENABLED=false ./scripts/bootstrap.sh
+```
 
 The bootstrap process creates a random URL which is then provisioned inside the
 Helm chart. To configure these URLs, you can specify them in the
-`infrastructure/helm-chart/charts/apps/charts/airy-config/values.yaml` document.
+`infrastructure/helm-chart/values.yaml` document.
 Alternatively you can edit the `airy.yaml` file by setting the following
 parameter (see `airy.tpl.yaml` for more examples):
 

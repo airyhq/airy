@@ -9,7 +9,7 @@ Prints version information
 
 ### Synopsis
 
-LONG
+Prints version information
 
 ```
 airy version [flags]

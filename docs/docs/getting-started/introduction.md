@@ -6,16 +6,15 @@ slug: /
 
 ## What is Airy Core?
 
-Airy Core is an open source, fully-featured, production ready messaging platform.
+Airy Core is an **open source**, **fully-featured**, **production ready** messaging platform.
 
-With Airy you can process conversational data from a variety of sources:
+With Airy Core you can process conversational data from a variety of sources:
 
-- Facebook
-- WhatsApp
+- Facebook Messenger
+- WhatsApp Business API
 - Google's Business Messages
 - SMS
 - Website Chat Plugins
-- Twilio
 - Your own conversational channels
 
 You can then use Airy to:
@@ -26,7 +25,9 @@ You can then use Airy to:
 - Mediate open requests with Agents via our messaging UI
 - Analyze your conversations
 
-Since Airy's infrastructure is built around Apache Kafka, it can process a large amount of conversations and messages simultaneously and stream the relevant conversational data to wherever you need it.
+Since Airy's infrastructure is built around Apache Kafka, it can process a large
+amount of conversations and messages simultaneously and stream the relevant
+conversational data to wherever you need it.
 
 ## Airy Core Components
 

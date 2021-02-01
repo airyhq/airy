@@ -2,7 +2,7 @@ import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 import {start, getResumeToken, sendMessage} from '../api';
 import {Text} from 'types';
-import {MessagePayload} from 'httpclient/payload/MessagePayload';
+import {MessagePayload} from 'httpclient';
 
 declare const window: {
   airy: {

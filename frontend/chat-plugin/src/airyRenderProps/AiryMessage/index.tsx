@@ -1,6 +1,6 @@
 import {h} from 'preact';
 import linkifyString from 'linkifyjs/string';
-import {MessagePayload} from 'httpclient/payload/MessagePayload';
+import {MessagePayload} from 'httpclient';
 
 import styles from './index.module.scss';
 

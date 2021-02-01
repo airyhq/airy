@@ -16,8 +16,7 @@ echo "Deploying the Airy Core Platform with the ${AIRY_VERSION} image tag"
 if [[ -f ${INFRASTRUCTURE_PATH}/airy.yaml ]]; then
     yq eval '.global.appImageTag="'${AIRY_VERSION}'"' -i ${INFRASTRUCTURE_PATH}/airy.yaml
     helm install core ${INFRASTRUCTURE_PATH}/helm-chart/ --values ${INFRASTRUCTURE_PATH}/airy.yaml --set global.ngrokEnabled=${NGROK_ENABLED} --timeout 1000s > /dev/null 2>&1
-    wget -qnv https://airy-core-binaries.s3.amazonaws.com/${AIRY_VERSION}/alpine/amd64/airy.gz
-    gunzip airy.gz
+    wget -qnv https://airy-core-binaries.s3.amazonaws.com/${AIRY_VERSION}/linux/amd64/airy
     chmod +x airy
     mv airy /usr/local/bin/
     airy init

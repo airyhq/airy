@@ -5,6 +5,73 @@ sidebar_label: Installation
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
+You can run the entire Airy Core on your machine inside an isolated Vagrant box. The Airy CLI enables you to interact with any Airy Core instance whether it is running locally or in the cloud.
+
+## Install the Airy CLI
+
+### Install the airy binary with curl on MacOS
+
+You can download the latest release with the following command or replace the version portion of the url with the specific version.
+
+1. Download the latest release:
+
+```sh
+curl https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)/darwin/amd64/airy -o "airy"
+```
+
+:::note
+To download a specific version, replace the $(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt) portion of the command with the specific version.
+
+For example, to download version 0.6.0 on macOS, type:
+
+curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/darwin/amd64/airy -o "airy"
+:::
+
+2. Validate the binary (optional)
+3. Make the **airy** binary executable.
+
+```
+chmod +x ./airy
+```
+
+4. Move the **airy** binary to a file location on your system PATH.
+
+```
+sudo mv ./airy /usr/local/bin/airy && \
+sudo chown root: /usr/local/bin/airy
+```
+
+### Install with Homebrew on macOS
+
+### Install on Linux
+
+1. Download the latest release:
+
+```sh
+curl -LO https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)/darwin/amd64/airy -o "airy"
+```
+2. Validate the binary (optional)
+3. Install **airy**
+
+```
+sudo install -o root -g root -m 0755 airy /usr/local/bin/airy
+```
+
+### Build the Airy CLI from source
+
+1. Build the cli target with Bazel
+
+```bash
+bazel build //infrastructure/cli:airy
+```
+
+4. Move the **airy** binary to a file location on your system PATH.
+```bash
+sudo cp bazel-out/darwin-fastbuild/bin/infrastructure/cli/airy ~/bin
+```
+
+
+
 ## Bootstrap Airy Core
 
 Create an Airy Core instance locally by entering the following commands:

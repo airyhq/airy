@@ -1,14 +1,16 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
-import {cloneDeep, uniq} from 'lodash-es';
+import {cloneDeep, uniq, sortBy} from 'lodash-es';
 
 import {Conversation, Message, ConversationFilter, ResponseMetadataPayload} from 'httpclient';
 
 import * as actions from '../../../actions/conversations';
 import * as filterActions from '../../../actions/conversationsFilter';
+import * as messageActions from '../../../actions/messages';
 
 type Action = ActionType<typeof actions>;
 type FilterAction = ActionType<typeof filterActions>;
+type MessageAction = ActionType<typeof messageActions>;
 
 type MergedConversation = Conversation & {
   blocked?: boolean;
@@ -176,7 +178,31 @@ const removeTagFromConversation = (state: AllConversationsState, conversationId,
   return state;
 };
 
-function allReducer(state: AllConversationsState = initialState, action: Action): AllConversationsState {
+const lastMessageOf = (messages: Message[]): Message => {
+  return sortBy(messages, message => message.sentAt).pop();
+};
+
+const mergeMessages = (state: AllConversationsState, conversationId: string, messages: Message[]) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (conversation) {
+    return {
+      ...state,
+      items: {
+        ...state.items,
+        [conversation.id]: {
+          ...conversation,
+          lastMessage: lastMessageOf(messages.concat([conversation.lastMessage])),
+        },
+      },
+    };
+  }
+  return state;
+};
+
+function allReducer(
+  state: AllConversationsState = initialState,
+  action: Action | MessageAction
+): AllConversationsState {
   switch (action.type) {
     case getType(actions.mergeConversationsAction):
       return {
@@ -244,6 +270,24 @@ function allReducer(state: AllConversationsState = initialState, action: Action)
         };
       }
       return state;
+
+    case getType(actions.setConversationUnreadMessageCount):
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [action.payload.conversationId]: {
+            ...state.items[action.payload.conversationId],
+            unreadMessageCount: action.payload.unreadMessageCount,
+          },
+        },
+      };
+
+    case getType(messageActions.addMessagesAction):
+      return mergeMessages(state, action.payload.conversationId, action.payload.messages);
+
+    case getType(messageActions.loadingMessagesAction):
+      return mergeMessages(state, action.payload.conversationId, action.payload.messages);
 
     default:
       return state;

@@ -13,7 +13,7 @@ import (
 
 var loginCmd = &cobra.Command{
 	Use:   "login",
-	Short: "Logs you in in the Airy Core Platform",
+	Short: "Login into an Airy Core instance",
 	Long:  ``,
 	Run:   login,
 }
@@ -37,6 +37,6 @@ func login(cmd *cobra.Command, args []string) {
 
 func init() {
 	var email, password string
-	loginCmd.Flags().StringVarP(&email, "email", "e", "grace@hopper.com", "Email")
+	loginCmd.Flags().StringVarP(&email, "email", "e", "grace@example.com", "Email")
 	loginCmd.Flags().StringVarP(&password, "password", "p", "the_answer_is_42", "Password")
 }

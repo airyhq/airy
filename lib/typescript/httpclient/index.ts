@@ -9,6 +9,7 @@ import {
   ListTagsResponsePayload,
   CreateTagRequestPayload,
   LoginViaEmailRequestPayload,
+  SendMessagesRequestPayload
 } from './payload';
 import {PaginatedPayload} from './payload/PaginatedPayload';
 import {ChannelApiPayload} from './payload/ChannelApiPayload';
@@ -26,6 +27,8 @@ import {tagsMapper} from './mappers/tagsMapper';
 import {TagColor, Tag} from './model';
 import {TagPayload} from './payload/TagPayload';
 import {userMapper} from './mappers/userMapper';
+import {messageMapper} from './mappers/messageMapper';
+import {conversationMapper} from './mappers/conversationMapper';
 
 const headers = {
   Accept: 'application/json',
@@ -59,8 +62,8 @@ export function isString(object: any) {
 }
 
 export class HttpClient {
-  public readonly token?: string;
   public readonly apiUrlConfig?: string;
+  public token?: string;
 
   constructor(token?: string, apiUrlConfig?: string) {
     this.token = token;
@@ -143,6 +146,13 @@ export class HttpClient {
     } catch (error) {
       return error;
     }
+  }
+
+  public async getConversationInfo(conversationId: string) {
+    const conversation: ConversationPayload = await this.doFetchFromBackend('conversations.info', {
+      conversation_id: conversationId,
+    });
+    return Promise.resolve(conversationMapper(conversation));
   }
 
   public async readConversations(conversationId: string) {
@@ -240,7 +250,21 @@ export class HttpClient {
       return error;
     }
   }
+
+  public async sendMessages(requestPayload: SendMessagesRequestPayload) {
+    try {
+      const response: MessagePayload = await this.doFetchFromBackend('messages.send', {
+        conversation_id: requestPayload.conversationId,
+        message: requestPayload.message,
+      });
+      return messageMapper(response);
+    } catch (error) {
+      return error;
+    }
+  }
 }
 
+export * from './mappers';
 export * from './model';
 export * from './payload';
+export * from './messagesForChannels';

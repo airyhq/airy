@@ -1,9 +1,9 @@
 ---
 title: SMS via Twilio
-sidebar_label: SMS - Twilio
+sidebar_label: SMS
 ---
 
-The Twilio sms source provides a channel for sending and receiving SMS using the
+The Twilio SMS source provides a channel for sending and receiving SMS using the
 [Twilio API](https://www.twilio.com/).
 
 :::note
@@ -22,7 +22,7 @@ import TwilioSource from './twilio-source.mdx'
 
 After you created a Twilio phone number you must [point its webhook
 integration](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url)
-to your running Airy Core Platform instance.
+to your running Airy Core instance.
 
 Next call the Platform API:
 

@@ -9,11 +9,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// UICmd opens the Airy Core Platform UI
+// UICmd opens the Airy Core UI
 var UICmd = &cobra.Command{
 	Use:              "ui",
 	TraverseChildren: true,
-	Short:            "Opens the Airy Core Platform UI in your local browser",
+	Short:            "Opens the Airy Core UI in your local browser",
 	Long:             ``,
 	Run:              demo,
 }

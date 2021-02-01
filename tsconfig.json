@@ -1,43 +1,7 @@
 {
-  "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "strict": false,
-    "baseUrl": "./",
-    "noImplicitAny": false,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "sourceMap": true,
-    "jsx": "react",
-    "paths": {
-      "components": [
-        "./frontend/components/src"
-      ],
-      "components/*": [
-        "./frontend/components/src/*"
-      ],
-      "types": [
-        "./lib/typescript/types"
-      ],
-      "types/*": [
-        "./lib/typescript/types/*"
-      ],
-      "httpclient": [
-        "./lib/typescript/httpclient"
-      ],
-      "httpclient/*": [
-        "./lib/typescript/httpclient/*"
-      ],
-      "*": [
-        "./*"
-      ]
-    }
-  },
-  "exclude": ["node_modules"]
+  "extends": "./bazel.tsconfig.json",
+  "include": [
+    "./frontend/**/*",
+    "./lib/typescript/**/*",
+  ],
 }

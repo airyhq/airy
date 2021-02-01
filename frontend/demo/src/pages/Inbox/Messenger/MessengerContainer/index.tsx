@@ -7,6 +7,7 @@ import MessageList from '../MessageList';
 import {ReactComponent as EmptyStateImage} from '../../../../assets/images/empty-state/inbox-empty-state.svg';
 import styles from './index.module.scss';
 import ConversationMetadata from '../ConversationMetadata';
+import MessageInput from '../../MessageInput';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -37,9 +38,13 @@ const MessengerContainer = (props: MessengerContainerProps) => {
             <EmptyStateImage />
           </div>
         ) : (
-          <MessageList conversation={currentConversation} />
+          <div className={styles.messageDisplay}>
+            <MessageList conversation={currentConversation} />
+            {currentConversation && <MessageInput channelSource={currentConversation.channel.source} />}
+          </div>
         )}
       </div>
+
       <ConversationMetadata conversation={currentConversation} />
     </>
   );

@@ -1,5 +1,4 @@
 import {ActionType, getType} from 'typesafe-actions';
-
 import * as actions from '../../../actions/messages';
 import {Message} from 'httpclient';
 import {DataState} from '..';
@@ -27,7 +26,7 @@ function organiseMessages(messages: Message[]): Message[] {
   return sortBy(messages, message => message.sentAt);
 }
 
-export default function messagesReducer(state = initialState, action: Action): any {
+export default function messagesReducer(state = initialState, action: Action): Messages {
   switch (action.type) {
     case getType(actions.loadingMessagesAction):
       if (state.all[action.payload.conversationId]) {
@@ -50,6 +49,17 @@ export default function messagesReducer(state = initialState, action: Action): a
           },
         };
       }
+
+    case getType(actions.addMessagesAction):
+      return {
+        ...state,
+        all: {
+          ...state.all,
+          [action.payload.conversationId]: [
+            ...organiseMessages(state.all[action.payload.conversationId].concat(action.payload.messages)),
+          ],
+        },
+      };
 
     default:
       return state;

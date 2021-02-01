@@ -13,6 +13,7 @@ export const CONVERSATION_READ = '@@conversations/CONVERSATION_READ';
 export const CONVERSATION_ADD_TAG = '@@conversations/CONVERSATION_ADD_TAG';
 export const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
 export const CONVERSATION_UPDATE_PAGINATION_DATA = '@@conversation/UPDATE_PAGINATION_DATA';
+export const CONVERSATION_SET_UNREAD_MESSAGE_COUNT = '@@conversations/CONVERSATION_SET_UNREAD_MESSAGE_COUNT';
 
 export const loadingConversationAction = createAction(CONVERSATION_LOADING, resolve => (conversationId: string) =>
   resolve(conversationId)
@@ -22,7 +23,7 @@ export const loadingConversationsAction = createAction(CONVERSATIONS_LOADING, re
 
 export const mergeConversationsAction = createAction(
   CONVERSATIONS_MERGE,
-  resolve => (conversations: PaginatedResponse<Conversation>) => resolve({conversations})
+  resolve => (conversations: PaginatedResponse<Conversation> | Conversation) => resolve({conversations})
 );
 
 export const readConversationsAction = createAction(CONVERSATION_READ, resolve => (conversationId: string) =>
@@ -55,6 +56,11 @@ export const updateMessagesPaginationDataAction = createAction(
     resolve({conversationId, paginationData})
 );
 
+export const setConversationUnreadMessageCount = createAction(
+  CONVERSATION_SET_UNREAD_MESSAGE_COUNT,
+  resolve => (conversationId: string, unreadMessageCount: number) => resolve({conversationId, unreadMessageCount})
+);
+
 export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
@@ -81,6 +87,28 @@ export function listNextConversations() {
       })
       .catch((error: Error) => {
         return Promise.reject(error);
+      });
+  };
+}
+
+function sleep(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
+export function getConversationInfo(conversationId: string, retries?: number) {
+  return async (dispatch: Dispatch<any>) => {
+    return HttpClientInstance.getConversationInfo(conversationId)
+      .then((response: Conversation) => {
+        dispatch(mergeConversationsAction([response]));
+        return Promise.resolve(true);
+      })
+      .catch(async (error: Error) => {
+        if (retries > 5) {
+          return Promise.reject(error);
+        } else {
+          await sleep(1000);
+          return getConversationInfo(conversationId, retries ? retries + 1 : 1)(dispatch);
+        }
       });
   };
 }

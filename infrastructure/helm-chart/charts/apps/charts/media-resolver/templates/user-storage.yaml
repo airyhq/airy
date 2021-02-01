@@ -1,0 +1,12 @@
+{{ if .Values.storage }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-storage
+data:
+  STORAGE_S3_KEY: {{ .Values.storage.s3.key }}
+  STORAGE_S3_SECRET: "{{ .Values.storage.s3.secret }}"
+  STORAGE_S3_BUCKET: {{ .Values.storage.s3.bucket }}
+  STORAGE_S3_REGION: {{ .Values.storage.s3.region }}
+  STORAGE_S3_PATH: {{ .Values.storage.s3.path }}
+{{ end }}

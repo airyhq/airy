@@ -1,10 +1,10 @@
 import _redux from 'redux';
 import _, {createSelector} from 'reselect';
 import {Tag} from 'httpclient';
-import {RootState} from '../reducers';
+import {StateModel} from '../reducers';
 
-const tags = (state: RootState) => state.data.tags.all;
-const queries = (state: RootState) => state.data.tags.query;
+const tags = (state: StateModel) => state.data.tags.all;
+const queries = (state: StateModel) => state.data.tags.query;
 const filter = (tags: Tag[], filter: string) => {
   if (filter === '') {
     return tags;

@@ -1,0 +1,6 @@
+{
+  "extends": "../../bazel.tsconfig.json",
+  "compilerOptions": {
+    "jsxFactory": "h"
+  }
+}

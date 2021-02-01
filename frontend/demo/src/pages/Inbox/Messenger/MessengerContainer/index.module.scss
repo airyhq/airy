@@ -34,5 +34,14 @@
   }
 }
 
-.notSelectedState {
+.messageDisplay {
+  @media screen and (max-width: 1050px) {
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+  display: flex;
+  flex: 1;
+  height: auto;
+  flex-direction: column;
+  overflow: hidden;
 }

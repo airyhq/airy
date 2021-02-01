@@ -3,11 +3,10 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 import {debounce} from 'lodash-es';
 
-import {Conversation, Message, SenderType} from 'httpclient';
+import {Message, SenderType, Conversation} from 'httpclient';
+import RenderLibrary from 'render';
 
 import {StateModel} from '../../../../reducers';
-
-import MessageListItem from '../MessengerListItem';
 
 import {listMessages, listPreviousMessages} from '../../../../actions/messages';
 
@@ -39,8 +38,7 @@ function usePrevious(value: [] | string) {
 }
 
 const MessageList = (props: MessageListProps) => {
-  const {listMessages, listPreviousMessages, messages, conversation, item} = props;
-
+  const {listMessages, listPreviousMessages, messages, item, conversation} = props;
   const [stickBottom, setStickBottom] = useState(true);
 
   const prevMessages = usePrevious(messages);
@@ -164,11 +162,13 @@ const MessageList = (props: MessageListProps) => {
                   {formatDateOfMessage(message)}
                 </div>
               )}
-              <MessageListItem
-                conversation={conversation}
+              <RenderLibrary
                 message={message}
-                showAvatar={!prevWasContact && isContact(message)}
-                showSentAt={!nextIsSameUser}
+                source={item.channel.source}
+                currentConversation={item}
+                prevWasContact={prevWasContact}
+                nextIsSameUser={nextIsSameUser}
+                isContact={isContact(message)}
               />
             </div>
           );

@@ -28,8 +28,7 @@ export interface SourceTemplate extends Content {
   payload: any;
 }
 
-export interface Text extends Content {
-  type: 'text';
+export interface Text {
   text: string;
 }
 

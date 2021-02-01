@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "strict": false,
+    "baseUrl": "./",
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "paths": {
+      "components": [
+        "./frontend/components/src"
+      ],
+      "components/*": [
+        "./frontend/components/src/*"
+      ],  
+      "httpclient": [
+        "./lib/typescript/httpclient"
+      ],
+      "httpclient/*": [
+        "./lib/typescript/httpclient/*"
+      ],
+      "types": [
+        "./lib/typescript/types"
+      ],
+      "types/*": [
+        "./lib/typescript/types/*"
+      ],
+      "websocketclient": [
+        "./lib/typescript/websocketclient"
+      ],
+      "websocketclient/*": [
+        "./lib/typescript/websocketclient/*"
+      ],
+      "*": [
+        "./*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

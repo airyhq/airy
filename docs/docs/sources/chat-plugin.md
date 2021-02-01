@@ -1,10 +1,11 @@
 ---
-title: Chat Plugin
-sidebar_label: Chat Plugin
+title: Airy Live Chat Plugin
+sidebar_label: Airy Live Chat Plugin
 ---
 
-The Airy Core Chat Plugin is a fully-featured [source](/getting-started/glossary.md#source) that
-enables conversations with anonymous website visitors through a web chat plugin.
+The Airy Live Chat Plugin is a fully-featured
+[source](/getting-started/glossary#source) that enables conversations with
+anonymous website visitors through a web chat plugin.
 
 :::tip What you will learn
 
@@ -16,7 +17,7 @@ enables conversations with anonymous website visitors through a web chat plugin.
 
 ## Connect
 
-Connects a Chat Plugin source to the Airy Core Platform.
+Connects a Chat Plugin source to Airy Core.
 
 ```
 POST /chatplugin.connect
@@ -89,7 +90,7 @@ browser.
 ## HTTP API
 
 The HTTP api adheres to standards laid out in the [core
-API](api/http/endpoints.md#introduction).
+API](/api/introduction#authentication).
 
 ### Authenticating web users
 
@@ -173,7 +174,6 @@ header.
 {
   "message": {
     "text": "{String}"
-    "type": "text"
   }
 }
 ```

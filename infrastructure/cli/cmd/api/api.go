@@ -8,7 +8,7 @@ import (
 var APICmd = &cobra.Command{
 	Use:              "api",
 	TraverseChildren: true,
-	Short:            "Interacts with the Airy Core Platform HTTP API",
+	Short:            "Interacts with the Airy Core HTTP API",
 	Long:             ``,
 }
 

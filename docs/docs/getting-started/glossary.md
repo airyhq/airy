@@ -4,7 +4,7 @@ title: Glossary
 sidebar_label: Glossary
 ---
 
-This document aims to provide an high-level overview of the Airy Core Platform
+This document aims to provide an high-level overview of the Airy Core
 technical vocabulary. It provides definition of the most important terms used
 both in the code and in the rest of the documentation.
 
@@ -16,12 +16,11 @@ model and glossary do not correspond exactly. The former is the exact machine
 representation of the data we store and the latter is a conceptual artifact we
 created to discuss and solve problems.
 
-The Airy Core Platform allows its [users](#user) to process messaging data from
-a variety of [sources](#source), which are integrated via [source
-providers](#provider). Users] connect sources via [channels](#channel).
-Once the channel is connected, the Airy Core Platform ingests source data and
-transforms them into [conversations](#conversation), [contacts](#contact), and
-[messages](#message).
+Airy Core allows its [users](#user) to process messaging data from a variety of
+[sources](#source), which are integrated via [source providers](#provider).
+Users connect sources via [channels](#channel). Once the channel is connected,
+Airy Core ingests source data and transforms them into
+[conversations](#conversation), [contacts](#contact), and [messages](#message).
 
 ## Channel
 
@@ -119,20 +118,20 @@ e.g.
 
 A tag is a specialized metadata, which is used to tag
 [conversations](#conversation). As the use case of tagging conversations is so
-common, the Airy Core Platform provides specialized endpoints and filters for
-tagging conversations.
+common, Airy Core provides specialized endpoints and filters for tagging
+conversations.
 
 ## Source
 
 A source represents a system that generates messaging data that a user wants to
-process with the Airy Core Platform.
+process with Airy Core.
 
 ### Provider
 
-Source providers are API platforms that allow the Airy Core Platform to connect
-to one or more of their sources typically via a webhook. E.g. Twilio is a source
-provider for the Twilio SMS and WhatsApp sources.
+Source providers are API platforms that allow Airy Core to connect to one or
+more of their sources typically via a webhook. E.g. Twilio is a source provider
+for the Twilio SMS and WhatsApp sources.
 
 ## User
 
-A user represents one authorized agent in the Airy Core Platform.
+A user represents one authorized agent in Airy Core.

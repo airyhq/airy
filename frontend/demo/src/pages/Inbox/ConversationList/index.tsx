@@ -1,14 +1,15 @@
-import React, {CSSProperties, RefObject} from 'react';
+import React, {createRef} from 'react';
 import {withRouter, matchPath, RouteComponentProps, match} from 'react-router-dom';
-import {connect, ConnectedProps} from 'react-redux';
+import _, {connect, ConnectedProps} from 'react-redux';
 
 import InfiniteLoader from 'react-window-infinite-loader';
 import ResizableWindowList from '../../../components/ResizableWindowList';
 
-import {newestConversationFirst} from '../../../selectors/conversations';
+import {newestConversationFirst, newestFilteredConversationFirst} from '../../../selectors/conversations';
 import {listNextConversations} from '../../../actions/conversations';
 
 import ConversationListHeader from '../ConversationListHeader';
+import ConversationsFilter from '../ConversationsFilter';
 import ConversationListItem from '../ConversationListItem';
 import NoConversations from '../NoConversations';
 import {SimpleLoader} from '@airyhq/components';
@@ -36,7 +37,10 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
   return {
     currentConversationId: match && match.params.id,
     conversations: newestConversationFirst(state),
+    filteredConversations: newestFilteredConversationFirst(state),
     conversationsPaginationData: state.data.conversations.all.paginationData,
+    filteredMetadata: state.data.conversations.filtered.metadata,
+    currentFilter: state.data.conversations.filtered.currentFilter,
     loading: state.data.conversations.all.paginationData.loading,
     user: state.data.user,
   };
@@ -45,9 +49,9 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationList = (props: ConversationListProps) => {
-  const listRef: RefObject<any> = React.createRef();
+  const listRef: any = createRef();
 
-  const renderConversationItem = (conversation: Conversation, style: CSSProperties) => {
+  const renderConversationItem = (conversation: Conversation, style: React.CSSProperties) => {
     const {currentConversationId} = props;
     if (conversation == null) {
       return (
@@ -67,30 +71,42 @@ const ConversationList = (props: ConversationListProps) => {
   };
 
   const renderConversationList = () => {
-    const {conversations, conversationsPaginationData, loading, listNextConversations} = props;
+    const {
+      conversations,
+      filteredConversations,
+      conversationsPaginationData,
+      filteredMetadata,
+      currentFilter,
+      loading,
+      listNextConversations,
+    } = props;
+   
 
-    const items = conversations;
-    const paginationData = conversationsPaginationData;
+    const hasFilter = Object.keys(currentFilter || {}).length > 0;
+    const items = hasFilter ? filteredConversations : conversations;
+    const metadata = hasFilter ? filteredMetadata : conversationsPaginationData;
+
     const hasMoreData = paginationData.nextCursor && paginationData.nextCursor.length > 0;
 
     const isItemLoaded = (index: number) => index < items.length;
     const itemCount = hasMoreData ? items.length + 1 : items.length;
     const loadMoreItems = () => {
-      if (!paginationData.loading) {
-        listNextConversations();
+      if (!metadata.loading) {
+        hasFilter ? listNextConversations() : listNextConversations();
       }
       return Promise.resolve(true);
     };
 
     return (
       <InfiniteLoader isItemLoaded={isItemLoaded} itemCount={itemCount} loadMoreItems={loadMoreItems}>
-        {({onItemsRendered}) => (
+        {({onItemsRendered, ref}) => (
           <div className={styles.conversationListPaginationWrapper}>
             {!items.length && !loading ? (
               <NoConversations />
             ) : (
               <ResizableWindowList
                 ref={listRef}
+                infiniteLoaderRef={ref}
                 itemCount={itemCount}
                 itemSize={115}
                 width={'100%'}
@@ -104,11 +120,16 @@ const ConversationList = (props: ConversationListProps) => {
     );
   };
 
+  const resizeList = () => {
+    //TODO
+  };
+
   return (
     <section className={styles.conversationListContainerContacts}>
       <div className={styles.conversationListContainer}>
         <section className={styles.conversationListContainerFilterBox}>
           <ConversationListHeader />
+          <ConversationsFilter onFilterVisibilityChanged={() => resizeList()} />
         </section>
       </div>
       <section className={styles.conversationListContactList}>{renderConversationList()}</section>

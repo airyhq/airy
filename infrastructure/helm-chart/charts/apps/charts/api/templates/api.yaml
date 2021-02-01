@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-config
+  namespace: {{ .Values.global.namespace }}
+data:
+  MAIL_FROM: {{ .Values.mailFrom }}
+  MAIL_PORT: "{{ .Values.mailPort }}"
+  MAIL_URL: {{ .Values.mailUrl }}
+  MAIL_USERNAME: {{ .Values.mailUsername }}
+  MAIL_PASSWORD: {{ .Values.mailPassword }}
+  JWT_SECRET: {{ randAlphaNum 128 | quote }}
+  ALLOWED_ORIGINS: {{ .Values.allowedOrigins | quote }}

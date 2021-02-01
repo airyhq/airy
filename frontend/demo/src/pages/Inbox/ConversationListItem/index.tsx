@@ -37,8 +37,9 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
-  if (message && message.content[0]) {
-    return <>{message.content[0].text}</>;
+  if (message && message.content) {
+    const messageJSON = JSON.parse(message.content);
+    return <>{messageJSON.text}</>;
   }
   return <div />;
 };

@@ -11,12 +11,17 @@ import {HttpClientInstance} from '../../InitializeAiryApi';
 
 const SET_CURRENT_CHANNELS = '@@channel/SET_CHANNELS';
 const ADD_CHANNELS = '@@channel/ADD_CHANNELS';
+const ADD_CHANNEL = '@@channel/ADD_CHANNEL';
+const REMOVE_CHANNEL = '@@channel/REMOVE_CHANNEL';
 
 export const setCurrentChannelsAction = createAction(SET_CURRENT_CHANNELS, resolve => (channels: Channel[]) =>
   resolve(channels)
 );
 
 export const addChannelsAction = createAction(ADD_CHANNELS, resolve => (channels: Channel[]) => resolve(channels));
+
+export const addChannelAction = createAction(ADD_CHANNEL, resolve => (channel: Channel) => resolve(channel));
+export const removeChannelAction = createAction(REMOVE_CHANNEL, resolve => (channel: Channel) => resolve(channel));
 
 export function listChannels() {
   return async (dispatch: Dispatch<any>) => {

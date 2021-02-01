@@ -11,4 +11,5 @@ prettier(
         "**/*.css",
     ]),
     config = "//:.prettierrc.json",
+    ignore = "//:.prettierignore",
 )

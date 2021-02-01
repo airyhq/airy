@@ -30,22 +30,21 @@ const MessengerContainer = (props: MessengerContainerProps) => {
 
   return (
     <>
-      <div className={styles.container}>
-        <div className={styles.messengerContainer}>
-          {!conversations ? (
-            <div className={styles.emptyState}>
-              <h1>Your conversations will appear here as soon as a contact messages you.</h1>
-              <p>Airy Messenger only shows new conversations from the moment you connect at least one channel.</p>
-              <EmptyStateImage />
-            </div>
-          ) : (
-            <div className={styles.messageDisplay}>
-              <MessageList conversation={currentConversation} />
-              {currentConversation && <MessageInput channelSource={currentConversation.channel.source} />}
-            </div>
-          )}
-        </div>
+      <div className={styles.messengerContainer}>
+        {!conversations ? (
+          <div className={styles.emptyState}>
+            <h1>Your conversations will appear here as soon as a contact messages you.</h1>
+            <p>Airy Messenger only shows new conversations from the moment you connect at least one channel.</p>
+            <EmptyStateImage />
+          </div>
+        ) : (
+          <div className={styles.messageDisplay}>
+            <MessageList conversation={currentConversation} />
+            {currentConversation && <MessageInput channelSource={currentConversation.channel.source} />}
+          </div>
+        )}
       </div>
+
       <ConversationMetadata conversation={currentConversation} />
     </>
   );

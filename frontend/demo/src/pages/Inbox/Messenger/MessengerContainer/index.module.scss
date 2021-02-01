@@ -34,14 +34,6 @@
   }
 }
 
-.container {
-  display: flex;
-  overflow: hidden;
-  flex-basis: auto;
-  flex-grow: 1;
-  position: relative;
-}
-
 .messageDisplay {
   @media screen and (max-width: 1050px) {
     overflow-x: scroll;

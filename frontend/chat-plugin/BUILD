@@ -8,6 +8,9 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 module_deps = [
     "//lib/typescript/types",
+    "//lib/typescript/httpclient",
+    "//lib/typescript/render",
+    "//lib/typescript/dates",
 ]
 
 web_app(

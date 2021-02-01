@@ -261,6 +261,7 @@ export class HttpClient {
   }
 }
 
+export * from './mappers';
 export * from './model';
 export * from './payload';
 export * from './messagesForChannels';

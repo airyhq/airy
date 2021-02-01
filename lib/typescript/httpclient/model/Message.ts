@@ -14,8 +14,20 @@ export interface Attachement {
   };
 }
 
+export enum MessageSource {
+  facebook = 'facebook',
+  google = 'google',
+  chatplugin = 'chat_plugin',
+  smsTwilio = 'twilio.sms',
+  whatsappTwilio = 'twilio.whatsapp',
+}
+
 export enum MessageType {
+  audio = 'audio',
+  file = 'file',
+  image = 'image',
   text = 'text',
+  video = 'video',
 }
 
 export enum MessageAlignment {
@@ -37,10 +49,7 @@ export enum SenderType {
 }
 export interface Message {
   id: string;
-  content: {
-    text: string;
-    type: MessageType;
-  };
+  content: string;
   deliveryState: MessageState;
   senderType: SenderType;
   sentAt: Date;

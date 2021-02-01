@@ -1,17 +1,11 @@
 import {h} from 'preact';
 import linkifyString from 'linkifyjs/string';
+import {MessagePayload} from 'httpclient';
 
 import styles from './index.module.scss';
 
 type AiryMessageProps = {
-  message: {
-    id: string;
-    sender_type: string;
-    content: string;
-    delivery_state: string;
-    sent_at: string;
-    state: string;
-  };
+  message: MessagePayload;
 };
 
 interface TextMessageContext {

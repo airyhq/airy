@@ -37,6 +37,6 @@ func login(cmd *cobra.Command, args []string) {
 
 func init() {
 	var email, password string
-	loginCmd.Flags().StringVarP(&email, "email", "e", "grace@hopper.com", "Email")
+	loginCmd.Flags().StringVarP(&email, "email", "e", "grace@example.com", "Email")
 	loginCmd.Flags().StringVarP(&password, "password", "p", "the_answer_is_42", "Password")
 }

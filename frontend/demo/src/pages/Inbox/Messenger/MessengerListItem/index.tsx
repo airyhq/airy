@@ -21,7 +21,7 @@ const MessengerListItem = (props: MessengerListItemProps) => {
     return conversation && <AvatarImage contact={conversation.contact} />;
   };
 
-  const messageText = message.content[0].text;
+  const messageText = message.content;
 
   return (
     <div className={styles.messageListItemContainer}>

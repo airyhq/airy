@@ -1,6 +1,6 @@
 ---
-title: Google
-sidebar_label: Google
+title: Google’s Business Messages
+sidebar_label: Google’s Business Messages
 ---
 
 The Google source provides a channel of communication between your Google

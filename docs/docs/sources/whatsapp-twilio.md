@@ -1,6 +1,6 @@
 ---
 title: WhatsApp via Twilio
-sidebar_label: WhatsApp - Twilio
+sidebar_label: WhatsApp Business API
 ---
 
 The Twilio WhatsApp source provides a channel for sending and receiving WhatsApp

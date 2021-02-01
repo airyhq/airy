@@ -1,9 +1,9 @@
 ---
 title: SMS via Twilio
-sidebar_label: SMS - Twilio
+sidebar_label: SMS
 ---
 
-The Twilio sms source provides a channel for sending and receiving SMS using the
+The Twilio SMS source provides a channel for sending and receiving SMS using the
 [Twilio API](https://www.twilio.com/).
 
 :::note

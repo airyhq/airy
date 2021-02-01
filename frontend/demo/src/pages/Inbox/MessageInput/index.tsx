@@ -57,7 +57,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
         </div>
       </div>
       <div className={styles.sendDiv}>
-        <button type="button" className={styles.sendButton} onClick={handleClick}>
+        <button type="button" className={styles.sendButton} onClick={handleClick} disabled={!input}>
           <div className={styles.sendButtonText}>
             <Paperplane />
           </div>

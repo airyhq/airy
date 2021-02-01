@@ -1,3 +1,6 @@
+@import '../../assets//scss//colors.scss';
+@import '../../assets/scss//fonts.scss';
+
 .messageListItemContainer {
   display: flex;
   flex: none;
@@ -32,8 +35,8 @@
   display: inline-flex;
   padding: 10px;
   margin-top: 5px;
-  background: #f1faff;
-  color: #212428;
+  background: var(--color-background-blue);
+  color: var(--color-text-contrast);
   border-radius: 8px;
 }
 
@@ -48,7 +51,7 @@
   display: inline-flex;
   padding: 10px;
   position: relative;
-  background: #1578d4;
+  background: var(--color-airy-blue);
   color: white;
   position: relative;
   text-align: left;
@@ -56,11 +59,8 @@
 }
 
 .messageTime {
-  font-family: 'Lato', sans-serif;
-  font-size: 0.8rem; // 13px
-  line-height: 1rem;
-  color: #737373;
-  margin: 4px 10px;
+  @include font-s;
+  color: var(--color-text-gray);
 }
 
 .avatar {

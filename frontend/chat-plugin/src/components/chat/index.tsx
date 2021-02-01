@@ -14,8 +14,8 @@ import {AiryWidgetConfiguration} from '../../config';
 import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import RenderLibrary from 'render';
-import {messageMapper, MessagePayload, SenderType, MessageState, MessageSource} from 'httpclient';
+import AiryMessage from '../../airyRenderProps/AiryMessage/index';
+import {MessagePayload, SenderType, MessageState} from 'httpclient';
 
 let ws: WebSocket;
 
@@ -128,26 +128,19 @@ const Chat = (props: Props) => {
           <HeaderBarProp render={headerBar} />
           <div className={style.chat}>
             <div id="messages" className={style.messages}>
-              {messages.map((message: MessagePayload) => {
-                const mess = messageMapper(message);
-                console.log(mess);
-                return (
-                  <MessageProp
-                    key={message.id}
-                    render={
-                      props.airyMessageProp
-                        ? () => props.airyMessageProp(ctrl)
-                        : () => (
-                            <RenderLibrary
-                              message={messageMapper(message)}
-                              source={MessageSource.chatplugin}
-                              isContact={true}
-                            />
-                          )
-                    }
-                  />
-                );
-              })}
+              {messages &&
+                messages.map((message: MessagePayload) => {
+                  return (
+                    <MessageProp
+                      key={message.id}
+                      render={
+                        props.airyMessageProp
+                          ? () => props.airyMessageProp(ctrl)
+                          : () => <AiryMessage message={message} />
+                      }
+                    />
+                  );
+                })}
             </div>
             <InputBarProp render={inputBar} />
           </div>

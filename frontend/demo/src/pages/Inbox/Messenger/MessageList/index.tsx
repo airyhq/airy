@@ -155,6 +155,8 @@ const MessageList = (props: MessageListProps) => {
           const prevWasContact = prevMessage ? isContact(prevMessage) : false;
           const nextIsSameUser = nextMessage ? isContact(message) == isContact(nextMessage) : false;
 
+          console.log(item.channel.source);
+
           return (
             <div key={message.id}>
               {hasDateChanged(prevMessage, message) && (

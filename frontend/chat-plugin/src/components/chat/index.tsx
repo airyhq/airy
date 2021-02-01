@@ -16,6 +16,7 @@ import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 import {MessageState, SenderType} from 'httpclient';
+import {MessagePayload} from 'httpclient/payload/MessagePayload';
 
 let ws: WebSocket;
 
@@ -35,17 +36,8 @@ const Chat = (props: Props) => {
   const [isChatHidden, setIsChatHidden] = useState(true);
   const [messages, setMessages] = useState([welcomeMessage]);
 
-  const getResumeToken = () => {
-    const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.has('resume_token')) {
-      localStorage.setItem('resume_token', queryParams.get('resume_token'));
-    }
-
-    return queryParams.get('resume_token') || localStorage.getItem('resume_token');
-  };
-
   useEffect(() => {
-    ws = new WebSocket(props.channel_id, onReceive, setMessages, getResumeToken());
+    ws = new WebSocket(props.channel_id, onReceive, setInitialMessages, getResumeToken());
     ws.start().catch(error => {
       console.error(error);
       setInstallError(error.message);
@@ -55,6 +47,18 @@ const Chat = (props: Props) => {
   useEffect(() => {
     updateScroll();
   }, [messages]);
+
+  const getResumeToken = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.has('resume_token')) {
+      localStorage.setItem('resume_token', queryParams.get('resume_token'));
+    }
+    return queryParams.get('resume_token') || localStorage.getItem('resume_token');
+  };
+
+  const setInitialMessages = (initalMessages: Array<MessagePayload>) => {
+    setMessages([...messages, ...initalMessages]);
+  };
 
   const ctrl = {
     toggleHideChat: () => {

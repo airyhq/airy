@@ -20,20 +20,19 @@ class WebSocket {
   channel_id: string;
   token: string;
   resume_token: string;
-  messages: [];
-  setMessages: (messages: Array<MessagePayload>) => void;
+  setInitialMessages: (messages: Array<MessagePayload>) => void;
   onReceive: messageCallbackType;
 
   constructor(
     channel_id: string,
     onReceive: messageCallbackType,
-    setMessages: (messages: Array<MessagePayload>) => void,
+    setInitialMessages: (messages: Array<MessagePayload>) => void,
     resume_token?: string
   ) {
     this.channel_id = channel_id;
     this.onReceive = onReceive;
     this.resume_token = resume_token;
-    this.setMessages = setMessages;
+    this.setInitialMessages = setInitialMessages;
   }
 
   connect = (token: string) => {
@@ -66,11 +65,14 @@ class WebSocket {
 
   start = async () => {
     const response = await start(this.channel_id, this.resume_token);
-    this.connect(response.token);
-    this.setMessages(response.messages);
-
-    if (!this.resume_token) {
-      await getResumeToken(this.token);
+    if (response.token && response.messages) {
+      this.connect(response.token);
+      this.setInitialMessages(response.messages);
+      if (!this.resume_token) {
+        await getResumeToken(this.token);
+      }
+    } else {
+      localStorage.clear();
     }
   };
 

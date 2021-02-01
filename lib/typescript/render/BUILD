@@ -5,10 +5,10 @@ package(default_visibility = ["//visibility:public"])
 ts_library(
     name = "render",
     deps = [
-        "//lib/typescript/httpclient",
-        "//lib/typescript/dates",
-        "//lib/typescript/types",
         "//frontend/assets",
+        "//lib/typescript/dates",
+        "//lib/typescript/httpclient",
+        "//lib/typescript/types",
         "@npm//@types/node",
         "@npm//@types/react",
         "@npm//linkifyjs",

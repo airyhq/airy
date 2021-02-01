@@ -163,6 +163,7 @@ exports_files(
     [
         "package.json",
         ".prettierrc.json",
+        ".prettierignore",
         "yarn.lock",
         "tsconfig.json",
     ],

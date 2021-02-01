@@ -61,8 +61,8 @@ export function isString(object: any) {
 }
 
 export class HttpClient {
-  public readonly token?: string;
   public readonly apiUrlConfig?: string;
+  public token?: string;
 
   constructor(token?: string, apiUrlConfig?: string) {
     this.token = token;

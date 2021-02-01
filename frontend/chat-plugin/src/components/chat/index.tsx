@@ -14,7 +14,7 @@ import {AiryWidgetConfiguration} from '../../config';
 import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import AiryMessage from '../../airyRenderProps/AiryMessage/index';
+import AiryMessage from '../../airyRenderProps/AiryMessage';
 import {MessagePayload, SenderType, MessageState} from 'httpclient';
 
 let ws: WebSocket;

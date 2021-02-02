@@ -10,7 +10,7 @@ integration pattern:
 - Call the [subscribe](#subscribing) endpoint
 - Consume on your URL of choice [events](#event-payload)
 - React to those events by calling the [send
-  message](api/http.md#send-a-message) endpoint
+  message](/api/endpoints/messages.md#send) endpoint
 
 You must de-duplicate messages on arrival as the webhook _does not_ guarantee
 events uniqueness.
@@ -94,9 +94,9 @@ request with the following structure:
   },
   "source": "facebook",
   "sent_at": "2020-07-20T14:18:08.584Z",
-  "text": "Message to be sent"
+  "content": '{"text":"Hello World"}'
 }
 ```
 
 For possible values of `sender.type` see the [Message model
-documentation](glossary.md#fields)
+documentation](/getting-started/glossary.md#fields)

@@ -38,7 +38,7 @@ Then open `http://localhost:8080/` in a web browser to access the Airy Demo UI
 
 ### Installation
 The bootstrap installation requires [Vagrant](https://www.vagrantup.com/downloads) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
-found, the script ```$ ./scripts/bootstrap.sh``` will attempt to install them for you. Check out our [test deployment guide](/docs/docs/guides/airy-core-in-test-env.md) for detailed information.
+found, the script ```$ ./scripts/bootstrap.sh``` will attempt to install them for you. Check out our [test deployment guide](/docs/docs/getting-started/deployment/test-environment.md) for detailed information.
 
 ### Authentication
 

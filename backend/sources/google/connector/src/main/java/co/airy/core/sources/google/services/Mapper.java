@@ -1,31 +1,20 @@
 package co.airy.core.sources.google.services;
 
 import co.airy.avro.communication.Message;
-import co.airy.core.sources.google.model.SendMessagePayload;
 import co.airy.core.sources.google.model.SendMessageRequest;
-import co.airy.mapping.ContentMapper;
-import co.airy.mapping.model.Text;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Mapper {
-    private final ContentMapper mapper;
-    Mapper(ContentMapper mapper) {
-        this.mapper = mapper;
-    }
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    public SendMessagePayload fromSendMessageRequest(SendMessageRequest sendMessageRequest) throws Exception {
+    public JsonNode fromSendMessageRequest(SendMessageRequest sendMessageRequest) throws Exception {
         final Message message = sendMessageRequest.getMessage();
-        final Text text = (Text) mapper.render(message)
-                .stream()
-                .filter(c -> c instanceof Text)
-                .findFirst()
-                .orElseThrow(() -> new Exception("google only supports text messages"));
-
-        return SendMessagePayload.builder()
-                .messageId(message.getId())
-                .representative(new SendMessagePayload.Representative("HUMAN"))
-                .text(text.getText())
-                .build();
+        final JsonNode messageNode = mapper.readTree(message.getContent());
+        ((ObjectNode) messageNode).put("messageId", message.getId());
+        return messageNode;
     }
 }

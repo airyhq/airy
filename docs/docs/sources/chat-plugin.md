@@ -1,10 +1,11 @@
 ---
-title: Chat Plugin
-sidebar_label: Chat Plugin
+title: Airy Live Chat Plugin
+sidebar_label: Airy Live Chat Plugin
 ---
 
-The Airy Core Chat Plugin is a fully-featured [source](/glossary.md#source) that
-enables conversations with anonymous website visitors through a web chat plugin.
+The Airy Live Chat Plugin is a fully-featured
+[source](/getting-started/glossary#source) that enables conversations with
+anonymous website visitors through a web chat plugin.
 
 :::tip What you will learn
 
@@ -16,7 +17,7 @@ enables conversations with anonymous website visitors through a web chat plugin.
 
 ## Connect
 
-Connects a Chat Plugin source to the Airy Core Platform.
+Connects a Chat Plugin source to Airy Core.
 
 ```
 POST /chatplugin.connect
@@ -89,7 +90,7 @@ browser.
 ## HTTP API
 
 The HTTP api adheres to standards laid out in the [core
-API](api/http.md#introduction).
+API](/api/introduction#authentication).
 
 ### Authenticating web users
 
@@ -126,14 +127,8 @@ previous conversation using the [resume endpoint](#get-a-resume-token).
   "messages": [
     {
       "id": "{UUID}",
-      "content": [
-        {
-          "text": "{String}",
-          "type": "text"
-          // Determines the schema of the content
-        }
-      ],
-      // typed source message model
+      "content": '{"text":"Hello World"}',
+      // source message payload
       "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
       "sender_type": "{string/enum}",
@@ -179,7 +174,6 @@ header.
 {
   "message": {
     "text": "{String}"
-    "type": "text"
   }
 }
 ```
@@ -189,11 +183,8 @@ header.
 ```json5
 {
   id: "{UUID}",
-  content: {
-    text: "{String}",
-    type: "text"
-    // Determines the schema of the content
-  },
+  "content": '{"text":"Hello World"}',
+  // source message payload
   state: "{String}",
   // delivery state of message, one of PENDING, FAILED, DELIVERED
   sender_type: "{string/enum}",
@@ -221,8 +212,8 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
 {
   message: {
     id: "{UUID}",
-    content: "{String}",
-    // source content string
+    "content": '{"text":"Hello World"}',
+    // source message payload
     state: "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     sender_type: "{string/enum}",

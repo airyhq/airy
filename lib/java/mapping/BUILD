@@ -1,5 +1,4 @@
 load("//tools/build:java_library.bzl", "custom_java_library")
-load("@rules_java//java:defs.bzl", "java_binary")
 load("//tools/build:junit5.bzl", "junit5")
 
 lib_deps = [
@@ -16,16 +15,6 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/mapping/**/*.java"]),
     visibility = ["//visibility:public"],
     deps = lib_deps,
-)
-
-java_binary(
-    name = "ts-generator",
-    srcs = glob(["src/ts-generator/**/*.java"]),
-    main_class = "co.airy.ts_generator.Main",
-    deps = [
-        ":mapping",
-        "@maven//:cz_habarta_typescript_generator_typescript_generator_core",
-    ],
 )
 
 [

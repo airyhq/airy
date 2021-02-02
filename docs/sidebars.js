@@ -1,11 +1,38 @@
 module.exports = {
   docs: [
-    'index',
     {
-      Overview: ['overview/architecture', 'overview/design-principles', 'overview/release-process', 'overview/kafka'],
+      '🚀 Getting Started': [
+        'getting-started/introduction',
+        'getting-started/installation',
+        {
+          Deployment: [
+            'getting-started/deployment/introduction',
+            'getting-started/deployment/vagrant',
+            'getting-started/deployment/production',
+          ],
+        },
+        'getting-started/quickstart',
+        {
+          CLI: [
+            'getting-started/cli',
+            'cli/airy',
+            'cli/airy_version',
+            'cli/airy_init',
+            'cli/airy_config',
+            'cli/airy_config_apply',
+            'cli/airy_api',
+            'cli/airy_api_signup',
+            'cli/airy_api_login',
+            'cli/airy_status',
+          ],
+        },
+        'getting-started/troubleshooting',
+        'getting-started/glossary',
+      ],
     },
     {
-      Sources: [
+      '💬 Sources': [
+        'sources/introduction',
         'sources/chat-plugin',
         'sources/facebook',
         'sources/google',
@@ -14,17 +41,44 @@ module.exports = {
       ],
     },
     {
-      Guides: [
-        'guides/contributing',
+      '🔌 API': [
+        'api/introduction',
+        'api/authentication',
         {
-          Deployment: ['guides/airy-core-in-test-env', 'guides/airy-core-in-production'],
+          'HTTP Endpoints': [
+            'api/endpoints/introduction',
+            'api/endpoints/channels',
+            'api/endpoints/conversations',
+            'api/endpoints/messages',
+            'api/endpoints/metadata',
+            'api/endpoints/tags',
+            'api/endpoints/users',
+          ],
         },
-        'guides/airy-core-and-rasa',
+        'api/websocket',
+        'api/webhook',
       ],
     },
     {
-      'API Reference': ['api/http', 'api/websocket', 'api/webhook'],
+      '✨ Apps': ['apps/ui'],
     },
-    'glossary',
+    {
+      '🛠️ Integrations': [
+        {
+          'Conversational AI /NLP': ['integrations/rasa'],
+        },
+      ],
+    },
+    {
+      '⚙️ Concepts': [
+        'concepts/architecture',
+        'concepts/design-principles',
+        'concepts/release-process',
+        'concepts/kafka',
+      ],
+    },
+    {
+      '📚 Guides': ['guides/contributing'],
+    },
   ],
 };

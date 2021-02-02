@@ -1,6 +1,23 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+DEFAULT_AIRY_CORE_CPUS = 4
+DEFAULT_AIRY_CORE_MEMORY = 7168
+DEFAULT_NGROK_ENABLED = "true"
+DEFAULT_AIRY_VERSION = "develop"
+
+airy_core_cpus = ENV.fetch("AIRY_CORE_CPUS", DEFAULT_AIRY_CORE_CPUS).to_i
+cpus = airy_core_cpus.zero? ? DEFAULT_AIRY_CORE_CPUS : airy_core_cpus
+
+airy_core_memory = ENV.fetch("AIRY_CORE_MEMORY", DEFAULT_AIRY_CORE_MEMORY).to_i
+memory = airy_core_memory.zero? ? DEFAULT_AIRY_CORE_MEMORY : airy_core_memory
+
+ngrok_enabled = ENV.fetch("NGROK_ENABLED", DEFAULT_NGROK_ENABLED).to_s
+ngrok = ngrok_enabled != "false" ? DEFAULT_NGROK_ENABLED : ngrok_enabled
+
+airy_version = ENV.fetch("AIRY_VERSION", DEFAULT_AIRY_VERSION).to_s
+version = airy_version.empty? ? DEFAULT_AIRY_VERSION : airy_version
+
 Vagrant.configure("2") do |config|
   config.vm.define "airy-core", autostart: true do |airy_core|
     airy_core.vm.box = "generic/alpine310"
@@ -9,15 +26,15 @@ Vagrant.configure("2") do |config|
     airy_core.vm.network "private_network", ip: "192.168.50.5"
     config.hostsupdater.aliases = %w[chatplugin.airy demo.airy api.airy]
     airy_core.vm.provider "virtualbox" do |vbox|
-      vbox.cpus = 4
-      vbox.memory = 7168
+      vbox.cpus = cpus
+      vbox.memory = memory
       vbox.customize [ "modifyvm", :id, "--audio", "none" ]
     end
     airy_core.vm.synced_folder "./", "/vagrant", disabled: false
     airy_core.vm.provision "pre-requisites", type: "shell" do |p|
       p.inline = "/vagrant/scripts/provision/prerequisites.sh"
     end
-    airy_core.vm.provision "core", type: "shell", env: {"AIRY_VERSION" => ENV['AIRY_VERSION']} do |c|
+    airy_core.vm.provision "core", type: "shell", env: {"AIRY_VERSION"=>version, "NGROK_ENABLED"=>ngrok} do |c|
       c.inline = "/vagrant/scripts/provision/core.sh"
     end
     airy_core.trigger.before [:halt, :reload] do |stop|

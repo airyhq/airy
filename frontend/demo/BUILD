@@ -5,15 +5,17 @@ load("//tools/build:container_push.bzl", "container_push")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 module_deps = [
+    "//frontend/assets",
     "//lib/typescript/types",
     "//lib/typescript/httpclient",
+    "//lib/typescript/render",
+    "//lib/typescript/dates",
+    "//lib/typescript/websocketclient",
 ]
 
 ts_library(
     name = "app",
-    deps = [
-        "//lib/typescript/httpclient",
-        "//lib/typescript/types",
+    deps = module_deps + [
         "@npm//@airyhq/components",
         "@npm//@types/facebook-js-sdk",
         "@npm//@types/node",
@@ -38,6 +40,7 @@ ts_library(
 web_app(
     name = "bundle",
     app_lib = ":app",
+    dev_index = "development.html",
     entry = "frontend/demo/src/index.js",
     index = ":index.html",
     module_deps = module_deps,

@@ -1,9 +1,8 @@
 import {ActionType, getType} from 'typesafe-actions';
-
 import * as actions from '../../../actions/messages';
 import {Message} from 'httpclient';
 import {DataState} from '..';
-import _ from 'lodash-es';
+import {cloneDeep, sortBy} from 'lodash-es';
 
 type Action = ActionType<typeof actions>;
 
@@ -16,27 +15,58 @@ export type MessageById = {
 };
 
 export type Messages = {
-  all: {[conversationId: string]: MessageById};
+  all: Message[];
 };
 
 const initialState = {
-  all: {},
+  all: [],
 };
 
-function organiseMessages(messages: Message[]): MessageById {
-  return _.keyBy(messages, 'id');
+function mergeMessages(oldMessages: Message[], newMessages: Message[]): Message[] {
+  const messages = cloneDeep(oldMessages);
+  newMessages.forEach((message: Message) => {
+    if (!messages.some((item: Message) => item.id === message.id)) {
+      messages.push(message);
+    }
+  });
+  return sortBy(messages, message => message.sentAt);
 }
 
-export default function messagesReducer(state = initialState, action: Action): any {
+export default function messagesReducer(state = initialState, action: Action): Messages {
   switch (action.type) {
     case getType(actions.loadingMessagesAction):
+      if (state.all[action.payload.conversationId]) {
+        return {
+          ...state,
+          all: {
+            ...state.all,
+            [action.payload.conversationId]: [
+              ...mergeMessages([...action.payload.messages], []),
+              ...state.all[action.payload.conversationId],
+            ],
+          },
+        };
+      } else {
+        return {
+          ...state,
+          all: {
+            ...state.all,
+            [action.payload.conversationId]: [...mergeMessages([...action.payload.messages], [])],
+          },
+        };
+      }
+
+    case getType(actions.addMessagesAction):
       return {
         ...state,
         all: {
           ...state.all,
-          [action.payload.conversationId]: organiseMessages(action.payload.messages),
+          [action.payload.conversationId]: [
+            ...mergeMessages(state.all[action.payload.conversationId] || [], [...action.payload.messages]),
+          ],
         },
       };
+
     default:
       return state;
   }

@@ -14,7 +14,7 @@ import styles from './index.module.scss';
 import {TableRow} from './TableRow';
 import SimpleTagForm from './SimpleTagForm';
 import EmptyStateTags from './EmptyStateTags';
-import {RootState} from '../../reducers';
+import {StateModel} from '../../reducers';
 
 const initialState = {
   modal: {
@@ -202,7 +202,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: StateModel) => ({
   tags: filteredTags(state),
   allTagsCount: state.data.tags.all.length,
   tagQuery: state.data.tags.query,

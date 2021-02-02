@@ -22,13 +22,13 @@ var cliConfigFile string
 var Version string
 var CommitSHA1 string
 
-var rootCmd = &cobra.Command{
+var RootCmd = &cobra.Command{
 	Use:              "airy",
-	Short:            "airy controls your Airy Core Platform instance",
+	Short:            "airy controls an Airy Core instance",
 	Long:             ``,
 	TraverseChildren: true,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		if cmd.Name() != "init" {
+		if cmd.Name() != "init" && cmd.Name() != "version" {
 			initConfig()
 		}
 	},
@@ -39,13 +39,13 @@ var versionCmd = &cobra.Command{
 	Short: "Prints version information",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Version: %s, GitCommit: %s", Version, CommitSHA1)
+		fmt.Printf("Version: %s, GitCommit: %s\n", Version, CommitSHA1)
 	},
 }
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Inits your Airy CLI configuration",
+	Short: "Inits your airy configuration",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		home, err := homedir.Dir()
@@ -72,7 +72,7 @@ var initCmd = &cobra.Command{
 }
 
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
+	if err := RootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
@@ -107,19 +107,19 @@ func initConfig() {
 
 func init() {
 	apiHost := ""
-	rootCmd.PersistentFlags().StringVar(&apiHost, "apihost", "http://api.airy", "Airy Core Platform HTTP API host")
-	viper.BindPFlag("apihost", rootCmd.PersistentFlags().Lookup("apihost"))
+	RootCmd.PersistentFlags().StringVar(&apiHost, "apihost", "http://api.airy", "Airy Core HTTP API host")
+	viper.BindPFlag("apihost", RootCmd.PersistentFlags().Lookup("apihost"))
 	viper.SetDefault("apihost", "http://api.airy")
 
 	apiJWTToken := ""
-	rootCmd.PersistentFlags().StringVarP(&apiJWTToken, "apiJWTToken", "", "", "apiJWTToken")
-	rootCmd.PersistentFlags().MarkHidden("apiJWTToken")
-	viper.BindPFlag("apiJWTToken", rootCmd.PersistentFlags().Lookup("apiJWTToken"))
-	rootCmd.PersistentFlags().StringVar(&cliConfigFile, "cli-config", "", "config file (default is $HOME/.airy/cli.yaml)")
-	rootCmd.AddCommand(api.APICmd)
-	rootCmd.AddCommand(config.ConfigCmd)
-	rootCmd.AddCommand(status.StatusCmd)
-	rootCmd.AddCommand(ui.UICmd)
-	rootCmd.AddCommand(versionCmd)
-	rootCmd.AddCommand(initCmd)
+	RootCmd.PersistentFlags().StringVarP(&apiJWTToken, "apiJWTToken", "", "", "apiJWTToken")
+	RootCmd.PersistentFlags().MarkHidden("apiJWTToken")
+	viper.BindPFlag("apiJWTToken", RootCmd.PersistentFlags().Lookup("apiJWTToken"))
+	RootCmd.PersistentFlags().StringVar(&cliConfigFile, "cli-config", "", "config file (default is $HOME/.airy/cli.yaml)")
+	RootCmd.AddCommand(api.APICmd)
+	RootCmd.AddCommand(config.ConfigCmd)
+	RootCmd.AddCommand(status.StatusCmd)
+	RootCmd.AddCommand(ui.UICmd)
+	RootCmd.AddCommand(versionCmd)
+	RootCmd.AddCommand(initCmd)
 }

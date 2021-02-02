@@ -1,13 +1,11 @@
 package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.core.api.communication.lucene.ExtendedQueryParser;
-import co.airy.model.metadata.MetadataKeys;
-import co.airy.model.metadata.Subject;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.ConversationIndex;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
+import co.airy.core.api.communication.lucene.ExtendedQueryParser;
 import co.airy.core.api.communication.lucene.ReadOnlyLuceneStore;
 import co.airy.core.api.communication.payload.ConversationByIdRequestPayload;
 import co.airy.core.api.communication.payload.ConversationListRequestPayload;
@@ -15,6 +13,8 @@ import co.airy.core.api.communication.payload.ConversationListResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.ResponseMetadata;
+import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.Subject;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
 import co.airy.spring.web.payload.EmptyResponsePayload;
@@ -23,7 +23,6 @@ import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -112,7 +111,7 @@ public class ConversationsController {
     private ResponseEntity<ConversationListResponsePayload> listConversations(ConversationListRequestPayload requestPayload) {
         final List<Conversation> conversations = fetchAllConversations();
         int totalSize = conversations.size();
-        conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessage().getSentAt()).reversed());
+        conversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessageContainer().getMessage().getSentAt()).reversed());
 
         final Paginator<Conversation> paginator = new Paginator<>(conversations, Conversation::getId)
                 .from(requestPayload.getCursor()).perPage(requestPayload.getPageSize());

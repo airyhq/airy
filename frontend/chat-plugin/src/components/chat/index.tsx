@@ -10,26 +10,21 @@ import AiryInputBar from '../../airyRenderProps/AiryInputBar';
 import style from './index.module.scss';
 import HeaderBarProp from '../../components/headerBar';
 import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
-import AiryMessage from '../../airyRenderProps/AiryMessage';
 import {AiryWidgetConfiguration} from '../../config';
 import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
+import AiryMessage from '../../airyRenderProps/AiryMessage';
+import {MessagePayload, SenderType, MessageState} from 'httpclient';
 
 let ws: WebSocket;
 
-const welcomeMessage = {
+const welcomeMessage: MessagePayload = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
-  sender_type: 'app_user',
-  content: [
-    {
-      text: 'Hello! How can we help you?',
-      type: 'text',
-    },
-  ],
-  delivery_state: 'undefined',
-  sent_at: 'undefined',
-  state: 'delivered',
+  content: JSON.stringify({text: 'Hello! How can we help you?'}),
+  delivery_state: MessageState.delivered,
+  sender_type: SenderType.appUser,
+  sent_at: new Date(),
 };
 
 type Props = AiryWidgetConfiguration & RoutableProps;
@@ -38,19 +33,10 @@ const Chat = (props: Props) => {
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(true);
-  const [messages, setMessages] = useState([welcomeMessage]);
-
-  const getResumeToken = () => {
-    const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.has('resume_token')) {
-      localStorage.setItem('resume_token', queryParams.get('resume_token'));
-    }
-
-    return queryParams.get('resume_token') || localStorage.getItem('resume_token');
-  };
+  const [messages, setMessages] = useState<MessagePayload[]>([welcomeMessage]);
 
   useEffect(() => {
-    ws = new WebSocket(props.channel_id, onReceive, getResumeToken());
+    ws = new WebSocket(props.channel_id, onReceive, setInitialMessages, getResumeToken());
     ws.start().catch(error => {
       console.error(error);
       setInstallError(error.message);
@@ -60,6 +46,18 @@ const Chat = (props: Props) => {
   useEffect(() => {
     updateScroll();
   }, [messages]);
+
+  const getResumeToken = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.has('resume_token')) {
+      localStorage.setItem('resume_token', queryParams.get('resume_token'));
+    }
+    return queryParams.get('resume_token') || localStorage.getItem('resume_token');
+  };
+
+  const setInitialMessages = (initalMessages: Array<MessagePayload>) => {
+    setMessages([...messages, ...initalMessages]);
+  };
 
   const ctrl = {
     toggleHideChat: () => {
@@ -80,7 +78,6 @@ const Chat = (props: Props) => {
     sendMessage: (text: string) => {
       ws.onSend({
         text,
-        type: 'text',
       });
     },
   };
@@ -90,7 +87,7 @@ const Chat = (props: Props) => {
   };
 
   const onReceive = (data: IMessage) => {
-    setMessages(messages => [...messages, JSON.parse(data.body).message]);
+    setMessages((messages: MessagePayload[]) => [...messages, JSON.parse(data.body).message]);
   };
 
   const updateScroll = () => {
@@ -134,18 +131,19 @@ const Chat = (props: Props) => {
           <HeaderBarProp render={headerBar} />
           <div className={style.chat}>
             <div id="messages" className={style.messages}>
-              {messages.map(message => {
-                return (
-                  <MessageProp
-                    key
-                    render={
-                      props.airyMessageProp
-                        ? () => props.airyMessageProp(ctrl)
-                        : () => <AiryMessage message={message} />
-                    }
-                  />
-                );
-              })}
+              {messages &&
+                messages.map((message: MessagePayload) => {
+                  return (
+                    <MessageProp
+                      key={message.id}
+                      render={
+                        props.airyMessageProp
+                          ? () => props.airyMessageProp(ctrl)
+                          : () => <AiryMessage message={message} />
+                      }
+                    />
+                  );
+                })}
             </div>
             <InputBarProp render={inputBar} />
           </div>

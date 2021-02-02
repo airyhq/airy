@@ -1,11 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import _, {connect, ConnectedProps} from 'react-redux';
+
 import {Tag as TagModel} from 'httpclient';
 import {Settings} from '../../reducers/data/settings';
 
 import {ReactComponent as Close} from '../../assets/images/icons/close.svg';
 import styles from './index.module.scss';
-import {RootState} from '../../reducers';
+import {StateModel} from '../../reducers';
 
 type TagProps = {
   tag: TagModel;
@@ -13,8 +14,15 @@ type TagProps = {
   onClick?: () => void;
   removeTag?: () => void;
   variant?: 'default' | 'light';
-  type?: string;
+} & ConnectedProps<typeof connector>;
+
+const mapStateToProps = (state: StateModel) => {
+  return {
+    settings: state.data.settings,
+  };
 };
+
+const connector = connect(mapStateToProps, null);
 
 type tagState = {
   settings: Settings;
@@ -56,10 +64,4 @@ export const Tag = ({tag, expanded, variant, onClick, removeTag, settings}: TagP
   );
 };
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    settings: state.data.settings,
-  };
-};
-
-export default connect(mapStateToProps)(Tag);
+export default connector(Tag);

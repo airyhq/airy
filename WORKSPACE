@@ -10,7 +10,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "fd79bd3344b9c95a09eaa94597a49069f943e089",
+    commit = "cdb56bffd21ea94fe909394a2c7321135dfd506f",
     remote = "https://github.com/airyhq/bazel-tools.git",
     shallow_since = "1607079534 +0100",
 )
@@ -34,7 +34,6 @@ maven_install(
         "com.google.auth:google-auth-library-oauth2-http:0.20.0",
         "com.jayway.jsonpath:json-path:2.4.0",
         "com.twilio.sdk:twilio:7.51.0",
-        "cz.habarta.typescript-generator:typescript-generator-core:2.26.723",
         "io.confluent:kafka-avro-serializer:5.5.1",
         "io.confluent:kafka-schema-registry-client:5.5.1",
         "io.confluent:kafka-schema-registry:5.5.1",

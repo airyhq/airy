@@ -8,6 +8,9 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 module_deps = [
     "//lib/typescript/types",
+    "//lib/typescript/httpclient",
+    "//lib/typescript/render",
+    "//lib/typescript/dates",
 ]
 
 web_app(
@@ -44,8 +47,8 @@ ts_library(
 
 ts_config(
     name = "widget_tsconfig",
-    src = "tsconfig.json",
-    deps = ["//:tsconfig.json"],
+    src = "bazel.tsconfig.json",
+    deps = ["//:bazel.tsconfig.json"],
 )
 
 pkg_tar(

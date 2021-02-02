@@ -1,6 +1,6 @@
 ---
-title: Facebook
-sidebar_label: Facebook
+title: Facebook Messenger
+sidebar_label: Facebook Messenger
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -11,7 +11,7 @@ Core Platform instance.
 :::tip What you will learn
 
 - The required steps to configure the Facebook source
-- How to connect a Facebook page to the Airy Core Platform
+- How to connect a Facebook page to Airy Core
 
 :::
 
@@ -47,7 +47,9 @@ Now you can use the app id and the app secret for the following environment vari
 
 :::note
 
-Refer to the [test](/guides/airy-core-in-test-env#connect-sources) guide or the [production](/guides/airy-core-in-production#connect-sources) one to set these variables in your Airy Core Platform instance.
+Refer to the [test](getting-started/deployment/vagrant.md#connect-sources) guide
+or the [production](getting-started/deployment/production.md#connect-sources)
+one to set these variables in your Airy Core instance.
 
 :::
 
@@ -60,7 +62,10 @@ a value of your choice.
 
 :::note
 
-Refer to the [test](/guides/airy-core-in-test-env#connect-sources) guide or the [production](/guides/airy-core-in-production#connect-sources) one to set these variables in your Airy Core Platform instance.
+Refer to the [test](/getting-started/deployment/vagrant.md#connect-sources)
+guide or the
+[production](/getting-started/deployment/production.md#connect-sources) one to
+set these variables in your Airy Core instance.
 
 :::
 
@@ -71,24 +76,24 @@ click on "Edit subscription". You will see something like this:
 <img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/webhook.png')} />
 
 Once the verification process has been completed, Facebook will immediately
-start sending events to your Airy Core Platform instance.
+start sending events to your Airy Core instance.
 
 ### Obtain a page token
 
-The next step is to obtain a page token, so the Airy Core Platform can send messages
-on behalf of your page. The fastest way to get one is to use the graph explorer that
-Facebook provides [Graph
+The next step is to obtain a page token, so that Airy Core can send messages on
+behalf of your page. The fastest way to get one is to use the graph explorer
+that Facebook provides [Graph
 Explorer](https://developers.facebook.com/tools/explorer/).
 
 On the `User or Page` option, select `Get Page Token` and click on `Generate Access Token`:
 
 <img alt="Facebook token page" src={useBaseUrl('img/sources/facebook/token.jpg')} />
 
-You're now ready to connect a Facebook page to the Airy Core Platform 🎉.
+You're now ready to connect a Facebook page to your Airy Core instace 🎉.
 
 ## Connect
 
-Connects a Facebook page to the Airy Core Platform.
+Connects a Facebook page to Airy Core.
 
 ```
 POST /facebook.connect
@@ -124,7 +129,7 @@ POST /facebook.connect
 
 ## Disconnect
 
-Disconnects a Facebook page from the Airy Core Platform
+Disconnects a Facebook page from Airy Core
 
 ```
 POST /facebook.disconnect
@@ -168,45 +173,5 @@ the nature of the request, the response time may vary.
       "connected": true
     }
   ]
-}
-```
-
-## Send a template message
-
-With Facebook messenger you can send [templates](https://developers.facebook.com/docs/messenger-platform/send-messages/templates) to your contacts,
-which is useful for automations, FAQs, receipts and many more use cases. To send Facebook templates using the [send message API](/api/http.md#send-a-message) you have to
-first build an attachment for Facebook using their template model. Quoting from the docs:
-
-> The body of the request follows a standard format for all template types, with the `message.attachment.payload` property containing the type and content details that are specific to each template type:
->
-> ```json5
-> {
->   "recipient": {
->     "id": "<PSID>"
->   },
->   "message": {
->     "attachment": {
->       "type": "template",
->       "payload": {
->         "template_type": "<TEMPLATE_TYPE>"
->         // ...
->       }
->     }
->   }
-> }
-> ```
-
-Next take the `message.attachment.payload` field and add it to the `message` field on the API request like so:
-
-```json5
-{
-  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
-  "message": {
-    "payload": {
-      "template_type": "<TEMPLATE_TYPE>"
-      // ...
-    },
-    "type": "source.template"
-  }
 }
 ```

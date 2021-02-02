@@ -1,19 +1,19 @@
-airy controls your Airy Core Platform instance
+airy controls an Airy Core instance
 
 Usage:
   airy [command]
 
 Available Commands:
-  api         Interacts with the Airy Core Platform HTTP API
-  config      Manages your Airy Core Platform instance via airy.yaml
+  api         Interacts with the Airy Core HTTP API
+  config      Manages an Airy Core instance via airy.yaml
   help        Help about any command
-  init        Inits your Airy CLI configuration
-  status      Reports the status of your Airy Core Platform
-  ui          Opens the Airy Core Platform UI in your local browser
+  init        Inits your airy configuration
+  status      Reports the status of an Airy Core instance
+  ui          Opens the Airy Core UI in your local browser
   version     Prints version information
 
 Flags:
-      --apihost string      Airy Core Platform HTTP API host (default "http://api.airy")
+      --apihost string      Airy Core HTTP API host (default "http://api.airy")
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
   -h, --help                help for airy
 

@@ -1,4 +1,4 @@
-import React, {CSSProperties} from 'react';
+import React, {CSSProperties, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
@@ -37,8 +37,9 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
-  if (message && message.content[0]) {
-    return <>{message.content[0].text}</>;
+  if (message && message.content) {
+    const messageJSON = JSON.parse(message.content);
+    return <>{messageJSON.text}</>;
   }
   return <div />;
 };
@@ -48,6 +49,12 @@ const ConversationListItem = (props: ConversationListItemProps) => {
 
   const participant = conversation.contact;
   const unread = conversation.unreadMessageCount > 0;
+
+  useEffect(() => {
+    if (active && unread) {
+      return readConversations(conversation.id);
+    }
+  }, [active, conversation]);
 
   return (
     <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>

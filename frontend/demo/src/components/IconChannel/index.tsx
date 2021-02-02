@@ -13,7 +13,7 @@ import {ReactComponent as WhatsappAvatar} from '../../assets/images/icons/whatsa
 import {ReactComponent as AiryAvatar} from '../../assets/images/icons/airy_avatar.svg';
 import {ReactComponent as AiryIcon} from '../../assets/images/icons/airy-icon.svg';
 
-import styles from './style.module.scss';
+import styles from './index.module.scss';
 
 type IconChannelProps = {
   channel: Channel;

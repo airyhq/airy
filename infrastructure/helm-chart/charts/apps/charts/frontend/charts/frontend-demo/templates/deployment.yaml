@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-demo
+  name: frontend-ui
   namespace: {{ .Values.global.namespace }}
   labels:
-    app: frontend-demo
+    app: frontend-ui
     type: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend-demo
+      app: frontend-ui
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       labels:
-        app: frontend-demo
+        app: frontend-ui
     spec:
       containers:
       - name: app

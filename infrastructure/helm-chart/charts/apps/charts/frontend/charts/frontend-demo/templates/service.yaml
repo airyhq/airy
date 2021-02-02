@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-demo
+  name: frontend-ui
   namespace: {{ .Values.global.namespace }}
 spec:
   ports:
@@ -10,4 +10,4 @@ spec:
       protocol: TCP
   type: NodePort
   selector:
-    app: frontend-demo
+    app: frontend-ui

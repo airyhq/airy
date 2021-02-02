@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ComponentType} from 'react';
 import {ListOnItemsRenderedProps, ListChildComponentProps, VariableSizeList as List} from 'react-window';
-import './index.module.scss';
+import styles from './index.module.scss';
 
 type ResizableWindowProps = {
   itemCount: number;
@@ -46,7 +46,7 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
   resizeToFit = () => {
     if (this.state.mounted) {
       this.setState({
-        height: Math.floor(this.resizeRef.current.getBoundingClientRect().height) + 200,
+        height: Math.floor(this.resizeRef.current.getBoundingClientRect().height),
       });
     }
   };
@@ -63,7 +63,7 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
   render() {
     const {itemCount, itemSize, width, children, onItemsRendered} = this.props;
     return (
-      <div ref={this.resizeRef} className="resizablewindowlist">
+      <div ref={this.resizeRef} className={styles.resizableWindowList}>
         <List
           ref={this.setRef}
           height={this.state.height}

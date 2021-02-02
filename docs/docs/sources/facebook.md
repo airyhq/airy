@@ -96,7 +96,7 @@ You're now ready to connect a Facebook page to your Airy Core instace 🎉.
 Connects a Facebook page to Airy Core.
 
 ```
-POST /facebook.connect
+POST /channels.facebook.connect
 ```
 
 - `page_id` is the Facebook page id
@@ -132,7 +132,7 @@ POST /facebook.connect
 Disconnects a Facebook page from Airy Core
 
 ```
-POST /facebook.disconnect
+POST /channels.facebook.disconnect
 ```
 
 import ChannelDisconnect from './channel-disconnect.mdx'
@@ -141,7 +141,7 @@ import ChannelDisconnect from './channel-disconnect.mdx'
 
 ## Explore
 
-`POST /facebook.explore`
+`POST /channels.facebook.explore`
 
 A synchronous endpoint that makes a request to Facebook
 to list the available Facebook pages. Some of those pages may already

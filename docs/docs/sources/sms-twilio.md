@@ -27,7 +27,7 @@ to your running Airy Core instance.
 Next call the Platform API:
 
 ```
-POST /twilio.sms.connect
+POST /channels.twilio.sms.connect
 ```
 
 - `phone_number` The phone number as listed in your [Twilio
@@ -61,7 +61,7 @@ POST /twilio.sms.connect
 ## Disconnect
 
 ```
-POST /twilio.sms.disconnect
+POST /channels.twilio.sms.disconnect
 ```
 
 import ChannelDisconnect from './channel-disconnect.mdx'

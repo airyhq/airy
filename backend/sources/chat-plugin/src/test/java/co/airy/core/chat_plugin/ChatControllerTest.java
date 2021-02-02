@@ -106,7 +106,7 @@ public class ChatControllerTest {
     void authenticateSendAndReceive() throws Exception {
         final String authPayload = "{\"channel_id\":\"" + channel.getId() + "\"}";
 
-        final String response = mvc.perform(post("/chatplugin.authenticate")
+        final String response = mvc.perform(post("/channels.chatplugin.authenticate")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(authPayload))
                 .andExpect(status().isOk())
@@ -137,7 +137,7 @@ public class ChatControllerTest {
     void canResumeConversation() throws Exception {
         final String authPayload = "{\"channel_id\":\"" + channel.getId() + "\"}";
 
-        String response = mvc.perform(post("/chatplugin.authenticate")
+        String response = mvc.perform(post("/channels.chatplugin.authenticate")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .content(authPayload))
                 .andExpect(status().isOk())
@@ -167,7 +167,7 @@ public class ChatControllerTest {
 
         retryOnException(() -> {
             final String resumePayload = "{\"resume_token\":\"" + resumeToken + "\"}";
-            mvc.perform(post("/chatplugin.authenticate")
+            mvc.perform(post("/channels.chatplugin.authenticate")
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .content(resumePayload))
                     .andExpect(status().isOk())

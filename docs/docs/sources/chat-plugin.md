@@ -20,7 +20,7 @@ anonymous website visitors through a web chat plugin.
 Connects a Chat Plugin source to Airy Core.
 
 ```
-POST /chatplugin.connect
+POST /channels.chatplugin.connect
 ```
 
 - `name` is a unique identifier of your choice
@@ -45,7 +45,7 @@ POST /chatplugin.connect
 ## Disconnect
 
 ```
-POST /chatplugin.disconnect
+POST /channels.chatplugin.disconnect
 ```
 
 import ChannelDisconnect from './channel-disconnect.mdx'
@@ -94,7 +94,7 @@ API](/api/introduction#authentication).
 
 ### Authenticating web users
 
-`POST /chatplugin.authenticate`
+`POST /channels.chatplugin.authenticate`
 
 The request returns an authentication token that needs to be included in the
 WebSocket connection handshake.

@@ -34,7 +34,7 @@ sending events to your Airy Core instance.
 Connects a Google Business Account to Airy Core.
 
 ```
-POST /google.connect
+POST /channels.google.connect
 ```
 
 - `gbm_id` The id of your Google Business Message [agent](https://developers.google.com/business-communications/business-messages/reference/business-communications/rest/v1/brands.agents#Agent).
@@ -64,7 +64,7 @@ POST /google.connect
 ## Disconnect
 
 ```
-POST /google.disconnect
+POST /channels.google.disconnect
 ```
 
 import ChannelDisconnect from './channel-disconnect.mdx'

@@ -45,7 +45,7 @@ public class ChatController {
         this.mapper = mapper;
     }
 
-    @PostMapping("/chatplugin.authenticate")
+    @PostMapping("/channels.chatplugin.authenticate")
     ResponseEntity<?> authenticateVisitor(@RequestBody @Valid AuthenticationRequestPayload requestPayload) {
         final UUID channelId = requestPayload.getChannelId();
         final String resumeToken = requestPayload.getResumeToken();

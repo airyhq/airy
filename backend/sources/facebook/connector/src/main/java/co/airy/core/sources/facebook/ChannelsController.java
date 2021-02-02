@@ -37,7 +37,7 @@ public class ChannelsController {
         this.stores = stores;
     }
 
-    @PostMapping("/facebook.explore")
+    @PostMapping("/channels.facebook.explore")
     ResponseEntity<?> explore(@RequestBody @Valid ExploreRequestPayload requestPayload) {
         try {
             final List<PageWithConnectInfo> pagesInfo = api.getPagesInfo(requestPayload.getAuthToken());
@@ -72,7 +72,7 @@ public class ChannelsController {
         }
     }
 
-    @PostMapping("/facebook.connect")
+    @PostMapping("/channels.facebook.connect")
     ResponseEntity<?> connect(@RequestBody @Valid ConnectRequestPayload requestPayload) {
         final String token = requestPayload.getPageToken();
         final String pageId = requestPayload.getPageId();

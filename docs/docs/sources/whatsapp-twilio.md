@@ -28,7 +28,7 @@ to your Airy Core running instance.
 Next call the Airy Core API for connecting channels:
 
 ```
-POST /twilio.whatsapp.connect
+POST /channels.twilio.whatsapp.connect
 ```
 
 - `phone_number` The phone number as listed in your [Twilio
@@ -63,7 +63,7 @@ POST /twilio.whatsapp.connect
 ## Disconnect
 
 ```
-POST /twilio.whatsapp.disconnect
+POST /channels.twilio.whatsapp.disconnect
 ```
 
 import ChannelDisconnect from './channel-disconnect.mdx'

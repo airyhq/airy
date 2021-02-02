@@ -36,7 +36,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
                 .authorizeRequests()
                 .antMatchers("/actuator/**", "/ws.chatplugin").permitAll()
-                .mvcMatchers("/chatplugin.authenticate").permitAll()
+                .mvcMatchers("/channels.chatplugin.authenticate").permitAll()
                 .anyRequest().authenticated();
     }
 

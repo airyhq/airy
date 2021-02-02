@@ -3,6 +3,7 @@ package co.airy.core.api.communication;
 import co.airy.core.api.communication.dto.MessageContainer;
 import co.airy.core.api.communication.payload.MessageListRequestPayload;
 import co.airy.core.api.communication.payload.MessageListResponsePayload;
+import co.airy.core.api.communication.payload.PaginationData;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +55,7 @@ public class MessagesController {
 
         return MessageListResponsePayload.builder()
                 .data(page.getData().stream().map(mapper::fromMessageContainer).collect(toList()))
-                .responseMetadata(MessageListResponsePayload.ResponseMetadata.builder()
+                .paginationData(PaginationData.builder()
                         .nextCursor(page.getNextCursor())
                         .previousCursor(cursor)
                         .total(messages.size())

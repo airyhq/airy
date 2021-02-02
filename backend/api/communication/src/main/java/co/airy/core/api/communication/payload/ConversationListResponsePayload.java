@@ -13,5 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class ConversationListResponsePayload {
     private List<ConversationResponsePayload> data;
-    private ResponseMetadata responseMetadata;
+    private PaginationData paginationData;
 }

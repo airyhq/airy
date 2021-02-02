@@ -12,7 +12,7 @@ import MessengerContainer from './MessengerContainer';
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    loading: state.data.conversations.all.metadata.loading,
+    loading: state.data.conversations.all.paginationData.loading,
     conversations: state.data.conversations.all,
   };
 };

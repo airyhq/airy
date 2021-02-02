@@ -74,7 +74,7 @@ Find users whose name ends with "Lovelace":
       "unread_message_count": 1
     }
   ],
-  "response_metadata": {
+  "pagination_data": {
     "previous_cursor": "",
     "next_cursor": "",
     "filtered_total": 1,

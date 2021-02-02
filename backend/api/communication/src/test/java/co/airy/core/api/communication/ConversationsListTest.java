@@ -115,7 +115,7 @@ class ConversationsListTest {
                 () -> webTestHelper.post("/conversations.list", "{} ", userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
-                        .andExpect(jsonPath("response_metadata.total", is(conversations.size())))
+                        .andExpect(jsonPath("pagination_data.total", is(conversations.size())))
                         .andExpect(jsonPath("$.data[*].last_message.sent_at").value(contains(
                                 conversations.stream()
                                         .map(TestConversation::getLastMessageSentAt)
@@ -178,8 +178,8 @@ class ConversationsListTest {
                 () -> webTestHelper.post("/conversations.list", payload, userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(count)))
-                        .andExpect(jsonPath("response_metadata.filtered_total", is(count)))
-                        .andExpect(jsonPath("response_metadata.total", is(conversations.size()))),
+                        .andExpect(jsonPath("pagination_data.filtered_total", is(count)))
+                        .andExpect(jsonPath("pagination_data.total", is(conversations.size()))),
                 String.format("Expected %d conversation returned", count));
     }
 }

@@ -103,11 +103,11 @@ const MessageList = (props: MessageListProps) => {
   };
 
   const isLoadingConversation = () => {
-    return item && item.metadata && item.metadata.loading;
+    return item && item.paginationData && item.paginationData.loading;
   };
 
   const hasPreviousMessages = () => {
-    return !!(item && item.metadata && item.metadata.next_cursor);
+    return !!(item && item.paginationData && item.paginationData.nextCursor);
   };
 
   const scrollbarVisible = () => {

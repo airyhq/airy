@@ -35,7 +35,7 @@ Paginated endpoints _always_ respond with the following JSON format:
       "field2": "this is fine"
     }
   ],
-  "response_metadata": {
+  "pagination_data": {
     "previous_cursor": "",
     "next_cursor": "",
     "filtered_total": 1,
@@ -50,7 +50,7 @@ The response comes in two parts:
 
   An array of objects. Object specification depends on the endpoint.
 
-- `response_metadata`
+- `pagination_data`
   An object with the following fields:
 
   - `previous_cursor`

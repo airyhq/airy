@@ -38,10 +38,10 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
     currentConversationId: match && match.params.id,
     conversations: newestConversationFirst(state),
     filteredConversations: newestFilteredConversationFirst(state),
-    conversationsMetadata: state.data.conversations.all.metadata,
-    filteredMetadata: state.data.conversations.filtered.metadata,
+    conversationsPaginationData: state.data.conversations.all.paginationData,
+    filteredPaginationData: state.data.conversations.filtered.paginationData,
     currentFilter: state.data.conversations.filtered.currentFilter,
-    loading: state.data.conversations.all.metadata.loading,
+    loading: state.data.conversations.all.paginationData.loading,
     user: state.data.user,
   };
 };
@@ -74,8 +74,8 @@ const ConversationList = (props: ConversationListProps) => {
     const {
       conversations,
       filteredConversations,
-      conversationsMetadata,
-      filteredMetadata,
+      conversationsPaginationData,
+      filteredPaginationData,
       currentFilter,
       loading,
       listNextConversations,
@@ -83,16 +83,14 @@ const ConversationList = (props: ConversationListProps) => {
 
     const hasFilter = Object.keys(currentFilter || {}).length > 0;
     const items = hasFilter ? filteredConversations : conversations;
-    const metadata = hasFilter ? filteredMetadata : conversationsMetadata;
+    const paginationData = hasFilter ? filteredPaginationData : conversationsPaginationData;
 
-    const {next_cursor: nextCursor} = conversationsMetadata;
-
-    const hasMoreData = nextCursor && nextCursor.length > 0;
+    const hasMoreData = paginationData.nextCursor && paginationData.nextCursor.length > 0;
 
     const isItemLoaded = (index: number) => index < items.length;
     const itemCount = hasMoreData ? items.length + 1 : items.length;
     const loadMoreItems = () => {
-      if (!metadata.loading) {
+      if (!paginationData.loading) {
         hasFilter ? listNextConversations() : listNextConversations();
       }
       return Promise.resolve(true);

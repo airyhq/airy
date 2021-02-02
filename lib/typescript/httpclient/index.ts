@@ -1,5 +1,6 @@
 import {ChannelsPayload} from './payload/ChannelsPayload';
 import {channelsMapper} from './mappers/channelsMapper';
+import {paginatedPayloadMapper} from './mappers/paginatedPayloadMapper';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelRequestPayload,
@@ -8,14 +9,14 @@ import {
   ListTagsResponsePayload,
   CreateTagRequestPayload,
   LoginViaEmailRequestPayload,
+  SendMessagesRequestPayload,
 } from './payload';
-import {SendMessagesRequestPayload} from './payload/SendMessagesRequestPayload';
+import {PaginatedPayload} from './payload/PaginatedPayload';
 import {ChannelApiPayload} from './payload/ChannelApiPayload';
 import {connectChannelApiMapper} from './mappers/connectChannelApiMapper';
 import {channelMapper} from './mappers/channelMapper';
 import {disconnectChannelApiMapper} from './mappers/disconnectChannelApiMapper';
 import {ConversationPayload} from './payload/ConversationPayload';
-import {PaginatedPayload} from './payload/PaginatedPayload';
 import {conversationsMapper} from './mappers/conversationsMapper';
 import {ListMessagesRequestPayload} from './payload/ListMessagesRequestPayload';
 import {TagConversationRequestPayload} from './payload/TagConversationRequestPayload';
@@ -139,8 +140,9 @@ export class HttpClient {
         'conversations.list',
         conversationListRequest
       );
-      const {response_metadata} = response;
-      return {data: conversationsMapper(response.data), metadata: response_metadata};
+      const {pagination_data} = response;
+
+      return paginatedPayloadMapper({data: conversationsMapper(response.data), pagination_data: pagination_data});
     } catch (error) {
       return error;
     }
@@ -168,8 +170,9 @@ export class HttpClient {
         cursor: conversationListRequest.cursor,
         page_size: conversationListRequest.pageSize,
       });
-      const {response_metadata} = response;
-      return {data: messageMapperData(response), metadata: response_metadata};
+      const {pagination_data} = response;
+
+      return paginatedPayloadMapper({data: messageMapperData(response), pagination_data: pagination_data});
     } catch (error) {
       return error;
     }

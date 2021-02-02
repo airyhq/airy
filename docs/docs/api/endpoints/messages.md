@@ -41,7 +41,7 @@ latest.
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
     }
   ],
-  "response_metadata": {
+  "pagination_data": {
     "previous_cursor": "",
     "next_cursor": "",
     "filtered_total": 1,

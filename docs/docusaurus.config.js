@@ -52,7 +52,7 @@ module.exports = {
           position: 'right',
           href: 'https://airy.co/docs/getting-started/troubleshooting',
         },
-      ]
+      ],
     },
     footer: {
       style: 'light',

@@ -26,7 +26,7 @@ module.exports = {
       logo: {
         alt: 'Airy Documentation',
         src: 'img/logo.svg',
-        srcDark: 'img/dark.svg',
+        srcDark: 'img/logo_dark.svg',
       },
     },
     footer: {

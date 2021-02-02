@@ -47,7 +47,9 @@ Now you can use the app id and the app secret for the following environment vari
 
 :::note
 
-Refer to the [test](getting-started/deployment/test-environment.md#connect-sources) guide or the [production](getting-started/deployment/prod-environment.md#connect-sources) one to set these variables in your Airy Core instance.
+Refer to the [test](getting-started/deployment/vagrant.md#connect-sources) guide
+or the [production](getting-started/deployment/production.md#connect-sources)
+one to set these variables in your Airy Core instance.
 
 :::
 
@@ -60,7 +62,10 @@ a value of your choice.
 
 :::note
 
-Refer to the [test](/getting-started/deployment/test-environment.md#connect-sources) guide or the [production](/getting-started/deployment/prod-environment.md#connect-sources) one to set these variables in your Airy Core instance.
+Refer to the [test](/getting-started/deployment/vagrant.md#connect-sources)
+guide or the
+[production](/getting-started/deployment/production.md#connect-sources) one to
+set these variables in your Airy Core instance.
 
 :::
 

@@ -4,19 +4,29 @@ sidebar_label: Installation
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 You can run the entire Airy Core on your machine inside an isolated Vagrant box. The Airy CLI enables you to interact with any Airy Core instance whether it is running locally or in the cloud.
 
 ## Install the Airy CLI
 
-### Install the airy binary with curl on MacOS
+### Download the binary with curl
 
-You can download the latest release with the following command or replace the version portion of the url with the specific version.
+1. Download the latest release with:
 
-1. Download the latest release:
+<Tabs
+groupId="operating-systems"
+defaultValue="win"
+values={[
+{label: 'Linux', value: 'lin'},
+{label: 'MacOS', value: 'mac'},
+]
+}>
+<TabItem value="mac">
 
-```sh
-curl https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)/darwin/amd64/airy -o "airy"
+```bash
+curl "https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)/darwin/amd64/airy" -o "airy"
 ```
 
 :::note
@@ -26,11 +36,40 @@ For example, to download version 0.6.0 on macOS, type:
 
 curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/darwin/amd64/airy -o "airy"
 :::
+</TabItem>
+
+<TabItem value="lin">
+
+```bash
+curl -LO "https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)/linux/amd64/airy" -o "airy"
+```
+
+:::note
+To download a specific version, replace the $(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt) portion of the command with the specific version.
+
+For example, to download version 0.6.0 on Linux, type:
+
+curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/linux/amd64/airy -o "airy"
+:::
+</TabItem>
+
+</Tabs>
+
+<Tabs
+groupId="operating-systems"
+defaultValue="win"
+values={[
+{label: 'Linux', value: 'lin'},
+{label: 'MacOS', value: 'mac'},
+]
+}>
+
+<TabItem value="mac">
 
 2. Validate the binary (optional)
 3. Make the **airy** binary executable.
 
-```
+```bash
 chmod +x ./airy
 ```
 
@@ -41,21 +80,21 @@ sudo mv ./airy /usr/local/bin/airy && \
 sudo chown root: /usr/local/bin/airy
 ```
 
-### Install with Homebrew on macOS
+</TabItem>
 
-### Install on Linux
+<TabItem value="lin">
 
-1. Download the latest release:
-
-```sh
-curl -LO https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)/darwin/amd64/airy -o "airy"
-```
 2. Validate the binary (optional)
 3. Install **airy**
 
-```
+```bash
 sudo install -o root -g root -m 0755 airy /usr/local/bin/airy
 ```
+
+</TabItem>
+</Tabs>
+
+### Install with a package manager
 
 ### Build the Airy CLI from source
 
@@ -65,12 +104,11 @@ sudo install -o root -g root -m 0755 airy /usr/local/bin/airy
 bazel build //infrastructure/cli:airy
 ```
 
-4. Move the **airy** binary to a file location on your system PATH.
+2. Move the **airy** binary to a file location on your system PATH.
+
 ```bash
 sudo cp bazel-out/darwin-fastbuild/bin/infrastructure/cli/airy ~/bin
 ```
-
-
 
 ## Bootstrap Airy Core
 

@@ -28,6 +28,7 @@ module.exports = {
     },
     {
       '💬 Sources': [
+        'sources/introduction',
         'sources/chat-plugin',
         'sources/facebook',
         'sources/google',

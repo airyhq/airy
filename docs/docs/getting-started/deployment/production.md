@@ -271,7 +271,7 @@ You must set appropriate `host` attributes in the rules for:
 
 - API endpoints (defaults to `api.airy`)
 - Webhooks endpoints (defaults to `webhooks.airy`)
-- Demo (defaults to `demo.airy`)
+- Demo (defaults to `ui.airy`)
 - Chat plugin (defaults to `chatplugin.airy`)
 
 If you are not using Traefik, you can use the

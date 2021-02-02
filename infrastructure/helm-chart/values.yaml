@@ -6,5 +6,5 @@ global:
   ingress:
     apiHost: "api.airy"
     webhooksHost: "webhooks.airy"
-    uiHost: "demo.airy"
+    uiHost: "ui.airy"
     chatpluginHost: "chatplugin.airy"

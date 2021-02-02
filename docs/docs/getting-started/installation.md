@@ -135,7 +135,7 @@ your hosts file. You can skip this step and add the following lines to your
 hosts file yourself.
 
 ```
-192.168.50.5  demo.airy
+192.168.50.5  ui.airy
 192.168.50.5  api.airy
 192.168.50.5  chatplugin.airy
 ```

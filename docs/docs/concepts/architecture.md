@@ -41,7 +41,7 @@ which run as part of Airy Core:
 
 ## Frontend
 
-- frontend-demo - Web application for viewing messages
+- frontend-ui - Web application for viewing messages
 - frontend-chat-plugin - Web chat plugin
 
 ## Airy Controller

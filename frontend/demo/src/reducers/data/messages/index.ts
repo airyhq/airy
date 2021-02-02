@@ -2,7 +2,7 @@ import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/messages';
 import {Message} from 'httpclient';
 import {DataState} from '..';
-import {sortBy} from 'lodash-es';
+import {cloneDeep, sortBy} from 'lodash-es';
 
 type Action = ActionType<typeof actions>;
 
@@ -22,7 +22,13 @@ const initialState = {
   all: [],
 };
 
-function organiseMessages(messages: Message[]): Message[] {
+function mergeMessages(oldMessages: Message[], newMessages: Message[]): Message[] {
+  const messages = cloneDeep(oldMessages);
+  newMessages.forEach((message: Message) => {
+    if (!messages.some((item: Message) => item.id === message.id)) {
+      messages.push(message);
+    }
+  });
   return sortBy(messages, message => message.sentAt);
 }
 
@@ -35,7 +41,7 @@ export default function messagesReducer(state = initialState, action: Action): M
           all: {
             ...state.all,
             [action.payload.conversationId]: [
-              ...organiseMessages([...action.payload.messages]),
+              ...mergeMessages([...action.payload.messages], []),
               ...state.all[action.payload.conversationId],
             ],
           },
@@ -45,7 +51,7 @@ export default function messagesReducer(state = initialState, action: Action): M
           ...state,
           all: {
             ...state.all,
-            [action.payload.conversationId]: [...organiseMessages([...action.payload.messages])],
+            [action.payload.conversationId]: [...mergeMessages([...action.payload.messages], [])],
           },
         };
       }
@@ -56,7 +62,7 @@ export default function messagesReducer(state = initialState, action: Action): M
         all: {
           ...state.all,
           [action.payload.conversationId]: [
-            ...organiseMessages((state.all[action.payload.conversationId] || []).concat(action.payload.messages)),
+            ...mergeMessages(state.all[action.payload.conversationId] || [], [...action.payload.messages]),
           ],
         },
       };

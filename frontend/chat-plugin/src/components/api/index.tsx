@@ -29,7 +29,7 @@ export const getResumeToken = async (token: string) => {
     body: JSON.stringify({}),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
   });
   const jsonResumeToken = await resumeChat.json();

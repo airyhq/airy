@@ -17,8 +17,8 @@ const mapStateToProps = (state: StateModel) => {
   return {
     conversationsFilter: state.data.conversations.filtered.currentFilter,
     isFilterActive: isFilterActive(state),
-    conversationsMetadata: state.data.conversations.all.metadata,
-    filteredMetadata: state.data.conversations.filtered.metadata,
+    conversationsPaginationData: state.data.conversations.all.paginationData,
+    filteredPaginationData: state.data.conversations.filtered.paginationData,
   };
 };
 
@@ -105,21 +105,23 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   };
 
   const itemsCount = () => {
-    const {conversationsMetadata, filteredMetadata} = props;
+    const {conversationsPaginationData, filteredPaginationData} = props;
     const formatter = new Intl.NumberFormat('en-US');
 
-    if (filteredMetadata.loaded) {
+    if (filteredPaginationData.loaded) {
       return (
         <div className={styles.filterCount}>
-          {`Filtered: ${filteredMetadata.filtered_total} Total: ${filteredMetadata.total}`}
+          {`Filtered: ${filteredPaginationData.filtered_total} Total: ${filteredPaginationData.total}`}
         </div>
       );
     }
 
-    if (conversationsMetadata.total) {
+    if (conversationsPaginationData.total) {
       return (
         <div className={styles.filterCount}>
-          {`${formatter.format(filteredMetadata.filtered_total || conversationsMetadata.total)} Conversations`}
+          {`${formatter.format(
+            filteredPaginationData.filtered_total || conversationsPaginationData.total
+          )} Conversations`}
         </div>
       );
     }

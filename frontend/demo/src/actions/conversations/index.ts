@@ -23,7 +23,10 @@ export const loadingConversationsAction = createAction(CONVERSATIONS_LOADING, re
 
 export const mergeConversationsAction = createAction(
   CONVERSATIONS_MERGE,
-  resolve => (conversations: PaginatedResponse<Conversation> | Conversation) => resolve({conversations})
+  resolve => (
+    conversations: Conversation[],
+    paginationData?: {previousCursor: string; nextCursor: string; total: number}
+  ) => resolve({conversations, paginationData})
 );
 
 export const readConversationsAction = createAction(CONVERSATION_READ, resolve => (conversationId: string) =>
@@ -66,7 +69,7 @@ export function listConversations() {
     dispatch(loadingConversationsAction());
     return HttpClientInstance.listConversations({page_size: 10})
       .then((response: PaginatedResponse<Conversation>) => {
-        dispatch(mergeConversationsAction(response));
+        dispatch(mergeConversationsAction(response.data, response.paginationData));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {
@@ -82,7 +85,7 @@ export function listNextConversations() {
     dispatch(loadingConversationsAction());
     return HttpClientInstance.listConversations({cursor: cursor})
       .then((response: PaginatedResponse<Conversation>) => {
-        dispatch(mergeConversationsAction(response));
+        dispatch(mergeConversationsAction(response.data, response.paginationData));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {

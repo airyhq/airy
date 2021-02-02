@@ -43,7 +43,7 @@ export type AllConversationsState = {
 export type FilteredState = {
   items: ConversationMap;
   currentFilter: ConversationFilter;
-  metadata: AllConversationMetadata;
+  paginationData: AllConversationPaginationData;
 };
 
 export type ErrorState = {
@@ -211,16 +211,28 @@ function allReducer(
 ): AllConversationsState {
   switch (action.type) {
     case getType(actions.mergeConversationsAction):
-      return {
-        ...state,
-        items: mergeConversations(state.items, action.payload.conversations.data as MergedConversation[]),
-        paginationData: {
-          ...state.paginationData,
-          ...action.payload.conversations.paginationData,
-          loading: false,
-          loaded: true,
-        },
-      };
+      if (action.payload.paginationData) {
+        return {
+          ...state,
+          items: mergeConversations(state.items, action.payload.conversations as MergedConversation[]),
+          paginationData: {
+            ...state.paginationData,
+            ...action.payload.paginationData,
+            loading: false,
+            loaded: true,
+          },
+        };
+      } else {
+        return {
+          ...state,
+          items: mergeConversations(state.items, action.payload.conversations as MergedConversation[]),
+          paginationData: {
+            ...state.paginationData,
+            loading: false,
+            loaded: true,
+          },
+        };
+      }
 
     case getType(actions.loadingConversationsAction):
       return {
@@ -312,7 +324,7 @@ function allReducer(
 function filteredReducer(
   state: FilteredState = {
     items: {},
-    metadata: {previous_cursor: null, next_cursor: null, total: 0},
+    paginationData: {previousCursor: null, nextCursor: null, total: 0},
     currentFilter: {},
   },
   action: FilterAction | Action
@@ -322,16 +334,16 @@ function filteredReducer(
       return {
         currentFilter: action.payload.filter,
         items: mergeConversations({}, action.payload.conversations),
-        metadata: action.payload.metadata,
+        paginationData: action.payload.paginationData,
       };
     case getType(filterActions.mergeFilteredConversationsAction):
       return {
         currentFilter: action.payload.filter,
         items: mergeFilteredConversations(state.items, action.payload.conversations),
-        metadata: action.payload.metadata,
+        paginationData: action.payload.paginationData,
       };
     case getType(filterActions.resetFilteredConversationAction):
-      return {items: {}, metadata: {previous_cursor: null, next_cursor: null, total: 0}, currentFilter: {}};
+      return {items: {}, paginationData: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: {}};
     case getType(filterActions.updateFilteredConversationsAction):
       return {
         ...state,

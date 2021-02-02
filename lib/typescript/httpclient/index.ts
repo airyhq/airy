@@ -9,7 +9,7 @@ import {
   ListTagsResponsePayload,
   CreateTagRequestPayload,
   LoginViaEmailRequestPayload,
-  SendMessagesRequestPayload
+  SendMessagesRequestPayload,
 } from './payload';
 import {PaginatedPayload} from './payload/PaginatedPayload';
 import {ChannelApiPayload} from './payload/ChannelApiPayload';

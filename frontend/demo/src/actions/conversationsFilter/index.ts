@@ -1,6 +1,6 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {Conversation, ConversationFilter} from 'httpclient';
+import {Conversation, ConversationFilter, PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 
 import {StateModel} from '../../reducers';
@@ -15,13 +15,19 @@ export const UPDATE_CONVERSATION_FILTER = '@@conversation/UPDATE_FILTER';
 export const resetFilteredConversationAction = createAction(RESET_FILTERED_CONVERSATIONS);
 export const setFilteredConversationsAction = createAction(
   SET_FILTERED_CONVERSATIONS,
-  resolve => (conversations: Conversation[], filter: ConversationFilter, metadata: ResponseMetadataPayload) =>
-    resolve({conversations, filter, metadata})
+  resolve => (
+    conversations: Conversation[],
+    filter: ConversationFilter,
+    paginationData: {previousCursor: string; nextCursor: string; total: number}
+  ) => resolve({conversations, filter, paginationData})
 );
 export const mergeFilteredConversationsAction = createAction(
   MERGE_FILTERED_CONVERSATIONS,
-  resolve => (conversations: Conversation[], filter: ConversationFilter, metadata: ResponseMetadataPayload) =>
-    resolve({conversations, filter, metadata})
+  resolve => (
+    conversations: Conversation[],
+    filter: ConversationFilter,
+    paginationData: {previousCursor: string; nextCursor: string; total: number}
+  ) => resolve({conversations, filter, paginationData})
 );
 export const updateFilteredConversationsAction = createAction(
   UPDATE_CONVERSATION_FILTER,
@@ -65,12 +71,12 @@ const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, 
           page_size: 10,
           cursor,
           filters: filterToLuceneSyntax(filter),
-        }).then((response: {data: Conversation[]; metadata: ResponseMetadataPayload}) => {
+        }).then((response: PaginatedResponse<Conversation>) => {
           if (isEqual(filter, state().data.conversations.filtered.currentFilter)) {
             if (cursor) {
-              dispatch(mergeFilteredConversationsAction(response.data, filter, response.metadata));
+              dispatch(mergeFilteredConversationsAction(response.data, filter, response.paginationData));
             } else {
-              dispatch(setFilteredConversationsAction(response.data, filter, response.metadata));
+              dispatch(setFilteredConversationsAction(response.data, filter, response.paginationData));
             }
             return Promise.resolve(true);
           }

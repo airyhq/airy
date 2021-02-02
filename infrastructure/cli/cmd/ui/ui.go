@@ -2,12 +2,14 @@ package ui
 
 import (
 	"fmt"
-	"log"
 	"os/exec"
 	"runtime"
 
 	"github.com/spf13/cobra"
 )
+
+//TODO make this a config
+const url = "http://ui.airy/"
 
 // UICmd opens the Airy Core UI
 var UICmd = &cobra.Command{
@@ -15,14 +17,10 @@ var UICmd = &cobra.Command{
 	TraverseChildren: true,
 	Short:            "Opens the Airy Core UI in your local browser",
 	Long:             ``,
-	Run:              demo,
+	Run:              ui,
 }
 
-func demo(cmd *cobra.Command, args []string) {
-	// Initialize the api request
-
-	url := "http://ui.airy/"
-
+func ui(cmd *cobra.Command, args []string) {
 	var err error
 
 	switch runtime.GOOS {
@@ -35,8 +33,8 @@ func demo(cmd *cobra.Command, args []string) {
 	default:
 		err = fmt.Errorf("unsupported platform")
 	}
-	if err != nil {
-		log.Fatal(err)
-	}
 
+	if err != nil {
+		fmt.Println("could not open the Airy UI: ", err)
+	}
 }

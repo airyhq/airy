@@ -27,6 +27,32 @@ module.exports = {
         alt: 'Airy Documentation',
         src: 'img/logo.svg',
       },
+      items: [
+        {
+          target: '_self',
+          label: 'Airy Core',
+          position: 'left',
+          href: 'https://airy.co/docs/airycore',
+        },
+        {
+          target: '_self',
+          label: 'Airy Enterprise',
+          position: 'left',
+          href: 'https://airy.co/docs/airyenterprise',
+        },
+        {
+          href: 'https://github.com/airyhq/airy',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
+          position: 'right',
+        },
+        {
+          target: '_self',
+          label: 'Need help?',
+          position: 'right',
+          href: 'https://airy.co/docs/getting-started/troubleshooting',
+        },
+      ]
     },
     footer: {
       style: 'light',

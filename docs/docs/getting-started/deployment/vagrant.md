@@ -40,7 +40,7 @@ your hosts file. You can skip this step and add the following lines to your
 hosts file yourself.
 
 ```
-192.168.50.5  demo.airy
+192.168.50.5  ui.airy
 192.168.50.5  api.airy
 192.168.50.5  chatplugin.airy
 ```
@@ -63,7 +63,7 @@ local machine. You can see an example request to the API by running the
 
 ## Access the UI
 
-The UI can be accessed through http://demo.airy.
+The UI can be accessed through http://ui.airy.
 
 The frontend UI for the Airy chat plugin can be accessed through
 http://chatplugin.airy/example. Refer to [the Airy Live Chat

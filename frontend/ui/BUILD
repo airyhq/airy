@@ -41,10 +41,10 @@ web_app(
     name = "bundle",
     app_lib = ":app",
     dev_index = "development.html",
-    entry = "frontend/demo/src/index.js",
+    entry = "frontend/ui/src/index.js",
     index = ":index.html",
     module_deps = module_deps,
-    static_assets = "//frontend/demo/public",
+    static_assets = "//frontend/ui/public",
 )
 
 pkg_tar(
@@ -72,5 +72,5 @@ container_image(
 
 container_push(
     registry = "ghcr.io/airyhq/frontend",
-    repository = "demo",
+    repository = "ui",
 )

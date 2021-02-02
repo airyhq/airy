@@ -123,7 +123,7 @@ Here is a quick overview of how the repository is organized:
 
 - `frontend`
 
-  This directory contains the code of a demo epplication which showcases
+  This directory contains the code of a demo application which showcases
   the feature of the platform.
 
 - `infrastructure`

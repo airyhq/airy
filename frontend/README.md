@@ -11,9 +11,9 @@ The Frontend section of the Airy core platform contains the user interaction(UI)
 Here is a quick introduction to the frontend projects:
 
 
-- `Demo`
+- `UI`
 
-  The [Demo project](https://github.com/airyhq/airy/tree/develop/frontend/demo) is a minimum UI implementation of the provided [Airy Core Platform API](https://docs.airy.co/api/http). 
+  The [UI project](https://github.com/airyhq/airy/tree/develop/frontend/ui) is a minimum UI implementation of the provided [Airy Core Platform API](https://docs.airy.co/api/http). 
 
 - `Chat_Plugin`
 

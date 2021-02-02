@@ -96,8 +96,6 @@ sudo install -o root -g root -m 0755 airy /usr/local/bin/airy
 </TabItem>
 </Tabs>
 
-### Install with a package manager
-
 ### Build the Airy CLI from source
 
 1. Build the cli target with Bazel

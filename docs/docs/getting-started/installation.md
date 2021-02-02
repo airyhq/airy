@@ -7,7 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-You can run the entire Airy Core on your machine inside an isolated Vagrant box. The Airy CLI enables you to interact with any Airy Core instance whether it is running locally or in the cloud.
+You can run the entire Airy Core on your machine inside an isolated Vagrant box. We recommend to install the Aiy CLI first which will aid you in the process of installation and managing your Airy Core instance.
 
 ## Install the Airy CLI
 
@@ -20,7 +20,7 @@ groupId="operating-systems"
 defaultValue="win"
 values={[
 {label: 'Linux', value: 'lin'},
-{label: 'MacOS', value: 'mac'},
+{label: 'macOS', value: 'mac'},
 ]
 }>
 <TabItem value="mac">
@@ -30,7 +30,7 @@ curl "https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-core
 ```
 
 :::note
-To download a specific version, replace the $(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt) portion of the command with the specific version.
+To download a specific version, replace the `$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)` portion of the command with the specific version.
 
 For example, to download version 0.6.0 on macOS, type:
 
@@ -45,7 +45,7 @@ curl -LO "https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-
 ```
 
 :::note
-To download a specific version, replace the $(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt) portion of the command with the specific version.
+To download a specific version, replace the `$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)` portion of the command with the specific version.
 
 For example, to download version 0.6.0 on Linux, type:
 
@@ -107,7 +107,7 @@ bazel build //infrastructure/cli:airy
 2. Move the **airy** binary to a file location on your system PATH.
 
 ```bash
-sudo cp bazel-out/darwin-fastbuild/bin/infrastructure/cli/airy ~/bin
+sudo cp bazel-out/darwin-fastbuild/bin/infrastructure/cli/airy /usr/local/bin/airy
 ```
 
 ## Bootstrap Airy Core

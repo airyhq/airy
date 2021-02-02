@@ -63,9 +63,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
                 if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    final String jwtToken = accessor.getFirstNativeHeader(HttpHeaders.AUTHORIZATION);
+                    String authToken = accessor.getFirstNativeHeader(HttpHeaders.AUTHORIZATION);
+                    if (authToken != null && authToken.startsWith("Bearer")) {
+                        authToken = authToken.substring(7);
+                    }
+
                     try {
-                        final Principal principal = jwt.authenticate(jwtToken);
+                        final Principal principal = jwt.authenticate(authToken);
                         accessor.setUser(principal);
                     } catch (Exception e) {
                         log.error(String.format("STOMP Command: %s, token: %s \n Failed to authenticate", accessor.getCommand(), jwtToken));

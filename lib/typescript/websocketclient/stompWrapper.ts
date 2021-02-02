@@ -22,7 +22,7 @@ export class StompWrapper {
   initConnection = () => {
     this.stompClient = new Client({
       connectHeaders: {
-        Authorization: this.authToken,
+        Authorization: `Bearer ${this.authToken}`,
       },
       brokerURL: this.url,
       reconnectDelay: 2000,

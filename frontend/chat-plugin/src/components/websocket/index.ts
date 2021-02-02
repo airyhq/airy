@@ -41,7 +41,7 @@ class WebSocket {
     this.client = new Client({
       brokerURL: `ws${TLS_PREFIX}://${API_HOST}/ws.chatplugin`,
       connectHeaders: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
       },
       debug: function(str) {
         console.info(str);

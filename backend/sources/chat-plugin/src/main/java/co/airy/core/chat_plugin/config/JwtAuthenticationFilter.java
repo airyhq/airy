@@ -26,9 +26,12 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
-        String header = req.getHeader(HttpHeaders.AUTHORIZATION);
+        String authToken = req.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authToken != null && authToken.startsWith("Bearer")) {
+            authToken = authToken.substring(7);
+        }
 
-        if (header == null) {
+        if (authToken == null) {
             chain.doFilter(req, res);
             return;
         }
@@ -39,15 +42,11 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         chain.doFilter(req, res);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (token != null) {
-            final Principal principal = jwt.authenticate(token);
+    private UsernamePasswordAuthenticationToken getAuthentication(String token) {
+        final Principal principal = jwt.authenticate(token);
 
-            if (principal != null) {
-                return new UsernamePasswordAuthenticationToken(principal, null, List.of());
-            }
-            return null;
+        if (principal != null) {
+            return new UsernamePasswordAuthenticationToken(principal, null, List.of());
         }
         return null;
     }

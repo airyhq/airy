@@ -48,12 +48,10 @@ export async function parseBody(response: Response): Promise<any> {
     body = JSON.parse(body);
   }
 
-  const errorResponse = {
+  throw {
     status: response.status,
     body: body,
   };
-
-  throw errorResponse;
 }
 
 export function isString(object: any) {
@@ -71,7 +69,7 @@ export class HttpClient {
 
   private async doFetchFromBackend(url: string, body?: Object): Promise<any> {
     if (this.token) {
-      headers['Authorization'] = this.token;
+      headers['Authorization'] = `Bearer ${this.token}`;
     }
     if (!(body instanceof FormData)) {
       if (!isString(body)) {

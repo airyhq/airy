@@ -61,7 +61,7 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/linux/amd64/airy -o "airy
 groupId="operating-systems"
 defaultValue="mac"
 values={[
-{label: 'Linux', value: 'lin'},
+{label: 'Linux', value: 'linux'},
 {label: 'MacOS', value: 'mac'},
 ]
 }>

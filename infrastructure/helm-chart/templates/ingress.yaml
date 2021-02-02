@@ -249,7 +249,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend-demo
+                name: frontend-ui
                 port:
                   number: 80
     - host: {{ .Values.global.ingress.chatpluginHost }}

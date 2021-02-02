@@ -1,3 +1,7 @@
+const isDev = process.env.NODE_ENV === 'development';
+const URL = 'https://docs.airy.co/';
+const SWAP_URL = isDev ? 'http://localhost:3000' : URL;
+
 module.exports = {
   title: 'Airy Documentation',
   tagline: 'Airy documentation website',
@@ -32,13 +36,13 @@ module.exports = {
           target: '_self',
           label: 'Airy Core',
           position: 'left',
-          href: 'https://airy.co/docs/airycore',
+          href: 'https://docs.airy.co',
         },
         {
           target: '_self',
           label: 'Airy Enterprise',
           position: 'left',
-          href: 'https://airy.co/docs/airyenterprise',
+          href: 'https://enterprise.airy.co',
         },
         {
           href: 'https://github.com/airyhq/airy',
@@ -50,7 +54,7 @@ module.exports = {
           target: '_self',
           label: 'Need help?',
           position: 'right',
-          href: 'https://airy.co/docs/getting-started/troubleshooting',
+          href: `${SWAP_URL}/getting-started/troubleshooting`,
         },
       ],
     },

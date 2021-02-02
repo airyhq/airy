@@ -262,7 +262,7 @@ spec:
                 name: sources-chatplugin
                 port:
                   number: 80
-          - path: /channels.chatplugin.authenticate
+          - path: /chatplugin.authenticate
             pathType: Prefix
             backend:
               service:

@@ -31,3 +31,19 @@ for more information.
   ]
 }
 ```
+
+## Connecting channels
+
+- [Airy Live Chat Plugin](sources/chat-plugin.md#connect)
+- [Facebook Messenger](sources/facebook.md#connect)
+- [Google's Business Messages](sources/google.md#connect)
+- [SMS](sources/sms-twilio.md#connect)
+- [Whatsapp Business API](sources/whatsapp-twilio.md#connect)
+
+## Disconnecting channels
+
+- [Airy Live Chat Plugin](sources/chat-plugin.md#disconnect)
+- [Facebook Messenger](sources/facebook.md#disconnect)
+- [Google's Business Messages](sources/google.md#disconnect)
+- [SMS](sources/sms-twilio.md#disconnect)
+- [Whatsapp Business API](sources/whatsapp-twilio.md#disconnect)

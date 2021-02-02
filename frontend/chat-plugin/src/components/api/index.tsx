@@ -39,7 +39,7 @@ export const getResumeToken = async (token: string) => {
 
 export const start = async (channel_id: string, resume_token: string) => {
   try {
-    const response = await fetch(`http${TLS_PREFIX}://${API_HOST}/channels.chatplugin.authenticate`, {
+    const response = await fetch(`http${TLS_PREFIX}://${API_HOST}/chatplugin.authenticate`, {
       method: 'POST',
       body: JSON.stringify({
         channel_id: channel_id,

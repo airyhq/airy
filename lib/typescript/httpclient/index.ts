@@ -98,9 +98,9 @@ export class HttpClient {
     }
   }
 
-  public async exploreChannels(requestPayload: ExploreChannelRequestPayload) {
+  public async exploreFacebookChannels(requestPayload: ExploreChannelRequestPayload) {
     try {
-      const response: ChannelsPayload = await this.doFetchFromBackend('channels.explore', requestPayload);
+      const response: ChannelsPayload = await this.doFetchFromBackend('facebook.channels.explore', requestPayload);
       return channelsMapper(response, requestPayload.source);
     } catch (error) {
       return error;
@@ -108,21 +108,13 @@ export class HttpClient {
   }
 
   public async connectChannel(requestPayload: ConnectChannelRequestPayload) {
-    try {
-      const response: ChannelApiPayload = await this.doFetchFromBackend(
-        'channels.connect',
-        connectChannelApiMapper(requestPayload)
-      );
-      return channelMapper(response);
-    } catch (error) {
-      return error;
-    }
+    // TODO implement per source
   }
 
-  public async disconnectChannel(requestPayload: DisconnectChannelRequestPayload) {
+  public async disconnectChannel(source: string, requestPayload: DisconnectChannelRequestPayload) {
     try {
       const response: ChannelsPayload = await this.doFetchFromBackend(
-        'channels.disconnect',
+        `channels.${source}.disconnect`,
         disconnectChannelApiMapper(requestPayload)
       );
       return channelsMapper(response);

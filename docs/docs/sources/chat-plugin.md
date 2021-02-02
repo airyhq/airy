@@ -94,7 +94,7 @@ API](/api/introduction#authentication).
 
 ### Authenticating web users
 
-`POST /channels.chatplugin.authenticate`
+`POST /chatplugin.authenticate`
 
 The request returns an authentication token that needs to be included in the
 WebSocket connection handshake.

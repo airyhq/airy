@@ -26,7 +26,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const ConversationContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
   useEffect(() => {
     props.listConversations();
-  });
+  }, []);
 
   return <Messenger />;
 };

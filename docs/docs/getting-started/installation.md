@@ -45,6 +45,5 @@ use that configuration file with the `kubectl` utility, for example:
 kubectl --kubeconfig ~/.airy/kube.conf get pods
 ```
 
-Check out our [guide for running in test
-environment](getting-started/deployment/test-environment.md) for detailed
-information.
+Check out our [guide for running Airy Core in a test
+environment](getting-started/deployment/vagrant.md) for detailed information.

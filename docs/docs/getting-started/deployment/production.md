@@ -1,5 +1,5 @@
 ---
-title: Running Airy Core in production
+title: Production
 sidebar_label: Production
 ---
 
@@ -203,7 +203,9 @@ must configure the system via the `airy.yaml` file, then you can proceed:
 helm install core ./helm-chart/charts/apps/ --values ./airy.yaml --timeout 1000s
 ```
 
-The API `Airy apps`, the Frontend UI and the Frontend Chatplugin start by default, while all the other apps are optional and are started if there is provided configuration for them in the `airy.yaml` file.
+The API `Airy apps`, the Frontend UI and the Frontend of the Airy Live Chat
+plugin start by default, while all the other apps are optional and are started
+if there is provided configuration for them in the `airy.yaml` file.
 
 At this point you should have a running `Airy Core` in your environment 🎉.
 
@@ -214,10 +216,12 @@ If afterwards you need to modify or add other config parameters in the
 airy config apply --config ./airy.yaml --kube-config /path/to/your/kube.conf
 ```
 
-Make sure you point the `--kube-config` flag to your Kubernetes configuration file.
+Make sure you point the `--kube-config` flag to your Kubernetes configuration
+file.
 
-If you want to deploy the Airy Core with a specific version, you must set the version in your
-`airy.yaml` file, under the `global.appImageTag` configuration key.
+If you want to deploy a specific version of Airy Core, you must set the version
+in your `airy.yaml` file, under the `global.appImageTag` configuration key to
+the desired version.
 
 ## Network
 
@@ -225,10 +229,10 @@ If you want to deploy the Airy Core with a specific version, you must set the ve
 
 The helm chart creates separate NodePort service for every source with the
 naming convention `sources-SOURCE_NAME-webhook`. These services must be exposed
-publicly on the Internet, so that the sources can send messages and events to
-the webhook services, inside the Kubernetes cluster.
+publicly on the Internet, so that Airy Core can integrate with the source via a
+webhook.
 
-To get the ports on which the webhook services are running, you can run:
+Find out on which ports the webhook services are running:
 
 ```sh
 kubectl get service -l airy=sources.webhook --output jsonpath={.items[*].spec.ports[*].nodePort}
@@ -256,7 +260,8 @@ Ingress resources. You can choose an [Kubernetes ingress
 controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 in accordance to your needs or preferences. If you are using the
 [Traefik](https://traefik.io/) ingress controller, you can edit the
-`infrastructure/helm-chart/templates/ingress.yaml` file to modify the `host` records and apply the Kubernetes manifest:
+`infrastructure/helm-chart/templates/ingress.yaml` file to modify the `host`
+records and apply the Kubernetes manifest:
 
 ```bash script
 kubectl apply -f infrastructure/helm-chart/templates/ingress.yaml
@@ -270,8 +275,8 @@ You must set appropriate `host` attributes in the rules for:
 - Chat plugin (defaults to `chatplugin.airy`)
 
 If you are not using Traefik, you can use the
-`infrastructure/helm-chart/templates/ingress.yaml` file as a guide to create your own
-Kubernetes manifest for your preferred ingress controller.
+`infrastructure/helm-chart/templates/ingress.yaml` file as a guide to create
+your own Kubernetes manifest for your preferred ingress controller.
 
 If your Kubernetes cluster is not directly reachable on the Internet, you will
 need a public LoadBalancer or a `reverse proxy` to tunnel the traffic to the

@@ -9,4 +9,4 @@ sidebar_label: Overview
 
 The Airy CLI is a developer tool to help you build, test, and manage Airy directly from your terminal.
 
-The CLI is easy to install, works on macOS, Windows, and Linux.
+The CLI is easy to [install](/getting-started/installation.md) and works on macOS, Windows, and Linux.

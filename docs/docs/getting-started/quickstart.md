@@ -33,7 +33,7 @@ token=$(echo $(curl -H 'Content-Type: application/json' -d \
 \"email\":\"grace@example.com\", \
 \"password\":\"the_answer_is_42\" \
 }" api.airy/users.login) | jq -r '.token')
-curl -H "Content-Type: application/json" -H "Authorization: $token" -d \
+curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 "{
     \"name\": \"chat plugin source\"
 }" api.airy/chatplugin.connect
@@ -67,7 +67,7 @@ created. it should return the message you have just sent.
 <img alt="conversations.list" src={useBaseUrl('img/getting-started/quickstart/conversation_list.gif')} />
 
 ```bash
-curl -H "Content-Type: application/json" -H "Authorization: $token" -d "{}" \
+curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
 api.airy/conversations.list | jq .
 ```
 

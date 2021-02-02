@@ -27,14 +27,17 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
-        String header = req.getHeader(HttpHeaders.AUTHORIZATION);
+        String authToken = req.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authToken != null && authToken.startsWith("Bearer")) {
+            authToken = authToken.substring(7);
+        }
 
-        if (header == null) {
+        if (authToken == null) {
             chain.doFilter(req, res);
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(authToken);
         if (authentication == null) {
             res.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -44,15 +47,11 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         chain.doFilter(req, res);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (token != null) {
-            final String user = jwt.authenticate(token);
+    private UsernamePasswordAuthenticationToken getAuthentication(String token) {
+        final String user = jwt.authenticate(token);
 
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, List.of());
-            }
-            return null;
+        if (user != null) {
+            return new UsernamePasswordAuthenticationToken(user, null, List.of());
         }
         return null;
     }

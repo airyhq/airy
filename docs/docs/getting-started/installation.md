@@ -17,9 +17,9 @@ You can run the entire Airy Core on your machine inside an isolated Vagrant box.
 
 <Tabs
 groupId="operating-systems"
-defaultValue="win"
+defaultValue="mac"
 values={[
-{label: 'Linux', value: 'lin'},
+{label: 'Linux', value: 'linux'},
 {label: 'macOS', value: 'mac'},
 ]
 }>
@@ -38,7 +38,7 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/darwin/amd64/airy -o "air
 :::
 </TabItem>
 
-<TabItem value="lin">
+<TabItem value="linux">
 
 ```bash
 curl -LO "https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)/linux/amd64/airy" -o "airy"
@@ -57,7 +57,7 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/linux/amd64/airy -o "airy
 
 <Tabs
 groupId="operating-systems"
-defaultValue="win"
+defaultValue="mac"
 values={[
 {label: 'Linux', value: 'lin'},
 {label: 'MacOS', value: 'mac'},
@@ -66,8 +66,8 @@ values={[
 
 <TabItem value="mac">
 
-2. Validate the binary (optional)
-3. Make the **airy** binary executable.
+1. Validate the binary (optional)
+2. Make the **airy** binary executable.
 
 ```bash
 chmod +x ./airy
@@ -82,7 +82,7 @@ sudo chown root: /usr/local/bin/airy
 
 </TabItem>
 
-<TabItem value="lin">
+<TabItem value="linux">
 
 2. Validate the binary (optional)
 3. Install **airy**

@@ -25,7 +25,8 @@ module.exports = {
       title: 'Documentation',
       logo: {
         alt: 'Airy Documentation',
-        src: 'img/logo.svg',
+        src: 'img/logo_light.svg',
+        srcDark: 'img/logo_dark.svg',
       },
     },
     footer: {

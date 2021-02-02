@@ -139,11 +139,7 @@ if [ -z ${AIRY_VERSION+x} ]; then
     esac
 fi
 
-if [[ ${NGROK_ENABLED} != "false" ]]; then
-    NGROK_ENABLED="true"
-fi
-
-AIRY_VERSION=${AIRY_VERSION} NGROK_ENABLED=${NGROK_ENABLED} AIRY_CORE_CPUS=${AIRY_CORE_CPUS} AIRY_CORE_MEMORY=${AIRY_CORE_MEMORY} vagrant up
+AIRY_VERSION=${AIRY_VERSION} vagrant up
 
 mkdir -p ~/.airy
 cd $infra_path

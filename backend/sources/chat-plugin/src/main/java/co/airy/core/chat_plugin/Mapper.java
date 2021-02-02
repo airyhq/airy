@@ -12,6 +12,7 @@ public class Mapper {
         return MessageResponsePayload.builder()
                 .content(message.getContent())
                 .senderType(message.getSenderType().toString().toLowerCase())
+                .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .state(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))

@@ -5,7 +5,11 @@ module.exports = {
         'getting-started/introduction',
         'getting-started/installation',
         {
-          Deployment: ['getting-started/deployment/test-environment', 'getting-started/deployment/prod-environment'],
+          Deployment: [
+            'getting-started/deployment/introduction',
+            'getting-started/deployment/vagrant',
+            'getting-started/deployment/production',
+          ],
         },
         'getting-started/quickstart',
         {
@@ -28,6 +32,7 @@ module.exports = {
     },
     {
       '💬 Sources': [
+        'sources/introduction',
         'sources/chat-plugin',
         'sources/facebook',
         'sources/google',

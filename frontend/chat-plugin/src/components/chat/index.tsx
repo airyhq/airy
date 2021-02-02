@@ -21,9 +21,9 @@ let ws: WebSocket;
 
 const welcomeMessage: MessagePayload = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
-  sender_type: SenderType.appUser,
   content: JSON.stringify({text: 'Hello! How can we help you?'}),
   delivery_state: MessageState.delivered,
+  sender_type: SenderType.appUser,
   sent_at: new Date(),
 };
 
@@ -35,17 +35,8 @@ const Chat = (props: Props) => {
   const [isChatHidden, setIsChatHidden] = useState(true);
   const [messages, setMessages] = useState<MessagePayload[]>([welcomeMessage]);
 
-  const getResumeToken = () => {
-    const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.has('resume_token')) {
-      localStorage.setItem('resume_token', queryParams.get('resume_token'));
-    }
-
-    return queryParams.get('resume_token') || localStorage.getItem('resume_token');
-  };
-
   useEffect(() => {
-    ws = new WebSocket(props.channel_id, onReceive, getResumeToken());
+    ws = new WebSocket(props.channel_id, onReceive, setInitialMessages, getResumeToken());
     ws.start().catch(error => {
       console.error(error);
       setInstallError(error.message);
@@ -55,6 +46,18 @@ const Chat = (props: Props) => {
   useEffect(() => {
     updateScroll();
   }, [messages]);
+
+  const getResumeToken = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    if (queryParams.has('resume_token')) {
+      localStorage.setItem('resume_token', queryParams.get('resume_token'));
+    }
+    return queryParams.get('resume_token') || localStorage.getItem('resume_token');
+  };
+
+  const setInitialMessages = (initalMessages: Array<MessagePayload>) => {
+    setMessages([...messages, ...initalMessages]);
+  };
 
   const ctrl = {
     toggleHideChat: () => {

@@ -7,7 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-You can run the entire Airy Core on your machine inside an isolated Vagrant box. We recommend to install the Aiy CLI first which will aid you in the process of installation and managing your Airy Core instance.
+You can run the entire Airy Core on your machine [inside an isolated Vagrant box](/getting-started/deployment/vagrant.md). We recommend to install the Aiy CLI first which will aid you in the process of installing and managing your Airy Core instance.
 
 ## Install the Airy CLI
 
@@ -30,6 +30,7 @@ curl "https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-core
 ```
 
 :::note
+
 To download a specific version, replace the `$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)` portion of the command with the specific version.
 
 For example, to download version 0.6.0 on macOS, type:
@@ -45,6 +46,7 @@ curl -LO "https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-
 ```
 
 :::note
+
 To download a specific version, replace the `$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)` portion of the command with the specific version.
 
 For example, to download version 0.6.0 on Linux, type:

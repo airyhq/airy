@@ -5,7 +5,7 @@ sidebar_label: Overview
 
 ## CLI
 
-> _Start, manage and test instances of Airy Core right from the terminal_
+> _Start, manage, and test instances of Airy Core right from the terminal_
 
 The Airy CLI is a developer tool to help you build, test, and manage Airy directly from your terminal.
 

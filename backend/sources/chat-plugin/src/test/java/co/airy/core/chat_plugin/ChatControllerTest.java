@@ -152,6 +152,7 @@ public class ChatControllerTest {
                 .headers(buildHeaders(authToken))
                 .content(sendMessagePayload))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.delivery_state", is("delivered")))
                 .andExpect(jsonPath("$.content", containsString(messageText)));
 
         response = mvc.perform(post("/chatplugin.resumeToken")

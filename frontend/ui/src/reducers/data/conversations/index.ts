@@ -73,14 +73,14 @@ function mergeConversations(
       conversations[conversation.id] = {
         ...newConversations[conversation.id],
         ...conversation,
-        message: getLatestMessage(newConversations[conversation.id], conversation),
+        lastMessage: getLatestMessage(newConversations[conversation.id], conversation),
         paginationData: conversations[conversation.id].paginationData,
       };
     } else {
       conversations[conversation.id] = {
         ...newConversations[conversation.id],
         ...conversation,
-        message: getLatestMessage(newConversations[conversation.id], conversation),
+        lastMessage: getLatestMessage(newConversations[conversation.id], conversation),
       };
     }
   });
@@ -103,7 +103,7 @@ function mergeFilteredConversations(
     conversations[conversation.id] = {
       ...newConversations[conversation.id],
       ...conversation,
-      message: getLatestMessage(newConversations[conversation.id], conversation),
+      lastMessage: getLatestMessage(newConversations[conversation.id], conversation),
     };
   });
 

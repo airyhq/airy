@@ -2,6 +2,7 @@ import React, {useEffect, useState, createRef, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 import {debounce} from 'lodash-es';
+import {withRouter} from 'react-router-dom';
 
 import {Message, SenderType, Conversation} from 'httpclient';
 import {SourceMessage} from 'render';
@@ -14,6 +15,7 @@ import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
 import {getCurrentConversation, getCurrentMessages} from "../../../../selectors/conversations";
 import {ConversationRouteProps} from "../../index";
+import {isSameDay} from "dates";
 
 type MessageListProps = ConnectedProps<typeof connector>;
 
@@ -100,10 +102,6 @@ const MessageList = (props: MessageListProps) => {
         return !isSameDay(prevMessage.sentAt, message.sentAt);
     };
 
-    const isSameDay = (firstDate: Date, secondDate: Date) => {
-        return new Date(firstDate).setHours(0, 0, 0, 0) === new Date(secondDate).setHours(0, 0, 0, 0);
-    };
-
     const isLoadingConversation = () => {
         return conversation && conversation.paginationData && conversation.paginationData.loading;
     };
@@ -179,4 +177,4 @@ const MessageList = (props: MessageListProps) => {
     );
 };
 
-export default connector(MessageList);
+export default withRouter(connector(MessageList));

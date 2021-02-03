@@ -1,30 +1,40 @@
 import React from 'react';
-import {isFromContact} from "../../../httpclient/model";
+import {isFromContact, Message} from "../../../httpclient/model";
 import {getSharedComponentProps, MessageRenderProps} from "../../shared";
 import {Text} from "../../components/Text";
+import {ContentUnion} from "./facebookModel";
 
 export const FacebookRender = (props: MessageRenderProps) => {
-    if (isFromContact(props.message)) {
-        return facebookInbound(props);
+    const message = props.message;
+    const content = isFromContact(message) ? facebookInbound(message) : facebookOutbound(message);
+    return render(content, props);
+}
+
+function render(content: ContentUnion, props: MessageRenderProps) {
+    switch (content.type) {
+        case "text":
+            return <Text
+                {...getSharedComponentProps(props)}
+                text={content.text}
+            />
+
+        // TODO render more facebook models
     }
-
-    return facebookOutbound(props);
 }
 
-function facebookInbound(props: MessageRenderProps) {
-    const messageJson = JSON.parse(props.message.content)
-
-    return <Text
-        {...getSharedComponentProps(props)}
-        text={messageJson.text}
-    />
+// TODO map more string content to facebook models
+function facebookInbound(message: Message): ContentUnion {
+    const messageJson = JSON.parse(message.content)
+    return {
+        type: 'text',
+        text: messageJson.message.text
+    };
 }
 
-function facebookOutbound(props: MessageRenderProps) {
-    const messageJson = JSON.parse(props.message.content)
-
-    return <Text
-        {...getSharedComponentProps(props)}
-        text={messageJson.message.text}
-    />
+function facebookOutbound(message: Message): ContentUnion {
+    const messageJson = JSON.parse(message.content)
+    return {
+        type: 'text',
+        text: messageJson.text
+    };
 }

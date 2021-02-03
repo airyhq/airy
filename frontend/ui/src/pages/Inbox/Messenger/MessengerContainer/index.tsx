@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 import {StateModel} from '../../../../reducers';
 import MessageList from '../MessageList';
@@ -17,7 +17,7 @@ const mapStateToProps = (state: StateModel, ownProps) => {
     };
 };
 
-const connector = connect(mapStateToProps, null);
+const connector = connect(mapStateToProps);
 
 type MessengerContainerProps = ConnectedProps<typeof connector>;
 
@@ -33,7 +33,7 @@ const MessengerContainer = ({conversations, currentConversation}: MessengerConta
                 </div>
             ) : (
                 <div className={styles.messageDisplay}>
-                    <MessageList conversation={currentConversation}/>
+                    <MessageList />
                     {currentConversation && <MessageInput channelSource={currentConversation.channel.source}/>}
                 </div>
             )}
@@ -43,4 +43,4 @@ const MessengerContainer = ({conversations, currentConversation}: MessengerConta
     </>
 
 
-export default connector(MessengerContainer);
+export default withRouter(connector(MessengerContainer));

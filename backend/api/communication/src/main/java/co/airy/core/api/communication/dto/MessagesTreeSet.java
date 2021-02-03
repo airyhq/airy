@@ -1,5 +1,6 @@
 package co.airy.core.api.communication.dto;
 
+import co.airy.model.message.dto.MessageContainer;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Comparator;

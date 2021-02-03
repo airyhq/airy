@@ -1,4 +1,4 @@
-package co.airy.core.api.communication.dto;
+package co.airy.model.message.dto;
 
 import co.airy.avro.communication.Message;
 import lombok.AllArgsConstructor;

@@ -4,7 +4,7 @@ import _redux from 'redux';
 import {debounce} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
 
-import {Message, SenderType} from 'httpclient';
+import {Message} from 'httpclient';
 import {SourceMessage} from 'render';
 
 import {StateModel} from '../../../../reducers';
@@ -16,6 +16,7 @@ import {formatDateOfMessage} from '../../../../services/format/date';
 import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 import {isSameDay} from 'dates';
+import {getSource, isFromContact} from '../../../../../../../lib/typescript/httpclient/model';
 
 type MessageListProps = ConnectedProps<typeof connector>;
 
@@ -92,8 +93,6 @@ const MessageList = (props: MessageListProps) => {
     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
   };
 
-  const isContact = (message: Message) => message.senderType !== SenderType.appUser;
-
   const hasDateChanged = (prevMessage: Message, message: Message) => {
     if (prevMessage == null) {
       return true;
@@ -154,8 +153,10 @@ const MessageList = (props: MessageListProps) => {
         messages.map((message: Message, index: number) => {
           const prevMessage = messages[index - 1];
           const nextMessage = messages[index + 1];
-          const prevWasContact = prevMessage ? isContact(prevMessage) : false;
-          const nextIsSameUser = nextMessage ? isContact(message) == isContact(nextMessage) : false;
+          const shouldShowContact = !isFromContact(prevMessage) && !isFromContact(message);
+          const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
+
+          const contactToShow = shouldShowContact ? conversation.contact : null;
 
           return (
             <div key={message.id} id={`message-item-${message.id}`}>
@@ -165,10 +166,10 @@ const MessageList = (props: MessageListProps) => {
                 </div>
               )}
               <SourceMessage
+                source={getSource(conversation)}
                 message={message}
-                conversation={conversation}
-                prevWasContact={prevWasContact}
-                nextIsSameUser={nextIsSameUser}
+                contact={contactToShow}
+                lastInGroup={lastInGroup}
               />
             </div>
           );

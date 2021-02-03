@@ -13,18 +13,19 @@ import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
 import {AiryWidgetConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import AiryMessage from '../../airyRenderProps/AiryMessage';
 import {MessagePayload, SenderType, MessageState} from 'httpclient';
 import {SourceMessage} from 'render';
+import {isFromContact, Message} from '../../../../../lib/typescript/httpclient/model';
+import {messageMapper} from '../../../../../lib/typescript/httpclient/mappers';
 
 let ws: WebSocket;
 
-const welcomeMessage: MessagePayload = {
+const welcomeMessage: Message = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   content: JSON.stringify({text: 'Hello! How can we help you?'}),
-  delivery_state: MessageState.delivered,
-  sender_type: SenderType.appUser,
-  sent_at: new Date(),
+  deliveryState: MessageState.delivered,
+  senderType: SenderType.appUser,
+  sentAt: new Date(),
 };
 
 type Props = AiryWidgetConfiguration;
@@ -33,7 +34,7 @@ const Chat = (props: Props) => {
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(true);
-  const [messages, setMessages] = useState<MessagePayload[]>([welcomeMessage]);
+  const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
 
   useEffect(() => {
     ws = new WebSocket(props.channel_id, onReceive, setInitialMessages, getResumeToken());
@@ -55,8 +56,8 @@ const Chat = (props: Props) => {
     return queryParams.get('resume_token') || localStorage.getItem('resume_token');
   };
 
-  const setInitialMessages = (initalMessages: Array<MessagePayload>) => {
-    setMessages([...messages, ...initalMessages]);
+  const setInitialMessages = (initialMessages: Array<Message>) => {
+    setMessages([...messages, ...initialMessages]);
   };
 
   const ctrl = {
@@ -87,7 +88,8 @@ const Chat = (props: Props) => {
   };
 
   const onReceive = (data: IMessage) => {
-    setMessages((messages: MessagePayload[]) => [...messages, JSON.parse(data.body).message]);
+    const newMessage = messageMapper(JSON.parse(data.body).message as MessagePayload);
+    setMessages((messages: Message[]) => [...messages, newMessage]);
   };
 
   const updateScroll = () => {
@@ -131,32 +133,21 @@ const Chat = (props: Props) => {
           <HeaderBarProp render={headerBar} />
           <div className={style.chat}>
             <div id="messages" className={style.messages}>
-              {messages &&
-                messages.map((message: MessagePayload) => {
-                  return (
-                    <MessageProp
-                      key={message.id}
-                      render={
-                        props.airyMessageProp
-                          ? () => props.airyMessageProp(ctrl)
-                          : () => (
-                              <SourceMessage
-                                message={message as any}
-                                conversation={
-                                  {
-                                    channel: {
-                                      source: 'facebook',
-                                    },
-                                  } as any
-                                }
-                                prevWasContact
-                                nextIsSameUser
-                              />
-                            )
-                      }
-                    />
-                  );
-                })}
+              {messages.map((message, index: number) => {
+                const nextMessage = messages[index + 1];
+                const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
+
+                return (
+                  <MessageProp
+                    key={message.id}
+                    render={
+                      props.airyMessageProp
+                        ? () => props.airyMessageProp(ctrl)
+                        : () => <SourceMessage message={message} source="chat_plugin" lastInGroup={lastInGroup} />
+                    }
+                  />
+                );
+              })}
             </div>
             <InputBarProp render={inputBar} />
           </div>

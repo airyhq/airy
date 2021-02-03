@@ -37,8 +37,10 @@ latest.
       // delivery state of message, one of PENDING, FAILED, DELIVERED
       "sender_type": "{string/enum}",
       // See glossary
-      "sent_at": "{string}"
+      "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+      "source": "{String}"
+      // one of the possible sources
     }
   ],
   "pagination_data": {
@@ -77,7 +79,9 @@ Sends a message to a conversation and returns a payload. Whatever is put on the
   "state": "pending|failed|delivered",
   "sender_type": "{string/enum}",
   // See glossary
-  "sent_at": "{string}"
+  "sent_at": "{string}",
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+  "source": "{String}"
+  // one of the possible sources
 }
 ```

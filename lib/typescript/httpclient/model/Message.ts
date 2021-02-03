@@ -47,6 +47,12 @@ export enum SenderType {
   sourceUser = 'source_user',
   appUser = 'app_user',
 }
+
+export function isFromContact(message: Message) {
+  return message?.senderType == SenderType.sourceContact;
+}
+
+
 export interface Message {
   id: string;
   content: string;

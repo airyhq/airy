@@ -1,0 +1,13 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.avatar {
+  display: flex;
+}
+
+.avatarImage {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+}
+

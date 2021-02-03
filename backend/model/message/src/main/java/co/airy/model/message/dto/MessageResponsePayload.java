@@ -19,6 +19,7 @@ public class MessageResponsePayload {
     private String senderType;
     private String sentAt;
     private String deliveryState;
+    private String source;
 
     public static MessageResponsePayload fromMessageContainer(MessageContainer messageContainer) {
         final Message message = messageContainer.getMessage();
@@ -28,6 +29,7 @@ public class MessageResponsePayload {
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
+                .source(message.getSource())
                 .build();
     }
 
@@ -38,6 +40,7 @@ public class MessageResponsePayload {
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
+                .source(message.getSource())
                 .build();
     }
 

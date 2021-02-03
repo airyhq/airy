@@ -16,7 +16,7 @@ import {formatDateOfMessage} from '../../../../services/format/date';
 import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 import {isSameDay} from 'dates';
-import {getSource, isFromContact} from '../../../../../../../lib/typescript/httpclient/model';
+import {getSource, isFromContact} from 'httpclient';
 
 type MessageListProps = ConnectedProps<typeof connector>;
 

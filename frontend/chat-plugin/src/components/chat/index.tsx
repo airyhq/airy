@@ -13,10 +13,8 @@ import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
 import {AiryWidgetConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import {MessagePayload, SenderType, MessageState} from 'httpclient';
+import {MessagePayload, SenderType, MessageState, isFromContact, Message, messageMapper} from 'httpclient';
 import {SourceMessage} from 'render';
-import {isFromContact, Message} from '../../../../../lib/typescript/httpclient/model';
-import {messageMapper} from '../../../../../lib/typescript/httpclient/mappers';
 
 let ws: WebSocket;
 

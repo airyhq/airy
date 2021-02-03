@@ -7,6 +7,4 @@ export interface TextContent extends Content {
   text: string;
 }
 
-// TODO add a new facebook content model here
-
 export type ContentUnion = TextContent;

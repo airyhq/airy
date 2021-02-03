@@ -1,6 +1,14 @@
 {
   "extends": "../../bazel.tsconfig.json",
   "compilerOptions": {
-    "jsxFactory": "h"
+    "skipLibCheck": true,
+    "paths": {
+      "react": [
+        "preact/compat"
+      ],
+      "react-dom": [
+        "preact/compat"
+      ]
+    }
   }
 }

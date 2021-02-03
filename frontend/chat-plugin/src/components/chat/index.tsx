@@ -1,5 +1,5 @@
-import {h} from 'preact';
-import {useState, useEffect} from 'preact/hooks';
+import React from 'react';
+import {useState, useEffect} from 'react';
 import {IMessage} from '@stomp/stompjs';
 
 import WebSocket from '../../components/websocket';
@@ -11,11 +11,11 @@ import style from './index.module.scss';
 import HeaderBarProp from '../../components/headerBar';
 import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
 import {AiryWidgetConfiguration} from '../../config';
-import {RoutableProps} from 'preact-router';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 import AiryMessage from '../../airyRenderProps/AiryMessage';
 import {MessagePayload, SenderType, MessageState} from 'httpclient';
+import {SourceMessage} from 'render';
 
 let ws: WebSocket;
 
@@ -27,7 +27,7 @@ const welcomeMessage: MessagePayload = {
   sent_at: new Date(),
 };
 
-type Props = AiryWidgetConfiguration & RoutableProps;
+type Props = AiryWidgetConfiguration;
 
 const Chat = (props: Props) => {
   const [installError, setInstallError] = useState('');
@@ -139,7 +139,20 @@ const Chat = (props: Props) => {
                       render={
                         props.airyMessageProp
                           ? () => props.airyMessageProp(ctrl)
-                          : () => <AiryMessage message={message} />
+                          : () => (
+                              <SourceMessage
+                                message={message as any}
+                                conversation={
+                                  {
+                                    channel: {
+                                      source: 'facebook',
+                                    },
+                                  } as any
+                                }
+                                prevWasContact
+                                nextIsSameUser
+                              />
+                            )
                       }
                     />
                   );

@@ -107,8 +107,16 @@ export class HttpClient {
     }
   }
 
-  public async connectChannel(requestPayload: ConnectChannelRequestPayload) {
-    // TODO implement per source
+  public async connectFacebookChannel(requestPayload: ConnectChannelRequestPayload) {
+    try {
+      const response: ChannelApiPayload = await this.doFetchFromBackend(
+          'channels.connect',
+          connectChannelApiMapper(requestPayload)
+      );
+      return channelMapper(response);
+    } catch (error) {
+      return error;
+    }
   }
 
   public async disconnectChannel(source: string, requestPayload: DisconnectChannelRequestPayload) {

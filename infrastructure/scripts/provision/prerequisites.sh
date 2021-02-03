@@ -14,7 +14,7 @@ chmod +x linux-amd64/helm
 
 sudo mv linux-amd64/helm /usr/local/bin/helm
 
-while ! `test -f /etc/rancher/k3s/k3s.yaml`
+while ! test -f /etc/rancher/k3s/k3s.yaml
 do
     echo "Waiting for Kubernetes to start..."
     sleep 5

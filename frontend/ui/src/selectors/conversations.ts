@@ -3,6 +3,13 @@ import {filter, reverse, sortBy, values} from 'lodash-es';
 import {Conversation} from 'httpclient';
 import {StateModel} from '../reducers';
 import {ConversationMap} from '../reducers/data/conversations';
+import {ConversationRouteProps} from '../pages/Inbox';
+
+export const getCurrentConversation = (state: StateModel, props: ConversationRouteProps) =>
+  state.data.conversations.all.items[props.match.params.conversationId];
+
+export const getCurrentMessages = (state: StateModel, props: ConversationRouteProps) =>
+  state.data.messages.all[props.match.params.conversationId];
 
 export const filteredConversationSelector = createSelector(
   (state: StateModel) => state.data.conversations.filtered.items,

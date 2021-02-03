@@ -2,9 +2,10 @@ import React, {useEffect, useState, createRef, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 import {debounce} from 'lodash-es';
+import {withRouter} from 'react-router-dom';
 
-import {Message, SenderType, Conversation} from 'httpclient';
-import RenderLibrary from 'render';
+import {Message, SenderType} from 'httpclient';
+import {SourceMessage} from 'render';
 
 import {StateModel} from '../../../../reducers';
 
@@ -12,13 +13,16 @@ import {listMessages, listPreviousMessages} from '../../../../actions/messages';
 
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
+import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/conversations';
+import {ConversationRouteProps} from '../../index';
+import {isSameDay} from 'dates';
 
-type MessageListProps = {conversation: Conversation} & ConnectedProps<typeof connector>;
+type MessageListProps = ConnectedProps<typeof connector>;
 
-const mapStateToProps = (state: StateModel, ownProps: {conversation: Conversation}) => {
+const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
-    messages: state.data.messages.all[ownProps.conversation && ownProps.conversation.id],
-    item: state.data.conversations.all.items[ownProps.conversation && ownProps.conversation.id],
+    messages: getCurrentMessages(state, ownProps),
+    conversation: getCurrentConversation(state, ownProps),
   };
 };
 
@@ -29,7 +33,7 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-function usePrevious(value: [] | string) {
+function usePrevious(value: Message[] | string) {
   const ref = useRef(null);
   useEffect(() => {
     ref.current = value;
@@ -38,7 +42,7 @@ function usePrevious(value: [] | string) {
 }
 
 const MessageList = (props: MessageListProps) => {
-  const {listMessages, listPreviousMessages, messages, item, conversation} = props;
+  const {listMessages, listPreviousMessages, messages, conversation} = props;
   const [stickBottom, setStickBottom] = useState(true);
 
   const prevMessages = usePrevious(messages);
@@ -63,7 +67,7 @@ const MessageList = (props: MessageListProps) => {
     if (hasPreviousMessages() && !scrollbarVisible() && !isLoadingConversation()) {
       debouncedListPreviousMessages(conversation.id);
     }
-  }, [item]);
+  }, [conversation]);
 
   useEffect(() => {
     if (prevMessages && messages && prevMessages.length < messages.length) {
@@ -98,16 +102,12 @@ const MessageList = (props: MessageListProps) => {
     return !isSameDay(prevMessage.sentAt, message.sentAt);
   };
 
-  const isSameDay = (firstDate: Date, secondDate: Date) => {
-    return new Date(firstDate).setHours(0, 0, 0, 0) === new Date(secondDate).setHours(0, 0, 0, 0);
-  };
-
   const isLoadingConversation = () => {
-    return item && item.paginationData && item.paginationData.loading;
+    return conversation && conversation.paginationData && conversation.paginationData.loading;
   };
 
   const hasPreviousMessages = () => {
-    return !!(item && item.paginationData && item.paginationData.nextCursor);
+    return !!(conversation && conversation.paginationData && conversation.paginationData.nextCursor);
   };
 
   const scrollbarVisible = () => {
@@ -128,18 +128,20 @@ const MessageList = (props: MessageListProps) => {
 
   const handleScroll = debounce(
     () => {
-      if (messageListRef) {
-        if (hasPreviousMessages() && messageListRef.current.scrollTop === 0 && !isLoadingConversation()) {
-          debouncedListPreviousMessages(conversation.id);
-        }
+      if (!messageListRef) {
+        return;
+      }
 
-        const entireHeightScrolled =
-          messageListRef.current.scrollHeight - 1 <=
-          messageListRef.current.clientHeight + messageListRef.current.scrollTop;
+      if (hasPreviousMessages() && messageListRef.current.scrollTop === 0 && !isLoadingConversation()) {
+        debouncedListPreviousMessages(conversation.id);
+      }
 
-        if (stickBottom !== entireHeightScrolled) {
-          setStickBottom(entireHeightScrolled);
-        }
+      const entireHeightScrolled =
+        messageListRef.current.scrollHeight - 1 <=
+        messageListRef.current.clientHeight + messageListRef.current.scrollTop;
+
+      if (stickBottom !== entireHeightScrolled) {
+        setStickBottom(entireHeightScrolled);
       }
     },
     100,
@@ -156,19 +158,17 @@ const MessageList = (props: MessageListProps) => {
           const nextIsSameUser = nextMessage ? isContact(message) == isContact(nextMessage) : false;
 
           return (
-            <div key={message.id}>
+            <div key={message.id} id={`message-item-${message.id}`}>
               {hasDateChanged(prevMessage, message) && (
                 <div key={`date-${message.id}`} className={styles.dateHeader}>
                   {formatDateOfMessage(message)}
                 </div>
               )}
-              <RenderLibrary
+              <SourceMessage
                 message={message}
-                source={item.channel.source}
-                currentConversation={item}
+                conversation={conversation}
                 prevWasContact={prevWasContact}
                 nextIsSameUser={nextIsSameUser}
-                isContact={isContact(message)}
               />
             </div>
           );
@@ -177,4 +177,4 @@ const MessageList = (props: MessageListProps) => {
   );
 };
 
-export default connector(MessageList);
+export default withRouter(connector(MessageList));

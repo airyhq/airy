@@ -21,7 +21,7 @@
       ],
       "components/*": [
         "./frontend/components/src/*"
-      ],  
+      ],
       "httpclient": [
         "./lib/typescript/httpclient"
       ],
@@ -32,6 +32,12 @@
         "./lib/typescript/types"
       ],
       "types/*": [
+        "./lib/typescript/types/*"
+      ],
+      "dates": [
+        "./lib/typescript/types"
+      ],
+      "dates/*": [
         "./lib/typescript/types/*"
       ],
       "websocketclient": [

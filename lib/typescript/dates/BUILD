@@ -5,7 +5,6 @@ package(default_visibility = ["//visibility:public"])
 ts_library(
     name = "dates",
     deps = [
-        "//lib/typescript/httpclient",
         "//lib/typescript/types",
     ],
 )

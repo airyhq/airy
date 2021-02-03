@@ -1,25 +1,18 @@
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/messages';
 import {Message} from 'httpclient';
-import {DataState} from '..';
 import {cloneDeep, sortBy} from 'lodash-es';
 
 type Action = ActionType<typeof actions>;
 
-export type MessagesState = {
-  data: DataState;
-};
-
-export type MessageById = {
-  [messageId: string]: Message;
-};
-
 export type Messages = {
-  all: Message[];
+  all: {
+    [messageId: string]: Message[];
+  };
 };
 
 const initialState = {
-  all: [],
+  all: {},
 };
 
 function mergeMessages(oldMessages: Message[], newMessages: Message[]): Message[] {

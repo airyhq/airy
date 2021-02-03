@@ -1,9 +1,10 @@
 package co.airy.core.api.communication;
 
-import co.airy.core.api.communication.dto.MessageContainer;
 import co.airy.core.api.communication.payload.MessageListRequestPayload;
 import co.airy.core.api.communication.payload.MessageListResponsePayload;
 import co.airy.core.api.communication.payload.PaginationData;
+import co.airy.model.message.dto.MessageContainer;
+import co.airy.model.message.dto.MessageResponsePayload;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,9 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class MessagesController {
     private final Stores stores;
-    private final Mapper mapper;
 
-    MessagesController(Stores stores, Mapper mapper) {
+    MessagesController(Stores stores) {
         this.stores = stores;
-        this.mapper = mapper;
     }
 
     @PostMapping("/messages.list")
@@ -54,7 +53,7 @@ public class MessagesController {
         Page<MessageContainer> page = paginator.page();
 
         return MessageListResponsePayload.builder()
-                .data(page.getData().stream().map(mapper::fromMessageContainer).collect(toList()))
+                .data(page.getData().stream().map(MessageResponsePayload::fromMessageContainer).collect(toList()))
                 .paginationData(PaginationData.builder()
                         .nextCursor(page.getNextCursor())
                         .previousCursor(cursor)

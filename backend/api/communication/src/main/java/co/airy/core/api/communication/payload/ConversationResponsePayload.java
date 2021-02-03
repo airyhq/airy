@@ -1,6 +1,7 @@
 package co.airy.core.api.communication.payload;
 
 import co.airy.model.channel.ChannelPayload;
+import co.airy.model.message.dto.MessageResponsePayload;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

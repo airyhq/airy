@@ -1,5 +1,6 @@
 package co.airy.core.chat_plugin.payload;
 
+import co.airy.model.message.dto.MessageResponsePayload;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

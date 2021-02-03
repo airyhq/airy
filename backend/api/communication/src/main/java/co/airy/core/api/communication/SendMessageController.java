@@ -6,9 +6,10 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
-import co.airy.core.api.communication.dto.MessageContainer;
 import co.airy.core.api.communication.payload.SendMessageRequestPayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.model.message.dto.MessageContainer;
+import co.airy.model.message.dto.MessageResponsePayload;
 import co.airy.spring.web.payload.EmptyResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -72,7 +73,6 @@ public class SendMessageController {
                 .build();
 
         producer.send(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message)).get();
-
-        return ResponseEntity.ok(mapper.fromMessageContainer(new MessageContainer(message, Map.of())));
+        return ResponseEntity.ok(MessageResponsePayload.fromMessageContainer(new MessageContainer(message, Map.of())));
     }
 }

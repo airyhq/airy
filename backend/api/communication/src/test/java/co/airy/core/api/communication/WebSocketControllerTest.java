@@ -124,6 +124,7 @@ public class WebSocketControllerTest {
 
         assertNotNull(recMessage);
         assertThat(recMessage.getConversationId(), is(conversationId));
+        assertThat(recMessage.getMessage().getSource(), is("facebook"));
 
         final ChannelPayload receivedChannel = channelFuture.get(30, TimeUnit.SECONDS);
 

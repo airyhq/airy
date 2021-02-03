@@ -141,6 +141,10 @@
   color: var(--color-text-gray);
   font-weight: 400;
 
+  &:not(:last-child) {
+    padding-right: 4px;
+  }
+
   &:hover {
     color: var(--color-airy-blue);
     text-decoration: underline;

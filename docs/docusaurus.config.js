@@ -28,6 +28,32 @@ module.exports = {
         src: 'img/logo_light.svg',
         srcDark: 'img/logo_dark.svg',
       },
+      items: [
+        {
+          target: '_self',
+          label: 'Airy Core',
+          position: 'left',
+          href: 'https://docs.airy.co',
+        },
+        {
+          target: '_self',
+          label: 'Airy Enterprise',
+          position: 'left',
+          href: 'https://enterprise.airy.co',
+        },
+        {
+          href: 'https://github.com/airyhq/airy',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
+          position: 'right',
+        },
+        {
+          target: '_self',
+          label: 'Need help?',
+          position: 'right',
+          to: '/getting-started/troubleshooting',
+        },
+      ],
     },
     footer: {
       style: 'light',

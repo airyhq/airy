@@ -1,10 +1,10 @@
 export interface Content {
-    type: 'text';
+  type: 'text';
 }
 
 export interface TextContent extends Content {
-    type: 'text';
-    text: string;
+  type: 'text';
+  text: string;
 }
 
 // TODO add a new facebook content model here

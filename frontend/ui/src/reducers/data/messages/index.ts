@@ -7,7 +7,7 @@ type Action = ActionType<typeof actions>;
 
 export type Messages = {
   all: {
-    [messageId: string]: Message[]
+    [messageId: string]: Message[];
   };
 };
 

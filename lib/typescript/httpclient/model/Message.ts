@@ -52,7 +52,6 @@ export function isFromContact(message: Message) {
   return message?.senderType == SenderType.sourceContact;
 }
 
-
 export interface Message {
   id: string;
   content: string;

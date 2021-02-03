@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {RouteComponentProps} from "react-router-dom";
+import {RouteComponentProps} from 'react-router-dom';
 
 import {User} from 'httpclient';
 import {listConversations} from '../../actions/conversations';
@@ -8,7 +8,7 @@ import {StateModel} from '../../reducers';
 
 import Messenger from './Messenger';
 
-export type ConversationRouteProps = RouteComponentProps<{conversationId: string}>
+export type ConversationRouteProps = RouteComponentProps<{conversationId: string}>;
 
 interface InboxProps {
   user: User;

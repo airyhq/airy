@@ -1,7 +1,3 @@
-const isDev = process.env.NODE_ENV === 'development';
-const URL = 'https://docs.airy.co/';
-const SWAP_URL = isDev ? 'http://localhost:3000' : URL;
-
 module.exports = {
   title: 'Airy Documentation',
   tagline: 'Airy documentation website',
@@ -54,7 +50,7 @@ module.exports = {
           target: '_self',
           label: 'Need help?',
           position: 'right',
-          href: `${SWAP_URL}/getting-started/troubleshooting`,
+          href: '/getting-started/troubleshooting',
         },
       ],
     },

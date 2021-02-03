@@ -1,6 +1,6 @@
 import React from 'react';
 import {isFromContact, Message} from '../../../httpclient/model';
-import {getSharedComponentProps, MessageRenderProps} from '../../shared';
+import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './facebookModel';
 
@@ -13,7 +13,7 @@ export const FacebookRender = (props: MessageRenderProps) => {
 function render(content: ContentUnion, props: MessageRenderProps) {
   switch (content.type) {
     case 'text':
-      return <Text {...getSharedComponentProps(props)} text={content.text} />;
+      return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
 
     // TODO render more facebook models
   }

@@ -3,7 +3,7 @@ import {renderProviders} from './renderProviders';
 import {getSource} from 'httpclient';
 
 import {Text} from './components/Text';
-import {getSharedComponentProps, MessageRenderProps} from './shared';
+import {getDefaultMessageRenderingProps, MessageRenderProps} from './shared';
 
 export const SourceMessage = (props: MessageRenderProps) => {
   const source = getSource(props.conversation);
@@ -14,6 +14,6 @@ export const SourceMessage = (props: MessageRenderProps) => {
     return provider(props);
   } catch (e) {
     console.error(e);
-    return <Text {...getSharedComponentProps(props)} text="Could not render this content" />;
+    return <Text {...getDefaultMessageRenderingProps(props)} text="Could not render this content" />;
   }
 };

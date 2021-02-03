@@ -1,5 +1,6 @@
-import {Message, Conversation, isFromContact} from 'httpclient';
+import {Conversation, isFromContact, Message} from 'httpclient';
 import {formatTime} from 'dates';
+import {DefaultMessageRenderingProps} from './components';
 
 export interface MessageRenderProps {
   message: Message;
@@ -8,14 +9,7 @@ export interface MessageRenderProps {
   nextIsSameUser: boolean;
 }
 
-export interface SharedComponentProps {
-  fromContact: boolean;
-  conversation: Conversation;
-  showAvatar: boolean;
-  sentAt?: string;
-}
-
-export const getSharedComponentProps = (props: MessageRenderProps): SharedComponentProps => {
+export const getDefaultMessageRenderingProps = (props: MessageRenderProps): DefaultMessageRenderingProps => {
   const fromContact = isFromContact(props.message);
   return {
     fromContact,

@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {Avatar} from '../Avatar';
-import {SharedComponentProps} from '../../shared';
+import {DefaultMessageRenderingProps} from '../index';
 
-type TextRenderProps = SharedComponentProps & {
+type TextRenderProps = DefaultMessageRenderingProps & {
   text: string;
 };
 

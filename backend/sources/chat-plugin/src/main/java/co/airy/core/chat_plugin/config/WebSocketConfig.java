@@ -72,7 +72,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         final Principal principal = jwt.authenticate(authToken);
                         accessor.setUser(principal);
                     } catch (Exception e) {
-                        log.error(String.format("STOMP Command: %s, token: %s \n Failed to authenticate", accessor.getCommand(), jwtToken));
+                        log.error(String.format("STOMP Command: %s, token: %s \n Failed to authenticate", accessor.getCommand(), authToken));
                     }
                 }
 

@@ -146,7 +146,7 @@ public class WebSocketControllerTest {
 
         StompHeaders connectHeaders = new StompHeaders();
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
-        connectHeaders.add(AUTHORIZATION, jwt.tokenFor("userId"));
+        connectHeaders.add(AUTHORIZATION, "Bearer " + jwt.tokenFor("userId"));
 
         return stompClient.connect("ws://localhost:" + port + "/ws.communication", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
         }).get();

@@ -34,7 +34,7 @@ public class ChannelsController {
         this.producer = producer;
     }
 
-    @PostMapping("/twilio.sms.connect")
+    @PostMapping("/channels.twilio.sms.connect")
     ResponseEntity<?> connectSms(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
         final String channelId = UUIDv5.fromNamespaceAndName("twilio.sms", requestPayload.getPhoneNumber()).toString();
 
@@ -50,7 +50,7 @@ public class ChannelsController {
         return connectChannel(channel);
     }
 
-    @PostMapping("/twilio.whatsapp.connect")
+    @PostMapping("/channels.twilio.whatsapp.connect")
     ResponseEntity<?> connectWhatsapp(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
         final String phoneNumber = "whatsapp:" + requestPayload.getPhoneNumber();
         final String channelId = UUIDv5.fromNamespaceAndName("twilio.whatsapp", phoneNumber).toString();
@@ -77,12 +77,12 @@ public class ChannelsController {
         return ResponseEntity.ok(fromChannel(channel));
     }
 
-    @PostMapping("/twilio.sms.disconnect")
+    @PostMapping("/channels.twilio.sms.disconnect")
     ResponseEntity<?> disconnectSms(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
         return disconnect(requestPayload);
     }
 
-    @PostMapping("/twilio.whatsapp.disconnect")
+    @PostMapping("/channels.twilio.whatsapp.disconnect")
     ResponseEntity<?> disconnectWhatsapp(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
         return disconnect(requestPayload);
     }

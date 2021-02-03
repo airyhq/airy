@@ -36,7 +36,7 @@ token=$(echo $(curl -H 'Content-Type: application/json' -d \
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 "{
     \"name\": \"chat plugin source\"
-}" api.airy/chatplugin.connect
+}" api.airy/channels.chatplugin.connect
 ```
 
 <img alt="channels_connect" src={useBaseUrl('img/getting-started/quickstart/connect_chatplugin_channel.gif')} />

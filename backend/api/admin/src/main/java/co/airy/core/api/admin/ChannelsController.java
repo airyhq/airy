@@ -45,7 +45,7 @@ public class ChannelsController {
                 .collect(toList())));
     }
 
-    @PostMapping("/chatplugin.connect")
+    @PostMapping("/channels.chatplugin.connect")
     ResponseEntity<?> connect(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
         final String sourceChannelId = requestPayload.getName();
         final String sourceIdentifier = "chat_plugin";
@@ -69,7 +69,7 @@ public class ChannelsController {
         return ResponseEntity.ok(fromChannel(channel));
     }
 
-    @PostMapping("/chatplugin.disconnect")
+    @PostMapping("/channels.chatplugin.disconnect")
     ResponseEntity<?> disconnect(@RequestBody @Valid ChannelDisconnectRequestPayload requestPayload) {
         final String channelId = requestPayload.getChannelId().toString();
 

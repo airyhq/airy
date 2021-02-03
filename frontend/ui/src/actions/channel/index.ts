@@ -38,7 +38,7 @@ export function listChannels() {
 
 export function exploreChannels(requestPayload: ExploreChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.exploreChannels(requestPayload)
+    return HttpClientInstance.exploreFacebookChannels(requestPayload)
       .then((response: Channel[]) => {
         dispatch(addChannelsAction(response));
         return Promise.resolve(response);
@@ -51,7 +51,7 @@ export function exploreChannels(requestPayload: ExploreChannelRequestPayload) {
 
 export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.connectChannel(requestPayload)
+    return HttpClientInstance.connectFacebookChannel(requestPayload)
       .then((response: Channel) => {
         dispatch(addChannelsAction([response]));
         return Promise.resolve(response);
@@ -62,9 +62,9 @@ export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
   };
 }
 
-export function disconnectChannel(requestPayload: DisconnectChannelRequestPayload) {
+export function disconnectChannel(source: string, requestPayload: DisconnectChannelRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.disconnectChannel(requestPayload)
+    return HttpClientInstance.disconnectChannel(source, requestPayload)
       .then((response: Channel[]) => {
         dispatch(setCurrentChannelsAction(response));
         return Promise.resolve(response);

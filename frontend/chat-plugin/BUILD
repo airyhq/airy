@@ -7,6 +7,7 @@ load("//tools/build:container_push.bzl", "container_push")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 module_deps = [
+    "//frontend/assets",
     "//lib/typescript/types",
     "//lib/typescript/httpclient",
     "//lib/typescript/render",
@@ -39,9 +40,11 @@ ts_library(
     deps = module_deps + [
         "@npm//@stomp/stompjs",
         "@npm//@types/node",
+        "@npm//@types/react",
+        "@npm//@types/react-dom",
         "@npm//linkifyjs",
-        "@npm//preact",
-        "@npm//preact-router",
+        "@npm//react",
+        "@npm//react-dom",
     ],
 )
 

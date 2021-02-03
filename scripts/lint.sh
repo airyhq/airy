@@ -9,7 +9,7 @@ echo "Check cli doc is in sync"
 cp docs/docs/cli/*.md /tmp/
 bazel run //docs/cli-doc:generate_cli_docs
 for filename in docs/docs/cli/*.md; do
-    cmp $filename /tmp/$(basename -- "$filename")
+    cmp "$filename" /tmp/"$(basename -- "$filename")"
 done
 echo
 echo "Running Bazel lint"
@@ -20,3 +20,7 @@ bazel test --test_tag_filters=lint //...
 echo
 echo "Running eslint"
 yarn eslint
+echo
+echo "Running shellcheck on *.sh"
+sudo apt-get install -y shellcheck
+find infrastructure scripts -type f -name "*.sh" -exec shellcheck {} +

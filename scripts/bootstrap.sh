@@ -7,7 +7,7 @@ OS=$(uname)
 SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)
 
 infra_path=""
-infra_path+=$( dirname $SCRIPT_PATH )
+infra_path+=$( dirname "$SCRIPT_PATH" )
 infra_path+="/infrastructure"
 
 if ! command -v vagrant &> /dev/null
@@ -16,10 +16,10 @@ then
     VAGRANT_VERSION="2.2.10"
     case "${ARCH}" in
         x86_64|amd64|arm64)
-            printf "Detected ${ARCH} system architecture\n"
+            printf "Detected %s system architecture\n" "${ARCH}"
             ;;
         *)
-            printf "This system's architecture, ${ARCH}, isn't supported\n"
+            printf "This system's architecture, %s, isn't supported\n" "${ARCH}"
             printf "If you can install vagrant on your machine, you can try running:\n\n"
             printf "cd infrastructure\n"
             printf "vagrant up\n"
@@ -30,29 +30,29 @@ then
         Linux|linux)
             printf "Detected Linux system\n"
             VAGRANT_URL="https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_linux_amd64.zip"
-            printf "Downloading Vagrant from ${VAGRANT_URL} ...\n"
+            printf "Downloading Vagrant from %s ...\n" "${VAGRANT_URL} "
             curl -fsL ${VAGRANT_URL} -o /tmp/vagrant.zip
             cd /tmp
             unzip ./vagrant.zip
             sudo mv ./vagrant /usr/local/bin
-            cd $OLDPWD
+            cd "$OLDPWD"
         ;;
         Darwin)
             printf "Detected MacOS system\n"
             VAGRANT_URL="https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.dmg"
-            printf "Downloading Vagrant from ${VAGRANT_URL} ...\n"
+            printf "Downloading Vagrant from %s ...\n" "${VAGRANT_URL}"
             curl -fsL ${VAGRANT_URL} -o /tmp/vagrant.dmg
-            VOLUME=`hdiutil attach /tmp/vagrant.dmg | grep Volumes | awk '{print $3}'`
+            VOLUME=$(hdiutil attach /tmp/vagrant.dmg | grep Volumes | awk '{print $3}')
             sudo installer -package /Volumes/Vagrant/vagrant.pkg  -target "/Volumes/Macintosh HD"
-            hdiutil detach $VOLUME
+            hdiutil detach "$VOLUME"
         ;;
         *)
-            printf "This system ${OS} isn't currently supported. We are sorry for the inconvenience.\n\n"
+            printf "This system %s isn't currently supported. We are sorry for the inconvenience.\n\n" "${OS}"
             exit 1
         ;;
     esac
 
-    printf "Vagrant installed in "`which vagrant`"\n"
+    printf "Vagrant installed in %s\n" "$(which vagrant)"
 fi
 
 read -p "Do you want to add the vagrant box to the host file so you can access it under api.airy [yn]? " -n 1 -r
@@ -65,13 +65,13 @@ fi
 if ! command -v VBoxManage &> /dev/null
 then
     printf "\nVirtualbox binary not found. Attempting to install...\n"
-    VIRTUALBOX_VERSION="2.2.10"
+    VIRTUALBOX_VERSION="6.1.16"
     case "${ARCH}" in
         x86_64|amd64|arm64)
-            printf "Detected ${ARCH} system architecture\n"
+            printf "Detected %s system architecture\n" "${ARCH}"
             ;;
         *)
-            printf "This system's architecture, ${ARCH}, isn't supported\n"
+            printf "This system's architecture, %s, isn't supported\n" "${ARCH}"
             printf "If you can install VirtualBox on your machine, you can try running:\n\n"
             printf "cd infrastructure\n"
             printf "vagrant up\n"
@@ -87,13 +87,13 @@ then
             osInfo[/etc/centos-release]="sudo yum -y install"
             osInfo[/etc/fedora-release]="sudo dnf -y install"
             package_manager=""
-            for f in ${!osInfo[@]}
+            for f in "${!osInfo[@]}"
             do
                 if [[ -f $f ]];then
                     package_manager=${osInfo[$f]}
                 fi
             done
-            if [ -z ${package_manager} ];then
+            if [ -z "${package_manager}" ];then
                 printf "Package manager couldn't be identified.\n"
                 printf "Currently only Debian-based, Alpine Centos and Fedora systems are supported.\n"
                 printf "We are sorry for the inconvenience.\n\n"
@@ -104,34 +104,34 @@ then
         ;;
         Darwin)
             printf "Detected MacOS system\n"
-            VIRTUALBOX_URL="https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1.16-140961-OSX.dmg"
-            printf "Downloading VirtualBox from ${VAGRANT_URL} ...\n"
+            VIRTUALBOX_URL="https://download.virtualbox.org/virtualbox/${VIRTUALBOX_VERSION}/VirtualBox-${VIRTUALBOX_VERSION}-140961-OSX.dmg"
+            printf "Downloading VirtualBox from %s ...\n" "${VIRTUALBOX_URL}"
             curl -fsL ${VIRTUALBOX_URL} -o /tmp/virtualbox.dmg
-            VOLUME=`hdiutil attach /tmp/virtualbox.dmg | grep Volumes | awk '{print $3}'`
+            VOLUME=$(hdiutil attach /tmp/virtualbox.dmg | grep Volumes | awk '{print $3}')
             sudo installer -package /Volumes/Virtualbox/virtualbox.pkg  -target "/Volumes/Macintosh HD"
-            hdiutil detach $VOLUME
+            hdiutil detach "$VOLUME"
         ;;
         *)
-            printf "This system ${OS} isn't currently supported. We are sorry for the inconvenience.\n\n"
+            printf "This system %s isn't currently supported. We are sorry for the inconvenience.\n\n" "${OS}" 
             exit 1
         ;;
     esac
 
-    printf "Virtualbox installed in "`which VBoxManage`"\n"
+    printf "Virtualbox installed in %s \n" "$(which VBoxManage)"
 fi
 
 
 cd $infra_path
 vagrant destroy -f
 
-if [ -z ${AIRY_VERSION+x} ]; then
+if [ -z "${AIRY_VERSION+x}" ]; then
     branch_name="$(git symbolic-ref HEAD 2>/dev/null)" ||
     branch_name="(unnamed branch)"     # detached HEAD
 
     branch_name=${branch_name##refs/heads/}
     case "$branch_name" in
         main|release* )
-            AIRY_VERSION=(`cat ../VERSION`)
+            AIRY_VERSION=$(cat ../VERSION)
             ;;
         * )
             AIRY_VERSION=develop

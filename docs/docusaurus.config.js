@@ -50,7 +50,7 @@ module.exports = {
           target: '_self',
           label: 'Need help?',
           position: 'right',
-          href: '/getting-started/troubleshooting',
+          to: '/getting-started/troubleshooting',
         },
       ],
     },

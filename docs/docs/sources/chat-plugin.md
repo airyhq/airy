@@ -15,43 +15,6 @@ anonymous website visitors through a web chat plugin.
 
 :::
 
-## Connect
-
-Connects a Chat Plugin source to Airy Core.
-
-```
-POST /channels.chatplugin.connect
-```
-
-- `name` is a unique identifier of your choice
-
-```json5
-{
-  "name": "website-identifier-42"
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "id": "1F679227-76C2-4302-BB12-703B2ADB0F66",
-  "name": "website-identifier-42",
-  "source": "chat_plugin",
-  "source_channel_id": "website-identifier-42"
-}
-```
-
-## Disconnect
-
-```
-POST /channels.chatplugin.disconnect
-```
-
-import ChannelDisconnect from './channel-disconnect.mdx'
-
-<ChannelDisconnect />
-
 ## Installation
 
 To install the Chat Plugin UI on your website add the following script tag to

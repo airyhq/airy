@@ -10,7 +10,7 @@ custom_java_library(
     ],
     deps = [
         "//:lombok",
-        "//lib/java/date",
         "//backend/avro/communication:message-avro",
+        "//lib/java/date",
     ],
 )

@@ -68,7 +68,7 @@ const Channels = (props: ChannelsConnectProps) => {
   );
 
   const disconnectClicked = (channel: Channel) => {
-    props.disconnectChannel("facebook", {channelId: channel.sourceChannelId});
+    props.disconnectChannel('facebook', {channelId: channel.sourceChannelId});
   };
 
   return (

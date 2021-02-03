@@ -50,6 +50,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -179,8 +180,8 @@ public class ChatControllerTest {
 
     private HttpHeaders buildHeaders(String jwtToken) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, jwtToken);
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
+        headers.setBearerAuth(jwtToken);
         return headers;
     }
 
@@ -193,7 +194,7 @@ public class ChatControllerTest {
         stompClient.setMessageConverter(messageConverter);
 
         StompHeaders connectHeaders = new StompHeaders();
-        connectHeaders.add(WebSocketHttpHeaders.AUTHORIZATION, jwtToken);
+        connectHeaders.add(WebSocketHttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
 
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
 

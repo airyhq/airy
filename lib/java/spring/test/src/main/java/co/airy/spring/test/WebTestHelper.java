@@ -46,8 +46,8 @@ public class WebTestHelper {
 
     private HttpHeaders buildHeaders(final String userId) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(AUTHORIZATION, jwt.tokenFor(userId));
         headers.add(CONTENT_TYPE, APPLICATION_JSON.toString());
+        headers.setBearerAuth(jwt.tokenFor(userId));
         return headers;
     }
 }

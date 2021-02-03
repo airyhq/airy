@@ -9,6 +9,7 @@ module.exports = {
             'getting-started/deployment/introduction',
             'getting-started/deployment/vagrant',
             'getting-started/deployment/production',
+            'getting-started/deployment/configuration',
           ],
         },
         'getting-started/quickstart',

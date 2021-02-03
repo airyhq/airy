@@ -26,11 +26,9 @@ public class WebSocketController {
     public static final String QUEUE_UNREAD_COUNT = "/queue/unread-count";
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final Mapper mapper;
 
-    WebSocketController(SimpMessagingTemplate messagingTemplate, Mapper mapper) {
+    WebSocketController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
-        this.mapper = mapper;
     }
 
     public void onNewMessage(Message message) {

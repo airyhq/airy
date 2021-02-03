@@ -21,11 +21,9 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class MessagesController {
     private final Stores stores;
-    private final Mapper mapper;
 
-    MessagesController(Stores stores, Mapper mapper) {
+    MessagesController(Stores stores) {
         this.stores = stores;
-        this.mapper = mapper;
     }
 
     @PostMapping("/messages.list")

@@ -212,13 +212,13 @@ POST /channels.twilio.whatsapp.connect
 
 ## Disconnecting channels
 
+import ChannelDisconnect from './channel-disconnect.mdx'
+
 ### Airy Live Chat Plugin
 
 ```
 POST /channels.chatplugin.disconnect
 ```
-
-import ChannelDisconnect from './channel-disconnect.mdx'
 
 <ChannelDisconnect />
 
@@ -230,8 +230,6 @@ Disconnects a Facebook page from Airy Core
 POST /channels.facebook.disconnect
 ```
 
-import ChannelDisconnect from './channel-disconnect.mdx'
-
 <ChannelDisconnect />
 
 ### Google
@@ -239,8 +237,6 @@ import ChannelDisconnect from './channel-disconnect.mdx'
 ```
 POST /channels.google.disconnect
 ```
-
-import ChannelDisconnect from './channel-disconnect.mdx'
 
 <ChannelDisconnect />
 
@@ -250,8 +246,6 @@ import ChannelDisconnect from './channel-disconnect.mdx'
 POST /channels.twilio.sms.disconnect
 ```
 
-import ChannelDisconnect from './channel-disconnect.mdx'
-
 <ChannelDisconnect />
 
 ### Whatsapp - Twilio
@@ -259,8 +253,6 @@ import ChannelDisconnect from './channel-disconnect.mdx'
 ```
 POST /channels.twilio.whatsapp.disconnect
 ```
-
-import ChannelDisconnect from './channel-disconnect.mdx'
 
 <ChannelDisconnect />
 

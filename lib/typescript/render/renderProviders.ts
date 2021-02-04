@@ -1,5 +1,5 @@
 import {FacebookRender} from './providers/facebook/FacebookRender';
-import {ChatPluginRender} from './providers/chat_plugin/ChatPluginRender';
+import {ChatPluginRender} from './providers/chatplugin/ChatPluginRender';
 import {MessageRenderProps} from './shared';
 
 type Provider = (messageRenderProps: MessageRenderProps) => JSX.Element;

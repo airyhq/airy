@@ -15,7 +15,6 @@ git_repository(
     shallow_since = "1612440527 +0100",
 )
 
-
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
 
 airy_bazel_tools_dependencies()

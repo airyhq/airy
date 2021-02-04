@@ -29,11 +29,11 @@ web_app(
 
 web_library(
     name = "library",
-    app_lib = ":app",
     aliases = {
         "react": "preact/compat",
         "react-dom": "preact/compat",
     },
+    app_lib = ":app",
     entry = "frontend/chat-plugin/src/defaultScript.js",
     module_deps = module_deps,
     output = {

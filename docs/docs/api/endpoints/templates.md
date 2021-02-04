@@ -46,6 +46,7 @@ Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html).
 **Sample request**
 
 Find templates whose name ends with "NASA":
+
 ```json5
 {
   "filters": "name:*NASA", // optional
@@ -62,7 +63,7 @@ Find templates whose name ends with "NASA":
     {
       "id": "TEMPLATE-UUID",
       "name": "Template for NASA",
-      "content": "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}",
+      "content": '{"blueprint":"text","payload":"[[salutation]]!"}',
       "variables": {
         "en": {
           "salutation": "%s"
@@ -103,11 +104,10 @@ Find templates whose name ends with "NASA":
 `POST /templates.update`
 
 ```json5
-
 {
   "id": "template id",
   "name": "my template name",
-  "content": "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}",
+  "content": '{"blueprint":"text","payload":"[[salutation]]!"}',
   "variables": {
     "en": {
       "salutation": "%s"
@@ -118,7 +118,7 @@ Find templates whose name ends with "NASA":
 
 **Sample Response**
 
-This endpoint returns *200* if successful.
+This endpoint returns _200_ if successful.
 
 ## Delete
 
@@ -132,4 +132,4 @@ This endpoint returns *200* if successful.
 
 **Sample Response**
 
-This endpoint returns *200* if successful.
+This endpoint returns _200_ if successful.

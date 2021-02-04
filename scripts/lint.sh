@@ -22,5 +22,4 @@ echo "Running eslint"
 yarn eslint
 echo
 echo "Running shellcheck on *.sh"
-sudo apt-get install -y shellcheck
 find infrastructure scripts -type f -name "*.sh" -exec shellcheck {} +

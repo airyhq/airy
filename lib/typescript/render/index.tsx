@@ -9,6 +9,7 @@ export const SourceMessage = (props: MessageRenderProps) => {
   const source = getSource(props.conversation);
 
   const provider = renderProviders[source];
+  console.log('provider', provider);
 
   try {
     return provider(props);

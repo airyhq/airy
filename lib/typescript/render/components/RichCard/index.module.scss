@@ -1,0 +1,63 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.richCardWrapper {
+  box-sizing: border-box;
+  height: 440px;
+  width: 288px;
+  border: 1px solid #cad5db;
+  border-radius: 16px;
+  background-color: #ffffff;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.title {
+  color: #212428;
+  font-family: Lato;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+
+.description {
+  color: #737373;
+  font-family: Lato;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+
+.suggestionsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.suggestionButton {
+  height: 48px;
+  width: auto;
+  padding: 12px 16px;
+  color: #1578d4;
+  font-family: Lato;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: 24px;
+  text-align: right;
+  border: 2px solid #cad5db;
+  border-radius: 4px;
+  background-color: #ffffff;
+  margin: 16px 0;
+  cursor: pointer;
+}
+
+.richCardText {
+  padding: 16px 16px 0 16px;
+
+  border-top: none;
+}
+
+.imageContainer {
+  width: 100%;
+  height: auto;
+}

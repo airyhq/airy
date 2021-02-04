@@ -14,6 +14,7 @@ export interface Attachement {
   };
 }
 
+//adding richcard here
 export enum MessageSource {
   facebook = 'facebook',
   google = 'google',

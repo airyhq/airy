@@ -3,11 +3,22 @@ title: Installation
 sidebar_label: Installation
 ---
 
+import Highlighter from "@site/src/components/Highlighter";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-You can run the entire Airy Core on your machine [inside an isolated Vagrant box](/getting-started/deployment/vagrant.md). We recommend to install the Aiy CLI first which will aid you in the process of installing and managing your Airy Core instance.
+<Highlighter>
+
+You can install Airy Core from **many possible installation options**, locally
+or in the cloud.
+
+</Highlighter>
+
+You can run the entire Airy Core on your machine [inside an isolated Vagrant
+box](/getting-started/deployment/vagrant.md). We recommend to install the Airy
+CLI first which will aid you in the process of installing and managing your Airy
+Core instance.
 
 ## Install the Airy CLI
 

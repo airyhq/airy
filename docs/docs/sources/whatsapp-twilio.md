@@ -3,6 +3,14 @@ title: WhatsApp via Twilio
 sidebar_label: WhatsApp Business API
 ---
 
+import Highlighter from "@site/src/components/Highlighter";
+
+<Highlighter>
+
+Connect with **2 Billion WhatsApp users** via messages and templates.
+
+</Highlighter>
+
 The Twilio WhatsApp source provides a channel for sending and receiving WhatsApp
 messages using the [Twilio API](https://www.twilio.com/).
 

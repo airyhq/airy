@@ -2,7 +2,7 @@ export type RenderCtrl = {
   toggleHideChat: () => void;
 };
 
-export type RenderProp = (ctrl?: RenderCtrl) => preact.JSX.Element;
+export type RenderProp = (ctrl?: RenderCtrl) => JSX.Element;
 
 export type AuthConfiguration = {
   channel_id: string;

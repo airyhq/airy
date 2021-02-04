@@ -1,5 +1,5 @@
-import {h} from 'preact';
-import {useState, useEffect} from 'preact/hooks';
+import React from 'react';
+import {useState, useEffect} from 'react';
 import style from './index.module.scss';
 
 type Props = {

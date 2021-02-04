@@ -1,8 +1,7 @@
-import {Conversation} from 'httpclient';
+import {Contact} from 'httpclient';
 
 export interface DefaultMessageRenderingProps {
   fromContact: boolean;
-  conversation: Conversation;
-  showAvatar: boolean;
+  contact?: Contact;
   sentAt?: string;
 }

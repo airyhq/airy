@@ -18,7 +18,7 @@ The `backend` system is a streaming platform. Its role is to:
 The `frontend` system contains a demo application and the JavaScript integration
 of the [Chat Plugin](sources/chat-plugin.md).
 
-Having that in mind, these are the docker containers – or the `Airy apps` –
+Having that in mind, these are the docker containers – or the `Airy Components` –
 which run as part of Airy Core:
 
 ## Sources
@@ -47,10 +47,10 @@ which run as part of Airy Core:
 ## Airy Controller
 
 Airy Core ships with a Kubernetes controller, which is responsible for starting
-and reloading the appropriate Airy apps based on the provided configuration. The
-controller as a deployment named `airy-controller`.
+and reloading the appropriate `Airy Components` based on the provided configuration. The
+controller is a deployment named `airy-controller`.
 
 ## Airy CLI
 
 Every release features a command line binary, used to configure and fetch status
-information from your Airy Core instance. This tool is referred to as the `Airy CLI` throughout the documentation.
+information from your Airy Core instance. This tool is referred to as the [Airy CLI](/getting-started/cli.md) throughout the documentation.

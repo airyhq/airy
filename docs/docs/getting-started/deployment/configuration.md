@@ -5,58 +5,61 @@ sidebar_label: Configuration
 
 ## Airy Core Configuration File
 
-The file `infrastructure/airy.tpl.yaml` is an example of all possible configuration options. This file should be copied and renamed to `infrastructure/airy.yaml` and modified
-according to your environment:
+The `infrastructure/airy.tpl.yaml` file contains examples of all possible configuration options. Copy and rename it to `infrastructure/airy.yaml` and modify it according to your environment:
 
 ```bash
 cd infrastructure
 cp airy.tpl.yaml airy.yaml
 ```
 
-We will guide you through the different sections so you can make the changes you are looking for. You can also omit keys for services which do not wish to configure.
-
-You can for example remove the Twilio section if you do not wish to use that source.
-
-```yaml
-twilio:
-  authToken: "changeme"
-  accountSid: "changeme"
-```
+We will guide you through the different sections so you can make the changes you are looking for. Keys can also be omited for services which you do not wish to configure.
 
 ### Global
 
-- appImageTag
+`appImageTag`
 
-If you want to deploy a specific version of Airy Core, you must set this to the desired version.
+The image tag of the container images for the `Airy Components`
 
-- containerRegistry
-- namespace
+`containerRegistry`
+
+The images of the `Airy Components` are stored in the [Github Container Registry](https://docs.github.com/en/packages/guides/about-github-container-registry).
+
+`namespace`
+
+The Kubernetes namespace the `Airy Core` will use
 
 ### Prerequisites
 
-Connecting the `Airy Components` to the
-Kafka cluster, PostgreSQL and Redis.
+These settings are used to connect the `Airy Components` to your Kafka cluster, PostgreSQL and Redis.
 
-- kafka
-- redis
-- postgres
+`kafka`
+`redis`
+`postgres`
 
 We recommend that you create a new database if you are reusing a PostgreSQL server to avoid name collisions.
 
 ### Components
 
-- api
-- sources
-- webhooks
-- media-resolver
+`api`
+
+The `mail*` settings are needed if you want the Airy Core to send emails out.
+
+The `jwtSecret` should be set to a long secure secret in production environments
+
+`sources`
+
+The `Airy Controller` will only start `Airy Components` when they are configured here. So to keep system load to a minimum only add the sources you are using.
+
+`webhooks`
+`media-resolver`
 
 ## Applying the configuration
 
-If you made changes in the `airy.yaml` file and want to apply it to your instance you can use our [CLI](getting-started/cli.md)
+If you made changes in `airy.yaml` and want to apply it to your instance you can use the [CLI](getting-started/cli.md) by running the following command.
 
-```sh
+```bash
 airy config apply --config ./airy.yaml --kube-config /path/to/your/kube.conf
 ```
 
-Make sure you point the `--kube-config` flag to your Kubernetes configuration
-file.
+Make sure you point the `--kube-config` flag to the Kubernetes configuration
+file of the cluster you want to configure.

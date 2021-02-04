@@ -144,8 +144,6 @@ Airy Core ships with a Kubernetes controller, which is responsible for starting
 and reloading the appropriate Airy Components based on the provided configuration. The
 controller is a deployment named `airy-controller`.
 
-For detailed information about the configuration options refer to the [Configuration Section].(configuration.md)
-
 After the [required services](#requirements) are deployed, you're ready to start
 the `Airy Components` inside a Kubernetes cluster.
 

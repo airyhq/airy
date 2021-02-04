@@ -36,24 +36,43 @@ for more information.
 
 `POST /templates.list`
 
+This is a [paginated](/api/endpoints/introduction.md#pagination) endpoint.
+
+**Filtering**
+
+This endpoint allows you to query templates using the human readable [Lucene
+Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html).
+
+**Sample request**
+
+Find templates whose name ends with "NASA":
 ```json5
 {
+  "filters": "name:*NASA", // optional
+  "cursor": "next-page-uuid",
+  "page_size": 2
 }
 ```
 
 **Sample response**
 
 ```json5
-[{
-  "name": "my template name",
-  "content": "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}",
-  "variables": {
-    "en": {
-      "salutation": "%s"
+{
+  "data": [
+    {
+      "id": "TEMPLATE-UUID",
+      "name": "Template for NASA",
+      "content": "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}",
+      "variables": {
+        "en": {
+          "salutation": "%s"
+        }
+      }
     }
-  }
-}]
+  ]
+}
 ```
+
 ## Info
 
 `POST /templates.info`
@@ -70,7 +89,12 @@ for more information.
 {
   "id": "TEMPLATE-UUID",
   "name": "{String}",
-  "content": "{String}"
+  "content": "{String}",
+  "variables": {
+    "en": {
+      "salutation": "%s"
+    }
+  }
 }
 ```
 
@@ -92,6 +116,10 @@ for more information.
 }
 ```
 
+**Sample Response**
+
+This endpoint returns *200* if successful.
+
 ## Delete
 
 `POST /templates.delete`
@@ -102,3 +130,6 @@ for more information.
 }
 ```
 
+**Sample Response**
+
+This endpoint returns *200* if successful.

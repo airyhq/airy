@@ -2,29 +2,18 @@ import React from 'react';
 import {Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {RichCard} from '../../components/RichCard';
-import {RichCardContent, ContentUnion, TextContent} from './chatPluginModel';
+import {ContentUnion, ContentType} from './chatPluginModel';
 import {Text} from '../../components/Text';
 
 export const ChatPluginRender = (props: MessageRenderProps) => {
-  const {
-    message: {content},
-    message,
-  } = props;
-
-  if (JSON.parse(content).text) {
-    return render(mapTextContent(message), props);
-  }
-
-  if (JSON.parse(content).richCard) {
-    return render(mapRichCardContent(message), props);
-  }
+  return render(mapContent(props.message), props);
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
   switch (content.type) {
-    case 'text':
+    case ContentType.text:
       return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
-    case 'richCard':
+    case ContentType.richCard:
       return (
         <RichCard
           {...getDefaultMessageRenderingProps(props)}
@@ -37,25 +26,29 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-function mapTextContent(message: Message): TextContent {
-  return {
-    type: 'text',
-    text: JSON.parse(message.content).text,
-  };
-}
+function mapContent(message: Message): ContentUnion {
+  const messageContent = JSON.parse(message.content);
 
-function mapRichCardContent(message: Message): RichCardContent {
-  const {
-    richCard: {
-      standaloneCard: {cardContent},
-    },
-  } = JSON.parse(message.content);
+  if (messageContent.text) {
+    return {
+      type: ContentType.text,
+      text: JSON.parse(message.content).text,
+    };
+  }
 
-  return {
-    type: 'richCard',
-    title: cardContent.title,
-    description: cardContent.description,
-    media: cardContent.media,
-    suggestions: cardContent.suggestions,
-  };
+  if (messageContent.richCard) {
+    const {
+      richCard: {
+        standaloneCard: {cardContent},
+      },
+    } = messageContent;
+
+    return {
+      type: ContentType.richCard,
+      title: cardContent.title,
+      description: cardContent.description,
+      media: cardContent.media,
+      suggestions: cardContent.suggestions,
+    };
+  }
 }

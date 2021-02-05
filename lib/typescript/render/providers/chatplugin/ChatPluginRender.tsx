@@ -1,5 +1,5 @@
 import React from 'react';
-import {isFromContact, Message} from '../../../httpclient/model';
+import {Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './chatPluginModel';

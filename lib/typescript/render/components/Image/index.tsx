@@ -3,16 +3,18 @@ import styles from './index.module.scss';
 import {Avatar} from '../Avatar';
 import {DefaultMessageRenderingProps} from '../index';
 
-type TextRenderProps = DefaultMessageRenderingProps & {
-  text: string;
+type ImageRenderProps = DefaultMessageRenderingProps & {
+  imageUrl: string;
 };
 
-export const Text = ({contact, sentAt, fromContact, text}: TextRenderProps) => (
+export const Image = ({contact, sentAt, fromContact, imageUrl}: ImageRenderProps) => (
   <div className={styles.wrapper}>
     <div className={styles.messageListItem}>
       {!fromContact ? (
         <div className={styles.messageListItemMember}>
-          <div className={styles.messageListItemMemberText}>{text}</div>
+          <div className={styles.messageListItemMemberImage}>
+            <img className={styles.messageListItemImageBlock} src={imageUrl} />
+          </div>
           {sentAt && <div className={styles.messageTime}>{sentAt}</div>}
         </div>
       ) : (
@@ -21,7 +23,9 @@ export const Text = ({contact, sentAt, fromContact, text}: TextRenderProps) => (
             <Avatar contact={contact} />
           </div>
           <div className={styles.messageListItemUser}>
-            <div className={styles.messageListItemUserText}>{text}</div>
+            <div className={styles.messageListItemUserImage}>
+              <img className={styles.messageListItemImageBlock} src={imageUrl} />
+            </div>
             {sentAt && <div className={styles.messageTime}>{sentAt}</div>}
           </div>
         </div>

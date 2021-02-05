@@ -31,13 +31,11 @@
   position: relative;
 }
 
-.messageListItemUserText {
+.messageListItemUserImage {
   display: inline-flex;
-  padding: 10px;
   margin-top: 5px;
-  background: var(--color-background-blue);
-  color: var(--color-text-contrast);
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .messageListItemMember {
@@ -47,17 +45,19 @@
   text-align: right;
 }
 
-.messageListItemMemberText {
+.messageListItemMemberImage {
   display: inline-flex;
-  padding: 10px;
   position: relative;
-  background: var(--color-airy-blue);
-  color: white;
   text-align: left;
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .messageTime {
   @include font-s;
   color: var(--color-text-gray);
+}
+
+.messageListItemImageBlock {
+  max-width: 100%;
 }

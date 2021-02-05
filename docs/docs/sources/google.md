@@ -3,6 +3,14 @@ title: Google’s Business Messages
 sidebar_label: Google’s Business Messages
 ---
 
+import Highlighter from "@site/src/components/Highlighter";
+
+<Highlighter>
+
+Start receiving and sending messages from **Google Maps & Google Search**.
+
+</Highlighter>
+
 The Google source provides a channel of communication between your Google
 Business Location and your running instance of Airy Core.
 

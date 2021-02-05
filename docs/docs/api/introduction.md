@@ -3,6 +3,14 @@ title: Introduction
 sidebar_label: Introduction
 ---
 
+import Highlighter from "@site/src/components/Highlighter";
+
+<Highlighter>
+
+Interact with your Airy Core via **HTTP Endpoints**, **WebSockets** or **Webhooks**.
+
+</Highlighter>
+
 This documents offers a high-level overview of the different parts that
 compose the Airy Core API.
 

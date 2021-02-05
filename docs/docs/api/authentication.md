@@ -3,6 +3,14 @@ title: Authentication
 sidebar_label: Authentication
 ---
 
+import Highlighter from "@site/src/components/Highlighter";
+
+<Highlighter>
+
+To start using the API, you need to **authenticate first**.
+
+</Highlighter>
+
 In order to communicate with the Airy Core API, you need a valid
 [JWT Token](https://jwt.io/) token. The login endpoint [login](#login) returns such a short-lived
 token which can be used to authenticate with endpoints via the [Bearer Authorization header](https://tools.ietf.org/html/rfc6750#section-2.1).

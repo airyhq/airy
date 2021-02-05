@@ -3,9 +3,18 @@ title: Quickstart
 sidebar_label: Quickstart
 ---
 
-Learn the basics with Airy Core's Quickstart: In this guide we are gonna set up
-our first source, Airy's Live Chat Plugin. We then use the plugin to send
-messages, and check them out in the UI, your terminal and directly in Apache Kafka.
+import Highlighter from "@site/src/components/Highlighter";
+
+<Highlighter>
+
+In this Quickstart we are **setting up our first source, listen to conversations, and
+consume directly from Kafka**
+
+</Highlighter>
+
+We are going to use Airy's Live Chat Plugin as our first source. We then use the
+plugin to send messages, and check them out in the UI, your terminal and
+directly in Apache Kafka.
 
 :::tip What you will learn
 

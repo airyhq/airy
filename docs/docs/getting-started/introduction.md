@@ -4,9 +4,16 @@ sidebar_label: Introduction
 slug: /
 ---
 
+import Highlighter from "@site/src/components/Highlighter";
+
 ## What is Airy Core?
 
-> Airy Core is an **open source**, **fully-featured**, **production-ready** messaging platform.
+<Highlighter>
+
+Airy Core is an **open source**, **fully-featured**, **production-ready**
+messaging platform.
+
+</Highlighter>
 
 With Airy Core you can process conversational data from a variety of sources:
 

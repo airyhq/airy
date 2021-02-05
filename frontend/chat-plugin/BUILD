@@ -7,6 +7,7 @@ load("//tools/build:container_push.bzl", "container_push")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 module_deps = [
+    "//frontend/assets",
     "//lib/typescript/types",
     "//lib/typescript/httpclient",
     "//lib/typescript/render",
@@ -15,14 +16,23 @@ module_deps = [
 
 web_app(
     name = "bundle",
+    aliases = {
+        "react": "preact/compat",
+        "react-dom": "preact/compat",
+    },
     app_lib = ":app",
     entry = "frontend/chat-plugin/src/iframe.js",
     index = ":development.html",
     module_deps = module_deps,
+    show_bundle_report = True,
 )
 
 web_library(
     name = "library",
+    aliases = {
+        "react": "preact/compat",
+        "react-dom": "preact/compat",
+    },
     app_lib = ":app",
     entry = "frontend/chat-plugin/src/defaultScript.js",
     module_deps = module_deps,
@@ -39,9 +49,11 @@ ts_library(
     deps = module_deps + [
         "@npm//@stomp/stompjs",
         "@npm//@types/node",
+        "@npm//@types/react",
+        "@npm//@types/react-dom",
         "@npm//linkifyjs",
-        "@npm//preact",
-        "@npm//preact-router",
+        "@npm//react",
+        "@npm//react-dom",
     ],
 )
 

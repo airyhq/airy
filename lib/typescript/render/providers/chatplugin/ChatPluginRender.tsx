@@ -1,7 +1,7 @@
 import React from 'react';
 import {Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
-import {RichCardComponent} from '../../components/RichCard';
+import {RichCard} from '../../components/RichCard';
 import {RichCardContent, ContentUnion, TextContent} from './chatPluginModel';
 import {Text} from '../../components/Text';
 
@@ -26,7 +26,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
     case 'richCard':
       return (
-        <RichCardComponent
+        <RichCard
           {...getDefaultMessageRenderingProps(props)}
           title={content.title}
           description={content.description}

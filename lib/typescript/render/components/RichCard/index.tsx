@@ -17,7 +17,7 @@ export type RichCardRenderProps = DefaultMessageRenderingProps & {
   media: MediaRenderProps;
 };
 
-export const RichCardComponent = ({sentAt, title, description, suggestions, media}: RichCardRenderProps) => (
+export const RichCard = ({sentAt, title, description, suggestions, media}: RichCardRenderProps) => (
   <div className={styles.wrapper}>
     <div className={styles.messageListUserContainer}>
       <div className={styles.richCardWrapper}>

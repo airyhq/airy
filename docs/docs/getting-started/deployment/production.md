@@ -152,7 +152,6 @@ must configure the system. See our [Configuration Docs](/getting-started/deploym
 
 Then you can proceed:
 
-
 ```sh
 helm install core ./helm-chart/charts/apps/ --values ./airy.yaml --timeout 1000s
 ```

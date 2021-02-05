@@ -33,6 +33,8 @@ The Facebook source requires the following configuration:
   Facebook pages
 - A page token for each facebook page you intend to integrate
 
+Refer to the [Configuration Docs](/getting-started/deployment/configuration.md#components) on how to input these values.
+
 Let's proceed step by step.
 
 ### Find the app id and secret

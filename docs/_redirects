@@ -1,0 +1,2 @@
+/airy https://www.airy.co
+/web/*  https://www.airy.co/:splat 200

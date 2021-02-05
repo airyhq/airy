@@ -148,9 +148,10 @@ After the [required services](#requirements) are deployed, you're ready to start
 the `Airy Components` inside a Kubernetes cluster.
 
 We provided a Helm chart to deploy the `Airy Components`. Before you can run helm, you
-must configure the system via the `airy.yaml` file, then you can proceed:
+must configure the system. See our [Configuration Docs](/getting-started/deployment/configuration.md) for detailed instructions.
 
-See our [Configuration Docs](/getting-started/deployment/configuration.md) for detailed instructions.
+Then you can proceed:
+
 
 ```sh
 helm install core ./helm-chart/charts/apps/ --values ./airy.yaml --timeout 1000s

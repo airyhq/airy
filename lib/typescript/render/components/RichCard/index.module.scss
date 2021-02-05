@@ -1,29 +1,52 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
+.wrapper {
+  display: flex;
+  flex: none;
+}
+
+.messageListItemMember {
+  width: 100%;
+  justify-content: flex-end;
+  text-align: right;
+  margin-top: 5px;
+}
+
+.messageTime {
+  @include font-s;
+  color: var(--color-text-gray);
+}
+
 .richCardWrapper {
   box-sizing: border-box;
-  height: 440px;
+  height: auto;
   width: 288px;
-  border: 1px solid #cad5db;
+  border: 1px solid var(--color-light-gray);
   border-radius: 16px;
-  background-color: #ffffff;
+  background-color: var(--color-template-highlight);
   margin-top: 15px;
-  margin-bottom: 15px;
+}
+
+.mediaContainer {
+  width: 100%;
+  height: auto;
+}
+
+.textContainer {
+  padding: 16px 16px 24px 16px;
 }
 
 .title {
-  color: #212428;
-  font-family: Lato;
-  font-size: 20px;
+  color: var(--color-text-contrast);
+  @include font-m;
   letter-spacing: 0;
   line-height: 24px;
 }
 
 .description {
-  color: #737373;
-  font-family: Lato;
-  font-size: 16px;
+  color: var(--color-text-gray);
+  @include font-base;
   letter-spacing: 0;
   line-height: 24px;
 }
@@ -38,26 +61,14 @@
   height: 48px;
   width: auto;
   padding: 12px 16px;
-  color: #1578d4;
-  font-family: Lato;
-  font-size: 20px;
+  @include font-m;
   letter-spacing: 0;
-  line-height: 24px;
-  text-align: right;
-  border: 2px solid #cad5db;
+  border: 2px solid var(--color-light-gray);
   border-radius: 4px;
-  background-color: #ffffff;
-  margin: 16px 0;
+  background-color: var(--color-template-highlight);
+  color: var(--color-airy-blue);
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
   cursor: pointer;
-}
-
-.richCardText {
-  padding: 16px 16px 0 16px;
-
-  border-top: none;
-}
-
-.imageContainer {
-  width: 100%;
-  height: auto;
 }

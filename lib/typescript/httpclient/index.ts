@@ -34,27 +34,6 @@ const headers = {
   Accept: 'application/json',
 };
 
-export async function parseBody(response: Response): Promise<any> {
-  if (response.ok) {
-    try {
-      return await response.json();
-    } catch {
-      // NOP
-    }
-  }
-
-  let body = await response.text();
-
-  if (body.length > 0) {
-    body = JSON.parse(body);
-  }
-
-  throw {
-    status: response.status,
-    body: body,
-  };
-}
-
 export function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
 }
@@ -62,10 +41,38 @@ export function isString(object: any) {
 export class HttpClient {
   public readonly apiUrlConfig?: string;
   public token?: string;
+  private unauthorizedErrorCallback?: (body: any) => void;
 
-  constructor(token?: string, apiUrlConfig?: string) {
+  constructor(token?: string, apiUrlConfig?: string, unauthorizedErrorCallback?: (body: any) => void) {
     this.token = token;
     this.apiUrlConfig = apiUrlConfig || 'http://api.airy';
+    this.unauthorizedErrorCallback = unauthorizedErrorCallback;
+  }
+
+  private async parseBody(response: Response): Promise<any> {
+    if (response.ok) {
+      try {
+        return await response.json();
+      } catch {
+        // NOP
+      }
+    }
+
+    const body: string = await response.text();
+    let errorResult: any;
+
+    if (body.length > 0) {
+      errorResult = JSON.parse(body);
+    }
+
+    if (response.status == 403 && this.unauthorizedErrorCallback) {
+      this.unauthorizedErrorCallback(errorResult);
+    }
+
+    throw {
+      status: response.status,
+      body: errorResult,
+    };
   }
 
   private async doFetchFromBackend(url: string, body?: Object): Promise<any> {
@@ -85,65 +92,45 @@ export class HttpClient {
       body: body as BodyInit,
     });
 
-    return parseBody(response);
+    return this.parseBody(response);
   }
 
   public async listChannels() {
-    try {
-      const response: ChannelsPayload = await this.doFetchFromBackend('channels.list');
-      return channelsMapper(response);
-    } catch (error) {
-      return error;
-    }
+    const response: ChannelsPayload = await this.doFetchFromBackend('channels.list');
+    return channelsMapper(response);
   }
 
   public async exploreFacebookChannels(requestPayload: ExploreChannelRequestPayload) {
-    try {
-      const response: ChannelsPayload = await this.doFetchFromBackend('facebook.channels.explore', requestPayload);
-      return channelsMapper(response, requestPayload.source);
-    } catch (error) {
-      return error;
-    }
+    const response: ChannelsPayload = await this.doFetchFromBackend('facebook.channels.explore', requestPayload);
+    return channelsMapper(response, requestPayload.source);
   }
 
   public async connectFacebookChannel(requestPayload: ConnectChannelRequestPayload) {
-    try {
-      const response: ChannelApiPayload = await this.doFetchFromBackend(
-        'channels.connect',
-        connectChannelApiMapper(requestPayload)
-      );
-      return channelMapper(response);
-    } catch (error) {
-      return error;
-    }
+    const response: ChannelApiPayload = await this.doFetchFromBackend(
+      'channels.connect',
+      connectChannelApiMapper(requestPayload)
+    );
+    return channelMapper(response);
   }
 
   public async disconnectChannel(source: string, requestPayload: DisconnectChannelRequestPayload) {
-    try {
-      const response: ChannelsPayload = await this.doFetchFromBackend(
-        `channels.${source}.disconnect`,
-        disconnectChannelApiMapper(requestPayload)
-      );
-      return channelsMapper(response);
-    } catch (error) {
-      return error;
-    }
+    const response: ChannelsPayload = await this.doFetchFromBackend(
+      `channels.${source}.disconnect`,
+      disconnectChannelApiMapper(requestPayload)
+    );
+    return channelsMapper(response);
   }
 
   public async listConversations(conversationListRequest: ListConversationsRequestPayload) {
     conversationListRequest.page_size = conversationListRequest.page_size ?? 10;
     conversationListRequest.cursor = conversationListRequest.cursor ?? null;
-    try {
-      const response: PaginatedPayload<ConversationPayload> = await this.doFetchFromBackend(
-        'conversations.list',
-        conversationListRequest
-      );
-      const {pagination_data} = response;
+    const response: PaginatedPayload<ConversationPayload> = await this.doFetchFromBackend(
+      'conversations.list',
+      conversationListRequest
+    );
+    const {pagination_data} = response;
 
-      return paginatedPayloadMapper({data: conversationsMapper(response.data), pagination_data: pagination_data});
-    } catch (error) {
-      return error;
-    }
+    return paginatedPayloadMapper({data: conversationsMapper(response.data), pagination_data: pagination_data});
   }
 
   public async getConversationInfo(conversationId: string) {
@@ -162,103 +149,67 @@ export class HttpClient {
     conversationListRequest.pageSize = conversationListRequest.pageSize ?? 10;
     conversationListRequest.cursor = conversationListRequest.cursor ?? null;
 
-    try {
-      const response: PaginatedPayload<MessagePayload> = await this.doFetchFromBackend('messages.list', {
-        conversation_id: conversationListRequest.conversationId,
-        cursor: conversationListRequest.cursor,
-        page_size: conversationListRequest.pageSize,
-      });
-      const {pagination_data} = response;
+    const response: PaginatedPayload<MessagePayload> = await this.doFetchFromBackend('messages.list', {
+      conversation_id: conversationListRequest.conversationId,
+      cursor: conversationListRequest.cursor,
+      page_size: conversationListRequest.pageSize,
+    });
+    const {pagination_data} = response;
 
-      return paginatedPayloadMapper({data: messageMapperData(response), pagination_data: pagination_data});
-    } catch (error) {
-      return error;
-    }
+    return paginatedPayloadMapper({data: messageMapperData(response), pagination_data: pagination_data});
   }
 
   public async listTags() {
-    try {
-      const response: ListTagsResponsePayload = await this.doFetchFromBackend('tags.list');
-      return tagsMapper(response.data);
-    } catch (error) {
-      return error;
-    }
+    const response: ListTagsResponsePayload = await this.doFetchFromBackend('tags.list');
+    return tagsMapper(response.data);
   }
 
   public async createTag(requestPayload: CreateTagRequestPayload) {
-    try {
-      const response: TagPayload = await this.doFetchFromBackend('tags.create', requestPayload);
-      return {
-        id: response.id,
-        name: requestPayload.name,
-        color: requestPayload.color as TagColor,
-      };
-    } catch (error) {
-      return error;
-    }
+    const response: TagPayload = await this.doFetchFromBackend('tags.create', requestPayload);
+    return {
+      id: response.id,
+      name: requestPayload.name,
+      color: requestPayload.color as TagColor,
+    };
   }
 
   public async updateTag(tag: Tag) {
-    try {
-      await this.doFetchFromBackend('tags.update', {...tag});
-      return Promise.resolve(true);
-    } catch (error) {
-      return error;
-    }
+    await this.doFetchFromBackend('tags.update', {...tag});
+    return Promise.resolve(true);
   }
 
   public async deleteTag(id: string) {
-    try {
-      await this.doFetchFromBackend('tags.delete', {id});
-      return Promise.resolve(true);
-    } catch (error) {
-      return error;
-    }
+    await this.doFetchFromBackend('tags.delete', {id});
+    return Promise.resolve(true);
   }
 
   public async loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
-    try {
-      const response = await this.doFetchFromBackend('users.login', requestPayload);
-      return userMapper(response);
-    } catch (error) {
-      return error;
-    }
+    const response = await this.doFetchFromBackend('users.login', requestPayload);
+    return userMapper(response);
   }
 
   public async tagConversation(requestPayload: TagConversationRequestPayload) {
-    try {
-      await this.doFetchFromBackend('conversations.tag', {
-        conversation_id: requestPayload.conversationId,
-        tag_id: requestPayload.tagId,
-      });
-      return Promise.resolve(true);
-    } catch (error) {
-      return error;
-    }
+    await this.doFetchFromBackend('conversations.tag', {
+      conversation_id: requestPayload.conversationId,
+      tag_id: requestPayload.tagId,
+    });
+    return Promise.resolve(true);
   }
 
   public async untagConversation(requestPayload: UntagConversationRequestPayload) {
-    try {
-      await this.doFetchFromBackend('conversations.untag', {
-        conversation_id: requestPayload.conversationId,
-        tag_id: requestPayload.tagId,
-      });
-      return Promise.resolve(true);
-    } catch (error) {
-      return error;
-    }
+    await this.doFetchFromBackend('conversations.untag', {
+      conversation_id: requestPayload.conversationId,
+      tag_id: requestPayload.tagId,
+    });
+    return Promise.resolve(true);
   }
 
   public async sendMessages(requestPayload: SendMessagesRequestPayload) {
-    try {
-      const response: MessagePayload = await this.doFetchFromBackend('messages.send', {
-        conversation_id: requestPayload.conversationId,
-        message: requestPayload.message,
-      });
-      return messageMapper(response);
-    } catch (error) {
-      return error;
-    }
+    const response: MessagePayload = await this.doFetchFromBackend('messages.send', {
+      conversation_id: requestPayload.conversationId,
+      message: requestPayload.message,
+    });
+    return messageMapper(response);
   }
 }
 

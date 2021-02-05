@@ -7,7 +7,7 @@ type TextRenderProps = DefaultMessageRenderingProps & {
   text: string;
 };
 
-export const Text = ({conversation, showAvatar, sentAt, fromContact, text}: TextRenderProps) => (
+export const Text = ({contact, sentAt, fromContact, text}: TextRenderProps) => (
   <div className={styles.wrapper}>
     <div className={styles.messageListItem}>
       {!fromContact ? (
@@ -17,7 +17,7 @@ export const Text = ({conversation, showAvatar, sentAt, fromContact, text}: Text
         </div>
       ) : (
         <div className={styles.messageListUserContainer}>
-          <div className={styles.messageAvatar}>{showAvatar && <Avatar contact={conversation.contact} />}</div>
+          <div className={styles.messageAvatar}>{contact && <Avatar contact={contact} />}</div>
           <div className={styles.messageListItemUser}>
             <div className={styles.messageListItemUserText}>{text}</div>
             {sentAt && <div className={styles.messageTime}>{sentAt}</div>}

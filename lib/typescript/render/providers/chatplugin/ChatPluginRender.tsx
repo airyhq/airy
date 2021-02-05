@@ -2,67 +2,60 @@ import React from 'react';
 import {Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {RichCardComponent} from '../../components/RichCard';
-import {Content, RichCard} from './ChatPluginModel';
+import {RichCardContent, ContentUnion, TextContent} from './chatPluginModel';
+import {Text} from '../../components/Text';
 
 export const ChatPluginRender = (props: MessageRenderProps) => {
-  const message = props.message.content;
-  let content;
+  const {
+    message: {content},
+    message,
+  } = props;
 
-  if (message.includes('richCard')) {
-    content = chatPluginRichCard(message);
-    props = content.richCard.standaloneCard.cardContent;
+  if (JSON.parse(content).text) {
+    return render(mapTextContent(message), props);
   }
 
-  return render(content, props);
+  if (JSON.parse(content).richCard) {
+    return render(mapRichCardContent(message), props);
+  }
 };
 
-function render(content, props) {
+function render(content: ContentUnion, props: MessageRenderProps) {
   switch (content.type) {
+    case 'text':
+      return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
     case 'richCard':
-      console.log('props', props);
-      return <RichCardComponent {...props} />;
+      return (
+        <RichCardComponent
+          {...getDefaultMessageRenderingProps(props)}
+          title={content.title}
+          description={content.description}
+          media={content.media}
+          suggestions={content.suggestions}
+        />
+      );
   }
 }
 
-function chatPluginRichCard(message: string): RichCard {
-  const messageJson = JSON.parse(message);
+function mapTextContent(message: Message): TextContent {
+  return {
+    type: 'text',
+    text: JSON.parse(message.content).text,
+  };
+}
 
-  console.log('messageJson', messageJson);
+function mapRichCardContent(message: Message): RichCardContent {
+  const {
+    richCard: {
+      standaloneCard: {cardContent},
+    },
+  } = JSON.parse(message.content);
 
-  // //destructure this
-  const richcard = messageJson.richCard.standaloneCard.cardContent;
   return {
     type: 'richCard',
-    fallback: messageJson.fallback,
-    richCard: {
-      standaloneCard: {
-        cardContent: {
-          title: richcard.title,
-          description: richcard.description,
-          media: {
-            height: richcard.media.height,
-            contentInfo: {
-              altText: richcard.media.contentInfo.altText,
-              fileUrl: richcard.media.contentInfo.fileUrl,
-              forceRefresh: richcard.media.contentInfo.forceRefresh,
-            },
-          },
-          suggestions: [
-            {
-              reply: {
-                text: richcard.suggestions[0].reply.text,
-                postbackData: richcard.suggestions[0].postbackData,
-              },
-            },
-            {
-              reply: {
-                text: richcard.suggestions[1].reply.text,
-                postbackData: richcard.suggestions[1].postbackData,
-              },
-            },
-          ],
-        },
-      },
-    },
+    title: cardContent.title,
+    description: cardContent.description,
+    media: cardContent.media,
+    suggestions: cardContent.suggestions,
   };
 }

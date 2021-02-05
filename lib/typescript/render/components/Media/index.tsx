@@ -1,24 +1,22 @@
 import React from 'react';
 import styles from './index.module.scss';
-
-export enum MediaHeight {
-  short = 'SHORT',
-  medium = 'MEDIUM',
-  tall = 'TALL',
-}
+import {MediaHeight} from '../../providers/chatplugin/chatPluginModel';
 
 export type MediaRenderProps = {
+  height: MediaHeight;
   contentInfo: {
     altText: string;
     fileUrl: string;
     forceRefresh: boolean;
-    height: MediaHeight;
   };
 };
 
-export const Media = ({contentInfo: {altText, fileUrl}}: MediaRenderProps) => (
-  <img src={fileUrl} alt={altText} className={styles.mediaImage} />
+export const Media = ({height, contentInfo: {altText, fileUrl}}: MediaRenderProps) => (
+  <img
+    src={fileUrl}
+    alt={altText}
+    className={`${styles.mediaImage} ${
+      height === MediaHeight.tall ? styles.tall : height === MediaHeight.medium ? styles.medium : styles.short
+    }`}
+  />
 );
-
-// `${styles.mediaImage}, ${height === 'SHORT' ?
-// styles.heightShort : height === 'TALL' ? styles.heightTall : styles.heightMedium}`

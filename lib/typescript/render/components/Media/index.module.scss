@@ -1,8 +1,16 @@
-@import 'assets/scss/fonts.scss';
-@import 'assets/scss/colors.scss';
-
 .mediaImage {
   object-fit: contain;
-  height: 168px;
   width: 288px;
+}
+
+.tall {
+  height: 264px;
+}
+
+.medium {
+  height: 168px;
+}
+
+.short {
+  height: 112px;
 }

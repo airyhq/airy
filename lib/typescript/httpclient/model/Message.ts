@@ -14,7 +14,6 @@ export interface Attachement {
   };
 }
 
-//adding richcard here
 export enum MessageSource {
   facebook = 'facebook',
   google = 'google',
@@ -50,7 +49,7 @@ export enum SenderType {
 }
 
 export function isFromContact(message: Message) {
-  return message?.senderType == SenderType.sourceContact;
+  return message?.senderType === SenderType.sourceContact;
 }
 
 export interface Message {

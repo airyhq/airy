@@ -27,11 +27,6 @@ prerequisites:
 apps:
   # Specific configurations for the API apps
   api:
-    mailFrom: "changeme"
-    mailPort: 587
-    mailUrl: "changeme"
-    mailUsername: "changeme"
-    mailPassword: "changeme"
     jwtSecret: "long-random-generated-jwt-secret"
     allowedOrigins: "*"
   # Specific configurations for sources

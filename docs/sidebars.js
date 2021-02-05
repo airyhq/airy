@@ -7,6 +7,7 @@ module.exports = {
         {
           Deployment: [
             'getting-started/deployment/introduction',
+            'getting-started/deployment/configuration',
             'getting-started/deployment/vagrant',
             'getting-started/deployment/production',
           ],

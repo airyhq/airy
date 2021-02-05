@@ -47,13 +47,15 @@ hosts file yourself.
 
 After the bootstrap process finishes, it will download the Kubernetes
 configuration file to the local host machine under `~/.airy/kube.conf`. That
-file is required for the Airy Command Line tool (Airy CLI), in order to access
+file is required for the Airy Command Line tool [Airy CLI](/getting-started/cli.md), in order to access
 the Kubernetes cluster where your Airy Core instance is running. You can also
 use that configuration file with the `kubectl` utility, for example:
 
 ```sh
 kubectl --kubeconfig ~/.airy/kube.conf get pods
 ```
+
+If you want to customize your `Airy Core` instance please see our [Configuration Section](configuration.md).
 
 ## Access the API
 
@@ -124,39 +126,10 @@ sources:
     webhookPublicUrl: https://public-url-for-SOURCE_NAME-webhook
 ```
 
-After preparing the configuration, run the following commands to apply the
-changes:
-
-```sh
-cd infrastructure
-vagrant ssh
-sudo -i
-helm upgrade core ~/airy-core/helm-chart/charts/apps/ --values /vagrant/airy.yaml  --timeout 1000s
-```
-
 ## Connect sources
 
 Integrating sources into the `Airy Core` often requires specific configuration
-settings, refer to the source specific docs for details. You must provide the
-settings in `infrastructure/airy.yaml` configuration file. An example of the
-configuration can be found in `airy.tpl.yaml`.
-
-After setting the configuration, you need the Airy command line binary (Airy
-CLI), to communicate with the core installation and apply the installation.
-Building and releasing the Airy CLI is part of the regular release process of
-the Airy Core. You can download the Airy CLI from the releases page on Github
-https://github.com/airyhq/airy/releases.
-
-After downloading it, run the following commands:
-
-```sh
-airy init
-airy apply config --config ./airy.yaml
-```
-
-The Airy CLI considers that the Kubernetes configuration file is located under
-`~/.airy/kube.conf`. If you modified the location of the file, make sure to set
-the appropriate path with the `--kube-config` flag.
+settings, refer to the [source specific docs](/sources/introduction.md) for details.
 
 ## Uninstall Airy Core
 

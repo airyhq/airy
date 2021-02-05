@@ -151,7 +151,7 @@ After downloading it, run the following commands:
 
 ```sh
 airy init
-airy apply config --config ./airy.yaml
+airy config apply --config ./airy.yaml
 ```
 
 The Airy CLI considers that the Kubernetes configuration file is located under

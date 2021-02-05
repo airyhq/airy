@@ -3,8 +3,16 @@ title: WebSocket
 sidebar_label: WebSocket
 ---
 
-Airy Core offers a WebSocket server that allows clients to connect and receive
-near real-time updates on communication data. The WebSocket server uses the
+import Highlighter from "@site/src/components/Highlighter";
+
+<Highlighter>
+
+Airy Core offers a WebSocket server that allows clients to **connect and receive
+near real-time updates**.
+
+</Highlighter>
+
+The WebSocket server uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
 protocol endpoint at `/ws.communication`.
 

@@ -19,14 +19,15 @@
 }
 
 .channelsWrapper {
-  width: 100%;
-  //height:100%;
   background: white;
-  padding: 32px;
-  margin: 88px 2.5em 5em 7.5em;
+  display: block;
   border-radius: 10px;
-  box-sizing: border-box;
-  overflow: visible;
+  padding-left: 96px;
+  padding-top: 88px;
+  width: 100%;
+  overflow-y: auto;
+  padding: 32px;
+  margin: 88px 2.5em 0 7.5em;
   min-height: calc(100vh - 170px);
 }
 

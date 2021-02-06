@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import FacebookLogin from 'react-facebook-login';
 import {Button} from '@airyhq/components';
-import ChannelItems from './ChannelItems';
+import ChannelSources from './ChannelSources';
 import {Channel} from 'httpclient';
 import {AiryConfig} from '../../AiryConfig';
 import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
@@ -171,7 +171,7 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
       </ul> */}
 
       <div>
-        <ChannelItems />
+        <ChannelSources />
       </div>
     </div>
   );

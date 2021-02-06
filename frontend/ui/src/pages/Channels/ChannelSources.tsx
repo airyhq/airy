@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ChannelItems.module.scss';
+import styles from './ChannelSources.module.scss';
 import {ReactComponent as AiryLogo} from '../../assets/images/icons/airy_avatar.svg';
 import {ReactComponent as FacebookLogo} from '../../assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as SMSLogo} from '../../assets/images/icons/sms_avatar.svg';

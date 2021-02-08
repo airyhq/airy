@@ -9,6 +9,8 @@ import co.airy.core.sources.facebook.payload.ConnectRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreResponsePayload;
 import co.airy.core.sources.facebook.payload.PageInfoResponsePayload;
+import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
 import org.apache.kafka.streams.state.KeyValueIterator;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
+import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -85,19 +88,23 @@ public class ChannelsController {
 
             api.connectPageToApp(fbPageWithConnectInfo.getAccessToken());
 
-            final Channel channel = Channel.newBuilder()
-                    .setId(channelId)
-                    .setConnectionState(ChannelConnectionState.CONNECTED)
-                    .setImageUrl(Optional.ofNullable(requestPayload.getImageUrl()).orElse(fbPageWithConnectInfo.getPicture().getData().getUrl()))
-                    .setName(Optional.ofNullable(requestPayload.getName()).orElse(fbPageWithConnectInfo.getNameWithLocationDescriptor()))
-                    .setSource("facebook")
-                    .setSourceChannelId(pageId)
-                    .setToken(token)
-                    .build();
+            final ChannelContainer container = ChannelContainer.builder()
+                    .channel(
+                            Channel.newBuilder()
+                                    .setId(channelId)
+                                    .setConnectionState(ChannelConnectionState.CONNECTED)
+                                    .setSource("facebook")
+                                    .setSourceChannelId(pageId)
+                                    .build()
+                    )
+                    .metadataMap(MetadataMap.from(List.of(
+                            newChannelMetadata(channelId, "name", Optional.ofNullable(requestPayload.getName()).orElse(fbPageWithConnectInfo.getNameWithLocationDescriptor())),
+                            newChannelMetadata(channelId, "image_url", Optional.ofNullable(requestPayload.getImageUrl()).orElse(fbPageWithConnectInfo.getPicture().getData().getUrl()))
+                    ))).build();
 
-            stores.storeChannel(channel);
+            stores.storeChannelContainer(container);
 
-            return ResponseEntity.ok(fromChannelContainer(channel));
+            return ResponseEntity.ok(fromChannelContainer(container));
         } catch (ApiException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         } catch (Exception e) {

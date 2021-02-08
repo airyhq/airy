@@ -81,9 +81,7 @@ public class EventsRouterTest {
                 .setId(channelId)
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setSourceChannelId(agentId)
-                .setName("Awesome place")
                 .setSource("google")
-                .setToken("")
                 .build()));
 
         // Wait for the channels table to catch up
@@ -106,9 +104,7 @@ public class EventsRouterTest {
                 .setId(channelId)
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setSourceChannelId(agentId)
-                .setName("Awesome place")
                 .setSource("google")
-                .setToken("")
                 .build()));
 
         // Wait for the channels table to catch up

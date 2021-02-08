@@ -2,7 +2,10 @@ package co.airy.core.sources.google;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.Metadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
 import lombok.AllArgsConstructor;
@@ -18,9 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
+import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 
 @RestController
 public class ChannelsController {
@@ -41,22 +48,31 @@ public class ChannelsController {
 
         final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, gbmId).toString();
 
-        final Channel channel = Channel.newBuilder()
-                .setId(channelId)
-                .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setSource(sourceIdentifier)
-                .setSourceChannelId(gbmId)
-                .setName(requestPayload.getName())
-                .setImageUrl(requestPayload.getImageUrl())
-                .build();
-
         try {
-            producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
+            List<Metadata> metadataList = new ArrayList<>();
+            metadataList.add(newChannelMetadata(channelId, "name", requestPayload.getName()));
+
+            if (requestPayload.getImageUrl() != null) {
+                metadataList.add(newChannelMetadata(channelId, "image_url", requestPayload.getImageUrl()));
+            }
+
+            final ChannelContainer container = ChannelContainer.builder()
+                    .channel(
+                            Channel.newBuilder()
+                                    .setId(channelId)
+                                    .setConnectionState(ChannelConnectionState.CONNECTED)
+                                    .setSource(sourceIdentifier)
+                                    .setSourceChannelId(gbmId)
+                                    .build()
+                    )
+                    .metadataMap(MetadataMap.from(metadataList)).build();
+
+            stores.storeChannelContainer(container);
+
+            return ResponseEntity.ok(fromChannelContainer(container));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
-
-        return ResponseEntity.ok(fromChannelContainer(channel));
     }
 
     @PostMapping("/channels.google.disconnect")
@@ -92,10 +108,8 @@ public class ChannelsController {
 class ConnectChannelRequestPayload {
     @NotNull
     private String gbmId;
-
     @NotNull
     private String name;
-
     private String imageUrl;
 }
 

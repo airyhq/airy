@@ -7,6 +7,7 @@ app_deps = [
     "//:springboot_actuator",
     "//backend/model/channel",
     "//backend/model/message",
+    "//backend/model/metadata",
     "//lib/java/log",
     "//lib/java/uuid",
     "@maven//:com_twilio_sdk_twilio",

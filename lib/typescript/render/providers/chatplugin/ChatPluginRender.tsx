@@ -8,9 +8,8 @@ import {Message, isFromContact} from 'httpclient';
 
 export const ChatPluginRender = (props: MessageRenderProps) => {
   const {message} = props;
-  const content = isFromContact(message) ? chatpluginInbound(message) : chatpluginOutbound(message);
 
-  return render(content, props);
+  return render(mapContent(message), props);
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
@@ -43,40 +42,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-// TODO map more string content to chatplugin models
-function chatpluginInbound(message: Message): ContentUnion {
-  const messageContent = JSON.parse(message.content);
-  if (messageContent.containsRichText) {
-    return {
-      type: 'richText',
-      text: messageContent.text,
-      fallback: messageContent.fallback,
-      containsRichtText: messageContent.containsRichText,
-    };
-  }
-  if (messageContent.richCard) {
-    const {
-      richCard: {
-        standaloneCard: {cardContent},
-      },
-    } = messageContent;
-
-    return {
-      type: 'richCard',
-      title: cardContent.title,
-      description: cardContent.description,
-      media: cardContent.media,
-      suggestions: cardContent.suggestions,
-    };
-  } else {
-    return {
-      type: 'text',
-      text: messageContent.text,
-    };
-  }
-}
-
-function chatpluginOutbound(message: Message): ContentUnion {
+function mapContent(message: Message): ContentUnion {
   const messageContent = JSON.parse(message.content);
   if (messageContent.containsRichText) {
     return {

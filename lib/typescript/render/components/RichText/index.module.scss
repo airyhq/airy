@@ -1,7 +1,7 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.messageContainer {
+.container {
   display: flex;
   align-self: flex-end;
   width: 100%;
@@ -9,24 +9,24 @@
   word-break: break-word;
 }
 
-.messageAvatar {
+.avatar {
   width: 40px;
   height: 40px;
   margin: 6px 8px 0 0;
 }
 
-.messageUserContainer {
+.userContainer {
   display: flex;
   flex-direction: row;
 }
 
-.messageUser {
+.user {
   align-self: flex-start;
   text-align: left;
   position: relative;
 }
 
-.messageUserText {
+.userText {
   display: inline-flex;
   padding: 10px;
   margin-top: 5px;
@@ -35,14 +35,14 @@
   border-radius: 8px;
 }
 
-.messageMember {
+.member {
   margin-top: 5px;
   justify-content: flex-end;
   width: 100%;
   text-align: right;
 }
 
-.messageMemberText {
+.memberText {
   display: inline-flex;
   padding: 10px;
   position: relative;
@@ -53,7 +53,7 @@
   border-radius: 8px;
 }
 
-.messageTime {
+.time {
   @include font-s;
   color: var(--color-text-gray);
 }

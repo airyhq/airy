@@ -1,5 +1,13 @@
+export interface Attachment {
+  type: 'image' | 'video' | 'audio' | 'file' | 'fallback';
+  payload: {
+    title?: string;
+    url?: string;
+  };
+}
+
 export interface Content {
-  type: 'text';
+  type: 'text' | 'image';
 }
 
 export interface TextContent extends Content {
@@ -7,6 +15,10 @@ export interface TextContent extends Content {
   text: string;
 }
 
-// TODO add a new facebook content model here
+export interface ImageContent extends Content {
+  type: 'image';
+  imageUrl: string;
+}
 
-export type ContentUnion = TextContent;
+// Add a new facebook content model here:
+export type ContentUnion = TextContent | ImageContent;

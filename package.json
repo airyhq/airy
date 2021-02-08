@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "eslint": "eslint frontend/"
+    "eslint": "eslint ./"
   },
   "dependencies": {
     "@airyhq/components": "latest",

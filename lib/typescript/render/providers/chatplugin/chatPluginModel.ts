@@ -15,8 +15,8 @@ export enum MediaHeight {
 
 export interface RichCardContent extends Content {
   type: 'richCard';
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   media: {
     height: MediaHeight;
     contentInfo: {
@@ -33,7 +33,7 @@ export interface RichCardContent extends Content {
       };
     },
     {
-      reply: {
+      reply?: {
         text: string;
         postbackData: string;
       };

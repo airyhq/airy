@@ -45,8 +45,8 @@ function mapContent(message: Message): ContentUnion {
 
     return {
       type: 'richCard',
-      title: cardContent.title,
-      description: cardContent.description,
+      ...(cardContent.title && {title: cardContent.title}),
+      ...(cardContent.description && {description: cardContent.description}),
       media: cardContent.media,
       suggestions: cardContent.suggestions,
     };

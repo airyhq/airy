@@ -4,15 +4,15 @@ sidebar_label: Rasa
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import Highlighter from "@site/src/components/Highlighter";
+import TLDR from "@site/src/components/TLDR";
 
-<Highlighter>
+<TLDR>
 
 Rasa is an open source machine learning framework for automated text and voice-based conversations. Understand messages, hold conversations, and connect to messaging channels and APIs.
 
 \- From the [Rasa documentation](https://rasa.com/docs/rasa/)
 
-</Highlighter>
+</TLDR>
 
 :::tip What you will learn
 

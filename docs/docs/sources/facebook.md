@@ -4,14 +4,14 @@ sidebar_label: Facebook Messenger
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import Highlighter from "@site/src/components/Highlighter";
+import TLDR from "@site/src/components/TLDR";
 
-<Highlighter>
+<TLDR>
 
 **Connect your Facebook Pages**, send and receive messages from Facebook’s 1,3
 Billion users.
 
-</Highlighter>
+</TLDR>
 
 This document provides a step by step guide to integrate Facebook with your Airy
 Core Platform instance.

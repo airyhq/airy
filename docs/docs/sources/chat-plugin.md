@@ -3,13 +3,13 @@ title: Airy Live Chat Plugin
 sidebar_label: Airy Live Chat Plugin
 ---
 
-import Highlighter from "@site/src/components/Highlighter";
+import TLDR from "@site/src/components/TLDR";
 
-<Highlighter>
+<TLDR>
 
 Airy's Live Chat Plugin is an **open-source chat widget** that you can put on your website to chat with your visitors.
 
- </Highlighter>
+ </TLDR>
 
 The Airy Live Chat Plugin is a fully-featured
 [source](/getting-started/glossary#source) that enables conversations with

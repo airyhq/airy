@@ -10,6 +10,14 @@ for more information.
 
 `POST /channels.list`
 
+**Sample request**
+
+```json5
+{
+  "source": "source to filter on" // optional
+}
+```
+
 **Sample response**
 
 ```json5
@@ -34,6 +42,64 @@ for more information.
       }
     }
   ]
+}
+```
+
+## Info
+
+`POST /channels.info`
+
+**Sample request**
+
+```json5
+{
+  "channel_id": "channel-uuid"
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "id": "channel-uuid",
+  "source": "facebook",
+  "source_channel_id": "fb-page-id-1",
+  "metadata": {
+    "name": "my page 1",
+    // optional
+    "image_url": "http://example.org/avatar.jpeg"
+  }
+}
+```
+
+## Update
+
+`POST /channels.update`
+
+Update a channel's name or image url.
+
+**Sample request**
+
+```json5
+{
+  "channel_id": "channel-uuid",
+  "name": "new name for this channel", // optional
+  "image_url": "http://example.org/avatar_redesign.jpeg" // optional
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "id": "channel-uuid",
+  "source": "facebook",
+  "source_channel_id": "fb-page-id-1",
+  "metadata": {
+    "name": "new name for this channel",
+    // optional
+    "image_url": "http://example.org/avatar_redesign.jpeg"
+  }
 }
 ```
 

@@ -137,7 +137,7 @@ Resets the unread count of a conversation and returns status code `202 (Accepted
 
 **Sample request**
 
-```json
+```json5
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622"
 }

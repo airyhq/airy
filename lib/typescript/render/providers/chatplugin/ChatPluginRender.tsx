@@ -1,6 +1,7 @@
 import React from 'react';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {RichText} from '../../components/RichText';
+import {RichCard} from '../../components/RichCard';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './chatPluginModel';
 import {Message, isFromContact} from 'httpclient';
@@ -27,6 +28,16 @@ function render(content: ContentUnion, props: MessageRenderProps) {
           containsRichText={messageContent.containsRichText}
         />
       );
+    case 'richCard':
+      return (
+        <RichCard
+          {...getDefaultMessageRenderingProps(props)}
+          title={content.title}
+          description={content.description}
+          media={content.media}
+          suggestions={content.suggestions}
+        />
+      );
 
     // TODO render more chatplugin models
   }
@@ -35,12 +46,27 @@ function render(content: ContentUnion, props: MessageRenderProps) {
 // TODO map more string content to chatplugin models
 function chatpluginInbound(message: Message): ContentUnion {
   const messageContent = JSON.parse(message.content);
-  if (messageContent && messageContent.containsRichText) {
+  if (messageContent.containsRichText) {
     return {
       type: 'richText',
       text: messageContent.text,
       fallback: messageContent.fallback,
       containsRichtText: messageContent.containsRichText,
+    };
+  }
+  if (messageContent.richCard) {
+    const {
+      richCard: {
+        standaloneCard: {cardContent},
+      },
+    } = messageContent;
+
+    return {
+      type: 'richCard',
+      title: cardContent.title,
+      description: cardContent.description,
+      media: cardContent.media,
+      suggestions: cardContent.suggestions,
     };
   } else {
     return {
@@ -52,12 +78,27 @@ function chatpluginInbound(message: Message): ContentUnion {
 
 function chatpluginOutbound(message: Message): ContentUnion {
   const messageContent = JSON.parse(message.content);
-  if (messageContent && messageContent.containsRichText) {
+  if (messageContent.containsRichText) {
     return {
       type: 'richText',
       text: messageContent.text,
       fallback: messageContent.fallback,
       containsRichtText: messageContent.containsRichText,
+    };
+  }
+  if (messageContent.richCard) {
+    const {
+      richCard: {
+        standaloneCard: {cardContent},
+      },
+    } = messageContent;
+
+    return {
+      type: 'richCard',
+      title: cardContent.title,
+      description: cardContent.description,
+      media: cardContent.media,
+      suggestions: cardContent.suggestions,
     };
   } else {
     return {

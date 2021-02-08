@@ -25,10 +25,6 @@ public class MessageResponsePayload {
     private Map<String, String> metadata;
 
     public static MessageResponsePayload fromMessageContainer(MessageContainer messageContainer) {
-        return fromMessageContainer(messageContainer, Map.of());
-    }
-
-    public static MessageResponsePayload fromMessageContainer(MessageContainer messageContainer, Map<String, String> metadata) {
         final Message message = messageContainer.getMessage();
         return MessageResponsePayload.builder()
                 .content(resolveContent(message, messageContainer.getMetadataMap()))
@@ -37,7 +33,7 @@ public class MessageResponsePayload {
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
                 .source(message.getSource())
-                .metadata(metadata)
+                .metadata(messageContainer.getMetadataMap())
                 .build();
     }
 

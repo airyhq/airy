@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -30,8 +32,7 @@ public class MessagesController {
     ResponseEntity<MessageListResponsePayload> messageList(@RequestBody @Valid MessageListRequestPayload messageListRequestPayload) {
         final String conversationId = messageListRequestPayload.getConversationId().toString();
         final int pageSize = Optional.ofNullable(messageListRequestPayload.getPageSize()).orElse(20);
-
-        MessageListResponsePayload response = fetchMessages(conversationId, pageSize, messageListRequestPayload.getCursor());
+MessageListResponsePayload response = fetchMessages(conversationId, pageSize, messageListRequestPayload.getCursor());
 
         if (response == null) {
             return ResponseEntity.notFound().build();
@@ -53,11 +54,15 @@ public class MessagesController {
         Page<MessageContainer> page = paginator.page();
 
         return MessageListResponsePayload.builder()
-                .data(page.getData().stream().map(MessageResponsePayload::fromMessageContainer).collect(toList()))
+                .data(page.getData().stream().map(mc -> {
+                    final Map<String, String> metadata = stores.getMetadata(mc.getMessage().getId());
+                    return MessageResponsePayload.fromMessageContainer(mc, metadata);
+                }).collect(toList()))
                 .paginationData(PaginationData.builder()
                         .nextCursor(page.getNextCursor())
                         .previousCursor(cursor)
                         .total(messages.size())
-                        .build()).build();
+                        .build())
+                .build();
     }
 }

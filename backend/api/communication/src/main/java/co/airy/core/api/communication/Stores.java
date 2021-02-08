@@ -64,6 +64,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final LuceneProvider luceneProvider;
 
     private final String messagesStore = "messages-store";
+    private final String metadataStore = "metadata-store";
     private final String conversationsStore = "conversations-store";
     private final String conversationsLuceneStore = "conversations-lucene-store";
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
@@ -102,7 +103,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 }, (conversationId, metadata, aggregate) -> {
                     aggregate.remove(metadata.getKey());
                     return aggregate;
-                });
+                }, Materialized.as(metadataStore));
 
         final KStream<String, CountAction> resetStream = builder.<String, ReadReceipt>stream(applicationCommunicationReadReceipts)
                 .mapValues(readReceipt -> CountAction.reset(readReceipt.getReadDate()));
@@ -196,6 +197,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return streams.acquireLocalStore(messagesStore);
     }
 
+    public ReadOnlyKeyValueStore<String, Map<String, String>> getMetadataStore() {
+        return streams.acquireLocalStore(metadataStore);
+    }
+
     public ReadOnlyLuceneStore getConversationLuceneStore() {
         return luceneProvider;
     }
@@ -210,6 +215,13 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public void deleteMetadata(Subject subject, String key) throws ExecutionException, InterruptedException {
         producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(subject, key).toString(), null)).get();
+    }
+
+    public Map<String, String> getMetadata(String conversationId) {
+        final ReadOnlyKeyValueStore<String, Map<String, String>> messagesStore = getMetadataStore();
+        final Map<String, String> metadata = messagesStore.get(conversationId);
+
+        return metadata == null ? Map.of() : metadata;
     }
 
     public List<MessageContainer> getMessages(String conversationId) {

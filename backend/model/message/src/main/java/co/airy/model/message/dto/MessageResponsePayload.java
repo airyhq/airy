@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 import static co.airy.date.format.DateFormat.isoFromMillis;
 import static co.airy.model.message.MessageRepository.resolveContent;
 
@@ -20,6 +22,7 @@ public class MessageResponsePayload {
     private String sentAt;
     private String deliveryState;
     private String source;
+    private Map<String, String> metadata;
 
     public static MessageResponsePayload fromMessageContainer(MessageContainer messageContainer) {
         final Message message = messageContainer.getMessage();
@@ -30,6 +33,19 @@ public class MessageResponsePayload {
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
                 .source(message.getSource())
+                .metadata(Map.of())
+                .build();
+    }
+    public static MessageResponsePayload fromMessageContainer(MessageContainer messageContainer, Map<String, String> metadata) {
+        final Message message = messageContainer.getMessage();
+        return MessageResponsePayload.builder()
+                .content(resolveContent(message, messageContainer.getMetadataMap()))
+                .senderType(message.getSenderType().toString().toLowerCase())
+                .deliveryState(message.getDeliveryState().toString().toLowerCase())
+                .id(message.getId())
+                .sentAt(isoFromMillis(message.getSentAt()))
+                .source(message.getSource())
+                .metadata(metadata)
                 .build();
     }
 

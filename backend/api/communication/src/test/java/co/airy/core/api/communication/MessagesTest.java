@@ -107,6 +107,38 @@ public class MessagesTest {
     }
 
     @Test
+    void canReturnMetadata() throws Exception {
+        final String conversationId = UUID.randomUUID().toString();
+        final String messageId = UUID.randomUUID().toString();
+        final String text = "MESSAGE TEXT";
+
+        kafkaTestHelper.produceRecords(List.of(
+                new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, Message.newBuilder()
+                        .setId(messageId)
+                        .setSentAt(Instant.now().toEpochMilli())
+                        .setSenderId("source-conversation-id")
+                        .setDeliveryState(DeliveryState.DELIVERED)
+                        .setSource("facebook")
+                        .setSenderType(SenderType.SOURCE_CONTACT)
+                        .setConversationId(conversationId)
+                        .setHeaders(Map.of())
+                        .setChannelId(channel.getId())
+                        .setContent("{\"text\":\"" + text + "\"}")
+                        .build()),
+                new ProducerRecord<>(applicationCommunicationMetadata.name(), "metadata-id",
+                        newMessageMetadata(messageId, "metadata_key", "message metadata value"))
+        ));
+
+        final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
+        retryOnException(
+                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data", hasSize(1)))
+                        .andExpect(jsonPath("$.data[0].metadata.metadata_key", containsString("message metadata value"))),
+                "/messages.list metadata was not correct");
+    }
+
+    @Test
     void canReplaceMessageContentUrl() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
 

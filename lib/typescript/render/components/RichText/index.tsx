@@ -6,33 +6,30 @@ import {DefaultMessageRenderingProps} from '..';
 
 type RichTextRenderProps = DefaultMessageRenderingProps & {
   message: Message;
+  text: string;
+  fallback: string;
+  containsRichText: boolean;
 };
 
 export const RichText = (props: RichTextRenderProps) => {
-  const {message, fromContact, sentAt, contact} = props;
-  const messageJSON = JSON.parse(message.content);
-  const messageText = messageJSON.text;
-  const messageFallback = messageJSON.fallback;
-  const messageIsRichText = messageJSON.containsRichText;
+  const {message, text, fallback, containsRichText, fromContact, sentAt, contact} = props;
 
   return (
-    <div className={styles.messageListItemContainer}>
-      <div className={styles.messageListItem} id={`message-item-${message.id}`}>
-        {!fromContact ? (
-          <div className={styles.messageListItemMember}>
-            <div className={styles.messageListItemMemberText}>{messageIsRichText ? messageText : messageFallback}</div>
+    <div className={styles.messageContainer} id={`message-item-${message.id}`}>
+      {!fromContact ? (
+        <div className={styles.messageMember}>
+          <div className={styles.messageMemberText}>{containsRichText ? text : fallback}</div>
+          {sentAt && <div className={styles.messageTime}>{sentAt}</div>}
+        </div>
+      ) : (
+        <div className={styles.messageUserContainer}>
+          <div className={styles.messageAvatar}>{contact && <Avatar contact={contact} />}</div>
+          <div className={styles.messageUser}>
+            <div className={styles.messageUserText}>{containsRichText ? text : fallback}</div>
             {sentAt && <div className={styles.messageTime}>{sentAt}</div>}
           </div>
-        ) : (
-          <div className={styles.messageListUserContainer}>
-            <div className={styles.messageAvatar}>{contact && <Avatar contact={contact} />}</div>
-            <div className={styles.messageListItemUser}>
-              <div className={styles.messageListItemUserText}>{messageIsRichText ? messageText : messageFallback}</div>
-              {sentAt && <div className={styles.messageTime}>{sentAt}</div>}
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

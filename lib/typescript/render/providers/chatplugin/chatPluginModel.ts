@@ -1,19 +1,14 @@
-export enum ContentType {
-  text = 'text',
-  richText = 'richText',
-}
-
 export interface Content {
-  type: ContentType;
+  type: 'text' | 'richText';
 }
 
 export interface TextContent extends Content {
-  type: ContentType.text;
+  type: 'text';
   text: string;
 }
 
 export interface RichtTextContent extends Content {
-  type: ContentType.richText;
+  type: 'richText';
   text: string;
   fallback: string;
   containsRichtText: boolean;

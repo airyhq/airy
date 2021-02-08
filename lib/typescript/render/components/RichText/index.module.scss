@@ -1,7 +1,7 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.messageListItem {
+.messageContainer {
   display: flex;
   align-self: flex-end;
   width: 100%;
@@ -15,18 +15,18 @@
   margin: 6px 8px 0 0;
 }
 
-.messageListUserContainer {
+.messageUserContainer {
   display: flex;
   flex-direction: row;
 }
 
-.messageListItemUser {
+.messageUser {
   align-self: flex-start;
   text-align: left;
   position: relative;
 }
 
-.messageListItemUserText {
+.messageUserText {
   display: inline-flex;
   padding: 10px;
   margin-top: 5px;
@@ -35,14 +35,14 @@
   border-radius: 8px;
 }
 
-.messageListItemMember {
+.messageMember {
   margin-top: 5px;
   justify-content: flex-end;
   width: 100%;
   text-align: right;
 }
 
-.messageListItemMemberText {
+.messageMemberText {
   display: inline-flex;
   padding: 10px;
   position: relative;

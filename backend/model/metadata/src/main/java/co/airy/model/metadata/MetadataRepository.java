@@ -28,6 +28,15 @@ public class MetadataRepository {
                 .build();
     }
 
+    public static Metadata newChannelMetadata(String channelId, String key, String value) {
+        return Metadata.newBuilder()
+                .setSubject(new Subject("channel", channelId).toString())
+                .setKey(key)
+                .setValue(value)
+                .setTimestamp(Instant.now().toEpochMilli())
+                .build();
+    }
+
     public static Metadata newMessageMetadata(String messageId, String key, String value) {
         return Metadata.newBuilder()
                 .setSubject(new Subject("message", messageId).toString())
@@ -39,6 +48,10 @@ public class MetadataRepository {
 
     public static boolean isConversationMetadata(Metadata metadata) {
         return metadata.getSubject().startsWith("conversation:");
+    }
+
+    public static boolean isChannelMetadata(Metadata metadata) {
+        return metadata.getSubject().startsWith("channel:");
     }
 
     public static boolean isMessageMetadata(Metadata metadata) {

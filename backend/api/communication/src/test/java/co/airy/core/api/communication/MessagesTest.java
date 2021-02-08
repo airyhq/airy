@@ -63,7 +63,6 @@ public class MessagesTest {
     private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(channelId)
-            .setName("channel-name")
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .build();

@@ -58,7 +58,6 @@ class ConversationsListTest {
     private static final Channel defaultChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("channel-id")
-            .setName("channel-name")
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .build();
@@ -66,7 +65,6 @@ class ConversationsListTest {
     private static final Channel channelToFind = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("special-channel-id")
-            .setName("channel-name")
             .setSource("facebook")
             .setSourceChannelId("special-external-channel-id")
             .build();

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static co.airy.model.channel.ChannelPayload.fromChannel;
+import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -97,7 +97,7 @@ public class ChannelsController {
 
             stores.storeChannel(channel);
 
-            return ResponseEntity.ok(fromChannel(channel));
+            return ResponseEntity.ok(fromChannelContainer(channel));
         } catch (ApiException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         } catch (Exception e) {

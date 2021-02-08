@@ -68,7 +68,6 @@ public class WebSocketControllerTest {
     final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("facebook-channel-id")
-            .setName("channel-name")
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")

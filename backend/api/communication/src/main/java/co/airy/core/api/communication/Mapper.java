@@ -7,6 +7,8 @@ import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.model.channel.ChannelPayload;
 import co.airy.model.message.dto.MessageResponsePayload;
 import co.airy.model.metadata.MetadataKeys;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -18,10 +20,13 @@ import static co.airy.model.metadata.MetadataRepository.getConversationInfo;
 public class Mapper {
 
     public ConversationResponsePayload fromConversation(Conversation conversation) {
+
         return ConversationResponsePayload.builder()
                 .channel(ChannelPayload.builder()
                         .id(conversation.getChannelId())
-                        .name(conversation.getChannel().getName())
+                        // TODO https://github.com/airyhq/airy/issues/909
+                        // Once we have the channel metadata map in the topology,
+                        // create this payload using ChannelContainer.from
                         .source(conversation.getChannel().getSource())
                         .build())
                 .id(conversation.getId())

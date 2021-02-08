@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-import static co.airy.model.channel.ChannelPayload.fromChannel;
+import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
 
 @RestController
 public class ChannelsController {
@@ -74,7 +74,7 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
 
-        return ResponseEntity.ok(fromChannel(channel));
+        return ResponseEntity.ok(fromChannelContainer(channel));
     }
 
     @PostMapping("/channels.twilio.sms.disconnect")

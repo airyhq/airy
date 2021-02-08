@@ -2,7 +2,7 @@ import React from 'react';
 import {Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {RichCard} from '../../components/RichCard';
-import {ContentUnion, ContentType} from './chatPluginModel';
+import {ContentUnion} from './chatPluginModel';
 import {Text} from '../../components/Text';
 
 export const ChatPluginRender = (props: MessageRenderProps) => {
@@ -11,9 +11,9 @@ export const ChatPluginRender = (props: MessageRenderProps) => {
 
 function render(content: ContentUnion, props: MessageRenderProps) {
   switch (content.type) {
-    case ContentType.text:
+    case 'text':
       return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
-    case ContentType.richCard:
+    case 'richCard':
       return (
         <RichCard
           {...getDefaultMessageRenderingProps(props)}
@@ -31,7 +31,7 @@ function mapContent(message: Message): ContentUnion {
 
   if (messageContent.text) {
     return {
-      type: ContentType.text,
+      type: 'text',
       text: JSON.parse(message.content).text,
     };
   }
@@ -44,7 +44,7 @@ function mapContent(message: Message): ContentUnion {
     } = messageContent;
 
     return {
-      type: ContentType.richCard,
+      type: 'richCard',
       title: cardContent.title,
       description: cardContent.description,
       media: cardContent.media,

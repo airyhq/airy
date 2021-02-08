@@ -1,14 +1,9 @@
-export enum ContentType {
-  text = 'text',
-  richCard = 'richCard',
-}
-
 export interface Content {
-  type: ContentType;
+  type: 'text' | 'richCard';
 }
 
 export interface TextContent extends Content {
-  type: ContentType.text;
+  type: 'text';
   text: string;
 }
 
@@ -19,7 +14,7 @@ export enum MediaHeight {
 }
 
 export interface RichCardContent extends Content {
-  type: ContentType.richCard;
+  type: 'richCard';
   title: string;
   description: string;
   media: {

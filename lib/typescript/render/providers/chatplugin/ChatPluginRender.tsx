@@ -13,6 +13,7 @@ export const ChatPluginRender = (props: MessageRenderProps) => {
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
+  const messageContent = JSON.parse(props.message.content);
   switch (content.type) {
     case 'text':
       return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
@@ -21,9 +22,9 @@ function render(content: ContentUnion, props: MessageRenderProps) {
         <RichText
           {...getDefaultMessageRenderingProps(props)}
           message={props.message}
-          text={JSON.parse(props.message.content).text}
-          fallback={JSON.parse(props.message.content).fallback}
-          containsRichText={JSON.parse(props.message.content).containsRichText}
+          text={messageContent.text}
+          fallback={messageContent.fallback}
+          containsRichText={messageContent.containsRichText}
         />
       );
 

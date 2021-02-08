@@ -3,7 +3,8 @@ import {isFromContact, Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
-import {Attachment, ContentUnion} from './facebookModel';
+import {SimpleAttachment, ButtonAttachment, ContentUnion} from './facebookModel';
+import {ButtonTemplate} from './components/ButtonTemplate';
 
 export const FacebookRender = (props: MessageRenderProps) => {
   const message = props.message;
@@ -18,19 +19,29 @@ function render(content: ContentUnion, props: MessageRenderProps) {
 
     case 'image':
       return <Image {...getDefaultMessageRenderingProps(props)} imageUrl={content.imageUrl} />;
+
+    case 'buttonTemplate':
+      return <ButtonTemplate {...getDefaultMessageRenderingProps(props)} template={content} />;
   }
 }
 
-const parseAttachment = (attachement: Attachment): ContentUnion => {
+const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment): ContentUnion => {
   if (attachement.type === 'image') {
     return {
       type: 'image',
       imageUrl: attachement.payload.url,
     };
+  } else if (attachement.type === 'template' && attachement.payload.template_type == 'button') {
+    return {
+      type: 'buttonTemplate',
+      text: attachement.payload.text,
+      buttons: attachement.payload.buttons,
+    };
   }
+
   return {
     type: 'text',
-    text: attachement.payload.title || 'Unknown message type',
+    text: 'Unknown message type',
   };
 };
 
@@ -54,8 +65,17 @@ function facebookInbound(message: Message): ContentUnion {
 
 function facebookOutbound(message: Message): ContentUnion {
   const messageJson = JSON.parse(message.content);
-  return {
-    type: 'text',
-    text: messageJson.text,
-  };
+  if (messageJson.attachment) {
+    return parseAttachment(messageJson.attachment);
+  } else if (messageJson.text) {
+    return {
+      type: 'text',
+      text: messageJson.text,
+    };
+  } else {
+    return {
+      type: 'text',
+      text: 'Unknown message type',
+    };
+  }
 }

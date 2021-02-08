@@ -72,7 +72,7 @@ These settings are used to connect the **Airy Components** to your Kafka cluster
 
 ## Applying the configuration
 
-If you made changes in `airy.yaml` and want to apply it to your instance you can use the [airy config apply](/cli/airy_config_apply.md) by running the following [CLI](getting-started/cli.md) command.
+If you made changes in `airy.yaml` and want to apply it to your instance you can use the [airy config apply](/cli/airy_config_apply.md) by running the following [Airy CLI](/cli/introduction.md) command.
 
 ```bash
 airy config apply --config ./airy.yaml --kube-config /path/to/your/kube.conf

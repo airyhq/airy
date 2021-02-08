@@ -3,14 +3,14 @@ title: WebSocket
 sidebar_label: WebSocket
 ---
 
-import Highlighter from "@site/src/components/Highlighter";
+import TLDR from "@site/src/components/TLDR";
 
-<Highlighter>
+<TLDR>
 
 Airy Core offers a WebSocket server that allows clients to **connect and receive
 near real-time updates**.
 
-</Highlighter>
+</TLDR>
 
 The WebSocket server uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)

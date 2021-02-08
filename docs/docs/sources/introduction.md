@@ -3,14 +3,14 @@ title: Introduction
 sidebar_label: Introduction
 ---
 
-import Highlighter from "@site/src/components/Highlighter";
+import TLDR from "@site/src/components/TLDR";
 
-<Highlighter>
+<TLDR>
 
 Airy Core allows you to connect **many different sources**: our Live Chat
 Plugin, Facebook Messenger, WhatsApp, your own custom sources.
 
-</Highlighter>
+</TLDR>
 
 One of the crucial features Airy Core provides is the ability to process
 conversational data from a variety of sources (like Facebook Messenger, Google

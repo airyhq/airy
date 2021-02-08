@@ -5,17 +5,9 @@ module.exports = {
         'getting-started/introduction',
         'getting-started/installation',
         {
-          Deployment: [
-            'getting-started/deployment/introduction',
-            'getting-started/deployment/configuration',
-            'getting-started/deployment/vagrant',
-            'getting-started/deployment/production',
-          ],
-        },
-        'getting-started/quickstart',
-        {
-          CLI: [
-            'getting-started/cli',
+          'Command Line Interface': [
+            'cli/introduction',
+            'cli/installation',
             'cli/airy',
             'cli/airy_version',
             'cli/airy_init',
@@ -27,6 +19,14 @@ module.exports = {
             'cli/airy_status',
           ],
         },
+        {
+          Deployment: [
+            'getting-started/deployment/introduction',
+            'getting-started/deployment/vagrant',
+            'getting-started/deployment/production',
+          ],
+        },
+        'getting-started/quickstart',
         'getting-started/troubleshooting',
         'getting-started/glossary',
       ],

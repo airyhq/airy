@@ -3,14 +3,14 @@ title: Quickstart
 sidebar_label: Quickstart
 ---
 
-import Highlighter from "@site/src/components/Highlighter";
+import TLDR from "@site/src/components/TLDR";
 
-<Highlighter>
+<TLDR>
 
 In this Quickstart we are **setting up our first source, listen to conversations, and
 consume directly from Kafka**
 
-</Highlighter>
+</TLDR>
 
 We are going to use Airy's Live Chat Plugin as our first source. We then use the
 plugin to send messages, and check them out in the UI, your terminal and

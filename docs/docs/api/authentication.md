@@ -3,13 +3,13 @@ title: Authentication
 sidebar_label: Authentication
 ---
 
-import Highlighter from "@site/src/components/Highlighter";
+import TLDR from "@site/src/components/TLDR";
 
-<Highlighter>
+<TLDR>
 
 To start using the API, you need to **authenticate first**.
 
-</Highlighter>
+</TLDR>
 
 In order to communicate with the Airy Core API, you need a valid
 [JWT Token](https://jwt.io/) token. The login endpoint [login](#login) returns such a short-lived

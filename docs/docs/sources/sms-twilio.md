@@ -3,13 +3,13 @@ title: SMS via Twilio
 sidebar_label: SMS
 ---
 
-import Highlighter from "@site/src/components/Highlighter";
+import TLDR from "@site/src/components/TLDR";
 
-<Highlighter>
+<TLDR>
 
 **Sending and receiving SMS** with every phone on the planet.
 
-</Highlighter>
+</TLDR>
 
 The Twilio SMS source provides a channel for sending and receiving SMS using the
 [Twilio API](https://www.twilio.com/).

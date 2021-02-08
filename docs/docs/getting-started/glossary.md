@@ -4,9 +4,9 @@ title: Glossary
 sidebar_label: Glossary
 ---
 
-import Highlighter from "@site/src/components/Highlighter";
+import TLDR from "@site/src/components/TLDR";
 
-<Highlighter>
+<TLDR>
 
 Airy Core allows its [users](#user) to process messaging data from a variety of
 [sources](#source), which are integrated via [source providers](#provider).
@@ -14,7 +14,7 @@ Users connect sources via [channels](#channel). Once the channel is connected,
 Airy Core ingests source data and transforms them into
 [conversations](#conversation), [contacts](#contact), and [messages](#message).
 
-</Highlighter>
+</TLDR>
 
 This document aims to provide an high-level overview of the Airy Core
 technical vocabulary. It provides definition of the most important terms used

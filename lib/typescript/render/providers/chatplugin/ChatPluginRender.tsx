@@ -26,23 +26,17 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       );
     case 'richCardCarousel':
       return (
-        <RichCardCarousel 
-        {...getDefaultMessageRenderingProps(props)}
-        cards={content.}
-        title={content.title}
-        description={content.description}
-        media={content.media}
-        suggestions={content.suggestions}
-        cardWidth={content.cardWidth}
+        <RichCardCarousel
+          {...getDefaultMessageRenderingProps(props)}
+          cardWidth={content.cardWidth}
+          cardContents={content.cardContents}
         />
-      )
+      );
   }
 }
 
 function mapContent(message: Message): ContentUnion {
   const messageContent = JSON.parse(message.content);
-
-  console.log(messageContent);
 
   if (messageContent.text) {
     return {
@@ -72,21 +66,15 @@ function mapContent(message: Message): ContentUnion {
       richCard: {
         carouselCard: {
           cardWidth,
-          cardContents: [{
-          }]
+          cardContents: [],
         },
       },
     } = messageContent;
 
-    console.log(messageContent.cardContents);
-
     return {
       type: 'richCardCarousel',
       cardWidth: cardWidth,
-      ...(cardContents.title && {title: cardContents.title}),
-      ...(cardContents.description && {description: cardContents.description}),
-      media: cardContents.media,
-      suggestions: cardContents.suggestions,
+      cardContents: messageContent.richCard.carouselCard.cardContents,
     };
   }
 }

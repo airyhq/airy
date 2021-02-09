@@ -1,10 +1,17 @@
 export interface Content {
-  type: 'text' | 'richCard' | 'richCardCarousel';
+  type: 'text' | 'richText' | 'richCard' | 'richCardCarousel';
 }
 
 export interface TextContent extends Content {
   type: 'text';
   text: string;
+}
+
+export interface RichTextContent extends Content {
+  type: 'richText';
+  text: string;
+  fallback: string;
+  containsRichtText: boolean;
 }
 
 export enum MediaHeight {
@@ -72,4 +79,4 @@ export interface RichCardCarouselContent extends Content {
   ];
 }
 
-export type ContentUnion = TextContent | RichCardContent | RichCardCarouselContent;
+export type ContentUnion = TextContent | RichTextContent | RichCardContent | RichCardCarouselContent;

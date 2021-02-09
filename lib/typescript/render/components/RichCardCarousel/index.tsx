@@ -19,40 +19,56 @@ type Suggestions = [
 ];
 
 export type RichCardCarouselRenderProps = DefaultMessageRenderingProps & {
-  title?: string;
   cardWidth: string;
-  description?: string;
-  suggestions: Suggestions;
-  media: MediaRenderProps;
+  cardContents: [
+    {
+      title?: string;
+      description?: string;
+      media: MediaRenderProps;
+      suggestions: Suggestions;
+    }
+  ];
 };
 
 export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
-  const {title, description, suggestions, media} = props;
+  const {cardContents, cardWidth} = props;
 
   return (
-    <div className={styles.richCardContainer}>
+    <div className={styles.richCardCarouselContainer}>
       <div className={styles.mediaContainer}>
-        <Media {...media} />
+        {cardContents.map(card => {
+          <Media {...card.media} />;
+        })}
       </div>
       <div className={styles.textContainer}>
-        {title && <h1 className={styles.title}>{title}</h1>}
-        {description && <span className={styles.description}>{description}</span>}
-        <div className={styles.suggestionsContainer}>
-          {suggestions.map(({reply: {text, postbackData}}) => {
-            return (
-              text &&
-              postbackData && (
-                <button key={text} className={styles.suggestionButton}>
-                  {' '}
-                  <a className={styles.suggestionLink} href={postbackData} target="_blank" rel="noopener noreferrer">
+        {cardContents.map(card => {
+          {
+            card.title && <h1 className={styles.title}>{card.title}</h1>;
+          }
+          {
+            card.description && <span className={styles.description}>{card.description}</span>;
+          }
+        })}
+      </div>
+      <div className={styles.suggestionsContainer}>
+        {cardContents.map(card => {
+          {
+            card.suggestions.map(({reply: {text, postbackData}}) => {
+              return (
+                text &&
+                postbackData && (
+                  <button key={text} className={styles.suggestionButton}>
                     {' '}
-                    {text}{' '}
-                  </a>{' '}
-                </button>
-              )
-            );
-          })}
-        </div>
+                    <a className={styles.suggestionLink} href={postbackData} target="_blank" rel="noopener noreferrer">
+                      {' '}
+                      {text}{' '}
+                    </a>{' '}
+                  </button>
+                )
+              );
+            });
+          }
+        })}
       </div>
     </div>
   );

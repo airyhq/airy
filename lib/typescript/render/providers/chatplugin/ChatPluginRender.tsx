@@ -19,7 +19,9 @@ function render(content: ContentUnion, props: MessageRenderProps) {
           {...getDefaultMessageRenderingProps(props)}
           title={content.title}
           description={content.description}
-          media={content.media}
+          height={content.media.height}
+          altText={content.media.contentInfo.altText}
+          fileUrl={content.media.contentInfo.fileUrl}
           suggestions={content.suggestions}
         />
       );

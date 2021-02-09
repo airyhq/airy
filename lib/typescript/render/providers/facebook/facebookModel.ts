@@ -7,7 +7,7 @@ export interface Attachment {
 }
 
 export interface Content {
-  type: 'text' | 'image';
+  type: 'text' | 'image' | 'quickReplies' | 'video';
 }
 
 export interface TextContent extends Content {
@@ -20,5 +20,26 @@ export interface ImageContent extends Content {
   imageUrl: string;
 }
 
+export interface VideoContent extends Content {
+  type: 'video';
+  videoUrl: string;
+}
+
+export interface QuickReply {
+  content_type: string;
+  title: string;
+  payload: string;
+  image_url?: string;
+}
+
+export interface QuickRepliesContent extends Content {
+  type: 'quickReplies';
+  text?: string;
+  attachment?: ContentUnionAttachment;
+  quickReplies: QuickReply[];
+}
+
 // Add a new facebook content model here:
-export type ContentUnion = TextContent | ImageContent;
+export type ContentUnion = TextContent | ImageContent | VideoContent | QuickRepliesContent;
+
+export type ContentUnionAttachment = TextContent | ImageContent | VideoContent;

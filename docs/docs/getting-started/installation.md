@@ -6,6 +6,7 @@ sidebar_label: Installation
 import TLDR from "@site/src/components/TLDR";
 import Box from "@site/src/components/Box";
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import DeploySVG from '@site/static/img/getting-started/installation/deploy.svg'
 
 <TLDR>
 
@@ -29,21 +30,36 @@ It is easy to install and works on macOS, Windows, and Linux.
     listStyleType: "none",
     padding: 0
 }}>
-<li><Box>
 
-[Run Airy Core on your machine inside an isolated Vagrant
-box](/getting-started/deployment/vagrant.md)
-
-</Box>
+<li style={{
+    marginBottom: '12px'
+}}>
+<Box 
+    icon={() => <DeploySVG />}
+    title='CLI' 
+    description='Run Airy on your local machine using the CLI' 
+    link='/cli/installation'
+/>
 </li>
 
-<li>
-<Box>
+<li style={{
+    marginBottom: '12px'
+}}>
+<Box     
+    title='Run Airy Core on your machine inside an isolated Vagrant' 
+    description='Run Airy Core on your machine inside an isolated Vagrant' 
+    link='/getting-started/deployment/production'
+/>
+</li>
 
-[Run Airy Core in the cloud](/getting-started/deployment/production.md)
-
-</Box>
-
+<li style={{
+    marginBottom: '12px'
+}}>
+<Box     
+    title='Run Airy Core in the cloud' 
+    description='Run Airy Core in the cloud' 
+    link='/getting-started/deployment/production'
+/>
 </li>
 
 </ul>

@@ -4,7 +4,7 @@ import {RichText} from '../../components/RichText';
 import {RichCard} from '../../components/RichCard';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './chatPluginModel';
-import {Message, isFromContact} from 'httpclient';
+import {Message} from 'httpclient';
 
 export const ChatPluginRender = (props: MessageRenderProps) => {
   const {message} = props;

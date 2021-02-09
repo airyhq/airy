@@ -2,6 +2,7 @@ import React from 'react';
 import {Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {RichCard} from '../../components/RichCard';
+import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {ContentUnion} from './chatPluginModel';
 import {Text} from '../../components/Text';
 
@@ -23,11 +24,25 @@ function render(content: ContentUnion, props: MessageRenderProps) {
           suggestions={content.suggestions}
         />
       );
+    case 'richCardCarousel':
+      return (
+        <RichCardCarousel 
+        {...getDefaultMessageRenderingProps(props)}
+        cards={content.}
+        title={content.title}
+        description={content.description}
+        media={content.media}
+        suggestions={content.suggestions}
+        cardWidth={content.cardWidth}
+        />
+      )
   }
 }
 
 function mapContent(message: Message): ContentUnion {
   const messageContent = JSON.parse(message.content);
+
+  console.log(messageContent);
 
   if (messageContent.text) {
     return {
@@ -36,7 +51,7 @@ function mapContent(message: Message): ContentUnion {
     };
   }
 
-  if (messageContent.richCard) {
+  if (messageContent.richCard.standaloneCard) {
     const {
       richCard: {
         standaloneCard: {cardContent},
@@ -49,6 +64,29 @@ function mapContent(message: Message): ContentUnion {
       ...(cardContent.description && {description: cardContent.description}),
       media: cardContent.media,
       suggestions: cardContent.suggestions,
+    };
+  }
+
+  if (messageContent.richCard.carouselCard) {
+    const {
+      richCard: {
+        carouselCard: {
+          cardWidth,
+          cardContents: [{
+          }]
+        },
+      },
+    } = messageContent;
+
+    console.log(messageContent.cardContents);
+
+    return {
+      type: 'richCardCarousel',
+      cardWidth: cardWidth,
+      ...(cardContents.title && {title: cardContents.title}),
+      ...(cardContents.description && {description: cardContents.description}),
+      media: cardContents.media,
+      suggestions: cardContents.suggestions,
     };
   }
 }

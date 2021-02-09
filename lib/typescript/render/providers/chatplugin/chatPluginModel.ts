@@ -1,5 +1,5 @@
 export interface Content {
-  type: 'text' | 'richCard';
+  type: 'text' | 'richCard' | 'richCardCarousel';
 }
 
 export interface TextContent extends Content {
@@ -12,7 +12,6 @@ export enum MediaHeight {
   medium = 'MEDIUM',
   tall = 'TALL',
 }
-
 export interface RichCardContent extends Content {
   type: 'richCard';
   title?: string;
@@ -41,4 +40,36 @@ export interface RichCardContent extends Content {
   ];
 }
 
-export type ContentUnion = TextContent | RichCardContent;
+export interface RichCardCarouselContent extends Content {
+  type: 'richCardCarousel';
+  cardWidth: string;
+  cardContents: [
+    {
+      title?: string;
+      description?: string;
+      media: {
+        height: MediaHeight;
+        contentInfo: {
+          fileUrl: string;
+          forceRefresh: boolean;
+        };
+      };
+      suggestions: [
+        {
+          reply: {
+            text: string;
+            postbackData: string;
+          };
+        },
+        {
+          reply?: {
+            text: string;
+            postbackData: string;
+          };
+        }
+      ];
+    }
+  ];
+}
+
+export type ContentUnion = TextContent | RichCardContent | RichCardCarouselContent;

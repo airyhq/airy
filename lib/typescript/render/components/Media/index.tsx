@@ -5,7 +5,7 @@ import {MediaHeight} from '../../providers/chatplugin/chatPluginModel';
 export type MediaRenderProps = {
   height: MediaHeight;
   contentInfo: {
-    altText: string;
+    altText?: string;
     fileUrl: string;
     forceRefresh: boolean;
   };

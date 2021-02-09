@@ -1,18 +1,32 @@
 import React from 'react';
-import {Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
+import {RichText} from '../../components/RichText';
 import {RichCard} from '../../components/RichCard';
-import {ContentUnion} from './chatPluginModel';
 import {Text} from '../../components/Text';
+import {ContentUnion} from './chatPluginModel';
+import {Message, isFromContact} from 'httpclient';
 
 export const ChatPluginRender = (props: MessageRenderProps) => {
-  return render(mapContent(props.message), props);
+  const {message} = props;
+
+  return render(mapContent(message), props);
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
+  const messageContent = JSON.parse(props.message.content);
   switch (content.type) {
     case 'text':
       return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
+    case 'richText':
+      return (
+        <RichText
+          {...getDefaultMessageRenderingProps(props)}
+          message={props.message}
+          text={messageContent.text}
+          fallback={messageContent.fallback}
+          containsRichText={messageContent.containsRichText}
+        />
+      );
     case 'richCard':
       return (
         <RichCard
@@ -23,19 +37,21 @@ function render(content: ContentUnion, props: MessageRenderProps) {
           suggestions={content.suggestions}
         />
       );
+
+    // TODO render more chatplugin models
   }
 }
 
 function mapContent(message: Message): ContentUnion {
   const messageContent = JSON.parse(message.content);
-
-  if (messageContent.text) {
+  if (messageContent.containsRichText) {
     return {
-      type: 'text',
-      text: JSON.parse(message.content).text,
+      type: 'richText',
+      text: messageContent.text,
+      fallback: messageContent.fallback,
+      containsRichtText: messageContent.containsRichText,
     };
   }
-
   if (messageContent.richCard) {
     const {
       richCard: {
@@ -49,6 +65,11 @@ function mapContent(message: Message): ContentUnion {
       ...(cardContent.description && {description: cardContent.description}),
       media: cardContent.media,
       suggestions: cardContent.suggestions,
+    };
+  } else {
+    return {
+      type: 'text',
+      text: messageContent.text,
     };
   }
 }

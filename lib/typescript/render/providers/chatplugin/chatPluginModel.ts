@@ -1,10 +1,17 @@
 export interface Content {
-  type: 'text' | 'richCard';
+  type: 'text' | 'richText' | 'richCard';
 }
 
 export interface TextContent extends Content {
   type: 'text';
   text: string;
+}
+
+export interface RichTextContent extends Content {
+  type: 'richText';
+  text: string;
+  fallback: string;
+  containsRichtText: boolean;
 }
 
 export enum MediaHeight {
@@ -41,4 +48,6 @@ export interface RichCardContent extends Content {
   ];
 }
 
-export type ContentUnion = TextContent | RichCardContent;
+// TODO add a new chatplugin content model here
+
+export type ContentUnion = TextContent | RichTextContent | RichCardContent;

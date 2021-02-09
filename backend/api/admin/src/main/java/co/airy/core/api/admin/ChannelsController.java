@@ -35,10 +35,11 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.list")
-    ResponseEntity<ChannelsResponsePayload> listChannels() {
+    ResponseEntity<ChannelsResponsePayload> listChannels(@RequestBody @Valid ListChannelRequestPayload requestPayload) {
         final List<ChannelContainer> channels = stores.getChannels();
-
+        final String sourceToFilter = requestPayload.getSource();
         return ResponseEntity.ok(new ChannelsResponsePayload(channels.stream()
+                .filter((container) -> sourceToFilter == null || sourceToFilter.equals(container.getChannel().getSource()))
                 .map(ChannelPayload::fromChannelContainer)
                 .collect(toList())));
     }
@@ -134,6 +135,12 @@ public class ChannelsController {
         return ResponseEntity.ok(new EmptyResponsePayload());
     }
 
+}
+
+@Data
+@NoArgsConstructor
+class ListChannelRequestPayload {
+    private String source;
 }
 
 @Data

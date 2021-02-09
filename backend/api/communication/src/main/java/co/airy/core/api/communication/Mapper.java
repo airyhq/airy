@@ -35,7 +35,7 @@ public class Mapper {
                 .build();
     }
 
-    private ContactResponsePayload getContact(co.airy.core.api.communication.dto.Conversation conversation) {
+    private ContactResponsePayload getContact(Conversation conversation) {
         final Map<String, String> metadata = conversation.getMetadata();
         final DisplayName displayName = conversation.getDisplayNameOrDefault();
 

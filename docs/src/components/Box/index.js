@@ -25,7 +25,10 @@ const Box = ({icon, title, description, link, cutomizedBackgroundColor, cutomize
   }
 
   return (
-    <div className={`${isDarkTheme ? styles.containerDark : styles.containerLight}`} style={{backgroundColor: cutomizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${cutomizedHoverColor}`}} onClick={() => history.push(link)}>
+    <div
+      className={`${isDarkTheme ? styles.containerDark : styles.containerLight}`}
+      style={{backgroundColor: cutomizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${cutomizedHoverColor}`}}
+      onClick={() => history.push(link)}>
       {icon && icon()}
       <div>
         <h4

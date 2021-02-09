@@ -13,17 +13,19 @@ const adjust = (color, amount) => {
   );
 };
 
-const Box = ({icon, title, description, link, color, history}) => {
+const Box = ({icon, title, description, link, cutomizedBackgroundColor, cutomizedHoverColor, history}) => {
   const {isDarkTheme} = useThemeContext();
 
-  if (typeof color == 'undefined') {
-    color = isDarkTheme ? '#4BB3FD' : '#6198D1';
-  } else {
-    color = isDarkTheme ? adjust(color, -100) : color;
+  if (cutomizedBackgroundColor) {
+    cutomizedBackgroundColor = isDarkTheme ? adjust(cutomizedBackgroundColor, -100) : cutomizedBackgroundColor;
+  }
+
+  if (cutomizedHoverColor) {
+    cutomizedHoverColor = isDarkTheme ? adjust(cutomizedHoverColor, -100) : cutomizedHoverColor;
   }
 
   return (
-    <div className={styles.container} style={{backgroundColor: color}} onClick={() => history.push(link)}>
+    <div className={`${isDarkTheme ? styles.containerDark : styles.containerLight}`} style={{backgroundColor: cutomizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${cutomizedHoverColor}`}} onClick={() => history.push(link)}>
       {icon && icon()}
       <div>
         <h4

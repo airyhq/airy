@@ -1,0 +1,66 @@
+{{- if .Values.enabled }}
+{{- $password := (randAlphaNum 10 | lower) }}
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: akhq-config
+data:  
+  password: {{ $password }}
+  application.yml: | 
+    akhq:
+      server:
+        access-log:
+          enabled: true
+          format: "[Date: {}] [Duration: {} ms] [Url: {} {}] [Status: {}] [Ip: {}] [User: {}]"
+      clients-defaults:
+        consumer:
+          properties:
+            isolation.level: read_committed
+      connections:
+        core:
+          properties:
+            bootstrap.servers: ${KAFKA_BROKERS}
+          schema-registry:
+            url: ${KAFKA_SCHEMA_REGISTRY_URL}
+      pagination:
+        page-size: 25
+        threads: 16
+      # Topic list display options (optional)
+      topic:
+        retention: 172800000
+        partition: 3
+        replication: 3
+        default-view: HIDE_INTERNAL
+        internal-regexps:
+          - "^_.*$"
+          - "^.*_schemas$"
+          - "^.*connect-config$"
+          - "^.*connect-offsets$1"
+          - "^.*connect-status$"
+        stream-regexps:
+          - "^.*-changelog$"
+          - "^.*-repartition$"
+          - "^.*-rekey$"
+        skip-consumer-groups: false
+      # Topic display data options (optional)
+      topic-data:
+        sort: OLDEST # default sort order (OLDEST, NEWEST) (default: OLDEST)
+        size: 50 # max record per page (default: 50)
+        poll-timeout: 1000 # The time, in milliseconds, spent waiting in poll if data is not available in the buffer.
+      security:
+        default-group: no-roles
+        basic-auth:
+          - username: admin
+            password: {{ sha256sum $password }}
+            groups:
+              - admin
+    micronaut:
+      security:
+        enabled: true
+        token:
+          jwt:
+            signatures:
+              secret:
+                generator:
+                  secret: {{ randAlphaNum 128 | quote }}
+{{- end }}

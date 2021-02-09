@@ -77,7 +77,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
             </div>
             <div className={styles.bottomRow}>
               <div className={styles.source}>
-                <IconChannel channel={conversation.channel} showAvatar showName />
+                {conversation.channel && <IconChannel channel={conversation.channel} showAvatar showName />}
               </div>
               <div className={styles.contactLastMessageDate}>{formatTimeOfMessage(conversation.lastMessage)}</div>
             </div>

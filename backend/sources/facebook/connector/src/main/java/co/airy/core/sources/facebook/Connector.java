@@ -9,6 +9,7 @@ import co.airy.core.sources.facebook.api.Mapper;
 import co.airy.core.sources.facebook.api.model.SendMessagePayload;
 import co.airy.core.sources.facebook.api.model.UserProfile;
 import co.airy.core.sources.facebook.dto.SendMessageRequest;
+import co.airy.core.sources.facebook.dto.Conversation;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.auth.IgnoreAuthPattern;
@@ -42,7 +43,7 @@ public class Connector {
 
     public Message sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();
-        final co.airy.core.sources.facebook.dto.Conversation conversation = sendMessageRequest.getConversation();
+        final Conversation conversation = sendMessageRequest.getConversation();
 
         try {
             final String pageToken = conversation.getChannel().getToken();
@@ -62,14 +63,14 @@ public class Connector {
         return message;
     }
 
-    public boolean needsMetadataFetched(co.airy.core.sources.facebook.dto.Conversation conversation) {
+    public boolean needsMetadataFetched(Conversation conversation) {
         final Map<String, String> metadata = conversation.getMetadata();
         final String fetchState = metadata.get(MetadataKeys.ConversationKeys.Contact.FETCH_STATE);
 
         return !ok.toString().equals(fetchState) && !failed.toString().equals(fetchState);
     }
 
-    public List<KeyValue<String, Metadata>> fetchMetadata(String conversationId, co.airy.core.sources.facebook.dto.Conversation conversation) {
+    public List<KeyValue<String, Metadata>> fetchMetadata(String conversationId, Conversation conversation) {
         final UserProfile profile = getProfile(conversation);
 
         final List<KeyValue<String, Metadata>> recordList = new ArrayList<>();
@@ -101,7 +102,7 @@ public class Connector {
         return recordList;
     }
 
-    public UserProfile getProfile(co.airy.core.sources.facebook.dto.Conversation conversation) {
+    public UserProfile getProfile(Conversation conversation) {
         final String sourceConversationId = conversation.getSourceConversationId();
         final String token = conversation.getChannel().getToken();
         try {

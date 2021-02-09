@@ -20,13 +20,12 @@ public class Mapper {
     public ConversationResponsePayload fromConversation(Conversation conversation) {
 
         return ConversationResponsePayload.builder()
-                .channel(ChannelPayload.builder()
-                        .id(conversation.getChannelId())
+                .channel(
                         // TODO https://github.com/airyhq/airy/issues/909
                         // Once we have the channel metadata map in the topology,
-                        // create this payload using ChannelContainer.from
-                        .source(conversation.getChannel().getSource())
-                        .build())
+                        // create this payload using ChannelPayload.fromChannelContainer
+                        ChannelPayload.fromChannel(conversation.getChannel())
+                )
                 .id(conversation.getId())
                 .unreadMessageCount(conversation.getUnreadMessageCount())
                 .tags(conversation.getTagIds())

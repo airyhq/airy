@@ -17,6 +17,25 @@ export interface ButtonAttachment extends Attachment {
     buttons: Button[];
   };
 }
+export interface GenericAttachment extends Attachment {
+  type: 'template';
+  payload: {
+    text: string;
+    template_type: 'generic';
+    elements: Element[];
+  };
+}
+
+export interface Element {
+  title: string;
+  subtitle?: string;
+  image_url?: string;
+  default_action?: {
+    type: string;
+    url?: string;
+  };
+  buttons: Button[];
+}
 
 export interface Content {
   type: string;
@@ -44,5 +63,10 @@ export interface ButtonTemplate extends Content {
   buttons: Button[];
 }
 
+export interface GenericTemplate extends Content {
+  type: 'genericTemplate';
+  elements: Element[];
+}
+
 // Add a new facebook content model here:
-export type ContentUnion = TextContent | ImageContent | ButtonTemplate;
+export type ContentUnion = TextContent | ImageContent | ButtonTemplate | GenericTemplate;

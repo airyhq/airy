@@ -3,8 +3,9 @@ import {isFromContact, Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
-import {SimpleAttachment, ButtonAttachment, ContentUnion} from './facebookModel';
+import {SimpleAttachment, ButtonAttachment, ContentUnion, GenericAttachment} from './facebookModel';
 import {ButtonTemplate} from './components/ButtonTemplate';
+import {GenericTemplate} from './components/GenericTemplate';
 
 export const FacebookRender = (props: MessageRenderProps) => {
   const message = props.message;
@@ -22,10 +23,13 @@ function render(content: ContentUnion, props: MessageRenderProps) {
 
     case 'buttonTemplate':
       return <ButtonTemplate {...getDefaultMessageRenderingProps(props)} template={content} />;
+
+    case 'genericTemplate':
+      return <GenericTemplate {...getDefaultMessageRenderingProps(props)} template={content} />;
   }
 }
 
-const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment): ContentUnion => {
+const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | GenericAttachment): ContentUnion => {
   if (attachement.type === 'image') {
     return {
       type: 'image',
@@ -36,6 +40,11 @@ const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment): Cont
       type: 'buttonTemplate',
       text: attachement.payload.text,
       buttons: attachement.payload.buttons,
+    };
+  } else if (attachement.type === 'template' && attachement.payload.template_type == 'generic') {
+    return {
+      type: 'genericTemplate',
+      elements: attachement.payload.elements,
     };
   }
 

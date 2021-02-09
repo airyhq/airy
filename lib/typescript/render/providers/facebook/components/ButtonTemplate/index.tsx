@@ -16,10 +16,10 @@ export const ButtonTemplate = ({sentAt, template}: ButtonTemplateRendererProps) 
           <div key={`button-${idx}`} className={styles.button}>
             {button.type == 'web_url' && button.url.length ? (
               <a href={button.url} target="_blank" rel="noreferrer" className={styles.buttonText}>
-                Link
+                {button.title}
               </a>
             ) : (
-              <div className={styles.buttonText}>button.title</div>
+              <div className={styles.buttonText}>{button.title}</div>
             )}
           </div>
         );

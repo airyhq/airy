@@ -3,6 +3,14 @@ title: Webhook
 sidebar_label: Webhook
 ---
 
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+
+Use Webhooks to receive events to notify you when a variety of interactions or events happen.
+
+</TLDR>
+
 The webhook integration enables you to programmatically participate in
 conversations by sending messages or reacting to them. Here's a common
 integration pattern:

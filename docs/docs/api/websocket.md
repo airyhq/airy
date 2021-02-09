@@ -3,8 +3,16 @@ title: WebSocket
 sidebar_label: WebSocket
 ---
 
-Airy Core offers a WebSocket server that allows clients to connect and receive
-near real-time updates on communication data. The WebSocket server uses the
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+
+Airy Core offers a WebSocket server that allows clients to **connect and receive
+near real-time updates**.
+
+</TLDR>
+
+The WebSocket server uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
 protocol endpoint at `/ws.communication`.
 
@@ -38,8 +46,10 @@ updated.
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     "sender_type": "{string/enum}",
     // See glossary
-    "sent_at": "{string}"
+    "sent_at": "{string}",
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    "source": "{String}"
+    // one of the possible sources
   }
 }
 ```

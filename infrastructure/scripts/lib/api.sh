@@ -13,9 +13,9 @@ function apiCall {
   local url="${host}.airy/${endpoint}"
 
   if [ "$token" = "no-auth" ]; then
-      response=$(curl -H ${content_type} -s -w "\n%{http_code}\n" ${url} -d ${request_payload} 2>&1)
+      response=$(curl -H "${content_type}" -s -w "\n%{http_code}\n" "${url}" -d "${request_payload}" 2>&1)
     else
-      response=$(curl -H ${content_type} -H "Authorization: $token" -s -w "\n%{http_code}\n" ${url} -d ${request_payload} 2>&1)
+      response=$(curl -H "${content_type}" -H "Authorization: $token" -s -w "\n%{http_code}\n" "${url}" -d "${request_payload}" 2>&1)
   fi
   response_payload=$(head -1 <<< "${response}")
   response_http_code=$(tail -1 <<< "${response}")
@@ -25,20 +25,21 @@ function apiCall {
     exit
   fi
 
-  echo ${response_payload}
+  echo "${response_payload}"
 }
 
 function extractFromPayload {
-  local payload=$(tail -1 <<< "${1}")
-  echo ${payload} | jq -r ".${2}"
+  local payload
+  payload=$(tail -1 <<< "${1}")
+  echo "${payload}" | jq -r ".${2}"
 }
 
 function generateChatPluginMessages {
   local id=${1}
   local file=${2}
 
-  while read chatplugin_token
+  while read -r chatplugin_token
   do
-    apiCall "chatplugin.send" "{\"message\": {\"text\": \"You deserve it ${id} !\"}}" 200 ${chatplugin_token} chatplugin
-  done < ${file}
+    apiCall "chatplugin.send" "{\"message\": {\"text\": \"You deserve it ${id} !\"}}" 200 "${chatplugin_token}" chatplugin
+  done < "${file}"
 }

@@ -4,9 +4,16 @@ sidebar_label: Introduction
 slug: /
 ---
 
+import TLDR from "@site/src/components/TLDR";
+
 ## What is Airy Core?
 
-> Airy Core is an **open source**, **fully-featured**, **production-ready** messaging platform.
+<TLDR>
+
+Airy Core is an **open source**, **fully-featured**, **production-ready**
+messaging platform.
+
+</TLDR>
 
 With Airy Core you can process conversational data from a variety of sources:
 

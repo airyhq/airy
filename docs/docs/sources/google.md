@@ -3,6 +3,14 @@ title: Google’s Business Messages
 sidebar_label: Google’s Business Messages
 ---
 
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+
+Start receiving and sending messages from **Google Maps & Google Search**.
+
+</TLDR>
+
 The Google source provides a channel of communication between your Google
 Business Location and your running instance of Airy Core.
 
@@ -28,45 +36,3 @@ against your partner key. You must also set the environment variable
 
 Once the verification process has been completed, Google will immediately start
 sending events to your Airy Core instance.
-
-## Connect
-
-Connects a Google Business Account to Airy Core.
-
-```
-POST /google.connect
-```
-
-- `gbm_id` The id of your Google Business Message [agent](https://developers.google.com/business-communications/business-messages/reference/business-communications/rest/v1/brands.agents#Agent).
-- `name` Custom name for the connected business
-- `image_url` Custom image URL
-
-```json5
-{
-  "gbm_id": "gbm-id",
-  "name": "My custom name for this location",
-  "image_url": "https://example.com/custom-image.jpg" // optional
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "id": "channel-uuid-1",
-  "name": "My custom name for this location",
-  "image_url": "https://example.com/custom-image.jpg",
-  "source": "google",
-  "source_channel_id": "gbm-id"
-}
-```
-
-## Disconnect
-
-```
-POST /google.disconnect
-```
-
-import ChannelDisconnect from './channel-disconnect.mdx'
-
-<ChannelDisconnect />

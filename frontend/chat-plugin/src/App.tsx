@@ -1,23 +1,20 @@
-import {h, Component} from 'preact';
-import {Router} from 'preact-router';
-
-import ChatRoute from './routes/chat';
+import React, {Component} from 'react';
 
 import style from './App.module.scss';
+import Chat from './components/chat';
 
 export default class App extends Component {
-  currentUrl: string = null;
-
-  handleRoute = (e: any) => {
-    this.currentUrl = e.url;
-  };
-
   render() {
+    const queryParams = new URLSearchParams(window.location.search);
+    const channelId = queryParams.get('channel_id');
+
     return (
       <div className={style.container}>
-        <Router onChange={this.handleRoute}>
-          <ChatRoute path={'/'} />
-        </Router>
+        {channelId ? (
+          <Chat channel_id={channelId} />
+        ) : (
+          <span style={{color: 'red'}}>Widget authorization failed. Please check your installation.</span>
+        )}
       </div>
     );
   }

@@ -3,10 +3,17 @@ title: Authentication
 sidebar_label: Authentication
 ---
 
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+
+To start using the API, you need to **authenticate first**.
+
+</TLDR>
+
 In order to communicate with the Airy Core API, you need a valid
-[JWT](https://jwt.io/) token. Get a valid token by sending a request to the
-login endpoint [login](#login). It returns a short-lived JWT token you can use
-for HTTP requests.
+[JWT Token](https://jwt.io/) token. The login endpoint [login](#login) returns such a short-lived
+token which can be used to authenticate with endpoints via the [Bearer Authorization header](https://tools.ietf.org/html/rfc6750#section-2.1).
 
 ## Login
 

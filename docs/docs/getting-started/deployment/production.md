@@ -10,7 +10,7 @@ proceeding.
 
 ## Requirements
 
-The `Airy apps` are the services which comprise `Airy Core`. They run as docker
+The `Airy Components` are the services which comprise `Airy Core`. They run as docker
 containers and require access to several other services to be in place before
 they can be started:
 
@@ -96,7 +96,7 @@ persistent storage.
 
 After the server has been provisioned, a database must be created, along with
 username and password which have full privileges on the database. Note down
-these parameters as they are required to start the `Airy apps`.
+these parameters as they are required to start the `Airy Components`.
 
 We provide a Helm chart to deploy a PostgreSQL server Kubernetes. Set the
 `pgPassword` variable in `infrastructure/helm-chart/charts/postgres/values.yaml`
@@ -120,11 +120,11 @@ helm install redis infrastructure/helm-chart/charts/redis/
 
 ### Kubernetes
 
-The `Airy apps` run on top of Kubernetes which is our preferred runtime. We
+The `Airy Components` run on top of Kubernetes which is our preferred runtime. We
 recommend Kubernetes for more robust and reliable deployment in production
-environments. However, the `Airy apps` do not depend on Kubernetes in any way.
+environments. However, the `Airy Components` do not depend on Kubernetes in any way.
 
-If you prefer to deploy the `Airy apps` on a Docker runtime, you can refer to
+If you prefer to deploy the `Airy Components` on a Docker runtime, you can refer to
 our the Kubernetes manifests, where all the Docker images and configuration
 parameters are specified. In order to generate the Kubernetes manifests, run:
 
@@ -132,7 +132,7 @@ parameters are specified. In order to generate the Kubernetes manifests, run:
 helm template ./infrastructure/helm-chart
 ```
 
-## Running the Airy apps
+## Running the Airy Components
 
 So far Airy Core has been tested on K3s, Minikube and AWS EKS. The following
 configuration and deployment instructions are applicable to any Kubernetes
@@ -141,37 +141,26 @@ to proceed with deploying the apps, we assume that you have a running Kubernetes
 cluster, properly configured KUBECONF file and properly set context.
 
 Airy Core ships with a Kubernetes controller, which is responsible for starting
-and reloading the appropriate Airy apps based on the provided configuration. The
-controller as a deployment named `airy-controller`.
-
-### Configuration
+and reloading the appropriate Airy Components based on the provided configuration. The
+controller is a deployment named `airy-controller`.
 
 After the [required services](#requirements) are deployed, you're ready to start
-the `Airy apps` inside a Kubernetes cluster. Connecting the `Airy apps` to the
-Kafka cluster, PostgreSQL and Redis can be done by creating a configuration
-file, prior to deploying the apps. Make sure that the `Airy apps` also have
-network connectivity to the required services.
+the `Airy Components` inside a Kubernetes cluster.
 
-The file `infrastructure/airy.tpl.yaml` contains an example of all possible
-configuration parameters. This file should be copied to `airy.yaml` and edited
-according to your environment:
+We provided a Helm chart to deploy the `Airy Components`. Before you can run helm, you
+must configure the system. See our [Configuration Docs](/getting-started/deployment/configuration.md) for detailed instructions.
+
+Then you can proceed:
 
 ```sh
-cd infrastructure
-cp airy.tpl.yaml airy.yaml
+helm install core ./helm-chart/charts/apps/ --values ./airy.yaml --timeout 1000s
 ```
 
-Edit the file to configure connections to the base services. Make sure to configure the
-following sections correctly, so that the `Airy apps` start properly:
+The API `Airy Components`, the Frontend UI and the Frontend of the Airy Live Chat
+plugin start by default, while all the other apps are optional and are started
+if there is provided configuration for them in the `airy.yaml` file.
 
-```yaml
-apps:
-  kafka: ...
-  redis: ...
-  postgresql: ...
-```
-
-We recommend that you create a new database if you are reusing a PostgreSQL server to avoid name collisions.
+At this point you should have a running `Airy Core` in your environment 🎉.
 
 ## Source media storage
 
@@ -182,46 +171,6 @@ content.
 Airy Core allows you to persist this data to a storage of your choice. To take
 advantage of this you must provide access credentials to your storage. The
 platform currently supports [s3](https://aws.amazon.com/s3/):
-
-```yaml
-apps:
-  storage:
-    s3:
-      key: <your aws iam access key id>
-      secret: <your aws iam access key secret>
-      bucket: <the target bucket>
-      region: <the bucket's aws region>
-      path: <(optional) defaults to the bucket root>
-```
-
-### Deployment
-
-We provided a Helm chart to deploy the `Airy apps`. Before you can run helm, you
-must configure the system via the `airy.yaml` file, then you can proceed:
-
-```sh
-helm install core ./helm-chart/charts/apps/ --values ./airy.yaml --timeout 1000s
-```
-
-The API `Airy apps`, the Frontend UI and the Frontend of the Airy Live Chat
-plugin start by default, while all the other apps are optional and are started
-if there is provided configuration for them in the `airy.yaml` file.
-
-At this point you should have a running `Airy Core` in your environment 🎉.
-
-If afterwards you need to modify or add other config parameters in the
-`airy.yaml` file, after editing the file run:
-
-```sh
-airy config apply --config ./airy.yaml --kube-config /path/to/your/kube.conf
-```
-
-Make sure you point the `--kube-config` flag to your Kubernetes configuration
-file.
-
-If you want to deploy a specific version of Airy Core, you must set the version
-in your `airy.yaml` file, under the `global.appImageTag` configuration key to
-the desired version.
 
 ## Network
 
@@ -271,7 +220,7 @@ You must set appropriate `host` attributes in the rules for:
 
 - API endpoints (defaults to `api.airy`)
 - Webhooks endpoints (defaults to `webhooks.airy`)
-- Demo (defaults to `demo.airy`)
+- Core UI (defaults to `ui.airy`)
 - Chat plugin (defaults to `chatplugin.airy`)
 
 If you are not using Traefik, you can use the

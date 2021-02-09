@@ -4,6 +4,14 @@ sidebar_label: Facebook Messenger
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+
+**Connect your Facebook Pages**, send and receive messages from Facebook’s 1,3
+Billion users.
+
+</TLDR>
 
 This document provides a step by step guide to integrate Facebook with your Airy
 Core Platform instance.
@@ -24,6 +32,8 @@ The Facebook source requires the following configuration:
 - A webhook integration so that the platform can ingest messages from your
   Facebook pages
 - A page token for each facebook page you intend to integrate
+
+Refer to the [Configuration Docs](/getting-started/deployment/configuration.md#components) on how to input these values.
 
 Let's proceed step by step.
 
@@ -90,88 +100,3 @@ On the `User or Page` option, select `Get Page Token` and click on `Generate Acc
 <img alt="Facebook token page" src={useBaseUrl('img/sources/facebook/token.jpg')} />
 
 You're now ready to connect a Facebook page to your Airy Core instace 🎉.
-
-## Connect
-
-Connects a Facebook page to Airy Core.
-
-```
-POST /facebook.connect
-```
-
-- `page_id` is the Facebook page id
-- `page_token` is the page Access Token
-- `name` Custom name for the connected page
-- `image_url` Custom image URL
-
-**Sample request**
-
-```json5
-{
-  "page_id": "fb-page-id-1",
-  "page_token": "authentication token",
-  "name": "My custom name for this page",
-  "image_url": "https://example.org/custom-image.jpg" // optional
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "id": "channel-uuid-1",
-  "name": "My custom name for this page",
-  "image_url": "https://example.org/custom-image.jpg",
-  "source": "facebook",
-  "source_channel_id": "fb-page-id-1"
-}
-```
-
-## Disconnect
-
-Disconnects a Facebook page from Airy Core
-
-```
-POST /facebook.disconnect
-```
-
-import ChannelDisconnect from './channel-disconnect.mdx'
-
-<ChannelDisconnect />
-
-## Explore
-
-`POST /facebook.explore`
-
-A synchronous endpoint that makes a request to Facebook
-to list the available Facebook pages. Some of those pages may already
-be connected, which is accounted for in the boolean field `connected`. Due to
-the nature of the request, the response time may vary.
-
-**Sample request**
-
-```json5
-{
-  "auth_token": "authentication token"
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "data": [
-    {
-      "name": "my page 1",
-      "page_id": "fb-page-id-1",
-      "connected": false,
-      "image_url": "http://example.org/avatar.jpeg" // optional
-    },
-    {
-      "name": "my page 2",
-      "page_id": "fb-page-id-2",
-      "connected": true
-    }
-  ]
-}
-```

@@ -3,6 +3,14 @@ title: Airy Live Chat Plugin
 sidebar_label: Airy Live Chat Plugin
 ---
 
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+
+Airy's Live Chat Plugin is an **open-source chat widget** that you can put on your website to chat with your visitors.
+
+ </TLDR>
+
 The Airy Live Chat Plugin is a fully-featured
 [source](/getting-started/glossary#source) that enables conversations with
 anonymous website visitors through a web chat plugin.
@@ -14,43 +22,6 @@ anonymous website visitors through a web chat plugin.
 - How to use the HTTP and WebSocket APIs that power the Chat Plugin
 
 :::
-
-## Connect
-
-Connects a Chat Plugin source to Airy Core.
-
-```
-POST /chatplugin.connect
-```
-
-- `name` is a unique identifier of your choice
-
-```json5
-{
-  "name": "website-identifier-42"
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "id": "1F679227-76C2-4302-BB12-703B2ADB0F66",
-  "name": "website-identifier-42",
-  "source": "chat_plugin",
-  "source_channel_id": "website-identifier-42"
-}
-```
-
-## Disconnect
-
-```
-POST /chatplugin.disconnect
-```
-
-import ChannelDisconnect from './channel-disconnect.mdx'
-
-<ChannelDisconnect />
 
 ## Installation
 

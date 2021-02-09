@@ -1,26 +1,16 @@
 import React from 'react';
-import {Message, Conversation} from 'httpclient';
-import TextRender from './messages/TextRender/index';
+import {renderProviders} from './renderProviders';
 
-type RenderLibraryProps = {
-  message: Message;
-  source: string;
-  currentConversation?: Conversation;
-  prevWasContact?: boolean;
-  isContact: boolean;
-  nextIsSameUser?: boolean;
+import {Text} from './components/Text';
+import {getDefaultMessageRenderingProps, MessageRenderProps} from './shared';
+
+export const SourceMessage = (props: MessageRenderProps) => {
+  const provider = renderProviders[props.source];
+
+  try {
+    return provider(props);
+  } catch (e) {
+    console.error(e);
+    return <Text {...getDefaultMessageRenderingProps(props)} text="Could not render this content" />;
+  }
 };
-
-const RenderLibrary = (props: RenderLibraryProps) => {
-  const {message, currentConversation, prevWasContact, isContact, nextIsSameUser} = props;
-  return (
-    <TextRender
-      conversation={currentConversation}
-      message={message}
-      showAvatar={!prevWasContact && isContact}
-      showSentAt={!nextIsSameUser}
-    />
-  );
-};
-
-export default RenderLibrary;

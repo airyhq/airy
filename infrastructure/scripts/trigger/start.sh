@@ -3,9 +3,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)
-INFRASTRUCTURE_PATH=$(cd ${SCRIPT_PATH}/../../; pwd -P)
+INFRASTRUCTURE_PATH=$(cd "${SCRIPT_PATH}"/../../; pwd -P)
 
-source ${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh
+# shellcheck source=/dev/null
+source "${INFRASTRUCTURE_PATH}/scripts/lib/k8s.sh"
 
 kubectl delete pod startup-helper --force 2>/dev/null || true
 kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"

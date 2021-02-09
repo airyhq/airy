@@ -1,6 +1,7 @@
 package co.airy.core.api.communication.dto;
 
 import co.airy.avro.communication.Channel;
+import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.MetadataRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -4,11 +4,17 @@ sidebar_label: Troubleshooting
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+
+There are 2 ways to get help quickly: **Community Support** and **Enterprise
+Support** by the founding engineers.
+
+</TLDR>
 
 Airy Core is free and open-source for users who wish to self-host the platform.
-That doesn't mean that you are alone with your problems. There are 2 ways to get
-help quickly: Community Support & Enterprise Support by the engineers who built
-the platform.
+That doesn't mean that you are alone with your problems.
 
 <img alt="Community Support" src={useBaseUrl('img/getting-started/troubleshooting/community.png')} />
 

@@ -34,7 +34,7 @@ public class ChannelsController {
         this.producer = producer;
     }
 
-    @PostMapping("/google.connect")
+    @PostMapping("/channels.google.connect")
     ResponseEntity<?> connect(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
         final String gbmId = requestPayload.getGbmId();
         final String sourceIdentifier = "google";
@@ -59,7 +59,7 @@ public class ChannelsController {
         return ResponseEntity.ok(fromChannel(channel));
     }
 
-    @PostMapping("/google.disconnect")
+    @PostMapping("/channels.google.disconnect")
     ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
         final String channelId = requestPayload.getChannelId().toString();
 

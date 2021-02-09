@@ -11,3 +11,7 @@ export interface Conversation {
   lastMessage: Message;
   unreadMessageCount?: number;
 }
+
+export function getSource(conversation: Conversation) {
+  return conversation?.channel?.source;
+}

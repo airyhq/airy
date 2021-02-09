@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eo pipefail
 
-ZOOKEEPER_SERVERS=$(echo ${ZOOKEEPER_SERVERS} | tr ";" " ")
-ZOOKEEPER_ID=$(echo ${POD_NAME} | awk -F "-" '{ print $NF; }')
+ZOOKEEPER_SERVERS=$(echo "${ZOOKEEPER_SERVERS}" | tr ";" " ")
+ZOOKEEPER_ID=$(echo "${POD_NAME}" | awk -F "-" '{ print $NF; }')
 ZOOKEEPER_SERVER_ID=$((ZOOKEEPER_ID+1))
 
 echo "${ZOOKEEPER_SERVER_ID}" > /var/lib/zookeeper/data/myid

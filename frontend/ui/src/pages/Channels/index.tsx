@@ -8,7 +8,7 @@ import {Button} from '@airyhq/components';
 import {Channel} from 'httpclient';
 import {AiryConfig} from '../../AiryConfig';
 import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
-import {StateModel} from '../../reducers/index';
+import {StateModel} from '../../reducers';
 
 import styles from './index.module.scss';
 
@@ -92,23 +92,28 @@ const Channels = (props: ChannelsConnectProps) => {
         />
       </div>
       <ul className={styles.channelList}>
-        {props.channels.map((channel: Channel) => (
-          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-            <img src={channel.imageUrl} className={styles.channelImage} />
-            <div className={styles.channelName}>{channel.name}</div>
-            <div className={styles.channelAction}>
-              {channel.connected ? (
-                <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
-                  Disconnect
-                </Button>
-              ) : (
-                <Button styleVariant="small" onClick={() => connectClicked(channel)}>
-                  Connect
-                </Button>
+        {props.channels.map((channel: Channel) => {
+          const channelName = channel.metadata.name;
+          return (
+            <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+              {channel.metadata.image_url && (
+                <img src={channel.metadata.image_url} alt={channelName} className={styles.channelImage} />
               )}
-            </div>
-          </li>
-        ))}
+              <div className={styles.channelName}>{channel.metadata.name}</div>
+              <div className={styles.channelAction}>
+                {channel.connected ? (
+                  <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
+                    Disconnect
+                  </Button>
+                ) : (
+                  <Button styleVariant="small" onClick={() => connectClicked(channel)}>
+                    Connect
+                  </Button>
+                )}
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

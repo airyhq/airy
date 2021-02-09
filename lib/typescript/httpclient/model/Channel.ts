@@ -1,8 +1,14 @@
+import {Metadata} from './Metadata';
+
+export type ChannelMetadata = Metadata & {
+  name: string;
+  image_url?: string;
+};
+
 export interface Channel {
   id?: string;
-  name: string;
+  metadata: ChannelMetadata;
   source: string;
   sourceChannelId: string;
   connected: boolean;
-  imageUrl?: string;
 }

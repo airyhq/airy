@@ -2,7 +2,9 @@ package co.airy.model.channel;
 
 import co.airy.avro.communication.Channel;
 import co.airy.model.channel.dto.ChannelContainer;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +20,6 @@ public class ChannelPayload {
     private String id;
     private String source;
     private String sourceChannelId;
-
     private JsonNode metadata;
 
     public static ChannelPayload fromChannelContainer(ChannelContainer container) {
@@ -34,6 +35,7 @@ public class ChannelPayload {
     public static ChannelPayload fromChannel(Channel channel) {
         return ChannelPayload.builder()
                 .id(channel.getId())
+                .metadata(JsonNodeFactory.instance.objectNode())
                 .source(channel.getSource())
                 .sourceChannelId(channel.getSourceChannelId())
                 .build();

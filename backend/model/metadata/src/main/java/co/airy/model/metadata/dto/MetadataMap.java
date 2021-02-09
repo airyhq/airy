@@ -8,11 +8,11 @@ import java.util.HashMap;
 
 public class MetadataMap extends HashMap<String, Metadata> implements Serializable {
     // Convenience methods for aggregating on Metadata in Kafka Streams
-    public static MetadataMap Adder(String key, Metadata metadata, MetadataMap aggregate) {
+    public static MetadataMap adder(String key, Metadata metadata, MetadataMap aggregate) {
         aggregate.put(metadata.getKey(), metadata);
         return aggregate;
     }
-    public static MetadataMap Subtractor(String key, Metadata metadata, MetadataMap aggregate) {
+    public static MetadataMap subtractor(String key, Metadata metadata, MetadataMap aggregate) {
         aggregate.remove(metadata.getKey());
         return aggregate;
     }

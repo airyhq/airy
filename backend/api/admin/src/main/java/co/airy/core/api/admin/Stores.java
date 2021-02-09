@@ -69,7 +69,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         final KTable<String, MetadataMap> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
                 .filter((metadataId, metadata) -> isChannelMetadata(metadata))
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
-                .aggregate(MetadataMap::new, MetadataMap::Adder, MetadataMap::Subtractor);
+                .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor);
 
         builder.<String, Channel>table(applicationCommunicationChannels)
                 .filter((k, v) -> v.getConnectionState().equals(ChannelConnectionState.CONNECTED))

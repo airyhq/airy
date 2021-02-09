@@ -1,5 +1,6 @@
 package co.airy.core.api.communication;
 
+import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.DisplayName;
 import co.airy.core.api.communication.payload.ContactResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
@@ -16,7 +17,7 @@ import static co.airy.model.metadata.MetadataRepository.getConversationInfo;
 @Component
 public class Mapper {
 
-    public ConversationResponsePayload fromConversation(co.airy.core.api.communication.dto.Conversation conversation) {
+    public ConversationResponsePayload fromConversation(Conversation conversation) {
 
         return ConversationResponsePayload.builder()
                 .channel(ChannelPayload.builder()

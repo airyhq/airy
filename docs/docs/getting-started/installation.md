@@ -15,14 +15,9 @@ or in the cloud.
 
 </TLDR>
 
-### Command Line Interface
+You can install Airy from many possible installation options: It can be installed on your computer or with services such as **DigitalOcean** or **Docker**.
 
-The [Airy CLI](/cli/introduction.md) is a developer tool to help you **build**, **test**, and **manage** Airy directly from your terminal.
-
-We recommend to [install](/cli/installation.md) the Airy CLI first which will
-aid you in the process of installing and managing your Airy Core instance.
-
-It is easy to install and works on macOS, Windows, and Linux.
+The following documentation covers many different options to install Airy and getting started on using it.
 
 ## Installation guides
 
@@ -39,26 +34,6 @@ It is easy to install and works on macOS, Windows, and Linux.
     title='CLI' 
     description='Run Airy on your local machine using the CLI' 
     link='/cli/installation'
-/>
-</li>
-
-<li style={{
-    marginBottom: '12px'
-}}>
-<Box     
-    title='Run Airy Core on your machine inside an isolated Vagrant' 
-    description='Run Airy Core on your machine inside an isolated Vagrant' 
-    link='/getting-started/deployment/production'
-/>
-</li>
-
-<li style={{
-    marginBottom: '12px'
-}}>
-<Box     
-    title='Run Airy Core in the cloud' 
-    description='Run Airy Core in the cloud' 
-    link='/getting-started/deployment/production'
 />
 </li>
 

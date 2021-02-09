@@ -1,4 +1,7 @@
 export interface Attachment {
+  type: string;
+}
+export interface SimpleAttachment {
   type: 'image' | 'video' | 'audio' | 'file' | 'fallback';
   payload: {
     title?: string;
@@ -6,8 +9,17 @@ export interface Attachment {
   };
 }
 
+export interface ButtonAttachment extends Attachment {
+  type: 'template';
+  payload: {
+    text: string;
+    template_type: 'button';
+    buttons: Button[];
+  };
+}
+
 export interface Content {
-  type: 'text' | 'image';
+  type: string;
 }
 
 export interface TextContent extends Content {
@@ -20,5 +32,17 @@ export interface ImageContent extends Content {
   imageUrl: string;
 }
 
+export interface Button {
+  type: 'web_url';
+  url: string;
+  title: string;
+}
+
+export interface ButtonTemplate extends Content {
+  type: 'buttonTemplate';
+  text: string;
+  buttons: Button[];
+}
+
 // Add a new facebook content model here:
-export type ContentUnion = TextContent | ImageContent;
+export type ContentUnion = TextContent | ImageContent | ButtonTemplate;

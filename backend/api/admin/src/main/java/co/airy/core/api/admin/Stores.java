@@ -29,15 +29,12 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.model.metadata.MetadataRepository.isChannelMetadata;
-import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
@@ -101,10 +98,12 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     public void storeChannelContainer(ChannelContainer container) throws ExecutionException, InterruptedException {
-        final Channel channel = container.getChannel();
-        storeChannel(channel);
+        storeChannel(container.getChannel());
+        storeMetadataMap(container.getMetadataMap());
+    }
 
-        for (Metadata metadata : container.getMetadataMap().values()) {
+    public void storeMetadataMap(MetadataMap metadataMap) throws ExecutionException, InterruptedException {
+        for (Metadata metadata : metadataMap.values()) {
             producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(metadata).toString(), metadata)).get();
         }
     }
@@ -123,6 +122,11 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public ReadOnlyKeyValueStore<String, ChannelContainer> getConnectedChannelsStore() {
         return streams.acquireLocalStore(connectedChannelsStore);
+    }
+
+    public ChannelContainer getChannel(String channelId) {
+        final ReadOnlyKeyValueStore<String, ChannelContainer> store = getConnectedChannelsStore();
+        return store.get(channelId);
     }
 
     public List<ChannelContainer> getChannels() {

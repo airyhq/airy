@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static co.airy.model.metadata.MetadataKeys.PUBLIC;
+import static co.airy.model.metadata.MetadataKeys.USER_DATA;
 import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 
 @RestController
@@ -28,7 +28,7 @@ public class MetadataController {
     @PostMapping("/metadata.set")
     ResponseEntity<?> setMetadata(@RequestBody @Valid SetMetadataRequestPayload requestPayload) {
         final Metadata metadata = newConversationMetadata(requestPayload.getConversationId(),
-                PUBLIC + "." + requestPayload.getKey(),
+                USER_DATA + "." + requestPayload.getKey(),
                 requestPayload.getValue());
         try {
             stores.storeMetadata(metadata);
@@ -41,7 +41,7 @@ public class MetadataController {
     @PostMapping("/metadata.remove")
     ResponseEntity<?> removeMetadata(@RequestBody @Valid RemoveMetadataRequestPayload requestPayload) {
         final Subject subject = new Subject("conversation", requestPayload.getConversationId());
-        final String metadataKey = PUBLIC + "." + requestPayload.getKey();
+        final String metadataKey = USER_DATA + "." + requestPayload.getKey();
 
         try {
             stores.deleteMetadata(subject, metadataKey);

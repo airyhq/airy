@@ -125,16 +125,16 @@ class FetchMetadataTest {
         assertThat(metadataList, hasSize(4));
 
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.FIRST_NAME) && metadata.getValue().equals(firstName)
+                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.FIRST_NAME) && metadata.getValue().equals(firstName)
         )));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.LAST_NAME) && metadata.getValue().equals(lastName)
+                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.LAST_NAME) && metadata.getValue().equals(lastName)
         )));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.AVATAR_URL) && metadata.getValue().equals(avatarUrl)
+                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.AVATAR_URL) && metadata.getValue().equals(avatarUrl)
         )));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.FETCH_STATE) && metadata.getValue().equals("ok")
+                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.FETCH_STATE) && metadata.getValue().equals("ok")
         )));
 
         assertThat(sourceConversationIdCaptor.getValue(), equalTo(sourceConversationId));

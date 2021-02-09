@@ -10,6 +10,7 @@ import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreResponsePayload;
 import co.airy.core.sources.facebook.payload.PageInfoResponsePayload;
 import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
@@ -98,8 +99,8 @@ public class ChannelsController {
                                     .build()
                     )
                     .metadataMap(MetadataMap.from(List.of(
-                            newChannelMetadata(channelId, "name", Optional.ofNullable(requestPayload.getName()).orElse(fbPageWithConnectInfo.getNameWithLocationDescriptor())),
-                            newChannelMetadata(channelId, "image_url", Optional.ofNullable(requestPayload.getImageUrl()).orElse(fbPageWithConnectInfo.getPicture().getData().getUrl()))
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(requestPayload.getName()).orElse(fbPageWithConnectInfo.getNameWithLocationDescriptor())),
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, Optional.ofNullable(requestPayload.getImageUrl()).orElse(fbPageWithConnectInfo.getPicture().getData().getUrl()))
                     ))).build();
 
             stores.storeChannelContainer(container);

@@ -5,6 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
@@ -23,7 +24,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
@@ -50,10 +50,10 @@ public class ChannelsController {
 
         try {
             List<Metadata> metadataList = new ArrayList<>();
-            metadataList.add(newChannelMetadata(channelId, "name", requestPayload.getName()));
+            metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, requestPayload.getName()));
 
             if (requestPayload.getImageUrl() != null) {
-                metadataList.add(newChannelMetadata(channelId, "image_url", requestPayload.getImageUrl()));
+                metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, requestPayload.getImageUrl()));
             }
 
             final ChannelContainer container = ChannelContainer.builder()

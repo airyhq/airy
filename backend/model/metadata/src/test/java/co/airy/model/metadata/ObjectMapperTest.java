@@ -1,7 +1,6 @@
 package co.airy.model.metadata;
 
 import co.airy.avro.communication.Metadata;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -9,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static co.airy.model.metadata.MetadataObjectMapper.getMetadataFromJson;
 import static co.airy.model.metadata.MetadataObjectMapper.getMetadataPayload;

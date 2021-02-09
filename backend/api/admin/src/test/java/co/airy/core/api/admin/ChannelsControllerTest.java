@@ -2,7 +2,6 @@ package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.Metadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
@@ -27,8 +26,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.UUID;
 
-import static co.airy.model.metadata.MetadataRepository.getId;
-import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
@@ -96,9 +93,7 @@ public class ChannelsControllerTest {
     @Test
     void canListChannels() throws Exception {
         final String disconnectedChannel = "channel-id-2";
-        final String expectedChannelName = "channel name";
 
-        final Metadata channelMetadata = newChannelMetadata(connectedChannel.getId(), "name", expectedChannelName);
         kafkaTestHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), disconnectedChannel,
                         Channel.newBuilder()
@@ -106,16 +101,38 @@ public class ChannelsControllerTest {
                                 .setId(disconnectedChannel)
                                 .setSource("facebook")
                                 .setSourceChannelId("ps-id-2")
-                                .build()),
-                new ProducerRecord<>(applicationCommunicationMetadata.name(), getId(channelMetadata).toString(), channelMetadata)
+                                .build())
         ));
 
         retryOnException(() -> webTestHelper.post("/channels.list", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data.length()", greaterThanOrEqualTo(1)))
-                        .andExpect(jsonPath("$.data[0].metadata.name", equalTo(expectedChannelName)))
                         .andExpect(jsonPath("$.data[*].id").value(not(contains(disconnectedChannel)))),
                 "/channels.list did not return the right number of channels");
+    }
+
+    @Test
+    void canUpdateChannel() throws Exception {
+        final String expectedChannelName = "channel name";
+
+        retryOnException(() -> webTestHelper.post("/channels.info", String.format("{\"channel_id\":\"%s\"}", connectedChannel.getId()), "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id", equalTo(connectedChannel.getId())))
+                        .andExpect(jsonPath("$.metadata.name", not(equalTo(expectedChannelName)))),
+                "/channels.info did not return the right channel");
+
+        webTestHelper.post("/channels.update", String.format("{\"channel_id\":\"%s\",\"name\":\"%s\"}",
+                connectedChannel.getId(), expectedChannelName), "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id", equalTo(connectedChannel.getId())))
+                        .andExpect(jsonPath("$.metadata.name", not(equalTo(connectedChannel.getId()))))
+                        .andExpect(jsonPath("$.source", equalTo(connectedChannel.getSource())));
+
+        retryOnException(() -> webTestHelper.post("/channels.info", String.format("{\"channel_id\":\"%s\"}", connectedChannel.getId()), "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id", equalTo(connectedChannel.getId())))
+                        .andExpect(jsonPath("$.metadata.name", equalTo(expectedChannelName))),
+                "/channels.update did not update");
     }
 
 }

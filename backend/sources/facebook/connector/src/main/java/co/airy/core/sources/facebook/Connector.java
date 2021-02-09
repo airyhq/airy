@@ -8,7 +8,6 @@ import co.airy.core.sources.facebook.api.ApiException;
 import co.airy.core.sources.facebook.api.Mapper;
 import co.airy.core.sources.facebook.api.model.SendMessagePayload;
 import co.airy.core.sources.facebook.api.model.UserProfile;
-import co.airy.core.sources.facebook.dto.Conversation;
 import co.airy.core.sources.facebook.dto.SendMessageRequest;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.model.metadata.MetadataKeys;
@@ -24,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
-import static co.airy.model.metadata.MetadataKeys.Source.ContactFetchState.failed;
-import static co.airy.model.metadata.MetadataKeys.Source.ContactFetchState.ok;
+import static co.airy.model.metadata.MetadataKeys.ConversationKeys.ContactFetchState.failed;
+import static co.airy.model.metadata.MetadataKeys.ConversationKeys.ContactFetchState.ok;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 
@@ -43,7 +42,7 @@ public class Connector {
 
     public Message sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();
-        final Conversation conversation = sendMessageRequest.getConversation();
+        final co.airy.core.sources.facebook.dto.Conversation conversation = sendMessageRequest.getConversation();
 
         try {
             final String pageToken = conversation.getChannel().getToken();
@@ -63,46 +62,46 @@ public class Connector {
         return message;
     }
 
-    public boolean needsMetadataFetched(Conversation conversation) {
+    public boolean needsMetadataFetched(co.airy.core.sources.facebook.dto.Conversation conversation) {
         final Map<String, String> metadata = conversation.getMetadata();
-        final String fetchState = metadata.get(MetadataKeys.Source.Contact.FETCH_STATE);
+        final String fetchState = metadata.get(MetadataKeys.ConversationKeys.Contact.FETCH_STATE);
 
         return !ok.toString().equals(fetchState) && !failed.toString().equals(fetchState);
     }
 
-    public List<KeyValue<String, Metadata>> fetchMetadata(String conversationId, Conversation conversation) {
+    public List<KeyValue<String, Metadata>> fetchMetadata(String conversationId, co.airy.core.sources.facebook.dto.Conversation conversation) {
         final UserProfile profile = getProfile(conversation);
 
         final List<KeyValue<String, Metadata>> recordList = new ArrayList<>();
 
         if (profile.getFirstName() != null) {
-            final Metadata firstName = newConversationMetadata(conversationId, MetadataKeys.Source.Contact.FIRST_NAME, profile.getFirstName());
+            final Metadata firstName = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.FIRST_NAME, profile.getFirstName());
             recordList.add(KeyValue.pair(getId(firstName).toString(), firstName));
         }
 
         if (profile.getLastName() != null) {
-            final Metadata lastName = newConversationMetadata(conversationId, MetadataKeys.Source.Contact.LAST_NAME, profile.getLastName());
+            final Metadata lastName = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.LAST_NAME, profile.getLastName());
             recordList.add(KeyValue.pair(getId(lastName).toString(), lastName));
         }
 
         if (profile.getProfilePic() != null) {
-            final Metadata avatarUrl = newConversationMetadata(conversationId, MetadataKeys.Source.Contact.AVATAR_URL, profile.getProfilePic());
+            final Metadata avatarUrl = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.AVATAR_URL, profile.getProfilePic());
             recordList.add(KeyValue.pair(getId(avatarUrl).toString(), avatarUrl));
         }
 
         final String newFetchState = recordList.size() > 0 ? ok.toString() : failed.toString();
-        final String oldFetchState = conversation.getMetadata().get(MetadataKeys.Source.Contact.FETCH_STATE);
+        final String oldFetchState = conversation.getMetadata().get(MetadataKeys.ConversationKeys.Contact.FETCH_STATE);
 
         // Only update fetch state if there has been a change
         if (!newFetchState.equals(oldFetchState)) {
-            final Metadata fetchState = newConversationMetadata(conversationId, MetadataKeys.Source.Contact.FETCH_STATE, newFetchState);
+            final Metadata fetchState = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.FETCH_STATE, newFetchState);
             recordList.add(KeyValue.pair(getId(fetchState).toString(), fetchState));
         }
 
         return recordList;
     }
 
-    public UserProfile getProfile(Conversation conversation) {
+    public UserProfile getProfile(co.airy.core.sources.facebook.dto.Conversation conversation) {
         final String sourceConversationId = conversation.getSourceConversationId();
         final String token = conversation.getChannel().getToken();
         try {

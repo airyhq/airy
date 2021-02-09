@@ -5,6 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
@@ -12,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,10 +72,10 @@ public class ChannelsController {
     private ResponseEntity<?> connectChannel(Channel channel, String name, String imageUrl) {
         try {
             List<Metadata> metadataList = new ArrayList<>();
-            metadataList.add(newChannelMetadata(channel.getId(), "name", name));
+            metadataList.add(newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.NAME, name));
 
             if (imageUrl != null) {
-                metadataList.add(newChannelMetadata(channel.getId(), "image_url", imageUrl));
+                metadataList.add(newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.IMAGE_URL, imageUrl));
             }
 
             final ChannelContainer container = ChannelContainer.builder()

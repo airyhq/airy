@@ -132,15 +132,15 @@ public class EventsRouterTest {
         assertThat(metadataList, hasSize(3));
 
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.FIRST_NAME) &&
+                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.FIRST_NAME) &&
                         metadata.getValue().equals(singleName)
         )));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.FIRST_NAME) &&
+                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.FIRST_NAME) &&
                         metadata.getValue().equals("Grace")
         )));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.LAST_NAME) &&
+                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.LAST_NAME) &&
                         metadata.getValue().equals("Brewster Murray Hopper")
         )));
     }

@@ -1,6 +1,7 @@
 package co.airy.model.channel.dto;
 
 import co.airy.avro.communication.Channel;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,7 @@ public class ChannelContainer implements Serializable {
     private MetadataMap getDefaultMetadata() {
         final String defaultName = String.format("%s %s", channel.getSource(), channel.getId().substring(31));
         return MetadataMap.from(List.of(
-                newChannelMetadata(channel.getId(), "name", defaultName)
+                newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.NAME, defaultName)
         ));
     }
 }

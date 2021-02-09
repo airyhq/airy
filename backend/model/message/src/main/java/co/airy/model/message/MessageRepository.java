@@ -3,8 +3,8 @@ package co.airy.model.message;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 
-import java.util.Map;
 import java.time.Instant;
+import java.util.Map;
 
 public class MessageRepository {
     public static Message updateDeliveryState(Message message, DeliveryState state) {

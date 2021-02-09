@@ -1,8 +1,8 @@
 package co.airy.core.api.admin;
 
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;

@@ -7,6 +7,7 @@ app_deps = [
     "//:springboot_actuator",
     "//backend/model/channel",
     "//backend/model/message",
+    "//backend/model/metadata",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/uuid",

@@ -12,5 +12,6 @@ custom_java_library(
         "//:jackson",
         "//:lombok",
         "//backend/avro/communication:channel-avro",
+        "//backend/model/metadata",
     ],
 )

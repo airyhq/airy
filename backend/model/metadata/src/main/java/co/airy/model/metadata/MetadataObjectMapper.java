@@ -1,9 +1,9 @@
 package co.airy.model.metadata;
 
 import co.airy.avro.communication.Metadata;
+import co.airy.model.metadata.dto.MetadataMap;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,11 +15,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
 
 public class MetadataObjectMapper {
+
+    public static JsonNode getMetadataPayload(MetadataMap metadataMap) {
+        final List<Metadata> metadataList = new ArrayList<>(metadataMap.values());
+        return getMetadataPayload(metadataList);
+    }
+
     public static JsonNode getMetadataPayload(List<Metadata> metadataList) {
         metadataList.sort(comparing(Metadata::getTimestamp));
 

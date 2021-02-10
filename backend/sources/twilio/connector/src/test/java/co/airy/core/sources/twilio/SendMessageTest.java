@@ -101,7 +101,6 @@ class SendMessageTest {
                         .setToken(token)
                         .setSourceChannelId(sourceChannelId)
                         .setSource("twilio.sms")
-                        .setName("name")
                         .setId(channelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
                         .build()

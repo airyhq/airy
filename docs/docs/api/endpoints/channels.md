@@ -10,6 +10,14 @@ for more information.
 
 `POST /channels.list`
 
+**Sample request**
+
+```json5
+{
+  "source": "source to filter on" // optional
+}
+```
+
 **Sample response**
 
 ```json5
@@ -17,18 +25,81 @@ for more information.
   "data": [
     {
       "id": "channel-uuid-1",
-      "name": "my page 1",
       "source": "facebook",
       "source_channel_id": "fb-page-id-1",
-      "image_url": "http://example.org/avatar.jpeg" // optional
+      "metadata": {
+        "name": "my page 1",
+        // optional
+        "image_url": "http://example.org/avatar.jpeg"
+      }
     },
     {
       "id": "channel-uuid-2",
-      "name": "my page 2",
       "source": "facebook",
-      "source_channel_id": "fb-page-id-2"
+      "source_channel_id": "fb-page-id-2",
+      "metadata": {
+        "name": "my page 2"
+      }
     }
   ]
+}
+```
+
+## Info
+
+`POST /channels.info`
+
+**Sample request**
+
+```json5
+{
+  "channel_id": "channel-uuid"
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "id": "channel-uuid",
+  "source": "facebook",
+  "source_channel_id": "fb-page-id-1",
+  "metadata": {
+    "name": "my page 1",
+    // optional
+    "image_url": "http://example.org/avatar.jpeg"
+  }
+}
+```
+
+## Update
+
+`POST /channels.update`
+
+Update a channel's name or image url.
+
+**Sample request**
+
+```json5
+{
+  "channel_id": "channel-uuid",
+  "name": "new name for this channel", // optional
+  "image_url": "http://example.org/avatar_redesign.jpeg" // optional
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "id": "channel-uuid",
+  "source": "facebook",
+  "source_channel_id": "fb-page-id-1",
+  "metadata": {
+    "name": "new name for this channel",
+    // optional
+    "image_url": "http://example.org/avatar_redesign.jpeg"
+  }
 }
 ```
 
@@ -55,9 +126,9 @@ POST /channels.chatplugin.connect
 ```json5
 {
   "id": "1F679227-76C2-4302-BB12-703B2ADB0F66",
-  "name": "website-identifier-42",
   "source": "chat_plugin",
-  "source_channel_id": "website-identifier-42"
+  "source_channel_id": "website-identifier-42",
+  "metadata": {"name": "website-identifier-42"}
 }
 ```
 
@@ -90,10 +161,13 @@ POST /channels.facebook.connect
 ```json5
 {
   "id": "channel-uuid-1",
-  "name": "My custom name for this page",
-  "image_url": "https://example.org/custom-image.jpg",
   "source": "facebook",
-  "source_channel_id": "fb-page-id-1"
+  "source_channel_id": "fb-page-id-1",
+  "metadata": {
+    "name": "My custom name for this page",
+    // optional
+    "image_url": "https://example.org/custom-image.jpg"
+  }
 }
 ```
 
@@ -122,8 +196,7 @@ POST /channels.google.connect
 ```json5
 {
   "id": "channel-uuid-1",
-  "name": "My custom name for this location",
-  "image_url": "https://example.com/custom-image.jpg",
+  "metadata": {"name": "My custom name for this location", "image_url": "https://example.com/custom-image.jpg"},
   "source": "google",
   "source_channel_id": "gbm-id"
 }
@@ -162,8 +235,7 @@ POST /channels.twilio.sms.connect
 ```json5
 {
   "id": "channel-uuid-1",
-  "name": "SMS for receipts",
-  "image_url": "https://example.com/custom-image.jpg",
+  "metadata": {"name": "SMS for receipts", "image_url": "https://example.com/custom-image.jpg"},
   "source": "twilio.sms",
   "source_channel_id": "+491234567"
 }
@@ -203,8 +275,7 @@ POST /channels.twilio.whatsapp.connect
 ```json5
 {
   "id": "channel-uuid-1",
-  "name": "WhatsApp Marketing",
-  "image_url": "https://example.com/custom-image.jpg",
+  "metadata": {"name": "WhatsApp Marketing", "image_url": "https://example.com/custom-image.jpg"},
   "source": "twilio.whatsapp",
   "source_channel_id": "whatsapp:+491234567"
 }

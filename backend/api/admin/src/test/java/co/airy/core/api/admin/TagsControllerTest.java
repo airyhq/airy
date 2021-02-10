@@ -1,6 +1,7 @@
 package co.airy.core.api.admin;
 
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.KafkaTestHelper;
@@ -37,6 +38,7 @@ public class TagsControllerTest {
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
+    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
     private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
     private static KafkaTestHelper kafkaTestHelper;
 
@@ -51,6 +53,7 @@ public class TagsControllerTest {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationChannels,
                 applicationCommunicationWebhooks,
+                applicationCommunicationMetadata,
                 applicationCommunicationTags
         );
         kafkaTestHelper.beforeAll();

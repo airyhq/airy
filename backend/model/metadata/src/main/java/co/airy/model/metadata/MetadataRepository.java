@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.model.metadata.MetadataKeys.PUBLIC;
+import static co.airy.model.metadata.MetadataKeys.USER_DATA;
 import static java.util.stream.Collectors.toMap;
 
 public class MetadataRepository {
@@ -28,6 +28,15 @@ public class MetadataRepository {
                 .build();
     }
 
+    public static Metadata newChannelMetadata(String channelId, String key, String value) {
+        return Metadata.newBuilder()
+                .setSubject(new Subject("channel", channelId).toString())
+                .setKey(key)
+                .setValue(value)
+                .setTimestamp(Instant.now().toEpochMilli())
+                .build();
+    }
+
     public static Metadata newMessageMetadata(String messageId, String key, String value) {
         return Metadata.newBuilder()
                 .setSubject(new Subject("message", messageId).toString())
@@ -41,18 +50,22 @@ public class MetadataRepository {
         return metadata.getSubject().startsWith("conversation:");
     }
 
+    public static boolean isChannelMetadata(Metadata metadata) {
+        return metadata.getSubject().startsWith("channel:");
+    }
+
     public static boolean isMessageMetadata(Metadata metadata) {
         return metadata.getSubject().startsWith("message:");
     }
 
     public static Map<String, String> getConversationInfo(Map<String, String> metadataMap) {
-        return filterPrefix(metadataMap, PUBLIC);
+        return filterPrefix(metadataMap, USER_DATA);
     }
 
     public static Metadata newConversationTag(String conversationId, String tagId) {
         return Metadata.newBuilder()
                 .setSubject(new Subject("conversation",conversationId).toString())
-                .setKey(String.format("%s.%s", MetadataKeys.TAGS, tagId))
+                .setKey(String.format("%s.%s", MetadataKeys.ConversationKeys.TAGS, tagId))
                 .setValue("")
                 .setTimestamp(Instant.now().toEpochMilli())
                 .build();

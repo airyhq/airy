@@ -58,7 +58,6 @@ class ConversationsListTest {
     private static final Channel defaultChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("channel-id")
-            .setName("channel-name")
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .build();
@@ -66,7 +65,6 @@ class ConversationsListTest {
     private static final Channel channelToFind = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("special-channel-id")
-            .setName("channel-name")
             .setSource("facebook")
             .setSourceChannelId("special-external-channel-id")
             .build();
@@ -78,11 +76,11 @@ class ConversationsListTest {
     private static final String userId = "user-id";
 
     private static final List<TestConversation> conversations = List.of(
-            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.Source.Contact.FIRST_NAME, firstNameToFind), 1),
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.ConversationKeys.Contact.FIRST_NAME, firstNameToFind), 1),
             TestConversation.from(UUID.randomUUID().toString(), channelToFind,
-                    Map.of(MetadataKeys.TAGS + "." + tagId, "", MetadataKeys.TAGS + "." + anotherTagId, ""),
+                    Map.of(MetadataKeys.ConversationKeys.TAGS + "." + tagId, "", MetadataKeys.ConversationKeys.TAGS + "." + anotherTagId, ""),
                     1),
-            TestConversation.from(conversationIdToFind, defaultChannel, Map.of(MetadataKeys.TAGS + "." + tagId, ""), 1),
+            TestConversation.from(conversationIdToFind, defaultChannel, Map.of(MetadataKeys.ConversationKeys.TAGS + "." + tagId, ""), 1),
             TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 2),
             TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 5)
     );

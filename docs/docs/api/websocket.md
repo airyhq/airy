@@ -22,7 +22,7 @@ the API](/api/introduction#authentication).
 
 ## Event Types
 
-All event updates are sent to the `/queue/updates` queue as JSON encoded payloads. The `type`
+All event updates are sent to the `/events` queue as JSON encoded payloads. The `type`
 field informs the client of the kind of update that is encoded in the payload.
 
 ### Message
@@ -31,20 +31,22 @@ field informs the client of the kind of update that is encoded in the payload.
 {
   "type": "message",
 
-  "conversation_id": "{UUID}",
-  "channel_id": "{UUID}",
-  "message": {
-    "id": "{UUID}",
-    "content": '{"text":"Hello World"}',
-    // source message payload
-    "delivery_state": "pending|failed|delivered",
-    // delivery state of message, one of pending, failed, delivered
-    "sender_type": "{string/enum}",
-    // See glossary
-    "sent_at": "{string}",
-    //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-    "source": "{String}"
-    // one of the possible sources
+  "payload": {
+    "conversation_id": "{UUID}",
+    "channel_id": "{UUID}",
+    "message": {
+      "id": "{UUID}",
+      "content": '{"text":"Hello World"}',
+      // source message payload
+      "delivery_state": "pending|failed|delivered",
+      // delivery state of message, one of pending, failed, delivered
+      "sender_type": "{string/enum}",
+      // See glossary
+      "sent_at": "{string}",
+      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+      "source": "{String}"
+      // one of the possible sources
+    }
   }
 }
 ```
@@ -57,14 +59,16 @@ field informs the client of the kind of update that is encoded in the payload.
 {
   "type": "metadata",
 
-  "subject": "conversation|channel|message",
-  "identifier": "conversation/channel/message id",
   "payload": {
-    // nested metadata object. I.e. for a conversation:
-    "contact": {
-      "displayName": "Grace"
-    },
-    "isUserTyping": true
+    "subject": "conversation|channel|message",
+    "identifier": "conversation/channel/message id",
+    "metadata": {
+      // nested metadata object. I.e. for a conversation:
+      "contact": {
+        "displayName": "Grace"
+      },
+      "isUserTyping": true
+    }
   }
 }
 ```
@@ -75,9 +79,12 @@ field informs the client of the kind of update that is encoded in the payload.
 {
   "type": "channel",
 
-  "id": "{UUID}",
-  "source": "facebook",
-  "source_channel_id": "fb-page-id-1",
-  "connected": true // or false
+  "payload": {
+    "id": "{UUID}",
+    "name": "my page 1",
+    "source": "facebook",
+    "source_channel_id": "fb-page-id-1",
+    "connected": true // or false
+  }
 }
 ```

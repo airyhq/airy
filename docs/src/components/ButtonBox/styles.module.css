@@ -23,6 +23,7 @@
 .containerLight:hover,
 .containerDark:hover {
   box-shadow: 0px 0px 0px 4px #3678e5;
+  text-decoration: none;
 }
 
 svg {

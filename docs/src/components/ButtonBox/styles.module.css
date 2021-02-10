@@ -5,7 +5,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  background-color: #4BB3FD;
+  background-color: #4bb3fd;
   box-shadow: none;
 }
 
@@ -16,13 +16,13 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  background-color: #4BB3FD;
+  background-color: #4bb3fd;
   box-shadow: none;
 }
 
 .containerLight:hover,
 .containerDark:hover {
-  box-shadow: 0px 0px 0px 4px #3678E5;
+  box-shadow: 0px 0px 0px 4px #3678e5;
   text-decoration: none;
 }
 

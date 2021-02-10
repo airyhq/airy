@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-websocket
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: api-websocket
+    type: api
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: api-websocket
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: api-websocket
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_SCHEMA_REGISTRY_URL
+        - name: KAFKA_COMMIT_INTERVAL_MS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_COMMIT_INTERVAL_MS
+        - name: SERVICE_NAME
+          value: api-websocket
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: JWT_SECRET
+        - name: ALLOWED_ORIGINS
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: ALLOWED_ORIGINS
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+            - name: Health-Check
+              value: health-check
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3

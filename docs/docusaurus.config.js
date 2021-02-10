@@ -2,7 +2,7 @@ module.exports = {
   title: 'Airy Documentation',
   tagline: 'Airy documentation website',
   url: 'https://docs.airy.co',
-  baseUrl: '/',
+  baseUrl: '/docs/',
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'airyhq',

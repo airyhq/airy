@@ -41,8 +41,6 @@ conversational data to wherever you need it.
 
 ## Get Started
 
-If you’re interested in trying Airy you need to install it first.
-
 <ul style={{
     listStyleType: "none",
     padding: 0
@@ -55,7 +53,7 @@ If you’re interested in trying Airy you need to install it first.
     icon={() => <DeploySVG />}
     title='Start Installation' 
     description='Install Airy with our CLI, locally or in the cloud' 
-    link='getting-started/deployment/vagrant'
+    link='cli/installation'
 />
 </li>
 
@@ -75,7 +73,7 @@ Once you have Airy installed, follow our Quick Start for guidance.
     icon={() => <DiamondSVG />}
     title='To the Quick Start' 
     description='Learn the Airy Basics with our Quick Start' 
-    link='getting-started/deployment/production'
+    link='getting-started/quickstart'
 />
 </li>
 

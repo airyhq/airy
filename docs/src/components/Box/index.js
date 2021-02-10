@@ -13,21 +13,21 @@ const adjust = (color, amount) => {
   );
 };
 
-const Box = ({icon, title, description, link, cutomizedBackgroundColor, cutomizedHoverColor, history}) => {
+const Box = ({icon, title, description, link, customizedBackgroundColor, customizedHoverColor, history}) => {
   const {isDarkTheme} = useThemeContext();
 
-  if (cutomizedBackgroundColor) {
-    cutomizedBackgroundColor = isDarkTheme ? adjust(cutomizedBackgroundColor, -100) : cutomizedBackgroundColor;
+  if (customizedBackgroundColor) {
+    customizedBackgroundColor = isDarkTheme ? adjust(customizedBackgroundColor, -100) : customizedBackgroundColor;
   }
 
-  if (cutomizedHoverColor) {
-    cutomizedHoverColor = isDarkTheme ? adjust(cutomizedHoverColor, -100) : cutomizedHoverColor;
+  if (customizedHoverColor) {
+    customizedHoverColor = isDarkTheme ? adjust(customizedHoverColor, -100) : customizedHoverColor;
   }
 
   return (
     <div
       className={`${isDarkTheme ? styles.containerDark : styles.containerLight}`}
-      style={{backgroundColor: cutomizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${cutomizedHoverColor}`}}
+      style={{backgroundColor: customizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${customizedHoverColor}`}}
       onClick={() => history.push(link)}>
       {icon && icon()}
       <div>

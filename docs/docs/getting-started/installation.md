@@ -30,7 +30,7 @@ The following documentation covers many different options to install Airy and ge
     marginBottom: '12px'
 }}>
 <Box 
-    icon={() => <DeploySVG />}
+    icon={() => <DeploySVG />}    
     title='CLI' 
     description='Run Airy on your local machine using the CLI' 
     link='/cli/installation'

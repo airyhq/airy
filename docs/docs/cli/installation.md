@@ -5,7 +5,7 @@ hide_table_of_contents: false
 ---
 
 import TLDR from "@site/src/components/TLDR";
-import ButtonBox from "@site/src/components/ButtonBox";
+import SuccessBox from "@site/src/components/SuccessBox";
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -134,14 +134,14 @@ your `apiHost` and `apiJwtToken`:
 airy init
 ```
 
-<ButtonBox color="#ACDF87">
+<SuccessBox>
 
 :tada: Congratulations! 
 
 You have successfully installed Airy CLI! Next step: Choose a way to [Deploy
 Airy Core](/getting-started/deployment/introduction.md)
 
-</ButtonBox>
+</SuccessBox>
 
 ## Building from source
 

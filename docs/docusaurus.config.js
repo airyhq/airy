@@ -22,7 +22,6 @@ module.exports = {
       additionalLanguages: ['json5'],
     },
     navbar: {
-      title: 'Documentation',
       logo: {
         alt: 'Airy Documentation',
         src: 'img/logo_light.svg',
@@ -33,7 +32,7 @@ module.exports = {
           target: '_self',
           label: 'Airy Core',
           position: 'left',
-          href: 'https://docs.airy.co',
+          to: '/',
         },
         {
           target: '_self',

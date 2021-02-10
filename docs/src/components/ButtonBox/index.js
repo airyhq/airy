@@ -1,5 +1,7 @@
 import React from 'react';
 import useThemeContext from '@theme/hooks/useThemeContext';
+import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import {withRouter} from 'react-router-dom';
 
 import styles from './styles.module.css';
@@ -13,7 +15,7 @@ const adjust = (color, amount) => {
   );
 };
 
-const ButtonBox = ({icon, title, description, link, customizedBackgroundColor, customizedHoverColor, history}) => {
+const ButtonBox = ({children, icon, title, description, link, customizedBackgroundColor, customizedHoverColor}) => {
   const {isDarkTheme} = useThemeContext();
 
   if (customizedBackgroundColor) {
@@ -25,10 +27,10 @@ const ButtonBox = ({icon, title, description, link, customizedBackgroundColor, c
   }
 
   return (
-    <div
+    <Link
+      to={useBaseUrl(link)}
       className={`${isDarkTheme ? styles.containerDark : styles.containerLight}`}
-      style={{backgroundColor: customizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${customizedHoverColor}`}}
-      onClick={() => history.push(link)}>
+      style={{backgroundColor: customizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${customizedHoverColor}`}}>
       {icon && icon()}
       <div>
         <h4
@@ -47,7 +49,8 @@ const ButtonBox = ({icon, title, description, link, customizedBackgroundColor, c
           {description}
         </p>
       </div>
-    </div>
+      {children}
+    </Link>
   );
 };
 

@@ -13,7 +13,7 @@ const adjust = (color, amount) => {
   );
 };
 
-const Box = ({icon, title, description, link, customizedBackgroundColor, customizedHoverColor, history}) => {
+const ButtonBox = ({icon, title, description, link, customizedBackgroundColor, customizedHoverColor, history}) => {
   const {isDarkTheme} = useThemeContext();
 
   if (customizedBackgroundColor) {
@@ -51,4 +51,4 @@ const Box = ({icon, title, description, link, customizedBackgroundColor, customi
   );
 };
 
-export default withRouter(Box);
+export default withRouter(ButtonBox);

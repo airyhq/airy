@@ -5,7 +5,7 @@ hide_table_of_contents: false
 ---
 
 import TLDR from "@site/src/components/TLDR";
-import Box from "@site/src/components/Box";
+import ButtonBox from "@site/src/components/ButtonBox";
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -134,14 +134,14 @@ your `apiHost` and `apiJwtToken`:
 airy init
 ```
 
-<Box color="#ACDF87">
+<ButtonBox color="#ACDF87">
 
 :tada: Congratulations! 
 
 You have successfully installed Airy CLI! Next step: Choose a way to [Deploy
 Airy Core](/getting-started/deployment/introduction.md)
 
-</Box>
+</ButtonBox>
 
 ## Building from source
 

@@ -4,7 +4,7 @@ sidebar_label: Installation
 ---
 
 import TLDR from "@site/src/components/TLDR";
-import Box from "@site/src/components/Box";
+import ButtonBox from "@site/src/components/ButtonBox";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import DeploySVG from '@site/static/img/getting-started/installation/deploy.svg'
 
@@ -29,7 +29,7 @@ The following documentation covers many different options to install Airy and ge
 <li style={{
     marginBottom: '12px'
 }}>
-<Box 
+<ButtonBox 
     icon={() => <DeploySVG />}    
     title='CLI' 
     description='Run Airy on your local machine using the CLI' 

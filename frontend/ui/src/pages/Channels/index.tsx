@@ -96,8 +96,8 @@ const Channels = (props: ChannelsConnectProps) => {
           const channelName = channel.metadata.name;
           return (
             <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-              {channel.metadata.image_url && (
-                <img src={channel.metadata.image_url} alt={channelName} className={styles.channelImage} />
+              {channel.metadata.imageUrl && (
+                <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
               )}
               <div className={styles.channelName}>{channel.metadata.name}</div>
               <div className={styles.channelAction}>

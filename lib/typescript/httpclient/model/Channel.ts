@@ -2,7 +2,7 @@ import {Metadata} from './Metadata';
 
 export type ChannelMetadata = Metadata & {
   name: string;
-  image_url?: string;
+  imageUrl?: string;
 };
 
 export interface Channel {

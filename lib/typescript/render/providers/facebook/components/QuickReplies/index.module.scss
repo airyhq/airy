@@ -35,13 +35,6 @@
   border-radius: 50%;
 }
 
-.attachmentImage {
-  width: 70px;
-  height: auto;
-  object-fit: contain;
-  margin: 5px 0;
-}
-
 .title {
   @include font-base;
   color: var(--color-airy-blue);

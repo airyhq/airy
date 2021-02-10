@@ -117,8 +117,19 @@ function facebookOutbound(message: Message): ContentUnion {
     };
   }
 
+  if (messageJson.attachment) {
+    return parseAttachment(messageJson.attachment);
+  }
+
+  if (messageJson.text) {
+    return {
+      type: 'text',
+      text: messageJson.text,
+    };
+  }
+
   return {
     type: 'text',
-    text: messageJson.text,
+    text: 'Unknown message type',
   };
 }

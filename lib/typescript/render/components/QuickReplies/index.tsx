@@ -3,12 +3,12 @@ import styles from './index.module.scss';
 import {DefaultMessageRenderingProps} from '../index';
 import {Text} from '../Text';
 import {Media} from '../Media';
-import {QuickReply, ImageContent, TextContent, VideoContent} from '../../providers/facebook/facebookModel';
+import {QuickReply, AttachmentUnion} from '../../providers/facebook/facebookModel';
 import {MediaHeight} from '../../providers/chatplugin/chatPluginModel';
 
 export type QuickRepliesRenderProps = DefaultMessageRenderingProps & {
   text?: string;
-  attachment?: ImageContent | TextContent | VideoContent;
+  attachment?: AttachmentUnion;
   quickReplies: QuickReply[];
 };
 
@@ -19,12 +19,10 @@ export const QuickReplies = ({quickReplies, contact, fromContact, text, attachme
     {attachment && 'text' in attachment && <Text contact={contact} fromContact={fromContact} text={attachment.text} />}
 
     {attachment && 'imageUrl' in attachment && (
-      <Media altText="image attachment" isRichCard={false} fileUrl={attachment.imageUrl} height={MediaHeight.short} />
+      <Media altText="image attachment" fileUrl={attachment.imageUrl} height={MediaHeight.short} />
     )}
 
-    {attachment && 'videoUrl' in attachment && (
-      <Media altText="video attachment" isRichCard={false} fileUrl={attachment.videoUrl} />
-    )}
+    {attachment && 'videoUrl' in attachment && <Media fileUrl={attachment.videoUrl} height={MediaHeight.short} />}
 
     <div className={styles.container}>
       {quickReplies.map(({title, image_url}) => (

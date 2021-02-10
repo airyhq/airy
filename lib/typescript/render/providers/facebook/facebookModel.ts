@@ -1,4 +1,7 @@
 export interface Attachment {
+  type: string;
+}
+export interface SimpleAttachment {
   type: 'image' | 'video' | 'audio' | 'file' | 'fallback';
   payload: {
     title?: string;
@@ -35,11 +38,11 @@ export interface QuickReply {
 export interface QuickRepliesContent extends Content {
   type: 'quickReplies';
   text?: string;
-  attachment?: ContentUnionAttachment;
+  attachment?: AttachmentUnion;
   quickReplies: QuickReply[];
 }
 
 // Add a new facebook content model here:
 export type ContentUnion = TextContent | ImageContent | VideoContent | QuickRepliesContent;
 
-export type ContentUnionAttachment = TextContent | ImageContent | VideoContent;
+export type AttachmentUnion = TextContent | ImageContent | VideoContent;

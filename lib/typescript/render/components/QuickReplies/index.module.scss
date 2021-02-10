@@ -5,13 +5,13 @@
   display: flex;
   flex-direction: column;
   margin-top: 5px;
+  align-items: flex-end;
 }
 
 .container {
   display: flex;
   flex-wrap: wrap;
   margin-top: 5px;
-  align-items: flex-end;
 }
 
 .replyButton {

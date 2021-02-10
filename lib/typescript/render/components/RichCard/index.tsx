@@ -31,7 +31,7 @@ export type RichCardRenderProps = DefaultMessageRenderingProps & {
 export const RichCard = ({title, description, suggestions, height, fileUrl, altText}: RichCardRenderProps) => (
   <div className={styles.richCardContainer}>
     <div className={styles.mediaContainer}>
-      <Media isRichCard={true} height={height} altText={altText} fileUrl={fileUrl} />
+      <Media height={height} altText={altText} fileUrl={fileUrl} isRichCard={true} />
     </div>
     <div className={styles.textContainer}>
       {title && <h1 className={styles.title}>{title}</h1>}

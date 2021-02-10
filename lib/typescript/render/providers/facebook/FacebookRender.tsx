@@ -4,7 +4,7 @@ import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared'
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {QuickReplies} from '../../components/QuickReplies';
-import {Attachment, ContentUnion, ContentUnionAttachment} from './facebookModel';
+import {AttachmentUnion, SimpleAttachment, ContentUnion} from './facebookModel';
 
 export const FacebookRender = (props: MessageRenderProps) => {
   const message = props.message;
@@ -32,7 +32,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-const parseAttachment = (attachement: Attachment): ContentUnionAttachment => {
+const parseAttachment = (attachement: SimpleAttachment): AttachmentUnion => {
   if (attachement.type === 'image') {
     return {
       type: 'image',

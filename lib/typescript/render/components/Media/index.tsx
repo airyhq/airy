@@ -4,22 +4,23 @@ import {MediaHeight} from '../../providers/chatplugin/chatPluginModel';
 
 export type MediaRenderProps = {
   height?: MediaHeight;
-  altText: string;
+  altText?: string;
   fileUrl: string;
-  isRichCard: boolean;
+  isRichCard?: boolean;
 };
 
-const isImagePng = url => url.split('.').includes('png');
-const isImageJpg = url => url.split('.').includes('jpg');
-const isVideo = url => url.split('.').includes('mp4');
+const imageElements = element => element === 'jpg' || element === 'png' || element === 'jpeg' || element === 'gif';
+
+const isImage = url => url.split('.').some(imageElements);
+const isVideo = url => url.split('.').some(element => element === 'mp4');
 
 export const Media = ({height, altText, fileUrl, isRichCard}: MediaRenderProps) => {
-  if (isImagePng(fileUrl) || isImageJpg(fileUrl)) {
+  if (isImage(fileUrl)) {
     return (
       <img
         src={fileUrl}
         alt={altText}
-        className={`${isRichCard ? styles.richCardImage : styles.mediaImage} ${
+        className={`${isRichCard ? styles.richCardImage : styles.image} ${
           height === MediaHeight.tall ? styles.tall : height === MediaHeight.short ? styles.short : styles.medium
         }`}
       />
@@ -28,7 +29,11 @@ export const Media = ({height, altText, fileUrl, isRichCard}: MediaRenderProps) 
 
   if (isVideo(fileUrl)) {
     return (
-      <video className={styles.video}>
+      <video
+        className={`${isRichCard ? styles.richCardVideo : styles.video} ${
+          height === MediaHeight.tall ? styles.tall : height === MediaHeight.short ? styles.short : styles.medium
+        }`}
+        controls>
         <source src={fileUrl} type="video/mp4" />
         Your browser does not support the video tag.
       </video>

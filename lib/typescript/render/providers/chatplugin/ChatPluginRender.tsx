@@ -30,6 +30,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
           {...getDefaultMessageRenderingProps(props)}
           cardWidth={content.cardWidth}
           cardContents={content.cardContents}
+          id={props.message.id}
         />
       );
   }

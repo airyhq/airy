@@ -26,7 +26,7 @@ export interface RichCardContent extends Content {
   media: {
     height: MediaHeight;
     contentInfo: {
-      altText: string;
+      altText?: string;
       fileUrl: string;
       forceRefresh: boolean;
     };
@@ -50,33 +50,7 @@ export interface RichCardContent extends Content {
 export interface RichCardCarouselContent extends Content {
   type: 'richCardCarousel';
   cardWidth: string;
-  cardContents: [
-    {
-      title?: string;
-      description?: string;
-      media: {
-        height: MediaHeight;
-        contentInfo: {
-          fileUrl: string;
-          forceRefresh: boolean;
-        };
-      };
-      suggestions: [
-        {
-          reply: {
-            text: string;
-            postbackData: string;
-          };
-        },
-        {
-          reply?: {
-            text: string;
-            postbackData: string;
-          };
-        }
-      ];
-    }
-  ];
+  cardContents: [RichCardContent];
 }
 
 export type ContentUnion = TextContent | RichTextContent | RichCardContent | RichCardCarouselContent;

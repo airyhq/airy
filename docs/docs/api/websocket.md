@@ -88,10 +88,8 @@ updated.
 ```json5
 {
   "id": "{UUID}",
-  "name": "my page 1",
   "source": "facebook",
-  "source_channel_id": "fb-page-id-1",
-  "image_url": "http://example.org/avatar.jpeg" // optional
+  "source_channel_id": "fb-page-id-1"
 }
 ```
 
@@ -108,9 +106,7 @@ Incoming payloads notify connected clients whenever a channel was disconnected.
 ```json5
 {
   "id": "{UUID}",
-  "name": "my page 1",
   "source": "facebook",
-  "source_channel_id": "fb-page-id-1",
-  "image_url": "http://example.org/avatar.jpeg" // optional
+  "source_channel_id": "fb-page-id-1"
 }
 ```

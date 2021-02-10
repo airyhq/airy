@@ -3,6 +3,7 @@ title: Quickstart
 sidebar_label: Quickstart
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
@@ -16,18 +17,20 @@ We are going to use Airy's Live Chat Plugin as our first source. We then use the
 plugin to send messages, and check them out in the UI, your terminal and
 directly in Apache Kafka.
 
-:::tip What you will learn
+- [Step 1: How to setup your first source](#step-1-how-to-setup-your-first-source)
+- [Step 2: Send messages via the Chat Plugin](#step-2-send-messages-via-the-chat-plugin)
+- [Step 3: Use the HTTP API to list conversations](#step-3-use-the-http-api-to-list-conversations)
+- [Step 4: Consume directly from Apache Kafka](#step-4-consume-directly-from-apache-kafka)
 
-- How to set up your first Source
-- How to send Messages
-- How to use the API to list conversations
-- How to consume directly from Kafka
+:::info
+
+To get going with the Quickstart, [you must install Airy
+first](/getting-started/installation.md). Once you installed Airy and have the CLI
+up and running you are good to go.
 
 :::
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
-
-## How to setup your first source
+## Step 1: How to setup your first source
 
 The [Airy Live Chat Plugin](/sources/chat-plugin.md) source is well suited for a
 first integration because it does not require any configuration.
@@ -53,7 +56,7 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 The ID from the response is the `channel_id`. It is required for
 the next steps, so note it down.
 
-## Send messages via the Chat Plugin
+## Step 2: Send messages via the Chat Plugin
 
 Pass the `channel_id` as a query parameter when opening the demo page in your
 browser. This authenticates the chat plugin and enables you to send messages
@@ -67,7 +70,7 @@ You can now type a message in the text box and send it 🎉
 
 <img alt="chatplugin working" src={useBaseUrl('img/getting-started/quickstart/chatplugin.gif')} />
 
-## Use the HTTP API to list conversations
+## Step 3: Use the HTTP API to list conversations
 
 To see how messages are flowing through the system, [list
 conversations](/api/endpoints/conversations.md#list) for the channel you have just
@@ -80,7 +83,7 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{
 api.airy/conversations.list | jq .
 ```
 
-## Consume directly from Apache Kafka
+## Step 4: Consume directly from Apache Kafka
 
 You can also consume the messages directly from the Kafka
 `application.communication.messages` topic:
@@ -94,4 +97,5 @@ kafka-console-consumer \
 --from-beginning
 ```
 
-<img alt="Kafka Topic" src={useBaseUrl('img/getting-started/quickstart/messages_topic.gif')} />
+<img alt="Kafka Topic"
+src={useBaseUrl('img/getting-started/quickstart/messages_topic.gif')} />

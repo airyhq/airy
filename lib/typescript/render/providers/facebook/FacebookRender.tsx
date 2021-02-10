@@ -3,8 +3,11 @@ import {isFromContact, Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
-import {QuickReplies} from '../../components/QuickReplies';
-import {AttachmentUnion, SimpleAttachment, ContentUnion} from './facebookModel';
+import {Video} from '../../components/Video';
+import {QuickReplies} from './components/QuickReplies';
+import {AttachmentUnion, SimpleAttachment, ContentUnion, ButtonAttachment, GenericAttachment} from './facebookModel';
+import {ButtonTemplate} from './components/ButtonTemplate';
+import {GenericTemplate} from './components/GenericTemplate';
 
 export const FacebookRender = (props: MessageRenderProps) => {
   const message = props.message;
@@ -20,6 +23,15 @@ function render(content: ContentUnion, props: MessageRenderProps) {
     case 'image':
       return <Image {...getDefaultMessageRenderingProps(props)} imageUrl={content.imageUrl} />;
 
+    case 'video':
+      return <Video {...getDefaultMessageRenderingProps(props)} videoUrl={content.videoUrl} />;
+
+    case 'buttonTemplate':
+      return <ButtonTemplate {...getDefaultMessageRenderingProps(props)} template={content} />;
+
+    case 'genericTemplate':
+      return <GenericTemplate {...getDefaultMessageRenderingProps(props)} template={content} />;
+
     case 'quickReplies':
       return (
         <QuickReplies
@@ -32,11 +44,22 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-const parseAttachment = (attachement: SimpleAttachment): AttachmentUnion => {
+const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | GenericAttachment): AttachmentUnion => {
   if (attachement.type === 'image') {
     return {
       type: 'image',
       imageUrl: attachement.payload.url,
+    };
+  } else if (attachement.type === 'template' && attachement.payload.template_type == 'button') {
+    return {
+      type: 'buttonTemplate',
+      text: attachement.payload.text,
+      buttons: attachement.payload.buttons,
+    };
+  } else if (attachement.type === 'template' && attachement.payload.template_type == 'generic') {
+    return {
+      type: 'genericTemplate',
+      elements: attachement.payload.elements,
     };
   }
 
@@ -49,7 +72,7 @@ const parseAttachment = (attachement: SimpleAttachment): AttachmentUnion => {
 
   return {
     type: 'text',
-    text: attachement.payload.title || 'Unknown message type',
+    text: 'Unknown message type',
   };
 };
 
@@ -74,9 +97,9 @@ function facebookInbound(message: Message): ContentUnion {
 function facebookOutbound(message: Message): ContentUnion {
   const messageJson = JSON.parse(message.content);
 
-  if ((messageJson.text && messageJson.quick_replies) || (messageJson.attachment && messageJson.quick_replies)) {
+  if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {
-      return;
+      messageJson.quick_replies = messageJson.quick_replies.slice(0, 13);
     }
 
     if (messageJson.attachment) {

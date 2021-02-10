@@ -3,6 +3,7 @@ package co.airy.core.api.admin;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.KafkaTestHelper;
@@ -27,6 +28,7 @@ import java.util.UUID;
 
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -43,6 +45,7 @@ public class ChannelsControllerTest {
     private static KafkaTestHelper kafkaTestHelper;
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
+    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
     private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
 
     @Autowired
@@ -53,6 +56,7 @@ public class ChannelsControllerTest {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationChannels,
                 applicationCommunicationWebhooks,
+                applicationCommunicationMetadata,
                 applicationCommunicationTags
         );
         kafkaTestHelper.beforeAll();
@@ -65,13 +69,10 @@ public class ChannelsControllerTest {
 
     private static boolean testDataInitialized = false;
 
-    static final String facebookToken = "token";
     static final Channel connectedChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(UUID.randomUUID().toString())
-            .setName("connected channel name")
             .setSource("facebook")
-            .setToken(facebookToken)
             .setSourceChannelId("source-channel-id")
             .build();
 
@@ -98,17 +99,40 @@ public class ChannelsControllerTest {
                         Channel.newBuilder()
                                 .setConnectionState(ChannelConnectionState.DISCONNECTED)
                                 .setId(disconnectedChannel)
-                                .setName("channel-name-2")
                                 .setSource("facebook")
                                 .setSourceChannelId("ps-id-2")
-                                .build()))
-        );
+                                .build())
+        ));
 
         retryOnException(() -> webTestHelper.post("/channels.list", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data.length()", greaterThanOrEqualTo(1)))
                         .andExpect(jsonPath("$.data[*].id").value(not(contains(disconnectedChannel)))),
                 "/channels.list did not return the right number of channels");
+    }
+
+    @Test
+    void canUpdateChannel() throws Exception {
+        final String expectedChannelName = "channel name";
+
+        retryOnException(() -> webTestHelper.post("/channels.info", String.format("{\"channel_id\":\"%s\"}", connectedChannel.getId()), "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id", equalTo(connectedChannel.getId())))
+                        .andExpect(jsonPath("$.metadata.name", not(equalTo(expectedChannelName)))),
+                "/channels.info did not return the right channel");
+
+        webTestHelper.post("/channels.update", String.format("{\"channel_id\":\"%s\",\"name\":\"%s\"}",
+                connectedChannel.getId(), expectedChannelName), "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id", equalTo(connectedChannel.getId())))
+                        .andExpect(jsonPath("$.metadata.name", not(equalTo(connectedChannel.getId()))))
+                        .andExpect(jsonPath("$.source", equalTo(connectedChannel.getSource())));
+
+        retryOnException(() -> webTestHelper.post("/channels.info", String.format("{\"channel_id\":\"%s\"}", connectedChannel.getId()), "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id", equalTo(connectedChannel.getId())))
+                        .andExpect(jsonPath("$.metadata.name", equalTo(expectedChannelName))),
+                "/channels.update did not update");
     }
 
 }

@@ -4,7 +4,7 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  margin-top: 5px;
+  margin-top: 8px;
   align-items: flex-end;
 }
 
@@ -12,6 +12,7 @@
   display: flex;
   flex-wrap: wrap;
   margin-top: 5px;
+  justify-content: flex-end;
 }
 
 .replyButton {

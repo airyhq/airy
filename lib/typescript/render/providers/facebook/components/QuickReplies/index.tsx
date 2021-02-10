@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {DefaultMessageRenderingProps} from '../index';
-import {Text} from '../Text';
-import {Media} from '../Media';
-import {QuickReply, AttachmentUnion} from '../../providers/facebook/facebookModel';
-import {MediaHeight} from '../../providers/chatplugin/chatPluginModel';
+import {DefaultMessageRenderingProps} from '../../../../components/index';
+import {Text} from '../../../../components/Text';
+import {Video} from '../../../../components/Video';
+import {Image} from '../../../../components/Image';
+import {QuickReply, AttachmentUnion} from '../../facebookModel';
 
 export type QuickRepliesRenderProps = DefaultMessageRenderingProps & {
   text?: string;
@@ -19,10 +19,12 @@ export const QuickReplies = ({quickReplies, contact, fromContact, text, attachme
     {attachment && 'text' in attachment && <Text contact={contact} fromContact={fromContact} text={attachment.text} />}
 
     {attachment && 'imageUrl' in attachment && (
-      <Media altText="image attachment" fileUrl={attachment.imageUrl} height={MediaHeight.short} />
+      <Image contact={contact} fromContact={fromContact} imageUrl={attachment.imageUrl} />
     )}
 
-    {attachment && 'videoUrl' in attachment && <Media fileUrl={attachment.videoUrl} height={MediaHeight.short} />}
+    {attachment && 'videoUrl' in attachment && (
+      <Video contact={contact} fromContact={fromContact} videoUrl={attachment.videoUrl} />
+    )}
 
     <div className={styles.container}>
       {quickReplies.map(({title, image_url}) => (

@@ -1,38 +1,41 @@
 package co.airy.model.channel;
 
 import co.airy.avro.communication.Channel;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import co.airy.model.channel.dto.ChannelContainer;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static co.airy.model.metadata.MetadataObjectMapper.getMetadataPayload;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class ChannelPayload {
     private String id;
-
-    @JsonInclude(NON_NULL)
-    private String name;
-
-    @JsonInclude(NON_NULL)
     private String source;
-
-    @JsonInclude(NON_NULL)
     private String sourceChannelId;
+    private JsonNode metadata;
 
-    @JsonInclude(NON_NULL)
-    private String imageUrl;
+    public static ChannelPayload fromChannelContainer(ChannelContainer container) {
+        final Channel channel = container.getChannel();
+        return ChannelPayload.builder()
+                .id(channel.getId())
+                .metadata(getMetadataPayload(container.getMetadataMap()))
+                .source(channel.getSource())
+                .sourceChannelId(channel.getSourceChannelId())
+                .build();
+    }
 
     public static ChannelPayload fromChannel(Channel channel) {
         return ChannelPayload.builder()
-                .name(channel.getName())
                 .id(channel.getId())
-                .imageUrl(channel.getImageUrl())
+                .metadata(JsonNodeFactory.instance.objectNode())
                 .source(channel.getSource())
                 .sourceChannelId(channel.getSourceChannelId())
                 .build();

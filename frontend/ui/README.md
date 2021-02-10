@@ -57,7 +57,7 @@ To start the app in development mode, run these commands:
 
 ```
 yarn
-yarn ibazel run //frontend/demo:bundle_server
+yarn ibazel run //frontend/ui:bundle_server
 ```
 
 After it started, open a web browser to [`localhost:8080`](http://localhost:8080). Login with the user you created above.

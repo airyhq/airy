@@ -101,7 +101,6 @@ class EventsRouterTest {
                     .setId(channelId)
                     .setConnectionState(ChannelConnectionState.CONNECTED)
                     .setSourceChannelId(pageId)
-                    .setName("fb-page-a")
                     .setSource("facebook")
                     .setToken("")
                     .build()));
@@ -152,9 +151,7 @@ class EventsRouterTest {
                 .setId(channelId)
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setSourceChannelId(pageId)
-                .setName("fb-page-a")
                 .setSource("facebook")
-                .setToken("")
                 .build()));
 
         final String webhookPayload = String.format(payload, pageId, pageId);

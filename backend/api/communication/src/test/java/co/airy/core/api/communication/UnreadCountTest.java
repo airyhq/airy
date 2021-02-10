@@ -45,7 +45,6 @@ class UnreadCountTest {
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
-
         kafkaTestHelper.beforeAll();
     }
 
@@ -65,7 +64,6 @@ class UnreadCountTest {
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId("channel-id")
-                .setName("channel-name")
                 .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build();

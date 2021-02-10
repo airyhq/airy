@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {Media} from '../Media';
-import {MediaHeight} from '../../providers/chatplugin/chatPluginModel';
+import {Media, MediaRenderProps} from './Media';
 import {DefaultMessageRenderingProps} from '../index';
 
 type Suggestions = [
@@ -23,15 +22,13 @@ export type RichCardRenderProps = DefaultMessageRenderingProps & {
   title?: string;
   description?: string;
   suggestions: Suggestions;
-  height: MediaHeight;
-  altText: string;
-  fileUrl: string;
+  media: MediaRenderProps;
 };
 
-export const RichCard = ({title, description, suggestions, height, fileUrl, altText}: RichCardRenderProps) => (
+export const RichCard = ({title, description, suggestions, media}: RichCardRenderProps) => (
   <div className={styles.richCardContainer}>
     <div className={styles.mediaContainer}>
-      <Media height={height} altText={altText} fileUrl={fileUrl} isRichCard={true} />
+      <Media {...media} />
     </div>
     <div className={styles.textContainer}>
       {title && <h1 className={styles.title}>{title}</h1>}

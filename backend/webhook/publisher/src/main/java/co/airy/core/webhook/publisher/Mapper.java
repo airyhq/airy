@@ -5,7 +5,6 @@ import co.airy.core.webhook.publisher.model.Postback;
 import co.airy.core.webhook.publisher.model.WebhookBody;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 
 import static co.airy.date.format.DateFormat.isoFromMillis;

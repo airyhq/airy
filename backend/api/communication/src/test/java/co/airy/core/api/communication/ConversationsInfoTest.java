@@ -64,7 +64,6 @@ class ConversationsInfoTest {
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId("channel-id")
-                .setName("channel-name")
                 .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build();

@@ -77,9 +77,7 @@ class EventsRouterTest {
                         .setId(channelId)
                         .setSourceChannelId("whatsapp:+" + externalChannelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
-                        .setName("twilio place")
                         .setSource("twilio.whatsapp")
-                        .setToken("")
                         .build())
         ));
 

@@ -4,11 +4,9 @@
   "type": "record",
   "fields": [
     {"name": "id", "type": "string"},
-    {"name": "name", "type": "string"},
     {"name": "source", "type": "string"},
     {"name": "sourceChannelId", "type": "string"},
     {"name": "token", "type": ["null", "string"], "default": null},
-    {"name": "connectionState", "type": {"name": "ChannelConnectionState", "type": "enum", "symbols": ["CONNECTED", "DISCONNECTED"]}},
-    {"name": "imageUrl", "type": ["null", "string"], "default":  null}
+    {"name": "connectionState", "type": {"name": "ChannelConnectionState", "type": "enum", "symbols": ["CONNECTED", "DISCONNECTED"]}}
   ]
 }

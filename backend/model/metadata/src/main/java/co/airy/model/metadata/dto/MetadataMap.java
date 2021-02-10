@@ -17,6 +17,11 @@ public class MetadataMap extends HashMap<String, Metadata> implements Serializab
         return aggregate;
     }
 
+    public String getMetadataValue(String key) {
+        final Metadata metadata = get(key);
+        return metadata == null ? null : metadata.getValue();
+    }
+
     public static MetadataMap from(Collection<Metadata> metadataList) {
         final MetadataMap metadataMap = new MetadataMap();
         for (Metadata metadata : metadataList) {

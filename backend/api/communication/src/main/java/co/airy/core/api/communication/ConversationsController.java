@@ -90,7 +90,7 @@ public class ConversationsController {
         final List<ConversationResponsePayload> response = paginator.page().getData()
                 .stream()
                 .map((conversationIndex -> conversationsStore.get(conversationIndex.getId())))
-                .map(mapper::fromConversation)
+                .map(ConversationResponsePayload::fromConversation)
                 .collect(toList());
 
         int totalSize = queryResult.getTotal();
@@ -120,7 +120,7 @@ public class ConversationsController {
 
         final List<ConversationResponsePayload> response = page.getData()
                 .stream()
-                .map(mapper::fromConversation)
+                .map(ConversationResponsePayload::fromConversation)
                 .collect(toList());
 
         return ResponseEntity.ok(
@@ -146,7 +146,7 @@ public class ConversationsController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(mapper.fromConversation(conversation));
+        return ResponseEntity.ok(ConversationResponsePayload.fromConversation(conversation));
     }
 
     private List<Conversation> fetchAllConversations() {

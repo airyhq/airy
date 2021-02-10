@@ -111,7 +111,6 @@ public class EventsRouterTest {
         TimeUnit.SECONDS.sleep(5);
 
         final String displayName = "Grace Brewster Murray Hopper";
-        final String singleName = "hal9000";
 
         // Two different event types that both carry context
         final String messagePayload = "{\"agent\":\"brands/somebrand/agents/%s\",\"conversationId\":\"CONVERSATION_ID\"," +
@@ -119,29 +118,21 @@ public class EventsRouterTest {
                 "\"context\":{\"userInfo\":{\"displayName\":\"%s\"}},\"sendTime\":\"2014-10-02T15:01:23.045123456Z\"}";
         final String userStatusPayload = "{\"agent\":\"brands/somebrand/agents/%s\",\"conversationId\":\"CONVERSATION_ID\"," +
                 "\"customAgentId\":\"CUSTOM_AGENT_ID\",\"userStatus\":{\"isTyping\":true}," +
-                "\"context\":{\"userInfo\":{\"displayName\":\"%s\"}},\"sendTime\":\"2014-10-02T15:01:23.045123456Z\"}";
+                "\"sendTime\":\"2014-10-02T15:01:23.045123456Z\"}";
 
         List<ProducerRecord<String, String>> events = List.of(
                 new ProducerRecord<>(sourceGoogleEvents.name(), UUID.randomUUID().toString(), String.format(messagePayload, agentId, displayName)),
-                new ProducerRecord<>(sourceGoogleEvents.name(), UUID.randomUUID().toString(), String.format(userStatusPayload, agentId, singleName))
+                new ProducerRecord<>(sourceGoogleEvents.name(), UUID.randomUUID().toString(), String.format(userStatusPayload, agentId))
         );
 
         kafkaTestHelper.produceRecords(events);
 
-        List<Metadata> metadataList = kafkaTestHelper.consumeValues(3, applicationCommunicationMetadata.name());
-        assertThat(metadataList, hasSize(3));
+        List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, applicationCommunicationMetadata.name());
+        assertThat(metadataList, hasSize(1));
 
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.FIRST_NAME) &&
-                        metadata.getValue().equals(singleName)
-        )));
-        assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.FIRST_NAME) &&
-                        metadata.getValue().equals("Grace")
-        )));
-        assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.LAST_NAME) &&
-                        metadata.getValue().equals("Brewster Murray Hopper")
+                metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME) &&
+                        metadata.getValue().equals(displayName)
         )));
     }
 }

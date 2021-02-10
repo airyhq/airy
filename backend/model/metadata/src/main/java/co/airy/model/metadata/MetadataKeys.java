@@ -7,10 +7,12 @@ public class MetadataKeys {
     public static String USER_DATA = "user_data";
     public static class ConversationKeys {
         public static final String TAGS = "tags";
+        public static final String UNREAD_COUNT = "unread_count";
+
+        public static final String CONTACT = "contact";
 
         public static class Contact {
-            public static final String FIRST_NAME = "contact.first_name";
-            public static final String LAST_NAME = "contact.last_name";
+            public static final String DISPLAY_NAME = "contact.display_name";
             public static final String AVATAR_URL = "contact.avatar_url";
             public static final String FETCH_STATE = "contact.fetch_state";
         }

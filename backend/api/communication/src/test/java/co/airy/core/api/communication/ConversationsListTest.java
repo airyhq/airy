@@ -76,7 +76,7 @@ class ConversationsListTest {
     private static final String userId = "user-id";
 
     private static final List<TestConversation> conversations = List.of(
-            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.ConversationKeys.Contact.FIRST_NAME, firstNameToFind), 1),
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME, firstNameToFind), 1),
             TestConversation.from(UUID.randomUUID().toString(), channelToFind,
                     Map.of(MetadataKeys.ConversationKeys.TAGS + "." + tagId, "", MetadataKeys.ConversationKeys.TAGS + "." + anotherTagId, ""),
                     1),

@@ -1,13 +1,23 @@
 package co.airy.core.api.communication.payload;
 
+import co.airy.core.api.communication.dto.Conversation;
 import co.airy.model.channel.ChannelPayload;
 import co.airy.model.message.dto.MessageResponsePayload;
+import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.dto.MetadataMap;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
+import static co.airy.date.format.DateFormat.isoFromMillis;
+import static co.airy.model.metadata.MetadataKeys.*;
+import static co.airy.model.metadata.MetadataObjectMapper.getMetadataPayload;
 
 @Data
 @Builder
@@ -17,8 +27,34 @@ public class ConversationResponsePayload {
     private String id;
     private String createdAt;
     private ChannelPayload channel;
-    private List<String> tags;
-    private ContactResponsePayload contact;
+    private JsonNode metadata;
     private MessageResponsePayload lastMessage;
-    private Integer unreadMessageCount;
+
+    public static ConversationResponsePayload fromConversation(Conversation conversation) {
+        JsonNode metadata = getMetadataPayload(conversation.getMetadata());
+
+        return ConversationResponsePayload.builder()
+                .channel(
+                        // TODO https://github.com/airyhq/airy/issues/909
+                        // Once we have the channel metadata map in the topology,
+                        // create this payload using ChannelPayload.fromChannelContainer
+                        ChannelPayload.fromChannel(conversation.getChannel())
+                )
+                .id(conversation.getId())
+                .metadata(defaultMetadata(metadata, conversation))
+                .createdAt(isoFromMillis(conversation.getCreatedAt()))
+                .lastMessage(MessageResponsePayload.fromMessageContainer(conversation.getLastMessageContainer()))
+                .build();
+    }
+
+    private static JsonNode defaultMetadata(JsonNode metadata, Conversation conversation) {
+        JsonNode contactNode = metadata.get(ConversationKeys.CONTACT) == null ?
+                JsonNodeFactory.instance.objectNode() : metadata.get("contact");
+        if (contactNode.get(ConversationKeys.Contact.DISPLAY_NAME) == null) {
+            ((ObjectNode) contactNode).put(ConversationKeys.Contact.DISPLAY_NAME, conversation.getDisplayNameOrDefault().toString());
+            ((ObjectNode) metadata).set("contact", contactNode);
+        }
+
+        return metadata;
+    }
 }

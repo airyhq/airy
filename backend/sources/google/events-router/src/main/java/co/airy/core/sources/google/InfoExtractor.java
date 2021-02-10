@@ -42,18 +42,7 @@ public class InfoExtractor {
         final JsonNode userInfo = context.get("userInfo");
         if (userInfo != null && userInfo.has("displayName")) {
             final String displayName = userInfo.get("displayName").textValue();
-            final int lastIndexOf = displayName.indexOf(" ");
-
-            // There's only a first name
-            if (lastIndexOf != -1) {
-                final String firstName = displayName.substring(0, lastIndexOf);
-                final String lastName = displayName.substring(lastIndexOf + 1);
-
-                metadata.add(newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.FIRST_NAME, firstName));
-                metadata.add(newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.LAST_NAME, lastName));
-            } else {
-                metadata.add(newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.FIRST_NAME, displayName));
-            }
+            metadata.add(newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME, displayName));
         }
 
         return metadata;

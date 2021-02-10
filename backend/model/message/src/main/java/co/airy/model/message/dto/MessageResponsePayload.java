@@ -1,6 +1,8 @@
 package co.airy.model.message.dto;
 
 import co.airy.avro.communication.Message;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +12,7 @@ import java.util.Map;
 
 import static co.airy.date.format.DateFormat.isoFromMillis;
 import static co.airy.model.message.MessageRepository.resolveContent;
+import static co.airy.model.metadata.MetadataObjectMapper.getMetadataPayload;
 
 @Data
 @Builder
@@ -22,7 +25,7 @@ public class MessageResponsePayload {
     private String sentAt;
     private String deliveryState;
     private String source;
-    private Map<String, String> metadata;
+    private JsonNode metadata;
 
     public static MessageResponsePayload fromMessageContainer(MessageContainer messageContainer) {
         final Message message = messageContainer.getMessage();
@@ -33,7 +36,7 @@ public class MessageResponsePayload {
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
                 .source(message.getSource())
-                .metadata(messageContainer.getMetadataMap())
+                .metadata(getMetadataPayload(messageContainer.getMetadataMap()))
                 .build();
     }
 
@@ -45,6 +48,7 @@ public class MessageResponsePayload {
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
                 .source(message.getSource())
+                .metadata(JsonNodeFactory.instance.objectNode())
                 .build();
     }
 

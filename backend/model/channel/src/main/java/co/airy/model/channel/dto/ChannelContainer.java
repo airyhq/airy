@@ -20,15 +20,4 @@ import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 public class ChannelContainer implements Serializable {
     private Channel channel;
     private MetadataMap metadataMap;
-
-    public MetadataMap getMetadataMap() {
-        return this.metadataMap != null ? this.metadataMap : getDefaultMetadata();
-    }
-
-    private MetadataMap getDefaultMetadata() {
-        final String defaultName = String.format("%s %s", channel.getSource(), channel.getId().substring(31));
-        return MetadataMap.from(List.of(
-                newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.NAME, defaultName)
-        ));
-    }
 }

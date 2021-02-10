@@ -4,6 +4,7 @@ import co.airy.avro.communication.Channel;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.MetadataRepository;
+import co.airy.model.metadata.dto.MetadataMap;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,20 +32,27 @@ public class Conversation implements Serializable {
     private Integer unreadMessageCount;
 
     @Builder.Default
-    private Map<String, String> metadata = new HashMap<>();
+    private MetadataMap metadata = new MetadataMap();
 
     @JsonIgnore
-    public DisplayName getDisplayNameOrDefault() {
-        String firstName = metadata.get(MetadataKeys.ConversationKeys.Contact.FIRST_NAME);
-        String lastName = metadata.get(MetadataKeys.ConversationKeys.Contact.LAST_NAME);
+    public String getDisplayNameOrDefault() {
+        String displayName = metadata.getMetadataValue(MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME);
 
         // Default to a display name that looks like: "Facebook 4ecb3"
-        if (firstName == null && lastName == null) {
-            firstName = prettifySource(channel.getSource());
-            lastName = getId().substring(31); // UUIDs have a fixed length of 36
+        if (displayName == null) {
+            return String.format("%s %s", prettifySource(channel.getSource()), getId().substring(31));
         }
 
-        return new DisplayName(firstName, lastName);
+        return displayName;
+    }
+
+    @JsonIgnore
+    public List<String> getTagIds() {
+        return metadata.keySet()
+                .stream()
+                .filter((entry) -> entry.startsWith(MetadataKeys.ConversationKeys.TAGS))
+                .map(s -> s.split("\\.")[1])
+                .collect(toList());
     }
 
     /**
@@ -52,19 +60,11 @@ public class Conversation implements Serializable {
      * - Capitalize first letter
      * E.g. twilio.sms -> Sms, facebook -> Facebook
      */
+    @JsonIgnore
     private String prettifySource(String source) {
         final String[] splits = source.split("\\.");
         source = splits[splits.length - 1];
         return capitalize(source);
-    }
-
-    @JsonIgnore
-    public List<String> getTagIds() {
-        return MetadataRepository.filterPrefix(metadata, MetadataKeys.ConversationKeys.TAGS)
-                .keySet()
-                .stream()
-                .map(s -> s.split("\\.")[1])
-                .collect(toList());
     }
 
     @JsonIgnore

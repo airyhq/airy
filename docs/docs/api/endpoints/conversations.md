@@ -55,12 +55,15 @@ Find users whose name ends with "Lovelace":
         }
       },
       "created_at": "2019-01-07T09:01:44.000Z",
-      "contact": {
-        // Additional data on the contact
-        "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
-        "display_name": "Airy Support"
+      "metadata": {
+        "contact": {
+          "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
+          "display_name": "Airy Support"
+        },
+        "tags": {
+          "f339c325-8614-43cb-a70a-e83d81bf56fc": ""
+        }
       },
-      "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
       "last_message": {
         id: "{UUID}",
         "content": '{"text":"Hello World"}',
@@ -113,11 +116,15 @@ Find users whose name ends with "Lovelace":
     "source": "facebook"
   },
   "created_at": "2019-01-07T09:01:44.000Z",
-  "contact": {
-    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg", // optional
-    "display_name": "Airy Support" // optional
+  "metadata": {
+    "contact": {
+      "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
+      "display_name": "Airy Support"
+    },
+    "tags": {
+      "f339c325-8614-43cb-a70a-e83d81bf56fc": ""
+    }
   },
-  "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
   "last_message": {
     "id": "{UUID}",
     "content": '{"text":"Hello World"}',

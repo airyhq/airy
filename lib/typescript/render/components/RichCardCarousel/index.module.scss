@@ -3,35 +3,49 @@
 
 .richCardCarouselContainer {
   display: flex;
-  overflow-x: auto;
+  overflow-x: hidden;
+  padding-left: 16px;
+  margin-right: 16px;
 }
 
 .richCard {
-  padding: 5px;
+  padding-right: 5px;
 }
 
 .button {
-    position: relative;
+  position: relative;
 
   .moveNext {
+    img {
+      height: 24px;
+      width: 24px;
+    }
+    border: 1px solid black;
     position: absolute;
-    width: 40px;
+    width: 30px;
     height: 40px;
-    border-top-left-radius: 16px;
-    border-bottom-left-radius: 16px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
     border: none;
-    background: red;
-    left: 300px;
-    top: 200px;
+    background: white;
+    left: 290px;
+    top: 135px;
   }
 
   .moveBack {
+    img {
+      height: 24px;
+      width: 24px;
+    }
+    border: 1px solid black;
     position: absolute;
-    width: 40px;
+    width: 30px;
     height: 40px;
-    border-top-right-radius: 16px;
-    border-bottom-right-radius: 16px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
     border: none;
-    background: yellow;
+    background: white;
+    top: 135px;
+    left: 0px;
   }
 }

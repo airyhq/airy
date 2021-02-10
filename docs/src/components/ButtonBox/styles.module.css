@@ -1,0 +1,34 @@
+.containerDark {
+  display: flex;
+  align-items: center;
+  padding: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: #4bb3fd;
+  box-shadow: none;
+}
+
+.containerLight {
+  display: flex;
+  align-items: center;
+  padding: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: #4bb3fd;
+  box-shadow: none;
+}
+
+.containerLight:hover,
+.containerDark:hover {
+  box-shadow: 0px 0px 0px 4px #3678e5;
+  text-decoration: none;
+}
+
+svg {
+  color: white;
+  height: 32px;
+  width: 32px;
+  margin-right: 12px;
+}

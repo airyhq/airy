@@ -94,8 +94,7 @@ class EventsRouterTest {
         testHelper.produceRecords(List.of(
                 new ProducerRecord<>(sourceTwilioEvents.name(), UUID.randomUUID().toString(), event),
                 new ProducerRecord<>(sourceTwilioEvents.name(), UUID.randomUUID().toString(), broken)
-                )
-        );
+        ));
 
         List<Message> messages = testHelper.consumeValues(1, applicationCommunicationMessages.name());
         assertEquals(1, messages.size(), "Expected 1 new message");

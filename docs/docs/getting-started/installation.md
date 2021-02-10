@@ -4,8 +4,9 @@ sidebar_label: Installation
 ---
 
 import TLDR from "@site/src/components/TLDR";
-import Box from "@site/src/components/Box";
+import ButtonBox from "@site/src/components/ButtonBox";
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import DeploySVG from '@site/static/img/getting-started/installation/deploy.svg'
 
 <TLDR>
 
@@ -14,14 +15,8 @@ or in the cloud.
 
 </TLDR>
 
-### Command Line Interface
-
-The [Airy CLI](/cli/introduction.md) is a developer tool to help you **build**, **test**, and **manage** Airy directly from your terminal.
-
 We recommend to [install](/cli/installation.md) the Airy CLI first which will
-aid you in the process of installing and managing your Airy Core instance.
-
-It is easy to install and works on macOS, Windows, and Linux.
+aid you in the process of installing and managing your Airy Core instance. It is easy to install and works on macOS, Windows, and Linux.
 
 ## Installation guides
 
@@ -29,21 +24,16 @@ It is easy to install and works on macOS, Windows, and Linux.
     listStyleType: "none",
     padding: 0
 }}>
-<li><Box>
 
-[Run Airy Core on your machine inside an isolated Vagrant
-box](/getting-started/deployment/vagrant.md)
-
-</Box>
-</li>
-
-<li>
-<Box>
-
-[Run Airy Core in the cloud](/getting-started/deployment/production.md)
-
-</Box>
-
+<li style={{
+    marginBottom: '12px'
+}}>
+<ButtonBox 
+    icon={() => <DeploySVG />}    
+    title='CLI' 
+    description='Run Airy on your local machine using the CLI' 
+    link='/cli/installation'
+/>
 </li>
 
 </ul>

@@ -2,7 +2,7 @@ import {Channel} from '../model';
 import {ChannelApiPayload} from '../payload/ChannelApiPayload';
 
 export const channelMapper = (payload: ChannelApiPayload): Channel => {
-  const channel = {
+  let channel = {
     ...payload,
     sourceChannelId: payload.source_channel_id,
     metadata: {

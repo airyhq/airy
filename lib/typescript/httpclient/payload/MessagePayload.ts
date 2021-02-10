@@ -6,5 +6,5 @@ export interface MessagePayload {
   delivery_state: MessageState;
   sender_type: SenderType;
   sent_at: Date;
-  metadata?: Record<string, unknown>;
+  metadata?: Map<string, object>;
 }

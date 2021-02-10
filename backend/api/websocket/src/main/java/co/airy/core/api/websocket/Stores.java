@@ -3,14 +3,16 @@ package co.airy.core.api.websocket;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.kafka.core.KafkaConsumerWrapper;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.streams.KafkaStreamsWrapper;
+import co.airy.model.metadata.dto.MetadataMap;
 import org.apache.avro.specific.SpecificRecordBase;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.common.errors.WakeupException;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.KTable;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -19,74 +21,50 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
-import java.util.List;
+import static co.airy.model.metadata.MetadataRepository.getSubject;
+import static co.airy.model.metadata.MetadataRepository.isChannelMetadata;
 
 @Component
-public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, Runnable, DisposableBean {
-    private static final String appId = "api.WebsocketConsumer";
-    private final KafkaConsumerWrapper<String, SpecificRecordBase> consumer;
+public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+    private static final String appId = "api.WebsocketStores";
+    private final KafkaStreamsWrapper streams;
     private final WebSocketController webSocketController;
-    private boolean running = false;
 
-    Stores(KafkaConsumerWrapper<String, SpecificRecordBase> consumer,
+    Stores(KafkaStreamsWrapper streams,
            WebSocketController webSocketController
     ) {
-        this.consumer = consumer;
+        this.streams = streams;
         this.webSocketController = webSocketController;
     }
 
     @Override
-    public void run() {
-        consumer.subscribe(appId, List.of(
-                new ApplicationCommunicationMetadata().name(),
-                new ApplicationCommunicationMessages().name(),
-                new ApplicationCommunicationChannels().name()
-        ));
-
-        running = true;
-
-        try {
-            while (running) {
-                try {
-
-                    ConsumerRecords<String, SpecificRecordBase> records = consumer.poll(Duration.ofMillis(100));
-                    for (ConsumerRecord<String, SpecificRecordBase> record : records) {
-                        final SpecificRecordBase value = record.value();
-                        if (value instanceof Message) {
-                            webSocketController.onMessage((Message) value);
-                        } else if (value instanceof Metadata) {
-                            webSocketController.onMetadata((Metadata) value);
-                        } else if (value instanceof Channel)  {
-                            webSocketController.onChannel((Channel) value);
-                        }
-                    }
-
-                    if (!records.isEmpty()) {
-                        consumer.commitAsync();
-                    }
-                } catch (WakeupException e) {
-                    running = false;
-                }
-            }
-        } finally {
-            consumer.close();
-        }
-    }
-
-    @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        new Thread(this).start();
+        final StreamsBuilder builder = new StreamsBuilder();
+
+        builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+                .peek((messageId, message) -> webSocketController.onMessage(message));
+
+        builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
+                .peek((channelId, channel) -> webSocketController.onChannel(channel));
+
+        builder.<String, Metadata>table(new ApplicationCommunicationMetadata().name())
+                .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
+                .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor)
+                .toStream()
+                .peek((identifier, metadataMap) -> webSocketController.onMetadata(metadataMap));
+
+        streams.start(builder.build(), appId);
     }
 
     @Override
     public void destroy() {
-        consumer.wakeup();
+        if (streams != null) {
+            streams.close();
+        }
     }
 
     @Override
     public Health health() {
-        return Health.status(running ? Status.UP : Status.DOWN).build();
+        return Health.status(Status.UP).build();
     }
-
 }

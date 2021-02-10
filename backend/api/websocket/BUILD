@@ -10,6 +10,7 @@ app_deps = [
     "//backend/model/message",
     "//backend/model/channel",
     "//backend/model/metadata",
+    "//lib/java/date",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/kafka/core:spring-kafka-core",

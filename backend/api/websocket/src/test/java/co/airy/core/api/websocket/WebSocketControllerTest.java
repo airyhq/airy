@@ -1,7 +1,10 @@
 package co.airy.core.api.websocket;
 
+import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.SenderType;
 import co.airy.core.api.websocket.payload.ChannelEvent;
 import co.airy.core.api.websocket.payload.MessageEvent;
@@ -39,6 +42,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
 import java.time.Instant;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -97,10 +101,7 @@ public class WebSocketControllerTest {
 
     @Test
     void canReceiveMessageEvents() throws Exception {
-        final CompletableFuture<MessageEvent> messageFuture = subscribe(port, MessageEvent.class, QUEUE_EVENTS, jwt);
-        final CompletableFuture<ChannelEvent> channelFuture = subscribe(port, ChannelEvent.class, QUEUE_EVENTS, jwt);
-        final CompletableFuture<MetadataEvent> metadataFuture = subscribe(port, MetadataEvent.class, QUEUE_EVENTS, jwt);
-
+        final CompletableFuture<MessageEvent> future = subscribe(port, MessageEvent.class, QUEUE_EVENTS, jwt);
         final Message message = Message.newBuilder()
                 .setId("messageId")
                 .setSource("facebook")
@@ -116,11 +117,49 @@ public class WebSocketControllerTest {
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message));
 
-        MessageEvent recMessage = messageFuture.get(30, TimeUnit.SECONDS);
+        MessageEvent recMessage = future.get(30, TimeUnit.SECONDS);
         assertNotNull(recMessage);
         assertThat(recMessage.getPayload().getChannelId(), equalTo(message.getChannelId()));
         assertThat(recMessage.getPayload().getMessage().getId(), equalTo(message.getId()));
         assertThat(recMessage.getPayload().getMessage().getContent(), equalTo(message.getContent()));
+    }
+
+    @Test
+    void canReceiveChannelEvents() throws Exception {
+        final CompletableFuture<ChannelEvent> future = subscribe(port, ChannelEvent.class, QUEUE_EVENTS, jwt);
+
+        final Channel channel = Channel.newBuilder()
+                .setId(UUID.randomUUID().toString())
+                .setConnectionState(ChannelConnectionState.CONNECTED)
+                .setSource("sourceIdentifier")
+                .setSourceChannelId("sourceChannelId")
+                .build();
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
+
+        ChannelEvent recChannel = future.get(30, TimeUnit.SECONDS);
+        assertNotNull(recChannel);
+        assertThat(recChannel.getPayload().getId(), equalTo(channel.getId()));
+    }
+
+    @Test
+    void canReceiveMetadataEvents() throws Exception {
+        final CompletableFuture<MetadataEvent> future = subscribe(port, MetadataEvent.class, QUEUE_EVENTS, jwt);
+
+        final Metadata metadata = Metadata.newBuilder()
+                .setKey("contact.displayName")
+                .setValue("Grace")
+                .setSubject("conversation:123")
+                .setTimestamp(Instant.now().toEpochMilli())
+                .build();
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMetadata.name(), "metadataId", metadata));
+
+        MetadataEvent recMetadata = future.get(30, TimeUnit.SECONDS);
+        assertNotNull(recMetadata);
+        assertThat(recMetadata.getPayload().getSubject(), equalTo("conversation"));
+        assertThat(recMetadata.getPayload().getIdentifier(), equalTo("123"));
+        assertThat(recMetadata.getPayload().getMetadata().get("contact").get("displayName").textValue(), equalTo(metadata.getValue()));
     }
 
     private static StompSession connectToWs(int port, Jwt jwt) throws ExecutionException, InterruptedException {

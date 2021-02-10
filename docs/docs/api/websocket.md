@@ -30,7 +30,6 @@ field informs the client of the kind of update that is encoded in the payload.
 ```json5
 {
   "type": "message",
-
   "payload": {
     "conversation_id": "{UUID}",
     "channel_id": "{UUID}",
@@ -44,8 +43,12 @@ field informs the client of the kind of update that is encoded in the payload.
       // See glossary
       "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-      "source": "{String}"
+      "source": "{String}",
       // one of the possible sources
+      "metadata": {
+        "sentFrom": "iPhone"
+      }
+      // metadata object of the message
     }
   }
 }

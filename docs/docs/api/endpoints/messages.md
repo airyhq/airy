@@ -39,8 +39,12 @@ latest.
       // See glossary
       "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-      "source": "{String}"
+      "source": "{String}",
       // one of the possible sources
+      "metadata": {
+        "sentFrom": "iPhone"
+      }
+      // metadata object of the message
     }
   ],
   "pagination_data": {
@@ -81,7 +85,11 @@ Sends a message to a conversation and returns a payload. Whatever is put on the
   // See glossary
   "sent_at": "{string}",
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-  "source": "{String}"
+  "source": "{String}",
   // one of the possible sources
+  "metadata": {
+    "sentFrom": "iPhone"
+  }
+  // metadata object of the message
 }
 ```

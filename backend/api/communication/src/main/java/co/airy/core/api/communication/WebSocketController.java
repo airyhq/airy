@@ -8,6 +8,7 @@ import co.airy.core.api.communication.payload.UnreadCountPayload;
 import co.airy.model.channel.ChannelPayload;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
+import co.airy.model.metadata.dto.MetadataMap;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class WebSocketController {
         final MessageUpsertPayload messageUpsertPayload = MessageUpsertPayload.builder()
                 .channelId(message.getChannelId())
                 .conversationId(message.getConversationId())
-                .message(MessageResponsePayload.fromMessageContainer(new MessageContainer(message, Map.of())))
+                .message(MessageResponsePayload.fromMessageContainer(new MessageContainer(message, new MetadataMap())))
                 .build();
         messagingTemplate.convertAndSend(QUEUE_MESSAGE, messageUpsertPayload);
     }

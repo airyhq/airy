@@ -46,7 +46,6 @@ class ConversationsTagTest {
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
-
         kafkaTestHelper.beforeAll();
     }
 
@@ -65,7 +64,7 @@ class ConversationsTagTest {
         final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId("channel-id")
+                .setId(UUID.randomUUID().toString())
                 .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build();

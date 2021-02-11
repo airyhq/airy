@@ -24,6 +24,10 @@ public class ChannelPayload {
     private JsonNode metadata;
 
     public static ChannelPayload fromChannelContainer(ChannelContainer container) {
+        if(container.getMetadataMap() == null) {
+            return fromChannel(container.getChannel());
+        }
+
         final Channel channel = container.getChannel();
         return ChannelPayload.builder()
                 .id(channel.getId())

@@ -34,12 +34,7 @@ public class ConversationResponsePayload {
         JsonNode metadata = getMetadataPayload(conversation.getMetadata());
 
         return ConversationResponsePayload.builder()
-                .channel(
-                        // TODO https://github.com/airyhq/airy/issues/909
-                        // Once we have the channel metadata map in the topology,
-                        // create this payload using ChannelPayload.fromChannelContainer
-                        ChannelPayload.fromChannel(conversation.getChannel())
-                )
+                .channel(ChannelPayload.fromChannelContainer(conversation.getChannelContainer()))
                 .id(conversation.getId())
                 .metadata(defaultMetadata(metadata, conversation))
                 .createdAt(isoFromMillis(conversation.getCreatedAt()))
@@ -51,8 +46,15 @@ public class ConversationResponsePayload {
         JsonNode contactNode = metadata.get(ConversationKeys.CONTACT) == null ?
                 JsonNodeFactory.instance.objectNode() : metadata.get("contact");
         if (contactNode.get(ConversationKeys.Contact.DISPLAY_NAME) == null) {
-            ((ObjectNode) contactNode).put(ConversationKeys.Contact.DISPLAY_NAME, conversation.getDisplayNameOrDefault().toString());
+            ((ObjectNode) contactNode).put("display_name", conversation.getDisplayNameOrDefault());
             ((ObjectNode) metadata).set("contact", contactNode);
+        }
+
+        final JsonNode unreadCount = metadata.get(ConversationKeys.UNREAD_COUNT);
+        if (unreadCount == null) {
+            ((ObjectNode) metadata).put(ConversationKeys.UNREAD_COUNT, 0);
+        } else if (unreadCount.isTextual()) {
+            ((ObjectNode) metadata).put(ConversationKeys.UNREAD_COUNT, unreadCount.intValue());
         }
 
         return metadata;

@@ -62,7 +62,8 @@ Find users whose name ends with "Lovelace":
         },
         "tags": {
           "f339c325-8614-43cb-a70a-e83d81bf56fc": ""
-        }
+        },
+        "unread_count": 1
       },
       "last_message": {
         id: "{UUID}",
@@ -77,8 +78,7 @@ Find users whose name ends with "Lovelace":
         //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
         "source": "{String}"
         // one of the possible sources
-      },
-      "unread_message_count": 1
+      }
     }
   ],
   "pagination_data": {
@@ -123,7 +123,8 @@ Find users whose name ends with "Lovelace":
     },
     "tags": {
       "f339c325-8614-43cb-a70a-e83d81bf56fc": ""
-    }
+    },
+    "unread_count": 1
   },
   "last_message": {
     "id": "{UUID}",
@@ -136,8 +137,7 @@ Find users whose name ends with "Lovelace":
     // See glossary
     "sent_at": "{string}"
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-  },
-  "unread_message_count": 1
+  }
 }
 ```
 

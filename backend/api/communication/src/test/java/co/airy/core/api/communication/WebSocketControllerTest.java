@@ -35,6 +35,7 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -67,7 +68,7 @@ public class WebSocketControllerTest {
 
     final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("facebook-channel-id")
+            .setId(UUID.randomUUID().toString())
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")

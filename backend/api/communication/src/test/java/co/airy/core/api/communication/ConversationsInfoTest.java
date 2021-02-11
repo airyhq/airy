@@ -45,7 +45,6 @@ class ConversationsInfoTest {
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
-
         kafkaTestHelper.beforeAll();
     }
 
@@ -63,7 +62,7 @@ class ConversationsInfoTest {
     void canFetchConversationsInfo() throws Exception {
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId("channel-id")
+                .setId(UUID.randomUUID().toString())
                 .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build();
@@ -71,7 +70,6 @@ class ConversationsInfoTest {
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
 
         final String conversationId = UUID.randomUUID().toString();
-
         kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
 
         retryOnException(
@@ -80,7 +78,7 @@ class ConversationsInfoTest {
                         "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId))),
-                "Conversations list is missing records"
+                "Cannot find conversation"
         );
     }
 }

@@ -29,6 +29,7 @@
   padding: 32px;
   margin: 88px 2.5em 0 7.5em;
   min-height: calc(100vh - 170px);
+ 
 }
 
 .connectButton {
@@ -177,6 +178,7 @@
   flex-direction: column;
   width: 20%;
   margin-bottom: 1em;
+  
 }
 
 .flexWrap {
@@ -192,7 +194,7 @@
   min-width: 35vh;
   max-height: 14vh;
   padding: 1%;
-  margin-bottom: 15px;
+  margin: 22px 0px 15px 0px;
 }
 
 .airyLogo {
@@ -224,6 +226,7 @@
   width: 40px;
   height: 70px;
   margin-left: 8px;
+  margin-top: 8px;
   transition: 0.2s ease-in-out all;
   border: none;
   padding: 0;
@@ -248,7 +251,6 @@
 .airyConnectedContainer {
   display: flex;
   flex-direction: column;
-  //background-color: green;
   min-width: 65vh;
 }
 
@@ -265,7 +267,8 @@
 }
 
 .airyConnectedPara {
-  margin-left: 10em;
+  color: var(--color-text-gray);
+  margin-left: 3em;
 }
 
 .channelList {
@@ -282,11 +285,11 @@
   display: flex;
   border-bottom: 1px solid var(--color-airy-blue);
   align-items: center;
-  padding: 8px 0;
- }
-  
- .channelName {
-  padding: 0 16px;
+}
+
+.channelName {
+  padding-top:16px;
+  padding-left:16px;
 }
 
 .channelAction {
@@ -303,7 +306,7 @@
   min-width: 35vh;
   max-height: 14vh;
   padding: 1%;
-  margin-bottom: 15px;
+  margin: 22px 0px 15px 0px;
 }
 
 .facebookLogo {
@@ -331,7 +334,7 @@
   min-width: 35vh;
   max-height: 14vh;
   padding: 1%;
-  margin-bottom: 15px;
+  margin: 22px 0px 15px 0px;
 }
 
 .smsLogo {
@@ -360,7 +363,7 @@
   min-width: 35vh;
   max-height: 14vh;
   padding: 1%;
-  margin-bottom: 15px;
+  margin: 22px 0px 15px 0px;
 }
 
 .whatsappLogo {
@@ -387,9 +390,9 @@
   border-radius: 8px;
   flex-basis: 100%;
   min-width: 35vh;
-  max-height: 14vh;
+  max-height: 15vh;
   padding: 1%;
-  margin-bottom: 15px;
+  margin: 22px 0px 15px 0px;
 }
 
 .googleLogo {

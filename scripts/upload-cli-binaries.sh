@@ -10,4 +10,4 @@ do
 done
 
 cat ./VERSION > stable.txt
-aws s3 cp stable.txt https://airy-core-binaries.s3.amazonaws.com/stable.txt
+aws s3 cp stable.txt s3://airy-core-binaries/stable.txt

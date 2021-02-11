@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
 import static java.util.stream.Collectors.toList;
 
 @RestController

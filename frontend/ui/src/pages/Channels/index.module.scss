@@ -4,7 +4,14 @@
 .headline {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 64px;
+  margin-bottom: 20px;
+  color: #212428;
+  font-family: Lato;
+  font-size: 39px;
+  font-weight: 900;
+  letter-spacing: 0;
+  
+  margin-bottom: 14px;
 }
 
 .headlineText {
@@ -53,23 +60,12 @@
   }
 }
 
-.channelList {
+.channelChoice {
   list-style: none;
+  color: grey;
+  padding-bottom: 20px;
 }
 
-.channelListEntry {
-  display: flex;
-  border-bottom: 1px solid var(--color-light-gray);
-  align-items: center;
-  padding: 8px 0;
-}
 
-.channelName {
-  padding: 0 16px;
-}
 
-.channelAction {
-  flex-grow: 1;
-  justify-content: right;
-  display: flex;
-}
+

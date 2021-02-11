@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import FacebookLogin from 'react-facebook-login';
 import {Button} from '@airyhq/components';
-
+import ChannelItems from './ChannelItems';
 import {Channel} from 'httpclient';
 import {AiryConfig} from '../../AiryConfig';
 import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
@@ -66,13 +66,16 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
   );
 
   const disconnectClicked = (channel: Channel) => {
-    props.disconnectChannel('facebook', {channelId: channel.sourceChannelId});
+    props.disconnectChannel({channelId: channel.sourceChannelId});
   };
 
   return (
     <div className={styles.channelsWrapper}>
       <div className={styles.headline}>
-        <h1 className={styles.headlineText}>Channels</h1>
+        <div>
+          <h1 className={styles.headlineText}>Channels</h1>
+        </div>
+
         <FacebookLogin
           appId={AiryConfig.FACEBOOK_APP_ID}
           autoLoad={false}
@@ -113,6 +116,9 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
           );
         })}
       </ul>
+      <div>
+        <ChannelItems />
+      </div>
     </div>
   );
 };

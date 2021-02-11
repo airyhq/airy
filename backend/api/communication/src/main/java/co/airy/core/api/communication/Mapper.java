@@ -18,12 +18,14 @@ import static co.airy.model.metadata.MetadataRepository.getConversationInfo;
 public class Mapper {
 
     public ConversationResponsePayload fromConversation(Conversation conversation) {
+
         return ConversationResponsePayload.builder()
-                .channel(ChannelPayload.builder()
-                        .id(conversation.getChannelId())
-                        .name(conversation.getChannel().getName())
-                        .source(conversation.getChannel().getSource())
-                        .build())
+                .channel(
+                        // TODO https://github.com/airyhq/airy/issues/909
+                        // Once we have the channel metadata map in the topology,
+                        // create this payload using ChannelPayload.fromChannelContainer
+                        ChannelPayload.fromChannel(conversation.getChannel())
+                )
                 .id(conversation.getId())
                 .unreadMessageCount(conversation.getUnreadMessageCount())
                 .tags(conversation.getTagIds())
@@ -38,7 +40,7 @@ public class Mapper {
         final DisplayName displayName = conversation.getDisplayNameOrDefault();
 
         return ContactResponsePayload.builder()
-                .avatarUrl(metadata.get(MetadataKeys.Source.Contact.AVATAR_URL))
+                .avatarUrl(metadata.get(MetadataKeys.ConversationKeys.Contact.AVATAR_URL))
                 .displayName(displayName.toString())
                 .info(getConversationInfo(metadata))
                 .build();

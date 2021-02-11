@@ -37,8 +37,6 @@ function render(content: ContentUnion, props: MessageRenderProps) {
           suggestions={content.suggestions}
         />
       );
-
-    // TODO render more chatplugin models
   }
 }
 

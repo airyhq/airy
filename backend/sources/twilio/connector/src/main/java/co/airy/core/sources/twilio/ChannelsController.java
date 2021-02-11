@@ -2,14 +2,17 @@ package co.airy.core.sources.twilio;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.Metadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import static co.airy.model.channel.ChannelPayload.fromChannel;
+import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
+import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 
 @RestController
 public class ChannelsController {
@@ -43,11 +49,9 @@ public class ChannelsController {
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setSource("twilio.sms")
                 .setSourceChannelId(requestPayload.getPhoneNumber())
-                .setName(requestPayload.getName())
-                .setImageUrl(requestPayload.getImageUrl())
                 .build();
 
-        return connectChannel(channel);
+        return connectChannel(channel, requestPayload.getName(), requestPayload.getImageUrl());
     }
 
     @PostMapping("/channels.twilio.whatsapp.connect")
@@ -60,21 +64,29 @@ public class ChannelsController {
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setSource("twilio.whatsapp")
                 .setSourceChannelId(phoneNumber)
-                .setName(requestPayload.getName())
-                .setImageUrl(requestPayload.getImageUrl())
                 .build();
 
-        return connectChannel(channel);
+        return connectChannel(channel, requestPayload.getName(), requestPayload.getImageUrl());
     }
 
-    private ResponseEntity<?> connectChannel(Channel channel) {
+    private ResponseEntity<?> connectChannel(Channel channel, String name, String imageUrl) {
         try {
-            producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
+            List<Metadata> metadataList = new ArrayList<>();
+            metadataList.add(newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.NAME, name));
+
+            if (imageUrl != null) {
+                metadataList.add(newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.IMAGE_URL, imageUrl));
+            }
+
+            final ChannelContainer container = ChannelContainer.builder()
+                    .channel(channel)
+                    .metadataMap(MetadataMap.from(metadataList)).build();
+
+            stores.storeChannelContainer(container);
+            return ResponseEntity.ok(fromChannelContainer(container));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
-
-        return ResponseEntity.ok(fromChannel(channel));
     }
 
     @PostMapping("/channels.twilio.sms.disconnect")
@@ -104,7 +116,7 @@ public class ChannelsController {
         channel.setToken(null);
 
         try {
-            producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
+            stores.storeChannel(channel);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
@@ -120,10 +132,8 @@ public class ChannelsController {
 class ConnectChannelRequestPayload {
     @NotNull
     private String phoneNumber;
-
     @NotNull
     private String name;
-
     private String imageUrl;
 }
 

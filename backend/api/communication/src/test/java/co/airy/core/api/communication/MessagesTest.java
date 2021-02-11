@@ -13,7 +13,6 @@ import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,13 +25,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationMessages;
@@ -63,7 +59,6 @@ public class MessagesTest {
     private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(channelId)
-            .setName("channel-name")
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .build();
@@ -104,6 +99,38 @@ public class MessagesTest {
                                         .map(DateFormat::isoFromMillis)
                                         .sorted(reverseOrder()).toArray()))),
                 "/messages.list endpoint error");
+    }
+
+    @Test
+    void canReturnMetadata() throws Exception {
+        final String conversationId = UUID.randomUUID().toString();
+        final String messageId = UUID.randomUUID().toString();
+        final String text = "MESSAGE TEXT";
+
+        kafkaTestHelper.produceRecords(List.of(
+                new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, Message.newBuilder()
+                        .setId(messageId)
+                        .setSentAt(Instant.now().toEpochMilli())
+                        .setSenderId("source-conversation-id")
+                        .setDeliveryState(DeliveryState.DELIVERED)
+                        .setSource("facebook")
+                        .setSenderType(SenderType.SOURCE_CONTACT)
+                        .setConversationId(conversationId)
+                        .setHeaders(Map.of())
+                        .setChannelId(channel.getId())
+                        .setContent("{\"text\":\"" + text + "\"}")
+                        .build()),
+                new ProducerRecord<>(applicationCommunicationMetadata.name(), "metadata-id",
+                        newMessageMetadata(messageId, "metadata_key", "message metadata value"))
+        ));
+
+        final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
+        retryOnException(
+                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data", hasSize(1)))
+                        .andExpect(jsonPath("$.data[0].metadata.metadata_key", containsString("message metadata value"))),
+                "/messages.list metadata was not correct");
     }
 
     @Test

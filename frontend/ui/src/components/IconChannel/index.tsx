@@ -18,107 +18,76 @@ import styles from './index.module.scss';
 type IconChannelProps = {
   channel: Channel;
   icon?: boolean;
-  avatar?: boolean;
-  name?: boolean;
+  showAvatar?: boolean;
+  showName?: boolean;
   text?: boolean;
 };
 
-const PlaceholderChannelData = {
+const PlaceholderChannelData: Channel = {
   id: 'id',
-  name: 'Retriving Data...',
-  source: 'FACEBOOK',
+  source: 'facebook',
+  metadata: {
+    name: 'Retrieving Data...',
+  },
   sourceChannelId: 'external_channel_id',
   connected: true,
+};
+
+const SOURCE_INFO = {
+  facebook: {
+    text: 'Facebook page',
+    icon: () => <FacebookIcon />,
+    avatar: () => <MessengerAvatar />,
+  },
+  google: {
+    text: 'Google page',
+    icon: () => <GoogleIcon />,
+    avatar: () => <GoogleAvatar />,
+  },
+  'twilio.sms': {
+    text: 'SMS phone number',
+    icon: () => <SmsIcon />,
+    avatar: () => <SmsAvatar />,
+  },
+  'twilio.whatsapp': {
+    text: 'Whatsapp number',
+    icon: () => <WhatsappIcon />,
+    avatar: () => <WhatsappAvatar />,
+  },
+  chat_plugin: {
+    text: 'Airy Chat plugin',
+    icon: () => <AiryIcon />,
+    avatar: () => <AiryAvatar />,
+  },
 };
 
 const IconChannel: React.FC<IconChannelProps> = ({
   channel,
   icon,
-  avatar,
-  name,
+  showAvatar,
+  showName,
   text,
 }: IconChannelProps): JSX.Element => {
   if (!channel) {
     channel = PlaceholderChannelData;
   }
 
-  const SOURCE_INFO = {
-    facebook: {
-      text: 'Facebook page',
-      icon: function() {
-        return <FacebookIcon />;
-      },
-      avatar: function() {
-        return <MessengerAvatar />;
-      },
-      name: channel.name,
-    },
-    google: {
-      text: 'Google page',
-      icon: function() {
-        return <GoogleIcon />;
-      },
-      avatar: function() {
-        return <GoogleAvatar />;
-      },
-      name: channel.name,
-    },
-    'twilio.sms': {
-      text: 'SMS page',
-      icon: function() {
-        return <SmsIcon />;
-      },
-      avatar: function() {
-        return <SmsAvatar />;
-      },
-      name: channel.name,
-    },
-    'twilio.whatsapp': {
-      text: 'Whatsapp page',
-      icon: function() {
-        return <WhatsappIcon />;
-      },
-      avatar: function() {
-        return <WhatsappAvatar />;
-      },
-      name: channel.name,
-    },
-    chat_plugin: {
-      text: 'Airy Chat plugin',
-      icon: function() {
-        return <AiryIcon />;
-      },
-      avatar: function() {
-        return <AiryAvatar />;
-      },
-      name: channel.name,
-    },
-  };
-
   //TODO: This has to go once the backend returns the source
   const channelInfo = SOURCE_INFO[channel.source || 'chat_plugin'];
-  const fbFallback = SOURCE_INFO['FACEBOOK'];
+  const fbFallback = SOURCE_INFO['facebook'];
 
-  if (!channelInfo) {
-    return (
-      <>
-        {fbFallback.icon()} {fbFallback.text}
-      </>
-    );
-  }
-
-  if (icon && name) {
+  if (icon && showName) {
     return (
       <div className={styles.iconName}>
         {channelInfo.icon()}
-        <p>{channelInfo.name}</p>
+        <p>{channel.metadata.name}</p>
       </div>
     );
-  } else if (avatar && name) {
+  } else if (showAvatar && showName) {
     return (
       <div className={styles.avatarName}>
         {channelInfo.avatar()}
-        <p>{channelInfo.name}</p>
+        <p>{channel.metadata.name}</p>
       </div>
     );
   } else if (icon && text) {
@@ -128,7 +97,7 @@ const IconChannel: React.FC<IconChannelProps> = ({
         <p>{channelInfo.text}</p>
       </div>
     );
-  } else if (avatar && text) {
+  } else if (showAvatar && text) {
     return (
       <div className={styles.avatarText}>
         {channelInfo.avatar()}
@@ -137,7 +106,7 @@ const IconChannel: React.FC<IconChannelProps> = ({
     );
   } else if (icon) {
     return <>{channelInfo.icon()}</>;
-  } else if (avatar) {
+  } else if (showAvatar) {
     return <>{channelInfo.avatar()}</>;
   }
   return (

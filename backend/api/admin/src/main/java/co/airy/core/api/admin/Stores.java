@@ -2,16 +2,22 @@ package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.Tag;
 import co.airy.avro.communication.Webhook;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
+import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.metadata.dto.MetadataMap;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
@@ -25,6 +31,10 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.getSubject;
+import static co.airy.model.metadata.MetadataRepository.isChannelMetadata;
 
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
@@ -44,6 +54,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
     private final String applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks().name();
     private final String applicationCommunicationTags = new ApplicationCommunicationTags().name();
+    private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
 
     public Stores(KafkaStreamsWrapper streams, KafkaProducer<String, SpecificRecordBase> producer) {
         this.streams = streams;
@@ -54,8 +65,15 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public void onApplicationEvent(ApplicationStartedEvent event) {
         final StreamsBuilder builder = new StreamsBuilder();
 
+        // metadata table keyed by channel id
+        final KTable<String, MetadataMap> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
+                .filter((metadataId, metadata) -> isChannelMetadata(metadata))
+                .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
+                .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor);
+
         builder.<String, Channel>table(applicationCommunicationChannels)
-                .filter((k, v) -> v.getConnectionState().equals(ChannelConnectionState.CONNECTED), Materialized.as(connectedChannelsStore));
+                .filter((k, v) -> v.getConnectionState().equals(ChannelConnectionState.CONNECTED))
+                .leftJoin(metadataTable, ChannelContainer::new, Materialized.as(connectedChannelsStore));
 
         builder.<String, Webhook>stream(applicationCommunicationWebhooks)
                 .groupBy((webhookId, webhook) -> allWebhooksKey)
@@ -79,6 +97,21 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationWebhooks, allWebhooksKey, webhook)).get();
     }
 
+    public void storeChannelContainer(ChannelContainer container) throws ExecutionException, InterruptedException {
+        storeChannel(container.getChannel());
+        storeMetadataMap(container.getMetadataMap());
+    }
+
+    public void storeMetadataMap(MetadataMap metadataMap) throws ExecutionException, InterruptedException {
+        for (Metadata metadata : metadataMap.values()) {
+            producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(metadata).toString(), metadata)).get();
+        }
+    }
+
+    public void storeChannel(Channel channel) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
+    }
+
     public void storeTag(Tag tag) throws ExecutionException, InterruptedException {
         producer.send(new ProducerRecord<>(applicationCommunicationTags, tag.getId(), tag)).get();
     }
@@ -87,16 +120,21 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationTags, tag.getId(), null));
     }
 
-    public ReadOnlyKeyValueStore<String, Channel> getConnectedChannelsStore() {
+    public ReadOnlyKeyValueStore<String, ChannelContainer> getConnectedChannelsStore() {
         return streams.acquireLocalStore(connectedChannelsStore);
     }
 
-    public List<Channel> getChannels() {
-        final ReadOnlyKeyValueStore<String, Channel> store = getConnectedChannelsStore();
+    public ChannelContainer getChannel(String channelId) {
+        final ReadOnlyKeyValueStore<String, ChannelContainer> store = getConnectedChannelsStore();
+        return store.get(channelId);
+    }
 
-        final KeyValueIterator<String, Channel> iterator = store.all();
+    public List<ChannelContainer> getChannels() {
+        final ReadOnlyKeyValueStore<String, ChannelContainer> store = getConnectedChannelsStore();
 
-        List<Channel> channels = new ArrayList<>();
+        final KeyValueIterator<String, ChannelContainer> iterator = store.all();
+
+        List<ChannelContainer> channels = new ArrayList<>();
         iterator.forEachRemaining(kv -> channels.add(kv.value));
 
         return channels;

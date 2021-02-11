@@ -104,8 +104,12 @@ previous conversation using the [resume endpoint](#get-a-resume-token).
       // delivery state of message, one of PENDING, FAILED, DELIVERED
       "sender_type": "{string/enum}",
       // See glossary
-      "sent_at": "{string}"
+      "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+      "metadata": {
+        "sentFrom": "iPhone"
+      }
+      // metadata object of the message
     }
   ]
 }
@@ -160,8 +164,12 @@ header.
   // delivery state of message, one of PENDING, FAILED, DELIVERED
   sender_type: "{string/enum}",
   // See glossary
-  sent_at: "{string}"
+  sent_at: "{string}",
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+  "metadata": {
+    "sentFrom": "iPhone"
+  }
+  // metadata object of the message
 }
 ```
 
@@ -189,8 +197,12 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
     // delivery state of message, one of PENDING, FAILED, DELIVERED
     sender_type: "{string/enum}",
     // See glossary
-    sent_at: "{string}"
+    sent_at: "{string}",
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+    "metadata": {
+      "sentFrom": "iPhone"
+    }
+    // metadata object of the message
   }
 }
 ```

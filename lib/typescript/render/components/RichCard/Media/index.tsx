@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {MediaHeight} from '../../providers/chatplugin/chatPluginModel';
+import {MediaHeight} from '../../../providers/chatplugin/chatPluginModel';
 
 export type MediaRenderProps = {
   height: MediaHeight;

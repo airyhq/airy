@@ -1,0 +1,203 @@
+@import '../../assets/scss/colors.scss';
+@import '../../assets/scss/fonts.scss';
+
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 30%;
+    
+    
+  }
+
+  .flexWrap {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+  }
+  .airyChannel {
+    display: inline-flex;
+    border: solid 1px var(--color-light-gray);
+    border-radius: 8px;
+    flex-basis: 100%;
+    width:auto;
+    height:auto;
+    padding:1%;
+    margin-bottom: 15px;
+  }
+
+  .airyChannel .airyLogo{
+    height: 60px;
+    border: none;
+    width: 40px;
+    background:white;
+    border-radius: 50%;
+    padding-left: 12px;
+  }
+
+  .airyTitleAndText{
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .airyText{ 
+    color: grey;
+    
+  }
+
+  .channelButton {
+    display: flex;
+    
+  }
+
+  .addChannelButton {
+  position: relative;
+  width: 40px;
+  height: 70px;
+  margin-left: 8px;
+  transition: 0.2s ease-in-out all;
+  top: 1px;
+  border: none;
+  background: white;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
+  }
+
+  .channelButtonIcon{
+  height: 40px;
+  border: none;
+  width: 40px;
+  @include font-s;
+  font-weight: 400;
+  color: #000;
+  
+  
+  }
+
+  .channelButtonIcon:hover {
+  background: var(--color-airy-blue);
+}
+
+  .facebookChannel {
+    display: inline-flex;
+    border: solid 1px var(--color-light-gray);
+    border-radius: 8px;
+    flex-basis: 100%;
+    width:auto;
+    height:auto;
+    padding:1%;
+    margin-bottom: 15px;
+  }
+
+  .facebookChannel  .facebookLogo{
+    height: 60px;
+    border: none;
+    width: 40px;
+    background:white;
+    border-radius: 50%;
+    padding-left: 12px;
+  }
+
+  .facebookTitleAndText{
+    margin-left: auto;
+    margin-right: 10px;
+  }
+
+  .facebookText{ 
+    color: grey;
+    
+  }
+
+    .smsChannel {
+    display: inline-flex;
+    border: solid 1px var(--color-light-gray);
+    border-radius: 8px;
+    flex-basis: 100%;
+    width:auto;
+    height:auto;
+    padding:1%;
+    margin-bottom: 15px;
+  }
+
+  .smsChannel .smsLogo{
+    height: 60px;
+    border: none;
+    width: 40px;
+    background:white;
+    border-radius: 50%;
+    padding-left: 12px;
+  }
+
+  .smsTitleAndText{
+    margin-left: 21px;
+    margin-right: auto;
+  }
+
+  .smsText{ 
+    color: grey;
+    
+  }
+
+   .whatsappChannel {
+    display: inline-flex;
+    border: solid 1px var(--color-light-gray);
+    border-radius: 8px;
+    flex-basis: 100%;
+    width:auto;
+    height:auto;
+    padding:1%;
+    margin-bottom: 15px;
+  }
+
+  .whatsappChannel .whatsappLogo{
+    height: 60px;
+    border: none;
+    width: 40px;
+    background:white;
+    border-radius: 50%;
+    padding-left: 12px;
+  }
+
+
+  .whatsappTitleAndText{
+    margin-left: 20px;
+    margin-right: auto;
+  }
+
+  .whatsappText{ 
+    color: grey;
+    
+  }
+
+  .googleChannel {
+    display: inline-flex;
+    border: solid 1px var(--color-light-gray);
+    border-radius: 8px;
+    flex-basis: 100%;
+    width:auto;
+    height:auto;
+    padding:1%;
+    margin-bottom: 15px;
+  }
+
+  .googleChannel .googleLogo{
+    height: 60px;
+    border: none;
+    width: 40px;
+    background:white;
+    border-radius: 50%;
+    padding-left: 12px;
+  }
+
+  .googleTitleAndText{
+    margin-left: 20px;
+    margin-right: auto;
+  }
+
+  .googleText{ 
+    color: grey;
+    
+  }
+ 
+  
+  

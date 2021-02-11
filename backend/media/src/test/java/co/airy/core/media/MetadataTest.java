@@ -100,7 +100,7 @@ public class MetadataTest {
                 bucket,
                 path,
                 conversationId,
-                MetadataKeys.Source.Contact.AVATAR_URL);
+                MetadataKeys.ConversationKeys.Contact.AVATAR_URL);
 
         final ArgumentCaptor<PutObjectRequest> s3PutCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
 
@@ -112,7 +112,7 @@ public class MetadataTest {
         kafkaTestHelper.produceRecord(
                 new ProducerRecord<>(applicationCommunicationMetadata.name(), metadataId,
                         newConversationMetadata(conversationId,
-                                MetadataKeys.Source.Contact.AVATAR_URL,
+                                MetadataKeys.ConversationKeys.Contact.AVATAR_URL,
                                 originalUrl)
                 ));
 
@@ -127,6 +127,6 @@ public class MetadataTest {
         final PutObjectRequest putObjectRequest = s3PutCaptor.getValue();
         assertThat(putObjectRequest.getBucketName(), equalTo(bucket));
         assertThat(putObjectRequest.getKey(),
-                equalTo(String.format("%s/%s", conversationId, MetadataKeys.Source.Contact.AVATAR_URL + ".resolved")));
+                equalTo(String.format("%s/%s", conversationId, MetadataKeys.ConversationKeys.Contact.AVATAR_URL + ".resolved")));
     }
 }

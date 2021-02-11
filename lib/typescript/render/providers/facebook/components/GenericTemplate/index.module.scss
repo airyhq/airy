@@ -1,0 +1,96 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  margin-top: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.templates {
+  display: flex;
+  flex-direction: row;
+  overflow: auto;
+  max-width: 100%;
+}
+
+.template {
+  background-color: var(--color-template-gray);
+  border-radius: 16px;
+  width: 320px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.templateTitle {
+  font-weight: 700;
+}
+
+.templateImage {
+  width: 100%;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  overflow: hidden;
+}
+
+.innerTemplate {
+  padding: 8px 16px 16px 16px;
+}
+
+.button {
+  font-weight: 700;
+  background-color: var(--color-template-highlight);
+  border-radius: 8px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.buttonText {
+  color: var(--color-contrast);
+  text-decoration: none;
+  padding: 8px;
+  display: block;
+  &:hover {
+    color: var(--color-contrast);
+    text-decoration: none;
+  }
+}
+
+.buttonScroll {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 1px solid #f7f7f7;
+  box-shadow: 0 2px 1px 0 #98a4ab;
+  border-radius: 100%;
+  background-color: #ffffff;
+  padding: 0;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.buttonLeft {
+  @extend .buttonScroll;
+  position: absolute;
+  left: 4px;
+}
+
+.buttonRight {
+  @extend .buttonScroll;
+  position: absolute;
+  right: 4px;
+}
+
+.scrollRight {
+  transform: scaleX(-1);
+}
+
+.messageTime {
+  @include font-s;
+  color: var(--color-text-gray);
+}

@@ -52,7 +52,6 @@ public class SendMessageControllerTest {
     private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId("channel-id")
-            .setName("channel-name")
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")
@@ -87,9 +86,8 @@ public class SendMessageControllerTest {
         final String requestPayload = String.format("{\"conversation_id\":\"%s\"," +
                         "\"message\":%s}",
                 conversationId, messagePayload);
-        final String userId = "user-id";
 
-        final String response = webTestHelper.post("/messages.send", requestPayload, userId)
+        final String response = webTestHelper.post("/messages.send", requestPayload, "user-id")
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 

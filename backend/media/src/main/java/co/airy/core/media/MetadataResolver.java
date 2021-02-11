@@ -51,7 +51,7 @@ public class MetadataResolver {
         }
 
         return isConversationMetadata(metadata)
-                && metadata.getKey().equals(MetadataKeys.Source.Contact.AVATAR_URL)
+                && metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.AVATAR_URL)
                 && !mediaUpload.isUserStorageUrl(dataUrl);
     }
 

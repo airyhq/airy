@@ -49,10 +49,10 @@ public class InfoExtractor {
                 final String firstName = displayName.substring(0, lastIndexOf);
                 final String lastName = displayName.substring(lastIndexOf + 1);
 
-                metadata.add(newConversationMetadata(conversationId, MetadataKeys.Source.Contact.FIRST_NAME, firstName));
-                metadata.add(newConversationMetadata(conversationId, MetadataKeys.Source.Contact.LAST_NAME, lastName));
+                metadata.add(newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.FIRST_NAME, firstName));
+                metadata.add(newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.LAST_NAME, lastName));
             } else {
-                metadata.add(newConversationMetadata(conversationId, MetadataKeys.Source.Contact.FIRST_NAME, displayName));
+                metadata.add(newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.FIRST_NAME, displayName));
             }
         }
 

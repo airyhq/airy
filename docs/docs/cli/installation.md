@@ -5,7 +5,7 @@ hide_table_of_contents: false
 ---
 
 import TLDR from "@site/src/components/TLDR";
-import Box from "@site/src/components/Box";
+import SuccessBox from "@site/src/components/SuccessBox";
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -40,6 +40,7 @@ yourself](installation.md#building-from-source).
 groupId="operating-systems"
 defaultValue="mac"
 values={[
+{label: 'Homebrew', value: 'homebrew'},
 {label: 'macOS', value: 'mac'},
 {label: 'Linux', value: 'linux'},
 ]
@@ -67,6 +68,21 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/darwin/amd64/airy -o "air
 :::
 </TabItem>
 
+<TabItem value="homebrew">
+
+Make sure you have the [Xcode Command Line Tools](https://developer.apple.com/library/archive/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-WHAT_IS_THE_COMMAND_LINE_TOOLS_PACKAGE_)  otherwise you can install them with:
+```bash
+xcode-select --install
+```
+
+Now you can get the CLI straight from our tap:
+
+```bash
+brew install airyhq/airy/airycli
+```
+
+</TabItem>
+
 <TabItem value="linux">
 
 ```bash
@@ -89,6 +105,7 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/linux/amd64/airy -o "airy
 groupId="operating-systems"
 defaultValue="mac"
 values={[
+{label: 'Homebrew', value: 'homebrew'},
 {label: 'macOS', value: 'mac'},
 {label: 'Linux', value: 'linux'},
 ]
@@ -114,6 +131,10 @@ sudo install -o root -g root -m 0755 airy /usr/local/bin/airy
 ```
 
 </TabItem>
+<TabItem value="homebrew">
+
+
+</TabItem>
 </Tabs>
 
 
@@ -134,14 +155,14 @@ your `apiHost` and `apiJwtToken`:
 airy init
 ```
 
-<Box color="#ACDF87">
+<SuccessBox>
 
 :tada: Congratulations! 
 
 You have successfully installed Airy CLI! Next step: Choose a way to [Deploy
 Airy Core](/getting-started/deployment/introduction.md)
 
-</Box>
+</SuccessBox>
 
 ## Building from source
 

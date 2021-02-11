@@ -8,6 +8,8 @@ app_deps = [
     "//backend/model/channel",
     "//backend:tag",
     "//backend:webhook",
+    "//backend/model/metadata",
+    "//backend/model/template",
     "//lib/java/uuid",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",

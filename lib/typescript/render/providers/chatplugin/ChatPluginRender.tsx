@@ -1,23 +1,38 @@
 import React from 'react';
-import {Message} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
+import {RichText} from '../../components/RichText';
 import {RichCard} from '../../components/RichCard';
 import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {ContentUnion} from './chatPluginModel';
 import {Text} from '../../components/Text';
+import {Message} from 'httpclient';
 
 export const ChatPluginRender = (props: MessageRenderProps) => {
   return render(mapContent(props.message), props);
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
+  const messageContent = JSON.parse(props.message.content);
+  const defaultProps = getDefaultMessageRenderingProps(props);
+  const modifiedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
+
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
+      return <Text {...modifiedProps} text={content.text} />;
+    case 'richText':
+      return (
+        <RichText
+          {...modifiedProps}
+          message={props.message}
+          text={messageContent.text}
+          fallback={messageContent.fallback}
+          containsRichText={messageContent.containsRichText}
+        />
+      );
     case 'richCard':
       return (
         <RichCard
-          {...getDefaultMessageRenderingProps(props)}
+          {...modifiedProps}
           title={content.title}
           description={content.description}
           media={content.media}
@@ -27,7 +42,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
     case 'richCardCarousel':
       return (
         <RichCardCarousel
-          {...getDefaultMessageRenderingProps(props)}
+          {...modifiedProps}
           cardWidth={content.cardWidth}
           cardContents={content.cardContents}
           id={props.message.id}

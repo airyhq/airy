@@ -5,6 +5,9 @@ slug: /
 ---
 
 import TLDR from "@site/src/components/TLDR";
+import ButtonBox from "@site/src/components/ButtonBox";
+import DeploySVG from "@site/static/img/getting-started/installation/deploy.svg";
+import DiamondSVG from "@site/static/img/getting-started/introduction/diamond.svg";
 
 ## What is Airy Core?
 
@@ -35,6 +38,53 @@ You can then use Airy Core to:
 Since Airy's infrastructure is built around Apache Kafka, it can process a large
 amount of conversations and messages simultaneously and stream the relevant
 conversational data to wherever you need it.
+
+## Get Started
+
+<ul style={{
+    listStyleType: "none",
+    padding: 0
+}}>
+
+<li style={{
+    marginBottom: '12px'
+}}>
+<ButtonBox 
+    icon={() => <DeploySVG />}
+    title='Start Installation' 
+    description='Install Airy with our CLI, locally or in the cloud' 
+    link='cli/installation'
+/>
+</li>
+
+</ul>
+
+Once you have Airy installed, follow our Quick Start for guidance.
+
+<ul style={{
+    listStyleType: "none",
+    padding: 0
+}}>
+
+<li style={{
+    marginBottom: '12px'
+}}>
+<ButtonBox 
+    icon={() => <DiamondSVG />}
+    title='To the Quick Start' 
+    description='Learn the Airy Basics with our Quick Start' 
+    link='getting-started/quickstart'
+/>
+</li>
+
+</ul>
+
+We'll guide you through the following journey:
+
+- Connect your first Source
+- Send Messages
+- Use the API to list conversations
+- Consume directly from Kafka
 
 ## Airy Core Components
 

@@ -35,8 +35,8 @@ public class Conversation implements Serializable {
 
     @JsonIgnore
     public DisplayName getDisplayNameOrDefault() {
-        String firstName = metadata.get(MetadataKeys.Source.Contact.FIRST_NAME);
-        String lastName = metadata.get(MetadataKeys.Source.Contact.LAST_NAME);
+        String firstName = metadata.get(MetadataKeys.ConversationKeys.Contact.FIRST_NAME);
+        String lastName = metadata.get(MetadataKeys.ConversationKeys.Contact.LAST_NAME);
 
         // Default to a display name that looks like: "Facebook 4ecb3"
         if (firstName == null && lastName == null) {
@@ -60,7 +60,7 @@ public class Conversation implements Serializable {
 
     @JsonIgnore
     public List<String> getTagIds() {
-        return MetadataRepository.filterPrefix(metadata, MetadataKeys.TAGS)
+        return MetadataRepository.filterPrefix(metadata, MetadataKeys.ConversationKeys.TAGS)
                 .keySet()
                 .stream()
                 .map(s -> s.split("\\.")[1])

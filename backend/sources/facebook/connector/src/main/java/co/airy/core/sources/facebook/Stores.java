@@ -12,7 +12,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
-import co.airy.log.AiryLoggerFactory;
+import co.airy.model.channel.dto.ChannelContainer;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -22,9 +22,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
-import org.apache.kafka.streams.kstream.Suppressed;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -32,23 +30,23 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
 
 @Service
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean, HealthIndicator {
-    private static final Logger log = AiryLoggerFactory.getLogger(Stores.class);
     private static final String appId = "sources.facebook.ConnectorStores";
 
     private final KafkaStreamsWrapper streams;
     private final String channelsStore = "channels-store";
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
+    private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
     private final KafkaProducer<String, SpecificRecordBase> producer;
     private final Connector connector;
 
@@ -131,6 +129,15 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
     public ReadOnlyKeyValueStore<String, Channel> getChannelsStore() {
         return streams.acquireLocalStore(channelsStore);
+    }
+
+    public void storeChannelContainer(ChannelContainer container) throws ExecutionException, InterruptedException {
+        final Channel channel = container.getChannel();
+        storeChannel(channel);
+
+        for (Metadata metadata : container.getMetadataMap().values()) {
+            producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(metadata).toString(), metadata)).get();
+        }
     }
 
     public void storeChannel(Channel channel) throws ExecutionException, InterruptedException {

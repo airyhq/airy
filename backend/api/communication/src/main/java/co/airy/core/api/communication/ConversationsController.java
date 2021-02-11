@@ -219,7 +219,7 @@ public class ConversationsController {
 
         try {
             final Subject subject = new Subject("conversation", conversationId);
-            final String metadataKey = String.format("%s.%s", MetadataKeys.TAGS, tagId);
+            final String metadataKey = String.format("%s.%s", MetadataKeys.ConversationKeys.TAGS, tagId);
             stores.deleteMetadata(subject, metadataKey);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));

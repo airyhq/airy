@@ -36,22 +36,17 @@ for more information.
 
 `POST /templates.list`
 
-This is a [paginated](/api/endpoints/introduction.md#pagination) endpoint.
-
 **Filtering**
 
-This endpoint allows you to query templates using the human readable [Lucene
-Query Syntax](https://lucene.apache.org/core/2_9_4/queryparsersyntax.html).
+This endpoint allows you to query templates, filtering by name.
 
 **Sample request**
 
-Find templates whose name ends with "NASA":
+Find templates whose name contains "NASA":
 
 ```json5
 {
-  "filters": "name:*NASA", // optional
-  "cursor": "next-page-uuid",
-  "page_size": 2
+  "name": "NASA" //optional
 }
 ```
 

@@ -26,4 +26,3 @@ This endpoint takes a `data` object and upserts the metadata for the `id`.
 
 The endpoint returns status code `200` if the operation was successful, and
 `400` if not.
-

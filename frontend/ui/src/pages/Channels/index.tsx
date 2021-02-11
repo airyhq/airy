@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 import {Channel} from 'httpclient';
-//import {AiryConfig} from '../../AiryConfig';
 import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
 import {StateModel} from '../../reducers/index';
 import styles from './index.module.scss';
@@ -12,6 +11,13 @@ import {setPageTitle} from '../../services/pageTitle';
 import {ReactComponent as SearchIcon} from '../../assets/images/icons/search.svg';
 import {ReactComponent as BackIcon} from '../../assets/images/icons/arrow-left-2.svg';
 import {ReactComponent as FilterIcon} from '../../assets/images/icons/filter-alt.svg';
+import {ReactComponent as AiryLogo} from '../../assets/images/icons/airy_avatar.svg';
+import {ReactComponent as FacebookLogo} from '../../assets/images/icons/messenger_avatar.svg';
+import {ReactComponent as SMSLogo} from '../../assets/images/icons/sms_avatar.svg';
+import {ReactComponent as WhatsappLogo} from '../../assets/images/icons/whatsapp_avatar.svg';
+import {ReactComponent as GoogleLogo} from '../../assets/images/icons/google_avatar.svg';
+import {ReactComponent as AddChannel} from '../../assets/images/icons/plus-circle.svg';
+import {ReactComponent as Placeholder} from '../../assets/images/icons/placeholder.svg';
 import {SearchField} from '@airyhq/components';
 
 const mapDispatchToProps = {
@@ -30,6 +36,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type ChannelsConnectProps = {} & ConnectedProps<typeof connector> & RouteComponentProps;
 
 const Channels = (props: ChannelsConnectProps) => {
+  const {channels} = props;
   const [isShowingSearchChannelInput, setIsShowingSearchChannelInput] = useState(false);
   const [searchChannel, setSearchChannel] = useState('');
 
@@ -51,23 +58,8 @@ const Channels = (props: ChannelsConnectProps) => {
     setPageTitle('Channels');
   }, []);
 
-  const handleAiryChannel = () => {
-    //Enter logic here
-  };
-  const handleFacebookChannel = () => {
-    //Enter logic here
-  };
-  const handleSmsChannel = () => {
-    //Enter logic here
-  };
-  const handleWhatsappChannel = () => {
-    //Enter logic here
-  };
-  const handleGoogleChannel = () => {
-    //Enter logic here
-  };
-
-  const totalChannel = props.channels.length;
+  const chatPluginSources = props.channels.filter(channel => channel.source === 'chat_plugin');
+  const facebookSources = props.channels.filter(channel => channel.source === 'facebook');
 
   const renderSearchChannelInput = isShowingSearchChannelInput ? (
     <div className={styles.containerChannelSearchField}>
@@ -93,7 +85,7 @@ const Channels = (props: ChannelsConnectProps) => {
       </div>
     </div>
   );
-  console.log(props.channels);
+
   return (
     <div className={styles.channelsWrapper}>
       <div className={styles.channelsHeadline}>
@@ -109,7 +101,7 @@ const Channels = (props: ChannelsConnectProps) => {
           {renderSearchChannelInput}
         </div>
       </div>
-      <ul className={styles.channelsChoice}>
+      <div className={styles.channelsChoice}>
         {' '}
         <p>Choose a channel you want to connect</p>
       </div>
@@ -125,9 +117,9 @@ const Channels = (props: ChannelsConnectProps) => {
               <p className={styles.airyText}>Best of class browser messenger</p>
             </div>
           </div>
-          {Channels && props.channels.length === 0 && (
+          {channels && chatPluginSources.length === 0 && (
             <div className={styles.channelButton}>
-              <button type="button" onClick={handleAiryChannel} className={styles.addChannelButton}>
+              <button type="button" className={styles.addChannelButton}>
                 <div className={styles.channelButtonIcon}>
                   <AddChannel />
                 </div>
@@ -135,24 +127,35 @@ const Channels = (props: ChannelsConnectProps) => {
             </div>
           )}
 
-          {Channels && props.channels.length > 0 && (
+          {channels && chatPluginSources.length > 0 && (
             <>
               <div className={styles.airyConnectedContainer}>
-                <div className={styles.airyConnectedPara}>
-                  <p>{totalChannel} CONNECTED</p>
+                <div className={styles.airyConnectedSum}>
+                  <p>{chatPluginSources.length} CONNECTED</p>
                 </div>
 
                 <div className={styles.airyConnectedChannel}>
-                  {props.channels.map((channel: Channel) => (
-                    <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                      <img src={channel.imageUrl} className={styles.channelImage} />
-                      <div className={styles.channelName}>{channel.name}</div>
-                    </li>
-                  ))}
+                  {chatPluginSources.map((channel: Channel) => {
+                    const channelName = channel.metadata.name;
+                    return (
+                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                        {channel.metadata.imageUrl && (
+                          <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
+                        )}
+                        <div className={styles.namePlaceholder}>
+                          <div className={styles.placeholderLogo}>
+                            <Placeholder />{' '}
+                          </div>
+
+                          <div className={styles.channelName}>{channel.metadata.name}</div>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </div>
               </div>
               <div className={styles.channelButton}>
-                <button type="button" onClick={handleAiryChannel} className={styles.addChannelButton}>
+                <button type="button" className={styles.addChannelButton}>
                   <div className={styles.channelButtonIcon}>
                     <AddChannel />
                   </div>
@@ -172,9 +175,9 @@ const Channels = (props: ChannelsConnectProps) => {
               <p className={styles.facebookText}>Connect multiple Facebook pages</p>
             </div>
           </div>
-          {Channels && props.channels.length === 0 && (
+          {channels && facebookSources.length === 0 && (
             <div className={styles.channelButton}>
-              <button type="button" onClick={handleFacebookChannel} className={styles.addChannelButton}>
+              <button type="button" className={styles.addChannelButton}>
                 <div className={styles.channelButtonIcon}>
                   <AddChannel />
                 </div>
@@ -182,25 +185,29 @@ const Channels = (props: ChannelsConnectProps) => {
             </div>
           )}
 
-          {Channels && props.channels.length > 0 && (
+          {channels && facebookSources.length > 0 && (
             <>
               <div className={styles.airyConnectedContainer}>
-                <div className={styles.airyConnectedPara}>
-                  <p>{totalChannel} CONNECTED</p>
+                <div className={styles.airyConnectedSum}>
+                  <p>{facebookSources.length} CONNECTED</p>
                 </div>
 
                 <div className={styles.airyConnectedChannel}>
-                  {props.channels.map((channel: Channel) => (
-                    <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                      <img src={channel.imageUrl} className={styles.channelImage} />
-                      <div className={styles.channelName}>{channel.name}</div>
-                      <div className={styles.channelAction}></div>
-                    </li>
-                  ))}
+                  {facebookSources.map((channel: Channel) => {
+                    // const channelName = channel.metadata.name;
+                    return (
+                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                        {/* {channel.metadata.imageUrl && (
+                          <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
+                        )} */}
+                        <div className={styles.channelName}>{channel.metadata.name}</div>
+                      </li>
+                    );
+                  })}
                 </div>
               </div>
               <div className={styles.channelButton}>
-                <button type="button" onClick={handleAiryChannel} className={styles.addChannelButton}>
+                <button type="button" className={styles.addChannelButton}>
                   <div className={styles.channelButtonIcon}>
                     <AddChannel />
                   </div>
@@ -221,7 +228,7 @@ const Channels = (props: ChannelsConnectProps) => {
           </div>
           <div>
             <div className={styles.channelButton}>
-              <button type="button" onClick={handleSmsChannel} className={styles.addChannelButton}>
+              <button type="button" className={styles.addChannelButton}>
                 <div className={styles.channelButtonIcon}>
                   <AddChannel />
                 </div>
@@ -241,7 +248,7 @@ const Channels = (props: ChannelsConnectProps) => {
           </div>
           <div>
             <div className={styles.channelButton}>
-              <button type="button" onClick={handleWhatsappChannel} className={styles.addChannelButton}>
+              <button type="button" className={styles.addChannelButton}>
                 <div className={styles.channelButtonIcon}>
                   <AddChannel />
                 </div>
@@ -261,7 +268,7 @@ const Channels = (props: ChannelsConnectProps) => {
           </div>
           <div>
             <div className={styles.channelButton}>
-              <button type="button" onClick={handleGoogleChannel} className={styles.addChannelButton}>
+              <button type="button" className={styles.addChannelButton}>
                 <div className={styles.channelButtonIcon}>
                   <AddChannel />
                 </div>

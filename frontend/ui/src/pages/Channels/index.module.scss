@@ -27,39 +27,8 @@
   width: 100%;
   overflow-y: auto;
   padding: 32px;
-  margin: 88px 2.5em 0 7.5em;
+  margin: 88px 1.5em 0 100px;
   min-height: calc(100vh - 170px);
- 
-}
-
-.connectButton {
-  @include font-m;
-  font-weight: 700;
-  line-height: 16px;
-  font-size: 20px;
-  height: 40px;
-  background-color: var(--color-airy-blue);
-  color: white;
-  border-radius: 4px;
-  text-align: center;
-  border: none;
-  cursor: pointer;
-  padding: 8px 16px;
-  margin: 0 0;
-  &:hover {
-    background-color: var(--color-airy-blue-hover);
-  }
-
-  &:active {
-    background: var(--color-airy-blue-pressed);
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    color: var(--color-text-gray) !important;
-    background-color: var(--color-light-gray) !important;
-    border: none;
-  }
 }
 
 .containerChannelSearchField {
@@ -142,28 +111,10 @@
   outline: none;
 }
 
-
 .searchIcon {
   background-color: rgb(243, 243, 243);
-  height: 30px;
+  height: 25px;
   border: none;
-  width: 30px;
-  
-}
-
-.searchIcon:hover {
-  background: var(--color-airy-blue);
-}
-
-.containerFilterAndSearchChannel{
-  display:flex;
-  border-radius: 5px;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.containerFilter{
-  margin-right: 18px;
   width: 25px;
 }
 
@@ -178,7 +129,6 @@
   flex-direction: column;
   width: 20%;
   margin-bottom: 1em;
-  
 }
 
 .flexWrap {
@@ -255,7 +205,9 @@
 }
 
 .airyConnectedChannel {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   border: solid 1px var(--color-light-gray);
   border-radius: 8px;
   flex-basis: 100%;
@@ -266,30 +218,42 @@
   //background-color: red;
 }
 
-.airyConnectedPara {
+.airyConnectedSum {
   color: var(--color-text-gray);
   margin-left: 3em;
 }
 
+.namePlaceholder {
+  display: flex;
+  flex-direction: row;
+}
+
+.placeholderLogo {
+  height: 40px;
+  border: none;
+  width: 40px;
+  background: white;
+  border-radius: 50%;
+  padding: 15px 0px 17px 28px;
+}
+
+.channelName {
+  padding: 5px 0px 15px 0px;
+}
+
 .channelList {
   list-style: none;
- }
-  
- .channelsChoice {
-  list-style: none;
-  color: var(--color-text-gray);
-  padding-bottom: 20px;
- }
-  
- .channelListEntry {
-  display: flex;
-  border-bottom: 1px solid var(--color-airy-blue);
+}
+
+.channelListEntry {
+  display: inline-flex;
+  flex-direction: column;
   align-items: center;
 }
 
 .channelName {
-  padding-top:16px;
-  padding-left:16px;
+  padding-top: 16px;
+  padding-left: 16px;
 }
 
 .channelAction {

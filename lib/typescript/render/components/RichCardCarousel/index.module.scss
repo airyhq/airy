@@ -11,6 +11,10 @@
   padding-right: 5px;
 }
 
+.richCard:last-child {
+  padding-right: 20px;
+}
+
 .button {
   position: relative;
   outline: none;
@@ -53,6 +57,25 @@
     left: 0px;
   }
   .moveBack:focus {
+    outline: none;
+  }
+
+  .moveNextShort {
+    img {
+      height: 24px;
+      width: 24px;
+    }
+    position: absolute;
+    width: 30px;
+    height: 40px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border: none;
+    background: white;
+    left: 146px;
+    top: 135px;
+  }
+  .moveNextShort:focus {
     outline: none;
   }
 }

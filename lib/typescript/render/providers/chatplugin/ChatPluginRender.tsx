@@ -63,18 +63,9 @@ function mapContent(message: Message): ContentUnion {
   }
 
   if (messageContent.richCard.carouselCard) {
-    const {
-      richCard: {
-        carouselCard: {
-          cardWidth,
-          cardContents: [],
-        },
-      },
-    } = messageContent;
-
     return {
       type: 'richCardCarousel',
-      cardWidth: cardWidth,
+      cardWidth: messageContent.richCard.carouselCard.cardWidth,
       cardContents: messageContent.richCard.carouselCard.cardContents,
     };
   }

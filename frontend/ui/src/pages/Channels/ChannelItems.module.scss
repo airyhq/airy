@@ -5,8 +5,6 @@
     display: flex;
     flex-wrap: wrap;
     width: 30%;
-    
-    
   }
 
   .flexWrap {
@@ -14,29 +12,32 @@
     flex-grow: 1;
     align-items: center;
   }
+
   .airyChannel {
     display: inline-flex;
     border: solid 1px var(--color-light-gray);
     border-radius: 8px;
     flex-basis: 100%;
     width:auto;
-    height:auto;
+    height:17vh;
     padding:1%;
     margin-bottom: 15px;
   }
 
-  .airyChannel .airyLogo{
+   .airyLogo{
     height: 60px;
     border: none;
     width: 40px;
     background:white;
     border-radius: 50%;
     padding-left: 12px;
+    padding-top: 22px;
   }
 
   .airyTitleAndText{
     margin-left: auto;
     margin-right: auto;
+    padding-top: 22px;
   }
 
   .airyText{ 
@@ -70,6 +71,7 @@
   @include font-s;
   font-weight: 400;
   color: #000;
+  padding-top: 5px;
   
   
   }
@@ -84,23 +86,25 @@
     border-radius: 8px;
     flex-basis: 100%;
     width:auto;
-    height:auto;
+    height:17vh;
     padding:1%;
     margin-bottom: 15px;
   }
 
-  .facebookChannel  .facebookLogo{
+  .facebookLogo{
     height: 60px;
     border: none;
     width: 40px;
     background:white;
     border-radius: 50%;
     padding-left: 12px;
+    padding-top: 22px;
   }
 
   .facebookTitleAndText{
     margin-left: auto;
     margin-right: 10px;
+    padding-top: 22px;
   }
 
   .facebookText{ 
@@ -114,23 +118,25 @@
     border-radius: 8px;
     flex-basis: 100%;
     width:auto;
-    height:auto;
+    height:17vh;
     padding:1%;
     margin-bottom: 15px;
   }
 
-  .smsChannel .smsLogo{
+   .smsLogo{
     height: 60px;
     border: none;
     width: 40px;
     background:white;
     border-radius: 50%;
     padding-left: 12px;
+    padding-top: 22px;
   }
 
   .smsTitleAndText{
     margin-left: 21px;
     margin-right: auto;
+    padding-top: 22px;
   }
 
   .smsText{ 
@@ -144,24 +150,26 @@
     border-radius: 8px;
     flex-basis: 100%;
     width:auto;
-    height:auto;
+    height:17vh;
     padding:1%;
     margin-bottom: 15px;
   }
 
-  .whatsappChannel .whatsappLogo{
+   .whatsappLogo{
     height: 60px;
     border: none;
     width: 40px;
     background:white;
     border-radius: 50%;
     padding-left: 12px;
+    padding-top: 22px;
   }
 
 
   .whatsappTitleAndText{
     margin-left: 20px;
     margin-right: auto;
+    padding-top: 22px;
   }
 
   .whatsappText{ 
@@ -175,23 +183,25 @@
     border-radius: 8px;
     flex-basis: 100%;
     width:auto;
-    height:auto;
+    height:17vh;
     padding:1%;
     margin-bottom: 15px;
   }
 
-  .googleChannel .googleLogo{
+  .googleLogo{
     height: 60px;
     border: none;
     width: 40px;
     background:white;
     border-radius: 50%;
     padding-left: 12px;
+    padding-top: 22px;
   }
 
   .googleTitleAndText{
     margin-left: 20px;
     margin-right: auto;
+    padding-top: 22px;
   }
 
   .googleText{ 

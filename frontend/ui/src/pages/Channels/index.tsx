@@ -116,11 +116,20 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
 
   return (
     <div className={styles.channelsWrapper}>
-      <div className={styles.headline}>
+      <div className={styles.channelsHeadline}>
         <div>
-          <h1 className={styles.headlineText}>Channels</h1>
+          <h1 className={styles.channelsHeadlineText}>Channels</h1>
         </div>
-        <FacebookLogin
+        <div className={styles.containerFilterAndSearchChannel}>
+          <div className={styles.containerFilter}>
+            <button type="button" className={styles.searchButton} onClick={onClickSearch} disabled={true}>
+              <FilterIcon className={styles.searchIcon} title="Filter" />
+            </button>
+          </div>
+
+          {renderSearchChannelInput}
+        </div>
+        {/* <FacebookLogin
           appId={AiryConfig.FACEBOOK_APP_ID}
           autoLoad={false}
           textButton="Add a Channel"
@@ -133,14 +142,34 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
             <Button type="button" onClick={fetchPages}>
               Add Channels
             </Button>
-          )}
-        />{' '}
-        */}
+          )} 
+        /> */}
       </div>
-      <ul className={styles.channelChoice}>
+      <ul className={styles.channelsChoice}>
         {' '}
         <li>Choose a channel you want to connect</li>
       </ul>
+
+      {/* <ul className={styles.channelList}>
+        {props.channels.map((channel: Channel) => (
+          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+            <img src={channel.imageUrl} className={styles.channelImage} />
+            <div className={styles.channelName}>{channel.name}</div>
+            <div className={styles.channelAction}>
+              {channel.connected ? (
+                <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
+                  Disconnect
+                </Button>
+              ) : (
+                <Button styleVariant="small" onClick={() => connectClicked(channel)}>
+                  Connect
+                </Button>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul> */}
+
       <div>
         <ChannelItems />
       </div>

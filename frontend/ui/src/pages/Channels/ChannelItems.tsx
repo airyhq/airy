@@ -5,7 +5,7 @@ import {ReactComponent as FacebookLogo} from '../../assets/images/icons/messenge
 import {ReactComponent as SMSLogo} from '../../assets/images/icons/sms_avatar.svg';
 import {ReactComponent as WhatsappLogo} from '../../assets/images/icons/whatsapp_avatar.svg';
 import {ReactComponent as GoogleLogo} from '../../assets/images/icons/google_avatar.svg';
-import {ReactComponent as AddChannel} from '../../assets/images/icons/add-icon.svg';
+import {ReactComponent as AddChannel} from '../../assets/images/icons/plus-circle.svg';
 
 function channelItem() {
   const handleAiryChannel = () => {

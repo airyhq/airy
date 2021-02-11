@@ -40,6 +40,7 @@ yourself](installation.md#building-from-source).
 groupId="operating-systems"
 defaultValue="mac"
 values={[
+{label: 'Homebrew', value: 'homebrew'},
 {label: 'macOS', value: 'mac'},
 {label: 'Linux', value: 'linux'},
 ]
@@ -67,6 +68,21 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/darwin/amd64/airy -o "air
 :::
 </TabItem>
 
+<TabItem value="homebrew">
+
+Make sure you have the [Xcode Command Line Tools](https://developer.apple.com/library/archive/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-WHAT_IS_THE_COMMAND_LINE_TOOLS_PACKAGE_)  otherwise you can install them with:
+```bash
+xcode-select --install
+```
+
+Now you can get the CLI straight from our tap:
+
+```bash
+brew install airyhq/airy/airycli
+```
+
+</TabItem>
+
 <TabItem value="linux">
 
 ```bash
@@ -89,6 +105,7 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/linux/amd64/airy -o "airy
 groupId="operating-systems"
 defaultValue="mac"
 values={[
+{label: 'Homebrew', value: 'homebrew'},
 {label: 'macOS', value: 'mac'},
 {label: 'Linux', value: 'linux'},
 ]
@@ -112,6 +129,10 @@ sudo chown root: /usr/local/bin/airy
 ```bash
 sudo install -o root -g root -m 0755 airy /usr/local/bin/airy
 ```
+
+</TabItem>
+<TabItem value="homebrew">
+
 
 </TabItem>
 </Tabs>

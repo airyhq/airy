@@ -31,6 +31,8 @@ kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replicatio
 
 kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.tags" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
 
+kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.templates" --config cleanup.policy=compact min.compaction.lag.ms=86400000 segment.bytes=10485760 1>/dev/null
+
 kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}application.communication.webhooks"  1>/dev/null
 
 kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}ops.application.health" --config retention.ms=3600000 1>/dev/null

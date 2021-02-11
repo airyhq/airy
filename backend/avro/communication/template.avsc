@@ -1,0 +1,10 @@
+{
+  "namespace": "co.airy.avro.communication",
+  "name": "Template",
+  "type": "record",
+  "fields": [
+    {"name": "id", "type": "string"},
+    {"name": "name", "type": "string"},
+    {"name": "content", "type": "string"}
+  ]
+}

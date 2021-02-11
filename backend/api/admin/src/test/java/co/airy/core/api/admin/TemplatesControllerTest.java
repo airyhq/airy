@@ -26,6 +26,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(value = "classpath:test.properties")
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-public class TagsControllerTest {
+public class TemplatesControllerTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
@@ -73,48 +76,36 @@ public class TagsControllerTest {
     }
 
     @Test
-    void canManageTags() throws Exception {
-        final String name = "awesome-tag";
-        final String color = "tag-red";
-        final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
+    void canManageTemplates() throws Exception {
+        final String name = "awesome-template";
+        final String content = "{}";
+        final String payload = "{\"name\":\"" + name + "\",\"content\": \"" + content + "\"}";
 
-        final String createTagResponse = webTestHelper.post("/tags.create", payload, "user-id")
+        final String createTagResponse = webTestHelper.post("/templates.create", payload, "user-id")
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
         final JsonNode jsonNode = objectMapper.readTree(createTagResponse);
-        final String tagId = jsonNode.get("id").textValue();
+        final String templateId = jsonNode.get("id").textValue();
 
-        //TODO wait for tag to be there
+        assertThat(templateId, is(not(nullValue())));
+
+        //TODO wait for template to be there
         TimeUnit.SECONDS.sleep(5);
 
-        webTestHelper.post("/tags.list", "{}", "user-id")
+        webTestHelper.post("/templates.info", "{\"id\":\"" + templateId + "\"}", "user-id")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(is(templateId)))
+                .andExpect(jsonPath("$.name").value(is(name)));
+
+        webTestHelper.post("/templates.list", "{\"name\":\"" + name.substring(0, 3) + "\"}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(1)))
-                .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
-                .andExpect(jsonPath("$.data[0].name").value(is(name)))
-                .andExpect(jsonPath("$.data[0].color").value(is("RED")));
+                .andExpect(jsonPath("$.data[0].id").value(is(templateId)))
+                .andExpect(jsonPath("$.data[0].name").value(is(name)));
 
-        webTestHelper.post("/tags.update",
-                "{\"id\": \"" + tagId + "\", \"name\": \"new-name\", \"color\": \"" + color + "\"}", "user-id")
-                .andExpect(status().isOk());
-
-        webTestHelper.post("/tags.list", "{}", "user-id")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()", is(1)))
-                .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
-                .andExpect(jsonPath("$.data[0].name").value(is("new-name")))
-                .andExpect(jsonPath("$.data[0].color").value(is("RED")));
-
-        webTestHelper.post("/tags.delete", "{\"id\": \"" + tagId + "\"}", "user-id").andExpect(status().isOk());
-
-        //TODO wait for tag deletion
-        TimeUnit.SECONDS.sleep(5);
-
-        webTestHelper.post("/tags.list", "{}", "user-id")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()", is(0)));
+        webTestHelper.post("/templates.delete", "{\"id\": \"" + templateId + "\"}", "user-id").andExpect(status().isOk());
     }
 }

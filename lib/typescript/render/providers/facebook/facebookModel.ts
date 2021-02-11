@@ -51,6 +51,25 @@ export interface ImageContent extends Content {
   imageUrl: string;
 }
 
+export interface VideoContent extends Content {
+  type: 'video';
+  videoUrl: string;
+}
+
+export interface QuickReply {
+  content_type: string;
+  title: string;
+  payload: string;
+  image_url?: string;
+}
+
+export interface QuickRepliesContent extends Content {
+  type: 'quickReplies';
+  text?: string;
+  attachment?: AttachmentUnion;
+  quickReplies: QuickReply[];
+}
+
 export interface Button {
   type: 'web_url';
   url: string;
@@ -69,4 +88,11 @@ export interface GenericTemplate extends Content {
 }
 
 // Add a new facebook content model here:
-export type ContentUnion = TextContent | ImageContent | ButtonTemplate | GenericTemplate;
+export type ContentUnion =
+  | TextContent
+  | ImageContent
+  | VideoContent
+  | ButtonTemplate
+  | GenericTemplate
+  | QuickRepliesContent;
+export type AttachmentUnion = TextContent | ImageContent | VideoContent | ButtonTemplate | GenericTemplate;

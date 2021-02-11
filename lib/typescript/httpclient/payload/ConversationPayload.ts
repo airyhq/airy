@@ -12,5 +12,5 @@ export interface ConversationPayload {
   };
   tags: string[];
   last_message: MessagePayload;
-  unread_message_count?: number;
+  unread_count?: number;
 }

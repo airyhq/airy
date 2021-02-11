@@ -13,5 +13,5 @@ export const conversationMapper = (payload: ConversationPayload): Conversation =
   },
   tags: payload.tags,
   lastMessage: messageMapper(payload.last_message),
-  unreadMessageCount: payload.unread_message_count,
+  unreadMessageCount: payload.unread_count,
 });

@@ -13,7 +13,7 @@ export const CONVERSATION_READ = '@@conversations/CONVERSATION_READ';
 export const CONVERSATION_ADD_TAG = '@@conversations/CONVERSATION_ADD_TAG';
 export const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
 export const CONVERSATION_UPDATE_PAGINATION_DATA = '@@conversation/UPDATE_PAGINATION_DATA';
-export const CONVERSATION_SET_UNREAD_MESSAGE_COUNT = '@@conversations/CONVERSATION_SET_UNREAD_MESSAGE_COUNT';
+export const CONVERSATION_SET_UNREAD_COUNT = '@@conversations/CONVERSATION_SET_UNREAD_COUNT';
 
 export const loadingConversationAction = createAction(CONVERSATION_LOADING, resolve => (conversationId: string) =>
   resolve(conversationId)
@@ -60,7 +60,7 @@ export const updateMessagesPaginationDataAction = createAction(
 );
 
 export const setConversationUnreadMessageCount = createAction(
-  CONVERSATION_SET_UNREAD_MESSAGE_COUNT,
+  CONVERSATION_SET_UNREAD_COUNT,
   resolve => (conversationId: string, unreadMessageCount: number) => resolve({conversationId, unreadMessageCount})
 );
 

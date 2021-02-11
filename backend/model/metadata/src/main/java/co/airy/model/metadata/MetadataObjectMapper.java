@@ -41,7 +41,7 @@ public class MetadataObjectMapper {
 
         // stop recursion
         if (nodeNames.length == 1) {
-            root.put(key, value);
+            setValue(root, key, value);
         } else {
             final String nodeName = nodeNames[0];
             final String remainingNodes = String.join(".", Arrays.copyOfRange(nodeNames, 1, nodeNames.length));
@@ -57,8 +57,19 @@ public class MetadataObjectMapper {
                 root.set(nodeName, nextRootNode);
             }
             applyMetadata(nextRootNode, remainingNodes, value);
-
         }
+    }
+
+    private static void setValue(ObjectNode node, String key, String value) {
+        if (key.endsWith("count")) {
+            try {
+                node.put(key, Integer.valueOf(value));
+                return;
+            } catch (NumberFormatException expected) {
+            }
+        }
+
+        node.put(key, value);
     }
 
     public static List<Metadata> getMetadataFromJson(Subject subject, JsonNode payload) throws Exception {

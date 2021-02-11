@@ -53,8 +53,6 @@ public class ConversationResponsePayload {
         final JsonNode unreadCount = metadata.get(ConversationKeys.UNREAD_COUNT);
         if (unreadCount == null) {
             ((ObjectNode) metadata).put(ConversationKeys.UNREAD_COUNT, 0);
-        } else if (unreadCount.isTextual()) {
-            ((ObjectNode) metadata).put(ConversationKeys.UNREAD_COUNT, unreadCount.intValue());
         }
 
         return metadata;

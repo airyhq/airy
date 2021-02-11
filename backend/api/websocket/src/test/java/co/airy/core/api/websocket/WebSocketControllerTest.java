@@ -16,6 +16,7 @@ import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.jwt.Jwt;
+import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -77,6 +78,9 @@ public class WebSocketControllerTest {
     private MockMvc mvc;
 
     @Autowired
+    private WebTestHelper webTestHelper;
+
+    @Autowired
     private Jwt jwt;
 
     @BeforeAll
@@ -96,7 +100,7 @@ public class WebSocketControllerTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        retryOnException(() -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()), "Application is not healthy");
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test

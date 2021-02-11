@@ -68,7 +68,6 @@ class ConversationsInfoTest {
                 .build();
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-
         final String conversationId = UUID.randomUUID().toString();
         kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
 

@@ -147,12 +147,12 @@ class ConversationsListTest {
 
     @Test
     void canFilterByUnreadMessageCountRange() throws Exception {
-        checkConversationsFound("{\"filters\": \"unread_message_count:[2 TO *]\"}", 2);
+        checkConversationsFound("{\"filters\": \"unread_count:[2 TO *]\"}", 2);
     }
 
     @Test
     void canFilterByUnreadMessageCount() throws Exception {
-        checkConversationsFound("{\"filters\": \"unread_message_count:2\"}", 1);
+        checkConversationsFound("{\"filters\": \"unread_count:2\"}", 1);
     }
 
     @Test

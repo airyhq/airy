@@ -48,7 +48,7 @@ public class ConversationsController {
 
     ConversationsController(Stores stores) {
         this.stores = stores;
-        this.queryParser = new ExtendedQueryParser(Set.of("unread_message_count"),
+        this.queryParser = new ExtendedQueryParser(Set.of("unread_count"),
                 Set.of("created_at"),
                 "id",
                 new WhitespaceAnalyzer());

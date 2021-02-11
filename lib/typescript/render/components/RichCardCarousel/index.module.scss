@@ -4,8 +4,7 @@
 .richCardCarouselContainer {
   display: flex;
   overflow-x: hidden;
-  padding-left: 16px;
-  margin-right: 16px;
+  padding-left: 20px;
 }
 
 .richCard {
@@ -14,13 +13,13 @@
 
 .button {
   position: relative;
+  outline: none;
 
   .moveNext {
     img {
       height: 24px;
       width: 24px;
     }
-    border: 1px solid black;
     position: absolute;
     width: 30px;
     height: 40px;
@@ -31,13 +30,18 @@
     left: 290px;
     top: 135px;
   }
+  .moveNext:focus {
+    outline: none;
+  }
 
   .moveBack {
     img {
       height: 24px;
       width: 24px;
     }
-    border: 1px solid black;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
     position: absolute;
     width: 30px;
     height: 40px;
@@ -47,5 +51,8 @@
     background: white;
     top: 135px;
     left: 0px;
+  }
+  .moveBack:focus {
+    outline: none;
   }
 }

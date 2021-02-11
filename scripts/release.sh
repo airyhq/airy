@@ -37,6 +37,7 @@ finish() {
     merge_develop
     echo -e "Release ${release_number} is finished\n"
     create_alpha_version
+
 }
 
 update_release_version() {

@@ -218,6 +218,11 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationMetadata, getId(subject, key).toString(), null)).get();
     }
 
+    public MetadataMap getMetadata(String subjectId) {
+        final ReadOnlyKeyValueStore<String, MetadataMap> metadataStore = getMetadataStore();
+        return metadataStore.get(subjectId);
+    }
+
     public List<Conversation> addChannelMetadata(List<Conversation> conversations) {
         final ReadOnlyKeyValueStore<String, MetadataMap> metadataStore = getMetadataStore();
         Map<String, MetadataMap> metadataCache = new HashMap<>();

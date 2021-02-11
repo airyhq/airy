@@ -15,6 +15,7 @@ import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.PaginationData;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.Subject;
+import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
 import co.airy.spring.web.payload.EmptyResponsePayload;
@@ -142,6 +143,9 @@ public class ConversationsController {
         if (conversation == null) {
             return ResponseEntity.notFound().build();
         }
+
+        final MetadataMap channelMetadata = stores.getMetadata(conversation.getChannelId());
+        conversation.getChannelContainer().setMetadataMap(channelMetadata);
 
         return ResponseEntity.ok(ConversationResponsePayload.fromConversation(conversation));
     }

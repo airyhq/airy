@@ -108,6 +108,10 @@ public class TemplatesControllerTest {
                 .andExpect(jsonPath("$.data[0].id").value(is(templateId)))
                 .andExpect(jsonPath("$.data[0].name").value(is(name)));
 
+        webTestHelper.post("/templates.list", "{}", "user-id")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()", is(1)));
+
         webTestHelper.post("/templates.delete", "{\"id\": \"" + templateId + "\"}", "user-id").andExpect(status().isOk());
     }
 }

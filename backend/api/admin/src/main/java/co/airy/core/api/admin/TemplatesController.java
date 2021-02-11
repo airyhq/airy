@@ -75,7 +75,12 @@ public class TemplatesController {
     @PostMapping("/templates.list")
     ResponseEntity<?> listTemplates(@RequestBody @Valid ListTemplatesRequestPayload payload) {
         final List<TemplatePayload> response = stores.getTemplates().stream()
-                .filter(t -> t.getName().contains(payload.getName()))
+                .filter(t -> {
+                    if (payload.getName() == null || payload.getName().isEmpty()) {
+                        return true;
+                    }
+                    return t.getName().contains(payload.getName());
+                })
                 .map(TemplatePayload::fromTemplate)
                 .collect(toList());
 

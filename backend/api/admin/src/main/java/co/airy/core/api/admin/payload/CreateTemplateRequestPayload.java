@@ -14,7 +14,9 @@ import javax.validation.constraints.NotNull;
 public class CreateTemplateRequestPayload {
     @NotNull
     private String name;
+    @NotNull
+    private String content;
     @Valid
     @NotNull
-    private JsonNode content;
+    private JsonNode variables;
 }

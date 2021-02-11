@@ -39,7 +39,8 @@ public class TemplatesController {
         final Template template = Template.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setName(payload.getName())
-                .setContent(objectMapper.writeValueAsString(payload.getContent()))
+                .setContent(payload.getContent())
+                .setVariables(objectMapper.writeValueAsString(payload.getVariables()))
                 .build();
 
         try {

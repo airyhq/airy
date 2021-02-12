@@ -78,7 +78,7 @@ xcode-select --install
 Now you can get the CLI straight from our tap:
 
 ```bash
-brew install airyhq/airy/airycli
+brew install airyhq/airy/cli
 ```
 
 </TabItem>

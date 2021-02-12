@@ -131,6 +131,22 @@ sources:
 Integrating sources into the `Airy Core` often requires specific configuration
 settings, refer to the [source specific docs](/sources/introduction.md) for details.
 
+## External tools
+
+The optional external tools can be activated in the `airy.yaml` configuration file, under the `tools` section.
+For more details please see our [Configuration Section](configuration.md).
+
+### AKHQ
+
+AKHQ is a GUI for inspecting Apache Kafka. If enabled, it can be accessed under `http://tools.airy/akhq`.
+Username is `admin` and the auto-generated password can be retrieved from a configMap:
+
+```sh
+cd infrastructure
+vagrant ssh
+kubectl get configmap akhq-config -o jsonpath="{.data.password}"
+```
+
 ## Uninstall Airy Core
 
 You can remove the Airy Core Vagrant box from your machine completely running

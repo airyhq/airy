@@ -222,6 +222,7 @@ You must set appropriate `host` attributes in the rules for:
 - Webhooks endpoints (defaults to `webhooks.airy`)
 - Core UI (defaults to `ui.airy`)
 - Chat plugin (defaults to `chatplugin.airy`)
+- Tools (defaults to `tools.airy`)
 
 If you are not using Traefik, you can use the
 `infrastructure/helm-chart/templates/ingress.yaml` file as a guide to create
@@ -231,7 +232,22 @@ If your Kubernetes cluster is not directly reachable on the Internet, you will
 need a public LoadBalancer or a `reverse proxy` to tunnel the traffic to the
 ports exposed by the ingress controller (usually ports `80` and `443`).
 
-## AWS Cloud Services
+## External tools
+
+The optional external tools can be activated in the `airy.yaml` configuration file, under the `tools` section.
+For more details please see our [Configuration Section](configuration.md).
+
+### AKHQ
+
+AKHQ is a GUI for inspecting Apache Kafka. If enabled, it can be accessed under `http://{TOOLS-HOSTNAME}/akhq`,
+where {TOOLS-HOSTNAME} is the configured ingress hostname, set in the previous section.
+Username is `admin` and the auto-generated password can be retrieved from a configMap:
+
+```sh
+kubectl get configmap akhq-config -o jsonpath="{.data.password}"
+```
+
+## AWS Cloud
 
 TODO
 

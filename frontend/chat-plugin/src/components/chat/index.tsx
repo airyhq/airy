@@ -141,7 +141,14 @@ const Chat = (props: Props) => {
                     render={
                       props.airyMessageProp
                         ? () => props.airyMessageProp(ctrl)
-                        : () => <SourceMessage message={message} source="chat_plugin" lastInGroup={lastInGroup} />
+                        : () => (
+                            <SourceMessage
+                              message={message}
+                              source="chat_plugin"
+                              lastInGroup={lastInGroup}
+                              invertSides={true}
+                            />
+                          )
                     }
                   />
                 );

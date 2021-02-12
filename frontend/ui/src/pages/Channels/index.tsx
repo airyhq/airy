@@ -60,6 +60,8 @@ const Channels = (props: ChannelsConnectProps) => {
 
   const chatPluginSources = props.channels.filter(channel => channel.source === 'chat_plugin');
   const facebookSources = props.channels.filter(channel => channel.source === 'facebook');
+  const smsSources = props.channels.filter(channel => channel.source === 'twilio.sms');
+  const whatsappSources = props.channels.filter(channel => channel.source === 'twilio.whatsapp');
 
   const renderSearchChannelInput = isShowingSearchChannelInput ? (
     <div className={styles.containerChannelSearchField}>
@@ -139,10 +141,11 @@ const Channels = (props: ChannelsConnectProps) => {
                     const channelName = channel.metadata.name;
                     return (
                       <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                        {channel.metadata.imageUrl && (
-                          <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
-                        )}
                         <div className={styles.namePlaceholder}>
+                          {channel.metadata.imageUrl && (
+                            <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
+                          )}
+
                           <div className={styles.placeholderLogo}>
                             <Placeholder />{' '}
                           </div>
@@ -194,13 +197,15 @@ const Channels = (props: ChannelsConnectProps) => {
 
                 <div className={styles.airyConnectedChannel}>
                   {facebookSources.map((channel: Channel) => {
-                    // const channelName = channel.metadata.name;
+                    const channelName = channel.metadata.name;
                     return (
                       <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                        {/* {channel.metadata.imageUrl && (
-                          <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
-                        )} */}
-                        <div className={styles.channelName}>{channel.metadata.name}</div>
+                        <div className={styles.namePlaceholder}>
+                          {channel.metadata.imageUrl && (
+                            <img src={channel.metadata.imageUrl} alt={channelName} className={styles.facebookImage} />
+                          )}
+                          <div className={styles.channelName}>{channel.metadata.name}</div>
+                        </div>
                       </li>
                     );
                   })}
@@ -226,7 +231,8 @@ const Channels = (props: ChannelsConnectProps) => {
               <p className={styles.smsText}>Deliver SMS with ease</p>
             </div>
           </div>
-          <div>
+
+          {channels && smsSources.length === 0 && (
             <div className={styles.channelButton}>
               <button type="button" className={styles.addChannelButton}>
                 <div className={styles.channelButtonIcon}>
@@ -234,7 +240,46 @@ const Channels = (props: ChannelsConnectProps) => {
                 </div>
               </button>
             </div>
-          </div>
+          )}
+
+          {channels && smsSources.length > 0 && (
+            <>
+              <div className={styles.airyConnectedContainer}>
+                <div className={styles.airyConnectedSum}>
+                  <p>{smsSources.length} CONNECTED</p>
+                </div>
+
+                <div className={styles.airyConnectedChannel}>
+                  {smsSources.map((channel: Channel) => {
+                    //const channelName = channel.metadata.name;
+                    return (
+                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                        <div className={styles.namePlaceholder}>
+                          {/* {channel.metadata.imageUrl && (
+                          <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
+                        )} */}
+
+                          <div className={styles.placeholderLogo}>
+                            <Placeholder />{' '}
+                          </div>
+
+                          <div className={styles.channelName}>{channel.metadata.name}</div>
+                          <div className={styles.smsChannelId}>{channel.sourceChannelId}</div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className={styles.channelButton}>
+                <button type="button" className={styles.addChannelButton}>
+                  <div className={styles.channelButtonIcon}>
+                    <AddChannel />
+                  </div>
+                </button>
+              </div>
+            </>
+          )}
         </div>
         <div className={styles.flexWrap}>
           <div className={styles.whatsappChannel}>
@@ -246,7 +291,8 @@ const Channels = (props: ChannelsConnectProps) => {
               <p className={styles.whatsappText}>World #1 chat app</p>
             </div>
           </div>
-          <div>
+
+          {channels && whatsappSources.length === 0 && (
             <div className={styles.channelButton}>
               <button type="button" className={styles.addChannelButton}>
                 <div className={styles.channelButtonIcon}>
@@ -254,8 +300,47 @@ const Channels = (props: ChannelsConnectProps) => {
                 </div>
               </button>
             </div>
-          </div>
+          )}
+          {channels && whatsappSources.length > 0 && (
+            <>
+              <div className={styles.airyConnectedContainer}>
+                <div className={styles.airyConnectedSum}>
+                  <p>{whatsappSources.length} CONNECTED</p>
+                </div>
+
+                <div className={styles.airyConnectedChannel}>
+                  {whatsappSources.map((channel: Channel) => {
+                    //const channelName = channel.metadata.name;
+                    return (
+                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                        <div className={styles.namePlaceholder}>
+                          {/* {channel.metadata.imageUrl && (
+                          <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
+                        )} */}
+
+                          <div className={styles.placeholderLogo}>
+                            <Placeholder />{' '}
+                          </div>
+
+                          <div className={styles.channelName}>{channel.metadata.name}</div>
+                          <div className={styles.smsChannelId}>{channel.sourceChannelId}</div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className={styles.channelButton}>
+                <button type="button" className={styles.addChannelButton}>
+                  <div className={styles.channelButtonIcon}>
+                    <AddChannel />
+                  </div>
+                </button>
+              </div>
+            </>
+          )}
         </div>
+
         <div className={styles.flexWrap}>
           <div className={styles.googleChannel}>
             <div className={styles.googleLogo}>

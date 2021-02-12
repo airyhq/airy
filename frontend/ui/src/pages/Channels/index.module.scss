@@ -201,7 +201,7 @@
 .airyConnectedContainer {
   display: flex;
   flex-direction: column;
-  min-width: 65vh;
+  max-width: 65vh;
 }
 
 .airyConnectedChannel {
@@ -290,6 +290,14 @@
   color: var(--color-text-gray);
 }
 
+.facebookImage {
+  width: 50px;
+  border: none;
+
+  background: white;
+  padding: 15px 0px 17px 28px;
+}
+
 .smsChannel {
   display: inline-flex;
   border: solid 1px var(--color-light-gray);
@@ -317,6 +325,11 @@
 
 .smsText {
   color: var(--color-text-gray);
+}
+
+.smsChannelId {
+  padding-top: 15px;
+  padding-left: 30px;
 }
 
 .whatsappChannel {

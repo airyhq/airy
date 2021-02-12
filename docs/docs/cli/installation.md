@@ -24,8 +24,9 @@ You can follow the next steps for a quick setup:
 
 ### Step 1: Check the requirements
 
-Airy is built to run in the cloud, but you can also run it locally.
-The CLI runs on macOS, Linux and Windows and we provide pre-built executable binaries for **x86-64**.
+Airy is built to run in the cloud, but you can also run it locally. The CLI runs
+on macOS, Linux and Windows and we provide pre-built executable binaries for
+**x86-64**.
 
 If you are running on a different platform you can also [build it
 yourself](installation.md#building-from-source).
@@ -70,7 +71,10 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/darwin/amd64/airy -o "air
 
 <TabItem value="homebrew">
 
-Make sure you have the [Xcode Command Line Tools](https://developer.apple.com/library/archive/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-WHAT_IS_THE_COMMAND_LINE_TOOLS_PACKAGE_)  otherwise you can install them with:
+Make sure you have the [Xcode Command Line
+Tools](https://developer.apple.com/library/archive/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-WHAT_IS_THE_COMMAND_LINE_TOOLS_PACKAGE_)
+otherwise you can install them with:
+
 ```bash
 xcode-select --install
 ```
@@ -91,7 +95,8 @@ curl -LO "https://airy-core-binaries.s3.amazonaws.com/$(curl -L -s https://airy-
 
 :::note
 
-To download a specific version, replace the `$(curl -L -s <URL>)` portion of the command with the specific version.
+To download a specific version, replace the `$(curl -L -s <URL>)` portion of the
+command with the specific version.
 
 For example, to download version 0.6.0 on Linux, type:
 
@@ -99,7 +104,6 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/linux/amd64/airy -o "airy
 :::
 </TabItem>
 </Tabs>
-
 
 <Tabs
 groupId="operating-systems"
@@ -120,7 +124,6 @@ sudo mv ./airy /usr/local/bin/airy && \
 sudo chown root: /usr/local/bin/airy
 ```
 </TabItem>
-
 
 <TabItem value="linux">
 

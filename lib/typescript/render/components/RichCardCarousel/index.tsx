@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styles from './index.module.scss';
-import {MediaRenderProps} from '../Media';
+import {MediaRenderProps} from '../RichCard/Media';
 import {DefaultMessageRenderingProps} from '../index';
 import {RichCard} from '../RichCard';
 import leftArrow from 'assets/images/icons/leftArrow.svg';
@@ -115,18 +115,10 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
     const scrollDistance =
       cardWidth == Width.short ? VisibleArea.short - space + padding : VisibleArea.medium - space + padding;
 
-    switch (cardWidth) {
-      case Width.short:
-        return elem.scrollBy({
-          behavior: 'smooth',
-          left: direction == Direction.back ? -scrollDistance : scrollDistance,
-        });
-      case Width.medium:
-        return elem.scrollBy({
-          behavior: 'smooth',
-          left: direction == Direction.back ? -scrollDistance : scrollDistance,
-        });
-    }
+    return elem.scrollBy({
+      behavior: 'smooth',
+      left: direction == Direction.back ? -scrollDistance : scrollDistance,
+    });
   };
 
   return (
@@ -135,7 +127,8 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
       <div
         id={id}
         className={styles.richCardCarouselContainer}
-        style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
+        // style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
+        style={cardWidth === Width.short ? {width: `${VisibleArea.short}px`} : {width: `${VisibleArea.medium}px`}}>
         {cardContents.map((card: Card) => {
           return (
             <div key={card.title} className={styles.richCard}>

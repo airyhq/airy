@@ -1,3 +1,4 @@
+import {Suggestion} from '../../components/RichCard';
 export interface Content {
   type: 'text' | 'richText' | 'richCard' | 'richCardCarousel';
 }
@@ -31,27 +32,24 @@ export interface RichCardContent extends Content {
       forceRefresh: boolean;
     };
   };
-  suggestions: [
-    {
-      reply: {
-        text: string;
-        postbackData: string;
-      };
-    },
-    {
-      reply?: {
-        text: string;
-        postbackData: string;
-      };
-    }
-  ];
+  suggestions: Suggestion[];
 }
 
-// TODO add a new chatplugin content model here
 export interface RichCardCarouselContent extends Content {
   type: 'richCardCarousel';
   cardWidth: string;
   cardContents: [RichCardContent];
 }
 
-export type ContentUnion = TextContent | RichTextContent | RichCardContent | RichCardCarouselContent;
+export interface SuggestionResponse {
+  type: 'suggestionResponse';
+  text: string;
+  postbackData: string;
+}
+
+export type ContentUnion =
+  | TextContent
+  | RichTextContent
+  | RichCardContent
+  | RichCardCarouselContent
+  | SuggestionResponse;

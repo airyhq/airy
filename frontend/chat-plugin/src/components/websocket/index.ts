@@ -1,7 +1,7 @@
 import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 import {start, getResumeToken, sendMessage} from '../api';
-import {Text} from 'types';
+import {SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
 import {Message, messageMapper} from 'httpclient';
 
 declare const window: {
@@ -61,7 +61,7 @@ class WebSocket {
     this.client.activate();
   };
 
-  onSend = (message: Text) => sendMessage(message, this.token);
+  onSend = (message: TextContent | SuggestionResponse) => sendMessage(message, this.token);
 
   start = async () => {
     const response = await start(this.channel_id, this.resume_token);

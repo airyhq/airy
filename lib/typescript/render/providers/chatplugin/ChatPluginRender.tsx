@@ -21,6 +21,8 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   switch (content.type) {
     case 'text':
       return <Text {...propsToUse} text={content.text} />;
+    case 'suggestionResponse':
+      return <Text {...propsToUse} text={content.text} />;
     case 'richText':
       return (
         <RichText
@@ -88,11 +90,11 @@ function mapContent(message: Message): ContentUnion {
     };
   }
 
-  if (messageContent.richCard.carouselCard) {
+  if (messageContent.postbackData) {
     return {
-      type: 'richCardCarousel',
-      cardWidth: messageContent.richCard.carouselCard.cardWidth,
-      cardContents: messageContent.richCard.carouselCard.cardContents,
+      type: 'suggestionResponse',
+      text: messageContent.text,
+      postbackData: messageContent.postbackData,
     };
   }
 }

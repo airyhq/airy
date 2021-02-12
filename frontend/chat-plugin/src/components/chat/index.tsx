@@ -14,7 +14,7 @@ import {AiryWidgetConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 import {MessagePayload, SenderType, MessageState, isFromContact, Message, messageMapper} from 'httpclient';
-import {SourceMessage} from 'render';
+import {SourceMessage, CommandUnion} from 'render';
 
 let ws: WebSocket;
 
@@ -76,6 +76,7 @@ const Chat = (props: Props) => {
     },
     sendMessage: (text: string) => {
       ws.onSend({
+        type: 'text',
         text,
       });
     },
@@ -124,6 +125,12 @@ const Chat = (props: Props) => {
     return null;
   }
 
+  const commandCallback = (command: CommandUnion) => {
+    if (command.type === 'suggestedReply') {
+      ws.onSend({type: 'suggestionResponse', text: command.payload.text, postbackData: command.payload.postbackData});
+    }
+  };
+
   return (
     <div className={style.main}>
       {!isChatHidden && (
@@ -147,6 +154,7 @@ const Chat = (props: Props) => {
                               source="chat_plugin"
                               lastInGroup={lastInGroup}
                               invertSides={true}
+                              commandCallback={commandCallback}
                             />
                           )
                     }

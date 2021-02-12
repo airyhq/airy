@@ -7,6 +7,7 @@ export interface MessageRenderProps {
   source: string;
   contact?: Contact;
   lastInGroup: boolean;
+  invertSides?: boolean;
 }
 
 export const getDefaultMessageRenderingProps = (props: MessageRenderProps): DefaultMessageRenderingProps => {

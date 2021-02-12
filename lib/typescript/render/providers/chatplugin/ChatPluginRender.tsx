@@ -14,16 +14,18 @@ export const ChatPluginRender = (props: MessageRenderProps) => {
 
 function render(content: ContentUnion, props: MessageRenderProps) {
   const messageContent = JSON.parse(props.message.content);
+
   const defaultProps = getDefaultMessageRenderingProps(props);
-  const modifiedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
+  const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
+  const propsToUse = props.invertSides ? invertedProps : defaultProps;
 
   switch (content.type) {
     case 'text':
-      return <Text {...modifiedProps} text={content.text} />;
+      return <Text {...propsToUse} text={content.text} />;
     case 'richText':
       return (
         <RichText
-          {...modifiedProps}
+          {...propsToUse}
           message={props.message}
           text={messageContent.text}
           fallback={messageContent.fallback}
@@ -33,7 +35,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
     case 'richCard':
       return (
         <RichCard
-          {...modifiedProps}
+          {...propsToUse}
           title={content.title}
           description={content.description}
           media={content.media}

@@ -23,10 +23,11 @@ export type RichCardRenderProps = DefaultMessageRenderingProps & {
   description?: string;
   suggestions: Suggestions;
   media: MediaRenderProps;
+  cardWidth?: string;
 };
 
-export const RichCard = ({title, description, suggestions, media}: RichCardRenderProps) => (
-  <div className={styles.richCardContainer}>
+export const RichCard = ({title, description, suggestions, media, cardWidth}: RichCardRenderProps) => (
+  <div className={styles.richCardContainer} style={cardWidth === 'SHORT' ? {width: '136px'} : {width: '280px'}}>
     <div className={styles.mediaContainer}>
       <Media {...media} />
     </div>

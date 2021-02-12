@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import styles from './index.module.scss';
 import {MediaRenderProps} from '../RichCard/Media';
 import {DefaultMessageRenderingProps} from '../index';
@@ -57,21 +57,18 @@ export type RichCardCarouselRenderProps = DefaultMessageRenderingProps & {
 };
 
 export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
-  const {cardContents, cardWidth, id} = props;
+  const {cardContents, cardWidth, id, fromContact} = props;
   const [position, setPosition] = useState(0);
   const [disabled, setDiabled] = useState(false);
-  const [style, setStyle] = useState('');
   const amountCards = cardContents.length;
-
-  useEffect(() => {
-    cardWidth == Width.short ? setStyle(styles.moveNextShort) : setStyle(styles.moveNext);
-  }),
-    [];
 
   const button = (position: number, amountCards: number, id: string) => {
     if (position == 0) {
       return (
-        <button className={style} onClick={() => carouselMove(cardWidth, Direction.next, id)} disabled={disabled}>
+        <button
+          className={styles.moveNext}
+          onClick={() => carouselMove(cardWidth, Direction.next, id)}
+          disabled={disabled}>
           <img src={rightArrow} />
         </button>
       );
@@ -87,8 +84,11 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
       );
     } else {
       return (
-        <div>
-          <button className={style} onClick={() => carouselMove(cardWidth, Direction.next, id)} disabled={disabled}>
+        <>
+          <button
+            className={styles.moveNext}
+            onClick={() => carouselMove(cardWidth, Direction.next, id)}
+            disabled={disabled}>
             <img src={rightArrow} />
           </button>
           <button
@@ -97,7 +97,7 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
             disabled={disabled}>
             <img src={leftArrow} />
           </button>
-        </div>
+        </>
       );
     }
   };
@@ -123,26 +123,70 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
 
   return (
     <>
-      <div className={styles.button}>{button(position, amountCards, id)}</div>
-      <div
-        id={id}
-        className={styles.richCardCarouselContainer}
-        // style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
-        style={cardWidth === Width.short ? {width: `${VisibleArea.short}px`} : {width: `${VisibleArea.medium}px`}}>
-        {cardContents.map((card: Card) => {
-          return (
-            <div key={card.title} className={styles.richCard}>
-              <RichCard
-                title={card.title}
-                description={card.description}
-                media={card.media}
-                suggestions={card.suggestions}
-                fromContact={true}
-              />
+      {fromContact ? (
+        <>
+          <div className={styles.containerContact}>
+            <div
+              className={styles.containerButton}
+              style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
+              {button(position, amountCards, id)}
+              <div
+                id={id}
+                className={styles.richCardCarouselContainer}
+                style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
+                <div className={styles.button}>{button(position, amountCards, id)}</div>
+                <div className={styles.isContact}>
+                  {cardContents.map((card: Card) => {
+                    return (
+                      <div key={card.title} className={styles.richCard}>
+                        <RichCard
+                          title={card.title}
+                          description={card.description}
+                          media={card.media}
+                          suggestions={card.suggestions}
+                          fromContact={true}
+                          cardWidth={cardWidth}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
-          );
-        })}
-      </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={styles.containerMember}>
+            <div
+              className={styles.containerButton}
+              style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
+              {button(position, amountCards, id)}
+              <div
+                id={id}
+                className={styles.richCardCarouselContainer}
+                style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
+                <div className={styles.isMember}>
+                  {cardContents.map((card: Card) => {
+                    return (
+                      <div key={card.title} className={styles.richCard}>
+                        <RichCard
+                          title={card.title}
+                          description={card.description}
+                          media={card.media}
+                          suggestions={card.suggestions}
+                          fromContact={false}
+                          cardWidth={cardWidth}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

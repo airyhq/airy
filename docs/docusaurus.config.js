@@ -1,8 +1,8 @@
 module.exports = {
   title: 'Airy Documentation',
   tagline: 'Airy documentation website',
-  url: 'https://docs.airy.co',
-  baseUrl: '/docs/',
+  url: 'https://airy.co',
+  baseUrl: '/docs/core/',
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'airyhq',
@@ -38,7 +38,7 @@ module.exports = {
           target: '_self',
           label: 'Airy Enterprise',
           position: 'left',
-          href: 'https://enterprise.airy.co',
+          href: '/docs/enterprise/',
         },
         {
           href: 'https://github.com/airyhq/airy',

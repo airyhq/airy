@@ -7,10 +7,10 @@
 # You should not be trying to invoke this file directly from your BUILD file.
 
 RULEDIR=$(pwd)
-# MAINCLASS=$1
+MAINCLASS=$1
 OUTPUTJAR=$2
 APPJAR=$3
-# APPJAR_NAME=$4
+APPJAR_NAME=$4
 MANIFEST=$5
 
 # This output is really spammy, suppress unless you need it
@@ -36,12 +36,12 @@ mkdir -p outputjar/BOOT-INF/classes
 
 # Extract the compiled Boot application classes into BOOT-INF/classes
 #    this must include the application's main class (annotated with @SpringBootApplication)
-cd "$RULEDIR"/outputjar/BOOT-INF/classes || exit
-jar -xf "$RULEDIR/$APPJAR"
+cd $RULEDIR/outputjar/BOOT-INF/classes
+jar -xf $RULEDIR/$APPJAR
 
 # Copy all transitive upstream dependencies into BOOT-INF/lib
 #   The dependencies are passed as arguments to the script, starting at index 5
-cd "$RULEDIR"/outputjar || exit
+cd $RULEDIR/outputjar
 i=6
 while [ "$i" -le "$#" ]; do
   eval "lib=\${$i}"
@@ -52,9 +52,9 @@ while [ "$i" -le "$#" ]; do
     # the Spring Boot Loader classes are special, they must be extracted at the root level /,
     #   not in BOOT-INF/lib/loader.jar nor BOOT-INF/classes/**/*.class
     # we only extract org/* since we don't want the toplevel META-INF files
-    jar xf "$RULEDIR"/"$lib" org
+    jar xf $RULEDIR/$lib org
   else
-    cp "$RULEDIR"/"$lib" BOOT-INF/lib
+    cp $RULEDIR/$lib BOOT-INF/lib
   fi
 
   i=$((i + 1))
@@ -64,7 +64,7 @@ done
 # Note that a critical part of this step is to pass option 0 into the jar command
 # that tells jar not to compress the jar, only package it. Spring Boot does not
 # allow the jar file to be compressed (it will fail at startup).
-cd "$RULEDIR"/outputjar || exit
-jar -cfm0 ../"$OUTPUTJAR" ../"$MANIFEST" .
+cd $RULEDIR/outputjar
+jar -cfm0 ../$OUTPUTJAR ../$MANIFEST .
 
-cd "$RULEDIR" || exit
+cd $RULEDIR

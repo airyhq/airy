@@ -1,0 +1,8 @@
+.buttonBoxList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.buttonBoxListItem {
+  margin-bottom: 12px;
+}

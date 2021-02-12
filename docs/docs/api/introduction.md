@@ -4,6 +4,11 @@ sidebar_label: Introduction
 ---
 
 import TLDR from "@site/src/components/TLDR";
+import ButtonBoxList from "@site/src/components/ButtonBoxList";
+import ButtonBox from "@site/src/components/ButtonBox";
+import BoltSVG from "@site/static/icons/bolt.svg";
+import ServerStackSVG from "@site/static/icons/server-stack.svg";
+import WebhooksSVG from "@site/static/icons/webhooks.svg";
 
 <TLDR>
 
@@ -20,6 +25,23 @@ the platform will immediately start consuming conversational data and store it
 in its streaming data platform. Airy Core exposes three different ways of
 interacting with data:
 
-- an [HTTP API](/api/endpoints/introduction.md)
-- A [WebSocket server](/api/websocket.md)
-- A [Webhook integration](/api/webhook.md)
+<ButtonBoxList>
+<ButtonBox
+    icon={() => <BoltSVG />}
+    title='HTTP API'
+    description='Access your conversational data with blazing fast HTTP endpoints'
+    link='api/endpoints/introduction'
+/>
+<ButtonBox
+    icon={() => <ServerStackSVG />}
+    title='WebSocket Server'
+    description='Power real-time applications with STOMP style WebSocket'
+    link='api/websocket'
+/>
+<ButtonBox
+    icon={() => <WebhooksSVG />}
+    title='Webhook'
+    description='Participate programmatically in conversations by listening to events'
+    link='api/webhook'
+/>
+</ButtonBoxList>

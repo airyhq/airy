@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -25,6 +26,7 @@ import java.util.Base64;
 import java.util.Properties;
 import java.util.UUID;
 
+@RestController
 public class WebhookController implements DisposableBean {
     private final String sourceGoogleEvents = new SourceGoogleEvents().name();
     private final String partnerKey;

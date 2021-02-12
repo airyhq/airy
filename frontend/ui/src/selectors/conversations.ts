@@ -1,12 +1,27 @@
 import _, {createSelector} from 'reselect';
 import {filter, reverse, sortBy, values} from 'lodash-es';
 import {Conversation} from 'httpclient';
-import {StateModel} from '../reducers';
+import {MergedConversation, StateModel} from '../reducers';
 import {ConversationMap} from '../reducers/data/conversations';
 import {ConversationRouteProps} from '../pages/Inbox';
+import {WithConversationMetadata} from 'httpclient';
 
-export const getCurrentConversation = (state: StateModel, props: ConversationRouteProps) =>
-  state.data.conversations.all.items[props.match.params.conversationId];
+const addMetadataToConversation = (conversation, metadataState): WithConversationMetadata<MergedConversation> => {
+  if (!conversation) {
+    return;
+  }
+  return {
+    ...conversation,
+    metadata: metadataState.conversation[conversation.id],
+  };
+};
+
+export const getCurrentConversation = createSelector(
+  (state: StateModel, props: ConversationRouteProps) =>
+    state.data.conversations.all.items[props.match.params.conversationId],
+  (state: StateModel) => state.data.metadata,
+  addMetadataToConversation
+);
 
 export const getCurrentMessages = (state: StateModel, props: ConversationRouteProps) =>
   state.data.messages.all[props.match.params.conversationId];
@@ -18,10 +33,12 @@ export const filteredConversationSelector = createSelector(
 
 export const allConversationSelector = createSelector(
   (state: StateModel) => state.data.conversations.all.items,
-  (conversations: ConversationMap) => Object.keys(conversations).map((cId: string) => ({...conversations[cId]}))
+  (state: StateModel) => state.data.metadata,
+  (conversations: ConversationMap, metadataState): WithConversationMetadata<MergedConversation>[] =>
+    Object.keys(conversations).map((cId: string) => ({...addMetadataToConversation(conversations[cId], metadataState)}))
 );
 
-export const newestConversationFirst = createSelector(allConversationSelector, (conversations: Conversation[]) => {
+export const newestConversationFirst = createSelector(allConversationSelector, conversations => {
   return reverse(
     sortBy(
       values(conversations),

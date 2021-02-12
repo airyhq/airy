@@ -1,19 +1,21 @@
 import {Dispatch} from 'redux';
 import {createAction} from 'typesafe-actions';
-import {Conversation, PaginatedResponse} from 'httpclient';
+import {Conversation} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
+import {MetadataEvent} from '../../../../../lib/typescript/httpclient/model';
+import {setMetadataAction, setMetadataListAction} from '../metadata';
 
-export const CONVERSATION_LOADING = '@@conversation/LOADING';
-export const CONVERSATIONS_LOADING = '@@conversations/LOADING';
-export const CONVERSATIONS_MERGE = '@@conversations/MERGE';
-export const CONVERSATION_ADD_ERROR = '@@conversations/ADD_ERROR_TO_CONVERSATION';
-export const CONVERSATION_REMOVE_ERROR = '@@conversations/REMOVE_ERROR_FROM_CONVERSATION';
-export const CONVERSATION_READ = '@@conversations/CONVERSATION_READ';
-export const CONVERSATION_ADD_TAG = '@@conversations/CONVERSATION_ADD_TAG';
-export const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
-export const CONVERSATION_UPDATE_PAGINATION_DATA = '@@conversation/UPDATE_PAGINATION_DATA';
-export const CONVERSATION_SET_UNREAD_COUNT = '@@conversations/CONVERSATION_SET_UNREAD_COUNT';
+const CONVERSATION_LOADING = '@@conversation/LOADING';
+const CONVERSATIONS_LOADING = '@@conversations/LOADING';
+const CONVERSATIONS_MERGE = '@@conversations/MERGE';
+const CONVERSATION_ADD_ERROR = '@@conversations/ADD_ERROR_TO_CONVERSATION';
+const CONVERSATION_REMOVE_ERROR = '@@conversations/REMOVE_ERROR_FROM_CONVERSATION';
+const CONVERSATION_READ = '@@conversations/CONVERSATION_READ';
+const CONVERSATION_ADD_TAG = '@@conversations/CONVERSATION_ADD_TAG';
+const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
+const CONVERSATION_UPDATE_PAGINATION_DATA = '@@conversation/UPDATE_PAGINATION_DATA';
+const CONVERSATION_SET_UNREAD_COUNT = '@@conversations/CONVERSATION_SET_UNREAD_COUNT';
 
 export const loadingConversationAction = createAction(CONVERSATION_LOADING, resolve => (conversationId: string) =>
   resolve(conversationId)
@@ -27,10 +29,6 @@ export const mergeConversationsAction = createAction(
     conversations: Conversation[],
     paginationData?: {previousCursor: string; nextCursor: string; total: number}
   ) => resolve({conversations, paginationData})
-);
-
-export const readConversationsAction = createAction(CONVERSATION_READ, resolve => (conversationId: string) =>
-  resolve({conversationId})
 );
 
 export const addErrorToConversationAction = createAction(
@@ -59,17 +57,18 @@ export const updateMessagesPaginationDataAction = createAction(
     resolve({conversationId, paginationData})
 );
 
-export const setConversationUnreadMessageCount = createAction(
-  CONVERSATION_SET_UNREAD_COUNT,
-  resolve => (conversationId: string, unreadMessageCount: number) => resolve({conversationId, unreadMessageCount})
-);
-
 export function listConversations() {
   return async (dispatch: Dispatch<any>) => {
     dispatch(loadingConversationsAction());
     return HttpClientInstance.listConversations({page_size: 10})
-      .then((response: PaginatedResponse<Conversation>) => {
+      .then(response => {
         dispatch(mergeConversationsAction(response.data, response.paginationData));
+        const metadataEvents = response.data.map(
+          ({id, metadata}): MetadataEvent => ({subject: 'conversation', identifier: id, metadata})
+        );
+        // TODO this shizzle with all the metadata
+        dispatch(setMetadataListAction(metadataEvents));
+
         return Promise.resolve(true);
       })
       .catch((error: Error) => {
@@ -84,8 +83,12 @@ export function listNextConversations() {
 
     dispatch(loadingConversationsAction());
     return HttpClientInstance.listConversations({cursor: cursor})
-      .then((response: PaginatedResponse<Conversation>) => {
+      .then(response => {
         dispatch(mergeConversationsAction(response.data, response.paginationData));
+        const metadataEvents = response.data.map(
+          ({id, metadata}): MetadataEvent => ({subject: 'conversation', identifier: id, metadata})
+        );
+        dispatch(setMetadataListAction(metadataEvents));
         return Promise.resolve(true);
       })
       .catch((error: Error) => {
@@ -101,8 +104,15 @@ function sleep(time) {
 export function getConversationInfo(conversationId: string, retries?: number) {
   return async (dispatch: Dispatch<any>) => {
     return HttpClientInstance.getConversationInfo(conversationId)
-      .then((response: Conversation) => {
+      .then(response => {
         dispatch(mergeConversationsAction([response]));
+        dispatch(
+          setMetadataAction({
+            subject: 'conversation',
+            identifier: response.id,
+            metadata: response.metadata,
+          })
+        );
         return Promise.resolve(true);
       })
       .catch(async (error: Error) => {
@@ -118,7 +128,17 @@ export function getConversationInfo(conversationId: string, retries?: number) {
 
 export function readConversations(conversationId: string) {
   return function(dispatch: Dispatch<any>) {
-    HttpClientInstance.readConversations(conversationId).then(() => dispatch(readConversationsAction(conversationId)));
+    HttpClientInstance.readConversations(conversationId).then(() =>
+      dispatch(
+        setMetadataAction({
+          subject: 'conversation',
+          identifier: conversationId,
+          metadata: {
+            unreadCount: 0,
+          },
+        })
+      )
+    );
   };
 }
 

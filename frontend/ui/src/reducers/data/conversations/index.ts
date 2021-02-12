@@ -12,8 +12,7 @@ type Action = ActionType<typeof actions>;
 type FilterAction = ActionType<typeof filterActions>;
 type MessageAction = ActionType<typeof messageActions>;
 
-type MergedConversation = Conversation & {
-  blocked?: boolean;
+export type MergedConversation = Conversation & {
   paginationData?: {
     previousCursor: string;
     nextCursor: string;
@@ -253,22 +252,6 @@ function allReducer(
         },
       };
 
-    case getType(actions.readConversationsAction):
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [action.payload.conversationId]: {
-            ...state.items[action.payload.conversationId],
-            unreadMessageCount: 0,
-          },
-        },
-        paginationData: {
-          ...state.paginationData,
-          loading: false,
-        },
-      };
-
     case getType(actions.addTagToConversationAction):
       return addTagToConversation(state, action.payload.conversationId, action.payload.tagId);
 
@@ -293,22 +276,6 @@ function allReducer(
         };
       }
       return state;
-
-    case getType(actions.setConversationUnreadMessageCount):
-      if (state.items[action.payload.conversationId]) {
-        return {
-          ...state,
-          items: {
-            ...state.items,
-            [action.payload.conversationId]: {
-              ...state.items[action.payload.conversationId],
-              unreadMessageCount: action.payload.unreadMessageCount,
-            },
-          },
-        };
-      } else {
-        return state;
-      }
 
     case getType(messageActions.addMessagesAction):
       return mergeMessages(state, action.payload.conversationId, action.payload.messages);

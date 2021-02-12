@@ -62,7 +62,7 @@ import static java.util.stream.Collectors.toCollection;
 @Component
 @RestController
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
-    private static final String appId = "api.CommunicationStores";
+    private static final String appId = "api.CommunicationStoresTEST";
 
     private final KafkaStreamsWrapper streams;
     private final KafkaProducer<String, SpecificRecordBase> producer;

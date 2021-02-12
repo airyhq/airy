@@ -6,8 +6,9 @@ import {Message, Channel} from 'httpclient';
 import {env} from '../../env';
 import {StateModel} from '../../reducers';
 import {addMessagesAction} from '../../actions/messages';
-import {getConversationInfo, setConversationUnreadMessageCount} from '../../actions/conversations';
+import {getConversationInfo} from '../../actions/conversations';
 import {addChannelAction, removeChannelAction} from '../../actions/channel';
+import {setMetadataAction} from '../../actions/metadata';
 
 type AiryWebSocketProps = {} & ConnectedProps<typeof connector>;
 
@@ -29,8 +30,16 @@ const mapDispatchToProps = dispatch => {
     addChannelAction: (channel: Channel) => dispatch(addChannelAction(channel)),
     removeChannelAction: (channel: Channel) => dispatch(removeChannelAction(channel)),
     getConversationInfo: (conversationId: string) => dispatch(getConversationInfo(conversationId)),
-    setConversationUnreadMessageCount: (conversationId: string, unreadMesageCount: number) =>
-      dispatch(setConversationUnreadMessageCount(conversationId, unreadMesageCount)),
+    setConversationUnreadMessageCount: (conversationId: string, unreadCount: number) =>
+      dispatch(
+        setMetadataAction({
+          subject: 'conversation',
+          identifier: conversationId,
+          metadata: {
+            unreadCount,
+          },
+        })
+      ),
   };
 };
 
@@ -90,9 +99,7 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
     }
   };
 
-  useEffect(() => {
-    refreshSocket();
-  }, [user.token]);
+  useEffect(refreshSocket, [user.token]);
 
   return <AiryWebSocketContext.Provider value={{refreshSocket}}>{children}</AiryWebSocketContext.Provider>;
 };

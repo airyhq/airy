@@ -1,5 +1,5 @@
 import React, {createRef} from 'react';
-import {withRouter, matchPath, RouteComponentProps, match} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import InfiniteLoader from 'react-window-infinite-loader';
@@ -14,44 +14,38 @@ import ConversationListItem from '../ConversationListItem';
 import NoConversations from '../NoConversations';
 import {SimpleLoader} from '@airyhq/components';
 
-import {StateModel} from '../../../reducers';
-import {Conversation} from 'httpclient';
+import {MergedConversation, StateModel} from '../../../reducers';
 
 import styles from './index.module.scss';
+import {ConversationRouteProps} from '../index';
+import {WithConversationMetadata} from '../../../../../../lib/typescript/httpclient/model';
 
 type ConversationListProps = ConnectedProps<typeof connector>;
-
-type MatchParams = {
-  id: string;
-};
 
 const mapDispatchToProps = {
   listNextConversations,
 };
 
-const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
-  const match: match<MatchParams> = matchPath(ownProps.history.location.pathname, {
-    path: '/inbox/conversations/:id',
-  });
-
-  return {
-    currentConversationId: match && match.params.id,
-    conversations: newestConversationFirst(state),
-    filteredConversations: newestFilteredConversationFirst(state),
-    conversationsPaginationData: state.data.conversations.all.paginationData,
-    filteredPaginationData: state.data.conversations.filtered.paginationData,
-    currentFilter: state.data.conversations.filtered.currentFilter,
-    loading: state.data.conversations.all.paginationData.loading,
-    user: state.data.user,
-  };
-};
+const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
+  currentConversationId: ownProps.match.params.conversationId,
+  conversations: newestConversationFirst(state),
+  filteredConversations: newestFilteredConversationFirst(state),
+  conversationsPaginationData: state.data.conversations.all.paginationData,
+  filteredPaginationData: state.data.conversations.filtered.paginationData,
+  currentFilter: state.data.conversations.filtered.currentFilter,
+  loading: state.data.conversations.all.paginationData.loading,
+  user: state.data.user,
+});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationList = (props: ConversationListProps) => {
   const listRef: any = createRef();
 
-  const renderConversationItem = (conversation: Conversation, style: React.CSSProperties) => {
+  const renderConversationItem = (
+    conversation: WithConversationMetadata<MergedConversation>,
+    style: React.CSSProperties
+  ) => {
     const {currentConversationId} = props;
     if (conversation == null) {
       return (

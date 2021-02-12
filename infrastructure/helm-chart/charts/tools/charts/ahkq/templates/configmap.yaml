@@ -55,6 +55,8 @@ data:
             groups:
               - admin
     micronaut:
+      server:
+        context-path: "/akhq"
       security:
         enabled: true
         token:

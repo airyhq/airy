@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v1
@@ -46,10 +46,9 @@ jobs:
           bazel build //...
 
       - name: Push images
-        if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          ./scripts/push-images.sh ${{ github.ref }}
+          ./scripts/push-images.sh develop
       - name: Install aws cli
         uses: chrislennon/action-aws-cli@v1.1
         env:

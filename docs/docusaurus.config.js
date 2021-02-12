@@ -38,7 +38,7 @@ module.exports = {
           target: '_self',
           label: 'Airy Enterprise',
           position: 'left',
-          href: '/docs/enterprise/',
+          href: 'https://airy.co/docs/enterprise/',
         },
         {
           href: 'https://github.com/airyhq/airy',

@@ -58,10 +58,16 @@ const Channels = (props: ChannelsConnectProps) => {
     setPageTitle('Channels');
   }, []);
 
-  const chatPluginSources = props.channels.filter(channel => channel.source === 'chat_plugin');
+  const chatPluginSources = props.channels.filter(channel => channel.source === 'chat_plugin').slice(0, 4);
+  const chatPluginSourcesExtra = props.channels.filter(channel => channel.source === 'chat_plugin').slice(4);
+  const totalChatPlugin = chatPluginSources.concat(chatPluginSourcesExtra);
+
   const facebookSources = props.channels.filter(channel => channel.source === 'facebook');
   const smsSources = props.channels.filter(channel => channel.source === 'twilio.sms');
   const whatsappSources = props.channels.filter(channel => channel.source === 'twilio.whatsapp');
+
+  console.log(chatPluginSources.slice(0, 4));
+  console.log(chatPluginSourcesExtra);
 
   const renderSearchChannelInput = isShowingSearchChannelInput ? (
     <div className={styles.containerChannelSearchField}>
@@ -119,7 +125,7 @@ const Channels = (props: ChannelsConnectProps) => {
               <p className={styles.airyText}>Best of class browser messenger</p>
             </div>
           </div>
-          {channels && chatPluginSources.length === 0 && (
+          {chatPluginSources.length === 0 && (
             <div className={styles.channelButton}>
               <button type="button" className={styles.addChannelButton}>
                 <div className={styles.channelButtonIcon}>
@@ -129,11 +135,11 @@ const Channels = (props: ChannelsConnectProps) => {
             </div>
           )}
 
-          {channels && chatPluginSources.length > 0 && (
+          {chatPluginSources.length > 0 && (
             <>
               <div className={styles.airyConnectedContainer}>
                 <div className={styles.airyConnectedSum}>
-                  <p>{chatPluginSources.length} CONNECTED</p>
+                  <p>{totalChatPlugin.length} CONNECTED</p>
                 </div>
 
                 <div className={styles.airyConnectedChannel}>
@@ -156,7 +162,11 @@ const Channels = (props: ChannelsConnectProps) => {
                     );
                   })}
                 </div>
+                <div>
+                  <button>+{chatPluginSourcesExtra.length} connected</button>
+                </div>
               </div>
+
               <div className={styles.channelButton}>
                 <button type="button" className={styles.addChannelButton}>
                   <div className={styles.channelButtonIcon}>

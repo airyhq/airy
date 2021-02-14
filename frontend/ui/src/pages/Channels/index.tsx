@@ -60,7 +60,7 @@ const Channels = (props: ChannelsConnectProps) => {
 
   const chatPluginSources = props.channels.filter(channel => channel.source === 'chat_plugin').slice(0, 4);
   const chatPluginSourcesExtra = props.channels.filter(channel => channel.source === 'chat_plugin').slice(4);
-  const totalChatPlugin = chatPluginSources.concat(chatPluginSourcesExtra);
+  const totalChatPluginSources = chatPluginSources.concat(chatPluginSourcesExtra);
 
   const facebookSources = props.channels.filter(channel => channel.source === 'facebook');
   const smsSources = props.channels.filter(channel => channel.source === 'twilio.sms');
@@ -139,7 +139,7 @@ const Channels = (props: ChannelsConnectProps) => {
             <>
               <div className={styles.airyConnectedContainer}>
                 <div className={styles.airyConnectedSum}>
-                  <p>{totalChatPlugin.length} CONNECTED</p>
+                  <p>{totalChatPluginSources.length} CONNECTED</p>
                 </div>
 
                 <div className={styles.airyConnectedChannel}>
@@ -147,7 +147,7 @@ const Channels = (props: ChannelsConnectProps) => {
                     const channelName = channel.metadata.name;
                     return (
                       <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                        <div className={styles.namePlaceholder}>
+                        <div className={styles.connectedChannelData}>
                           {channel.metadata.imageUrl && (
                             <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
                           )}
@@ -161,9 +161,9 @@ const Channels = (props: ChannelsConnectProps) => {
                       </li>
                     );
                   })}
-                </div>
-                <div>
-                  <button>+{chatPluginSourcesExtra.length} connected</button>
+                  {chatPluginSourcesExtra.length > 0 && (
+                    <button className={styles.extraChannel}>+{chatPluginSourcesExtra.length} connected</button>
+                  )}
                 </div>
               </div>
 

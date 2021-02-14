@@ -1,6 +1,18 @@
 @import '../../assets/scss/fonts';
 @import '../../assets/scss/colors';
 
+.channelsWrapper {
+  background: white;
+  display: block;
+  border-radius: 10px;
+  padding-left: 96px;
+  padding-top: 88px;
+  width: 100%;
+  overflow-y: auto;
+  padding: 32px;
+  margin: 88px 1.5em 0 100px;
+  min-height: calc(100vh - 170px);
+}
 .channelsHeadline {
   display: flex;
   justify-content: space-between;
@@ -16,19 +28,6 @@
 .channelsHeadlineText {
   @include font-xl;
   font-weight: 900;
-}
-
-.channelsWrapper {
-  background: white;
-  display: block;
-  border-radius: 10px;
-  padding-left: 96px;
-  padding-top: 88px;
-  width: 100%;
-  overflow-y: auto;
-  padding: 32px;
-  margin: 88px 1.5em 0 100px;
-  min-height: calc(100vh - 170px);
 }
 
 .containerChannelSearchField {
@@ -142,9 +141,9 @@
   border-radius: 8px;
   flex-basis: 100%;
   min-width: 35vh;
-  max-height: 14vh;
+  max-height: 13vh;
   padding: 1%;
-  margin: 22px 0px 15px 0px;
+  margin: 22px 0px 10px 0px;
 }
 
 .airyLogo {
@@ -175,8 +174,8 @@
   background: white;
   width: 40px;
   height: 70px;
-  margin-left: 8px;
-  margin-top: 8px;
+  margin-left: 5px;
+  margin-top: 12px;
   transition: 0.2s ease-in-out all;
   border: none;
   padding: 0;
@@ -202,6 +201,8 @@
   display: flex;
   flex-direction: column;
   max-width: 65vh;
+  max-height: 21vh;
+  
 }
 
 .airyConnectedChannel {
@@ -212,10 +213,10 @@
   border-radius: 8px;
   flex-basis: 100%;
   min-width: 55vh;
-  max-height: 15vh;
+  max-height: 18vh;
   margin-left: 15px;
   margin-bottom: 16px;
-  //background-color: red;
+  
 }
 
 .airyConnectedSum {
@@ -223,22 +224,31 @@
   margin-left: 3em;
 }
 
-.namePlaceholder {
+.connectedChannelData {
   display: flex;
   flex-direction: row;
 }
 
 .placeholderLogo {
-  height: 40px;
-  border: none;
-  width: 40px;
+  height: 23px;
+  width: 20px;
+  border: solid 1px var(--color-text-gray);
+  
   background: white;
   border-radius: 50%;
-  padding: 15px 0px 17px 28px;
+  padding: 2px 15px 15px 0px;
+  margin: 15px 0px 15px 15px;
 }
 
 .channelName {
-  padding: 5px 0px 15px 0px;
+  padding-right: 25px;
+}
+.extraChannel{
+  border: none;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
+  background: white;
 }
 
 .channelList {
@@ -268,7 +278,7 @@
   border-radius: 8px;
   flex-basis: 100%;
   min-width: 35vh;
-  max-height: 14vh;
+  max-height: 13vh;
   padding: 1%;
   margin: 22px 0px 15px 0px;
 }
@@ -304,7 +314,7 @@
   border-radius: 8px;
   flex-basis: 100%;
   min-width: 35vh;
-  max-height: 14vh;
+  max-height: 13vh;
   padding: 1%;
   margin: 22px 0px 15px 0px;
 }
@@ -338,7 +348,7 @@
   border-radius: 8px;
   flex-basis: 100%;
   min-width: 35vh;
-  max-height: 14vh;
+  max-height: 13vh;
   padding: 1%;
   margin: 22px 0px 15px 0px;
 }
@@ -367,7 +377,7 @@
   border-radius: 8px;
   flex-basis: 100%;
   min-width: 35vh;
-  max-height: 15vh;
+  max-height: 14vh;
   padding: 1%;
   margin: 22px 0px 15px 0px;
 }

@@ -1,10 +1,32 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
+.containerContact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.containerMember {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 .richCardCarouselContainer {
   display: flex;
   overflow-x: hidden;
   padding-left: 20px;
+}
+
+.isContact {
+  margin-top: 5px;
+  display: flex;
+}
+
+.isMember {
+  margin-top: 5px;
+  display: flex;
 }
 
 .richCard {
@@ -15,67 +37,66 @@
   padding-right: 20px;
 }
 
-.button {
+.containerButton {
   position: relative;
+}
+
+.moveNext {
+  img {
+    height: 24px;
+    width: 24px;
+  }
+  position: absolute;
+  width: 30px;
+  height: 40px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border: none;
+  background: white;
+  right: 0%;
+  top: 40%;
+}
+.moveNext:focus {
   outline: none;
+}
 
-  .moveNext {
-    img {
-      height: 24px;
-      width: 24px;
-    }
-    position: absolute;
-    width: 30px;
-    height: 40px;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    border: none;
-    background: white;
-    left: 290px;
-    top: 135px;
+.moveBack {
+  img {
+    height: 24px;
+    width: 24px;
   }
-  .moveNext:focus {
-    outline: none;
-  }
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  position: absolute;
+  width: 30px;
+  height: 40px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border: none;
+  background: white;
+  top: 40%;
+  left: 0%;
+}
+.moveBack:focus {
+  outline: none;
+}
 
-  .moveBack {
-    img {
-      height: 24px;
-      width: 24px;
-    }
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    position: absolute;
-    width: 30px;
-    height: 40px;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-    border: none;
-    background: white;
-    top: 135px;
-    left: 0px;
+.moveNextShort {
+  img {
+    height: 24px;
+    width: 24px;
   }
-  .moveBack:focus {
-    outline: none;
-  }
-
-  .moveNextShort {
-    img {
-      height: 24px;
-      width: 24px;
-    }
-    position: absolute;
-    width: 30px;
-    height: 40px;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    border: none;
-    background: white;
-    left: 146px;
-    top: 135px;
-  }
-  .moveNextShort:focus {
-    outline: none;
-  }
+  position: absolute;
+  width: 30px;
+  height: 40px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border: none;
+  background: white;
+  right: 0%;
+  top: 40%;
+}
+.moveNextShort:focus {
+  outline: none;
 }

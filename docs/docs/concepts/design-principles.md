@@ -3,7 +3,7 @@ title: Design Principles
 sidebar_label: Design Principles
 ---
 
-The design of the Airy Core heavily relies on a few core ideas. The
+The design of Airy Core heavily relies on a few core ideas. The
 goal of this document is to provide context about these ideas and how they
 affected the way the platform is built.
 

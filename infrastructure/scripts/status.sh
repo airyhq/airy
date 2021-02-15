@@ -40,7 +40,7 @@ echo
 echo "Your public url for the Twilio Webhook is:"
 echo "${TWILIO_WEBHOOK_PUBLIC_URL}"
 echo
-echo "You can access the API of the Airy Core at:"
+echo "You can access the Airy Core HTTP API at:"
 echo "http://${API_HOSTNAME}"
 echo
 echo "Example:"

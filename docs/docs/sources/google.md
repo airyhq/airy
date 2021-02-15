@@ -17,7 +17,7 @@ Business Location and your running instance of Airy Core.
 :::tip What you will learn
 
 - The required steps to configure the Google source
-- How to connect a Google Business Location to the Airy Core
+- How to connect a Google Business Location to Airy Core
 
 :::
 

@@ -55,10 +55,11 @@ export type RichCardCarouselRenderProps = DefaultMessageRenderingProps & {
   cardWidth: string;
   cardContents: [Card];
   id: string;
+  inChatPlugin: boolean;
 };
 
 export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
-  const {cardContents, cardWidth, id, fromContact} = props;
+  const {cardContents, cardWidth, id, fromContact, inChatPlugin} = props;
   const [position, setPosition] = useState(0);
   const [disabled, setDiabled] = useState(false);
   const amountCards = cardContents.length;
@@ -126,7 +127,9 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
     <>
       {fromContact ? (
         <>
-          <div className={styles.containerContact}>
+          <div
+            className={styles.containerContact}
+            style={inChatPlugin == true ? {transform: 'scale(0.7)'} : {transform: 'scale(1.0)'}}>
             <div
               className={styles.containerButton}
               style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
@@ -137,15 +140,15 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
                 style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
                 <div className={styles.button}>{button(position, amountCards, id)}</div>
                 <div className={styles.isContact}>
-                  {cardContents.map((card: Card) => {
+                  {cardContents.map((card: Card, idx: number) => {
                     return (
-                      <div key={card.title} className={styles.richCard}>
+                      <div key={idx} className={styles.richCard}>
                         <RichCard
                           title={card.title}
                           description={card.description}
                           media={card.media}
                           suggestions={card.suggestions}
-                          fromContact={true}
+                          fromContact={fromContact}
                           cardWidth={cardWidth}
                         />
                       </div>
@@ -158,7 +161,9 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
         </>
       ) : (
         <>
-          <div className={styles.containerMember}>
+          <div
+            className={styles.containerMember}
+            style={inChatPlugin == true ? {transform: 'scale(0.7)'} : {transform: 'scale(1.0)'}}>
             <div
               className={styles.containerButton}
               style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
@@ -168,15 +173,15 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
                 className={styles.richCardCarouselContainer}
                 style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
                 <div className={styles.isMember}>
-                  {cardContents.map((card: Card) => {
+                  {cardContents.map((card: Card, idx: number) => {
                     return (
-                      <div key={card.title} className={styles.richCard}>
+                      <div key={idx} className={styles.richCard}>
                         <RichCard
                           title={card.title}
                           description={card.description}
                           media={card.media}
                           suggestions={card.suggestions}
-                          fromContact={false}
+                          fromContact={fromContact}
                           cardWidth={cardWidth}
                         />
                       </div>

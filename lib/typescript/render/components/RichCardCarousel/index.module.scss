@@ -55,9 +55,19 @@
   background: white;
   right: 0%;
   top: 40%;
+  cursor: pointer;
 }
 .moveNext:focus {
   outline: none;
+}
+
+.moveNext:active {
+  transition-duration: 0.2s;
+  transition: ease-in-out;
+  img {
+    height: 20px;
+    width: 20px;
+  }
 }
 
 .moveBack {
@@ -77,26 +87,17 @@
   background: white;
   top: 40%;
   left: 0%;
+  cursor: pointer;
 }
 .moveBack:focus {
   outline: none;
 }
 
-.moveNextShort {
+.moveBack:active {
+  transition-duration: 0.2s;
+  transition: ease-in-out;
   img {
-    height: 24px;
-    width: 24px;
+    height: 20px;
+    width: 20px;
   }
-  position: absolute;
-  width: 30px;
-  height: 40px;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-  border: none;
-  background: white;
-  right: 0%;
-  top: 40%;
-}
-.moveNextShort:focus {
-  outline: none;
 }

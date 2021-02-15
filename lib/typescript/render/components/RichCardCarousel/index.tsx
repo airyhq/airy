@@ -77,6 +77,7 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
     if (position == amountCards - 1) {
       return (
         <button
+          type="button"
           className={styles.moveBack}
           onClick={() => carouselMove(cardWidth, Direction.back, id)}
           disabled={disabled}>
@@ -87,12 +88,14 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
       return (
         <>
           <button
+            type="button"
             className={styles.moveNext}
             onClick={() => carouselMove(cardWidth, Direction.next, id)}
             disabled={disabled}>
             <img src={rightArrow} />
           </button>
           <button
+            type="button"
             className={styles.moveBack}
             onClick={() => carouselMove(cardWidth, Direction.back, id)}
             disabled={disabled}>
@@ -126,9 +129,7 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
     <>
       {fromContact ? (
         <>
-          <div
-            className={styles.containerContact}
-            style={inChatPlugin == true ? {transform: 'scale(0.7)'} : {transform: 'scale(1.0)'}}>
+          <div className={styles.containerContact} style={inChatPlugin == true ? {transform: 'scale(0.7)'} : {}}>
             <div
               className={styles.containerButton}
               style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
@@ -160,9 +161,7 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
         </>
       ) : (
         <>
-          <div
-            className={styles.containerMember}
-            style={inChatPlugin == true ? {transform: 'scale(0.7)'} : {transform: 'scale(1.0)'}}>
+          <div className={styles.containerMember} style={inChatPlugin == true ? {transform: 'scale(0.7)'} : {}}>
             <div
               className={styles.containerButton}
               style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>

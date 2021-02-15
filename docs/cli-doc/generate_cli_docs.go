@@ -37,7 +37,7 @@ func main() {
 	w := bufio.NewWriter(f)
 
 	title := strings.Title(basename)
-	w.WriteString(fmt.Sprintf(fmTemplate, title, "CLI "+title))
+	w.WriteString(fmt.Sprintf(fmTemplate, "Command "+title, title))
 
 	err = genMarkdownTreeCustom(cmd.RootCmd, w)
 	if err != nil {

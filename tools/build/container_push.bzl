@@ -11,6 +11,15 @@ def container_push(registry, repository):
     )
 
     lib_push(
+        name = "ljupco-test-ci",
+        format = "Docker",
+        image = ":image",
+        registry = registry,
+        repository = repository,
+        tag = "ljupco-test-ci",
+    )
+
+    lib_push(
         name = "local",
         format = "Docker",
         image = ":image",

@@ -4,8 +4,8 @@ import {Metadata} from './Metadata';
 import {Channel} from './Channel';
 
 export type ConversationMetadata = Metadata & {
-  contact?: Contact;
-  unreadCount?: number;
+  contact: Contact;
+  unreadCount: number;
 };
 
 export interface Conversation {

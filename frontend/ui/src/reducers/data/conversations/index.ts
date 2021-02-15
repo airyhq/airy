@@ -211,8 +211,7 @@ function allReducer(
 ): AllConversationsState {
   switch (action.type) {
     case getType(metadataActions.setMetadataAction):
-      const {subject, identifier, metadata} = action.payload;
-      if (subject !== 'conversation') {
+      if (action.payload.subject !== 'conversation') {
         return state;
       }
 
@@ -220,9 +219,9 @@ function allReducer(
         ...state,
         items: {
           ...state.items,
-          [identifier]: {
-            ...state.items[identifier],
-            metadata: merge({}, state.items[identifier].metadata, metadata),
+          [action.payload.identifier]: {
+            ...state.items[action.payload.identifier],
+            metadata: merge({}, state.items[action.payload.identifier].metadata, action.payload.metadata),
           },
         },
       };

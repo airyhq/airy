@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
-import {Channel} from 'httpclient';
 import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
 import {StateModel} from '../../reducers/index';
 import styles from './index.module.scss';
@@ -11,14 +10,12 @@ import {setPageTitle} from '../../services/pageTitle';
 import {ReactComponent as SearchIcon} from '../../assets/images/icons/search.svg';
 import {ReactComponent as BackIcon} from '../../assets/images/icons/arrow-left-2.svg';
 import {ReactComponent as FilterIcon} from '../../assets/images/icons/filter-alt.svg';
-import {ReactComponent as AiryLogo} from '../../assets/images/icons/airy_avatar.svg';
-import {ReactComponent as FacebookLogo} from '../../assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as SMSLogo} from '../../assets/images/icons/sms_avatar.svg';
-import {ReactComponent as WhatsappLogo} from '../../assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as GoogleLogo} from '../../assets/images/icons/google_avatar.svg';
-import {ReactComponent as AddChannel} from '../../assets/images/icons/plus-circle.svg';
-import {ReactComponent as Placeholder} from '../../assets/images/icons/placeholder.svg';
 import {SearchField} from '@airyhq/components';
+import ChatPluginSource from '../Channels/ChannelsSources/ChatPluginSource';
+import FacebookSource from '../Channels/ChannelsSources/FacebookSource';
+import TwilloSmsSource from '../Channels/ChannelsSources/TwilloSmsSource';
+import WhatsappSmsSource from '../Channels/ChannelsSources/WhatsappSmsSource';
+import GoogleSource from '../Channels/ChannelsSources/GoogleSource';
 
 const mapDispatchToProps = {
   listChannels,
@@ -36,7 +33,6 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type ChannelsConnectProps = {} & ConnectedProps<typeof connector> & RouteComponentProps;
 
 const Channels = (props: ChannelsConnectProps) => {
-  const {channels} = props;
   const [isShowingSearchChannelInput, setIsShowingSearchChannelInput] = useState(false);
   const [searchChannel, setSearchChannel] = useState('');
 
@@ -57,17 +53,6 @@ const Channels = (props: ChannelsConnectProps) => {
     props.listChannels();
     setPageTitle('Channels');
   }, []);
-
-  const chatPluginSources = props.channels.filter(channel => channel.source === 'chat_plugin').slice(0, 4);
-  const chatPluginSourcesExtra = props.channels.filter(channel => channel.source === 'chat_plugin').slice(4);
-  const totalChatPluginSources = chatPluginSources.concat(chatPluginSourcesExtra);
-
-  const facebookSources = props.channels.filter(channel => channel.source === 'facebook');
-  const smsSources = props.channels.filter(channel => channel.source === 'twilio.sms');
-  const whatsappSources = props.channels.filter(channel => channel.source === 'twilio.whatsapp');
-
-  console.log(chatPluginSources.slice(0, 4));
-  console.log(chatPluginSourcesExtra);
 
   const renderSearchChannelInput = isShowingSearchChannelInput ? (
     <div className={styles.containerChannelSearchField}>
@@ -115,262 +100,11 @@ const Channels = (props: ChannelsConnectProps) => {
       </div>
 
       <div className={styles.wrapper}>
-        <div className={styles.flexWrap}>
-          <div className={styles.airyChannel}>
-            <div className={styles.airyLogo}>
-              <AiryLogo />
-            </div>
-            <div className={styles.airyTitleAndText}>
-              <p className={styles.airyTitle}>Airy Live Chat</p>
-              <p className={styles.airyText}>Best of class browser messenger</p>
-            </div>
-          </div>
-          {chatPluginSources.length === 0 && (
-            <div className={styles.channelButton}>
-              <button type="button" className={styles.addChannelButton}>
-                <div className={styles.channelButtonIcon}>
-                  <AddChannel />
-                </div>
-              </button>
-            </div>
-          )}
-
-          {chatPluginSources.length > 0 && (
-            <>
-              <div className={styles.airyConnectedContainer}>
-                <div className={styles.airyConnectedSum}>
-                  <p>{totalChatPluginSources.length} CONNECTED</p>
-                </div>
-
-                <div className={styles.airyConnectedChannel}>
-                  {chatPluginSources.map((channel: Channel) => {
-                    const channelName = channel.metadata.name;
-                    return (
-                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                        <div className={styles.connectedChannelData}>
-                          {channel.metadata.imageUrl && (
-                            <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
-                          )}
-
-                          <div className={styles.placeholderLogo}>
-                            <Placeholder />{' '}
-                          </div>
-
-                          <div className={styles.channelName}>{channel.metadata.name}</div>
-                        </div>
-                      </li>
-                    );
-                  })}
-                  {chatPluginSourcesExtra.length > 0 && (
-                    <button className={styles.extraChannel}>+{chatPluginSourcesExtra.length} connected</button>
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.channelButton}>
-                <button type="button" className={styles.addChannelButton}>
-                  <div className={styles.channelButtonIcon}>
-                    <AddChannel />
-                  </div>
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className={styles.flexWrap}>
-          <div className={styles.facebookChannel}>
-            <div className={styles.facebookLogo}>
-              <FacebookLogo />
-            </div>
-            <div className={styles.facebookTitleAndText}>
-              <p className={styles.facebookTitle}>Messenger</p>
-              <p className={styles.facebookText}>Connect multiple Facebook pages</p>
-            </div>
-          </div>
-          {channels && facebookSources.length === 0 && (
-            <div className={styles.channelButton}>
-              <button type="button" className={styles.addChannelButton}>
-                <div className={styles.channelButtonIcon}>
-                  <AddChannel />
-                </div>
-              </button>
-            </div>
-          )}
-
-          {channels && facebookSources.length > 0 && (
-            <>
-              <div className={styles.airyConnectedContainer}>
-                <div className={styles.airyConnectedSum}>
-                  <p>{facebookSources.length} CONNECTED</p>
-                </div>
-
-                <div className={styles.airyConnectedChannel}>
-                  {facebookSources.map((channel: Channel) => {
-                    const channelName = channel.metadata.name;
-                    return (
-                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                        <div className={styles.namePlaceholder}>
-                          {channel.metadata.imageUrl && (
-                            <img src={channel.metadata.imageUrl} alt={channelName} className={styles.facebookImage} />
-                          )}
-                          <div className={styles.channelName}>{channel.metadata.name}</div>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className={styles.channelButton}>
-                <button type="button" className={styles.addChannelButton}>
-                  <div className={styles.channelButtonIcon}>
-                    <AddChannel />
-                  </div>
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-        <div className={styles.flexWrap}>
-          <div className={styles.smsChannel}>
-            <div className={styles.smsLogo}>
-              <SMSLogo />
-            </div>
-            <div className={styles.smsTitleAndText}>
-              <p className={styles.smsTitle}>SMS</p>
-              <p className={styles.smsText}>Deliver SMS with ease</p>
-            </div>
-          </div>
-
-          {channels && smsSources.length === 0 && (
-            <div className={styles.channelButton}>
-              <button type="button" className={styles.addChannelButton}>
-                <div className={styles.channelButtonIcon}>
-                  <AddChannel />
-                </div>
-              </button>
-            </div>
-          )}
-
-          {channels && smsSources.length > 0 && (
-            <>
-              <div className={styles.airyConnectedContainer}>
-                <div className={styles.airyConnectedSum}>
-                  <p>{smsSources.length} CONNECTED</p>
-                </div>
-
-                <div className={styles.airyConnectedChannel}>
-                  {smsSources.map((channel: Channel) => {
-                    //const channelName = channel.metadata.name;
-                    return (
-                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                        <div className={styles.namePlaceholder}>
-                          {/* {channel.metadata.imageUrl && (
-                          <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
-                        )} */}
-
-                          <div className={styles.placeholderLogo}>
-                            <Placeholder />{' '}
-                          </div>
-
-                          <div className={styles.channelName}>{channel.metadata.name}</div>
-                          <div className={styles.smsChannelId}>{channel.sourceChannelId}</div>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className={styles.channelButton}>
-                <button type="button" className={styles.addChannelButton}>
-                  <div className={styles.channelButtonIcon}>
-                    <AddChannel />
-                  </div>
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-        <div className={styles.flexWrap}>
-          <div className={styles.whatsappChannel}>
-            <div className={styles.whatsappLogo}>
-              <WhatsappLogo />
-            </div>
-            <div className={styles.whatsappTitleAndText}>
-              <p className={styles.whatsappTitle}>Whatsapp</p>
-              <p className={styles.whatsappText}>World #1 chat app</p>
-            </div>
-          </div>
-
-          {channels && whatsappSources.length === 0 && (
-            <div className={styles.channelButton}>
-              <button type="button" className={styles.addChannelButton}>
-                <div className={styles.channelButtonIcon}>
-                  <AddChannel />
-                </div>
-              </button>
-            </div>
-          )}
-          {channels && whatsappSources.length > 0 && (
-            <>
-              <div className={styles.airyConnectedContainer}>
-                <div className={styles.airyConnectedSum}>
-                  <p>{whatsappSources.length} CONNECTED</p>
-                </div>
-
-                <div className={styles.airyConnectedChannel}>
-                  {whatsappSources.map((channel: Channel) => {
-                    //const channelName = channel.metadata.name;
-                    return (
-                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                        <div className={styles.namePlaceholder}>
-                          {/* {channel.metadata.imageUrl && (
-                          <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
-                        )} */}
-
-                          <div className={styles.placeholderLogo}>
-                            <Placeholder />{' '}
-                          </div>
-
-                          <div className={styles.channelName}>{channel.metadata.name}</div>
-                          <div className={styles.smsChannelId}>{channel.sourceChannelId}</div>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className={styles.channelButton}>
-                <button type="button" className={styles.addChannelButton}>
-                  <div className={styles.channelButtonIcon}>
-                    <AddChannel />
-                  </div>
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className={styles.flexWrap}>
-          <div className={styles.googleChannel}>
-            <div className={styles.googleLogo}>
-              <GoogleLogo />
-            </div>
-            <div className={styles.googleTitleAndText}>
-              <p className={styles.googleTitle}>Google Business Messages</p>
-              <p className={styles.googleText}>Be there when people search</p>
-            </div>
-          </div>
-          <div>
-            <div className={styles.channelButton}>
-              <button type="button" className={styles.addChannelButton}>
-                <div className={styles.channelButtonIcon}>
-                  <AddChannel />
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
+        <ChatPluginSource pluginSource={props.channels} />
+        <FacebookSource facebookSource={props.channels} />
+        <TwilloSmsSource twilloSmsSource={props.channels} />
+        <WhatsappSmsSource whatsappSmsSource={props.channels} />
+        <GoogleSource googleSource={props.channels} />
       </div>
     </div>
   );

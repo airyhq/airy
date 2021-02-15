@@ -25,6 +25,7 @@ jobs:
 
       - name: Install Java
         run: |
+          sudo apt-get update
           sudo apt-get -y install openjdk-11-jdk openjdk-11-jre
 
       - name: Check Software versions

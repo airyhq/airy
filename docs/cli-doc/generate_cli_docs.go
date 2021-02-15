@@ -51,7 +51,7 @@ func genMarkdownTreeCustom(cmd *cobra.Command, w *bufio.Writer) error {
 	subcommands := cmd.Commands()
 	sort.Sort(byName(subcommands))
 
-	if err := GenMarkdownCustom(cmd, w); err != nil {
+	if err := genMarkdownCustom(cmd, w); err != nil {
 		return err
 	}
 
@@ -67,7 +67,7 @@ func genMarkdownTreeCustom(cmd *cobra.Command, w *bufio.Writer) error {
 	return nil
 }
 
-func GenMarkdownCustom(cmd *cobra.Command, w *bufio.Writer) error {
+func genMarkdownCustom(cmd *cobra.Command, w *bufio.Writer) error {
 	cmd.InitDefaultHelpCmd()
 	cmd.InitDefaultHelpFlag()
 
@@ -121,24 +121,5 @@ func GenMarkdownCustom(cmd *cobra.Command, w *bufio.Writer) error {
 	w.WriteString("\n")
 	w.WriteString("***\n\n")
 	w.Flush()
-	return nil
-}
-
-func printOptions(w *bufio.Writer, cmd *cobra.Command, name string) error {
-	flags := cmd.NonInheritedFlags()
-	flags.SetOutput(w)
-	if flags.HasAvailableFlags() {
-		w.WriteString("#### Options\n\n```\n")
-		flags.PrintDefaults()
-		w.WriteString("```\n\n")
-	}
-
-	parentFlags := cmd.InheritedFlags()
-	parentFlags.SetOutput(w)
-	if parentFlags.HasAvailableFlags() {
-		w.WriteString("#### Options inherited from parent commands\n\n```\n")
-		parentFlags.PrintDefaults()
-		w.WriteString("```\n\n")
-	}
 	return nil
 }

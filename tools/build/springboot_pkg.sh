@@ -68,6 +68,6 @@ cd "$RULEDIR"/outputjar || exit
 
 echo $(ls .)
 
-jar -cfm0 ../"$OUTPUTJAR" ../"$MANIFEST" $(ls .)
+jar -cfm0 ../"$OUTPUTJAR" ../"$MANIFEST" $(ls . | sort)
 
 cd "$RULEDIR" || exit

@@ -39,7 +39,7 @@ jobs:
       - name: Push images
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          bazel run //backend/sources/connector:8.1-ci-test
+          bazel run //backend/sources/facebook/connector:8.1-ci-test
 
       - name: Install aws cli
         uses: chrislennon/action-aws-cli@v1.1

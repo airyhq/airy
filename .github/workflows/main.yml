@@ -57,4 +57,4 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop') || startsWith(github.ref, 'refs/heads/test-ci')
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          bazel run //backend/sources/twilio/connector:8.1-ci-test
+          bazel run //backend/sources/twilio/connector:local

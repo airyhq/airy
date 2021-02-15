@@ -7,10 +7,20 @@
   align-items: flex-start;
 }
 
+.containerChatpluginContact {
+  @extend .containerContact;
+  transform: scale(0.75);
+}
+
 .containerMember {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+}
+
+.containerChatpluginMember {
+  @extend .containerMember;
+  transform: scale(0.75);
 }
 
 .richCardCarouselContainer {

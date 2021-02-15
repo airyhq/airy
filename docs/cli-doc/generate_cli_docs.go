@@ -1,11 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"cli/cmd"
+	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
-	"github.com/spf13/cobra/doc"
+	"github.com/spf13/cobra"
 
 	"fmt"
 )
@@ -19,23 +22,123 @@ sidebar_label: %s
 
 `
 
-func defaultLinkHandler(name, ref string) string {
-	return fmt.Sprintf("`%s <%s.rst>`_", name, ref)
-}
+const basename = "reference"
 
 func main() {
 
-	filePrepender := func(filename string) string {
-		title := strings.Title(strings.Replace(strings.ReplaceAll(filepath.Base(filename), "_", " "), ".md", "", 1))
-		return fmt.Sprintf(fmTemplate, title, title)
+	dir := ProjectDir + "/docs/docs/cli"
+
+	filename := filepath.Join(dir, basename+".md")
+	f, err := os.Create(filename)
+	if err != nil {
+		fmt.Println(err)
 	}
-	identity := func(s string) string { return s }
+	defer f.Close()
+	w := bufio.NewWriter(f)
 
-	cmd.RootCmd.DisableAutoGenTag = true
+	title := strings.Title(basename)
+	w.WriteString(fmt.Sprintf(fmTemplate, title, "CLI "+title))
 
-	err := doc.GenMarkdownTreeCustom(cmd.RootCmd, ProjectDir+"/docs/docs/cli", filePrepender, identity)
+	err = genMarkdownTreeCustom(cmd.RootCmd, w)
 	if err != nil {
 		fmt.Println(err)
 	}
 
+}
+
+func genMarkdownTreeCustom(cmd *cobra.Command, w *bufio.Writer) error {
+
+	subcommands := cmd.Commands()
+	sort.Sort(byName(subcommands))
+
+	if err := GenMarkdownCustom(cmd, w); err != nil {
+		return err
+	}
+
+	for _, c := range subcommands {
+		if !c.IsAvailableCommand() || c.IsAdditionalHelpTopicCommand() {
+			continue
+		}
+		if err := genMarkdownTreeCustom(c, w); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func GenMarkdownCustom(cmd *cobra.Command, w *bufio.Writer) error {
+	cmd.InitDefaultHelpCmd()
+	cmd.InitDefaultHelpFlag()
+
+	name := cmd.CommandPath()
+
+	w.WriteString("## " + name + "\n\n")
+	w.WriteString(cmd.Short + "\n\n")
+	if len(cmd.Long) > 0 {
+		w.WriteString("#### Synopsis\n\n")
+		w.WriteString(cmd.Long + "\n\n")
+	}
+
+	if cmd.Runnable() {
+		w.WriteString(fmt.Sprintf("```\n%s\n```\n\n", cmd.UseLine()))
+	}
+
+	if len(cmd.Example) > 0 {
+		w.WriteString("#### Examples\n\n")
+		w.WriteString(fmt.Sprintf("```\n%s\n```\n\n", cmd.Example))
+	}
+
+	if err := printOptions(w, cmd, name); err != nil {
+		return err
+	}
+	if hasSeeAlso(cmd) {
+		w.WriteString("#### SEE ALSO\n\n")
+		if cmd.HasParent() {
+			parent := cmd.Parent()
+			pname := parent.CommandPath()
+			link := basename + "#" + pname
+			link = strings.Replace(link, " ", "-", -1)
+			w.WriteString(fmt.Sprintf("* [%s](%s)\t - %s\n", pname, link, parent.Short))
+			cmd.VisitParents(func(c *cobra.Command) {
+			})
+		}
+
+		subcommands := cmd.Commands()
+		sort.Sort(byName(subcommands))
+
+		for _, child := range subcommands {
+			if !child.IsAvailableCommand() || child.IsAdditionalHelpTopicCommand() {
+				continue
+			}
+			cname := name + " " + child.Name()
+			link := basename + "#" + cname
+			link = strings.Replace(link, " ", "-", -1)
+			w.WriteString(fmt.Sprintf("* [%s](%s)\t - %s\n", cname, link, child.Short))
+		}
+	}
+
+	w.WriteString("\n")
+	w.WriteString("***\n\n")
+	w.Flush()
+	return nil
+}
+
+func printOptions(w *bufio.Writer, cmd *cobra.Command, name string) error {
+	flags := cmd.NonInheritedFlags()
+	flags.SetOutput(w)
+	if flags.HasAvailableFlags() {
+		w.WriteString("#### Options\n\n```\n")
+		flags.PrintDefaults()
+		w.WriteString("```\n\n")
+	}
+
+	parentFlags := cmd.InheritedFlags()
+	parentFlags.SetOutput(w)
+	if parentFlags.HasAvailableFlags() {
+		w.WriteString("#### Options inherited from parent commands\n\n```\n")
+		parentFlags.PrintDefaults()
+		w.WriteString("```\n\n")
+	}
+	return nil
 }

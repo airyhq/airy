@@ -39,7 +39,7 @@ yourself](installation.md#building-from-source).
 
 <Tabs
 groupId="operating-systems"
-defaultValue="mac"
+defaultValue="homebrew"
 values={[
 {label: 'Homebrew', value: 'homebrew'},
 {label: 'macOS', value: 'mac'},
@@ -73,7 +73,7 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/darwin/amd64/airy -o "air
 
 Make sure you have the [Xcode Command Line
 Tools](https://developer.apple.com/library/archive/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-WHAT_IS_THE_COMMAND_LINE_TOOLS_PACKAGE_)
-otherwise you can install them with:
+installed. Otherwise you can install them with:
 
 ```bash
 xcode-select --install
@@ -107,7 +107,7 @@ curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/linux/amd64/airy -o "airy
 
 <Tabs
 groupId="operating-systems"
-defaultValue="mac"
+defaultValue="homebrew"
 values={[
 {label: 'Homebrew', value: 'homebrew'},
 {label: 'macOS', value: 'mac'},

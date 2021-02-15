@@ -14,21 +14,21 @@ APPJAR_NAME=$4
 MANIFEST=$5
 
 # This output is really spammy, suppress unless you need it
-#echo "SPRING BOOT PACKAGER FOR BAZEL"
-#echo "  RULEDIR         $RULEDIR     (build working directory)"
-#echo "  MAINCLASS       $MAINCLASS   (classname of the @SpringBootApplication class for the MANIFEST.MF file entry)"
-#echo "  OUTPUTJAR       $OUTPUTJAR   (the executable JAR that will be built from this rule)"
-#echo "  APPJAR          $APPJAR      (contains the .class files for the Spring Boot application)"
-#echo "  APPJAR_NAME     $APPJAR_NAME (unused, is the appjar filename without the .jar extension)"
-#echo "  MANIFEST        $MANIFEST    (the location of the generated MANIFEST.MF file)"
-#echo "  DEPLIBS         (list of upstream transitive dependencies, these will be incorporated into the jar file in BOOT-INF/lib )"
-#i=6
-#while [ "$i" -le "$#" ]; do
-#  eval "lib=\${$i}"
-#  printf '%s\n' "     DEPLIB:      $lib"
-#  i=$((i + 1))
-#done
-#echo ""
+echo "SPRING BOOT PACKAGER FOR BAZEL"
+echo "  RULEDIR         $RULEDIR     (build working directory)"
+echo "  MAINCLASS       $MAINCLASS   (classname of the @SpringBootApplication class for the MANIFEST.MF file entry)"
+echo "  OUTPUTJAR       $OUTPUTJAR   (the executable JAR that will be built from this rule)"
+echo "  APPJAR          $APPJAR      (contains the .class files for the Spring Boot application)"
+echo "  APPJAR_NAME     $APPJAR_NAME (unused, is the appjar filename without the .jar extension)"
+echo "  MANIFEST        $MANIFEST    (the location of the generated MANIFEST.MF file)"
+echo "  DEPLIBS         (list of upstream transitive dependencies, these will be incorporated into the jar file in BOOT-INF/lib )"
+i=6
+while [ "$i" -le "$#" ]; do
+  eval "lib=\${$i}"
+  printf '%s\n' "     DEPLIB:      $lib"
+  i=$((i + 1))
+done
+echo ""
 
 # Setup working directories
 mkdir -p outputjar/BOOT-INF/lib

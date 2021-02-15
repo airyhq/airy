@@ -151,7 +151,7 @@ airy version
 
 ### Step 4: Initialize the setup
 
-The [airy init](cli/airy_init.md) will create a `cli.yaml` file which stores
+The [airy init](cli/reference.md#init) will create a `cli.yaml` file which stores
 your `apiHost` and `apiJwtToken`:
 
 ```bash

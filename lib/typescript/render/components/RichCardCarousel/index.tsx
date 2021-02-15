@@ -55,11 +55,11 @@ export type RichCardCarouselRenderProps = DefaultMessageRenderingProps & {
   cardWidth: string;
   cardContents: [Card];
   id: string;
-  inChatPlugin: boolean;
+  isChatPlugin: boolean;
 };
 
 export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
-  const {cardContents, cardWidth, id, fromContact, inChatPlugin} = props;
+  const {cardContents, cardWidth, id, fromContact, isChatPlugin} = props;
   const [position, setPosition] = useState(0);
   const [disabled, setDiabled] = useState(false);
   const amountCards = cardContents.length;
@@ -68,6 +68,7 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
     if (position == 0) {
       return (
         <button
+          type="button"
           className={styles.moveNext}
           onClick={() => carouselMove(cardWidth, Direction.next, id)}
           disabled={disabled}>
@@ -130,7 +131,7 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
     <>
       {fromContact ? (
         <>
-          <div className={styles.containerContact} style={inChatPlugin == true ? {transform: 'scale(0.7)'} : {}}>
+          <div className={`${isChatPlugin ? styles.containerChatpluginContact : styles.containerContact}`}>
             <div
               className={styles.containerButton}
               style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
@@ -162,7 +163,7 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
         </>
       ) : (
         <>
-          <div className={styles.containerMember} style={inChatPlugin == true ? {transform: 'scale(0.7)'} : {}}>
+          <div className={`${isChatPlugin ? styles.containerChatpluginMember : styles.containerMember}`}>
             <div
               className={styles.containerButton}
               style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>

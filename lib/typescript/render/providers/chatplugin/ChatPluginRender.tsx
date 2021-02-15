@@ -50,7 +50,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
           cardWidth={content.cardWidth}
           cardContents={content.cardContents}
           id={props.message.id}
-          inChatPlugin={propsToUse.fromContact}
+          isChatPlugin={propsToUse.fromContact}
         />
       )
   }

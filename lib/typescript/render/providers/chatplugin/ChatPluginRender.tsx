@@ -2,6 +2,7 @@ import React from 'react';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {RichText} from '../../components/RichText';
 import {RichCard} from '../../components/RichCard';
+import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './chatPluginModel';
 import {Message} from 'httpclient';
@@ -42,6 +43,18 @@ function render(content: ContentUnion, props: MessageRenderProps) {
           suggestions={content.suggestions}
         />
       );
+    case 'richCardCarousel':
+      return (
+        <RichCardCarousel 
+        {...getDefaultMessageRenderingProps(props)}
+        cards={content.}
+        title={content.title}
+        description={content.description}
+        media={content.media}
+        suggestions={content.suggestions}
+        cardWidth={content.cardWidth}
+        />
+      )
   }
 }
 
@@ -73,6 +86,29 @@ function mapContent(message: Message): ContentUnion {
     return {
       type: 'text',
       text: messageContent.text,
+    };
+  }
+
+  if (messageContent.richCard.carouselCard) {
+    const {
+      richCard: {
+        carouselCard: {
+          cardWidth,
+          cardContents: [{
+          }]
+        },
+      },
+    } = messageContent;
+
+    console.log(messageContent.cardContents);
+
+    return {
+      type: 'richCardCarousel',
+      cardWidth: cardWidth,
+      ...(cardContents.title && {title: cardContents.title}),
+      ...(cardContents.description && {description: cardContents.description}),
+      media: cardContents.media,
+      suggestions: cardContents.suggestions,
     };
   }
 }

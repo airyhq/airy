@@ -18,10 +18,22 @@ jobs:
       - name: Check Software versions
         run: |
           java -version
-          sudo dpkg -l | grep -i jdk
-          sudo dpkg -l | grep -i jre
-          jar --version
-          ls -lah $(which python)
+          sudo dpkg -l | grep -i jdk || true
+          sudo dpkg -l | grep -i jre || true
+          jar --version || true
+          ls -lah $(which python) || true
+
+      - name: Install Java
+        run: |
+          sudo apt-get -y install openjdk-11-jdk openjdk-11-jre
+
+      - name: Check Software versions
+        run: |
+          java -version
+          sudo dpkg -l | grep -i jdk || true
+          sudo dpkg -l | grep -i jre || true
+          jar --version || true
+          ls -lah $(which python) || true
 
       - name: Install bazelisk
         run: |

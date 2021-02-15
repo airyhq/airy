@@ -52,11 +52,11 @@ module.exports = {
     {
       '✨ Apps': [
         {
-          'UI': [
+          UI: [
             'apps/ui/introduction',
             'apps/ui/ui-quick-start',
             'apps/ui/inbox',
-            'apps/ui/tags',            
+            'apps/ui/tags',
             'apps/ui/teams-routing',
             'apps/ui/ui-components',
           ],

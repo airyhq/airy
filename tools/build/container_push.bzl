@@ -20,6 +20,15 @@ def container_push(registry, repository):
     )
 
     lib_push(
+        name = "ci-bug",
+        format = "Docker",
+        image = ":image",
+        registry = registry,
+        repository = repository,
+        tag = "ci-bug",
+    )
+
+    lib_push(
         name = "release",
         format = "Docker",
         image = ":image",

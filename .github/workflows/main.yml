@@ -39,7 +39,13 @@ jobs:
       - name: Push images
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          ./scripts/push-images.sh develop
+          release_targets=$(bazel query "filter("ci-bug$", //...)" --output label)
+
+          for target in $release_targets; do
+            echo "Deploying $target"
+            bazel run "$target"
+          done
+
       - name: Install aws cli
         uses: chrislennon/action-aws-cli@v1.1
         env:

@@ -45,14 +45,11 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       );
     case 'richCardCarousel':
       return (
-        <RichCardCarousel 
-        {...getDefaultMessageRenderingProps(props)}
-        cards={content.}
-        title={content.title}
-        description={content.description}
-        media={content.media}
-        suggestions={content.suggestions}
-        cardWidth={content.cardWidth}
+        <RichCardCarousel
+          {...getDefaultMessageRenderingProps(props)}
+          cardWidth={content.cardWidth}
+          cardContents={content.cardContents}
+          id={props.message.id}
         />
       )
   }

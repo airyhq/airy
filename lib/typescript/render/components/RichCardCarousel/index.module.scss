@@ -1,0 +1,37 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.richCardCarouselContainer {
+  display: flex;
+  overflow-x: auto;
+}
+
+.richCard {
+  padding: 5px;
+}
+
+.button {
+    position: relative;
+
+  .moveNext {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border: none;
+    background: red;
+    left: 300px;
+    top: 200px;
+  }
+
+  .moveBack {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border: none;
+    background: yellow;
+  }
+}

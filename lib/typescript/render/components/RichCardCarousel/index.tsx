@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './index.module.scss';
-import {Media, MediaRenderProps} from '../Media';
+import {MediaRenderProps} from '../Media';
 import {DefaultMessageRenderingProps} from '../index';
+import {RichCard} from '../RichCard';
+import chevronLeft from 'assets/images/icons/chevronLeft.svg';
 
 type Suggestions = [
   {
@@ -18,42 +20,91 @@ type Suggestions = [
   }
 ];
 
+type Card = {
+  title?: string;
+  description?: string;
+  media: MediaRenderProps;
+  suggestions: Suggestions;
+};
+
+enum Direction {
+    back = 'back',
+    next = 'next'
+}
+
+enum Width {
+    short = 'SHORT',
+    medium = 'MEDIUM'
+}
+
 export type RichCardCarouselRenderProps = DefaultMessageRenderingProps & {
   title?: string;
   cardWidth: string;
-  description?: string;
-  suggestions: Suggestions;
-  media: MediaRenderProps;
+  cardContents: [Card];
+  id: string;
 };
 
 export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
-  const {title, description, suggestions, media} = props;
+  const {cardContents, cardWidth, id} = props;
+  const [position, setPosition] = useState(0);
+  const amountCards = cardContents.length;
+
+  const button = (position: number, amountCards: number, id: string) => {
+    if (position == 0) {
+      return <button className={styles.moveNext} onClick={() => carouselMove(cardWidth, Direction.next, id)}></button>;
+    }
+    if (position == amountCards - 1) {
+      return (
+        <button className={styles.moveBack} onClick={() => carouselMove(cardWidth, Direction.back, id)}>
+          <img src={chevronLeft} />
+        </button>
+      );
+    } else {
+      return (
+        <div>
+          <button className={styles.moveNext} onClick={() => carouselMove(cardWidth, Direction.next, id)}></button>
+          <button className={styles.moveBack} onClick={() => carouselMove(cardWidth, Direction.back, id)}>
+            <img src={chevronLeft} />
+          </button>
+        </div>
+      );
+    }
+  };
+
+  const carouselMove = (cardWidth: string, direction: Direction, id: string) => {
+      direction == Direction.back ? setPosition(position - 1) : setPosition(position + 1);
+      var elem = document.getElementById(id);
+
+      switch (cardWidth) {
+        case Width.short:
+          return elem.scrollBy({
+            behavior: 'smooth',
+            left: direction == Direction.back ? -136 : 136,
+          });
+        case Width.medium:
+          return elem.scrollBy({
+            behavior: 'smooth',
+            left: direction == Direction.back ? -293 : 293,
+          });
+      }
+  }
 
   return (
-    <div className={styles.richCardContainer}>
-      <div className={styles.mediaContainer}>
-        <Media {...media} />
-      </div>
-      <div className={styles.textContainer}>
-        {title && <h1 className={styles.title}>{title}</h1>}
-        {description && <span className={styles.description}>{description}</span>}
-        <div className={styles.suggestionsContainer}>
-          {suggestions.map(({reply: {text, postbackData}}) => {
-            return (
-              text &&
-              postbackData && (
-                <button key={text} className={styles.suggestionButton}>
-                  {' '}
-                  <a className={styles.suggestionLink} href={postbackData} target="_blank" rel="noopener noreferrer">
-                    {' '}
-                    {text}{' '}
-                  </a>{' '}
-                </button>
-              )
-            );
-          })}
-        </div>
-      </div>
+    <div id={id} className={styles.richCardCarouselContainer} style={cardWidth === Width.short ? {width: '280px'} : {width: '320px'}}>
+      <div className={styles.button}>{button(position, amountCards, id)}</div>
+      {cardContents.map((card: Card) => {
+        return (
+          <div key={card.title} className={styles.richCard}>
+            <RichCard
+              title={card.title}
+              description={card.description}
+              media={card.media}
+              suggestions={card.suggestions}
+              fromContact={true}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 };

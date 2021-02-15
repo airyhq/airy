@@ -12,12 +12,12 @@ import TagsSVG from "@site/static/icons/price-tag.svg";
 import UsersSVG from "@site/static/icons/users.svg";
 import ComponentsSVG from "@site/static/icons/information-architecture.svg";
 
-Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your teams to use.
+Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your teams to use. 
 
 While the [Chat Plugin](sources/chat-plugin.md) is the open-source chat UI for your website and app visitors, Airy UI has different all the UI interfaces you need internally for a messaging platform.
 
-Airy UI comes with an open-source, customizable [inbox](inbox), filled with the conversations of all your [sources](sources/introduction.md),
-Additional features like [Filters, Search](inbox) and [Tags](tags) help you and your [teams](teams-routing) organize conversations better.
+Airy UI comes with an open-source, customizable [inbox](inbox), filled with the conversations of all your [sources](sources/introduction.md), 
+Additional features like [Filters, Search](inbox) and [Tags](tags) help you.
 
 <ButtonBoxList>
     <ButtonBox
@@ -37,13 +37,7 @@ Additional features like [Filters, Search](inbox) and [Tags](tags) help you and 
         title='Tags'
         description='Tag your conversations for easy filtering, searching & segmenting'
         link='apps/ui/tags'
-    />
-    <ButtonBox
-        icon={() => <UsersSVG />}
-        title='Teams & Routing'
-        description='Teams help you scale from a few users to many'
-        link='apps/ui/teams-routing'
-    />
+    />    
     <ButtonBox
         icon={() => <ComponentsSVG />}
         title='UI Components'

@@ -15,6 +15,14 @@ jobs:
           java-version: '11'
           architecture: 'x64'
 
+      - name: Check Software versions
+        run: |
+          java -version
+          sudo dpkg -l | grep -i jdk
+          sudo dpkg -l | grep -i jre
+          jar --version
+          ls -lah $(which python)
+
       - name: Install bazelisk
         run: |
           curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.1.0/bazelisk-linux-amd64"

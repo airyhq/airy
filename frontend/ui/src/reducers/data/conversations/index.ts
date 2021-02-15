@@ -1,14 +1,15 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
-import {cloneDeep, uniq, sortBy} from 'lodash-es';
+import {cloneDeep, sortBy, uniq, merge} from 'lodash-es';
 
-import {Conversation, Message, ConversationFilter} from 'httpclient';
+import {Conversation, ConversationFilter, Message} from 'httpclient';
 
+import * as metadataActions from '../../../actions/metadata';
 import * as actions from '../../../actions/conversations';
 import * as filterActions from '../../../actions/conversationsFilter';
 import * as messageActions from '../../../actions/messages';
 
-type Action = ActionType<typeof actions>;
+type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 type FilterAction = ActionType<typeof filterActions>;
 type MessageAction = ActionType<typeof messageActions>;
 
@@ -209,6 +210,22 @@ function allReducer(
   action: Action | MessageAction
 ): AllConversationsState {
   switch (action.type) {
+    case getType(metadataActions.setMetadataAction):
+      const {subject, identifier, metadata} = action.payload;
+      if (subject !== 'conversation') {
+        return state;
+      }
+
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [identifier]: {
+            ...state.items[identifier],
+            metadata: merge({}, state.items[identifier].metadata, metadata),
+          },
+        },
+      };
     case getType(actions.mergeConversationsAction):
       if (action.payload.paginationData) {
         return {

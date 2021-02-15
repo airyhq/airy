@@ -18,7 +18,6 @@ import {MergedConversation, StateModel} from '../../../reducers';
 
 import styles from './index.module.scss';
 import {ConversationRouteProps} from '../index';
-import {WithConversationMetadata} from '../../../../../../lib/typescript/httpclient/model';
 
 type ConversationListProps = ConnectedProps<typeof connector>;
 
@@ -42,10 +41,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const ConversationList = (props: ConversationListProps) => {
   const listRef: any = createRef();
 
-  const renderConversationItem = (
-    conversation: WithConversationMetadata<MergedConversation>,
-    style: React.CSSProperties
-  ) => {
+  const renderConversationItem = (conversation: MergedConversation, style: React.CSSProperties) => {
     const {currentConversationId} = props;
     if (conversation == null) {
       return (

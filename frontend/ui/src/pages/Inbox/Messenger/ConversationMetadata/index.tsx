@@ -1,5 +1,6 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import {Tag as TagModel, TagColor} from 'httpclient';
 
 import {createTag, listTags} from '../../../../actions/tags';
@@ -206,4 +207,4 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   );
 };
 
-export default connector(ConversationMetadata);
+export default withRouter(connector(ConversationMetadata));

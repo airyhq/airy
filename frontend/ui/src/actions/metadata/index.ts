@@ -1,14 +1,8 @@
 import {createAction} from 'typesafe-actions';
 import {MetadataEvent} from 'httpclient';
 
-const SET_METADATA = '@@channel/SET_METADATA';
-const SET_METADATA_LIST = '@@channel/SET_METADATA_LIST';
+const SET_METADATA = '@@metadata/SET_METADATA';
 
-export const setMetadataAction = createAction(SET_METADATA, resolve => <T>(metadataEvent: MetadataEvent<T>) =>
+export const setMetadataAction = createAction(SET_METADATA, resolve => (metadataEvent: MetadataEvent) =>
   resolve(metadataEvent)
-);
-
-export const setMetadataListAction = createAction(
-  SET_METADATA_LIST,
-  resolve => <T>(metadataEvents: MetadataEvent<T>[]) => resolve(metadataEvents)
 );

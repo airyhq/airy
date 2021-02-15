@@ -1,8 +1,8 @@
-import {Conversation, WithConversationMetadata} from '../model';
+import {Conversation} from '../model';
 import {ConversationPayload} from '../payload/ConversationPayload';
 import {messageMapper} from './messageMapper';
 
-export const conversationMapper = (payload: ConversationPayload): WithConversationMetadata<Conversation> => {
+export const conversationMapper = (payload: ConversationPayload): Conversation => {
   return {
     id: payload.id,
     channel: payload.channel,
@@ -15,7 +15,7 @@ export const conversationMapper = (payload: ConversationPayload): WithConversati
       unreadCount: payload.metadata.unread_count,
     },
     createdAt: new Date(payload.created_at),
-    tags: Object.keys(payload.metadata.tags),
+    tags: Object.keys(payload.metadata.tags || {}),
     lastMessage: messageMapper(payload.last_message),
   };
 };

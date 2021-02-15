@@ -25,12 +25,12 @@ const mapStateToProps = (state: StateModel) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addMessagesAction: (conversationId: string, messages: Message[]) =>
+    addMessages: (conversationId: string, messages: Message[]) =>
       dispatch(addMessagesAction({conversationId, messages})),
-    addChannelAction: (channel: Channel) => dispatch(addChannelAction(channel)),
-    removeChannelAction: (channel: Channel) => dispatch(removeChannelAction(channel)),
+    addChannel: (channel: Channel) => dispatch(addChannelAction(channel)),
+    removeChannel: (channel: Channel) => dispatch(removeChannelAction(channel)),
     getConversationInfo: (conversationId: string) => dispatch(getConversationInfo(conversationId)),
-    setConversationUnreadMessageCount: (conversationId: string, unreadCount: number) =>
+    setConversationUnreadCount: (conversationId: string, unreadCount: number) =>
       dispatch(
         setMetadataAction({
           subject: 'conversation',
@@ -51,19 +51,19 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
     conversations,
     getConversationInfo,
     user,
-    addMessagesAction,
-    addChannelAction,
-    removeChannelAction,
-    setConversationUnreadMessageCount,
+    addMessages,
+    addChannel,
+    removeChannel,
+    setConversationUnreadCount,
   } = props;
   const [webSocketClient, setWebSocketClient] = useState(null);
 
   const addMessage = (conversationId: string, message: Message) => {
     if (conversations[conversationId]) {
-      addMessagesAction(conversationId, [message]);
+      addMessages(conversationId, [message]);
     } else {
       getConversationInfo(conversationId).then(() => {
-        addMessagesAction(conversationId, [message]);
+        addMessages(conversationId, [message]);
       });
     }
   };
@@ -80,18 +80,9 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
             onMessage: (conversationId: string, _channelId: string, message: Message) => {
               addMessage(conversationId, message);
             },
-
-            onUnreadCountUpdated: (conversationId: string, unreadMesageCount: number) => {
-              setConversationUnreadMessageCount(conversationId, unreadMesageCount);
-            },
-
-            onChannelConnected: (channel: Channel) => {
-              addChannelAction(channel);
-            },
-
-            onChannelDisconnected: (channel: Channel) => {
-              removeChannelAction(channel);
-            },
+            onUnreadCountUpdated: setConversationUnreadCount,
+            onChannelConnected: addChannel,
+            onChannelDisconnected: removeChannel,
           },
           env.API_HOST
         )

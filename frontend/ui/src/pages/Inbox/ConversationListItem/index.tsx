@@ -7,7 +7,7 @@ import AvatarImage from '../../../components/AvatarImage';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
-import {Conversation, Message, WithConversationMetadata} from 'httpclient';
+import {Message} from 'httpclient';
 import {MergedConversation, StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations} from '../../../actions/conversations';
@@ -19,7 +19,7 @@ interface FormattedMessageProps {
 }
 
 type ConversationListItemProps = {
-  conversation: WithConversationMetadata<MergedConversation>;
+  conversation: MergedConversation;
   active: boolean;
   style: CSSProperties;
 } & ConnectedProps<typeof connector>;

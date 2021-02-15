@@ -65,6 +65,11 @@ done
 # that tells jar not to compress the jar, only package it. Spring Boot does not
 # allow the jar file to be compressed (it will fail at startup).
 cd "$RULEDIR"/outputjar || exit
-jar -cfm0 ../"$OUTPUTJAR" ../"$MANIFEST" .
+
+ls -d **/* | sort > list.txt
+
+# echo list.txt
+
+jar -cfm0 ../"$OUTPUTJAR" ../"$MANIFEST" @list.txt
 
 cd "$RULEDIR" || exit

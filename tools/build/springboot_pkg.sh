@@ -66,8 +66,8 @@ done
 # allow the jar file to be compressed (it will fail at startup).
 cd "$RULEDIR"/outputjar || exit
 
-echo $(ls .)
+echo $(ls . | sort -r)
 
-jar -cfm0 ../"$OUTPUTJAR" ../"$MANIFEST" $(ls . | sort)
+jar -cfm0 ../"$OUTPUTJAR" ../"$MANIFEST" $(ls . | sort -r)
 
 cd "$RULEDIR" || exit

@@ -32,10 +32,6 @@ jobs:
         env:
           GCS_SA_KEY: ${{secrets.GCS_SA_KEY}}
 
-      - name: Build all artifacts
-        run: |
-          bazel build //...
-
       - name: Push images
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin

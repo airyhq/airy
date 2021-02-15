@@ -54,4 +54,4 @@ export interface RichCardCarouselContent extends Content {
   cardContents: [RichCardContent];
 }
 
-export type ContentUnion = TextContent | RichCardContent | RichCardCarouselContent;
+export type ContentUnion = TextContent | RichTextContent | RichCardContent | RichCardCarouselContent;

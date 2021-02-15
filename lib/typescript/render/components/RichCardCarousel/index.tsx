@@ -51,7 +51,6 @@ enum VisibleArea {
 }
 
 export type RichCardCarouselRenderProps = DefaultMessageRenderingProps & {
-  title?: string;
   cardWidth: string;
   cardContents: [Card];
   id: string;

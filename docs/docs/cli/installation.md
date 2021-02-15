@@ -21,7 +21,6 @@ You can follow the next steps for a quick setup:
 - [Step 3: Verify your installation](installation.md#step-3-verify-your-installation)
 - [Step 4: Initialize the setup](installation.md#step-4-initialize-the-setup)
 
-
 ### Step 1: Check the requirements
 
 Airy is built to run in the cloud, but you can also run it locally. The CLI runs
@@ -31,9 +30,7 @@ on macOS, Linux and Windows and we provide pre-built executable binaries for
 If you are running on a different platform you can also [build it
 yourself](installation.md#building-from-source).
 
-
 ### Step 2: Install the Airy CLI
-
 
 #### Download the latest release
 
@@ -123,6 +120,7 @@ values={[
 sudo mv ./airy /usr/local/bin/airy && \
 sudo chown root: /usr/local/bin/airy
 ```
+
 </TabItem>
 
 <TabItem value="linux">
@@ -136,10 +134,8 @@ sudo install -o root -g root -m 0755 airy /usr/local/bin/airy
 </TabItem>
 <TabItem value="homebrew">
 
-
 </TabItem>
 </Tabs>
-
 
 ### Step 3: Verify your installation
 
@@ -160,7 +156,7 @@ airy init
 
 <SuccessBox>
 
-:tada: Congratulations! 
+:tada: Congratulations!
 
 You have successfully installed Airy CLI! Next step: Choose a way to [Deploy
 Airy Core](/getting-started/deployment/introduction.md)

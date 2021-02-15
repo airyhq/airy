@@ -48,12 +48,8 @@ Additional features like [Filters, Search](inbox) and [Tags](tags) help you.
 
 **Overview**
 
-Inbox Screenshot/Gif
-
 <img alt="Demo Tags"
 src={useBaseUrl('img/apps/ui/demotags.gif')} />
-
-Teams & Routing Screenshot/ Gif
 
 **Usecases**
 

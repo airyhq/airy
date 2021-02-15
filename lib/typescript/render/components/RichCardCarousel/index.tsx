@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './index.module.scss';
 import {MediaRenderProps} from '../Media';
 import {DefaultMessageRenderingProps} from '../index';
 import {RichCard} from '../RichCard';
 import leftArrow from 'assets/images/icons/leftArrow.svg';
 import rightArrow from 'assets/images/icons/rightArrow.svg';
-import {stat} from 'fs';
 
 type Suggestions = [
   {
@@ -43,11 +42,11 @@ enum Width {
 // Given width of RichCards
 enum CardWidth {
   short = 136,
-  medium = 280, 
+  medium = 280,
 }
 
 enum VisibleArea {
-  short = 156,
+  short = 176,
   medium = 320,
 }
 
@@ -62,15 +61,18 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
   const {cardContents, cardWidth, id} = props;
   const [position, setPosition] = useState(0);
   const [disabled, setDiabled] = useState(false);
+  const [style, setStyle] = useState('');
   const amountCards = cardContents.length;
+
+  useEffect(() => {
+    cardWidth == Width.short ? setStyle(styles.moveNextShort) : setStyle(styles.moveNext);
+  }),
+    [];
 
   const button = (position: number, amountCards: number, id: string) => {
     if (position == 0) {
       return (
-        <button
-          className={styles.moveNext}
-          onClick={() => carouselMove(cardWidth, Direction.next, id)}
-          disabled={disabled}>
+        <button className={style} onClick={() => carouselMove(cardWidth, Direction.next, id)} disabled={disabled}>
           <img src={rightArrow} />
         </button>
       );
@@ -87,10 +89,7 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
     } else {
       return (
         <div>
-          <button
-            className={styles.moveNext}
-            onClick={() => carouselMove(cardWidth, Direction.next, id)}
-            disabled={disabled}>
+          <button className={style} onClick={() => carouselMove(cardWidth, Direction.next, id)} disabled={disabled}>
             <img src={rightArrow} />
           </button>
           <button
@@ -112,21 +111,21 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
     direction == Direction.back ? setPosition(position - 1) : setPosition(position + 1);
     const elem = document.getElementById(id);
     const padding = 5;
-    const scrollDistance = cardWidth == Width.short ? CardWidth.short + padding : CardWidth.medium + padding;
-
-    console.log(scrollDistance);
+    const space =
+      cardWidth == Width.short ? VisibleArea.short - CardWidth.short : VisibleArea.medium - CardWidth.medium;
+    const scrollDistance =
+      cardWidth == Width.short ? VisibleArea.short - space + padding : VisibleArea.medium - space + padding;
 
     switch (cardWidth) {
       case Width.short:
         return elem.scrollBy({
           behavior: 'smooth',
-        //   left: direction == Direction.back ? -VisibleArea.short : VisibleArea.short,
+          left: direction == Direction.back ? -scrollDistance : scrollDistance,
         });
       case Width.medium:
         return elem.scrollBy({
           behavior: 'smooth',
-        //   left: direction == Direction.back ? -VisibleArea.medium : VisibleArea.medium,
-        left: direction == Direction.back ? -scrollDistance : scrollDistance,
+          left: direction == Direction.back ? -scrollDistance : scrollDistance,
         });
     }
   };
@@ -137,7 +136,7 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
       <div
         id={id}
         className={styles.richCardCarouselContainer}
-        style={cardWidth === Width.short ? {width: '156px'} : {width: '320px'}}>
+        style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
         {cardContents.map((card: Card) => {
           return (
             <div key={card.title} className={styles.richCard}>

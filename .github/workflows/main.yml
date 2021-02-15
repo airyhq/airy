@@ -12,7 +12,8 @@ jobs:
 
       - uses: joschi/setup-jdk@v2
         with:
-          java-version: '11'
+          java-version: '11.0.2'
+          release: 'jdk-11.0.2+9'
           architecture: 'x64'
 
       - name: Install bazelisk

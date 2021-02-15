@@ -5,19 +5,7 @@ module.exports = {
         'getting-started/introduction',
         'getting-started/installation',
         {
-          'Command Line Interface': [
-            'cli/introduction',
-            'cli/installation',
-            'cli/airy',
-            'cli/airy_version',
-            'cli/airy_init',
-            'cli/airy_config',
-            'cli/airy_config_apply',
-            'cli/airy_api',
-            'cli/airy_api_signup',
-            'cli/airy_api_login',
-            'cli/airy_status',
-          ],
+          'Command Line Interface': ['cli/introduction', 'cli/installation', 'cli/reference'],
         },
         {
           Deployment: [

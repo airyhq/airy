@@ -1,6 +1,6 @@
 ---
-title: Reference
-sidebar_label: CLI Reference
+title: Command Reference
+sidebar_label: Reference
 ---
 
 ##  Api Login

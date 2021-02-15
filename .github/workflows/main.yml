@@ -32,24 +32,15 @@ jobs:
         env:
           GCS_SA_KEY: ${{secrets.GCS_SA_KEY}}
 
-      - name: Lint
-        run: |
-          sudo apt-get install -y shellcheck
-          ./scripts/lint.sh
-
-      - name: Test
-        run: |
-          bazel test --test_tag_filters=-lint //...
-
       - name: Build all artifacts
         run: |
           bazel build //...
 
       - name: Push images
-        if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          ./scripts/push-images.sh ${{ github.ref }}
+          bazel run //backend/sources/connector:8.1-ci-test
+
       - name: Install aws cli
         uses: chrislennon/action-aws-cli@v1.1
         env:

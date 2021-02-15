@@ -11,12 +11,12 @@ def container_push(registry, repository):
     )
 
     lib_push(
-        name = "local",
+        name = "8.1-ci-test",
         format = "Docker",
         image = ":image",
         registry = registry,
         repository = repository,
-        tag = "{BUILD_USER}",
+        tag = "8.1-ci-test",
     )
 
     lib_push(

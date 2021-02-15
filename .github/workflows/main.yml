@@ -10,19 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: joschi/setup-jdk@v2
-        with:
-          java-version: '11'
-          architecture: 'x64'
-
-      - name: Check Software versions
-        run: |
-          java -version
-          sudo dpkg -l | grep -i jdk || true
-          sudo dpkg -l | grep -i jre || true
-          jar --version || true
-          ls -lah $(which python) || true
-
       - name: Install Java
         run: |
           sudo apt-get update

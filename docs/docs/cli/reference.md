@@ -3,55 +3,7 @@ title: Reference
 sidebar_label: CLI Reference
 ---
 
-## airy
-
-airy controls an Airy Core instance
-
-#### Options
-
-```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
-  -h, --help                help for airy
-```
-
-#### SEE ALSO
-
-* [airy api](reference#airy-api)	 - Interacts with the Airy Core HTTP API
-* [airy config](reference#airy-config)	 - Manages an Airy Core instance via airy.yaml
-* [airy init](reference#airy-init)	 - Inits your airy configuration
-* [airy status](reference#airy-status)	 - Reports the status of an Airy Core instance
-* [airy ui](reference#airy-ui)	 - Opens the Airy Core UI in your local browser
-* [airy version](reference#airy-version)	 - Prints version information
-
-***
-
-## airy api
-
-Interacts with the Airy Core HTTP API
-
-#### Options
-
-```
-  -h, --help   help for api
-```
-
-#### Options inherited from parent commands
-
-```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
-```
-
-#### SEE ALSO
-
-* [airy](reference#airy)	 - airy controls an Airy Core instance
-* [airy api login](reference#airy-api-login)	 - Login into an Airy Core instance
-* [airy api signup](reference#airy-api-signup)	 - Signs users up in Airy Core
-
-***
-
-## airy api login
+##  Api Login
 
 Login into an Airy Core instance
 
@@ -74,13 +26,10 @@ airy api login [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
-#### SEE ALSO
-
-* [airy api](reference#airy-api)	 - Interacts with the Airy Core HTTP API
 
 ***
 
-## airy api signup
+##  Api Signup
 
 Signs users up in Airy Core
 
@@ -105,39 +54,10 @@ airy api signup [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
-#### SEE ALSO
-
-* [airy api](reference#airy-api)	 - Interacts with the Airy Core HTTP API
 
 ***
 
-## airy config
-
-Manages an Airy Core instance via airy.yaml
-
-#### Options
-
-```
-      --config string        Configuration file for an Airy Core instance (default "./airy.yaml")
-  -h, --help                 help for config
-      --kube-config string   Kubernetes config file for the cluster of an Airy Core instance (default "~/.airy/kube.conf")
-```
-
-#### Options inherited from parent commands
-
-```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
-```
-
-#### SEE ALSO
-
-* [airy](reference#airy)	 - airy controls an Airy Core instance
-* [airy config apply](reference#airy-config-apply)	 - Applies configuration values from airy.yaml configuration to an Airy Core instance
-
-***
-
-## airy config apply
+##  Config Apply
 
 Applies configuration values from airy.yaml configuration to an Airy Core instance
 
@@ -160,13 +80,10 @@ airy config apply [flags]
       --kube-config string   Kubernetes config file for the cluster of an Airy Core instance (default "~/.airy/kube.conf")
 ```
 
-#### SEE ALSO
-
-* [airy config](reference#airy-config)	 - Manages an Airy Core instance via airy.yaml
 
 ***
 
-## airy init
+##  Init
 
 Inits your airy configuration
 
@@ -187,13 +104,10 @@ airy init [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
-#### SEE ALSO
-
-* [airy](reference#airy)	 - airy controls an Airy Core instance
 
 ***
 
-## airy status
+##  Status
 
 Reports the status of an Airy Core instance
 
@@ -214,13 +128,10 @@ airy status [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
-#### SEE ALSO
-
-* [airy](reference#airy)	 - airy controls an Airy Core instance
 
 ***
 
-## airy ui
+##  Ui
 
 Opens the Airy Core UI in your local browser
 
@@ -241,13 +152,10 @@ airy ui [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
-#### SEE ALSO
-
-* [airy](reference#airy)	 - airy controls an Airy Core instance
 
 ***
 
-## airy version
+##  Version
 
 Prints version information
 
@@ -268,9 +176,6 @@ airy version [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
-#### SEE ALSO
-
-* [airy](reference#airy)	 - airy controls an Airy Core instance
 
 ***
 

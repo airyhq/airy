@@ -51,8 +51,10 @@ func genMarkdownTreeCustom(cmd *cobra.Command, w *bufio.Writer) error {
 	subcommands := cmd.Commands()
 	sort.Sort(byName(subcommands))
 
-	if err := genMarkdownCustom(cmd, w); err != nil {
-		return err
+	if len(subcommands) == 0 {
+		if err := genMarkdownCustom(cmd, w); err != nil {
+			return err
+		}
 	}
 
 	for _, c := range subcommands {
@@ -72,8 +74,9 @@ func genMarkdownCustom(cmd *cobra.Command, w *bufio.Writer) error {
 	cmd.InitDefaultHelpFlag()
 
 	name := cmd.CommandPath()
+	header := strings.Title(strings.Replace(name, "airy", "", -1))
 
-	w.WriteString("## " + name + "\n\n")
+	w.WriteString("## " + header + "\n\n")
 	w.WriteString(cmd.Short + "\n\n")
 	if len(cmd.Long) > 0 {
 		w.WriteString("#### Synopsis\n\n")
@@ -91,31 +94,6 @@ func genMarkdownCustom(cmd *cobra.Command, w *bufio.Writer) error {
 
 	if err := printOptions(w, cmd, name); err != nil {
 		return err
-	}
-	if hasSeeAlso(cmd) {
-		w.WriteString("#### SEE ALSO\n\n")
-		if cmd.HasParent() {
-			parent := cmd.Parent()
-			pname := parent.CommandPath()
-			link := basename + "#" + pname
-			link = strings.Replace(link, " ", "-", -1)
-			w.WriteString(fmt.Sprintf("* [%s](%s)\t - %s\n", pname, link, parent.Short))
-			cmd.VisitParents(func(c *cobra.Command) {
-			})
-		}
-
-		subcommands := cmd.Commands()
-		sort.Sort(byName(subcommands))
-
-		for _, child := range subcommands {
-			if !child.IsAvailableCommand() || child.IsAdditionalHelpTopicCommand() {
-				continue
-			}
-			cname := name + " " + child.Name()
-			link := basename + "#" + cname
-			link = strings.Replace(link, " ", "-", -1)
-			w.WriteString(fmt.Sprintf("* [%s](%s)\t - %s\n", cname, link, child.Short))
-		}
 	}
 
 	w.WriteString("\n")

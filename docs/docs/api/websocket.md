@@ -35,7 +35,7 @@ field informs the client of the kind of update that is encoded in the payload.
     "channel_id": "{UUID}",
     "message": {
       "id": "{UUID}",
-      "content": '{"text":"Hello World"}',
+      "content": {"text": "Hello World"},
       // source message payload
       "delivery_state": "pending|failed|delivered",
       // delivery state of message, one of pending, failed, delivered

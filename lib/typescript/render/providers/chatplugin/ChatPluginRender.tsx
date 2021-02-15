@@ -12,7 +12,7 @@ export const ChatPluginRender = (props: MessageRenderProps) => {
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
-  const messageContent = JSON.parse(props.message.content);
+  const messageContent = props.message.content;
 
   const defaultProps = getDefaultMessageRenderingProps(props);
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
@@ -57,12 +57,12 @@ function render(content: ContentUnion, props: MessageRenderProps) {
 }
 
 function mapContent(message: Message): ContentUnion {
-  const messageContent = JSON.parse(message.content);
+  const messageContent = message.content;
 
   if (messageContent.text) {
     return {
       type: 'text',
-      text: JSON.parse(message.content).text,
+      text: message.content.text,
     };
   }
 

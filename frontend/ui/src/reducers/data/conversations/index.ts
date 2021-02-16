@@ -1,19 +1,19 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
-import {cloneDeep, uniq, sortBy} from 'lodash-es';
+import {cloneDeep, sortBy, uniq, merge} from 'lodash-es';
 
-import {Conversation, Message, ConversationFilter} from 'httpclient';
+import {Conversation, ConversationFilter, Message} from 'httpclient';
 
+import * as metadataActions from '../../../actions/metadata';
 import * as actions from '../../../actions/conversations';
 import * as filterActions from '../../../actions/conversationsFilter';
 import * as messageActions from '../../../actions/messages';
 
-type Action = ActionType<typeof actions>;
+type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 type FilterAction = ActionType<typeof filterActions>;
 type MessageAction = ActionType<typeof messageActions>;
 
-type MergedConversation = Conversation & {
-  blocked?: boolean;
+export type MergedConversation = Conversation & {
   paginationData?: {
     previousCursor: string;
     nextCursor: string;
@@ -210,6 +210,21 @@ function allReducer(
   action: Action | MessageAction
 ): AllConversationsState {
   switch (action.type) {
+    case getType(metadataActions.setMetadataAction):
+      if (action.payload.subject !== 'conversation') {
+        return state;
+      }
+
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [action.payload.identifier]: {
+            ...state.items[action.payload.identifier],
+            metadata: merge({}, state.items[action.payload.identifier].metadata, action.payload.metadata),
+          },
+        },
+      };
     case getType(actions.mergeConversationsAction):
       if (action.payload.paginationData) {
         return {
@@ -253,22 +268,6 @@ function allReducer(
         },
       };
 
-    case getType(actions.readConversationsAction):
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [action.payload.conversationId]: {
-            ...state.items[action.payload.conversationId],
-            unreadMessageCount: 0,
-          },
-        },
-        paginationData: {
-          ...state.paginationData,
-          loading: false,
-        },
-      };
-
     case getType(actions.addTagToConversationAction):
       return addTagToConversation(state, action.payload.conversationId, action.payload.tagId);
 
@@ -293,22 +292,6 @@ function allReducer(
         };
       }
       return state;
-
-    case getType(actions.setConversationUnreadMessageCount):
-      if (state.items[action.payload.conversationId]) {
-        return {
-          ...state,
-          items: {
-            ...state.items,
-            [action.payload.conversationId]: {
-              ...state.items[action.payload.conversationId],
-              unreadMessageCount: action.payload.unreadMessageCount,
-            },
-          },
-        };
-      } else {
-        return state;
-      }
 
     case getType(messageActions.addMessagesAction):
       return mergeMessages(state, action.payload.conversationId, action.payload.messages);

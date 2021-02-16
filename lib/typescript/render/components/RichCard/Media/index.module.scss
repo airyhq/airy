@@ -1,6 +1,9 @@
 .mediaImage {
-  object-fit: contain;
-  width: 288px;
+  width: 100%;
+  object-fit: cover;
+  overflow: hidden;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
 
 .tall {

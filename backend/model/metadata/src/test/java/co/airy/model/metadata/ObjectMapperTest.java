@@ -24,13 +24,15 @@ public class ObjectMapperTest {
         final List<Metadata> metadata = new ArrayList<>(Arrays.asList(
                 newConversationMetadata("id", "contact.address.line_1", "Mission Street"),
                 newConversationMetadata("id", "contact.displayName", "Grace"),
-                newConversationMetadata("id", "tags.1234", "")
+                newConversationMetadata("id", "tags.1234", ""),
+                newConversationMetadata("id", "unread_count", "10")
         ));
 
         final JsonNode payload = getMetadataPayload(metadata);
         assertThat(payload.get("contact").get("address").get("line_1").textValue(), equalTo("Mission Street"));
         assertThat(payload.get("contact").get("displayName").textValue(), equalTo("Grace"));
         assertThat(payload.get("tags").get("1234").textValue(), equalTo(""));
+        assertThat(payload.get("unread_count").intValue(), equalTo(10));
     }
 
     @Test

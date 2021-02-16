@@ -1,4 +1,5 @@
 export * from './channel';
+export * from './metadata';
 export * from './conversations';
 export * from './conversationsFilter';
 export * from './settings';

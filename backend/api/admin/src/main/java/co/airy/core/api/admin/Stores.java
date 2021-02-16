@@ -4,10 +4,12 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.Tag;
+import co.airy.avro.communication.Template;
 import co.airy.avro.communication.Webhook;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
+import co.airy.kafka.schema.application.ApplicationCommunicationTemplates;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.channel.dto.ChannelContainer;
@@ -46,6 +48,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String connectedChannelsStore = "connected-channels-store";
     private final String tagsStore = "tags-store";
     private final String webhooksStore = "webhook-store";
+    private final String templatesStore = "templates-store";
 
     // Using a UUID as the default key for the webhook will make it easier
     // to add multiple webhooks if that ever becomes a requirement
@@ -55,6 +58,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks().name();
     private final String applicationCommunicationTags = new ApplicationCommunicationTags().name();
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
+    private final String applicationCommunicationTemplates = new ApplicationCommunicationTemplates().name();
 
     public Stores(KafkaStreamsWrapper streams, KafkaProducer<String, SpecificRecordBase> producer) {
         this.streams = streams;
@@ -80,6 +84,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .reduce((oldValue, newValue) -> newValue, Materialized.as(webhooksStore));
 
         builder.<String, Tag>table(applicationCommunicationTags, Materialized.as(tagsStore));
+
+        builder.<String, Template>table(applicationCommunicationTemplates, Materialized.as(templatesStore));
 
         streams.start(builder.build(), appId);
     }
@@ -120,13 +126,30 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationTags, tag.getId(), null));
     }
 
+    public void storeTemplate(Template template) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationTemplates, template.getId(), template)).get();
+    }
+
+    public void deleteTemplate(Template template) {
+        producer.send(new ProducerRecord<>(applicationCommunicationTemplates, template.getId(), null));
+    }
+
     public ReadOnlyKeyValueStore<String, ChannelContainer> getConnectedChannelsStore() {
         return streams.acquireLocalStore(connectedChannelsStore);
+    }
+
+    public ReadOnlyKeyValueStore<String, Template> getTemplatesStore() {
+        return streams.acquireLocalStore(templatesStore);
     }
 
     public ChannelContainer getChannel(String channelId) {
         final ReadOnlyKeyValueStore<String, ChannelContainer> store = getConnectedChannelsStore();
         return store.get(channelId);
+    }
+
+    public Template getTemplate(String templateId) {
+        final ReadOnlyKeyValueStore<String, Template> store = getTemplatesStore();
+        return store.get(templateId);
     }
 
     public List<ChannelContainer> getChannels() {
@@ -140,9 +163,17 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return channels;
     }
 
+    public List<Template> getTemplates() {
+        final KeyValueIterator<String, Template> iterator = getTemplatesStore().all();
+
+        List<Template> templates = new ArrayList<>();
+        iterator.forEachRemaining(kv -> templates.add(kv.value));
+
+        return templates;
+    }
+
     public Webhook getWebhook() {
         final ReadOnlyKeyValueStore<String, Webhook> webhookStore = getWebhookStore();
-
         return webhookStore.get(allWebhooksKey);
     }
 

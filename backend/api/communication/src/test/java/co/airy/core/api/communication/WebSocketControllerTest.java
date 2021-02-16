@@ -10,6 +10,7 @@ import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.model.channel.ChannelPayload;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.jwt.Jwt;
+import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -35,6 +36,7 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -61,13 +63,11 @@ public class WebSocketControllerTest {
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static KafkaTestHelper kafkaTestHelper;
 
-    private static boolean testDataInitialized = false;
-
     private static final String conversationId = "conversation-id";
 
     final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("facebook-channel-id")
+            .setId(UUID.randomUUID().toString())
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")
@@ -82,6 +82,9 @@ public class WebSocketControllerTest {
     @Autowired
     private Jwt jwt;
 
+    @Autowired
+    private WebTestHelper webTestHelper;
+
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
@@ -95,13 +98,7 @@ public class WebSocketControllerTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        if (testDataInitialized) {
-            return;
-        }
-
-        retryOnException(() -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()), "Application is not healthy");
-
-        testDataInitialized = true;
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test

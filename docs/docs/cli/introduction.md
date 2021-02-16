@@ -12,11 +12,10 @@ the Airy Core directly from your terminal.
 
 </TLDR>
 
-
 ### Cheat Sheet
 
-| Command           | Effect                                                                               |
-|-------------------|--------------------------------------------------------------------------------------|
+| Command             | Effect                                                                             |
+| ------------------- | ---------------------------------------------------------------------------------- |
 | `airy init`         | Inits your airy configuration                                                      |
 | `airy status`       | Reports the status of an Airy Core instance                                        |
 | `airy config apply` | Applies configuration values from airy.yaml configuration to an Airy Core instance |

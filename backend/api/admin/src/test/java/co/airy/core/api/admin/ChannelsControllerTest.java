@@ -5,6 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
+import co.airy.kafka.schema.application.ApplicationCommunicationTemplates;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -47,6 +48,7 @@ public class ChannelsControllerTest {
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
     private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
+    private static final ApplicationCommunicationTemplates applicationCommunicationTemplates = new ApplicationCommunicationTemplates();
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -57,7 +59,8 @@ public class ChannelsControllerTest {
                 applicationCommunicationChannels,
                 applicationCommunicationWebhooks,
                 applicationCommunicationMetadata,
-                applicationCommunicationTags
+                applicationCommunicationTags,
+                applicationCommunicationTemplates
         );
         kafkaTestHelper.beforeAll();
     }

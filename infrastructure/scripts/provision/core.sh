@@ -12,7 +12,7 @@ source "${INFRASTRUCTURE_PATH}"/scripts/lib/k8s.sh
 cd "${INFRASTRUCTURE_PATH}"/scripts/
 wait-for-service-account
 
-echo "Deploying the Airy Core Platform with the ${AIRY_VERSION} image tag"
+echo "Deploying Airy Core with the ${AIRY_VERSION} image tag"
 
 if [[ -f "${INFRASTRUCTURE_PATH}"/airy.yaml ]]; then
     yq eval '.global.appImageTag="'"${AIRY_VERSION}"'"' -i "${INFRASTRUCTURE_PATH}"/airy.yaml

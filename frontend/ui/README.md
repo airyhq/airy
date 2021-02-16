@@ -6,7 +6,7 @@
 
 ### Airy Demo UI
 
-The Airy Demo UI is a minimal user interactive frontend project that showcases the Airy Core Platform API.It enables users to experience the functionalities of our Airy Core Platform.
+The Airy UI is a fully featured user interactive frontend project that showcases Airy Core features. It enables users to experience the functionalities of Airy Core.
 
 
 - [Airy Demo UI](#airy-demo-ui)

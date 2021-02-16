@@ -11,6 +11,7 @@ ts_library(
         "//lib/typescript/types",
         "@npm//@types/node",
         "@npm//@types/react",
+        "@npm//@types/resize-observer-browser",
         "@npm//linkifyjs",
         "@npm//react",
     ],

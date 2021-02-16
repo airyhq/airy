@@ -9,6 +9,7 @@ app_deps = [
     "//backend:tag",
     "//backend:webhook",
     "//backend/model/metadata",
+    "//backend/model/template",
     "//lib/java/uuid",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",

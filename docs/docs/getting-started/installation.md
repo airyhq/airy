@@ -5,8 +5,8 @@ sidebar_label: Installation
 
 import TLDR from "@site/src/components/TLDR";
 import ButtonBox from "@site/src/components/ButtonBox";
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import DeploySVG from '@site/static/img/getting-started/installation/deploy.svg'
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import DeploySVG from "@site/static/icons/deploy.svg";
 
 <TLDR>
 
@@ -20,20 +20,9 @@ aid you in the process of installing and managing your Airy Core instance. It is
 
 ## Installation guides
 
-<ul style={{
-    listStyleType: "none",
-    padding: 0
-}}>
-
-<li style={{
-    marginBottom: '12px'
-}}>
-<ButtonBox 
-    icon={() => <DeploySVG />}    
-    title='CLI' 
-    description='Run Airy on your local machine using the CLI' 
-    link='/cli/installation'
+<ButtonBox
+icon={() => <DeploySVG />}
+title='CLI'
+description='Run Airy on your local machine using the CLI'
+link='/cli/installation'
 />
-</li>
-
-</ul>

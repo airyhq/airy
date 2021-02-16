@@ -2,11 +2,11 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,11 +20,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.UUID;
 
+import static co.airy.core.api.communication.util.TestConversation.generateRecords;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
+import static org.hamcrest.core.Is.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
@@ -56,8 +60,9 @@ public class MetadataControllerTest {
     void beforeEach() throws Exception {
         webTestHelper.waitUntilHealthy();
     }
+
     @Test
-    void canSetMetadata() throws Exception {
+    void canUpsertMetadata() throws Exception {
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId(UUID.randomUUID().toString())
@@ -67,52 +72,25 @@ public class MetadataControllerTest {
         final String conversationId = UUID.randomUUID().toString();
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
+        final List<ProducerRecord<String, SpecificRecordBase>> producerRecords = generateRecords(conversationId, channel, 1);
+        kafkaTestHelper.produceRecords(producerRecords);
+        final String messageId = producerRecords.get(0).key();
 
         retryOnException(
-                () -> webTestHelper.post("/metadata.set",
-                        "{\"conversation_id\":\"" + conversationId + "\", \"key\": \"awesome.key\", \"value\": \"awesome-value\"}",
+                () -> webTestHelper.post("/metadata.upsert",
+                        "{\"subject\": \"message\", \"id\": \"" + messageId + "\", \"data\": {\"sentFrom\": \"iPhone\"}}",
                         "user-id")
                         .andExpect(status().isOk()),
-                "Error setting metadata"
-        );
-    }
-
-    @Test
-    void canRemoveMetadata() throws Exception {
-        final Channel channel = Channel.newBuilder()
-                .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId(UUID.randomUUID().toString())
-                .setSource("facebook")
-                .setSourceChannelId("ps-id")
-                .build();
-        final String conversationId = UUID.randomUUID().toString();
-
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
-
-        retryOnException(
-                () -> webTestHelper.post("/metadata.set",
-                        "{\"conversation_id\":\"" + conversationId + "\", \"key\": \"awesome.key\", \"value\": \"awesome-value\"}",
-                        "user-id")
-                        .andExpect(status().isOk()),
-                "Error setting metadata"
+                "Error upserting metadata"
         );
 
         retryOnException(
-                () -> webTestHelper.post("/metadata.remove",
-                        "{\"conversation_id\":\"" + conversationId + "\", \"key\": \"awesome.key\"}",
+                () -> webTestHelper.post("/conversations.info",
+                        "{\"conversation_id\":\"" + conversationId + "\"}",
                         "user-id")
-                        .andExpect(status().isOk()),
-                "Error removing metadata"
-        );
-
-        retryOnException(
-                () -> webTestHelper.post("/metadata.remove",
-                        "{\"conversation_id\":\"" + conversationId + "\", \"key\": \"non-existing\"}",
-                        "user-id")
-                        .andExpect(status().isOk()),
-                "Error removing metadata"
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.last_message.metadata.sentFrom", is("iPhone"))),
+                "Conversations list metadata is not present"
         );
     }
 }

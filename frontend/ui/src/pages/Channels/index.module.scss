@@ -1,26 +1,26 @@
 @import '../../assets/scss/fonts';
 @import '../../assets/scss/colors';
 
-.headline {
+.channelsHeadline {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
   color: #212428;
-  font-family: Lato;
+  @include font-base;
   font-size: 39px;
   font-weight: 900;
   letter-spacing: 0;
-  
   margin-bottom: 14px;
 }
 
-.headlineText {
+.channelsHeadlineText {
   @include font-xl;
-  font-weight: bold;
+  font-weight: 900;
 }
 
 .channelsWrapper {
   width: 100%;
+  //height:100%;
   background: white;
   padding: 32px;
   margin: 88px 2.5em 5em 7.5em;
@@ -60,12 +60,123 @@
   }
 }
 
-.channelChoice {
-  list-style: none;
-  color: grey;
-  padding-bottom: 20px;
+.containerChannelSearchField {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  height: 40px;
+  width: 100%;
+  animation-name: searchFieldAnimation;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes searchFieldAnimation {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.backIcon {
+  cursor: pointer;
+  height: 13px;
+  width: 17px;
+
+  path {
+    fill: var(--color-airy-blue);
+  }
+}
+
+.backButton {
+  border: none;
+  background-color: white;
+  padding-left: 0px;
+  padding-right: 14px;
+}
+
+.channelSearchFieldWidth {
+  width: 100%;
+}
+
+.containerChannelSearchHeadline {
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  width: 100%;
+}
+
+.searchBox {
+  color: black;
+  background: white;
+}
+
+.searchButton {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  top: 1px;
+  padding: 0;
+  outline: none;
+  
 }
 
 
+.searchIcon {
+  background-color: rgb(243, 243, 243);
+  height: 30px;
+  border: none;
+  width: 30px;
+  
+}
+
+.searchIcon:hover {
+  background: var(--color-airy-blue);
+}
+
+.containerFilterAndSearchChannel{
+  display:flex;
+  border-radius: 5px;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.containerFilter{
+  margin-right: 18px;
+}
+
+.channelList {
+  list-style: none;
+ }
+  
+ .channelsChoice {
+  list-style: none;
+  color: var(--color-text-gray);
+  padding-bottom: 20px;
+ }
+  
+ .channelListEntry {
+  display: flex;
+  border-bottom: 1px solid var(--color-airy-blue);
+  align-items: center;
+  padding: 8px 0;
+ }
+  
+ .channelName {
+  padding: 0 16px;
+ }
+  
+ .channelAction {
+  flex-grow: 1;
+  justify-content: right;
+  display: flex;
+ }
+  
+ 
 
 

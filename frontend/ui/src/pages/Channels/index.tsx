@@ -6,12 +6,15 @@ import ChannelItems from './ChannelItems';
 import {Channel} from 'httpclient';
 import {AiryConfig} from '../../AiryConfig';
 import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
-import {StateModel} from '../../reducers';
-
+import {StateModel} from '../../reducers/index';
 import styles from './index.module.scss';
 
 import {allChannels} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
+import {ReactComponent as SearchIcon} from '../../assets/images/icons/search.svg';
+import {ReactComponent as BackIcon} from '../../assets/images/icons/arrow-left-2.svg';
+import {ReactComponent as FilterIcon} from '../../assets/images/icons/filter-alt.svg';
+import {SearchField} from '@airyhq/components';
 
 const mapDispatchToProps = {
   listChannels,
@@ -28,6 +31,23 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const Channels = (props: ConnectedProps<typeof connector>) => {
   const [facebookToken, setFacebookToken] = useState('');
+
+  const [isShowingSearchChannelInput, setIsShowingSearchChannelInput] = useState(false);
+  const [searchChannel, setSearchChannel] = useState('');
+
+  const onClickSearch = () => {
+    setIsShowingSearchChannelInput(!isShowingSearchChannelInput);
+  };
+
+  const onClickBack = () => {
+    setIsShowingSearchChannelInput(!isShowingSearchChannelInput);
+    setSearchChannel('');
+  };
+
+  const setValue = (value: string) => {
+    setSearchChannel(value);
+  };
+
   useEffect(() => {
     props.listChannels();
     setPageTitle('Channels');
@@ -69,14 +89,47 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
     props.disconnectChannel({channelId: channel.sourceChannelId});
   };
 
+  const renderSearchChannelInput = isShowingSearchChannelInput ? (
+    <div className={styles.containerChannelSearchField}>
+      <button type="button" className={styles.backButton} onClick={onClickBack}>
+        <BackIcon className={styles.backIcon} />
+      </button>
+      <div className={styles.channelSearchFieldWidth}>
+        <SearchField
+          placeholder="Search"
+          value={searchChannel}
+          setValue={setValue}
+          resetClicked={onClickSearch}
+          autoFocus={true}
+        />
+      </div>
+    </div>
+  ) : (
+    <div className={styles.containerChannelSearchHeadline}>
+      <div className={styles.searchBox}>
+        <button type="button" className={styles.searchButton} onClick={onClickSearch}>
+          <SearchIcon className={styles.searchIcon} title="Search" />
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className={styles.channelsWrapper}>
-      <div className={styles.headline}>
+      <div className={styles.channelsHeadline}>
         <div>
-          <h1 className={styles.headlineText}>Channels</h1>
+          <h1 className={styles.channelsHeadlineText}>Channels</h1>
         </div>
+        <div className={styles.containerFilterAndSearchChannel}>
+          <div className={styles.containerFilter}>
+            <button type="button" className={styles.searchButton} onClick={onClickSearch} disabled={true}>
+              <FilterIcon className={styles.searchIcon} title="Filter" />
+            </button>
+          </div>
 
-        <FacebookLogin
+          {renderSearchChannelInput}
+        </div>
+        {/* <FacebookLogin
           appId={AiryConfig.FACEBOOK_APP_ID}
           autoLoad={false}
           textButton="Add a Channel"
@@ -89,33 +142,34 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
             <Button type="button" onClick={fetchPages}>
               Add Channels
             </Button>
-          )}
-        />
+          )} 
+        /> */}
       </div>
-      <ul className={styles.channelList}>
-        {props.channels.map((channel: Channel) => {
-          const channelName = channel.metadata.name;
-          return (
-            <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-              {channel.metadata.imageUrl && (
-                <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
-              )}
-              <div className={styles.channelName}>{channel.metadata.name}</div>
-              <div className={styles.channelAction}>
-                {channel.connected ? (
-                  <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
-                    Disconnect
-                  </Button>
-                ) : (
-                  <Button styleVariant="small" onClick={() => connectClicked(channel)}>
-                    Connect
-                  </Button>
-                )}
-              </div>
-            </li>
-          );
-        })}
+      <ul className={styles.channelsChoice}>
+        {' '}
+        <li>Choose a channel you want to connect</li>
       </ul>
+
+      {/* <ul className={styles.channelList}>
+        {props.channels.map((channel: Channel) => (
+          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+            <img src={channel.imageUrl} className={styles.channelImage} />
+            <div className={styles.channelName}>{channel.name}</div>
+            <div className={styles.channelAction}>
+              {channel.connected ? (
+                <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
+                  Disconnect
+                </Button>
+              ) : (
+                <Button styleVariant="small" onClick={() => connectClicked(channel)}>
+                  Connect
+                </Button>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul> */}
+
       <div>
         <ChannelItems />
       </div>

@@ -42,7 +42,7 @@ Additional features like [Filters, Search](inbox) and [Tags](tags) help you.
         icon={() => <ComponentsSVG />}
         title='UI Components'
         description='Buttons, Inputs, Loaders and all Airy UI Components '
-        link='apps/ui/ui-components'
+        link='apps/ui/components'
     />
 </ButtonBoxList>
 
@@ -50,7 +50,3 @@ Additional features like [Filters, Search](inbox) and [Tags](tags) help you.
 
 <img alt="Demo Tags"
 src={useBaseUrl('img/apps/ui/demotags.gif')} />
-
-**Usecases**
-
-Explainer paragraph, link to case studies

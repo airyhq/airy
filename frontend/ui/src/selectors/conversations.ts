@@ -21,7 +21,7 @@ export const allConversationSelector = createSelector(
   (conversations: ConversationMap) => Object.keys(conversations).map((cId: string) => ({...conversations[cId]}))
 );
 
-export const newestConversationFirst = createSelector(allConversationSelector, (conversations: Conversation[]) => {
+export const newestConversationFirst = createSelector(allConversationSelector, conversations => {
   return reverse(
     sortBy(
       values(conversations),

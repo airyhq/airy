@@ -38,7 +38,7 @@ const MessengerContainer = ({conversations, currentConversation}: MessengerConta
       )}
     </div>
 
-    <ConversationMetadata conversation={currentConversation} />
+    {currentConversation && <ConversationMetadata />}
   </>
 );
 

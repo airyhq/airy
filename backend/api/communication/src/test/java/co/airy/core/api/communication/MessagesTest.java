@@ -55,7 +55,7 @@ public class MessagesTest {
     @Autowired
     private WebTestHelper webTestHelper;
 
-    private static final String channelId = "channel-id";
+    private static final String channelId = UUID.randomUUID().toString();
     private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(channelId)

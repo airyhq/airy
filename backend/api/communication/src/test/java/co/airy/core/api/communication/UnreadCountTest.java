@@ -63,7 +63,7 @@ class UnreadCountTest {
         final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId("channel-id")
+                .setId(UUID.randomUUID().toString())
                 .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build();
@@ -71,7 +71,6 @@ class UnreadCountTest {
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
 
         final String conversationId = UUID.randomUUID().toString();
-
         final int unreadMessages = 3;
 
         kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, unreadMessages));
@@ -80,15 +79,15 @@ class UnreadCountTest {
 
         retryOnException(() -> webTestHelper.post("/conversations.info", payload, userId)
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.unread_message_count", equalTo(unreadMessages))),
-                "Conversation list not showing unread count");
+                        .andExpect(jsonPath("$.metadata.unread_count", equalTo(unreadMessages))),
+                "Conversation not showing unread count");
 
         webTestHelper.post("/conversations.read", payload, userId).andExpect(status().isAccepted());
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info", payload, userId)
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.unread_message_count", equalTo(0))),
+                        .andExpect(jsonPath("$.metadata.unread_count", equalTo(0))),
                 "Conversation unread count did not reset");
     }
 }

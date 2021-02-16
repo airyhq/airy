@@ -1,24 +1,19 @@
 package co.airy.core.webhook.publisher;
 
-import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
-import co.airy.core.webhook.publisher.model.QueueMessage;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.model.event.payload.ChannelEvent;
 import co.airy.model.event.payload.Event;
 import co.airy.model.event.payload.MessageEvent;
 import co.airy.model.event.payload.MetadataEvent;
 import co.airy.model.metadata.dto.MetadataMap;
-import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -44,7 +39,7 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
     private final KafkaStreamsWrapper streams;
     private final RedisQueue redisQueuePublisher;
 
-    public Publisher(KafkaStreamsWrapper streams, RedisQueue redisQueuePublisher, Mapper mapper) {
+    public Publisher(KafkaStreamsWrapper streams, RedisQueue redisQueuePublisher) {
         this.streams = streams;
         this.redisQueuePublisher = redisQueuePublisher;
     }
@@ -55,9 +50,6 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
         builder.<String, Webhook>stream(new ApplicationCommunicationWebhooks().name())
                 .groupBy((webhookId, webhook) -> allWebhooksKey)
                 .reduce((oldValue, newValue) -> newValue, Materialized.as(webhooksStore));
-
-        builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
-                .peek((channelId, channel) -> publishRecord(channel));
 
         builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .filter(((messageId, message) ->
@@ -91,11 +83,9 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
             return MessageEvent.fromMessage((Message) record);
         } else if (record instanceof MetadataMap) {
             return MetadataEvent.fromMetadataMap((MetadataMap) record);
-        } else if (record instanceof Channel) {
-            return ChannelEvent.fromChannel((Channel) record);
         }
 
-        throw new Exception("Unknown type for record " + record);
+        throw new Exception("unknown type for record " + record);
     }
 
     @Override

@@ -8,7 +8,7 @@
     "channel_id": "{UUID}",
     "message": {
       "id": "{UUID}",
-      "content": '{"text":"Hello World"}',
+      "content": {"text":"Hello World"},
       // source message payload
       "delivery_state": "pending|failed|delivered",
       // delivery state of message, one of pending, failed, delivered
@@ -18,10 +18,7 @@
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
       "source": "{String}",
       // one of the possible sources
-      "metadata": {
-        "sentFrom": "iPhone"
-      }
-      // metadata object of the message
+      "metadata": {} // empty
     }
   }
 }
@@ -57,7 +54,6 @@
 
   "payload": {
     "id": "{UUID}",
-    "name": "my page 1",
     "source": "facebook",
     "source_channel_id": "fb-page-id-1",
     "connected": true // or false

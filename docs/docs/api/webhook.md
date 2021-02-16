@@ -92,6 +92,49 @@ After [subscribing](#subscribing) to an Airy webhook, you will
 start receiving events on your URL of choice. The event will _always_ be a POST
 request with one the following payloads:
 
-import EventPayloads from "./event-payloads.mdx"
+### Message
 
-<EventPayloads />
+```json5
+{
+  "type": "message",
+  "payload": {
+    "conversation_id": "{UUID}",
+    "channel_id": "{UUID}",
+    "message": {
+      "id": "{UUID}",
+      "content": {"text": "Hello World"},
+      // source message payload
+      "delivery_state": "pending|failed|delivered",
+      // delivery state of message, one of pending, failed, delivered
+      "sender_type": "{string/enum}",
+      // See glossary
+      "sent_at": "{string}",
+      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+      "source": "{String}"
+      // one of the possible sources
+    }
+  }
+}
+```
+
+### Metadata
+
+**Sample payload**
+
+```json5
+{
+  "type": "metadata",
+
+  "payload": {
+    "subject": "conversation|channel|message",
+    "identifier": "conversation/channel/message id",
+    "metadata": {
+      // nested metadata object. I.e. for a conversation:
+      "contact": {
+        "displayName": "Grace"
+      },
+      "isUserTyping": true
+    }
+  }
+}
+```

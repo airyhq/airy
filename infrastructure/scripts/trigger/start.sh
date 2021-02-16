@@ -25,6 +25,8 @@ wait-for-service startup-helper schema-registry 8081 15 "Schema registry"
 
 echo "Starting up Airy Core components"
 kubectl scale deployment -l type=api --replicas=1
+kubectl scale deployment -l type=frontend --replicas=1
+
 
 wait-for-service startup-helper api-auth 80 10 api-auth
 

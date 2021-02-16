@@ -9,7 +9,7 @@ import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
 
-In this Quickstart we are **Creating a user** and using its credentials to **log
+In this Quickstart we are **creating a user** and using its credentials to **log
 in to the UI**
 
 </TLDR>
@@ -61,9 +61,9 @@ Now enter your credentials on the login page and click **Login**.
 
 <SuccessBox>
 
-:tada: Congratulations!
+:tada: **Congratulations!**
 
-You have successfully logged in to the Airy Core! Next step: Make
+**You are now in the UI!** Next step: Make
 yourself familiar with the [Inbox](/apps/ui/inbox.md)
 
 </SuccessBox>

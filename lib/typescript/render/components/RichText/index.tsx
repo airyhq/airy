@@ -13,7 +13,6 @@ type RichTextRenderProps = DefaultMessageRenderingProps & {
 
 export const RichText = (props: RichTextRenderProps) => {
   const {message, text, fallback, containsRichText, fromContact, sentAt, contact} = props;
-
   return (
     <div className={styles.container} id={`message-item-${message.id}`}>
       {!fromContact ? (

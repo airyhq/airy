@@ -1,23 +1,17 @@
 {{- if .Values.enabled }}
-apiVersion: v1
-kind: Secret
-metadata:
-  name: akhq
-type: Opaque
-data:
-  auth: YWlyeTokYXByMSRZR3E3b0dFRyRuSEoxWVl6dGxVanY5R253OWprVGYxCg==
----
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: akhq
   namespace: {{ .Values.global.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: traefik
 spec:
   rules:
-    - host: akhq.{{ .Values.global.ingress.toolsHost }}
+    - host: {{ .Values.global.ingress.toolsHost }}
       http:
         paths:
-          - path: /
+          - path: /akhq
             pathType: Prefix
             backend:
               service:

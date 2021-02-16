@@ -2,7 +2,6 @@ package co.airy.model.channel;
 
 import co.airy.avro.communication.Channel;
 import co.airy.model.channel.dto.ChannelContainer;
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import lombok.AllArgsConstructor;

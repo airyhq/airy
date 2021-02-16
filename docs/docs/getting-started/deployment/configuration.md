@@ -70,9 +70,16 @@ These settings are used to connect the **Airy Components** to your Kafka cluster
   - `storage`
     - `s3` set these to your AWS S3 config to store source specific user data
 
+### Tools
+
+These settings are used to enable or disable some external tools, used to monitor or debug the **Airy Core**.
+
+- `akhq` Kafka GUI for Apache Kafka (For more information visit [akhq.io](https://akhq.io/))
+  - `enabled` set to either `true` to start AKHQ or `false` (default) to disable it.
+
 ## Applying the configuration
 
-If you made changes in `airy.yaml` and want to apply it to your instance you can use the [airy config apply](/cli/airy_config_apply.md) by running the following [Airy CLI](/cli/introduction.md) command.
+If you made changes in `airy.yaml` and want to apply it to your instance you can use the [airy config apply](/cli/reference.md#config-apply) by running the following [Airy CLI](/cli/introduction.md) command.
 
 ```bash
 airy config apply --config ./airy.yaml --kube-config /path/to/your/kube.conf

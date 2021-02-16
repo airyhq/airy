@@ -26,7 +26,8 @@
   text-decoration: none;
 }
 
-svg {
+.containerLight svg,
+.containerDark svg {
   color: white;
   height: 32px;
   width: 32px;

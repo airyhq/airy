@@ -8,6 +8,7 @@ global:
     webhooksHost: webhooks.airy
     uiHost: ui.airy
     chatpluginHost: chatplugin.airy
+    toolsHost: tools.airy
 prerequisites:
   # Configuration for the Kafka cluster
   kafka:

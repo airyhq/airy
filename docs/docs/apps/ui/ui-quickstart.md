@@ -57,7 +57,7 @@ airy ui
 
 Now enter your credentials on the login page and click **Login**.
 
-<img alt="channels_connect" src={useBaseUrl('img/apps/ui/login.gif')} />
+<img alt="login" src={useBaseUrl('img/apps/ui/login.gif')} />
 
 <SuccessBox>
 

@@ -1,6 +1,6 @@
 import {ConnectChannelRequestPayload, ConnectChannelRequestApiPayload} from '../payload';
 
-export const connectChannelApiMapper = (payload: ConnectChannelRequestPayload): ConnectChannelRequestApiPayload => ({
+export const connectChannelMapper = (payload: ConnectChannelRequestPayload): ConnectChannelRequestApiPayload => ({
   source: payload.source,
   source_channel_id: payload.sourceChannelId,
   token: payload.token,

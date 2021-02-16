@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.model.message.MessageRepository.isFromContact;
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
 
 @Component
@@ -66,11 +67,11 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 }), Materialized.as(messagesStore));
 
         // Client Echoes
-        messageStream.filter((messageId, message) -> message.getSenderType().equals(SenderType.SOURCE_CONTACT))
+        messageStream.filter((messageId, message) -> isFromContact(message))
                 .peek((messageId, message) -> webSocketController.onNewMessage(message));
 
         // Runtime Outbound
-        messageStream.filter((messageId, message) -> !message.getSenderType().equals(SenderType.SOURCE_CONTACT)
+        messageStream.filter((messageId, message) -> !isFromContact(message)
                 && message.getDeliveryState().equals(DeliveryState.PENDING)
         )
                 .mapValues((messageId, message) -> {

@@ -1,6 +1,7 @@
 package co.airy.model.channel;
 
 import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.model.channel.dto.ChannelContainer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -20,6 +21,7 @@ public class ChannelPayload {
     private String id;
     private String source;
     private String sourceChannelId;
+    private boolean connected;
     private JsonNode metadata;
 
     public static ChannelPayload fromChannelContainer(ChannelContainer container) {
@@ -33,6 +35,7 @@ public class ChannelPayload {
                 .metadata(defaultMetadata(getMetadataPayload(container.getMetadataMap()), channel))
                 .source(channel.getSource())
                 .sourceChannelId(channel.getSourceChannelId())
+                .connected(channel.getConnectionState().equals(ChannelConnectionState.CONNECTED))
                 .build();
     }
 
@@ -42,6 +45,7 @@ public class ChannelPayload {
                 .metadata(defaultMetadata(JsonNodeFactory.instance.objectNode(), channel))
                 .source(channel.getSource())
                 .sourceChannelId(channel.getSourceChannelId())
+                .connected(channel.getConnectionState().equals(ChannelConnectionState.CONNECTED))
                 .build();
     }
 

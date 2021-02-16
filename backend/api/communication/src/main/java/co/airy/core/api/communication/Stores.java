@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.model.message.MessageRepository.isFromContact;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.model.metadata.MetadataRepository.isChannelMetadata;
@@ -109,6 +110,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         // produce unread count metadata
         messageStream.selectKey((messageId, message) -> message.getConversationId())
+                .filter((conversationId, message) -> isFromContact(message))
                 .peek((conversationId, message) -> webSocketController.onNewMessage(message))
                 .mapValues(message -> CountAction.increment(message.getSentAt()))
                 .merge(resetStream)
@@ -165,7 +167,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                                 aggregate.setLastMessageContainer(container);
                             }
 
-                            if (SenderType.SOURCE_CONTACT.equals(container.getMessage().getSenderType())) {
+                            if (isFromContact(container.getMessage())) {
                                 aggregate.setSourceConversationId(container.getMessage().getSenderId());
                             }
 

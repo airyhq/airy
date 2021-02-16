@@ -26,7 +26,7 @@ type ConversationListItemProps = {
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    channels: state.data.channels,
+    channels: Object.values(state.data.channels),
   };
 };
 

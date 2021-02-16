@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.model.message.MessageRepository.isFromContact;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
@@ -92,7 +93,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 .aggregate(Conversation::new,
                         (conversationId, message, conversation) -> {
                             final Conversation.ConversationBuilder conversationBuilder = conversation.toBuilder();
-                            if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
+                            if (isFromContact(message)) {
                                 conversationBuilder.sourceConversationId(message.getSenderId());
                             }
                             conversationBuilder.channelId(message.getChannelId());

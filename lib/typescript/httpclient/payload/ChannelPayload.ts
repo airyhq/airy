@@ -1,4 +1,4 @@
-export interface ChannelApiPayload {
+export interface ChannelPayload {
   id: string;
   metadata: any & {
     name: string;
@@ -6,4 +6,5 @@ export interface ChannelApiPayload {
   };
   source: string;
   source_channel_id: string;
+  connected: boolean;
 }

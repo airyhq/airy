@@ -1,30 +1,26 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {Channel} from 'httpclient';
 import * as actions from '../../../actions/channel';
-import {unionWith} from 'lodash-es';
 
 type Action = ActionType<typeof actions>;
 
-export const initialState = [];
+export interface ChannelsState {
+  [channelId: string]: Channel;
+}
 
-const mergeChannels = (channels: Channel[], newChannels: Channel[]) =>
-  unionWith(newChannels, channels, (channelA: Channel, channelB: Channel) => {
-    return channelA.id === channelB.id;
-  });
+const setChannel = (state: ChannelsState, channel: Channel) => ({
+  ...state,
+  [channel.id]: channel,
+});
 
-const removeChannel = (channels: Channel[], removeChannel: Channel) =>
-  channels.filter(item => item.id != removeChannel.id);
-
-const channelsReducer: any = (state = initialState, action: Action): Channel[] | {} => {
+const channelsReducer = (state = {}, action: Action): ChannelsState => {
   switch (action.type) {
     case getType(actions.setCurrentChannelsAction):
-      return action.payload;
+      return action.payload.reduce(setChannel, {});
     case getType(actions.addChannelsAction):
-      return mergeChannels(state, action.payload);
-    case getType(actions.addChannelAction):
-      return mergeChannels(state, [action.payload]);
-    case getType(actions.removeChannelAction):
-      return removeChannel(state, action.payload);
+      return action.payload.reduce(setChannel, state);
+    case getType(actions.setChannelAction):
+      return setChannel(state, action.payload);
     default:
       return state;
   }

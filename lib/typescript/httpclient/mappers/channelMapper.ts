@@ -1,7 +1,7 @@
 import {Channel} from '../model';
-import {ChannelApiPayload} from '../payload/ChannelApiPayload';
+import {ChannelPayload} from '../payload';
 
-export const channelMapper = (payload: ChannelApiPayload): Channel => {
+export const channelMapper = (payload: ChannelPayload): Channel => {
   const channel = {
     ...payload,
     sourceChannelId: payload.source_channel_id,

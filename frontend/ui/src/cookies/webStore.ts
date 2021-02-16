@@ -11,14 +11,16 @@ export const getUserId = () => getCookie('userId');
 export const getAuthToken = () => getCookie('authToken');
 
 export function storeUserData(data: User) {
-  if (data.token) {
-    localStorage.setItem('id', data.id);
-    localStorage.setItem('firstName', data.firstName);
-    localStorage.setItem('lastName', data.lastName);
-    localStorage.setItem('isAuthSuccess', JSON.stringify(true));
-    setAuthToken(data.token);
-    setUserId(data.id);
+  if (!data.token) {
+    return;
   }
+
+  localStorage.setItem('id', data.id);
+  localStorage.setItem('firstName', data.firstName);
+  localStorage.setItem('lastName', data.lastName);
+  localStorage.setItem('isAuthSuccess', JSON.stringify(true));
+  setAuthToken(data.token);
+  setUserId(data.id);
 }
 
 export function clearUserData() {

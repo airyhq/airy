@@ -24,7 +24,7 @@ function mapStateToProps(state: StateModel) {
     user: state.data.user,
     filter: state.data.conversations.filtered.currentFilter,
     tags: state.data.tags.all,
-    channels: state.data.channels,
+    channels: Object.values(state.data.channels),
   };
 }
 

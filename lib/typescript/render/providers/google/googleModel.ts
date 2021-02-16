@@ -1,5 +1,5 @@
 export interface Content {
-  type: 'text' | 'image' | 'suggestions';
+  type: 'text' | 'image' | 'suggestions' | 'richText';
 }
 
 export interface TextContent extends Content {
@@ -10,6 +10,14 @@ export interface TextContent extends Content {
 export interface ImageContent extends Content {
   type: 'image';
   imageUrl: string;
+  altText?: string;
+}
+
+export interface RichTextContent extends Content {
+  type: 'richText';
+  text: string;
+  fallback: string;
+  containsRichtText: boolean;
 }
 
 export interface SuggestedReplies {
@@ -32,6 +40,30 @@ export interface SuggestedActions {
   };
 }
 
+export interface AuthenticationRequestSuggestion {
+  authenticationRequest: {
+    oauth: {
+      clientId: string;
+      codeChallenge: string;
+      scopes: [string];
+    };
+  };
+}
+
+export interface AuthenticationRequestSuggestion {
+  authenticationRequest: {
+    oauth: {
+      clientId: string;
+      codeChallenge: string;
+      scopes: [string];
+    };
+  };
+}
+
+export interface LiveAgentRequestSuggestion {
+  liveAgentRequest: {};
+}
+
 export interface suggestionsContent extends Content {
   type: 'suggestions';
   text?: string;
@@ -40,7 +72,11 @@ export interface suggestionsContent extends Content {
     fileUrl: string;
     altText: string;
   };
-  suggestions: SuggestedReplies[] | SuggestedActions[];
+  suggestions:
+    | SuggestedReplies[]
+    | SuggestedActions[]
+    | AuthenticationRequestSuggestion[]
+    | LiveAgentRequestSuggestion[];
 }
 
-export type ContentUnion = TextContent | ImageContent | suggestionsContent;
+export type ContentUnion = TextContent | ImageContent | RichTextContent | suggestionsContent;

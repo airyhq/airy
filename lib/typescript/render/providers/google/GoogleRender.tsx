@@ -2,9 +2,10 @@ import React from 'react';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {Suggestions} from './components/Suggestions';
 import {Text} from '../../components/Text';
-import {ContentUnion} from './googleModel';
+import {ContentUnion} from './GoogleModel';
 import {Message, isFromContact} from 'httpclient';
 import {Image} from '../../components/Image';
+import {RichText} from '../../components/RichText';
 
 export const GoogleRender = (props: MessageRenderProps) => {
   const message = props.message;
@@ -21,11 +22,23 @@ function render(content: ContentUnion, props: MessageRenderProps) {
     case 'image':
       return <Image {...getDefaultMessageRenderingProps(props)} imageUrl={content.imageUrl} />;
 
+    case 'richText':
+      return (
+        <RichText
+          {...getDefaultMessageRenderingProps(props)}
+          message={props.message}
+          text={content.text}
+          fallback={content.fallback}
+          containsRichText={content.containsRichtText}
+        />
+      );
+
     case 'suggestions':
       return (
         <Suggestions
           {...getDefaultMessageRenderingProps(props)}
           text={content.text}
+          image={content.image}
           fallback={content.fallback}
           suggestions={content.suggestions}
         />
@@ -33,6 +46,13 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
+//GoogleInbound
+//messages received from via Goggle B Messages chat
+//message object
+//image are links in text field
+//- text
+//- image
+//- suggestionResponse
 function googleInbound(message: Message): ContentUnion {
   const messageJson = JSON.parse(message.content);
 
@@ -45,11 +65,27 @@ function googleInbound(message: Message): ContentUnion {
     };
   }
 
+  if (messageJson.authenticationResponse) {
+    if (messageJson.authenticationResponse.code && !messageJson.authenticationResponse.errorDetails) {
+      return {
+        type: 'text',
+        text: 'Authentication was successful',
+      };
+    }
+
+    if (!messageJson.authenticationResponse.code && messageJson.authenticationResponse.errorDetails) {
+      return {
+        type: 'text',
+        text: messageJson.authenticationResponse.errorDetails.errorDescription ?? 'Authentication failed',
+      };
+    }
+  }
+
   if (
     messageJson.message.text &&
     messageJson.message.text.includes('https://storage.googleapis.com') &&
-    (messageJson.message.text.includes('X-Goog-Algorithm') || messageJson.message.text.includes('x-goog-algorithm')) &&
-    (messageJson.message.text.includes('X-Goog-Credential') || messageJson.message.text.includes('x-goog-credential'))
+    messageJson.message.text.toLowerCase().includes('x-goog-algorithm') &&
+    messageJson.message.text.toLowerCase().includes('x-goog-credential')
   ) {
     return {
       type: 'image',
@@ -70,31 +106,49 @@ function googleInbound(message: Message): ContentUnion {
   };
 }
 
+//Google Outbound
+//messages sent via Curl / or the UI
 function googleOutbound(message: Message): ContentUnion {
   const messageJson = JSON.parse(message.content);
 
   console.log('outbound - messageJson', messageJson);
 
-  if (messageJson.text && messageJson.suggestions) {
+  if (messageJson.containsRichText) {
     return {
-      type: 'suggestions',
+      type: 'richText',
       text: messageJson.text,
-      suggestions: messageJson.suggestions,
+      fallback: messageJson.fallback,
+      containsRichtText: messageJson.containsRichText,
     };
   }
 
-  if (messageJson.image && messageJson.suggestions) {
-    return {
-      type: 'suggestions',
-      image: {fileUrl: messageJson.image.contentInfo.fileUrl, altText: messageJson.image.contentInfo.altText},
-      suggestions: messageJson.suggestions,
-    };
+  if (messageJson.suggestions) {
+    if (messageJson.suggestions.length > 13) {
+      messageJson.suggestions = messageJson.suggestions.slice(0, 13);
+    }
+
+    if (messageJson.text) {
+      return {
+        type: 'suggestions',
+        text: messageJson.text,
+        suggestions: messageJson.suggestions,
+      };
+    }
+
+    if (messageJson.image) {
+      return {
+        type: 'suggestions',
+        image: {fileUrl: messageJson.image.contentInfo.fileUrl, altText: messageJson.image.contentInfo.altText},
+        suggestions: messageJson.suggestions,
+      };
+    }
   }
 
   if (messageJson.image) {
     return {
       type: 'image',
       imageUrl: messageJson.image.contentInfo.fileUrl,
+      altText: messageJson.image.contentInfo.altText,
     };
   }
 

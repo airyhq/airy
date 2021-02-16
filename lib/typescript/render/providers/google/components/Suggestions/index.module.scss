@@ -3,16 +3,40 @@
 
 .wrapper {
   display: flex;
-  flex-direction: column;
-  margin-top: 8px;
-  align-items: flex-end;
+  flex: none;
+}
+
+.item {
+  display: flex;
+  align-self: flex-end;
+  width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.itemMember {
+  margin-top: 5px;
+  justify-content: flex-end;
+  width: 100%;
+  text-align: right;
 }
 
 .container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.itemUser {
+  align-self: flex-start;
+  text-align: left;
+  position: relative;
+}
+
+.itemUserSuggestions {
+  display: inline-flex;
   margin-top: 5px;
-  justify-content: flex-end;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .replyButton {
@@ -26,13 +50,6 @@
   border-radius: 16px;
   border: 1px solid var(--color-airy-blue);
   background-color: var(--color-template-highlight);
-}
-
-.quickReplyImage {
-  width: 25px;
-  height: 25px;
-  margin-right: 6px;
-  border-radius: 50%;
 }
 
 .title {

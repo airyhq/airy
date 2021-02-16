@@ -3,6 +3,9 @@ title: Inbox
 sidebar_label: Inbox
 ---
 
+import ButtonBox from "@site/src/components/ButtonBox";
+import AiryBubbleSVG from "@site/static/icons/airy-bubble.svg";
+
 Airy’s Inbox gives you an UI for all your conversations.
 
 See all conversations from the sources you connected, no matter if they come via the Live Chat Plugin, Facebook Messenger, Google’s Business Messages, SMS, WhatsApp or a custom source.
@@ -29,8 +32,12 @@ Airy’s Inbox supports all Google’s Rich Cards variants from Rich Cards to Ca
 Airy’s Live Chat Plugin supports templates too. The template payload is the same as for Google Rich Cards.
 This enables you and your teams to interact with your website visitors in a richer way, and also enables chat bots in the templates.
 
-> > Airy Live Chat Plugin
-> > The Airy Live Chat Plugin enables conversations with website visitors through a web chat plugin
+<ButtonBox
+icon={() => <AiryBubbleSVG />}
+title='Airy Live Chat Plugin'
+description='The Airy Live Chat Plugin enables conversations with website visitors through a web chat plugin'
+link='sources/chat-plugin'
+/>
 
 ## Search & Filter
 

@@ -50,7 +50,11 @@ module.exports = {
       ],
     },
     {
-      '✨ Apps': ['apps/ui'],
+      '✨ Apps': [
+        {
+          UI: ['apps/ui/introduction', 'apps/ui/ui-quick-start', 'apps/ui/inbox', 'apps/ui/tags', 'apps/ui/components'],
+        },
+      ],
     },
     {
       '🛠️ Integrations': [

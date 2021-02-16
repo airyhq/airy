@@ -1,6 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {Conversation, Tag as TagModel, TagColor} from 'httpclient';
+import {withRouter} from 'react-router-dom';
+import {Tag as TagModel, TagColor} from 'httpclient';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
@@ -12,11 +13,12 @@ import {StateModel} from '../../../../reducers';
 import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
 import {Button, Input, LinkButton} from '@airyhq/components';
+import {getCurrentConversation} from '../../../../selectors/conversations';
+import {ConversationRouteProps} from '../../index';
 
-type ConversationMetadataProps = {conversation: Conversation} & ConnectedProps<typeof connector>;
-
-const mapStateToProps = (state: StateModel) => {
+const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
+    conversation: getCurrentConversation(state, ownProps),
     tags: state.data.tags.all,
   };
 };
@@ -30,7 +32,7 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const ConversationMetadata = (props: ConversationMetadataProps) => {
+const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const {tags, createTag, conversation, listTags, addTagToConversation, removeTagFromConversation} = props;
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
@@ -87,15 +89,14 @@ const ConversationMetadata = (props: ConversationMetadataProps) => {
     return true;
   };
 
-  const getFilterdTags = (): TagModel[] => {
-    return filterForUnusedTags(tags)
+  const getFilteredTags = (): TagModel[] =>
+    filterForUnusedTags(tags)
       .sort(tagSorter)
       .filter(tag => tag.name.startsWith(tagName));
-  };
 
   const submitForm = (event: FormEvent) => {
     event.preventDefault();
-    const filteredTags = getFilterdTags();
+    const filteredTags = getFilteredTags();
 
     if (filteredTags.length == 1) {
       addTag(filteredTags[0]);
@@ -109,7 +110,7 @@ const ConversationMetadata = (props: ConversationMetadataProps) => {
   };
 
   const renderTagsDialog = () => {
-    const filteredTags = getFilterdTags();
+    const filteredTags = getFilteredTags();
 
     return (
       <Dialog close={() => setShowTagsDialog(false)}>
@@ -125,12 +126,12 @@ const ConversationMetadata = (props: ConversationMetadataProps) => {
             name="tag_name"
             placeholder="Please enter a tag name"
             autoComplete="off"
-            autoFocus={true}
+            autoFocus
             fontClass="font-s"
             minLength={1}
             maxLength={50}
             validation={checkIfExists}
-            showErrors={true}
+            showErrors
           />
           {filteredTags.length > 0 ? (
             filteredTags.map(tag => {
@@ -152,7 +153,7 @@ const ConversationMetadata = (props: ConversationMetadataProps) => {
               <ColorSelector
                 handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value as TagColor)}
                 color={color}
-                editing={true}
+                editing
               />
               <div className={styles.addTagsButtonRow}>
                 <Button type="submit" styleVariant="small">
@@ -170,21 +171,24 @@ const ConversationMetadata = (props: ConversationMetadataProps) => {
     return tags.find(tag => tag.id === tagId);
   };
 
+  const contact = conversation.metadata.contact;
   return (
     <div className={styles.content}>
       {conversation && (
         <div className={styles.metaPanel}>
           <div className={styles.contact}>
             <div className={styles.avatarImage}>
-              <AvatarImage contact={conversation.contact} />
+              <AvatarImage contact={contact} />
             </div>
 
-            <div className={styles.displayName}>{conversation.contact.displayName}</div>
+            <div className={styles.displayName}>{contact.displayName}</div>
           </div>
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>
               <h3 className={styles.tagsHeaderTitle}>Tags</h3>
-              <LinkButton onClick={showAddTags}>{showTagsDialog ? 'Close' : '+ Add Tag'} </LinkButton>
+              <LinkButton onClick={showAddTags} type="button">
+                {showTagsDialog ? 'Close' : '+ Add Tag'}{' '}
+              </LinkButton>
             </div>
 
             {showTagsDialog && renderTagsDialog()}
@@ -203,4 +207,4 @@ const ConversationMetadata = (props: ConversationMetadataProps) => {
   );
 };
 
-export default connector(ConversationMetadata);
+export default withRouter(connector(ConversationMetadata));

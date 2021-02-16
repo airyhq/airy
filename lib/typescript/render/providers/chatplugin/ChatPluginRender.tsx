@@ -2,14 +2,13 @@ import React from 'react';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {RichText} from '../../components/RichText';
 import {RichCard} from '../../components/RichCard';
+import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './chatPluginModel';
 import {Message} from 'httpclient';
 
 export const ChatPluginRender = (props: MessageRenderProps) => {
-  const {message} = props;
-
-  return render(mapContent(message), props);
+  return render(mapContent(props.message), props);
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
@@ -21,6 +20,8 @@ function render(content: ContentUnion, props: MessageRenderProps) {
 
   switch (content.type) {
     case 'text':
+      return <Text {...propsToUse} text={content.text} />;
+    case 'suggestionResponse':
       return <Text {...propsToUse} text={content.text} />;
     case 'richText':
       return (
@@ -42,20 +43,30 @@ function render(content: ContentUnion, props: MessageRenderProps) {
           suggestions={content.suggestions}
         />
       );
+    case 'richCardCarousel':
+      return (
+        <RichCardCarousel
+          {...propsToUse}
+          cardWidth={content.cardWidth}
+          cardContents={content.cardContents}
+          id={props.message.id}
+          isChatPlugin={propsToUse.fromContact}
+        />
+      );
   }
 }
 
 function mapContent(message: Message): ContentUnion {
   const messageContent = JSON.parse(message.content);
-  if (messageContent.containsRichText) {
+
+  if (messageContent.text) {
     return {
-      type: 'richText',
-      text: messageContent.text,
-      fallback: messageContent.fallback,
-      containsRichtText: messageContent.containsRichText,
+      type: 'text',
+      text: JSON.parse(message.content).text,
     };
   }
-  if (messageContent.richCard) {
+
+  if (messageContent.richCard.standaloneCard) {
     const {
       richCard: {
         standaloneCard: {cardContent},
@@ -69,10 +80,21 @@ function mapContent(message: Message): ContentUnion {
       media: cardContent.media,
       suggestions: cardContent.suggestions,
     };
-  } else {
+  }
+
+  if (messageContent.richCard.carouselCard) {
     return {
-      type: 'text',
+      type: 'richCardCarousel',
+      cardWidth: messageContent.richCard.carouselCard.cardWidth,
+      cardContents: messageContent.richCard.carouselCard.cardContents,
+    };
+  }
+
+  if (messageContent.postbackData) {
+    return {
+      type: 'suggestionResponse',
       text: messageContent.text,
+      postbackData: messageContent.postbackData,
     };
   }
 }

@@ -8,7 +8,7 @@
 
 
 
-# Airy Core Platform
+# Airy Core
 
 [![Join the chat on Airy community](https://img.shields.io/badge/forum-join%20discussions-brightgreen.svg)](https://airy.co/community/?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Documentation Status](https://img.shields.io/badge/docs-stable-brightgreen.svg)](https://docs.airy.co/)
@@ -18,7 +18,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/airyhq/airy/projects)
 
 
-The Airy Core Platform is an open source, fully-featured, production ready
+Airy Core is an open source, fully-featured, production ready
 messaging platform.
 With Airy you can process conversational data from a variety of sources:
 
@@ -73,7 +73,7 @@ Learn more about what we open-sourced in the
 
 ## Getting started
 
-You can run the Airy Core Platform locally by running the following commands:
+You can run Airy Core locally by running the following commands:
 
 ```sh
 $ git clone https://github.com/airyhq/airy
@@ -89,7 +89,7 @@ deployment guide](/docs/docs/getting-started/deployment/test-environment.md) for
 
 ## Components
 
-The Airy Core Platform contains the following components:
+Airy Core contains the following components:
 
 - An ingestion platform that heavily relies on [Apache
   Kafka](https://kafka.apache.org) to process incoming webhook data from
@@ -110,7 +110,7 @@ The Airy Core Platform contains the following components:
 ## Organization of the Repository
 
 This [monorepo](https://en.wikipedia.org/wiki/Monorepo) contains all the
-code and tooling required to run the Airy Core Platform.
+code and tooling required to run Airy Core.
 
 Here is a quick overview of how the repository is organized:
 
@@ -147,7 +147,7 @@ If you wish to learn more about a specific project, refer to the
 
 ## Design Principles
 
-The Airy Core Platform is built using a few guiding principles. An introduction
+Airy Core is built using a few guiding principles. An introduction
 to these principles is essential to navigate the code base with ease. You can
 read more about it [here](/docs/docs/guidelines/design-principles.md)
 
@@ -168,7 +168,7 @@ started.
 
 ## Code of Conduct
 
-To ensure a safe experience and a welcoming community, the Airy Core Platform
+To ensure a safe experience and a welcoming community, Airy Core
 project adheres to the [contributor
 convenant](https://www.contributor-covenant.org/) [code of
 conduct](/code_of_conduct.md).

@@ -2,9 +2,11 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.Metadata;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -20,10 +22,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.UUID;
 
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
+import static co.airy.core.api.communication.util.Topics.applicationCommunicationMetadata;
 import static co.airy.core.api.communication.util.Topics.getTopics;
+import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -45,7 +51,6 @@ class ConversationsInfoTest {
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
-
         kafkaTestHelper.beforeAll();
     }
 
@@ -61,17 +66,20 @@ class ConversationsInfoTest {
 
     @Test
     void canFetchConversationsInfo() throws Exception {
+        final String channelName = "My sticker store";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId("channel-id")
+                .setId(UUID.randomUUID().toString())
                 .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build();
 
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-
+        final Metadata metadata = newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.NAME, channelName);
+        kafkaTestHelper.produceRecords(List.of(
+                new ProducerRecord<>(applicationCommunicationMetadata.name(), getId(metadata).toString(), metadata),
+                new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel)
+        ));
         final String conversationId = UUID.randomUUID().toString();
-
         kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
 
         retryOnException(
@@ -79,8 +87,9 @@ class ConversationsInfoTest {
                         "{\"conversation_id\":\"" + conversationId + "\"}",
                         "user-id")
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.id", is(conversationId))),
-                "Conversations list is missing records"
+                        .andExpect(jsonPath("$.id", is(conversationId)))
+                        .andExpect(jsonPath("$.channel.metadata.name", is(channelName))),
+                "Cannot find conversation"
         );
     }
 }

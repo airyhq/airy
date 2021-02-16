@@ -51,7 +51,7 @@ public class SendMessageControllerTest {
 
     private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("channel-id")
+            .setId(UUID.randomUUID().toString())
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .setToken("AWESOME TOKEN")

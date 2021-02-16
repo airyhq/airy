@@ -7,8 +7,8 @@ import AvatarImage from '../../../components/AvatarImage';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
-import {Conversation, Message} from 'httpclient';
-import {StateModel} from '../../../reducers';
+import {Message} from 'httpclient';
+import {MergedConversation, StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations} from '../../../actions/conversations';
 
@@ -19,7 +19,7 @@ interface FormattedMessageProps {
 }
 
 type ConversationListItemProps = {
-  conversation: Conversation;
+  conversation: MergedConversation;
   active: boolean;
   style: CSSProperties;
 } & ConnectedProps<typeof connector>;
@@ -47,8 +47,8 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
 const ConversationListItem = (props: ConversationListItemProps) => {
   const {conversation, active, style, readConversations} = props;
 
-  const participant = conversation.contact;
-  const unread = conversation.unreadMessageCount > 0;
+  const participant = conversation.metadata.contact;
+  const unread = conversation.metadata.unreadCount > 0;
 
   useEffect(() => {
     if (active && unread) {

@@ -10,6 +10,7 @@ import co.airy.core.api.communication.payload.SendMessageRequestPayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
+import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.web.payload.EmptyResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,15 +35,13 @@ public class SendMessageController {
     private final Stores stores;
     private final ObjectMapper objectMapper;
     private final KafkaProducer<String, Message> producer;
-    private final Mapper mapper;
 
     private final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
 
-    SendMessageController(Stores stores, ObjectMapper objectMapper, KafkaProducer<String, Message> producer, Mapper mapper) {
+    SendMessageController(Stores stores, ObjectMapper objectMapper, KafkaProducer<String, Message> producer) {
         this.stores = stores;
         this.objectMapper = objectMapper;
         this.producer = producer;
-        this.mapper = mapper;
     }
 
     @PostMapping("/messages.send")
@@ -73,6 +72,6 @@ public class SendMessageController {
                 .build();
 
         producer.send(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message)).get();
-        return ResponseEntity.ok(MessageResponsePayload.fromMessageContainer(new MessageContainer(message, Map.of())));
+        return ResponseEntity.ok(MessageResponsePayload.fromMessageContainer(new MessageContainer(message, new MetadataMap())));
     }
 }

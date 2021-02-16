@@ -26,8 +26,8 @@ public class DocumentMapper {
 
         document.add(new LongPoint("created_at", conversation.getCreatedAt()));
         document.add(new StoredField("created_at", conversation.getCreatedAt()));
-        document.add(new IntPoint("unread_message_count", conversation.getUnreadMessageCount()));
-        document.add(new StoredField("unread_message_count", conversation.getUnreadMessageCount()));
+        document.add(new IntPoint("unread_count", conversation.getUnreadMessageCount()));
+        document.add(new StoredField("unread_count", conversation.getUnreadMessageCount()));
 
         for (String tagId : conversation.getTagIds()) {
             document.add(new TextField("tag_ids", tagId, Field.Store.YES));
@@ -38,7 +38,7 @@ public class DocumentMapper {
 
     public ConversationIndex fromDocument(Document document) {
         final Long createdAt = document.getField("created_at").numericValue().longValue();
-        final Integer unreadCount = document.getField("unread_message_count").numericValue().intValue();
+        final Integer unreadCount = document.getField("unread_count").numericValue().intValue();
 
         final List<String> tagIds = document.getFields().stream()
                 .filter((field) -> field.name().equals("tag_ids"))

@@ -86,25 +86,12 @@ Subscribes the webhook for the first time or update its parameters.
 }
 ```
 
-## Event Payload
+## Event Payloads
 
 After [subscribing](#subscribing) to an Airy webhook, you will
 start receiving events on your URL of choice. The event will _always_ be a POST
-request with the following structure:
+request with one the following payloads:
 
-```json5
-{
-  "conversation_id": "4242424242",
-  "id": "7560bf66-d9c4-48f8-b7f1-27ab6c40a40a",
-  "sender": {
-    "id": "adac9220-fe7b-40a8-98e5-2fcfaf4a53b5",
-    "type": "source_contact"
-  },
-  "source": "facebook",
-  "sent_at": "2020-07-20T14:18:08.584Z",
-  "content": '{"text":"Hello World"}'
-}
-```
+import EventPayloads from "./event-payloads.mdx"
 
-For possible values of `sender.type` see the [Message model
-documentation](/getting-started/glossary.md#fields)
+<EventPayloads />

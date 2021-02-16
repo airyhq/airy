@@ -1,4 +1,4 @@
-package co.airy.core.api.websocket.payload;
+package co.airy.model.event.payload;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

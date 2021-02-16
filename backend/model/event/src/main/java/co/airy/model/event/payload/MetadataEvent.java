@@ -1,4 +1,4 @@
-package co.airy.core.api.websocket.payload;
+package co.airy.model.event.payload;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.model.metadata.dto.MetadataMap;

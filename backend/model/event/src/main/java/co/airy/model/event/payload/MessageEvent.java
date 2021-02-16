@@ -1,4 +1,4 @@
-package co.airy.core.api.websocket.payload;
+package co.airy.model.event.payload;
 
 import co.airy.avro.communication.Message;
 import co.airy.model.message.dto.MessageResponsePayload;

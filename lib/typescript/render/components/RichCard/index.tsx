@@ -25,30 +25,72 @@ export type RichCardRenderProps = DefaultMessageRenderingProps & {
   media: MediaRenderProps;
 };
 
-export const RichCard = ({title, description, suggestions, media}: RichCardRenderProps) => (
-  <div className={styles.richCardContainer}>
-    <div className={styles.mediaContainer}>
-      <Media {...media} />
-    </div>
-    <div className={styles.textContainer}>
-      {title && <h1 className={styles.title}>{title}</h1>}
-      {description && <span className={styles.description}>{description}</span>}
-      <div className={styles.suggestionsContainer}>
-        {suggestions.map(({reply: {text, postbackData}}) => {
-          return (
-            text &&
-            postbackData && (
-              <button key={text} className={styles.suggestionButton}>
-                {' '}
-                <a className={styles.suggestionLink} href={postbackData} target="_blank" rel="noopener noreferrer">
-                  {' '}
-                  {text}{' '}
-                </a>{' '}
-              </button>
-            )
-          );
-        })}
+export const RichCard = ({title, description, suggestions, media, sentAt, fromContact}: RichCardRenderProps) => (
+  <>
+    {fromContact ? (
+      <div className={styles.containerContact}>
+        <div className={styles.richCardContainer}>
+          <div className={styles.mediaContainer}>
+            <Media {...media} />
+          </div>
+          <div className={styles.textContainer}>
+            {title && <h1 className={styles.title}>{title}</h1>}
+            {description && <span className={styles.description}>{description}</span>}
+            <div className={styles.suggestionsContainer}>
+              {suggestions.map(({reply: {text, postbackData}}) => {
+                return (
+                  text &&
+                  postbackData && (
+                    <button key={text} className={styles.suggestionButton}>
+                      {' '}
+                      <a
+                        className={styles.suggestionLink}
+                        href={postbackData}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        {' '}
+                        {text}{' '}
+                      </a>{' '}
+                    </button>
+                  )
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    ) : (
+      <div className={styles.containerMember}>
+        <div className={styles.richCardContainer}>
+          <div className={styles.mediaContainer}>
+            <Media {...media} />
+          </div>
+          <div className={styles.textContainer}>
+            {title && <h1 className={styles.title}>{title}</h1>}
+            {description && <span className={styles.description}>{description}</span>}
+            <div className={styles.suggestionsContainer}>
+              {suggestions.map(({reply: {text, postbackData}}) => {
+                return (
+                  text &&
+                  postbackData && (
+                    <button key={text} className={styles.suggestionButton}>
+                      {' '}
+                      <a
+                        className={styles.suggestionLink}
+                        href={postbackData}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        {' '}
+                        {text}{' '}
+                      </a>{' '}
+                    </button>
+                  )
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </>
 );

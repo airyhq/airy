@@ -1,6 +1,16 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
+.containerContact {
+  display: flex;
+  align-content: flex-start;
+}
+
+.containerMember {
+  display: flex;
+  align-content: flex-end;
+}
+
 .richCardContainer {
   box-sizing: border-box;
   height: auto;

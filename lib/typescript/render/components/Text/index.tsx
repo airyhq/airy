@@ -17,9 +17,7 @@ export const Text = ({contact, sentAt, fromContact, text}: TextRenderProps) => (
         </div>
       ) : (
         <div className={styles.messageListUserContainer}>
-          <div className={styles.messageAvatar}>
-            <Avatar contact={contact} />
-          </div>
+          <div className={styles.messageAvatar}>{sentAt && <Avatar contact={contact} />}</div>
           <div className={styles.messageListItemUser}>
             <div className={styles.messageListItemUserText}>{text}</div>
             {sentAt && <div className={styles.messageTime}>{sentAt}</div>}

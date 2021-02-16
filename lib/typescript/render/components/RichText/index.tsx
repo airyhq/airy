@@ -22,7 +22,7 @@ export const RichText = (props: RichTextRenderProps) => {
         </div>
       ) : (
         <div className={styles.userContainer}>
-          <div className={styles.avatar}>{contact && <Avatar contact={contact} />}</div>
+          <div className={styles.avatar}>{sentAt && <Avatar contact={contact} />}</div>
           <div className={styles.user}>
             <div className={styles.userText}>{containsRichText ? text : fallback}</div>
             {sentAt && <div className={styles.time}>{sentAt}</div>}

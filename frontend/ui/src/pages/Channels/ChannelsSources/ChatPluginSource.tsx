@@ -20,6 +20,7 @@ const ChatPluginSource = (props: chatPluginProps) => {
         title="Airy Live Chat "
         text="Best of class browser messenger"
         image={<AiryLogo />}
+        buttonIcon={<AddChannel />}
         shouldDisplayButton={chatPluginSources.length === 0}
       />
 

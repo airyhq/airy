@@ -2,9 +2,20 @@ import React from 'react';
 import {Channel} from 'httpclient';
 import styles from './ChannelsConnected.module.scss';
 
-type connectedChannelsProps = {channelSources: Channel[]};
+type connectedChannelsProps = {
+  showConnectedChannels: boolean;
+  showSumOfChannels: number;
+  connected: string;
+  connectedChannel: Channel[];
+  placeholderImage: JSX.Element;
+  extraChannel: boolean;
+  displayExtraChannel: number;
+  isConnected: string;
+  addAChannel: JSX.Element;
+  ignoreChannelId?: boolean;
+};
 
-const ChannelsConnected = (props: connectedChannelsProps & any) => {
+const ChannelsConnected = (props: connectedChannelsProps) => {
   return (
     <>
       {props.showConnectedChannels && (

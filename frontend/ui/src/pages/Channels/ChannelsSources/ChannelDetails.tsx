@@ -1,7 +1,15 @@
 import React from 'react';
 import styles from './ChannelDetails.module.scss';
 
-const ChannelDetails = props => {
+type ChannelDetailsProps = {
+  image: JSX.Element;
+  title: string;
+  text: string;
+  buttonIcon: JSX.Element;
+  shouldDisplayButton: boolean;
+};
+
+const ChannelDetails = (props: ChannelDetailsProps) => {
   return (
     <>
       <div className={styles.channelCard}>

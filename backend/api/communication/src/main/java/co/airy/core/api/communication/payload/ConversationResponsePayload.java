@@ -3,8 +3,6 @@ package co.airy.core.api.communication.payload;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.model.channel.ChannelPayload;
 import co.airy.model.message.dto.MessageResponsePayload;
-import co.airy.model.metadata.MetadataKeys;
-import co.airy.model.metadata.dto.MetadataMap;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -12,8 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 import static co.airy.date.format.DateFormat.isoFromMillis;
 import static co.airy.model.metadata.MetadataKeys.*;
@@ -31,7 +27,7 @@ public class ConversationResponsePayload {
     private MessageResponsePayload lastMessage;
 
     public static ConversationResponsePayload fromConversation(Conversation conversation) {
-        JsonNode metadata = getMetadataPayload(conversation.getMetadata());
+        JsonNode metadata = getMetadataPayload(conversation.getMetadataMap());
 
         return ConversationResponsePayload.builder()
                 .channel(ChannelPayload.fromChannelContainer(conversation.getChannelContainer()))

@@ -42,7 +42,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -179,7 +178,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .leftJoin(metadataTable, (conversation, metadataMap) -> {
                     if (metadataMap != null) {
                         return conversation.toBuilder()
-                                .metadata(metadataMap)
+                                .metadataMap(metadataMap)
                                 .build();
                     }
                     return conversation;

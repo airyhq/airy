@@ -1,7 +1,6 @@
 package co.airy.core.api.communication.dto;
 
 import co.airy.avro.communication.Channel;
-import co.airy.log.AiryLoggerFactory;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.metadata.MetadataKeys;
@@ -11,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
 
 import java.io.Serializable;
 import java.util.List;
@@ -25,16 +23,13 @@ import static org.springframework.util.StringUtils.capitalize;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Conversation implements Serializable {
-    private static final Logger log = AiryLoggerFactory.getLogger(Conversation.class);
-
     private Long createdAt;
     private MessageContainer lastMessageContainer;
     private String sourceConversationId;
     private ChannelContainer channelContainer;
 
-
     @Builder.Default
-    private MetadataMap metadata = new MetadataMap();
+    private MetadataMap metadataMap = new MetadataMap();
 
     @JsonIgnore
     public Channel getChannel() {
@@ -42,12 +37,12 @@ public class Conversation implements Serializable {
     }
 
     public Integer getUnreadMessageCount() {
-        return metadata.getMetadataNumericValue(MetadataKeys.ConversationKeys.UNREAD_COUNT, 0);
+        return metadataMap.getMetadataNumericValue(MetadataKeys.ConversationKeys.UNREAD_COUNT, 0);
     }
 
     @JsonIgnore
     public String getDisplayNameOrDefault() {
-        String displayName = metadata.getMetadataValue(MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME);
+        String displayName = metadataMap.getMetadataValue(MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME);
 
         // Default to a display name that looks like: "Facebook 4ecb3"
         if (displayName == null) {
@@ -59,7 +54,7 @@ public class Conversation implements Serializable {
 
     @JsonIgnore
     public List<String> getTagIds() {
-        return metadata.keySet()
+        return metadataMap.keySet()
                 .stream()
                 .filter((entry) -> entry.startsWith(MetadataKeys.ConversationKeys.TAGS))
                 .map(s -> s.split("\\.")[1])

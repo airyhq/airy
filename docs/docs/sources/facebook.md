@@ -5,6 +5,10 @@ sidebar_label: Facebook Messenger
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import TLDR from "@site/src/components/TLDR";
+import ButtonBox from "@site/src/components/ButtonBox";
+import ButtonBoxList from "@site/src/components/ButtonBoxList";
+import FacebookMessengerSVG from "@site/static/icons/facebook-messenger.svg";
+
 
 <TLDR>
 
@@ -99,4 +103,24 @@ On the `User or Page` option, select `Get Page Token` and click on `Generate Acc
 
 <img alt="Facebook token page" src={useBaseUrl('img/sources/facebook/token.jpg')} />
 
-You're now ready to connect a Facebook page to your Airy Core instace 🎉.
+You're now ready to connect a Facebook page to your Airy Core instance 🎉
+
+The next step is to send a request to the [Channels endpoint](api/endpoints/channels.md#Facebook) to connect a Facebook page to your instance. 
+
+After connecting the Facebook source to your instance, you will be able to send messages through the [Messages endpoint](api/endpoints/messages). The frontend of Airy Core is able render the messages types you can send from a Facebook source.
+
+<ButtonBoxList>
+<ButtonBox
+    icon={() => <FacebookMessengerSVG />}
+    title='Channels endpoint'
+    description='Connect a Facebook source to your Airy Core instance through the Channels endpoint'
+    link='api/endpoints/channels.md#Facebook'
+/>
+
+<ButtonBox
+    icon={() => <FacebookMessengerSVG />}
+    title='Messages endpoint'
+    description='Send messages to your Airy Core instance from a Facebook source through the Messages endpoint'
+    link='api/endpoints/messages'
+/>
+</ButtonBoxList>

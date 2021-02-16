@@ -2,31 +2,16 @@ import React, {useState} from 'react';
 import styles from './index.module.scss';
 import {MediaRenderProps} from '../RichCard/Media';
 import {DefaultMessageRenderingProps} from '../index';
-import {RichCard} from '../RichCard';
+import {RichCard, Suggestion} from '../RichCard';
 import leftArrow from 'assets/images/icons/leftArrow.svg';
 import rightArrow from 'assets/images/icons/rightArrow.svg';
-
-type Suggestions = [
-  {
-    reply: {
-      text: string;
-      postbackData: string;
-    };
-  },
-  {
-    reply?: {
-      text: string;
-      postbackData: string;
-    };
-  }
-];
 
 type Card = {
   id?: string;
   title?: string;
   description?: string;
   media: MediaRenderProps;
-  suggestions: Suggestions;
+  suggestions: Suggestion[];
 };
 
 enum Direction {

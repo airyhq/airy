@@ -4,6 +4,8 @@ import {renderProviders} from './renderProviders';
 import {Text} from './components/Text';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from './shared';
 
+export * from './shared';
+
 export const SourceMessage = (props: MessageRenderProps) => {
   const provider = renderProviders[props.source];
 

@@ -1,4 +1,4 @@
-import {Text} from 'types';
+import {SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
 
 declare const window: {
   airy: {
@@ -10,17 +10,32 @@ declare const window: {
 
 const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
 
-export const sendMessage = (message: Text, token: string) => {
+export const sendMessage = (message: TextContent | SuggestionResponse, token: string) => {
   return fetch(`//${API_HOST}/chatplugin.send`, {
     method: 'POST',
-    body: JSON.stringify({
-      message,
-    }),
+    body: JSON.stringify(convertToBody(message)),
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+const convertToBody = (message: TextContent | SuggestionResponse) => {
+  if (message.type == 'suggestionResponse') {
+    return {
+      message: {
+        text: message.text,
+        postbackData: message.postbackData,
+      },
+    };
+  }
+
+  return {
+    message: {
+      text: message.text,
+    },
+  };
 };
 
 export const getResumeToken = async (token: string) => {

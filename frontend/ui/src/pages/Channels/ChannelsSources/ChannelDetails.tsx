@@ -6,7 +6,7 @@ type ChannelDetailsProps = {
   title: string;
   text: string;
   buttonIcon: JSX.Element;
-  shouldDisplayButton: boolean;
+  displayButton: boolean;
 };
 
 const ChannelDetails = (props: ChannelDetailsProps) => {
@@ -20,7 +20,7 @@ const ChannelDetails = (props: ChannelDetailsProps) => {
         </div>
       </div>
 
-      {props.shouldDisplayButton && (
+      {props.displayButton && (
         <div className={styles.channelButton}>
           <button type="button" className={styles.addChannelButton}>
             <div className={styles.channelButtonIcon}>{props.buttonIcon}</div>

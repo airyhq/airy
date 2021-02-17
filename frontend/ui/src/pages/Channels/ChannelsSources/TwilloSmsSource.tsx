@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './TwilloSmsSource.module.scss';
-import {ReactComponent as SMSLogo} from '../../../assets/images/icons/sms.svg';
+import {ReactComponent as SMSLogo} from '../../../assets/images/icons/sms-channel.svg';
 import {ReactComponent as AddChannel} from '../../../assets/images/icons/plus-circle.svg';
 import {ReactComponent as Placeholder} from '../../../assets/images/icons/placeholder.svg';
 import {Channel} from 'httpclient';
@@ -21,7 +21,7 @@ const TwilloSmsSource = (props: twilloSmsSourceProps) => {
         text="Deliver SMS with ease"
         image={<SMSLogo />}
         buttonIcon={<AddChannel />}
-        shouldDisplayButton={twilloSources.length === 0}
+        displayButton={twilloSources.length === 0}
       />
 
       <ChannelsConnected
@@ -29,7 +29,7 @@ const TwilloSmsSource = (props: twilloSmsSourceProps) => {
         showSumOfChannels={totalTwilloSources.length}
         connected="CONNECTED"
         connectedChannel={twilloSources}
-        placeholderImage={<Placeholder />}
+        placeholderImage={<SMSLogo />}
         extraChannel={twilloSourcesExtra.length > 0}
         displayExtraChannel={twilloSourcesExtra.length}
         isConnected="connected"

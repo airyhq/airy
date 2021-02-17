@@ -21,7 +21,7 @@ const ChatPluginSource = (props: chatPluginProps) => {
         text="Best of class browser messenger"
         image={<AiryLogo />}
         buttonIcon={<AddChannel />}
-        shouldDisplayButton={chatPluginSources.length === 0}
+        displayButton={chatPluginSources.length === 0}
       />
 
       <ChannelsConnected
@@ -29,7 +29,7 @@ const ChatPluginSource = (props: chatPluginProps) => {
         showSumOfChannels={totalChatPluginSources.length}
         connected="CONNECTED"
         connectedChannel={chatPluginSources}
-        placeholderImage={<Placeholder />}
+        placeholderImage={<AiryLogo />}
         extraChannel={chatPluginSourcesExtra.length > 0}
         displayExtraChannel={chatPluginSourcesExtra.length}
         isConnected="connected"

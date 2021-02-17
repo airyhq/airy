@@ -17,11 +17,11 @@ const GoogleSource = (props: googleSourceProps) => {
   return (
     <div className={styles.flexWrap}>
       <ChannelDetails
-        title="Google Business Messenger"
+        title="Google Business Messages"
         text="Be there when people search"
         image={<GoogleLogo />}
         buttonIcon={<AddChannel />}
-        shouldDisplayButton={googleSources.length === 0}
+        displayButton={googleSources.length === 0}
       />
 
       <ChannelsConnected

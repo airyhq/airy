@@ -21,7 +21,7 @@ const FacebookSource = (props: facebookSourceProps) => {
         text="Connect multiple Facebook pages"
         image={<FacebookLogo />}
         buttonIcon={<AddChannel />}
-        shouldDisplayButton={facebookSources.length === 0}
+        displayButton={facebookSources.length === 0}
       />
 
       <ChannelsConnected
@@ -29,12 +29,13 @@ const FacebookSource = (props: facebookSourceProps) => {
         showSumOfChannels={totalFacebookSources.length}
         connected="CONNECTED"
         connectedChannel={facebookSources}
-        placeholderImage={<Placeholder />}
         extraChannel={facebookSourcesExtra.length > 0}
         displayExtraChannel={facebookSourcesExtra.length}
         isConnected="connected"
         addAChannel={<AddChannel />}
         ignoreChannelId={facebookSources.length > 0}
+        ignorePlaceholder={facebookSources.length > 0}
+        displayFacebookImage={facebookSources.length > 0}
       />
     </div>
   );

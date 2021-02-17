@@ -21,7 +21,7 @@ const WhatsappSmsSource = (props: whatsappSourceProps) => {
         text="World #1 chat app"
         image={<WhatsappLogo />}
         buttonIcon={<AddChannel />}
-        shouldDisplayButton={whatsappSources.length === 0}
+        displayButton={whatsappSources.length === 0}
       />
 
       <ChannelsConnected
@@ -29,7 +29,7 @@ const WhatsappSmsSource = (props: whatsappSourceProps) => {
         showSumOfChannels={totalWhatsappSources.length}
         connected="CONNECTED"
         connectedChannel={whatsappSources}
-        placeholderImage={<Placeholder />}
+        placeholderImage={<WhatsappLogo />}
         extraChannel={whatsappSourcesExtra.length > 0}
         displayExtraChannel={whatsappSourcesExtra.length}
         isConnected="connected"

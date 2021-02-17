@@ -4,27 +4,30 @@
 .connectedContainer {
   display: flex;
   flex-direction: column;
-  min-width: 65vh;
-  max-height: 21vh;
+  height: 120px;
+  width: 450px;
+  margin-bottom:10px;
+}
+
+.connectedSum {
+  margin-left:10px;
+  color: var(--color-text-gray);
+ 
 }
 
 .connectedChannel {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  border: solid 1px var(--color-light-gray);
+  box-sizing: border-box;
+  height: 100px;
+  width: 500px;
+  border: 1px solid #CAD5DB;
   border-radius: 8px;
-  flex-basis: 100%;
-  max-width: 65vh;
-  max-height: 18vh;
-  margin-left: 15px;
-  margin-bottom: 16px;
+  background-color: #FFFFFF;
+  margin-left:10px;
+  margin-bottom:10px;
 }
 
-.connectedSum {
-  color: var(--color-text-gray);
-  margin-left: 3em;
-}
+
 
 .connectedChannelData {
   display: flex;
@@ -32,14 +35,24 @@
 }
 
 .placeholderLogo {
-  height: 23px;
-  width: 20px;
-  border: solid 1px var(--color-text-gray);
   background: white;
-  border-radius: 50%;
-  padding: 0px 15px 18px 0px;
-  margin: 15px 0px 15px 16px;
+  padding-top:12px;
+  margin: 0px 0px 15px 18px;
+  svg {
+   
+  height: 16px;
+  width: 16px;
+  
+    
+  }
 }
+
+.facebookImage{
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  margin: 16px 0px 0px 16px;
+ }
 
 .extraChannel {
   border: none;
@@ -58,13 +71,21 @@
   align-items: center;
 }
 
+
+
 .connectedChannelName {
-  padding-top: 16px;
+  padding-top: 10px;
+  padding-left: 6px;
+}
+
+.facebookName {
+  padding-top: 1px;
   padding-left: 16px;
 }
 
+
 .channelId {
-  padding-top: 15px;
+  padding-top: 10px;
   padding-left: 30px;
 }
 
@@ -88,15 +109,28 @@
 }
 
 .channelButtonIcon {
-  height: 40px;
-  border: none;
-  width: 40px;
-  @include font-s;
-  font-weight: 400;
-  color: #000;
-  padding-top: 5px;
-}
+  @include font-m;
+  margin-left: 60px;
+  
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-text-gray);
+  cursor: pointer;
+ 
+  padding:2px;
 
-.channelButtonIcon:hover {
-  background: var(--color-airy-blue);
+  svg {
+    margin: 0;
+    path {
+      fill: var(--color-text-gray);
+    }
+  }
+  &:hover {
+    color: var(--color-airy-blue);
+    background-color: var(--color-background-blue);
+    box-shadow: 0px 0px 0px 3px var(--color-background-blue);
+  }
 }

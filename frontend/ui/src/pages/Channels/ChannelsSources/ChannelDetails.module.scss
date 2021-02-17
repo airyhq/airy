@@ -7,36 +7,59 @@
 }
 
 .channelCard {
-  display: inline-flex;
-  border: solid 1px var(--color-light-gray);
+  display: flex;
+  box-sizing: border-box;
+  height: 100px;
+  width: 300px;
+  border: 1px solid var(--color-light-gray);
   border-radius: 8px;
-  flex-basis: 100%;
-  min-width: 35vh;
-  max-height: 13vh;
-  padding: 1%;
-  margin: 25px 0px 10px 0px;
+  background-color: #FFFFFF;
+  margin-top: 22px;
 }
 
 .channelLogo {
-  height: 60px;
-  width: 42px;
-  background: white;
-  border-radius: 50%;
-  padding: 15px 0px 15px 12px;
+  display: inline-flex;
+  height: 40px;
+  width: 40px;
+  margin:16px 8px 42px 16px;
+  svg{
+    width:30px;
+    height:30px;
+  }
 }
 
-.channelTitleAndText {
-  margin: 0px auto 0px 21px;
-  padding: 15px 0px 15px 0px;
+.channelTitle{
+  display: inline-flex;
+  height: 24px;
+  width: 190px;
+  color: #212428;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 24px;
+  margin:16px 20px 2px 2px;
 }
+
+// .channelTitleAndText {
+//   margin: 0px auto 0px 21px;
+//   padding: 15px 0px 15px 0px;
+// }
 
 .channelText {
+  display: inline-flex;
+  height: 48px;
+  width: 190px;
   color: var(--color-text-gray);
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+  
 }
 
 .channelButton {
-  display: block;
-  padding-top: 25px;
+  display: flex;
+  padding-top: 8px;
 }
 
 .addChannelButton {
@@ -44,8 +67,8 @@
   background: white;
   width: 40px;
   height: 70px;
-  margin-left: 5px;
-  margin-top: 15px;
+  margin-left: 6px;
+  margin-top: 32px;
   transition: 0.2s ease-in-out all;
   border: none;
   padding: 0;
@@ -54,15 +77,30 @@
 }
 
 .channelButtonIcon {
-  height: 40px;
-  border: none;
-  width: 40px;
-  @include font-s;
-  font-weight: 400;
+  @include font-m;
+  margin-right: 16px;
+  
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: var(--color-text-gray);
-  padding-top: 5px;
+  cursor: pointer;
+ 
+  padding:2px;
+
+  svg {
+    margin: 0;
+    path {
+      fill: var(--color-text-gray);
+    }
+  }
+  &:hover {
+    color: var(--color-airy-blue);
+    background-color: var(--color-background-blue);
+    box-shadow: 0px 0px 0px 3px var(--color-background-blue);
+  }
 }
 
-.channelButtonIcon:hover {
-  background: var(--color-airy-blue);
-}
+

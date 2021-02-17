@@ -1,7 +1,7 @@
 package co.airy.core.webhook.publisher;
 
-import co.airy.core.webhook.publisher.model.QueueMessage;
 import co.airy.log.AiryLoggerFactory;
+import co.airy.model.event.payload.Event;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,9 +24,9 @@ public class RedisQueue {
         this.redisTemplate = redisTemplate;
     }
 
-    void publishMessage(String webhookId, QueueMessage message) {
+    void publishMessage(String webhookId, Event event) {
         try {
-            redisTemplate.opsForList().leftPush(webhookId, objectMapper.writeValueAsString(message));
+            redisTemplate.opsForList().leftPush(webhookId, objectMapper.writeValueAsString(event));
         } catch (JsonProcessingException e) {
             log.error("failed to publish message to redis", e);
         }

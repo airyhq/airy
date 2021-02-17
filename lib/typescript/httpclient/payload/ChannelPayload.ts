@@ -1,6 +1,8 @@
+import {Metadata} from '../model';
+
 export interface ChannelPayload {
   id: string;
-  metadata: any & {
+  metadata?: Metadata & {
     name: string;
     image_url?: string;
   };

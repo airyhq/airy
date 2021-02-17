@@ -7,7 +7,7 @@ export const channelMapper = (payload: ChannelPayload): Channel => {
     sourceChannelId: payload.source_channel_id,
     metadata: {
       ...payload.metadata,
-      imageUrl: payload.metadata.image_url,
+      imageUrl: payload.metadata?.image_url,
     },
     connected: true,
   };

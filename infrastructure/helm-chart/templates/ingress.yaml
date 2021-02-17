@@ -99,6 +99,20 @@ spec:
                 name: api-admin
                 port:
                   number: 80
+          - path: /channels.info
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /channels.update
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
           - path: /channels.chatplugin.disconnect
             pathType: Prefix
             backend:

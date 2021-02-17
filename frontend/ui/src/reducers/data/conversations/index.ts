@@ -221,7 +221,7 @@ function allReducer(
           ...state.items,
           [action.payload.identifier]: {
             ...state.items[action.payload.identifier],
-            metadata: merge({}, state.items[action.payload.identifier].metadata, action.payload.metadata),
+            metadata: merge({}, state.items[action.payload.identifier]?.metadata, action.payload.metadata),
           },
         },
       };

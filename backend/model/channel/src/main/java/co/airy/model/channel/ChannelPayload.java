@@ -42,7 +42,6 @@ public class ChannelPayload {
     public static ChannelPayload fromChannel(Channel channel) {
         return ChannelPayload.builder()
                 .id(channel.getId())
-                .metadata(defaultMetadata(JsonNodeFactory.instance.objectNode(), channel))
                 .source(channel.getSource())
                 .sourceChannelId(channel.getSourceChannelId())
                 .connected(channel.getConnectionState().equals(ChannelConnectionState.CONNECTED))

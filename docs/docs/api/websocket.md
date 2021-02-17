@@ -20,7 +20,7 @@ To execute the handshake with `/ws.events` you must set an
 `Authorization` header where the value is the authorization token obtained [from
 the API](/api/introduction#authentication).
 
-## Event Types
+## Event Payloads
 
 All event updates are sent to the `/events` queue as JSON encoded payloads. The `type`
 field informs the client of the kind of update that is encoded in the payload.
@@ -35,7 +35,7 @@ field informs the client of the kind of update that is encoded in the payload.
     "channel_id": "{UUID}",
     "message": {
       "id": "{UUID}",
-      "content": '{"text":"Hello World"}',
+      "content": {"text": "Hello World"},
       // source message payload
       "delivery_state": "pending|failed|delivered",
       // delivery state of message, one of pending, failed, delivered
@@ -43,12 +43,8 @@ field informs the client of the kind of update that is encoded in the payload.
       // See glossary
       "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-      "source": "{String}",
+      "source": "{String}"
       // one of the possible sources
-      "metadata": {
-        "sentFrom": "iPhone"
-      }
-      // metadata object of the message
     }
   }
 }
@@ -84,7 +80,6 @@ field informs the client of the kind of update that is encoded in the payload.
 
   "payload": {
     "id": "{UUID}",
-    "name": "my page 1",
     "source": "facebook",
     "source_channel_id": "fb-page-id-1",
     "connected": true // or false

@@ -1,7 +1,5 @@
-/* global FB */
 import React, {useCallback, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import {Button} from '@airyhq/components';
 
@@ -19,17 +17,13 @@ const mapDispatchToProps = {
   disconnectChannel,
 };
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    channels: state.data.channels,
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  channels: Object.values(state.data.channels),
+});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type ChannelsConnectProps = {} & ConnectedProps<typeof connector> & RouteComponentProps;
-
-const Channels = (props: ChannelsConnectProps) => {
+const Channels = (props: ConnectedProps<typeof connector>) => {
   const [facebookToken, setFacebookToken] = useState('');
   useEffect(() => {
     props.listChannels();
@@ -92,28 +86,31 @@ const Channels = (props: ChannelsConnectProps) => {
         />
       </div>
       <ul className={styles.channelList}>
-        {props.channels.map((channel: Channel) => {
-          const channelName = channel.metadata.name;
-          return (
-            <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-              {channel.metadata.imageUrl && (
-                <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
-              )}
-              <div className={styles.channelName}>{channel.metadata.name}</div>
-              <div className={styles.channelAction}>
-                {channel.connected ? (
-                  <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
-                    Disconnect
-                  </Button>
-                ) : (
-                  <Button styleVariant="small" onClick={() => connectClicked(channel)}>
-                    Connect
-                  </Button>
+        {props.channels
+          // Websocket channels don't necessarily have a name so we wait for the metadata
+          .filter((channel: Channel) => !!channel.metadata.name)
+          .map((channel: Channel) => {
+            const channelName = channel.metadata.name;
+            return (
+              <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                {channel.metadata.imageUrl && (
+                  <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
                 )}
-              </div>
-            </li>
-          );
-        })}
+                <div className={styles.channelName}>{channel.metadata.name}</div>
+                <div className={styles.channelAction}>
+                  {channel.connected ? (
+                    <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
+                      Disconnect
+                    </Button>
+                  ) : (
+                    <Button styleVariant="small" onClick={() => connectClicked(channel)}>
+                      Connect
+                    </Button>
+                  )}
+                </div>
+              </li>
+            );
+          })}
       </ul>
     </div>
   );

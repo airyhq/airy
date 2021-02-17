@@ -28,6 +28,8 @@ kubectl scale deployment -l type=api --replicas=1
 
 wait-for-service startup-helper api-auth 80 10 api-auth
 
+kubectl scale deployment -l type=frontend --replicas=1
+
 kubectl scale deployment -l app=airy-controller --replicas=1
 
 kubectl delete pod startup-helper --force 2>/dev/null

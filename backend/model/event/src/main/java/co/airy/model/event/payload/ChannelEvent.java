@@ -1,5 +1,6 @@
-package co.airy.core.api.websocket.payload;
+package co.airy.model.event.payload;
 
+import co.airy.avro.communication.Channel;
 import co.airy.model.channel.ChannelPayload;
 import co.airy.model.message.dto.MessageResponsePayload;
 import lombok.AllArgsConstructor;
@@ -17,4 +18,8 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 public class ChannelEvent extends Event implements Serializable {
     private ChannelPayload payload;
+
+    public static ChannelEvent fromChannel(Channel channel) {
+        return builder().payload(ChannelPayload.fromChannel(channel)).build();
+    }
 }

@@ -9,7 +9,9 @@ import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '
 import {StateModel} from '../../reducers';
 
 import styles from './index.module.scss';
+
 import {allChannels} from '../../selectors/channels';
+import {setPageTitle} from '../../services/pageTitle';
 
 const mapDispatchToProps = {
   listChannels,
@@ -28,6 +30,7 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
   const [facebookToken, setFacebookToken] = useState('');
   useEffect(() => {
     props.listChannels();
+    setPageTitle('Channels');
   }, []);
 
   const connect = (token: string) => {

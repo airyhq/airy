@@ -86,25 +86,55 @@ Subscribes the webhook for the first time or update its parameters.
 }
 ```
 
-## Event Payload
+## Event Payloads
 
 After [subscribing](#subscribing) to an Airy webhook, you will
 start receiving events on your URL of choice. The event will _always_ be a POST
-request with the following structure:
+request with one the following payloads:
+
+### Message
 
 ```json5
 {
-  "conversation_id": "4242424242",
-  "id": "7560bf66-d9c4-48f8-b7f1-27ab6c40a40a",
-  "sender": {
-    "id": "adac9220-fe7b-40a8-98e5-2fcfaf4a53b5",
-    "type": "source_contact"
-  },
-  "source": "facebook",
-  "sent_at": "2020-07-20T14:18:08.584Z",
-  "content": '{"text":"Hello World"}'
+  "type": "message",
+  "payload": {
+    "conversation_id": "{UUID}",
+    "channel_id": "{UUID}",
+    "message": {
+      "id": "{UUID}",
+      "content": {"text": "Hello World"},
+      // source message payload
+      "delivery_state": "pending|failed|delivered",
+      // delivery state of message, one of pending, failed, delivered
+      "sender_type": "{string/enum}",
+      // See glossary
+      "sent_at": "{string}",
+      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+      "source": "{String}"
+      // one of the possible sources
+    }
+  }
 }
 ```
 
-For possible values of `sender.type` see the [Message model
-documentation](/getting-started/glossary.md#fields)
+### Metadata
+
+**Sample payload**
+
+```json5
+{
+  "type": "metadata",
+
+  "payload": {
+    "subject": "conversation|channel|message",
+    "identifier": "conversation/channel/message id",
+    "metadata": {
+      // nested metadata object. I.e. for a conversation:
+      "contact": {
+        "displayName": "Grace"
+      },
+      "isUserTyping": true
+    }
+  }
+}
+```

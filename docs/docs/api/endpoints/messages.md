@@ -30,7 +30,7 @@ latest.
   "data": [
     {
       "id": "{UUID}",
-      "content": '{"text":"Hello World"}',
+      "content": {"text": "Hello World"},
       // source message payload
       // typed source message model
       "state": "{String}",
@@ -79,7 +79,7 @@ Sends a message to a conversation and returns a payload. Whatever is put on the
 ```json5
 {
   "id": "{UUID}",
-  "content": '{"text":"Hello"}',
+  "content": {"text": "Hello"},
   "state": "pending|failed|delivered",
   "sender_type": "{string/enum}",
   // See glossary

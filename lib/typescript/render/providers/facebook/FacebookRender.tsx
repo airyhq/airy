@@ -77,7 +77,7 @@ const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | Gene
 };
 
 function facebookInbound(message: Message): ContentUnion {
-  const messageJson = JSON.parse(message.content);
+  const messageJson = message.content;
 
   if (messageJson.message.attachments?.length) {
     return parseAttachment(messageJson.message.attachments[0]);
@@ -95,7 +95,7 @@ function facebookInbound(message: Message): ContentUnion {
 }
 
 function facebookOutbound(message: Message): ContentUnion {
-  const messageJson = JSON.parse(message.content);
+  const messageJson = message.content;
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {

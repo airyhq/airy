@@ -28,7 +28,15 @@ export type RichCardRenderProps = DefaultMessageRenderingProps & {
   cardWidth?: string;
 };
 
-export const RichCard = ({title, description, suggestions, media, cardWidth, commandCallback, sentAt, fromContact}: RichCardRenderProps) => {
+export const RichCard = ({
+  title,
+  description,
+  suggestions,
+  media,
+  cardWidth,
+  commandCallback,
+  fromContact,
+}: RichCardRenderProps) => {
   const clickSuggestion = (suggestion: Suggestion) => {
     if (suggestion.reply) {
       commandCallback &&
@@ -52,60 +60,57 @@ export const RichCard = ({title, description, suggestions, media, cardWidth, com
 
   return (
     <>
-    {fromContact ? 
-    <div className={styles.containerContact}>
-         <div className={styles.richCardContainer} style={cardWidth === 'SHORT' ? {width: '136px'} : {width: '280px'}}>
-         <div className={styles.mediaContainer}>
-           <Media {...media} />
-         </div>
-         <div className={styles.textContainer}>
-           {title && <h1 className={styles.title}>{title}</h1>}
-           {description && <span className={styles.description}>{description}</span>}
-           <div className={styles.suggestionsContainer}>
-             {suggestions.map((suggestion, idx) => (
-               <button
-                 type="button"
-                 key={idx}
-                 className={styles.suggestionButton}
-                 onClick={() => {
-                   clickSuggestion(suggestion);
-                 }}>
-                 {suggestion.reply ? suggestion.reply.text : suggestion.action.text}
-               </button>
-             ))}
-           </div>
-         </div>
-       </div>
-       </div>
-    
-    
-    
-    :
-    <div className={styles.containerMember}>
-     <div className={styles.richCardContainer} style={cardWidth === 'SHORT' ? {width: '136px'} : {width: '280px'}}>
-      <div className={styles.mediaContainer}>
-        <Media {...media} />
-      </div>
-      <div className={styles.textContainer}>
-        {title && <h1 className={styles.title}>{title}</h1>}
-        {description && <span className={styles.description}>{description}</span>}
-        <div className={styles.suggestionsContainer}>
-          {suggestions.map((suggestion, idx) => (
-            <button
-              type="button"
-              key={idx}
-              className={styles.suggestionButton}
-              onClick={() => {
-                clickSuggestion(suggestion);
-              }}>
-              {suggestion.reply ? suggestion.reply.text : suggestion.action.text}
-            </button>
-          ))}
+      {fromContact ? (
+        <div className={styles.containerContact}>
+          <div className={styles.richCardContainer} style={cardWidth === 'SHORT' ? {width: '136px'} : {width: '280px'}}>
+            <div className={styles.mediaContainer}>
+              <Media {...media} />
+            </div>
+            <div className={styles.textContainer}>
+              {title && <h1 className={styles.title}>{title}</h1>}
+              {description && <span className={styles.description}>{description}</span>}
+              <div className={styles.suggestionsContainer}>
+                {suggestions.map((suggestion: Suggestion, idx: number) => (
+                  <button
+                    type="button"
+                    key={idx}
+                    className={styles.suggestionButton}
+                    onClick={() => {
+                      clickSuggestion(suggestion);
+                    }}>
+                    {suggestion.reply ? suggestion.reply.text : suggestion.action.text}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    </div>}
-
+      ) : (
+        <div className={styles.containerMember}>
+          <div className={styles.richCardContainer} style={cardWidth === 'SHORT' ? {width: '136px'} : {width: '280px'}}>
+            <div className={styles.mediaContainer}>
+              <Media {...media} />
+            </div>
+            <div className={styles.textContainer}>
+              {title && <h1 className={styles.title}>{title}</h1>}
+              {description && <span className={styles.description}>{description}</span>}
+              <div className={styles.suggestionsContainer}>
+                {suggestions.map((suggestion: Suggestion, idx: number) => (
+                  <button
+                    type="button"
+                    key={idx}
+                    className={styles.suggestionButton}
+                    onClick={() => {
+                      clickSuggestion(suggestion);
+                    }}>
+                    {suggestion.reply ? suggestion.reply.text : suggestion.action.text}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

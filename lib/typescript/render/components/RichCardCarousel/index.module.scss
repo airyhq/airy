@@ -111,3 +111,8 @@
     width: 20px;
   }
 }
+
+.time {
+  @include font-s;
+  color: var(--color-text-gray);
+}

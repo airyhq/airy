@@ -3,12 +3,14 @@
 
 .containerContact {
   display: flex;
-  align-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .containerMember {
   display: flex;
-  align-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .richCardContainer {
@@ -63,4 +65,9 @@
   background-color: var(--color-template-highlight);
   color: var(--color-airy-blue);
   cursor: pointer;
+}
+
+.time {
+  @include font-s;
+  color: var(--color-text-gray);
 }

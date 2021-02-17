@@ -7,6 +7,8 @@ import SuccessBox from "@site/src/components/SuccessBox";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ButtonBox from "@site/src/components/ButtonBox";
 import TLDR from "@site/src/components/TLDR";
+import PrototypeSVG from "@site/static/icons/prototype.svg";
+
 
 <TLDR>
 
@@ -71,8 +73,8 @@ Now enter your credentials on the login page and click **Login**.
 ###
 
 <ButtonBox
-        icon={() => <CogSVG />}
-        title='Next Step: Discover the Inbox'
-        description='Now that you can access the UI it is time to discover the Inbox and its features '
-        link='apps/ui/inbox'
+icon={() => <PrototypeSVG />}
+title='Next Step: Discover the Inbox'
+description='Now that you can access the UI it is time to discover the Inbox and its features '
+link='apps/ui/inbox'
 />

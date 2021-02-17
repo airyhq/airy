@@ -25,6 +25,7 @@ const channelsReducer = (state = {}, action: Action): ChannelsState => {
       return {
         ...state,
         [action.payload.identifier]: {
+          id: action.payload.identifier,
           ...state[action.payload.identifier],
           metadata: merge({}, state[action.payload.identifier]?.metadata, action.payload.metadata),
         },

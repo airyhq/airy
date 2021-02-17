@@ -3,7 +3,7 @@ import {createAction} from 'typesafe-actions';
 import {Conversation, PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
-import {setMetadataAction} from '../metadata';
+import {mergeMetadataAction, setMetadataAction} from '../metadata';
 
 const CONVERSATION_LOADING = '@@conversation/LOADING';
 const CONVERSATIONS_LOADING = '@@conversations/LOADING';
@@ -36,11 +36,6 @@ export const addErrorToConversationAction = createAction(
 export const removeErrorFromConversationAction = createAction(
   CONVERSATION_REMOVE_ERROR,
   resolve => (conversationId: string) => resolve({conversationId})
-);
-
-export const addTagToConversationAction = createAction(
-  CONVERSATION_ADD_TAG,
-  resolve => (conversationId: string, tagId: string) => resolve({conversationId, tagId})
 );
 
 export const removeTagFromConversationAction = createAction(
@@ -107,7 +102,17 @@ export const readConversations = (conversationId: string) => (dispatch: Dispatch
 
 export const addTagToConversation = (conversationId: string, tagId: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.tagConversation({conversationId, tagId}).then(() =>
-    dispatch(addTagToConversationAction(conversationId, tagId))
+    dispatch(
+      mergeMetadataAction({
+        subject: 'conversation',
+        identifier: conversationId,
+        metadata: {
+          tags: {
+            [tagId]: '',
+          },
+        },
+      })
+    )
   );
 };
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {WebSocketClient} from 'websocketclient';
-import {Message, Channel} from 'httpclient';
+import {Message, Channel, MetadataEvent} from 'httpclient';
 
 import {env} from '../../env';
 import {StateModel} from '../../reducers';
@@ -9,7 +9,7 @@ import {addMessagesAction} from '../../actions/messages';
 import {getConversationInfo} from '../../actions/conversations';
 import {setChannelAction} from '../../actions/channel';
 import {setMetadataAction} from '../../actions/metadata';
-import {MetadataEvent} from '../../../../../lib/typescript/httpclient/model';
+import {allConversations} from '../../selectors/conversations';
 
 type AiryWebSocketProps = {} & ConnectedProps<typeof connector>;
 
@@ -19,7 +19,7 @@ export const AiryWebSocketContext = React.createContext({
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    conversations: state.data.conversations.all.items,
+    conversations: allConversations(state),
     user: state.data.user,
   };
 };

@@ -1,7 +1,7 @@
 import _, {createSelector} from 'reselect';
-import {filter, reverse, sortBy, values} from 'lodash-es';
+import {filter, pickBy, reverse, sortBy, values} from 'lodash-es';
 import {Conversation} from 'httpclient';
-import {StateModel} from '../reducers';
+import {MergedConversation, StateModel} from '../reducers';
 import {ConversationMap} from '../reducers/data/conversations';
 import {ConversationRouteProps} from '../pages/Inbox';
 
@@ -16,12 +16,16 @@ export const filteredConversationSelector = createSelector(
   (conversations: ConversationMap) => Object.keys(conversations).map((cId: string) => ({...conversations[cId]}))
 );
 
-export const allConversationSelector = createSelector(
-  (state: StateModel) => state.data.conversations.all.items,
-  (conversations: ConversationMap) => Object.keys(conversations).map((cId: string) => ({...conversations[cId]}))
-);
+// Filter out conversations that only have metadata
+export const allConversations = (state: StateModel): MergedConversation[] =>
+  Object.values(
+    pickBy(
+      state.data.conversations.all.items,
+      ({id, metadata, ...restConversation}) => Object.keys(restConversation).length > 1
+    )
+  );
 
-export const newestConversationFirst = createSelector(allConversationSelector, conversations => {
+export const newestConversationFirst = createSelector(allConversations, conversations => {
   return reverse(
     sortBy(
       values(conversations),

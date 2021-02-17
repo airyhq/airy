@@ -9,6 +9,7 @@ import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '
 import {StateModel} from '../../reducers';
 
 import styles from './index.module.scss';
+import {allChannels} from '../../selectors/channels';
 
 const mapDispatchToProps = {
   listChannels,
@@ -18,7 +19,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(state.data.channels),
+  channels: Object.values(allChannels(state)),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -86,31 +87,28 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
         />
       </div>
       <ul className={styles.channelList}>
-        {props.channels
-          // Websocket channels don't necessarily have a name so we wait for the metadata
-          .filter((channel: Channel) => !!channel.metadata.name)
-          .map((channel: Channel) => {
-            const channelName = channel.metadata.name;
-            return (
-              <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                {channel.metadata.imageUrl && (
-                  <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
+        {props.channels.map((channel: Channel) => {
+          const channelName = channel.metadata.name;
+          return (
+            <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+              {channel.metadata.imageUrl && (
+                <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
+              )}
+              <div className={styles.channelName}>{channel.metadata.name}</div>
+              <div className={styles.channelAction}>
+                {channel.connected ? (
+                  <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
+                    Disconnect
+                  </Button>
+                ) : (
+                  <Button styleVariant="small" onClick={() => connectClicked(channel)}>
+                    Connect
+                  </Button>
                 )}
-                <div className={styles.channelName}>{channel.metadata.name}</div>
-                <div className={styles.channelAction}>
-                  {channel.connected ? (
-                    <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
-                      Disconnect
-                    </Button>
-                  ) : (
-                    <Button styleVariant="small" onClick={() => connectClicked(channel)}>
-                      Connect
-                    </Button>
-                  )}
-                </div>
-              </li>
-            );
-          })}
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

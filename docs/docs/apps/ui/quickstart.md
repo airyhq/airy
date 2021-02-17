@@ -5,6 +5,7 @@ sidebar_label: Quickstart
 
 import SuccessBox from "@site/src/components/SuccessBox";
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import ButtonBox from "@site/src/components/ButtonBox";
 import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
@@ -61,9 +62,17 @@ Now enter your credentials on the login page and click **Login**.
 
 <SuccessBox>
 
-:tada: **Congratulations!**
+:tada: **SUCCESS!**
 
-**You are now in the UI!** Next step: Make
-yourself familiar with the [Inbox](/apps/ui/inbox.md)
+**You are now in the UI!**
 
 </SuccessBox>
+
+###
+
+<ButtonBox
+        icon={() => <CogSVG />}
+        title='Next Step: Discover the Inbox'
+        description='Now that you can access the UI it is time to discover the Inbox and its features '
+        link='apps/ui/inbox'
+/>

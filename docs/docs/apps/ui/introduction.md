@@ -24,7 +24,7 @@ Additional features like [Filters, Search](inbox) and [Tags](tags) help you.
         icon={() => <CogSVG />}
         title='UI Quickstart'
         description='Step by Step Guide on getting up and running with the UI'
-        link='apps/ui/ui-quickstart'
+        link='apps/ui/quickstart'
     />
     <ButtonBox
         icon={() => <InboxSVG />}

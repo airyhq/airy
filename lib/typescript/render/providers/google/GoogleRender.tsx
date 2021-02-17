@@ -2,7 +2,7 @@ import React from 'react';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {Suggestions} from './components/Suggestions';
 import {Text} from '../../components/Text';
-import {ContentUnion} from './GoogleModel';
+import {ContentUnion} from './googleModel';
 import {Message, isFromContact} from 'httpclient';
 import {Image} from '../../components/Image';
 import {RichText} from '../../components/RichText';

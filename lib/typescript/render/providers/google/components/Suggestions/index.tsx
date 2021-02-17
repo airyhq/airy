@@ -6,7 +6,7 @@ import {
   SuggestedActions,
   AuthenticationRequestSuggestion,
   LiveAgentRequestSuggestion,
-} from '../../GoogleModel';
+} from '../../googleModel';
 import {Image} from '../../../../components/Image';
 import {Text} from '../../../../components/Text';
 

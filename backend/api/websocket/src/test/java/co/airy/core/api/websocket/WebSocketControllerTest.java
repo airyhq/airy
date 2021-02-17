@@ -6,17 +6,18 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.SenderType;
-import co.airy.core.api.websocket.payload.ChannelEvent;
-import co.airy.core.api.websocket.payload.MessageEvent;
-import co.airy.core.api.websocket.payload.MetadataEvent;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.event.payload.ChannelEvent;
+import co.airy.model.event.payload.MessageEvent;
+import co.airy.model.event.payload.MetadataEvent;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.jwt.Jwt;
 import co.airy.spring.test.WebTestHelper;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -43,6 +44,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -50,12 +52,12 @@ import java.util.concurrent.TimeUnit;
 
 import static co.airy.core.api.websocket.WebSocketController.QUEUE_EVENTS;
 import static co.airy.test.Timing.retryOnException;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {AirySpringBootApplication.class})
@@ -70,12 +72,9 @@ public class WebSocketControllerTest {
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
 
-
     @Value("${local.server.port}")
     private int port;
 
-    @Autowired
-    private MockMvc mvc;
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -125,7 +124,8 @@ public class WebSocketControllerTest {
         assertNotNull(recMessage);
         assertThat(recMessage.getPayload().getChannelId(), equalTo(message.getChannelId()));
         assertThat(recMessage.getPayload().getMessage().getId(), equalTo(message.getId()));
-        assertThat(recMessage.getPayload().getMessage().getContent(), equalTo(message.getContent()));
+        Map<String, Object> node = (Map<String, Object>) recMessage.getPayload().getMessage().getContent();
+        assertThat(node.get("text").toString(), containsString("hello world"));
     }
 
     @Test

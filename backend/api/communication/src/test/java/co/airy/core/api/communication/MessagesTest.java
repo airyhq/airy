@@ -39,6 +39,7 @@ import static co.airy.test.Timing.retryOnException;
 import static java.util.Comparator.reverseOrder;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -163,8 +164,55 @@ public class MessagesTest {
                 () -> webTestHelper.post("/messages.list", payload, "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))
-                        .andExpect(jsonPath("$.data[0].content", containsString(persistentUrl))),
+                        .andExpect(jsonPath("$.data[0].content.url", containsString(persistentUrl))),
                 "/messages.list content url was not replaced by metadata");
     }
+    @Test
+    void canReturnTwilioMessagesUnparsed() throws Exception {
 
+        final String conversationId = UUID.randomUUID().toString();
+        final String messageId = UUID.randomUUID().toString();
+        final String sourceConversationId = "+491234567";
+        final String text = "Hello World";
+        final String sourceChannelId = "+497654321";
+        final String token = "token";
+
+        final String content = "ApiVersion=2010-04-01&SmsSid=SMbc31b6419de618d65076200c54676476&SmsStatus=received&SmsMessageSid=SMbc31b6419de618d65076200c54676476&NumSegments=1&To=whatsapp%3A%2B" +
+                sourceChannelId +
+                "&From=whatsapp%3A%2B" +
+                sourceConversationId +
+                "&MessageSid=SMbc31b6419de618d65076200c54676476&Body=Hi&AccountSid=AC64c9ab479b849275b7b50bd19540c602&NumMedia=0";
+
+        kafkaTestHelper.produceRecords(List.of(
+                new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
+                        .setToken(token)
+                        .setSourceChannelId(sourceChannelId)
+                        .setSource("twilio.sms")
+                        .setId(channelId)
+                        .setConnectionState(ChannelConnectionState.CONNECTED)
+                        .build()
+                ),
+                new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
+                        Message.newBuilder()
+                                .setId(messageId)
+                                .setSource("twilio.sms")
+                                .setSentAt(Instant.now().toEpochMilli())
+                                .setSenderId(sourceConversationId)
+                                .setSenderType(SenderType.SOURCE_CONTACT)
+                                .setDeliveryState(DeliveryState.DELIVERED)
+                                .setConversationId(conversationId)
+                                .setChannelId(channelId)
+                                .setContent(content)
+                                .build())
+        ));
+
+        final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
+        retryOnException(
+                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data", hasSize(1)))
+                        .andExpect(jsonPath("$.data[0].content", is(content))),
+                "/messages.list content url was not replaced by metadata");
+
+    }
 }

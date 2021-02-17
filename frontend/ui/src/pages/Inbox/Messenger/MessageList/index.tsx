@@ -17,7 +17,7 @@ import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/
 import {ConversationRouteProps} from '../../index';
 import {isSameDay} from 'dates';
 import {getSource, isFromContact} from 'httpclient';
-import {AvatarTime} from 'render/components/AvatarTime';
+import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime} from 'dates';
 
 type MessageListProps = ConnectedProps<typeof connector>;
@@ -168,7 +168,7 @@ const MessageList = (props: MessageListProps) => {
                   {formatDateOfMessage(message)}
                 </div>
               )}
-              <AvatarTime
+              <MessageInfoWrapper
                 fromContact={isFromContact(message)}
                 contact={conversation.metadata.contact}
                 sentAt={sentAt}
@@ -179,7 +179,7 @@ const MessageList = (props: MessageListProps) => {
                   contact={contactToShow}
                   lastInGroup={lastInGroup}
                 />
-              </AvatarTime>
+              </MessageInfoWrapper>
             </div>
           );
         })}

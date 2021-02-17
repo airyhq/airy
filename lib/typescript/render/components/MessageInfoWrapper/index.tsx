@@ -8,7 +8,7 @@ type AvatarTimeProps = {
   lastInGroup: boolean;
 } & DefaultMessageRenderingProps;
 
-export const AvatarTime = (props: AvatarTimeProps) => {
+export const MessageInfoWrapper = (props: AvatarTimeProps) => {
   const {sentAt, contact, fromContact, children, lastInGroup} = props;
 
   return (

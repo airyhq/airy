@@ -9,12 +9,6 @@
   word-break: break-word;
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  margin: 6px 8px 0 0;
-}
-
 .userContainer {
   display: flex;
   flex-direction: row;
@@ -51,9 +45,4 @@
   position: relative;
   text-align: left;
   border-radius: 8px;
-}
-
-.time {
-  @include font-s;
-  color: var(--color-text-gray);
 }

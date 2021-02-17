@@ -14,12 +14,6 @@
   word-break: break-word;
 }
 
-.messageAvatar {
-  width: 40px;
-  height: 40px;
-  margin: 6px 8px 0 0;
-}
-
 .messageListUserContainer {
   display: flex;
   flex-direction: row;
@@ -58,9 +52,4 @@
   color: white;
   text-align: left;
   border-radius: 8px;
-}
-
-.messageTime {
-  @include font-s;
-  color: var(--color-text-gray);
 }

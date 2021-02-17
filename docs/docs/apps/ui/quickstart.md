@@ -9,7 +9,6 @@ import ButtonBox from "@site/src/components/ButtonBox";
 import TLDR from "@site/src/components/TLDR";
 import PrototypeSVG from "@site/static/icons/prototype.svg";
 
-
 <TLDR>
 
 In this Quickstart we are **creating a user** and using its credentials to **log

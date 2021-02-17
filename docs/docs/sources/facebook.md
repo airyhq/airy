@@ -7,8 +7,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import TLDR from "@site/src/components/TLDR";
 import ButtonBox from "@site/src/components/ButtonBox";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
-import FacebookMessengerSVG from "@site/static/icons/facebook-messenger.svg";
-
+import BoltSVG from "@site/static/icons/bolt.svg";
+import InboxSVG from "@site/static/icons/prototype.svg";
 
 <TLDR>
 
@@ -49,8 +49,8 @@ configuration, you should see something like this:
 
 <img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/apps.jpg')} />
 
-Note down the `App ID` of your Facebook application and then head to the basic
-settings page. Here you will find your `App Secret`:
+Note down the `App ID` of your Facebook application and then head to the Basic
+Settings page. Here you will find your `App Secret`:
 
 <img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/secret.png')} />
 
@@ -105,22 +105,29 @@ On the `User or Page` option, select `Get Page Token` and click on `Generate Acc
 
 You're now ready to connect a Facebook page to your Airy Core instance 🎉
 
-The next step is to send a request to the [Channels endpoint](api/endpoints/channels.md#Facebook) to connect a Facebook page to your instance. 
+The next step is to send a request to the [Channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
 
-After connecting the Facebook source to your instance, you will be able to send messages through the [Messages endpoint](api/endpoints/messages). The frontend of Airy Core is able render the messages types you can send from a Facebook source.
+After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send). [Airy's Inbox UI](/apps/ui/inbox) is able render the messages types you can send from a Facebook source, such as Templates or Quick Replies.
 
 <ButtonBoxList>
 <ButtonBox
-    icon={() => <FacebookMessengerSVG />}
+    icon={() => <BoltSVG />}
     title='Channels endpoint'
     description='Connect a Facebook source to your Airy Core instance through the Channels endpoint'
-    link='api/endpoints/channels.md#Facebook'
+    link='api/endpoints/channels#facebook'
 />
 
 <ButtonBox
-    icon={() => <FacebookMessengerSVG />}
-    title='Messages endpoint'
-    description='Send messages to your Airy Core instance from a Facebook source through the Messages endpoint'
-    link='api/endpoints/messages'
+icon={() => <BoltSVG />}
+title='Messages endpoint'
+description='Send messages to your Airy Core instance from a Facebook source through the Messages endpoint'
+link='api/endpoints/messages#send'
+/>
+
+<ButtonBox
+icon={() => <InboxSVG />}
+title='Inbox'
+description='See the messages sent from a Facebook source in the Inbox UI'
+link='apps/ui/inbox'
 />
 </ButtonBoxList>

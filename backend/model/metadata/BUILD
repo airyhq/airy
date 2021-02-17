@@ -5,6 +5,7 @@ lib_deps = [
     "//:lombok",
     "//:jackson",
     "//backend/avro/communication:metadata-avro",
+    "//lib/java/log",
     "//lib/java/uuid",
 ]
 

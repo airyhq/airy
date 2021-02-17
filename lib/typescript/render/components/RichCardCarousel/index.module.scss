@@ -1,0 +1,113 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.containerContact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.containerChatpluginContact {
+  @extend .containerContact;
+  transform: scale(0.75);
+}
+
+.containerMember {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.containerChatpluginMember {
+  @extend .containerMember;
+  transform: scale(0.75);
+}
+
+.richCardCarouselContainer {
+  display: flex;
+  overflow-x: hidden;
+  padding-left: 20px;
+}
+
+.isContact {
+  margin-top: 5px;
+  display: flex;
+}
+
+.isMember {
+  margin-top: 5px;
+  display: flex;
+}
+
+.richCard {
+  padding-right: 5px;
+}
+
+.richCard:last-child {
+  padding-right: 20px;
+}
+
+.containerButton {
+  position: relative;
+}
+
+.moveNext {
+  img {
+    height: 24px;
+    width: 24px;
+  }
+  position: absolute;
+  width: 30px;
+  height: 40px;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border: none;
+  background: white;
+  right: 0%;
+  top: 40%;
+  cursor: pointer;
+}
+.moveNext:focus {
+  outline: none;
+}
+
+.moveNext:active {
+  transition-duration: 0.2s;
+  transition: ease-in-out;
+  img {
+    height: 20px;
+    width: 20px;
+  }
+}
+
+.moveBack {
+  img {
+    height: 24px;
+    width: 24px;
+  }
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  position: absolute;
+  width: 30px;
+  height: 40px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border: none;
+  background: white;
+  top: 40%;
+  left: 0%;
+  cursor: pointer;
+}
+.moveBack:focus {
+  outline: none;
+}
+
+.moveBack:active {
+  transition-duration: 0.2s;
+  transition: ease-in-out;
+  img {
+    height: 20px;
+    width: 20px;
+  }
+}

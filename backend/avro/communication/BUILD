@@ -28,3 +28,8 @@ avro_java_library(
 avro_java_library(
     name = "tag",
 )
+
+avro_java_library(
+    name = "template-avro",
+    srcs = ["template.avsc"],
+)

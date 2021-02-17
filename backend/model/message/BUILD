@@ -9,8 +9,10 @@ custom_java_library(
         "//lib/java/kafka/schema:application-communication-messages",
     ],
     deps = [
+        "//:jackson",
         "//:lombok",
         "//backend/avro/communication:message-avro",
+        "//backend/model/metadata",
         "//lib/java/date",
     ],
 )

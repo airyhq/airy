@@ -156,7 +156,7 @@ const MessageList = (props: MessageListProps) => {
           const shouldShowContact = !isFromContact(prevMessage) && !isFromContact(message);
           const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
 
-          const contactToShow = shouldShowContact ? conversation.contact : null;
+          const contactToShow = shouldShowContact ? conversation.metadata.contact : null;
 
           return (
             <div key={message.id} id={`message-item-${message.id}`}>

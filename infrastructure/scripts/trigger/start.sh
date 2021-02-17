@@ -23,10 +23,12 @@ wait-for-service startup-helper postgres 5432 10 Postgres
 kubectl scale deployment schema-registry --replicas=1
 wait-for-service startup-helper schema-registry 8081 15 "Schema registry"
 
-echo "Starting up Airy Core Platform appplications"
+echo "Starting up Airy Core components"
 kubectl scale deployment -l type=api --replicas=1
 
 wait-for-service startup-helper api-auth 80 10 api-auth
+
+kubectl scale deployment -l type=frontend --replicas=1
 
 kubectl scale deployment -l app=airy-controller --replicas=1
 

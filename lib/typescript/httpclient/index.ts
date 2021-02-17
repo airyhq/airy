@@ -134,10 +134,9 @@ export class HttpClient {
   }
 
   public async getConversationInfo(conversationId: string) {
-    const conversation: ConversationPayload = await this.doFetchFromBackend('conversations.info', {
+    return this.doFetchFromBackend('conversations.info', {
       conversation_id: conversationId,
-    });
-    return Promise.resolve(conversationMapper(conversation));
+    }).then(conversationMapper);
   }
 
   public async readConversations(conversationId: string) {

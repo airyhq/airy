@@ -64,13 +64,6 @@ export class WebSocketClient {
     }
   };
 
-  parseChannelChannelConnected = (body: string) => {
-    if (this.callbackMap && this.callbackMap.onUnreadCountUpdated) {
-      const json = JSON.parse(body);
-      this.callbackMap.onUnreadCountUpdated(json.conversation_id, json.unread_message_count);
-    }
-  };
-
   parseChannelConnected = (body: string) => {
     if (this.callbackMap && this.callbackMap.onChannelConnected) {
       const json = JSON.parse(body);

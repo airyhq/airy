@@ -5,25 +5,14 @@ module.exports = {
         'getting-started/introduction',
         'getting-started/installation',
         {
-          'Command Line Interface': [
-            'cli/introduction',
-            'cli/installation',
-            'cli/airy',
-            'cli/airy_version',
-            'cli/airy_init',
-            'cli/airy_config',
-            'cli/airy_config_apply',
-            'cli/airy_api',
-            'cli/airy_api_signup',
-            'cli/airy_api_login',
-            'cli/airy_status',
-          ],
+          'Command Line Interface': ['cli/introduction', 'cli/installation', 'cli/reference'],
         },
         {
           Deployment: [
             'getting-started/deployment/introduction',
             'getting-started/deployment/vagrant',
             'getting-started/deployment/production',
+            'getting-started/deployment/configuration',
           ],
         },
         'getting-started/quickstart',
@@ -61,7 +50,11 @@ module.exports = {
       ],
     },
     {
-      '✨ Apps': ['apps/ui'],
+      '✨ Apps': [
+        {
+          UI: ['apps/ui/introduction', 'apps/ui/ui-quick-start', 'apps/ui/inbox', 'apps/ui/tags', 'apps/ui/components'],
+        },
+      ],
     },
     {
       '🛠️ Integrations': [

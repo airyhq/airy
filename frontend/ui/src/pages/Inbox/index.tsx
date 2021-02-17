@@ -7,6 +7,7 @@ import {listConversations} from '../../actions/conversations';
 import {StateModel} from '../../reducers';
 
 import Messenger from './Messenger';
+import {setPageTitle} from '../../services/pageTitle';
 
 export type ConversationRouteProps = RouteComponentProps<{conversationId: string}>;
 
@@ -29,6 +30,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const ConversationContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
   useEffect(() => {
     props.listConversations();
+    setPageTitle('Inbox');
   }, []);
 
   return <Messenger />;

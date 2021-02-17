@@ -57,14 +57,14 @@ class ConversationsListTest {
 
     private static final Channel defaultChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("channel-id")
+            .setId(UUID.randomUUID().toString())
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .build();
 
     private static final Channel channelToFind = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId("special-channel-id")
+            .setId(UUID.randomUUID().toString())
             .setSource("facebook")
             .setSourceChannelId("special-external-channel-id")
             .build();
@@ -76,7 +76,7 @@ class ConversationsListTest {
     private static final String userId = "user-id";
 
     private static final List<TestConversation> conversations = List.of(
-            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.ConversationKeys.Contact.FIRST_NAME, firstNameToFind), 1),
+            TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME, firstNameToFind), 1),
             TestConversation.from(UUID.randomUUID().toString(), channelToFind,
                     Map.of(MetadataKeys.ConversationKeys.TAGS + "." + tagId, "", MetadataKeys.ConversationKeys.TAGS + "." + anotherTagId, ""),
                     1),
@@ -147,12 +147,12 @@ class ConversationsListTest {
 
     @Test
     void canFilterByUnreadMessageCountRange() throws Exception {
-        checkConversationsFound("{\"filters\": \"unread_message_count:[2 TO *]\"}", 2);
+        checkConversationsFound("{\"filters\": \"unread_count:[2 TO *]\"}", 2);
     }
 
     @Test
     void canFilterByUnreadMessageCount() throws Exception {
-        checkConversationsFound("{\"filters\": \"unread_message_count:2\"}", 1);
+        checkConversationsFound("{\"filters\": \"unread_count:2\"}", 1);
     }
 
     @Test

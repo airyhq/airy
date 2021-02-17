@@ -15,6 +15,7 @@ import {TableRow} from './TableRow';
 import SimpleTagForm from './SimpleTagForm';
 import EmptyStateTags from './EmptyStateTags';
 import {StateModel} from '../../reducers';
+import {setPageTitle} from '../../services/pageTitle';
 
 const initialState = {
   modal: {
@@ -32,6 +33,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   state = initialState;
 
   componentDidMount() {
+    setPageTitle('Tags');
     this.props.listTags();
     this.props.filterTags('');
   }

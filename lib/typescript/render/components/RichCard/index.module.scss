@@ -4,7 +4,7 @@
 .richCardContainer {
   box-sizing: border-box;
   height: auto;
-  width: 288px;
+  width: 280px;
   border: 1px solid var(--color-light-gray);
   border-radius: 16px;
   background-color: var(--color-template-highlight);
@@ -51,13 +51,6 @@
   border: 2px solid var(--color-light-gray);
   border-radius: 4px;
   background-color: var(--color-template-highlight);
-}
-
-.suggestionLink,
-.suggestionLink:active,
-.suggestionLink:hover {
-  @include font-m;
-  letter-spacing: 0;
   color: var(--color-airy-blue);
-  text-decoration: none;
+  cursor: pointer;
 }

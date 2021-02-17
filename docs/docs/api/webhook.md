@@ -102,7 +102,7 @@ request with the following structure:
   },
   "source": "facebook",
   "sent_at": "2020-07-20T14:18:08.584Z",
-  "content": '{"text":"Hello World"}'
+  "content": {"text": "Hello World"}
 }
 ```
 

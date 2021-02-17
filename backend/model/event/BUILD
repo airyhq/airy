@@ -7,8 +7,8 @@ custom_java_library(
     deps = [
         "//:jackson",
         "//:lombok",
-        "//backend/model/metadata",
-        "//backend/model/message",
         "//backend/model/channel",
+        "//backend/model/message",
+        "//backend/model/metadata",
     ],
 )

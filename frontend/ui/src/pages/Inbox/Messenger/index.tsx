@@ -5,7 +5,6 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import ConversationList from '../ConversationList';
 
 import {MergedConversation, StateModel} from '../../../reducers';
-import {AllConversationsState} from '../../../reducers/data/conversations';
 
 import styles from './index.module.scss';
 import MessengerContainer from './MessengerContainer';

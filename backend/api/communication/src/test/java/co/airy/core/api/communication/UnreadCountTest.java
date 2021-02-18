@@ -2,6 +2,9 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.DeliveryState;
+import co.airy.avro.communication.Message;
+import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -20,9 +23,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
+import static co.airy.core.api.communication.util.Topics.applicationCommunicationMessages;
 import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -74,6 +81,21 @@ class UnreadCountTest {
         final int unreadMessages = 3;
 
         kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, unreadMessages));
+
+        // Messages from Airy should not increase the unread count
+        kafkaTestHelper.produceRecords(List.of(
+                new ProducerRecord<>(applicationCommunicationMessages.name(), "message-id", Message.newBuilder()
+                        .setId("message-id")
+                        .setSentAt(Instant.now().toEpochMilli())
+                        .setSenderId("source-conversation-id")
+                        .setDeliveryState(DeliveryState.DELIVERED)
+                        .setSource("facebook")
+                        .setSenderType(SenderType.APP_USER)
+                        .setConversationId(conversationId)
+                        .setChannelId(channel.getId())
+                        .setContent("from airy")
+                        .build())
+        ));
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
 

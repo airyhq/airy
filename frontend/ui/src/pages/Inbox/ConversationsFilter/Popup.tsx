@@ -18,13 +18,14 @@ import Tag from '../../../components/Tag';
 import {ReactComponent as CheckmarkIcon} from '../../../assets/images/icons/checkmark.svg';
 
 import styles from './Popup.module.scss';
+import {allChannels} from '../../../selectors/channels';
 
 function mapStateToProps(state: StateModel) {
   return {
     user: state.data.user,
     filter: state.data.conversations.filtered.currentFilter,
     tags: state.data.tags.all,
-    channels: state.data.channels,
+    channels: Object.values(allChannels(state)),
   };
 }
 

@@ -46,7 +46,6 @@ public class MessageResponsePayload {
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
                 .source(message.getSource())
-                .metadata(JsonNodeFactory.instance.objectNode())
                 .build();
     }
 

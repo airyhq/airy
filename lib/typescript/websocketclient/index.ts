@@ -1,13 +1,12 @@
 import {StompWrapper} from './stompWrapper';
-import {Message, Channel} from 'httpclient';
-import {messageMapper} from 'httpclient/mappers/messageMapper';
-import {channelMapper} from 'httpclient/mappers/channelMapper';
+import {Message, Channel, messageMapper, MetadataEvent} from 'httpclient';
+import {EventPayloadUnion} from './payload';
+import {channelMapper} from '../httpclient/mappers';
 
 type CallbackMap = {
   onMessage?: (conversationId: string, channelId: string, message: Message) => void;
-  onUnreadCountUpdated?: (conversationId: string, unreadMessageCount: number) => void;
-  onChannelConnected?: (channel: Channel) => void;
-  onChannelDisconnected?: (channel: Channel) => void;
+  onMetadata?: (metadataEvent: MetadataEvent) => void;
+  onChannel?: (channel: Channel) => void;
   onError?: () => void;
 };
 
@@ -18,25 +17,16 @@ export class WebSocketClient {
   stompWrapper: StompWrapper;
   callbackMap: CallbackMap;
 
-  constructor(token: string, callbackMap: CallbackMap, baseUrl: string) {
+  constructor(token: string, callbackMap: CallbackMap = {}, baseUrl: string) {
     this.token = token;
     this.callbackMap = callbackMap;
-    this.apiUrlConfig = `ws://${baseUrl}/ws.communication`;
+    this.apiUrlConfig = `ws://${baseUrl}/ws.events`;
 
     this.stompWrapper = new StompWrapper(
       this.apiUrlConfig,
       {
-        '/queue/message': item => {
-          this.parseMessageBody(item.body);
-        },
-        '/queue/unread-count': item => {
-          this.parseUnreadBody(item.body);
-        },
-        '/queue/channel/connected': item => {
-          this.parseChannelConnected(item.body);
-        },
-        '/queue/channel/disconnected': item => {
-          this.parseChannelDisconnected(item.body);
+        '/events': item => {
+          this.onEvent(item.body);
         },
       },
       this.token,
@@ -49,36 +39,28 @@ export class WebSocketClient {
     this.stompWrapper.destroyConnection();
   };
 
-  parseMessageBody = (body: string) => {
-    if (this.callbackMap && this.callbackMap.onMessage) {
-      const json = JSON.parse(body);
-      const message = messageMapper(json.message);
-      this.callbackMap.onMessage(json.conversation_id, json.channel_id, message);
-    }
-  };
-
-  parseUnreadBody = (body: string) => {
-    if (this.callbackMap && this.callbackMap.onUnreadCountUpdated) {
-      const json = JSON.parse(body);
-      this.callbackMap.onUnreadCountUpdated(json.conversation_id, json.unread_message_count);
-    }
-  };
-
-  parseChannelConnected = (body: string) => {
-    if (this.callbackMap && this.callbackMap.onChannelConnected) {
-      const json = JSON.parse(body);
-      this.callbackMap.onChannelConnected(channelMapper(json));
-    }
-  };
-
-  parseChannelDisconnected = (body: string) => {
-    if (this.callbackMap && this.callbackMap.onChannelDisconnected) {
-      const json = JSON.parse(body);
-      this.callbackMap.onChannelDisconnected(channelMapper(json));
+  onEvent = (body: string) => {
+    const json: EventPayloadUnion = JSON.parse(body);
+    switch (json.type) {
+      case 'channel':
+        this.callbackMap.onChannel?.(channelMapper(json.payload));
+        break;
+      case 'message':
+        this.callbackMap.onMessage?.(
+          json.payload.conversation_id,
+          json.payload.channel_id,
+          messageMapper(json.payload.message)
+        );
+        break;
+      case 'metadata':
+        this.callbackMap.onMetadata?.(json.payload);
+        break;
+      default:
+        console.error('Unknown /events payload', json);
     }
   };
 
   onError = () => {
-    this.callbackMap && this.callbackMap.onError && this.callbackMap.onError();
+    this.callbackMap.onError && this.callbackMap.onError();
   };
 }

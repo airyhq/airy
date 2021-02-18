@@ -13,7 +13,8 @@ declare const window: {
 };
 
 const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
-const TLS_PREFIX = window.airy ? (window.airy.no_tls === true ? '' : 's') : '';
+// https: -> wss: and http: -> ws:
+const protocol = location.protocol.replace('http', 'ws');
 
 class WebSocket {
   client: Client;
@@ -39,7 +40,7 @@ class WebSocket {
     this.token = token;
 
     this.client = new Client({
-      brokerURL: `ws${TLS_PREFIX}://${API_HOST}/ws.chatplugin`,
+      brokerURL: `${protocol}//${API_HOST}/ws.chatplugin`,
       connectHeaders: {
         Authorization: `Bearer ${token}`,
       },

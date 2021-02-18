@@ -24,15 +24,12 @@ const mapStateToProps = (state: StateModel) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addMessages: (conversationId: string, messages: Message[]) =>
-      dispatch(addMessagesAction({conversationId, messages})),
-    onChannel: (channel: Channel) => dispatch(setChannelAction(channel)),
-    getConversationInfo: (conversationId: string) => dispatch(getConversationInfo(conversationId)),
-    onMetadata: (metadataEvent: MetadataEvent) => dispatch(setMetadataAction(metadataEvent)),
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  addMessages: (conversationId: string, messages: Message[]) => dispatch(addMessagesAction({conversationId, messages})),
+  onChannel: (channel: Channel) => dispatch(setChannelAction(channel)),
+  getConversationInfo: (conversationId: string) => dispatch(getConversationInfo(conversationId)),
+  onMetadata: (metadataEvent: MetadataEvent) => dispatch(setMetadataAction(metadataEvent)),
+});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

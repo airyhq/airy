@@ -53,8 +53,7 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
                 .reduce((oldValue, newValue) -> newValue, Materialized.as(webhooksStore));
 
         builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter(((messageId, message) ->
-                        DeliveryState.DELIVERED.equals(message.getDeliveryState()) && message.getUpdatedAt() == null))
+                .filter((messageId, message) -> message.getUpdatedAt() == null)
                 .foreach((messageId, message) -> publishRecord(message));
 
         builder.<String, Metadata>table(new ApplicationCommunicationMetadata().name())

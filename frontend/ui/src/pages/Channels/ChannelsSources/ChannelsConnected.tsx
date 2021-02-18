@@ -28,90 +28,105 @@ const ChannelsConnected = (props: connectedChannelsProps) => {
                 {props.showSumOfChannels} {props.connected}
               </p>
             </div>
+            <div className={styles.connectedChannelFlex}>
+              <div className={styles.connectedChannel}>
+                {props.connectedChannel.map((channel: Channel) => {
+                  const channelName = channel.metadata.name;
+                  return (
+                    <>
+                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                        <div className={styles.connectedChannelData}>
+                          {channel.metadata.imageUrl && props.displayFacebookImage && (
+                            <img src={channel.metadata.imageUrl} alt={channelName} className={styles.facebookImage} />
+                          )}
 
-            <div className={styles.connectedChannel}>
-              {props.connectedChannel.map((channel: Channel) => {
-                const channelName = channel.metadata.name;
-                return (
-                  <>
-                    <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                      <div className={styles.connectedChannelData}>
-                        {channel.metadata.imageUrl && props.displayFacebookImage && (
-                          <img src={channel.metadata.imageUrl} alt={channelName} className={styles.facebookImage} />
-                        )}
+                          {!props.ignorePlaceholder && (
+                            <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
+                          )}
 
-                        {!props.ignorePlaceholder && (
-                          <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
-                        )}
+                          <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
 
-                        <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
+                          {!props.ignoreChannelId && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
+                        </div>
+                      </li>
+                      {props.displayFacebookImage && (
+                        <>
+                          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                            <div className={styles.connectedChannelData}>
+                              {channel.metadata.imageUrl && props.displayFacebookImage && (
+                                <img
+                                  src={channel.metadata.imageUrl}
+                                  alt={channelName}
+                                  className={styles.facebookImage}
+                                />
+                              )}
 
-                        {!props.ignoreChannelId && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
-                      </div>
-                    </li>
-                    {props.displayFacebookImage && (
-                      <>
-                        <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                          <div className={styles.connectedChannelData}>
-                            {channel.metadata.imageUrl && props.displayFacebookImage && (
-                              <img src={channel.metadata.imageUrl} alt={channelName} className={styles.facebookImage} />
-                            )}
+                              {!props.ignorePlaceholder && (
+                                <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
+                              )}
 
-                            {!props.ignorePlaceholder && (
-                              <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
-                            )}
+                              <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
 
-                            <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
+                              {!props.ignoreChannelId && (
+                                <div className={styles.channelId}>{channel.sourceChannelId}</div>
+                              )}
+                            </div>
+                          </li>
+                          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                            <div className={styles.connectedChannelData}>
+                              {channel.metadata.imageUrl && props.displayFacebookImage && (
+                                <img
+                                  src={channel.metadata.imageUrl}
+                                  alt={channelName}
+                                  className={styles.facebookImage}
+                                />
+                              )}
 
-                            {!props.ignoreChannelId && (
-                              <div className={styles.channelId}>{channel.sourceChannelId}</div>
-                            )}
-                          </div>
-                        </li>
-                        <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                          <div className={styles.connectedChannelData}>
-                            {channel.metadata.imageUrl && props.displayFacebookImage && (
-                              <img src={channel.metadata.imageUrl} alt={channelName} className={styles.facebookImage} />
-                            )}
+                              {!props.ignorePlaceholder && (
+                                <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
+                              )}
 
-                            {!props.ignorePlaceholder && (
-                              <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
-                            )}
+                              <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
 
-                            <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
+                              {!props.ignoreChannelId && (
+                                <div className={styles.channelId}>{channel.sourceChannelId}</div>
+                              )}
+                            </div>
+                          </li>
+                          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                            <div className={styles.connectedChannelData}>
+                              {channel.metadata.imageUrl && props.displayFacebookImage && (
+                                <img
+                                  src={channel.metadata.imageUrl}
+                                  alt={channelName}
+                                  className={styles.facebookImage}
+                                />
+                              )}
 
-                            {!props.ignoreChannelId && (
-                              <div className={styles.channelId}>{channel.sourceChannelId}</div>
-                            )}
-                          </div>
-                        </li>
-                        <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                          <div className={styles.connectedChannelData}>
-                            {channel.metadata.imageUrl && props.displayFacebookImage && (
-                              <img src={channel.metadata.imageUrl} alt={channelName} className={styles.facebookImage} />
-                            )}
+                              {!props.ignorePlaceholder && (
+                                <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
+                              )}
 
-                            {!props.ignorePlaceholder && (
-                              <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
-                            )}
+                              <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
 
-                            <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
-
-                            {!props.ignoreChannelId && (
-                              <div className={styles.channelId}>{channel.sourceChannelId}</div>
-                            )}
-                          </div>
-                        </li>
-                      </>
-                    )}
-                  </>
-                );
-              })}
-              {props.extraChannel && (
-                <button className={styles.extraChannel}>
-                  +{props.displayExtraChannel} {props.isConnected}
-                </button>
-              )}
+                              {!props.ignoreChannelId && (
+                                <div className={styles.channelId}>{channel.sourceChannelId}</div>
+                              )}
+                            </div>
+                          </li>
+                        </>
+                      )}
+                    </>
+                  );
+                })}
+                <div className={styles.extraChannelButton}>
+                  {props.extraChannel && (
+                    <button className={styles.extraChannel}>
+                      +{props.displayExtraChannel} {props.isConnected}
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 

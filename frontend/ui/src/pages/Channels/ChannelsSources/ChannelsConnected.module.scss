@@ -1,116 +1,137 @@
 @import '../../../assets/scss/fonts';
 @import '../../../assets/scss/colors';
 
+
+
 .connectedContainer {
   display: flex;
   flex-direction: column;
   height: 120px;
-  width: 450px;
+  min-width: 450px;
   margin-bottom:10px;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 8px;
+
 }
 
 .connectedSum {
+  display:inline-flex;
   margin-left:10px;
   color: var(--color-text-gray);
- 
 }
 
+.connectedChannelFlex{
+  display:flex;
+  flex-direction: row;
+  height: 100px;
+  min-width: 450px;
+}
+
+
 .connectedChannel {
-  display: flex;
+  display:flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   box-sizing: border-box;
   height: 100px;
-  width: 500px;
-  border: 1px solid #CAD5DB;
+  width: 430px;
+  border: 1px solid var(--color-light-gray);
   border-radius: 8px;
   background-color: #FFFFFF;
   margin-left:10px;
-  margin-bottom:10px;
+  margin-bottom:0px;
 }
 
+.extraChannel {
+  display:flex;
+  border: none;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
+  background: white;
+  color: var(--color-airy-blue);
+  text-decoration: underline;
+  background-color:red;
+}
 
 
 .connectedChannelData {
   display: flex;
-  align-items: flex-start;
+  margin-left:6px;
+  
+}
+
+.channelListEntry {
+   display: inline-flex;
+  
 }
 
 .placeholderLogo {
-  background: white;
-  padding-top:12px;
-  margin: 0px 0px 15px 18px;
+  display: inline-flex;
+  height: 20px;
+  width: 20px;
+  margin:16px 8px 0px 6px;
   svg {
    
-  height: 16px;
-  width: 16px;
+  height: 18px;
+  width: 18px;
   
     
   }
 }
 
 .facebookImage{
+  display: inline-flex;
   height: 16px;
   width: 16px;
   border-radius: 50%;
-  margin: 16px 0px 0px 16px;
+  margin: 16px 12px 0px 4px;
  }
-
-.extraChannel {
-  border: none;
-  padding: 0;
-  outline: none;
-  cursor: pointer;
-  background: white;
-  padding: 1px 0px 23px 5px;
-  color: var(--color-airy-blue);
-  text-decoration: underline;
-}
-
-.channelListEntry {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 
 
 .connectedChannelName {
   padding-top: 10px;
   padding-left: 6px;
+  width:168px;
+  height:24px;
 }
 
-.facebookName {
-  padding-top: 1px;
-  padding-left: 16px;
-}
+
+
+
 
 
 .channelId {
   padding-top: 10px;
-  padding-left: 30px;
 }
 
 .channelButton {
-  display: block;
-  padding-top: 25px;
+  display: flex;
+  padding-top: 8px;
+  width:40px;
+  height:40px;
+  margin:20px 0px 8px 0px;
 }
 
 .addChannelButton {
   position: relative;
   background: white;
   width: 40px;
-  height: 70px;
-  margin-left: 5px;
-  margin-top: 15px;
+  height: 40px;
+  margin-left: 7px;
+  margin-top: 32px;
   transition: 0.2s ease-in-out all;
   border: none;
   padding: 0;
   outline: none;
   cursor: pointer;
+  
 }
 
 .channelButtonIcon {
   @include font-m;
-  margin-left: 60px;
+  margin-right: 16px;
+  margin-bottom: 24px;
   
   width: 24px;
   height: 24px;
@@ -120,7 +141,7 @@
   color: var(--color-text-gray);
   cursor: pointer;
  
-  padding:2px;
+  padding:0px;
 
   svg {
     margin: 0;

@@ -119,13 +119,13 @@ const ChannelsConnected = (props: connectedChannelsProps) => {
                     </>
                   );
                 })}
-                <div className={styles.extraChannelButton}>
-                  {props.extraChannel && (
-                    <button className={styles.extraChannel}>
-                      +{props.displayExtraChannel} {props.isConnected}
-                    </button>
-                  )}
-                </div>
+              </div>
+              <div className={styles.extraChannelButton}>
+                {props.extraChannel && (
+                  <button className={styles.extraChannel}>
+                    +{props.displayExtraChannel} {props.isConnected}
+                  </button>
+                )}
               </div>
             </div>
           </div>

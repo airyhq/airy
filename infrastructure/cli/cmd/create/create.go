@@ -3,6 +3,7 @@ package create
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/spf13/cobra"
@@ -22,29 +23,52 @@ func create(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 
-	// log.Println("creating Subnet")
-	// ec2Client := ec2.NewFromConfig(cfg)
-	// VpcId := string("vpc-id")
-	// CidrBlock := string("10.0.0.0/24")
-	// _, err = ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
-	// 	CidrBlock: &CidsBlock,
-	// 	VpcId:     &VpcId,
-	// })
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	ec2Client := ec2.NewFromConfig(cfg)
+	CidrBlock := string("10.0.0.0/24")
+
+	log.Println("Creating VPC")
+	createVpcResult, err := ec2Client.CreateVpc(context.TODO(), &ec2.CreateVpcInput{
+		CidrBlock: &CidrBlock,
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	VpcId := createVpcResult.Vpc.VpcId
+
+	log.Println("creating first Subnet")
+	CidrBlock = string("10.0.0.0/24")
+	createFirstSubnetResult, err := ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
+		CidrBlock: &CidrBlock,
+		VpcId:     VpcId,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("creating second Subnet")
+	CidrBlock = string("10.0.1.0/24")
+	createSecondSubnetResult, err := ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
+		CidrBlock: &CidrBlock,
+		VpcId:     VpcId,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	client := eks.NewFromConfig(cfg)
 	log.Println("Creating cluster")
 
 	clusterName := string("go-test")
 	roleArn := string("arn:aws:iam::947726454442:role/eks_buildfarm_manager")
-	SubnetIds := []string{"subnet-02a33165", "subnet-faa43ba6"}
+	var subnetIds []string
+	subnetIds = append(subnetIds, *createFirstSubnetResult.Subnet.SubnetId)
+	subnetIds = append(subnetIds, *createSecondSubnetResult.Subnet.SubnetId)
 	_, err = client.CreateCluster(context.TODO(), &eks.CreateClusterInput{
 		Name:    &clusterName,
 		RoleArn: &roleArn,
 		ResourcesVpcConfig: &types.VpcConfigRequest{
-			SubnetIds: SubnetIds,
+			SubnetIds: subnetIds,
 		},
 	})
 

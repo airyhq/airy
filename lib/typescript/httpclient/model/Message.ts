@@ -54,7 +54,7 @@ export function isFromContact(message: Message) {
 
 export interface Message {
   id: string;
-  content: string;
+  content: any;
   deliveryState: MessageState;
   senderType: SenderType;
   sentAt: Date;

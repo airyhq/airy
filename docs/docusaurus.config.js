@@ -2,7 +2,7 @@ module.exports = {
   title: 'Airy Documentation',
   tagline: 'Airy documentation website',
   url: 'https://airy.co',
-  baseUrl: '/docs/core/',
+  baseUrl: process.env.CONTEXT === 'production' ? '/docs/core/' : '/',
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'airyhq',

@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.google.model.SendMessageRequest;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -29,6 +28,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.model.message.MessageRepository.isFromContact;
 import static co.airy.model.metadata.MetadataRepository.getId;
 
 @Component
@@ -61,10 +61,11 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                 .groupByKey()
                 .aggregate(SendMessageRequest::new,
                         (conversationId, message, aggregate) -> {
-                            if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
-                                aggregate.setSourceConversationId(message.getSenderId());
+                            final SendMessageRequest.SendMessageRequestBuilder requestBuilder = aggregate.toBuilder();
+                            if (isFromContact(message)) {
+                                requestBuilder.sourceConversationId(message.getSenderId());
                             }
-                            return aggregate;
+                            return requestBuilder.build();
                         });
 
         messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))

@@ -1,5 +1,5 @@
-import {ChannelApiPayload} from './ChannelApiPayload';
+import {ChannelPayload} from './ChannelPayload';
 
 export interface ChannelsPayload {
-  data: ChannelApiPayload[];
+  data: ChannelPayload[];
 }

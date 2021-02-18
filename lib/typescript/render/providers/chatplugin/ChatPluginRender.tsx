@@ -12,8 +12,6 @@ export const ChatPluginRender = (props: MessageRenderProps) => {
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
-  const messageContent = JSON.parse(props.message.content);
-
   const defaultProps = getDefaultMessageRenderingProps(props);
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
   const propsToUse = props.invertSides ? invertedProps : defaultProps;
@@ -28,9 +26,9 @@ function render(content: ContentUnion, props: MessageRenderProps) {
         <RichText
           {...propsToUse}
           message={props.message}
-          text={messageContent.text}
-          fallback={messageContent.fallback}
-          containsRichText={messageContent.containsRichText}
+          text={content.text}
+          fallback={content.fallback}
+          containsRichText={content.containsRichtText}
         />
       );
     case 'richCard':
@@ -44,25 +42,17 @@ function render(content: ContentUnion, props: MessageRenderProps) {
         />
       );
     case 'richCardCarousel':
-      return (
-        <RichCardCarousel
-          {...propsToUse}
-          cardWidth={content.cardWidth}
-          cardContents={content.cardContents}
-          id={props.message.id}
-          isChatPlugin={propsToUse.fromContact}
-        />
-      );
+      return <RichCardCarousel {...propsToUse} cardWidth={content.cardWidth} cardContents={content.cardContents} />;
   }
 }
 
 function mapContent(message: Message): ContentUnion {
-  const messageContent = JSON.parse(message.content);
+  const messageContent = message.content;
 
   if (messageContent.text) {
     return {
       type: 'text',
-      text: JSON.parse(message.content).text,
+      text: messageContent.text,
     };
   }
 

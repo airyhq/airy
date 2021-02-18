@@ -42,6 +42,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
   constructor(props: ConnectedProps<typeof connector> & RouteComponentProps) {
     super(props);
   }
+
   componentDidMount() {
     this.props.fakeSettingsAPICall();
   }

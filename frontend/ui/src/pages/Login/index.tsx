@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import {loginViaEmail} from '../../actions/user';
 
 import logo from '../../assets/images/logo/airy_primary_rgb.svg';
 import styles from './index.module.scss';
+import {setPageTitle} from '../../services/pageTitle';
 
 const mapDispatchToProps = {
   loginViaEmail,
@@ -19,6 +20,10 @@ type LoginConnectProps = {} & ConnectedProps<typeof connector> & RouteComponentP
 
 const Login = (props: LoginConnectProps) => {
   const [credentialError, setCredentialError] = useState(false);
+
+  useEffect(() => {
+    setPageTitle('Login');
+  }, []);
 
   const handleLogin = (e: any) => {
     e.preventDefault();

@@ -15,5 +15,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class MessageContainer implements Serializable {
     private Message message;
-    private MetadataMap metadataMap;
+    @Builder.Default
+    private MetadataMap metadataMap = new MetadataMap();
 }

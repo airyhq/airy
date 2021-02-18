@@ -1,17 +1,9 @@
 import _, {Dispatch} from 'redux';
 import {fakeData} from '../../pages/Tags/FAKESETTINGS';
+import {createAction} from 'typesafe-actions';
 
-export const ADD_SETTINGS_TO_STORE = 'ADD_SETTINGS_TO_STORE';
+const ADD_SETTINGS_TO_STORE = 'ADD_SETTINGS_TO_STORE';
 
-export function fetchSettings() {
-  return {
-    type: ADD_SETTINGS_TO_STORE,
-    colors: fakeData(),
-  };
-}
+export const fetchSettings = createAction(ADD_SETTINGS_TO_STORE, resolve => () => resolve(fakeData()));
 
-export function fakeSettingsAPICall() {
-  return function(dispatch: Dispatch<any>) {
-    dispatch(fetchSettings());
-  };
-}
+export const fakeSettingsAPICall = () => (dispatch: Dispatch<any>) => dispatch(fetchSettings());

@@ -8,11 +8,8 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.metadata.dto.MetadataMap;
-import org.apache.avro.specific.SpecificRecordBase;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.kstream.KTable;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -22,7 +19,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import static co.airy.model.metadata.MetadataRepository.getSubject;
-import static co.airy.model.metadata.MetadataRepository.isChannelMetadata;
 
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {

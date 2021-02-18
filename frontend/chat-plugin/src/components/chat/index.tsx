@@ -21,7 +21,7 @@ let ws: WebSocket;
 
 const welcomeMessage: Message = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
-  content: JSON.stringify({text: 'Hello! How can we help you?'}),
+  content: {text: 'Hello! How can we help you?'},
   deliveryState: MessageState.delivered,
   senderType: SenderType.appUser,
   sentAt: new Date(),

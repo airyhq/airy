@@ -1,7 +1,5 @@
-/* global FB */
 import React, {useCallback, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 import {Button} from '@airyhq/components';
 
@@ -12,6 +10,9 @@ import {StateModel} from '../../reducers';
 
 import styles from './index.module.scss';
 
+import {allChannels} from '../../selectors/channels';
+import {setPageTitle} from '../../services/pageTitle';
+
 const mapDispatchToProps = {
   listChannels,
   exploreChannels,
@@ -19,20 +20,17 @@ const mapDispatchToProps = {
   disconnectChannel,
 };
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    channels: state.data.channels,
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  channels: Object.values(allChannels(state)),
+});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type ChannelsConnectProps = {} & ConnectedProps<typeof connector> & RouteComponentProps;
-
-const Channels = (props: ChannelsConnectProps) => {
+const Channels = (props: ConnectedProps<typeof connector>) => {
   const [facebookToken, setFacebookToken] = useState('');
   useEffect(() => {
     props.listChannels();
+    setPageTitle('Channels');
   }, []);
 
   const connect = (token: string) => {

@@ -1,5 +1,5 @@
 import _, {combineReducers, Reducer} from 'redux-starter-kit';
-import {User, Channel} from 'httpclient';
+import {User} from 'httpclient';
 import {Tags} from './tags';
 import {Settings} from './settings';
 
@@ -7,7 +7,7 @@ import user from './user';
 import conversations, {ConversationsState} from './conversations';
 import tags from './tags';
 import settings from './settings';
-import channels from './channels';
+import channels, {ChannelsState} from './channels';
 import messages, {Messages} from './messages';
 
 export * from './channels';
@@ -22,7 +22,7 @@ export type DataState = {
   messages: Messages;
   tags: Tags;
   settings: Settings;
-  channels: Channel[];
+  channels: ChannelsState;
 };
 
 const reducers: Reducer = combineReducers<DataState>({

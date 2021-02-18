@@ -5,6 +5,7 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
+import co.airy.core.webhook.publisher.payload.QueueMessage;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
@@ -71,7 +72,12 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
             final Webhook webhook = webhookStore.get(allWebhooksKey);
 
             if (webhook != null && webhook.getStatus().equals(Status.Subscribed)) {
-                redisQueuePublisher.publishMessage(webhook.getId(), fromRecord(record));
+                redisQueuePublisher.publishMessage(webhook.getId(), QueueMessage.builder()
+                        .body(fromRecord(record))
+                        .endpoint(webhook.getEndpoint())
+                        .headers(webhook.getHeaders())
+                        .build()
+                );
             }
         } catch (Exception e) {
             log.error("failed to publish record", e);

@@ -10,6 +10,9 @@ type CallbackMap = {
   onError?: () => void;
 };
 
+// https: -> wss: and http: -> ws:
+const protocol = location.protocol.replace('http', 'ws');
+
 export class WebSocketClient {
   public readonly token?: string;
   public readonly apiUrlConfig?: string;
@@ -20,7 +23,7 @@ export class WebSocketClient {
   constructor(token: string, callbackMap: CallbackMap = {}, baseUrl: string) {
     this.token = token;
     this.callbackMap = callbackMap;
-    this.apiUrlConfig = `ws://${baseUrl}/ws.communication`;
+    this.apiUrlConfig = `${protocol}//${baseUrl}/ws.communication`;
 
     this.stompWrapper = new StompWrapper(
       this.apiUrlConfig,

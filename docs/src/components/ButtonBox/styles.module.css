@@ -22,7 +22,7 @@
 }
 
 .containerLight:hover {
-  box-shadow: 0px 0px 0px 4px #98d3fd;
+  box-shadow: 0 0 8px 0px #4bb3fd;
   text-decoration: none;
 }
 
@@ -50,13 +50,20 @@
 }
 
 .containerDark:hover {
-  box-shadow: 0px 0px 0px 4px #3678e5;
+  box-shadow: 0 0 8px 0px #4bb3fd;
   text-decoration: none;
 }
 
-.containerLight svg,
+.containerLight svg {
+  height: 32px;
+  width: 32px;
+  margin-right: 12px;
+  fill: black;
+}
+
 .containerDark svg {
   height: 32px;
   width: 32px;
   margin-right: 12px;
+  fill: white;
 }

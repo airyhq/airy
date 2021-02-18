@@ -14,9 +14,9 @@ near real-time updates**.
 
 The WebSocket server uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
-protocol endpoint at `/ws.events`.
+protocol endpoint at `/ws.communication`.
 
-To execute the handshake with `/ws.events` you must set an
+To execute the handshake with `/ws.communication` you must set an
 `Authorization` header where the value is the authorization token obtained [from
 the API](/api/introduction#authentication).
 

@@ -20,7 +20,7 @@ export class WebSocketClient {
   constructor(token: string, callbackMap: CallbackMap = {}, baseUrl: string) {
     this.token = token;
     this.callbackMap = callbackMap;
-    this.apiUrlConfig = `ws://${baseUrl}/ws.events`;
+    this.apiUrlConfig = `ws://${baseUrl}/ws.communication`;
 
     this.stompWrapper = new StompWrapper(
       this.apiUrlConfig,

@@ -26,6 +26,13 @@
   flex-direction: row;
 }
 
+.suggestionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  justify-content: flex-end;
+}
+
 .itemUser {
   align-self: flex-start;
   text-align: left;
@@ -33,7 +40,7 @@
 }
 
 .itemUserSuggestions {
-  display: inline-flex;
+  display: flex;
   margin-top: 5px;
   border-radius: 8px;
   overflow: hidden;
@@ -50,6 +57,7 @@
   border-radius: 16px;
   border: 1px solid var(--color-airy-blue);
   background-color: var(--color-template-highlight);
+  display:block;
 }
 
 .title {

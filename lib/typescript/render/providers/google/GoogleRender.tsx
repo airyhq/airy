@@ -14,7 +14,6 @@ export const GoogleRender = (props: MessageRenderProps) => {
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
-  console.log('content', content);
   switch (content.type) {
     case 'text':
       return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
@@ -53,10 +52,14 @@ function render(content: ContentUnion, props: MessageRenderProps) {
 //- text
 //- image
 //- suggestionResponse
+//- authenticationResponse
+//sender_type: source_contact 
+//`source_contact` sent to the source by a contact
 function googleInbound(message: Message): ContentUnion {
-  const messageJson = JSON.parse(message.content);
+  console.log('inbound - message', message);
+  const messageJson = message.content.message;
 
-  console.log('inbound - messageJson', messageJson);
+  console.log('messageJson', messageJson);
 
   if (messageJson.suggestionResponse) {
     return {
@@ -82,21 +85,21 @@ function googleInbound(message: Message): ContentUnion {
   }
 
   if (
-    messageJson.message.text &&
-    messageJson.message.text.includes('https://storage.googleapis.com') &&
-    messageJson.message.text.toLowerCase().includes('x-goog-algorithm') &&
-    messageJson.message.text.toLowerCase().includes('x-goog-credential')
+    messageJson.text &&
+    messageJson.text.includes('https://storage.googleapis.com') &&
+    messageJson.text.toLowerCase().includes('x-goog-algorithm') &&
+    messageJson.text.toLowerCase().includes('x-goog-credential')
   ) {
     return {
       type: 'image',
-      imageUrl: messageJson.message.text,
+      imageUrl: messageJson.text,
     };
   }
 
-  if (messageJson.message.text) {
+  if (messageJson.text) {
     return {
       type: 'text',
-      text: messageJson.message.text,
+      text: messageJson.text,
     };
   }
 
@@ -109,8 +112,9 @@ function googleInbound(message: Message): ContentUnion {
 //Google Outbound
 //messages sent via Curl / or the UI
 function googleOutbound(message: Message): ContentUnion {
-  const messageJson = JSON.parse(message.content);
+  const messageJson = message.content;
 
+  console.log('outbound - message', message);
   console.log('outbound - messageJson', messageJson);
 
   if (messageJson.containsRichText) {

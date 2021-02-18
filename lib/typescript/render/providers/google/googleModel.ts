@@ -64,7 +64,7 @@ export interface LiveAgentRequestSuggestion {
   liveAgentRequest: {};
 }
 
-export interface suggestionsContent extends Content {
+export interface SuggestionsContent extends Content {
   type: 'suggestions';
   text?: string;
   fallback?: string;
@@ -79,4 +79,4 @@ export interface suggestionsContent extends Content {
     | LiveAgentRequestSuggestion[];
 }
 
-export type ContentUnion = TextContent | ImageContent | RichTextContent | suggestionsContent;
+export type ContentUnion = TextContent | ImageContent | RichTextContent | SuggestionsContent;

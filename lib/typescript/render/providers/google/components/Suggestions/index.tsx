@@ -38,88 +38,15 @@ export const Suggestions = ({text, fallback, image, suggestions, contact, fromCo
           )}
 
           <div className={styles.itemMemberSuggestions}>
-            {(suggestions as (
-              | SuggestedReplies
-              | SuggestedActions
-              | AuthenticationRequestSuggestion
-              | LiveAgentRequestSuggestion
-            )[]).map(elem => {
-              {
-                'reply' in elem && (
-                  <button key={elem.reply.text} className={styles.replyButton}>
-                    <h1 key={elem.reply.text} className={styles.title}>
-                      {elem.reply.text}
-                    </h1>
-                  </button>
-                );
-              }
-
-              {
-                'action' in elem && (
-                  <>
-                    <button key={elem.action.text} className={styles.replyButton}>
-                      <h1 key={elem.action.text} className={styles.title}>
-                        <a
-                          key={elem.action.text}
-                          href={
-                            elem.action.openUrlAction && elem.action.openUrlAction.url
-                              ? elem.action.openUrlAction.url
-                              : elem.action.dialAction && elem.action.dialAction.phoneNumber
-                          }>
-                          {elem.action.text}
-                        </a>
-                      </h1>
-                    </button>
-                  </>
-                );
-              }
-
-              {
-                'authenticationRequest' in elem && (
-                  <>
-                    <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
-                      <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
-                        Sign in
-                      </h1>
-                    </button>
-                  </>
-                );
-              }
-
-              {
-                'liveAgentRequest' in elem && (
-                  <>
-                    <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
-                      <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
-                        Message a live agent
-                      </h1>
-                    </button>
-                  </>
-                );
-              }
-            })}
-          </div>
-        </div>
-      ) : (
-        <div className={styles.container}>
-          {text && <Text contact={contact} fromContact={fromContact} text={text} />}
-
-          {!text && fallback && <Text contact={contact} fromContact={fromContact} text={fallback} />}
-
-          {image && (
-            <Image contact={contact} fromContact={fromContact} imageUrl={image.fileUrl} altText={image.altText} />
-          )}
-
-          <div className={styles.itemUser}>
-            <div className={styles.itemUserSuggestions}>
+            <div className={styles.suggestionsContainer}>
               {(suggestions as (
                 | SuggestedReplies
                 | SuggestedActions
                 | AuthenticationRequestSuggestion
                 | LiveAgentRequestSuggestion
               )[]).map(elem => {
-                {
-                  'reply' in elem && (
+                if ('reply' in elem) {
+                  return (
                     <button key={elem.reply.text} className={styles.replyButton}>
                       <h1 key={elem.reply.text} className={styles.title}>
                         {elem.reply.text}
@@ -128,47 +55,110 @@ export const Suggestions = ({text, fallback, image, suggestions, contact, fromCo
                   );
                 }
 
-                {
-                  'action' in elem && (
-                    <>
-                      <button key={elem.action.text} className={styles.replyButton}>
-                        <h1 key={elem.action.text} className={styles.title}>
-                          <a
-                            key={elem.action.text}
-                            href={
-                              elem.action.openUrlAction && elem.action.openUrlAction.url
-                                ? elem.action.openUrlAction.url
-                                : elem.action.dialAction && elem.action.dialAction.phoneNumber
-                            }>
-                            {elem.action.text}
-                          </a>
-                        </h1>
-                      </button>
-                    </>
+                if ('action' in elem) {
+                  return (
+                    <button key={elem.action.text} className={styles.replyButton}>
+                      <h1 key={elem.action.text} className={styles.title}>
+                        <a
+                          key={elem.action.text}
+                          href={
+                            elem.action.openUrlAction && elem.action.openUrlAction.url
+                              ? elem.action.openUrlAction.url
+                              : `tel: ${elem.action.dialAction && elem.action.dialAction.phoneNumber}`
+                          }>
+                          {elem.action.text}
+                        </a>
+                      </h1>
+                    </button>
                   );
                 }
 
-                {
-                  'authenticationRequest' in elem && (
-                    <>
-                      <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
-                        <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
-                          Sign in
-                        </h1>
-                      </button>
-                    </>
+                if ('authenticationRequest' in elem) {
+                  return (
+                    <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
+                      <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
+                        Sign in with Google on Google's Business Messages chat
+                      </h1>
+                    </button>
                   );
                 }
 
-                {
-                  'liveAgentRequest' in elem && (
-                    <>
-                      <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
-                        <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
-                          Message a live agent
-                        </h1>
-                      </button>
-                    </>
+                if ('liveAgentRequest' in elem) {
+                  return (
+                    <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
+                      <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
+                        Message a live agent on Google's Business Messages chat
+                      </h1>
+                    </button>
+                  );
+                }
+              })}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.itemUser}>
+          {text && <Text contact={contact} fromContact={fromContact} text={text} />}
+
+          {!text && fallback && <Text contact={contact} fromContact={fromContact} text={fallback} />}
+
+          {image && (
+            <Image contact={contact} fromContact={fromContact} imageUrl={image.fileUrl} altText={image.altText} />
+          )}
+
+          <div className={styles.itemUserSuggestions}>
+            <div className={styles.suggestionsContainer}>
+              {(suggestions as (
+                | SuggestedReplies
+                | SuggestedActions
+                | AuthenticationRequestSuggestion
+                | LiveAgentRequestSuggestion
+              )[]).map(elem => {
+                if ('reply' in elem) {
+                  return (
+                    <button key={elem.reply.text} className={styles.replyButton}>
+                      <h1 key={elem.reply.text} className={styles.title}>
+                        {elem.reply.text}
+                      </h1>
+                    </button>
+                  );
+                }
+
+                if ('action' in elem) {
+                  return (
+                    <button key={elem.action.text} className={styles.replyButton}>
+                      <h1 key={elem.action.text} className={styles.title}>
+                        <a
+                          key={elem.action.text}
+                          href={
+                            elem.action.openUrlAction && elem.action.openUrlAction.url
+                              ? elem.action.openUrlAction.url
+                              : `tel: ${elem.action.dialAction && elem.action.dialAction.phoneNumber}`
+                          }>
+                          {elem.action.text}
+                        </a>
+                      </h1>
+                    </button>
+                  );
+                }
+
+                if ('authenticationRequest' in elem) {
+                  return (
+                    <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
+                      <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
+                        Sign in with Google on Google's Business Messages chat
+                      </h1>
+                    </button>
+                  );
+                }
+
+                if ('liveAgentRequest' in elem) {
+                  return (
+                    <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
+                      <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
+                        Message a live agent on Google's Business Messages chat
+                      </h1>
+                    </button>
                   );
                 }
               })}

@@ -23,8 +23,12 @@ func create(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 
+	// iamClient := iam.NewFromConfig(cfg)
+	// roleName := string("role-name")
+	// createIamResult, err := iamClient.CreateRole(context.TODO(), &iam.CreateRoleInput{})
+
 	ec2Client := ec2.NewFromConfig(cfg)
-	CidrBlock := string("10.0.0.0/24")
+	CidrBlock := string("10.0.0.0/16")
 
 	log.Println("Creating VPC")
 	createVpcResult, err := ec2Client.CreateVpc(context.TODO(), &ec2.CreateVpcInput{
@@ -35,22 +39,25 @@ func create(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 	VpcId := createVpcResult.Vpc.VpcId
-
 	log.Println("creating first Subnet")
-	CidrBlock = string("10.0.0.0/24")
+	CidrBlock = string("10.0.1.0/24")
+	AvailabilityZone := string("us-east-1a")
 	createFirstSubnetResult, err := ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
-		CidrBlock: &CidrBlock,
-		VpcId:     VpcId,
+		CidrBlock:        &CidrBlock,
+		VpcId:            VpcId,
+		AvailabilityZone: &AvailabilityZone,
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	log.Println("creating second Subnet")
-	CidrBlock = string("10.0.1.0/24")
+	CidrBlock = string("10.0.2.0/24")
+	AvailabilityZone = string("us-east-1b")
 	createSecondSubnetResult, err := ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
-		CidrBlock: &CidrBlock,
-		VpcId:     VpcId,
+		CidrBlock:        &CidrBlock,
+		VpcId:            VpcId,
+		AvailabilityZone: &AvailabilityZone,
 	})
 	if err != nil {
 		log.Fatal(err)

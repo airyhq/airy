@@ -35,7 +35,7 @@ The Facebook source requires the following configuration:
   your Facebook application
 - A webhook integration so that the platform can ingest messages from your
   Facebook pages
-- A page token for each facebook page you intend to integrate
+- A page token for each Facebook page you intend to integrate
 
 Refer to the [Configuration Docs](/getting-started/deployment/configuration.md#components) on how to input these values.
 
@@ -130,6 +130,8 @@ You are now ready to connect a Facebook page to your Airy Core instance 🎉
 
 <br />
 
+### Connect a Facebook page to your instance
+
 The next step is to send a request to the [Channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
 
 <ButtonBox
@@ -175,6 +177,8 @@ POST /channels.facebook.connect
   }
 }
 ```
+
+### Send messages from a Facebook source
 
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send). See a sample request for sending a text message below.
 
@@ -224,6 +228,8 @@ Sends a message to a conversation and returns a payload. Whatever is put on the
 ```
 
 <br />
+
+### Send and receive messages with the Inbox UI
 
 Now that you connected Facebook Messenger to your instance and started a conversation, you can see the conversations, messages and templates in the [Airy Inbox](/apps/ui/inbox), and use it to respond to the messages.
 

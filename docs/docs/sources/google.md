@@ -106,7 +106,7 @@ POST /channels.google.connect
 }
 ```
 
-## Send and receive messages from Google's Business Messages
+## Send messages from Google's Business Messages source
 
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send). See a sample request for sending a text message below.
 
@@ -154,6 +154,8 @@ Sends a message to a conversation and returns a payload. Whatever is put on the
   // metadata object of the message
 }
 ```
+
+## Send and receive messages with the Inbox UI
 
 Now that you connected Google's Business Messages to your instance and started a conversation, you can see the conversations, messages in the [Airy Inbox](/apps/ui/inbox), and use it to respond to the messages. The [Inbox's UI](/apps/ui/inbox) is able render the messages types you can send from Google's Business Messages, such as Rich Cards or Suggestions.
 

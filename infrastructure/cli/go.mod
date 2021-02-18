@@ -4,6 +4,11 @@ go 1.12
 
 require (
 	github.com/airyhq/airy/lib/go/httpclient v0.0.0
+	github.com/aws/aws-sdk-go-v2 v1.2.0
+	github.com/aws/aws-sdk-go-v2/config v1.1.1
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.1.1
+	github.com/aws/aws-sdk-go-v2/service/eks v1.1.1
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.2.0
 	github.com/kr/pretty v0.2.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.1.1

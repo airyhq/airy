@@ -1,4 +1,5 @@
 import {SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
+import {setResumeTokenInStorage} from '../storage';
 
 declare const window: {
   airy: {
@@ -38,27 +39,27 @@ const convertToBody = (message: TextContent | SuggestionResponse) => {
   };
 };
 
-export const getResumeToken = async (token: string) => {
+export const getResumeToken = async (channelId: string, authToken: string) => {
   const resumeChat = await fetch(`//${API_HOST}/chatplugin.resumeToken`, {
     method: 'POST',
     body: JSON.stringify({}),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${authToken}`,
     },
   });
   const jsonResumeToken = await resumeChat.json();
-  localStorage.setItem('resume_token', jsonResumeToken.resume_token);
+  setResumeTokenInStorage(channelId, jsonResumeToken.resume_token);
 };
 
-export const start = async (channel_id: string, resume_token: string) => {
+export const start = async (channelId: string, resumeToken: string) => {
   try {
     const response = await fetch(`//${API_HOST}/chatplugin.authenticate`, {
       method: 'POST',
       body: JSON.stringify({
-        channel_id: channel_id,
-        ...(resume_token && {
-          resume_token,
+        channel_id: channelId,
+        ...(resumeToken && {
+          resume_token: resumeToken,
         }),
       }),
       headers: {

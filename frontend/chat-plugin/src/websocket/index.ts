@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime';
 import {start, getResumeToken, sendMessage} from '../api';
 import {SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
 import {Message, messageMapper} from 'httpclient';
+import {resetStorage} from '../storage';
 
 declare const window: {
   airy: {
@@ -18,21 +19,21 @@ const protocol = location.protocol.replace('http', 'ws');
 
 class WebSocket {
   client: Client;
-  channel_id: string;
+  channelId: string;
   token: string;
-  resume_token: string;
+  resumeToken: string;
   setInitialMessages: (messages: Array<Message>) => void;
   onReceive: messageCallbackType;
 
   constructor(
-    channel_id: string,
+    channelId: string,
     onReceive: messageCallbackType,
     setInitialMessages: (messages: Array<Message>) => void,
-    resume_token?: string
+    resumeToken?: string
   ) {
-    this.channel_id = channel_id;
+    this.channelId = channelId;
     this.onReceive = onReceive;
-    this.resume_token = resume_token;
+    this.resumeToken = resumeToken;
     this.setInitialMessages = setInitialMessages;
   }
 
@@ -65,15 +66,15 @@ class WebSocket {
   onSend = (message: TextContent | SuggestionResponse) => sendMessage(message, this.token);
 
   start = async () => {
-    const response = await start(this.channel_id, this.resume_token);
+    const response = await start(this.channelId, this.resumeToken);
     if (response.token && response.messages) {
       this.connect(response.token);
       this.setInitialMessages(response.messages.map(messageMapper));
-      if (!this.resume_token) {
-        await getResumeToken(this.token);
+      if (!this.resumeToken) {
+        await getResumeToken(this.channelId, this.token);
       }
     } else {
-      localStorage.clear();
+      resetStorage(this.channelId);
     }
   };
 

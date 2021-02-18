@@ -113,70 +113,33 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
 
   return (
     <>
-      {fromContact ? (
-        <>
-          <div className={`${isChatPlugin ? styles.containerChatpluginContact : styles.containerContact}`}>
-            <div
-              className={styles.containerButton}
-              style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
-              {button(position, amountCards, id)}
-              <div
-                id={id}
-                className={styles.richCardCarouselContainer}
-                style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
-                <div className={styles.button}>{button(position, amountCards, id)}</div>
-                <div className={styles.isContact}>
-                  {cardContents.map((card: Card, idx: number) => {
-                    return (
-                      <div key={idx} className={styles.richCard}>
-                        <RichCard
-                          title={card.title}
-                          description={card.description}
-                          media={card.media}
-                          suggestions={card.suggestions}
-                          fromContact={fromContact}
-                          cardWidth={cardWidth}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+      <div className={`${isChatPlugin ? styles.containerChatplugin : styles.container}`}>
+        <div className={styles.containerButton} style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
+          {button(position, amountCards, id)}
+          <div
+            id={id}
+            className={styles.richCardCarouselContainer}
+            style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
+            <div className={styles.button}>{button(position, amountCards, id)}</div>
+            <div className={styles.cards}>
+              {cardContents.map((card: Card, idx: number) => {
+                return (
+                  <div key={idx} className={styles.richCard}>
+                    <RichCard
+                      title={card.title}
+                      description={card.description}
+                      media={card.media}
+                      suggestions={card.suggestions}
+                      fromContact={fromContact}
+                      cardWidth={cardWidth}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
-        </>
-      ) : (
-        <>
-          <div className={`${isChatPlugin ? styles.containerChatpluginMember : styles.containerMember}`}>
-            <div
-              className={styles.containerButton}
-              style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
-              {button(position, amountCards, id)}
-              <div
-                id={id}
-                className={styles.richCardCarouselContainer}
-                style={cardWidth === Width.short ? {width: '176px'} : {width: '320px'}}>
-                <div className={styles.isMember}>
-                  {cardContents.map((card: Card, idx: number) => {
-                    return (
-                      <div key={idx} className={styles.richCard}>
-                        <RichCard
-                          title={card.title}
-                          description={card.description}
-                          media={card.media}
-                          suggestions={card.suggestions}
-                          fromContact={fromContact}
-                          cardWidth={cardWidth}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+        </div>
+      </div>
     </>
   );
 };

@@ -1,25 +1,14 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.containerContact {
+.container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.containerChatpluginContact {
-  @extend .containerContact;
-  transform: scale(0.75);
-}
-
-.containerMember {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.containerChatpluginMember {
-  @extend .containerMember;
+.containerChatplugin {
+  @extend .container;
   transform: scale(0.75);
 }
 
@@ -29,12 +18,7 @@
   padding-left: 20px;
 }
 
-.isContact {
-  margin-top: 5px;
-  display: flex;
-}
-
-.isMember {
+.cards {
   margin-top: 5px;
   display: flex;
 }

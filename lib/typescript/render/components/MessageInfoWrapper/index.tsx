@@ -3,38 +3,39 @@ import {Avatar} from '../Avatar';
 import {DefaultMessageRenderingProps} from '../../components/index';
 import styles from './index.module.scss';
 
-type AvatarTimeProps = {
+type MessageInfoWrapperProps = {
   children?: ReactNode;
-  lastInGroup: boolean;
+  lastInGroup?: boolean;
+  isChatPlugin: boolean;
 } & DefaultMessageRenderingProps;
 
-export const MessageInfoWrapper = (props: AvatarTimeProps) => {
-  const {sentAt, contact, fromContact, children, lastInGroup} = props;
+export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
+  const {sentAt, contact, fromContact, children, lastInGroup, isChatPlugin} = props;
 
-  return (
+  const isContact = isChatPlugin ? !fromContact : fromContact;
+
+  const MemberMessage = () => (
+    <div className={styles.member}>
+      <div>{children}</div>
+      <div className={styles.time}>{sentAt}</div>
+    </div>
+  );
+
+  const ContactMessage = () => (
     <>
-      {fromContact ? (
-        <>
-          <div className={styles.contact}>
-            {sentAt && (
-              <>
-                <div className={styles.avatar}>
-                  <Avatar contact={contact} />
-                </div>
-              </>
-            )}
-            <div style={lastInGroup == false ? {paddingLeft: '40px', marginLeft: '8px'} : {}}>{children}</div>
+      <div className={styles.contact}>
+        {sentAt && (
+          <div className={styles.avatar}>
+            <Avatar contact={contact} />
           </div>
-          <div className={styles.time}>{sentAt}</div>
-        </>
-      ) : (
-        <>
+        )}
+        <div className={styles.contactContent} style={lastInGroup == false ? {marginLeft: '48px'} : {}}>
           {children}
-          <div className={styles.member}>
-            <div className={styles.time}>{sentAt}</div>
-          </div>
-        </>
-      )}
+        </div>
+      </div>
+      <div className={styles.time}>{sentAt}</div>
     </>
   );
+
+  return <>{isContact ? <ContactMessage /> : <MemberMessage />}</>;
 };

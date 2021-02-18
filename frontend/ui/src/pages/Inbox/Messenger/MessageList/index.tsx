@@ -172,7 +172,8 @@ const MessageList = (props: MessageListProps) => {
                 fromContact={isFromContact(message)}
                 contact={conversation.metadata.contact}
                 sentAt={sentAt}
-                lastInGroup={lastInGroup}>
+                lastInGroup={lastInGroup}
+                isChatPlugin={false}>
                 <SourceMessage
                   source={getSource(conversation)}
                   message={message}

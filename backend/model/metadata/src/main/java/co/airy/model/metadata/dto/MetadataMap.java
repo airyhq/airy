@@ -2,7 +2,6 @@ package co.airy.model.metadata.dto;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.model.metadata.MetadataKeys;
 import org.slf4j.Logger;
 
 import java.io.Serializable;

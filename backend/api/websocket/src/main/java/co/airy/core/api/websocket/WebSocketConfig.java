@@ -46,7 +46,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // TODO this is a temporary name. We can change it back to
         // /ws.communication in https://github.com/airyhq/airy/issues/886
-        registry.addEndpoint("/ws.events").setAllowedOrigins("*");
+        registry.addEndpoint("/ws.communication").setAllowedOrigins("*");
     }
 
     @Bean

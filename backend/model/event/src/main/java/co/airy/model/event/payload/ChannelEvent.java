@@ -2,7 +2,6 @@ package co.airy.model.event.payload;
 
 import co.airy.avro.communication.Channel;
 import co.airy.model.channel.ChannelPayload;
-import co.airy.model.message.dto.MessageResponsePayload;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

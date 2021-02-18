@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.google.model.SendMessageRequest;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;

@@ -1,15 +1,10 @@
 package co.airy.model.metadata;
 
 import co.airy.avro.communication.Metadata;
-import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.uuid.UUIDv5;
 
 import java.time.Instant;
-import java.util.Map;
 import java.util.UUID;
-
-import static co.airy.model.metadata.MetadataKeys.USER_DATA;
-import static java.util.stream.Collectors.toMap;
 
 public class MetadataRepository {
     public static Metadata newConversationMetadata(String conversationId, String key, String value) {

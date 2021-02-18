@@ -2,7 +2,6 @@ package co.airy.model.message.dto;
 
 import co.airy.avro.communication.Message;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

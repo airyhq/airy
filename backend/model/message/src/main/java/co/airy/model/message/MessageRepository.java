@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.Instant;
-import java.util.List;
 
 public class MessageRepository {
     public static Message updateDeliveryState(Message message, DeliveryState state) {

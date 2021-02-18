@@ -31,17 +31,13 @@ Core Platform instance.
 
 The Facebook source requires the following configuration:
 
-- An app id and an app secret so that the platform can send messages back via
-  your Facebook application
-- A webhook integration so that the platform can ingest messages from your
-  Facebook pages
-- A page token for each Facebook page you intend to integrate
-
-Refer to the [Configuration Docs](/getting-started/deployment/configuration.md#components) on how to input these values.
+- [Step 1: Step 1: Find the App ID and secret](#step-1-find-the-app-id-and-secret)
+- [Step 2:  Configure the webhook integration](#step-2-configure-the-webhook-integration)
+- [Step 3: Obtain a page token](#step-3-obtain-a-page-token)
 
 Let's proceed step by step.
 
-### Find the app id and secret
+### Step 1: Find the app id and secret
 
 To connect a page, you must have an approved Facebook app. If you don't have
 one, you must register and create an app on [Facebook For Developers](https://developers.facebook.com/).
@@ -72,6 +68,8 @@ Now you can use the app id and the app secret for the following environment vari
 - `FACEBOOK_APP_ID`
 - `FACEBOOK_APP_SECRET`
 
+Refer to the [Configuration Docs](/getting-started/deployment/configuration.md#components) on how to input these values.
+
 :::note
 
 Refer to the [test](getting-started/deployment/vagrant.md#connect-sources) guide
@@ -80,7 +78,7 @@ one to set these variables in your Airy Core instance.
 
 :::
 
-### Configure the webhook integration
+### Step 2: Configure the webhook integration
 
 For Facebook to start sending events to your running instance, it must first
 verify your integration with a challenge. To verify your Facebook webhook
@@ -111,7 +109,7 @@ You will see something like this:
 Once the verification process has been completed, Facebook will immediately
 start sending events to your Airy Core instance.
 
-### Obtain a page token
+### Step 3: Obtain a page token
 
 The next step is to obtain a page token, so that Airy Core can send messages on
 behalf of your page. The fastest way to get one is to use the graph explorer
@@ -130,7 +128,7 @@ You are now ready to connect a Facebook page to your Airy Core instance 🎉
 
 <br />
 
-### Connect a Facebook page to your instance
+## Connect a Facebook page to your instance
 
 The next step is to send a request to the [Channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
 
@@ -178,7 +176,7 @@ POST /channels.facebook.connect
 }
 ```
 
-### Send messages from a Facebook source
+## Send messages from a Facebook source
 
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send). See a sample request for sending a text message below.
 
@@ -229,7 +227,7 @@ Sends a message to a conversation and returns a payload. Whatever is put on the
 
 <br />
 
-### Send and receive messages with the Inbox UI
+## Send and receive messages with the Inbox UI
 
 Now that you connected Facebook Messenger to your instance and started a conversation, you can see the conversations, messages and templates in the [Airy Inbox](/apps/ui/inbox), and use it to respond to the messages.
 

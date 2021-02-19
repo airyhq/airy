@@ -10,7 +10,7 @@ type facebookSourceProps = {facebookSource: Channel[]};
 
 const FacebookSource = (props: facebookSourceProps) => {
   const facebookSources = props.facebookSource.filter(channel => channel.source === 'facebook').slice(0, 4);
-  const facebookSourcesExtra = props.facebookSource.filter(channel => channel.source === 'facebook').slice(2);
+  const facebookSourcesExtra = props.facebookSource.filter(channel => channel.source === 'facebook').slice(4);
   const totalFacebookSources = facebookSources.concat(facebookSourcesExtra);
 
   return (

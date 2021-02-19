@@ -43,16 +43,6 @@ export interface AuthenticationRequestSuggestion {
   };
 }
 
-export interface AuthenticationRequestSuggestion {
-  authenticationRequest: {
-    oauth: {
-      clientId: string;
-      codeChallenge: string;
-      scopes: [string];
-    };
-  };
-}
-
 export interface LiveAgentRequestSuggestion {
   liveAgentRequest: {};
 }

@@ -61,7 +61,7 @@ export const Suggestions = ({text, fallback, image, suggestions, contact, fromCo
                   <button key={elem.action.text} className={styles.replyButton}>
                     <img
                       className={styles.actionImage}
-                      alt="action icon"
+                      alt={elem.action.openUrlAction ? 'link icon' : 'phone icon'}
                       src={elem.action.openUrlAction ? linkIcon : phoneIcon}
                     />
                     <h1 key={elem.action.text} className={styles.title}>

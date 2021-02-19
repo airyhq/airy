@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.CountAction;
 import co.airy.core.api.communication.dto.MessagesTreeSet;
@@ -50,6 +49,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.model.message.MessageRepository.isFromContact;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.model.metadata.MetadataRepository.isChannelMetadata;
@@ -61,11 +61,10 @@ import static java.util.stream.Collectors.toCollection;
 @Component
 @RestController
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
-    private static final String appId = "api.CommunicationStoresTEST";
+    private static final String appId = "api.CommunicationStores";
 
     private final KafkaStreamsWrapper streams;
     private final KafkaProducer<String, SpecificRecordBase> producer;
-    private final WebSocketController webSocketController;
     private final LuceneProvider luceneProvider;
 
     private final String messagesStore = "messages-store";
@@ -77,12 +76,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     Stores(KafkaStreamsWrapper streams,
            KafkaProducer<String, SpecificRecordBase> producer,
-           WebSocketController webSocketController,
            LuceneProvider luceneProvider
     ) {
         this.streams = streams;
         this.producer = producer;
-        this.webSocketController = webSocketController;
         this.luceneProvider = luceneProvider;
     }
 
@@ -93,9 +90,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
 
-        final KTable<String, Channel> channelTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
-                .peek((channelId, channel) -> webSocketController.onChannelUpdate(channel))
-                .toTable();
+        final KTable<String, Channel> channelTable = builder.<String, Channel>table(new ApplicationCommunicationChannels().name());
 
         // conversation/message/channel metadata keyed by conversation/message/channel id
         final KTable<String, MetadataMap> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
@@ -109,7 +104,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         // produce unread count metadata
         messageStream.selectKey((messageId, message) -> message.getConversationId())
-                .peek((conversationId, message) -> webSocketController.onNewMessage(message))
+                .filter((conversationId, message) -> isFromContact(message))
                 .mapValues(message -> CountAction.increment(message.getSentAt()))
                 .merge(resetStream)
                 .groupByKey()
@@ -124,7 +119,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                     }
 
                     return unreadCountState;
-                }).toStream().peek(webSocketController::onUnreadCount)
+                }).toStream()
                 .map((conversationId, unreadCountState) -> {
                     final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.UNREAD_COUNT,
                             unreadCountState.getUnreadCount().toString());
@@ -165,7 +160,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                                 aggregate.setLastMessageContainer(container);
                             }
 
-                            if (SenderType.SOURCE_CONTACT.equals(container.getMessage().getSenderType())) {
+                            if (isFromContact(container.getMessage())) {
                                 aggregate.setSourceConversationId(container.getMessage().getSenderId());
                             }
 

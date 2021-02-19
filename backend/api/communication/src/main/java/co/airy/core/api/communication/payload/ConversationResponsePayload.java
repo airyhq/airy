@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import static co.airy.date.format.DateFormat.isoFromMillis;
-import static co.airy.model.metadata.MetadataKeys.*;
+import static co.airy.model.metadata.MetadataKeys.ConversationKeys;
 import static co.airy.model.metadata.MetadataObjectMapper.getMetadataPayload;
 
 @Data

@@ -2,7 +2,6 @@ package co.airy.model.message.dto;
 
 import co.airy.avro.communication.Message;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,7 +45,6 @@ public class MessageResponsePayload {
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
                 .source(message.getSource())
-                .metadata(JsonNodeFactory.instance.objectNode())
                 .build();
     }
 

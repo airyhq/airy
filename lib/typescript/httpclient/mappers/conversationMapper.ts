@@ -1,5 +1,5 @@
 import {Conversation} from '../model';
-import {ConversationPayload} from '../payload/ConversationPayload';
+import {ConversationPayload} from '../payload';
 import {messageMapper} from './messageMapper';
 
 export const conversationMapper = (payload: ConversationPayload): Conversation => {
@@ -15,7 +15,6 @@ export const conversationMapper = (payload: ConversationPayload): Conversation =
       unreadCount: payload.metadata.unread_count,
     },
     createdAt: new Date(payload.created_at),
-    tags: Object.keys(payload.metadata.tags || {}),
     lastMessage: messageMapper(payload.last_message),
   };
 };

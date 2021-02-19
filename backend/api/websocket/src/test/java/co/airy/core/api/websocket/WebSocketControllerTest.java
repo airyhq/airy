@@ -17,7 +17,6 @@ import co.airy.model.event.payload.MetadataEvent;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.jwt.Jwt;
 import co.airy.spring.test.WebTestHelper;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -37,7 +36,6 @@ import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
@@ -51,9 +49,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static co.airy.core.api.websocket.WebSocketController.QUEUE_EVENTS;
-import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -177,7 +173,7 @@ public class WebSocketControllerTest {
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
         connectHeaders.add(AUTHORIZATION, "Bearer " + jwt.tokenFor("userId"));
 
-        return stompClient.connect("ws://localhost:" + port + "/ws.events", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
+        return stompClient.connect("ws://localhost:" + port + "/ws.communication", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
         }).get();
     }
 

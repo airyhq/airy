@@ -3,7 +3,6 @@ package co.airy.core.api.communication;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -32,6 +31,7 @@ import java.util.UUID;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationMessages;
 import static co.airy.core.api.communication.util.Topics.getTopics;
+import static co.airy.model.message.MessageRepository.isFromAiry;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -99,7 +99,7 @@ public class SendMessageControllerTest {
 
         final Optional<Message> maybeMessage = records.stream()
                 .map(ConsumerRecord::value)
-                .filter(m -> m.getSenderType().equals(SenderType.APP_USER) && m.getId().equals(messageId))
+                .filter(message -> isFromAiry(message) && message.getId().equals(messageId))
                 .findFirst();
 
         if (maybeMessage.isEmpty()) {

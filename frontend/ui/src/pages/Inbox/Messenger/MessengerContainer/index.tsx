@@ -4,18 +4,16 @@ import {withRouter} from 'react-router-dom';
 
 import {StateModel} from '../../../../reducers';
 import MessageList from '../MessageList';
-import {ReactComponent as EmptyStateImage} from '../../../../assets/images/empty-state/inbox-empty-state.svg';
+import {ReactComponent as EmptyStateImage} from 'assets/images/empty-state/inbox-empty-state.svg';
 import styles from './index.module.scss';
 import ConversationMetadata from '../ConversationMetadata';
 import MessageInput from '../../MessageInput';
-import {getCurrentConversation} from '../../../../selectors/conversations';
+import {allConversations, getCurrentConversation} from '../../../../selectors/conversations';
 
-const mapStateToProps = (state: StateModel, ownProps) => {
-  return {
-    conversations: state.data.conversations.all.items,
-    currentConversation: getCurrentConversation(state, ownProps),
-  };
-};
+const mapStateToProps = (state: StateModel, ownProps) => ({
+  conversations: allConversations(state),
+  currentConversation: getCurrentConversation(state, ownProps),
+});
 
 const connector = connect(mapStateToProps);
 

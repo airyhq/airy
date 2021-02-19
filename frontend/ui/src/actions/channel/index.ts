@@ -11,66 +11,38 @@ import {HttpClientInstance} from '../../InitializeAiryApi';
 
 const SET_CURRENT_CHANNELS = '@@channel/SET_CHANNELS';
 const ADD_CHANNELS = '@@channel/ADD_CHANNELS';
-const ADD_CHANNEL = '@@channel/ADD_CHANNEL';
-const REMOVE_CHANNEL = '@@channel/REMOVE_CHANNEL';
+const SET_CHANNEL = '@@channel/SET_CHANNEL';
 
 export const setCurrentChannelsAction = createAction(SET_CURRENT_CHANNELS, resolve => (channels: Channel[]) =>
   resolve(channels)
 );
 
 export const addChannelsAction = createAction(ADD_CHANNELS, resolve => (channels: Channel[]) => resolve(channels));
+export const setChannelAction = createAction(SET_CHANNEL, resolve => (channel: Channel) => resolve(channel));
 
-export const addChannelAction = createAction(ADD_CHANNEL, resolve => (channel: Channel) => resolve(channel));
-export const removeChannelAction = createAction(REMOVE_CHANNEL, resolve => (channel: Channel) => resolve(channel));
+export const listChannels = () => async (dispatch: Dispatch<any>) =>
+  HttpClientInstance.listChannels().then((response: Channel[]) => {
+    dispatch(setCurrentChannelsAction(response));
+    return Promise.resolve(response);
+  });
 
-export function listChannels() {
-  return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.listChannels()
-      .then((response: Channel[]) => {
-        dispatch(setCurrentChannelsAction(response));
-        return Promise.resolve(response);
-      })
-      .catch((error: Error) => {
-        return Promise.reject(error);
-      });
-  };
-}
+export const exploreChannels = (requestPayload: ExploreChannelRequestPayload) => async (dispatch: Dispatch<any>) => {
+  return HttpClientInstance.exploreFacebookChannels(requestPayload).then((response: Channel[]) => {
+    dispatch(addChannelsAction(response));
+    return Promise.resolve(response);
+  });
+};
 
-export function exploreChannels(requestPayload: ExploreChannelRequestPayload) {
-  return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.exploreFacebookChannels(requestPayload)
-      .then((response: Channel[]) => {
-        dispatch(addChannelsAction(response));
-        return Promise.resolve(response);
-      })
-      .catch((error: Error) => {
-        return Promise.reject(error);
-      });
-  };
-}
+export const connectChannel = (requestPayload: ConnectChannelRequestPayload) => async (dispatch: Dispatch<any>) =>
+  HttpClientInstance.connectFacebookChannel(requestPayload).then((response: Channel) => {
+    dispatch(addChannelsAction([response]));
+    return Promise.resolve(response);
+  });
 
-export function connectChannel(requestPayload: ConnectChannelRequestPayload) {
-  return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.connectFacebookChannel(requestPayload)
-      .then((response: Channel) => {
-        dispatch(addChannelsAction([response]));
-        return Promise.resolve(response);
-      })
-      .catch((error: Error) => {
-        return Promise.reject(error);
-      });
-  };
-}
-
-export function disconnectChannel(source: string, requestPayload: DisconnectChannelRequestPayload) {
-  return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.disconnectChannel(source, requestPayload)
-      .then((response: Channel[]) => {
-        dispatch(setCurrentChannelsAction(response));
-        return Promise.resolve(response);
-      })
-      .catch((error: Error) => {
-        return Promise.reject(error);
-      });
-  };
-}
+export const disconnectChannel = (source: string, requestPayload: DisconnectChannelRequestPayload) => async (
+  dispatch: Dispatch<any>
+) =>
+  HttpClientInstance.disconnectChannel(source, requestPayload).then((response: Channel[]) => {
+    dispatch(setCurrentChannelsAction(response));
+    return Promise.resolve(response);
+  });

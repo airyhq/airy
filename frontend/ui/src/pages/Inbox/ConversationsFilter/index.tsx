@@ -8,7 +8,7 @@ import {StateModel} from '../../../reducers';
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
 import {isFilterActive} from '../../../selectors/conversations';
 
-import {ReactComponent as ChevronLeft} from '../../../assets/images/icons/chevron_left.svg';
+import {ReactComponent as ChevronLeft} from 'assets/images/icons/chevron_left.svg';
 import Popup from './Popup';
 
 import styles from './index.module.scss';

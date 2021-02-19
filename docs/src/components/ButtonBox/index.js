@@ -29,23 +29,12 @@ const ButtonBox = ({children, icon, title, description, link, customizedBackgrou
   return (
     <Link
       to={useBaseUrl(link)}
-      className={`${isDarkTheme ? styles.containerDark : styles.containerLight}`}
+      className={isDarkTheme ? styles.containerDark : styles.containerLight}
       style={{backgroundColor: customizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${customizedHoverColor}`}}>
       {icon && icon()}
       <div>
-        <h4
-          style={{
-            margin: 0,
-            color: 'white',
-          }}>
-          {title}
-        </h4>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 14,
-            color: 'white',
-          }}>
+        <h4 className={isDarkTheme ? styles.containerDarkTitle : styles.containerLightTitle}>{title}</h4>
+        <p className={isDarkTheme ? styles.containerDarkDescription : styles.containerLightDescription}>
           {description}
         </p>
       </div>

@@ -3,10 +3,10 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, Link, RouteComponentProps} from 'react-router-dom';
 import {StateModel} from '../../reducers';
 import ListenOutsideClick from '../ListenOutsideClick';
-import {ReactComponent as LogoutIcon} from '../../assets/images/icons/sign-out.svg';
-import {ReactComponent as ShortcutIcon} from '../../assets/images/icons/shortcut.svg';
-import {ReactComponent as AiryLogo} from '../../assets/images/logo/airy_primary_rgb.svg';
-import {ReactComponent as ChevronDownIcon} from '../../assets/images/icons/chevron-down.svg';
+import {ReactComponent as LogoutIcon} from 'assets/images/icons/sign-out.svg';
+import {ReactComponent as ShortcutIcon} from 'assets/images/icons/shortcut.svg';
+import {ReactComponent as AiryLogo} from 'assets/images/logo/airy_primary_rgb.svg';
+import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
 import {LOGOUT_ROUTE} from '../../routes/routes';
 import styles from './index.module.scss';
 

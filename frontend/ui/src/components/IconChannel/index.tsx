@@ -2,16 +2,16 @@
 import React from 'react';
 import {Channel} from 'httpclient';
 
-import {ReactComponent as FacebookIcon} from '../../assets/images/icons/facebook_rounded.svg';
-import {ReactComponent as GoogleIcon} from '../../assets/images/icons/google-messages.svg';
-import {ReactComponent as SmsIcon} from '../../assets/images/icons/sms-icon.svg';
-import {ReactComponent as WhatsappIcon} from '../../assets/images/icons/whatsapp-icon.svg';
-import {ReactComponent as MessengerAvatar} from '../../assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as GoogleAvatar} from '../../assets/images/icons/google_avatar.svg';
-import {ReactComponent as SmsAvatar} from '../../assets/images/icons/sms_avatar.svg';
-import {ReactComponent as WhatsappAvatar} from '../../assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as AiryAvatar} from '../../assets/images/icons/airy_avatar.svg';
-import {ReactComponent as AiryIcon} from '../../assets/images/icons/airy-icon.svg';
+import {ReactComponent as FacebookIcon} from 'assets/images/icons/facebook_rounded.svg';
+import {ReactComponent as GoogleIcon} from 'assets/images/icons/google-messages.svg';
+import {ReactComponent as SmsIcon} from 'assets/images/icons/sms-icon.svg';
+import {ReactComponent as WhatsappIcon} from 'assets/images/icons/whatsapp-icon.svg';
+import {ReactComponent as MessengerAvatar} from 'assets/images/icons/messenger_avatar.svg';
+import {ReactComponent as GoogleAvatar} from 'assets/images/icons/google_avatar.svg';
+import {ReactComponent as SmsAvatar} from 'assets/images/icons/sms_avatar.svg';
+import {ReactComponent as WhatsappAvatar} from 'assets/images/icons/whatsapp_avatar.svg';
+import {ReactComponent as AiryAvatar} from 'assets/images/icons/airy_avatar.svg';
+import {ReactComponent as AiryIcon} from 'assets/images/icons/airy-icon.svg';
 
 import styles from './index.module.scss';
 

@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styles from './index.module.scss';
 import {sendMessages} from '../../../actions/messages';
-import {ReactComponent as Paperplane} from '../../../assets/images/icons/paperplane.svg';
+import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
 import {StateModel} from '../../../reducers';
 import {getTextMessagePayload} from 'httpclient';
 

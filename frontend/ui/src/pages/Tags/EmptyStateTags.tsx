@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import styles from './index.module.scss';
 import {Button} from '@airyhq/components';
-import emptyImage from '../../assets/images/empty-state/tags-empty-state.svg';
+import {ReactComponent as EmptyImage} from 'assets/images/empty-state/tags-empty-state.svg';
 import SimpleTagForm from './SimpleTagForm';
 
 const EmptyStateTags: React.FC = (): JSX.Element => {
@@ -17,7 +17,7 @@ const EmptyStateTags: React.FC = (): JSX.Element => {
             <p>
               Tags provide a useful way to group related conversations together and to quickly filter and search them.
             </p>
-            <img src={emptyImage} />
+            <EmptyImage />
             <Button onClick={() => setShow(true)}>Create a Tag</Button>
           </div>
         </div>

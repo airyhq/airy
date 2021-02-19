@@ -109,16 +109,24 @@ You will see something like this:
 Once the verification process has been completed, Facebook will immediately
 start sending events to your Airy Core instance.
 
-### Step 3: Obtain a page token
+### Step 3: Add products: Messenger and Webhooks 
 
-The next step is to obtain a page token, so that Airy Core can send messages on
-behalf of your page. The fastest way to get one is to use the graph explorer
-that Facebook provides [Graph
-Explorer](https://developers.facebook.com/tools/explorer/).
+Click on "Products" on the left sidebar and click on the + icon: a list of products that you 
+can add to your app will appear.
 
-On the `User or Page` option, select `Get Page Token` and click on `Generate Access Token`:
+<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/products.png')} />
 
-<img alt="Facebook token page" src={useBaseUrl('img/sources/facebook/token.jpg')} />
+Select the product "Webhooks" and click on the button "Subscribe to this object". This will open a pop-up: add your callback url and verify token in the fields.
+
+<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/webhook_product.png')} />
+
+Next, go back to the Products section and select "Messenger". Click on the blue button "Add or Remove 
+Pages" and select your page. After that, click on the button "Add callback url" and add your callback url and verify token in the fields.
+
+<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/messenger.png')} />
+
+<br />
+
 
 <SuccessBox>
 

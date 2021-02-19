@@ -17,6 +17,8 @@ import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/
 import {ConversationRouteProps} from '../../index';
 import {isSameDay} from 'dates';
 import {getSource, isFromContact} from 'httpclient';
+import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
+import {formatTime} from 'dates';
 
 type MessageListProps = ConnectedProps<typeof connector>;
 
@@ -157,6 +159,7 @@ const MessageList = (props: MessageListProps) => {
           const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
 
           const contactToShow = shouldShowContact ? conversation.metadata.contact : null;
+          const sentAt = lastInGroup ? formatTime(message.sentAt) : null;
 
           return (
             <div key={message.id} id={`message-item-${message.id}`}>
@@ -165,12 +168,19 @@ const MessageList = (props: MessageListProps) => {
                   {formatDateOfMessage(message)}
                 </div>
               )}
-              <SourceMessage
-                source={getSource(conversation)}
-                message={message}
-                contact={contactToShow}
+              <MessageInfoWrapper
+                fromContact={isFromContact(message)}
+                contact={conversation.metadata.contact}
+                sentAt={sentAt}
                 lastInGroup={lastInGroup}
-              />
+                isChatPlugin={false}>
+                <SourceMessage
+                  source={getSource(conversation)}
+                  message={message}
+                  contact={contactToShow}
+                  lastInGroup={lastInGroup}
+                />
+              </MessageInfoWrapper>
             </div>
           );
         })}

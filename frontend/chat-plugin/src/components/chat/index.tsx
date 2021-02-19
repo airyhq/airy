@@ -15,6 +15,7 @@ import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 import {MessagePayload, SenderType, MessageState, isFromContact, Message, messageMapper} from 'httpclient';
 import {SourceMessage, CommandUnion} from 'render';
+import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {getResumeTokenFromStorage} from '../../storage';
 
 let ws: WebSocket;
@@ -142,13 +143,15 @@ const Chat = (props: Props) => {
                       props.airyMessageProp
                         ? () => props.airyMessageProp(ctrl)
                         : () => (
-                            <SourceMessage
-                              message={message}
-                              source="chat_plugin"
-                              lastInGroup={lastInGroup}
-                              invertSides={true}
-                              commandCallback={commandCallback}
-                            />
+                            <MessageInfoWrapper fromContact={isFromContact(message)} isChatPlugin={true}>
+                              <SourceMessage
+                                message={message}
+                                source="chat_plugin"
+                                lastInGroup={lastInGroup}
+                                invertSides={true}
+                                commandCallback={commandCallback}
+                              />
+                            </MessageInfoWrapper>
                           )
                     }
                   />

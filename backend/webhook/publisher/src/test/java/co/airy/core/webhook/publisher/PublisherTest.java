@@ -5,12 +5,12 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
+import co.airy.core.webhook.publisher.payload.QueueMessage;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.model.event.payload.Event;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -96,7 +96,7 @@ public class PublisherTest {
 
         TimeUnit.SECONDS.sleep(2);
 
-        ArgumentCaptor<Event> batchCaptor = ArgumentCaptor.forClass(Event.class);
+        ArgumentCaptor<QueueMessage> batchCaptor = ArgumentCaptor.forClass(QueueMessage.class);
         doNothing().when(redisQueue).publishMessage(Mockito.anyString(), batchCaptor.capture());
 
         List<ProducerRecord<String, Message>> messages = new ArrayList<>();

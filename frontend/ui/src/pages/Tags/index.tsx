@@ -3,7 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 
 import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/components';
 
-import plus from '../../assets/images/icons/plus.svg';
+import {ReactComponent as Plus} from 'assets/images/icons/plus.svg';
 
 import {listTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
 import {filteredTags} from '../../selectors/tags';
@@ -168,7 +168,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
               <SearchField placeholder="Search for tags" value={this.state.tagQuery} setValue={this.handleSearch} />
             </div>
             <button onClick={this.handleTagDrawer} className={styles.addButton}>
-              Add tag <img className={styles.plusButton} src={plus} />
+              Add tag <Plus className={styles.plusButton} />
             </button>
           </div>
           {this.state.createDrawer && <SimpleTagForm onClose={this.handleTagDrawer} />}

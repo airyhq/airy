@@ -5,7 +5,6 @@ import {Text} from '../../components/Text';
 import {ContentUnion} from './googleModel';
 import {Message, isFromContact} from 'httpclient';
 import {Image} from '../../components/Image';
-import {RichText} from '../../components/RichText';
 
 export const GoogleRender = (props: MessageRenderProps) => {
   const message = props.message;
@@ -21,17 +20,6 @@ function render(content: ContentUnion, props: MessageRenderProps) {
     case 'image':
       return <Image {...getDefaultMessageRenderingProps(props)} imageUrl={content.imageUrl} />;
 
-    case 'richText':
-      return (
-        <RichText
-          {...getDefaultMessageRenderingProps(props)}
-          message={props.message}
-          text={content.text}
-          fallback={content.fallback}
-          containsRichText={content.containsRichtText}
-        />
-      );
-
     case 'suggestions':
       return (
         <Suggestions
@@ -45,21 +33,8 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-//GoogleInbound
-//messages received from via Goggle B Messages chat
-//message object
-//image are links in text field
-//- text
-//- image
-//- suggestionResponse
-//- authenticationResponse
-//sender_type: source_contact
-//`source_contact` sent to the source by a contact
 function googleInbound(message: Message): ContentUnion {
-  console.log('inbound - message', message);
   const messageJson = message.content.message;
-
-  console.log('messageJson', messageJson);
 
   if (messageJson.suggestionResponse) {
     return {
@@ -76,7 +51,7 @@ function googleInbound(message: Message): ContentUnion {
       };
     }
 
-    if (!messageJson.authenticationResponse.code && messageJson.authenticationResponse.errorDetails) {
+    if (messageJson.authenticationResponse.errorDetails && !messageJson.authenticationResponse.code) {
       return {
         type: 'text',
         text: messageJson.authenticationResponse.errorDetails.errorDescription ?? 'Authentication failed',
@@ -109,22 +84,8 @@ function googleInbound(message: Message): ContentUnion {
   };
 }
 
-//Google Outbound
-//messages sent via Curl / or the UI
 function googleOutbound(message: Message): ContentUnion {
   const messageJson = message.content;
-
-  console.log('outbound - message', message);
-  console.log('outbound - messageJson', messageJson);
-
-  if (messageJson.containsRichText) {
-    return {
-      type: 'richText',
-      text: messageJson.text,
-      fallback: messageJson.fallback,
-      containsRichtText: messageJson.containsRichText,
-    };
-  }
 
   if (messageJson.suggestions) {
     if (messageJson.suggestions.length > 13) {

@@ -1,5 +1,5 @@
 export interface Content {
-  type: 'text' | 'image' | 'suggestions' | 'richText';
+  type: 'text' | 'image' | 'suggestions';
 }
 
 export interface TextContent extends Content {
@@ -11,13 +11,6 @@ export interface ImageContent extends Content {
   type: 'image';
   imageUrl: string;
   altText?: string;
-}
-
-export interface RichTextContent extends Content {
-  type: 'richText';
-  text: string;
-  fallback: string;
-  containsRichtText: boolean;
 }
 
 export interface SuggestedReplies {
@@ -79,4 +72,4 @@ export interface SuggestionsContent extends Content {
     | LiveAgentRequestSuggestion[];
 }
 
-export type ContentUnion = TextContent | ImageContent | RichTextContent | SuggestionsContent;
+export type ContentUnion = TextContent | ImageContent | SuggestionsContent;

@@ -26,7 +26,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: api-communication
+                name: api-websocket
                 port:
                   number: 80
           - path: /conversations.list

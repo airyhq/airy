@@ -2,7 +2,7 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import {IMessage} from '@stomp/stompjs';
 
-import WebSocket from '../../components/websocket';
+import WebSocket from '../../websocket';
 import MessageProp from '../../components/message';
 import InputBarProp from '../../components/inputBar';
 import AiryInputBar from '../../airyRenderProps/AiryInputBar';
@@ -16,6 +16,7 @@ import AiryBubble from '../../airyRenderProps/AiryBubble';
 import {MessagePayload, SenderType, MessageState, isFromContact, Message, messageMapper} from 'httpclient';
 import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
+import {getResumeTokenFromStorage} from '../../storage';
 
 let ws: WebSocket;
 
@@ -36,7 +37,7 @@ const Chat = (props: Props) => {
   const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
 
   useEffect(() => {
-    ws = new WebSocket(props.channel_id, onReceive, setInitialMessages, getResumeToken());
+    ws = new WebSocket(props.channelId, onReceive, setInitialMessages, getResumeTokenFromStorage(props.channelId));
     ws.start().catch(error => {
       console.error(error);
       setInstallError(error.message);
@@ -46,14 +47,6 @@ const Chat = (props: Props) => {
   useEffect(() => {
     updateScroll();
   }, [messages]);
-
-  const getResumeToken = () => {
-    const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.has('resume_token')) {
-      localStorage.setItem('resume_token', queryParams.get('resume_token'));
-    }
-    return queryParams.get('resume_token') || localStorage.getItem('resume_token');
-  };
 
   const setInitialMessages = (initialMessages: Array<Message>) => {
     setMessages([...messages, ...initialMessages]);

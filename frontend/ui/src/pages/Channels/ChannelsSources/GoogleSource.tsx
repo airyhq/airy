@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './GoogleSource.module.scss';
+import styles from './ChannelDetails.module.scss';
 import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.svg';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';

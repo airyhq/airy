@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './FacebookSource.module.scss';
+import styles from './ChannelDetails.module.scss';
 import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';

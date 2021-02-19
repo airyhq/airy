@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './TwilloSmsSource.module.scss';
+import styles from './ChannelDetails.module.scss';
 import {ReactComponent as SMSLogo} from 'assets/images/icons/sms.svg';
 import {ReactComponent as SMSChannelLogo} from 'assets/images/icons/sms-channel.svg';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';

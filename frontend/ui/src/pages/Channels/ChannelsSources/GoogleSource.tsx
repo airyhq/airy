@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from './GoogleSource.module.scss';
-import {ReactComponent as GoogleLogo} from '../../../assets/images/icons/google_avatar.svg';
-import {ReactComponent as AddChannel} from '../../../assets/images/icons/plus-circle.svg';
-import {ReactComponent as Placeholder} from '../../../assets/images/icons/placeholder.svg';
+import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.svg';
+import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
 import ChannelDetails from './ChannelDetails';
 import ChannelsConnected from './ChannelsConnected';
@@ -29,11 +28,12 @@ const GoogleSource = (props: googleSourceProps) => {
         showSumOfChannels={totalGoogleSources.length}
         connected="CONNECTED"
         connectedChannel={googleSources}
-        placeholderImage={<Placeholder />}
+        placeholderImage={<GoogleLogo />}
         extraChannel={googleSourcesExtra.length > 0}
         displayExtraChannel={googleSourcesExtra.length}
         isConnected="connected"
         addAChannel={<AddChannel />}
+        ignoreChannelId={googleSources.length > 0}
       />
     </div>
   );

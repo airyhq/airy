@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from './FacebookSource.module.scss';
-import {ReactComponent as FacebookLogo} from '../../../assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as AddChannel} from '../../../assets/images/icons/plus-circle.svg';
-import {ReactComponent as Placeholder} from '../../../assets/images/icons/placeholder.svg';
+import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
+import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
 import ChannelDetails from './ChannelDetails';
 import ChannelsConnected from './ChannelsConnected';
@@ -11,7 +10,7 @@ type facebookSourceProps = {facebookSource: Channel[]};
 
 const FacebookSource = (props: facebookSourceProps) => {
   const facebookSources = props.facebookSource.filter(channel => channel.source === 'facebook').slice(0, 4);
-  const facebookSourcesExtra = props.facebookSource.filter(channel => channel.source === 'facebook').slice(4);
+  const facebookSourcesExtra = props.facebookSource.filter(channel => channel.source === 'facebook').slice(2);
   const totalFacebookSources = facebookSources.concat(facebookSourcesExtra);
 
   return (
@@ -34,7 +33,7 @@ const FacebookSource = (props: facebookSourceProps) => {
         isConnected="connected"
         addAChannel={<AddChannel />}
         ignoreChannelId={facebookSources.length > 0}
-        ignorePlaceholder={facebookSources.length > 0}
+        ignoreSvgAvatar={facebookSources.length > 0}
         displayFacebookImage={facebookSources.length > 0}
       />
     </div>

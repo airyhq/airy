@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from './WhatsappSmsSource.module.scss';
-import {ReactComponent as WhatsappLogo} from '../../../assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as AddChannel} from '../../../assets/images/icons/plus-circle.svg';
-import {ReactComponent as Placeholder} from '../../../assets/images/icons/placeholder.svg';
+import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
+import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
 import ChannelDetails from './ChannelDetails';
 import ChannelsConnected from './ChannelsConnected';

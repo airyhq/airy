@@ -13,7 +13,7 @@
   width: 300px;
   border: 1px solid var(--color-light-gray);
   border-radius: 8px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   margin-top: 22px;
 }
 
@@ -21,30 +21,24 @@
   display: inline-flex;
   height: 40px;
   width: 40px;
-  margin:16px 8px 42px 16px;
-  svg{
-    width:30px;
-    height:30px;
+  margin: 16px 8px 42px 16px;
+  svg {
+    width: 30px;
+    height: 30px;
   }
 }
 
-.channelTitle{
+.channelTitle {
   display: inline-flex;
   height: 24px;
   width: 190px;
   color: #212428;
-  font-family: Lato;
   font-size: 16px;
   font-weight: bold;
   letter-spacing: 0;
   line-height: 24px;
-  margin:16px 20px 2px 2px;
+  margin: 16px 20px 2px 2px;
 }
-
-// .channelTitleAndText {
-//   margin: 0px auto 0px 21px;
-//   padding: 15px 0px 15px 0px;
-// }
 
 .channelText {
   display: inline-flex;
@@ -54,15 +48,14 @@
   font-size: 16px;
   letter-spacing: 0;
   line-height: 24px;
-  
 }
 
 .channelButton {
   display: flex;
   padding-top: 8px;
-  width:40px;
-  height:40px;
-  margin:20px 0px 8px 0px;
+  width: 40px;
+  height: 40px;
+  margin: 20px 0px 8px 0px;
 }
 
 .addChannelButton {
@@ -77,13 +70,11 @@
   padding: 0;
   outline: none;
   cursor: pointer;
-  
 }
 
 .channelButtonIcon {
   @include font-m;
   margin-right: 16px;
-  
   width: 24px;
   height: 24px;
   display: flex;
@@ -91,8 +82,8 @@
   align-items: center;
   color: var(--color-text-gray);
   cursor: pointer;
- 
-  padding:0px;
+
+  padding: 0px;
 
   svg {
     margin: 0;
@@ -106,5 +97,3 @@
     box-shadow: 0px 0px 0px 3px var(--color-background-blue);
   }
 }
-
-

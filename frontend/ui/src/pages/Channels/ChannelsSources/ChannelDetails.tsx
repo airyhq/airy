@@ -23,7 +23,9 @@ const ChannelDetails = (props: ChannelDetailsProps) => {
       {props.displayButton && (
         <div className={styles.channelButton}>
           <button type="button" className={styles.addChannelButton}>
-            <div className={styles.channelButtonIcon}>{props.buttonIcon}</div>
+            <div className={styles.channelButtonIcon} title="Add a channel">
+              {props.buttonIcon}
+            </div>
           </button>
         </div>
       )}

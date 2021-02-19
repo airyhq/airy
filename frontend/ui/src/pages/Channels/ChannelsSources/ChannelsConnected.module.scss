@@ -1,59 +1,40 @@
 @import '../../../assets/scss/fonts';
 @import '../../../assets/scss/colors';
 
-
-
 .connectedContainer {
   display: flex;
   flex-direction: column;
   height: 120px;
   min-width: 500px;
-  margin-bottom:10px;
-  // border: 1px solid var(--color-light-gray);
-  // border-radius: 8px;
-
+  margin-bottom: 10px;
 }
 
 .connectedSum {
-  // display:inline-flex;
-  margin-left:16px;
+  margin-left: 16px;
   color: var(--color-text-gray);
 }
 
-
-
-.connectedChannelFlex{
-  display:flex;
-  //flex-direction: column;
-  //align-items: center;
-  //flex-wrap: wrap;
-  //flex-basis: 100%;
+.connectedChannelBox {
+  display: flex;
   box-sizing: border-box;
-  height: 100px;
+  min-height: 100px;
   min-width: 450px;
   border: 1px solid var(--color-light-gray);
   border-radius: 8px;
-  background-color: #FFFFFF;
-  margin-left:12px;
-  
+  background-color: #ffffff;
+  margin-left: 12px;
 }
 
 .connectedChannel {
-  display:flex;
-  flex-wrap:wrap;
+  display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
-  min-width:398px;
-  height:94px;
+  min-width: 398px;
+  min-height: 94px;
 }
-
-
-.extraChannelButton{
-
-}
-
 
 .extraChannel {
-  display:flex;
+  display: flex;
   border: none;
   padding: 0;
   outline: none;
@@ -62,58 +43,45 @@
   color: var(--color-airy-blue);
   text-decoration: underline;
   margin-top: 40px;
-  width:88px;
-  height:20px;
+  min-width: 88px;
+  min-height: 20px;
 }
-
 
 .connectedChannelData {
   display: flex;
-  //margin-left:6px;
   align-items: flex-start;
-  margin-top:6px;
-  
+  margin: 6px 0px 0px 6px;
 }
 
 .channelListEntry {
-   display: inline-flex;
-  
+  display: inline-flex;
 }
 
 .placeholderLogo {
   display: inline-flex;
   height: 20px;
   width: 20px;
-  margin:16px 8px 0px 6px;
+  margin: 14px 2px 0px 6px;
   svg {
-   
-  height: 18px;
-  width: 18px;
-  
-    
+    height: 18px;
+    width: 18px;
   }
 }
 
-.facebookImage{
+.facebookImage {
   display: inline-flex;
   height: 16px;
   width: 16px;
   border-radius: 50%;
   margin: 16px 12px 0px 8px;
- }
-
-
-.connectedChannelName {
-  padding-top: 10px;
-  padding-left: 6px;
-  width:168px;
-  height:24px;
 }
 
-
-
-
-
+.connectedChannelName {
+  margin-right: 7px;
+  padding-top: 10px;
+  min-width: 168px;
+  height: 24px;
+}
 
 .channelId {
   padding-top: 10px;
@@ -122,9 +90,9 @@
 .channelButton {
   display: flex;
   padding-top: 8px;
-  width:40px;
-  height:40px;
-  margin:20px 0px 8px 0px;
+  width: 40px;
+  height: 40px;
+  margin: 20px 0px 8px 0px;
 }
 
 .addChannelButton {
@@ -139,14 +107,11 @@
   padding: 0;
   outline: none;
   cursor: pointer;
-  
 }
 
 .channelButtonIcon {
   @include font-m;
-  margin-right: 16px;
-  margin-bottom: 24px;
-  
+  margin: 0px 16px 24px 0px;
   width: 24px;
   height: 24px;
   display: flex;
@@ -154,8 +119,7 @@
   align-items: center;
   color: var(--color-text-gray);
   cursor: pointer;
- 
-  padding:0px;
+  padding: 0;
 
   svg {
     margin: 0;

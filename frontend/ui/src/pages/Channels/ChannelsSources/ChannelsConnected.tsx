@@ -13,7 +13,7 @@ type connectedChannelsProps = {
   isConnected: string;
   addAChannel: JSX.Element;
   ignoreChannelId?: boolean;
-  ignorePlaceholder?: boolean;
+  ignoreSvgAvatar?: boolean;
   displayFacebookImage?: boolean;
 };
 
@@ -28,7 +28,7 @@ const ChannelsConnected = (props: connectedChannelsProps) => {
                 {props.showSumOfChannels} {props.connected}
               </p>
             </div>
-            <div className={styles.connectedChannelFlex}>
+            <div className={styles.connectedChannelBox}>
               <div className={styles.connectedChannel}>
                 {props.connectedChannel.map((channel: Channel) => {
                   const channelName = channel.metadata.name;
@@ -40,7 +40,7 @@ const ChannelsConnected = (props: connectedChannelsProps) => {
                             <img src={channel.metadata.imageUrl} alt={channelName} className={styles.facebookImage} />
                           )}
 
-                          {!props.ignorePlaceholder && (
+                          {!props.ignoreSvgAvatar && (
                             <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
                           )}
 
@@ -49,80 +49,13 @@ const ChannelsConnected = (props: connectedChannelsProps) => {
                           {!props.ignoreChannelId && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
                         </div>
                       </li>
-                      {props.displayFacebookImage && (
-                        <>
-                          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                            <div className={styles.connectedChannelData}>
-                              {channel.metadata.imageUrl && props.displayFacebookImage && (
-                                <img
-                                  src={channel.metadata.imageUrl}
-                                  alt={channelName}
-                                  className={styles.facebookImage}
-                                />
-                              )}
-
-                              {!props.ignorePlaceholder && (
-                                <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
-                              )}
-
-                              <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
-
-                              {!props.ignoreChannelId && (
-                                <div className={styles.channelId}>{channel.sourceChannelId}</div>
-                              )}
-                            </div>
-                          </li>
-                          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                            <div className={styles.connectedChannelData}>
-                              {channel.metadata.imageUrl && props.displayFacebookImage && (
-                                <img
-                                  src={channel.metadata.imageUrl}
-                                  alt={channelName}
-                                  className={styles.facebookImage}
-                                />
-                              )}
-
-                              {!props.ignorePlaceholder && (
-                                <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
-                              )}
-
-                              <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
-
-                              {!props.ignoreChannelId && (
-                                <div className={styles.channelId}>{channel.sourceChannelId}</div>
-                              )}
-                            </div>
-                          </li>
-                          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                            <div className={styles.connectedChannelData}>
-                              {channel.metadata.imageUrl && props.displayFacebookImage && (
-                                <img
-                                  src={channel.metadata.imageUrl}
-                                  alt={channelName}
-                                  className={styles.facebookImage}
-                                />
-                              )}
-
-                              {!props.ignorePlaceholder && (
-                                <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
-                              )}
-
-                              <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
-
-                              {!props.ignoreChannelId && (
-                                <div className={styles.channelId}>{channel.sourceChannelId}</div>
-                              )}
-                            </div>
-                          </li>
-                        </>
-                      )}
                     </>
                   );
                 })}
               </div>
               <div className={styles.extraChannelButton}>
                 {props.extraChannel && (
-                  <button className={styles.extraChannel}>
+                  <button className={styles.extraChannel} title="Click for more details">
                     +{props.displayExtraChannel} {props.isConnected}
                   </button>
                 )}
@@ -132,7 +65,9 @@ const ChannelsConnected = (props: connectedChannelsProps) => {
 
           <div className={styles.channelButton}>
             <button type="button" className={styles.addChannelButton}>
-              <div className={styles.channelButtonIcon}>{props.addAChannel}</div>
+              <div className={styles.channelButtonIcon} title="Add a channel">
+                {props.addAChannel}
+              </div>
             </button>
           </div>
         </>

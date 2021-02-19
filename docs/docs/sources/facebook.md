@@ -32,7 +32,7 @@ Core Platform instance.
 The Facebook source requires the following configuration:
 
 - [Step 1: Step 1: Find the App ID and secret](#step-1-find-the-app-id-and-secret)
-- [Step 2:  Configure the webhook integration](#step-2-configure-the-webhook-integration)
+- [Step 2: Configure the webhook integration](#step-2-configure-the-webhook-integration)
 - [Step 3: Obtain a page token](#step-3-obtain-a-page-token)
 
 Let's proceed step by step.
@@ -109,24 +109,32 @@ You will see something like this:
 Once the verification process has been completed, Facebook will immediately
 start sending events to your Airy Core instance.
 
-### Step 3: Add products: Messenger and Webhooks 
+### Step 3: Add products: Messenger and Webhooks
 
-Click on "Products" on the left sidebar and click on the + icon: a list of products that you 
+Click on "Products" on the left sidebar and click on the + icon: a list of products that you
 can add to your app will appear.
 
-<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/products.png')} />
+<img alt="Facebook add product" src={useBaseUrl('img/sources/facebook/products.png')} />
 
 Select the product "Webhooks" and click on the button "Subscribe to this object". This will open a pop-up: add your callback url and verify token in the fields.
 
-<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/webhook_product.png')} />
+<img alt="Facebook add webhooks product" src={useBaseUrl('img/sources/facebook/webhook_product.png')} />
 
-Next, go back to the Products section and select "Messenger". Click on the blue button "Add or Remove 
+Next, go back to the Products section and select "Messenger". Click on the blue button "Add or Remove
 Pages" and select your page. After that, click on the button "Add callback url" and add your callback url and verify token in the fields.
 
-<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/messenger.png')} />
+<img alt="Facebook messenger product" src={useBaseUrl('img/sources/facebook/messenger.png')} />
+
+Once your page has been added, click on the button "Generate Token".
+
+<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/token_messenger.png')} />
+
+This will open a pop-up with your page token. You will need it to connect the Facebook page to your instance.
+
+<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/tokenMessenger_popUp.png')} />
 
 <br />
-
+<br />
 
 <SuccessBox>
 
@@ -134,11 +142,10 @@ You are now ready to connect a Facebook page to your Airy Core instance 🎉
 
 </SuccessBox>
 
-<br />
-
 ## Connect a Facebook page to your instance
 
-The next step is to send a request to the [Channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
+The next step is to send a request to the [Channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance. `page_token` is the page Access Token you obtained on the
+Messenger section.
 
 <ButtonBox
 icon={() => <BoltSVG />}

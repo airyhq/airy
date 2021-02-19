@@ -53,7 +53,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
 //- image
 //- suggestionResponse
 //- authenticationResponse
-//sender_type: source_contact 
+//sender_type: source_contact
 //`source_contact` sent to the source by a contact
 function googleInbound(message: Message): ContentUnion {
   console.log('inbound - message', message);

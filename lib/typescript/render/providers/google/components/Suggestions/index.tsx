@@ -61,6 +61,7 @@ export const Suggestions = ({text, fallback, image, suggestions, contact, fromCo
                       <h1 key={elem.action.text} className={styles.title}>
                         <a
                           key={elem.action.text}
+                          className={styles.title}
                           href={
                             elem.action.openUrlAction && elem.action.openUrlAction.url
                               ? elem.action.openUrlAction.url
@@ -77,7 +78,7 @@ export const Suggestions = ({text, fallback, image, suggestions, contact, fromCo
                   return (
                     <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
                       <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
-                        Sign in with Google on Google's Business Messages chat
+                        Sign in with Google
                       </h1>
                     </button>
                   );
@@ -87,12 +88,13 @@ export const Suggestions = ({text, fallback, image, suggestions, contact, fromCo
                   return (
                     <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
                       <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
-                        Message a live agent on Google's Business Messages chat
+                        Message a live agent
                       </h1>
                     </button>
                   );
                 }
               })}
+              <span className={styles.hoverText}>This action can only be triggered by your contact.</span>
             </div>
           </div>
         </div>
@@ -146,7 +148,7 @@ export const Suggestions = ({text, fallback, image, suggestions, contact, fromCo
                   return (
                     <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
                       <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
-                        Sign in with Google on Google's Business Messages chat
+                        Sign in with Google
                       </h1>
                     </button>
                   );
@@ -156,7 +158,7 @@ export const Suggestions = ({text, fallback, image, suggestions, contact, fromCo
                   return (
                     <button key={Math.floor(Math.random() * 10)} className={styles.replyButton}>
                       <h1 key={Math.floor(Math.random() * 10)} className={styles.title}>
-                        Message a live agent on Google's Business Messages chat
+                        Message a live agent
                       </h1>
                     </button>
                   );

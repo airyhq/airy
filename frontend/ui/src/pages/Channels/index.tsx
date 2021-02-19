@@ -1,10 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import FacebookLogin from 'react-facebook-login';
-import {Button} from '@airyhq/components';
-import ChannelSources from './ChannelSources';
+import {RouteComponentProps} from 'react-router-dom';
 import {Channel} from 'httpclient';
-import {AiryConfig} from '../../AiryConfig';
+//import {AiryConfig} from '../../AiryConfig';
 import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
 import {StateModel} from '../../reducers/index';
 import styles from './index.module.scss';
@@ -29,9 +27,9 @@ const mapStateToProps = (state: StateModel) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const Channels = (props: ConnectedProps<typeof connector>) => {
-  const [facebookToken, setFacebookToken] = useState('');
+type ChannelsConnectProps = {} & ConnectedProps<typeof connector> & RouteComponentProps;
 
+const Channels = (props: ChannelsConnectProps) => {
   const [isShowingSearchChannelInput, setIsShowingSearchChannelInput] = useState(false);
   const [searchChannel, setSearchChannel] = useState('');
 
@@ -53,41 +51,23 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
     setPageTitle('Channels');
   }, []);
 
-  const connect = (token: string) => {
-    props.exploreChannels({
-      source: 'facebook',
-      token,
-    });
+  const handleAiryChannel = () => {
+    //Enter logic here
+  };
+  const handleFacebookChannel = () => {
+    //Enter logic here
+  };
+  const handleSmsChannel = () => {
+    //Enter logic here
+  };
+  const handleWhatsappChannel = () => {
+    //Enter logic here
+  };
+  const handleGoogleChannel = () => {
+    //Enter logic here
   };
 
-  const fetchPages = () => {
-    FB.getLoginStatus(loginResponse => {
-      if (loginResponse.status === 'connected') {
-        setFacebookToken(loginResponse.authResponse.accessToken);
-        connect(loginResponse.authResponse.accessToken);
-      } else {
-        FB.login(loginResponse => {
-          setFacebookToken(loginResponse.authResponse.accessToken);
-          connect(loginResponse.authResponse.accessToken);
-        });
-      }
-    });
-  };
-
-  const connectClicked = useCallback(
-    (channel: Channel) => {
-      props.connectChannel({
-        source: channel.source,
-        sourceChannelId: channel.sourceChannelId,
-        token: facebookToken,
-      });
-    },
-    [facebookToken]
-  );
-
-  const disconnectClicked = (channel: Channel) => {
-    props.disconnectChannel({channelId: channel.sourceChannelId});
-  };
+  const totalChannel = props.channels.length;
 
   const renderSearchChannelInput = isShowingSearchChannelInput ? (
     <div className={styles.containerChannelSearchField}>
@@ -129,49 +109,143 @@ const Channels = (props: ConnectedProps<typeof connector>) => {
 
           {renderSearchChannelInput}
         </div>
-        {/* <FacebookLogin
-          appId={AiryConfig.FACEBOOK_APP_ID}
-          autoLoad={false}
-          textButton="Add a Channel"
-          fields="name,email,picture"
-          scope="pages_messaging,pages_show_list,manage_pages"
-          callback={fetchPages}
-          version="3.2"
-          cssClass={styles.connectButton}
-          render={() => (
-            <Button type="button" onClick={fetchPages}>
-              Add Channels
-            </Button>
-          )} 
-        /> */}
       </div>
       <ul className={styles.channelsChoice}>
         {' '}
-        <li>Choose a channel you want to connect</li>
-      </ul>
-
-      {/* <ul className={styles.channelList}>
-        {props.channels.map((channel: Channel) => (
-          <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-            <img src={channel.imageUrl} className={styles.channelImage} />
-            <div className={styles.channelName}>{channel.name}</div>
-            <div className={styles.channelAction}>
-              {channel.connected ? (
-                <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
-                  Disconnect
-                </Button>
-              ) : (
-                <Button styleVariant="small" onClick={() => connectClicked(channel)}>
-                  Connect
-                </Button>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul> */}
+        <p>Choose a channel you want to connect</p>
+      </div>
 
       <div>
-        <ChannelSources />
+        <div className={styles.wrapper}>
+          <div className={styles.flexWrap}>
+            <div className={styles.airyChannel}>
+              <div className={styles.airyLogo}>
+                <AiryLogo />
+              </div>
+              <div className={styles.airyTitleAndText}>
+                <p className={styles.airyTitle}>Airy Live Chat</p>
+                <p className={styles.airyText}>Best of class browser messenger</p>
+              </div>
+            </div>
+            {Channels && props.channels.length === 0 && (
+              <div className={styles.channelButton}>
+                <button type="button" onClick={handleAiryChannel} className={styles.addChannelButton}>
+                  <div className={styles.channelButtonIcon}>
+                    <AddChannel />
+                  </div>
+                </button>
+              </div>
+            )}
+
+            {Channels && props.channels.length > 0 && (
+              <>
+                <div className={styles.airyConnectedContainer}>
+                  <div className={styles.airyConnectedPara}>
+                    <p>{totalChannel} Connected</p>
+                  </div>
+
+                  <div className={styles.airyConnectedChannel}>
+                    {props.channels.map((channel: Channel) => (
+                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                        <img src={channel.imageUrl} className={styles.channelImage} />
+                        <div className={styles.channelName}>{channel.name}</div>
+                        <div className={styles.channelAction}></div>
+                      </li>
+                    ))}
+                  </div>
+                </div>
+                <div className={styles.channelButton}>
+                  <button type="button" onClick={handleAiryChannel} className={styles.addChannelButton}>
+                    <div className={styles.channelButtonIcon}>
+                      <AddChannel />
+                    </div>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className={styles.flexWrap}>
+            <div className={styles.facebookChannel}>
+              <div className={styles.facebookLogo}>
+                <FacebookLogo />
+              </div>
+              <div className={styles.facebookTitleAndText}>
+                <p className={styles.facebookTitle}>Messenger</p>
+                <p className={styles.facebookText}>Connect multiple Facebook pages</p>
+              </div>
+            </div>
+            <div>
+              <div className={styles.channelButton}>
+                <button type="button" onClick={handleFacebookChannel} className={styles.addChannelButton}>
+                  <div className={styles.channelButtonIcon}>
+                    <AddChannel />
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className={styles.flexWrap}>
+            <div className={styles.smsChannel}>
+              <div className={styles.smsLogo}>
+                <SMSLogo />
+              </div>
+              <div className={styles.smsTitleAndText}>
+                <p className={styles.smsTitle}>SMS</p>
+                <p className={styles.smsText}>Deliver SMS with ease</p>
+              </div>
+            </div>
+            <div>
+              <div className={styles.channelButton}>
+                <button type="button" onClick={handleSmsChannel} className={styles.addChannelButton}>
+                  <div className={styles.channelButtonIcon}>
+                    <AddChannel />
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className={styles.flexWrap}>
+            <div className={styles.whatsappChannel}>
+              <div className={styles.whatsappLogo}>
+                <WhatsappLogo />
+              </div>
+              <div className={styles.whatsappTitleAndText}>
+                <p className={styles.whatsappTitle}>Whatsapp</p>
+                <p className={styles.whatsappText}>World #1 chat app</p>
+              </div>
+            </div>
+            <div>
+              <div className={styles.channelButton}>
+                <button type="button" onClick={handleWhatsappChannel} className={styles.addChannelButton}>
+                  <div className={styles.channelButtonIcon}>
+                    <AddChannel />
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className={styles.flexWrap}>
+            <div className={styles.googleChannel}>
+              <div className={styles.googleLogo}>
+                <GoogleLogo />
+              </div>
+              <div className={styles.googleTitleAndText}>
+                <p className={styles.googleTitle}>Google Business Messages</p>
+                <p className={styles.googleText}>Be there when people search</p>
+              </div>
+            </div>
+            <div>
+              <div className={styles.channelButton}>
+                <button type="button" onClick={handleGoogleChannel} className={styles.addChannelButton}>
+                  <div className={styles.channelButtonIcon}>
+                    <AddChannel />
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

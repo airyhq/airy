@@ -115,6 +115,21 @@
   background: white;
 }
 
+.searchIcon:hover {
+  background: var(--color-airy-blue);
+}
+
+.containerFilterAndSearchChannel {
+  display: flex;
+  border-radius: 5px;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.containerFilter {
+  margin-right: 18px;
+}
+
 .searchButton {
   border: none;
   background-color: white;
@@ -124,7 +139,6 @@
   top: 1px;
   padding: 0;
   outline: none;
-  
 }
 
 
@@ -149,6 +163,109 @@
 
 .containerFilter{
   margin-right: 18px;
+  width: 25px;
+}
+
+.channelsChoice {
+  list-style: none;
+  color: var(--color-text-gray);
+  padding-bottom: 20px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  margin-bottom: 1em;
+}
+
+.flexWrap {
+  display: flex;
+  flex-grow: 1;
+}
+
+.airyChannel {
+  display: inline-flex;
+  border: solid 1px var(--color-light-gray);
+  border-radius: 8px;
+  flex-basis: 100%;
+  min-width: 35vh;
+  max-height: 14vh;
+  padding: 1%;
+  margin-bottom: 15px;
+}
+
+.airyLogo {
+  height: 60px;
+  border: none;
+  width: 40px;
+  background: white;
+  border-radius: 50%;
+  padding: 15px 0px 15px 12px;
+}
+
+.airyTitleAndText {
+  margin: 0px auto 0px 21px;
+  padding: 15px 0px 15px 0px;
+}
+
+.airyText {
+  color: var(--color-text-gray);
+}
+
+.channelButton {
+  display: block;
+  padding-top: 25px;
+}
+
+.addChannelButton {
+  position: relative;
+  background: white;
+  width: 40px;
+  height: 70px;
+  margin-left: 8px;
+  transition: 0.2s ease-in-out all;
+  border: none;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+.channelButtonIcon {
+  height: 40px;
+  border: none;
+  width: 40px;
+  @include font-s;
+  font-weight: 400;
+  color: #000;
+  padding-top: 5px;
+}
+
+.channelButtonIcon:hover {
+  background: var(--color-airy-blue);
+}
+
+.airyConnectedContainer {
+  display: flex;
+  flex-direction: column;
+  //background-color: green;
+  min-width: 65vh;
+}
+
+.airyConnectedChannel {
+  display: inline-flex;
+  border: solid 1px var(--color-light-gray);
+  border-radius: 8px;
+  flex-basis: 100%;
+  min-width: 55vh;
+  max-height: 15vh;
+  margin-left: 15px;
+  margin-bottom: 16px;
+  //background-color: red;
+}
+
+.airyConnectedPara {
+  margin-left: 10em;
 }
 
 .channelList {
@@ -170,14 +287,125 @@
   
  .channelName {
   padding: 0 16px;
- }
-  
- .channelAction {
+}
+
+.channelAction {
   flex-grow: 1;
   justify-content: right;
   display: flex;
- }
-  
- 
+}
 
+.facebookChannel {
+  display: inline-flex;
+  border: solid 1px var(--color-light-gray);
+  border-radius: 8px;
+  flex-basis: 100%;
+  min-width: 35vh;
+  max-height: 14vh;
+  padding: 1%;
+  margin-bottom: 15px;
+}
 
+.facebookLogo {
+  height: 60px;
+  border: none;
+  width: 40px;
+  background: white;
+  padding: 15px 0px 15px 12px;
+}
+
+.facebookTitleAndText {
+  margin: 0px auto 0px 21px;
+  padding: 15px 0px 15px 0px;
+}
+
+.facebookText {
+  color: var(--color-text-gray);
+}
+
+.smsChannel {
+  display: inline-flex;
+  border: solid 1px var(--color-light-gray);
+  border-radius: 8px;
+  flex-basis: 100%;
+  min-width: 35vh;
+  max-height: 14vh;
+  padding: 1%;
+  margin-bottom: 15px;
+}
+
+.smsLogo {
+  height: 60px;
+  border: none;
+  width: 40px;
+  background: white;
+  border-radius: 50%;
+  padding: 15px 0px 15px 12px;
+}
+
+.smsTitleAndText {
+  margin: 0px auto 0px 21px;
+  padding: 15px 0px 15px 0px;
+}
+
+.smsText {
+  color: var(--color-text-gray);
+}
+
+.whatsappChannel {
+  display: inline-flex;
+  border: solid 1px var(--color-light-gray);
+  border-radius: 8px;
+  flex-basis: 100%;
+  min-width: 35vh;
+  max-height: 14vh;
+  padding: 1%;
+  margin-bottom: 15px;
+}
+
+.whatsappLogo {
+  height: 60px;
+  border: none;
+  width: 40px;
+  background: white;
+  border-radius: 50%;
+  padding: 15px 0px 15px 12px;
+}
+
+.whatsappTitleAndText {
+  margin: 0px auto 0px 20px;
+  padding: 15px 0px 15px 0px;
+}
+
+.whatsappText {
+  color: var(--color-text-gray);
+}
+
+.googleChannel {
+  display: inline-flex;
+  border: solid 1px var(--color-light-gray);
+  border-radius: 8px;
+  flex-basis: 100%;
+  min-width: 35vh;
+  max-height: 14vh;
+  padding: 1%;
+  margin-bottom: 15px;
+}
+
+.googleLogo {
+  height: 60px;
+  border: none;
+  width: 40px;
+  background: white;
+  border-radius: 50%;
+  padding: 15px 0px 15px 12px;
+}
+
+.googleTitleAndText {
+  margin: 0px auto 0px 20px;
+  padding: 15px 0px 15px 0px;
+}
+
+.googleText {
+  color: var(--color-text-gray);
+}

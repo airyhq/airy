@@ -85,7 +85,7 @@ airy config apply [flags]
 
 ##  Create
 
-Creates an instance of Airy Core
+Creates an instance of the Airy Core
 
 ```
 airy create [flags]
@@ -95,7 +95,7 @@ airy create [flags]
 
 ```
   -h, --help              help for create
-      --provider string   One of the supported providers (aws|local)
+      --provider string   One of the supported providers (aws|local). Default is aws
 ```
 
 #### Options inherited from parent commands

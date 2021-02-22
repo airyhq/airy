@@ -94,23 +94,17 @@ This will add the Webhooks as one of your app's products and will lead you to th
 https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/webhooks/
 ```
 
-<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/webhook_1.png')} />
+<img alt="Facebook webhook" src={useBaseUrl('img/sources/facebook/webhook_1.png')} />
 
 Select "Page" from the dropdown (the default is "User") and click on the button "Subscribe to this object".
 
 This will open a modal box: add your Callback URL (your instance's Facebook Webhook URL) and Verify Token (the webhookSecret you added in `infrastructure/airy.yaml` in the previous step).
 
-<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/webhook_2.png')} />
+<img alt="Facebook webhook" src={useBaseUrl('img/sources/facebook/webhook_2.png')} />
 
 <br />
 
 :::note
-You can find your Facebook Webhook URL by running in the terminal:
-
-```
-cd infrastructure
-vagrant status
-```
 
 Your Facebook Webhook URL should have the following format:
 
@@ -118,7 +112,7 @@ Your Facebook Webhook URL should have the following format:
 `https://fb-RANDOM_STRING.tunnel.airy.co/facebook`
 ```
 
-Find more information about the Vagrant box status [here](/getting-started/deployment/vagrant#status)
+Find out how you can find your Facebook Webhook URL [here](/getting-started/deployment/vagrant#status)
 :::
 
 If you encounter errors, please make sure that the Verify Token matches the `webhookSecret` in `infrastructure/airy.yaml` and that your variables have been successfully set to your Airy Core instance.
@@ -155,13 +149,21 @@ Notice that at the bottom of the page, the Webhooks product has been added with 
 
 Click on the blue button "Add or Remove Pages" and select your page.
 
-Once your page has been added, click on the button "Generate Token".
+Once your page has been added, scroll down and click on the button "Add Subscriptions".
 
-<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/token_messenger.png')} />
+<img alt="Facebook page subscriptions" src={useBaseUrl('img/sources/facebook/add_subscriptions.png')} />
 
-This will open a pop-up revealing your page Token. Copy it, you will need it to connect the Facebook page to your instance.
+This opens a modal box: tick "messages" and "messaging_postbacks" from the Subscription Fields list.
 
-<img alt="Facebook edit subscription" src={useBaseUrl('img/sources/facebook/tokenMessenger_popUp.png')} />
+<img alt="Facebook page subscriptions" src={useBaseUrl('img/sources/facebook/edit_page_subs.png')} />
+
+Next, scroll up, and click on the button "Generate Token".
+
+<img alt="Facebook page token" src={useBaseUrl('img/sources/facebook/token_messenger.png')} />
+
+This will open a pop-up revealing your page Access Token. Copy it, you will need it to connect the Facebook page to your instance.
+
+<img alt="Facebook page token" src={useBaseUrl('img/sources/facebook/tokenMessenger_popUp.png')} />
 
 <br />
 <br />

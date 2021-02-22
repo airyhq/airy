@@ -1,4 +1,4 @@
-module redis-worker
+module com.github/airyhq/airy/backend/webhook/redis-worker
 
 go 1.13
 

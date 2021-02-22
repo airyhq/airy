@@ -1,12 +1,8 @@
 <p align="center">
   <img src="https://global-uploads.webflow.com/5e9d5014fb5d85233d05fa23/5ea6ab4327484b79bdb4cea4_airy_primary_rgb.svg" alt="Airy-logo" width="240">
-
-
   <div align="center">The open source, fully-featured, production ready</div>
   <div align="center">Messaging platform</div>
 </p>
-
-
 
 # Airy Core
 
@@ -18,9 +14,9 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/airyhq/airy/projects)
 
 
-Airy Core is an open source, fully-featured, production ready
-messaging platform.
-With Airy you can process conversational data from a variety of sources:
+Airy Core is an open source, fully-featured, production ready messaging
+platform. With Airy you can process conversational data from a variety of
+sources:
 
  - **Facebook**
  - **WhatsApp**
@@ -38,9 +34,9 @@ You can then use Airy to:
  - **Mediate open requests with Agents via our messaging UI**
  - **Analyze your conversations**
 
-Since Airy's infrastructure is built around Apache Kafka, it can process a
-large amount of conversations and messages simultaneously and stream the
-relevant conversational data to wherever you need it.
+Since Airy's infrastructure is built around Apache Kafka, it can process a large
+amount of conversations and messages simultaneously and stream the relevant
+conversational data to wherever you need it.
 
 Learn more about what we open-sourced in the
 [announcement blog post](https://airy.co/blog/what-we-open-sourced).
@@ -71,22 +67,35 @@ Learn more about what we open-sourced in the
 Airy Core contains the following components:
 
 - **💬 Connectors for all [conversational sources](https://airy.co/docs/core/sources/introduction)**
-Connect anything from our free open-source [live chat plugin](https://airy.co/docs/core/sources/chat-plugin), [Facebook Messenger](https://airy.co/docs/core/sources/facebook), [Google's Business Messages](https://airy.co/docs/core/sources/google) to your Airy Core. 
 
-This is all possible through an ingestion platform that heavily relies on [Apache Kafka](https://kafka.apache.org) to process incoming webhook data from different sources. We make sense of the data and reshape it into source independent contacts, conversations, and messages.
+  Connect anything from our free open-source [live chat
+  plugin](https://airy.co/docs/core/sources/chat-plugin), [Facebook
+  Messenger](https://airy.co/docs/core/sources/facebook), [Google's Business
+  Messages](https://airy.co/docs/core/sources/google) to your Airy Core. This is
+  all possible through an ingestion platform that heavily relies on [Apache
+  Kafka](https://kafka.apache.org) to process incoming webhook data from
+  different sources. We make sense of the data and reshape it into source
+  independent contacts, conversations, and messages.
 
 - **⚡[APIs](https://airy.co/docs/core/api/introduction) to access your data**
-An [API](https://airy.co/docs/core/api/introduction) to access conversational data with blazing fast HTTP endpoints.
+
+  An [API](https://airy.co/docs/core/api/introduction) to access conversational
+  data with blazing fast HTTP endpoints.
 
 - **🔌[WebSockets](https://airy.co/docs/core/api/websocket) to power real-time applications**
-A [WebSocket server](https://airy.co/docs/core/api/websocket) that allows clients to receive near real-time updates about data flowing through the system.
+
+  A [WebSocket server](https://airy.co/docs/core/api/websocket) that allows
+  clients to receive near real-time updates about data flowing through the
+  system.
 
 - **🎣[Webhook](https://airy.co/docs/core/api/webhook) to listen to events and participate programmatically in conversations**
-A webhook integration server that allows its users to programmatically participate in conversations by sending messages (the webhook integration exposes events users can "listen" to and react programmatically.)
+
+  A webhook integration server that allows its users to programmatically participate in conversations by sending messages (the webhook integration exposes events users can "listen" to and react programmatically.)
 
 - **💎[UI: From an inbox to dashboards](https://airy.co/docs/core/apps/ui/introduction)**
-Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your teams to use.
 
+  Not every message can be handled by code, this is why Airy comes with
+  different UIs ready for you and your teams to use.
 
 ## How to contribute
 
@@ -105,7 +114,6 @@ started.
 
 ## Code of Conduct
 
-To ensure a safe experience and a welcoming community, Airy Core
-project adheres to the [contributor
-convenant](https://www.contributor-covenant.org/) [code of
+To ensure a safe experience and a welcoming community, Airy Core project adheres
+to the [contributor convenant](https://www.contributor-covenant.org/) [code of
 conduct](/code_of_conduct.md).

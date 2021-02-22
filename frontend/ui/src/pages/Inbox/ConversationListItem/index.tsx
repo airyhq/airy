@@ -31,8 +31,8 @@ const mapDispatchToProps = {
 const connector = connect(null, mapDispatchToProps);
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
-  if (message && message.content) {
-    return <>{message.content.text}</>;
+  if (message?.content) {
+    return <>{message.content.message?.text || message.content.text}</>;
   }
   return <div />;
 };

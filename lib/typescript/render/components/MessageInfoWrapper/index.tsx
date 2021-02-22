@@ -16,7 +16,7 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
 
   const MemberMessage = () => (
     <div className={styles.member}>
-      <div>{children}</div>
+      <div className={styles.memberContent}>{children}</div>
       <div className={styles.time}>{sentAt}</div>
     </div>
   );

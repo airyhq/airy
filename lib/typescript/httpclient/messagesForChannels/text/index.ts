@@ -7,7 +7,7 @@ export const getTextMessagePayload = (
 ): SendMessagesRequestPayload => {
   let payload: SendMessagesRequestPayload;
   switch (channel) {
-    case 'chat_plugin' || 'twillo.sms' || 'google' || 'facebook' || 'twillo.whatsapp':
+    case 'chat_plugin' || 'twilio.sms' || 'google' || 'facebook' || 'twilio.whatsapp':
       payload = {
         conversationId,
         message: {

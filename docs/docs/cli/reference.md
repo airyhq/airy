@@ -83,6 +83,31 @@ airy config apply [flags]
 
 ***
 
+##  Create
+
+Creates an instance of Airy Core
+
+```
+airy create [flags]
+```
+
+#### Options
+
+```
+  -h, --help              help for create
+      --provider string   One of the supported providers (aws|local). Default is aws
+```
+
+#### Options inherited from parent commands
+
+```
+      --apihost string      Airy Core HTTP API host (default "http://api.airy")
+      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+```
+
+
+***
+
 ##  Init
 
 Inits your airy configuration

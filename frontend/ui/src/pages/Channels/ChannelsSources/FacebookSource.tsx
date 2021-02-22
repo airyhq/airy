@@ -18,7 +18,7 @@ const FacebookSource = (props: facebookSourceProps) => {
     showSumOfChannels: totalFacebookSources.length,
     connectedChannel: facebookSources,
     displayFacebookImage: facebookSources.length > 0,
-    ignoreChannelId: facebookSources.length > 0,
+
     ignoreSvgAvatar: facebookSources.length > 0,
   };
 

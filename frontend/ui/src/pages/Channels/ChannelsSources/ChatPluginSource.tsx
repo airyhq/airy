@@ -17,7 +17,6 @@ const ChatPluginSource = (props: chatPluginProps) => {
     showConnectedChannels: chatPluginSources.length > 0,
     connectedChannel: chatPluginSources,
     showSumOfChannels: totalChatPluginSources.length,
-    ignoreChannelId: chatPluginSources.length > 0,
   };
 
   const connectedAttributesExtra = {

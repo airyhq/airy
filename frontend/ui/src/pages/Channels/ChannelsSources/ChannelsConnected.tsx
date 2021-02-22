@@ -13,7 +13,7 @@ type connectedChannelsProps = {
   displayExtraChannel: number;
   isConnected: string;
   addAChannel: JSX.Element;
-  ignoreChannelId?: boolean;
+  renderChannelId?: boolean;
   ignoreSvgAvatar?: boolean;
   displayFacebookImage?: boolean;
 };
@@ -50,7 +50,7 @@ const ChannelsConnected = (props: connectedChannelsProps) => {
 
                           <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
 
-                          {!props.ignoreChannelId && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
+                          {props.renderChannelId && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
                         </div>
                       </li>
                     </>

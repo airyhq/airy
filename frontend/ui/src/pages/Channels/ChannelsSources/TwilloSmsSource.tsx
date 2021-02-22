@@ -18,11 +18,12 @@ const TwilloSmsSource = (props: twilloSmsSourceProps) => {
     showConnectedChannels: twilloSources.length > 0,
     connectedChannel: twilloSources,
     showSumOfChannels: totalTwilloSources.length,
+    renderChannelId: twilloSources.length > 0,
   };
 
   const connectedAttributesExtra = {
     extraChannel: twilloSourcesExtra.length > 0,
-    displayExtraChannel: totalTwilloSources.length,
+    displayExtraChannel: twilloSourcesExtra.length,
   };
 
   return (

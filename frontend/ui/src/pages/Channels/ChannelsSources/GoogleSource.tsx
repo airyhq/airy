@@ -17,7 +17,6 @@ const GoogleSource = (props: googleSourceProps) => {
     showConnectedChannels: googleSources.length > 0,
     connectedChannel: googleSources,
     showSumOfChannels: totalGoogleSources.length,
-    ignoreChannelId: googleSources.length > 0,
   };
 
   const connectedAttributesExtra = {

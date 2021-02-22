@@ -17,11 +17,12 @@ const WhatsappSmsSource = (props: whatsappSourceProps) => {
     showConnectedChannels: whatsappSources.length > 0,
     connectedChannel: whatsappSources,
     showSumOfChannels: totalWhatsappSources.length,
+    renderChannelId: whatsappSources.length > 0,
   };
 
   const connectedAttributesExtra = {
     extraChannel: whatsappSourcesExtra.length > 0,
-    displayExtraChannel: totalWhatsappSources.length,
+    displayExtraChannel: whatsappSourcesExtra.length,
   };
 
   return (

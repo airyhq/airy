@@ -17,9 +17,8 @@ var (
 )
 
 func init() {
-	CreateCmd.Flags().StringVarP(&provider, "provider", "", "", "One of the supported providers (aws|local)")
-	CreateCmd.MarkFlagRequired("provider")
-	viper.BindPFlag("provider", CreateCmd.PersistentFlags().Lookup("provider"))
+	CreateCmd.Flags().StringVar(&provider, "provider", "", "One of the supported providers (aws|local). Default is aws")
+	viper.SetDefault("provider", "aws")
 }
 
 func create(cmd *cobra.Command, args []string) {

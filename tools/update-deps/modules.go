@@ -9,15 +9,10 @@ import (
 	"strings"
 )
 
-type Module struct {
-	File *modfile.File
-	Path string
-}
-
 func FindModules(rootPath string, excludePattern string) []string {
 	paths := make([]string, 0)
 
-	filepath.Walk(rootPath, func(path string, f os.FileInfo, err error) error {
+	err := filepath.Walk(rootPath, func(path string, f os.FileInfo, err error) error {
 		matches, err := filepath.Match(excludePattern, path)
 		if err != nil {
 			log.Fatal(err)
@@ -32,6 +27,10 @@ func FindModules(rootPath string, excludePattern string) []string {
 		}
 		return nil
 	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return paths
 }

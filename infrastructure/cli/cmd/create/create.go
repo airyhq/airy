@@ -17,7 +17,8 @@ var (
 )
 
 func init() {
-	CreateCmd.PersistentFlags().StringVarP(&provider, "provider", "", "", "provider")
+	CreateCmd.Flags().StringVarP(&provider, "provider", "", "", "One of the supported providers (aws|local)")
+	CreateCmd.MarkFlagRequired("provider")
 	viper.BindPFlag("provider", CreateCmd.PersistentFlags().Lookup("provider"))
 }
 

@@ -5,5 +5,8 @@ go_library(
     srcs = ["create.go"],
     importpath = "cli/cmd/create",
     visibility = ["//visibility:public"],
-    deps = ["@com_github_spf13_cobra//:cobra"],
+    deps = [
+        "@com_github_spf13_cobra//:cobra",
+        "@com_github_spf13_viper//:viper",
+    ],
 )

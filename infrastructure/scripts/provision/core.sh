@@ -25,18 +25,3 @@ if [[ -f "${INFRASTRUCTURE_PATH}"/airy.yaml ]]; then
 else
     helm install core "${INFRASTRUCTURE_PATH}"/helm-chart/ --set global.appImageTag="${AIRY_VERSION}" --set global.ngrokEnabled="${NGROK_ENABLED}" --timeout 1000s > /dev/null 2>&1
 fi
-
-kubectl run startup-helper --image busybox --command -- /bin/sh -c "tail -f /dev/null"
-
-wait-for-running-pod startup-helper
-wait-for-service startup-helper zookeeper 2181 15 ZooKeeper
-wait-for-service startup-helper kafka 9092 15 Kafka
-kubectl cp provision/create-topics.sh kafka-0:/tmp
-kubectl exec kafka-0 -- /tmp/create-topics.sh
-
-kubectl scale deployment postgres --replicas=1
-wait-for-service startup-helper postgres 5432 10 Postgres
-
-kubectl scale statefulset redis-cluster --replicas=1
-wait-for-service startup-helper redis-cluster 6379 10 Redis
-kubectl delete pod startup-helper --force 2>/dev/null

@@ -3,7 +3,7 @@ set -eo pipefail
 IFS=$'\n\t'
 
 echo "Check create-topics.sh is in sync"
-cmp <(bazel run //infrastructure/tools/topics:app) infrastructure/scripts/provision/create-topics.sh
+cmp <(bazel run //infrastructure/tools/topics:app) infrastructure/helm-chart/charts/provisioning/templates/kafka-create-topics.yaml
 echo
 echo "Check cli doc is in sync"
 cp docs/docs/cli/reference.md /tmp/

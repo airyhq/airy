@@ -77,7 +77,7 @@ const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | Gene
 };
 
 function facebookInbound(message: Message): ContentUnion {
-  const messageJson = message.content;
+  const messageJson = message.content;  
 
   if (messageJson.message.attachments?.length) {
     return parseAttachment(messageJson.message.attachments[0]);
@@ -105,7 +105,7 @@ function facebookOutbound(message: Message): ContentUnion {
     if (messageJson.attachment) {
       return {
         type: 'quickReplies',
-        attachment: parseAttachment(messageJson.attachment),
+        attachment: parseAttachment(messageJson.attachment[0]),
         quickReplies: messageJson.quick_replies,
       };
     }
@@ -117,14 +117,14 @@ function facebookOutbound(message: Message): ContentUnion {
     };
   }
 
-  if (messageJson.attachment) {
-    return parseAttachment(messageJson.attachment);
+  if (messageJson.message?.attachments && messageJson.message?.attachments.length > 0) {
+    return parseAttachment(messageJson.message.attachments[0]);
   }
 
-  if (messageJson.text) {
+  if (messageJson.message?.text) {
     return {
       type: 'text',
-      text: messageJson.text,
+      text: messageJson.message?.text,
     };
   }
 

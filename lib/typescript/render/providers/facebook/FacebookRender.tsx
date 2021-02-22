@@ -77,7 +77,7 @@ const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | Gene
 };
 
 function facebookInbound(message: Message): ContentUnion {
-  const messageJson = message.content;
+  const messageJson = message.content;  
 
   if (messageJson.message?.attachments?.length) {
     return parseAttachment(messageJson.message.attachments[0]);

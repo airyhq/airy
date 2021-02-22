@@ -32,6 +32,7 @@ export class SourceMessage extends React.Component<MessageRenderProps, SourceMes
     if (this.state.hasError) {
       return this.errorFallback();
     }
+
     const provider = renderProviders[this.props.source];
 
     try {

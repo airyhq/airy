@@ -5,7 +5,6 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.facebook.dto.Conversation;
 import co.airy.core.sources.facebook.dto.SendMessageRequest;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
@@ -35,6 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.model.message.MessageRepository.isFromContact;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
@@ -92,20 +92,18 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 .aggregate(Conversation::new,
                         (conversationId, message, conversation) -> {
                             final Conversation.ConversationBuilder conversationBuilder = conversation.toBuilder();
-                            if (SenderType.SOURCE_CONTACT.equals(message.getSenderType())) {
+                            if (isFromContact(message)) {
                                 conversationBuilder.sourceConversationId(message.getSenderId());
                             }
                             conversationBuilder.channelId(message.getChannelId());
 
                             return conversationBuilder.build();
                         })
-                .join(channelsTable, Conversation::getChannelId, (conversation, channel) -> {
-                    return conversation.toBuilder()
-                            .channelId(conversation.getChannelId())
-                            .channel(channel)
-                            .sourceConversationId(conversation.getSourceConversationId())
-                            .build();
-                });
+                .join(channelsTable, Conversation::getChannelId, (conversation, channel) -> conversation.toBuilder()
+                        .channelId(conversation.getChannelId())
+                        .channel(channel)
+                        .sourceConversationId(conversation.getSourceConversationId())
+                        .build());
 
         // Send outbound messages
         messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))

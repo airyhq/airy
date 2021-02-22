@@ -1,33 +1,9 @@
-@import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-.container {
-  display: flex;
-  align-self: flex-end;
+.contactContent {
   width: 100%;
   overflow-wrap: break-word;
   word-break: break-word;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  margin: 6px 8px 0 0;
-}
-
-.userContainer {
-  display: flex;
-  flex-direction: row;
-}
-
-.user {
-  align-self: flex-start;
-  text-align: left;
-  position: relative;
-}
-
-.userText {
-  display: inline-flex;
   padding: 10px;
   margin-top: 5px;
   background: var(--color-background-blue);
@@ -35,25 +11,39 @@
   border-radius: 8px;
 }
 
-.member {
-  margin-top: 5px;
-  justify-content: flex-end;
+.memberContent {
   width: 100%;
-  text-align: right;
-}
-
-.memberText {
-  display: inline-flex;
+  overflow-wrap: break-word;
+  word-break: break-word;
   padding: 10px;
-  position: relative;
+  margin-top: 5px;
   background: var(--color-airy-blue);
   color: white;
-  position: relative;
-  text-align: left;
   border-radius: 8px;
+  a {
+    color: white;
+    &:visited,
+    &:hover {
+      color: white;
+    }
+  }
 }
 
-.time {
-  @include font-s;
-  color: var(--color-text-gray);
+.richText {
+  p:first-child {
+    margin-top: 0;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  b,
+  strong {
+    font-weight: 700;
+  }
+
+  i,
+  em {
+    font-style: italic;
+  }
 }

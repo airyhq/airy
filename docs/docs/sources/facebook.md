@@ -149,7 +149,7 @@ https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/dashboard/#addProdu
 
 This will add Messenger as one of your app's products and will lead you to the Messenger product page.
 
-Notice that at the bottom of the page, the Webhooks product has been added with the variables you gave at previous step.
+Notice that at the bottom of the page, the Webhooks product has been added with the variables you gave at the previous step.
 
 <img alt="Facebook messenger product" src={useBaseUrl('img/sources/facebook/messenger.png')} />
 

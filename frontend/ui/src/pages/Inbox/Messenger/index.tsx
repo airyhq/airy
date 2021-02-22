@@ -4,16 +4,16 @@ import _, {connect, ConnectedProps} from 'react-redux';
 
 import ConversationList from '../ConversationList';
 
-import {StateModel} from '../../../reducers';
-import {AllConversationsState} from '../../../reducers/data/conversations';
+import {MergedConversation, StateModel} from '../../../reducers';
 
 import styles from './index.module.scss';
 import MessengerContainer from './MessengerContainer';
+import {allConversations} from '../../../selectors/conversations';
 
 const mapStateToProps = (state: StateModel) => {
   return {
     loading: state.data.conversations.all.paginationData.loading,
-    conversations: state.data.conversations.all,
+    conversations: allConversations(state),
   };
 };
 
@@ -22,7 +22,7 @@ const connector = connect(mapStateToProps);
 const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps) => {
   const {conversations, match} = props;
 
-  const waitForContentAndRedirect = (conversations: AllConversationsState) => {
+  const waitForContentAndRedirect = (conversations: MergedConversation[]) => {
     const conversationId = conversations[0].id;
     const targetPath = `/inbox/conversations/${conversationId}`;
     if (targetPath !== window.location.pathname) {
@@ -30,13 +30,13 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
     }
   };
 
-  if (match.isExact && conversations.items.length) {
+  if (match.isExact && conversations.length) {
     return waitForContentAndRedirect(conversations);
   }
 
   return (
     <section className={styles.messengerContainer}>
-      {!!conversations.items && (
+      {!!conversations && (
         <section className={styles.messengerContainerMiddlePanel}>
           <ConversationList />
         </section>

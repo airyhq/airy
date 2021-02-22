@@ -31,7 +31,8 @@ for more information.
         "name": "my page 1",
         // optional
         "image_url": "http://example.org/avatar.jpeg"
-      }
+      },
+      "connected": true
     },
     {
       "id": "channel-uuid-2",
@@ -39,7 +40,8 @@ for more information.
       "source_channel_id": "fb-page-id-2",
       "metadata": {
         "name": "my page 2"
-      }
+      },
+      "connected": true
     }
   ]
 }
@@ -68,7 +70,8 @@ for more information.
     "name": "my page 1",
     // optional
     "image_url": "http://example.org/avatar.jpeg"
-  }
+  },
+  "connected": true
 }
 ```
 
@@ -99,7 +102,8 @@ Update a channel's name or image url.
     "name": "new name for this channel",
     // optional
     "image_url": "http://example.org/avatar_redesign.jpeg"
-  }
+  },
+  "connected": true
 }
 ```
 
@@ -128,7 +132,8 @@ POST /channels.chatplugin.connect
   "id": "1F679227-76C2-4302-BB12-703B2ADB0F66",
   "source": "chat_plugin",
   "source_channel_id": "website-identifier-42",
-  "metadata": {"name": "website-identifier-42"}
+  "metadata": {"name": "website-identifier-42"},
+  "connected": true
 }
 ```
 
@@ -179,7 +184,8 @@ POST /channels.twilio.sms.connect
   "id": "channel-uuid-1",
   "metadata": {"name": "SMS for receipts", "image_url": "https://example.com/custom-image.jpg"},
   "source": "twilio.sms",
-  "source_channel_id": "+491234567"
+  "source_channel_id": "+491234567",
+  "connected": true
 }
 ```
 
@@ -219,7 +225,8 @@ POST /channels.twilio.whatsapp.connect
   "id": "channel-uuid-1",
   "metadata": {"name": "WhatsApp Marketing", "image_url": "https://example.com/custom-image.jpg"},
   "source": "twilio.whatsapp",
-  "source_channel_id": "whatsapp:+491234567"
+  "source_channel_id": "whatsapp:+491234567",
+  "connected": true
 }
 ```
 

@@ -32,7 +32,7 @@ declare const window: {
 
 if (window.airy.cid.length) {
   new AiryWidget({
-    channel_id: window.airy.cid,
+    channelId: window.airy.cid,
   }).render(anchor);
 } else {
   console.log(

@@ -30,7 +30,7 @@ latest.
   "data": [
     {
       "id": "{UUID}",
-      "content": '{"text":"Hello World"}',
+      "content": {"text": "Hello World"},
       // source message payload
       // typed source message model
       "state": "{String}",

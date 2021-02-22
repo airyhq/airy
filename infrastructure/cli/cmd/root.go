@@ -7,6 +7,7 @@ import (
 
 	"cli/cmd/api"
 	"cli/cmd/config"
+	"cli/cmd/create"
 	"cli/cmd/status"
 	"cli/cmd/ui"
 
@@ -122,4 +123,5 @@ func init() {
 	RootCmd.AddCommand(ui.UICmd)
 	RootCmd.AddCommand(versionCmd)
 	RootCmd.AddCommand(initCmd)
+	RootCmd.AddCommand(create.CreateCmd)
 }

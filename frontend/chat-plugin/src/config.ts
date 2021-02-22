@@ -5,7 +5,7 @@ export type RenderCtrl = {
 export type RenderProp = (ctrl?: RenderCtrl) => JSX.Element;
 
 export type AuthConfiguration = {
-  channel_id: string;
+  channelId: string;
 };
 
 export type AiryWidgetConfiguration = AuthConfiguration & {

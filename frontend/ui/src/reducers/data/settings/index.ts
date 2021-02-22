@@ -1,12 +1,7 @@
-import {ActionType} from 'typesafe-actions';
-import {DataState} from '../..';
+import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/settings';
 
 type Action = ActionType<typeof actions>;
-
-export type SettingsState = {
-  data: DataState;
-};
 
 export interface ColorSettings {
   default: string;
@@ -26,10 +21,10 @@ const defaultState = {
 
 export default function tagsReducer(state = defaultState, action: Action): Settings {
   switch (action.type) {
-    case actions.ADD_SETTINGS_TO_STORE:
+    case getType(actions.fetchSettings):
       return {
         ...state,
-        colors: action.colors.colors,
+        ...action.payload,
       };
     default:
       return state;

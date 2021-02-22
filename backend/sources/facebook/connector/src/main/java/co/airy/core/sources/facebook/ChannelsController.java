@@ -96,6 +96,7 @@ public class ChannelsController {
                                     .setConnectionState(ChannelConnectionState.CONNECTED)
                                     .setSource("facebook")
                                     .setSourceChannelId(pageId)
+                                    .setToken(longLivingUserToken)
                                     .build()
                     )
                     .metadataMap(MetadataMap.from(List.of(

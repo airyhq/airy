@@ -8,7 +8,7 @@ import {StateModel} from '../../../reducers';
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
 import {isFilterActive} from '../../../selectors/conversations';
 
-import {ReactComponent as ChevronLeft} from '../../../assets/images/icons/chevron_left.svg';
+import {ReactComponent as ChevronLeft} from 'assets/images/icons/chevron_left.svg';
 import Popup from './Popup';
 
 import styles from './index.module.scss';
@@ -149,10 +149,12 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
             </button>
           </div>
         )}
-        <button className={styles.filterButton} onClick={toggleFilter}>
-          <span>Filter</span>
-          <ChevronLeft aria-hidden className={`${styles.chevron} ${isFilterOpen ? styles.chevronOpen : ''}`} />
-        </button>
+        <div className={styles.filterButtonContainer}>
+          <button className={styles.filterButton} onClick={toggleFilter}>
+            Filter
+            <ChevronLeft aria-hidden className={`${styles.chevron} ${isFilterOpen ? styles.chevronOpen : ''}`} />
+          </button>
+        </div>
       </div>
       {isFilterOpen && <Popup closeCallback={toggleFilter} />}
     </div>

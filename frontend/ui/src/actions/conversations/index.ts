@@ -3,7 +3,7 @@ import {createAction} from 'typesafe-actions';
 import {Conversation, PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
-import {setMetadataAction} from '../metadata';
+import {mergeMetadataAction, setMetadataAction} from '../metadata';
 
 const CONVERSATION_LOADING = '@@conversation/LOADING';
 const CONVERSATIONS_LOADING = '@@conversations/LOADING';
@@ -38,11 +38,6 @@ export const removeErrorFromConversationAction = createAction(
   resolve => (conversationId: string) => resolve({conversationId})
 );
 
-export const addTagToConversationAction = createAction(
-  CONVERSATION_ADD_TAG,
-  resolve => (conversationId: string, tagId: string) => resolve({conversationId, tagId})
-);
-
 export const removeTagFromConversationAction = createAction(
   CONVERSATION_REMOVE_TAG,
   resolve => (conversationId: string, tagId: string) => resolve({conversationId, tagId})
@@ -54,86 +49,75 @@ export const updateMessagesPaginationDataAction = createAction(
     resolve({conversationId, paginationData})
 );
 
-export function listConversations() {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(loadingConversationsAction());
-    return HttpClientInstance.listConversations({page_size: 10})
-      .then((response: PaginatedResponse<Conversation>) => {
-        dispatch(mergeConversationsAction(response.data, response.paginationData));
-        return Promise.resolve(true);
-      })
-      .catch((error: Error) => {
-        return Promise.reject(error);
-      });
-  };
-}
+export const listConversations = () => async (dispatch: Dispatch<any>) => {
+  dispatch(loadingConversationsAction());
+  return HttpClientInstance.listConversations({page_size: 10}).then((response: PaginatedResponse<Conversation>) => {
+    dispatch(mergeConversationsAction(response.data, response.paginationData));
+    return Promise.resolve(true);
+  });
+};
 
-export function listNextConversations() {
-  return async (dispatch: Dispatch<any>, state: () => StateModel) => {
-    const cursor = state().data.conversations.all.paginationData.nextCursor;
+export const listNextConversations = () => async (dispatch: Dispatch<any>, state: () => StateModel) => {
+  const cursor = state().data.conversations.all.paginationData.nextCursor;
 
-    dispatch(loadingConversationsAction());
-    return HttpClientInstance.listConversations({cursor: cursor})
-      .then((response: PaginatedResponse<Conversation>) => {
-        dispatch(mergeConversationsAction(response.data, response.paginationData));
-        return Promise.resolve(true);
-      })
-      .catch((error: Error) => {
-        return Promise.reject(error);
-      });
-  };
-}
+  dispatch(loadingConversationsAction());
+  return HttpClientInstance.listConversations({cursor: cursor}).then((response: PaginatedResponse<Conversation>) => {
+    dispatch(mergeConversationsAction(response.data, response.paginationData));
+    return Promise.resolve(true);
+  });
+};
 
 function sleep(time) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
 
-export function getConversationInfo(conversationId: string, retries?: number) {
-  return async (dispatch: Dispatch<any>) => {
-    return HttpClientInstance.getConversationInfo(conversationId)
-      .then(response => {
-        dispatch(mergeConversationsAction([response]));
-        return Promise.resolve(true);
+export const getConversationInfo = (conversationId: string, retries?: number) => async (dispatch: Dispatch<any>) =>
+  HttpClientInstance.getConversationInfo(conversationId)
+    .then(response => {
+      dispatch(mergeConversationsAction([response]));
+      return Promise.resolve(true);
+    })
+    .catch(async (error: Error) => {
+      if (retries > 5) {
+        return Promise.reject(error);
+      } else {
+        await sleep(1000);
+        return getConversationInfo(conversationId, retries ? retries + 1 : 1)(dispatch);
+      }
+    });
+
+export const readConversations = (conversationId: string) => (dispatch: Dispatch<any>) => {
+  HttpClientInstance.readConversations(conversationId).then(() =>
+    dispatch(
+      setMetadataAction({
+        subject: 'conversation',
+        identifier: conversationId,
+        metadata: {
+          unreadCount: 0,
+        },
       })
-      .catch(async (error: Error) => {
-        if (retries > 5) {
-          return Promise.reject(error);
-        } else {
-          await sleep(1000);
-          return getConversationInfo(conversationId, retries ? retries + 1 : 1)(dispatch);
-        }
-      });
-  };
-}
+    )
+  );
+};
 
-export function readConversations(conversationId: string) {
-  return function(dispatch: Dispatch<any>) {
-    HttpClientInstance.readConversations(conversationId).then(() =>
-      dispatch(
-        setMetadataAction({
-          subject: 'conversation',
-          identifier: conversationId,
-          metadata: {
-            unreadCount: 0,
+export const addTagToConversation = (conversationId: string, tagId: string) => (dispatch: Dispatch<any>) => {
+  HttpClientInstance.tagConversation({conversationId, tagId}).then(() =>
+    dispatch(
+      mergeMetadataAction({
+        subject: 'conversation',
+        identifier: conversationId,
+        metadata: {
+          tags: {
+            [tagId]: '',
           },
-        })
-      )
-    );
-  };
-}
+        },
+      })
+    )
+  );
+};
 
-export function addTagToConversation(conversationId: string, tagId: string) {
-  return function(dispatch: Dispatch<any>) {
-    HttpClientInstance.tagConversation({conversationId, tagId}).then(() =>
-      dispatch(addTagToConversationAction(conversationId, tagId))
-    );
-  };
-}
-
-export function removeTagFromConversation(conversationId: string, tagId: string) {
-  return function(dispatch: Dispatch<any>) {
-    HttpClientInstance.untagConversation({conversationId, tagId}).then(() =>
-      dispatch(removeTagFromConversationAction(conversationId, tagId))
-    );
-  };
-}
+export const removeTagFromConversation = (conversationId: string, tagId: string) => (dispatch: Dispatch<any>) => {
+  HttpClientInstance.untagConversation({conversationId, tagId}).then(() =>
+    dispatch(removeTagFromConversationAction(conversationId, tagId))
+  );
+};

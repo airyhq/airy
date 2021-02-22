@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Tag as TagModel, TagColor} from 'httpclient';
+import {Tag as TagModel, TagColor, getTags} from 'httpclient';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
@@ -59,11 +59,11 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const filterForUnusedTags = (tags: TagModel[]): TagModel[] => {
-    return tags.filter(tag => !conversation.tags.includes(tag.id));
+    return tags.filter(tag => !(tag.id in conversation.metadata.tags));
   };
 
   const filterForUsedTags = (tags: TagModel[]): TagModel[] => {
-    return tags.filter(tag => conversation.tags.includes(tag.id));
+    return tags.filter(tag => tag.id in conversation.metadata.tags);
   };
 
   const tagSorter = (tagA: TagModel, tagB: TagModel) => {
@@ -195,7 +195,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
             <div className={styles.tagList}>
               {tags &&
-                conversation.tags
+                getTags(conversation)
                   .map(tagId => findTag(tagId))
                   .sort(tagSorter)
                   .map(tag => tag && <Tag key={tag.id} tag={tag} removeTag={() => removeTag(tag)} />)}

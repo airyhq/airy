@@ -13,6 +13,18 @@ const GoogleSource = (props: googleSourceProps) => {
   const googleSourcesExtra = props.googleSource.filter(channel => channel.source === 'google').slice(2);
   const totalGoogleSources = googleSources.concat(googleSourcesExtra);
 
+  const connectedAttributes = {
+    showConnectedChannels: googleSources.length > 0,
+    connectedChannel: googleSources,
+    showSumOfChannels: totalGoogleSources.length,
+    ignoreChannelId: googleSources.length > 0,
+  };
+
+  const connectedAttributesExtra = {
+    extraChannel: googleSourcesExtra.length > 0,
+    displayExtraChannel: googleSourcesExtra.length,
+  };
+
   return (
     <div className={styles.flexWrap}>
       <ChannelDetails
@@ -24,16 +36,12 @@ const GoogleSource = (props: googleSourceProps) => {
       />
 
       <ChannelsConnected
-        showConnectedChannels={googleSources.length > 0}
-        showSumOfChannels={totalGoogleSources.length}
+        {...connectedAttributes}
+        {...connectedAttributesExtra}
         connected="CONNECTED"
-        connectedChannel={googleSources}
         placeholderImage={<GoogleLogo />}
-        extraChannel={googleSourcesExtra.length > 0}
-        displayExtraChannel={googleSourcesExtra.length}
         isConnected="connected"
         addAChannel={<AddChannel />}
-        ignoreChannelId={googleSources.length > 0}
       />
     </div>
   );

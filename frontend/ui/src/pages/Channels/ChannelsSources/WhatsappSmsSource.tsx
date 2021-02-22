@@ -13,6 +13,17 @@ const WhatsappSmsSource = (props: whatsappSourceProps) => {
   const whatsappSourcesExtra = props.whatsappSmsSource.filter(channel => channel.source === 'twilio.whatsapp').slice(2);
   const totalWhatsappSources = whatsappSources.concat(whatsappSourcesExtra);
 
+  const connectedAttributes = {
+    showConnectedChannels: whatsappSources.length > 0,
+    connectedChannel: whatsappSources,
+    showSumOfChannels: totalWhatsappSources.length,
+  };
+
+  const connectedAttributesExtra = {
+    extraChannel: whatsappSourcesExtra.length > 0,
+    displayExtraChannel: totalWhatsappSources.length,
+  };
+
   return (
     <div className={styles.flexWrap}>
       <ChannelDetails
@@ -24,13 +35,10 @@ const WhatsappSmsSource = (props: whatsappSourceProps) => {
       />
 
       <ChannelsConnected
-        showConnectedChannels={whatsappSources.length > 0}
-        showSumOfChannels={totalWhatsappSources.length}
+        {...connectedAttributes}
+        {...connectedAttributesExtra}
         connected="CONNECTED"
-        connectedChannel={whatsappSources}
         placeholderImage={<WhatsappLogo />}
-        extraChannel={whatsappSourcesExtra.length > 0}
-        displayExtraChannel={whatsappSourcesExtra.length}
         isConnected="connected"
         addAChannel={<AddChannel />}
       />

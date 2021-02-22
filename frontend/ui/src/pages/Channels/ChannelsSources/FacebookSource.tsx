@@ -13,6 +13,20 @@ const FacebookSource = (props: facebookSourceProps) => {
   const facebookSourcesExtra = props.facebookSource.filter(channel => channel.source === 'facebook').slice(4);
   const totalFacebookSources = facebookSources.concat(facebookSourcesExtra);
 
+  const connectedAttributes = {
+    showConnectedChannels: facebookSources.length > 0,
+    showSumOfChannels: totalFacebookSources.length,
+    connectedChannel: facebookSources,
+    displayFacebookImage: facebookSources.length > 0,
+    ignoreChannelId: facebookSources.length > 0,
+    ignoreSvgAvatar: facebookSources.length > 0,
+  };
+
+  const connectedAttributesExtra = {
+    extraChannel: facebookSourcesExtra.length > 0,
+    displayExtraChannel: facebookSourcesExtra.length,
+  };
+
   return (
     <div className={styles.flexWrap}>
       <ChannelDetails
@@ -24,17 +38,11 @@ const FacebookSource = (props: facebookSourceProps) => {
       />
 
       <ChannelsConnected
-        showConnectedChannels={facebookSources.length > 0}
-        showSumOfChannels={totalFacebookSources.length}
+        {...connectedAttributes}
+        {...connectedAttributesExtra}
         connected="CONNECTED"
-        connectedChannel={facebookSources}
-        extraChannel={facebookSourcesExtra.length > 0}
-        displayExtraChannel={facebookSourcesExtra.length}
         isConnected="connected"
         addAChannel={<AddChannel />}
-        ignoreChannelId={facebookSources.length > 0}
-        ignoreSvgAvatar={facebookSources.length > 0}
-        displayFacebookImage={facebookSources.length > 0}
       />
     </div>
   );

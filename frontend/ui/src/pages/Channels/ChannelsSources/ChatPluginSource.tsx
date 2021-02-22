@@ -13,6 +13,18 @@ const ChatPluginSource = (props: chatPluginProps) => {
   const chatPluginSourcesExtra = props.pluginSource.filter(channel => channel.source === 'chat_plugin').slice(4);
   const totalChatPluginSources = chatPluginSources.concat(chatPluginSourcesExtra);
 
+  const connectedAttributes = {
+    showConnectedChannels: chatPluginSources.length > 0,
+    connectedChannel: chatPluginSources,
+    showSumOfChannels: totalChatPluginSources.length,
+    ignoreChannelId: chatPluginSources.length > 0,
+  };
+
+  const connectedAttributesExtra = {
+    extraChannel: chatPluginSourcesExtra.length > 0,
+    displayExtraChannel: chatPluginSourcesExtra.length,
+  };
+
   return (
     <div className={styles.flexWrap}>
       <ChannelDetails
@@ -24,16 +36,12 @@ const ChatPluginSource = (props: chatPluginProps) => {
       />
 
       <ChannelsConnected
-        showConnectedChannels={chatPluginSources.length > 0}
-        showSumOfChannels={totalChatPluginSources.length}
+        {...connectedAttributes}
+        {...connectedAttributesExtra}
         connected="CONNECTED"
-        connectedChannel={chatPluginSources}
         placeholderImage={<AiryLogo />}
-        extraChannel={chatPluginSourcesExtra.length > 0}
-        displayExtraChannel={chatPluginSourcesExtra.length}
         isConnected="connected"
         addAChannel={<AddChannel />}
-        ignoreChannelId={chatPluginSources.length > 0}
       />
     </div>
   );

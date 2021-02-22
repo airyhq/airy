@@ -4,8 +4,8 @@
 .connectedContainer {
   display: flex;
   flex-direction: column;
+  min-width: 514px;
   height: 120px;
-  min-width: 500px;
   margin-bottom: 10px;
 }
 
@@ -35,6 +35,8 @@
 
 .extraChannel {
   display: flex;
+  min-width: 88px;
+  min-height: 20px;
   border: none;
   padding: 0;
   outline: none;
@@ -42,9 +44,7 @@
   background: white;
   color: var(--color-airy-blue);
   text-decoration: underline;
-  margin-top: 40px;
-  min-width: 88px;
-  min-height: 20px;
+  margin: 2px -1px 0px 0px;
 }
 
 .connectedChannelData {
@@ -73,14 +73,14 @@
   height: 16px;
   width: 16px;
   border-radius: 50%;
-  margin: 16px 12px 0px 8px;
+  margin: 14px 6px 0px 8px;
 }
 
 .connectedChannelName {
-  margin-right: 7px;
-  padding-top: 10px;
   min-width: 168px;
   height: 24px;
+  margin-right: 7px;
+  padding-top: 10px;
 }
 
 .channelId {
@@ -89,22 +89,21 @@
 
 .channelButton {
   display: flex;
-  padding-top: 8px;
   width: 40px;
   height: 40px;
+  padding-top: 8px;
   margin: 20px 0px 8px 0px;
 }
 
 .addChannelButton {
   position: relative;
-  background: white;
   width: 40px;
   height: 40px;
-  margin-left: 7px;
-  margin-top: 32px;
+  background: white;
+  margin: 32px 0px 0px 7px;
+  padding: 0;
   transition: 0.2s ease-in-out all;
   border: none;
-  padding: 0;
   outline: none;
   cursor: pointer;
 }

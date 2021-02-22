@@ -1,5 +1,6 @@
 import React from 'react';
 import {Channel} from 'httpclient';
+import {LinkButton} from '@airyhq/components';
 import styles from './ChannelsConnected.module.scss';
 
 type connectedChannelsProps = {
@@ -31,13 +32,16 @@ const ChannelsConnected = (props: connectedChannelsProps) => {
             <div className={styles.connectedChannelBox}>
               <div className={styles.connectedChannel}>
                 {props.connectedChannel.map((channel: Channel) => {
-                  const channelName = channel.metadata.name;
                   return (
                     <>
                       <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                         <div className={styles.connectedChannelData}>
                           {channel.metadata.imageUrl && props.displayFacebookImage && (
-                            <img src={channel.metadata.imageUrl} alt={channelName} className={styles.facebookImage} />
+                            <img
+                              src={channel.metadata.imageUrl}
+                              alt={channel.metadata.name}
+                              className={styles.facebookImage}
+                            />
                           )}
 
                           {!props.ignoreSvgAvatar && (
@@ -53,11 +57,11 @@ const ChannelsConnected = (props: connectedChannelsProps) => {
                   );
                 })}
               </div>
-              <div className={styles.extraChannelButton}>
+              <div className={styles.extraChannel}>
                 {props.extraChannel && (
-                  <button className={styles.extraChannel} title="Click for more details">
+                  <LinkButton>
                     +{props.displayExtraChannel} {props.isConnected}
-                  </button>
+                  </LinkButton>
                 )}
               </div>
             </div>

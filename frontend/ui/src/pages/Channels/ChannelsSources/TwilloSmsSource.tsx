@@ -14,6 +14,17 @@ const TwilloSmsSource = (props: twilloSmsSourceProps) => {
   const twilloSourcesExtra = props.twilloSmsSource.filter(channel => channel.source === 'twilio.sms').slice(2);
   const totalTwilloSources = twilloSources.concat(twilloSourcesExtra);
 
+  const connectedAttributes = {
+    showConnectedChannels: twilloSources.length > 0,
+    connectedChannel: twilloSources,
+    showSumOfChannels: totalTwilloSources.length,
+  };
+
+  const connectedAttributesExtra = {
+    extraChannel: twilloSourcesExtra.length > 0,
+    displayExtraChannel: totalTwilloSources.length,
+  };
+
   return (
     <div className={styles.flexWrap}>
       <ChannelDetails
@@ -25,13 +36,10 @@ const TwilloSmsSource = (props: twilloSmsSourceProps) => {
       />
 
       <ChannelsConnected
-        showConnectedChannels={twilloSources.length > 0}
-        showSumOfChannels={totalTwilloSources.length}
+        {...connectedAttributes}
+        {...connectedAttributesExtra}
         connected="CONNECTED"
-        connectedChannel={twilloSources}
         placeholderImage={<SMSChannelLogo />}
-        extraChannel={twilloSourcesExtra.length > 0}
-        displayExtraChannel={twilloSourcesExtra.length}
         isConnected="connected"
         addAChannel={<AddChannel />}
       />

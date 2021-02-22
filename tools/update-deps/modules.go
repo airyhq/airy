@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type Module struct {
@@ -62,6 +63,11 @@ func MergeModules(targetModule modfile.File, modules []modfile.File) modfile.Fil
 
 	for _, file := range modules {
 		for _, require := range file.Require {
+			// Skip paths within the same repository because gazelle cannot use them
+			if strings.HasPrefix(require.Mod.Path, targetModule.Module.Mod.Path) {
+				continue
+			}
+
 			if err := targetModule.AddRequire(require.Mod.Path, require.Mod.Version); err != nil {
 				log.Fatal(err)
 			}

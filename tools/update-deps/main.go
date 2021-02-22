@@ -5,11 +5,14 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 )
 
 func main() {
 	log.SetFlags(0)
-	dryRun := *flag.Bool("dry_run", true, "Print to stdout instead of writing files")
+
+	var dryRun bool
+	flag.BoolVar(&dryRun,"dry_run", false, "Print to stdout instead of writing files")
 	flag.Parse()
 
 	err := os.Chdir(os.Getenv("BUILD_WORKSPACE_DIRECTORY"))
@@ -24,6 +27,7 @@ func main() {
 	}
 
 	targetModule := LoadModule("go.mod")
+
 	modules := LoadModules(packages)
 
 	targetModule = MergeModules(targetModule, modules)
@@ -36,14 +40,23 @@ func main() {
 	if dryRun == true {
 		log.Println("Merged go.mod:\n---------------")
 		log.Print(string(fileContent))
+		os.Exit(0)
 	} else {
 		if err = ioutil.WriteFile("go.mod", fileContent, 644); err != nil {
 			log.Fatal(err)
 		}
+		log.Println("Updated go.mod")
 	}
 
-	// run gazelle update-repos on virtual go.mod
+	err = exec.Command("go", "get", ".").Start()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Installed packages and updating go.sum using go get")
 
-	// cleanup
-
+	err = exec.Command("bazel", "run", "//:gazelle", "--", "-update-repos", "-from_file=go.mod", "-prune").Start()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Updated go_repositories.bzl with Gazelle")
 }

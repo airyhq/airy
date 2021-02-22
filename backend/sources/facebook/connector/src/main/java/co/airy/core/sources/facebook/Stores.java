@@ -99,13 +99,11 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
                             return conversationBuilder.build();
                         })
-                .join(channelsTable, Conversation::getChannelId, (conversation, channel) -> {
-                    return conversation.toBuilder()
-                            .channelId(conversation.getChannelId())
-                            .channel(channel)
-                            .sourceConversationId(conversation.getSourceConversationId())
-                            .build();
-                });
+                .join(channelsTable, Conversation::getChannelId, (conversation, channel) -> conversation.toBuilder()
+                        .channelId(conversation.getChannelId())
+                        .channel(channel)
+                        .sourceConversationId(conversation.getSourceConversationId())
+                        .build());
 
         // Send outbound messages
         messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))

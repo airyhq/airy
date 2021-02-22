@@ -4,6 +4,7 @@ import co.airy.avro.communication.Message;
 import co.airy.core.sources.google.model.SendMessageRequest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,14 @@ public class Mapper {
         final Message message = sendMessageRequest.getMessage();
         final JsonNode messageNode = mapper.readTree(message.getContent());
         ((ObjectNode) messageNode).put("messageId", message.getId());
+
+        // Default human representative
+        if (messageNode.get("representative") == null) {
+            final ObjectNode representativeNode = JsonNodeFactory.instance.objectNode();
+            representativeNode.put("representativeType", "HUMAN");
+            ((ObjectNode) messageNode).set("representative", representativeNode);
+        }
+
         return messageNode;
     }
 }

@@ -6,6 +6,7 @@ Usage:
 Available Commands:
   api         Interacts with the Airy Core HTTP API
   config      Manages an Airy Core instance via airy.yaml
+  create      Creates an instance of the Airy Core
   help        Help about any command
   init        Inits your airy configuration
   status      Reports the status of an Airy Core instance

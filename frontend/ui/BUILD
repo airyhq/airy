@@ -19,7 +19,6 @@ ts_library(
         "@npm//@airyhq/components",
         "@npm//@types/facebook-js-sdk",
         "@npm//@types/node",
-        "@npm//@types/prop-types",
         "@npm//@types/react",
         "@npm//@types/react-dom",
         "@npm//@types/react-redux",

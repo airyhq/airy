@@ -64,7 +64,7 @@ export class HttpClient {
     let errorResult: any;
 
     if (body.length > 0) {
-      errorResult = JSON.parse(body);
+      errorResult = JSON.parse(body) as any;
     }
 
     if (response.status == 403 && this.unauthorizedErrorCallback) {

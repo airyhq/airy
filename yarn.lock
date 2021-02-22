@@ -1613,15 +1613,20 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@bazel/ibazel@0.12.2":
-  version "0.12.2"
-  resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.12.2.tgz#98a290dbf8025076dd3040eab4f13a3d7e99357c"
-  integrity sha512-CktVREceZn+6VokQ7A2qByuXBSGRM0THuyv68JUShHYyCkYS94nYMZEIe5NXk12CRzcpMLfZGD5Gdtr+jWs9pw==
+"@bazel/bazelisk@^1.7.5":
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/@bazel/bazelisk/-/bazelisk-1.7.5.tgz#dd1a52e3d23464f72de55aa3dc4777847fa85373"
+  integrity sha512-JHwP9JhfZUSoj4sku471Bjw4uE773U2Agujnx0CdPkeRk25khy1l3VyjaPaHB+z1fmMnM6ED3M7tetQUsovUQg==
 
-"@bazel/typescript@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-1.6.0.tgz"
-  integrity sha512-vAKuwy1Hgl+t3M3sH/G0oqHRYN35TdENj+0lsCI3x7EbSzyI6cbA3YQrLrlyvdScksqOpZa3PZ3UBGqfJJq2DA==
+"@bazel/ibazel@^0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.14.0.tgz#86fa0002bed2ce1123b7ad98d4dd4623a0d93244"
+  integrity sha512-s0gyec6lArcRDwVfIP6xpY8iEaFpzrSpyErSppd3r2O49pOEg7n6HGS/qJ8ncvme56vrDk6crl/kQ6VAdEO+rg==
+
+"@bazel/typescript@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-3.2.0.tgz#299bd173fe04f98407ab9be4f654662c1c28470e"
+  integrity sha512-RKdy9ThbcUAqZR3AJK7AR/nxbJqdHi7pPayIGUSMIpxVkeTxVRQpf1aGe2H02HdZ9fR/uk1xXhO/Ff9TLvTgHQ==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"

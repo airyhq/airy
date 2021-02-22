@@ -20,4 +20,30 @@
   background: var(--color-airy-blue);
   color: white;
   border-radius: 8px;
+  a {
+    color: white;
+    &:visited,
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+.richText {
+  p:first-child {
+    margin-top: 0;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  b,
+  strong {
+    font-weight: 700;
+  }
+
+  i,
+  em {
+    font-style: italic;
+  }
 }

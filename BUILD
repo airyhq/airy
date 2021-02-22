@@ -2,7 +2,7 @@ load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 load("@bazel_gazelle//:def.bzl", "gazelle")
-load("@io_bazel_rules_go//go:def.bzl", "TOOLS_NOGO", "nogo")
+load("@io_bazel_rules_go//go:def.bzl", "TOOLS_NOGO", "go_binary", "go_library", "nogo")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -173,6 +173,7 @@ exports_files(
     ],
 )
 
+# gazelle:ignore
 # gazelle:proto disable_global
 # gazelle:build_file_name BUILD
 # gazelle:prefix

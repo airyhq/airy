@@ -1239,6 +1239,7 @@ def go_repositories():
     go_repository(
         name = "io_k8s_api",
         build_file_proto_mode = "disable_global",
+        build_naming_convention = "go_default_library",
         importpath = "k8s.io/api",
         sum = "h1:WwrYoZNM1W1aQEbyl8HNG+oWGzLpZQBlcerS9BQw9yI=",
         version = "v0.20.0",
@@ -1246,6 +1247,7 @@ def go_repositories():
     go_repository(
         name = "io_k8s_apimachinery",
         build_file_proto_mode = "disable_global",
+        build_naming_convention = "go_default_library",
         importpath = "k8s.io/apimachinery",
         sum = "h1:jjzbTJRXk0unNS71L7h3lxGDH/2HPxMPaQY+MjECKL8=",
         version = "v0.20.0",
@@ -1253,6 +1255,7 @@ def go_repositories():
     go_repository(
         name = "io_k8s_client_go",
         build_file_proto_mode = "legacy",
+        build_naming_convention = "go_default_library",
         importpath = "k8s.io/client-go",
         sum = "h1:Xlax8PKbZsjX4gFvNtt4F5MoJ1V5prDvCuoq9B7iax0=",
         version = "v0.20.0",

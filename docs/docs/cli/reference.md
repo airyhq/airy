@@ -85,7 +85,7 @@ airy config apply [flags]
 
 ##  Create
 
-Creates an instance of the Airy Core
+Creates an instance of Airy Core
 
 ```
 airy create [flags]

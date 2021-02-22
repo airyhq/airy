@@ -10,7 +10,7 @@ var (
 	provider  string
 	CreateCmd = &cobra.Command{
 		Use:   "create",
-		Short: "Creates an instance of the Airy Core",
+		Short: "Creates an instance of Airy Core",
 		Long:  ``,
 		Run:   create,
 	}

@@ -30,30 +30,30 @@ Business Location and your running instance of Airy Core.
 
 Google's Business Messages requires the following configuration:
 
-- Registration with Google's Business Messages
-- Editing of the yaml file in Airy Core
-- Verification by Google
+- [Step 1: Registration](#step-1-registration)
+- [Step 2: Editing of the yaml file in Airy Core](#step-2-editing-of-the-yaml-file-in-airy-core)
+- [Step 3: Verification by Google](#step-3-verification-by-google)
 
 Let's proceed step by step.
 
-## Registration with Google's Business Messages
+## Step 1: Registration
 
-You first need to be registered with Google's Business Messages before configuring this source. You can find more information about Google's Business Messages and its messages types [here](https://developers.google.com/business-communications/business-messages/guides).
+You first need to be registered with Google's Business Messages before configuring this source. You can find more information about Google's Business Messages and the registration process [here](https://developers.google.com/business-communications/business-messages/guides).
 
-## Editing of the yaml file in Airy Core
+## Step 2: Editing of the yaml file in Airy Core
 
 Once you are registered, head over to your Google Service Account and create a key in json format.
 
 <img alt="Facebook token page" src={useBaseUrl('img/sources/google/key.png')} />
 
 Copy the Google Service Account key file provided by Google to
-`infrastructure/airy.yaml` as a one line string
+`infrastructure/airy.yaml` as a one line string, below `sources/google`:
 
 ```
 GOOGLE_SA_FILE=<CONTENT OF THE FILE>
 ```
 
-## Verification by Google
+## Step 3: Verification by Google
 
 As a security measure, every request sent by Google is signed and verified
 against your partner key. You must also set the environment variable
@@ -61,14 +61,13 @@ against your partner key. You must also set the environment variable
 
 <SuccessBox>
 
-Once the verification process has been completed, Google's Business Messages will immediately start
-sending events to your Airy Core instance 🎉
+Once the verification process has been completed, Google's Business Messages will immediately start sending events to your Airy Core instance 🎉
 
 </SuccessBox>
 
 ## Connecting Google's Business Messages to your Airy Core instance
 
-After the configuration, send a request to the [Channels endpoint](/api/endpoints/channels#google) to connect Google's Business Messages source to your instance.
+After the configuration, you can connect Google's Business Messages source to your instance by sending a request to the [Channels endpoint](/api/endpoints/channels#google).
 
 <ButtonBox
 icon={() => <BoltSVG />}
@@ -79,36 +78,13 @@ link='api/endpoints/channels#google'
 
 <br/>
 
-```
-POST /channels.google.connect
-```
+import ConnectGoogle from '../api/endpoints/connect-google.mdx'
 
-- `gbm_id` The id of your Google Business Message [agent](https://developers.google.com/business-communications/business-messages/reference/business-communications/rest/v1/brands.agents#Agent).
-- `name` Custom name for the connected business
-- `image_url` Custom image URL
-
-```json5
-{
-  "gbm_id": "gbm-id",
-  "name": "My custom name for this location",
-  "image_url": "https://example.com/custom-image.jpg" // optional
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "id": "channel-uuid-1",
-  "metadata": {"name": "My custom name for this location", "image_url": "https://example.com/custom-image.jpg"},
-  "source": "google",
-  "source_channel_id": "gbm-id"
-}
-```
+<ConnectGoogle />
 
 ## Send messages from Google's Business Messages source
 
-After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send). See a sample request for sending a text message below.
+After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
 
 <ButtonBox
 icon={() => <BoltSVG />}
@@ -130,7 +106,11 @@ Sends a message to a conversation and returns a payload. Whatever is put on the
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "text": "Hello World"
+    "text": "Hello World Agent!",
+    "representative": {
+      "displayName": "Hello World from Agent",
+      "representativeType": "HUMAN"
+    }
   }
 }
 ```
@@ -157,11 +137,13 @@ Sends a message to a conversation and returns a payload. Whatever is put on the
 
 ## Send and receive messages with the Inbox UI
 
-Now that you connected Google's Business Messages to your instance and started a conversation, you can see the conversations, messages in the [Airy Inbox](/apps/ui/inbox), and use it to respond to the messages. The [Inbox's UI](/apps/ui/inbox) is able render the messages types you can send from Google's Business Messages, such as Rich Cards or Suggestions.
+Now that you connected Google's Business Messages to your instance and started a conversation, you can see the conversations, messages in the [Airy Inbox](/apps/ui/inbox), and use it to respond to the messages.
+
+The [Inbox's UI](/apps/ui/inbox) is able render the messages types you can send from Google's Business Messages, such as Rich Cards or Suggestions.
 
 <ButtonBox
 icon={() => <InboxSVG />}
 title='Inbox'
-description="Receive messages from Google's Business Messages and send messsages using the Inbox UI"
+description="Receive messages from Google's Business Messages and send messages using the Inbox UI"
 link='apps/ui/inbox'
 />

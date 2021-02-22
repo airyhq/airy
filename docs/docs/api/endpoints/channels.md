@@ -134,73 +134,15 @@ POST /channels.chatplugin.connect
 
 ### Facebook
 
-Connects a Facebook page to Airy Core.
+import ConnectFacebook from './connect-facebook.mdx'
 
-```
-POST /channels.facebook.connect
-```
-
-- `page_id` is the Facebook page id
-- `page_token` is the page Access Token
-- `name` Custom name for the connected page
-- `image_url` Custom image URL
-
-**Sample request**
-
-```json5
-{
-  "page_id": "fb-page-id-1",
-  "page_token": "authentication token",
-  "name": "My custom name for this page",
-  "image_url": "https://example.org/custom-image.jpg" // optional
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "id": "channel-uuid-1",
-  "source": "facebook",
-  "source_channel_id": "fb-page-id-1",
-  "metadata": {
-    "name": "My custom name for this page",
-    // optional
-    "image_url": "https://example.org/custom-image.jpg"
-  }
-}
-```
+<ConnectFacebook />
 
 ### Google
 
-Connects a Google Business Account to Airy Core.
+import ConnectGoogle from './connect-google.mdx'
 
-```
-POST /channels.google.connect
-```
-
-- `gbm_id` The id of your Google Business Message [agent](https://developers.google.com/business-communications/business-messages/reference/business-communications/rest/v1/brands.agents#Agent).
-- `name` Custom name for the connected business
-- `image_url` Custom image URL
-
-```json5
-{
-  "gbm_id": "gbm-id",
-  "name": "My custom name for this location",
-  "image_url": "https://example.com/custom-image.jpg" // optional
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "id": "channel-uuid-1",
-  "metadata": {"name": "My custom name for this location", "image_url": "https://example.com/custom-image.jpg"},
-  "source": "google",
-  "source_channel_id": "gbm-id"
-}
-```
+<ConnectGoogle />
 
 ### SMS - Twilio
 

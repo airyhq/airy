@@ -164,14 +164,7 @@ You can ssh inside the Airy Core box for testing and debugging purposes with
 
 ### Status
 
-To view the status of the Vagrant box run:
-
-```sh
-cd infrastructure
-vagrant status
-```
-
-or
+Run the following `status command` to print the information on how to access Airy Core.
 
 ```sh
 cd infrastructure
@@ -195,6 +188,13 @@ ${TWILIO_WEBHOOK_PUBLIC_URL}/twilio
 
 "Example:"
 "curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}'
+```
+
+To inspect the status of the Vagrant box run:
+
+```sh
+cd infrastructure
+vagrant status
 ```
 
 ### Overwrite default CPUs and memory

@@ -204,28 +204,3 @@ airy version [flags]
 
 ***
 
-
-##  Create
-
-Creates an instance of Airy Core, given a provider
-
-```
-airy create [flags]
-```
-
-#### Options
-
-```
-  --provider string       Airy Core provider (one of aws or local)
-  -h, --help              help for create
-```
-
-#### Options inherited from parent commands
-
-```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
-```
-
-
-***

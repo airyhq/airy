@@ -38,7 +38,7 @@ export const Suggestions = ({text, fallback, image, suggestions, contact, fromCo
 
         {!text && !image && fallback && <Text contact={contact} fromContact={fromContact} text={fallback} />}
 
-        <div className={styles.itemMemberSuggestions}>
+        <div>
           <div className={styles.suggestionsContainer}>
             {(suggestions as (
               | SuggestedReplies

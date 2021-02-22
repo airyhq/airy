@@ -21,11 +21,6 @@
   text-align: right;
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-}
-
 .suggestionsContainer {
   display: flex;
   flex-wrap: wrap;
@@ -33,19 +28,6 @@
   justify-content: flex-end;
   position: relative;
   width: 100%;
-}
-
-.itemUser {
-  align-self: flex-start;
-  text-align: left;
-}
-
-.itemUserSuggestions {
-  display: flex;
-  margin-top: 5px;
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
 }
 
 .replyButton {
@@ -59,6 +41,13 @@
   border-radius: 16px;
   border: 1px solid var(--color-dark-elements-gray);
   background-color: var(--color-template-highlight);
+}
+
+.title {
+  @include font-base;
+  color: var(--color-text-contrast);
+  text-decoration: none;
+  font-weight: normal;
 }
 
 .actionImage {
@@ -93,11 +82,4 @@
   @include font-s;
   color: var(--color-text-contrast);
   text-align: center;
-}
-
-.title {
-  @include font-base;
-  color: var(--color-text-contrast);
-  text-decoration: none;
-  font-weight: normal;
 }

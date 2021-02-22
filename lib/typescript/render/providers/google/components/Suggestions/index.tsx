@@ -1,12 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {DefaultMessageRenderingProps} from '../../../../components/index';
-import {
-  SuggestedReplies,
-  SuggestedActions,
-  AuthenticationRequestSuggestion,
-  LiveAgentRequestSuggestion,
-} from '../../googleModel';
+import {SuggestionsUnion} from '../../googleModel';
 import {Image} from '../../../../components/Image';
 import {Text} from '../../../../components/Text';
 import linkIcon from 'assets/images/icons/link.svg';
@@ -19,11 +14,7 @@ type SuggestionsRendererProps = DefaultMessageRenderingProps & {
     fileUrl: string;
     altText: string;
   };
-  suggestions:
-    | SuggestedReplies[]
-    | SuggestedActions[]
-    | AuthenticationRequestSuggestion[]
-    | LiveAgentRequestSuggestion[];
+  suggestions: SuggestionsUnion[];
 };
 
 export const Suggestions = ({text, fallback, image, suggestions, contact, fromContact}: SuggestionsRendererProps) => (
@@ -40,12 +31,7 @@ export const Suggestions = ({text, fallback, image, suggestions, contact, fromCo
 
         <div>
           <div className={styles.suggestionsContainer}>
-            {(suggestions as (
-              | SuggestedReplies
-              | SuggestedActions
-              | AuthenticationRequestSuggestion
-              | LiveAgentRequestSuggestion
-            )[]).map(elem => {
+            {(suggestions as SuggestionsUnion[]).map(elem => {
               if ('reply' in elem) {
                 return (
                   <button key={elem.reply.text} className={styles.replyButton}>

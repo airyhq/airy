@@ -13,14 +13,14 @@ export interface ImageContent extends Content {
   altText?: string;
 }
 
-export interface SuggestedReplies {
+interface SuggestedReplies {
   reply: {
     text: string;
     postbackData: string;
   };
 }
 
-export interface SuggestedActions {
+interface SuggestedActions {
   action: {
     text: string;
     postbackData: string;
@@ -33,7 +33,7 @@ export interface SuggestedActions {
   };
 }
 
-export interface AuthenticationRequestSuggestion {
+interface AuthenticationRequestSuggestion {
   authenticationRequest: {
     oauth: {
       clientId: string;
@@ -43,9 +43,15 @@ export interface AuthenticationRequestSuggestion {
   };
 }
 
-export interface LiveAgentRequestSuggestion {
+interface LiveAgentRequestSuggestion {
   liveAgentRequest: {};
 }
+
+export type SuggestionsUnion =
+  | SuggestedReplies
+  | SuggestedActions
+  | AuthenticationRequestSuggestion
+  | LiveAgentRequestSuggestion;
 
 export interface SuggestionsContent extends Content {
   type: 'suggestions';
@@ -55,11 +61,7 @@ export interface SuggestionsContent extends Content {
     fileUrl: string;
     altText: string;
   };
-  suggestions:
-    | SuggestedReplies[]
-    | SuggestedActions[]
-    | AuthenticationRequestSuggestion[]
-    | LiveAgentRequestSuggestion[];
+  suggestions: SuggestionsUnion[];
 }
 
 export type ContentUnion = TextContent | ImageContent | SuggestionsContent;

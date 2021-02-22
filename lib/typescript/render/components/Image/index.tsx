@@ -18,7 +18,6 @@ export const Image = ({fromContact, imageUrl, altText}: ImageRenderProps) => (
         </div>
       ) : (
         <div className={styles.messageListUserContainer}>
-          <div className={styles.messageAvatar}></div>
           <div className={styles.messageListItemUser}>
             <div className={styles.messageListItemUserImage}>
               <img className={styles.messageListItemImageBlock} src={imageUrl} />

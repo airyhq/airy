@@ -86,9 +86,10 @@ function googleInbound(message: Message): ContentUnion {
 
 function googleOutbound(message: Message): ContentUnion {
   const messageJson = message.content;
+  const maxNumberOfSuggestions = 13;
 
   if (messageJson.suggestions) {
-    if (messageJson.suggestions.length > 13) {
+    if (messageJson.suggestions.length > maxNumberOfSuggestions) {
       messageJson.suggestions = messageJson.suggestions.slice(0, 13);
     }
 

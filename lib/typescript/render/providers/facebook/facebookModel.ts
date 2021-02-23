@@ -46,6 +46,12 @@ export interface TextContent extends Content {
   text: string;
 }
 
+export interface Postback extends Content {
+  type: 'postback';
+  title: string;
+  payload: string;
+}
+
 export interface ImageContent extends Content {
   type: 'image';
   imageUrl: string;
@@ -90,6 +96,7 @@ export interface GenericTemplate extends Content {
 // Add a new facebook content model here:
 export type ContentUnion =
   | TextContent
+  | Postback
   | ImageContent
   | VideoContent
   | ButtonTemplate

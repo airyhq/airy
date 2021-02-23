@@ -1,17 +1,17 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import FacebookLogin from 'react-facebook-login';
-import {Button} from '@airyhq/components';
-
-import {Channel} from 'httpclient';
-import {AiryConfig} from '../../AiryConfig';
+import {RouteComponentProps} from 'react-router-dom';
 import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
-import {StateModel} from '../../reducers';
-
+import {StateModel} from '../../reducers/index';
 import styles from './index.module.scss';
 
 import {allChannels} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
+import ChatPluginSource from '../Channels/ChannelsSources/ChatPluginSource';
+import FacebookSource from '../Channels/ChannelsSources/FacebookSource';
+import TwilloSmsSource from '../Channels/ChannelsSources/TwilloSmsSource';
+import WhatsappSmsSource from '../Channels/ChannelsSources/WhatsappSmsSource';
+import GoogleSource from '../Channels/ChannelsSources/GoogleSource';
 
 const mapDispatchToProps = {
   listChannels,
@@ -26,93 +26,33 @@ const mapStateToProps = (state: StateModel) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const Channels = (props: ConnectedProps<typeof connector>) => {
-  const [facebookToken, setFacebookToken] = useState('');
+type ChannelsConnectProps = {} & ConnectedProps<typeof connector> & RouteComponentProps;
+
+const Channels = (props: ChannelsConnectProps) => {
   useEffect(() => {
     props.listChannels();
     setPageTitle('Channels');
   }, []);
 
-  const connect = (token: string) => {
-    props.exploreChannels({
-      source: 'facebook',
-      token,
-    });
-  };
-
-  const fetchPages = () => {
-    FB.getLoginStatus(loginResponse => {
-      if (loginResponse.status === 'connected') {
-        setFacebookToken(loginResponse.authResponse.accessToken);
-        connect(loginResponse.authResponse.accessToken);
-      } else {
-        FB.login(loginResponse => {
-          setFacebookToken(loginResponse.authResponse.accessToken);
-          connect(loginResponse.authResponse.accessToken);
-        });
-      }
-    });
-  };
-
-  const connectClicked = useCallback(
-    (channel: Channel) => {
-      props.connectChannel({
-        source: channel.source,
-        sourceChannelId: channel.sourceChannelId,
-        token: facebookToken,
-      });
-    },
-    [facebookToken]
-  );
-
-  const disconnectClicked = (channel: Channel) => {
-    props.disconnectChannel('facebook', {channelId: channel.sourceChannelId});
-  };
-
   return (
     <div className={styles.channelsWrapper}>
-      <div className={styles.headline}>
-        <h1 className={styles.headlineText}>Channels</h1>
-        <FacebookLogin
-          appId={AiryConfig.FACEBOOK_APP_ID}
-          autoLoad={false}
-          textButton="Add a Channel"
-          fields="name,email,picture"
-          scope="pages_messaging,pages_show_list,manage_pages"
-          callback={fetchPages}
-          version="3.2"
-          cssClass={styles.connectButton}
-          render={() => (
-            <Button type="button" onClick={fetchPages}>
-              Add Channels
-            </Button>
-          )}
-        />
+      <div className={styles.channelsHeadline}>
+        <div>
+          <h1 className={styles.channelsHeadlineText}>Channels</h1>
+        </div>
       </div>
-      <ul className={styles.channelList}>
-        {props.channels.map((channel: Channel) => {
-          const channelName = channel.metadata.name;
-          return (
-            <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-              {channel.metadata.imageUrl && (
-                <img src={channel.metadata.imageUrl} alt={channelName} className={styles.channelImage} />
-              )}
-              <div className={styles.channelName}>{channel.metadata.name}</div>
-              <div className={styles.channelAction}>
-                {channel.connected ? (
-                  <Button styleVariant="small" onClick={() => disconnectClicked(channel)}>
-                    Disconnect
-                  </Button>
-                ) : (
-                  <Button styleVariant="small" onClick={() => connectClicked(channel)}>
-                    Connect
-                  </Button>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+      <div className={styles.channelsChoice}>
+        {' '}
+        <p>Choose a channel you want to connect</p>
+      </div>
+
+      <div className={styles.wrapper}>
+        <ChatPluginSource pluginSource={props.channels} />
+        <FacebookSource facebookSource={props.channels} />
+        <TwilloSmsSource twilloSmsSource={props.channels} />
+        <WhatsappSmsSource whatsappSmsSource={props.channels} />
+        <GoogleSource googleSource={props.channels} />
+      </div>
     </div>
   );
 };

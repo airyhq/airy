@@ -10,9 +10,6 @@ type ChannelDetailsProps = {
 };
 
 const ChannelDetails = (props: ChannelDetailsProps) => {
-  console.log(props.title);
-  console.log(props.displayButton);
-
   return (
     <>
       <div className={styles.channelCard}>

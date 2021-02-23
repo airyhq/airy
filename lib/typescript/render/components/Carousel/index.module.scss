@@ -28,6 +28,19 @@
   padding: 0;
   line-height: 0;
   cursor: pointer;
+
+  &:focus {
+    border: none;
+    outline: none;
+  }
+  &:active {
+    transition-duration: 0.2s;
+    transition: ease-in-out;
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
 }
 
 .buttonLeft {

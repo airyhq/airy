@@ -8,23 +8,20 @@ import ChannelsConnected from './ChannelsConnected';
 type googleSourceProps = {googleSource: Channel[]};
 
 const GoogleSource = (props: googleSourceProps) => {
-
-  const channels = props.googleSource || [];
-
-  console.log(channels);
+  const channels = props.googleSource.filter((channel: Channel) => channel.source === 'google');
 
   return (
-    <div style={{display: "flex",flexGrow: 1}}>
+    <div style={{display: 'flex', flexGrow: 1}}>
       <ChannelDetails
         title="Google Business Messages"
         text="Be there when people search"
         image={<GoogleLogo />}
         buttonIcon={<AddChannel />}
-        displayButton={channels.length <= 4}
+        displayButton={!channels.length}
       />
 
       <ChannelsConnected
-        source="google"        
+        source="google"
         channels={channels}
         connected="CONNECTED"
         placeholderImage={<GoogleLogo />}

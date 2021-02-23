@@ -3,61 +3,63 @@ import {Channel} from 'httpclient';
 import {LinkButton} from '@airyhq/components';
 import styles from './index.module.scss';
 
-type connectedChannelsProps = {  
+type connectedChannelsProps = {
   source: string;
   channels: Channel[];
-  connected: string;  
-  placeholderImage?: JSX.Element;    
+  connected: string;
+  placeholderImage?: JSX.Element;
   isConnected: string;
-  addAChannel: JSX.Element;  
+  addAChannel: JSX.Element;
 };
 
 const ChannelsConnected = (props: connectedChannelsProps) => {
-
   const {source, channels} = props;
 
-  const filteredChannels = channels.filter((channel: Channel) => channel.source === source);
-  const isPhoneNumberSource = () => { return source === "twilio.sms" || source === "twilio.whatsapp" };
+  const isPhoneNumberSource = () => {
+    return source === 'twilio.sms' || source === 'twilio.whatsapp';
+  };
 
-  const channelsToShow =  isPhoneNumberSource() ? 2 : 4;
-  const hasExtraChannels = filteredChannels.length > channelsToShow;
+  const channelsToShow = isPhoneNumberSource() ? 2 : 4;
+  const hasExtraChannels = channels.length > channelsToShow;
 
   return (
     <>
-      {filteredChannels && filteredChannels.length > 0 && (
+      {channels && channels.length > 0 && (
         <>
           <div className={styles.connectedContainer}>
             <div className={styles.connectedSum}>
               <p>
-                {filteredChannels.length} {props.connected}
+                {channels.length} {props.connected}
               </p>
             </div>
             <div className={styles.connectedChannelBox}>
               <div className={styles.connectedChannel}>
-                {filteredChannels.slice(0, channelsToShow).map((channel: Channel) => {
-                  return (                    
+                {channels.slice(0, channelsToShow).map((channel: Channel) => {
+                  return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <div className={styles.connectedChannelData}>
-                        {source === "facebook" && channel.metadata.imageUrl ? (
+                        {source === 'facebook' && channel.metadata.imageUrl ? (
                           <img
                             src={channel.metadata.imageUrl}
                             alt={channel.metadata.name}
                             className={styles.facebookImage}
                           />
-                        ):(
+                        ) : (
                           <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
                         )}
                         <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
-                        {isPhoneNumberSource() && <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>}
+                        {isPhoneNumberSource() && (
+                          <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>
+                        )}
                       </div>
-                    </li>                  
+                    </li>
                   );
                 })}
               </div>
               <div className={styles.extraChannel}>
                 {hasExtraChannels && (
                   <LinkButton>
-                    +{filteredChannels.length - channelsToShow} {props.isConnected}
+                    +{channels.length - channelsToShow} {props.isConnected}
                   </LinkButton>
                 )}
               </div>

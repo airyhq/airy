@@ -10,9 +10,8 @@ type ChannelDetailsProps = {
 };
 
 const ChannelDetails = (props: ChannelDetailsProps) => {
-
-  console.log(props.title)
-  console.log(props.displayButton)
+  console.log(props.title);
+  console.log(props.displayButton);
 
   return (
     <>

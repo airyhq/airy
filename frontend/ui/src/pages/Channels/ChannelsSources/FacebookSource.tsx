@@ -8,21 +8,20 @@ import ChannelsConnected from './ChannelsConnected';
 type facebookSourceProps = {facebookSource: Channel[]};
 
 const FacebookSource = (props: facebookSourceProps) => {
-
-  const channels = props.facebookSource || [];
+  const channels = props.facebookSource.filter((channel: Channel) => channel.source === 'facebook');
 
   return (
-    <div style={{display: "flex",flexGrow: 1}}>
+    <div style={{display: 'flex', flexGrow: 1}}>
       <ChannelDetails
         title="Messenger "
         text="Connect multiple Facebook pages"
         image={<FacebookLogo />}
         buttonIcon={<AddChannel />}
-        displayButton={channels.length <= 4}
+        displayButton={!channels.length}
       />
 
       <ChannelsConnected
-        source="facebook"        
+        source="facebook"
         channels={channels}
         connected="CONNECTED"
         isConnected="connected"

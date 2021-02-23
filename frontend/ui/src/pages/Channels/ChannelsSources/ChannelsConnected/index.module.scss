@@ -18,7 +18,7 @@
   display: flex;
   box-sizing: border-box;
   width: 550px;
-  min-height: 100px;  
+  min-height: 100px;
   overflow: hidden;
   border: 1px solid var(--color-light-gray);
   border-radius: 8px;
@@ -46,9 +46,12 @@
 .extraChannel {
   display: flex;
   min-width: 88px;
-  min-height: 20px;  
-  padding: 0 24px 0 24px;  
-  cursor: pointer;  
+  min-height: 20px;
+  padding: 0 24px 0 24px;
+  cursor: pointer;
+  button {
+    outline: none;
+  }
 }
 
 .connectedChannelData {
@@ -70,10 +73,10 @@
   }
 }
 
-.facebookImage {  
+.facebookImage {
   height: 20px;
   width: 20px;
-  border-radius: 50%;  
+  border-radius: 50%;
 }
 
 .connectedChannelName {
@@ -111,10 +114,10 @@
   width: 30px;
   height: 30px;
   margin-right: 16px;
-  padding: 0px;    
+  padding: 0px;
   border-radius: 50%;
-  color: var(--color-text-gray);  
-  cursor: pointer;  
+  color: var(--color-text-gray);
+  cursor: pointer;
 
   svg {
     height: 30px;

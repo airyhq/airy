@@ -8,21 +8,20 @@ import ChannelsConnected from './ChannelsConnected';
 type chatPluginProps = {pluginSource: Channel[]};
 
 const ChatPluginSource = (props: chatPluginProps) => {
-
-  const channels = props.pluginSource || [];
+  const channels = props.pluginSource.filter((channel: Channel) => channel.source === 'chat_plugin');
 
   return (
-    <div style={{display: "flex",flexGrow: 1}}>
+    <div style={{display: 'flex', flexGrow: 1}}>
       <ChannelDetails
         title="Airy Live Chat "
         text="Best of class browser messenger"
         image={<AiryLogo />}
         buttonIcon={<AddChannel />}
-        displayButton={channels.length <= 4}
+        displayButton={!channels.length}
       />
 
       <ChannelsConnected
-        source="chat_plugin"        
+        source="chat_plugin"
         channels={channels}
         connected="CONNECTED"
         placeholderImage={<AiryLogo />}

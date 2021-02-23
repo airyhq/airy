@@ -16,7 +16,8 @@ require (
 	k8s.io/api v0.20.0
 	k8s.io/apimachinery v0.20.0
 	k8s.io/client-go v0.20.0
-
+	helm.sh/helm/v3 v3.5.2
 )
 
 replace github.com/airyhq/airy/lib/go/httpclient => ../../lib/go/httpclient
+replace github.com/docker/distribution => github.com/docker/distribution v2.7.1

@@ -58,7 +58,7 @@ On your application's dashboard, note down the `App ID` of your application and 
 https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/settings/basic/
 ```
 
-Here you will find your `App Secret`:
+You will find your `App Secret` on this page:
 
 <img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/secret.png')} />
 
@@ -112,7 +112,7 @@ Your Facebook Webhook URL should have the following format:
 `https://fb-RANDOM_STRING.tunnel.airy.co/facebook`
 ```
 
-Find out how you can find your Facebook Webhook URL [here](/getting-started/deployment/vagrant#status)
+Refer to [our section on the Vagrant box status](/getting-started/deployment/vagrant#status) for information about how to find your Facebook Webhook URL.
 :::
 
 If you encounter errors, please make sure that the Verify Token matches the `webhookSecret` in `infrastructure/airy.yaml` and that your variables have been successfully set to your Airy Core instance.

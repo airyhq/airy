@@ -38,7 +38,7 @@ Let's proceed step by step.
 
 ## Step 1: Registration
 
-You first need to be registered with Google's Business Messages before configuring this source. You can find more information about Google's Business Messages and the registration process [here](https://developers.google.com/business-communications/business-messages/guides).
+You first need to be registered with Google's Business Messages before configuring this source. Refer to [Google's Business Messages' guides](https://developers.google.com/business-communications/business-messages/guides) to find more information about this source and the registration process.
 
 ## Step 2: Editing of the yaml file in Airy Core
 

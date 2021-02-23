@@ -58,38 +58,12 @@ latest.
 
 ## Send
 
-`POST /messages.send`
+import MessagesSend from './messages-send.mdx'
 
-Sends a message to a conversation and returns a payload. Whatever is put on the
-`message` field will be forwarded "as-is" to the source's message endpoint.
+<MessagesSend />
 
-**Sending a text message**
+## Send from Google's Business Messages source
 
-```json5
-{
-  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
-  "message": {
-    "text": "Hello World"
-  }
-}
-```
+import GoogleMessagesSend from './google-messages-send.mdx'
 
-**Sample response**
-
-```json5
-{
-  "id": "{UUID}",
-  "content": {"text": "Hello"},
-  "state": "pending|failed|delivered",
-  "sender_type": "{string/enum}",
-  // See glossary
-  "sent_at": "{string}",
-  //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-  "source": "{String}",
-  // one of the possible sources
-  "metadata": {
-    "sentFrom": "iPhone"
-  }
-  // metadata object of the message
-}
-```
+<GoogleMessagesSend />

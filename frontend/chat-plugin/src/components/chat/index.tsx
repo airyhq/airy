@@ -81,7 +81,7 @@ const Chat = (props: Props) => {
   };
 
   const onReceive = (data: IMessage) => {
-    const newMessage = messageMapper(JSON.parse(data.body).message as MessagePayload);
+    const newMessage = messageMapper((JSON.parse(data.body) as any).message as MessagePayload);
     setMessages((messages: Message[]) => [...messages, newMessage]);
   };
 

@@ -15,7 +15,7 @@ import {IconChannelFilter} from '../../../components/IconChannelFilter';
 import DialogCustomizable from '../../../components/DialogCustomizable';
 import Tag from '../../../components/Tag';
 
-import {ReactComponent as CheckmarkIcon} from '../../../assets/images/icons/checkmark.svg';
+import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
 
 import styles from './Popup.module.scss';
 import {allChannels} from '../../../selectors/channels';

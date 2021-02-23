@@ -14,5 +14,6 @@ ts_library(
         "@npm//@types/resize-observer-browser",
         "@npm//linkifyjs",
         "@npm//react",
+        "@npm//react-markdown",
     ],
 )

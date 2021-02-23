@@ -53,7 +53,7 @@ public class MessageParser {
         } else if (appId != null && !appId.equals(this.facebookAppId)) {
             senderType = SenderType.SOURCE_USER;
             senderId = appId;
-        } else if(isEcho && appId == null) {
+        } else if(appId == null) {
             senderType = SenderType.SOURCE_USER;
             senderId = getSourceConversationId(webhookMessaging);
         } else {

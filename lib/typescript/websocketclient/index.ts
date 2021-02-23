@@ -43,7 +43,7 @@ export class WebSocketClient {
   };
 
   onEvent = (body: string) => {
-    const json: EventPayloadUnion = JSON.parse(body);
+    const json: EventPayloadUnion = JSON.parse(body) as any;
     switch (json.type) {
       case 'channel':
         this.callbackMap.onChannel?.(channelMapper(json.payload));

@@ -100,10 +100,8 @@
   &:hover {
     color: var(--color-airy-blue-hover);
     .plusButton {
-      svg {
-        path {
-          fill: var(--color-airy-blue-hover);
-        }
+      path {
+        fill: var(--color-airy-blue-hover);
       }
     }
   }
@@ -111,11 +109,9 @@
   .plusButton {
     display: inherit;
     margin-left: 4px;
-    svg {
-      width: 12px;
-      position: relative;
-      top: 1px;
-    }
+    width: 12px;
+    position: relative;
+    top: 1px;
   }
 }
 

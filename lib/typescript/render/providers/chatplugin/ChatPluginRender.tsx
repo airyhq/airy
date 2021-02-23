@@ -49,14 +49,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
 function mapContent(message: Message): ContentUnion {
   const messageContent = message.content;
 
-  if (messageContent.text) {
-    return {
-      type: 'text',
-      text: messageContent.text,
-    };
-  }
-
-  if (messageContent.richCard.standaloneCard) {
+  if (messageContent.richCard?.standaloneCard) {
     const {
       richCard: {
         standaloneCard: {cardContent},
@@ -72,7 +65,7 @@ function mapContent(message: Message): ContentUnion {
     };
   }
 
-  if (messageContent.richCard.carouselCard) {
+  if (messageContent.richCard?.carouselCard) {
     return {
       type: 'richCardCarousel',
       cardWidth: messageContent.richCard.carouselCard.cardWidth,
@@ -87,4 +80,22 @@ function mapContent(message: Message): ContentUnion {
       postbackData: messageContent.postbackData,
     };
   }
+
+  if (messageContent.containsRichText) {
+    return {
+      type: 'richText',
+      text: messageContent.text,
+      fallback: messageContent.fallback,
+      containsRichtText: parseBoolean(messageContent.containsRichText),
+    };
+  }
+
+  if (messageContent.text) {
+    return {
+      type: 'text',
+      text: messageContent.text,
+    };
+  }
 }
+
+const parseBoolean = value => (typeof value == 'boolean' ? value : /^true$/i.test(value));

@@ -20,8 +20,8 @@ export const getTextMessagePayload = (
         conversationId,
         message: {
           text,
-          representative: {            
-            representativeType: "HUMAN",
+          representative: {
+            representativeType: 'HUMAN',
           },
         },
       };

@@ -3,7 +3,7 @@ export interface SendMessagesRequestPayload {
   message: {
     text: string;
     representative?: {
-      representativeType?: string
-    }
+      representativeType?: string;
+    };
   };
 }

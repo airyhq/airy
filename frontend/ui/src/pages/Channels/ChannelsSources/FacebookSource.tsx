@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './ChannelDetails.module.scss';
 import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
@@ -9,37 +8,22 @@ import ChannelsConnected from './ChannelsConnected';
 type facebookSourceProps = {facebookSource: Channel[]};
 
 const FacebookSource = (props: facebookSourceProps) => {
-  const facebookSources = props.facebookSource.filter(channel => channel.source === 'facebook').slice(0, 4);
-  const facebookSourcesExtra = props.facebookSource.filter(channel => channel.source === 'facebook').slice(4);
-  const totalFacebookSources = facebookSources.concat(facebookSourcesExtra);
 
-  const connectedAttributes = {
-    showConnectedChannels: facebookSources.length > 0,
-    showSumOfChannels: totalFacebookSources.length,
-    connectedChannel: facebookSources,
-    displayFacebookImage: facebookSources.length > 0,
-
-    ignoreSvgAvatar: facebookSources.length > 0,
-  };
-
-  const connectedAttributesExtra = {
-    extraChannel: facebookSourcesExtra.length > 0,
-    displayExtraChannel: facebookSourcesExtra.length,
-  };
+  const channels = props.facebookSource || [];
 
   return (
-    <div className={styles.flexWrap}>
+    <div style={{display: "flex",flexGrow: 1}}>
       <ChannelDetails
         title="Messenger "
         text="Connect multiple Facebook pages"
         image={<FacebookLogo />}
         buttonIcon={<AddChannel />}
-        displayButton={facebookSources.length === 0}
+        displayButton={channels.length <= 4}
       />
 
       <ChannelsConnected
-        {...connectedAttributes}
-        {...connectedAttributesExtra}
+        source="facebook"        
+        channels={channels}
         connected="CONNECTED"
         isConnected="connected"
         addAChannel={<AddChannel />}

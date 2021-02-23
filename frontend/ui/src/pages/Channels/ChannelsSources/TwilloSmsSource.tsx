@@ -1,7 +1,5 @@
 import React from 'react';
-import styles from './ChannelDetails.module.scss';
-import {ReactComponent as SMSLogo} from 'assets/images/icons/sms.svg';
-import {ReactComponent as SMSChannelLogo} from 'assets/images/icons/sms-channel.svg';
+import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
 import ChannelDetails from './ChannelDetails';
@@ -10,37 +8,24 @@ import ChannelsConnected from './ChannelsConnected';
 type twilloSmsSourceProps = {twilloSmsSource: Channel[]};
 
 const TwilloSmsSource = (props: twilloSmsSourceProps) => {
-  const twilloSources = props.twilloSmsSource.filter(channel => channel.source === 'twilio.sms').slice(0, 2);
-  const twilloSourcesExtra = props.twilloSmsSource.filter(channel => channel.source === 'twilio.sms').slice(2);
-  const totalTwilloSources = twilloSources.concat(twilloSourcesExtra);
 
-  const connectedAttributes = {
-    showConnectedChannels: twilloSources.length > 0,
-    connectedChannel: twilloSources,
-    showSumOfChannels: totalTwilloSources.length,
-    renderChannelId: twilloSources.length > 0,
-  };
-
-  const connectedAttributesExtra = {
-    extraChannel: twilloSourcesExtra.length > 0,
-    displayExtraChannel: twilloSourcesExtra.length,
-  };
+  const channels = props.twilloSmsSource || [];
 
   return (
-    <div className={styles.flexWrap}>
+    <div style={{display: "flex",flexGrow: 1}}>
       <ChannelDetails
         title="SMS "
         text="Deliver SMS with ease"
         image={<SMSLogo />}
         buttonIcon={<AddChannel />}
-        displayButton={twilloSources.length === 0}
+        displayButton={channels.length <= 2}
       />
 
       <ChannelsConnected
-        {...connectedAttributes}
-        {...connectedAttributesExtra}
+        source="twilio.sms"        
+        channels={channels}
         connected="CONNECTED"
-        placeholderImage={<SMSChannelLogo />}
+        placeholderImage={<SMSLogo />}
         isConnected="connected"
         addAChannel={<AddChannel />}
       />

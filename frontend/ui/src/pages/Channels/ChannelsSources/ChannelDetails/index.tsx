@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ChannelDetails.module.scss';
+import styles from './index.module.scss';
 
 type ChannelDetailsProps = {
   image: JSX.Element;
@@ -10,6 +10,10 @@ type ChannelDetailsProps = {
 };
 
 const ChannelDetails = (props: ChannelDetailsProps) => {
+
+  console.log(props.title)
+  console.log(props.displayButton)
+
   return (
     <>
       <div className={styles.channelCard}>

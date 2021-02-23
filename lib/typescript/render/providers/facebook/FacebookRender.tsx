@@ -92,6 +92,7 @@ function facebookInbound(message: Message): ContentUnion {
     return {
       type: 'text',
       text: messageJson.message?.text,
+    };
   }
 
   if (messageJson.postback?.title) {

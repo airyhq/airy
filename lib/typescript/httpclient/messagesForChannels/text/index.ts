@@ -5,18 +5,16 @@ export const getTextMessagePayload = (
   conversationId: string,
   text: string
 ): SendMessagesRequestPayload => {
-  let payload: SendMessagesRequestPayload;
   switch (channel) {
     case 'chat_plugin' || 'twillo.sms' || 'facebook' || 'twillo.whatsapp':
-      payload = {
+      return {
         conversationId,
         message: {
           text,
         },
       };
-      return payload;
     case 'google':
-      payload = {
+      return {
         conversationId,
         message: {
           text,
@@ -26,12 +24,11 @@ export const getTextMessagePayload = (
         },
       };
     default:
-      payload = {
+      return {
         conversationId,
         message: {
           text,
         },
       };
-      return payload;
   }
 };

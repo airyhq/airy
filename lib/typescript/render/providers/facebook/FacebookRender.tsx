@@ -88,6 +88,11 @@ function facebookInbound(message: Message): ContentUnion {
 
   if (messageJson.message?.attachments?.length) {
     return parseAttachment(messageJson.message.attachments[0]);
+  } else if (messageJson.message?.text) {
+    return {
+      type: 'text',
+      text: messageJson.message?.text,
+    };
   }
 
   if (messageJson.postback?.title) {
@@ -119,11 +124,11 @@ function facebookOutbound(message: Message): ContentUnion {
       messageJson.quick_replies = messageJson.quick_replies.slice(0, 13);
     }
 
-    if (messageJson.attachment) {
+    if (messageJson.attachment || messageJson.message?.attachments) {
       return {
         type: 'quickReplies',
-        attachment: parseAttachment(messageJson.attachment),
-        quickReplies: messageJson.quick_replies,
+        attachment: parseAttachment(messageJson.attachment || messageJson.message?.attachments),
+        quickReplies: messageJson.quick_replies || messageJson.message?.quick_replies,
       };
     }
 
@@ -134,14 +139,14 @@ function facebookOutbound(message: Message): ContentUnion {
     };
   }
 
-  if (messageJson.attachment) {
-    return parseAttachment(messageJson.attachment);
+  if (messageJson.attachment || messageJson.message?.attachments) {
+    return parseAttachment(messageJson.attachment || messageJson.message?.attachments[0]);
   }
 
-  if (messageJson.text) {
+  if (messageJson.text || messageJson.message?.text) {
     return {
       type: 'text',
-      text: messageJson.text,
+      text: messageJson.text || messageJson.message?.text,
     };
   }
 

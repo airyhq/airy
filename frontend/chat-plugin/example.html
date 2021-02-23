@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>Chat Plugin Souce Demo Page</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script>
-        var search = new URLSearchParams(location.search);
+      var search = new URLSearchParams(location.search);
 
-        (function (w, d, s, n) {
-            w[n] = w[n] || {};
-            w[n].cid = search.get("channel_id");
-            w[n].h = "{{API_HOST}}";
-            // Only to be used for local installations
-            w[n].no_tls = true;
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s);
-            j.async = true;
-            j.src = '//' + w[n].h + '/s.js';
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'airy');
+      (function(w, d, s, n) {
+        w[n] = w[n] || {};
+        w[n].cid = search.get('channel_id');
+        w[n].h = '{{API_HOST}}';
+        // Only to be used for local installations
+        w[n].no_tls = true;
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s);
+        j.async = true;
+        j.src = '//' + w[n].h + '/s.js';
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'airy');
     </script>
-</head>
-<body id="myPage" style="background-color: rgb(241, 250, 255);">
-<!-- Airy target container -->
-<div id="airyContainer"></div>
-</body>
+  </head>
+  <body id="myPage" style="background-color: rgb(241, 250, 255);">
+    <!-- Airy target container -->
+    <div id="airyContainer"></div>
+  </body>
 </html>

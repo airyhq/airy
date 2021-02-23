@@ -1,6 +1,6 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
-import {cloneDeep, sortBy, uniq, merge} from 'lodash-es';
+import {cloneDeep, sortBy, merge, pickBy, pick} from 'lodash-es';
 
 import {Conversation, ConversationFilter, Message} from 'httpclient';
 
@@ -8,6 +8,7 @@ import * as metadataActions from '../../../actions/metadata';
 import * as actions from '../../../actions/conversations';
 import * as filterActions from '../../../actions/conversationsFilter';
 import * as messageActions from '../../../actions/messages';
+import {MetadataEvent, ConversationMetadata} from 'httpclient';
 
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 type FilterAction = ActionType<typeof filterActions>;
@@ -145,43 +146,25 @@ const initialState: AllConversationsState = {
   },
 };
 
-const addTagToConversation = (state: AllConversationsState, conversationId, tagId) => {
-  const conversation: Conversation = state.items[conversationId];
-  if (conversation) {
-    const tags: string[] = [...state.items[conversationId].tags];
-    tags.push(tagId);
-
-    return {
-      ...state,
-      items: {
-        ...state.items,
-        [conversation.id]: {
-          ...conversation,
-          tags: uniq(tags),
-        },
-      },
-    };
-  }
-
-  return state;
-};
-
 const removeTagFromConversation = (state: AllConversationsState, conversationId, tagId) => {
   const conversation: Conversation = state.items[conversationId];
-  if (conversation) {
-    return {
-      ...state,
-      items: {
-        ...state.items,
-        [conversation.id]: {
-          ...conversation,
-          tags: conversation.tags.filter(tag => tag !== tagId),
-        },
-      },
-    };
+  if (!conversation) {
+    return state;
   }
 
-  return state;
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          tags: pickBy(conversation.metadata?.tags, (value, key) => key !== tagId),
+        },
+      },
+    },
+  };
 };
 
 const lastMessageOf = (messages: Message[]): Message => {
@@ -220,8 +203,30 @@ function allReducer(
         items: {
           ...state.items,
           [action.payload.identifier]: {
+            id: action.payload.identifier,
             ...state.items[action.payload.identifier],
-            metadata: merge({}, state.items[action.payload.identifier].metadata, action.payload.metadata),
+            metadata: {
+              // Ensure that there is always a display name present
+              ...pick(state.items[action.payload.identifier]?.metadata, 'contact.displayName'),
+              ...(<MetadataEvent<ConversationMetadata>>action.payload).metadata,
+            },
+          },
+        },
+      };
+
+    case getType(metadataActions.mergeMetadataAction):
+      if (action.payload.subject !== 'conversation') {
+        return state;
+      }
+
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [action.payload.identifier]: {
+            id: action.payload.identifier,
+            ...state.items[action.payload.identifier],
+            metadata: merge({}, state.items[action.payload.identifier]?.metadata, action.payload.metadata),
           },
         },
       };
@@ -267,9 +272,6 @@ function allReducer(
           loading: true,
         },
       };
-
-    case getType(actions.addTagToConversationAction):
-      return addTagToConversation(state, action.payload.conversationId, action.payload.tagId);
 
     case getType(actions.removeTagFromConversationAction):
       return removeTagFromConversation(state, action.payload.conversationId, action.payload.tagId);

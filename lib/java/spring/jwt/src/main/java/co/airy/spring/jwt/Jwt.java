@@ -53,13 +53,16 @@ public class Jwt {
     }
 
     public String authenticate(final String authHeader) {
-        Claims claims = null;
-        if (authHeader != null) {
-            try {
-                claims = extractClaims(authHeader);
-            } catch (Exception e) {
-                log.error("Failed to extract claims from token: " + e.getMessage());
-            }
+        if (authHeader == null) {
+            return null;
+        }
+
+        Claims claims;
+        try {
+            claims = extractClaims(authHeader);
+        } catch (Exception e) {
+            log.error("Failed to extract claims from token: " + e.getMessage());
+            return null;
         }
 
         if (claims == null) {

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-consumer
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: webhook-consumer
+    type: webhook
+    core.airy.co/managed: "true"
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: webhook-consumer
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: webhook-consumer
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        env:
+        - name: SERVICE_NAME
+          value: webhook-consumer
+        - name: REDIS_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: redis-config
+              key: REDIS_HOSTNAME
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: redis-config
+              key: REDIS_PORT
+        - name: WEBHOOK_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: webhooks-config
+              key: NAME
+        livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              httpHeaders:
+                - name: Health-Check
+                  value: health-check
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3

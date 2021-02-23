@@ -12,8 +12,6 @@ export const ChatPluginRender = (props: MessageRenderProps) => {
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
-  const messageContent = JSON.parse(props.message.content);
-
   const defaultProps = getDefaultMessageRenderingProps(props);
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
   const propsToUse = props.invertSides ? invertedProps : defaultProps;
@@ -28,9 +26,9 @@ function render(content: ContentUnion, props: MessageRenderProps) {
         <RichText
           {...propsToUse}
           message={props.message}
-          text={messageContent.text}
-          fallback={messageContent.fallback}
-          containsRichText={messageContent.containsRichText}
+          text={content.text}
+          fallback={content.fallback}
+          containsRichText={content.containsRichtText}
         />
       );
     case 'richCard':
@@ -44,29 +42,14 @@ function render(content: ContentUnion, props: MessageRenderProps) {
         />
       );
     case 'richCardCarousel':
-      return (
-        <RichCardCarousel
-          {...propsToUse}
-          cardWidth={content.cardWidth}
-          cardContents={content.cardContents}
-          id={props.message.id}
-          isChatPlugin={propsToUse.fromContact}
-        />
-      );
+      return <RichCardCarousel {...propsToUse} cardWidth={content.cardWidth} cardContents={content.cardContents} />;
   }
 }
 
 function mapContent(message: Message): ContentUnion {
-  const messageContent = JSON.parse(message.content);
+  const messageContent = message.content;
 
-  if (messageContent.text) {
-    return {
-      type: 'text',
-      text: JSON.parse(message.content).text,
-    };
-  }
-
-  if (messageContent.richCard.standaloneCard) {
+  if (messageContent.richCard?.standaloneCard) {
     const {
       richCard: {
         standaloneCard: {cardContent},
@@ -82,7 +65,7 @@ function mapContent(message: Message): ContentUnion {
     };
   }
 
-  if (messageContent.richCard.carouselCard) {
+  if (messageContent.richCard?.carouselCard) {
     return {
       type: 'richCardCarousel',
       cardWidth: messageContent.richCard.carouselCard.cardWidth,
@@ -97,4 +80,22 @@ function mapContent(message: Message): ContentUnion {
       postbackData: messageContent.postbackData,
     };
   }
+
+  if (messageContent.containsRichText) {
+    return {
+      type: 'richText',
+      text: messageContent.text,
+      fallback: messageContent.fallback,
+      containsRichtText: parseBoolean(messageContent.containsRichText),
+    };
+  }
+
+  if (messageContent.text) {
+    return {
+      type: 'text',
+      text: messageContent.text,
+    };
+  }
 }
+
+const parseBoolean = value => (typeof value == 'boolean' ? value : /^true$/i.test(value));

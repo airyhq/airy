@@ -8,7 +8,7 @@ import AvatarImage from '../../../components/AvatarImage';
 import {formatTimeOfMessage} from '../../../services/format/date';
 
 import {Message} from 'httpclient';
-import {MergedConversation, StateModel} from '../../../reducers';
+import {MergedConversation} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations} from '../../../actions/conversations';
 
@@ -24,22 +24,15 @@ type ConversationListItemProps = {
   style: CSSProperties;
 } & ConnectedProps<typeof connector>;
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    channels: state.data.channels,
-  };
-};
-
 const mapDispatchToProps = {
   readConversations,
 };
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
-  if (message && message.content) {
-    const messageJSON = JSON.parse(message.content);
-    return <>{messageJSON.text}</>;
+  if (message?.content) {
+    return <>{message.content.message?.text || message.content.text}</>;
   }
   return <div />;
 };

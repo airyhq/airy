@@ -22,9 +22,9 @@ Additional features like [Filters, Search](inbox) and [Tags](tags) help you.
 <ButtonBoxList>
     <ButtonBox
         icon={() => <CogSVG />}
-        title='UI Quick Start'
+        title='UI Quickstart'
         description='Step by Step Guide on getting up and running with the UI'
-        link='apps/ui/ui-quick-start'
+        link='apps/ui/quickstart'
     />
     <ButtonBox
         icon={() => <InboxSVG />}

@@ -67,7 +67,7 @@ Find users whose name ends with "Lovelace":
       },
       "last_message": {
         id: "{UUID}",
-        "content": '{"text":"Hello World"}',
+        "content": {"text": "Hello World"},
         // source message payload
         // typed source message model
         state: "{String}",
@@ -128,7 +128,7 @@ Find users whose name ends with "Lovelace":
   },
   "last_message": {
     "id": "{UUID}",
-    "content": '{"text":"Hello World"}',
+    "content": {"text": "Hello World"},
     // source message payload
     // typed source message model
     "delivery_state": "{String}",

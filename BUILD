@@ -173,6 +173,7 @@ exports_files(
     ],
 )
 
+# gazelle:ignore
 # gazelle:proto disable_global
 # gazelle:build_file_name BUILD
 # gazelle:prefix

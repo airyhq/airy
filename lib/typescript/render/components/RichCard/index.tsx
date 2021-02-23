@@ -51,27 +51,29 @@ export const RichCard = ({title, description, suggestions, media, cardWidth, com
   };
 
   return (
-    <div className={styles.richCardContainer} style={cardWidth === 'SHORT' ? {width: '136px'} : {width: '280px'}}>
-      <div className={styles.mediaContainer}>
-        <Media {...media} />
-      </div>
-      <div className={styles.textContainer}>
-        {title && <h1 className={styles.title}>{title}</h1>}
-        {description && <span className={styles.description}>{description}</span>}
-        <div className={styles.suggestionsContainer}>
-          {suggestions.map((suggestion, idx) => (
-            <button
-              type="button"
-              key={idx}
-              className={styles.suggestionButton}
-              onClick={() => {
-                clickSuggestion(suggestion);
-              }}>
-              {suggestion.reply ? suggestion.reply.text : suggestion.action.text}
-            </button>
-          ))}
+    <>
+      <div className={styles.richCardContainer} style={cardWidth === 'SHORT' ? {width: '136px'} : {width: '280px'}}>
+        <div className={styles.mediaContainer}>
+          <Media {...media} />
+        </div>
+        <div className={styles.textContainer}>
+          {title && <h1 className={styles.title}>{title}</h1>}
+          {description && <span className={styles.description}>{description}</span>}
+          <div className={styles.suggestionsContainer}>
+            {suggestions.map((suggestion: Suggestion, idx: number) => (
+              <button
+                type="button"
+                key={idx}
+                className={styles.suggestionButton}
+                onClick={() => {
+                  clickSuggestion(suggestion);
+                }}>
+                {suggestion.reply ? suggestion.reply.text : suggestion.action.text}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

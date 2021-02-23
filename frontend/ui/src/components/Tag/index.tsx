@@ -4,7 +4,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {Tag as TagModel} from 'httpclient';
 import {Settings} from '../../reducers/data/settings';
 
-import {ReactComponent as Close} from '../../assets/images/icons/close.svg';
+import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import styles from './index.module.scss';
 import {StateModel} from '../../reducers';
 

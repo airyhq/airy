@@ -98,7 +98,7 @@ previous conversation using the [resume endpoint](#get-a-resume-token).
   "messages": [
     {
       "id": "{UUID}",
-      "content": '{"text":"Hello World"}',
+      "content": {"text": "Hello World"},
       // source message payload
       "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
@@ -158,7 +158,7 @@ header.
 ```json5
 {
   id: "{UUID}",
-  "content": '{"text":"Hello World"}',
+  "content": {"text": "Hello World"},
   // source message payload
   state: "{String}",
   // delivery state of message, one of PENDING, FAILED, DELIVERED
@@ -191,7 +191,7 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
 {
   message: {
     id: "{UUID}",
-    "content": '{"text":"Hello World"}',
+    "content": {"text": "Hello World"},
     // source message payload
     state: "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED

@@ -1,6 +1,3 @@
-import {ChannelsPayload} from './payload/ChannelsPayload';
-import {channelsMapper} from './mappers/channelsMapper';
-import {paginatedPayloadMapper} from './mappers/paginatedPayloadMapper';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelRequestPayload,
@@ -10,25 +7,30 @@ import {
   CreateTagRequestPayload,
   LoginViaEmailRequestPayload,
   SendMessagesRequestPayload,
+  TagConversationRequestPayload,
+  UntagConversationRequestPayload,
+  MessagePayload,
+  TagPayload,
+  ListMessagesRequestPayload,
+  PaginatedPayload,
+  ConversationPayload,
+  ChannelPayload,
+  ChannelsPayload,
 } from './payload';
-import {PaginatedPayload} from './payload/PaginatedPayload';
-import {ChannelApiPayload} from './payload/ChannelApiPayload';
-import {connectChannelApiMapper} from './mappers/connectChannelApiMapper';
-import {channelMapper} from './mappers/channelMapper';
-import {disconnectChannelApiMapper} from './mappers/disconnectChannelApiMapper';
-import {ConversationPayload} from './payload/ConversationPayload';
-import {conversationsMapper} from './mappers/conversationsMapper';
-import {ListMessagesRequestPayload} from './payload/ListMessagesRequestPayload';
-import {TagConversationRequestPayload} from './payload/TagConversationRequestPayload';
-import {UntagConversationRequestPayload} from './payload/UntagConversationRequestPayload';
-import {MessagePayload} from './payload/MessagePayload';
-import {messageMapperData} from './mappers/messageMapperData';
-import {tagsMapper} from './mappers/tagsMapper';
+import {
+  connectChannelMapper,
+  channelMapper,
+  channelsMapper,
+  disconnectChannelApiMapper,
+  conversationsMapper,
+  messageMapperData,
+  tagsMapper,
+  userMapper,
+  paginatedPayloadMapper,
+  messageMapper,
+  conversationMapper,
+} from './mappers';
 import {TagColor, Tag} from './model';
-import {TagPayload} from './payload/TagPayload';
-import {userMapper} from './mappers/userMapper';
-import {messageMapper} from './mappers/messageMapper';
-import {conversationMapper} from './mappers/conversationMapper';
 
 const headers = {
   Accept: 'application/json',
@@ -62,7 +64,7 @@ export class HttpClient {
     let errorResult: any;
 
     if (body.length > 0) {
-      errorResult = JSON.parse(body);
+      errorResult = JSON.parse(body) as any;
     }
 
     if (response.status == 403 && this.unauthorizedErrorCallback) {
@@ -96,7 +98,7 @@ export class HttpClient {
   }
 
   public async listChannels() {
-    const response: ChannelsPayload = await this.doFetchFromBackend('channels.list');
+    const response: ChannelsPayload = await this.doFetchFromBackend('channels.list', {});
     return channelsMapper(response);
   }
 
@@ -106,9 +108,9 @@ export class HttpClient {
   }
 
   public async connectFacebookChannel(requestPayload: ConnectChannelRequestPayload) {
-    const response: ChannelApiPayload = await this.doFetchFromBackend(
+    const response: ChannelPayload = await this.doFetchFromBackend(
       'channels.connect',
-      connectChannelApiMapper(requestPayload)
+      connectChannelMapper(requestPayload)
     );
     return channelMapper(response);
   }

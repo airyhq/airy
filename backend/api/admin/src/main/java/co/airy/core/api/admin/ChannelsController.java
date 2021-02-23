@@ -62,16 +62,16 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmptyResponsePayload());
         }
 
-        container.getMetadataMap();
+        final MetadataMap metadataMap = container.getMetadataMap();
         if (requestPayload.getName() != null) {
-            container.getMetadataMap().put(MetadataKeys.ChannelKeys.NAME, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, requestPayload.getName()));
+            metadataMap.put(MetadataKeys.ChannelKeys.NAME, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, requestPayload.getName()));
         }
         if (requestPayload.getImageUrl() != null) {
-            container.getMetadataMap().put(MetadataKeys.ChannelKeys.IMAGE_URL, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, requestPayload.getName()));
+            metadataMap.put(MetadataKeys.ChannelKeys.IMAGE_URL, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, requestPayload.getName()));
         }
 
         try {
-            stores.storeMetadataMap(container.getMetadataMap());
+            stores.storeMetadataMap(metadataMap);
             return ResponseEntity.ok(fromChannelContainer(container));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();

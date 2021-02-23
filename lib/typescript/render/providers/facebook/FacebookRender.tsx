@@ -20,6 +20,9 @@ function render(content: ContentUnion, props: MessageRenderProps) {
     case 'text':
       return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
 
+    case 'postback':
+      return <Text {...getDefaultMessageRenderingProps(props)} text={content.title} />;
+
     case 'image':
       return <Image {...getDefaultMessageRenderingProps(props)} imageUrl={content.imageUrl} />;
 
@@ -50,13 +53,17 @@ const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | Gene
       type: 'image',
       imageUrl: attachement.payload.url,
     };
-  } else if (attachement.type === 'template' && attachement.payload.template_type == 'button') {
+  }
+
+  if (attachement.type === 'template' && attachement.payload.template_type == 'button') {
     return {
       type: 'buttonTemplate',
       text: attachement.payload.text,
       buttons: attachement.payload.buttons,
     };
-  } else if (attachement.type === 'template' && attachement.payload.template_type == 'generic') {
+  }
+
+  if (attachement.type === 'template' && attachement.payload.template_type == 'generic') {
     return {
       type: 'genericTemplate',
       elements: attachement.payload.elements,
@@ -77,36 +84,51 @@ const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | Gene
 };
 
 function facebookInbound(message: Message): ContentUnion {
-  const messageJson = JSON.parse(message.content);
+  const messageJson = message.content;
 
-  if (messageJson.message.attachments?.length) {
+  if (messageJson.message?.attachments?.length) {
     return parseAttachment(messageJson.message.attachments[0]);
-  } else if (messageJson.message.text) {
+  } else if (messageJson.message?.text) {
+    return {
+      type: 'text',
+      text: messageJson.message?.text,
+    };
+  }
+
+  if (messageJson.postback?.title) {
+    return {
+      type: 'postback',
+      title: messageJson.postback.title,
+      payload: messageJson.postback.payload,
+    };
+  }
+
+  if (messageJson.message?.text) {
     return {
       type: 'text',
       text: messageJson.message.text,
     };
-  } else {
-    return {
-      type: 'text',
-      text: 'Unkown message type',
-    };
   }
+
+  return {
+    type: 'text',
+    text: 'Unkown message type',
+  };
 }
 
 function facebookOutbound(message: Message): ContentUnion {
-  const messageJson = JSON.parse(message.content);
+  const messageJson = message.content;
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {
       messageJson.quick_replies = messageJson.quick_replies.slice(0, 13);
     }
 
-    if (messageJson.attachment) {
+    if (messageJson.attachment || messageJson.message?.attachments) {
       return {
         type: 'quickReplies',
-        attachment: parseAttachment(messageJson.attachment),
-        quickReplies: messageJson.quick_replies,
+        attachment: parseAttachment(messageJson.attachment || messageJson.message?.attachments),
+        quickReplies: messageJson.quick_replies || messageJson.message?.quick_replies,
       };
     }
 
@@ -117,14 +139,14 @@ function facebookOutbound(message: Message): ContentUnion {
     };
   }
 
-  if (messageJson.attachment) {
-    return parseAttachment(messageJson.attachment);
+  if (messageJson.attachment || messageJson.message?.attachments) {
+    return parseAttachment(messageJson.attachment || messageJson.message?.attachments[0]);
   }
 
-  if (messageJson.text) {
+  if (messageJson.text || messageJson.message?.text) {
     return {
       type: 'text',
-      text: messageJson.text,
+      text: messageJson.text || messageJson.message?.text,
     };
   }
 

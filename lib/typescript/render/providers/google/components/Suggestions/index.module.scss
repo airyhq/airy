@@ -1,0 +1,85 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  display: flex;
+  flex: none;
+}
+
+.item {
+  display: flex;
+  align-self: flex-end;
+  width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.itemMember {
+  margin-top: 5px;
+  justify-content: flex-end;
+  width: 100%;
+  text-align: right;
+}
+
+.suggestionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  justify-content: flex-end;
+  position: relative;
+  width: 100%;
+}
+
+.replyButton {
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 0px 5px 5px;
+  padding: 4px 8px;
+  border-radius: 16px;
+  border: 1px solid var(--color-dark-elements-gray);
+  background-color: var(--color-template-highlight);
+}
+
+.title {
+  @include font-base;
+  color: var(--color-text-contrast);
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.actionImage {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+}
+
+.hoverTextContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: absolute;
+  padding: 5px;
+  border-radius: 6px;
+  background-color: var(--color-light-gray);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.8s;
+  box-sizing: content-box;
+}
+
+.hoverTextContainer:hover {
+  visibility: visible;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.hoverText {
+  @include font-s;
+  color: var(--color-text-contrast);
+  text-align: center;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './index.module.scss';
-import {Avatar} from '../Avatar';
+import ReactMarkdown from 'react-markdown';
 import {Message} from 'httpclient';
+import styles from './index.module.scss';
 import {DefaultMessageRenderingProps} from '..';
 
 type RichTextRenderProps = DefaultMessageRenderingProps & {
@@ -12,23 +12,12 @@ type RichTextRenderProps = DefaultMessageRenderingProps & {
 };
 
 export const RichText = (props: RichTextRenderProps) => {
-  const {message, text, fallback, containsRichText, fromContact, sentAt, contact} = props;
+  const {message, text, fromContact} = props;
   return (
-    <div className={styles.container} id={`message-item-${message.id}`}>
-      {!fromContact ? (
-        <div className={styles.member}>
-          <div className={styles.memberText}>{containsRichText ? text : fallback}</div>
-          {sentAt && <div className={styles.time}>{sentAt}</div>}
-        </div>
-      ) : (
-        <div className={styles.userContainer}>
-          <div className={styles.avatar}>{contact && <Avatar contact={contact} />}</div>
-          <div className={styles.user}>
-            <div className={styles.userText}>{containsRichText ? text : fallback}</div>
-            {sentAt && <div className={styles.time}>{sentAt}</div>}
-          </div>
-        </div>
-      )}
+    <div className={fromContact ? styles.contactContent : styles.memberContent} id={`message-item-${message.id}`}>
+      <ReactMarkdown className={styles.richText} skipHtml={true} linkTarget={'_blank'}>
+        {text}
+      </ReactMarkdown>
     </div>
   );
 };

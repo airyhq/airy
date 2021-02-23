@@ -11,7 +11,7 @@ export default class App extends Component {
     return (
       <div className={style.container}>
         {channelId ? (
-          <Chat channel_id={channelId} />
+          <Chat channelId={channelId} />
         ) : (
           <span style={{color: 'red'}}>Widget authorization failed. Please check your installation.</span>
         )}

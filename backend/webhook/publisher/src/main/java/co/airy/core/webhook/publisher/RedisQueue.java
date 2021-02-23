@@ -1,7 +1,8 @@
 package co.airy.core.webhook.publisher;
 
-import co.airy.core.webhook.publisher.model.QueueMessage;
+import co.airy.core.webhook.publisher.payload.QueueMessage;
 import co.airy.log.AiryLoggerFactory;
+import co.airy.model.event.payload.Event;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

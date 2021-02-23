@@ -1,4 +1,4 @@
-load("@npm_bazel_typescript//:index.bzl", "ts_config")
+load("@npm//@bazel/typescript:index.bzl", "ts_config")
 load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_library")
 load("@com_github_airyhq_bazel_tools//web:web_app.bzl", "web_app")
 load("@com_github_airyhq_bazel_tools//web:web_library.bzl", "web_library")

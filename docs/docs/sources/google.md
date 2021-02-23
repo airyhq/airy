@@ -90,50 +90,14 @@ After connecting the source to your instance, you will be able to send messages 
 icon={() => <BoltSVG />}
 title='Messages endpoint'
 description="Send messages to your Airy Core instance from Google's Business Messages through the Messages endpoint"
-link='api/endpoints/messages#send'
+link='api/endpoints/messages#send-from-googles-business-messages-source'
 />
 
 <br />
 
-`POST /messages.send`
+import GoogleMessagesSend from '../api/endpoints/google-messages-send.mdx'
 
-Sends a message to a conversation and returns a payload. Whatever is put on the
-`message` field will be forwarded "as-is" to the source's message endpoint.
-
-**Sending a text message**
-
-```json5
-{
-  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
-  "message": {
-    "text": "Hello World Agent!",
-    "representative": {
-      "displayName": "Hello World from Agent",
-      "representativeType": "HUMAN"
-    }
-  }
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "id": "{UUID}",
-  "content": '{"text":"Hello"}',
-  "state": "pending|failed|delivered",
-  "sender_type": "{string/enum}",
-  // See glossary
-  "sent_at": "{string}",
-  //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-  "source": "{String}",
-  // one of the possible sources
-  "metadata": {
-    "sentFrom": "iPhone"
-  }
-  // metadata object of the message
-}
-```
+<GoogleMessagesSend />
 
 ## Send and receive messages with the Inbox UI
 

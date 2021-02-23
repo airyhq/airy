@@ -210,7 +210,7 @@ import MessagesSend from '../api/endpoints/messages-send.mdx'
 
 ## Send and receive messages with the Inbox UI
 
-Now that you've connected Facebook Messenger to your instance and started a conversation, you can see the conversations, messages, and templates in the [Airy Inbox](/apps/ui/inbox), and use it to respond to the messages.
+Now that you connected Facebook Messenger to your instance and started a conversation, you can see the conversations, messages, and templates in the [Airy Inbox](/apps/ui/inbox), and use it to respond to the messages.
 
 <ButtonBox
 icon={() => <InboxSVG />}

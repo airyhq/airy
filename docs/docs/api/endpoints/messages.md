@@ -61,3 +61,9 @@ latest.
 import MessagesSend from './messages-send.mdx'
 
 <MessagesSend />
+
+## Send from Google's Business Messages source
+
+import GoogleMessagesSend from './google-messages-send.mdx'
+
+<GoogleMessagesSend />

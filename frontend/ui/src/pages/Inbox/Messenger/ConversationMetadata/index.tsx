@@ -59,11 +59,11 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const filterForUnusedTags = (tags: TagModel[]): TagModel[] => {
-    return tags.filter(tag => !(tag.id in conversation.metadata.tags));
+    return tags.filter(tag => !(tag.id in (conversation.metadata.tags || {})));
   };
 
   const filterForUsedTags = (tags: TagModel[]): TagModel[] => {
-    return tags.filter(tag => tag.id in conversation.metadata.tags);
+    return tags.filter(tag => tag.id in (conversation.metadata.tags || {}));
   };
 
   const tagSorter = (tagA: TagModel, tagB: TagModel) => {

@@ -7,12 +7,11 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # Airy Bazel tools
-
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "5f3c835f4320292e76ad1b23308ea3704a35bd64",
+    commit = "701e4bd1503efe7308bf057ce031a165346b4580",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1612440527 +0100",
+    shallow_since = "1614011000 +0100",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -211,14 +210,6 @@ yarn_install(
     package_json = "//:package.json",
     yarn_lock = "//:yarn.lock",
 )
-
-load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
-
-install_bazel_dependencies()
-
-load("@npm_bazel_typescript//:index.bzl", "ts_setup_workspace")
-
-ts_setup_workspace()
 
 ### Bazel tooling
 

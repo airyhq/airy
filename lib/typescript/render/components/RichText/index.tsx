@@ -1,6 +1,7 @@
 import React from 'react';
-import styles from './index.module.scss';
+import ReactMarkdown from 'react-markdown';
 import {Message} from 'httpclient';
+import styles from './index.module.scss';
 import {DefaultMessageRenderingProps} from '..';
 
 type RichTextRenderProps = DefaultMessageRenderingProps & {
@@ -11,10 +12,12 @@ type RichTextRenderProps = DefaultMessageRenderingProps & {
 };
 
 export const RichText = (props: RichTextRenderProps) => {
-  const {message, text, fallback, containsRichText, fromContact} = props;
+  const {message, text, fromContact} = props;
   return (
     <div className={fromContact ? styles.contactContent : styles.memberContent} id={`message-item-${message.id}`}>
-      {containsRichText ? text : fallback}
+      <ReactMarkdown className={styles.richText} skipHtml={true} linkTarget={'_blank'}>
+        {text}
+      </ReactMarkdown>
     </div>
   );
 };

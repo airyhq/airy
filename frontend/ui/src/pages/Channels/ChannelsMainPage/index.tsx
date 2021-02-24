@@ -6,12 +6,13 @@ import TwilioSmsSource from './Sources/TwilioSmsSource';
 import GoogleSource from './Sources/GoogleSource';
 import TwilioWhatsAppSource from './Sources/TwilioWhatsAppSource';
 
-import {Channel} from 'httpclient';
+import {Channel, ConfigPayload} from 'httpclient';
 
 import styles from './index.module.scss';
 
 type ChannelsConnectProps = {
   channels: Channel[];
+  config: ConfigPayload;
 };
 
 const ChannelsMainPage = (props: ChannelsConnectProps) => {
@@ -28,11 +29,13 @@ const ChannelsMainPage = (props: ChannelsConnectProps) => {
       </div>
 
       <div className={styles.wrapper}>
-        <ChatPluginSource pluginSource={props.channels} />
-        <FacebookSource facebookSource={props.channels} />
-        <TwilioSmsSource twilloSmsSource={props.channels} />
-        <TwilioWhatsAppSource whatsappSmsSource={props.channels} />
-        <GoogleSource googleSource={props.channels} />
+        {props.config.components['sources-chatplugin'].enabled && <ChatPluginSource pluginSource={props.channels} />}
+        {props.config.components['sources-facebook'].enabled && <FacebookSource facebookSource={props.channels} />}
+        {props.config.components['sources-twilio'].enabled && <TwilioSmsSource twilloSmsSource={props.channels} />}
+        {props.config.components['sources-twilio'].enabled && (
+          <TwilioWhatsAppSource whatsappSmsSource={props.channels} />
+        )}
+        {props.config.components['sources-google'].enabled && <GoogleSource googleSource={props.channels} />}
       </div>
     </>
   );

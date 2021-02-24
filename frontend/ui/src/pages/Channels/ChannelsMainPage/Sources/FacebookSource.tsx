@@ -2,17 +2,17 @@ import React from 'react';
 import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
-import ChannelDetails from './ChannelDetails';
-import ChannelsConnected from './ChannelsConnected';
+import SourceDescription from '../SourceDescription';
+import SourceInfo from '../SourceInfo';
 
-type facebookSourceProps = {facebookSource: Channel[]};
+type FacebookSourceProps = {facebookSource: Channel[]};
 
-const FacebookSource = (props: facebookSourceProps) => {
+const FacebookSource = (props: FacebookSourceProps) => {
   const channels = props.facebookSource.filter((channel: Channel) => channel.source === 'facebook');
 
   return (
     <div style={{display: 'flex', flexGrow: 1}}>
-      <ChannelDetails
+      <SourceDescription
         title="Messenger "
         text="Connect multiple Facebook pages"
         image={<FacebookLogo />}
@@ -20,7 +20,7 @@ const FacebookSource = (props: facebookSourceProps) => {
         displayButton={!channels.length}
       />
 
-      <ChannelsConnected
+      <SourceInfo
         source="facebook"
         channels={channels}
         connected="CONNECTED"

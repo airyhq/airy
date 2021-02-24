@@ -2,17 +2,17 @@ import React from 'react';
 import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
-import ChannelDetails from './ChannelDetails';
-import ChannelsConnected from './ChannelsConnected';
+import SourceDescription from '../SourceDescription';
+import SourceInfo from '../SourceInfo';
 
-type whatsappSourceProps = {whatsappSmsSource: Channel[]};
+type TwilioWhatsAppSourceProps = {whatsappSmsSource: Channel[]};
 
-const WhatsappSmsSource = (props: whatsappSourceProps) => {
+const TwilioWhatsAppSource = (props: TwilioWhatsAppSourceProps) => {
   const channels = props.whatsappSmsSource.filter((channel: Channel) => channel.source === 'twilio.whatsapp');
 
   return (
     <div style={{display: 'flex', flexGrow: 1}}>
-      <ChannelDetails
+      <SourceDescription
         title="Whatsapp"
         text="World #1 chat app"
         image={<WhatsappLogo />}
@@ -20,7 +20,7 @@ const WhatsappSmsSource = (props: whatsappSourceProps) => {
         displayButton={!channels.length}
       />
 
-      <ChannelsConnected
+      <SourceInfo
         source="twilio.whatsapp"
         channels={channels}
         connected="CONNECTED"
@@ -32,4 +32,4 @@ const WhatsappSmsSource = (props: whatsappSourceProps) => {
   );
 };
 
-export default WhatsappSmsSource;
+export default TwilioWhatsAppSource;

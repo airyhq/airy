@@ -2,17 +2,17 @@ import React from 'react';
 import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.svg';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
-import ChannelDetails from './ChannelDetails';
-import ChannelsConnected from './ChannelsConnected';
+import SourceDescription from '../SourceDescription';
+import SourceInfo from '../SourceInfo';
 
-type googleSourceProps = {googleSource: Channel[]};
+type GoogleSourceProps = {googleSource: Channel[]};
 
-const GoogleSource = (props: googleSourceProps) => {
+const GoogleSource = (props: GoogleSourceProps) => {
   const channels = props.googleSource.filter((channel: Channel) => channel.source === 'google');
 
   return (
     <div style={{display: 'flex', flexGrow: 1}}>
-      <ChannelDetails
+      <SourceDescription
         title="Google Business Messages"
         text="Be there when people search"
         image={<GoogleLogo />}
@@ -20,7 +20,7 @@ const GoogleSource = (props: googleSourceProps) => {
         displayButton={!channels.length}
       />
 
-      <ChannelsConnected
+      <SourceInfo
         source="google"
         channels={channels}
         connected="CONNECTED"

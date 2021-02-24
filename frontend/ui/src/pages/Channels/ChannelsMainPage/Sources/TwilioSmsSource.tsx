@@ -2,17 +2,17 @@ import React from 'react';
 import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
-import ChannelDetails from './ChannelDetails';
-import ChannelsConnected from './ChannelsConnected';
+import SourceDescription from '../SourceDescription';
+import SourceInfo from '../SourceInfo';
 
-type twilloSmsSourceProps = {twilloSmsSource: Channel[]};
+type TwilioSmsSourceProps = {twilloSmsSource: Channel[]};
 
-const TwilloSmsSource = (props: twilloSmsSourceProps) => {
+const TwilioSmsSource = (props: TwilioSmsSourceProps) => {
   const channels = props.twilloSmsSource.filter((channel: Channel) => channel.source === 'twilio.sms');
 
   return (
     <div style={{display: 'flex', flexGrow: 1}}>
-      <ChannelDetails
+      <SourceDescription
         title="SMS "
         text="Deliver SMS with ease"
         image={<SMSLogo />}
@@ -20,7 +20,7 @@ const TwilloSmsSource = (props: twilloSmsSourceProps) => {
         displayButton={!channels.length}
       />
 
-      <ChannelsConnected
+      <SourceInfo
         source="twilio.sms"
         channels={channels}
         connected="CONNECTED"
@@ -32,4 +32,4 @@ const TwilloSmsSource = (props: twilloSmsSourceProps) => {
   );
 };
 
-export default TwilloSmsSource;
+export default TwilioSmsSource;

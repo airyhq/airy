@@ -3,7 +3,7 @@ import {Channel} from 'httpclient';
 import {LinkButton} from '@airyhq/components';
 import styles from './index.module.scss';
 
-type connectedChannelsProps = {
+type SourceInfoProps = {
   source: string;
   channels: Channel[];
   connected: string;
@@ -12,7 +12,7 @@ type connectedChannelsProps = {
   addAChannel: JSX.Element;
 };
 
-const ChannelsConnected = (props: connectedChannelsProps) => {
+const SourceInfo = (props: SourceInfoProps) => {
   const {source, channels} = props;
 
   const isPhoneNumberSource = () => {
@@ -79,4 +79,4 @@ const ChannelsConnected = (props: connectedChannelsProps) => {
   );
 };
 
-export default ChannelsConnected;
+export default SourceInfo;

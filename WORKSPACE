@@ -192,6 +192,14 @@ container_pull(
     tag = "1.0.0",
 )
 
+container_pull(
+    name = "helm",
+    digest = "sha256:722e4f1f4726d962eb87eb71b3935ff41c36574fd44e8740e8eabfbb693bb0d4",
+    registry = "docker.io",
+    repository = "alpine/helm",
+    tag = "3.5.2",
+)
+
 load(
     "@io_bazel_rules_docker//go:image.bzl",
     _go_image_repos = "repositories",

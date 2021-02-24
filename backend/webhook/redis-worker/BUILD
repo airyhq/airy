@@ -2,7 +2,7 @@
 
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
-load("//tools/build:container_push.bzl", "container_push")
+load("//tools/build:container_release.bzl", "container_release")
 
 go_binary(
     name = "redis-worker_binary",
@@ -15,7 +15,7 @@ go_image(
     embed = [":redis-worker_lib"],
 )
 
-container_push(
+container_release(
     registry = "ghcr.io/airyhq/webhook",
     repository = "consumer",
 )

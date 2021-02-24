@@ -2,7 +2,10 @@ package co.airy.model.metadata;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.model.metadata.dto.MetadataMap;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparing;
 
 public class MetadataObjectMapper {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static JsonNode getMetadataPayload(MetadataMap metadataMap) {
         final List<Metadata> metadataList = new ArrayList<>(metadataMap.values());
@@ -66,6 +70,13 @@ public class MetadataObjectMapper {
                 node.put(key, Integer.valueOf(value));
                 return;
             } catch (NumberFormatException expected) {
+            }
+        } else if (key.endsWith("content")) {
+            // This condition allows us to store message content in metadata
+            try {
+                node.set(key, objectMapper.readTree(value));
+                return;
+            } catch (Exception expected) {
             }
         }
 

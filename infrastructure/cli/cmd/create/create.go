@@ -7,10 +7,10 @@ import (
 )
 
 var (
-	provider  string
+	provider   string
 	kubeConfig string
-	version string
-	CreateCmd = &cobra.Command{
+	version    string
+	CreateCmd  = &cobra.Command{
 		Use:   "create",
 		Short: "Creates an instance of Airy Core",
 		Long:  ``,
@@ -31,8 +31,7 @@ func init() {
 func create(cmd *cobra.Command, args []string) {
 	fmt.Println("⚙️  Creating core with provider", provider)
 
-	helm := New(kubeConfig, version)
-	helm.Setup()
+	helm := New(kubeConfig, version, "default")
 	helm.InstallCharts()
 	fmt.Println("🚀 Starting core with default components")
 	fmt.Println("🎉 Your Airy Core is ready")

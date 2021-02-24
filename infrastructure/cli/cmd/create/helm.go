@@ -5,6 +5,7 @@ import (
 	"fmt"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -31,7 +32,7 @@ func New(kubeConfigPath string, version string, namespace string) Helm {
 
 	return Helm{
 		namespace: namespace,
-		version: version,
+		version:   version,
 		clientSet: clientSet,
 	}
 }
@@ -52,9 +53,7 @@ func (h *Helm) Setup() {
 
 	roleBindingClient := h.clientSet.RbacV1().ClusterRoleBindings()
 
-	roleBinding := &v1.ClusterRoleBinding{
-
-	}
+	roleBinding := &rbacv1.ClusterRoleBinding{}
 
 	roleBindingClient.Create(context.TODO(), roleBinding, metav1.CreateOptions{})
 }
@@ -73,7 +72,8 @@ func (h *Helm) InstallCharts() {
 					Containers: []corev1.Container{
 						{
 							Name:  "my-job",
-							Image: "",
+							Image: "busybox",
+							Args:  []string{"ls"},
 						},
 					},
 					RestartPolicy: "Never",
@@ -82,10 +82,19 @@ func (h *Helm) InstallCharts() {
 		},
 	}
 
-	jobCreation, jobCreationErr := jobsClient.Create(context.TODO(), job, v1.CreateOptions{})
+	_, jobCreationErr := jobsClient.Create(context.TODO(), job, v1.CreateOptions{})
 	if jobCreationErr != nil {
 		panic(jobCreationErr)
 	}
 
-	fmt.Println(jobCreation)
+	watcher, watcherErr := jobsClient.Watch(context.TODO(), v1.ListOptions{})
+	if watcherErr != nil {
+		panic(watcherErr)
+	}
+	ch := watcher.ResultChan()
+
+	for event := range ch {
+		fmt.Println(event)
+	}
+
 }

@@ -64,7 +64,8 @@
 }
 
 .messages {
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   -ms-overflow-style: none;
   scrollbar-width: none;
   padding: 0 8px 0 8px;

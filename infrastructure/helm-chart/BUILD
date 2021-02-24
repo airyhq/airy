@@ -4,13 +4,13 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 filegroup(
     name = "chart",
-    srcs = glob(["**/*"])
+    srcs = glob(["**/*"]),
 )
 
 pkg_tar(
     name = "chart_tar",
     srcs = [":chart"],
-    package_dir = "/apps/helm-chart", # cwd of the helm image
+    package_dir = "/apps/helm-chart",  # cwd of the helm image
     strip_prefix = "./",
 )
 
@@ -18,7 +18,7 @@ container_image(
     name = "image",
     base = "@helm//image",
     tars = [
-        ":chart_tar"
+        ":chart_tar",
     ],
     visibility = ["//visibility:public"],
 )

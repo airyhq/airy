@@ -2,7 +2,7 @@ import {ActionType, getType} from 'typesafe-actions';
 import {Channel} from 'httpclient';
 import * as actions from '../../../actions/channel';
 import * as metadataActions from '../../../actions/metadata';
-import {merge} from 'lodash-es';
+import {merge, omitBy} from 'lodash-es';
 
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 
@@ -36,6 +36,22 @@ const channelsReducer = (state = {}, action: Action): ChannelsState => {
       return action.payload.reduce(setChannel, state);
     case getType(actions.setChannelAction):
       return setChannel(state, action.payload);
+
+    case getType(actions.updateChannelAction):
+      return {
+        ...state,
+        [action.payload.id]: {
+          id: action.payload.id,
+          ...state[action.payload.id],
+          metadata: merge({}, state[action.payload.id]?.metadata, action.payload.metadata),
+        },
+      };
+
+    case getType(actions.deleteChannelAction):
+      return omitBy(state, (_channel, channelId: string) => {
+        return channelId == action.payload;
+      });
+
     default:
       return state;
   }

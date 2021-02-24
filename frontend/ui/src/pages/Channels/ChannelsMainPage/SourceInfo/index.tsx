@@ -1,6 +1,7 @@
 import React from 'react';
 import {Channel} from 'httpclient';
 import {LinkButton} from '@airyhq/components';
+import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import styles from './index.module.scss';
 
 type SourceInfoProps = {
@@ -9,7 +10,9 @@ type SourceInfoProps = {
   connected: string;
   placeholderImage?: JSX.Element;
   isConnected: string;
-  addAChannel: JSX.Element;
+  onAddChannelClick?: () => void;
+  onMoreChannelsClick?: () => void;
+  onChannelClick?: (channel: Channel) => void;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
@@ -37,8 +40,8 @@ const SourceInfo = (props: SourceInfoProps) => {
                 {channels.slice(0, channelsToShow).map((channel: Channel) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                      <div className={styles.connectedChannelData}>
-                        {source === 'facebook' && channel.metadata.imageUrl ? (
+                      <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
+                        {channel.metadata.imageUrl ? (
                           <img
                             src={channel.metadata.imageUrl}
                             alt={channel.metadata.name}
@@ -51,14 +54,14 @@ const SourceInfo = (props: SourceInfoProps) => {
                         {isPhoneNumberSource() && (
                           <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>
                         )}
-                      </div>
+                      </button>
                     </li>
                   );
                 })}
               </div>
               <div className={styles.extraChannel}>
                 {hasExtraChannels && (
-                  <LinkButton>
+                  <LinkButton onClick={props.onMoreChannelsClick}>
                     +{channels.length - channelsToShow} {props.isConnected}
                   </LinkButton>
                 )}
@@ -67,9 +70,9 @@ const SourceInfo = (props: SourceInfoProps) => {
           </div>
 
           <div className={styles.channelButton}>
-            <button type="button" className={styles.addChannelButton}>
+            <button type="button" className={styles.addChannelButton} onClick={props.onAddChannelClick}>
               <div className={styles.channelButtonIcon} title="Add a channel">
-                {props.addAChannel}
+                <AddChannel />
               </div>
             </button>
           </div>

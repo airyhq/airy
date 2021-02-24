@@ -4,7 +4,7 @@ go_library(
     name = "create",
     srcs = [
         "create.go",
-        "install.go",
+        "helm.go",
     ],
     importpath = "cli/cmd/create",
     visibility = ["//visibility:public"],

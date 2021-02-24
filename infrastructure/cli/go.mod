@@ -6,6 +6,7 @@ require (
 	github.com/airyhq/airy/lib/go/httpclient v0.0.0
 	github.com/kr/pretty v0.2.1
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/mittwald/go-helm-client v0.4.2
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
@@ -13,11 +14,9 @@ require (
 	github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77 // indirect
 	goji.io v2.0.2+incompatible
 	gopkg.in/yaml.v2 v2.4.0
-	k8s.io/api v0.20.0
-	k8s.io/apimachinery v0.20.0
-	k8s.io/client-go v0.20.0
-	helm.sh/helm/v3 v3.5.2
+	k8s.io/api v0.20.1
+	k8s.io/apimachinery v0.20.1
+	k8s.io/client-go v0.20.1
 )
 
 replace github.com/airyhq/airy/lib/go/httpclient => ../../lib/go/httpclient
-replace github.com/docker/distribution => github.com/docker/distribution v2.7.1

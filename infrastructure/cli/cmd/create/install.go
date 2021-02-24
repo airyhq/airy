@@ -57,5 +57,4 @@ func InstallCharts() {
 	}
 
 	fmt.Println(jobCreation)
-
 }

@@ -1,5 +1,5 @@
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
-load("//tools/build:container_push.bzl", "container_push")
+load("//tools/build:container_release.bzl", "container_release")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 filegroup(
@@ -23,7 +23,7 @@ container_image(
     visibility = ["//visibility:public"],
 )
 
-container_push(
+container_release(
     registry = "ghcr.io/airyhq/infrastructure",
     repository = "helm",
 )

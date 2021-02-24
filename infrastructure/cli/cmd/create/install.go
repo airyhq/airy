@@ -25,6 +25,7 @@ func InstallCharts() {
 	if kubeConfigErr != nil {
 		panic(kubeConfigErr)
 	}
+
 	clientset, clientsetErr := kubernetes.NewForConfig(config)
 	if clientsetErr != nil {
 		panic(clientsetErr)
@@ -35,7 +36,7 @@ func InstallCharts() {
 	job := &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "bla",
-			Namespace: "bla",
+			Namespace: "default",
 		},
 		Spec: batchv1.JobSpec{
 			Template: corev1.PodTemplateSpec{
@@ -46,6 +47,7 @@ func InstallCharts() {
 							Image: "busybox",
 						},
 					},
+					RestartPolicy: "Never",
 				},
 			},
 		},

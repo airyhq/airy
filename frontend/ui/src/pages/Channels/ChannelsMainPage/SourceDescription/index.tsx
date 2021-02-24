@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
-import styles from './ChannelDetails.module.scss';
-import {RequirementsDialog} from './Facebook/RequirementsDialog';
-import {ChannelSource} from './ChannelSourceModel';
+import styles from './index.module.scss';
+import {RequirementsDialog} from '../../Facebook/RequirementsDialog';
+import {ChannelSource} from 'httpclient';
+import {ReactComponent as AddIcon} from 'assets/images/icons/plus-circle.svg';
 
 type SourceDescriptionProps = {
   image: JSX.Element;
   title: string;
   text: string;
-  buttonIcon: JSX.Element;
   displayButton: boolean;
   id: string;
+  onAddChannelClick?: () => void;
 };
 
 const SourceDescription = (props: SourceDescriptionProps) => {
@@ -45,9 +46,9 @@ const SourceDescription = (props: SourceDescriptionProps) => {
 
       {props.displayButton && (
         <div className={styles.channelButton}>
-          <button type="button" className={styles.addChannelButton} onClick={() => setShow(true)}>
+          <button type="button" className={styles.addChannelButton} onClick={props.onAddChannelClick}>
             <div className={styles.channelButtonIcon} title="Add a channel">
-              {props.buttonIcon}
+              <AddIcon />
             </div>
           </button>
         </div>

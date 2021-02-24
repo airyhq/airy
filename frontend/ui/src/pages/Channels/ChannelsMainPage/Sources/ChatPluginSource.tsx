@@ -1,9 +1,9 @@
 import React from 'react';
 import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
-import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
 import SourceInfo from '../SourceInfo';
 import SourceDescription from '../SourceDescription';
+import {ChannelSource} from 'httpclient';
 
 type ChatPluginProps = {pluginSource: Channel[]};
 
@@ -16,8 +16,8 @@ const ChatPluginSource = (props: ChatPluginProps) => {
         title="Airy Live Chat "
         text="Best of class browser messenger"
         image={<AiryLogo />}
-        buttonIcon={<AddChannel />}
         displayButton={!channels.length}
+        id={ChannelSource.chatPlugin}
       />
 
       <SourceInfo
@@ -26,7 +26,6 @@ const ChatPluginSource = (props: ChatPluginProps) => {
         connected="CONNECTED"
         placeholderImage={<AiryLogo />}
         isConnected="connected"
-        addAChannel={<AddChannel />}
       />
     </div>
   );

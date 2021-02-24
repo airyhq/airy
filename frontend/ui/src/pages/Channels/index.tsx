@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
+import {Route, RouteComponentProps, Switch} from 'react-router-dom';
 import {listChannels} from '../../actions/channel';
 import {getClientConfig} from '../../actions/config';
 import {StateModel} from '../../reducers/index';
@@ -10,6 +10,8 @@ import {allChannels} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
 
 import ChannelsMainPage from './ChannelsMainPage';
+import FacebookConnect from './ChannelsMainPage/Sources/FacebookConnect';
+import {CHANNELS_FACEBOOK_ROUTE} from '../../routes/routes';
 
 const mapDispatchToProps = {
   listChannels,
@@ -32,10 +34,17 @@ const Channels = (props: ChannelsConnectProps) => {
     setPageTitle('Channels');
   }, []);
 
-  return (
+  const renderChannels = () => (
     <div className={styles.channelsWrapper}>
       <ChannelsMainPage channels={props.channels} config={props.config} />
     </div>
+  );
+
+  return (
+    <Switch>
+      <Route path={[`${CHANNELS_FACEBOOK_ROUTE}/:channelId?`]} component={FacebookConnect} />
+      <Route path="/" render={renderChannels} />
+    </Switch>
   );
 };
 

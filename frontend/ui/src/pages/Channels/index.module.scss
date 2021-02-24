@@ -1,6 +1,3 @@
-@import '../../assets/scss/fonts';
-@import '../../assets/scss/colors';
-
 .channelsWrapper {
   background: white;
   display: block;
@@ -8,37 +5,7 @@
   padding-left: 96px;
   padding-top: 88px;
   width: 100%;
-  overflow-y: auto;
   padding: 32px;
   margin: 88px 1.5em 0 100px;
   min-height: calc(100vh - 170px);
-}
-.channelsHeadline {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  color: #212428;
-  @include font-base;
-  font-size: 39px;
-  font-weight: 900;
-  letter-spacing: 0;
-  margin-bottom: 14px;
-}
-
-.channelsHeadlineText {
-  @include font-xl;
-  font-weight: 900;
-}
-
-.channelsChoice {
-  list-style: none;
-  color: var(--color-text-gray);
-  padding-bottom: 20px;
-}
-
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  margin-bottom: 1em;
 }

@@ -1,10 +1,5 @@
-@import '../../../assets/scss/fonts';
-@import '../../../assets/scss/colors';
-
-.flexWrap {
-  display: flex;
-  flex-grow: 1;
-}
+@import '../../../../assets/scss/fonts';
+@import '../../../../assets/scss/colors';
 
 .channelCard {
   display: flex;
@@ -13,8 +8,8 @@
   width: 300px;
   border: 1px solid var(--color-light-gray);
   border-radius: 8px;
-  background-color: #ffffff;
-  margin-top: 22px;
+  background-color: white;
+  margin-top: 24px;
 }
 
 .channelLogo {
@@ -23,8 +18,8 @@
   width: 40px;
   margin: 16px 8px 42px 16px;
   svg {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -37,7 +32,7 @@
   font-weight: bold;
   letter-spacing: 0;
   line-height: 24px;
-  margin: 16px 20px 2px 2px;
+  margin: 16px 20px 2px 0;
 }
 
 .channelText {
@@ -51,10 +46,6 @@
 }
 
 .channelButton {
-  display: flex;
-  padding-top: 8px;
-  width: 40px;
-  height: 40px;
   margin: 20px 0px 8px 0px;
 }
 
@@ -74,18 +65,20 @@
 
 .channelButtonIcon {
   @include font-m;
-  margin-right: 16px;
-  width: 24px;
-  height: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 30px;
+  height: 30px;
+  margin-right: 16px;
+  padding: 0px;
+  border-radius: 50%;
   color: var(--color-text-gray);
   cursor: pointer;
 
-  padding: 0px;
-
   svg {
+    height: 30px;
+    width: 30px;
     margin: 0;
     path {
       fill: var(--color-text-gray);

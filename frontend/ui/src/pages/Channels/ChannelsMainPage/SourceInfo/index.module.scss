@@ -1,5 +1,5 @@
-@import '../../../assets/scss/fonts';
-@import '../../../assets/scss/colors';
+@import '../../../../assets/scss/fonts';
+@import '../../../../assets/scss/colors';
 
 .connectedContainer {
   display: flex;
@@ -17,8 +17,9 @@
 .connectedChannelBox {
   display: flex;
   box-sizing: border-box;
+  width: 550px;
   min-height: 100px;
-  min-width: 450px;
+  overflow: hidden;
   border: 1px solid var(--color-light-gray);
   border-radius: 8px;
   background-color: #ffffff;
@@ -29,28 +30,34 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  min-width: 398px;
+  justify-content: space-evenly;
+  white-space: nowrap;
+  min-width: 400px;
   min-height: 94px;
+  padding: 8px;
+}
+
+.extraPhoneInfo {
+  overflow: hidden;
+  max-width: 142px;
+  text-overflow: ellipsis;
 }
 
 .extraChannel {
   display: flex;
   min-width: 88px;
   min-height: 20px;
-  border: none;
-  padding: 0;
-  outline: none;
+  padding: 0 24px 0 24px;
   cursor: pointer;
-  background: white;
-  color: var(--color-airy-blue);
-  text-decoration: underline;
-  margin: 2px -1px 0px 0px;
+  button {
+    outline: none;
+  }
 }
 
 .connectedChannelData {
   display: flex;
-  align-items: flex-start;
-  margin: 6px 0px 0px 6px;
+  align-items: center;
+  margin: 4px;
 }
 
 .channelListEntry {
@@ -58,40 +65,31 @@
 }
 
 .placeholderLogo {
-  display: inline-flex;
-  height: 20px;
-  width: 20px;
-  margin: 14px 2px 0px 6px;
+  height: 24px;
+  width: 24px;
   svg {
-    height: 18px;
-    width: 18px;
+    height: 24px;
+    width: 24px;
   }
 }
 
 .facebookImage {
-  display: inline-flex;
-  height: 16px;
-  width: 16px;
+  height: 20px;
+  width: 20px;
   border-radius: 50%;
-  margin: 14px 6px 0px 8px;
 }
 
 .connectedChannelName {
   min-width: 168px;
   height: 24px;
-  margin-right: 7px;
-  padding-top: 10px;
-}
-
-.channelId {
-  padding-top: 10px;
+  margin: 0 4px 0 4px;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .channelButton {
-  display: flex;
-  width: 40px;
-  height: 40px;
-  padding-top: 8px;
   margin: 20px 0px 8px 0px;
 }
 
@@ -110,17 +108,20 @@
 
 .channelButtonIcon {
   @include font-m;
-  margin: 0px 16px 24px 0px;
-  width: 24px;
-  height: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 30px;
+  height: 30px;
+  margin-right: 16px;
+  padding: 0px;
+  border-radius: 50%;
   color: var(--color-text-gray);
   cursor: pointer;
-  padding: 0;
 
   svg {
+    height: 30px;
+    width: 30px;
     margin: 0;
     path {
       fill: var(--color-text-gray);

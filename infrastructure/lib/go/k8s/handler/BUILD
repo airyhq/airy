@@ -1,5 +1,6 @@
 # gazelle:prefix github.com/airyhq/airy/infrastructure/lib/go/k8s/handler
 
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
@@ -23,3 +24,5 @@ go_library(
         "@io_k8s_klog//:klog",
     ],
 )
+
+check_pkg(name = "buildifier")

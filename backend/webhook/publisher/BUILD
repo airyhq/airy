@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
 load("//tools/build:container_push.bzl", "container_push")
@@ -41,3 +42,5 @@ container_push(
     registry = "ghcr.io/airyhq/webhook",
     repository = "publisher",
 )
+
+check_pkg(name = "buildifier")

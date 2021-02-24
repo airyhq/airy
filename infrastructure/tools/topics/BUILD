@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
 load("@rules_java//java:defs.bzl", "java_binary")
 
 app_deps = [
@@ -11,3 +12,5 @@ java_binary(
     resources = glob(["src/main/resources/**/*"]),
     deps = app_deps,
 )
+
+check_pkg(name = "buildifier")

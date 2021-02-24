@@ -1,0 +1,92 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.container {
+  display: flex;
+  margin-left: 100px;
+  margin-top: 88px;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 8px;
+  padding-left: 32px;
+  width: 100%;
+}
+
+.title {
+  @include font-xxl;
+  font-weight: bold;
+  margin-top: 32px;
+}
+
+.subtitle {
+  display: flex;
+  flex-direction: column;
+  @include font-s;
+  color: var(--color-airy-blue);
+  img {
+    width: 17px;
+    height: 13px;
+  }
+}
+
+.backButton {
+  align-self: flex-start;
+  color: var(--color-airy-blue);
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  margin-top: 8px;
+
+  svg {
+    margin-right: 6px;
+    path {
+      fill: var(--color-airy-blue);
+    }
+  }
+}
+
+.connectButton {
+  @include font-m;
+  width: 146px;
+  height: 40px;
+  background: var(--color-airy-blue);
+  border-radius: 4px;
+  color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 32px;
+}
+
+.inputContainer {
+  width: 474px;
+}
+
+.inputTitle {
+  @include font-base;
+  width: 100%;
+  margin-top: 24px;
+  padding-left: 2px;
+}
+
+.inputInput {
+  border-radius: 4px;
+  border: 1px solid var(--color-dark-elements-gray);
+  margin-top: 5px;
+
+  input {
+    @include font-base;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    padding: 4px 8px;
+  }
+}
+
+.inputOptionalTitle {
+  @include font-s;
+  color: var(--color-text-gray);
+  margin-top: 5px;
+  padding-left: 2px;
+}

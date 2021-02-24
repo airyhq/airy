@@ -1,0 +1,81 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 582px;
+  height: 477px;
+  background: white;
+  border-radius: 8px;
+  position: relative;
+  background: yellow;
+}
+
+.title {
+  @include font-xl;
+  align-self: center;
+  padding-top: 40px;
+}
+
+.headline {
+  @include font-base;
+  padding-top: 40px;
+  padding-left: 40px;
+}
+
+.body {
+  @include font-base;
+  margin: 20px 40px 0px 40px;
+
+  ul {
+    margin-left: 20px;
+  }
+
+  li {
+    padding-top: 10px;
+  }
+
+  p {
+    padding-top: 15px;
+  }
+
+  a {
+    font-weight: normal;
+  }
+}
+
+.button {
+  background-color: var(--color-airy-blue);
+  width: 205px;
+  height: 40px;
+  color: white;
+  border-radius: 4px;
+  align-items: center;
+  margin-top: 32px;
+  margin-left: 40px;
+  margin-bottom: 40px;
+
+  button {
+    @include font-m;
+    width: 205px;
+    height: 40px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  right: 17px;
+  top: 17px;
+  width: 14px;
+  height: 14px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}

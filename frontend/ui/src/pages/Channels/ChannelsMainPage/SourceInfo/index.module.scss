@@ -55,9 +55,20 @@
 }
 
 .connectedChannelData {
+  @include font-base;
   display: flex;
   align-items: center;
   margin: 4px;
+  align-items: flex-start;
+  border: none;
+  outline: none;
+  background-color: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .channelListEntry {

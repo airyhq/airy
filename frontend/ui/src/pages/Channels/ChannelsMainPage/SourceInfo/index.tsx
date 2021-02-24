@@ -2,6 +2,7 @@ import React from 'react';
 import {Channel} from 'httpclient';
 import {LinkButton} from '@airyhq/components';
 import styles from './index.module.scss';
+import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 
 type SourceInfoProps = {
   source: string;
@@ -9,7 +10,8 @@ type SourceInfoProps = {
   connected: string;
   placeholderImage?: JSX.Element;
   isConnected: string;
-  addAChannel: JSX.Element;
+  onAddChannelClick?: () => void;
+  onChannelClick?: (channel: Channel) => void;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
@@ -37,7 +39,7 @@ const SourceInfo = (props: SourceInfoProps) => {
                 {channels.slice(0, channelsToShow).map((channel: Channel) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                      <div className={styles.connectedChannelData}>
+                      <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
                         {source === 'facebook' && channel.metadata.imageUrl ? (
                           <img
                             src={channel.metadata.imageUrl}
@@ -51,7 +53,7 @@ const SourceInfo = (props: SourceInfoProps) => {
                         {isPhoneNumberSource() && (
                           <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>
                         )}
-                      </div>
+                      </button>
                     </li>
                   );
                 })}
@@ -69,7 +71,7 @@ const SourceInfo = (props: SourceInfoProps) => {
           <div className={styles.channelButton}>
             <button type="button" className={styles.addChannelButton}>
               <div className={styles.channelButtonIcon} title="Add a channel">
-                {props.addAChannel}
+                <AddChannel />
               </div>
             </button>
           </div>

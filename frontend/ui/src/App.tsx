@@ -84,7 +84,7 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
               <Route exact path={LOGIN_ROUTE} component={Login} />
               <Route path={INBOX_ROUTE} component={Inbox} />
               <Route exact path={LOGOUT_ROUTE} component={Logout} />
-              <Route exact path={CHANNELS_ROUTE} component={Channels} />
+              <Route path={CHANNELS_ROUTE} component={Channels} />
               <Route component={NotFound} />
             </Switch>
           </div>

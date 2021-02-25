@@ -37,9 +37,20 @@
   margin-right: 8px;
 }
 
-.container {
+.inputContainer {
   display: flex;
   flex-direction: column;
+  margin-bottom: 32px;
+  width: 474px;
+  margin-top: 16px;
+
+  label {
+    margin-top: 24px;
+  }
+
+  input {
+    @include font-base;
+  }
 }
 
 .subtitle {
@@ -51,53 +62,4 @@
     width: 17px;
     height: 13px;
   }
-}
-
-.connectButton {
-  @include font-m;
-  width: 146px;
-  height: 40px;
-  background: var(--color-airy-blue);
-  border-radius: 4px;
-  color: white;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  margin-top: 32px;
-
-  &:disabled {
-    background: var(--color-dark-elements-gray);
-  }
-}
-
-.inputContainer {
-  width: 474px;
-  margin-top: 24px;
-}
-
-.inputTitle {
-  @include font-base;
-  width: 100%;
-  padding-left: 2px;
-}
-
-.inputInput {
-  border-radius: 4px;
-  border: 1px solid var(--color-dark-elements-gray);
-  margin-top: 5px;
-
-  input {
-    @include font-base;
-    background-color: transparent;
-    border: none;
-    width: 100%;
-    padding: 4px 8px;
-  }
-}
-
-.inputOptionalTitle {
-  @include font-s;
-  color: var(--color-text-gray);
-  margin-top: 5px;
-  padding-left: 2px;
 }

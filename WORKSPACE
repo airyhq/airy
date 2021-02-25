@@ -106,7 +106,6 @@ maven_install(
     maven_install_json = "//:maven_install.json",
     repositories = [
         "https://packages.confluent.io/maven",
-        "https://oss.sonatype.org/content/repositories/snapshots/",
         "https://repo1.maven.org/maven2",
         "https://jitpack.io",
     ],

@@ -1,6 +1,6 @@
 module cli
 
-go 1.12
+go 1.15
 
 require (
 	github.com/airyhq/airy/lib/go/httpclient v0.0.0

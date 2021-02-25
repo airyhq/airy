@@ -91,6 +91,8 @@ func main() {
 		}
 
 		log.Printf("Modified %v", sourceModule.Path)
-		os.Chdir(workingDir)
+		if err = os.Chdir(workingDir); err != nil {
+			log.Fatal(err)
+		}
 	}
 }

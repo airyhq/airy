@@ -61,7 +61,7 @@ func (h *Helm) Setup() {
 			Name:      "helm-account-binding",
 			Namespace: h.namespace,
 		},
-		Subjects: []rbacv1.Subject{rbacv1.Subject{
+		Subjects: []rbacv1.Subject{{
 			Namespace: h.namespace,
 			Kind:      "ServiceAccount",
 			Name:      "helm-account",
@@ -92,9 +92,9 @@ func (h *Helm) InstallCharts() {
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{
 						{
-							Name:  "my-job",
-							Image: "busybox",
-							Args:  []string{"ls"},
+							Name:  "helm-runner",
+							Image: "ghcr.io/airyhq/infrastructure/helm:" + h.version,
+							Args:  []string{"list"},
 						},
 					},
 					RestartPolicy:      "Never",

@@ -94,8 +94,10 @@ airy create [flags]
 #### Options
 
 ```
-  -h, --help              help for create
-      --provider string   One of the supported providers (aws|local). Default is aws
+  -h, --help                 help for create
+      --kube-config string   Path to the kubeconfig used to communicate with the cluster
+      --provider string      One of the supported providers (aws|local). Default is aws
+      --version string       Version of Airy Core to run this command for.
 ```
 
 #### Options inherited from parent commands

@@ -44,6 +44,7 @@
     "connect-history-api-fallback": "^1.6.0",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.5.2",
+    "cypress": "^6.5.0",
     "ejs-compiled-loader": "^1.1.0",
     "eslint": "^7.16.0",
     "eslint-plugin-react": "^7.21.5",

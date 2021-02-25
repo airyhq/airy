@@ -8,6 +8,7 @@ import (
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	watch "k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"log"
@@ -100,16 +101,19 @@ func (h *Helm) InstallCharts() {
 
 	for event := range ch {
 		watchedJob, _ := event.Object.(*batchv1.Job)
-		success := watchedJob.Status.Succeeded
-		if success == 0 {
+		switch event.Type {
+		case watch.Added:
 			fmt.Println("Running Helm")
-		} else if success == 1 {
-			fmt.Println("Helm finished")
-			jobDeletionErr := jobsClient.Delete(context.TODO(), h.name, v1.DeleteOptions{})
-			if jobDeletionErr == nil {
-				fmt.Println("Job deleted")
+		case watch.Modified:
+			success := watchedJob.Status.Succeeded
+			if success == 1 {
+				fmt.Println("Helm finished running")
+				jobDeletionErr := jobsClient.Delete(context.TODO(), h.name, v1.DeleteOptions{})
+				if jobDeletionErr == nil {
+					fmt.Println("Job deleted")
+					return
+				}
 			}
-			break
 		}
 	}
 }

@@ -94,7 +94,13 @@ func (h *Helm) InstallCharts() {
 	ch := watcher.ResultChan()
 
 	for event := range ch {
-		fmt.Println(event)
+		watchedJob, _ := event.Object.(*batchv1.Job)
+		success := watchedJob.Status.Succeeded
+		if success == 0 {
+			fmt.Println("Running Helm")
+		} else if success == 1 {
+			fmt.Println("Helm finished")
+			break
+		}
 	}
-
 }

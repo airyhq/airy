@@ -187,4 +187,15 @@ nogo(
     deps = TOOLS_NOGO,
 )
 
-check_pkg(name = "buildifier")
+filegroup(
+    name = "starlark_files",
+    srcs = [
+        "BUILD",
+        "WORKSPACE",
+        "go_repositories.bzl",
+    ],
+)
+
+check_pkg(
+    name = "buildifier",
+)

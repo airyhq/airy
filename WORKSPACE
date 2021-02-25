@@ -178,6 +178,7 @@ load(
 
 container_pull(
     name = "java_base",
+    digest = "sha256:65aa73135827584754f1f1949c59c3e49f1fed6c35a918fadba8b4638ebc9c5d",
     registry = "gcr.io",
     repository = "distroless/java",
     tag = "11",

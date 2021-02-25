@@ -14,6 +14,7 @@ import (
 )
 
 type Helm struct {
+	name      string
 	version   string
 	namespace string
 	clientSet *kubernetes.Clientset
@@ -31,6 +32,7 @@ func New(kubeConfigPath string, version string, namespace string) Helm {
 	}
 
 	return Helm{
+		name:      "helm-runner",
 		namespace: namespace,
 		version:   version,
 		clientSet: clientSet,
@@ -63,7 +65,7 @@ func (h *Helm) InstallCharts() {
 
 	job := &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "helm-runner",
+			Name:      h.name,
 			Namespace: h.namespace,
 			Labels:    map[string]string{"helm-runner": "true"},
 		},
@@ -103,7 +105,7 @@ func (h *Helm) InstallCharts() {
 			fmt.Println("Running Helm")
 		} else if success == 1 {
 			fmt.Println("Helm finished")
-			jobDeletionErr := jobsClient.Delete(context.TODO(), "helm-runner", v1.DeleteOptions{})
+			jobDeletionErr := jobsClient.Delete(context.TODO(), h.name, v1.DeleteOptions{})
 			if jobDeletionErr == nil {
 				fmt.Println("Job deleted")
 			}

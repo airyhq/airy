@@ -32,6 +32,7 @@ func create(cmd *cobra.Command, args []string) {
 	fmt.Println("⚙️  Creating core with provider", provider)
 
 	helm := New(kubeConfig, version, "default")
+	helm.Setup()
 	helm.InstallCharts()
 	fmt.Println("🚀 Starting core with default components")
 	fmt.Println("🎉 Your Airy Core is ready")

@@ -56,9 +56,26 @@ func (h *Helm) Setup() {
 
 	roleBindingClient := h.clientSet.RbacV1().ClusterRoleBindings()
 
-	roleBinding := &rbacv1.ClusterRoleBinding{}
+	roleBinding := &rbacv1.ClusterRoleBinding{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "helm-account-binding",
+			Namespace: h.namespace,
+		},
+		Subjects: []rbacv1.Subject{rbacv1.Subject{
+			Namespace: h.namespace,
+			Kind:      "ServiceAccount",
+			Name:      "helm-account",
+		}},
+		RoleRef: rbacv1.RoleRef{
+			Kind: "ClusterRole",
+			Name: "cluster-admin",
+		},
+	}
 
-	roleBindingClient.Create(context.TODO(), roleBinding, metav1.CreateOptions{})
+	_, err = roleBindingClient.Create(context.TODO(), roleBinding, metav1.CreateOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (h *Helm) InstallCharts() {
@@ -80,7 +97,8 @@ func (h *Helm) InstallCharts() {
 							Args:  []string{"ls"},
 						},
 					},
-					RestartPolicy: "Never",
+					RestartPolicy:      "Never",
+					ServiceAccountName: "helm-account",
 				},
 			},
 		},

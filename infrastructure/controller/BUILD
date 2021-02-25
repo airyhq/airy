@@ -1,3 +1,5 @@
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
+
 # gazelle:prefix github.com/airyhq/airy/infrastructure/controller
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
@@ -33,3 +35,5 @@ container_release(
     registry = "ghcr.io/airyhq/infrastructure",
     repository = "controller",
 )
+
+check_pkg(name = "buildifier")

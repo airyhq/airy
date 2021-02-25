@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
 load("//tools/build:java_library.bzl", "custom_java_library")
 
 custom_java_library(
@@ -17,3 +18,5 @@ custom_java_library(
         "@maven//:com_fasterxml_jackson_module_jackson_module_afterburner",
     ],
 )
+
+check_pkg(name = "buildifier")

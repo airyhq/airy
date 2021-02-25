@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
 load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
@@ -56,3 +57,5 @@ container_release(
     registry = "ghcr.io/airyhq/api",
     repository = "communication",
 )
+
+check_pkg(name = "buildifier")

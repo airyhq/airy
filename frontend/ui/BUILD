@@ -3,6 +3,11 @@ load("@com_github_airyhq_bazel_tools//web:web_app.bzl", "web_app")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/build:container_release.bzl", "container_release")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
+
+check_pkg()
+
+check_pkg(name = "buildifier")
 
 module_deps = [
     "//frontend/assets",

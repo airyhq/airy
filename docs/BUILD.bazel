@@ -1,6 +1,8 @@
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
 load("@com_github_airyhq_bazel_tools//code-format:prettier.bzl", "prettier")
 
 prettier(
+    name = "prettier",
     srcs = glob([
         "**/*.md",
         "**/*.js",
@@ -13,3 +15,5 @@ prettier(
     config = "//:.prettierrc.json",
     ignore = "//:.prettierignore",
 )
+
+check_pkg(name = "buildifier")

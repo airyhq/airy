@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "701e4bd1503efe7308bf057ce031a165346b4580",
+    commit = "fdcea2e82051dc5c8a0f2522c459691128bc38c9",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1614011000 +0100",
+    shallow_since = "1614184856 +0100",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -106,7 +106,6 @@ maven_install(
     maven_install_json = "//:maven_install.json",
     repositories = [
         "https://packages.confluent.io/maven",
-        "https://oss.sonatype.org/content/repositories/snapshots/",
         "https://repo1.maven.org/maven2",
         "https://jitpack.io",
     ],
@@ -179,6 +178,7 @@ load(
 
 container_pull(
     name = "java_base",
+    digest = "sha256:65aa73135827584754f1f1949c59c3e49f1fed6c35a918fadba8b4638ebc9c5d",
     registry = "gcr.io",
     repository = "distroless/java",
     tag = "11",

@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
 load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 # gazelle:prefix github.com/airyhq/airy/lib/go/httpclient
@@ -23,3 +24,5 @@ go_test(
         "@com_github_stretchr_testify//assert",
     ],
 )
+
+check_pkg(name = "buildifier")

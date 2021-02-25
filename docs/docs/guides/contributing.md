@@ -51,21 +51,16 @@ You can lint the entire code base by executing the `./scripts/lint.sh` script.
 We use language specific linters:
 
 - [buildifier](https://github.com/bazelbuild/buildtools/tree/master/buildifier)
-  to lint Bazel files
+  to lint Bazel starlark files
 - [prettier](https://prettier.io/) for TypeScript, JavaScript and SCSS
 - [CheckStyle](https://checkstyle.sourceforge.io/) for Java
 
-Java and prettier are ran as test targets for each package, so you can run:
+Java, Buildifier and prettier are ran as test targets for each package, so you can run:
 
 ```shell script
 bazel test //my/package:checkstyle
 bazel test //my/package:prettier
-```
-
-To execute the buildifier linter run:
-
-```shell script
-bazel run //:check
+bazel test //my/package:buildifier
 ```
 
 You can also run:

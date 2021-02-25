@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
 load("//tools/build:java_library.bzl", "custom_java_library")
 load("//tools/build:junit5.bzl", "junit5")
 
@@ -28,3 +29,5 @@ junit5(
         "//:junit",
     ] + lib_deps,
 )
+
+check_pkg(name = "buildifier")

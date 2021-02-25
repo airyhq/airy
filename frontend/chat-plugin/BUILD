@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
 load("@npm//@bazel/typescript:index.bzl", "ts_config")
 load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_library")
 load("@com_github_airyhq_bazel_tools//web:web_app.bzl", "web_app")
@@ -97,3 +98,5 @@ container_release(
     registry = "ghcr.io/airyhq/frontend",
     repository = "chat-plugin",
 )
+
+check_pkg(name = "buildifier")

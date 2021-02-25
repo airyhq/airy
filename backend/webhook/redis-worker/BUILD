@@ -1,5 +1,6 @@
 # gazelle:prefix redis-worker
 
+load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 load("//tools/build:container_release.bzl", "container_release")
@@ -27,3 +28,5 @@ go_library(
     visibility = ["//visibility:private"],
     deps = ["//backend/webhook/redis-worker/pkg/scheduler"],
 )
+
+check_pkg(name = "buildifier")

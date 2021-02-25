@@ -1,4 +1,4 @@
-load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
@@ -15,8 +15,8 @@ alias(
 multirun(
     name = "fix",
     commands = [
-        "@com_github_airyhq_bazel_tools//code-format:fix_prettier",
-        "@com_github_airyhq_bazel_tools//code-format:fix_buildifier",
+        "@com_github_airyhq_bazel_tools//lint:fix_prettier",
+        "@com_github_airyhq_bazel_tools//lint:fix_buildifier",
     ],
     visibility = ["//visibility:public"],
 )

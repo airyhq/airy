@@ -1,4 +1,4 @@
-load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("//tools/build:avro.bzl", "avro_java_library")
 
 package(default_visibility = ["//visibility:public"])

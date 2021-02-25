@@ -10,11 +10,8 @@ cp docs/docs/cli/reference.md /tmp/
 bazel run //docs/cli-doc:generate_cli_docs
 cmp docs/docs/cli/reference.md  /tmp/reference.md
 echo
-echo "Running Prettier, buildifier and Java tests"
+echo "Running Prettier, Buildifier and Checkstyle"
 bazel test --test_tag_filters=lint //...
-echo
-echo "Running eslint"
-yarn eslint
 echo
 echo "Running shellcheck on *.sh"
 find infrastructure scripts -type f -name "*.sh" -exec shellcheck {} +

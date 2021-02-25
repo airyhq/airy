@@ -1,6 +1,6 @@
-load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@npm//@bazel/typescript:index.bzl", "ts_config")
-load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_library")
+load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
 load("@com_github_airyhq_bazel_tools//web:web_app.bzl", "web_app")
 load("@com_github_airyhq_bazel_tools//web:web_library.bzl", "web_library")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
@@ -44,7 +44,7 @@ web_library(
     },
 )
 
-ts_library(
+ts_web_library(
     name = "app",
     tsconfig = ":widget_tsconfig",
     deps = module_deps + [

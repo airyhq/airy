@@ -1,4 +1,4 @@
-load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
 load("//tools/build:container_release.bzl", "container_release")

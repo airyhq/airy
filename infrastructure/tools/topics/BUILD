@@ -1,4 +1,4 @@
-load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@rules_java//java:defs.bzl", "java_binary")
 
 app_deps = [

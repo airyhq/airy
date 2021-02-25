@@ -1,9 +1,9 @@
-load("@com_github_airyhq_bazel_tools//code-format:buildifier.bzl", "check_pkg")
-load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_library")
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
 
 package(default_visibility = ["//visibility:public"])
 
-ts_library(
+ts_web_library(
     name = "dates",
     deps = [
         "//lib/typescript/types",

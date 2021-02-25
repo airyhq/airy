@@ -5,9 +5,18 @@ metadata:
 data:
   wait-for-service.sh: |
     #!/bin/sh
-    service=${1}
-    port=${2}
+    service=${SERVICE_NAME}
+    port=${SERVICE_PORT}
     delay=${3:-10}
+
+    while ! nc -z ${service} ${port} >/dev/null 2>&1; do sleep ${delay}; echo Waiting for service ${service} to start...; done
+
+  wait-for-service-url.sh: |
+    #!/bin/sh
+    url=${SERVICE_URL}
+    delay=${2:-10}
+    service=$(echo ${url} | cut -d ":" -f1)
+    port=$(echo ${url} | cut -d ":" -f2)
 
     while ! nc -z ${service} ${port} >/dev/null 2>&1; do sleep ${delay}; echo Waiting for service ${service} to start...; done
 

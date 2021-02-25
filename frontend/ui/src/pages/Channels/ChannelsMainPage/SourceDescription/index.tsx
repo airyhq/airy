@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import styles from './index.module.scss';
-import {RequirementsDialog} from '../../Facebook/RequirementsDialog';
-import {ChannelSource} from 'httpclient';
+import {openRequirementsDialog} from '../index';
 import {ReactComponent as AddIcon} from 'assets/images/icons/plus-circle.svg';
 
 type SourceDescriptionProps = {
@@ -15,21 +14,6 @@ type SourceDescriptionProps = {
 
 const SourceDescription = (props: SourceDescriptionProps) => {
   const [show, setShow] = useState(false);
-
-  const openRequirementsDialog = (id: string): JSX.Element => {
-    switch (id) {
-      case ChannelSource.facebook:
-        return <RequirementsDialog show={true} />;
-      case ChannelSource.google:
-        break;
-      case ChannelSource.chatPlugin:
-        break;
-      case ChannelSource.twilioSMS:
-        break;
-      case ChannelSource.twilioWhatsapp:
-        break;
-    }
-  };
 
   return (
     <>

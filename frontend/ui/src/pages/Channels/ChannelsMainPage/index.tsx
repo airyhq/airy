@@ -5,6 +5,8 @@ import FacebookSource from './Sources/FacebookSource';
 import TwilioSmsSource from './Sources/TwilioSmsSource';
 import GoogleSource from './Sources/GoogleSource';
 import TwilioWhatsAppSource from './Sources/TwilioWhatsAppSource';
+import {ChannelSource} from 'httpclient';
+import {RequirementsDialog} from '../Facebook/RequirementsDialog';
 
 import {Channel, ConfigPayload} from 'httpclient';
 
@@ -13,6 +15,21 @@ import styles from './index.module.scss';
 type ChannelsConnectProps = {
   channels: Channel[];
   config: ConfigPayload;
+};
+
+export const openRequirementsDialog = (id: string): JSX.Element => {
+  switch (id) {
+    case ChannelSource.facebook:
+      return <RequirementsDialog show={true} />;
+    case ChannelSource.google:
+      break;
+    case ChannelSource.chatPlugin:
+      break;
+    case ChannelSource.twilioSMS:
+      break;
+    case ChannelSource.twilioWhatsapp:
+      break;
+  }
 };
 
 const ChannelsMainPage = (props: ChannelsConnectProps) => {

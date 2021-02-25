@@ -69,7 +69,7 @@ const SourceInfo = (props: SourceInfoProps) => {
           </div>
 
           <div className={styles.channelButton}>
-            <button type="button" className={styles.addChannelButton}>
+            <button type="button" className={styles.addChannelButton} onClick={() => props.onAddChannelClick()}>
               <div className={styles.channelButtonIcon} title="Add a channel">
                 <AddChannel />
               </div>

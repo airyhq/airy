@@ -3,6 +3,7 @@ import styles from './FacebookConnect.module.scss';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
+import {Button} from '@airyhq/components';
 
 interface FacebookProps {
   channelId?: string;
@@ -11,7 +12,7 @@ interface FacebookProps {
 type InputProps = {
   id: string;
   value: string;
-  onChange: (event: any) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   title: string;
   placeholder: string;
   optional?: boolean;
@@ -38,15 +39,21 @@ const FacebookConnect = (props: RouteComponentProps<FacebookProps>) => {
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
 
+  const buttonStatus = () => {
+    if (id.length > 5 && token != '') {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>Facebook Messenger</h1>
-
       <Link to={CHANNELS_ROUTE} className={styles.backButton}>
         <BackIcon className={styles.backIcon} />
         Back to channels
       </Link>
-
       <div className={styles.container}>
         <Input
           id="id"
@@ -81,9 +88,10 @@ const FacebookConnect = (props: RouteComponentProps<FacebookProps>) => {
           onChange={event => setImage(event.target.value)}
         />
       </div>
-      <button type="button" className={styles.connectButton}>
+      <button type="button" className={styles.connectButton} disabled={buttonStatus()}>
         Connect Page
       </button>
+      ]
     </div>
   );
 };

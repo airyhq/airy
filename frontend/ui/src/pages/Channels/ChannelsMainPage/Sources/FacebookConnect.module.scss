@@ -64,6 +64,10 @@
   border: none;
   cursor: pointer;
   margin-top: 32px;
+
+  &:disabled {
+    background: var(--color-dark-elements-gray);
+  }
 }
 
 .inputContainer {

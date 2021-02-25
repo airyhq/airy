@@ -65,6 +65,7 @@ func (h *Helm) InstallCharts() {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "helm-runner",
 			Namespace: h.namespace,
+			Labels:    map[string]string{"helm-runner": "true"},
 		},
 		Spec: batchv1.JobSpec{
 			Template: corev1.PodTemplateSpec{
@@ -87,7 +88,9 @@ func (h *Helm) InstallCharts() {
 		panic(jobCreationErr)
 	}
 
-	watcher, watcherErr := jobsClient.Watch(context.TODO(), v1.ListOptions{})
+	watcher, watcherErr := jobsClient.Watch(context.TODO(), v1.ListOptions{
+		LabelSelector: "helm-runner=true",
+	})
 	if watcherErr != nil {
 		panic(watcherErr)
 	}

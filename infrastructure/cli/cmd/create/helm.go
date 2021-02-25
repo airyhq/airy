@@ -103,6 +103,10 @@ func (h *Helm) InstallCharts() {
 			fmt.Println("Running Helm")
 		} else if success == 1 {
 			fmt.Println("Helm finished")
+			jobDeletionErr := jobsClient.Delete(context.TODO(), "helm-runner", v1.DeleteOptions{})
+			if jobDeletionErr == nil {
+				fmt.Println("Job deleted")
+			}
 			break
 		}
 	}

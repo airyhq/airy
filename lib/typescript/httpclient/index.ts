@@ -137,7 +137,10 @@ export class HttpClient {
       lastMessage: this.mapMessage(messagePayload.last_message),
     }));
 
-    return {data: conversationData, paginationData: camelcaseKeys(response.pagination_data, {deep: true, stopPaths: ['metadata.userData']})};
+    return {
+      data: conversationData,
+      paginationData: camelcaseKeys(response.pagination_data, {deep: true, stopPaths: ['metadata.userData']}),
+    };
   }
 
   public async getConversationInfo(conversationId: string) {

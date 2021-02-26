@@ -1,7 +1,7 @@
-load("@io_bazel_rules_docker//container:container.bzl", lib_push = "container_push")
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
-def container_push(registry, repository):
-    lib_push(
+def container_release(registry, repository):
+    container_push(
         name = "develop",
         format = "Docker",
         image = ":image",
@@ -10,7 +10,7 @@ def container_push(registry, repository):
         tag = "develop",
     )
 
-    lib_push(
+    container_push(
         name = "local",
         format = "Docker",
         image = ":image",
@@ -19,7 +19,7 @@ def container_push(registry, repository):
         tag = "{BUILD_USER}",
     )
 
-    lib_push(
+    container_push(
         name = "release",
         format = "Docker",
         image = ":image",

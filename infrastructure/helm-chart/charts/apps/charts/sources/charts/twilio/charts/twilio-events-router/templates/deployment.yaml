@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.global.namespace }}
   labels:
     app: sources-twilio-events-router
-    type: sources-twilio
+    type: sources
     core.airy.co/managed: "true"
 spec:
   replicas: 0
@@ -58,3 +58,25 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 3
+      initContainers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: REPLICAS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_MINIMUM_REPLICAS
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts

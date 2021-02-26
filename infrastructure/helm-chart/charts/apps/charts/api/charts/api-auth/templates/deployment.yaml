@@ -7,7 +7,7 @@ metadata:
     app: api-auth
     type: api
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: api-auth
@@ -91,3 +91,20 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 3
+      initContainers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
+        env:
+        - name: SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: POSTGRES_ENDPOINT
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts

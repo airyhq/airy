@@ -13,8 +13,9 @@
 .carouselChildren {
   display: flex;
   flex-direction: row;
-  overflow: auto;
+  overflow: hidden;
   max-width: 100%;
+  align-items: flex-end;
 }
 
 .buttonScroll {

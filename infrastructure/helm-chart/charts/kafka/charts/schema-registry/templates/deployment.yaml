@@ -39,3 +39,25 @@ spec:
                 fieldPath: status.podIP
           - name: KARAPACE_BOOTSTRAP_URI
             value: {{ .Values.kafka.bootstrapServers }}
+      initContainers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: REPLICAS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_MINIMUM_REPLICAS
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts

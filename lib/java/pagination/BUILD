@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("//tools/build:java_library.bzl", "custom_java_library")
 load("//tools/build:junit5.bzl", "junit5")
 
@@ -18,3 +19,5 @@ custom_java_library(
     )
     for file in glob(["src/test/java/**/*Test.java"])
 ]
+
+check_pkg(name = "buildifier")

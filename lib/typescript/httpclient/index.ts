@@ -16,6 +16,7 @@ import {
   ConversationPayload,
   ChannelPayload,
   ChannelsPayload,
+  ConfigPayload,
 } from './payload';
 import {
   connectChannelMapper,
@@ -211,6 +212,11 @@ export class HttpClient {
       message: requestPayload.message,
     });
     return messageMapper(response);
+  }
+
+  public async getConfig() {
+    const response: ConfigPayload = await this.doFetchFromBackend('client.config');
+    return response;
   }
 }
 

@@ -148,7 +148,8 @@ After the [required services](#requirements) are deployed, you're ready to start
 the `Airy Components` inside a Kubernetes cluster.
 
 We provided a Helm chart to deploy the `Airy Components`. Before you can run helm, you
-must configure the system. See our [Configuration Docs](/getting-started/deployment/configuration.md) for detailed instructions.
+must configure the system. See our [Configuration
+Docs](/getting-started/installation/configuration.md) for detailed instructions.
 
 Then you can proceed:
 

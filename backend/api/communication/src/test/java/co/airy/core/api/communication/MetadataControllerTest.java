@@ -89,7 +89,7 @@ public class MetadataControllerTest {
                         "{\"conversation_id\":\"" + conversationId + "\"}",
                         "user-id")
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.last_message.metadata.sentFrom", is("iPhone"))),
+                        .andExpect(jsonPath("$.last_message.metadata.user_data.sentFrom", is("iPhone"))),
                 "Conversations list metadata is not present"
         );
     }

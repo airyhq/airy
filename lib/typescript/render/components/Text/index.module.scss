@@ -1,23 +1,21 @@
 @import 'assets/scss/colors.scss';
 
-.contactContent {
-  width: 100%;
+.textMessage {
+  display: inline-block;
   overflow-wrap: break-word;
   word-break: break-word;
   padding: 10px;
   margin-top: 5px;
+  border-radius: 8px;
+  font-family: 'Lato', sans-serif;
+}
+
+.contactContent {
   background: var(--color-background-blue);
   color: var(--color-text-contrast);
-  border-radius: 8px;
 }
 
 .memberContent {
-  width: 100%;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  padding: 10px;
-  margin-top: 5px;
   background: var(--color-airy-blue);
   color: white;
-  border-radius: 8px;
 }

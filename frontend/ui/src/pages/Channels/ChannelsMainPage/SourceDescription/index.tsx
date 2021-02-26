@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './ChannelDetails.module.scss';
+import styles from './index.module.scss';
 
-type ChannelDetailsProps = {
+type SourceDescriptionProps = {
   image: JSX.Element;
   title: string;
   text: string;
@@ -9,7 +9,7 @@ type ChannelDetailsProps = {
   displayButton: boolean;
 };
 
-const ChannelDetails = (props: ChannelDetailsProps) => {
+const SourceDescription = (props: SourceDescriptionProps) => {
   return (
     <>
       <div className={styles.channelCard}>
@@ -33,4 +33,4 @@ const ChannelDetails = (props: ChannelDetailsProps) => {
   );
 };
 
-export default ChannelDetails;
+export default SourceDescription;

@@ -11,7 +11,7 @@ import (
 )
 
 type SourceModule struct {
-	Path string
+	Path   string
 	Module modfile.File
 }
 
@@ -37,7 +37,7 @@ func LoadModules(paths []string) []SourceModule {
 	modules := make([]SourceModule, 0)
 	for _, path := range paths {
 		modules = append(modules, SourceModule{
-			Path: path,
+			Path:   path,
 			Module: LoadModule(path),
 		})
 	}
@@ -100,6 +100,13 @@ func UpdateModule(targetModule modfile.File, sourceModule modfile.File) (bool, m
 					log.Fatal(err)
 				}
 			}
+		}
+	}
+
+	if targetModule.Go == nil || targetModule.Go.Version != sourceModule.Go.Version {
+		modified = true
+		if err := targetModule.AddGoStmt(sourceModule.Go.Version); err != nil {
+			log.Fatal()
 		}
 	}
 

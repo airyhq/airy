@@ -4,7 +4,6 @@ go 1.15
 
 require (
 	github.com/airyhq/airy/lib/go/httpclient v0.0.0
-	github.com/gosuri/uilive v0.0.4
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/kr/pretty v0.2.1
 	github.com/mitchellh/go-homedir v1.1.0

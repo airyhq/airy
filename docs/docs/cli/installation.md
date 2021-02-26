@@ -159,7 +159,7 @@ airy init
 :tada: Congratulations!
 
 You have successfully installed Airy CLI! Next step: Choose a way to [Deploy
-Airy Core](/getting-started/deployment/introduction.md)
+Airy Core](/getting-started/installation/introduction.md)
 
 </SuccessBox>
 

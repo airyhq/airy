@@ -6,6 +6,11 @@
   align-items: flex-start;
 }
 
+.contactContent {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 .member {
   display: flex;
   flex-direction: column;

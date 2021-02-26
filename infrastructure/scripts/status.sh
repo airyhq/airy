@@ -22,7 +22,7 @@ NGROK_ENABLED=$(kubectl get configmap core-config -o jsonpath='{.data.NGROK_ENAB
 if [ "${NGROK_ENABLED}" = "true" ]; then
     FACEBOOK_WEBHOOK_PUBLIC_URL="https://fb-${CORE_ID}.tunnel.airy.co/facebook"
     GOOGLE_WEBHOOK_PUBLIC_URL="https://gl-${CORE_ID}.tunnel.airy.co/google"
-    TWILIO_WEBHOOK_PUBLIC_URL="https://tw-${CORE_ID}.tunnel.airy.co"
+    TWILIO_WEBHOOK_PUBLIC_URL="https://tw-${CORE_ID}.tunnel.airy.co/twilio"
 else
     WEBHOOKS_HOSTNAME=$(kubectl get configmap hostnames -o jsonpath='{.data.WEBHOOKS_HOST}')
     FACEBOOK_WEBHOOK_PUBLIC_URL="https://${WEBHOOKS_HOSTNAME}/facebook"

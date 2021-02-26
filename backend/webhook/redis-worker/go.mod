@@ -1,6 +1,6 @@
 module github.com/airyhq/airy/backend/webhook/redis-worker
 
-go 1.13
+go 1.15
 
 require (
 	github.com/alicebob/miniredis/v2 v2.13.3

@@ -17,6 +17,7 @@ import {
   ChannelPayload,
   ChannelsPayload,
   UserPayload,
+  ConfigPayload,
 } from './payload';
 
 import {TagColor, Tag, Message} from './model';
@@ -232,6 +233,11 @@ export class HttpClient {
     });
 
     return this.mapMessage(response);
+  }
+
+  public async getConfig() {
+    const response: ConfigPayload = await this.doFetchFromBackend('client.config');
+    return response;
   }
 }
 

@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("//tools/build:java_library.bzl", "custom_java_library")
 load("//tools/build:helper.bzl", "file_to_kebab")
 
@@ -26,3 +27,5 @@ custom_java_library(
     visibility = ["//visibility:public"],
     deps = [":kafka-schema"],
 )
+
+check_pkg(name = "buildifier")

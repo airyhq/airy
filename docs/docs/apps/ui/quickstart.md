@@ -23,9 +23,9 @@ in to the UI**
 
 ## Introduction
 
-The easiest way to see the Airy Core UI in action is to launch the
-[Vagrant Box](getting-started/deployment/vagrant.md) and then follow these three
-simple steps.
+The easiest way to see the Airy Core UI in action is to launch the [Vagrant
+Box](getting-started/installation/vagrant.md) and then follow these three simple
+steps.
 
 ## Step 1: Registration
 

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, KeyboardEvent} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styles from './index.module.scss';
@@ -36,8 +36,18 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const conversationIdParams = useParams();
   const currentConversationId: string = conversationIdParams[Object.keys(conversationIdParams)[0]];
 
-  const handleClick = () => {
+  const sendMessage = () => {
     props.sendMessages(getTextMessagePayload(channelSource, currentConversationId, input)).then(() => setInput(''));
+  };
+
+  const handleClick = () => {
+    sendMessage();
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.metaKey && event.key === 'Enter') {
+      sendMessage();
+    }
   };
 
   return (
@@ -53,11 +63,16 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             autoFocus={true}
             value={input}
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
           />
         </div>
       </div>
       <div className={styles.sendDiv}>
-        <button type="button" className={styles.sendButton} onClick={handleClick} disabled={!input}>
+        <button
+          type="button"
+          className={`${styles.sendButton} ${input && styles.sendButtonActive}`}
+          onClick={handleClick}
+          disabled={input.trim().length == 0}>
           <div className={styles.sendButtonText}>
             <Paperplane />
           </div>

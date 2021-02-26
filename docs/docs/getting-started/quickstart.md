@@ -8,8 +8,8 @@ import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
 
-In this Quickstart we are **setting up our first source, listen to conversations, and
-consume directly from Kafka**
+In this Quickstart we are **setting up our first source, listen to
+conversations, and consume directly from Kafka**
 
 </TLDR>
 
@@ -25,8 +25,8 @@ directly in Apache Kafka.
 :::info
 
 To get going with the Quickstart, [you must install Airy
-first](/getting-started/installation.md). Once you installed Airy and have the CLI
-up and running you are good to go.
+first](/getting-started/installation/introduction.md). Once you installed Airy and have the
+CLI up and running you are good to go.
 
 :::
 

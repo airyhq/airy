@@ -19,3 +19,4 @@ export * from './ListMessagesRequestPayload';
 export * from './TagConversationRequestPayload';
 export * from './UntagConversationRequestPayload';
 export * from './SendMessagesRequestPayload';
+export * from './ConfigPayload';

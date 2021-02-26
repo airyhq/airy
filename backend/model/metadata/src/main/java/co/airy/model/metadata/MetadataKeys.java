@@ -38,5 +38,9 @@ public class MetadataKeys {
         public static final String NAME = "name";
         public static final String IMAGE_URL = "image_url";
     }
+
+    public static class MessageKeys {
+        public static final String SUGGESTIONS = "suggestions";
+    }
 }
 

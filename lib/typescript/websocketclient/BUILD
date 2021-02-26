@@ -9,5 +9,6 @@ ts_library(
         "//lib/typescript/types",
         "@npm//@stomp/stompjs",
         "@npm//@types/node",
+        "@npm//camelcase-keys",
     ],
 )

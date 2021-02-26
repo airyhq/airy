@@ -1,7 +1,7 @@
 import {StompWrapper} from './stompWrapper';
-import {Message, Channel, messageMapper, MetadataEvent} from 'httpclient';
+import {Message, Channel, MetadataEvent} from 'httpclient';
 import {EventPayloadUnion} from './payload';
-import {channelMapper} from '../httpclient/mappers';
+const camelcaseKeys = require('camelcase-keys');
 
 type CallbackMap = {
   onMessage?: (conversationId: string, channelId: string, message: Message) => void;
@@ -46,14 +46,13 @@ export class WebSocketClient {
     const json: EventPayloadUnion = JSON.parse(body) as any;
     switch (json.type) {
       case 'channel':
-        this.callbackMap.onChannel?.(channelMapper(json.payload));
+        this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true}));
         break;
       case 'message':
-        this.callbackMap.onMessage?.(
-          json.payload.conversation_id,
-          json.payload.channel_id,
-          messageMapper(json.payload.message)
-        );
+        this.callbackMap.onMessage?.(json.payload.conversation_id, json.payload.channel_id, {
+          ...camelcaseKeys(json.payload.message, {deep: true}),
+          sentAt: new Date(json.payload.message.sent_at),
+        });
         break;
       case 'metadata':
         this.callbackMap.onMetadata?.(json.payload);

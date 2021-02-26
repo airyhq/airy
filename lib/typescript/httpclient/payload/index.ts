@@ -7,6 +7,7 @@ export * from './ExploreChannelRequestPayload';
 export * from './ListConversationsRequestPayload';
 export * from './ListTagsResponsePayload';
 export * from './LoginViaEmailRequestPayload';
+export * from './UserPayload';
 export * from './PaginatedPayload';
 export * from './PaginatedResponse';
 export * from './MessagePayload';

@@ -16,21 +16,12 @@ import {
   ConversationPayload,
   ChannelPayload,
   ChannelsPayload,
+  UserPayload,
 } from './payload';
-import {
-  connectChannelMapper,
-  channelMapper,
-  channelsMapper,
-  disconnectChannelApiMapper,
-  conversationsMapper,
-  messageMapperData,
-  tagsMapper,
-  userMapper,
-  paginatedPayloadMapper,
-  messageMapper,
-  conversationMapper,
-} from './mappers';
-import {TagColor, Tag} from './model';
+
+import {TagColor, Tag, Message} from './model';
+const camelcaseKeys = require('camelcase-keys');
+//import camelcaseKeys from 'camelcase-keys';
 
 const headers = {
   Accept: 'application/json',
@@ -97,30 +88,38 @@ export class HttpClient {
     return this.parseBody(response);
   }
 
+  private mapMessage = (payload: MessagePayload): Message => {
+    return {...camelcaseKeys(payload, {deep: true}), sentAt: new Date(payload.sent_at)};
+  };
+
   public async listChannels() {
     const response: ChannelsPayload = await this.doFetchFromBackend('channels.list', {});
-    return channelsMapper(response);
+
+    return camelcaseKeys(response.data, {deep: true});
   }
 
   public async exploreFacebookChannels(requestPayload: ExploreChannelRequestPayload) {
     const response: ChannelsPayload = await this.doFetchFromBackend('facebook.channels.explore', requestPayload);
-    return channelsMapper(response);
+
+    return camelcaseKeys(response.data, {deep: true});
   }
 
   public async connectFacebookChannel(requestPayload: ConnectChannelRequestPayload) {
     const response: ChannelPayload = await this.doFetchFromBackend(
       'channels.connect',
-      connectChannelMapper(requestPayload)
+      camelcaseKeys(requestPayload, {deep: true})
     );
-    return channelMapper(response);
+
+    return camelcaseKeys(response, {deep: true});
   }
 
   public async disconnectChannel(source: string, requestPayload: DisconnectChannelRequestPayload) {
     const response: ChannelsPayload = await this.doFetchFromBackend(
       `channels.${source}.disconnect`,
-      disconnectChannelApiMapper(requestPayload)
+      camelcaseKeys(requestPayload, {deep: true})
     );
-    return channelsMapper(response);
+
+    return camelcaseKeys(response.data, {deep: true});
   }
 
   public async listConversations(conversationListRequest: ListConversationsRequestPayload) {
@@ -130,15 +129,22 @@ export class HttpClient {
       'conversations.list',
       conversationListRequest
     );
-    const {pagination_data} = response;
 
-    return paginatedPayloadMapper({data: conversationsMapper(response.data), pagination_data: pagination_data});
+    const conversationData = response.data.map((messagePayload: ConversationPayload) => ({
+      ...camelcaseKeys(messagePayload, {deep: true}),
+      createdAt: new Date(messagePayload.created_at),
+      lastMessage: this.mapMessage(messagePayload.last_message),
+    }));
+
+    return {data: conversationData, paginationData: camelcaseKeys(response.pagination_data, {deep: true})};
   }
 
   public async getConversationInfo(conversationId: string) {
-    return this.doFetchFromBackend('conversations.info', {
+    const response: ConversationPayload = await this.doFetchFromBackend('conversations.info', {
       conversation_id: conversationId,
-    }).then(conversationMapper);
+    });
+
+    return camelcaseKeys(response, {deep: true});
   }
 
   public async readConversations(conversationId: string) {
@@ -155,13 +161,26 @@ export class HttpClient {
       cursor: conversationListRequest.cursor,
       page_size: conversationListRequest.pageSize,
     });
-    const {pagination_data} = response;
 
-    return paginatedPayloadMapper({data: messageMapperData(response), pagination_data: pagination_data});
+    const mapMessageData = response.data.map((messagePayload: MessagePayload) => this.mapMessage(messagePayload));
+
+    return {data: mapMessageData, paginationData: camelcaseKeys(response.pagination_data, {deep: true})};
   }
 
   public async listTags() {
     const response: ListTagsResponsePayload = await this.doFetchFromBackend('tags.list');
+
+    const tagMapper = {
+      BLUE: 'tag-blue',
+      RED: 'tag-red',
+      GREEN: 'tag-green',
+      PURPLE: 'tag-purple',
+    };
+
+    const tagsMapper = (serverTags: Tag[]): Tag[] => {
+      return serverTags.map(t => ({id: t.id, name: t.name, color: tagMapper[t.color] || 'tag-blue'}));
+    };
+
     return tagsMapper(response.data);
   }
 
@@ -185,8 +204,9 @@ export class HttpClient {
   }
 
   public async loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
-    const response = await this.doFetchFromBackend('users.login', requestPayload);
-    return userMapper(response);
+    const response: UserPayload = await this.doFetchFromBackend('users.login', requestPayload);
+
+    return {...camelcaseKeys(response, {deep: true}), displayName: `${response.first_name} ${response.last_name}`};
   }
 
   public async tagConversation(requestPayload: TagConversationRequestPayload) {
@@ -210,11 +230,11 @@ export class HttpClient {
       conversation_id: requestPayload.conversationId,
       message: requestPayload.message,
     });
-    return messageMapper(response);
+
+    return this.mapMessage(response);
   }
 }
 
-export * from './mappers';
 export * from './model';
 export * from './payload';
 export * from './messagesForChannels';

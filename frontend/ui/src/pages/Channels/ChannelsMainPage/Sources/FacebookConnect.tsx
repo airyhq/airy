@@ -5,9 +5,6 @@ import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
 import {Button, Input} from '@airyhq/components';
 import {connectChannelFacebook} from '../../../../actions/channel';
-import {ChannelSource} from 'httpclient';
-import { url } from 'inspector';
-
 interface FacebookProps {
   channelId?: string;
 }
@@ -73,7 +70,6 @@ const FacebookConnect = (props: RouteComponentProps<FacebookProps>) => {
           hint="The standard picture is the same as the Facebook Page"
           value={image}
           onChange={event => setImage(event.target.value)}
-          inputmode='url'
           height={33}></Input>
       </div>
       <Button styleVariant="normal" disabled={buttonStatus()} onClick={connectChannelFacebook(connectFacebookPayload)}>

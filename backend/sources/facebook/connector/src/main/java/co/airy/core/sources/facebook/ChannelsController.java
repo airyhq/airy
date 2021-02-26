@@ -9,9 +9,11 @@ import co.airy.core.sources.facebook.payload.ConnectRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreResponsePayload;
 import co.airy.core.sources.facebook.payload.PageInfoResponsePayload;
+import co.airy.core.sources.facebook.payload.DisconnectChannelRequestPayload;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
+import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
 import org.apache.kafka.streams.state.KeyValueIterator;
@@ -112,6 +114,32 @@ public class ChannelsController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
+    }
+
+    @PostMapping("/channels.facebook.disconnect")
+    ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
+        final String channelId = requestPayload.getChannelId().toString();
+
+        final Channel channel = stores.getChannelsStore().get(channelId);
+
+        if (channel == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
+            return ResponseEntity.accepted().body(new EmptyResponsePayload());
+        }
+
+        channel.setConnectionState(ChannelConnectionState.DISCONNECTED);
+        channel.setToken(null);
+
+        try {
+            stores.storeChannel(channel);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
+
+        return ResponseEntity.ok(new EmptyResponsePayload());
     }
 
 }

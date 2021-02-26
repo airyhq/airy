@@ -1,9 +1,10 @@
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@npm//@bazel/typescript:index.bzl", "ts_config")
-load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_library")
+load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
 load("@com_github_airyhq_bazel_tools//web:web_app.bzl", "web_app")
 load("@com_github_airyhq_bazel_tools//web:web_library.bzl", "web_library")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
-load("//tools/build:container_push.bzl", "container_push")
+load("//tools/build:container_release.bzl", "container_release")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 module_deps = [
@@ -43,7 +44,7 @@ web_library(
     },
 )
 
-ts_library(
+ts_web_library(
     name = "app",
     tsconfig = ":widget_tsconfig",
     deps = module_deps + [
@@ -93,7 +94,9 @@ container_image(
     visibility = ["//visibility:public"],
 )
 
-container_push(
+container_release(
     registry = "ghcr.io/airyhq/frontend",
     repository = "chat-plugin",
 )
+
+check_pkg(name = "buildifier")

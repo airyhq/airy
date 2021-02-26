@@ -32,13 +32,10 @@ import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 @RestController
 public class ChannelsController {
     private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
-
     private final Stores stores;
-    private final KafkaProducer<String, Channel> producer;
 
-    public ChannelsController(Stores stores, KafkaProducer<String, Channel> producer) {
+    public ChannelsController(Stores stores) {
         this.stores = stores;
-        this.producer = producer;
     }
 
     @PostMapping("/channels.google.connect")
@@ -93,7 +90,7 @@ public class ChannelsController {
         channel.setToken(null);
 
         try {
-            producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
+            stores.storeChannel(channel);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }

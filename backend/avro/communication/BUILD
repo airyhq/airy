@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("//tools/build:avro.bzl", "avro_java_library")
 
 package(default_visibility = ["//visibility:public"])
@@ -33,3 +34,5 @@ avro_java_library(
     name = "template-avro",
     srcs = ["template.avsc"],
 )
+
+check_pkg(name = "buildifier")

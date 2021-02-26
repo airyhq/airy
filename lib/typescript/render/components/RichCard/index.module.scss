@@ -4,7 +4,7 @@
 .richCardContainer {
   box-sizing: border-box;
   height: auto;
-  width: 280px;
+  width: 320px;
   border: 1px solid var(--color-light-gray);
   border-radius: 16px;
   background-color: var(--color-template-highlight);
@@ -17,20 +17,22 @@
 }
 
 .textContainer {
-  padding: 16px 16px 24px 16px;
+  padding: 16px;
 }
 
 .title {
-  color: var(--color-text-contrast);
   @include font-m;
+  font-size: 18px;
+  color: var(--color-text-contrast);
   letter-spacing: 0;
   line-height: 24px;
-  margin-bottom: 8px;
+  margin: 0 0 8px 0;
 }
 
 .description {
-  color: var(--color-text-gray);
   @include font-base;
+  font-size: 15px;
+  color: black;
   letter-spacing: 0;
   line-height: 24px;
 }
@@ -38,17 +40,23 @@
 .suggestionsContainer {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .suggestionButton {
-  height: 48px;
+  @include font-base;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  font-weight: 600;
+  height: 40px;
   width: auto;
-  padding: 12px 16px;
-  margin-top: 16px;
-  display: flex;
+  max-width: 250px;
+  padding: 8px 16px;
+  margin-top: 12px;
   align-items: center;
-  border: 2px solid var(--color-light-gray);
+  border: 1px solid var(--color-light-gray);
   border-radius: 4px;
   background-color: var(--color-template-highlight);
   color: var(--color-airy-blue);

@@ -68,6 +68,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final LuceneProvider luceneProvider;
 
     private final String messagesStore = "messages-store";
+    private final String messagesByIdStore = "messages-by-id-store";
     private final String metadataStore = "metadata-store";
     private final String conversationsStore = "conversations-store";
     private final String conversationsLuceneStore = "conversations-lucene-store";
@@ -131,7 +132,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .leftJoin(metadataTable, (message, metadataMap) -> MessageContainer.builder()
                         .message(message)
                         .metadataMap(Optional.ofNullable(metadataMap).orElse(new MetadataMap()))
-                        .build())
+                        .build(), Materialized.as(messagesByIdStore))
                 .toStream()
                 .filter((messageId, messageContainer) -> messageContainer != null)
                 .groupBy((messageId, messageContainer) -> messageContainer.getMessage().getConversationId());
@@ -192,6 +193,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return streams.acquireLocalStore(messagesStore);
     }
 
+    public ReadOnlyKeyValueStore<String, MessageContainer> getMessagesByIdStore() {
+        return streams.acquireLocalStore(messagesByIdStore);
+    }
+
     public ReadOnlyKeyValueStore<String, MetadataMap> getMetadataStore() {
         return streams.acquireLocalStore(metadataStore);
     }
@@ -213,12 +218,17 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     public MetadataMap getMetadata(String subjectId) {
-        final ReadOnlyKeyValueStore<String, MetadataMap> metadataStore = getMetadataStore();
-        return metadataStore.get(subjectId);
+        final ReadOnlyKeyValueStore<String, MetadataMap> store = getMetadataStore();
+        return store.get(subjectId);
+    }
+
+    public MessageContainer getMessageContainer(String messageId) {
+        final ReadOnlyKeyValueStore<String, MessageContainer> store = getMessagesByIdStore();
+        return store.get(messageId);
     }
 
     public List<Conversation> addChannelMetadata(List<Conversation> conversations) {
-        final ReadOnlyKeyValueStore<String, MetadataMap> metadataStore = getMetadataStore();
+        final ReadOnlyKeyValueStore<String, MetadataMap> store = getMetadataStore();
         Map<String, MetadataMap> metadataCache = new HashMap<>();
 
         for (Conversation conversation : conversations) {
@@ -227,7 +237,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
             if (metadataCache.containsKey(channelId)) {
                 container.setMetadataMap(metadataCache.get(channelId));
             } else {
-                final MetadataMap metadataMap = metadataStore.get(channelId);
+                final MetadataMap metadataMap = store.get(channelId);
                 if (metadataMap != null) {
                     metadataCache.put(channelId, metadataMap);
                     container.setMetadataMap(metadataMap);
@@ -239,8 +249,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     public List<MessageContainer> getMessages(String conversationId) {
-        final ReadOnlyKeyValueStore<String, MessagesTreeSet> messagesStore = getMessagesStore();
-        final MessagesTreeSet messagesTreeSet = messagesStore.get(conversationId);
+        final ReadOnlyKeyValueStore<String, MessagesTreeSet> store = getMessagesStore();
+        final MessagesTreeSet messagesTreeSet = store.get(conversationId);
 
         return messagesTreeSet == null ? null : new ArrayList<>(messagesTreeSet);
     }
@@ -262,6 +272,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public Health health() {
         getConversationsStore();
         getMessagesStore();
+        getMessagesByIdStore();
         getMetadataStore();
 
         return Health.status(Status.UP).build();

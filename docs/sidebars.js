@@ -3,17 +3,16 @@ module.exports = {
     {
       '🚀 Getting Started': [
         'getting-started/introduction',
-        'getting-started/installation',
         {
-          'Command Line Interface': ['cli/introduction', 'cli/installation', 'cli/reference'],
+          Installation: [
+            'getting-started/installation/introduction',
+            'getting-started/installation/vagrant',
+            'getting-started/installation/production',
+            'getting-started/installation/configuration',
+          ],
         },
         {
-          Deployment: [
-            'getting-started/deployment/introduction',
-            'getting-started/deployment/vagrant',
-            'getting-started/deployment/production',
-            'getting-started/deployment/configuration',
-          ],
+          'Command Line Interface': ['cli/introduction', 'cli/installation', 'cli/reference'],
         },
         'getting-started/quickstart',
         'getting-started/troubleshooting',

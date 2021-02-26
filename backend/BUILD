@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@rules_java//java:defs.bzl", "java_library")
 
 package(default_visibility = ["//visibility:public"])
@@ -46,3 +47,5 @@ java_library(
         "//lib/java/kafka/schema:application-communication-webhooks",
     ],
 )
+
+check_pkg(name = "buildifier")

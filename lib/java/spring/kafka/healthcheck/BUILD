@@ -1,3 +1,4 @@
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("//tools/build:java_library.bzl", "custom_java_library")
 load("//tools/build:avro.bzl", "avro_java_library")
 
@@ -17,3 +18,5 @@ custom_java_library(
         "@maven//:org_springframework_spring_context",
     ],
 )
+
+check_pkg(name = "buildifier")

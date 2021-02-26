@@ -100,7 +100,6 @@ Update a channel's name or image url.
   "source_channel_id": "fb-page-id-1",
   "metadata": {
     "name": "new name for this channel",
-    // optional
     "image_url": "http://example.org/avatar_redesign.jpeg"
   },
   "connected": true
@@ -111,7 +110,7 @@ Update a channel's name or image url.
 
 ### Airy Live Chat Plugin
 
-Connects a Chat Plugin source to Airy Core.
+Connects a Chat Plugin source to Airy Core.\_\_
 
 ```
 POST /channels.chatplugin.connect
@@ -121,7 +120,8 @@ POST /channels.chatplugin.connect
 
 ```json5
 {
-  "name": "website-identifier-42"
+  "name": "website-identifier-42",
+  "image_url": "http://example.org/plugin_icon.jpeg" // optional
 }
 ```
 
@@ -132,7 +132,10 @@ POST /channels.chatplugin.connect
   "id": "1F679227-76C2-4302-BB12-703B2ADB0F66",
   "source": "chat_plugin",
   "source_channel_id": "website-identifier-42",
-  "metadata": {"name": "website-identifier-42"},
+  "metadata": {
+    "name": "website-identifier-42",
+    "image_url": "http://example.org/plugin_icon.jpeg" // optional
+  },
   "connected": true
 }
 ```

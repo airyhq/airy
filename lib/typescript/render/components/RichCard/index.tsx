@@ -52,12 +52,12 @@ export const RichCard = ({title, description, suggestions, media, cardWidth, com
 
   return (
     <>
-      <div className={styles.richCardContainer} style={cardWidth === 'SHORT' ? {width: '136px'} : {width: '280px'}}>
+      <div className={styles.richCardContainer} style={cardWidth === 'SHORT' ? {width: '136px'} : {width: '320px'}}>
         <div className={styles.mediaContainer}>
           <Media {...media} />
         </div>
         <div className={styles.textContainer}>
-          {title && <h1 className={styles.title}>{title}</h1>}
+          {title && <h2 className={styles.title}>{title}</h2>}
           {description && <span className={styles.description}>{description}</span>}
           <div className={styles.suggestionsContainer}>
             {suggestions.map((suggestion: Suggestion, idx: number) => (

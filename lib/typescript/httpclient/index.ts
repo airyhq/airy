@@ -20,6 +20,7 @@ import {
 } from './payload';
 
 import {TagColor, Tag, Message} from './model';
+/* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
 const headers = {
@@ -88,7 +89,6 @@ export class HttpClient {
   }
 
   private mapMessage = (payload: MessagePayload): Message => {
-    console.log({...camelcaseKeys(payload, {deep: true}), sentAt: new Date(payload.sent_at)})
     return {...camelcaseKeys(payload, {deep: true}), sentAt: new Date(payload.sent_at)};
   };
 
@@ -163,8 +163,6 @@ export class HttpClient {
     });
 
     const mapMessageData = response.data.map((messagePayload: MessagePayload) => this.mapMessage(messagePayload));
-
-    console.log("mapMessageData", mapMessageData)
 
     return {data: mapMessageData, paginationData: camelcaseKeys(response.pagination_data, {deep: true})};
   }

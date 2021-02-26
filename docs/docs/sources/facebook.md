@@ -31,9 +31,13 @@ Core Platform instance.
 
 The Facebook source requires the following configuration:
 
-- [Step 1: Find the App ID and Secret](#step-1-find-the-app-id-and-secret)
-- [Step 2: Configure the webhook integration](#step-2-configure-the-webhook-integration)
-- [Step 3: Obtain the page token](#step-3-obtain-the-page-token)
+- [Configuration](#configuration)
+  - [Step 1: Find the App ID and Secret](#step-1-find-the-app-id-and-secret)
+  - [Step 2: Configure the webhook integration](#step-2-configure-the-webhook-integration)
+  - [Step 3: Obtain the page token](#step-3-obtain-the-page-token)
+- [Connect a Facebook page to your instance](#connect-a-facebook-page-to-your-instance)
+- [Send messages from a Facebook source](#send-messages-from-a-facebook-source)
+- [Send and receive messages with the Inbox UI](#send-and-receive-messages-with-the-inbox-ui)
 
 Let's proceed step by step.
 
@@ -66,11 +70,14 @@ Copy and paste your App ID and App Secret as strings next to `appId` and `appSec
 
 :::note
 
-Refer to the [Configuration Docs](/getting-started/deployment/configuration.md#components) on how to input these values.
+Refer to the [Configuration
+Docs](/getting-started/installation/configuration.md#components) on how to input
+these values.
 
-Refer to the [test](getting-started/deployment/vagrant.md#connect-sources) guide
-or the [production](getting-started/deployment/production.md#connect-sources)
-one to set these variables in your Airy Core instance.
+Refer to the [test](getting-started/installation/vagrant.md#connect-sources)
+guide or the
+[production](getting-started/installation/production.md#connect-sources) one to
+set these variables in your Airy Core instance.
 
 :::
 
@@ -112,16 +119,21 @@ Your Facebook Webhook URL should have the following format:
 `https://fb-RANDOM_STRING.tunnel.airy.co/facebook`
 ```
 
-Refer to [our section on the Vagrant box status](/getting-started/deployment/vagrant#status) for information about how to find your Facebook Webhook URL.
+Refer to [our section on the Vagrant box
+status](/getting-started/installation/vagrant#status) for information about how
+to find your Facebook Webhook URL.
+
 :::
 
-If you encounter errors, please make sure that the Verify Token matches the `webhookSecret` in `infrastructure/airy.yaml` and that your variables have been successfully set to your Airy Core instance.
+If you encounter errors, please make sure that the Verify Token matches the
+`webhookSecret` in `infrastructure/airy.yaml` and that your variables have been
+successfully set to your Airy Core instance.
 
 :::note
 
-Refer to the [test](/getting-started/deployment/vagrant.md#connect-sources)
+Refer to the [test](/getting-started/installation/vagrant.md#connect-sources)
 guide or the
-[production](/getting-started/deployment/production.md#connect-sources) one to
+[production](/getting-started/installation/production.md#connect-sources) one to
 set these variables in your Airy Core instance.
 
 :::

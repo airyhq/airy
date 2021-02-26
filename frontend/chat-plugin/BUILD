@@ -54,6 +54,7 @@ ts_library(
         "@npm//linkifyjs",
         "@npm//react",
         "@npm//react-dom",
+        "@npm//camelcase-keys",
     ],
 )
 

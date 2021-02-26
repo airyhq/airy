@@ -47,11 +47,11 @@ export class WebSocketClient {
     const json: EventPayloadUnion = JSON.parse(body) as any;
     switch (json.type) {
       case 'channel':
-        this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true}));
+        this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true, stopPaths: ['metadata.userData']}));
         break;
       case 'message':
         this.callbackMap.onMessage?.(json.payload.conversation_id, json.payload.channel_id, {
-          ...camelcaseKeys(json.payload.message, {deep: true}),
+          ...camelcaseKeys(json.payload.message, {deep: true, stopPaths: ['content']}),
           sentAt: new Date(json.payload.message.sent_at),
         });
         break;

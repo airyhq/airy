@@ -89,37 +89,37 @@ export class HttpClient {
   }
 
   private mapMessage = (payload: MessagePayload): Message => {
-    return {...camelcaseKeys(payload, {deep: true}), sentAt: new Date(payload.sent_at)};
+    return {...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}), sentAt: new Date(payload.sent_at)};
   };
 
   public async listChannels() {
     const response: ChannelsPayload = await this.doFetchFromBackend('channels.list', {});
 
-    return camelcaseKeys(response.data, {deep: true});
+    return camelcaseKeys(response.data, {deep: true, stopPaths: ['metadata.userData']});
   }
 
   public async exploreFacebookChannels(requestPayload: ExploreChannelRequestPayload) {
     const response: ChannelsPayload = await this.doFetchFromBackend('facebook.channels.explore', requestPayload);
 
-    return camelcaseKeys(response.data, {deep: true});
+    return camelcaseKeys(response.data, {deep: true, stopPaths: ['metadata.userData']});
   }
 
   public async connectFacebookChannel(requestPayload: ConnectChannelRequestPayload) {
     const response: ChannelPayload = await this.doFetchFromBackend(
       'channels.connect',
-      camelcaseKeys(requestPayload, {deep: true})
+      camelcaseKeys(requestPayload, {deep: true, stopPaths: ['metadata.userData']})
     );
 
-    return camelcaseKeys(response, {deep: true});
+    return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.userData']});
   }
 
   public async disconnectChannel(source: string, requestPayload: DisconnectChannelRequestPayload) {
     const response: ChannelsPayload = await this.doFetchFromBackend(
       `channels.${source}.disconnect`,
-      camelcaseKeys(requestPayload, {deep: true})
+      camelcaseKeys(requestPayload, {deep: true, stopPaths: ['metadata.userData']})
     );
 
-    return camelcaseKeys(response.data, {deep: true});
+    return camelcaseKeys(response.data, {deep: true, stopPaths: ['metadata.userData']});
   }
 
   public async listConversations(conversationListRequest: ListConversationsRequestPayload) {

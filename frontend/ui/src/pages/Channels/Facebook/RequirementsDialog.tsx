@@ -1,20 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from './RequirementsDialog.module.scss';
 import close from 'assets/images/icons/close.svg';
 
 type RequirementsDialogProps = {
-  show: boolean;
+  onClose: () => void;
+  onAddChannel: () => void;
 };
 
 export const RequirementsDialog = (props: RequirementsDialogProps) => {
-  const {show} = props;
-  const [displayed, setDisplayed] = useState(show ? true : false);
-
   return (
     <>
-      {displayed && (
+      <div className={styles.backgroundContainer}>
         <div className={styles.container}>
-          <button className={styles.closeButton} onClick={() => setDisplayed(false)}>
+          <button className={styles.closeButton} onClick={() => props.onClose()}>
             <img src={close} />
           </button>
           <div className={styles.title}>
@@ -39,12 +37,12 @@ export const RequirementsDialog = (props: RequirementsDialogProps) => {
             </p>
           </div>
           <div className={styles.button}>
-            <button type="button" onClick={() => console.log('CLICK CLICK')}>
+            <button type="button" onClick={() => props.onAddChannel()}>
               I&apos;m ready to connect
             </button>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };

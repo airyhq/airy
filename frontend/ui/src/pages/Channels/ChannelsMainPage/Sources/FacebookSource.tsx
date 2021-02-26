@@ -7,7 +7,10 @@ import SourceInfo from '../SourceInfo';
 import {ChannelSource} from 'httpclient';
 import {CHANNELS_FACEBOOK_ROUTE} from '../../../../routes/routes';
 
-type FacebookSourceProps = {facebookSource: Channel[]};
+type FacebookSourceProps = {
+  facebookSource: Channel[];
+  showDialogAction: (source: string) => void;
+};
 
 const FacebookSource = (props: FacebookSourceProps & RouteComponentProps) => {
   const channels = props.facebookSource.filter((channel: Channel) => channel.source === 'facebook');
@@ -20,9 +23,7 @@ const FacebookSource = (props: FacebookSourceProps & RouteComponentProps) => {
         image={<FacebookLogo />}
         displayButton={!channels.length}
         id={ChannelSource.facebook}
-        onAddChannelClick={() => {
-          props.history.push(CHANNELS_FACEBOOK_ROUTE);
-        }}
+        onAddChannelClick={() => props.showDialogAction(ChannelSource.facebook)}
       />
 
       <SourceInfo

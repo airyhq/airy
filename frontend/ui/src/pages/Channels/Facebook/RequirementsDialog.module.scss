@@ -1,6 +1,10 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
+html {
+  background-color: black;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -9,7 +13,12 @@
   background: white;
   border-radius: 8px;
   position: relative;
-  background: yellow;
+  background: pink;
+  z-index: 1;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .title {

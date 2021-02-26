@@ -90,11 +90,3 @@
     box-shadow: 0px 0px 0px 3px var(--color-background-blue);
   }
 }
-
-.requirementsDialog {
-  z-index: 1;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}

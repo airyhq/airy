@@ -3,6 +3,7 @@ package create
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -14,14 +15,18 @@ import (
 	"log"
 )
 
+const airyYamlConfigMap = "airy-yaml-config"
+const serviceAccountName = "helm-account"
+
 type Helm struct {
 	name      string
 	version   string
 	namespace string
-	clientSet *kubernetes.Clientset
+	coreConf  string
+	clientset *kubernetes.Clientset
 }
 
-func New(kubeConfigPath string, version string, namespace string) Helm {
+func New(kubeConfigPath string, version string, namespace string, airyConf string) Helm {
 	config, err := clientcmd.BuildConfigFromFlags("", kubeConfigPath)
 	if err != nil {
 		log.Fatal(err)
@@ -36,25 +41,26 @@ func New(kubeConfigPath string, version string, namespace string) Helm {
 		name:      "helm-runner",
 		namespace: namespace,
 		version:   version,
-		clientSet: clientSet,
+		coreConf:  airyConf,
+		clientset: clientSet,
 	}
 }
 
-func (h *Helm) Setup() {
-	accountClient := h.clientSet.CoreV1().ServiceAccounts(h.namespace)
+func (h *Helm) Setup() error {
+	accountClient := h.clientset.CoreV1().ServiceAccounts(h.namespace)
 
 	account := &corev1.ServiceAccount{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "helm-account",
+			Name:      serviceAccountName,
 			Namespace: h.namespace,
 		},
 	}
 	_, err := accountClient.Create(context.TODO(), account, metav1.CreateOptions{})
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	roleBindingClient := h.clientSet.RbacV1().ClusterRoleBindings()
+	roleBindingClient := h.clientset.RbacV1().ClusterRoleBindings()
 
 	roleBinding := &rbacv1.ClusterRoleBinding{
 		ObjectMeta: metav1.ObjectMeta{
@@ -64,7 +70,7 @@ func (h *Helm) Setup() {
 		Subjects: []rbacv1.Subject{{
 			Namespace: h.namespace,
 			Kind:      "ServiceAccount",
-			Name:      "helm-account",
+			Name:      serviceAccountName,
 		}},
 		RoleRef: rbacv1.RoleRef{
 			Kind: "ClusterRole",
@@ -74,12 +80,23 @@ func (h *Helm) Setup() {
 
 	_, err = roleBindingClient.Create(context.TODO(), roleBinding, metav1.CreateOptions{})
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	return nil
 }
 
-func (h *Helm) InstallCharts() {
-	jobsClient := h.clientSet.BatchV1().Jobs(h.namespace)
+func (h *Helm) InstallCharts() error {
+	return h.runHelm([]string{"install", "--values", "/apps/config/airy.yaml", "core", "/apps/helm-chart/"})
+}
+
+func (h *Helm) runHelm(args []string) error {
+	if err := h.upsertAiryYaml(); err != nil {
+		return err
+	}
+
+	h.cleanupJob()
+	jobsClient := h.clientset.BatchV1().Jobs(h.namespace)
 
 	job := &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
@@ -94,44 +111,108 @@ func (h *Helm) InstallCharts() {
 						{
 							Name:  "helm-runner",
 							Image: "ghcr.io/airyhq/infrastructure/helm:" + h.version,
-							Args:  []string{"list"},
+							Args:  args,
+							ImagePullPolicy: corev1.PullAlways,
+							VolumeMounts: []corev1.VolumeMount{
+								{
+									Name:      "core-config",
+									MountPath: "/apps/config",
+								},
+							},
+						},
+					},
+					Volumes: []corev1.Volume{
+						{
+							Name: "core-config",
+							VolumeSource: corev1.VolumeSource{
+								ConfigMap: &corev1.ConfigMapVolumeSource{
+									LocalObjectReference: corev1.LocalObjectReference{
+										Name: airyYamlConfigMap,
+									},
+								},
+							},
 						},
 					},
 					RestartPolicy:      "Never",
-					ServiceAccountName: "helm-account",
+					ServiceAccountName: serviceAccountName,
 				},
 			},
 		},
 	}
 
-	_, jobCreationErr := jobsClient.Create(context.TODO(), job, v1.CreateOptions{})
-	if jobCreationErr != nil {
-		panic(jobCreationErr)
+	_, err := jobsClient.Create(context.TODO(), job, v1.CreateOptions{})
+	if err != nil {
+		return err
 	}
 
-	watcher, watcherErr := jobsClient.Watch(context.TODO(), v1.ListOptions{
+	watcher, err := jobsClient.Watch(context.TODO(), v1.ListOptions{
 		LabelSelector: "helm-runner=true",
 	})
-	if watcherErr != nil {
-		panic(watcherErr)
+	if err != nil {
+		return err
 	}
+
 	ch := watcher.ResultChan()
 
 	for event := range ch {
-		watchedJob, _ := event.Object.(*batchv1.Job)
 		switch event.Type {
+		case watch.Error:
+			h.cleanupJob()
+			return fmt.Errorf("helm run failed with error %v", event.Object)
 		case watch.Added:
-			fmt.Println("Running Helm")
 		case watch.Modified:
-			success := watchedJob.Status.Succeeded
-			if success == 1 {
-				fmt.Println("Helm finished running")
-				jobDeletionErr := jobsClient.Delete(context.TODO(), h.name, v1.DeleteOptions{})
-				if jobDeletionErr == nil {
-					fmt.Println("Job deleted")
-					return
-				}
+			job, _ := event.Object.(*batchv1.Job)
+			if job.Status.Succeeded == 1 {
+				h.cleanupJob()
+				return nil
+			} else if job.Status.Failed == 1 {
+				h.cleanupJob()
+				return fmt.Errorf("helm run failed with error %v", event.Object)
 			}
 		}
 	}
+
+	return nil
+}
+
+// Create/update airy yaml config map
+func (h *Helm) upsertAiryYaml() error {
+	cm, _ := h.clientset.CoreV1().ConfigMaps(h.namespace).Get(context.TODO(), airyYamlConfigMap, v1.GetOptions{})
+
+	cmData := map[string]string{
+		"airy.yaml": h.getAiryYaml(),
+	}
+
+	if cm.GetName() == "" {
+		_, err := h.clientset.CoreV1().ConfigMaps(h.namespace).Create(context.TODO(),
+			&corev1.ConfigMap{
+				ObjectMeta: v1.ObjectMeta{
+					Name:      airyYamlConfigMap,
+					Namespace: h.namespace,
+				},
+				Data: cmData,
+			}, v1.CreateOptions{})
+		return err
+	} else {
+		cm.Data = cmData
+		_, err := h.clientset.CoreV1().ConfigMaps(h.namespace).Update(context.TODO(), cm, v1.UpdateOptions{})
+		return err
+	}
+}
+
+func (h *Helm) getAiryYaml() string {
+	content, err := ioutil.ReadFile(h.coreConf)
+	if err != nil {
+		log.Fatalf("failed to read Airy yaml with error %v", err)
+	}
+	return string(content)
+}
+
+func (h *Helm) cleanupJob() error {
+	jobsClient := h.clientset.BatchV1().Jobs(h.namespace)
+
+	deletionPolicy := v1.DeletePropagationBackground
+	return jobsClient.Delete(context.TODO(), h.name, v1.DeleteOptions{
+		PropagationPolicy: &deletionPolicy,
+	})
 }

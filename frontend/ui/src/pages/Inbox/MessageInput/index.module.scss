@@ -84,3 +84,86 @@
 .sendButtonText svg {
   position: relative;
 }
+
+.messageActionsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 0 6px 5px 5px;
+}
+
+.messageActionsContainer svg {
+  height: 20px;
+  cursor: pointer;
+}
+
+.messageActionsContainer g,
+.sendButton g {
+  fill: inherit;
+}
+
+.messageActionsContainer .emoji {
+  height: 24px;
+  top: 2px;
+  position: relative;
+}
+
+.iconButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  margin-left: 4px;
+  width: 30px;
+  height: 30px;
+
+  svg {
+    width: 22px;
+    pointer-events: none;
+    path {
+      fill: #a0abb2;
+    }
+  }
+
+  .actionToolTip {
+    @include font-s;
+    position: absolute;
+    background-color: var(--color-text-contrast);
+    color: white;
+    border-radius: 4px;
+    padding: 2px 8px;
+    display: none;
+    bottom: 33px;
+    z-index: 2;
+  }
+}
+
+.iconButton:hover {
+  background-color: var(--color-background-blue);
+  border-radius: 50%;
+  svg {
+    path {
+      fill: #4bb3fd;
+    }
+  }
+
+  .actionToolTip {
+    display: block;
+  }
+}
+
+.iconButton:focus {
+  outline: none;
+}
+
+.iconButton:active svg,
+.iconButton:focus svg,
+.iconButton.active svg {
+  fill: #0dab76;
+}
+
+.templateButton {
+  background: transparent;
+  border: none;
+}

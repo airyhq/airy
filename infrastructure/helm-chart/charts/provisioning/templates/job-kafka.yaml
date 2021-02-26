@@ -17,11 +17,6 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: ZOOKEEPER
-        - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_BROKERS
         - name: REPLICAS
           valueFrom:
             configMapKeyRef:
@@ -34,6 +29,17 @@ spec:
       - name: wait
         image: busybox
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: REPLICAS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_MINIMUM_REPLICAS
         volumeMounts:
         - name: provisioning-scripts
           mountPath: /opt/provisioning

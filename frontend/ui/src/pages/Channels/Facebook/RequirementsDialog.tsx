@@ -43,6 +43,7 @@ export const RequirementsDialog = (props: RequirementsDialogProps) => {
           </div>
         </div>
       </div>
+    </body>
     </>
   );
 };

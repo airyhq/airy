@@ -1,10 +1,6 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
 
-html {
-  background-color: black;
-}
-
 .container {
   display: flex;
   flex-direction: column;
@@ -13,10 +9,10 @@ html {
   background: white;
   border-radius: 8px;
   position: relative;
-  background: pink;
+  background: white;
   z-index: 1;
   position: fixed;
-  top: 50%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
 }

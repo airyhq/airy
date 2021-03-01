@@ -163,9 +163,9 @@ export class HttpClient {
       page_size: conversationListRequest.pageSize,
     });
 
-    const mapMessageData = response.data.map((messagePayload: MessagePayload) => this.mapMessage(messagePayload));
+    const mappedMessageData = response.data.map((messagePayload: MessagePayload) => this.mapMessage(messagePayload));
 
-    return {data: mapMessageData, paginationData: camelcaseKeys(response.pagination_data)};
+    return {data: mappedMessageData, paginationData: camelcaseKeys(response.pagination_data)};
   }
 
   public async listTags() {

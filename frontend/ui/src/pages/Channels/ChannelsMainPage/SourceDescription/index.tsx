@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import styles from './index.module.scss';
-import {openRequirementsDialog} from '../index';
 import {ReactComponent as AddIcon} from 'assets/images/icons/plus-circle.svg';
 
 type SourceDescriptionProps = {
@@ -17,9 +16,7 @@ const SourceDescription = (props: SourceDescriptionProps) => {
 
   return (
     <>
-      <div className={styles.requirementsDialogBackground}>
-        {show && <div className={styles.requirementsDialog}>{openRequirementsDialog(props.id)}</div>}
-      </div>
+      <div className={styles.requirementsDialogBackground}></div>
       <div className={styles.channelCard}>
         <div className={styles.channelLogo}>{props.image}</div>
         <div className={styles.channelTitleAndText}>
@@ -30,7 +27,7 @@ const SourceDescription = (props: SourceDescriptionProps) => {
 
       {props.displayButton && (
         <div className={styles.channelButton}>
-          <button type="button" className={styles.addChannelButton} onClick={props.onAddChannelClick}>
+          <button type="button" className={styles.addChannelButton} onClick={() => props.onAddChannelClick()}>
             <div className={styles.channelButtonIcon} title="Add a channel">
               <AddIcon />
             </div>

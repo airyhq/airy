@@ -111,7 +111,7 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     if (filteredPaginationData.loaded) {
       return (
         <div className={styles.filterCount}>
-          {`Filtered: ${filteredPaginationData.filtered_total} Total: ${filteredPaginationData.total}`}
+          {`Filtered: ${filteredPaginationData.filteredTotal} Total: ${filteredPaginationData.total}`}
         </div>
       );
     }
@@ -120,7 +120,7 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
       return (
         <div className={styles.filterCount}>
           {`${formatter.format(
-            filteredPaginationData.filtered_total || conversationsPaginationData.total
+            filteredPaginationData.filteredTotal || conversationsPaginationData.total
           )} Conversations`}
         </div>
       );

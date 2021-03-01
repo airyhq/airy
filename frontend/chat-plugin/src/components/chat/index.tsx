@@ -42,8 +42,6 @@ type Props = AiryWidgetConfiguration;
 const Chat = (props: Props) => {
   if (props.welcomeMessage) {
     defaultWelcomeMessage.content = props.welcomeMessage;
-  } else if (window.airy?.welcomeMessage) {
-    defaultWelcomeMessage.content = window.airy.welcomeMessage;
   }
 
   const [installError, setInstallError] = useState('');

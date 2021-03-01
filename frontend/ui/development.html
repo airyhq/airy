@@ -5,7 +5,51 @@
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#000000" />    
+    <script>
+      var search = new URLSearchParams(location.search);
+
+      (function(w, d, s, n) {
+        w[n] = w[n] || {};
+        w[n].cid = '6ef3b781-f9c7-5232-a879-06de6bde0549';
+        w[n].h = 'api.airy';
+        w[n].welcomeMessage = {
+          fallback: 'Hello!\n\nWelcome to Airy!',
+          richCard: {
+            standaloneCard: {
+              cardContent: {
+                title: 'Hello!',
+                description: 'Welcome to Airy!',
+                media: {
+                  height: 'MEDIUM',
+                  contentInfo: {
+                    altText: 'Airy logo',
+                    fileUrl: 'https://picsum.photos/200',
+                    forceRefresh: 'false',
+                  },
+                },
+                suggestions: [
+                  {
+                    reply: {
+                      text: "Let's start",
+                      postbackData: '/start',
+                    },
+                  },                      
+                ],
+              },
+            },
+          },
+        };
+        // Only to be used for local installations
+        w[n].no_tls = true;
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s);
+        j.async = true;
+        j.src = '//' + w[n].h + '/s.js';
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'airy');
+    </script>
+  </head>
 
     <!--
       manifest.json provides metadata used when your web app is added to the
@@ -15,9 +59,7 @@
   </head>
 
   <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
+    <div id="airyContainer"></div>
+    <div id="root"></div>    
   </body>
 </html>

@@ -57,6 +57,7 @@
 .containerLight svg {
   height: 32px;
   width: 32px;
+  min-width: 32px;
   margin-right: 12px;
   fill: black;
 }
@@ -64,6 +65,7 @@
 .containerDark svg {
   height: 32px;
   width: 32px;
+  min-width: 32px;
   margin-right: 12px;
   fill: white;
 }

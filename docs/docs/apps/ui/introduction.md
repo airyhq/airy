@@ -6,9 +6,9 @@ sidebar_label: Introduction
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
-import CogSVG from "@site/static/icons/cog.svg";
-import InboxSVG from "@site/static/icons/prototype.svg";
-import TagsSVG from "@site/static/icons/price-tag.svg";
+import GearSVG from "@site/static/icons/gear.svg";
+import DesktopComputerSVG from "@site/static/icons/desktop-computer.svg";
+import LabelSVG from "@site/static/icons/label.svg";
 import UsersSVG from "@site/static/icons/users.svg";
 import ComponentsSVG from "@site/static/icons/information-architecture.svg";
 
@@ -21,19 +21,19 @@ Additional features like [Filters, Search](inbox) and [Tags](tags) help you.
 
 <ButtonBoxList>
     <ButtonBox
-        icon={() => <CogSVG />}
+        icon={() => <GearSVG />}
         title='UI Quickstart'
         description='Step by Step Guide on getting up and running with the UI'
         link='apps/ui/quickstart'
     />
     <ButtonBox
-        icon={() => <InboxSVG />}
+        icon={() => <DesktopComputerSVG />}
         title='Inbox'
         description='One inbox to see all your conversations & respond to them'
         link='apps/ui/inbox'
     />
     <ButtonBox
-        icon={() => <TagsSVG />}
+        icon={() => <LabelSVG />}
         title='Tags'
         description='Tag your conversations for easy filtering, searching & segmenting'
         link='apps/ui/tags'

@@ -94,7 +94,6 @@ airy create [flags]
 #### Options
 
 ```
-      --airyconfig string   Absolute path to the core airy.yaml config
   -h, --help                help for create
       --kubeconfig string   (optional) absolute path to the kubeconfig file (default "/Users/paulodiniz/.kube/config")
       --provider string     One of the supported providers (aws|local). Default is aws

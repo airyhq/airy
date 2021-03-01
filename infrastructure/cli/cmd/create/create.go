@@ -12,7 +12,6 @@ import (
 var (
 	provider   string
 	kubeConfig string
-	coreConfig string
 	version    string
 	CreateCmd  = &cobra.Command{
 		Use:   "create",
@@ -30,16 +29,14 @@ func init() {
 	}
 
 	CreateCmd.Flags().StringVar(&provider, "provider", "", "One of the supported providers (aws|local). Default is aws")
-	CreateCmd.Flags().StringVar(&coreConfig, "airyconfig", "", "Absolute path to the core airy.yaml config")
 
-	CreateCmd.MarkFlagRequired("airyconfig")
 	viper.SetDefault("provider", "aws")
 }
 
 func create(cmd *cobra.Command, args []string) {
 	fmt.Println("⚙️  Creating core with provider", provider)
 
-	helm := New(kubeConfig, "develop", "default", coreConfig)
+	helm := New(kubeConfig, "develop", "default")
 	if err := helm.Setup(); err != nil {
 		log.Fatalf("setting up Helm failed with err %v", err)
 	}

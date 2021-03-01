@@ -3,7 +3,6 @@ package create
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -18,15 +17,21 @@ import (
 const airyYamlConfigMap = "airy-yaml-config"
 const serviceAccountName = "helm-account"
 
+const defaultAiryConfig = `
+global:
+  appImageTag: develop
+  containerRegistry: ghcr.io/airyhq
+  namespace: default
+`
+
 type Helm struct {
 	name      string
 	version   string
 	namespace string
-	coreConf  string
 	clientset *kubernetes.Clientset
 }
 
-func New(kubeConfigPath string, version string, namespace string, airyConf string) Helm {
+func New(kubeConfigPath string, version string, namespace string) Helm {
 	config, err := clientcmd.BuildConfigFromFlags("", kubeConfigPath)
 	if err != nil {
 		log.Fatal(err)
@@ -41,7 +46,6 @@ func New(kubeConfigPath string, version string, namespace string, airyConf strin
 		name:      "helm-runner",
 		namespace: namespace,
 		version:   version,
-		coreConf:  airyConf,
 		clientset: clientSet,
 	}
 }
@@ -109,9 +113,9 @@ func (h *Helm) runHelm(args []string) error {
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{
 						{
-							Name:  "helm-runner",
-							Image: "ghcr.io/airyhq/infrastructure/helm:" + h.version,
-							Args:  args,
+							Name:            "helm-runner",
+							Image:           "ghcr.io/airyhq/infrastructure/helm:" + h.version,
+							Args:            args,
 							ImagePullPolicy: corev1.PullAlways,
 							VolumeMounts: []corev1.VolumeMount{
 								{
@@ -201,11 +205,7 @@ func (h *Helm) upsertAiryYaml() error {
 }
 
 func (h *Helm) getAiryYaml() string {
-	content, err := ioutil.ReadFile(h.coreConf)
-	if err != nil {
-		log.Fatalf("failed to read Airy yaml with error %v", err)
-	}
-	return string(content)
+	return defaultAiryConfig
 }
 
 func (h *Helm) cleanupJob() error {

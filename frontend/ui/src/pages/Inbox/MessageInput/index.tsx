@@ -6,6 +6,7 @@ import {sendMessages} from '../../../actions/messages';
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
 import {StateModel} from '../../../reducers';
 import {getTextMessagePayload} from 'httpclient';
+import {cyMessageSendButton, cyMessageTextArea} from '../../../../handles';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -64,7 +65,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             value={input}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            data-cy="messageTextArea"
+            data-cy={cyMessageTextArea}
           />
         </div>
       </div>
@@ -74,7 +75,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           className={`${styles.sendButton} ${input && styles.sendButtonActive}`}
           onClick={handleClick}
           disabled={input.trim().length == 0}
-          data-cy="messageSendButton">
+          data-cy={cyMessageSendButton}>
           <div className={styles.sendButtonText}>
             <Paperplane />
           </div>

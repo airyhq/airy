@@ -3,6 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 import {debounce} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
+import {cyMessageList} from '../../../../../handles';
 
 import {Message} from 'httpclient';
 import {SourceMessage} from 'render';
@@ -150,7 +151,7 @@ const MessageList = (props: MessageListProps) => {
   );
 
   return (
-    <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy="messageList">
+    <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
       {messages &&
         messages.map((message: Message, index: number) => {
           const prevMessage = messages[index - 1];

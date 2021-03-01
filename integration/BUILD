@@ -4,7 +4,7 @@ nodejs_binary(
     name = "cypress",
     data = [
         ":cypress.json",
-        "//integration/chatplugin:specs_output",
+        "//integration/chat-plugin:specs_output",
         "//integration/ui:specs_output",
         "@npm//cypress",
     ],

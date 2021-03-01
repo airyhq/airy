@@ -1,11 +1,12 @@
-load("@npm//@bazel/typescript:index.bzl", "ts_library")
+load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
 
-ts_library(
+ts_web_library(
     name = "specs",
     srcs = glob(["*.spec.ts"]),
     tsconfig = ":tsconfig.json",
     deps = [
         "@npm//cypress",
+        "//frontend/ui:handles",
     ],
 )
 

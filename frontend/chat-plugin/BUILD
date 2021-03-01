@@ -8,6 +8,8 @@ load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/build:container_release.bzl", "container_release")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
+package(default_visibility = ["//visibility:public"])
+
 module_deps = [
     "//frontend/assets",
     "//lib/typescript/types",
@@ -106,3 +108,9 @@ container_release(
 check_pkg(name = "buildifier")
 
 web_lint()
+
+ts_web_library(
+    name = "handles",
+    srcs = ["handles.ts"],
+    tsconfig = "//:tsconfig.json",
+)

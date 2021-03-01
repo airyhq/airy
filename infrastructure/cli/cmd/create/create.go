@@ -21,9 +21,11 @@ var (
 	}
 )
 
+const defaultKubeConfig = "$HOME/.kube/config"
+
 func init() {
 	if home := homedir.HomeDir(); home != "" {
-		CreateCmd.Flags().StringVar(&kubeConfig, "kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+		CreateCmd.Flags().StringVar(&kubeConfig, "kubeconfig", defaultKubeConfig, "(optional) absolute path to the kubeconfig file")
 	} else {
 		CreateCmd.Flags().StringVar(&kubeConfig, "kubeconfig", "", "absolute path to the kubeconfig file")
 	}
@@ -35,6 +37,10 @@ func init() {
 
 func create(cmd *cobra.Command, args []string) {
 	fmt.Println("⚙️  Creating core with provider", provider)
+
+	if kubeConfig == defaultKubeConfig {
+		kubeConfig = filepath.Join(homedir.HomeDir(), ".kube", "config")
+	}
 
 	helm := New(kubeConfig, "develop", "default")
 	if err := helm.Setup(); err != nil {

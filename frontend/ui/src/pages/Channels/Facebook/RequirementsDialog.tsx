@@ -42,7 +42,7 @@ export const RequirementsDialog = (props: RequirementsDialogProps) => {
             </button>
           </div>
         </div>
-        </div>
+      </div>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from './index.module.scss';
 import {ReactComponent as AddIcon} from 'assets/images/icons/plus-circle.svg';
 
@@ -12,8 +12,6 @@ type SourceDescriptionProps = {
 };
 
 const SourceDescription = (props: SourceDescriptionProps) => {
-  const [show, setShow] = useState(false);
-
   return (
     <>
       <div className={styles.requirementsDialogBackground}></div>

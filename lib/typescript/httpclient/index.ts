@@ -106,10 +106,7 @@ export class HttpClient {
   }
 
   public async connectFacebookChannel(requestPayload: ConnectChannelRequestPayload) {
-    const response: ChannelPayload = await this.doFetchFromBackend(
-      'channels.connect',
-      camelcaseKeys(requestPayload, {deep: true, stopPaths: ['metadata.userData']})
-    );
+    const response: ChannelPayload = await this.doFetchFromBackend('channels.connect', camelcaseKeys(requestPayload));
 
     return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.userData']});
   }
@@ -117,7 +114,7 @@ export class HttpClient {
   public async disconnectChannel(source: string, requestPayload: DisconnectChannelRequestPayload) {
     const response: ChannelsPayload = await this.doFetchFromBackend(
       `channels.${source}.disconnect`,
-      camelcaseKeys(requestPayload, {deep: true, stopPaths: ['metadata.userData']})
+      camelcaseKeys(requestPayload)
     );
 
     return camelcaseKeys(response.data, {deep: true, stopPaths: ['metadata.userData']});
@@ -132,14 +129,14 @@ export class HttpClient {
     );
 
     const conversationData = response.data.map((messagePayload: ConversationPayload) => ({
-      ...camelcaseKeys(messagePayload, {deep: true}),
+      ...camelcaseKeys(messagePayload, {deep: true, stopPaths: ['metadata.userData']}),
       createdAt: new Date(messagePayload.created_at),
       lastMessage: this.mapMessage(messagePayload.last_message),
     }));
 
     return {
       data: conversationData,
-      paginationData: camelcaseKeys(response.pagination_data, {deep: true, stopPaths: ['metadata.userData']}),
+      paginationData: camelcaseKeys(response.pagination_data),
     };
   }
 
@@ -168,7 +165,7 @@ export class HttpClient {
 
     const mapMessageData = response.data.map((messagePayload: MessagePayload) => this.mapMessage(messagePayload));
 
-    return {data: mapMessageData, paginationData: camelcaseKeys(response.pagination_data, {deep: true})};
+    return {data: mapMessageData, paginationData: camelcaseKeys(response.pagination_data)};
   }
 
   public async listTags() {
@@ -210,7 +207,7 @@ export class HttpClient {
   public async loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
     const response: UserPayload = await this.doFetchFromBackend('users.login', requestPayload);
 
-    return {...camelcaseKeys(response, {deep: true}), displayName: `${response.first_name} ${response.last_name}`};
+    return {...camelcaseKeys(response), displayName: `${response.first_name} ${response.last_name}`};
   }
 
   public async tagConversation(requestPayload: TagConversationRequestPayload) {

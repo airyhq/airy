@@ -41,6 +41,7 @@ const shouldRedirect = (path: string) =>
 class App extends Component<ConnectedProps<typeof connector> & RouteComponentProps> {
   constructor(props: ConnectedProps<typeof connector> & RouteComponentProps) {
     super(props);
+    console.log(props);
   }
 
   componentDidMount() {

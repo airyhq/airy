@@ -11,6 +11,33 @@
         w[n] = w[n] || {};
         w[n].cid = search.get('channel_id');
         w[n].h = '{{API_HOST}}';
+        w[n].welcomeMessage = {
+          fallback: 'Hello!\n\nWelcome to Airy!',
+          richCard: {
+            standaloneCard: {
+              cardContent: {
+                title: 'Hello2!',
+                description: 'Welcome to Airy!',
+                media: {
+                  height: 'MEDIUM',
+                  contentInfo: {
+                    altText: 'Airy logo',
+                    fileUrl: 'https://picsum.photos/200',
+                    forceRefresh: 'false',
+                  },
+                },
+                suggestions: [
+                  {
+                    reply: {
+                      text: "Let's start",
+                      postbackData: '/start',
+                    },
+                  },                      
+                ],
+              },
+            },
+          },
+        };
         // Only to be used for local installations
         w[n].no_tls = true;
         var f = d.getElementsByTagName(s)[0],

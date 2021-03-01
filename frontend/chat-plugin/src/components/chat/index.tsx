@@ -22,7 +22,7 @@ const camelcaseKeys = require('camelcase-keys');
 
 let ws: WebSocket;
 
-const welcomeMessage: Message = {
+const defaultWelcomeMessage: Message = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   content: {text: 'Hello! How can we help you?'},
   deliveryState: MessageState.delivered,
@@ -33,10 +33,14 @@ const welcomeMessage: Message = {
 type Props = AiryWidgetConfiguration;
 
 const Chat = (props: Props) => {
+  if (props.welcomeMessage) {
+    defaultWelcomeMessage.content = props.welcomeMessage;
+  }
+
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(true);
-  const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
+  const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
 
   useEffect(() => {
     ws = new WebSocket(props.channelId, onReceive, setInitialMessages, getResumeTokenFromStorage(props.channelId));

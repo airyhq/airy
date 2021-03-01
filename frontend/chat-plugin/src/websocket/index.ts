@@ -9,13 +9,13 @@ const camelcaseKeys = require('camelcase-keys');
 
 declare const window: {
   airy: {
-    h: string;
-    cid: string;
-    no_tls: boolean;
+    host: string;
+    channelId: string;
+    noTLS: boolean;
   };
 };
 
-const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
+const API_HOST = window.airy ? window.airy.host : 'chatplugin.airy';
 // https: -> wss: and http: -> ws:
 const protocol = location.protocol.replace('http', 'ws');
 

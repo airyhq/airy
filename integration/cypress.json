@@ -1,0 +1,9 @@
+{
+    "baseUrl": "http://ui.airy",
+    "integrationFolder": "integration",
+    "testFiles": "**/*.spec.?s",
+    "env": {
+        "username": "grace@example.com",
+        "password": "the_answer_is_42"
+    }
+}

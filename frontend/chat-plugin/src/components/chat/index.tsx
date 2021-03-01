@@ -123,12 +123,12 @@ const Chat = (props: Props) => {
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
     : () => (
-        <AiryInputBar sendMessage={sendMessage} messageString={messageString} setMessageString={setMessageString} />
+        <AiryInputBar sendMessage={sendMessage} messageString={messageString} setMessageString={setMessageString} dataCyId="inputbar"/>
       );
 
   const bubble = props.bubbleProp
     ? () => props.bubbleProp(ctrl)
-    : () => <AiryBubble isChatHidden={isChatHidden} toggleHideChat={ctrl.toggleHideChat} />;
+    : () => <AiryBubble isChatHidden={isChatHidden} toggleHideChat={ctrl.toggleHideChat} dataCyId="bubble" />;
 
   if (installError) {
     return null;

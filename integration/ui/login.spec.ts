@@ -4,8 +4,8 @@ describe('Login', () => {
 
     cy.get('form')
       .within(() => {
-        cy.get('input[type=email]').type('grace@example.com');
-        cy.get('input[type=password]').type('the_answer_is_42');
+        cy.get('input[type=email]').type(Cypress.env('username'));
+        cy.get('input[type=password]').type(Cypress.env('password'));
       })
       .submit();
 

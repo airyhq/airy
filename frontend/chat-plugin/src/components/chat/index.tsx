@@ -20,15 +20,6 @@ import {getResumeTokenFromStorage} from '../../storage';
 
 let ws: WebSocket;
 
-declare const window: {
-  airy: {
-    host: string;
-    channelId: string;
-    welcomeMessage: {};
-    noTLS: boolean;
-  };
-};
-
 const defaultWelcomeMessage: Message = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   content: {text: 'Hello! How can we help you?'},

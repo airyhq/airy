@@ -2,8 +2,10 @@ import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 import {start, getResumeToken, sendMessage} from '../api';
 import {SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
-import {Message, messageMapper} from 'httpclient';
+import {Message} from 'httpclient';
 import {resetStorage} from '../storage';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const camelcaseKeys = require('camelcase-keys');
 
 declare const window: {
   airy: {
@@ -69,7 +71,12 @@ class WebSocket {
     const response = await start(this.channelId, this.resumeToken);
     if (response.token && response.messages) {
       this.connect(response.token);
-      this.setInitialMessages(response.messages.map(messageMapper));
+      this.setInitialMessages(
+        response.messages.map(message => ({
+          ...camelcaseKeys(message, {deep: true, stopPaths: ['content']}),
+          sentAt: new Date(message.sent_at),
+        }))
+      );
       if (!this.resumeToken) {
         await getResumeToken(this.channelId, this.token);
       }

@@ -64,7 +64,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             value={input}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            data-cy="message_text_area"
+            data-cy="messageTextArea"
           />
         </div>
       </div>
@@ -74,7 +74,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           className={`${styles.sendButton} ${input && styles.sendButtonActive}`}
           onClick={handleClick}
           disabled={input.trim().length == 0}
-          data-cy="message_send_button">
+          data-cy="messageSendButton">
           <div className={styles.sendButtonText}>
             <Paperplane />
           </div>

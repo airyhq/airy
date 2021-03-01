@@ -11,8 +11,8 @@ describe(
     it('Creates a chat plugin conversation', () => {
       cy.visit('/example?channel_id=' + channelId);
       cy.get('[data-cy=bubble]').click();
-      cy.get('[data-cy=inputbar_textarea]').type(messageChatplugin);
-      cy.get('[data-cy=inputbar_button]').click();
+      cy.get('[data-cy=inputbarTextarea]').type(messageChatplugin);
+      cy.get('[data-cy=inputbarButton]').click();
     });
     it('Opens conversation in Inbox', {baseUrl: 'http://ui.airy'}, () => {
       cy.visit('/login');
@@ -22,9 +22,9 @@ describe(
           cy.get('input[type=password]').type(Cypress.env('password'));
         })
         .submit();
-      cy.get('[data-cy=message_text_area]').type(messageInbox);
-      cy.get('[data-cy=message_send_button]').click();
-      cy.get('[data-cy=message_list]').children().its('length').should('be.gte', 2);
+      cy.get('[data-cy=messageTextArea]').type(messageInbox);
+      cy.get('[data-cy=messageSendButton]').click();
+      cy.get('[data-cy=messageList]').children().its('length').should('be.gte', 2);
     });
   }
 );

@@ -6,6 +6,7 @@ import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
 import {ChannelSource} from 'httpclient';
 import {CHANNELS_FACEBOOK_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 
 type FacebookSourceProps = {
   facebookSource: Channel[];
@@ -33,8 +34,12 @@ const FacebookSource = (props: FacebookSourceProps & RouteComponentProps) => {
         isConnected="connected"
         onAddChannelClick={() => props.history.push(CHANNELS_FACEBOOK_ROUTE)}
         onChannelClick={(channel: Channel) => {
-          props.history.push(CHANNELS_FACEBOOK_ROUTE + `/${channel.id}`);
+          props.history.push({
+            pathname: CHANNELS_FACEBOOK_ROUTE + `/${channel.id}`,
+            state: {channel: channel},
+          });
         }}
+        onSourceInfoClick={() => props.history.push(CHANNELS_CONNECTED_ROUTE)}
       />
     </div>
   );

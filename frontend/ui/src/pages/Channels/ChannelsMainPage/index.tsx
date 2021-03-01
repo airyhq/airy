@@ -12,6 +12,7 @@ import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {Channel, ConfigPayload} from 'httpclient';
 
 import styles from './index.module.scss';
+import {stringify} from 'querystring';
 
 type ChannelsConnectProps = {
   channels: Channel[];

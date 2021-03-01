@@ -33,10 +33,10 @@ export const exploreChannels = (requestPayload: ExploreChannelRequestPayload) =>
   });
 };
 
-export const connectChannelFacebook = (requestPayload: ConnectChannelRequestPayload) => async (
+export const connectChannel = (source: string, requestPayload: ConnectChannelRequestPayload) => async (
   dispatch: Dispatch<any>
 ) =>
-  HttpClientInstance.connectFacebookChannel(requestPayload).then((response: Channel) => {
+  HttpClientInstance.connectChannel(source, requestPayload).then((response: Channel) => {
     dispatch(addChannelsAction([response]));
     return Promise.resolve(response);
   });

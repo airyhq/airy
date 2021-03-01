@@ -1,19 +1,30 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './FacebookConnect.module.scss';
-import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
+import {withRouter, RouteComponentProps, Link, match} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
 import {Button, Input} from '@airyhq/components';
-import {connectChannelFacebook} from '../../../../actions/channel';
-interface FacebookProps {
-  channelId?: string;
-}
+import {connectChannel} from '../../../../actions/channel';
+import {StateModel} from '../../../../reducers';
 
-const FacebookConnect = (props: RouteComponentProps<FacebookProps>) => {
+type FacebookProps = {
+  channelId?: string;
+} & RouteComponentProps<{channelId: string}> &
+  ConnectedProps<typeof connector>;
+
+const mapStateToProps = (state: StateModel, props: RouteComponentProps<{channelId: string}>) => ({
+  channel: state.data.channels[props.match.params.channelId],
+});
+
+const connector = connect(mapStateToProps, null);
+
+const FacebookConnect = (props: FacebookProps) => {
   const [id, setId] = useState('');
   const [token, setToken] = useState('');
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
+  const [buttonTitle, setButtonTitle] = useState('Connect Page');
 
   const buttonStatus = () => {
     if (id.length > 5 && token != '') {
@@ -22,6 +33,21 @@ const FacebookConnect = (props: RouteComponentProps<FacebookProps>) => {
       return true;
     }
   };
+
+  const previousData = () => {
+    if (props.match.params.channelId) {
+      setId(props.channel.sourceChannelId);
+      setName(props.channel.metadata.name);
+      setImage(props.channel.metadata.imageUrl);
+    }
+  };
+
+  useEffect(() => {
+    if (props.channel) {
+      previousData();
+      setButtonTitle('Update Page');
+    }
+  }, []);
 
   const connectFacebookPayload = {
     sourceChannelId: id,
@@ -72,11 +98,14 @@ const FacebookConnect = (props: RouteComponentProps<FacebookProps>) => {
           onChange={event => setImage(event.target.value)}
           height={33}></Input>
       </div>
-      <Button styleVariant="normal" disabled={buttonStatus()} onClick={connectChannelFacebook(connectFacebookPayload)}>
-        Connect Page
+      <Button
+        styleVariant="normal"
+        disabled={buttonStatus()}
+        onClick={connectChannel('facebook', connectFacebookPayload)}>
+        {buttonTitle}
       </Button>
     </div>
   );
 };
 
-export default withRouter(FacebookConnect);
+export default withRouter(connector(FacebookConnect));

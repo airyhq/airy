@@ -12,6 +12,7 @@ type SourceInfoProps = {
   isConnected: string;
   onAddChannelClick?: () => void;
   onChannelClick?: (channel: Channel) => void;
+  onSourceInfoClick?: (source: string) => void;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
@@ -35,6 +36,7 @@ const SourceInfo = (props: SourceInfoProps) => {
               </p>
             </div>
             <div className={styles.connectedChannelBox}>
+              {/* <button className={styles.connectedChannelBox} onClick={() => props.onSourceInfoClick('')}> */}
               <div className={styles.connectedChannel}>
                 {channels.slice(0, channelsToShow).map((channel: Channel) => {
                   return (
@@ -65,6 +67,7 @@ const SourceInfo = (props: SourceInfoProps) => {
                   </LinkButton>
                 )}
               </div>
+              {/* </button> */}
             </div>
           </div>
 

@@ -108,9 +108,9 @@ export class HttpClient {
     return channelsMapper(response);
   }
 
-  public async connectFacebookChannel(requestPayload: ConnectChannelRequestPayload) {
+  public async connectChannel(source: string, requestPayload: ConnectChannelRequestPayload) {
     const response: ChannelPayload = await this.doFetchFromBackend(
-      'channels.facebook.connect',
+      `channels.${source}.connect`,
       connectChannelMapper(requestPayload)
     );
     return channelMapper(response);

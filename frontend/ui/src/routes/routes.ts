@@ -2,6 +2,7 @@ export const ROOT_ROUTE = '/';
 export const LOGIN_ROUTE = '/login';
 export const LOGOUT_ROUTE = '/logout';
 export const CHANNELS_ROUTE = '/channels';
+export const CHANNELS_CONNECTED_ROUTE = '/channesls/connected';
 export const CHANNELS_FACEBOOK_ROUTE = '/channels/facebook';
 export const INBOX_ROUTE = '/inbox';
 export const INBOX_CONVERSATIONS_ROUTE = '/inbox/conversations';

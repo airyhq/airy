@@ -9,8 +9,8 @@
 
       (function(w, d, s, n) {
         w[n] = w[n] || {};
-        w[n].cid = search.get('channel_id');
-        w[n].h = '{{API_HOST}}';
+        w[n].channelId = search.get('channel_id');
+        w[n].host = '{{API_HOST}}';
         w[n].welcomeMessage = {
           fallback: 'Hello!\n\nWelcome to Airy!',
           richCard: {
@@ -39,7 +39,7 @@
           },
         };
         // Only to be used for local installations
-        w[n].no_tls = true;
+        w[n].noTLS = true;
         var f = d.getElementsByTagName(s)[0],
           j = d.createElement(s);
         j.async = true;

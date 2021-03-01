@@ -22,10 +22,10 @@ let ws: WebSocket;
 
 declare const window: {
   airy: {
-    h: string;
-    cid: string;
+    host: string;
+    channelId: string;
     welcomeMessage: {};
-    no_tls: boolean;
+    noTLS: boolean;
   };
 };
 

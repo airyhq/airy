@@ -1,4 +1,3 @@
-import {Message} from 'httpclient';
 import AiryWidget from './AiryWidget';
 
 const body = document.getElementsByTagName('body')[0];
@@ -26,16 +25,16 @@ body.appendChild(anchor);
 
 declare const window: {
   airy: {
-    h: string;
-    cid: string;
+    host: string;
+    channelId: string;
     welcomeMessage: {};
-    no_tls: boolean;
+    noTLS: boolean;
   };
 };
 
-if (window.airy.cid.length) {
+if (window.airy.channelId.length) {
   new AiryWidget({
-    channelId: window.airy.cid,
+    channelId: window.airy.channelId,
     welcomeMessage: window.airy.welcomeMessage,
   }).render(anchor);
 } else {

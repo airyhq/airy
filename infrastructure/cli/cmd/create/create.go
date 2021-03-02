@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"k8s.io/client-go/util/homedir"
-	"log"
+	"os"
 	"path/filepath"
 )
 
@@ -45,10 +45,12 @@ func create(cmd *cobra.Command, args []string) {
 
 	helm := New(kubeConfig, "develop", "default")
 	if err := helm.Setup(); err != nil {
-		log.Fatalf("setting up Helm failed with err %v", err)
+		fmt.Println("setting up Helm failed with err: ", err)
+		os.Exit(1)
 	}
 	if err := helm.InstallCharts(); err != nil {
-		log.Fatalf("installing Helm charts failed with err %v", err)
+		fmt.Println("installing Helm charts failed with err: ", err)
+		os.Exit(1)
 	}
 	fmt.Println("🚀 Starting core with default components")
 	fmt.Println("🎉 Your Airy Core is ready")

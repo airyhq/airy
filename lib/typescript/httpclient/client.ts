@@ -82,10 +82,6 @@ export class HttpClient {
   }
 
   private mapMessage = (payload: MessagePayload): Message => {
-    console.log('message', {
-      ...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}),
-      sentAt: new Date(payload.sent_at),
-    });
     return {...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}), sentAt: new Date(payload.sent_at)};
   };
 

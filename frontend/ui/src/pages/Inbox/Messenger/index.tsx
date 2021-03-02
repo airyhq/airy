@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Route, withRouter, Redirect, RouteComponentProps} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
@@ -36,15 +36,18 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
 
   return (
     <section className={styles.messengerContainer}>
-      {!!conversations && (
-        <section className={styles.messengerContainerMiddlePanel}>
-          <ConversationList />
-        </section>
-      )}
-
       <Route
         path={[`${match.url}/conversations/:conversationId`, `${match.url}`]}
-        render={props => <MessengerContainer {...props} />}
+        render={props => (
+          <Fragment>
+            {!!conversations && (
+              <section className={styles.messengerContainerMiddlePanel}>
+                <ConversationList />
+              </section>
+            )}
+            <MessengerContainer {...props} />
+          </Fragment>
+        )}
       />
     </section>
   );

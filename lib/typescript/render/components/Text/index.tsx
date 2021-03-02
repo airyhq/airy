@@ -7,5 +7,5 @@ type TextRenderProps = DefaultMessageRenderingProps & {
 };
 
 export const Text = ({text, fromContact}: TextRenderProps) => (
-  <div className={fromContact ? styles.contactContent : styles.memberContent}>{text}</div>
+  <div className={`${styles.textMessage} ${fromContact ? styles.contactContent : styles.memberContent}`}>{text}</div>
 );

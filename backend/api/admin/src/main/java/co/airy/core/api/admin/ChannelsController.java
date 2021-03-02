@@ -1,6 +1,7 @@
 package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
+import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.core.api.admin.payload.ChannelsResponsePayload;
 import co.airy.model.channel.ChannelPayload;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
@@ -67,7 +69,7 @@ public class ChannelsController {
             metadataMap.put(MetadataKeys.ChannelKeys.NAME, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, requestPayload.getName()));
         }
         if (requestPayload.getImageUrl() != null) {
-            metadataMap.put(MetadataKeys.ChannelKeys.IMAGE_URL, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, requestPayload.getName()));
+            metadataMap.put(MetadataKeys.ChannelKeys.IMAGE_URL, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, requestPayload.getImageUrl()));
         }
 
         try {
@@ -86,6 +88,13 @@ public class ChannelsController {
 
         final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, sourceChannelId).toString();
 
+        List<Metadata> metadataList = new ArrayList<>();
+        metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, requestPayload.getName()));
+
+        if (requestPayload.getImageUrl() != null) {
+            metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, requestPayload.getImageUrl()));
+        }
+
         final ChannelContainer container = ChannelContainer.builder()
                 .channel(
                         Channel.newBuilder()
@@ -95,9 +104,7 @@ public class ChannelsController {
                                 .setSourceChannelId(sourceChannelId)
                                 .build()
                 )
-                .metadataMap(MetadataMap.from(List.of(
-                        newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, requestPayload.getName())
-                ))).build();
+                .metadataMap(MetadataMap.from(metadataList)).build();
 
         try {
             stores.storeChannelContainer(container);
@@ -164,6 +171,7 @@ class UpdateChannelRequestPayload {
 class ConnectChannelRequestPayload {
     @NotNull
     private String name;
+    private String imageUrl;
 }
 
 @Data

@@ -2,6 +2,7 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.core.api.communication.payload.UpsertMetadataRequestPayload;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.MetadataObjectMapper;
 import co.airy.model.metadata.Subject;
 import co.airy.spring.web.payload.EmptyResponsePayload;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 public class MetadataController {
@@ -28,12 +31,15 @@ public class MetadataController {
         List<Metadata> metadataList;
         try {
             final Subject subject = new Subject(upsertMetadataRequestPayload.getSubject(), upsertMetadataRequestPayload.getId());
-            metadataList = MetadataObjectMapper.getMetadataFromJson(subject, upsertMetadataRequestPayload.getData());
+            metadataList = MetadataObjectMapper.getMetadataFromJson(subject, upsertMetadataRequestPayload.getData())
+                    .stream()
+                    .peek((metadata) -> metadata.setKey(String.format("%s.%s", MetadataKeys.USER_DATA, metadata.getKey())))
+                    .collect(toList());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new EmptyResponsePayload());
         }
 
-        for(Metadata metadata : metadataList) {
+        for (Metadata metadata : metadataList) {
             try {
                 stores.storeMetadata(metadata);
             } catch (Exception e) {

@@ -32,7 +32,6 @@ latest.
       "id": "{UUID}",
       "content": {"text": "Hello World"},
       // source message payload
-      // typed source message model
       "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
       "sender_type": "{string/enum}",
@@ -67,3 +66,53 @@ import MessagesSend from './messages-send.mdx'
 import GoogleMessagesSend from './google-messages-send.mdx'
 
 <GoogleMessagesSend />
+
+## Suggest replies
+
+`POST /messages.suggestReplies`
+
+Suggest a set of replies for a given message id. UI clients can show these to agents to make responding to user inquiries
+faster and more efficiently.
+
+**Sample request**
+
+```json5
+{
+  "message_id": "uuid",
+  "suggestions": {
+    "suggestion-id-1": {
+      "content": {"text": "Great that it worked. Is there anything else you need?"}
+    },
+    "suggestion-id-2": {
+      "content": {"text": "Have a nice day!"}
+    }
+  }
+}
+```
+
+**Sample response**
+
+The updated message including the suggested replies.
+
+```json5
+{
+  "id": "{UUID}",
+  "content": {"text": "Hello World"},
+  "state": "{String}",
+  "sender_type": "{string/enum}",
+  "sent_at": "{string}",
+  "source": "{String}",
+  "metadata": {
+    "suggestions": {
+      "suggestion-id-1": {
+        "content": {"text": "Great that it worked. Is there anything else you need?"}
+        // source specific content field (same as message content)
+      },
+      "suggestion-id-2": {
+        "content": {"text": "Have a nice day!"}
+      }
+    }
+  }
+  // metadata object of the message including the reply suggestions
+}
+```

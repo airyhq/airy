@@ -1,27 +1,24 @@
 import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
-import {listChannels, exploreChannels, connectChannel, disconnectChannel} from '../../actions/channel';
+import {listChannels} from '../../actions/channel';
+import {getClientConfig} from '../../actions/config';
 import {StateModel} from '../../reducers/index';
 import styles from './index.module.scss';
 
 import {allChannels} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
-import ChatPluginSource from '../Channels/ChannelsSources/ChatPluginSource';
-import FacebookSource from '../Channels/ChannelsSources/FacebookSource';
-import TwilloSmsSource from '../Channels/ChannelsSources/TwilloSmsSource';
-import WhatsappSmsSource from '../Channels/ChannelsSources/WhatsappSmsSource';
-import GoogleSource from '../Channels/ChannelsSources/GoogleSource';
+
+import ChannelsMainPage from './ChannelsMainPage';
 
 const mapDispatchToProps = {
   listChannels,
-  exploreChannels,
-  connectChannel,
-  disconnectChannel,
+  getClientConfig,
 };
 
 const mapStateToProps = (state: StateModel) => ({
   channels: Object.values(allChannels(state)),
+  config: state.data.config,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -31,28 +28,13 @@ type ChannelsConnectProps = {} & ConnectedProps<typeof connector> & RouteCompone
 const Channels = (props: ChannelsConnectProps) => {
   useEffect(() => {
     props.listChannels();
+    props.getClientConfig();
     setPageTitle('Channels');
   }, []);
 
   return (
     <div className={styles.channelsWrapper}>
-      <div className={styles.channelsHeadline}>
-        <div>
-          <h1 className={styles.channelsHeadlineText}>Channels</h1>
-        </div>
-      </div>
-      <div className={styles.channelsChoice}>
-        {' '}
-        <p>Choose a channel you want to connect</p>
-      </div>
-
-      <div className={styles.wrapper}>
-        <ChatPluginSource pluginSource={props.channels} />
-        <FacebookSource facebookSource={props.channels} />
-        <TwilloSmsSource twilloSmsSource={props.channels} />
-        <WhatsappSmsSource whatsappSmsSource={props.channels} />
-        <GoogleSource googleSource={props.channels} />
-      </div>
+      <ChannelsMainPage channels={props.channels} config={props.config} />
     </div>
   );
 };

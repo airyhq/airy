@@ -1,7 +1,9 @@
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
+
 # gazelle:prefix github.com/airyhq/airy/infrastructure/controller
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
-load("//tools/build:container_push.bzl", "container_push")
+load("//tools/build:container_release.bzl", "container_release")
 
 go_library(
     name = "controller_lib",
@@ -29,7 +31,9 @@ go_image(
     embed = [":controller_lib"],
 )
 
-container_push(
+container_release(
     registry = "ghcr.io/airyhq/infrastructure",
     repository = "controller",
 )
+
+check_pkg(name = "buildifier")

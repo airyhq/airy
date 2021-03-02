@@ -37,7 +37,8 @@ Airy Core to send and receive messages.
 
 :::note Prerequisites
 
-- A running Airy Core installation [Get Started](getting-started/installation.md)
+- A running Airy Core installation [Get
+  Started](getting-started/installation/introduction.md)
 - A local Rasa setup: For convenience, we recommend [the Docker setup](https://rasa.com/docs/rasa/docker/building-in-docker/) or [a demo repository](https://github.com/airyhq/rasa-demo) we created for this guide
 
 :::

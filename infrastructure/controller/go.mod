@@ -12,4 +12,5 @@ require (
 )
 
 replace github.com/airyhq/airy/infrastructure/lib/go/k8s/handler => ../lib/go/k8s/handler
+
 replace github.com/airyhq/airy/infrastructure/lib/go/k8s/util => ../lib/go/k8s/util

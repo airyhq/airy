@@ -13,14 +13,16 @@ import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
 import {AiryWidgetConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import {MessagePayload, SenderType, MessageState, isFromContact, Message, messageMapper} from 'httpclient';
+import {MessagePayload, SenderType, MessageState, isFromContact, Message} from 'httpclient';
 import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {getResumeTokenFromStorage} from '../../storage';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const camelcaseKeys = require('camelcase-keys');
 
 let ws: WebSocket;
 
-const welcomeMessage: Message = {
+const defaultWelcomeMessage: Message = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   content: {text: 'Hello! How can we help you?'},
   deliveryState: MessageState.delivered,
@@ -31,10 +33,14 @@ const welcomeMessage: Message = {
 type Props = AiryWidgetConfiguration;
 
 const Chat = (props: Props) => {
+  if (props.welcomeMessage) {
+    defaultWelcomeMessage.content = props.welcomeMessage;
+  }
+
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(true);
-  const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
+  const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
 
   useEffect(() => {
     ws = new WebSocket(props.channelId, onReceive, setInitialMessages, getResumeTokenFromStorage(props.channelId));
@@ -81,7 +87,11 @@ const Chat = (props: Props) => {
   };
 
   const onReceive = (data: IMessage) => {
-    const newMessage = messageMapper((JSON.parse(data.body) as any).message as MessagePayload);
+    const messagePayload = (JSON.parse(data.body) as any).message as MessagePayload;
+    const newMessage = {
+      ...camelcaseKeys(messagePayload, {deep: true, stopPaths: ['content']}),
+      sentAt: new Date(messagePayload.sent_at),
+    };
     setMessages((messages: Message[]) => [...messages, newMessage]);
   };
 

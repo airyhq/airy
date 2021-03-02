@@ -38,6 +38,7 @@ import static co.airy.model.metadata.MetadataRepository.newMessageMetadata;
 import static co.airy.test.Timing.retryOnException;
 import static java.util.Comparator.reverseOrder;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.StringContains.containsString;
@@ -167,9 +168,9 @@ public class MessagesTest {
                         .andExpect(jsonPath("$.data[0].content.url", containsString(persistentUrl))),
                 "/messages.list content url was not replaced by metadata");
     }
+
     @Test
     void canReturnTwilioMessagesUnparsed() throws Exception {
-
         final String conversationId = UUID.randomUUID().toString();
         final String messageId = UUID.randomUUID().toString();
         final String sourceConversationId = "+491234567";
@@ -213,6 +214,36 @@ public class MessagesTest {
                         .andExpect(jsonPath("$.data", hasSize(1)))
                         .andExpect(jsonPath("$.data[0].content", is(content))),
                 "/messages.list content url was not replaced by metadata");
+    }
 
+    @Test
+    void canSuggestReplies() throws Exception {
+        final String messageId = UUID.randomUUID().toString();
+        kafkaTestHelper.produceRecords(List.of(
+                new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
+                        Message.newBuilder()
+                                .setId(messageId)
+                                .setSource("twilio.sms")
+                                .setSentAt(Instant.now().toEpochMilli())
+                                .setSenderId("sourceConversationId")
+                                .setSenderType(SenderType.SOURCE_CONTACT)
+                                .setDeliveryState(DeliveryState.DELIVERED)
+                                .setConversationId(UUID.randomUUID().toString())
+                                .setChannelId(channelId)
+                                .setContent("content")
+                                .build())
+        ));
+
+        final String suggestionId = "user-provided-id";
+        final String suggestionContent = "{\"text\":\"Hello world\"}";
+        final String payload = String.format("{\"message_id\":\"%s\",\"suggestions\":{\"%s\":{\"content\":%s}}}}",
+                messageId, suggestionId, suggestionContent);
+
+        retryOnException(
+                () -> webTestHelper.post("/messages.suggestReplies", payload, "user-id")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id", equalTo(messageId)))
+                        .andExpect(jsonPath(String.format("$.metadata.suggestions['%s'].content.text", suggestionId), equalTo("Hello world"))),
+                "/messages.suggestReplies did not insert suggestion metadata");
     }
 }

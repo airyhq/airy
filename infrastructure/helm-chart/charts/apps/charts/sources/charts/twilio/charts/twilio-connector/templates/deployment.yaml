@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.global.namespace }}
   labels:
     app: sources-twilio-connector
-    type: sources-twilio
+    type: sources
     core.airy.co/managed: "true"
 spec:
   replicas: 0
@@ -57,6 +57,11 @@ spec:
               configMapKeyRef:
                 name: api-config
                 key: JWT_SECRET
+          - name: ALLOWED_ORIGINS
+            valueFrom:
+              configMapKeyRef:
+                name: api-config
+                key: ALLOWED_ORIGINS
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -86,7 +91,30 @@ spec:
           volumeMounts:
             - mountPath: /etc/ngrok
               name: ngrok-client-config
+{{ end }}
+      initContainers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: REPLICAS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_MINIMUM_REPLICAS
+        volumeMounts:
+          - name: provisioning-scripts
+            mountPath: /opt/provisioning
       volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+{{ if .Values.global.ngrokEnabled }}
         - name: ngrok-client-config
           configMap:
             name: ngrok-client-config

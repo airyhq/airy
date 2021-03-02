@@ -108,6 +108,14 @@ function googleOutbound(message: Message): ContentUnion {
         suggestions: messageJson.suggestions,
       };
     }
+
+    if (messageJson.fallback) {
+      return {
+        type: 'suggestions',
+        fallback: messageJson.fallback,
+        suggestions: messageJson.suggestions,
+      };
+    }
   }
 
   if (messageJson.image) {

@@ -107,11 +107,27 @@ spec:
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
+      initContainers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
+        env:
+        - name: SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: ZOOKEEPER
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
       volumes:
       {{- if not .Values.persistence.enabled }}
       - name: datadir-0
         emptyDir: {}
       {{- end }}
+      - name: provisioning-scripts
+        configMap:
+          name: provisioning-scripts
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}

@@ -138,8 +138,8 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             onKeyDown={handleKeyDown}
           />
         </div>
-      </div>
-      <InputOptions />
+        <InputOptions />
+      </div>      
       <div className={styles.sendDiv}>
         <button
           type="button"

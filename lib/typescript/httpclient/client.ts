@@ -3,24 +3,16 @@ import {
   ConnectChannelRequestPayload,
   DisconnectChannelRequestPayload,
   ListConversationsRequestPayload,
-  ListTagsResponsePayload,
   CreateTagRequestPayload,
   LoginViaEmailRequestPayload,
   SendMessagesRequestPayload,
   TagConversationRequestPayload,
   UntagConversationRequestPayload,
   MessagePayload,
-  TagPayload,
   ListMessagesRequestPayload,
-  PaginatedPayload,
-  ConversationPayload,
-  ChannelPayload,
-  ChannelsPayload,
-  UserPayload,
-  ConfigPayload,
 } from './payload';
 
-import {TagColor, Tag, Message} from './model';
+import {Tag, Message} from './model';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
@@ -90,7 +82,10 @@ export class HttpClient {
   }
 
   private mapMessage = (payload: MessagePayload): Message => {
-    console.log({...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}), sentAt: new Date(payload.sent_at)});
+    console.log('message', {
+      ...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}),
+      sentAt: new Date(payload.sent_at),
+    });
     return {...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}), sentAt: new Date(payload.sent_at)};
   };
 

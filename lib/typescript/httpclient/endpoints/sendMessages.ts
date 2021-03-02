@@ -1,6 +1,4 @@
 import {SendMessagesRequestPayload, MessagePayload} from '../payload';
-/* eslint-disable @typescript-eslint/no-var-requires */
-const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';
 
 export default HttpClient.prototype.sendMessages = async function(requestPayload: SendMessagesRequestPayload) {

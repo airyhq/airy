@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import {HttpClient} from '../client';
 
 export default HttpClient.prototype.readConversations = async function(conversationId: string) {

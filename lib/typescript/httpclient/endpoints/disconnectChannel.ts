@@ -1,4 +1,4 @@
-import {ChannelsPayload, DisconnectChannelRequestPayload} from '../payload';
+import {DisconnectChannelRequestPayload, ChannelsPayload} from '../payload';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';

@@ -1,6 +1,4 @@
 import {UntagConversationRequestPayload} from '../payload';
-/* eslint-disable @typescript-eslint/no-var-requires */
-const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';
 
 export default HttpClient.prototype.untagConversation = async function untagConversation(

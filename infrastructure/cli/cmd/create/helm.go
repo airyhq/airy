@@ -201,7 +201,7 @@ func (h *Helm) upsertAiryConfigMap() error {
 }
 
 func (h *Helm) getAiryConfigMap() string {
-	content, err := ioutil.ReadFile("defaults.yaml")
+	content, err := ioutil.ReadFile("./infrastructure/defaults.yaml")
 
 	if err != nil {
 		fmt.Println("Error fetching the default config file", err)

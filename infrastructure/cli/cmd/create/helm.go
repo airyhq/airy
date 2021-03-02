@@ -11,7 +11,7 @@ import (
 	watch "k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
-	"log"
+	"os"
 )
 
 const airyYamlConfigMap = "airy-yaml-config"
@@ -34,12 +34,14 @@ type Helm struct {
 func New(kubeConfigPath string, version string, namespace string) Helm {
 	config, err := clientcmd.BuildConfigFromFlags("", kubeConfigPath)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Building kubeconfig failed with error: ", err)
+		os.Exit(1)
 	}
 
 	clientSet, clientSetErr := kubernetes.NewForConfig(config)
 	if clientSetErr != nil {
-		log.Fatal(clientSetErr)
+		fmt.Println("Building kubernetes client failed: ", err)
+		os.Exit(1)
 	}
 
 	return Helm{

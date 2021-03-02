@@ -31,6 +31,7 @@ func init() {
 	}
 
 	CreateCmd.Flags().StringVar(&provider, "provider", "", "One of the supported providers (aws|local). Default is aws")
+	CreateCmd.Flags().MarkHidden("kubeconfig")
 
 	viper.SetDefault("provider", "aws")
 }

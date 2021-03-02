@@ -18,13 +18,13 @@
   border-color: var(--color-airy-blue);
   border-radius: 8px;
   display: flex;
-  flex-direction: column;
   align-items: normal;
   margin-left: 20px;
 }
 
 .inputWrap {
   display: flex;
+  width: 100%;
 }
 
 .messageTextArea {

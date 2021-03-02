@@ -11,7 +11,7 @@ import {setPageTitle} from '../../services/pageTitle';
 
 import ChannelsMainPage from './ChannelsMainPage';
 import FacebookConnect from './ChannelsMainPage/Sources/FacebookConnect';
-import FacebookChannelsList from './Facebook/FacebookChannelsList';
+import ChannelsList from '../Channels/ConnectedChannelsList/ChannelsList';
 import {CHANNELS_FACEBOOK_ROUTE} from '../../routes/routes';
 import {CHANNELS_CONNECTED_ROUTE} from '../../routes/routes';
 
@@ -45,7 +45,7 @@ const Channels = (props: ChannelsConnectProps) => {
   return (
     <Switch>
       <Route path={[`${CHANNELS_FACEBOOK_ROUTE}/:channelId?`]} component={FacebookConnect} />
-      <Route exact path={CHANNELS_CONNECTED_ROUTE} component={FacebookChannelsList} />
+      <Route exact path={CHANNELS_CONNECTED_ROUTE} component={ChannelsList} />
       <Route path="/" render={renderChannels} />
     </Switch>
   );

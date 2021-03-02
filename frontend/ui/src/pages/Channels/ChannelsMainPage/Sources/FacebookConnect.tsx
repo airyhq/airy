@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './FacebookConnect.module.scss';
-import {withRouter, RouteComponentProps, Link, match} from 'react-router-dom';
+import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
 import {Button, Input} from '@airyhq/components';

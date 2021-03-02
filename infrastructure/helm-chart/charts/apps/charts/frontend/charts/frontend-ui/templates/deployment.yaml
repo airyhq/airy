@@ -22,30 +22,25 @@ spec:
         app: frontend-ui
     spec:
       containers:
-        - name: app
-          image: '{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}'
-          imagePullPolicy: Always
-          env:
-            - name: API_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: hostnames
-                  key: API_HOST
-            - name: CHATPLUGIN_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: hostnames
-                  key: CHATPLUGIN_HOST
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 80
-              httpHeaders:
-                - name: Health-Check
-                  value: health-check
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            failureThreshold: 3
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        env:
+        - name: API_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: hostnames
+              key: HOST
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+            httpHeaders:
+            - name: Health-Check
+              value: health-check
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 3
       initContainers:
         - name: wait
           image: busybox

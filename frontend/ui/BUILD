@@ -52,7 +52,7 @@ web_app(
 pkg_tar(
     name = "bundle_tar",
     srcs = [":bundle"],
-    package_dir = "/usr/share/nginx/html/",
+    package_dir = "/usr/share/nginx/html/ui/",
     strip_prefix = "./bundle",
 )
 

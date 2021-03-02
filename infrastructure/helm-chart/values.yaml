@@ -4,8 +4,5 @@ global:
   namespace: default
   ngrokEnabled: false
   ingress:
-    apiHost: "api.airy"
-    webhooksHost: "webhooks.airy"
-    uiHost: "ui.airy"
-    chatpluginHost: "chatplugin.airy"
+    host: "airy.core"
     toolsHost: "tools.airy"

@@ -1,48 +1,66 @@
 import React, {useState} from 'react';
 import {SettingsModal, SimpleLoader, Button} from '@airyhq/components';
-import {ReactComponent as FacebookIcon} from 'assets/images/icons/messengerBubble.svg';
-import {ReactComponent as GoogleIcon} from 'assets/images/icons/google-messages.svg';
-import {ReactComponent as SmsIcon} from 'assets/images/icons/sms-icon.svg';
-import {ReactComponent as WhatsappIcon} from 'assets/images/icons/whatsapp-icon.svg';
+import {Channel, ChannelSource} from 'httpclient';
+import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
+import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.svg';
+import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
+import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
+import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
-import styles from './ChannelItem.module.scss';
+import styles from './ChannelListItem.module.scss';
 
 type ChannelItemProps = {
-  channel: {
-    name: string;
-    source: string;
-    loading: boolean;
-  };
+  channel: Channel;
   isConnected: boolean;
   isLastItem: boolean;
 };
 
 const ChannelItem = (props: ChannelItemProps) => {
-  const {name, source, loading = false} = props.channel;
-  const {isConnected, isLastItem} = props;
+  const {channel, isConnected, isLastItem} = props;
 
   const [deletePopupVisible, setDeletePopupVisible] = useState(false);
+
+  const channelIcon = (source: string) => {
+    switch (source) {
+      case ChannelSource.facebook:
+          return <FacebookLogo />
+        
+      case ChannelSource.google:
+          return <GoogleLogo />
+
+      case ChannelSource.twilioSMS:
+          return <SMSLogo />
+
+      case ChannelSource.twilioWhatsapp:
+          return <WhatsappLogo />
+
+      case ChannelSource.chatPlugin:
+          return <AiryLogo />
+          default:
+              return <AiryLogo />
+    }
+  };
 
   const SOURCE_DATA = {
     FACEBOOK: {
       style: styles.pageIconFacebook,
-      image: FacebookIcon,
+    //   image: FacebookIcon,
     },
     GOOGLE: {
       style: styles.pageIconGoogle,
-      image: GoogleIcon,
+    //   image: GoogleIcon,
     },
     SMS_TWILIO: {
       style: styles.pageIconSMS,
-      image: SmsIcon,
+    //   image: SmsIcon,
     },
     WHATSAPP_TWILIO: {
       style: styles.pageIconWhatsApp,
-      image: WhatsappIcon,
+    //   image: WhatsappIcon,
     },
     SELF: {
       style: styles.pageIconFacebook,
-      image: FacebookIcon,
+    //   image: FacebookIcon,
     },
   };
 
@@ -79,28 +97,33 @@ const ChannelItem = (props: ChannelItemProps) => {
 
   return (
     <>
-      <div
+    <div>
+      {/* <div
         className={`${styles.connectedPage} ${isConnected ? '' : styles.entryFade} ${
           isLastItem ? '' : styles.addDivider
-        }`}>
-        <div className={`${styles.pageIcon} ${source ? SOURCE_DATA[source].style : styles.pageIconFacebook}`}>
-          <FacebookIcon />
+        }`}> */}
+        {/* <div className={`${styles.pageIcon} ${source ? SOURCE_DATA[source].style : styles.pageIconFacebook}`}> */}
+            {/* <div> */}
+          {/* <FacebookIcon /> */}
           {/* <AccessibleSVG title={name} src={source ? SOURCE_DATA[source].image : fbIcon} /> */}
-        </div>
+        {/* </div> */}
         <div className={styles.channelDetails}>
+            <div className={styles.channelLogo}>
+                {channelIcon(channel.source)}
+            </div>
           <div className={styles.channelName}>
-            {name}
+            {channel.metadata.name}
             {isConnected && (
               <div className={styles.connectedHint}>
                 Connected <CheckMark />
               </div>
             )}
           </div>
-          {source !== 'FACEBOOK' && source !== undefined ? (
+          {/* {channel.source !== 'facebook' && channel.source !== undefined ? (
             <div className={styles.channelConnect}>{renderDisabledDisconnect()}</div>
           ) : (
             <div className={styles.channelConnect}>{!loading ? renderButton() : <SimpleLoader />}</div>
-          )}
+          )} */}
         </div>
       </div>
       {deletePopupVisible && (

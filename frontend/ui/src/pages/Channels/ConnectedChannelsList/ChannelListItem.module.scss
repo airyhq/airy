@@ -9,7 +9,14 @@
 
 .channelDetails {
   display: flex;
+  flex-direction: row;
+  align-items: center;
   flex-grow: 1;
+}
+
+.channelLogo {
+  height: 40px;
+  margin-right: 8px;
 }
 
 .addDivider {
@@ -96,6 +103,7 @@
     left: 2px;
     height: 8px;
     width: auto;
+    margin-top: 5px;
   }
 }
 

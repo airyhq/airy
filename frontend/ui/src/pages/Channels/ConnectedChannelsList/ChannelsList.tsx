@@ -5,7 +5,6 @@ import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {CHANNELS_ROUTE} from './../../../routes/routes';
 
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
-import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
 import {StateModel} from './../../../reducers';
 import {Channel} from 'httpclient';
 import {allChannels} from './../../../selectors/channels';
@@ -34,55 +33,53 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const ChannelsList = (props: ChannelsListProps) => {
   let {channels} = props;
   const [name, setName] = useState('');
+  const source = props.match.params.source;
 
   const filterSource = () => {
-    const source = props.match.params.source;
     switch (source) {
       case ChannelSource.facebook:
         channels = channels.filter((channel: Channel) => channel.source === ChannelSource.facebook);
+        setName('Facebook');
+        break;
       case ChannelSource.google:
         channels = channels.filter((channel: Channel) => channel.source === ChannelSource.google);
+        setName('Google');
+        break;
       case ChannelSource.twilioSMS:
         channels = channels.filter((channel: Channel) => channel.source === ChannelSource.twilioSMS);
+        setName('Twilio SMS');
+        break;
       case ChannelSource.twilioWhatsapp:
         channels = channels.filter((channel: Channel) => channel.source === ChannelSource.twilioWhatsapp);
+        setName('Twilio Whatsapp');
+        break;
       case ChannelSource.chatPlugin:
         channels = channels.filter((channel: Channel) => channel.source === ChannelSource.chatPlugin);
+        setName('Chat Plugin');
+        break;
     }
     return channels;
   };
 
-  console.log(filterSource());
+  useEffect(() => {
+    filterSource();
+  }, []);
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.headline}>LALALLA</h1>
+      <h1 className={styles.headline}>{name}</h1>
       <Link to={CHANNELS_ROUTE} className={styles.backButton}>
         <BackIcon className={styles.backIcon} />
         Back to channels
       </Link>
-      <div className={styles.connectedChannels}>
-        <p>TEEEEEST</p>
-        {channels.map((channel: Channel) => {
-          <div className={styles.channelRow}>
-            <p>dhsajkdahskdjashdkjsahdkajshkjdsha</p>
-            <img src={channel.metadata.imageUrl} />
-            <p>{channel.metadata.name}</p>
-            {channel.connected && (
-              <div className={styles.connectedHint}>
-                Connected <CheckMark />
-              </div>
-            )}
-            <div className={styles.channelRowEdit}>
-              <Button styleVariant="text">Edit</Button>
+      <div className={styles.channelsList}>
+        {channels &&
+          channels.map((channel: Channel) => (
+            <div key={channel.id} className={styles.connectedChannel}>
+              <ChannelListItem channel={channel} isConnected={channel.connected} isLastItem={false} />
             </div>
-            <br />
-          </div>;
-        })}
+          ))}
       </div>
-      {/* <Button styleVariant="normal" disabled={buttonStatus()} onClick={connectChannelFacebook(connectFacebookPayload)}>
-          Connect Page
-        </Button> */}
     </div>
   );
 };

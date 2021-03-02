@@ -12,7 +12,7 @@ type SourceInfoProps = {
   isConnected: string;
   onAddChannelClick?: () => void;
   onChannelClick?: (channel: Channel) => void;
-  onSourceInfoClick?: (source: string) => void;
+  onSourceInfoClick?: () => void;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
@@ -59,7 +59,7 @@ const SourceInfo = (props: SourceInfoProps) => {
                   );
                 })}
               </div>
-              <button className={styles.connectedChannelBox} onClick={() => props.onSourceInfoClick('')}>
+              <button className={styles.connectedChannelBox} onClick={() => props.onSourceInfoClick()}>
                 <div className={styles.extraChannel}>
                   {hasExtraChannels && (
                     <LinkButton>

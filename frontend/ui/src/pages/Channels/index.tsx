@@ -45,7 +45,7 @@ const Channels = (props: ChannelsConnectProps) => {
   return (
     <Switch>
       <Route path={[`${CHANNELS_FACEBOOK_ROUTE}/:channelId?`]} component={FacebookConnect} />
-      <Route exact path={CHANNELS_CONNECTED_ROUTE} component={ChannelsList} />
+      <Route path={[`${CHANNELS_CONNECTED_ROUTE}/:source?`]} component={ChannelsList} />
       <Route path="/" render={renderChannels} />
     </Switch>
   );

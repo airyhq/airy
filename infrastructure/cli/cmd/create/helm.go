@@ -14,10 +14,10 @@ import (
 	"os"
 )
 
-const airyYamlConfigMap = "airy-yaml-config"
+const airyConfigMap = "airy-config-map"
 const serviceAccountName = "helm-account"
 
-const defaultAiryConfig = `
+const defaultAiryConfigMap = `
 global:
   appImageTag: develop
   containerRegistry: ghcr.io/airyhq
@@ -93,11 +93,11 @@ func (h *Helm) Setup() error {
 }
 
 func (h *Helm) InstallCharts() error {
-	return h.runHelm([]string{"install", "--values", "/apps/config/airy.yaml", "core", "/apps/helm-chart/"})
+	return h.runHelm([]string{"install", "--values", "/apps/config/airy-config-map.yaml", "core", "/apps/helm-chart/"})
 }
 
 func (h *Helm) runHelm(args []string) error {
-	if err := h.upsertAiryYaml(); err != nil {
+	if err := h.upsertAiryConfigMap(); err != nil {
 		return err
 	}
 
@@ -133,7 +133,7 @@ func (h *Helm) runHelm(args []string) error {
 							VolumeSource: corev1.VolumeSource{
 								ConfigMap: &corev1.ConfigMapVolumeSource{
 									LocalObjectReference: corev1.LocalObjectReference{
-										Name: airyYamlConfigMap,
+										Name: airyConfigMap,
 									},
 								},
 							},
@@ -181,19 +181,19 @@ func (h *Helm) runHelm(args []string) error {
 	return nil
 }
 
-// Create/update airy yaml config map
-func (h *Helm) upsertAiryYaml() error {
-	cm, _ := h.clientset.CoreV1().ConfigMaps(h.namespace).Get(context.TODO(), airyYamlConfigMap, v1.GetOptions{})
+// Create/update airy config map
+func (h *Helm) upsertAiryConfigMap() error {
+	cm, _ := h.clientset.CoreV1().ConfigMaps(h.namespace).Get(context.TODO(), airyConfigMap, v1.GetOptions{})
 
 	cmData := map[string]string{
-		"airy.yaml": h.getAiryYaml(),
+		"airy-config-map.yaml": h.getAiryConfigMap(),
 	}
 
 	if cm.GetName() == "" {
 		_, err := h.clientset.CoreV1().ConfigMaps(h.namespace).Create(context.TODO(),
 			&corev1.ConfigMap{
 				ObjectMeta: v1.ObjectMeta{
-					Name:      airyYamlConfigMap,
+					Name:      airyConfigMap,
 					Namespace: h.namespace,
 				},
 				Data: cmData,
@@ -206,8 +206,8 @@ func (h *Helm) upsertAiryYaml() error {
 	}
 }
 
-func (h *Helm) getAiryYaml() string {
-	return defaultAiryConfig
+func (h *Helm) getAiryConfigMap() string {
+	return defaultAiryConfigMap
 }
 
 func (h *Helm) cleanupJob() error {

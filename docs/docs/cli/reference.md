@@ -94,9 +94,8 @@ airy create [flags]
 #### Options
 
 ```
-  -h, --help                help for create
-      --kubeconfig string   (optional) absolute path to the kubeconfig file (default "$HOME/.kube/config")
-      --provider string     One of the supported providers (aws|local). Default is aws
+  -h, --help              help for create
+      --provider string   One of the supported providers (aws|local). Default is aws
 ```
 
 #### Options inherited from parent commands

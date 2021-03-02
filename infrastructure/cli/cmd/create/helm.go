@@ -3,6 +3,7 @@ package create
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -16,13 +17,6 @@ import (
 
 const airyConfigMap = "airy-config-map"
 const serviceAccountName = "helm-account"
-
-const defaultAiryConfigMap = `
-global:
-  appImageTag: develop
-  containerRegistry: ghcr.io/airyhq
-  namespace: default
-`
 
 type Helm struct {
 	name      string
@@ -207,7 +201,14 @@ func (h *Helm) upsertAiryConfigMap() error {
 }
 
 func (h *Helm) getAiryConfigMap() string {
-	return defaultAiryConfigMap
+	content, err := ioutil.ReadFile("defaults.yaml")
+
+	if err != nil {
+		fmt.Println("Error fetching the default config file", err)
+		os.Exit(1)
+	}
+
+	return string(content)
 }
 
 func (h *Helm) cleanupJob() error {

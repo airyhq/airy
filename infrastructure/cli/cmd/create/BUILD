@@ -7,6 +7,9 @@ go_library(
         "create.go",
         "helm.go",
     ],
+    data = [
+        "//infrastructure:defaults",
+    ],
     importpath = "cli/cmd/create",
     visibility = ["//visibility:public"],
     deps = [

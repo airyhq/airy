@@ -12,8 +12,8 @@ type Props = {
 
 const AiryInputBar = (props: Props) => {
   const textInputRef = createRef<HTMLTextAreaElement>();
-  const dataCyButtonId = cyInputbarButton;
-  const dataCyTextareaId = cyInputbarTextarea;
+  const dataCyButtonId = props.dataCyButtonId;
+  const dataCyTextareaId = props.dataCyTextareaId;
 };
 
   useEffect(() => {

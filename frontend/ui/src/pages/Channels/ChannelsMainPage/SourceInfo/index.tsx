@@ -36,30 +36,30 @@ const SourceInfo = (props: SourceInfoProps) => {
               </p>
             </div>
             <div className={styles.connectedChannelBox}>
-              <div className={styles.connectedChannel}>
-                {channels.slice(0, channelsToShow).map((channel: Channel) => {
-                  return (
-                    <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                      <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
-                        {source === 'facebook' && channel.metadata.imageUrl ? (
-                          <img
-                            src={channel.metadata.imageUrl}
-                            alt={channel.metadata.name}
-                            className={styles.facebookImage}
-                          />
-                        ) : (
-                          <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
-                        )}
-                        <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
-                        {isPhoneNumberSource() && (
-                          <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>
-                        )}
-                      </button>
-                    </li>
-                  );
-                })}
-              </div>
-              <button className={styles.connectedChannelBox} onClick={() => props.onSourceInfoClick()}>
+              <button className={styles.connectedChannelBoxButton} onClick={() => props.onSourceInfoClick()}>
+                <div className={styles.connectedChannel}>
+                  {channels.slice(0, channelsToShow).map((channel: Channel) => {
+                    return (
+                      <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                        <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
+                          {source === 'facebook' && channel.metadata.imageUrl ? (
+                            <img
+                              src={channel.metadata.imageUrl}
+                              alt={channel.metadata.name}
+                              className={styles.facebookImage}
+                            />
+                          ) : (
+                            <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
+                          )}
+                          <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
+                          {isPhoneNumberSource() && (
+                            <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>
+                          )}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </div>
                 <div className={styles.extraChannel}>
                   {hasExtraChannels && (
                     <LinkButton>

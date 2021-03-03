@@ -1,5 +1,7 @@
-import React, {useState} from 'react';
-import {SettingsModal, SimpleLoader, Button} from '@airyhq/components';
+import React, {useEffect, useState} from 'react';
+import _, {connect, ConnectedProps} from 'react-redux';
+import {disconnectChannel} from '../../../actions/channel';
+import {SettingsModal, Button} from '@airyhq/components';
 import {Channel, ChannelSource} from 'httpclient';
 import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.svg';
@@ -8,122 +10,93 @@ import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avata
 import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
 import styles from './ChannelListItem.module.scss';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {CHANNELS_FACEBOOK_ROUTE} from '../../../routes/routes';
 
 type ChannelItemProps = {
   channel: Channel;
-  isConnected: boolean;
-  isLastItem: boolean;
+} & ConnectedProps<typeof connector> &
+  RouteComponentProps<{channelId: string}>;
+
+const mapDispatchToProps = {
+  disconnectChannel
 };
 
-const ChannelItem = (props: ChannelItemProps) => {
-  const {channel, isConnected, isLastItem} = props;
+const connector = connect(null, mapDispatchToProps);
 
+const ChannelItem = (props: ChannelItemProps) => {
+  const {channel} = props;
   const [deletePopupVisible, setDeletePopupVisible] = useState(false);
 
-  const channelIcon = (source: string) => {
-    switch (source) {
+  const disconnectChannelRequestPayload = {
+    channelId: channel.id,
+  };
+
+  useEffect(() => {
+    
+  }, [channel]);
+
+  const channelIcon = (channel: Channel) => {
+    switch (channel.source) {
       case ChannelSource.facebook:
-          return <FacebookLogo />
-        
+        if (channel.metadata.imageUrl) {
+          return <img className={styles.facebookPageLogo} src={channel.metadata.imageUrl} />;
+        } else {
+          return <FacebookLogo />;
+        }
       case ChannelSource.google:
-          return <GoogleLogo />
+        return <GoogleLogo />;
+      case ChannelSource.twilioSMS:
+        return <SMSLogo />;
+      case ChannelSource.twilioWhatsapp:
+        return <WhatsappLogo />;
+      case ChannelSource.chatPlugin:
+        return <AiryLogo />;
+      default:
+        return <AiryLogo />;
+    }
+  };
+
+  const editChannel = () => {
+    switch (channel.source) {
+      case ChannelSource.facebook:
+        return {pathname: CHANNELS_FACEBOOK_ROUTE + `/${channel.id}`, state: {channel: channel}};
+      case ChannelSource.google:
 
       case ChannelSource.twilioSMS:
-          return <SMSLogo />
 
       case ChannelSource.twilioWhatsapp:
-          return <WhatsappLogo />
 
       case ChannelSource.chatPlugin:
-          return <AiryLogo />
-          default:
-              return <AiryLogo />
     }
   };
 
-  const SOURCE_DATA = {
-    FACEBOOK: {
-      style: styles.pageIconFacebook,
-    //   image: FacebookIcon,
-    },
-    GOOGLE: {
-      style: styles.pageIconGoogle,
-    //   image: GoogleIcon,
-    },
-    SMS_TWILIO: {
-      style: styles.pageIconSMS,
-    //   image: SmsIcon,
-    },
-    WHATSAPP_TWILIO: {
-      style: styles.pageIconWhatsApp,
-    //   image: WhatsappIcon,
-    },
-    SELF: {
-      style: styles.pageIconFacebook,
-    //   image: FacebookIcon,
-    },
-  };
-
-  const handleClick = (requiresConfirmation: boolean) => {
-    if (!requiresConfirmation) {
-      //   props.manageChannel(props.channel, props.organization_id);
-      //   props.setDrawer && props.availablePages.length < 2 && props.setDrawer(false);
-    } else {
-      setDeletePopupVisible(true);
-    }
-  };
-
-  const renderButton = () => {
-    return isConnected ? (
-      <Button styleVariant="link" type="button" onClick={() => handleClick(true)}>
-        Disconnect
-      </Button>
-    ) : (
-      <Button styleVariant="small" type="button" onClick={() => handleClick(false)}>
-        Connect
-      </Button>
-    );
-  };
-
-  const renderDisabledDisconnect = () => {
-    return (
-      <div
-        className={styles.disabledDisconnect}
-        title="If you need to disconnect a channel, get in touch via support@airy.co">
-        Disconnect
-      </div>
-    );
-  };
+  const disconnectChannel = () => {
+    props.disconnectChannel(channel.source, disconnectChannelRequestPayload);
+    setDeletePopupVisible(false);
+  }
 
   return (
     <>
-    <div>
-      {/* <div
-        className={`${styles.connectedPage} ${isConnected ? '' : styles.entryFade} ${
-          isLastItem ? '' : styles.addDivider
-        }`}> */}
-        {/* <div className={`${styles.pageIcon} ${source ? SOURCE_DATA[source].style : styles.pageIconFacebook}`}> */}
-            {/* <div> */}
-          {/* <FacebookIcon /> */}
-          {/* <AccessibleSVG title={name} src={source ? SOURCE_DATA[source].image : fbIcon} /> */}
-        {/* </div> */}
-        <div className={styles.channelDetails}>
-            <div className={styles.channelLogo}>
-                {channelIcon(channel.source)}
+      <div>
+        <div className={styles.channelItem}>
+          <div className={styles.channelLogo}>{channelIcon(channel)}</div>
+          <div className={styles.channelNameButton}>
+            <div className={styles.channelName}>
+              {channel.metadata.name}
+              {channel.connected && (
+                <div className={styles.connectedHint}>
+                  Connected <CheckMark />
+                </div>
+              )}
             </div>
-          <div className={styles.channelName}>
-            {channel.metadata.name}
-            {isConnected && (
-              <div className={styles.connectedHint}>
-                Connected <CheckMark />
-              </div>
-            )}
+            <Button styleVariant="link" type="button" onClick={() => props.history.push(editChannel())}>
+              Edit
+            </Button>
+            <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(true)}>
+              Disconnect
+            </Button>
           </div>
-          {/* {channel.source !== 'facebook' && channel.source !== undefined ? (
-            <div className={styles.channelConnect}>{renderDisabledDisconnect()}</div>
-          ) : (
-            <div className={styles.channelConnect}>{!loading ? renderButton() : <SimpleLoader />}</div>
-          )} */}
         </div>
       </div>
       {deletePopupVisible && (
@@ -145,7 +118,10 @@ const ChannelItem = (props: ChannelItemProps) => {
               <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(false)}>
                 Cancel
               </Button>
-              <Button styleVariant="warning" type="submit" onClick={() => handleClick(false)}>
+              <Button
+                styleVariant="warning"
+                type="submit"
+                onClick={() => disconnectChannel()}>
                 Disconnect Channel
               </Button>
             </div>
@@ -156,4 +132,4 @@ const ChannelItem = (props: ChannelItemProps) => {
   );
 };
 
-export default ChannelItem;
+export default withRouter(connector(ChannelItem));

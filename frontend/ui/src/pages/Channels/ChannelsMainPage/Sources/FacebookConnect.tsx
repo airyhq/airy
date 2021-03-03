@@ -3,10 +3,11 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './FacebookConnect.module.scss';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
-import {CHANNELS_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_CONNECTED_ROUTE, CHANNELS_ROUTE} from '../../../../routes/routes';
 import {Button, Input} from '@airyhq/components';
 import {connectChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
+import {Channel} from 'httpclient';
 
 type FacebookProps = {
   channelId?: string;
@@ -17,7 +18,11 @@ const mapStateToProps = (state: StateModel, props: RouteComponentProps<{channelI
   channel: state.data.channels[props.match.params.channelId],
 });
 
-const connector = connect(mapStateToProps, null);
+const mapDispatchToProps = {
+  connectChannel,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const FacebookConnect = (props: FacebookProps) => {
   const [id, setId] = useState('');
@@ -25,6 +30,8 @@ const FacebookConnect = (props: FacebookProps) => {
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
   const [buttonTitle, setButtonTitle] = useState('Connect Page');
+
+  const {connectChannel} = props;
 
   const buttonStatus = () => {
     if (id.length > 5 && token != '') {
@@ -69,7 +76,7 @@ const FacebookConnect = (props: FacebookProps) => {
           label="Facebook Page ID"
           placeholder="Add the Facebook Page ID"
           value={id}
-          onChange={event => setId(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setId(event.target.value)}
           minLength={6}
           required={true}
           height={33}></Input>
@@ -78,7 +85,7 @@ const FacebookConnect = (props: FacebookProps) => {
           label="Token"
           placeholder="Add the page Access Token"
           value={token}
-          onChange={event => setToken(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setToken(event.target.value)}
           required={true}
           height={33}></Input>
         <Input
@@ -87,7 +94,7 @@ const FacebookConnect = (props: FacebookProps) => {
           placeholder="Add a name"
           hint="The standard name will be the same as the Facebook Page"
           value={name}
-          onChange={event => setName(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
           height={33}></Input>
         <Input
           id="image"
@@ -95,13 +102,17 @@ const FacebookConnect = (props: FacebookProps) => {
           placeholder="Add an URL"
           hint="The standard picture is the same as the Facebook Page"
           value={image}
-          onChange={event => setImage(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setImage(event.target.value)}
           height={33}></Input>
       </div>
       <Button
         styleVariant="normal"
         disabled={buttonStatus()}
-        onClick={connectChannel('facebook', connectFacebookPayload)}>
+        onClick={() =>
+          connectChannel('facebook', connectFacebookPayload).then((response: Channel) => {
+            props.history.replace(CHANNELS_CONNECTED_ROUTE + '/facebook');
+          })
+        }>
         {buttonTitle}
       </Button>
     </div>

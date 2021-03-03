@@ -91,6 +91,39 @@
   text-transform: uppercase;
   color: var(--color-soft-green);
 }
-.lalala {
-  background-color: red;
+
+.headlineRow {
+  display: flex;
+  place-content: space-between;
+
+  button {
+    align-self: center;
+    height: 40px;
+    width: 40px;
+    margin-left: 16px;
+    background: var(--color-blue-white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: var(--color-background-blue);
+  }
+  button:last-child {
+    background: var(--color-airy-blue);
+    svg {
+      path {
+        fill: white;
+      }
+    }
+  }
+  button:last-child:hover {
+    background-color: var(--color-airy-blue-hover);
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
 }

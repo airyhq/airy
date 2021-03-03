@@ -42,10 +42,8 @@ const FacebookSource = (props: FacebookSourceProps & RouteComponentProps) => {
         onSourceInfoClick={() => {
           props.history.push({
             pathname: CHANNELS_CONNECTED_ROUTE + `/facebook`,
-            state: {source: 'facebook'},
           });
         }}
-        // onSourceInfoClick={(channel: Channel) => props.history.push(CHANNELS_CONNECTED_ROUTE)}
       />
     </div>
   );

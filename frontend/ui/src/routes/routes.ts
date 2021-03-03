@@ -4,6 +4,7 @@ export const LOGOUT_ROUTE = '/logout';
 export const CHANNELS_ROUTE = '/channels';
 export const CHANNELS_CONNECTED_ROUTE = '/channels/connected';
 export const CHANNELS_FACEBOOK_ROUTE = '/channels/facebook';
+export const CHANNELS_CHAT_PLUGIN_ROUTE = '/channels/chat_plugin';
 export const INBOX_ROUTE = '/inbox';
 export const INBOX_CONVERSATIONS_ROUTE = '/inbox/conversations';
 export const TAGS_ROUTE = '/tags';

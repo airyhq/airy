@@ -24,11 +24,20 @@
   border-radius: 8px;
   background-color: #ffffff;
   margin-left: 12px;
+  position: relative;
 
   &:hover {
     background-color: var(--color-background-blue);
     cursor: pointer;
   }
+}
+
+.connectedChannelBoxButton {
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
 }
 
 .connectedChannel {

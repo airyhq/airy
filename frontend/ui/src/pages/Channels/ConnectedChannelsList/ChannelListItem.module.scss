@@ -1,17 +1,12 @@
 @import 'assets/scss/fonts';
 @import 'assets/scss/colors';
 
-.connectedPage {
-  display: flex;
-  flex-grow: 1;
-  align-items: center;
-}
-
-.channelDetails {
+.channelItem {
   display: flex;
   flex-direction: row;
   align-items: center;
   flex-grow: 1;
+  height: 64px;
 }
 
 .channelLogo {
@@ -19,71 +14,24 @@
   margin-right: 8px;
 }
 
-.addDivider {
-  .channelDetails {
-    border-bottom: 1px solid var(--color-light-gray);
-  }
-}
-
-.channelsTable {
-  border-radius: 8px;
-  overflow-y: scroll;
-  height: 100vh;
-  width: 94%;
-  margin: 1em auto 0;
-  background: #fff;
-}
-
-.pageIcon {
-  width: 32px;
-  height: 32px;
+.channelNameButton {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 8px;
-  background-color: var(--color-blue-white);
+  flex: 1 1;
+  border-bottom: 1px solid var(--color-light-gray);
+}
+
+.channelName {
+  flex: 1 1;
+  text-align: left;
+  padding: 0 8px;
+  color: var(--color-text-contrast);
+  padding: 20.5px 0;
+}
+
+.facebookPageLogo {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-}
-
-.pageIconFacebook {
-  svg {
-    margin-top: 3px;
-    path {
-      fill: var(--color-airy-blue);
-    }
-  }
-}
-
-.pageIconGoogle {
-  svg {
-    margin-top: 4px;
-    path {
-      fill: var(--color-soft-green);
-    }
-  }
-}
-
-.pageIconWhatsApp {
-  svg {
-    width: 22px;
-    height: 22px;
-    margin-top: 3px;
-    margin-left: 2px;
-    path {
-      fill: #0ed662; // We are using the color of whatsapp here, Filipe approved
-    }
-  }
-}
-
-.pageIconSMS {
-  svg {
-    width: 22px;
-    height: 22px;
-    margin-top: 4px;
-    path {
-      fill: var(--color-airy-blue);
-    }
-  }
 }
 
 .connectedHint {
@@ -105,14 +53,6 @@
     width: auto;
     margin-top: 5px;
   }
-}
-
-.channelName {
-  flex: 1 1;
-  text-align: left;
-  padding: 0 8px;
-  color: var(--color-text-contrast);
-  padding: 20.5px 0;
 }
 
 .disabledDisconnect {

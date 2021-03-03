@@ -1,13 +1,15 @@
 import React from 'react';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {Channel} from 'httpclient';
 import SourceInfo from '../SourceInfo';
 import SourceDescription from '../SourceDescription';
 import {ChannelSource} from 'httpclient';
+import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 
 type ChatPluginProps = {pluginSource: Channel[]};
 
-const ChatPluginSource = (props: ChatPluginProps) => {
+const ChatPluginSource = (props: ChatPluginProps & RouteComponentProps) => {
   const channels = props.pluginSource.filter((channel: Channel) => channel.source === 'chat_plugin');
 
   return (
@@ -26,9 +28,15 @@ const ChatPluginSource = (props: ChatPluginProps) => {
         connected="CONNECTED"
         placeholderImage={<AiryLogo />}
         isConnected="connected"
+        onSourceInfoClick={() => {
+          props.history.push({
+            pathname: CHANNELS_CONNECTED_ROUTE + `/chat_plugin`,
+            state: {source: 'chat_plugin'},
+          });
+        }}
       />
     </div>
   );
 };
 
-export default ChatPluginSource;
+export default withRouter(ChatPluginSource);

@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState, MouseEvent, createRef, TextareaHTMLAttributes} from 'react';
+import React, {FormEvent, useEffect, useState, MouseEvent, createRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {Button, Input, LinkButton} from '@airyhq/components';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';

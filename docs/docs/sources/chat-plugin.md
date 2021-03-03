@@ -32,12 +32,12 @@ the `<head>` section:
 <script>
   (function(w, d, s, n) {
     w[n] = w[n] || {};
-    w[n].cid = "CHANNEL_ID";
-    w[n].h = "SCRIPT_HOST";
+    w[n].channelId = "CHANNEL_ID";
+    w[n].host = "SCRIPT_HOST";
     var f = d.getElementsByTagName(s)[0],
       j = d.createElement(s);
     j.async = true;
-    j.src = w[n].h + "/s.js";
+    j.src = w[n].host + "/s.js";
     f.parentNode.insertBefore(j, f);
   })(window, document, "script", "airy");
 </script>

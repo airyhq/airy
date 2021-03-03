@@ -1,6 +1,7 @@
 export * from './listChannels';
 export * from './exploreFacebookChannels';
 export * from './connectFacebookChannel';
+export * from './connectChatPluginChannel';
 export * from './disconnectChannel';
 export * from './listConversations';
 export * from './getConversationInfo';
@@ -15,3 +16,4 @@ export * from './tagConversation';
 export * from './untagConversation';
 export * from './sendMessages';
 export * from './getConfig';
+export * from './updateChannel';

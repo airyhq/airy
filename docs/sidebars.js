@@ -41,6 +41,7 @@ module.exports = {
             'api/endpoints/messages',
             'api/endpoints/metadata',
             'api/endpoints/tags',
+            'api/endpoints/templates',
             'api/endpoints/users',
           ],
         },

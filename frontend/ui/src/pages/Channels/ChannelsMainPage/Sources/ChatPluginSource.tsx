@@ -1,13 +1,16 @@
 import React from 'react';
-import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
-import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {Channel} from 'httpclient';
+
+import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
+
 import SourceInfo from '../SourceInfo';
 import SourceDescription from '../SourceDescription';
+import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../../../routes/routes';
 
 type ChatPluginProps = {pluginSource: Channel[]};
 
-const ChatPluginSource = (props: ChatPluginProps) => {
+const ChatPluginSource = (props: ChatPluginProps & RouteComponentProps) => {
   const channels = props.pluginSource.filter((channel: Channel) => channel.source === 'chat_plugin');
 
   return (
@@ -16,8 +19,10 @@ const ChatPluginSource = (props: ChatPluginProps) => {
         title="Airy Live Chat "
         text="Best of class browser messenger"
         image={<AiryLogo />}
-        buttonIcon={<AddChannel />}
         displayButton={!channels.length}
+        onAddChannelClick={() => {
+          props.history.push(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
+        }}
       />
 
       <SourceInfo
@@ -26,10 +31,18 @@ const ChatPluginSource = (props: ChatPluginProps) => {
         connected="CONNECTED"
         placeholderImage={<AiryLogo />}
         isConnected="connected"
-        addAChannel={<AddChannel />}
+        onMoreChannelsClick={() => {
+          props.history.push(CHANNELS_CHAT_PLUGIN_ROUTE);
+        }}
+        onAddChannelClick={() => {
+          props.history.push(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
+        }}
+        onChannelClick={(channel: Channel) => {
+          props.history.push(`${CHANNELS_CHAT_PLUGIN_ROUTE}/${channel.id}`);
+        }}
       />
     </div>
   );
 };
 
-export default ChatPluginSource;
+export default withRouter(ChatPluginSource);

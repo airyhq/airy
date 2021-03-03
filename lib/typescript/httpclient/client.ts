@@ -10,6 +10,8 @@ import {
   UntagConversationRequestPayload,
   MessagePayload,
   ListMessagesRequestPayload,
+  ConnectChatPluginRequestPayload,
+  UpdateChannelRequestPayload,
 } from './payload';
 
 import {Tag, Message} from './model';
@@ -90,6 +92,10 @@ export class HttpClient {
   public exploreFacebookChannels: (requestPayload: ExploreChannelRequestPayload) => Promise<any>;
 
   public connectFacebookChannel: (requestPayload: ConnectChannelRequestPayload) => Promise<any>;
+
+  public connectChatPluginChannel: (requestPayload: ConnectChatPluginRequestPayload) => Promise<any>;
+
+  public updateChannel: (requestPayload: UpdateChannelRequestPayload) => Promise<any>;
 
   public disconnectChannel: (source: string, requestPayload: DisconnectChannelRequestPayload) => Promise<any>;
 

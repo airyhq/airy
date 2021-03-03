@@ -64,6 +64,12 @@ ts_web_library(
     ],
 )
 
+ts_web_library(	
+    name = "handles",	
+    srcs = ["handles.ts"],	
+    tsconfig = "//:bazel.tsconfig.json",	
+)
+
 ts_config(
     name = "widget_tsconfig",
     src = "bazel.tsconfig.json",

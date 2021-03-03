@@ -3,7 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 import {debounce} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
-import {cyMessageList} from '../../../../../handles';
+import {cyMessageList} from 'handles';
 
 import {Message} from 'httpclient';
 import {SourceMessage} from 'render';

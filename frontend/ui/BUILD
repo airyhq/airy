@@ -19,6 +19,7 @@ module_deps = [
     "//lib/typescript/render",
     "//lib/typescript/dates",
     "//lib/typescript/websocketclient",
+    "//frontend/ui:handles",
 ]
 
 ts_web_library(
@@ -40,6 +41,13 @@ ts_web_library(
         "@npm//reselect",
         "@npm//typesafe-actions",
     ],
+    srcs = glob(["src/**/*.tsx", "src/**/*.ts"])
+)
+
+ts_web_library(	
+    name = "handles",	
+    srcs = ["handles.ts"],	
+    tsconfig = "//:bazel.tsconfig.json",	
 )
 
 web_app(

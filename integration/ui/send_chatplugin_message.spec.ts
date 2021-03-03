@@ -1,4 +1,4 @@
-import {cyMessageTextArea, cyMessageSendButton, cyMessageList} from '../../frontend/ui/handles';
+import {cyMessageTextArea, cyMessageSendButton, cyMessageList} from '../../frontend/ui/ui_handles';
 
 describe('Send chatplugin Message', () => {
   const messageInbox = 'Hello from Inbox!';

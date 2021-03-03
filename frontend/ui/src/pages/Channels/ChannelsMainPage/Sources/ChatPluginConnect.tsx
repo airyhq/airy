@@ -53,7 +53,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
         return channel.id === channelId;
       });
       if (channel) {
-        setDisplayName(channel.metadata?.name);
+        setDisplayName(channel.metadata?.name || '');
         setImageUrl(channel.metadata?.imageUrl || '');
       }
     }
@@ -158,7 +158,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
   (function(w, d, s, n) {
     w[n] = w[n] || {};
     w[n].channelId = "${channelId}";
-    w[n].host = "${'https://' + env.API_HOST}";
+    w[n].host = "${'//' + env.CHATPLUGIN_HOST}";
     var f = d.getElementsByTagName(s)[0],
       j = d.createElement(s);
     j.async = true;

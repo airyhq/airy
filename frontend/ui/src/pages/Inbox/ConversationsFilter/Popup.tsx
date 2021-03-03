@@ -161,8 +161,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
               />
             </div>
             <div className={styles.sourcesList}>
-              {sortBy(channels, channel => channel.metadata.name)
-                .filter((channel: Channel) => channel.metadata.name.toLowerCase().includes(pageSearch.toLowerCase()))
+              {sortBy(channels, channel => channel.metadata?.name)
+                .filter((channel: Channel) => channel.metadata?.name.toLowerCase().includes(pageSearch.toLowerCase()))
                 .map((channel, key) => (
                   <div
                     key={key}
@@ -180,7 +180,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       </div>
                     )}
 
-                    <div className={styles.pageName}>{channel.metadata.name}</div>
+                    <div className={styles.pageName}>{channel.metadata?.name}</div>
                   </div>
                 ))}
             </div>

@@ -41,16 +41,16 @@ const SourceInfo = (props: SourceInfoProps) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
-                        {channel.metadata.imageUrl ? (
+                        {channel.metadata?.imageUrl ? (
                           <img
-                            src={channel.metadata.imageUrl}
-                            alt={channel.metadata.name}
+                            src={channel.metadata?.imageUrl}
+                            alt={channel.metadata?.name}
                             className={styles.facebookImage}
                           />
                         ) : (
                           <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
                         )}
-                        <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
+                        <div className={styles.connectedChannelName}>{channel.metadata?.name}</div>
                         {isPhoneNumberSource() && (
                           <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>
                         )}

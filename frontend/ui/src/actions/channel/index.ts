@@ -3,7 +3,7 @@ import _, {Dispatch} from 'redux';
 
 import {
   Channel,
-  ConnectChannelRequestPayload,
+  ConnectChannelFacebookRequestPayload,
   ExploreChannelRequestPayload,
   DisconnectChannelRequestPayload,
   ConnectChatPluginRequestPayload,
@@ -37,7 +37,7 @@ export const exploreChannels = (requestPayload: ExploreChannelRequestPayload) =>
   });
 };
 
-export const connectChannel = (requestPayload: ConnectChannelRequestPayload) => async (
+export const connectFacebookChannel = (requestPayload: ConnectChannelFacebookRequestPayload) => async (
   dispatch: Dispatch<any>
 ) =>
   HttpClientInstance.connectFacebookChannel(requestPayload).then((response: Channel) => {

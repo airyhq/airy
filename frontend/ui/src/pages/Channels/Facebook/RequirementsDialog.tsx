@@ -38,7 +38,7 @@ export const RequirementsDialog = (props: RequirementsDialogProps) => {
             </p>
           </div>
           <div className={styles.button}>
-            <Button styleVariant='normal' type='button' onClick={() => props.onAddChannel()}>
+            <Button styleVariant="normal" type="button" onClick={() => props.onAddChannel()}>
               I&apos;m ready to connect
             </Button>
           </div>

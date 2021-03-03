@@ -36,7 +36,8 @@ const ChatPluginSource = (props: ChatPluginProps & RouteComponentProps) => {
           props.history.push({
             pathname: CHANNELS_CONNECTED_ROUTE + `/chat_plugin`,
             state: {source: 'chat_plugin'},
-          })}}
+          });
+        }}
         onMoreChannelsClick={() => {
           props.history.push(CHANNELS_CHAT_PLUGIN_ROUTE);
         }}

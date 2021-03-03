@@ -5,9 +5,9 @@ import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {CHANNELS_CONNECTED_ROUTE, CHANNELS_ROUTE} from '../../../../routes/routes';
 import {Button, Input} from '@airyhq/components';
-import {connectChannel} from '../../../../actions/channel';
+import {connectFacebookChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
-import {Channel, ConnectChannelRequestPayload} from 'httpclient';
+import {Channel, ConnectChannelFacebookRequestPayload} from 'httpclient';
 
 type FacebookProps = {
   channelId?: string;
@@ -19,13 +19,13 @@ const mapStateToProps = (state: StateModel, props: RouteComponentProps<{channelI
 });
 
 const mapDispatchToProps = {
-  connectChannel,
+  connectFacebookChannel,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const FacebookConnect = (props: FacebookProps) => {
-  const {connectChannel, channel} = props;
+  const {connectFacebookChannel, channel} = props;
   const [id, setId] = useState(channel?.sourceChannelId || '');
   const [token, setToken] = useState('');
   const [name, setName] = useState(channel?.metadata?.name || '');
@@ -47,9 +47,9 @@ const FacebookConnect = (props: FacebookProps) => {
   }, []);
 
   const connectNewChannel = () => {
-    const connectPayload: ConnectChannelRequestPayload = {
-      sourceChannelId: id,
-      token,
+    const connectPayload: ConnectChannelFacebookRequestPayload = {
+      pageId: id,
+      pageToken: token,
       ...(name &&
         name !== '' && {
           name,
@@ -60,7 +60,7 @@ const FacebookConnect = (props: FacebookProps) => {
         }),
     };
 
-    connectChannel('facebook', connectPayload).then((response: Channel) => {
+    connectFacebookChannel(connectPayload).then((response: Channel) => {
       props.history.replace(CHANNELS_CONNECTED_ROUTE + '/facebook');
     });
   };

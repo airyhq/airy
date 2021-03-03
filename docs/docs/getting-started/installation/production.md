@@ -3,6 +3,12 @@ title: Production
 sidebar_label: Production
 ---
 
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+Run Airy Core in a production environment with Kafka
+</TLDR>
+
 This document provides our recommendations on how to run the Airy Core
 in production environments. If you are not familiar with the architecture of the
 system, we suggest you read the [Architecture](/concepts/architecture.md) document before

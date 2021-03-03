@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
+import {Route, RouteComponentProps, Switch} from 'react-router-dom';
+
 import {listChannels} from '../../actions/channel';
 import {getClientConfig} from '../../actions/config';
 import {StateModel} from '../../reducers/index';
@@ -10,6 +11,8 @@ import {allChannels} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
 
 import ChannelsMainPage from './ChannelsMainPage';
+import ChatPluginConnect from './ChannelsMainPage/Sources/ChatPluginConnect';
+import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../routes/routes';
 
 const mapDispatchToProps = {
   listChannels,
@@ -27,15 +30,24 @@ type ChannelsConnectProps = {} & ConnectedProps<typeof connector> & RouteCompone
 
 const Channels = (props: ChannelsConnectProps) => {
   useEffect(() => {
-    props.listChannels();
+    if (props.channels.length == 0) {
+      props.listChannels();
+    }
     props.getClientConfig();
     setPageTitle('Channels');
   }, []);
 
-  return (
+  const renderChannels = () => (
     <div className={styles.channelsWrapper}>
       <ChannelsMainPage channels={props.channels} config={props.config} />
     </div>
+  );
+
+  return (
+    <Switch>
+      <Route path={[`${CHANNELS_CHAT_PLUGIN_ROUTE}/:channelId?`]} component={ChatPluginConnect} />
+      <Route path="/" render={renderChannels} />
+    </Switch>
   );
 };
 

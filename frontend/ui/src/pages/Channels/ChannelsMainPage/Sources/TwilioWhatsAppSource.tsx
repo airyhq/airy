@@ -1,6 +1,5 @@
 import React from 'react';
 import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
 import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
@@ -16,7 +15,6 @@ const TwilioWhatsAppSource = (props: TwilioWhatsAppSourceProps) => {
         title="Whatsapp"
         text="World #1 chat app"
         image={<WhatsappLogo />}
-        buttonIcon={<AddChannel />}
         displayButton={!channels.length}
       />
 
@@ -26,7 +24,6 @@ const TwilioWhatsAppSource = (props: TwilioWhatsAppSourceProps) => {
         connected="CONNECTED"
         placeholderImage={<WhatsappLogo />}
         isConnected="connected"
-        addAChannel={<AddChannel />}
       />
     </div>
   );

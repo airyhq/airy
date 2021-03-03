@@ -1,6 +1,5 @@
 import React from 'react';
 import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
 import {Channel} from 'httpclient';
 import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
@@ -16,17 +15,10 @@ const FacebookSource = (props: FacebookSourceProps) => {
         title="Messenger "
         text="Connect multiple Facebook pages"
         image={<FacebookLogo />}
-        buttonIcon={<AddChannel />}
         displayButton={!channels.length}
       />
 
-      <SourceInfo
-        source="facebook"
-        channels={channels}
-        connected="CONNECTED"
-        isConnected="connected"
-        addAChannel={<AddChannel />}
-      />
+      <SourceInfo source="facebook" channels={channels} connected="CONNECTED" isConnected="connected" />
     </div>
   );
 };

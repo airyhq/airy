@@ -57,6 +57,11 @@ spec:
               configMapKeyRef:
                 name: api-config
                 key: JWT_SECRET
+          - name: ALLOWED_ORIGINS
+            valueFrom:
+              configMapKeyRef:
+                name: api-config
+                key: ALLOWED_ORIGINS
           livenessProbe:
             httpGet:
               path: /actuator/health

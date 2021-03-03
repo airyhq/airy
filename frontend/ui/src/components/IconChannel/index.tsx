@@ -80,14 +80,14 @@ const IconChannel: React.FC<IconChannelProps> = ({
     return (
       <div className={styles.iconName}>
         {channelInfo.icon()}
-        <p>{channel.metadata.name}</p>
+        <p>{channel.metadata?.name}</p>
       </div>
     );
   } else if (showAvatar && showName) {
     return (
       <div className={styles.avatarName}>
         {channelInfo.avatar()}
-        <p>{channel.metadata.name}</p>
+        <p>{channel.metadata?.name}</p>
       </div>
     );
   } else if (icon && text) {

@@ -47,12 +47,15 @@ web_app(
     index = ":index.html",
     module_deps = module_deps,
     static_assets = "//frontend/ui/public",
+    output = {
+        "publicPath": "/ui/"
+    }
 )
 
 pkg_tar(
     name = "bundle_tar",
     srcs = [":bundle"],
-    package_dir = "/usr/share/nginx/html/ui/",
+    package_dir = "/usr/share/nginx/html/",
     strip_prefix = "./bundle",
 )
 

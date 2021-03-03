@@ -295,13 +295,6 @@ spec:
                 name: sources-twilio-connector
                 port:
                   number: 80
-          - path: /ui
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-ui
-                port:
-                  number: 80
           - path: /ws.chatplugin
             pathType: Prefix
             backend:
@@ -328,12 +321,5 @@ spec:
             backend:
               service:
                 name: sources-chatplugin
-                port:
-                  number: 80
-          - path: /ui/chatplugin
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-chat-plugin
                 port:
                   number: 80

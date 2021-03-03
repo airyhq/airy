@@ -45,6 +45,7 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
                 <ConversationList />
               </section>
             )}
+
             <MessengerContainer {...props} />
           </Fragment>
         )}

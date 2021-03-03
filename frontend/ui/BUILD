@@ -7,6 +7,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 
 package(default_visibility = ["//visibility:public"])
+
 check_pkg()
 
 check_pkg(name = "buildifier")

@@ -12,6 +12,7 @@ import {
   ListMessagesRequestPayload,
   ConnectChatPluginRequestPayload,
   UpdateChannelRequestPayload,
+  ListTemplatesRequestPayload,
 } from './payload';
 
 import {Tag, Message} from './model';
@@ -124,4 +125,6 @@ export class HttpClient {
   public sendMessages: (requestPayload: SendMessagesRequestPayload) => Promise<any>;
 
   public getConfig: () => Promise<any>;
+
+  public listTemplates: (requestPayload: ListTemplatesRequestPayload) => Promise<any>;
 }

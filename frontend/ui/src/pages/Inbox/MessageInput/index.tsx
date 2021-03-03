@@ -24,13 +24,13 @@ type MessageInputProps = {channelSource: string};
 
 const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
   const {channelSource} = props;
-  
+
   const [input, setInput] = useState('');
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
-  
+
   const textAreaRef = useRef(null);
-  const emojiDiv= createRef<HTMLDivElement>();
+  const emojiDiv = createRef<HTMLDivElement>();
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setInput(e.target.value);
@@ -60,15 +60,14 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   const InputOptions = () => {
-    
     const handleEmojiDrawer = () => {
-      if (!isShowingEmojiDrawer) {        
+      if (!isShowingEmojiDrawer) {
         addListeners();
       } else {
         removeListeners();
         textAreaRef.current && textAreaRef.current.focus();
-      }  
-      setIsShowingEmojiDrawer(!isShowingEmojiDrawer);        
+      }
+      setIsShowingEmojiDrawer(!isShowingEmojiDrawer);
     };
 
     const handleEmojiKeyEvent = e => {
@@ -88,39 +87,35 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       document.addEventListener('keydown', handleEmojiKeyEvent);
       document.addEventListener('click', handleEmojiOutsideClick);
     };
-  
+
     const removeListeners = () => {
       document.removeEventListener('keydown', handleEmojiKeyEvent);
       document.removeEventListener('click', handleEmojiOutsideClick);
     };
 
-    const handleClickTemplates = () => {                  
+    const handleClickTemplates = () => {
       setIsShowingTemplateModal(true);
     };
 
     return (
       <div className={styles.messageActionsContainer}>
         <button
-          className={`${styles.iconButton} ${styles.templateButton} ${
-            isShowingEmojiDrawer ? styles.active : ''
-          }`}
+          className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
           type="button"
           onClick={() => handleEmojiDrawer()}>
           <div className={styles.actionToolTip}>Emojis</div>
           <Smiley aria-hidden />
         </button>
         <button
-          className={`${styles.iconButton} ${styles.templateButton} ${
-            isShowingTemplateModal ? styles.active : ''
-          }`}
+          className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
           type="button"
           onClick={() => handleClickTemplates()}>
           <div className={styles.actionToolTip}>Templates</div>
           <TemplateAlt aria-hidden />
-        </button>            
+        </button>
       </div>
     );
-  }
+  };
 
   return (
     <form className={`${styles.container} ${styles.flexWrap}`}>
@@ -139,7 +134,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           />
         </div>
         <InputOptions />
-      </div>      
+      </div>
       <div className={styles.sendDiv}>
         <button
           type="button"

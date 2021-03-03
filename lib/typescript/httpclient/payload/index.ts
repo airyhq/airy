@@ -22,3 +22,5 @@ export * from './TagConversationRequestPayload';
 export * from './TagPayload';
 export * from './UntagConversationRequestPayload';
 export * from './UpdateChannelRequestPayload';
+export * from './ListTemplatesRequestPayload';
+export * from './ListTemplatesPayload';

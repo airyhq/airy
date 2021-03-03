@@ -1,0 +1,17 @@
+@import '../../../assets/scss/colors.scss';
+@import '../../../assets/scss/fonts.scss';
+
+.component {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-dark-elements-gray);
+  border-radius: 8px;
+  padding: 16px 16px;
+  position: absolute;
+  bottom: 78px;
+  right: 72px;
+  left: 24px;
+  top: 24px;
+  background-color: white;
+  z-index: 10;
+}

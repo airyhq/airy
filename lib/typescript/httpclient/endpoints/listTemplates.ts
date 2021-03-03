@@ -7,5 +7,5 @@ export default HttpClient.prototype.listTemplates = async function listTemplates
 ) {
   const response: ListTemplatesPayload = await this.doFetchFromBackend('templates.list', requestPayload);
 
-  return response.data;
+  return response;
 };

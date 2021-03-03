@@ -3,8 +3,8 @@ export interface Template {
   name: string;
   content: string;
   variables: {
-    en: {
-      salutation: string;
+    [key: string]: {
+      [key: string]: string;
     };
   };
 }

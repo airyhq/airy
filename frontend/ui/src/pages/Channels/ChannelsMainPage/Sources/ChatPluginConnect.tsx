@@ -7,7 +7,8 @@ import {Channel} from 'httpclient';
 import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 
-import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_ROUTE} from '../../../../routes/routes';
+import {env} from '../../../../env';
+import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../../../routes/routes';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import {allChannels} from '../../../../selectors/channels';
@@ -157,7 +158,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
   (function(w, d, s, n) {
     w[n] = w[n] || {};
     w[n].channelId = "${channelId}";
-    w[n].host = "SCRIPT_HOST";
+    w[n].host = "${'https://' + env.API_HOST}";
     var f = d.getElementsByTagName(s)[0],
       j = d.createElement(s);
     j.async = true;
@@ -205,9 +206,6 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
             </div>
             <div>
               <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={generateCode()}></textarea>
-            </div>
-            <div className={styles.codeAreaHint}>
-              Replace SCRIPT_HOST with the URL to your instance of the Chat Plugin server.
             </div>
             <Button onClick={copyToClipboard}>Copy code</Button>
           </div>

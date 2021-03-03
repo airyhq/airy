@@ -18,5 +18,5 @@ wget -qnv https://airy-core-binaries.s3.amazonaws.com/"${AIRY_VERSION}"/linux/am
 chmod +x airy
 mv airy /usr/local/bin/
 airy init
-airy create --provider=local
+airy create --provider=local --kube-config /etc/rancher/k3s/k3s.yaml
 airy config apply --kube-config /etc/rancher/k3s/k3s.yaml --config "${INFRASTRUCTURE_PATH}"/airy.yaml

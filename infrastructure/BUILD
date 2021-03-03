@@ -1,5 +1,3 @@
-filegroup(
-    name = "defaults",
-    srcs = ["defaults.yaml"],
-    visibility = ["//visibility:public"],
-)
+exports_files([
+    "defaults.yaml",
+])

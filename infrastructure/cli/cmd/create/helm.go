@@ -3,7 +3,6 @@ package create
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -180,7 +179,7 @@ func (h *Helm) upsertAiryConfigMap() error {
 	cm, _ := h.clientset.CoreV1().ConfigMaps(h.namespace).Get(context.TODO(), airyConfigMap, v1.GetOptions{})
 
 	cmData := map[string]string{
-		"airy-config-map.yaml": h.getAiryConfigMap(),
+		"airy-config-map.yaml": Data,
 	}
 
 	if cm.GetName() != "" {
@@ -198,17 +197,6 @@ func (h *Helm) upsertAiryConfigMap() error {
 			Data: cmData,
 		}, v1.CreateOptions{})
 	return err
-}
-
-func (h *Helm) getAiryConfigMap() string {
-	content, err := ioutil.ReadFile("./infrastructure/defaults.yaml")
-
-	if err != nil {
-		fmt.Println("Error fetching the default config file", err)
-		os.Exit(1)
-	}
-
-	return string(content)
 }
 
 func (h *Helm) cleanupJob() error {

@@ -183,21 +183,21 @@ func (h *Helm) upsertAiryConfigMap() error {
 		"airy-config-map.yaml": h.getAiryConfigMap(),
 	}
 
-	if cm.GetName() == "" {
-		_, err := h.clientset.CoreV1().ConfigMaps(h.namespace).Create(context.TODO(),
-			&corev1.ConfigMap{
-				ObjectMeta: v1.ObjectMeta{
-					Name:      airyConfigMap,
-					Namespace: h.namespace,
-				},
-				Data: cmData,
-			}, v1.CreateOptions{})
-		return err
-	} else {
+	if cm.GetName() != "" {
 		cm.Data = cmData
 		_, err := h.clientset.CoreV1().ConfigMaps(h.namespace).Update(context.TODO(), cm, v1.UpdateOptions{})
 		return err
 	}
+
+	_, err := h.clientset.CoreV1().ConfigMaps(h.namespace).Create(context.TODO(),
+		&corev1.ConfigMap{
+			ObjectMeta: v1.ObjectMeta{
+				Name:      airyConfigMap,
+				Namespace: h.namespace,
+			},
+			Data: cmData,
+		}, v1.CreateOptions{})
+	return err
 }
 
 func (h *Helm) getAiryConfigMap() string {

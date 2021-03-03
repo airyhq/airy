@@ -62,7 +62,7 @@
   margin-bottom: 40px;
 
   button {
-    @include font-m;
+    @include font-base;
     width: 205px;
     height: 40px;
     border: none;

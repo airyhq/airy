@@ -7,7 +7,7 @@ import {CHANNELS_CONNECTED_ROUTE, CHANNELS_ROUTE} from '../../../../routes/route
 import {Button, Input} from '@airyhq/components';
 import {connectChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
-import {Channel} from 'httpclient';
+import {Channel, ConnectChannelRequestPayload} from 'httpclient';
 
 type FacebookProps = {
   channelId?: string;
@@ -25,13 +25,12 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const FacebookConnect = (props: FacebookProps) => {
-  const [id, setId] = useState('');
+  const {connectChannel, channel} = props;
+  const [id, setId] = useState(channel?.sourceChannelId || '');
   const [token, setToken] = useState('');
-  const [name, setName] = useState('');
-  const [image, setImage] = useState('');
+  const [name, setName] = useState(channel?.metadata?.name || '');
+  const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
   const [buttonTitle, setButtonTitle] = useState('Connect Page');
-
-  const {connectChannel} = props;
 
   const buttonStatus = () => {
     if (id.length > 5 && token != '') {
@@ -41,26 +40,29 @@ const FacebookConnect = (props: FacebookProps) => {
     }
   };
 
-  const previousData = () => {
-    if (props.match.params.channelId) {
-      setId(props.channel.sourceChannelId);
-      setName(props.channel.metadata.name);
-      setImage(props.channel.metadata.imageUrl);
-    }
-  };
-
   useEffect(() => {
-    if (props.channel) {
-      previousData();
+    if (channel) {
       setButtonTitle('Update Page');
     }
   }, []);
 
-  const connectFacebookPayload = {
-    sourceChannelId: id,
-    token: token,
-    name: name,
-    imageUrl: image,
+  const connectNewChannel = () => {
+    const connectPayload: ConnectChannelRequestPayload = {
+      sourceChannelId: id,
+      token,
+      ...(name &&
+        name !== '' && {
+          name,
+        }),
+      ...(image &&
+        image !== '' && {
+          imageUrl: image,
+        }),
+    };
+
+    connectChannel('facebook', connectPayload).then((response: Channel) => {
+      props.history.replace(CHANNELS_CONNECTED_ROUTE + '/facebook');
+    });
   };
 
   return (
@@ -105,14 +107,7 @@ const FacebookConnect = (props: FacebookProps) => {
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setImage(event.target.value)}
           height={33}></Input>
       </div>
-      <Button
-        styleVariant="normal"
-        disabled={buttonStatus()}
-        onClick={() =>
-          connectChannel('facebook', connectFacebookPayload).then((response: Channel) => {
-            props.history.replace(CHANNELS_CONNECTED_ROUTE + '/facebook');
-          })
-        }>
+      <Button styleVariant="normal" disabled={buttonStatus()} onClick={() => connectNewChannel()}>
         {buttonTitle}
       </Button>
     </div>

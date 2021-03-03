@@ -19,7 +19,7 @@ type ChannelItemProps = {
   RouteComponentProps<{channelId: string}>;
 
 const mapDispatchToProps = {
-  disconnectChannel
+  disconnectChannel,
 };
 
 const connector = connect(null, mapDispatchToProps);
@@ -33,7 +33,7 @@ const ChannelItem = (props: ChannelItemProps) => {
   };
 
   useEffect(() => {
-    
+    console.log('render');
   }, [channel]);
 
   const channelIcon = (channel: Channel) => {
@@ -74,7 +74,7 @@ const ChannelItem = (props: ChannelItemProps) => {
   const disconnectChannel = () => {
     props.disconnectChannel(channel.source, disconnectChannelRequestPayload);
     setDeletePopupVisible(false);
-  }
+  };
 
   return (
     <>
@@ -118,10 +118,7 @@ const ChannelItem = (props: ChannelItemProps) => {
               <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(false)}>
                 Cancel
               </Button>
-              <Button
-                styleVariant="warning"
-                type="submit"
-                onClick={() => disconnectChannel()}>
+              <Button styleVariant="warning" type="submit" onClick={() => disconnectChannel()}>
                 Disconnect Channel
               </Button>
             </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './RequirementsDialog.module.scss';
 import close from 'assets/images/icons/close.svg';
+import {Button, SettingsModal} from '@airyhq/components';
 
 type RequirementsDialogProps = {
   onClose: () => void;
@@ -9,7 +10,7 @@ type RequirementsDialogProps = {
 
 export const RequirementsDialog = (props: RequirementsDialogProps) => {
   return (
-    <>
+    <SettingsModal style={{maxWidth: '582px'}} title="Connect Messenger" close={() => props.onClose()}>
       <div className={styles.backgroundContainer}>
         <div className={styles.container}>
           <button className={styles.closeButton} onClick={() => props.onClose()}>
@@ -37,12 +38,12 @@ export const RequirementsDialog = (props: RequirementsDialogProps) => {
             </p>
           </div>
           <div className={styles.button}>
-            <button type="button" onClick={() => props.onAddChannel()}>
+            <Button styleVariant='normal' type='button' onClick={() => props.onAddChannel()}>
               I&apos;m ready to connect
-            </button>
+            </Button>
           </div>
         </div>
       </div>
-    </>
+    </SettingsModal>
   );
 };

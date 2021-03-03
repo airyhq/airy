@@ -36,15 +36,19 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
 
   return (
     <section className={styles.messengerContainer}>
-      {!!conversations && (
-        <section className={styles.messengerContainerMiddlePanel}>
-          <ConversationList />
-        </section>
-      )}
-
       <Route
         path={[`${match.url}/conversations/:conversationId`, `${match.url}`]}
-        render={props => <MessengerContainer {...props} />}
+        render={props => (
+          <>
+            {!!conversations && (
+              <section className={styles.messengerContainerMiddlePanel}>
+                <ConversationList />
+              </section>
+            )}
+
+            <MessengerContainer {...props} />
+          </>
+        )}
       />
     </section>
   );

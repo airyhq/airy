@@ -1,8 +1,8 @@
 import React from 'react';
 import {Channel} from 'httpclient';
 import {LinkButton} from '@airyhq/components';
-import styles from './index.module.scss';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
+import styles from './index.module.scss';
 
 type SourceInfoProps = {
   source: string;
@@ -11,8 +11,9 @@ type SourceInfoProps = {
   placeholderImage?: JSX.Element;
   isConnected: string;
   onAddChannelClick?: () => void;
-  onChannelClick?: (channel: Channel) => void;
   onSourceInfoClick?: () => void;
+  onMoreChannelsClick?: () => void;
+  onChannelClick?: (channel: Channel) => void;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
@@ -41,16 +42,16 @@ const SourceInfo = (props: SourceInfoProps) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
-                        {source === 'facebook' && channel.metadata.imageUrl ? (
+                        {channel.metadata?.imageUrl ? (
                           <img
-                            src={channel.metadata.imageUrl}
-                            alt={channel.metadata.name}
+                            src={channel.metadata?.imageUrl}
+                            alt={channel.metadata?.name}
                             className={styles.facebookImage}
                           />
                         ) : (
                           <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
                         )}
-                        <div className={styles.connectedChannelName}>{channel.metadata.name}</div>
+                        <div className={styles.connectedChannelName}>{channel.metadata?.name}</div>
                         {isPhoneNumberSource() && (
                           <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>
                         )}
@@ -61,7 +62,7 @@ const SourceInfo = (props: SourceInfoProps) => {
               </div>
               <div className={styles.extraChannel}>
                 {hasExtraChannels && (
-                  <LinkButton>
+                  <LinkButton onClick={props.onMoreChannelsClick}>
                     +{channels.length - channelsToShow} {props.isConnected}
                   </LinkButton>
                 )}

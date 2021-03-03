@@ -169,6 +169,41 @@ spec:
                 name: api-admin
                 port:
                   number: 80
+          - path: /templates.create
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.update
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.list
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.delete
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.info
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
           - path: /channels.facebook.connect
             pathType: Prefix
             backend:

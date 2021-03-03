@@ -8,6 +8,7 @@ ts_web_library(
     deps = [
         "//lib/typescript/types",
         "@npm//@types/node",
+        "@npm//camelcase-keys",
     ],
 )
 

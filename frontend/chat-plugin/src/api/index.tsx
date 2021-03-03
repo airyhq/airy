@@ -3,13 +3,13 @@ import {setResumeTokenInStorage} from '../storage';
 
 declare const window: {
   airy: {
-    h: string;
-    cid: string;
-    no_tls: boolean;
+    host: string;
+    channelId: string;
+    noTLS: boolean;
   };
 };
 
-const API_HOST = window.airy ? window.airy.h : 'chatplugin.airy';
+const API_HOST = window.airy ? window.airy.host : 'chatplugin.airy';
 
 export const sendMessage = (message: TextContent | SuggestionResponse, token: string) => {
   return fetch(`//${API_HOST}/chatplugin.send`, {

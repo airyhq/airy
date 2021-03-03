@@ -25,15 +25,17 @@ body.appendChild(anchor);
 
 declare const window: {
   airy: {
-    h: string;
-    cid: string;
-    no_tls: boolean;
+    host: string;
+    channelId: string;
+    welcomeMessage: {};
+    noTLS: boolean;
   };
 };
 
-if (window.airy.cid.length) {
+if (window.airy.channelId.length) {
   new AiryWidget({
-    channelId: window.airy.cid,
+    channelId: window.airy.channelId,
+    welcomeMessage: window.airy.welcomeMessage,
   }).render(anchor);
 } else {
   console.log(

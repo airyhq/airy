@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {Route, RouteComponentProps, Switch} from 'react-router-dom';
+
 import {listChannels} from '../../actions/channel';
 import {getClientConfig} from '../../actions/config';
 import {StateModel} from '../../reducers/index';
@@ -14,6 +15,8 @@ import FacebookConnect from './ChannelsMainPage/Sources/FacebookConnect';
 import ChannelsList from '../Channels/ConnectedChannelsList/ChannelsList';
 import {CHANNELS_FACEBOOK_ROUTE} from '../../routes/routes';
 import {CHANNELS_CONNECTED_ROUTE} from '../../routes/routes';
+import ChatPluginConnect from './ChannelsMainPage/Sources/ChatPluginConnect';
+import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../routes/routes';
 
 const mapDispatchToProps = {
   listChannels,
@@ -31,7 +34,9 @@ type ChannelsConnectProps = {} & ConnectedProps<typeof connector> & RouteCompone
 
 const Channels = (props: ChannelsConnectProps) => {
   useEffect(() => {
-    props.listChannels();
+    if (props.channels.length == 0) {
+      props.listChannels();
+    }
     props.getClientConfig();
     setPageTitle('Channels');
   }, []);
@@ -46,6 +51,7 @@ const Channels = (props: ChannelsConnectProps) => {
     <Switch>
       <Route path={[`${CHANNELS_FACEBOOK_ROUTE}/:channelId?`]} component={FacebookConnect} />
       <Route path={[`${CHANNELS_CONNECTED_ROUTE}/:source?`]} component={ChannelsList} />
+      <Route path={[`${CHANNELS_CHAT_PLUGIN_ROUTE}/:channelId?`]} component={ChatPluginConnect} />
       <Route path="/" render={renderChannels} />
     </Switch>
   );

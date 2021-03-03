@@ -71,7 +71,6 @@
 .connectedChannelData {
   @include font-base;
   display: flex;
-  align-items: center;
   margin: 4px;
   align-items: flex-start;
   border: none;
@@ -106,12 +105,16 @@
 
 .connectedChannelName {
   min-width: 168px;
-  height: 24px;
   margin: 0 4px 0 4px;
   max-width: 200px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  margin-right: 7px;
+}
+
+.channelId {
+  padding-top: 10px;
 }
 
 .channelButton {

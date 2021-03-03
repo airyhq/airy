@@ -89,14 +89,23 @@ public class TemplatesController {
 
     @PostMapping("/templates.update")
     ResponseEntity<?> updateTemplate(@RequestBody @Valid UpdateTemplateRequestPayload payload) throws JsonProcessingException {
-        final Template template = stores.getTemplate(payload.getName());
+        final Template template = stores.getTemplate(payload.getId().toString());
 
         if (template == null) {
             return ResponseEntity.notFound().build();
         }
 
-        template.setContent(payload.getName());
-        template.setContent(objectMapper.writeValueAsString(payload.getContent()));
+        if (payload.getName() != null) {
+            template.setName(payload.getName());
+        }
+
+        if (payload.getContent() != null) {
+            template.setContent(payload.getContent());
+        }
+
+        if (payload.getVariables() != null) {
+            template.setVariables(objectMapper.writeValueAsString(payload.getVariables()));
+        }
 
         try {
             stores.storeTemplate(template);

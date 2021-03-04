@@ -20,7 +20,7 @@ const DialogChannel: React.FunctionComponent<IProps> = ({onClose, animate, child
   };
 
   return (
-    <Fragment
+    <div
       {...dialogVisible}
       timeout={animate ? 200 : 0}
       classNames={{exit: styles.fadeTransition}}
@@ -37,7 +37,7 @@ const DialogChannel: React.FunctionComponent<IProps> = ({onClose, animate, child
           </button>
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

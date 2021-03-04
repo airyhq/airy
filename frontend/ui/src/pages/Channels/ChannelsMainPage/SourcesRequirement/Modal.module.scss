@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .btn-openModal {
+    background: #2c2c2c;
+    color: #eee;
+    font-size: 1rem;
+    margin: 2rem;
+    padding: .5rem 1.8rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  .modal-wrapper {
+    background: #fff;
+    width: 80%;
+    max-width: 800px;
+    margin: 4rem auto;
+    transition: all .5s ease;
+  }
+  
+  .modal-header {
+    background: #2c2c2c;
+    color: #e9e9e9;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .modal-header span {
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .modal-content {
+    padding: 1.5rem 1rem;
+  }
+  
+  .modal-body {
+    margin-bottom: 1rem;
+  }
+  
+  .modal-body h4 {
+    font-size: 1.8rem;
+    color: #DD501D;
+  }
+  
+  .modal-body p {
+    font-size: 1rem;
+    background: #eee;
+    color: #333;
+    padding: 1rem;
+    margin: 1rem 0 2rem 0;
+  }
+  
+  .modal-footer button {
+    display: block;
+    font-size: 1rem;
+    margin-left: auto;
+    padding: 0.5rem 1.8rem;
+    background: #DD501D;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  .back-drop {
+    background: rgba(63, 61, 61, 0.692);
+    height: 100%;
+    position: fixed;
+    transition: all 1.3s;
+    width: 100%;
+  }
+
+
+  @import 'assets/scss/colors.scss';
+
+.background {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    background-color: var(--color-text-gray);
+    opacity: 0.5;
+  }
+}
+
+.dialog {
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.dialogInner {
+  background-color: white;
+  border-radius: 8px;
+  padding: 64px;
+  position: relative;
+}
+
+.closeButton {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+  outline: none;
+  position:absolute;
+   top:8px; 
+   right:10px;
+  svg {
+    width: 14px;
+    height: 14px;
+    path {
+      fill: black;
+    }
+  }
+}
+
+.fadeTransition {
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+
+
+@import '../../../assets/scss/fonts.scss';
+@import '../../../assets/scss/colors.scss';
+.inviteWrapper {
+  width: 500px;
+}
+
+.headline {
+  @include font-xl;
+  font-weight: bold;
+}
+
+.firstMessage {
+  @include font-base;
+  margin: 30px 20px 20px 0px;
+}
+
+.secondMessage {
+  @include font-base;
+  margin: 30px 20px 20px 0px;
+}
+
+.thirdMessage {
+  @include font-base;
+  margin: 24px 0px 58px 0px;
+}

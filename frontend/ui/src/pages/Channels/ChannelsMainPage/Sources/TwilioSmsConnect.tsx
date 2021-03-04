@@ -3,16 +3,19 @@ import styles from './TwilioSmsConnect.module.scss';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
-import {Button} from '@airyhq/components';
-import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
+import {Button, Input} from '@airyhq/components';
+import {ReactComponent as EmptyImage} from 'assets/images/icons/plus-circle.svg';
 
 interface TwilioSmsProps {
   channelId?: string;
 }
 
 const TwilioSmsConnect = (props: RouteComponentProps<TwilioSmsProps>) => {
+  const {name, placeholder, required, height, onChange} = props;
+
   const [twilloNumberInput, setTwilloNumberInput] = useState('');
   const [twilloNameInput, setTwilloNameInput] = useState('');
+  const [twilloUrlInput, setTwilloUrlInput] = useState('');
 
   const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setTwilloNumberInput(e.target.value);
@@ -22,9 +25,13 @@ const TwilioSmsConnect = (props: RouteComponentProps<TwilioSmsProps>) => {
     setTwilloNameInput(e.target.value);
   };
 
+  const handleUrlInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setTwilloUrlInput(e.target.value);
+  };
+
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.headline}>Twilio SMS</h1>
+      <h1 className={styles.headline}>SMS</h1>
       <Link to={CHANNELS_ROUTE} className={styles.backButton}>
         <BackIcon className={styles.backIcon} />
         Back to channels
@@ -34,7 +41,7 @@ const TwilioSmsConnect = (props: RouteComponentProps<TwilioSmsProps>) => {
         <div className={styles.formContent}>
           <div className={styles.formContentNumber}>
             <p>Twilio Phone Number</p>
-            <input
+            <Input
               name="numberInput"
               placeholder="Purchased Number +158129485394"
               required={true}
@@ -43,9 +50,11 @@ const TwilioSmsConnect = (props: RouteComponentProps<TwilioSmsProps>) => {
               onChange={handleNumberInput}
             />
           </div>
-          <div className={styles.formImageCard}>
+
+          {/* TODO after Image upload is supported by backend */}
+          {/*<div className={styles.formImageCard}>
             <div className={styles.emptyLogo}>
-              <AddChannel />
+              <EmptyImage />
             </div>
             <div>
               <p className={styles.imageUploadText}>
@@ -59,11 +68,23 @@ const TwilioSmsConnect = (props: RouteComponentProps<TwilioSmsProps>) => {
             {' '}
             Internal use only: to differentiate between channels. In case you do not set an image, it will be a standard
             icon.
+  </div>*/}
+
+          <div className={styles.formContentNumber}>
+            <p>Image URL (optional)</p>
+            <Input
+              name="UrlInput"
+              placeholder="Add an URL"
+              required={false}
+              height={32}
+              value={twilloUrlInput}
+              onChange={handleUrlInput}
+            />
           </div>
 
           <div className={styles.formContentName}>
             <p>Add a Name (optional) </p>
-            <input
+            <Input
               name="nameInput"
               placeholder="SMS Acme Berlin"
               value={twilloNameInput}

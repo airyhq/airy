@@ -6,18 +6,17 @@ import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
 import {ChannelSource} from 'httpclient';
-import {TwilioModal} from '../SourcesModal/TwilioModal';
+//import TwilioModal from '../SourcesRequirement/TwilioRequirement';
+import Modal from '../SourcesRequirement/Modal';
 
 type TwilioSmsSourceProps = {twilloSmsSource: Channel[]};
 
 const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
   const channels = props.twilloSmsSource.filter((channel: Channel) => channel.source === 'twilio.sms');
 
-  const [modalPopUp, setmodalPopUp] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const connectTwilioChannel = () => {
-    setmodalPopUp(true);
-  };
+  const closeModalHandler = () => setShowModal(false);
 
   return (
     <>
@@ -28,11 +27,10 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           image={<SMSLogo />}
           displayButton={!channels.length}
           id={ChannelSource.twilioSMS}
-          onAddChannelClick={connectTwilioChannel}
           // onAddChannelClick={() => {
           //   props.history.push(CHANNELS_TWILIO_SMS_ROUTE);
           // }}
-          // onAddChannelClick={connectSmsChannel}
+          onAddChannelClick={() => setShowModal(true)}
         />
 
         <SourceInfo
@@ -49,8 +47,7 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           }}
         />
       </div>
-
-      {modalPopUp && <TwilioModal />}
+      {showModal && <Modal show={showModal} close={closeModalHandler} />}
     </>
   );
 };

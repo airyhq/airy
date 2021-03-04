@@ -1,8 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from './index.module.scss';
 import {ReactComponent as AddIcon} from 'assets/images/icons/plus-circle.svg';
-import {TwilioModal} from '../SourcesModal/TwilioModal';
-import {ChannelSource} from 'httpclient';
 
 type SourceDescriptionProps = {
   image: JSX.Element;
@@ -16,24 +14,8 @@ type SourceDescriptionProps = {
 >>>>>>> 0d3a4d38 (resolve source connect conflict)
   onAddChannelClick?: () => void;
 };
-console.log(ChannelSource.twilioSMS);
-const SourceDescription = (props: SourceDescriptionProps) => {
-  const [show, setShow] = useState(false);
 
-  const openModal = (id: string): JSX.Element => {
-    switch (id) {
-      case ChannelSource.twilioSMS:
-        return <TwilioModal />;
-      case ChannelSource.google:
-        break;
-      case ChannelSource.chatPlugin:
-        break;
-      case ChannelSource.facebook:
-        break;
-      case ChannelSource.twilioWhatsapp:
-        break;
-    }
-  };
+const SourceDescription = (props: SourceDescriptionProps) => {
   return (
     <>
       <div className={styles.requirementsDialogBackground}></div>

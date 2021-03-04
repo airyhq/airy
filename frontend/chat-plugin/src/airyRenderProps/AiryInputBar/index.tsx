@@ -1,70 +1,66 @@
-import React from 'react';
-import {useState, useEffect} from 'react';
+import React, {ChangeEvent, FormEvent, KeyboardEvent, createRef, useEffect} from 'react';
 import style from './index.module.scss';
 
 type Props = {
   sendMessage: (text: string) => void;
+  messageString: string;
+  setMessageString: (text: string) => void;
 };
 
 const AiryInputBar = (props: Props) => {
-  const [messageString, setMessageString] = useState('');
+  const textInputRef = createRef<HTMLTextAreaElement>();
 
   useEffect(() => {
-    setMessageString('');
+    textInputRef.current.selectionStart = props.messageString.length;
+    textInputRef.current.selectionEnd = props.messageString.length;
   }, []);
 
-  const resizeTextarea = e => {
-    if (e.target.style) {
-      e.target.style.height = '32px';
-      e.target.style.height = `${Math.min(e.target.scrollHeight, 128)}px`;
+  const resizeTextarea = () => {
+    const textArea = textInputRef.current;
+    if (textArea) {
+      const outerHeight = parseInt(window.getComputedStyle(textArea).height, 10);
+      const diff = outerHeight - textArea.clientHeight;
+      // Set this to 0 first to get the calculation correct. Sadly this is needed.
+      textArea.style.height = '0';
+      textArea.style.height = Math.min(128, textArea.scrollHeight + diff) + 'px';
     }
   };
 
-  const onSubmit = e => {
-    e.preventDefault();
-    if (messageString.length) {
-      setMessageString('');
-      props.sendMessage(messageString);
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (props.messageString.length) {
+      props.setMessageString('');
+      props.sendMessage(props.messageString);
     }
   };
 
-  const handleInputAndChange = e => {
-    const localValue = e.target.value;
-    setMessageString(localValue);
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    resizeTextarea();
+    props.setMessageString(event.target.value);
   };
 
-  const handleLocalChange = e => {
-    resizeTextarea(e);
-    handleInputAndChange(e);
-  };
-
-  const handleLocalOnInput = e => {
-    resizeTextarea(e);
-    handleInputAndChange(e);
-  };
-
-  const handleLocalKeyDown = e => {
-    resizeTextarea(e);
-    const localValue = e.target.value;
-    if (e.key === 'Enter') {
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    resizeTextarea();
+    if (event.key === 'Enter') {
+      const localValue = event.currentTarget.value;
       if (localValue.length) {
-        e.preventDefault();
-        setMessageString('');
+        event.preventDefault();
+        props.setMessageString('');
         props.sendMessage(localValue);
       }
     }
   };
 
   return (
-    <form className={style.inputBar} onSubmit={e => onSubmit(e)}>
+    <form className={style.inputBar} onSubmit={onSubmit}>
       <textarea
+        ref={textInputRef}
         className={style.textArea}
         placeholder={'Enter a message...'}
         autoFocus={true}
-        onChange={handleLocalChange}
-        onInput={handleLocalOnInput}
-        onKeyDown={handleLocalKeyDown}
-        value={messageString}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        value={props.messageString}
       />
       <button className={style.sendButton} type="submit">
         <svg width="32px" height="28px" version="1.1" viewBox="0 0 32 32">

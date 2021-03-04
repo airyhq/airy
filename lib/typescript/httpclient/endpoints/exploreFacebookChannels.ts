@@ -3,7 +3,7 @@ import {ChannelsPayload, ExploreChannelRequestPayload} from '../payload';
 const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';
 
-export default HttpClient.prototype.exploreFacebookChannels = async function(
+export default HttpClient.prototype.exploreFacebookChannels = async function (
   requestPayload: ExploreChannelRequestPayload
 ) {
   const response: ChannelsPayload = await this.doFetchFromBackend('facebook.channels.explore', requestPayload);

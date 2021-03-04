@@ -3,7 +3,7 @@ import {ChannelPayload, ConnectChannelRequestPayload} from '../payload';
 const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';
 
-export default HttpClient.prototype.connectFacebookChannel = async function(
+export default HttpClient.prototype.connectFacebookChannel = async function (
   requestPayload: ConnectChannelRequestPayload
 ) {
   const response: ChannelPayload = await this.doFetchFromBackend('channels.connect', camelcaseKeys(requestPayload));

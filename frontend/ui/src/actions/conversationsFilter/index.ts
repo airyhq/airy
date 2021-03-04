@@ -48,7 +48,7 @@ export const setFilter = (filter: ConversationFilter) => {
 };
 
 export const resetFilter = () => {
-  return function(dispatch: Dispatch<any>, state: () => StateModel) {
+  return function (dispatch: Dispatch<any>, state: () => StateModel) {
     dispatch(resetFilteredConversationAction());
     const currentFilter = state().data.conversations.filtered.currentFilter;
     const newFilter: ConversationFilter = {displayName: currentFilter.displayName};

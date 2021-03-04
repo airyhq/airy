@@ -48,7 +48,7 @@
     "cypress": "^6.5.0",
     "ejs-compiled-loader": "^1.1.0",
     "eslint": "^7.21.0",
-    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react": "^7.22.0",
     "express": "^4.17.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.2.0",

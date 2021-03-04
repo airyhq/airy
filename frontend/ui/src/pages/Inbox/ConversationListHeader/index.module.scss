@@ -19,7 +19,7 @@
   flex-direction: row;
   align-items: stretch;
   justify-content: flex-start;
-  height: 100px;
+  height: 42px;
   width: 100%;
   animation-name: searchFieldAnimation;
   animation-duration: 500ms;
@@ -77,5 +77,11 @@
   margin-top: 7px;
   path {
     fill: var(--color-text-gray);
+    width: 22px;
+    height: 22px;
+    padding-top: 2px;
+    margin-right: 4px;
+    position: relative;
+    top: 8px;
   }
 }

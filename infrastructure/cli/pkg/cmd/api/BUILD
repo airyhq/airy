@@ -8,7 +8,7 @@ go_library(
         "login.go",
         "signup.go",
     ],
-    importpath = "cli/cmd/api",
+    importpath = "cli/pkg/cmd/api",
     visibility = ["//visibility:public"],
     deps = [
         "//lib/go/httpclient",

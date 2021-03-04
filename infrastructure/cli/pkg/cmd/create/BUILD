@@ -16,7 +16,7 @@ go_library(
         "helm.go",
         ":data",  # keep
     ],
-    importpath = "cli/cmd/create",
+    importpath = "cli/pkg/cmd/create",
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_spf13_cobra//:cobra",

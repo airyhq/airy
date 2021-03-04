@@ -8,7 +8,7 @@ go_library(
     srcs = ["main.go"],
     importpath = "cli",
     visibility = ["//visibility:private"],
-    deps = ["//infrastructure/cli/cmd"],
+    deps = ["//infrastructure/cli/pkg/cmd"],
 )
 
 go_binary(

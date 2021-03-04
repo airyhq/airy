@@ -21,7 +21,7 @@ import {
 } from './payload';
 
 import {TagColor, Tag, Message} from './model';
-import {connectChannelMapper} from './mappers/connectChannelMapper';
+
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 

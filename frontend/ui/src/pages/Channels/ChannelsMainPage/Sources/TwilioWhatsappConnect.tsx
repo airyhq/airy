@@ -1,20 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './TwilioSmsConnect.module.scss';
 import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
+import {Channel} from 'httpclient';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
 import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
 import {connectChannelTwilioWhatsapp} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';
-
+import {allChannels} from '../../../../selectors/channels';
 interface TwilioWhatsappRouterProps {
   channelId?: string;
 }
 const mapDispatchToProps = {connectChannelTwilioWhatsapp};
 const mapStateToProps = (state: StateModel) => ({
-  channel: state.data.channels,
+  channels: Object.values(allChannels(state)),
 });
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -24,6 +25,20 @@ const TwilioWhatsappConnect = (props: TwilioWhatsappProps) => {
   const [whatsappNumberInput, setWhatsappNumberInput] = useState('');
   const [whatsappNameInput, setWhatsappNameInput] = useState('');
   const [whatsappUrlInput, setWhatsappUrlInput] = useState('');
+  const channelId = props.match.params.channelId;
+
+  useEffect(() => {
+    if (channelId !== 'new_account') {
+      const channel = props.channels.find((channel: Channel) => {
+        return channel.id === channelId;
+      });
+      if (channel) {
+        setWhatsappNumberInput(channel.sourceChannelId || '');
+        setWhatsappUrlInput(channel.metadata.imageUrl || '');
+        setWhatsappNameInput(channel.metadata.name || '');
+      }
+    }
+  }, [props.channels, channelId]);
 
   const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setWhatsappNumberInput(e.target.value);

@@ -39,7 +39,7 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           placeholderImage={<SMSLogo />}
           isConnected="connected"
           onAddChannelClick={() => {
-            props.history.push(CHANNELS_TWILIO_SMS_ROUTE);
+            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/new_account');
           }}
           onChannelClick={(channel: Channel) => {
             props.history.push({

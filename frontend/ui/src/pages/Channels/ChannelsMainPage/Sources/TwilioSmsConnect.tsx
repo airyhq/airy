@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './TwilioSmsConnect.module.scss';
 import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
+import {Channel} from 'httpclient';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
 import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
 import {connectChannelTwilioSms} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
+import {allChannels} from '../../../../selectors/channels';
 import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';
 
 // type TwilioSmsRouterProps = {
@@ -25,7 +27,7 @@ interface TwilioSmsRouterProps {
 
 const mapDispatchToProps = {connectChannelTwilioSms};
 const mapStateToProps = (state: StateModel) => ({
-  channel: state.data.channels,
+  channels: Object.values(allChannels(state)),
 });
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -35,6 +37,20 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
   const [smsNumberInput, setSmsNumberInput] = useState('');
   const [smsNameInput, setSmsNameInput] = useState('');
   const [smsUrlInput, setSmsUrlInput] = useState('');
+  const channelId = props.match.params.channelId;
+
+  useEffect(() => {
+    if (channelId !== 'new_account') {
+      const channel = props.channels.find((channel: Channel) => {
+        return channel.id === channelId;
+      });
+      if (channel) {
+        setSmsNumberInput(channel.sourceChannelId || '');
+        setSmsUrlInput(channel.metadata.imageUrl || '');
+        setSmsNameInput(channel.metadata.name || '');
+      }
+    }
+  }, [props.channels, channelId]);
 
   const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSmsNumberInput(e.target.value);
@@ -57,7 +73,8 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
       })
       .then(() => {
         props.history.push(CHANNELS_TWILIO_SMS_ROUTE_CONNECTED);
-      });
+      })
+      .then(() => setSmsNumberInput || setSmsUrlInput || setSmsNameInput(''));
   };
 
   const connectTwilioSms = (e: React.ChangeEvent<HTMLFormElement>): void => {

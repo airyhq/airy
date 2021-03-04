@@ -38,7 +38,7 @@ const TwilioWhatsAppSource = (props: TwilioWhatsAppSourceProps & RouteComponentP
           placeholderImage={<WhatsappLogo />}
           isConnected="connected"
           onAddChannelClick={() => {
-            props.history.push(CHANNELS_TWILIO_WHATSAPP_ROUTE);
+            props.history.push(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account');
           }}
           onChannelClick={(channel: Channel) => {
             props.history.push({

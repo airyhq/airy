@@ -2,16 +2,12 @@
 @import '../../assets/scss/colors.scss';
 
 .tagsWrapper {
-  .cardRaised {
-    width: 100%;
-    background: #fff;
-  }
-
   display: block;
   padding-left: 96px;
   padding-top: 88px;
   width: 100%;
   overflow-y: auto;
+  min-height: calc(100vh - 170px);
 }
 
 .organizationSectionHeadline {
@@ -36,13 +32,20 @@
 }
 
 .cardRaised {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
   padding: 1.5em;
   border-radius: 8px 0px 8px 0px;
-  width: 94%;
   color: var(--color-text-contrast);
+
   h2 {
     @include font-m;
   }
+
   &.accountStatus {
     padding-bottom: 5px;
     & > div {
@@ -52,12 +55,14 @@
       color: var(--color-airy-blue);
     }
   }
+
   &.airySupport {
     padding-bottom: 0.5em;
     a {
       color: #212529;
       @include font-base;
     }
+
     .faqLink {
       padding-top: 12px;
       margin-top: 10px;
@@ -146,33 +151,6 @@
   text-align: left;
   padding-bottom: 41px;
   padding-left: 2px;
-}
-
-.emptyStateTitle {
-  position: relative;
-  left: 40%;
-  padding-top: 170px;
-  padding-bottom: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  h1 {
-    color: var(--color-airy-blue);
-    @include font-m;
-  }
-
-  p {
-    color: var(--color-text-gray);
-    @include font-base;
-    padding-top: 8px;
-    padding-bottom: 32px;
-    width: 25%;
-  }
-
-  img {
-    margin-bottom: 40px;
-  }
 }
 
 .noResultHeadline {

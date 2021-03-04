@@ -95,7 +95,7 @@ airy create [flags]
 
 ```
   -h, --help              help for create
-      --provider string   One of the supported providers (aws|local). Default is aws
+      --provider string   One of the supported providers (aws|local|minikube). Default is aws (default "local")
 ```
 
 #### Options inherited from parent commands

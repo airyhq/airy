@@ -14,7 +14,10 @@ go_library(
     x_defs = {
         "ProjectDir": "{PROJECT_DIR}",
     },
-    deps = ["@com_github_spf13_cobra//:cobra"],
+    deps = [
+        "//infrastructure/cli/pkg/cmd",
+        "@com_github_spf13_cobra//:cobra",
+    ],
 )
 
 go_binary(

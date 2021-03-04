@@ -20,6 +20,8 @@ var (
 
 func init() {
 	CreateCmd.Flags().StringVar(&provider, "provider", "local", "One of the supported providers (aws|local|minikube). Default is aws")
+	CreateCmd.MarkFlagRequired("provider")
+
 }
 
 func create(cmd *cobra.Command, args []string) {
@@ -27,7 +29,7 @@ func create(cmd *cobra.Command, args []string) {
 
 	clientset, err := providers.GetProvider(providers.Provider(provider))
 	if err != nil {
-		fmt.Println("provision cluster failed: ", err)
+		fmt.Println("provisioning cluster failed: ", err)
 		os.Exit(1)
 	}
 

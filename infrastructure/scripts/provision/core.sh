@@ -14,7 +14,7 @@ wait-for-service-account
 
 echo "Deploying Airy Core with the ${AIRY_VERSION} image tag"
 
-wget -qnv https://airy-core-binaries.s3.amazonaws.com/1041-integration/linux/amd64/airy
+wget -qnv https://airy-core-binaries.s3.amazonaws.com/"${AIRY_VERSION}"/linux/amd64/airy
 chmod +x airy
 mv airy /usr/local/bin/
 airy init

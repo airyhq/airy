@@ -36,7 +36,7 @@
     "@bazel/ibazel": "^0.14.0",
     "@bazel/typescript": "^3.2.0",
     "@svgr/webpack": "^5.4.0",
-    "@types/lodash-es": "^4.17.3",
+    "@types/lodash-es": "^4.17.4",
     "@types/react-window-infinite-loader": "^1.0.3",
     "@types/resize-observer-browser": "^0.1.5",
     "@typescript-eslint/eslint-plugin": "^4.11.0",

@@ -36,6 +36,7 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
             height={32}
             autoFocus={true}
             onChange={props.handleNumberInput}
+            fontClass="font-s"
           />
         </div>
 
@@ -47,6 +48,7 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
             required={false}
             height={32}
             onChange={props.handleUrlInput}
+            fontClass="font-s"
           />
         </div>
 
@@ -58,6 +60,7 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
             required={false}
             height={32}
             onChange={props.handleNameInput}
+            fontClass="font-s"
           />
         </div>
         <Button type="submit" styleVariant="normal" disabled={props.twilloNumberInput.trim().length == 0}>

@@ -13,7 +13,6 @@ declare global {
     airy: {
       host: string;
       channelId: string;
-      noTLS: boolean;
     };
   }
 }

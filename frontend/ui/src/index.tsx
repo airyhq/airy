@@ -10,11 +10,12 @@ import './index.scss';
 import './assets/scss/reset.scss';
 import '@airyhq/components/dist/main.css';
 
+console.log("public path", process.env.PUBLIC_PATH);
 const render = async () => {
   const App = (await import('./App')).default;
   const RootContainer = () => (
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_PATH}>
         <App />
       </BrowserRouter>
     </Provider>

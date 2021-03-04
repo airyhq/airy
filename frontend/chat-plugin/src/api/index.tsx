@@ -5,7 +5,6 @@ declare const window: {
   airy: {
     host: string;
     channelId: string;
-    noTLS: boolean;
   };
 };
 

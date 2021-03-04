@@ -32,18 +32,16 @@
                       text: "Let's start",
                       postbackData: '/start',
                     },
-                  },                      
+                  },
                 ],
               },
             },
           },
         };
-        // Only to be used for local installations
-        w[n].noTLS = true;
         var f = d.getElementsByTagName(s)[0],
           j = d.createElement(s);
         j.async = true;
-        j.src = '//' + w[n].host + '/s.js';
+        j.src = '//' + w[n].host + '/chatplugin/s.js';
         f.parentNode.insertBefore(j, f);
       })(window, document, 'script', 'airy');
     </script>

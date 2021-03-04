@@ -2,11 +2,10 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: 'airy-core-ui'
-  namespace: default
   namespace: {{ .Values.global.namespace }}
   annotations:
     kubernetes.io/ingress.class: "traefik"
-    traefik.frontend.rule.type: PathPrefixStrip  
+    traefik.frontend.rule.type: PathPrefixStrip
 spec:
   rules:
     - host: {{ .Values.global.ingress.host }}

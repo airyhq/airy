@@ -25,7 +25,9 @@ web_app(
     entry = "frontend/chat-plugin/src/iframe.js",
     index = ":development.html",
     module_deps = module_deps,
-    show_bundle_report = True,
+    output = {
+        "publicPath": "/chatplugin/"
+    }
 )
 
 web_library(
@@ -39,7 +41,7 @@ web_library(
     module_deps = module_deps,
     output = {
         "libraryExport": "AiryWidget",
-        "publicPath": "/",
+        "publicPath": "/chatplugin/",
         "filename": "s.js",
     },
 )

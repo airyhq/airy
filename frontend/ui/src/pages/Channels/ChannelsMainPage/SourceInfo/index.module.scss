@@ -29,15 +29,11 @@
   &:hover {
     background-color: var(--color-background-blue);
     cursor: pointer;
+    button {
+      background-color: var(--color-background-blue);
+      cursor: pointer;
+    }
   }
-}
-
-.connectedChannelBoxButton {
-  width: 100%;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  outline: none;
 }
 
 .connectedChannel {
@@ -60,6 +56,7 @@
 .extraChannel {
   display: flex;
   min-width: 88px;
+  width: 100%;
   min-height: 20px;
   padding: 0 24px 0 24px;
   cursor: pointer;

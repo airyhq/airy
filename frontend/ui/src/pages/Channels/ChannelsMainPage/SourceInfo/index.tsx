@@ -36,7 +36,7 @@ const SourceInfo = (props: SourceInfoProps) => {
                 {channels.length} {props.connected}
               </p>
             </div>
-            <div className={styles.connectedChannelBox} onClick={() => props.onSourceInfoClick()}>
+            <div className={styles.connectedChannelBox}>
               <div className={styles.connectedChannel}>
                 {channels.slice(0, channelsToShow).map((channel: Channel) => {
                   return (
@@ -60,9 +60,9 @@ const SourceInfo = (props: SourceInfoProps) => {
                   );
                 })}
               </div>
-              <div className={styles.extraChannel}>
+              <div className={styles.extraChannel} onClick={() => props.onSourceInfoClick()}>
                 {hasExtraChannels && (
-                  <LinkButton onClick={props.onMoreChannelsClick}>
+                  <LinkButton onClick={() => props.onSourceInfoClick()}>
                     +{channels.length - channelsToShow} {props.isConnected}
                   </LinkButton>
                 )}

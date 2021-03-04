@@ -8,7 +8,7 @@ import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 
 import {env} from '../../../../env';
-import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import {allChannels} from '../../../../selectors/channels';
@@ -76,7 +76,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
   const updateConnection = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     props.updateChannel({channelId: channelId, name: displayName, imageUrl: imageUrl}).then(() => {
-      props.history.replace(CHANNELS_CHAT_PLUGIN_ROUTE);
+      props.history.replace(CHANNELS_CONNECTED_ROUTE + '/chat_plugin');
     });
   };
 

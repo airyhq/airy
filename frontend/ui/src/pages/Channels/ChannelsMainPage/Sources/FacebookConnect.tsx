@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './FacebookConnect.module.scss';
-import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
-import {CHANNELS_CONNECTED_ROUTE, CHANNELS_ROUTE} from '../../../../routes/routes';
-import {Button, Input} from '@airyhq/components';
+import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {Button, Input, LinkButton} from '@airyhq/components';
 import {connectFacebookChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import {Channel, ConnectChannelFacebookRequestPayload} from 'httpclient';
@@ -31,6 +31,7 @@ const FacebookConnect = (props: FacebookProps) => {
   const [name, setName] = useState(channel?.metadata?.name || '');
   const [image, setImage] = useState(channel?.metadata?.imageUrl || '');
   const [buttonTitle, setButtonTitle] = useState('Connect Page');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const buttonStatus = () => {
     if (id.length > 5 && token != '') {
@@ -60,18 +61,22 @@ const FacebookConnect = (props: FacebookProps) => {
         }),
     };
 
-    connectFacebookChannel(connectPayload).then((response: Channel) => {
-      props.history.replace(CHANNELS_CONNECTED_ROUTE + '/facebook');
-    });
+    connectFacebookChannel(connectPayload)
+      .then((response: Channel) => {
+        props.history.replace(CHANNELS_CONNECTED_ROUTE + '/facebook');
+      })
+      .catch((error: Error) => {
+        setErrorMessage('Please check entered value');
+      });
   };
 
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>Facebook Messenger</h1>
-      <Link to={CHANNELS_ROUTE} className={styles.backButton}>
+      <LinkButton onClick={props.history.goBack} type="button">
         <BackIcon className={styles.backIcon} />
-        Back to channels
-      </Link>
+        Back
+      </LinkButton>
       <div className={styles.inputContainer}>
         <Input
           id="id"
@@ -81,7 +86,8 @@ const FacebookConnect = (props: FacebookProps) => {
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setId(event.target.value)}
           minLength={6}
           required={true}
-          height={33}></Input>
+          height={33}
+          hint={errorMessage}></Input>
         <Input
           id="token"
           label="Token"
@@ -89,7 +95,8 @@ const FacebookConnect = (props: FacebookProps) => {
           value={token}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setToken(event.target.value)}
           required={true}
-          height={33}></Input>
+          height={33}
+          hint={errorMessage}></Input>
         <Input
           id="name"
           label="Name (optional)"

@@ -25,6 +25,7 @@
   margin-bottom: 16px;
   cursor: pointer;
   text-decoration: none;
+  max-width: 200px;
   &:hover {
     text-decoration: underline;
   }
@@ -95,11 +96,17 @@
 .headlineRow {
   display: flex;
   place-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
   button {
     align-self: center;
     height: 40px;
-    width: 40px;
+    min-width: 40px;
     margin-left: 16px;
     background: var(--color-blue-white);
     border: none;
@@ -110,6 +117,7 @@
   button:hover {
     background-color: var(--color-background-blue);
   }
+
   button:last-child {
     background: var(--color-airy-blue);
     svg {
@@ -123,7 +131,32 @@
   }
 }
 
-.buttons {
+.searchFieldButtons {
   display: flex;
-  flex-direction: row;
+  align-items: center;
+}
+
+.searchField {
+  min-width: 300px;
+  animation-name: searchFieldAnimation;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes searchFieldAnimation {
+  0% {
+    margin-left: 0px;
+    width: 0%;
+  }
+  100% {
+    margin-left: 16px;
+    width: 200px;
+  }
+}
+
+.noSearchMatch {
+  @include font-m;
+  font-weight: bold;
+  color: var(--color-text-contrast);
+  margin-bottom: 4px;
 }

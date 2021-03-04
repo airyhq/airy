@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {disconnectChannel} from '../../../actions/channel';
 import {SettingsModal, Button} from '@airyhq/components';
@@ -11,7 +11,7 @@ import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
 import styles from './ChannelListItem.module.scss';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {CHANNELS_FACEBOOK_ROUTE} from '../../../routes/routes';
+import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_FACEBOOK_ROUTE} from '../../../routes/routes';
 
 type ChannelItemProps = {
   channel: Channel;
@@ -32,26 +32,38 @@ const ChannelItem = (props: ChannelItemProps) => {
     channelId: channel.id,
   };
 
-  useEffect(() => {
-    console.log('render');
-  }, [channel]);
-
   const channelIcon = (channel: Channel) => {
     switch (channel.source) {
       case ChannelSource.facebook:
-        if (channel.metadata.imageUrl) {
-          return <img className={styles.facebookPageLogo} src={channel.metadata.imageUrl} />;
+        if (channel?.metadata?.imageUrl) {
+          return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
         } else {
           return <FacebookLogo />;
         }
       case ChannelSource.google:
-        return <GoogleLogo />;
+        if (channel?.metadata?.imageUrl) {
+          return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
+        } else {
+          return <GoogleLogo />;
+        }
       case ChannelSource.twilioSMS:
-        return <SMSLogo />;
+        if (channel?.metadata?.imageUrl) {
+          return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
+        } else {
+          return <SMSLogo />;
+        }
       case ChannelSource.twilioWhatsapp:
-        return <WhatsappLogo />;
+        if (channel?.metadata?.imageUrl) {
+          return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
+        } else {
+          return <WhatsappLogo />;
+        }
       case ChannelSource.chatPlugin:
-        return <AiryLogo />;
+        if (channel?.metadata?.imageUrl) {
+          return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
+        } else {
+          return <AiryLogo />;
+        }
       default:
         return <AiryLogo />;
     }
@@ -68,11 +80,18 @@ const ChannelItem = (props: ChannelItemProps) => {
       case ChannelSource.twilioWhatsapp:
 
       case ChannelSource.chatPlugin:
+        return {pathname: CHANNELS_CHAT_PLUGIN_ROUTE + `/${channel.id}`, state: {channel: channel}};
     }
   };
 
-  const disconnectChannel = () => {
-    props.disconnectChannel(channel.source, disconnectChannelRequestPayload);
+  const disconnectChannel = (channelSource: string) => {
+    let source: string;
+    if (channelSource === 'chat_plugin') {
+      source = 'chatplugin';
+    } else {
+      source = channel.source;
+    }
+    props.disconnectChannel(source, disconnectChannelRequestPayload);
     setDeletePopupVisible(false);
   };
 
@@ -118,7 +137,7 @@ const ChannelItem = (props: ChannelItemProps) => {
               <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(false)}>
                 Cancel
               </Button>
-              <Button styleVariant="warning" type="submit" onClick={() => disconnectChannel()}>
+              <Button styleVariant="warning" type="submit" onClick={() => disconnectChannel(channel.source)}>
                 Disconnect Channel
               </Button>
             </div>

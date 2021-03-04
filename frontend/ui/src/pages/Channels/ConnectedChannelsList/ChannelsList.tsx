@@ -6,11 +6,13 @@ import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {ReactComponent as FilterIcon} from 'assets/images/icons/filter-alt.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as AddChannelIcon} from 'assets/images/icons/plus.svg';
+import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {StateModel} from './../../../reducers';
 import {Channel} from 'httpclient';
 import {allChannels} from './../../../selectors/channels';
 import {ChannelSource} from 'httpclient';
 import ChannelListItem from './ChannelListItem';
+import {SearchField} from '@airyhq/components';
 import styles from './ChannelsList.module.scss';
 
 type ChannelsListProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<{source: string}>;
@@ -25,16 +27,22 @@ const ChannelsList = (props: ChannelsListProps) => {
   const {channels} = props;
   const [name, setName] = useState('');
   const [path, setPath] = useState('');
+  const [searchText, setSearchText] = useState('');
+  const [showingSearchField, setShowingSearchField] = useState(false);
   const source = props.match.params.source;
+
+  const filteredChannels = channels
+    .filter((channel: Channel) => channel?.source === source)
+    .filter((channel: Channel) => channel?.metadata?.name?.toLowerCase().includes(searchText.toLowerCase()));
 
   useEffect(() => {
     setPageTitle();
-  }, [source]);
+  }, [source, channels]);
 
   const setPageTitle = () => {
     switch (source) {
       case ChannelSource.facebook:
-        setName('Facebook');
+        setName('Facebook Messenger');
         setPath(CHANNELS_FACEBOOK_ROUTE);
         break;
       case ChannelSource.google:
@@ -51,27 +59,55 @@ const ChannelsList = (props: ChannelsListProps) => {
         break;
       case ChannelSource.chatPlugin:
         setName('Chat Plugin');
-        setPath(CHANNELS_CHAT_PLUGIN_ROUTE);
+        setPath(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
         break;
     }
   };
 
-  const filteredChannels = channels.filter((channel: Channel) => channel.source === source);
+  const searchFieldState = () => {
+    if (showingSearchField) {
+      setShowingSearchField(false);
+      setSearchText('');
+    } else {
+      setShowingSearchField(true);
+    }
+  };
+
+  const channelSorter = (channelA: Channel, channelB: Channel) => {
+    if (channelA.metadata.name.toLowerCase() < channelB.metadata.name.toLowerCase()) {
+      return -1;
+    }
+    if (channelA.metadata.name.toLowerCase() > channelB.metadata.name.toLowerCase()) {
+      return 1;
+    }
+    return 0;
+  };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.headlineRow}>
         <h1 className={styles.headline}>{name}</h1>
-        <div className={styles.buttons}>
-          <button>
+        <div className={styles.searchFieldButtons}>
+          <div className={styles.searchField}>
+            {showingSearchField && (
+              <SearchField
+                placeholder="Search"
+                value={searchText}
+                setValue={(value: string) => setSearchText(value)}
+                autoFocus={true}
+                resetClicked={() => setSearchText('')}
+              />
+            )}
+          </div>
+          <div className={styles.buttons}>
+            {/* <button>
             <FilterIcon />
-          </button>
-          <button>
-            <SearchIcon />
-          </button>
-          <button onClick={() => props.history.push(path)}>
-            <AddChannelIcon />
-          </button>
+          </button> */}
+            <button onClick={() => searchFieldState()}>{showingSearchField ? <CloseIcon /> : <SearchIcon />}</button>
+            <button onClick={() => props.history.push(path)}>
+              <AddChannelIcon />
+            </button>
+          </div>
         </div>
       </div>
       <Link to={CHANNELS_ROUTE} className={styles.backButton}>
@@ -79,12 +115,18 @@ const ChannelsList = (props: ChannelsListProps) => {
         Back to channels
       </Link>
       <div className={styles.channelsList}>
-        {filteredChannels &&
-          filteredChannels.map((channel: Channel) => (
+        {filteredChannels.length > 0 ? (
+          filteredChannels.sort(channelSorter).map((channel: Channel) => (
             <div key={channel.id} className={styles.connectedChannel}>
               <ChannelListItem channel={channel} />
             </div>
-          ))}
+          ))
+        ) : (
+          <div className={styles.emptyState}>
+            <h1 className={styles.noSearchMatch}>Result not found.</h1>
+            <p>Try to search for a different term.</p>
+          </div>
+        )}
       </div>
     </div>
   );

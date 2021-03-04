@@ -10,7 +10,10 @@
 }
 
 .channelLogo {
+  display: flex;
+  align-items: center;
   height: 40px;
+  width: 40px;
   margin-right: 8px;
 }
 
@@ -28,9 +31,9 @@
   padding: 20.5px 0;
 }
 
-.facebookPageLogo {
-  width: 40px;
-  height: 40px;
+.imageUrlLogo {
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
 }
 

@@ -10,8 +10,6 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	watch "k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
-	"os"
 )
 
 const airyConfigMap = "airy-config-map"
@@ -24,24 +22,12 @@ type Helm struct {
 	clientset *kubernetes.Clientset
 }
 
-func New(kubeConfigPath string, version string, namespace string) Helm {
-	config, err := clientcmd.BuildConfigFromFlags("", kubeConfigPath)
-	if err != nil {
-		fmt.Println("Building kubeconfig failed with error: ", err)
-		os.Exit(1)
-	}
-
-	clientSet, clientSetErr := kubernetes.NewForConfig(config)
-	if clientSetErr != nil {
-		fmt.Println("Building kubernetes client failed: ", err)
-		os.Exit(1)
-	}
-
+func New(clientset *kubernetes.Clientset, version string, namespace string) Helm {
 	return Helm{
 		name:      "helm-runner",
 		namespace: namespace,
 		version:   version,
-		clientset: clientSet,
+		clientset: clientset,
 	}
 }
 

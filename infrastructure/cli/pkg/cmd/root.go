@@ -5,11 +5,11 @@ import (
 	"os"
 	"path"
 
-	"cli/cmd/api"
-	"cli/cmd/config"
-	"cli/cmd/create"
-	"cli/cmd/status"
-	"cli/cmd/ui"
+	"cli/pkg/cmd/api"
+	"cli/pkg/cmd/config"
+	"cli/pkg/cmd/create"
+	"cli/pkg/cmd/status"
+	"cli/pkg/cmd/ui"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"

@@ -3,7 +3,7 @@ import {ChannelPayload, ConnectChatPluginRequestPayload} from '../payload';
 const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';
 
-export default HttpClient.prototype.connectChatPluginChannel = async function(
+export default HttpClient.prototype.connectChatPluginChannel = async function (
   requestPayload: ConnectChatPluginRequestPayload
 ) {
   const response: ChannelPayload = await this.doFetchFromBackend(

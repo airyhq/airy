@@ -16,19 +16,17 @@ go_library(
         "helm.go",
         ":data",  # keep
     ],
-    importpath = "cli/cmd/create",
+    importpath = "cli/pkg/cmd/create",
     visibility = ["//visibility:public"],
     deps = [
+        "//infrastructure/cli/pkg/providers",
         "@com_github_spf13_cobra//:cobra",
-        "@com_github_spf13_viper//:viper",
         "@io_k8s_api//batch/v1:go_default_library",
         "@io_k8s_api//core/v1:go_default_library",
         "@io_k8s_api//rbac/v1:go_default_library",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
         "@io_k8s_apimachinery//pkg/watch:go_default_library",
         "@io_k8s_client_go//kubernetes:go_default_library",
-        "@io_k8s_client_go//tools/clientcmd:go_default_library",
-        "@io_k8s_client_go//util/homedir:go_default_library",
     ],
 )
 

@@ -3,7 +3,7 @@ import {ChannelPayload, UpdateChannelRequestPayload} from '../payload';
 const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';
 
-export default HttpClient.prototype.updateChannel = async function(requestPayload: UpdateChannelRequestPayload) {
+export default HttpClient.prototype.updateChannel = async function (requestPayload: UpdateChannelRequestPayload) {
   const response: ChannelPayload = await this.doFetchFromBackend(`channels.update`, {
     channel_id: requestPayload.channelId,
     name: requestPayload.name,

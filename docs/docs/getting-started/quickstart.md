@@ -5,6 +5,8 @@ sidebar_label: Quickstart
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import TLDR from "@site/src/components/TLDR";
+import ButtonBox from "@site/src/components/ButtonBox";
+import RocketSVG from "@site/static/icons/rocket.svg";
 
 <TLDR>
 
@@ -22,13 +24,12 @@ directly in Apache Kafka.
 - [Step 3: Use the HTTP API to list conversations](#step-3-use-the-http-api-to-list-conversations)
 - [Step 4: Consume directly from Apache Kafka](#step-4-consume-directly-from-apache-kafka)
 
-:::info
-
-To get going with the Quickstart, [you must install Airy
-first](/getting-started/installation/introduction.md). Once you installed Airy and have the
-CLI up and running you are good to go.
-
-:::
+<ButtonBox
+icon={() => <RocketSVG />}
+title='Did you already install the Airy CLI?'
+description='To get going with the Quickstart, you must install Airy first. Once the CLI is up and running you are good to go.'
+link='/getting-started/installation/introduction'
+/>
 
 ## Step 1: How to setup your first source
 

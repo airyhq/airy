@@ -1,0 +1,139 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.textContent {
+  max-width: 620px;
+  white-space: pre-wrap;
+}
+
+.normalVariant {
+  @include font-base;
+}
+
+.smallVariant {
+  width: 230px;
+  margin: 4px 0;
+  @include font-s;
+}
+
+.messageStyle {
+  border-radius: 8px;
+  display: flex;
+  align-self: flex-end;
+  display: inline-flex;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 620px;
+  padding: 10px;
+  background: var(--color-background-blue);
+  color: #212428;
+  position: relative;
+  text-align: left;
+}
+
+.messageStyleShadow {
+  @extend .messageStyle;
+  box-shadow: 0 2px 4px 0 #1b4469;
+}
+
+.messageStyle.single {
+  @include font-base;
+  border-radius: 8px;
+  line-height: 24px;
+}
+
+.messageStyle.top {
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.messageStyle.bottom {
+  border-radius: 8px;
+}
+
+.messageStyle.bottom::after,
+.messageStyle.single::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: -7px;
+  transform: rotateZ(-60deg);
+  border-top: 21px solid var(--color-background-blue);
+  border-left: 14px solid transparent;
+  border-right: 13px solid transparent;
+}
+
+.messageStyle.middle {
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.messageStyle.isMember {
+  border-radius: 8px;
+  background: var(--color-airy-blue);
+  color: white;
+  a {
+    color: white;
+  }
+}
+
+.messageStyle.isMember.single {
+  border-radius: 8px;
+}
+
+.messageStyle.isMember.top {
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.messageStyle.isMember.bottom {
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.messageStyle.isMember.bottom::after,
+.messageStyle.single.isMember::after {
+  bottom: 0px;
+  right: 0px;
+  left: auto;
+  border-top: 20px solid var(--color-airy-blue);
+  border-left: 0 solid transparent;
+  border-right: 20px solid transparent;
+  transform: rotateZ(180deg);
+  position: absolute;
+}
+
+.messageStyle.isMember.middle {
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.messageStyle.isMember.emoji {
+  background: none;
+  font-size: 32px;
+}
+
+.messageStyle.emoji:after {
+  content: none;
+  border: none;
+}
+
+.messageLink {
+  color: black;
+  text-decoration: underline;
+}
+
+.messageStyle.isMember .messageLink {
+  color: rgb(255, 255, 255);
+}

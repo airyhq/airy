@@ -11,12 +11,14 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 
 import {StateModel} from '../../../reducers';
 import {getTextMessagePayload} from 'httpclient';
+import {listTemplates} from '../../../actions/templates';
 
 const mapDispatchToProps = {sendMessages};
 
 const mapStateToProps = (state: StateModel) => {
   return {
     messages: state.data.messages.all,
+    listTemplates,
   };
 };
 
@@ -29,6 +31,8 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const [input, setInput] = useState('');
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+
+  console.log('isShowingTemplateModal', isShowingTemplateModal);
 
   const textAreaRef = useRef(null);
   const emojiDiv = createRef<HTMLDivElement>();
@@ -94,63 +98,73 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       document.removeEventListener('click', handleEmojiOutsideClick);
     };
 
+    useEffect(() => {
+      if (isShowingTemplateModal) {
+        window.addEventListener('click', handleClickTemplates);
+
+        return () => {
+          window.removeEventListener('click', handleClickTemplates);
+        };
+      }
+    }, [isShowingTemplateModal]);
+
     const handleClickTemplates = () => {
-      setIsShowingTemplateModal(true);
+      setIsShowingTemplateModal(!isShowingTemplateModal);
     };
 
     return (
       <div className={styles.messageActionsContainer}>
-        <button
-          className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
-          type="button"
-          onClick={() => handleEmojiDrawer()}>
-          <div className={styles.actionToolTip}>Emojis</div>
-          <Smiley aria-hidden />
-        </button>
-        <button
-          className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
-          type="button"
-          onClick={() => handleClickTemplates()}>
-          <div className={styles.actionToolTip}>Templates</div>
-          <TemplateAlt aria-hidden />
-        </button>
+        <>
+          {isShowingTemplateModal && <TemplateSelector />}
+          <button
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
+            type="button"
+            onClick={() => handleEmojiDrawer()}>
+            <div className={styles.actionToolTip}>Emojis</div>
+            <Smiley aria-hidden />
+          </button>
+          <button
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
+            type="button"
+            onClick={() => handleClickTemplates()}>
+            <div className={styles.actionToolTip}>Templates</div>
+            <TemplateAlt aria-hidden />
+          </button>
+        </>
       </div>
     );
   };
 
   return (
-    <div>
-      <TemplateSelector />
-      <form className={`${styles.container} ${styles.flexWrap}`}>
-        <div className={`${styles.messageWrap} ${styles.flexWrap}`}>
-          <div className={styles.inputWrap}>
-            <textarea
-              className={styles.messageTextArea}
-              ref={textAreaRef}
-              rows={1}
-              name="inputBar"
-              placeholder="Enter a message..."
-              autoFocus={true}
-              value={input}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-            />
+    <form className={`${styles.container} ${styles.flexWrap}`}>
+      <div className={`${styles.messageWrap} ${styles.flexWrap}`}>
+        <div className={styles.inputWrap}>
+          <textarea
+            className={styles.messageTextArea}
+            ref={textAreaRef}
+            rows={1}
+            name="inputBar"
+            placeholder="Enter a message..."
+            autoFocus={true}
+            value={input}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
+        <InputOptions />
+      </div>
+      <div className={styles.sendDiv}>
+        <button
+          type="button"
+          className={`${styles.sendButton} ${input && styles.sendButtonActive}`}
+          onClick={handleClick}
+          disabled={input.trim().length == 0}>
+          <div className={styles.sendButtonText}>
+            <Paperplane />
           </div>
-          <InputOptions />
-        </div>
-        <div className={styles.sendDiv}>
-          <button
-            type="button"
-            className={`${styles.sendButton} ${input && styles.sendButtonActive}`}
-            onClick={handleClick}
-            disabled={input.trim().length == 0}>
-            <div className={styles.sendButtonText}>
-              <Paperplane />
-            </div>
-          </button>
-        </div>
-      </form>
-    </div>
+        </button>
+      </div>
+    </form>
   );
 };
 

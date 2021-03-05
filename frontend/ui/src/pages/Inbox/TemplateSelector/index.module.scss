@@ -10,8 +10,104 @@
   position: absolute;
   bottom: 78px;
   right: 72px;
-  left: 24px;
+  left: 14px;
   top: 24px;
   background-color: white;
-  z-index: 10;
+}
+
+.topLine {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 16px;
+}
+
+.searchField {
+  flex-grow: 1;
+}
+
+.templateList {
+  max-height: 500px; // Old Firefox fallback
+  max-height: calc(100vh - 230px);
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -24px;
+}
+
+.tempatePreviewName {
+  @include font-s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.templatePreviewWrapper {
+  position: relative;
+  border: 0;
+  background-color: white;
+}
+
+.templatePreview {
+  cursor: pointer;
+  margin-left: 24px;
+  margin-bottom: 16px;
+  width: 250px;
+  overflow: hidden;
+  position: relative;
+}
+
+.clickOverlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.notFoundMessage {
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.notFoundImage {
+  flex-grow: 1;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.notFoundText {
+  h2 {
+    font-weight: 700;
+  }
+
+  p {
+    color: var(--color-text-gray);
+    margin-bottom: 32px;
+  }
+}
+
+.emptySeparator {
+  width: 40px;
+  height: 4px;
+  background-color: var(--color-accent-magenta);
+  margin-bottom: 8px;
+}
+
+.emptyMessageText {
+  text-align: left;
+  margin: 0 3rem 1rem 3rem;
+  h1 {
+    @include font-l;
+    font-weight: 900;
+    margin-bottom: 8px;
+    color: var(--color-airy-dark-blue);
+  }
+  p {
+    color: var(--color-text-gray);
+    margin-bottom: 16px;
+  }
 }

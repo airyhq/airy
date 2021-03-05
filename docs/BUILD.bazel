@@ -3,16 +3,6 @@ load("@com_github_airyhq_bazel_tools//lint:prettier.bzl", "prettier")
 
 prettier(
     name = "prettier",
-    srcs = glob([
-        "**/*.md",
-        "**/*.js",
-        "**/*.jsx",
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.scss",
-        "**/*.css",
-    ]),
-    config = "//:.prettierrc.json",
     ignore = "//:.prettierignore",
 )
 

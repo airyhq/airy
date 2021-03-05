@@ -2,7 +2,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "providers",
-    srcs = ["providers.go"],
+    srcs = ["provider.go"],
     importpath = "cli/pkg/providers",
     visibility = ["//visibility:public"],
     deps = [

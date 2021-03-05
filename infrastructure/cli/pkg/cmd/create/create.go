@@ -29,11 +29,7 @@ func init() {
 func create(cmd *cobra.Command, args []string) {
 	fmt.Println("⚙️  Creating core with provider", provider)
 
-	provider, err := providers.GetProvider(providers.ProviderName(provider))
-	if err != nil {
-		fmt.Println("could not get provider: ", err)
-		os.Exit(1)
-	}
+	provider := providers.MustGet(providers.ProviderName(provider))
 
 	context, err := provider.Provision()
 	if err != nil {

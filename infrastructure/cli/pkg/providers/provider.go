@@ -20,21 +20,21 @@ type Provider interface {
 	Provision() (kube.KubeCtx, error)
 }
 
-func GetProvider(providerName ProviderName) (Provider, error) {
+func MustGet(providerName ProviderName) Provider {
 	if providerName == Minikube {
-		return &minikube.Minikube{}, nil
+		return &minikube.Minikube{}
 	}
 
 	if providerName == Aws {
-		return &aws.Aws{}, nil
+		return &aws.Aws{}
 	}
 
 	// TODO remove this provider in #1041
 	if providerName == Local {
-		return &LocalProvider{}, nil
+		return &LocalProvider{}
 	}
 
-	return nil, fmt.Errorf("unknown provider \"%v\"", providerName)
+	panic(fmt.Sprintf("unknown provider \"%v\"", providerName))
 }
 
 // TODO remove this provider in #1041

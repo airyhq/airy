@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"cli/pkg/k8s_cluster"
+	"cli/pkg/kube"
 	"cli/pkg/providers/aws"
 	"cli/pkg/providers/minikube"
 	"fmt"

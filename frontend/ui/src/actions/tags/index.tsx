@@ -19,7 +19,7 @@ export const filterTagAction = createAction(SET_TAG_FILTER, resolve => (filter: 
 export const errorTagAction = createAction(ERROR_TAG, resolve => (status: string) => resolve(status));
 
 export function listTags() {
-  return function(dispatch: Dispatch<any>) {
+  return function (dispatch: Dispatch<any>) {
     return HttpClientInstance.listTags().then((response: Tag[]) => {
       dispatch(fetchTagAction(response));
     });
@@ -41,13 +41,13 @@ export function createTag(requestPayload: CreateTagRequestPayload) {
 }
 
 export function updateTag(tag: Tag) {
-  return function(dispatch: Dispatch<any>) {
+  return function (dispatch: Dispatch<any>) {
     HttpClientInstance.updateTag(tag).then(() => dispatch(editTagAction(tag)));
   };
 }
 
 export function deleteTag(id: string) {
-  return function(dispatch: Dispatch<any>) {
+  return function (dispatch: Dispatch<any>) {
     HttpClientInstance.deleteTag(id).then(() => {
       dispatch(deleteTagAction(id));
     });
@@ -55,13 +55,13 @@ export function deleteTag(id: string) {
 }
 
 export function filterTags(filter: string) {
-  return function(dispatch: Dispatch<any>) {
+  return function (dispatch: Dispatch<any>) {
     dispatch(filterTagAction(filter));
   };
 }
 
 export function errorTag(status: string) {
-  return function(dispatch: Dispatch<any>) {
+  return function (dispatch: Dispatch<any>) {
     dispatch(errorTagAction(status));
   };
 }

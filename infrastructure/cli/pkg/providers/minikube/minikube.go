@@ -1,14 +1,19 @@
 package minikube
 
 import (
+	"cli/pkg/k8s_cluster"
 	"fmt"
-	"k8s.io/client-go/kubernetes"
 	"os"
 )
 
-func Create() (*kubernetes.Clientset, error) {
+type Minikube struct {
+}
+
+func (m *Minikube) Provision() (k8s_cluster.Context, error) {
+	// Use this to
+	//clientcmd.NewNonInteractiveClientConfig()
 	fmt.Println("minikube provider not yet implemented")
 	os.Exit(1)
-	return nil, nil
+	return k8s_cluster.Context{}, nil
 }
 

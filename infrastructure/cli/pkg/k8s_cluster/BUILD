@@ -1,14 +1,11 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "providers",
-    srcs = ["providers.go"],
-    importpath = "cli/pkg/providers",
+    name = "k8s_cluster",
+    srcs = ["context.go"],
+    importpath = "cli/pkg/k8s_cluster",
     visibility = ["//visibility:public"],
     deps = [
-        "//infrastructure/cli/pkg/k8s_cluster",
-        "//infrastructure/cli/pkg/providers/aws",
-        "//infrastructure/cli/pkg/providers/minikube",
         "@io_k8s_client_go//kubernetes:go_default_library",
         "@io_k8s_client_go//tools/clientcmd:go_default_library",
     ],

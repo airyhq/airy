@@ -1,41 +1,46 @@
 package providers
 
 import (
+	"cli/pkg/k8s_cluster"
 	"cli/pkg/providers/aws"
 	"cli/pkg/providers/minikube"
 	"fmt"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
 	"os"
 )
 
-type Provider string
+type ProviderName string
 
 const (
-	Local    Provider = "local"
-	Minikube Provider = "minikube"
-	Aws      Provider = "aws"
+	Local    ProviderName = "local"
+	Minikube ProviderName = "minikube"
+	Aws      ProviderName = "aws"
 )
 
-func GetProvider(providerName Provider) (*kubernetes.Clientset, error) {
+type Provider interface {
+	Provision() (k8s_cluster.Context, error)
+}
+
+func GetProvider(providerName ProviderName) (Provider, error) {
 	if providerName == Minikube {
-		return minikube.Create()
+		return &minikube.Minikube{}, nil
 	}
 
 	if providerName == Aws {
-		return aws.Create()
+		return &aws.Aws{}, nil
 	}
 
 	// TODO remove this provider in #1041
 	if providerName == Local {
-		config, err := clientcmd.BuildConfigFromFlags("", os.Getenv("KUBE_CONFIG_PATH"))
-		if err != nil {
-			fmt.Println("Building kubeconfig failed with error: ", err)
-			os.Exit(1)
-		}
-
-		return kubernetes.NewForConfig(config)
+		return &LocalProvider{}, nil
 	}
 
 	return nil, fmt.Errorf("unknown provider \"%v\"", providerName)
+}
+
+// TODO remove this provider in #1041
+type LocalProvider struct {
+}
+
+func (l *LocalProvider) Provision() (k8s_cluster.Context, error) {
+	return k8s_cluster.New(os.Getenv("KUBE_CONFIG_PATH"), ""), nil
 }

@@ -10,6 +10,7 @@ import (
 var (
 	provider  string
 	namespace string
+	version   string
 	CreateCmd = &cobra.Command{
 		Use:   "create",
 		Short: "Creates an instance of Airy Core",
@@ -46,7 +47,7 @@ func create(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	helm := New(clientset, "develop", namespace)
+	helm := New(clientset, version, namespace)
 	if err := helm.Setup(); err != nil {
 		fmt.Println("setting up Helm failed with err: ", err)
 		os.Exit(1)

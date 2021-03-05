@@ -18,6 +18,9 @@ go_library(
     ],
     importpath = "cli/pkg/cmd/create",
     visibility = ["//visibility:public"],
+    x_defs = {
+        "version": "{STABLE_VERSION}",
+    },
     deps = [
         "//infrastructure/cli/pkg/providers",
         "@com_github_spf13_cobra//:cobra",

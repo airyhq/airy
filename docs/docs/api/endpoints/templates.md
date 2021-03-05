@@ -37,7 +37,7 @@ for more information.
 }
 ```
 
-## Listw
+## List
 
 `POST /templates.list`
 

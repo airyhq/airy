@@ -6,10 +6,8 @@ go_library(
     importpath = "cli/pkg/providers",
     visibility = ["//visibility:public"],
     deps = [
-        "//infrastructure/cli/pkg/k8s_cluster",
+        "//infrastructure/cli/pkg/kube:k8s_cluster",
         "//infrastructure/cli/pkg/providers/aws",
         "//infrastructure/cli/pkg/providers/minikube",
-        "@io_k8s_client_go//kubernetes:go_default_library",
-        "@io_k8s_client_go//tools/clientcmd:go_default_library",
     ],
 )

@@ -5,5 +5,5 @@ go_library(
     srcs = ["aws.go"],
     importpath = "cli/pkg/providers/aws",
     visibility = ["//visibility:public"],
-    deps = ["//infrastructure/cli/pkg/k8s_cluster"],
+    deps = ["//infrastructure/cli/pkg/kube"],
 )

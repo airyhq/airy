@@ -17,7 +17,7 @@ const (
 )
 
 type Provider interface {
-	Provision() (k8s_cluster.Context, error)
+	Provision() (kube.KubeCtx, error)
 }
 
 func GetProvider(providerName ProviderName) (Provider, error) {
@@ -41,6 +41,6 @@ func GetProvider(providerName ProviderName) (Provider, error) {
 type LocalProvider struct {
 }
 
-func (l *LocalProvider) Provision() (k8s_cluster.Context, error) {
-	return k8s_cluster.New(os.Getenv("KUBE_CONFIG_PATH"), ""), nil
+func (l *LocalProvider) Provision() (kube.KubeCtx, error) {
+	return kube.New(os.Getenv("KUBE_CONFIG_PATH"), ""), nil
 }

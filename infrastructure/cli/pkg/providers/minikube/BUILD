@@ -5,5 +5,5 @@ go_library(
     srcs = ["minikube.go"],
     importpath = "cli/pkg/providers/minikube",
     visibility = ["//visibility:public"],
-    deps = ["//infrastructure/cli/pkg/k8s_cluster"],
+    deps = ["//infrastructure/cli/pkg/kube"],
 )

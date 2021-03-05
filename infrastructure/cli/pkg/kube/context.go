@@ -1,23 +1,23 @@
-package k8s_cluster
+package kube
 
 import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-type Context struct {
+type KubeCtx struct {
 	kubeConfigPath string
 	contextName string
 }
 
-func New(kubeConfigPath, contextName string) Context {
-	return Context{
+func New(kubeConfigPath, contextName string) KubeCtx {
+	return KubeCtx{
 		kubeConfigPath: kubeConfigPath,
 		contextName: contextName,
 	}
 }
 
-func (c *Context) GetClientSet() (*kubernetes.Clientset, error) {
+func (c *KubeCtx) GetClientSet() (*kubernetes.Clientset, error) {
 	if c.contextName == "" {
 		config, err := clientcmd.BuildConfigFromFlags("", c.kubeConfigPath)
 		if err != nil {

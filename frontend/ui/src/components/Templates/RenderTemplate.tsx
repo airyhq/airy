@@ -1,10 +1,10 @@
 import React from 'react';
 import {TextTemplate} from './TextTemplate';
-import {Template} from 'httpclient';
+//import {Template} from 'httpclient';
 
 type Props = {
   styleVariant?: 'small' | 'normal';
-  template: Template;
+  template: any;
 };
 
 const RenderTemplate = ({styleVariant, template}: Props) => {

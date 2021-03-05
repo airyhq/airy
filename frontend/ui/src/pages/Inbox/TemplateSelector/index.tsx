@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
@@ -21,14 +21,46 @@ const mapStateToProps = (state: StateModel) => {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const TemplateSelector = ({listTemplates, templates}: ConnectedProps<typeof connector>) => {
+type Props = {
+  onClose: () => void;
+  selectTemplate: (t: Template) => void;
+} & ConnectedProps<typeof connector>;
+
+const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: Props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [templatesList, setTemplatesList] = useState(templates);
   const [loading, setLoading] = useState(true);
+  const componentRef = useRef(null);
 
-  console.log('loading', loading);
+  const keyDown = useCallback(
+    e => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    },
+    [onClose]
+  );
 
-  //add loading + loading check not found
+  const clickedOutside = useCallback(
+    e => {
+      if (componentRef.current === null || componentRef.current.contains(e.target)) {
+        return;
+      }
+
+      onClose();
+    },
+    [onClose]
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyDown);
+    document.addEventListener('click', clickedOutside);
+
+    return () => {
+      document.removeEventListener('keydown', keyDown);
+      document.removeEventListener('click', clickedOutside);
+    };
+  }, [keyDown, clickedOutside]);
 
   console.log('templates', templates);
 
@@ -82,7 +114,7 @@ const TemplateSelector = ({listTemplates, templates}: ConnectedProps<typeof conn
   };
 
   return (
-    <div className={styles.component}>
+    <div className={styles.component} ref={componentRef}>
       {!loading && templates.length === 0 && searchQuery === '' ? (
         renderEmpty()
       ) : (
@@ -104,12 +136,16 @@ const TemplateSelector = ({listTemplates, templates}: ConnectedProps<typeof conn
               {templatesList &&
                 templatesList.map((template, id) => {
                   return (
-                    <div className={styles.templatePreview} key={id}>
+                    <div
+                      className={styles.templatePreview}
+                      key={id}
+                      onClick={() => {
+                        selectTemplate(template);
+                      }}>
                       <div className={styles.tempatePreviewName}>{template.name}</div>
                       <RenderTemplate styleVariant="small" template={template} />
-                      <button type="button" className={styles.templatePreviewWrapper}>
-                        <div className={styles.clickOverlay} />
-                      </button>
+
+                      <div className={styles.clickOverlay} />
                     </div>
                   );
                 })}

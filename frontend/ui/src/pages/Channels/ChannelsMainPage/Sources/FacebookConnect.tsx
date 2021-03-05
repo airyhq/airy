@@ -62,10 +62,10 @@ const FacebookConnect = (props: FacebookProps) => {
     };
 
     connectFacebookChannel(connectPayload)
-      .then((response: Channel) => {
+      .then(() => {
         props.history.replace(CHANNELS_CONNECTED_ROUTE + '/facebook');
       })
-      .catch((error: Error) => {
+      .catch(() => {
         setErrorMessage('Please check entered value');
       });
   };

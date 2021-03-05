@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ChatPluginSource from './Sources/ChatPluginSource';
 import FacebookSource from './Sources/FacebookSource';
 import TwilioSmsSource from './Sources/TwilioSmsSource';
@@ -12,7 +12,6 @@ import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {Channel, ConfigPayload} from 'httpclient';
 
 import styles from './index.module.scss';
-import {stringify} from 'querystring';
 
 type ChannelsConnectProps = {
   channels: Channel[];
@@ -21,6 +20,8 @@ type ChannelsConnectProps = {
 
 const ChannelsMainPage = (props: ChannelsConnectProps & RouteComponentProps) => {
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
+
+  useEffect(() => {}, [props.channels]);
 
   const openRequirementsDialog = (source: string): JSX.Element => {
     switch (source) {

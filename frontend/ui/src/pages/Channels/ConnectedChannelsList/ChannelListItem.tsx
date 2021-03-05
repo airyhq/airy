@@ -74,11 +74,11 @@ const ChannelItem = (props: ChannelItemProps) => {
       case ChannelSource.facebook:
         return {pathname: CHANNELS_FACEBOOK_ROUTE + `/${channel.id}`, state: {channel: channel}};
       case ChannelSource.google:
-
+        break;
       case ChannelSource.twilioSMS:
-
+        break;
       case ChannelSource.twilioWhatsapp:
-
+        break;
       case ChannelSource.chatPlugin:
         return {pathname: CHANNELS_CHAT_PLUGIN_ROUTE + `/${channel.id}`, state: {channel: channel}};
     }

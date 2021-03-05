@@ -3,7 +3,6 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {CHANNELS_FACEBOOK_ROUTE, CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_ROUTE} from './../../../routes/routes';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
-import {ReactComponent as FilterIcon} from 'assets/images/icons/filter-alt.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as AddChannelIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
@@ -100,9 +99,6 @@ const ChannelsList = (props: ChannelsListProps) => {
             )}
           </div>
           <div className={styles.buttons}>
-            {/* <button>
-            <FilterIcon />
-          </button> */}
             <button onClick={() => searchFieldState()}>{showingSearchField ? <CloseIcon /> : <SearchIcon />}</button>
             <button onClick={() => props.history.push(path)}>
               <AddChannelIcon />

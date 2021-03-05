@@ -15,7 +15,7 @@ alias(
 
 fix_prettier(
     name = "fix_prettier",
-    ignore = ":.prettierignore",
+    ignore = "//:.prettierignore",
 )
 
 multirun(

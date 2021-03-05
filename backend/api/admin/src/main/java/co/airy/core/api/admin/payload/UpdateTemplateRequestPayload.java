@@ -16,6 +16,6 @@ public class UpdateTemplateRequestPayload {
     @NotNull
     private UUID id;
     private String name;
-    private String content;
+    private JsonNode content;
     private JsonNode variables;
 }

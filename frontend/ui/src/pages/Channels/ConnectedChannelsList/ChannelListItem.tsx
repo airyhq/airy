@@ -19,6 +19,7 @@ import {
 
 type ChannelItemProps = {
   channel: Channel;
+  source: string;
 } & ConnectedProps<typeof connector> &
   RouteComponentProps<{channelId: string}>;
 
@@ -31,6 +32,10 @@ const connector = connect(null, mapDispatchToProps);
 const ChannelItem = (props: ChannelItemProps) => {
   const {channel} = props;
   const [deletePopupVisible, setDeletePopupVisible] = useState(false);
+
+  const isPhoneNumberSource = () => {
+    return channel.source === 'twilio.sms' || channel.source === 'twilio.whatsapp';
+  };
 
   const disconnectChannelRequestPayload = {
     channelId: channel.id,
@@ -77,7 +82,7 @@ const ChannelItem = (props: ChannelItemProps) => {
           <div className={styles.channelNameButton}>
             <div className={styles.container}>
               <div className={styles.channelName}>{channel.metadata?.name}</div>
-              <div className={styles.channelId}>{channel.sourceChannelId}</div>
+              {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
               {channel.connected && (
                 <div className={styles.connectedHint}>
                   Connected <CheckMark />

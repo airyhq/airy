@@ -33,39 +33,23 @@ const ChannelItem = (props: ChannelItemProps) => {
   };
 
   const channelIcon = (channel: Channel) => {
-    switch (channel.source) {
-      case ChannelSource.facebook:
-        if (channel?.metadata?.imageUrl) {
-          return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
-        } else {
+    if (channel?.metadata?.imageUrl) {
+      return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
+    } else {
+      switch (channel.source) {
+        case ChannelSource.facebook:
           return <FacebookLogo />;
-        }
-      case ChannelSource.google:
-        if (channel?.metadata?.imageUrl) {
-          return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
-        } else {
+        case ChannelSource.google:
           return <GoogleLogo />;
-        }
-      case ChannelSource.twilioSMS:
-        if (channel?.metadata?.imageUrl) {
-          return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
-        } else {
+        case ChannelSource.twilioSMS:
           return <SMSLogo />;
-        }
-      case ChannelSource.twilioWhatsapp:
-        if (channel?.metadata?.imageUrl) {
-          return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
-        } else {
+        case ChannelSource.twilioWhatsapp:
           return <WhatsappLogo />;
-        }
-      case ChannelSource.chatPlugin:
-        if (channel?.metadata?.imageUrl) {
-          return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
-        } else {
+        case ChannelSource.chatPlugin:
           return <AiryLogo />;
-        }
-      default:
-        return <AiryLogo />;
+        default:
+          return <AiryLogo />;
+      }
     }
   };
 

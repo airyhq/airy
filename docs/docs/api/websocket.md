@@ -29,21 +29,21 @@ field informs the client of the kind of update that is encoded in the payload.
 
 ```json5
 {
-  "type": "message",
-  "payload": {
-    "conversation_id": "{UUID}",
-    "channel_id": "{UUID}",
-    "message": {
-      "id": "{UUID}",
-      "content": {"text": "Hello World"},
+  type: "message",
+  payload: {
+    conversation_id: "{UUID}",
+    channel_id: "{UUID}",
+    message: {
+      id: "{UUID}",
+      content: {text: "Hello World"},
       // source message payload
-      "delivery_state": "pending|failed|delivered",
+      delivery_state: "pending|failed|delivered",
       // delivery state of message, one of pending, failed, delivered
-      "sender_type": "{string/enum}",
+      sender_type: "{string/enum}",
       // See glossary
-      "sent_at": "{string}",
+      sent_at: "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-      "source": "{String}"
+      source: "{String}"
       // one of the possible sources
     }
   }
@@ -56,17 +56,17 @@ field informs the client of the kind of update that is encoded in the payload.
 
 ```json5
 {
-  "type": "metadata",
+  type: "metadata",
 
-  "payload": {
-    "subject": "conversation|channel|message",
-    "identifier": "conversation/channel/message id",
-    "metadata": {
+  payload: {
+    subject: "conversation|channel|message",
+    identifier: "conversation/channel/message id",
+    metadata: {
       // nested metadata object. I.e. for a conversation:
-      "contact": {
-        "displayName": "Grace"
+      contact: {
+        displayName: "Grace"
       },
-      "isUserTyping": true
+      isUserTyping: true
     }
   }
 }
@@ -76,13 +76,13 @@ field informs the client of the kind of update that is encoded in the payload.
 
 ```json5
 {
-  "type": "channel",
+  type: "channel",
 
-  "payload": {
-    "id": "{UUID}",
-    "source": "facebook",
-    "source_channel_id": "fb-page-id-1",
-    "connected": true // or false
+  payload: {
+    id: "{UUID}",
+    source: "facebook",
+    source_channel_id: "fb-page-id-1",
+    connected: true // or false
   }
 }
 ```

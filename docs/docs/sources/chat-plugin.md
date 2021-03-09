@@ -77,7 +77,7 @@ previous conversation using the [resume endpoint](#get-a-resume-token).
 
 ```json5
 {
-  "channel_id": "09816fe0-7950-40cb-bf60-adfa0d6d0679"
+  channel_id: "09816fe0-7950-40cb-bf60-adfa0d6d0679"
 }
 ```
 
@@ -85,8 +85,8 @@ previous conversation using the [resume endpoint](#get-a-resume-token).
 
 ```json5
 {
-  "token": "jwt",
-  "messages": []
+  token: "jwt",
+  messages: []
 }
 ```
 
@@ -94,20 +94,20 @@ previous conversation using the [resume endpoint](#get-a-resume-token).
 
 ```json5
 {
-  "token": "jwt",
-  "messages": [
+  token: "jwt",
+  messages: [
     {
-      "id": "{UUID}",
-      "content": {"text": "Hello World"},
+      id: "{UUID}",
+      content: {text: "Hello World"},
       // source message payload
-      "state": "{String}",
+      state: "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
-      "sender_type": "{string/enum}",
+      sender_type: "{string/enum}",
       // See glossary
-      "sent_at": "{string}",
+      sent_at: "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-      "metadata": {
-        "sentFrom": "iPhone"
+      metadata: {
+        sentFrom: "iPhone"
       }
       // metadata object of the message
     }
@@ -132,7 +132,7 @@ header.
 
 ```json5
 {
-  "resume_token": "jwt auth token"
+  resume_token: "jwt auth token"
 }
 ```
 
@@ -147,8 +147,8 @@ header.
 
 ```json5
 {
-  "message": {
-    "text": "{String}"
+  message: {
+    text: "{String}"
   }
 }
 ```
@@ -158,7 +158,7 @@ header.
 ```json5
 {
   id: "{UUID}",
-  "content": {"text": "Hello World"},
+  content: {text: "Hello World"},
   // source message payload
   state: "{String}",
   // delivery state of message, one of PENDING, FAILED, DELIVERED
@@ -166,8 +166,8 @@ header.
   // See glossary
   sent_at: "{string}",
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-  "metadata": {
-    "sentFrom": "iPhone"
+  metadata: {
+    sentFrom: "iPhone"
   }
   // metadata object of the message
 }
@@ -191,7 +191,7 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
 {
   message: {
     id: "{UUID}",
-    "content": {"text": "Hello World"},
+    content: {text: "Hello World"},
     // source message payload
     state: "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
@@ -199,8 +199,8 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
     // See glossary
     sent_at: "{string}",
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-    "metadata": {
-      "sentFrom": "iPhone"
+    metadata: {
+      sentFrom: "iPhone"
     }
     // metadata object of the message
   }

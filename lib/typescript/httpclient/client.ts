@@ -10,19 +10,21 @@ import {
   UntagConversationRequestPayload,
   MessagePayload,
   ListMessagesRequestPayload,
+  ConnectChatPluginRequestPayload,
+  UpdateChannelRequestPayload,
 } from './payload';
 
 import {Tag, Message} from './model';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
-const headers = {
-  Accept: 'application/json',
-};
-
 export function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
 }
+
+type FetchOptions = {
+  ignoreAuthToken?: boolean;
+};
 
 export class HttpClient {
   public readonly apiUrlConfig?: string;
@@ -61,8 +63,12 @@ export class HttpClient {
     };
   }
 
-  private async doFetchFromBackend(url: string, body?: Object): Promise<any> {
-    if (this.token) {
+  private async doFetchFromBackend(url: string, body?: Object, options?: FetchOptions): Promise<any> {
+    const headers = {
+      Accept: 'application/json',
+    };
+
+    if (options?.ignoreAuthToken != true && this.token) {
       headers['Authorization'] = `Bearer ${this.token}`;
     }
     if (!(body instanceof FormData)) {
@@ -90,6 +96,10 @@ export class HttpClient {
   public exploreFacebookChannels: (requestPayload: ExploreChannelRequestPayload) => Promise<any>;
 
   public connectFacebookChannel: (requestPayload: ConnectChannelRequestPayload) => Promise<any>;
+
+  public connectChatPluginChannel: (requestPayload: ConnectChatPluginRequestPayload) => Promise<any>;
+
+  public updateChannel: (requestPayload: UpdateChannelRequestPayload) => Promise<any>;
 
   public disconnectChannel: (source: string, requestPayload: DisconnectChannelRequestPayload) => Promise<any>;
 

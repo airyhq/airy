@@ -1,2 +1,3 @@
 docs/docs/cli/reference.md
 build/
+bazel-*

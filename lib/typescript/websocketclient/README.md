@@ -1,5 +1,4 @@
-
-### WebSocketClient Library 
+### WebSocketClient Library
 
 The WebSocketClient Library includes a WebSocket client for Airy's WebSocket API.
 
@@ -9,9 +8,9 @@ For each message that is delivered through the WebSocket, a method is called.
 
 For example:
 
-``` 
+```
 import { WebSocketClient} from 'websocketclient';
 
 const myInstance = new WebSocketClient(authtoken, {onMessage: (conversationId, channelId, message) => console.log(message)});
 
-``` 
+```

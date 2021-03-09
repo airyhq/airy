@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"cli/cmd"
+	"cli/pkg/cmd"
 	"os"
 	"path/filepath"
 	"sort"

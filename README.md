@@ -13,26 +13,25 @@
 [![License](https://img.shields.io/github/license/airyhq/airy)](https://github.com/airyhq/airy/blob/develop/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/airyhq/airy/projects)
 
-
 Airy Core is an open source, fully-featured, production ready messaging
 platform. With Airy you can process conversational data from a variety of
 sources:
 
- - **Facebook**
- - **WhatsApp**
- - **Google's Business Messages**
- - **SMS**
- - **Website Chat Plugins**
- - **Twilio**
- - **Your own conversational channels**
+- **Facebook**
+- **WhatsApp**
+- **Google's Business Messages**
+- **SMS**
+- **Website Chat Plugins**
+- **Twilio**
+- **Your own conversational channels**
 
 You can then use Airy to:
 
- - **Unify your messaging channels**
- - **Stream your conversational data wherever you want**
- - **Integrate with different NLP frameworks**
- - **Mediate open requests with Agents via our messaging UI**
- - **Analyze your conversations**
+- **Unify your messaging channels**
+- **Stream your conversational data wherever you want**
+- **Integrate with different NLP frameworks**
+- **Mediate open requests with Agents via our messaging UI**
+- **Analyze your conversations**
 
 Since Airy's infrastructure is built around Apache Kafka, it can process a large
 amount of conversations and messages simultaneously and stream the relevant

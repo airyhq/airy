@@ -27,11 +27,10 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class TemplatesController {
     private final Stores stores;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public TemplatesController(Stores stores, ObjectMapper objectMapper) {
+    public TemplatesController(Stores stores) {
         this.stores = stores;
-        this.objectMapper = objectMapper;
     }
 
     @PostMapping("/templates.create")
@@ -39,7 +38,7 @@ public class TemplatesController {
         final Template template = Template.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setName(payload.getName())
-                .setContent(payload.getContent())
+                .setContent(objectMapper.writeValueAsString(payload.getContent()))
                 .setVariables(objectMapper.writeValueAsString(payload.getVariables()))
                 .build();
 
@@ -89,14 +88,23 @@ public class TemplatesController {
 
     @PostMapping("/templates.update")
     ResponseEntity<?> updateTemplate(@RequestBody @Valid UpdateTemplateRequestPayload payload) throws JsonProcessingException {
-        final Template template = stores.getTemplate(payload.getName());
+        final Template template = stores.getTemplate(payload.getId().toString());
 
         if (template == null) {
             return ResponseEntity.notFound().build();
         }
 
-        template.setContent(payload.getName());
-        template.setContent(objectMapper.writeValueAsString(payload.getContent()));
+        if (payload.getName() != null) {
+            template.setName(payload.getName());
+        }
+
+        if (payload.getContent() != null) {
+            template.setContent(objectMapper.writeValueAsString(payload.getContent()));
+        }
+
+        if (payload.getVariables() != null) {
+            template.setVariables(objectMapper.writeValueAsString(payload.getVariables()));
+        }
 
         try {
             stores.storeTemplate(template);

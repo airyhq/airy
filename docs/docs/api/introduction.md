@@ -6,9 +6,9 @@ sidebar_label: Introduction
 import TLDR from "@site/src/components/TLDR";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
-import BoltSVG from "@site/static/icons/bolt.svg";
-import ServerStackSVG from "@site/static/icons/server-stack.svg";
-import WebhooksSVG from "@site/static/icons/webhooks.svg";
+import HighVoltageSVG from "@site/static/icons/high-voltage.svg";
+import ElectricPlugSVG from "@site/static/icons/electric-plug.svg";
+import FishingPoleSVG from "@site/static/icons/fishing-pole.svg";
 
 <TLDR>
 
@@ -27,19 +27,19 @@ interacting with data:
 
 <ButtonBoxList>
 <ButtonBox
-    icon={() => <BoltSVG />}
+    icon={() => <HighVoltageSVG />}
     title='HTTP API'
     description='Access your conversational data with blazing fast HTTP endpoints'
     link='api/endpoints/introduction'
 />
 <ButtonBox
-    icon={() => <ServerStackSVG />}
+    icon={() => <ElectricPlugSVG />}
     title='WebSocket Server'
     description='Power real-time applications with STOMP style WebSocket'
     link='api/websocket'
 />
 <ButtonBox
-    icon={() => <WebhooksSVG />}
+    icon={() => <FishingPoleSVG />}
     title='Webhook'
     description='Participate programmatically in conversations by listening to events'
     link='api/webhook'

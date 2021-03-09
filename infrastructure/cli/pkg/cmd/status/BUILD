@@ -4,7 +4,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "status",
     srcs = ["status.go"],
-    importpath = "cli/cmd/status",
+    importpath = "cli/pkg/cmd/status",
     visibility = ["//visibility:public"],
     deps = [
         "//lib/go/httpclient",

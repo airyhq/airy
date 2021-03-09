@@ -47,7 +47,7 @@ class WebSocket {
       connectHeaders: {
         Authorization: `Bearer ${token}`,
       },
-      debug: function(str) {
+      debug: function (str) {
         console.info(str);
       },
       reconnectDelay: 5000,
@@ -57,7 +57,7 @@ class WebSocket {
 
     this.client.onConnect = this.onConnect;
 
-    this.client.onStompError = function(frame: IFrame) {
+    this.client.onStompError = function (frame: IFrame) {
       console.error('Broker reported error: ' + frame.headers['message']);
       console.error('Additional details: ' + frame.body);
     };

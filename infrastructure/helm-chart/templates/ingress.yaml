@@ -78,6 +78,13 @@ spec:
                 name: api-communication
                 port:
                   number: 80
+          - path: /metadata.upsert
+            pathType: Prefix
+            backend:
+              service:
+                name: api-communication
+                port:
+                  number: 80
           - path: /client.config
             pathType: Prefix
             backend:
@@ -163,6 +170,41 @@ spec:
                 port:
                   number: 80
           - path: /tags.delete
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.create
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.update
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.list
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.delete
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.info
             pathType: Prefix
             backend:
               service:

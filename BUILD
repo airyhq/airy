@@ -1,4 +1,5 @@
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//lint:prettier.bzl", "fix_prettier")
 load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
@@ -12,10 +13,15 @@ alias(
     actual = "//:bazel.tsconfig.json",
 )
 
+fix_prettier(
+    name = "fix_prettier",
+    ignore = "//:.prettierignore",
+)
+
 multirun(
     name = "fix",
     commands = [
-        "@com_github_airyhq_bazel_tools//lint:fix_prettier",
+        ":fix_prettier",
         "@com_github_airyhq_bazel_tools//lint:fix_buildifier",
     ],
     visibility = ["//visibility:public"],

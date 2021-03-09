@@ -30,7 +30,7 @@ the `<head>` section:
 
 ```html
 <script>
-  (function(w, d, s, n) {
+  (function (w, d, s, n) {
     w[n] = w[n] || {};
     w[n].channelId = "CHANNEL_ID";
     w[n].host = "SCRIPT_HOST";

@@ -2,7 +2,7 @@ import {ListTagsResponsePayload} from '../payload';
 import {Tag} from '../model';
 import {HttpClient} from '../client';
 
-export default HttpClient.prototype.listTags = async function() {
+export default HttpClient.prototype.listTags = async function () {
   const response: ListTagsResponsePayload = await this.doFetchFromBackend('tags.list');
 
   const tagMapper = {

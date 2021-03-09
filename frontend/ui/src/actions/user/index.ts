@@ -3,6 +3,7 @@ import _, {Dispatch} from 'redux';
 
 import {User, LoginViaEmailRequestPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
+import {clearUserData} from '../../cookies';
 
 const SET_CURRENT_USER = '@@auth/SET_CURRENT_USER';
 const USER_AUTH_ERROR = '@@auth/ERROR';
@@ -29,6 +30,7 @@ export function loginViaEmail(requestPayload: LoginViaEmailRequestPayload) {
 
 export function logoutUser() {
   return async (dispatch: Dispatch<any>) => {
+    clearUserData();
     HttpClientInstance.token = null;
     dispatch(logoutUserAction());
   };

@@ -14,7 +14,7 @@ import ComponentsSVG from "@site/static/icons/information-architecture.svg";
 
 Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your teams to use.
 
-While the [Chat Plugin](sources/chat-plugin.md) is the open-source chat UI for your website and app visitors, Airy UI has different all the UI interfaces you need internally for a messaging platform.
+While the [Chat Plugin](sources/chatplugin/overview.md) is the open-source chat UI for your website and app visitors, Airy UI has different all the UI interfaces you need internally for a messaging platform.
 
 Airy UI comes with an open-source, customizable [inbox](inbox), filled with the conversations of all your [sources](sources/introduction.md),
 Additional features like [Filters, Search](inbox) and [Tags](tags) help you.

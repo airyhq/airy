@@ -3,7 +3,7 @@ title: Command Reference
 sidebar_label: Reference
 ---
 
-## Api Login
+##  Api Login
 
 Login into an Airy Core instance
 
@@ -26,9 +26,10 @@ airy api login [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
----
 
-## Api Signup
+***
+
+##  Api Signup
 
 Signs users up in Airy Core
 
@@ -53,9 +54,10 @@ airy api signup [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
----
 
-## Config Apply
+***
+
+##  Config Apply
 
 Applies configuration values from airy.yaml configuration to an Airy Core instance
 
@@ -78,9 +80,10 @@ airy config apply [flags]
       --kube-config string   Kubernetes config file for the cluster of an Airy Core instance (default "~/.airy/kube.conf")
 ```
 
----
 
-## Create
+***
+
+##  Create
 
 Creates an instance of Airy Core
 
@@ -103,9 +106,10 @@ airy create [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
----
 
-## Init
+***
+
+##  Init
 
 Inits your airy configuration
 
@@ -126,9 +130,10 @@ airy init [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
----
 
-## Status
+***
+
+##  Status
 
 Reports the status of an Airy Core instance
 
@@ -149,9 +154,10 @@ airy status [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
----
 
-## Ui
+***
+
+##  Ui
 
 Opens the Airy Core UI in your local browser
 
@@ -172,9 +178,10 @@ airy ui [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
----
 
-## Version
+***
+
+##  Version
 
 Prints version information
 
@@ -195,4 +202,6 @@ airy version [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
----
+
+***
+

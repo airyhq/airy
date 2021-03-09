@@ -9,7 +9,7 @@ import (
 )
 
 //TODO make this a config
-const url = "http://ui.airy/"
+const url = "http://airy.core/"
 
 // UICmd opens the Airy Core UI
 var UICmd = &cobra.Command{

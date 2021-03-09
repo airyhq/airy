@@ -15,6 +15,7 @@ alias(
 
 fix_prettier(
     name = "fix_prettier",
+    config = "//:.prettierrc.json",
     ignore = "//:.prettierignore",
 )
 
@@ -174,6 +175,7 @@ java_library(
 exports_files(
     [
         "package.json",
+        ".eslintrc",
         ".prettierrc.json",
         ".prettierignore",
         "yarn.lock",

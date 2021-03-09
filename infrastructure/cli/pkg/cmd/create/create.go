@@ -8,9 +8,10 @@ import (
 )
 
 var (
-	provider   string
-	version    string
-	CreateCmd  = &cobra.Command{
+	provider  string
+	namespace string
+	version   string
+	CreateCmd = &cobra.Command{
 		Use:   "create",
 		Short: "Creates an instance of Airy Core",
 		Long:  ``,
@@ -19,7 +20,8 @@ var (
 )
 
 func init() {
-	CreateCmd.Flags().StringVar(&provider, "provider", "local", "One of the supported providers (aws|local|minikube). Default is aws")
+	CreateCmd.Flags().StringVar(&provider, "provider", "local", "One of the supported providers (aws|local|minikube).")
+	CreateCmd.Flags().StringVar(&namespace, "namespace", "default", "(optional) Kubernetes namespace that Airy should be installed to.")
 	CreateCmd.MarkFlagRequired("provider")
 
 }
@@ -27,13 +29,21 @@ func init() {
 func create(cmd *cobra.Command, args []string) {
 	fmt.Println("⚙️  Creating core with provider", provider)
 
-	clientset, err := providers.GetProvider(providers.Provider(provider))
+	provider := providers.MustGet(providers.ProviderName(provider))
+
+	context, err := provider.Provision()
 	if err != nil {
-		fmt.Println("provisioning cluster failed: ", err)
+		fmt.Println("could not provision cluster: ", err)
 		os.Exit(1)
 	}
 
-	helm := New(clientset, "develop", "default")
+	clientset, err := context.GetClientSet()
+	if err != nil {
+		fmt.Println("could not get clientset: ", err)
+		os.Exit(1)
+	}
+
+	helm := New(clientset, version, namespace)
 	if err := helm.Setup(); err != nil {
 		fmt.Println("setting up Helm failed with err: ", err)
 		os.Exit(1)

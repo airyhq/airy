@@ -1,14 +1,18 @@
 package aws
 
 import (
+	"cli/pkg/kube"
 	"fmt"
-	"k8s.io/client-go/kubernetes"
 	"os"
 )
 
+type Aws struct {
+}
 
-func Create() (*kubernetes.Clientset, error) {
-	fmt.Println("aws provider not yet implemented")
+func (a *Aws) Provision() (kube.KubeCtx, error) {
+	// Use this to
+	//clientcmd.NewNonInteractiveClientConfig()
+	fmt.Println("minikube provider not yet implemented")
 	os.Exit(1)
-	return nil, nil
+	return kube.KubeCtx{}, nil
 }

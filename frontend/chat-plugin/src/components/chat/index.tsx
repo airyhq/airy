@@ -41,6 +41,7 @@ const Chat = (props: Props) => {
   const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(true);
   const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
+  const [messageString, setMessageString] = useState('');
 
   useEffect(() => {
     ws = new WebSocket(props.channelId, onReceive, setInitialMessages, getResumeTokenFromStorage(props.channelId));
@@ -119,7 +120,9 @@ const Chat = (props: Props) => {
 
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
-    : () => <AiryInputBar sendMessage={sendMessage} />;
+    : () => (
+        <AiryInputBar sendMessage={sendMessage} messageString={messageString} setMessageString={setMessageString} />
+      );
 
   const bubble = props.bubbleProp
     ? () => props.bubbleProp(ctrl)

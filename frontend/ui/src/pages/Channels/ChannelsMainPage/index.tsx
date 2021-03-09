@@ -21,8 +21,6 @@ type ChannelsConnectProps = {
 const ChannelsMainPage = (props: ChannelsConnectProps & RouteComponentProps) => {
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
 
-  useEffect(() => {}, [props.channels]);
-
   const openRequirementsDialog = (source: string): JSX.Element => {
     switch (source) {
       case ChannelSource.facebook:

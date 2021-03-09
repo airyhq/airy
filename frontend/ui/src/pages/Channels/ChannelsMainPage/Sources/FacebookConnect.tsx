@@ -7,7 +7,7 @@ import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {Button, Input, LinkButton} from '@airyhq/components';
 import {connectFacebookChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
-import {Channel, ConnectChannelFacebookRequestPayload} from 'httpclient';
+import {ConnectChannelFacebookRequestPayload} from 'httpclient';
 
 type FacebookProps = {
   channelId?: string;

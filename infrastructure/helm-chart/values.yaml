@@ -5,4 +5,3 @@ global:
   ngrokEnabled: false
   ingress:
     host: "airy.core"
-    toolsHost: "tools.airy"

@@ -5,7 +5,6 @@ global:
   namespace: default
   ingress:
     host: airy.core
-    toolsHost: tools.airy
 prerequisites:
   # Configuration for the Kafka cluster
   kafka:

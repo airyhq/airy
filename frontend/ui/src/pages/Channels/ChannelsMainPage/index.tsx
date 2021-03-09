@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import ChatPluginSource from './Sources/ChatPluginSource';
 import FacebookSource from './Sources/FacebookSource';
 import TwilioSmsSource from './Sources/TwilioSmsSource';

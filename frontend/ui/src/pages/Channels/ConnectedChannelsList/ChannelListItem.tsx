@@ -2,16 +2,11 @@ import React, {useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {disconnectChannel} from '../../../actions/channel';
 import {SettingsModal, Button} from '@airyhq/components';
-import {Channel, ChannelSource} from 'httpclient';
-import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.svg';
-import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
-import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
+import {Channel} from 'httpclient';
+import {getSourceLogo} from '../../../selectors/channels';
 import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
 import styles from './ChannelListItem.module.scss';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_FACEBOOK_ROUTE} from '../../../routes/routes';
 
 type ChannelItemProps = {
   channel: Channel;
@@ -36,36 +31,12 @@ const ChannelItem = (props: ChannelItemProps) => {
     if (channel?.metadata?.imageUrl) {
       return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
     } else {
-      switch (channel.source) {
-        case ChannelSource.facebook:
-          return <FacebookLogo />;
-        case ChannelSource.google:
-          return <GoogleLogo />;
-        case ChannelSource.twilioSMS:
-          return <SMSLogo />;
-        case ChannelSource.twilioWhatsapp:
-          return <WhatsappLogo />;
-        case ChannelSource.chatPlugin:
-          return <AiryLogo />;
-        default:
-          return <AiryLogo />;
-      }
+      getSourceLogo(channel);
     }
   };
 
   const editChannel = () => {
-    switch (channel.source) {
-      case ChannelSource.facebook:
-        return {pathname: CHANNELS_FACEBOOK_ROUTE + `/${channel.id}`, state: {channel: channel}};
-      case ChannelSource.google:
-        break;
-      case ChannelSource.twilioSMS:
-        break;
-      case ChannelSource.twilioWhatsapp:
-        break;
-      case ChannelSource.chatPlugin:
-        return {pathname: CHANNELS_CHAT_PLUGIN_ROUTE + `/${channel.id}`, state: {channel: channel}};
-    }
+    return {pathname: `/channels/${channel.source}/${channel.id}`, state: {channel: channel}};
   };
 
   const disconnectChannel = (channelSource: string) => {

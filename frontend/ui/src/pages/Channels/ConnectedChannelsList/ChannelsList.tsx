@@ -9,7 +9,7 @@ import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {StateModel} from './../../../reducers';
 import {Channel} from 'httpclient';
 import {allChannels} from './../../../selectors/channels';
-import {ChannelSource} from 'httpclient';
+import {ChannelSource, channelNameSorter} from 'httpclient';
 import ChannelListItem from './ChannelListItem';
 import {SearchField} from '@airyhq/components';
 import styles from './ChannelsList.module.scss';
@@ -72,16 +72,6 @@ const ChannelsList = (props: ChannelsListProps) => {
     }
   };
 
-  const channelSorter = (channelA: Channel, channelB: Channel) => {
-    if (channelA.metadata.name.toLowerCase() < channelB.metadata.name.toLowerCase()) {
-      return -1;
-    }
-    if (channelA.metadata.name.toLowerCase() > channelB.metadata.name.toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  };
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.headlineRow}>
@@ -112,7 +102,7 @@ const ChannelsList = (props: ChannelsListProps) => {
       </Link>
       <div className={styles.channelsList}>
         {filteredChannels.length > 0 ? (
-          filteredChannels.sort(channelSorter).map((channel: Channel) => (
+          filteredChannels.sort(channelNameSorter).map((channel: Channel) => (
             <div key={channel.id} className={styles.connectedChannel}>
               <ChannelListItem channel={channel} />
             </div>

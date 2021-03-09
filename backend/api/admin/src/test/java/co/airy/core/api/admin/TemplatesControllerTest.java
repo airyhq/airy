@@ -78,8 +78,8 @@ public class TemplatesControllerTest {
     @Test
     void canManageTemplates() throws Exception {
         final String name = "awesome-template";
-        final String content = "{\\\"blueprint\\\":\\\"text\\\",\\\"payload\\\":\\\"[[salutation]]!\\\"}";
-        final String payload = "{\"name\":\"" + name + "\",\"content\": \"" + content + "\", \"variables\": { \"en\": {\"salutation\": \"Hello\"}}}";
+        final String content = "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}";
+        final String payload = "{\"name\":\"" + name + "\",\"content\":" + content + ",\"variables\": { \"en\": {\"salutation\": \"Hello\"}}}";
 
         final String createTagResponse = webTestHelper.post("/templates.create", payload, "user-id")
                 .andExpect(status().isCreated())
@@ -98,7 +98,7 @@ public class TemplatesControllerTest {
         webTestHelper.post("/templates.info", "{\"id\":\"" + templateId + "\"}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(is(templateId)))
-                .andExpect(jsonPath("$.content").value(is("{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}")))
+                .andExpect(jsonPath("$.content").value(is(content)))
                 .andExpect(jsonPath("$.variables.en.salutation").value(is("Hello")))
                 .andExpect(jsonPath("$.name").value(is(name)));
 
@@ -108,10 +108,10 @@ public class TemplatesControllerTest {
                 .andExpect(jsonPath("$.data[0].id").value(is(templateId)))
                 .andExpect(jsonPath("$.data[0].name").value(is(name)));
 
-        webTestHelper.post("/templates.update", "{\"id\":\"" + templateId + "\", \"name\": \"new-template-name\", \"content\": \"" + content + "\"}", "user-id")
+        webTestHelper.post("/templates.update", "{\"id\":\"" + templateId + "\", \"name\": \"new-template-name\", \"content\": " + content + "}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(is(templateId)))
-                .andExpect(jsonPath("$.content").value(is("{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}")))
+                .andExpect(jsonPath("$.content").value(is(content)))
                 .andExpect(jsonPath("$.variables.en.salutation").value(is("Hello")))
                 .andExpect(jsonPath("$.name").value(is("new-template-name")));
 

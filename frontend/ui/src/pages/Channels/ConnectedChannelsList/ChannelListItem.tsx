@@ -2,8 +2,12 @@ import React, {useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {disconnectChannel} from '../../../actions/channel';
 import {SettingsModal, Button} from '@airyhq/components';
-import {Channel} from 'httpclient';
-import {getSourceLogo} from '../../../selectors/channels';
+import {Channel, ChannelSource} from 'httpclient';
+import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
+import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.svg';
+import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
+import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
+import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
 import styles from './ChannelListItem.module.scss';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
@@ -27,12 +31,28 @@ const ChannelItem = (props: ChannelItemProps) => {
     channelId: channel.id,
   };
 
-  const channelIcon = (channel: Channel) => {
+  const getSourceLogo = (channel: Channel) => {
+    switch (channel.source) {
+      case ChannelSource.facebook:
+        return <FacebookLogo />;
+      case ChannelSource.google:
+        return <GoogleLogo />;
+      case ChannelSource.twilioSMS:
+        return <SMSLogo />;
+      case ChannelSource.twilioWhatsapp:
+        return <WhatsappLogo />;
+      case ChannelSource.chatPlugin:
+        return <AiryLogo />;
+      default:
+        return <AiryLogo />;
+    }
+  };
+
+  const ChannelIcon = ({channel}: {channel: Channel}) => {
     if (channel?.metadata?.imageUrl) {
       return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
-    } else {
-      getSourceLogo(channel);
     }
+    return getSourceLogo(channel);
   };
 
   const editChannel = () => {
@@ -54,7 +74,9 @@ const ChannelItem = (props: ChannelItemProps) => {
     <>
       <div>
         <div className={styles.channelItem}>
-          <div className={styles.channelLogo}>{channelIcon(channel)}</div>
+          <div className={styles.channelLogo}>
+            <ChannelIcon channel={channel} />
+          </div>
           <div className={styles.channelNameButton}>
             <div className={styles.channelName}>
               {channel.metadata.name}

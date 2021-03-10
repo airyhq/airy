@@ -21,7 +21,7 @@ type ChannelsConnectProps = {
 const ChannelsMainPage = (props: ChannelsConnectProps & RouteComponentProps) => {
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
 
-  const openRequirementsDialog = (source: string): JSX.Element => {
+  const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
       case ChannelSource.facebook:
         return (
@@ -54,7 +54,7 @@ const ChannelsMainPage = (props: ChannelsConnectProps & RouteComponentProps) => 
       </div>
 
       <div className={styles.wrapper}>
-        {displayDialogFromSource !== '' && openRequirementsDialog(displayDialogFromSource)}
+        {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
         {props.config.components['sources-chatplugin'].enabled && <ChatPluginSource pluginSource={props.channels} />}
         {props.config.components['sources-facebook'].enabled && (
           <FacebookSource

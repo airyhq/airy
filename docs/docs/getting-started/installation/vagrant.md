@@ -35,14 +35,12 @@ need to install them manually.
 
 The script will also ask for your administrative credentials as we are using the
 [Vagrant Host Manager
-Plugin](https://github.com/devopsgroup-io/vagrant-hostmanager) to add entries to
-your hosts file. You can skip this step and add the following lines to your
+Plugin](https://github.com/devopsgroup-io/vagrant-hostmanager) to add an entry to
+your hosts file. You can skip this step and add the following line to your
 hosts file yourself.
 
 ```
-192.168.50.5  ui.airy
-192.168.50.5  api.airy
-192.168.50.5  chatplugin.airy
+192.168.50.5  airy.core
 ```
 
 After the bootstrap process finishes, it will download the Kubernetes
@@ -59,17 +57,17 @@ If you want to customize your `Airy Core` instance please see our [Configuration
 
 ## Access the API
 
-The API services are available under the domain `http://api.airy` from your
+The API services are available under the domain `http://airy.core` from your
 local machine. You can see an example request to the API by running the
 `status` command.
 
 ## Access the UI
 
-The UI can be accessed through http://ui.airy.
+The UI can be accessed at http://airy.core/ui/.
 
-The frontend UI for the Airy chat plugin can be accessed through
-http://chatplugin.airy/example. Refer to [the Airy Live Chat
-plugin](/sources/chat-plugin.md) documentation for detailed information.
+The frontend UI for the Airy chat plugin can be accessed at
+`http://airy.core/chatplugin/example`. Refer to [the Airy Live Chat
+plugin](/sources/chatplugin/overview.md) documentation for detailed information.
 
 ## Public webhooks
 
@@ -138,7 +136,7 @@ For more details please see our [Configuration Section](configuration.md).
 
 ### AKHQ
 
-AKHQ is a GUI for inspecting Apache Kafka. If enabled, it can be accessed under `http://tools.airy/akhq`.
+AKHQ is a GUI for inspecting Apache Kafka. If enabled, it can be accessed under `http://airy.core/tools/akhq`.
 Username is `admin` and the auto-generated password can be retrieved from a configMap:
 
 ```sh
@@ -184,10 +182,10 @@ ${GOOGLE_WEBHOOK_PUBLIC_URL}/google
 ${TWILIO_WEBHOOK_PUBLIC_URL}/twilio
 
 "You can access the API of Airy Core at:"
-"http://api.airy/"
+"http://airy.core/"
 
 "Example:"
-"curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}'
+"curl -X POST -H 'Content-Type: application/json' -d '{\"first_name\": \"Grace\",\"last_name\": \"Hopper\",\"password\": \"the_answer_is_42\",\"email\": \"grace@example.com\"}' http://airy.core/users.signup
 ```
 
 To inspect the status of the Vagrant box run:

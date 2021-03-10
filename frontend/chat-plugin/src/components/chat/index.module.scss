@@ -74,3 +74,25 @@
 .messages::-webkit-scrollbar {
   display: none;
 }
+
+.connectedContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.disconnectedOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(1, 1, 1, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}

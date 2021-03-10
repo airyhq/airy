@@ -14,7 +14,7 @@ Available Commands:
   version     Prints version information
 
 Flags:
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
+      --apihost string      Airy Core HTTP API host (default "http://airy.core")
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
   -h, --help                help for airy
 

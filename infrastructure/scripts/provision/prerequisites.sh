@@ -6,7 +6,7 @@ echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositor
 apk update
 apk add --no-cache wget unzip jq yq bash-completion
 
-curl -sfL https://get.k3s.io | sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik" sh -s -
 
 wget -qnv https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz
 tar -zxvf helm-v3.3.4-linux-amd64.tar.gz

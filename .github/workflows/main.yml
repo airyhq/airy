@@ -49,7 +49,7 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
-          ./scripts/push-images.sh ${{ github.ref }}
+          ./scripts/push-images.sh
       - name: Install aws cli
         uses: chrislennon/action-aws-cli@v1.1
         env:

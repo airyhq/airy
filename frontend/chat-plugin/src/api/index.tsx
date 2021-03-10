@@ -5,11 +5,10 @@ declare const window: {
   airy: {
     host: string;
     channelId: string;
-    noTLS: boolean;
   };
 };
 
-const API_HOST = window.airy ? window.airy.host : 'chatplugin.airy';
+const API_HOST = window.airy ? window.airy.host : 'airy.core';
 
 export const sendMessage = (message: TextContent | SuggestionResponse, token: string) => {
   return fetch(`//${API_HOST}/chatplugin.send`, {

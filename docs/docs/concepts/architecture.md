@@ -16,7 +16,7 @@ The `backend` system is a streaming platform. Its role is to:
 - Manage authentication and authorization features.
 
 The `frontend` system contains a demo application and the JavaScript integration
-of the [Chat Plugin](sources/chat-plugin.md).
+of the [Chat Plugin](sources/chatplugin/overview.md).
 
 Having that in mind, these are the docker containers – or the `Airy Components` –
 which run as part of Airy Core:

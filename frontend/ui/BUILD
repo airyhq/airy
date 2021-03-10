@@ -48,7 +48,7 @@ web_app(
     module_deps = module_deps,
     static_assets = "//frontend/ui/public",
     output = {
-        "publicPath": "/ui/"
+        "publicPath": "/ui"
     }
 )
 

@@ -26,7 +26,7 @@ web_app(
     index = ":development.html",
     module_deps = module_deps,
     output = {
-        "publicPath": "/chatplugin/"
+        "publicPath": "/chatplugin"
     }
 )
 
@@ -41,7 +41,7 @@ web_library(
     module_deps = module_deps,
     output = {
         "libraryExport": "AiryWidget",
-        "publicPath": "/chatplugin/",
+        "publicPath": "/chatplugin",
         "filename": "s.js",
     },
 )

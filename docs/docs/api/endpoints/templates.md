@@ -15,6 +15,7 @@ for more information.
 ```json5
 {
   name: "my template name",
+  source_type: "facebook",
   content: {
     message: {
       text: "[[salutation]]!"
@@ -63,6 +64,7 @@ Find templates whose name contains "NASA":
     {
       id: "TEMPLATE-UUID",
       name: "Template for NASA",
+      source_type: "facebook",
       content: {
         message: {
           text: "[[salutation]]!"
@@ -95,6 +97,7 @@ Find templates whose name contains "NASA":
 {
   id: "TEMPLATE-UUID",
   name: "{String}",
+  source_type: "facebook",
   content: {
     message: {
       text: "[[salutation]]!"
@@ -117,6 +120,7 @@ Find templates whose name contains "NASA":
 {
   id: "template id",
   name: "my template name",
+  source_type: "facebook",
   content: {
     message: {
       text: "[[salutation]]!"

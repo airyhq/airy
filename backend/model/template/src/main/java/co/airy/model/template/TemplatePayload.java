@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class TemplatePayload {
     private String id;
     private String name;
+    private String sourceType;
     private String content;
     private JsonNode variables;
     public static TemplatePayload fromTemplate(final Template template) {
@@ -32,6 +33,7 @@ public class TemplatePayload {
                 .name(template.getName())
                 .content(template.getContent())
                 .variables(variables)
+                .sourceType(template.getSourceType())
                 .build();
     }
 }

@@ -38,6 +38,7 @@ public class TemplatesController {
         final Template template = Template.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setName(payload.getName())
+                .setSourceType(payload.getSourceType())
                 .setContent(objectMapper.writeValueAsString(payload.getContent()))
                 .setVariables(objectMapper.writeValueAsString(payload.getVariables()))
                 .build();
@@ -104,6 +105,10 @@ public class TemplatesController {
 
         if (payload.getVariables() != null) {
             template.setVariables(objectMapper.writeValueAsString(payload.getVariables()));
+        }
+
+        if (payload.getSourceType() != null) {
+            template.setSourceType(payload.getSourceType());
         }
 
         try {

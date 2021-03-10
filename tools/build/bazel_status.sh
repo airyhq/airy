@@ -6,7 +6,11 @@ set -o pipefail
 
 echo STABLE_GIT_COMMIT $(git rev-parse HEAD)
 
-BRANCH=$(git branch --show-current)
+if [[ $CI = true ]]; then
+  BRANCH=$(echo "$GITHUB_REF" | sed -e "s/^refs\/heads\///")
+else
+  BRANCH=$(git branch --show-current)
+fi
 
 if [[ $BRANCH == "develop" ]]; then
   echo STABLE_VERSION "develop"

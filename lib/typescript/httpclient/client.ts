@@ -1,6 +1,6 @@
 import {
   ExploreChannelRequestPayload,
-  ConnectChannelRequestPayload,
+  ConnectChannelFacebookRequestPayload,
   DisconnectChannelRequestPayload,
   ListConversationsRequestPayload,
   CreateTagRequestPayload,
@@ -96,7 +96,7 @@ export class HttpClient {
 
   public exploreFacebookChannels: (requestPayload: ExploreChannelRequestPayload) => Promise<any>;
 
-  public connectFacebookChannel: (requestPayload: ConnectChannelRequestPayload) => Promise<any>;
+  public connectFacebookChannel: (requestPayload: ConnectChannelFacebookRequestPayload) => Promise<any>;
 
   public connectChatPluginChannel: (requestPayload: ConnectChatPluginRequestPayload) => Promise<any>;
 

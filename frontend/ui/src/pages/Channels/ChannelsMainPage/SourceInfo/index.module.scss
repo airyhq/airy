@@ -24,6 +24,17 @@
   border-radius: 8px;
   background-color: #ffffff;
   margin-left: 12px;
+  position: relative;
+
+  &:hover {
+    background-color: var(--color-background-blue);
+    box-shadow: -0.5px 2px 3px 0px var(--color-light-gray);
+    cursor: pointer;
+    button {
+      background-color: var(--color-background-blue);
+      cursor: pointer;
+    }
+  }
 }
 
 .connectedChannel {
@@ -46,6 +57,7 @@
 .extraChannel {
   display: flex;
   min-width: 88px;
+  width: 100%;
   min-height: 20px;
   padding: 0 24px 0 24px;
   cursor: pointer;
@@ -60,6 +72,7 @@
   margin: 4px;
   align-items: flex-start;
   border: none;
+  outline: none;
   background-color: inherit;
   text-align: left;
   cursor: pointer;

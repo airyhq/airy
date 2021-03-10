@@ -3,6 +3,7 @@ import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
 import {Channel} from 'httpclient';
 import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
+import {ChannelSource} from 'httpclient';
 
 type TwilioSmsSourceProps = {twilloSmsSource: Channel[]};
 
@@ -16,6 +17,7 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps) => {
         text="Deliver SMS with ease"
         image={<SMSLogo />}
         displayButton={!channels.length}
+        id={ChannelSource.twilioSMS}
       />
 
       <SourceInfo

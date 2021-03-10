@@ -11,6 +11,7 @@ type SourceInfoProps = {
   placeholderImage?: JSX.Element;
   isConnected: string;
   onAddChannelClick?: () => void;
+  onSourceInfoClick?: () => void;
   onMoreChannelsClick?: () => void;
   onChannelClick?: (channel: Channel) => void;
 };
@@ -59,9 +60,9 @@ const SourceInfo = (props: SourceInfoProps) => {
                   );
                 })}
               </div>
-              <div className={styles.extraChannel}>
+              <div className={styles.extraChannel} onClick={props.onSourceInfoClick}>
                 {hasExtraChannels && (
-                  <LinkButton onClick={props.onMoreChannelsClick}>
+                  <LinkButton onClick={props.onSourceInfoClick}>
                     +{channels.length - channelsToShow} {props.isConnected}
                   </LinkButton>
                 )}

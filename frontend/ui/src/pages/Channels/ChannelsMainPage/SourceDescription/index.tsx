@@ -7,12 +7,14 @@ type SourceDescriptionProps = {
   title: string;
   text: string;
   displayButton: boolean;
+  id: string;
   onAddChannelClick?: () => void;
 };
 
 const SourceDescription = (props: SourceDescriptionProps) => {
   return (
     <>
+      <div className={styles.requirementsDialogBackground}></div>
       <div className={styles.channelCard}>
         <div className={styles.channelLogo}>{props.image}</div>
         <div className={styles.channelTitleAndText}>

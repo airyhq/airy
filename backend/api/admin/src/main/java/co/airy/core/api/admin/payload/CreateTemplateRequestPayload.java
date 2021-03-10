@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +15,6 @@ public class CreateTemplateRequestPayload {
     @NotNull
     private String name;
     @NotNull
-    @Pattern(regexp = "facebook|google|twilio|chat_plugin", message = "Must be a valid source")
     private String sourceType;
     @NotNull
     private JsonNode content;

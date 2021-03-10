@@ -15,7 +15,7 @@ for more information.
 ```json5
 {
   name: "my template name",
-  source_type: "facebook", // facebook | google | twilio | chat_plugin
+  source_type: "facebook",
   content: {
     message: {
       text: "[[salutation]]!"

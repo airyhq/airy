@@ -60,7 +60,7 @@ func main() {
 	}
 	log.Println("Installed packages and updating go.sum using go get")
 
-	err = exec.Command("bazel", "run", "//:gazelle", "--", "-update-repos", "-from_file=go.mod", "-prune").Start()
+	err = exec.Command("bazel", "run", "//:gazelle", "--", "update-repos", "-from_file=go.mod", "-prune").Start()
 	if err != nil {
 		log.Fatal(err)
 	}

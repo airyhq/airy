@@ -4,6 +4,9 @@ go 1.15
 
 require (
 	github.com/airyhq/airy/lib/go/httpclient v0.0.0
+	github.com/aws/aws-sdk-go-v2/config v1.1.1
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.1.1
+	github.com/aws/aws-sdk-go-v2/service/eks v1.1.1
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/kr/pretty v0.2.1
 	github.com/mitchellh/go-homedir v1.1.0

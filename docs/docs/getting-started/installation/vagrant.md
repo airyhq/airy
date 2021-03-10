@@ -69,7 +69,7 @@ The UI can be accessed through http://ui.airy.
 
 The frontend UI for the Airy chat plugin can be accessed through
 http://chatplugin.airy/example. Refer to [the Airy Live Chat
-plugin](/sources/chat-plugin.md) documentation for detailed information.
+plugin](/sources/chatplugin/overview.md) documentation for detailed information.
 
 ## Public webhooks
 

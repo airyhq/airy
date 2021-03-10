@@ -108,9 +108,9 @@ func initConfig() {
 
 func init() {
 	apiHost := ""
-	RootCmd.PersistentFlags().StringVar(&apiHost, "apihost", "http://api.airy", "Airy Core HTTP API host")
+	RootCmd.PersistentFlags().StringVar(&apiHost, "apihost", "http://airy.core", "Airy Core HTTP API host")
 	viper.BindPFlag("apihost", RootCmd.PersistentFlags().Lookup("apihost"))
-	viper.SetDefault("apihost", "http://api.airy")
+	viper.SetDefault("apihost", "http://airy.core")
 
 	apiJWTToken := ""
 	RootCmd.PersistentFlags().StringVarP(&apiJWTToken, "apiJWTToken", "", "", "apiJWTToken")

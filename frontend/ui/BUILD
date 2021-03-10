@@ -45,6 +45,9 @@ web_app(
     entry = "frontend/ui/src/index.js",
     index = ":index.html",
     module_deps = module_deps,
+    output = {
+        "publicPath": "/ui",
+    },
     static_assets = "//frontend/ui/public",
 )
 

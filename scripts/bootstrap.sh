@@ -55,7 +55,7 @@ then
     printf "Vagrant installed in %s\n" "$(command -v vagrant)"
 fi
 
-read -p "Do you want to add the vagrant box to the host file so you can access it under api.airy [yn]? " -n 1 -r
+read -p "Do you want to add the vagrant box to the host file so you can access it under airy.core [yn]? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]];
 then

@@ -14,7 +14,6 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -36,6 +35,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.Instant;
 import java.util.List;
 
+import static co.airy.model.metadata.MetadataKeys.ConversationKeys;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -78,7 +78,7 @@ class FetchMetadataTest {
     }
 
     @BeforeEach
-    void beforeEach() throws InterruptedException {
+    void beforeEach() {
         MockitoAnnotations.initMocks(this);
     }
 
@@ -89,7 +89,7 @@ class FetchMetadataTest {
         final String token = "token";
 
         final String firstName = "Grace";
-        final String lastName = "Grace";
+        final String lastName = "Hopper";
         final String avatarUrl = "http://placehold.it/120x120&text=image1";
 
         UserProfile userProfile = new UserProfile(firstName, lastName, avatarUrl, "en");
@@ -103,7 +103,6 @@ class FetchMetadataTest {
                         .setToken(token)
                         .setSourceChannelId("ps-id")
                         .setSource("facebook")
-                        .setName("name")
                         .setId(channelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
                         .build()
@@ -122,20 +121,18 @@ class FetchMetadataTest {
                                 .build())
         ));
 
-        List<Metadata> metadataList = kafkaTestHelper.consumeValues(4, applicationCommunicationMetadata.name());
-        assertThat(metadataList, hasSize(4));
+        List<Metadata> metadataList = kafkaTestHelper.consumeValues(3, applicationCommunicationMetadata.name());
+        assertThat(metadataList, hasSize(3));
 
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.FIRST_NAME) && metadata.getValue().equals(firstName)
+                metadata.getKey().equals(ConversationKeys.Contact.DISPLAY_NAME)
+                        && metadata.getValue().equals(firstName + " " + lastName)
         )));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.LAST_NAME) && metadata.getValue().equals(lastName)
+                metadata.getKey().equals(ConversationKeys.Contact.AVATAR_URL) && metadata.getValue().equals(avatarUrl)
         )));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.AVATAR_URL) && metadata.getValue().equals(avatarUrl)
-        )));
-        assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.Source.Contact.FETCH_STATE) && metadata.getValue().equals("ok")
+                metadata.getKey().equals(ConversationKeys.Contact.FETCH_STATE) && metadata.getValue().equals("ok")
         )));
 
         assertThat(sourceConversationIdCaptor.getValue(), equalTo(sourceConversationId));

@@ -1,3 +1,5 @@
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//lint:prettier.bzl", "fix_prettier")
 load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
@@ -11,11 +13,17 @@ alias(
     actual = "//:bazel.tsconfig.json",
 )
 
+fix_prettier(
+    name = "fix_prettier",
+    config = "//:.prettierrc.json",
+    ignore = "//:.prettierignore",
+)
+
 multirun(
     name = "fix",
     commands = [
-        "@com_github_airyhq_bazel_tools//code-format:fix_prettier",
-        "@com_github_airyhq_bazel_tools//code-format:fix_buildifier",
+        ":fix_prettier",
+        "@com_github_airyhq_bazel_tools//lint:fix_buildifier",
     ],
     visibility = ["//visibility:public"],
 )
@@ -167,12 +175,14 @@ java_library(
 exports_files(
     [
         "package.json",
+        ".eslintrc",
         ".prettierrc.json",
         ".prettierignore",
         "yarn.lock",
     ],
 )
 
+# gazelle:ignore
 # gazelle:proto disable_global
 # gazelle:build_file_name BUILD
 # gazelle:prefix
@@ -183,4 +193,17 @@ nogo(
     config = "//tools/build:nogo_config.json",
     visibility = ["//visibility:public"],
     deps = TOOLS_NOGO,
+)
+
+filegroup(
+    name = "starlark_files",
+    srcs = [
+        "BUILD",
+        "WORKSPACE",
+        "go_repositories.bzl",
+    ],
+)
+
+check_pkg(
+    name = "buildifier",
 )

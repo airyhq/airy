@@ -12,28 +12,40 @@ import static java.util.stream.Collectors.joining;
 public class Application {
 
     public static void main(String[] args) {
-        String createTopicTemplate = "kafka-topics.sh --create --if-not-exists --zookeeper ${ZOOKEEPER} --replication-factor ${REPLICAS} --partitions ${PARTITIONS} --topic \"${AIRY_CORE_NAMESPACE}%s\" %s 1>/dev/null";
-        String headerTemplate = "#!/bin/bash\n" +
+        String createTopicTemplate = "    kafka-topics.sh --create --if-not-exists --zookeeper \"${ZOOKEEPER}\" --replication-factor \"${REPLICAS}\" --partitions \"${PARTITIONS}\" --topic \"${AIRY_CORE_NAMESPACE}%s\" %s";
+        String headerTemplate = "apiVersion: v1" +
                 "\n" +
-                "##########################################################################\n" +
-                "# THIS FILE WAS GENERATED. DO NOT EDIT. See /infrastructure/tools/topics #\n" +
-                "##########################################################################\n" +
+                "kind: ConfigMap" +
                 "\n" +
-                "set -euo pipefail\n" +
-                "IFS=$'\\n\\t'\n" +
+                "metadata:" +
                 "\n" +
-                "ZOOKEEPER=zookeeper:2181\n" +
-                "PARTITIONS=${PARTITIONS:-10}\n" +
-                "REPLICAS=${REPLICAS:-1}\n" +
-                "AIRY_CORE_NAMESPACE=${AIRY_CORE_NAMESPACE:-}\n" +
+                "  name: kafka-create-topics" +
                 "\n" +
-                "echo \"Creating Kafka topics\"\n" +
+                "data:" +
                 "\n" +
-                "if [ -n \"${AIRY_CORE_NAMESPACE}\" ]\n" +
-                "then\n" +
-                "  AIRY_CORE_NAMESPACE=\"${AIRY_CORE_NAMESPACE}.\"\n" +
-                "  echo \"Using ${AIRY_CORE_NAMESPACE} to namespace topics\"\n" +
-                "fi";
+                "  create-topics.sh: |" +
+                "\n" +
+                "    #!/bin/bash\n" +
+                "\n" +
+                "    ##########################################################################\n" +
+                "    # THIS FILE WAS GENERATED. DO NOT EDIT. See /infrastructure/tools/topics #\n" +
+                "    ##########################################################################\n" +
+                "\n" +
+                "    set -euo pipefail\n" +
+                "    IFS=$'\\n\\t'\n" +
+                "\n" +
+                "    ZOOKEEPER=${ZOOKEEPER:-zookeeper:2181}\n" +
+                "    PARTITIONS=${PARTITIONS:-10}\n" +
+                "    REPLICAS=${REPLICAS:-1}\n" +
+                "    AIRY_CORE_NAMESPACE=${AIRY_CORE_NAMESPACE:-}\n" +
+                "\n" +
+                "    echo \"Creating Kafka topics\"\n" +
+                "\n" +
+                "    if [ -n \"${AIRY_CORE_NAMESPACE}\" ]\n" +
+                "    then\n" +
+                "      AIRY_CORE_NAMESPACE=\"${AIRY_CORE_NAMESPACE}.\"\n" +
+                "      echo \"Using ${AIRY_CORE_NAMESPACE} to namespace topics\"\n" +
+                "    fi";
 
         TopicsFinder finder = new TopicsFinder();
 

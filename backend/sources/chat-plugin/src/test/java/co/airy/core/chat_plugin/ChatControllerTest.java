@@ -36,6 +36,7 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -75,7 +76,6 @@ public class ChatControllerTest {
     private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(UUID.randomUUID().toString())
-            .setName("Chat Plugin")
             .setSource("chat_plugin")
             .setSourceChannelId("some custom identifier")
             .build();
@@ -120,17 +120,17 @@ public class ChatControllerTest {
 
         final String messageText = "answer is 42";
         String sendMessagePayload = "{\"message\": { \"text\": \"" + messageText + "\", \"type\":\"text\" }}";
-        retryOnException(() -> mvc.perform(post("/chatplugin.send")
-                                .headers(buildHeaders(token))
-                                .content(sendMessagePayload))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.content", containsString(messageText))),
-                "Message was not sent");
+        mvc.perform(post("/chatplugin.send")
+                .headers(buildHeaders(token))
+                .content(sendMessagePayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.text", is(messageText)));
 
         final MessageUpsertPayload messageUpsertPayload = messageFuture.get();
 
         assertNotNull(messageUpsertPayload);
-        assertThat(messageUpsertPayload.getMessage().getContent(), containsString(messageText));
+        Map<String, Object> node = (Map<String, Object>) messageUpsertPayload.getMessage().getContent();
+        assertThat(node.get("text").toString(), containsString(messageText));
     }
 
     @Test
@@ -153,7 +153,7 @@ public class ChatControllerTest {
                 .content(sendMessagePayload))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.delivery_state", is("delivered")))
-                .andExpect(jsonPath("$.content", containsString(messageText)));
+                .andExpect(jsonPath("$.content.text", containsString(messageText)));
 
         response = mvc.perform(post("/chatplugin.resumeToken")
                 .headers(buildHeaders(authToken))
@@ -173,14 +173,14 @@ public class ChatControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.token", is(not(nullValue()))))
                     .andExpect(jsonPath("$.messages", hasSize(1)))
-                    .andExpect(jsonPath("$.messages[0].content", containsString(messageText)));
+                    .andExpect(jsonPath("$.messages[0].content.text", containsString(messageText)));
         }, "Did not resume conversation");
     }
 
     private HttpHeaders buildHeaders(String jwtToken) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, jwtToken);
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
+        headers.setBearerAuth(jwtToken);
         return headers;
     }
 
@@ -193,7 +193,7 @@ public class ChatControllerTest {
         stompClient.setMessageConverter(messageConverter);
 
         StompHeaders connectHeaders = new StompHeaders();
-        connectHeaders.add(WebSocketHttpHeaders.AUTHORIZATION, jwtToken);
+        connectHeaders.add(WebSocketHttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
 
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
 

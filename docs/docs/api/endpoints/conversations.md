@@ -48,33 +48,40 @@ Find users whose name ends with "Lovelace":
     {
       "id": "a688d36c-a85e-44af-bc02-4248c2c97622",
       "channel": {
-        "name": "Facebook page name",
         "source": "facebook",
-        "id": "318efa04-7cc1-4200-988e-50699d0dd6e3"
+        "id": "318efa04-7cc1-4200-988e-50699d0dd6e3",
+        "metadata": {
+          "name": "Facebook page name"
+        }
       },
       "created_at": "2019-01-07T09:01:44.000Z",
-      "contact": {
-        // Additional data on the contact
-        "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
-        "display_name": "Airy Support"
+      "metadata": {
+        "contact": {
+          "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
+          "display_name": "Airy Support"
+        },
+        "tags": {
+          "f339c325-8614-43cb-a70a-e83d81bf56fc": ""
+        },
+        "unread_count": 1
       },
-      "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
       "last_message": {
         id: "{UUID}",
-        "content": '{"text":"Hello World"}',
+        "content": {"text": "Hello World"},
         // source message payload
         // typed source message model
         state: "{String}",
         // delivery state of message, one of PENDING, FAILED, DELIVERED
         sender_type: "{string/enum}",
         // See glossary
-        sent_at: "{string}"
+        sent_at: "{string}",
         //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-      },
-      "unread_message_count": 1
+        "source": "{String}"
+        // one of the possible sources
+      }
     }
   ],
-  "response_metadata": {
+  "pagination_data": {
     "previous_cursor": "",
     "next_cursor": "",
     "filtered_total": 1,
@@ -102,18 +109,26 @@ Find users whose name ends with "Lovelace":
 {
   "id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "channel": {
-    "name": "facebook",
-    "id": "318efa04-7cc1-4200-988e-50699d0dd6e3"
+    "metadata": {
+      "name": "Facebook page name"
+    },
+    "id": "318efa04-7cc1-4200-988e-50699d0dd6e3",
+    "source": "facebook"
   },
   "created_at": "2019-01-07T09:01:44.000Z",
-  "contact": {
-    "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg", // optional
-    "display_name": "Airy Support" // optional
+  "metadata": {
+    "contact": {
+      "avatar_url": "https://assets.airy.co/AirySupportIcon.jpg",
+      "display_name": "Airy Support"
+    },
+    "tags": {
+      "f339c325-8614-43cb-a70a-e83d81bf56fc": ""
+    },
+    "unread_count": 1
   },
-  "tags": ["f339c325-8614-43cb-a70a-e83d81bf56fc"],
   "last_message": {
     "id": "{UUID}",
-    "content": '{"text":"Hello World"}',
+    "content": {"text": "Hello World"},
     // source message payload
     // typed source message model
     "delivery_state": "{String}",
@@ -122,8 +137,7 @@ Find users whose name ends with "Lovelace":
     // See glossary
     "sent_at": "{string}"
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-  },
-  "unread_message_count": 1
+  }
 }
 ```
 
@@ -135,7 +149,7 @@ Resets the unread count of a conversation and returns status code `202 (Accepted
 
 **Sample request**
 
-```json
+```json5
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622"
 }

@@ -106,7 +106,6 @@ class SendMessageTest {
                         .setToken(token)
                         .setSourceChannelId("ps-id")
                         .setSource("facebook")
-                        .setName("name")
                         .setId(channelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
                         .build()

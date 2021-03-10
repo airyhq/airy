@@ -9,6 +9,7 @@ import co.airy.core.chat_plugin.payload.AuthenticationRequestPayload;
 import co.airy.core.chat_plugin.payload.AuthenticationResponsePayload;
 import co.airy.core.chat_plugin.payload.ResumeTokenResponsePayload;
 import co.airy.core.chat_plugin.payload.SendMessageRequestPayload;
+import co.airy.model.message.dto.MessageResponsePayload;
 import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,13 +37,11 @@ public class ChatController {
     private final ObjectMapper objectMapper;
     private final Stores stores;
     private final Jwt jwt;
-    private final Mapper mapper;
 
-    public ChatController(Stores stores, Jwt jwt, ObjectMapper objectMapper, Mapper mapper) {
+    public ChatController(Stores stores, Jwt jwt, ObjectMapper objectMapper) {
         this.stores = stores;
         this.jwt = jwt;
         this.objectMapper = objectMapper;
-        this.mapper = mapper;
     }
 
     @PostMapping("/chatplugin.authenticate")
@@ -64,7 +63,7 @@ public class ChatController {
         final String authToken = jwt.getAuthToken(principal.getSessionId(), principal.getChannelId());
 
         return ResponseEntity.ok(new AuthenticationResponsePayload(authToken,
-                messages.stream().map(mapper::fromMessage).collect(Collectors.toList())));
+                messages.stream().map(MessageResponsePayload::fromMessage).collect(Collectors.toList())));
     }
 
     private Principal resumeConversation(String resumeToken) {
@@ -115,7 +114,7 @@ public class ChatController {
                     .build();
 
             stores.sendMessage(message);
-            return ResponseEntity.ok(mapper.fromMessage(message));
+            return ResponseEntity.ok(MessageResponsePayload.fromMessage(message));
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestErrorResponsePayload(e.getMessage()));
         } catch (Exception e) {

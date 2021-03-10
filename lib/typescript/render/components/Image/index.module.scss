@@ -1,0 +1,63 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  display: flex;
+  flex: none;
+}
+
+.messageListItem {
+  display: flex;
+  align-self: flex-end;
+  width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.messageAvatar {
+  width: 40px;
+  height: 40px;
+  margin: 6px 8px 0 0;
+}
+
+.messageListUserContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.messageListItemUser {
+  align-self: flex-start;
+  text-align: left;
+  position: relative;
+}
+
+.messageListItemUserImage {
+  display: inline-flex;
+  margin-top: 5px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.messageListItemMember {
+  margin-top: 5px;
+  justify-content: flex-end;
+  width: 100%;
+  text-align: right;
+}
+
+.messageListItemMemberImage {
+  display: inline-flex;
+  position: relative;
+  text-align: left;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.messageTime {
+  @include font-s;
+  color: var(--color-text-gray);
+}
+
+.messageListItemImageBlock {
+  max-width: 100%;
+}

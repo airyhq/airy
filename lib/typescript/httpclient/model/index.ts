@@ -4,5 +4,6 @@ export * from './Contact';
 export * from './Conversation';
 export * from './ConversationFilter';
 export * from './Message';
+export * from './Metadata';
 export * from './Tag';
 export * from './User';

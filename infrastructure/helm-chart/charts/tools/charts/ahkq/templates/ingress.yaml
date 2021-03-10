@@ -1,0 +1,21 @@
+{{- if .Values.enabled }}
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: akhq
+  namespace: {{ .Values.global.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - host: {{ .Values.global.ingress.toolsHost }}
+      http:
+        paths:
+          - path: /akhq
+            pathType: Prefix
+            backend:
+              service:
+                name: akhq
+                port:
+                  number: 8080
+{{- end }}

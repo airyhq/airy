@@ -9,6 +9,11 @@ import co.airy.core.sources.facebook.payload.ConnectRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreResponsePayload;
 import co.airy.core.sources.facebook.payload.PageInfoResponsePayload;
+import co.airy.core.sources.facebook.payload.DisconnectChannelRequestPayload;
+import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.dto.MetadataMap;
+import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
 import org.apache.kafka.streams.state.KeyValueIterator;
@@ -23,7 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static co.airy.model.channel.ChannelPayload.fromChannel;
+import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
+import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -37,7 +43,7 @@ public class ChannelsController {
         this.stores = stores;
     }
 
-    @PostMapping("/facebook.explore")
+    @PostMapping("/channels.facebook.explore")
     ResponseEntity<?> explore(@RequestBody @Valid ExploreRequestPayload requestPayload) {
         try {
             final List<PageWithConnectInfo> pagesInfo = api.getPagesInfo(requestPayload.getAuthToken());
@@ -72,7 +78,7 @@ public class ChannelsController {
         }
     }
 
-    @PostMapping("/facebook.connect")
+    @PostMapping("/channels.facebook.connect")
     ResponseEntity<?> connect(@RequestBody @Valid ConnectRequestPayload requestPayload) {
         final String token = requestPayload.getPageToken();
         final String pageId = requestPayload.getPageId();
@@ -85,24 +91,55 @@ public class ChannelsController {
 
             api.connectPageToApp(fbPageWithConnectInfo.getAccessToken());
 
-            final Channel channel = Channel.newBuilder()
-                    .setId(channelId)
-                    .setConnectionState(ChannelConnectionState.CONNECTED)
-                    .setImageUrl(Optional.ofNullable(requestPayload.getImageUrl()).orElse(fbPageWithConnectInfo.getPicture().getData().getUrl()))
-                    .setName(Optional.ofNullable(requestPayload.getName()).orElse(fbPageWithConnectInfo.getNameWithLocationDescriptor()))
-                    .setSource("facebook")
-                    .setSourceChannelId(pageId)
-                    .setToken(token)
-                    .build();
+            final ChannelContainer container = ChannelContainer.builder()
+                    .channel(
+                            Channel.newBuilder()
+                                    .setId(channelId)
+                                    .setConnectionState(ChannelConnectionState.CONNECTED)
+                                    .setSource("facebook")
+                                    .setSourceChannelId(pageId)
+                                    .setToken(longLivingUserToken)
+                                    .build()
+                    )
+                    .metadataMap(MetadataMap.from(List.of(
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(requestPayload.getName()).orElse(fbPageWithConnectInfo.getNameWithLocationDescriptor())),
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, Optional.ofNullable(requestPayload.getImageUrl()).orElse(fbPageWithConnectInfo.getPicture().getData().getUrl()))
+                    ))).build();
 
-            stores.storeChannel(channel);
+            stores.storeChannelContainer(container);
 
-            return ResponseEntity.ok(fromChannel(channel));
+            return ResponseEntity.ok(fromChannelContainer(container));
         } catch (ApiException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
+    }
+
+    @PostMapping("/channels.facebook.disconnect")
+    ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
+        final String channelId = requestPayload.getChannelId().toString();
+
+        final Channel channel = stores.getChannelsStore().get(channelId);
+
+        if (channel == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
+            return ResponseEntity.accepted().body(new EmptyResponsePayload());
+        }
+
+        channel.setConnectionState(ChannelConnectionState.DISCONNECTED);
+        channel.setToken(null);
+
+        try {
+            stores.storeChannel(channel);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
+
+        return ResponseEntity.ok(new EmptyResponsePayload());
     }
 
 }

@@ -8,7 +8,7 @@ elif
 	/root/configure-zookeeper.sh
 else
 	echo "Unsupported arguments to docker entrypoint"
-	exit -1
+	exit 1
 fi
 
 su-exec kafka "$@"

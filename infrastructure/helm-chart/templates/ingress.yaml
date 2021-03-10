@@ -26,7 +26,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: api-communication
+                name: api-websocket
                 port:
                   number: 80
           - path: /conversations.list
@@ -78,6 +78,13 @@ spec:
                 name: api-communication
                 port:
                   number: 80
+          - path: /metadata.upsert
+            pathType: Prefix
+            backend:
+              service:
+                name: api-communication
+                port:
+                  number: 80
           - path: /client.config
             pathType: Prefix
             backend:
@@ -92,14 +99,28 @@ spec:
                 name: api-admin
                 port:
                   number: 80
-          - path: /chatplugin.disconnect
+          - path: /channels.info
             pathType: Prefix
             backend:
               service:
                 name: api-admin
                 port:
                   number: 80
-          - path: /chatplugin.connect
+          - path: /channels.update
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /channels.chatplugin.disconnect
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /channels.chatplugin.connect
             pathType: Prefix
             backend:
               service:
@@ -155,63 +176,98 @@ spec:
                 name: api-admin
                 port:
                   number: 80
-          - path: /facebook.connect
+          - path: /templates.create
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.update
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.list
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.delete
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates.info
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /channels.facebook.connect
             pathType: Prefix
             backend:
               service:
                 name: sources-facebook-connector
                 port:
                   number: 80
-          - path: /facebook.disconnect
+          - path: /channels.facebook.disconnect
             pathType: Prefix
             backend:
               service:
                 name: sources-facebook-connector
                 port:
                   number: 80
-          - path: /facebook.explore
+          - path: /channels.facebook.explore
             pathType: Prefix
             backend:
               service:
                 name: sources-facebook-connector
                 port:
                   number: 80
-          - path: /google.connect
+          - path: /channels.google.connect
             pathType: Prefix
             backend:
               service:
                 name: sources-google-connector
                 port:
                   number: 80
-          - path: /google.disconnect
+          - path: /channels.google.disconnect
             pathType: Prefix
             backend:
               service:
                 name: sources-google-connector
                 port:
                   number: 80
-          - path: /twilio.sms.connect
+          - path: /channels.twilio.sms.connect
             pathType: Prefix
             backend:
               service:
                 name: sources-twilio-connector
                 port:
                   number: 80
-          - path: /twilio.sms.disconnect
+          - path: /channels.twilio.sms.disconnect
             pathType: Prefix
             backend:
               service:
                 name: sources-twilio-connector
                 port:
                   number: 80
-          - path: /twilio.whatsapp.connect
+          - path: /channels.twilio.whatsapp.connect
             pathType: Prefix
             backend:
               service:
                 name: sources-twilio-connector
                 port:
                   number: 80
-          - path: /twilio.whatsapp.disconnect
+          - path: /channels.twilio.whatsapp.disconnect
             pathType: Prefix
             backend:
               service:
@@ -249,7 +305,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend-demo
+                name: frontend-ui
                 port:
                   number: 80
     - host: {{ .Values.global.ingress.chatpluginHost }}

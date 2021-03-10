@@ -1,0 +1,41 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  align-items: flex-end;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  justify-content: flex-end;
+}
+
+.replyButton {
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 0px 5px 5px;
+  padding: 4px 8px;
+  border-radius: 16px;
+  border: 1px solid var(--color-airy-blue);
+  background-color: var(--color-template-highlight);
+}
+
+.quickReplyImage {
+  width: 25px;
+  height: 25px;
+  margin-right: 6px;
+  border-radius: 50%;
+}
+
+.title {
+  @include font-base;
+  color: var(--color-airy-blue);
+}

@@ -5,8 +5,9 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.SenderType;
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
-import co.airy.core.webhook.publisher.model.QueueMessage;
+import co.airy.core.webhook.publisher.payload.QueueMessage;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -48,11 +49,13 @@ public class PublisherTest {
     private static KafkaTestHelper kafkaTestHelper;
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
+    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
 
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationWebhooks,
+                applicationCommunicationMetadata,
                 applicationCommunicationMessages
         );
 

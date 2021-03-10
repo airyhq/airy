@@ -1,26 +1,45 @@
 import React from 'react';
-import {Message, Conversation} from 'httpclient';
-import TextRender from './messages/TextRender/index';
+import {renderProviders} from './renderProviders';
 
-type RenderLibraryProps = {
-  message: Message;
-  source: string;
-  currentConversation?: Conversation;
-  prevWasContact?: boolean;
-  isContact: boolean;
-  nextIsSameUser?: boolean;
+import {Text} from './components/Text';
+import {getDefaultMessageRenderingProps, MessageRenderProps} from './shared';
+
+export * from './shared';
+
+type SourceMessageState = {
+  hasError: boolean;
 };
 
-const RenderLibrary = (props: RenderLibraryProps) => {
-  const {message, currentConversation, prevWasContact, isContact, nextIsSameUser} = props;
-  return (
-    <TextRender
-      conversation={currentConversation}
-      message={message}
-      showAvatar={!prevWasContact && isContact}
-      showSentAt={!nextIsSameUser}
-    />
-  );
-};
+export class SourceMessage extends React.Component<MessageRenderProps, SourceMessageState> {
+  constructor(props: MessageRenderProps) {
+    super(props);
+    this.state = {hasError: false};
+  }
 
-export default RenderLibrary;
+  static getDerivedStateFromError() {
+    return {hasError: true};
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error(error, errorInfo);
+  }
+
+  errorFallback() {
+    return <Text {...getDefaultMessageRenderingProps(this.props)} text="Could not render this content" />;
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.errorFallback();
+    }
+
+    const provider = renderProviders[this.props.source];
+
+    try {
+      return provider(this.props);
+    } catch (e) {
+      console.error(e);
+      return this.errorFallback();
+    }
+  }
+}

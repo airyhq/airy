@@ -11,8 +11,9 @@ width: -moz-available;
 right: 0;
 bottom: 0;
 z-index: 9999;
-max-height: 500px;
-max-width: 300px;
+height: 100vh;
+max-height: 700px;
+max-width: 380px;
 padding: 0;
 margin: 0;
 color: #444;
@@ -24,15 +25,17 @@ body.appendChild(anchor);
 
 declare const window: {
   airy: {
-    h: string;
-    cid: string;
-    no_tls: boolean;
+    host: string;
+    channelId: string;
+    welcomeMessage: {};
+    noTLS: boolean;
   };
 };
 
-if (window.airy.cid.length) {
+if (window.airy.channelId.length) {
   new AiryWidget({
-    channel_id: window.airy.cid,
+    channelId: window.airy.channelId,
+    welcomeMessage: window.airy.welcomeMessage,
   }).render(anchor);
 } else {
   console.log(

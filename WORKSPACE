@@ -7,12 +7,11 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # Airy Bazel tools
-
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "cdb56bffd21ea94fe909394a2c7321135dfd506f",
+    commit = "18642f4f2483933d738138cb4a850d83c62f438d",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1607079534 +0100",
+    shallow_since = "1615304389 +0100",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -107,7 +106,6 @@ maven_install(
     maven_install_json = "//:maven_install.json",
     repositories = [
         "https://packages.confluent.io/maven",
-        "https://oss.sonatype.org/content/repositories/snapshots/",
         "https://repo1.maven.org/maven2",
         "https://jitpack.io",
     ],
@@ -131,6 +129,10 @@ http_archive(
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
 go_rules_dependencies()
+
+load("@io_bazel_rules_go//extras:embed_data_deps.bzl", "go_embed_data_dependencies")
+
+go_embed_data_dependencies()
 
 go_register_toolchains(nogo = "@//:airy_nogo")  # my_nogo is in the top-level BUILD file of this workspace
 
@@ -180,6 +182,7 @@ load(
 
 container_pull(
     name = "java_base",
+    digest = "sha256:65aa73135827584754f1f1949c59c3e49f1fed6c35a918fadba8b4638ebc9c5d",
     registry = "gcr.io",
     repository = "distroless/java",
     tag = "11",
@@ -191,6 +194,14 @@ container_pull(
     registry = "ghcr.io",
     repository = "airyhq/frontend/nginx-lua",
     tag = "1.0.0",
+)
+
+container_pull(
+    name = "helm",
+    digest = "sha256:722e4f1f4726d962eb87eb71b3935ff41c36574fd44e8740e8eabfbb693bb0d4",
+    registry = "docker.io",
+    repository = "alpine/helm",
+    tag = "3.5.2",
 )
 
 load(
@@ -211,14 +222,6 @@ yarn_install(
     package_json = "//:package.json",
     yarn_lock = "//:yarn.lock",
 )
-
-load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
-
-install_bazel_dependencies()
-
-load("@npm_bazel_typescript//:index.bzl", "ts_setup_workspace")
-
-ts_setup_workspace()
 
 ### Bazel tooling
 

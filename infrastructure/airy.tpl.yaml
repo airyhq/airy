@@ -5,9 +5,10 @@ global:
   namespace: default
   ingress:
     apiHost: api.airy
-    webhooksHost: "webhooks.airy"
-    uiHost: demo.airy
+    webhooksHost: webhooks.airy
+    uiHost: ui.airy
     chatpluginHost: chatplugin.airy
+    toolsHost: tools.airy
 prerequisites:
   # Configuration for the Kafka cluster
   kafka:
@@ -27,11 +28,6 @@ prerequisites:
 apps:
   # Specific configurations for the API apps
   api:
-    mailFrom: "changeme"
-    mailPort: 587
-    mailUrl: "changeme"
-    mailUsername: "changeme"
-    mailPassword: "changeme"
     jwtSecret: "long-random-generated-jwt-secret"
     allowedOrigins: "*"
   # Specific configurations for sources
@@ -56,3 +52,6 @@ apps:
         bucket: "changeme"
         region: "changeme"
         path: "path"
+tools:
+  akhq:
+    enabled: false

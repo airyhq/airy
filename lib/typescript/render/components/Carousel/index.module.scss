@@ -1,0 +1,70 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  margin-top: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.carouselChildren {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  max-width: 100%;
+  align-items: flex-end;
+}
+
+.buttonScroll {
+  position: absolute;
+  width: 30px;
+  height: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background-color: #ffffff;
+  padding: 0;
+  line-height: 0;
+  cursor: pointer;
+
+  &:focus {
+    border: none;
+    outline: none;
+  }
+  &:active {
+    transition-duration: 0.2s;
+    transition: ease-in-out;
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+.buttonLeft {
+  @extend .buttonScroll;
+  position: absolute;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  left: 0;
+}
+
+.buttonRight {
+  @extend .buttonScroll;
+  position: absolute;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  right: 0px;
+}
+
+.scrollButton {
+  width: 24px;
+}
+
+.messageTime {
+  @include font-s;
+  color: var(--color-text-gray);
+}

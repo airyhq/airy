@@ -1,8 +1,8 @@
 module.exports = {
   title: 'Airy Documentation',
   tagline: 'Airy documentation website',
-  url: 'https://docs.airy.co',
-  baseUrl: '/',
+  url: 'https://airy.co',
+  baseUrl: process.env.CONTEXT === 'production' ? '/docs/core/' : '/',
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'airyhq',
@@ -31,8 +31,35 @@ module.exports = {
       title: 'Documentation',
       logo: {
         alt: 'Airy Documentation',
-        src: 'img/logo.svg',
+        src: 'img/logo_light.svg',
+        srcDark: 'img/logo_dark.svg',
       },
+      items: [
+        {
+          target: '_self',
+          label: 'Airy Core',
+          position: 'left',
+          to: '/',
+        },
+        {
+          target: '_self',
+          label: 'Airy Enterprise',
+          position: 'left',
+          href: 'https://airy.co/docs/enterprise/',
+        },
+        {
+          href: 'https://github.com/airyhq/airy',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
+          position: 'right',
+        },
+        {
+          target: '_self',
+          label: 'Need help?',
+          position: 'right',
+          to: '/getting-started/troubleshooting',
+        },
+      ],
     },
     footer: {
       style: 'light',
@@ -47,6 +74,7 @@ module.exports = {
         docs: {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
+          showLastUpdateTime: true,
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

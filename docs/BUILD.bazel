@@ -1,15 +1,10 @@
-load("@com_github_airyhq_bazel_tools//code-format:prettier.bzl", "prettier")
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
+load("@com_github_airyhq_bazel_tools//lint:prettier.bzl", "prettier")
 
 prettier(
-    srcs = glob([
-        "**/*.md",
-        "**/*.js",
-        "**/*.jsx",
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.scss",
-        "**/*.css",
-    ]),
+    name = "prettier",
     config = "//:.prettierrc.json",
     ignore = "//:.prettierignore",
 )
+
+check_pkg(name = "buildifier")

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-ui
+  namespace: {{.Values.global.namespace}}
+  labels:
+    app: frontend-ui
+    type: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-ui
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: frontend-ui
+    spec:
+      containers:
+        - name: app
+          image: '{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}'
+          imagePullPolicy: Always
+          env:
+            - name: API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: hostnames
+                  key: API_HOST
+            - name: CHATPLUGIN_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: hostnames
+                  key: CHATPLUGIN_HOST
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+              httpHeaders:
+                - name: Health-Check
+                  value: health-check
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+      initContainers:
+        - name: wait
+          image: busybox
+          command: ['/bin/sh', '/opt/provisioning/wait-for-service.sh']
+          env:
+            - name: SERVICE_NAME
+              value: api-auth
+            - name: SERVICE_PORT
+              value: '80'
+          volumeMounts:
+            - name: provisioning-scripts
+              mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts

@@ -30,18 +30,23 @@ latest.
   "data": [
     {
       "id": "{UUID}",
-      "content": '{"text":"Hello World"}',
+      "content": {"text": "Hello World"},
       // source message payload
-      // typed source message model
       "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
       "sender_type": "{string/enum}",
       // See glossary
-      "sent_at": "{string}"
+      "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+      "source": "{String}",
+      // one of the possible sources
+      "metadata": {
+        "sentFrom": "iPhone"
+      }
+      // metadata object of the message
     }
   ],
-  "response_metadata": {
+  "pagination_data": {
     "previous_cursor": "",
     "next_cursor": "",
     "filtered_total": 1,
@@ -52,32 +57,62 @@ latest.
 
 ## Send
 
-`POST /messages.send`
+import MessagesSend from './messages-send.mdx'
 
-Sends a message to a conversation and returns a payload. Whatever is put on the
-`message` field will be forwarded "as-is" to the source's message endpoint.
+<MessagesSend />
 
-**Sending a text message**
+## Send from Google's Business Messages source
+
+import GoogleMessagesSend from './google-messages-send.mdx'
+
+<GoogleMessagesSend />
+
+## Suggest replies
+
+`POST /messages.suggestReplies`
+
+Suggest a set of replies for a given message id. UI clients can show these to agents to make responding to user inquiries
+faster and more efficiently.
+
+**Sample request**
 
 ```json5
 {
-  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
-  "message": {
-    "text": "Hello World"
+  "message_id": "uuid",
+  "suggestions": {
+    "suggestion-id-1": {
+      "content": {"text": "Great that it worked. Is there anything else you need?"}
+    },
+    "suggestion-id-2": {
+      "content": {"text": "Have a nice day!"}
+    }
   }
 }
 ```
 
 **Sample response**
 
+The updated message including the suggested replies.
+
 ```json5
 {
   "id": "{UUID}",
-  "content": '{"text":"Hello"}',
-  "state": "pending|failed|delivered",
+  "content": {"text": "Hello World"},
+  "state": "{String}",
   "sender_type": "{string/enum}",
-  // See glossary
-  "sent_at": "{string}"
-  //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+  "sent_at": "{string}",
+  "source": "{String}",
+  "metadata": {
+    "suggestions": {
+      "suggestion-id-1": {
+        "content": {"text": "Great that it worked. Is there anything else you need?"}
+        // source specific content field (same as message content)
+      },
+      "suggestion-id-2": {
+        "content": {"text": "Have a nice day!"}
+      }
+    }
+  }
+  // metadata object of the message including the reply suggestions
 }
 ```

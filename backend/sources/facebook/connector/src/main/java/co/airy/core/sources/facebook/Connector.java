@@ -11,7 +11,6 @@ import co.airy.core.sources.facebook.api.model.UserProfile;
 import co.airy.core.sources.facebook.dto.Conversation;
 import co.airy.core.sources.facebook.dto.SendMessageRequest;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
 import org.apache.kafka.streams.KeyValue;
@@ -22,10 +21,12 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
-import static co.airy.model.metadata.MetadataKeys.Source.ContactFetchState.failed;
-import static co.airy.model.metadata.MetadataKeys.Source.ContactFetchState.ok;
+import static co.airy.model.metadata.MetadataKeys.ConversationKeys;
+import static co.airy.model.metadata.MetadataKeys.ConversationKeys.ContactFetchState.failed;
+import static co.airy.model.metadata.MetadataKeys.ConversationKeys.ContactFetchState.ok;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 
@@ -65,7 +66,7 @@ public class Connector {
 
     public boolean needsMetadataFetched(Conversation conversation) {
         final Map<String, String> metadata = conversation.getMetadata();
-        final String fetchState = metadata.get(MetadataKeys.Source.Contact.FETCH_STATE);
+        final String fetchState = metadata.get(ConversationKeys.Contact.FETCH_STATE);
 
         return !ok.toString().equals(fetchState) && !failed.toString().equals(fetchState);
     }
@@ -75,27 +76,24 @@ public class Connector {
 
         final List<KeyValue<String, Metadata>> recordList = new ArrayList<>();
 
-        if (profile.getFirstName() != null) {
-            final Metadata firstName = newConversationMetadata(conversationId, MetadataKeys.Source.Contact.FIRST_NAME, profile.getFirstName());
-            recordList.add(KeyValue.pair(getId(firstName).toString(), firstName));
-        }
-
-        if (profile.getLastName() != null) {
-            final Metadata lastName = newConversationMetadata(conversationId, MetadataKeys.Source.Contact.LAST_NAME, profile.getLastName());
-            recordList.add(KeyValue.pair(getId(lastName).toString(), lastName));
+        if (profile.getFirstName() != null || profile.getLastName() != null) {
+            final String displayName = String.format("%s %s", Objects.toString(profile.getFirstName(), ""),
+                    Objects.toString(profile.getLastName(), "")).trim();
+            final Metadata displayNameMetadata = newConversationMetadata(conversationId, ConversationKeys.Contact.DISPLAY_NAME, displayName);
+            recordList.add(KeyValue.pair(getId(displayNameMetadata).toString(), displayNameMetadata));
         }
 
         if (profile.getProfilePic() != null) {
-            final Metadata avatarUrl = newConversationMetadata(conversationId, MetadataKeys.Source.Contact.AVATAR_URL, profile.getProfilePic());
+            final Metadata avatarUrl = newConversationMetadata(conversationId, ConversationKeys.Contact.AVATAR_URL, profile.getProfilePic());
             recordList.add(KeyValue.pair(getId(avatarUrl).toString(), avatarUrl));
         }
 
         final String newFetchState = recordList.size() > 0 ? ok.toString() : failed.toString();
-        final String oldFetchState = conversation.getMetadata().get(MetadataKeys.Source.Contact.FETCH_STATE);
+        final String oldFetchState = conversation.getMetadata().get(ConversationKeys.Contact.FETCH_STATE);
 
         // Only update fetch state if there has been a change
         if (!newFetchState.equals(oldFetchState)) {
-            final Metadata fetchState = newConversationMetadata(conversationId, MetadataKeys.Source.Contact.FETCH_STATE, newFetchState);
+            final Metadata fetchState = newConversationMetadata(conversationId, ConversationKeys.Contact.FETCH_STATE, newFetchState);
             recordList.add(KeyValue.pair(getId(fetchState).toString(), fetchState));
         }
 

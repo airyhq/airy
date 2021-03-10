@@ -1,40 +1,58 @@
 package co.airy.model.channel;
 
 import co.airy.avro.communication.Channel;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.model.channel.dto.ChannelContainer;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static co.airy.model.metadata.MetadataObjectMapper.getMetadataPayload;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class ChannelPayload {
     private String id;
-
-    @JsonInclude(NON_NULL)
-    private String name;
-
-    @JsonInclude(NON_NULL)
     private String source;
-
-    @JsonInclude(NON_NULL)
     private String sourceChannelId;
+    private boolean connected;
+    private JsonNode metadata;
 
-    @JsonInclude(NON_NULL)
-    private String imageUrl;
+    public static ChannelPayload fromChannelContainer(ChannelContainer container) {
+        if (container.getMetadataMap() == null) {
+            return fromChannel(container.getChannel());
+        }
+
+        final Channel channel = container.getChannel();
+        return ChannelPayload.builder()
+                .id(channel.getId())
+                .metadata(defaultMetadata(getMetadataPayload(container.getMetadataMap()), channel))
+                .source(channel.getSource())
+                .sourceChannelId(channel.getSourceChannelId())
+                .connected(channel.getConnectionState().equals(ChannelConnectionState.CONNECTED))
+                .build();
+    }
 
     public static ChannelPayload fromChannel(Channel channel) {
         return ChannelPayload.builder()
-                .name(channel.getName())
                 .id(channel.getId())
-                .imageUrl(channel.getImageUrl())
                 .source(channel.getSource())
                 .sourceChannelId(channel.getSourceChannelId())
+                .connected(channel.getConnectionState().equals(ChannelConnectionState.CONNECTED))
                 .build();
+    }
+
+    private static JsonNode defaultMetadata(JsonNode metadata, Channel channel) {
+        if (metadata.get("name") == null) {
+            final String defaultName = String.format("%s %s", channel.getSource(), channel.getId().substring(31));
+            ((ObjectNode) metadata).put("name", defaultName);
+        }
+
+        return metadata;
     }
 }

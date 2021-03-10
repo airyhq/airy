@@ -25,7 +25,8 @@ import java.util.UUID;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,7 +47,6 @@ class ConversationsTagTest {
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
-
         kafkaTestHelper.beforeAll();
     }
 
@@ -65,14 +65,12 @@ class ConversationsTagTest {
         final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId("channel-id")
-                .setName("channel-name")
+                .setId(UUID.randomUUID().toString())
                 .setSource("facebook")
                 .setSourceChannelId("ps-id")
                 .build();
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-
         final String conversationId = UUID.randomUUID().toString();
         kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
 
@@ -93,7 +91,7 @@ class ConversationsTagTest {
                         .andExpect(status().isOk())
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
-                        .andExpect(jsonPath("$.tags", containsInAnyOrder(tagId))),
+                        .andExpect(jsonPath(String.format("$.metadata.tags['%s']", tagId), is(not(nullValue())))),
                 "Conversation was not tagged");
 
         webTestHelper.post("/conversations.untag",
@@ -105,7 +103,7 @@ class ConversationsTagTest {
                         "{\"conversation_id\":\"" + conversationId + "\"}", userId)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
-                        .andExpect(jsonPath("$.tags.length()", is(0))),
+                        .andExpect(jsonPath("$.metadata.tags").doesNotExist()),
                 "Conversation was not untagged");
     }
 

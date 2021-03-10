@@ -4,6 +4,18 @@ title: Glossary
 sidebar_label: Glossary
 ---
 
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+
+Airy Core allows its [users](#user) to process messaging data from a variety of
+[sources](#source), which are integrated via [source providers](#provider).
+Users connect sources via [channels](#channel). Once the channel is connected,
+Airy Core ingests source data and transforms them into
+[conversations](#conversation), [contacts](#contact), and [messages](#message).
+
+</TLDR>
+
 This document aims to provide an high-level overview of the Airy Core
 technical vocabulary. It provides definition of the most important terms used
 both in the code and in the rest of the documentation.
@@ -15,12 +27,6 @@ is the right place. Furthermore, it is worth underlining that the Avro data
 model and glossary do not correspond exactly. The former is the exact machine
 representation of the data we store and the latter is a conceptual artifact we
 created to discuss and solve problems.
-
-Airy Core allows its [users](#user) to process messaging data from a variety of
-[sources](#source), which are integrated via [source providers](#provider).
-Users connect sources via [channels](#channel). Once the channel is connected,
-Airy Core ingests source data and transforms them into
-[conversations](#conversation), [contacts](#contact), and [messages](#message).
 
 ## Channel
 
@@ -135,3 +141,7 @@ for the Twilio SMS and WhatsApp sources.
 ## User
 
 A user represents one authorized agent in Airy Core.
+
+## Template
+
+Pre defined messages that can be enhanced with user defined data.

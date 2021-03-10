@@ -25,8 +25,8 @@ create_issue() {
 create_release_branch() {
     command git checkout develop
     command git pull origin develop
-    command git checkout -b release/${release_number}
-    command git push origin release/${release_number}
+    command git checkout -b release/"${release_number}"
+    command git push origin release/"${release_number}"
     echo -e "Created branch release/${release_number}\n"
 }
 
@@ -43,14 +43,14 @@ update_release_version() {
     issue_number=$(curl -s\
                        -H "Accept: application/vnd.github.v3+json" \
                        "https://api.github.com/repos/airyhq/airy/issues?labels=release" | jq '.[0].number')
-    command echo ${release_number}> VERSION
+    command echo "${release_number}"> VERSION
     echo -e "Updated VERSION file\n"
 }
 
 commit_version() {
     command git add VERSION
     command git commit -m "Fixes #${issue_number}"
-    command git push origin release/${release_number}
+    command git push origin release/"${release_number}"
     echo -e "Updated VERSION file\n"
 }
 
@@ -61,8 +61,8 @@ create_alpha_version() {
         minor="${BASH_REMATCH[2]}"
         patch="${BASH_REMATCH[3]}"
     fi
-    alpha_version=$(printf "%s.%s.%s-alpha\n" $major $((minor+1)) $patch)
-    command echo ${alpha_version}> VERSION
+    alpha_version=$(printf "%s.%s.%s-alpha\n" "$major" $((minor+1)) "$patch")
+    command echo "${alpha_version}"> VERSION
     command git add VERSION
     command git commit -m "Bump version to ${alpha_version}"
     command git push origin develop
@@ -72,17 +72,17 @@ create_alpha_version() {
 merge_main() {
     command git checkout main
     command git pull origin main
-    command git merge --no-ff release/${release_number}
-    command git tag ${release_number}
+    command git merge --no-ff release/"${release_number}"
+    command git tag "${release_number}"
     command git push origin main
-    command git push origin ${release_number}
+    command git push origin "${release_number}"
     echo -e "Successfully merged into main branch\n"
 }
 
 merge_develop() {
     command git checkout develop
     command git pull origin develop
-    command git merge --no-ff release/${release_number}
+    command git merge --no-ff release/"${release_number}"
     command git push origin develop
     echo -e "Successfully merged into develop branch\n"
 }
@@ -95,8 +95,8 @@ fi
 
 case $1 in
     "start")
-        start $2
+        start "$2"
         ;;
     "finish")
-        finish $2
+        finish "$2"
 esac

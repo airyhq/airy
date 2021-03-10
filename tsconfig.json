@@ -1,7 +1,10 @@
 {
   "extends": "./bazel.tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
   "include": [
     "./frontend/**/*",
-    "./lib/typescript/**/*",
-  ],
+    "./lib/typescript/**/*"
+  ]
 }

@@ -6,31 +6,23 @@ sidebar_label: Metadata
 Refer to our [metadata](getting-started/glossary.md#metadata) definition for
 more information.
 
-## Set
+## Upsert
 
-`POST /metadata.set`
+This endpoint takes a `data` object and upserts the metadata for the `id`.
 
-```json
+`POST /metadata.upsert`
+
+**Sample Request**
+
+```json5
 {
-  "conversation_id": "conversation-id",
-  "key": "ad.id",
-  "value": "Grace"
+  "id": "{String}", //id of the subject
+  "subject": "conversation|message|channel",
+  "data": {
+    "sentFrom": "iPhone"
+  }
 }
 ```
 
 The endpoint returns status code `200` if the operation was successful, and
 `400` if not.
-
-## Remove
-
-`POST /metadata.remove`
-
-```json
-{
-  "conversation_id": "conversation-id",
-  "key": "ad.id"
-}
-```
-
-This endpoint returns status code `200` if the operation was successful, and
-`500` if not.

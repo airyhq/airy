@@ -1,0 +1,69 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.suggestionsWrapper {
+  width: 100%;
+  margin-top: 5px;
+  text-align: right;
+}
+
+.suggestionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  position: relative;
+  margin-top: 5px;
+}
+
+.replyButton {
+  width: auto;
+  min-width: 4rem;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  margin: 0px 0px 5px 5px;
+  padding: 4px 8px;
+  align-items: center;
+  border-radius: 16px;
+  border: 1px solid var(--color-dark-elements-gray);
+  background-color: var(--color-template-highlight);
+}
+
+.title {
+  @include font-base;
+  color: var(--color-text-contrast);
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.actionImage {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+}
+
+.hoverTextContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  border-radius: 6px;
+  padding-right: 2px;
+  background-color: var(--color-light-gray);
+  opacity: 0;
+  transition: opacity 0.8s;
+}
+
+.hoverTextContainer:hover {
+  visibility: visible;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.hoverText {
+  @include font-s;
+  color: var(--color-text-contrast);
+}

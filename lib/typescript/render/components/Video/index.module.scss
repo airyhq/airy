@@ -1,0 +1,52 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  display: flex;
+  flex: none;
+}
+
+.item {
+  display: flex;
+  align-self: flex-end;
+  width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.itemMember {
+  margin-top: 5px;
+  justify-content: flex-end;
+  width: 100%;
+  text-align: right;
+}
+
+.itemMemberVideo {
+  display: inline-flex;
+  position: relative;
+  text-align: left;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.itemUser {
+  align-self: flex-start;
+  text-align: left;
+  position: relative;
+}
+
+.itemUserVideo {
+  display: inline-flex;
+  margin-top: 5px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video {
+  max-width: 100%;
+}

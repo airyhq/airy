@@ -4,24 +4,21 @@ import co.airy.avro.communication.Metadata;
 import co.airy.uuid.UUIDv5;
 
 import java.time.Instant;
-import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.model.metadata.MetadataKeys.PUBLIC;
-import static java.util.stream.Collectors.toMap;
-
 public class MetadataRepository {
-    public static Map<String, String> filterPrefix(Map<String, String> metadataMap, String prefix) {
-        return metadataMap
-                .entrySet()
-                .stream()
-                .filter((entry) -> entry.getKey().startsWith(prefix))
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
     public static Metadata newConversationMetadata(String conversationId, String key, String value) {
         return Metadata.newBuilder()
                 .setSubject(new Subject("conversation", conversationId).toString())
+                .setKey(key)
+                .setValue(value)
+                .setTimestamp(Instant.now().toEpochMilli())
+                .build();
+    }
+
+    public static Metadata newChannelMetadata(String channelId, String key, String value) {
+        return Metadata.newBuilder()
+                .setSubject(new Subject("channel", channelId).toString())
                 .setKey(key)
                 .setValue(value)
                 .setTimestamp(Instant.now().toEpochMilli())
@@ -41,18 +38,18 @@ public class MetadataRepository {
         return metadata.getSubject().startsWith("conversation:");
     }
 
-    public static boolean isMessageMetadata(Metadata metadata) {
-        return metadata.getSubject().startsWith("message:");
+    public static boolean isChannelMetadata(Metadata metadata) {
+        return metadata.getSubject().startsWith("channel:");
     }
 
-    public static Map<String, String> getConversationInfo(Map<String, String> metadataMap) {
-        return filterPrefix(metadataMap, PUBLIC);
+    public static boolean isMessageMetadata(Metadata metadata) {
+        return metadata.getSubject().startsWith("message:");
     }
 
     public static Metadata newConversationTag(String conversationId, String tagId) {
         return Metadata.newBuilder()
                 .setSubject(new Subject("conversation",conversationId).toString())
-                .setKey(String.format("%s.%s", MetadataKeys.TAGS, tagId))
+                .setKey(String.format("%s.%s", MetadataKeys.ConversationKeys.TAGS, tagId))
                 .setValue("")
                 .setTimestamp(Instant.now().toEpochMilli())
                 .build();

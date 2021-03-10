@@ -3,8 +3,16 @@ title: WebSocket
 sidebar_label: WebSocket
 ---
 
-Airy Core offers a WebSocket server that allows clients to connect and receive
-near real-time updates on communication data. The WebSocket server uses the
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+
+Airy Core offers a WebSocket server that allows clients to **connect and receive
+near real-time updates**.
+
+</TLDR>
+
+The WebSocket server uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
 protocol endpoint at `/ws.communication`.
 
@@ -12,95 +20,69 @@ To execute the handshake with `/ws.communication` you must set an
 `Authorization` header where the value is the authorization token obtained [from
 the API](/api/introduction#authentication).
 
-## Outbound Queues
+## Event Payloads
 
-Outbound queues follow the pattern `/queue/:event_type[/:action}]` and deliver
-JSON encoded payloads.
+All event updates are sent to the `/events` queue as JSON encoded payloads. The `type`
+field informs the client of the kind of update that is encoded in the payload.
 
 ### Message
 
-`/queue/message`
-
-Incoming payloads notify connected clients that a message was created or
-updated.
-
-**Sample payload**
-
 ```json5
 {
-  "conversation_id": "{UUID}",
-  "channel_id": "{UUID}",
-  "message": {
-    "id": "{UUID}",
-    "content": '{"text":"Hello World"}',
-    // source message payload
-    "delivery_state": "{String}",
-    // delivery state of message, one of PENDING, FAILED, DELIVERED
-    "sender_type": "{string/enum}",
-    // See glossary
-    "sent_at": "{string}"
-    //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+  "type": "message",
+  "payload": {
+    "conversation_id": "{UUID}",
+    "channel_id": "{UUID}",
+    "message": {
+      "id": "{UUID}",
+      "content": {"text": "Hello World"},
+      // source message payload
+      "delivery_state": "pending|failed|delivered",
+      // delivery state of message, one of pending, failed, delivered
+      "sender_type": "{string/enum}",
+      // See glossary
+      "sent_at": "{string}",
+      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+      "source": "{String}"
+      // one of the possible sources
+    }
   }
 }
 ```
 
-### Unread count
-
-`/queue/unread-count`
-
-Incoming payloads notify connected clients of the unread message count for a
-specific conversation at the time of delivery. Clients should keep track of the
-latest time the unread count for a specific conversation was updated and update
-the value only for a more recent count.
+### Metadata
 
 **Sample payload**
 
 ```json5
 {
-  conversation_id: "{UUID}",
-  //unique conversation id
-  unread_message_count: 42,
-  //the number of unreaded messages in this conversation
-  timestamp: "{string}"
-  //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+  "type": "metadata",
+
+  "payload": {
+    "subject": "conversation|channel|message",
+    "identifier": "conversation/channel/message id",
+    "metadata": {
+      // nested metadata object. I.e. for a conversation:
+      "contact": {
+        "displayName": "Grace"
+      },
+      "isUserTyping": true
+    }
+  }
 }
 ```
 
-### Channel connected
-
-`/queue/channel/connected`
-
-Incoming payloads notify connected clients whenever a channel was connected or
-updated.
-
-**Sample payload**
+### Channel
 
 ```json5
 {
-  "id": "{UUID}",
-  "name": "my page 1",
-  "source": "facebook",
-  "source_channel_id": "fb-page-id-1",
-  "image_url": "http://example.org/avatar.jpeg" // optional
-}
-```
+  "type": "channel",
 
----
-
-### Channel disconnected
-
-Incoming payloads notify connected clients whenever a channel was disconnected.
-
-`/queue/channel/disconnected`
-
-**Sample payload**
-
-```json5
-{
-  "id": "{UUID}",
-  "name": "my page 1",
-  "source": "facebook",
-  "source_channel_id": "fb-page-id-1",
-  "image_url": "http://example.org/avatar.jpeg" // optional
+  "payload": {
+    "id": "{UUID}",
+    "source": "facebook",
+    "source_channel_id": "fb-page-id-1",
+    "connected": true // or false
+  }
 }
 ```

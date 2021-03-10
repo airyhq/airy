@@ -1,4 +1,4 @@
-replicaCount: 0
+replicaCount: 1
 image: infrastructure/schema-registry
 imageTag: 2.0.1
 imagePullPolicy: Always

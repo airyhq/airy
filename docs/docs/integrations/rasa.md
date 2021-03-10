@@ -4,6 +4,15 @@ sidebar_label: Rasa
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+
+Rasa is an open source machine learning framework for automated text and voice-based conversations. Understand messages, hold conversations, and connect to messaging channels and APIs.
+
+\- From the [Rasa documentation](https://rasa.com/docs/rasa/)
+
+</TLDR>
 
 :::tip What you will learn
 
@@ -11,12 +20,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 - How to configure Rasa to receive and reply to messages using Airy
 
 :::
-
-> Rasa is an open source machine learning framework for automated text and
-> voice-based conversations. Understand messages, hold conversations, and
-> connect to messaging channels and APIs.
->
-> \- From the [Rasa documentation](https://rasa.com/docs/rasa/)
 
 Out of the box Rasa offers you a standard set of messaging channels to connect
 to. However, you can only connect to one Facebook page for instance at a time.
@@ -34,7 +37,8 @@ Airy Core to send and receive messages.
 
 :::note Prerequisites
 
-- A running Airy Core installation [Get Started](getting-started/installation.md)
+- A running Airy Core installation [Get
+  Started](getting-started/installation/introduction.md)
 - A local Rasa setup: For convenience, we recommend [the Docker setup](https://rasa.com/docs/rasa/docker/building-in-docker/) or [a demo repository](https://github.com/airyhq/rasa-demo) we created for this guide
 
 :::

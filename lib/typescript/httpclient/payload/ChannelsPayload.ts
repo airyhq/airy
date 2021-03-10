@@ -1,5 +1,5 @@
-import {Channel} from '../model';
+import {ChannelPayload} from './ChannelPayload';
 
 export interface ChannelsPayload {
-  data: Channel[];
+  data: ChannelPayload[];
 }

@@ -1,0 +1,87 @@
+.containerSearch {
+  display: flex;
+  width: 100%;
+  border-radius: 5px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.containerSearchHeadline {
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  width: 100%;
+}
+
+.containerSearchField {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  height: 42px;
+  width: 100%;
+  animation-name: searchFieldAnimation;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes searchFieldAnimation {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.backIcon {
+  cursor: pointer;
+  height: 13px;
+  width: 17px;
+
+  path {
+    fill: var(--color-airy-blue);
+  }
+}
+
+.backButton {
+  border: none;
+  background-color: white;
+  padding-left: 0px;
+  padding-right: 14px;
+}
+
+.searchFieldWidth {
+  width: 100%;
+}
+
+.searchBox {
+  color: black;
+  background: white;
+}
+
+.searchButton {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.headline {
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.searchIcon {
+  width: 22px;
+  height: 22px;
+  padding-top: 2px;
+  margin-right: 4px;
+  position: relative;
+  top: 8px;
+
+  path {
+    fill: var(--color-text-gray);
+  }
+}

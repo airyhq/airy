@@ -1,12 +1,14 @@
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
-load("//tools/build:container_push.bzl", "container_push")
+load("//tools/build:container_release.bzl", "container_release")
 
 app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
     "//backend/model/channel",
     "//backend/model/message",
+    "//backend/model/metadata",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/uuid",
@@ -37,7 +39,9 @@ springboot(
     for file in glob(["src/test/java/**/*Test.java"])
 ]
 
-container_push(
+container_release(
     registry = "ghcr.io/airyhq/sources",
     repository = "google-connector",
 )
+
+check_pkg(name = "buildifier")

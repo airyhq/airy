@@ -3,29 +3,18 @@ module.exports = {
     {
       '🚀 Getting Started': [
         'getting-started/introduction',
-        'getting-started/installation',
         {
-          Deployment: [
-            'getting-started/deployment/introduction',
-            'getting-started/deployment/vagrant',
-            'getting-started/deployment/production',
+          Installation: [
+            'getting-started/installation/introduction',
+            'getting-started/installation/vagrant',
+            'getting-started/installation/production',
+            'getting-started/installation/configuration',
           ],
+        },
+        {
+          'Command Line Interface': ['cli/introduction', 'cli/installation', 'cli/reference'],
         },
         'getting-started/quickstart',
-        {
-          CLI: [
-            'getting-started/cli',
-            'cli/airy',
-            'cli/airy_version',
-            'cli/airy_init',
-            'cli/airy_config',
-            'cli/airy_config_apply',
-            'cli/airy_api',
-            'cli/airy_api_signup',
-            'cli/airy_api_login',
-            'cli/airy_status',
-          ],
-        },
         'getting-started/troubleshooting',
         'getting-started/glossary',
       ],
@@ -33,7 +22,15 @@ module.exports = {
     {
       '💬 Sources': [
         'sources/introduction',
-        'sources/chat-plugin',
+        {
+          'Airy Live Chat Plugin': [
+            'sources/chatplugin/overview',
+            'sources/chatplugin/demo',
+            'sources/chatplugin/quickstart',
+            'sources/chatplugin/installation',
+            'sources/chatplugin/customization',
+          ],
+        },
         'sources/facebook',
         'sources/google',
         'sources/sms-twilio',
@@ -48,10 +45,12 @@ module.exports = {
           'HTTP Endpoints': [
             'api/endpoints/introduction',
             'api/endpoints/channels',
+            'api/endpoints/chatplugin',
             'api/endpoints/conversations',
             'api/endpoints/messages',
             'api/endpoints/metadata',
             'api/endpoints/tags',
+            'api/endpoints/templates',
             'api/endpoints/users',
           ],
         },
@@ -60,7 +59,11 @@ module.exports = {
       ],
     },
     {
-      '✨ Apps': ['apps/ui'],
+      '✨ Apps': [
+        {
+          UI: ['apps/ui/introduction', 'apps/ui/quickstart', 'apps/ui/inbox', 'apps/ui/tags', 'apps/ui/components'],
+        },
+      ],
     },
     {
       '🛠️ Integrations': [

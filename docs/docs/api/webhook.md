@@ -102,7 +102,7 @@ request with one the following payloads:
     "channel_id": "{UUID}",
     "message": {
       "id": "{UUID}",
-      "content": {text: "Hello World"},
+      "content": {"text": "Hello World"},
       // source message payload
       "delivery_state": "pending|failed|delivered",
       // delivery state of message, one of pending, failed, delivered

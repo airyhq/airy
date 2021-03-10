@@ -22,12 +22,6 @@ module.exports = {
       additionalLanguages: ['json5'],
     },
     navbar: {
-      items: [
-        {
-          type: 'search',
-          position: 'left',
-        },
-      ],
       title: 'Documentation',
       logo: {
         alt: 'Airy Documentation',
@@ -35,6 +29,10 @@ module.exports = {
         srcDark: 'img/logo_dark.svg',
       },
       items: [
+        {
+          type: 'search',
+          position: 'left',
+        },
         {
           target: '_self',
           label: 'Airy Core',

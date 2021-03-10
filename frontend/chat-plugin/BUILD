@@ -14,6 +14,7 @@ module_deps = [
     "//lib/typescript/httpclient",
     "//lib/typescript/render",
     "//lib/typescript/dates",
+    "//frontend/chat-plugin/handles:chat-plugin-handles",
 ]
 
 web_app(

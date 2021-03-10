@@ -15,6 +15,7 @@ module_deps = [
     "//lib/typescript/render",
     "//lib/typescript/dates",
     "//lib/typescript/websocketclient",
+    "//frontend/ui/handles",
 ]
 
 ts_web_library(

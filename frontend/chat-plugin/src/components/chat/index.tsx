@@ -18,6 +18,7 @@ import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
+import {cyBubble} from 'chat-plugin-handles';
 
 let ws: WebSocket;
 
@@ -128,7 +129,7 @@ const Chat = (props: Props) => {
 
   const bubble = props.bubbleProp
     ? () => props.bubbleProp(ctrl)
-    : () => <AiryBubble isChatHidden={isChatHidden} toggleHideChat={ctrl.toggleHideChat} />;
+    : () => <AiryBubble isChatHidden={isChatHidden} toggleHideChat={ctrl.toggleHideChat} dataCyId={cyBubble} />;
 
   if (installError) {
     return null;

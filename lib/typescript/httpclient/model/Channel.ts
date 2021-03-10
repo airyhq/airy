@@ -20,13 +20,3 @@ export enum ChannelSource {
   twilioSMS = 'twilio.sms',
   twilioWhatsapp = 'twilio.whatsapp',
 }
-
-export const channelNameSorter = (channelA: Channel, channelB: Channel) => {
-  if (channelA.metadata.name.toLowerCase() < channelB.metadata.name.toLowerCase()) {
-    return -1;
-  }
-  if (channelA.metadata.name.toLowerCase() > channelB.metadata.name.toLowerCase()) {
-    return 1;
-  }
-  return 0;
-};

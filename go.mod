@@ -9,6 +9,8 @@ require (
 	github.com/alicebob/miniredis/v2 v2.13.3
 	github.com/go-redis/redis/v8 v8.2.2
 	github.com/spf13/cobra v1.1.1
+	github.com/aws/aws-sdk-go-v2 v1.2.0
+	github.com/awslabs/smithy-go v0.3.0
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/kr/pretty v0.2.1
 	github.com/mitchellh/go-homedir v1.1.0

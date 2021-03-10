@@ -191,7 +191,7 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
 {
   "message": {
     "id": "{UUID}",
-    "content": {text: "Hello World"},
+    "content": {"text": "Hello World"},
     // source message payload
     "state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED

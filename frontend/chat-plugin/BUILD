@@ -1,3 +1,4 @@
+load("//tools/lint:web.bzl", "web_lint")
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@npm//@bazel/typescript:index.bzl", "ts_config")
 load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
@@ -26,8 +27,8 @@ web_app(
     index = ":development.html",
     module_deps = module_deps,
     output = {
-        "publicPath": "/chatplugin"
-    }
+        "publicPath": "/chatplugin",
+    },
 )
 
 web_library(
@@ -103,3 +104,5 @@ container_release(
 )
 
 check_pkg(name = "buildifier")
+
+web_lint()

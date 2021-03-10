@@ -1,64 +1,10 @@
 ---
-title: Airy Live Chat Plugin
-sidebar_label: Airy Live Chat Plugin
+title: Chat Plugin
+sidebar_label: Chat Plugin
 ---
 
-import TLDR from "@site/src/components/TLDR";
-
-<TLDR>
-
-Airy's Live Chat Plugin is an **open-source chat widget** that you can put on your website to chat with your visitors.
-
- </TLDR>
-
-The Airy Live Chat Plugin is a fully-featured
-[source](/getting-started/glossary#source) that enables conversations with
-anonymous website visitors through a web chat plugin.
-
-:::tip What you will learn
-
-- How to connect a Chat Plugin
-- How to install the Chat Plugin web widget
-- How to use the HTTP and WebSocket APIs that power the Chat Plugin
-
-:::
-
-## Installation
-
-To install the Chat Plugin UI on your website add the following script tag to
-the `<head>` section:
-
-```html
-<script>
-  (function (w, d, s, n) {
-    w[n] = w[n] || {};
-    w[n].channelId = "CHANNEL_ID";
-    w[n].host = "SCRIPT_HOST";
-    var f = d.getElementsByTagName(s)[0],
-      j = d.createElement(s);
-    j.async = true;
-    j.src = w[n].host + "/s.js";
-    f.parentNode.insertBefore(j, f);
-  })(window, document, "script", "airy");
-</script>
-```
-
-You must replace `CHANNEL_ID` with the channel id obtained when
-[connecting](#connecting-a-channel) the source and `SCRIPT_HOST` with the host
-of your Chat Plugin server. When using the local vagrant environment
-`SCRIPT_HOST` must be set to `airy.core`.
-
-:::note
-
-`airy.core/chatplugin/` is not publicly accessible. The setup will only work for local web pages.
-
-:::
-
-To test the setup, replace the `CHANNEL_ID` in the URL
-`http://airy.core/chatplugin//example?channel_id=CHANNEL_ID` and open it in your
-browser.
-
-## HTTP API
+Refer to our [Chat Plugin introduction](sources/chatplugin/overview.md) for
+more information.
 
 The HTTP api adheres to standards laid out in the [core
 API](/api/introduction#authentication).
@@ -119,8 +65,8 @@ previous conversation using the [resume endpoint](#get-a-resume-token).
 
 `POST /chatplugin.resumeToken`
 
-You must set the `token` obtained on the [authorization endpoint](#authenticating-web-users) as an `Authorization`
-header.
+You must set the `token` obtained on the [authorization
+endpoint](#authenticating-web-users) as an `Authorization` header.
 
 **Sample request**
 

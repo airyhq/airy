@@ -30,7 +30,7 @@ Business Messages, and so on).
     icon={() => <AiryBubbleSVG />}
     title='Airy Live Chat Plugin'
     description='The Airy Live Chat Plugin enables conversations with website visitors through a web chat plugin'
-    link='/sources/chat-plugin'
+    link='/sources/chatplugin/overview'
 />
 
 <ButtonBox

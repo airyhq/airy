@@ -36,7 +36,7 @@ This enables you and your teams to interact with your website visitors in a rich
 icon={() => <AiryBubbleSVG />}
 title='Airy Live Chat Plugin'
 description='The Airy Live Chat Plugin enables conversations with website visitors through a web chat plugin'
-link='sources/chat-plugin'
+link='sources/chatplugin/overview'
 />
 
 ## Search & Filter

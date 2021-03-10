@@ -63,11 +63,11 @@ local machine. You can see an example request to the API by running the
 
 ## Access the UI
 
-The UI can be accessed through http://airy.core/ui/.
+The UI can be accessed at http://airy.core/ui/.
 
-The frontend UI for the Airy chat plugin can be accessed through
-http://airy.core/chatplugin//example. Refer to [the Airy Live Chat
-plugin](/sources/chat-plugin.md) documentation for detailed information.
+The frontend UI for the Airy chat plugin can be accessed at
+`http://airy.core/chatplugin/example`. Refer to [the Airy Live Chat
+plugin](/sources/chatplugin/overview.md) documentation for detailed information.
 
 ## Public webhooks
 

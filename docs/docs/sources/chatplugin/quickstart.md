@@ -33,9 +33,6 @@ link='/getting-started/installation/introduction'
 
 ## Step 1: How to setup your first source
 
-The [Airy Live Chat Plugin](/sources/chatplugin/overview.md) source is well suited for a
-first integration because it does not require any configuration.
-
 Once you [signed up](/api/endpoints/users.md#signup), you must [log
 in](/api/authentication.md#login) so you can obtain a valid JWT token for the
 upcoming API calls:
@@ -52,7 +49,7 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 }" airy.core/channels.chatplugin.connect
 ```
 
-<img alt="channels_connect" src={useBaseUrl('img/getting-started/quickstart/connect_chatplugin_channel.gif')} />
+<img alt="channels_connect" src={useBaseUrl('img/sources/chatplugin/connect_chatplugin_channel.gif')} />
 
 The ID from the response is the `channel_id`. It is required for
 the next steps, so note it down.
@@ -69,7 +66,7 @@ http://airy.core/chatplugin/example?channel_id=<channel_id>
 
 You can now type a message in the text box and send it 🎉
 
-<img alt="chatplugin working" src={useBaseUrl('img/getting-started/quickstart/chatplugin.gif')} />
+<img alt="chatplugin working" src={useBaseUrl('img/sources/chatplugin/chatplugin.gif')} />
 
 ## Step 3: Use the HTTP API to list conversations
 
@@ -77,7 +74,7 @@ To see how messages are flowing through the system, [list
 conversations](/api/endpoints/conversations.md#list) for the channel you have just
 created. it should return the message you have just sent.
 
-<img alt="conversations.list" src={useBaseUrl('img/getting-started/quickstart/conversation_list.gif')} />
+<img alt="conversations.list" src={useBaseUrl('img/sources/chatplugin/conversation_list.gif')} />
 
 ```bash
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
@@ -99,4 +96,4 @@ kafka-console-consumer \
 ```
 
 <img alt="Kafka Topic"
-src={useBaseUrl('img/getting-started/quickstart/messages_topic.gif')} />
+src={useBaseUrl('img/sources/chatplugin/messages_topic.gif')} />

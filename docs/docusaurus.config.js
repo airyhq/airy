@@ -22,6 +22,12 @@ module.exports = {
       additionalLanguages: ['json5'],
     },
     navbar: {
+      items: [
+        {
+          type: 'search',
+          position: 'left',
+        },
+      ],
       title: 'Documentation',
       logo: {
         alt: 'Airy Documentation',

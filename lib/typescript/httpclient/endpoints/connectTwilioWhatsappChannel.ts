@@ -7,7 +7,7 @@ export default HttpClient.prototype.connectTwilioWhatsappChannel = async functio
   requestPayload: ConnectTwilioWhatsappRequestPayload
 ) {
   const response: ChannelPayload = await this.doFetchFromBackend('channels.twilio.whatsapp.connect', {
-    phone_number: requestPayload.phoneNumber,
+    phone_number: requestPayload.sourceChannelId,
     name: requestPayload.name,
     image_url: requestPayload.imageUrl,
   });

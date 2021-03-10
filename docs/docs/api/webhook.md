@@ -33,8 +33,8 @@ Subscribes the webhook for the first time or update its parameters.
 
 ```json5
 {
-  url: "https://my-url-to-be-hit",
-  headers: {
+  "url": "https://my-url-to-be-hit",
+  "headers": {
     "X-Custom-Header": "custom-code-for-header"
   }
 }
@@ -44,12 +44,12 @@ Subscribes the webhook for the first time or update its parameters.
 
 ```json5
 {
-  url: "https://my-url-to-be-hit",
-  headers: {
+  "url": "https://my-url-to-be-hit",
+  "headers": {
     "X-Custom-Header": "custom-code-for-header"
   },
-  status: "Subscribed",
-  api_secret: "{UUID}"
+  "status": "Subscribed",
+  "api_secret": "{UUID}"
 }
 ```
 
@@ -61,12 +61,12 @@ Subscribes the webhook for the first time or update its parameters.
 
 ```json5
 {
-  url: "https://my-url-to-be-hit",
-  headers: {
+  "url": "https://my-url-to-be-hit",
+  "headers": {
     "X-Custom-Header": "custom-code-for-header"
   },
-  status: "Unsubscribed",
-  api_secret: "{UUID}"
+  "status": "Unsubscribed",
+  "api_secret": "{UUID}"
 }
 ```
 
@@ -78,9 +78,9 @@ Subscribes the webhook for the first time or update its parameters.
 
 ```json5
 {
-  status: "Subscribed",
-  url: "https://my-url-to-be-hit",
-  headers: {
+  "status": "Subscribed",
+  "url": "https://my-url-to-be-hit",
+  "headers": {
     "X-Custom-Header": "custom-code-for-header"
   }
 }
@@ -96,21 +96,21 @@ request with one the following payloads:
 
 ```json5
 {
-  type: "message",
-  payload: {
-    conversation_id: "{UUID}",
-    channel_id: "{UUID}",
-    message: {
-      id: "{UUID}",
-      content: {text: "Hello World"},
+  "type": "message",
+  "payload": {
+    "conversation_id": "{UUID}",
+    "channel_id": "{UUID}",
+    "message": {
+      "id": "{UUID}",
+      "content": {text: "Hello World"},
       // source message payload
-      delivery_state: "pending|failed|delivered",
+      "delivery_state": "pending|failed|delivered",
       // delivery state of message, one of pending, failed, delivered
-      sender_type: "{string/enum}",
+      "sender_type": "{string/enum}",
       // See glossary
-      sent_at: "{string}",
+      "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
-      source: "{String}"
+      "source": "{String}"
       // one of the possible sources
     }
   }
@@ -123,17 +123,17 @@ request with one the following payloads:
 
 ```json5
 {
-  type: "metadata",
+  "type": "metadata",
 
-  payload: {
-    subject: "conversation|channel|message",
-    identifier: "conversation/channel/message id",
-    metadata: {
+  "payload": {
+    "subject": "conversation|channel|message",
+    "identifier": "conversation/channel/message id",
+    "metadata": {
       // nested metadata object. I.e. for a conversation:
-      contact: {
-        displayName: "Grace"
+      "contact": {
+        "displayName": "Grace"
       },
-      isUserTyping: true
+      "isUserTyping": true
     }
   }
 }

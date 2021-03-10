@@ -26,8 +26,8 @@ does not require a valid token to be present in the headers.
 
 ```json5
 {
-  email: "grace@example.com",
-  password: "avalidpassword"
+  "email": "grace@example.com",
+  "password": "avalidpassword"
 }
 ```
 

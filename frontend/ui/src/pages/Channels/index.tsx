@@ -7,7 +7,7 @@ import {getClientConfig} from '../../actions/config';
 import {StateModel} from '../../reducers/index';
 import styles from './index.module.scss';
 
-import {allChannels} from '../../selectors/channels';
+import {allChannelsConnected} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
 
 import ChannelsMainPage from './ChannelsMainPage';
@@ -24,7 +24,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allChannels(state)),
+  channels: Object.values(allChannelsConnected(state)),
   config: state.data.config,
 });
 

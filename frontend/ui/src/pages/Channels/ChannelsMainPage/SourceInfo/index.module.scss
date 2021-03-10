@@ -28,6 +28,7 @@
 
   &:hover {
     background-color: var(--color-background-blue);
+    box-shadow: -0.5px 2px 3px 0px var(--color-light-gray);
     cursor: pointer;
     button {
       background-color: var(--color-background-blue);

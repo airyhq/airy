@@ -25,7 +25,7 @@ const SourceDescription = (props: SourceDescriptionProps) => {
 
       {props.displayButton && (
         <div className={styles.channelButton}>
-          <button type="button" className={styles.addChannelButton} onClick={() => props.onAddChannelClick()}>
+          <button type="button" className={styles.addChannelButton} onClick={props.onAddChannelClick}>
             <div className={styles.channelButtonIcon} title="Add a channel">
               <AddIcon />
             </div>

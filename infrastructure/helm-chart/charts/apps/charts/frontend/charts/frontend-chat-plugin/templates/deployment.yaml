@@ -30,7 +30,7 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: hostnames
-                key: CHATPLUGIN_HOST
+                key: HOST
         livenessProbe:
           httpGet:
             path: /health

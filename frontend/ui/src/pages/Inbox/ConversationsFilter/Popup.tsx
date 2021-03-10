@@ -1,22 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {sortBy} from 'lodash-es';
-
+import {ReactComponent as AiryLogoIcon} from 'assets/images/icons/airy_avatar.svg';
 import {SearchField, LinkButton, Button} from '@airyhq/components';
 import {Tag as TagModel, Channel, ConversationFilter} from 'httpclient';
-
 import {listTags} from '../../../actions/tags';
-
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
-
 import {StateModel} from '../../../reducers';
-
 import {IconChannelFilter} from '../../../components/IconChannelFilter';
 import DialogCustomizable from '../../../components/DialogCustomizable';
 import Tag from '../../../components/Tag';
-
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
-
 import styles from './Popup.module.scss';
 import {allChannels} from '../../../selectors/channels';
 
@@ -176,7 +170,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       </div>
                     ) : (
                       <div className={styles.channelLogoWrapper}>
-                        <IconChannelFilter channel={channel} />
+                        {channel.metadata?.imageUrl ? <IconChannelFilter channel={channel} /> : <AiryLogoIcon />}
                       </div>
                     )}
 

@@ -14,6 +14,7 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 import {StateModel} from '../../../reducers';
 import {getTextMessagePayload} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
+import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -181,6 +182,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             value={input}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
+            data-cy={cyMessageTextArea}
           />
         </div>
         <InputOptions />
@@ -190,8 +192,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           type="button"
           className={`${styles.sendButton} ${input && styles.sendButtonActive}`}
           onClick={handleClick}
-          disabled={input.trim().length == 0}>
-          <div className={styles.sendButtonText} ref={sendButtonRef}>
+          disabled={input.trim().length == 0}
+          data-cy={cyMessageSendButton}>
+          <div className={styles.sendButtonText}>
             <Paperplane />
           </div>
         </button>

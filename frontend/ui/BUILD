@@ -15,6 +15,7 @@ module_deps = [
     "//lib/typescript/render",
     "//lib/typescript/dates",
     "//lib/typescript/websocketclient",
+    "//frontend/ui/handles",
 ]
 
 ts_web_library(
@@ -45,6 +46,9 @@ web_app(
     entry = "frontend/ui/src/index.js",
     index = ":index.html",
     module_deps = module_deps,
+    output = {
+        "publicPath": "/ui",
+    },
     static_assets = "//frontend/ui/public",
 )
 

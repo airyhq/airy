@@ -24,14 +24,14 @@ the `<head>` section:
 You must replace `CHANNEL_ID` with the channel id obtained when
 [connecting](#connecting-a-channel) the source and `SCRIPT_HOST` with the host
 of your Chat Plugin server. When using the local vagrant environment
-`SCRIPT_HOST` must be set to `chatplugin.airy`.
+`SCRIPT_HOST` must be set to `airy.core`.
 
 :::note
 
-`chatplugin.airy` is not publicly accessible. The setup will only work for local web pages.
+`airy.core` is not publicly accessible. The setup will only work for local web pages.
 
 :::
 
 To test the setup, replace the `CHANNEL_ID` in the URL
-`http://chatplugin.airy/example?channel_id=CHANNEL_ID` and open it in your
+`http://airy.core/chatplugin/example?channel_id=CHANNEL_ID` and open it in your
 browser.

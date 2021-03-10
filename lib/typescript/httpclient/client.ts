@@ -34,7 +34,7 @@ export class HttpClient {
 
   constructor(token?: string, apiUrlConfig?: string, unauthorizedErrorCallback?: (body: any) => void) {
     this.token = token;
-    this.apiUrlConfig = apiUrlConfig || 'http://api.airy';
+    this.apiUrlConfig = apiUrlConfig || 'http://airy.core';
     this.unauthorizedErrorCallback = unauthorizedErrorCallback;
   }
 

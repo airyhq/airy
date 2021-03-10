@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, KeyboardEvent, createRef} from 'react';
+import React, {useState, useEffect, useRef, KeyboardEvent} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import styles from './index.module.scss';
@@ -6,13 +6,15 @@ import {sendMessages} from '../../../actions/messages';
 import TemplateSelector from '../TemplateSelector';
 import 'emoji-mart/css/emoji-mart.css';
 import {Picker} from 'emoji-mart';
+import {SourceMessage} from 'render';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
+import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 
 import {StateModel} from '../../../reducers';
-import {getTextMessagePayload} from 'httpclient';
+import {getTextMessagePayload, Content} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 
@@ -34,9 +36,10 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const [input, setInput] = useState('');
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<Content | null>(null);
 
   console.log('isShowingEmojiDrawer', isShowingEmojiDrawer);
+  console.log("input", input)
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
@@ -70,13 +73,15 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   const InputOptions = () => {
+
     const handleEmojiDrawer = () => {
-      if (!isShowingEmojiDrawer) {
-        addListeners();
-      } else {
-        removeListeners();
+      if(isShowingTemplateModal){
+        setIsShowingTemplateModal(false);
+      }
+      if(isShowingEmojiDrawer){
         textAreaRef.current && textAreaRef.current.focus();
       }
+      
       setIsShowingEmojiDrawer(!isShowingEmojiDrawer);
     };
 
@@ -87,41 +92,48 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       }
     };
 
-    const handleEmojiOutsideClick = e => {
+    const handleEmojiClickedOutside = e => {
+      console.log("outside click")
+
       if (emojiDiv.current === null || emojiDiv.current.contains(e.target)) {
         return;
       }
 
-      handleEmojiDrawer();
+      handleEmojiDrawer()
+  
     };
 
-    const addListeners = () => {
-      document.addEventListener('keydown', handleEmojiKeyEvent);
-      document.addEventListener('click', handleEmojiOutsideClick);
-    };
+    useEffect(() => {
+      if(isShowingEmojiDrawer){
+        document.addEventListener('keydown', handleEmojiKeyEvent);
+        document.addEventListener('click', handleEmojiClickedOutside);
+  
+        return() => {
+          document.removeEventListener('keydown', handleEmojiKeyEvent);
+          document.removeEventListener('click', handleEmojiClickedOutside);
+        }
 
-    const removeListeners = () => {
-      document.removeEventListener('keydown', handleEmojiKeyEvent);
-      document.removeEventListener('click', handleEmojiOutsideClick);
-    };
+      }
+    }, [isShowingEmojiDrawer])
 
-    //to do: refactor with one toggle function
-    const handleClickTemplates = () => {
-      setIsShowingTemplateModal(true);
-    };
 
-    const handleCloseTemplates = () => {
-      setIsShowingTemplateModal(false);
+    const toggleTemplateModal = () => {
+      if(isShowingEmojiDrawer){
+        setIsShowingEmojiDrawer(!isShowingEmojiDrawer);
+      }
+      setIsShowingTemplateModal(!isShowingTemplateModal);
     };
 
     const templateSelected = template => {
-      const json = JSON.parse(template.content) as any;
-      if (json.blueprint === 'text') {
+      const jsonTemplate = JSON.parse(template.content) as any;
+
+      if (jsonTemplate.message.text) {
+        setInput(jsonTemplate.message.text);
         setIsShowingTemplateModal(false);
-        setInput(json.payload);
       } else {
         setIsShowingTemplateModal(false);
-        setSelectedTemplate(template);
+        const templateContent = JSON.parse(template.content) as any;
+        setSelectedTemplate({id: template.id, content: templateContent});
       }
       sendButtonRef.current.focus();
     };
@@ -142,7 +154,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       <div className={styles.messageActionsContainer}>
         <>
           {isShowingTemplateModal && (
-            <TemplateSelector onClose={handleCloseTemplates} selectTemplate={templateSelected} />
+            <TemplateSelector onClose={toggleTemplateModal} selectTemplate={templateSelected} />
           )}
           {isShowingEmojiDrawer && (
             <div ref={emojiDiv} className={styles.emojiDrawer}>
@@ -159,7 +171,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
             type="button"
-            onClick={() => handleClickTemplates()}>
+            onClick={() => toggleTemplateModal()}>
             <div className={styles.actionToolTip}>Templates</div>
             <TemplateAlt aria-hidden />
           </button>
@@ -187,6 +199,21 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
         </div>
         <InputOptions />
       </div>
+      <div className={`${styles.messageWrap} ${styles.flexWrap}`}>
+          {selectedTemplate && (
+            <div className={styles.templateSelector}>
+            <button
+              className={styles.removeTemplateButton}
+              onClick={() => setSelectedTemplate(null)}>
+              <Close />
+            </button>
+            <SourceMessage message={selectedTemplate} source="templateShowcase" />
+            <div className={styles.templateClickOverlay} />
+          </div>
+
+          )}
+            
+        </div>
       <div className={styles.sendDiv}>
         <button
           type="button"

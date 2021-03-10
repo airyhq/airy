@@ -10,6 +10,7 @@ import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 
 export const FacebookRender = (props: MessageRenderProps) => {
+  console.log("facebook render", props.message)
   const message = props.message;
   const content = isFromContact(message) ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
@@ -117,7 +118,12 @@ function facebookInbound(message: Content): ContentUnion {
 }
 
 function facebookOutbound(message: Content): ContentUnion {
+
+  console.log("facebook outbound", message)
   const messageJson = message.content;
+
+  console.log("messageJson", typeof messageJson)
+  console.log(messageJson.message.text)
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {

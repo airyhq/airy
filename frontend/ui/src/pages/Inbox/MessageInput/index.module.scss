@@ -20,7 +20,7 @@
   border-radius: 8px;
   display: flex;
   align-items: normal;
-  margin-left: 20px;
+  margin-left: 14px;
 }
 
 .inputWrap {
@@ -173,4 +173,57 @@
   position: absolute;
   right: 72px;
   bottom: 75px;
+}
+
+.templateSelector {
+  width: 164px;
+  overflow: hidden;
+  position: relative;
+  padding: 8px;
+}
+
+.templateClickOverlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.removeTemplateButton {
+  position: absolute;
+  top: 3px;
+  right: 1px;
+  border: none;
+  outline: none;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  border-radius: 50%;
+  border: 1px solid white;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.removeTemplateButton svg {
+  width: 8px;
+  height: 8px;
+  margin-left: -1px;
+  margin-top: -1px;
+}
+
+.removeTemplateButton:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.removeTemplateButton object {
+  width: 12px;
+  height: 12px;
 }

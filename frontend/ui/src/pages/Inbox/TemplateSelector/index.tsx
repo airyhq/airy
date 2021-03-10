@@ -73,12 +73,12 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
 
   }, [searchQuery, templates]);
 
-  //to do: improve
+
   useEffect(() => {
-    const payload = {};
+    const listAllTemplatesPayload = {};
 
     if (templates.length === 0 && loading) {
-      listTemplates(payload).then(() => {
+      listTemplates(listAllTemplatesPayload).then(() => {
         if (templates.length === 0) setLoading(false);
       });
     }
@@ -134,7 +134,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
             <div className={styles.templateList}>
               {templatesList &&
                 templatesList.map((template, id) => {
-                  console.log("template", template)
+                  const templateContent = JSON.parse(template.content) as any;
                   return (
                     <div
                       className={styles.templatePreview}
@@ -143,7 +143,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
                         selectTemplate(template);
                       }}>
                       <div className={styles.tempatePreviewName}>{template.name}</div>
-                      <SourceMessage message={{id:template.id, content:template.content}} source="facebook" />
+                      <SourceMessage message={{id:template.id, content:templateContent}} source="templateShowcase" />
 
                       <div className={styles.clickOverlay} />
                     </div>

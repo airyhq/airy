@@ -16,6 +16,7 @@ module_deps = [
     "//lib/typescript/httpclient",
     "//lib/typescript/render",
     "//lib/typescript/dates",
+    "//frontend/chat-plugin/handles",
 ]
 
 web_app(
@@ -64,12 +65,6 @@ ts_web_library(
     ],
 )
 
-ts_web_library(	
-    name = "handles",	
-    srcs = ["handles.ts"],	
-    tsconfig = "//:bazel.tsconfig.json",	
-)
-
 ts_config(
     name = "widget_tsconfig",
     src = "bazel.tsconfig.json",
@@ -114,9 +109,3 @@ container_release(
 check_pkg(name = "buildifier")
 
 web_lint()
-
-ts_web_library(
-    name = "handles",
-    srcs = ["handles.ts"],
-    tsconfig = "//:tsconfig.json",
-)

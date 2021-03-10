@@ -1,4 +1,4 @@
-import {cyMessageTextArea, cyMessageSendButton, cyMessageList} from '../../frontend/ui/ui_handles';
+import {cyMessageTextArea, cyMessageSendButton, cyMessageList} from 'handles';
 
 describe('Send chatplugin Message', () => {
   const messageInbox = 'Hello from Inbox!';
@@ -19,9 +19,6 @@ describe('Send chatplugin Message', () => {
   it('Opens conversation and sends reply in Inbox', () => {
     cy.get(`[data-cy=${cyMessageTextArea}]`).type(messageInbox);
     cy.get(`[data-cy=${cyMessageSendButton}]`).click();
-    cy.get(`[data-cy=${cyMessageList}]`)
-      .children()
-      .its('length')
-      .should('be.gte', 2);
+    cy.get(`[data-cy=${cyMessageList}]`).children().its('length').should('be.gte', 1);
   });
 });

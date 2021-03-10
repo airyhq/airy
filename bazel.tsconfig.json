@@ -52,11 +52,14 @@
       "websocketclient/*": [
         "./lib/typescript/websocketclient/*"
       ],
-      "handles": [
-        "./frontend/ui"
-      ],
       "*": [
         "./*"
+      ],
+      "handles": [
+        "./frontend/ui/handles"
+      ],
+      "chat-plugin-handles": [
+        "./frontend/chat-plugin/handles"
       ]
     }
   },

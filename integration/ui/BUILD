@@ -4,7 +4,7 @@ ts_web_library(
     name = "specs",
     srcs = glob(["*.spec.ts"]),
     deps = [
-        "//frontend/ui:handles",
+        "//frontend/ui/handles",
         "@npm//cypress",
     ],
 )

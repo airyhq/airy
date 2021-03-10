@@ -18,7 +18,7 @@ import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
-import {cyInputbarTextarea} from 'handles';
+import {cyBubble} from 'handles';
 
 let ws: WebSocket;
 
@@ -124,12 +124,12 @@ const Chat = (props: Props) => {
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
     : () => (
-        <AiryInputBar sendMessage={sendMessage} messageString={messageString} setMessageString={setMessageString}/>
+        <AiryInputBar sendMessage={sendMessage} messageString={messageString} setMessageString={setMessageString} />
       );
 
   const bubble = props.bubbleProp
     ? () => props.bubbleProp(ctrl)
-    : () => <AiryBubble isChatHidden={isChatHidden} toggleHideChat={ctrl.toggleHideChat} dataCyId="bubble" />;
+    : () => <AiryBubble isChatHidden={isChatHidden} toggleHideChat={ctrl.toggleHideChat} dataCyId={cyBubble} />;
 
   if (installError) {
     return null;

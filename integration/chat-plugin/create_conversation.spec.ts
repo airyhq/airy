@@ -1,9 +1,9 @@
-import {cyBubble, cyInputbarTextarea, cyInputbarButton} from '../../frontend/chat-plugin/handles';
+import {cyBubble, cyInputbarTextarea, cyInputbarButton} from 'chat-plugin-handles';
 
 describe(
   'Chatplugin',
   {
-    baseUrl: 'http://chatplugin.airy',
+    baseUrl: 'http://airy.core/chatplugin',
   },
   () => {
     const channelId = 'db2e1b00-143b-578e-be91-6d45a3038fae';

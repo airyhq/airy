@@ -6,15 +6,12 @@ type Props = {
   sendMessage: (text: string) => void;
   messageString: string;
   setMessageString: (text: string) => void;
-  dataCyButtonId?: string;
-  dataCyTextareaId?: string;
 };
 
 const AiryInputBar = (props: Props) => {
   const textInputRef = createRef<HTMLTextAreaElement>();
-  const dataCyButtonId = props.dataCyButtonId;
-  const dataCyTextareaId = props.dataCyTextareaId;
-};
+  const dataCyButtonId = cyInputbarButton;
+  const dataCyTextareaId = cyInputbarTextarea;
 
   useEffect(() => {
     textInputRef.current.selectionStart = props.messageString.length;

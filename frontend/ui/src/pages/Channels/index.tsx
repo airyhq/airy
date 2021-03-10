@@ -7,10 +7,14 @@ import {getClientConfig} from '../../actions/config';
 import {StateModel} from '../../reducers/index';
 import styles from './index.module.scss';
 
-import {allChannels} from '../../selectors/channels';
+import {allChannelsConnected} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
 
 import ChannelsMainPage from './ChannelsMainPage';
+import FacebookConnect from './ChannelsMainPage/Sources/FacebookConnect';
+import ChannelsList from '../Channels/ConnectedChannelsList/ChannelsList';
+import {CHANNELS_FACEBOOK_ROUTE} from '../../routes/routes';
+import {CHANNELS_CONNECTED_ROUTE} from '../../routes/routes';
 import ChatPluginConnect from './ChannelsMainPage/Sources/ChatPluginConnect';
 import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../routes/routes';
 
@@ -20,7 +24,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allChannels(state)),
+  channels: Object.values(allChannelsConnected(state)),
   config: state.data.config,
 });
 
@@ -45,7 +49,9 @@ const Channels = (props: ChannelsConnectProps) => {
 
   return (
     <Switch>
+      <Route path={[`${CHANNELS_FACEBOOK_ROUTE}/:channelId?`]} component={FacebookConnect} />
       <Route path={[`${CHANNELS_CHAT_PLUGIN_ROUTE}/:channelId?`]} component={ChatPluginConnect} />
+      <Route path={[`${CHANNELS_CONNECTED_ROUTE}/:source?`]} component={ChannelsList} />
       <Route path="/" render={renderChannels} />
     </Switch>
   );

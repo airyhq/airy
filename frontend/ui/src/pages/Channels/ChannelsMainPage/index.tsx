@@ -1,10 +1,13 @@
-import React from 'react';
-
+import React, {useState} from 'react';
 import ChatPluginSource from './Sources/ChatPluginSource';
 import FacebookSource from './Sources/FacebookSource';
 import TwilioSmsSource from './Sources/TwilioSmsSource';
 import GoogleSource from './Sources/GoogleSource';
 import TwilioWhatsAppSource from './Sources/TwilioWhatsAppSource';
+import {ChannelSource} from 'httpclient';
+import {RequirementsDialog} from '../Facebook/RequirementsDialog';
+import {CHANNELS_FACEBOOK_ROUTE} from '../../../routes/routes';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import {Channel, ConfigPayload} from 'httpclient';
 
@@ -15,7 +18,29 @@ type ChannelsConnectProps = {
   config: ConfigPayload;
 };
 
-const ChannelsMainPage = (props: ChannelsConnectProps) => {
+const ChannelsMainPage = (props: ChannelsConnectProps & RouteComponentProps) => {
+  const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
+
+  const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
+    switch (source) {
+      case ChannelSource.facebook:
+        return (
+          <RequirementsDialog
+            onClose={() => setDisplayDialogFromSource('')}
+            onAddChannel={() => props.history.push(CHANNELS_FACEBOOK_ROUTE)}
+          />
+        );
+      case ChannelSource.google:
+        break;
+      case ChannelSource.chatPlugin:
+        break;
+      case ChannelSource.twilioSMS:
+        break;
+      case ChannelSource.twilioWhatsapp:
+        break;
+    }
+  };
+
   return (
     <>
       <div className={styles.channelsHeadline}>
@@ -29,8 +54,14 @@ const ChannelsMainPage = (props: ChannelsConnectProps) => {
       </div>
 
       <div className={styles.wrapper}>
+        {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
         {props.config.components['sources-chatplugin'].enabled && <ChatPluginSource pluginSource={props.channels} />}
-        {props.config.components['sources-facebook'].enabled && <FacebookSource facebookSource={props.channels} />}
+        {props.config.components['sources-facebook'].enabled && (
+          <FacebookSource
+            facebookSource={props.channels}
+            showDialogAction={(source: string) => setDisplayDialogFromSource(source)}
+          />
+        )}
         {props.config.components['sources-twilio'].enabled && <TwilioSmsSource twilloSmsSource={props.channels} />}
         {props.config.components['sources-twilio'].enabled && (
           <TwilioWhatsAppSource whatsappSmsSource={props.channels} />
@@ -41,4 +72,4 @@ const ChannelsMainPage = (props: ChannelsConnectProps) => {
   );
 };
 
-export default ChannelsMainPage;
+export default withRouter(ChannelsMainPage);

@@ -8,15 +8,13 @@ load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/build:container_release.bzl", "container_release")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
-package(default_visibility = ["//visibility:public"])
-
 module_deps = [
     "//frontend/assets",
     "//lib/typescript/types",
     "//lib/typescript/httpclient",
     "//lib/typescript/render",
     "//lib/typescript/dates",
-    "//frontend/chat-plugin/handles",
+    "//frontend/chat-plugin/handles:chat-plugin-handles",
 ]
 
 web_app(

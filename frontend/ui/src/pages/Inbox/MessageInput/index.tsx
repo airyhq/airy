@@ -6,7 +6,7 @@ import {sendMessages} from '../../../actions/messages';
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
 import {StateModel} from '../../../reducers';
 import {getTextMessagePayload} from 'httpclient';
-import {cyMessageSendButton, cyMessageTextArea} from '../../../../handles';
+import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 
 const mapDispatchToProps = {sendMessages};
 

@@ -18,7 +18,7 @@ import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
-import {cyBubble} from 'handles';
+import {cyBubble} from 'chat-plugin-handles';
 
 let ws: WebSocket;
 

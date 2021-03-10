@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FormEvent, KeyboardEvent, createRef, useEffect} from 'react';
 import style from './index.module.scss';
-import {cyInputbarTextarea, cyInputbarButton} from 'handles';
+import {cyInputbarTextarea, cyInputbarButton} from 'chat-plugin-handles';
 
 type Props = {
   sendMessage: (text: string) => void;

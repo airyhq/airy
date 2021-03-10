@@ -34,11 +34,7 @@ const FacebookConnect = (props: FacebookProps) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const buttonStatus = () => {
-    if (id.length > 5 && token != '') {
-      return false;
-    } else {
-      return true;
-    }
+    return !(id.length > 5 && token != '');
   };
 
   useEffect(() => {

@@ -22,7 +22,6 @@ module.exports = {
       additionalLanguages: ['json5'],
     },
     navbar: {
-      title: 'Documentation',
       logo: {
         alt: 'Airy Documentation',
         src: 'img/logo_light.svg',

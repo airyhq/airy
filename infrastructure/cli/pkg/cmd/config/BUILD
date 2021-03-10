@@ -8,7 +8,7 @@ go_library(
         "configmaps.go",
         "parser.go",
     ],
-    importpath = "cli/cmd/config",
+    importpath = "cli/pkg/cmd/config",
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_mitchellh_go_homedir//:go-homedir",

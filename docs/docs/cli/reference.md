@@ -3,7 +3,7 @@ title: Command Reference
 sidebar_label: Reference
 ---
 
-##  Api Login
+## Api Login
 
 Login into an Airy Core instance
 
@@ -29,7 +29,7 @@ airy api login [flags]
 
 ***
 
-##  Api Signup
+## Api Signup
 
 Signs users up in Airy Core
 
@@ -57,7 +57,7 @@ airy api signup [flags]
 
 ***
 
-##  Config Apply
+## Config Apply
 
 Applies configuration values from airy.yaml configuration to an Airy Core instance
 
@@ -83,7 +83,7 @@ airy config apply [flags]
 
 ***
 
-##  Create
+## Create
 
 Creates an instance of Airy Core
 
@@ -94,8 +94,9 @@ airy create [flags]
 #### Options
 
 ```
-  -h, --help              help for create
-      --provider string   One of the supported providers (aws|local). Default is aws
+  -h, --help               help for create
+      --namespace string   (optional) Kubernetes namespace that Airy should be installed to. (default "default")
+      --provider string    One of the supported providers (aws|local|minikube). (default "local")
 ```
 
 #### Options inherited from parent commands
@@ -108,7 +109,7 @@ airy create [flags]
 
 ***
 
-##  Init
+## Init
 
 Inits your airy configuration
 
@@ -132,7 +133,7 @@ airy init [flags]
 
 ***
 
-##  Status
+## Status
 
 Reports the status of an Airy Core instance
 
@@ -156,7 +157,7 @@ airy status [flags]
 
 ***
 
-##  Ui
+## Ui
 
 Opens the Airy Core UI in your local browser
 
@@ -180,7 +181,7 @@ airy ui [flags]
 
 ***
 
-##  Version
+## Version
 
 Prints version information
 

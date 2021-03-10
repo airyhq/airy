@@ -1,7 +1,7 @@
 import {DisconnectChannelRequestPayload} from '../payload';
 import {HttpClient} from '../client';
 
-export default HttpClient.prototype.disconnectChannel = async function(
+export default HttpClient.prototype.disconnectChannel = async function (
   source: string,
   requestPayload: DisconnectChannelRequestPayload
 ) {

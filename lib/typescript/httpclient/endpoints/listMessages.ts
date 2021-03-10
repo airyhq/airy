@@ -3,7 +3,9 @@ import {ListMessagesRequestPayload, PaginatedPayload, MessagePayload} from '../p
 const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';
 
-export default HttpClient.prototype.listMessages = async function(conversationListRequest: ListMessagesRequestPayload) {
+export default HttpClient.prototype.listMessages = async function (
+  conversationListRequest: ListMessagesRequestPayload
+) {
   conversationListRequest.pageSize = conversationListRequest.pageSize ?? 10;
   conversationListRequest.cursor = conversationListRequest.cursor ?? null;
 

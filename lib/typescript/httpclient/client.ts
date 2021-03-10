@@ -19,13 +19,13 @@ import {Tag, Message} from './model';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
-const headers = {
-  Accept: 'application/json',
-};
-
 export function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
 }
+
+type FetchOptions = {
+  ignoreAuthToken?: boolean;
+};
 
 export class HttpClient {
   public readonly apiUrlConfig?: string;
@@ -64,8 +64,12 @@ export class HttpClient {
     };
   }
 
-  private async doFetchFromBackend(url: string, body?: Object): Promise<any> {
-    if (this.token) {
+  private async doFetchFromBackend(url: string, body?: Object, options?: FetchOptions): Promise<any> {
+    const headers = {
+      Accept: 'application/json',
+    };
+
+    if (options?.ignoreAuthToken != true && this.token) {
       headers['Authorization'] = `Bearer ${this.token}`;
     }
     if (!(body instanceof FormData)) {

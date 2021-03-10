@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"cli/cmd"
+	"cli/pkg/cmd"
 	"os"
 	"path/filepath"
 	"sort"
@@ -76,7 +76,7 @@ func genMarkdownCustom(cmd *cobra.Command, w *bufio.Writer) error {
 	name := cmd.CommandPath()
 	header := strings.Title(strings.Replace(name, "airy", "", -1))
 
-	w.WriteString("## " + header + "\n\n")
+	w.WriteString("## " + strings.Trim(header, " ") + "\n\n")
 	w.WriteString(cmd.Short + "\n\n")
 	if len(cmd.Long) > 0 {
 		w.WriteString("#### Synopsis\n\n")

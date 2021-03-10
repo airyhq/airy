@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "da1aa5af0f03767d08ed8af478248d3709342252",
+    commit = "18642f4f2483933d738138cb4a850d83c62f438d",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1614184856 +0100",
+    shallow_since = "1615304389 +0100",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -129,6 +129,10 @@ http_archive(
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
 go_rules_dependencies()
+
+load("@io_bazel_rules_go//extras:embed_data_deps.bzl", "go_embed_data_dependencies")
+
+go_embed_data_dependencies()
 
 go_register_toolchains(nogo = "@//:airy_nogo")  # my_nogo is in the top-level BUILD file of this workspace
 

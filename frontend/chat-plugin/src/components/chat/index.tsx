@@ -2,7 +2,7 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import {IMessage} from '@stomp/stompjs';
 
-import WebSocket from '../../websocket';
+import WebSocket, {ConnectionState} from '../../websocket';
 import MessageProp from '../../components/message';
 import InputBarProp from '../../components/inputBar';
 import AiryInputBar from '../../airyRenderProps/AiryInputBar';
@@ -16,7 +16,6 @@ import AiryBubble from '../../airyRenderProps/AiryBubble';
 import {MessagePayload, SenderType, MessageState, isFromContact, Message} from 'httpclient';
 import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
-import {getResumeTokenFromStorage} from '../../storage';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
@@ -41,9 +40,13 @@ const Chat = (props: Props) => {
   const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(true);
   const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
+  const [messageString, setMessageString] = useState('');
+  const [connectionState, setConnectionState] = useState(null);
 
   useEffect(() => {
-    ws = new WebSocket(props.channelId, onReceive, setInitialMessages, getResumeTokenFromStorage(props.channelId));
+    ws = new WebSocket(props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
+      setConnectionState(state);
+    });
     ws.start().catch(error => {
       console.error(error);
       setInstallError(error.message);
@@ -119,7 +122,9 @@ const Chat = (props: Props) => {
 
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
-    : () => <AiryInputBar sendMessage={sendMessage} />;
+    : () => (
+        <AiryInputBar sendMessage={sendMessage} messageString={messageString} setMessageString={setMessageString} />
+      );
 
   const bubble = props.bubbleProp
     ? () => props.bubbleProp(ctrl)
@@ -140,35 +145,40 @@ const Chat = (props: Props) => {
       {!isChatHidden && (
         <div className={`${style.container} ${styleFor(animation)}`}>
           <HeaderBarProp render={headerBar} />
-          <div className={style.chat}>
-            <div id="messages" className={style.messages}>
-              {messages.map((message, index: number) => {
-                const nextMessage = messages[index + 1];
-                const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
+          <div className={style.connectedContainer}>
+            <div className={style.chat}>
+              <div id="messages" className={style.messages}>
+                {messages.map((message, index: number) => {
+                  const nextMessage = messages[index + 1];
+                  const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
 
-                return (
-                  <MessageProp
-                    key={message.id}
-                    render={
-                      props.airyMessageProp
-                        ? () => props.airyMessageProp(ctrl)
-                        : () => (
-                            <MessageInfoWrapper fromContact={isFromContact(message)} isChatPlugin={true}>
-                              <SourceMessage
-                                message={message}
-                                source="chat_plugin"
-                                lastInGroup={lastInGroup}
-                                invertSides={true}
-                                commandCallback={commandCallback}
-                              />
-                            </MessageInfoWrapper>
-                          )
-                    }
-                  />
-                );
-              })}
+                  return (
+                    <MessageProp
+                      key={message.id}
+                      render={
+                        props.airyMessageProp
+                          ? () => props.airyMessageProp(ctrl)
+                          : () => (
+                              <MessageInfoWrapper fromContact={isFromContact(message)} isChatPlugin={true}>
+                                <SourceMessage
+                                  message={message}
+                                  source="chat_plugin"
+                                  lastInGroup={lastInGroup}
+                                  invertSides={true}
+                                  commandCallback={commandCallback}
+                                />
+                              </MessageInfoWrapper>
+                            )
+                      }
+                    />
+                  );
+                })}
+              </div>
+              <InputBarProp render={inputBar} />
+              {connectionState === ConnectionState.Disconnected && (
+                <div className={style.disconnectedOverlay}>Reconnecting...</div>
+              )}
             </div>
-            <InputBarProp render={inputBar} />
           </div>
         </div>
       )}

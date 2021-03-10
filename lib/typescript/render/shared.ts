@@ -1,4 +1,4 @@
-import {isFromContact, Message, Contact} from 'httpclient';
+import {isFromContact, Content,Contact} from 'httpclient';
 import {formatTime} from 'dates';
 import {DefaultMessageRenderingProps} from './components';
 
@@ -16,20 +16,22 @@ export interface SuggestedReplyCommand extends Command {
 
 export type CommandUnion = SuggestedReplyCommand;
 
+
+
 export interface MessageRenderProps {
-  message: Message;
-  source: string;
+  message: Content;
+  source?: string;
   contact?: Contact;
-  lastInGroup: boolean;
+  lastInGroup?: boolean;
   invertSides?: boolean;
   commandCallback?: (command: CommandUnion) => void;
 }
 
 export const getDefaultMessageRenderingProps = (props: MessageRenderProps): DefaultMessageRenderingProps => {
-  const fromContact = isFromContact(props.message);
+  const fromContact = isFromContact(props.message) ?? null;
   return {
     fromContact,
-    contact: props.contact,
+    contact: props.contact ?? null,
     commandCallback: props.commandCallback,
     sentAt: props.lastInGroup ? formatTime(props.message.sentAt) : null,
   };

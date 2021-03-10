@@ -5,7 +5,7 @@ import {RichCard} from '../../components/RichCard';
 import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './chatPluginModel';
-import {Message} from 'httpclient';
+import {Content} from 'httpclient';
 
 export const ChatPluginRender = (props: MessageRenderProps) => {
   return render(mapContent(props.message), props);
@@ -46,7 +46,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-function mapContent(message: Message): ContentUnion {
+function mapContent(message: Content): ContentUnion {
   const messageContent = message.content;
 
   if (messageContent.richCard?.standaloneCard) {

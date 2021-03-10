@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import {Message} from 'httpclient';
+import {Content} from 'httpclient';
 import styles from './index.module.scss';
 import {DefaultMessageRenderingProps} from '..';
 
 type RichTextRenderProps = DefaultMessageRenderingProps & {
-  message: Message;
+  message: Content;
   text: string;
   fallback: string;
   containsRichText: boolean;

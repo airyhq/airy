@@ -16,7 +16,7 @@ import {formatDateOfMessage} from '../../../../services/format/date';
 import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 import {isSameDay} from 'dates';
-import {getSource, isFromContact} from 'httpclient';
+import {getSource, isFromContact, Content} from 'httpclient';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime} from 'dates';
 
@@ -95,7 +95,7 @@ const MessageList = (props: MessageListProps) => {
     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
   };
 
-  const hasDateChanged = (prevMessage: Message, message: Message) => {
+  const hasDateChanged = (prevMessage: Content, message: Content) => {
     if (prevMessage == null) {
       return true;
     }
@@ -152,7 +152,7 @@ const MessageList = (props: MessageListProps) => {
   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll}>
       {messages &&
-        messages.map((message: Message, index: number) => {
+        messages.map((message: Content, index: number) => {
           const prevMessage = messages[index - 1];
           const nextMessage = messages[index + 1];
           const shouldShowContact = !isFromContact(prevMessage) && !isFromContact(message);

@@ -48,8 +48,17 @@ export enum SenderType {
   appUser = 'app_user',
 }
 
-export function isFromContact(message: Message) {
+export function isFromContact(message: Content) {
   return message?.senderType === SenderType.sourceContact;
+}
+
+export interface Content {
+  id: string;
+  content: any;
+  deliveryState?: MessageState;
+  senderType?: SenderType;
+  sentAt?: Date;
+
 }
 
 export interface Message {

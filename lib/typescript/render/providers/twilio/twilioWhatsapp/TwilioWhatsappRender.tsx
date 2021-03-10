@@ -1,5 +1,5 @@
 import React from 'react';
-import {isFromContact, Message} from '../../../../httpclient/model';
+import {isFromContact, Content} from '../../../../httpclient/model';
 import {Text} from '../../../components/Text';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../../shared';
 import {ContentUnion} from './twilioWhatsappModel';
@@ -17,7 +17,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-const inboundContent = (message: Message): ContentUnion => {
+const inboundContent = (message: Content): ContentUnion => {
   const messageContent = message.content;
   const startText = messageContent.search('&Body=');
   const endText = messageContent.search('&To=whatsapp');
@@ -32,7 +32,7 @@ const inboundContent = (message: Message): ContentUnion => {
   };
 };
 
-const outboundContent = (message: Message): ContentUnion => {
+const outboundContent = (message: Content): ContentUnion => {
   const messageContent = message.content;
   return {
     type: 'text',

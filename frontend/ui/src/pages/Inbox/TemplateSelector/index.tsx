@@ -3,11 +3,11 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
 import {SearchField} from '@airyhq/components';
-import {ListTemplatesRequestPayload, Template} from 'httpclient';
+import { Template} from 'httpclient';
 import {StateModel} from '../../../reducers';
-import RenderTemplate from '../../../components/Templates/RenderTemplate';
 import emptyState from 'assets/images/empty-state/templates-empty-state.png';
 import notFoundState from 'assets/images/not-found/templates-not-found.png';
+import {SourceMessage} from 'render';
 
 const mapDispatchToProps = {
   listTemplates,
@@ -71,12 +71,11 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
 
     setTemplatesList(templates);
 
-    console.log('templates', templates);
   }, [searchQuery, templates]);
 
   //to do: improve
   useEffect(() => {
-    const payload: ListTemplatesRequestPayload = {};
+    const payload = {};
 
     if (templates.length === 0 && loading) {
       listTemplates(payload).then(() => {
@@ -135,6 +134,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
             <div className={styles.templateList}>
               {templatesList &&
                 templatesList.map((template, id) => {
+                  console.log("template", template)
                   return (
                     <div
                       className={styles.templatePreview}
@@ -143,7 +143,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
                         selectTemplate(template);
                       }}>
                       <div className={styles.tempatePreviewName}>{template.name}</div>
-                      <RenderTemplate styleVariant="small" template={template} />
+                      <SourceMessage message={{id:template.id, content:template.content}} source="facebook" />
 
                       <div className={styles.clickOverlay} />
                     </div>

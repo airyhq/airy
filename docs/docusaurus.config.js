@@ -29,6 +29,10 @@ module.exports = {
       },
       items: [
         {
+          type: 'search',
+          position: 'left',
+        },
+        {
           target: '_self',
           label: 'Airy Core',
           position: 'left',

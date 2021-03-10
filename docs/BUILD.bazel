@@ -3,6 +3,7 @@ load("@com_github_airyhq_bazel_tools//lint:prettier.bzl", "prettier")
 
 prettier(
     name = "prettier",
+    config = "//:.prettierrc.json",
     ignore = "//:.prettierignore",
 )
 

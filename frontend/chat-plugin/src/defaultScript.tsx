@@ -28,11 +28,10 @@ declare const window: {
     host: string;
     channelId: string;
     welcomeMessage: {};
-    noTLS: boolean;
   };
 };
 
-if (window.airy.channelId.length) {
+if (window.airy.channelId) {
   new AiryWidget({
     channelId: window.airy.channelId,
     welcomeMessage: window.airy.welcomeMessage,

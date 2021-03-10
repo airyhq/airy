@@ -86,14 +86,14 @@ The connector requires the following configuration values:
 
 - `auth_token` the Airy Core JWT token you used
   to connect the webhook.
-- `api_host` The url where you host your Airy Core API (`http://api.airy` for a local installation).
+- `api_host` The url where you host your Airy Core API (`http://airy.core` for a local installation).
 
 Add them to your existing Rasa `credentials.yml`:
 
 ```yaml
 channels.airy.AiryInput:
   api_host: "your JWT authentication token"
-  auth_token: "http://api.airy"
+  auth_token: "http://airy.core"
 ```
 
 Now you should have a working integration 🎉.

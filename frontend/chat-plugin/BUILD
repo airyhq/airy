@@ -1,3 +1,4 @@
+load("//tools/lint:web.bzl", "web_lint")
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@npm//@bazel/typescript:index.bzl", "ts_config")
 load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
@@ -25,7 +26,9 @@ web_app(
     entry = "frontend/chat-plugin/src/iframe.js",
     index = ":development.html",
     module_deps = module_deps,
-    show_bundle_report = True,
+    output = {
+        "publicPath": "/chatplugin",
+    },
 )
 
 web_library(
@@ -39,7 +42,7 @@ web_library(
     module_deps = module_deps,
     output = {
         "libraryExport": "AiryWidget",
-        "publicPath": "/",
+        "publicPath": "/chatplugin",
         "filename": "s.js",
     },
 )
@@ -101,3 +104,5 @@ container_release(
 )
 
 check_pkg(name = "buildifier")
+
+web_lint()

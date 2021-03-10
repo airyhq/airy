@@ -158,7 +158,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
   (function(w, d, s, n) {
     w[n] = w[n] || {};
     w[n].channelId = "${channelId}";
-    w[n].host = "${'//' + env.CHATPLUGIN_HOST}";
+    w[n].host = "${'//' + env.API_HOST}";
     var f = d.getElementsByTagName(s)[0],
       j = d.createElement(s);
     j.async = true;

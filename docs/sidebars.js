@@ -83,5 +83,6 @@ module.exports = {
     {
       '📚 Guides': ['guides/contributing'],
     },
+    'changelog',
   ],
 };

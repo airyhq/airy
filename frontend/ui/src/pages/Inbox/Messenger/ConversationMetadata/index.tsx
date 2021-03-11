@@ -113,7 +113,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     const filteredTags = getFilteredTags();
 
     return (
-      <Dialog close={() => setShowTagsDialog(false)}>
+      <Dialog onClose={() => setShowTagsDialog(false)}>
         <form className={styles.addTags} onSubmit={submitForm}>
           <div className={styles.addTagHeadline}>Add a tag</div>
           <Input

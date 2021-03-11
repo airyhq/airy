@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {ReactComponent as AddIcon} from 'assets/images/icons/plus-circle.svg';
-
 type SourceDescriptionProps = {
   image: JSX.Element;
   title: string;

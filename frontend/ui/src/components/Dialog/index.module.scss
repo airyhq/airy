@@ -1,22 +1,83 @@
+@import 'assets/scss/colors.scss';
+
+
 .dialog {
   position: absolute;
   background-color: white;
   border: 1px solid var(--color-light-gray);
   border-radius: 4px;
   z-index: 4;
-}
+ }
 
-.nonOverlayDialog {
+  
+ .background {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  &:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    background-color: var(--color-text-gray);
+    opacity: 0.5;
+  }
+ }
+  
+ .dialog {
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width:532px;
+ }
+  
+ .dialogInner {
+  background-color: white;
+  border-radius: 8px;
+  padding: 64px;
+  position: relative;
+ }
+  
+ .closeButton {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+  outline:none;
+  svg {
+    width: 14px;
+    height: 14px;
+    path {
+      fill: white;
+    }
+  }
+ }
+  
+ .fadeTransition {
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+ }
+  
+ .nonOverlayDialog {
   @extend .dialog;
   position: relative;
   width: 233px;
-}
-
-.clickCover {
+ }
+  
+ .clickCover {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 2;
-}
+ }
+ 

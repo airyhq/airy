@@ -105,7 +105,18 @@ public class UsersControllerTest {
     }
 
     @Test
-    void canRestPassword() throws Exception {
+    void canValidateSignup() throws Exception {
+        final String firstName = "grace";
+        final String email = "grace@example.com";
+        final String password = "trustno1";
+
+        final String signUpRequest = "{\"email\":\"" + email + "\",\"first_name\":\"" + firstName + "\",\"password\":\"" + password + "\"}";
+
+        webTestHelper.post("/users.signup", signUpRequest).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void canResetPassword() throws Exception {
         final String email = "ada@example.com";
 
         final String signUpRequest = "{\"email\":\"" + email + "\",\"first_name\":\"something\"," +
@@ -113,7 +124,7 @@ public class UsersControllerTest {
 
         webTestHelper.post("/users.signup", signUpRequest).andExpect(status().isOk());
 
-        final String passwordResetRequest = "{\"email\":\"" + email + "\"}";
+        final String passwordResetRequest = "{\"email\":\"" + email + "\",\"password\":\"trustno1\"}";
 
         doNothing().when(mail).send(Mockito.eq(email), anyString(), anyString());
 
@@ -186,7 +197,7 @@ public class UsersControllerTest {
         final JsonNode jsonNode = objectMapper.readTree(signupResponse);
         final String userId = jsonNode.get("id").textValue();
 
-        final String requestPasswordRequest = "{\"email\":\"" + email + "\"}";
+        final String requestPasswordRequest = "{\"email\":\"" + email + "\", \"password\":\"trustno1\"}";
 
         doNothing().when(mail).send(Mockito.eq(email), anyString(), anyString());
 

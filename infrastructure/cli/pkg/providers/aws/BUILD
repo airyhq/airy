@@ -6,10 +6,16 @@ go_library(
     importpath = "cli/pkg/providers/aws",
     visibility = ["//visibility:public"],
     deps = [
+        "//infrastructure/cli/pkg/console",
         "//infrastructure/cli/pkg/kube",
+        "@com_github_aws_aws_sdk_go//aws",
         "@com_github_aws_aws_sdk_go_v2_config//:config",
         "@com_github_aws_aws_sdk_go_v2_service_ec2//:ec2",
+        "@com_github_aws_aws_sdk_go_v2_service_ec2//types",
         "@com_github_aws_aws_sdk_go_v2_service_eks//:eks",
         "@com_github_aws_aws_sdk_go_v2_service_eks//types",
+        "@com_github_aws_aws_sdk_go_v2_service_iam//:iam",
+        "@com_github_mitchellh_go_homedir//:go-homedir",
+        "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
     ],
 )

@@ -1,7 +1,6 @@
 package kube
 
 import (
-	"errors"
 	"github.com/spf13/viper"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -21,10 +20,6 @@ func New(kubeConfigPath, contextName string) KubeCtx {
 
 func (c *KubeCtx) GetClientSet() (*kubernetes.Clientset, error) {
 	if c.ContextName == "" {
-		if c.KubeConfigPath == "" {
-			return nil, errors.New("kube context is empty")
-		}
-
 		config, err := clientcmd.BuildConfigFromFlags("", c.KubeConfigPath)
 		if err != nil {
 			return nil, err

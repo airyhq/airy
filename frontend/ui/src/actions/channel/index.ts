@@ -51,6 +51,12 @@ export const connectChatPlugin = (requestPayload: ConnectChatPluginRequestPayloa
     return Promise.resolve(response);
   });
 
+  export const connectChannelTwilioSms = (requestPayload: ConnectChannelRequestPayload) => async (dispatch: Dispatch<any>) =>
+  HttpClientInstance.connectTwilioSms(requestPayload).then((response: Channel) => {
+    dispatch(addChannelsAction([response]));
+    return Promise.resolve(response);
+  });
+
 export const updateChannel = (requestPayload: UpdateChannelRequestPayload) => async (dispatch: Dispatch<any>) =>
   HttpClientInstance.updateChannel(requestPayload).then((response: Channel) => {
     dispatch(setChannelAction(response));

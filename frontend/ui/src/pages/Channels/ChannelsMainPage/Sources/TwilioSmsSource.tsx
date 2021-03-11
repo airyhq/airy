@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
 import {Channel} from 'httpclient';
@@ -13,10 +13,13 @@ type TwilioSmsSourceProps = {twilloSmsSource: Channel[]};
 
 const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
   const channels = props.twilloSmsSource.filter((channel: Channel) => channel.source === 'twilio.sms');
-
+  console.log(1 + 1);
   const [showModal, setShowModal] = useState(false);
-
   const closeModalOnClick = () => setShowModal(false);
+
+  useEffect(() => {
+    setShowModal(false);
+  }, []);
 
   return (
     <>
@@ -38,9 +41,6 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           isConnected="connected"
           onAddChannelClick={() => {
             props.history.push(CHANNELS_TWILIO_SMS_ROUTE);
-          }}
-          onChannelClick={(channel: Channel) => {
-            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + `/${channel.id}`);
           }}
         />
       </div>

@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import styles from './TwilioSmsConnect.module.scss';
+import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
 import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
-import {Button, Input} from '@airyhq/components';
-import {ReactComponent as EmptyImage} from 'assets/images/icons/plus-circle.svg';
+import {Button, Input, UrlInputField} from '@airyhq/components';
+//import {ReactComponent as EmptyImage} from 'assets/images/icons/plus-circle.svg';
+import {connectChannelTwilioSms} from '../../../../actions/channel';
 
 type TwilioSmsProps = {
   channelId?: string;
@@ -18,7 +20,10 @@ type TwilioSmsProps = {
   history: History;
 };
 
-const TwilioSmsConnect = ({history}: TwilioSmsProps & RouteComponentProps) => {
+const mapDispatchToProps = {connectChannelTwilioSms};
+const connector = connect(null, mapDispatchToProps);
+
+const TwilioSmsConnect = (props: TwilioSmsProps & ConnectedProps<typeof connector>) => {
   const [twilloNumberInput, setTwilloNumberInput] = useState('');
   const [twilloNameInput, setTwilloNameInput] = useState('');
   const [twilloUrlInput, setTwilloUrlInput] = useState('');
@@ -33,6 +38,18 @@ const TwilioSmsConnect = ({history}: TwilioSmsProps & RouteComponentProps) => {
 
   const handleUrlInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setTwilloUrlInput(e.target.value);
+  };
+
+  const sendTwilioData = () => {
+    props.connectChannelTwilioSms({
+      sourceChannelId: twilloNumberInput,
+      name: twilloNameInput,
+      imageUrl: twilloUrlInput,
+    });
+  };
+
+  const connectTwilioSms = () => {
+    sendTwilioData();
   };
 
   return (
@@ -78,7 +95,7 @@ const TwilioSmsConnect = ({history}: TwilioSmsProps & RouteComponentProps) => {
 
           <div className={styles.formContentNumber}>
             <p>Image URL (optional)</p>
-            <Input
+            <UrlInputField
               name="UrlInput"
               placeholder="Add an URL"
               required={false}
@@ -106,14 +123,11 @@ const TwilioSmsConnect = ({history}: TwilioSmsProps & RouteComponentProps) => {
         type="submit"
         styleVariant="normal"
         disabled={twilloNumberInput.trim().length == 0}
-        onClick={() => {
-          history.push(CHANNELS_TWILIO_SMS_ROUTE_CONNECTED);
-        }}>
-        {' '}
+        onClick={connectTwilioSms}>
         Connect SMS Number
       </Button>
     </div>
   );
 };
 
-export default withRouter(TwilioSmsConnect);
+export default connector(TwilioSmsConnect);

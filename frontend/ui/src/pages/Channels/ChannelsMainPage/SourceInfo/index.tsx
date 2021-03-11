@@ -9,7 +9,7 @@ type SourceInfoProps = {
   channels: Channel[];
   connected: string;
   placeholderImage?: JSX.Element;
-  isConnected: string;
+  isConnected?: string;
   onAddChannelClick?: () => void;
   onSourceInfoClick?: () => void;
   onMoreChannelsClick?: () => void;

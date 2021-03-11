@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
 import {Channel} from 'httpclient';
@@ -6,18 +6,11 @@ import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
 import {ChannelSource} from 'httpclient';
 import {CHANNELS_CONNECTED_ROUTE, CHANNELS_TWILIO_WHATSAPP_ROUTE} from '../../../../routes/routes';
-import SmsWhatsappDialogue from '../../Twilio/SmsWhatsappDialogue';
 
-type TwilioWhatsAppSourceProps = {whatsappSmsSource: Channel[]};
+type TwilioWhatsAppSourceProps = {whatsappSmsSource: Channel[]; showDialogAction: (source: string) => void};
 
 const TwilioWhatsAppSource = (props: TwilioWhatsAppSourceProps & RouteComponentProps) => {
   const channels = props.whatsappSmsSource.filter((channel: Channel) => channel.source === 'twilio.whatsapp');
-  const [showModal, setShowModal] = useState(false);
-  const closeModalOnClick = () => setShowModal(false);
-
-  useEffect(() => {
-    setShowModal(false);
-  }, []);
 
   return (
     <>
@@ -27,8 +20,8 @@ const TwilioWhatsAppSource = (props: TwilioWhatsAppSourceProps & RouteComponentP
           text="World #1 chat app"
           image={<WhatsappLogo />}
           displayButton={!channels.length}
-          id={ChannelSource.twilioSMS}
-          onAddChannelClick={() => setShowModal(true)}
+          id={ChannelSource.twilioWhatsapp}
+          onAddChannelClick={() => props.showDialogAction(ChannelSource.twilioWhatsapp)}
         />
 
         <SourceInfo
@@ -51,14 +44,6 @@ const TwilioWhatsAppSource = (props: TwilioWhatsAppSourceProps & RouteComponentP
           }}
         />
       </div>
-      {showModal && (
-        <SmsWhatsappDialogue
-          close={closeModalOnClick}
-          callModal={() => {
-            props.history.push(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account');
-          }}
-        />
-      )}
     </>
   );
 };

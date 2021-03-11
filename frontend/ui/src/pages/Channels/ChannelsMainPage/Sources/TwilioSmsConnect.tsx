@@ -82,7 +82,7 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
       <SmsWhatsappForm
         connectTwilioSms={connectTwilioSms}
         twilioPhoneNumber="Twilio Phone Number"
-        placeholder="Purchased Number +158129485394"
+        placeholder="Purchased Number +123456789"
         name="name"
         text="text"
         twilioNumberInput={smsNumberInput}
@@ -94,7 +94,7 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
         twilioUrlInput={smsUrlInput}
         handleUrlInput={handleUrlInput}
         accountName="Add a Name (optional)"
-        namePlaceholder="SMS Acme Berlin"
+        namePlaceholder="Add a Name"
         twilioNameInput={smsNameInput}
         handleNameInput={handleNameInput}
       />

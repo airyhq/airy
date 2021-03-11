@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
 import {Channel} from 'httpclient';
@@ -7,18 +7,11 @@ import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
 import {ChannelSource} from 'httpclient';
-import SmsWhatsappDialogue from '../../Twilio/SmsWhatsappDialogue';
 
-type TwilioSmsSourceProps = {twilioSmsSource: Channel[]};
+type TwilioSmsSourceProps = {twilioSmsSource: Channel[]; showDialogAction: (source: string) => void};
 
 const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
   const channels = props.twilioSmsSource.filter((channel: Channel) => channel.source === 'twilio.sms');
-  const [showModal, setShowModal] = useState(false);
-  const closeModalOnClick = () => setShowModal(false);
-
-  useEffect(() => {
-    setShowModal(false);
-  }, []);
 
   return (
     <>
@@ -29,7 +22,7 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           image={<SMSLogo />}
           displayButton={!channels.length}
           id={ChannelSource.twilioSMS}
-          onAddChannelClick={() => setShowModal(true)}
+          onAddChannelClick={() => props.showDialogAction(ChannelSource.twilioSMS)}
         />
 
         <SourceInfo
@@ -52,14 +45,6 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           }}
         />
       </div>
-      {showModal && (
-        <SmsWhatsappDialogue
-          close={closeModalOnClick}
-          callModal={() => {
-            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/new_account');
-          }}
-        />
-      )}
     </>
   );
 };

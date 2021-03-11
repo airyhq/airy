@@ -57,9 +57,9 @@ const SourceInfo = (props: SourceInfoProps) => {
                   );
                 })}
               </div>
-              <div className={styles.extraChannel} onClick={() => props.onSourceInfoClick()}>
+              <div className={styles.extraChannel} onClick={props.onSourceInfoClick}>
                 {hasExtraChannels && (
-                  <LinkButton onClick={() => props.onSourceInfoClick()}>
+                  <LinkButton onClick={props.onSourceInfoClick}>
                     +{channels.length - channelsToShow} {props.isConnected}
                   </LinkButton>
                 )}
@@ -68,7 +68,7 @@ const SourceInfo = (props: SourceInfoProps) => {
           </div>
 
           <div className={styles.channelButton}>
-            <button type="button" className={styles.addChannelButton} onClick={() => props.onAddChannelClick()}>
+            <button type="button" className={styles.addChannelButton} onClick={props.onAddChannelClick}>
               <div className={styles.channelButtonIcon} title="Add a channel">
                 <AddChannel />
               </div>

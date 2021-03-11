@@ -84,3 +84,34 @@
   cursor: pointer;
   outline: none;
 }
+.inviteWrapper {
+  width: 500px;
+  margin: 20px 40px 0px 40px;
+}
+
+.headline {
+  @include font-xl;
+  font-weight: bold;
+}
+
+.firstMessage {
+  @include font-base;
+  margin: 30px 20px 20px 0px;
+}
+
+.configMessage {
+  @include font-base;
+  color: rgba(235, 32, 97, 0.866);
+  text-decoration: none;
+  background-color: var(--color-light-gray);
+}
+
+.secondMessage {
+  @include font-base;
+  margin: 30px 20px 20px 0px;
+}
+
+.thirdMessage {
+  @include font-base;
+  margin: 24px 0px 58px 0px;
+}

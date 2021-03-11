@@ -5,8 +5,12 @@ import TwilioSmsSource from './Sources/TwilioSmsSource';
 import GoogleSource from './Sources/GoogleSource';
 import TwilioWhatsAppSource from './Sources/TwilioWhatsAppSource';
 import {ChannelSource} from 'httpclient';
-import {RequirementsDialog} from '../Facebook/RequirementsDialog';
-import {CHANNELS_FACEBOOK_ROUTE} from '../../../routes/routes';
+import {RequirementsDialog, SmsWhatsappDialogue} from '../Facebook/RequirementsDialog';
+import {
+  CHANNELS_FACEBOOK_ROUTE,
+  CHANNELS_TWILIO_SMS_ROUTE,
+  CHANNELS_TWILIO_WHATSAPP_ROUTE,
+} from '../../../routes/routes';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import {Channel, Config} from 'httpclient';
@@ -35,9 +39,19 @@ const ChannelsMainPage = (props: ChannelsConnectProps & RouteComponentProps) => 
       case ChannelSource.chatPlugin:
         break;
       case ChannelSource.twilioSMS:
-        break;
+        return (
+          <SmsWhatsappDialogue
+            onClose={() => setDisplayDialogFromSource('')}
+            onAddChannel={() => props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/new_account')}
+          />
+        );
       case ChannelSource.twilioWhatsapp:
-        break;
+        return (
+          <SmsWhatsappDialogue
+            onClose={() => setDisplayDialogFromSource('')}
+            onAddChannel={() => props.history.push(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account')}
+          />
+        );
     }
   };
 
@@ -62,9 +76,17 @@ const ChannelsMainPage = (props: ChannelsConnectProps & RouteComponentProps) => 
             showDialogAction={(source: string) => setDisplayDialogFromSource(source)}
           />
         )}
-        {props.config.components['sources-twilio'].enabled && <TwilioSmsSource twilioSmsSource={props.channels} />}
         {props.config.components['sources-twilio'].enabled && (
-          <TwilioWhatsAppSource whatsappSmsSource={props.channels} />
+          <TwilioSmsSource
+            twilioSmsSource={props.channels}
+            showDialogAction={(source: string) => setDisplayDialogFromSource(source)}
+          />
+        )}
+        {props.config.components['sources-twilio'].enabled && (
+          <TwilioWhatsAppSource
+            whatsappSmsSource={props.channels}
+            showDialogAction={(source: string) => setDisplayDialogFromSource(source)}
+          />
         )}
         {props.config.components['sources-google'].enabled && <GoogleSource googleSource={props.channels} />}
       </div>

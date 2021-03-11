@@ -3,51 +3,6 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 
-
-#### Changes
-
-- Bump yargs-parser from 5.0.0 to 5.0.1 [[#1213](https://github.com/airyhq/airy/pull/1213)]
-- Bump react-dom from 16.12.0 to 16.14.0 [[#1188](https://github.com/airyhq/airy/pull/1188)]
-- [[#659](https://github.com/airyhq/airy/issues/659)] Enable to connect via facebook [[#1130](https://github.com/airyhq/airy/pull/1130)]
-- change searchbar to the left [[#1192](https://github.com/airyhq/airy/pull/1192)]
-
-#### 🚀 Features
-
-- [[#1204](https://github.com/airyhq/airy/issues/1204)] Add sourceType to templates API [[#1208](https://github.com/airyhq/airy/pull/1208)]
-- [[#1047](https://github.com/airyhq/airy/issues/1047)] Chatplugin testing [[#1087](https://github.com/airyhq/airy/pull/1087)]
-- [[#1022](https://github.com/airyhq/airy/issues/1022)] Change ingress hostnames and deploy traefik ingress controller [[#1122](https://github.com/airyhq/airy/pull/1122)]
-- [[#1055](https://github.com/airyhq/airy/issues/1055)] Expired Websocket Connection [[#1181](https://github.com/airyhq/airy/pull/1181)]
-
-#### 🐛 Bug Fixes
-
-- [[#1214](https://github.com/airyhq/airy/issues/1214)] Duplicate messages in the redux store [[#1216](https://github.com/airyhq/airy/pull/1216)]
-- [[#1205](https://github.com/airyhq/airy/issues/1205)] Fix update deps command and the gazelle repositories [[#1209](https://github.com/airyhq/airy/pull/1209)]
-- Fix chat plugin build by upgrading bazel-tools [[#2](https://github.com/airyhq/airy/pull/2)] [[#1203](https://github.com/airyhq/airy/pull/1203)]
-- Fix chatplugin build by upgrading bazel-tools [[#1202](https://github.com/airyhq/airy/pull/1202)]
-- [[#1047](https://github.com/airyhq/airy/issues/1047)] Fix ui baseUrl [[#1200](https://github.com/airyhq/airy/pull/1200)]
-- [[#1174](https://github.com/airyhq/airy/issues/1174)] Follow up of the follow up of the fix [[#1198](https://github.com/airyhq/airy/pull/1198)]
-- [[#1174](https://github.com/airyhq/airy/issues/1174)] Follow up fix to bug introduced by PR #1177 [[#1196](https://github.com/airyhq/airy/pull/1196)]
-- [[#1101](https://github.com/airyhq/airy/issues/1101)] Filtering by channel not functioning [[#1194](https://github.com/airyhq/airy/pull/1194)]
-
-#### 📚 Documentation
-
-- [[#1105](https://github.com/airyhq/airy/issues/1105)] New structure for chatplugin docs [[#1180](https://github.com/airyhq/airy/pull/1180)]
-
-#### 🧰 Maintenance
-
-- Bump @bazel/typescript from 3.2.1 to 3.2.2 [[#1187](https://github.com/airyhq/airy/pull/1187)]
-- Bump copy-webpack-plugin from 5.1.1 to 6.4.1 [[#1158](https://github.com/airyhq/airy/pull/1158)]
-- [[#1183](https://github.com/airyhq/airy/issues/1183)] Bring back the prettier config [[#1184](https://github.com/airyhq/airy/pull/1184)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.12.1/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.12.1/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.12.1/windows/amd64/airy.exe)
-
 ## 0.12.0
 
 #### Changes

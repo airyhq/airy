@@ -8,3 +8,4 @@ export * from './Metadata';
 export * from './Tag';
 export * from './User';
 export * from './Template';
+export * from './RenderedContent';

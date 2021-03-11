@@ -13,5 +13,4 @@ export const renderProviders: {[key: string]: Provider} = {
   'twilio.sms': TwilioSMSRender,
   'twilio.whatsapp': TwilioWhatsappRender,
   google: GoogleRender,
-  templateShowcase: FacebookRender,
 };

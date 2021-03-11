@@ -12,7 +12,7 @@
   right: 72px;
   left: 14px;
   top: 24px;
-  background-color: white;
+  background-color: var(--color-template-highlight);
 }
 
 .topLine {
@@ -34,6 +34,16 @@
   margin-left: -24px;
 }
 
+.templatePreviewWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-left: 24px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
 .tempatePreviewName {
   @include font-s;
   white-space: nowrap;
@@ -41,28 +51,39 @@
   text-overflow: ellipsis;
 }
 
-.templatePreviewWrapper {
-  position: relative;
-  border: 0;
-  background-color: white;
+.emptyMessage {
+  text-align: center;
+  width: 100%;
 }
 
-.templatePreview {
-  cursor: pointer;
-  margin-left: 24px;
-  margin-bottom: 16px;
-  width: 250px;
-  overflow: hidden;
-  position: relative;
+.emptyImagePlaceholder {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  max-height: 350px;
 }
 
-.clickOverlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  cursor: pointer;
+.emptyMessageText {
+  text-align: left;
+  margin: 0 3rem 1rem 3rem;
+  h1 {
+    @include font-l;
+    font-weight: 900;
+    margin-bottom: 8px;
+    color: var(--color-airy-dark-blue);
+  }
+  p {
+    @include font-base;
+    color: var(--color-text-gray);
+    margin-bottom: 16px;
+  }
+}
+
+.emptySeparator {
+  width: 40px;
+  height: 4px;
+  background-color: var(--color-accent-magenta);
+  margin-bottom: 8px;
 }
 
 .notFoundMessage {
@@ -90,24 +111,7 @@
   }
 }
 
-.emptySeparator {
-  width: 40px;
-  height: 4px;
-  background-color: var(--color-accent-magenta);
-  margin-bottom: 8px;
-}
-
-.emptyMessageText {
-  text-align: left;
-  margin: 0 3rem 1rem 3rem;
-  h1 {
-    @include font-l;
-    font-weight: 900;
-    margin-bottom: 8px;
-    color: var(--color-airy-dark-blue);
-  }
-  p {
-    color: var(--color-text-gray);
-    margin-bottom: 16px;
-  }
+.errorMessage {
+  @include font-base;
+  color: var(--color-text-gray);
 }

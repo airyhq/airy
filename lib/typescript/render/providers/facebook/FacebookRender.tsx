@@ -1,5 +1,5 @@
 import React from 'react';
-import {isFromContact, Content} from '../../../httpclient/model';
+import {isFromContact, RenderedContent} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
@@ -10,7 +10,6 @@ import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 
 export const FacebookRender = (props: MessageRenderProps) => {
-  console.log("facebook render", props.message)
   const message = props.message;
   const content = isFromContact(message) ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
@@ -84,7 +83,7 @@ const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | Gene
   };
 };
 
-function facebookInbound(message: Content): ContentUnion {
+function facebookInbound(message: RenderedContent): ContentUnion {
   const messageJson = message.content;
 
   if (messageJson.message?.attachments?.length) {
@@ -117,13 +116,8 @@ function facebookInbound(message: Content): ContentUnion {
   };
 }
 
-function facebookOutbound(message: Content): ContentUnion {
-
-  console.log("facebook outbound", message)
-  const messageJson = message.content;
-
-  console.log("messageJson", typeof messageJson)
-  console.log(messageJson.message.text)
+function facebookOutbound(message: RenderedContent): ContentUnion {
+  const messageJson = message.content.message ?? message.content;
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {

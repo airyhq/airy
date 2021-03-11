@@ -2,7 +2,6 @@ import React from 'react';
 import {renderProviders} from './renderProviders';
 
 import {Text} from './components/Text';
-import {Template} from 'httpclient';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from './shared';
 
 export * from './shared';
@@ -10,8 +9,6 @@ export * from './shared';
 type SourceMessageState = {
   hasError: boolean;
 };
-
-
 
 export class SourceMessage extends React.Component<MessageRenderProps, SourceMessageState> {
   constructor(props: MessageRenderProps) {

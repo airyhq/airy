@@ -158,12 +158,6 @@
   outline: none;
 }
 
-.iconButton:active svg,
-.iconButton:focus svg,
-.iconButton.active svg {
-  fill: #0dab76;
-}
-
 .templateButton {
   background: transparent;
   border: none;
@@ -177,17 +171,12 @@
 
 .templateSelector {
   width: 164px;
+  max-height: 184px;
+  height: auto;
   overflow: hidden;
   position: relative;
-  padding: 8px;
-}
-
-.templateClickOverlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
+  margin: 0 8px 8px 8px;
+  border-radius: 16px;
 }
 
 .removeTemplateButton {

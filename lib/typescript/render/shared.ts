@@ -1,4 +1,4 @@
-import {isFromContact, Content,Contact} from 'httpclient';
+import {isFromContact, RenderedContent, Contact} from 'httpclient';
 import {formatTime} from 'dates';
 import {DefaultMessageRenderingProps} from './components';
 
@@ -16,11 +16,9 @@ export interface SuggestedReplyCommand extends Command {
 
 export type CommandUnion = SuggestedReplyCommand;
 
-
-
 export interface MessageRenderProps {
-  message: Content;
-  source?: string;
+  message: RenderedContent;
+  source: string;
   contact?: Contact;
   lastInGroup?: boolean;
   invertSides?: boolean;

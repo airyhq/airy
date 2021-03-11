@@ -2,8 +2,8 @@ import React, {useState, useCallback, useEffect, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
-import {SearchField} from '@airyhq/components';
-import { Template} from 'httpclient';
+import {SearchField, ErrorNotice} from '@airyhq/components';
+import {Template} from 'httpclient';
 import {StateModel} from '../../../reducers';
 import emptyState from 'assets/images/empty-state/templates-empty-state.png';
 import notFoundState from 'assets/images/not-found/templates-not-found.png';
@@ -30,6 +30,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
   const [searchQuery, setSearchQuery] = useState('');
   const [templatesList, setTemplatesList] = useState(templates);
   const [loading, setLoading] = useState(true);
+  const [listTemplatesError, setListTemplatesError] = useState(false);
   const componentRef = useRef(null);
 
   const keyDown = useCallback(
@@ -62,26 +63,31 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
     };
   }, [keyDown, clickedOutside]);
 
-  console.log('templates', templates);
-
   useEffect(() => {
     templates = templates.filter((template: Template) =>
       template.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     setTemplatesList(templates);
-
   }, [searchQuery, templates]);
-
 
   useEffect(() => {
     const listAllTemplatesPayload = {};
+    let abort = false;
 
     if (templates.length === 0 && loading) {
-      listTemplates(listAllTemplatesPayload).then(() => {
-        if (templates.length === 0) setLoading(false);
-      });
+      listTemplates(listAllTemplatesPayload)
+        .then(() => {
+          if (templates.length === 0 && !abort) setLoading(false);
+        })
+        .catch(() => {
+          if (!abort) setListTemplatesError(true);
+        });
     }
+
+    return () => {
+      abort = true;
+    };
   }, [templates, loading]);
 
   const renderEmpty = () => {
@@ -91,10 +97,8 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
         <div className={styles.emptyMessageText}>
           <h1>You have no templates yet.</h1>
           <div className={styles.emptySeparator} />
-          <div>
-            <p>Templates allow you to offer a richer interaction experience with images and buttons.</p>
-            <p>Use text templates to never type the same thing again.</p>
-          </div>
+          <p>Templates allow you to offer a richer interaction experience with images and buttons.</p>
+          <p>Use text templates to never type the same thing again.</p>
         </div>
       </div>
     );
@@ -112,9 +116,15 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
     );
   };
 
+  const renderError = () => {
+    return <ErrorNotice theme="error">Oops! Your templates could not be loaded. Please try again later.</ErrorNotice>;
+  };
+
   return (
     <div className={styles.component} ref={componentRef}>
-      {!loading && templates.length === 0 && searchQuery === '' ? (
+      {listTemplatesError && !searchQuery ? (
+        renderError()
+      ) : !loading && templates.length === 0 && !searchQuery ? (
         renderEmpty()
       ) : (
         <>
@@ -137,15 +147,16 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
                   const templateContent = JSON.parse(template.content) as any;
                   return (
                     <div
-                      className={styles.templatePreview}
+                      className={styles.templatePreviewWrapper}
                       key={id}
                       onClick={() => {
                         selectTemplate(template);
                       }}>
                       <div className={styles.tempatePreviewName}>{template.name}</div>
-                      <SourceMessage message={{id:template.id, content:templateContent}} source="templateShowcase" />
-
-                      <div className={styles.clickOverlay} />
+                      <SourceMessage
+                        message={{id: template.id, content: templateContent}}
+                        source={template.sourceType}
+                      />
                     </div>
                   );
                 })}

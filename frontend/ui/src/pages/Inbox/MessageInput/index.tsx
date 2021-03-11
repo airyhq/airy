@@ -14,7 +14,7 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 
 import {StateModel} from '../../../reducers';
-import {getTextMessagePayload, Content} from 'httpclient';
+import {getTextMessagePayload, RenderedContent} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 
@@ -30,35 +30,47 @@ const mapStateToProps = (state: StateModel) => {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type MessageInputProps = {channelSource: string};
 
+interface SelectedTemplate {
+  message: RenderedContent;
+  sourceType: string;
+}
+
 const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
   const {channelSource} = props;
 
   const [input, setInput] = useState('');
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<Content | null>(null);
-
-  console.log('isShowingEmojiDrawer', isShowingEmojiDrawer);
-  console.log("input", input)
+  const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
-  let emojiDiv = useRef<HTMLDivElement>(null);
+  const emojiDiv = useRef<HTMLDivElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setInput(e.target.value);
   };
 
   useEffect(() => {
-    textAreaRef.current.style.height = '0px';
-    const scrollHeight = textAreaRef.current.scrollHeight;
-    textAreaRef.current.style.height = scrollHeight + 'px';
+    if (input) {
+      textAreaRef.current.style.height = '0px';
+      const scrollHeight = textAreaRef.current.scrollHeight;
+      textAreaRef.current.style.height = scrollHeight + 'px';
+    }
   }, [input]);
 
   const conversationIdParams = useParams();
   const currentConversationId: string = conversationIdParams[Object.keys(conversationIdParams)[0]];
 
   const sendMessage = () => {
+    if (selectedTemplate) {
+      setSelectedTemplate(null);
+      props
+        .sendMessages({conversationId: currentConversationId, message: selectedTemplate.message.content})
+        .then(() => setInput(''));
+      return;
+    }
+
     props.sendMessages(getTextMessagePayload(channelSource, currentConversationId, input)).then(() => setInput(''));
   };
 
@@ -73,75 +85,72 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   const InputOptions = () => {
-
     const handleEmojiDrawer = () => {
-      if(isShowingTemplateModal){
+      if (isShowingTemplateModal) {
         setIsShowingTemplateModal(false);
       }
-      if(isShowingEmojiDrawer){
+      if (isShowingEmojiDrawer) {
         textAreaRef.current && textAreaRef.current.focus();
       }
-      
+
       setIsShowingEmojiDrawer(!isShowingEmojiDrawer);
     };
 
     const handleEmojiKeyEvent = e => {
-      console.log(e.key);
       if (e.key === 'Escape') {
         handleEmojiDrawer();
       }
     };
 
     const handleEmojiClickedOutside = e => {
-      console.log("outside click")
-
       if (emojiDiv.current === null || emojiDiv.current.contains(e.target)) {
         return;
       }
 
-      handleEmojiDrawer()
-  
+      handleEmojiDrawer();
     };
 
     useEffect(() => {
-      if(isShowingEmojiDrawer){
+      if (isShowingEmojiDrawer) {
         document.addEventListener('keydown', handleEmojiKeyEvent);
         document.addEventListener('click', handleEmojiClickedOutside);
-  
-        return() => {
+
+        return () => {
           document.removeEventListener('keydown', handleEmojiKeyEvent);
           document.removeEventListener('click', handleEmojiClickedOutside);
-        }
-
+        };
       }
-    }, [isShowingEmojiDrawer])
-
+    }, [isShowingEmojiDrawer]);
 
     const toggleTemplateModal = () => {
-      if(isShowingEmojiDrawer){
+      if (isShowingEmojiDrawer) {
         setIsShowingEmojiDrawer(!isShowingEmojiDrawer);
       }
       setIsShowingTemplateModal(!isShowingTemplateModal);
     };
 
-    const templateSelected = template => {
+    const selectTemplate = template => {
       const jsonTemplate = JSON.parse(template.content) as any;
 
-      if (jsonTemplate.message.text) {
+      if (
+        jsonTemplate.message.text &&
+        !jsonTemplate.message.suggestions &&
+        !jsonTemplate.message.quick_replies &&
+        !jsonTemplate.message.containsRichText
+      ) {
         setInput(jsonTemplate.message.text);
         setIsShowingTemplateModal(false);
       } else {
+        setInput('');
         setIsShowingTemplateModal(false);
         const templateContent = JSON.parse(template.content) as any;
-        setSelectedTemplate({id: template.id, content: templateContent});
+        setSelectedTemplate({message: {id: template.id, content: templateContent}, sourceType: template.sourceType});
       }
       sendButtonRef.current.focus();
     };
 
     const addEmoji = emoji => {
-      console.log('add emoji', emoji);
-
-      let emojiMessage = emoji.native;
+      const emojiMessage = emoji.native;
 
       const message = input + ' ' + emojiMessage;
 
@@ -153,9 +162,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     return (
       <div className={styles.messageActionsContainer}>
         <>
-          {isShowingTemplateModal && (
-            <TemplateSelector onClose={toggleTemplateModal} selectTemplate={templateSelected} />
-          )}
+          {isShowingTemplateModal && <TemplateSelector onClose={toggleTemplateModal} selectTemplate={selectTemplate} />}
           {isShowingEmojiDrawer && (
             <div ref={emojiDiv} className={styles.emojiDrawer}>
               <Picker showPreview={false} onSelect={addEmoji} title="Emoji" />
@@ -184,42 +191,42 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     <form className={`${styles.container} ${styles.flexWrap}`}>
       <div className={`${styles.messageWrap} ${styles.flexWrap}`}>
         <div className={styles.inputWrap}>
-          <textarea
-            className={styles.messageTextArea}
-            ref={textAreaRef}
-            rows={1}
-            name="inputBar"
-            placeholder="Enter a message..."
-            autoFocus={true}
-            value={input}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            data-cy={cyMessageTextArea}
-          />
-        </div>
-        <InputOptions />
-      </div>
-      <div className={`${styles.messageWrap} ${styles.flexWrap}`}>
+          {!selectedTemplate && (
+            <>
+              <textarea
+                className={styles.messageTextArea}
+                ref={textAreaRef}
+                rows={1}
+                name="inputBar"
+                placeholder="Enter a message..."
+                autoFocus={true}
+                value={input}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                data-cy={cyMessageTextArea}
+              />
+              <InputOptions />
+            </>
+          )}
+
           {selectedTemplate && (
             <div className={styles.templateSelector}>
-            <button
-              className={styles.removeTemplateButton}
-              onClick={() => setSelectedTemplate(null)}>
-              <Close />
-            </button>
-            <SourceMessage message={selectedTemplate} source="templateShowcase" />
-            <div className={styles.templateClickOverlay} />
-          </div>
-
+              <button className={styles.removeTemplateButton} onClick={() => setSelectedTemplate(null)}>
+                <Close />
+              </button>
+              <SourceMessage message={selectedTemplate.message} source={selectedTemplate.sourceType} />
+            </div>
           )}
-            
         </div>
+      </div>
+
       <div className={styles.sendDiv}>
         <button
           type="button"
-          className={`${styles.sendButton} ${input && styles.sendButtonActive}`}
+          ref={sendButtonRef}
+          className={`${styles.sendButton} ${(input || selectedTemplate) && styles.sendButtonActive}`}
           onClick={handleClick}
-          disabled={input.trim().length == 0}
+          disabled={input.trim().length == 0 && !selectedTemplate}
           data-cy={cyMessageSendButton}>
           <div className={styles.sendButtonText}>
             <Paperplane />

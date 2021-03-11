@@ -101,6 +101,7 @@ java_library(
     exports = [
         "@maven//:javax_servlet_javax_servlet_api",
         "@maven//:javax_validation_validation_api",
+        "@maven//:org_hibernate_validator_hibernate_validator",
         "@maven//:org_springframework_boot_spring_boot",
         "@maven//:org_springframework_boot_spring_boot_autoconfigure",
         "@maven//:org_springframework_boot_spring_boot_loader",

@@ -2,13 +2,95 @@ package create
 
 import (
 	"context"
+	"fmt"
+	"log"
+
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
+	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/spf13/cobra"
-	"log"
 )
+
+const awsIamEksPolicy = `{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "autoscaling:DescribeAutoScalingGroups",
+                "autoscaling:UpdateAutoScalingGroup",
+                "ec2:AttachVolume",
+                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:CreateRoute",
+                "ec2:CreateSecurityGroup",
+                "ec2:CreateTags",
+                "ec2:CreateVolume",
+                "ec2:DeleteRoute",
+                "ec2:DeleteSecurityGroup",
+                "ec2:DeleteVolume",
+                "ec2:DescribeInstances",
+                "ec2:DescribeRouteTables",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeVolumes",
+                "ec2:DescribeVolumesModifications",
+                "ec2:DescribeVpcs",
+                "ec2:DescribeDhcpOptions",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DetachVolume",
+                "ec2:ModifyInstanceAttribute",
+                "ec2:ModifyVolume",
+                "ec2:RevokeSecurityGroupIngress",
+                "elasticloadbalancing:AddTags",
+                "elasticloadbalancing:ApplySecurityGroupsToLoadBalancer",
+                "elasticloadbalancing:AttachLoadBalancerToSubnets",
+                "elasticloadbalancing:ConfigureHealthCheck",
+                "elasticloadbalancing:CreateListener",
+                "elasticloadbalancing:CreateLoadBalancer",
+                "elasticloadbalancing:CreateLoadBalancerListeners",
+                "elasticloadbalancing:CreateLoadBalancerPolicy",
+                "elasticloadbalancing:CreateTargetGroup",
+                "elasticloadbalancing:DeleteListener",
+                "elasticloadbalancing:DeleteLoadBalancer",
+                "elasticloadbalancing:DeleteLoadBalancerListeners",
+                "elasticloadbalancing:DeleteTargetGroup",
+                "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+                "elasticloadbalancing:DeregisterTargets",
+                "elasticloadbalancing:DescribeListeners",
+                "elasticloadbalancing:DescribeLoadBalancerAttributes",
+                "elasticloadbalancing:DescribeLoadBalancerPolicies",
+                "elasticloadbalancing:DescribeLoadBalancers",
+                "elasticloadbalancing:DescribeTargetGroupAttributes",
+                "elasticloadbalancing:DescribeTargetGroups",
+                "elasticloadbalancing:DescribeTargetHealth",
+                "elasticloadbalancing:DetachLoadBalancerFromSubnets",
+                "elasticloadbalancing:ModifyListener",
+                "elasticloadbalancing:ModifyLoadBalancerAttributes",
+                "elasticloadbalancing:ModifyTargetGroup",
+                "elasticloadbalancing:ModifyTargetGroupAttributes",
+                "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+                "elasticloadbalancing:RegisterTargets",
+                "elasticloadbalancing:SetLoadBalancerPoliciesForBackendServer",
+                "elasticloadbalancing:SetLoadBalancerPoliciesOfListener",
+                "kms:DescribeKey"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:CreateServiceLinkedRole",
+            "Resource": "*",
+            "Condition": {
+                "StringLike": {
+                    "iam:AWSServiceName": "elasticloadbalancing.amazonaws.com"
+                }
+            }
+        }
+    ]
+}`
 
 var CreateCmd = &cobra.Command{
 	Use:   "create",
@@ -23,9 +105,21 @@ func create(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 
-	// iamClient := iam.NewFromConfig(cfg)
+	iamClient := iam.NewFromConfig(cfg)
 	// roleName := string("role-name")
 	// createIamResult, err := iamClient.CreateRole(context.TODO(), &iam.CreateRoleInput{})
+	input := &iam.CreateRoleInput{
+		AssumeRolePolicyDocument: aws.String(awsIamEksPolicy),
+		Path:                     aws.String("/"),
+		RoleName:                 aws.String("Airy-Core-EKS-Role"),
+	}
+
+	iamResult, err := iamClient.CreateRole(context.TODO(), input)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println(iamResult)
+	}
 
 	ec2Client := ec2.NewFromConfig(cfg)
 	CidrBlock := string("10.0.0.0/16")
@@ -39,6 +133,7 @@ func create(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 	VpcId := createVpcResult.Vpc.VpcId
+	log.Printf("VPC created with id: %s\n", *VpcId)
 	log.Println("creating first Subnet")
 	CidrBlock = string("10.0.1.0/24")
 	AvailabilityZone := string("us-east-1a")
@@ -67,13 +162,13 @@ func create(cmd *cobra.Command, args []string) {
 	log.Println("Creating cluster")
 
 	clusterName := string("go-test")
-	roleArn := string("arn:aws:iam::947726454442:role/eks_buildfarm_manager")
+	roleArn := iamResult.Role.Arn
 	var subnetIds []string
 	subnetIds = append(subnetIds, *createFirstSubnetResult.Subnet.SubnetId)
 	subnetIds = append(subnetIds, *createSecondSubnetResult.Subnet.SubnetId)
 	_, err = client.CreateCluster(context.TODO(), &eks.CreateClusterInput{
 		Name:    &clusterName,
-		RoleArn: &roleArn,
+		RoleArn: roleArn,
 		ResourcesVpcConfig: &types.VpcConfigRequest{
 			SubnetIds: subnetIds,
 		},

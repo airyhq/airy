@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/airyhq/airy/lib/go/httpclient v0.0.0
+	github.com/aws/aws-sdk-go v1.37.28
 	github.com/aws/aws-sdk-go-v2 v1.2.0
 	github.com/aws/aws-sdk-go-v2/config v1.1.1
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.1.1

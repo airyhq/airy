@@ -72,7 +72,8 @@ const ChannelItem = (props: ChannelItemProps) => {
           </div>
           <div className={styles.channelNameButton}>
             <div className={styles.channelName}>
-              {channel.metadata.name}
+              {channel.metadata?.name}
+              {channel.sourceChannelId}
               {channel.connected && (
                 <div className={styles.connectedHint}>
                   Connected <CheckMark />

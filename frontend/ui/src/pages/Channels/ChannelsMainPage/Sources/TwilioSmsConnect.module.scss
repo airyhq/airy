@@ -49,6 +49,26 @@
 .listChannelName {
   flex-grow: 1;
   border-bottom: 1px solid var(--color-light-gray);
+  width:5px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+}
+
+.listChannelId {
+  flex-grow: 1;
+  border-bottom: 1px solid var(--color-light-gray);
+  width:5px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+}
+
+.connectedHint{
+  flex-grow: 1;
+  border-bottom: 1px solid var(--color-light-gray);
   height: 50px;
   display: flex;
   align-items: center;
@@ -65,4 +85,21 @@
 .listButtonEdit {
   margin-right: 8px;
   font-weight: normal;
+}
+
+.modalSeparator {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  height: 1px;
+  background: var(--color-light-gray);
+}
+
+.modalButtons {
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    margin: 0 8px;
+  }
 }

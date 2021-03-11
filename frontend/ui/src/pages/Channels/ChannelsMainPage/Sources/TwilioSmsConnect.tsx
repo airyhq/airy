@@ -5,12 +5,14 @@ import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {LinkButton} from '@airyhq/components';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
+import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
 import {Channel} from 'httpclient';
-import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_CONNECTED_ROUTE, CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
 import {connectTwilioSms, disconnectChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import {allChannels} from '../../../../selectors/channels';
 import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';
+
 interface TwilioSmsRouterProps {
   channelId?: string;
 }
@@ -63,9 +65,11 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
         imageUrl: smsUrlInput,
       })
       .then(() => {
-        props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/overview');
-      })
-      .then(() => setSmsNumberInput || setSmsUrlInput || setSmsNameInput(''));
+        props.history.push({
+          pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.sms`,
+          state: {source: 'twilio.sms'},
+        });
+      });
   };
 
   const connectTwilioSms = (e: React.ChangeEvent<HTMLFormElement>): void => {
@@ -73,7 +77,7 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
     sendTwilioSmsData();
   };
 
-  const renderFormFields = () => (
+  const showTwilioSmsForm = () => (
     <SmsWhatsappForm
       connectTwilioSms={connectTwilioSms}
       twilioPhoneNumber="Twilio Phone Number"
@@ -113,8 +117,13 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
                 </div>
               )}
             </div>
-            <div className={styles.listChannelName}>{channel.metadata.name}</div>
-            <div className={styles.listChannelName}>{channel.sourceChannelId}</div>
+            <div className={styles.listChannelName}>{channel.metadata?.name} </div>
+            <div className={styles.listChannelId}>{channel.sourceChannelId}</div>
+            {channel.connected && (
+              <div className={styles.connectedHint}>
+                Connected <CheckMark />
+              </div>
+            )}
             <div className={styles.listButtons}>
               <Link className={styles.listButtonEdit} to={`${CHANNELS_TWILIO_SMS_ROUTE}/${channel.id}`}>
                 Edit
@@ -141,8 +150,8 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
         Back
       </LinkButton>
 
-      {channelId.length && channelId === `${channelId}` && channelId !== 'overview' && renderFormFields()}
-      {channelId.length > 0 && channelId === 'overview' && renderOverviewPage()}
+      {channelId === `${channelId}` && channelId !== 'overview' && showTwilioSmsForm()}
+      {channelId === 'overview' && renderOverviewPage()}
     </div>
   );
 };

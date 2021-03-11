@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
 import {Channel} from 'httpclient';
+import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
@@ -37,6 +38,12 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           connected="CONNECTED"
           placeholderImage={<SMSLogo />}
           isConnected="connected"
+          onSourceInfoClick={() => {
+            props.history.push({
+              pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.sms`,
+              state: {source: 'twilio.sms'},
+            });
+          }}
           onChannelClick={(channel: Channel) => {
             props.history.push(
               CHANNELS_TWILIO_SMS_ROUTE + `/${channel.id}` //Leads to edit page(/connected_twilio_sms route)

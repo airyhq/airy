@@ -117,15 +117,11 @@ const ChannelsList = (props: ChannelsListProps) => {
       </Link>
       <div className={styles.channelsList}>
         {filteredChannels.length > 0 ? (
-          filteredChannels
-            .sort((channelA: Channel, channelB: Channel) =>
-              channelA.metadata.name.toLowerCase().localeCompare(channelB.metadata.name.toLowerCase())
-            )
-            .map((channel: Channel) => (
-              <div key={channel.id} className={styles.connectedChannel}>
-                <ChannelListItem channel={channel} />
-              </div>
-            ))
+          filteredChannels.sort(channelSorter).map((channel: Channel) => (
+            <div key={channel.id} className={styles.connectedChannel}>
+              <ChannelListItem channel={channel} />
+            </div>
+          ))
         ) : (
           <div className={styles.emptyState}>
             <h1 className={styles.noSearchMatch}>Result not found.</h1>

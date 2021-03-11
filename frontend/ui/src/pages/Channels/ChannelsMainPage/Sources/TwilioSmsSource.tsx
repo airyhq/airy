@@ -5,9 +5,9 @@ import {Channel} from 'httpclient';
 import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
+
 import {ChannelSource} from 'httpclient';
-//import TwilioModal from '../SourcesRequirement/TwilioRequirement';
-import Modal from '../SourcesRequirement/Modal';
+import TwilioDialogue from '../SourcesRequirement/TwilioDialogue';
 
 type TwilioSmsSourceProps = {twilloSmsSource: Channel[]};
 
@@ -16,7 +16,7 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
 
   const [showModal, setShowModal] = useState(false);
 
-  const closeModalHandler = () => setShowModal(false);
+  const closeModalOnClick = () => setShowModal(false);
 
   return (
     <>
@@ -27,9 +27,6 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           image={<SMSLogo />}
           displayButton={!channels.length}
           id={ChannelSource.twilioSMS}
-          // onAddChannelClick={() => {
-          //   props.history.push(CHANNELS_TWILIO_SMS_ROUTE);
-          // }}
           onAddChannelClick={() => setShowModal(true)}
         />
 
@@ -47,7 +44,7 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           }}
         />
       </div>
-      {showModal && <Modal show={showModal} close={closeModalHandler} />}
+      {showModal && <TwilioDialogue close={closeModalOnClick} />}
     </>
   );
 };

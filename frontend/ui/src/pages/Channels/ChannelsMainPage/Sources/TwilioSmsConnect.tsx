@@ -3,16 +3,22 @@ import styles from './TwilioSmsConnect.module.scss';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
 import {Button, Input} from '@airyhq/components';
 import {ReactComponent as EmptyImage} from 'assets/images/icons/plus-circle.svg';
 
-interface TwilioSmsProps {
+type TwilioSmsProps = {
   channelId?: string;
-}
+  name: string;
+  placeholder: string;
+  required: boolean;
+  height: number;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  history: History;
+};
 
-const TwilioSmsConnect = (props: RouteComponentProps<TwilioSmsProps>) => {
-  const {name, placeholder, required, height, onChange} = props;
-
+const TwilioSmsConnect = ({history}: TwilioSmsProps & RouteComponentProps) => {
   const [twilloNumberInput, setTwilloNumberInput] = useState('');
   const [twilloNameInput, setTwilloNameInput] = useState('');
   const [twilloUrlInput, setTwilloUrlInput] = useState('');
@@ -96,7 +102,13 @@ const TwilioSmsConnect = (props: RouteComponentProps<TwilioSmsProps>) => {
         </div>
       </form>
 
-      <Button type="submit" styleVariant="normal" disabled={twilloNumberInput.trim().length == 0}>
+      <Button
+        type="submit"
+        styleVariant="normal"
+        disabled={twilloNumberInput.trim().length == 0}
+        onClick={() => {
+          history.push(CHANNELS_TWILIO_SMS_ROUTE_CONNECTED);
+        }}>
         {' '}
         Connect SMS Number
       </Button>

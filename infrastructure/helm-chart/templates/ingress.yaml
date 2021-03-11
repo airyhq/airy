@@ -78,6 +78,13 @@ spec:
                 name: api-communication
                 port:
                   number: 80
+          - path: /messages.suggestReplies
+            pathType: Prefix
+            backend:
+              service:
+                name: api-communication
+                port:
+                  number: 80
           - path: /metadata.upsert
             pathType: Prefix
             backend:

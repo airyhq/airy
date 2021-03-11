@@ -227,9 +227,9 @@ yarn_install(
 
 git_repository(
     name = "com_github_atlassian_bazel_tools",
-    commit = "dc5e715035b6b17f24f1d40a7eac08f8f2ac8a11",
-    remote = "https://github.com/atlassian/bazel-tools.git",
-    shallow_since = "1597268988 +1000",
+    commit = "e45e55f213b6804115eed1b6eb4ffc3bcf7a0cc4",
+    remote = "https://github.com/ash2k/bazel-tools.git",
+    shallow_since = "1614900742 +1100",
 )
 
 load("@com_github_atlassian_bazel_tools//multirun:deps.bzl", "multirun_dependencies")

@@ -1,3 +1,4 @@
 **/*/cli/reference.md
 build/
 bazel-*
+**/*/.docusaurus

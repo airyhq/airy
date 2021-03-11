@@ -21,8 +21,10 @@ import styles from './ChannelsList.module.scss';
 
 type ChannelsListProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<{source: string}>;
 
-const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allChannels(state)),
+const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps<{source: string}>) => ({
+  channels: Object.values(allChannels(state)).filter(
+    (channel: Channel) => channel.source === ownProps.match.params.source
+  ),
 });
 
 const connector = connect(mapStateToProps, null);
@@ -35,9 +37,9 @@ const ChannelsList = (props: ChannelsListProps) => {
   const [showingSearchField, setShowingSearchField] = useState(false);
   const source = props.match.params.source;
 
-  const filteredChannels = channels
-    .filter((channel: Channel) => channel?.source === source)
-    .filter((channel: Channel) => channel?.metadata?.name?.toLowerCase().includes(searchText.toLowerCase()));
+  const filteredChannels = channels.filter((channel: Channel) =>
+    channel?.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   useEffect(() => {
     setPageTitle();
@@ -77,16 +79,6 @@ const ChannelsList = (props: ChannelsListProps) => {
     }
   };
 
-  const channelSorter = (channelA: Channel, channelB: Channel) => {
-    if (channelA.metadata.name.toLowerCase() < channelB.metadata.name.toLowerCase()) {
-      return -1;
-    }
-    if (channelA.metadata.name.toLowerCase() > channelB.metadata.name.toLowerCase()) {
-      return 1;
-    }
-    return 0;
-  };
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.headlineRow}>
@@ -117,11 +109,15 @@ const ChannelsList = (props: ChannelsListProps) => {
       </Link>
       <div className={styles.channelsList}>
         {filteredChannels.length > 0 ? (
-          filteredChannels.sort(channelSorter).map((channel: Channel) => (
-            <div key={channel.id} className={styles.connectedChannel}>
-              <ChannelListItem channel={channel} />
-            </div>
-          ))
+          filteredChannels
+            .sort((channelA: Channel, channelB: Channel) =>
+              channelA.metadata.name.toLowerCase().localeCompare(channelB.metadata.name.toLowerCase())
+            )
+            .map((channel: Channel) => (
+              <div key={channel.id} className={styles.connectedChannel}>
+                <ChannelListItem channel={channel} />
+              </div>
+            ))
         ) : (
           <div className={styles.emptyState}>
             <h1 className={styles.noSearchMatch}>Result not found.</h1>

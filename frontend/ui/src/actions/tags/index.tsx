@@ -1,5 +1,5 @@
 import _, {Dispatch} from 'redux';
-import {createAction} from 'typesafe-actions';
+import _typesafe, {createAction} from 'typesafe-actions';
 
 import {Tag, CreateTagRequestPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
@@ -11,12 +11,12 @@ const ERROR_TAG = 'ERROR_TAG';
 const ADD_TAGS_TO_STORE = 'ADD_TAGS_TO_STORE';
 const SET_TAG_FILTER = 'SET_TAG_FILTER';
 
-export const fetchTagAction = createAction(ADD_TAGS_TO_STORE, resolve => (tags: Tag[]) => resolve(tags));
-export const addTagAction = createAction(UPSERT_TAG, resolve => (tag: Tag) => resolve(tag));
-export const editTagAction = createAction(EDIT_TAG, resolve => (tag: Tag) => resolve(tag));
-export const deleteTagAction = createAction(DELETE_TAG, resolve => (id: string) => resolve(id));
-export const filterTagAction = createAction(SET_TAG_FILTER, resolve => (filter: string) => resolve(filter));
-export const errorTagAction = createAction(ERROR_TAG, resolve => (status: string) => resolve(status));
+export const fetchTagAction = createAction(ADD_TAGS_TO_STORE, (tags: Tag[]) => tags)<Tag[]>();
+export const addTagAction = createAction(UPSERT_TAG, (tag: Tag) => tag)<Tag>();
+export const editTagAction = createAction(EDIT_TAG, (tag: Tag) => tag)<Tag>();
+export const deleteTagAction = createAction(DELETE_TAG, (id: string) => id)<string>();
+export const filterTagAction = createAction(SET_TAG_FILTER, (filter: string) => filter)<string>();
+export const errorTagAction = createAction(ERROR_TAG, (status: string) => status)<string>();
 
 export function listTags() {
   return function (dispatch: Dispatch<any>) {

@@ -57,10 +57,8 @@ export const updateChannel = (requestPayload: UpdateChannelRequestPayload) => as
     return Promise.resolve(response);
   });
 
-export const disconnectChannel = (source: string, requestPayload: DisconnectChannelRequestPayload) => async (
-  dispatch: Dispatch<any>
-) =>
-  HttpClientInstance.disconnectChannel(source, requestPayload).then(() => {
+export const disconnectChannel = (requestPayload: DisconnectChannelRequestPayload) => async (dispatch: Dispatch<any>) =>
+  HttpClientInstance.disconnectChannel(requestPayload).then(() => {
     dispatch(deleteChannelAction(requestPayload.channelId));
     return Promise.resolve(true);
   });

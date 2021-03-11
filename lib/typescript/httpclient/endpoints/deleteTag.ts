@@ -1,6 +1,5 @@
 import {HttpClient} from '../client';
 
-export default HttpClient.prototype.deleteTag = async function deleteTag(id: string) {
-  await this.doFetchFromBackend('tags.delete', {id});
-  return Promise.resolve(true);
+export default HttpClient.prototype.deleteTag = function deleteTag(id: string) {
+  return this.doFetchFromBackend('tags.delete', {id});
 };

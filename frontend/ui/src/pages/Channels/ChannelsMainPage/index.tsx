@@ -9,13 +9,13 @@ import {RequirementsDialog} from '../Facebook/RequirementsDialog';
 import {CHANNELS_FACEBOOK_ROUTE} from '../../../routes/routes';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
-import {Channel, ConfigPayload} from 'httpclient';
+import {Channel, Config} from 'httpclient';
 
 import styles from './index.module.scss';
 
 type ChannelsConnectProps = {
   channels: Channel[];
-  config: ConfigPayload;
+  config: Config;
 };
 
 const ChannelsMainPage = (props: ChannelsConnectProps & RouteComponentProps) => {

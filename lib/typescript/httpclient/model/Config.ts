@@ -1,4 +1,4 @@
-export interface ConfigPayload {
+export interface Config {
   components: {
     'sources-chatplugin': {
       enabled: boolean;

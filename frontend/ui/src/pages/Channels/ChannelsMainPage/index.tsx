@@ -63,6 +63,8 @@ const ChannelsMainPage = (props: ChannelsConnectProps & RouteComponentProps) => 
           />
         )}
         {props.config.components['sources-twilio'].enabled && <TwilioSmsSource twilloSmsSource={props.channels} />}
+        {props.config.components['sources-facebook'].enabled && <FacebookSource facebookSource={props.channels} />}
+        {props.config.components['sources-twilio'].enabled && <TwilioSmsSource twilioSmsSource={props.channels} />}
         {props.config.components['sources-twilio'].enabled && (
           <TwilioWhatsAppSource whatsappSmsSource={props.channels} />
         )}

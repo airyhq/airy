@@ -5,15 +5,14 @@ import {Channel} from 'httpclient';
 import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
-
+import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
 import {ChannelSource} from 'httpclient';
 import TwilioDialogue from '../SourcesRequirement/TwilioDialogue';
 
-type TwilioSmsSourceProps = {twilloSmsSource: Channel[]};
+type TwilioSmsSourceProps = {twilioSmsSource: Channel[]};
 
 const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
-  const channels = props.twilloSmsSource.filter((channel: Channel) => channel.source === 'twilio.sms');
-  console.log(1 + 1);
+  const channels = props.twilioSmsSource.filter((channel: Channel) => channel.source === 'twilio.sms');
   const [showModal, setShowModal] = useState(false);
   const closeModalOnClick = () => setShowModal(false);
 
@@ -42,6 +41,16 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           onAddChannelClick={() => {
             props.history.push(CHANNELS_TWILIO_SMS_ROUTE);
           }}
+          onChannelClick={(channel: Channel) => {
+            props.history.push({
+              pathname: CHANNELS_TWILIO_SMS_ROUTE + `/${channel.id}`, //Leads to edit page(/connected_twilio_sms route)
+            });
+          }}
+          // onAddChannelBoxClick={() => {
+          //   props.history.push({
+          //     pathname: CHANNELS_TWILIO_SMS_ROUTE_CONNECTED, //Leads to edit page(/connected_twilio_sms route)
+          //   });
+          // }}
         />
       </div>
       {showModal && <TwilioDialogue close={closeModalOnClick} />}

@@ -21,7 +21,6 @@
 }
 
 .backButton {
-  display: block;
   margin-bottom: 16px;
   cursor: pointer;
   text-decoration: none;
@@ -42,7 +41,7 @@
 }
 
 .formContent {
-  display: flex;
+  display: block;
   flex-direction: column;
 }
 

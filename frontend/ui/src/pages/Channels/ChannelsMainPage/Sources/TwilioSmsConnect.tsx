@@ -9,21 +9,26 @@ import {Button, Input, UrlInputField} from '@airyhq/components';
 //import {ReactComponent as EmptyImage} from 'assets/images/icons/plus-circle.svg';
 import {connectChannelTwilioSms} from '../../../../actions/channel';
 
-type TwilioSmsProps = {
+// type TwilioSmsRouterProps = {
+//   channelId?: string;
+//   name: string;
+//   placeholder: string;
+//   required: boolean;
+//   height: number;
+//   value: string;
+//   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+//   history: History;
+// };
+interface TwilioSmsRouterProps {
   channelId?: string;
-  name: string;
-  placeholder: string;
-  required: boolean;
-  height: number;
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  history: History;
-};
+}
 
 const mapDispatchToProps = {connectChannelTwilioSms};
 const connector = connect(null, mapDispatchToProps);
 
-const TwilioSmsConnect = (props: TwilioSmsProps & ConnectedProps<typeof connector>) => {
+type TwilioSmsProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<TwilioSmsRouterProps>;
+
+const TwilioSmsConnect = (props: TwilioSmsProps) => {
   const [twilloNumberInput, setTwilloNumberInput] = useState('');
   const [twilloNameInput, setTwilloNameInput] = useState('');
   const [twilloUrlInput, setTwilloUrlInput] = useState('');
@@ -41,16 +46,25 @@ const TwilioSmsConnect = (props: TwilioSmsProps & ConnectedProps<typeof connecto
   };
 
   const sendTwilioData = () => {
-    props.connectChannelTwilioSms({
-      sourceChannelId: twilloNumberInput,
-      name: twilloNameInput,
-      imageUrl: twilloUrlInput,
-    });
+    props
+      .connectChannelTwilioSms('twilio.sms', {
+        sourceChannelId: twilloNumberInput,
+        name: twilloNameInput,
+        imageUrl: twilloUrlInput,
+      })
+      .then(() => {
+        props.history.push(CHANNELS_TWILIO_SMS_ROUTE_CONNECTED);
+      });
   };
 
-  const connectTwilioSms = () => {
+  const connectTwilioSms = (e: React.ChangeEvent<HTMLFormElement>): void => {
+    e.preventDefault();
     sendTwilioData();
   };
+
+  console.log(twilloNumberInput);
+  console.log(twilloNameInput);
+  console.log(twilloUrlInput);
 
   return (
     <div className={styles.wrapper}>
@@ -60,16 +74,17 @@ const TwilioSmsConnect = (props: TwilioSmsProps & ConnectedProps<typeof connecto
         Back to channels
       </Link>
 
-      <form className={styles.formContainer}>
+      <form onSubmit={connectTwilioSms} className={styles.formContainer}>
         <div className={styles.formContent}>
           <div className={styles.formContentNumber}>
-            <p>Twilio Phone Number</p>
             <Input
-              name="numberInput"
+              label="Twilio Phone Number"
               placeholder="Purchased Number +158129485394"
+              name="name"
+              type="text"
+              value={twilloNumberInput}
               required={true}
               height={32}
-              value={twilloNumberInput}
               onChange={handleNumberInput}
             />
           </div>
@@ -94,40 +109,37 @@ const TwilioSmsConnect = (props: TwilioSmsProps & ConnectedProps<typeof connecto
   </div>*/}
 
           <div className={styles.formContentNumber}>
-            <p>Image URL (optional)</p>
             <UrlInputField
-              name="UrlInput"
+              label="Image URL (optional)"
               placeholder="Add an URL"
+              name="url"
+              type="url"
+              value={twilloUrlInput}
               required={false}
               height={32}
-              value={twilloUrlInput}
               onChange={handleUrlInput}
             />
           </div>
 
           <div className={styles.formContentName}>
-            <p>Add a Name (optional) </p>
             <Input
-              name="nameInput"
+              label="Add a Name (optional)"
               placeholder="SMS Acme Berlin"
+              name="name"
+              type="name"
               value={twilloNameInput}
               required={false}
               height={32}
               onChange={handleNameInput}
             />
           </div>
+          <Button type="submit" styleVariant="normal" disabled={twilloNumberInput.trim().length == 0}>
+            Connect SMS Number
+          </Button>
         </div>
       </form>
-
-      <Button
-        type="submit"
-        styleVariant="normal"
-        disabled={twilloNumberInput.trim().length == 0}
-        onClick={connectTwilioSms}>
-        Connect SMS Number
-      </Button>
     </div>
   );
 };
 
-export default connector(TwilioSmsConnect);
+export default connector(withRouter(TwilioSmsConnect));

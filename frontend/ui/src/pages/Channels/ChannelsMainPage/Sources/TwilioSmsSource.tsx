@@ -49,12 +49,9 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
               CHANNELS_TWILIO_SMS_ROUTE + `/${channel.id}` //Leads to edit page(/connected_twilio_sms route)
             );
           }}
-          // onMoreChannelsClick={() => {
-          //   props.history.push({
-          //     pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.sms/#`,
-          //     state: {source: 'twilio.sms'},
-          //   });
-          // }}
+          onMoreChannelsClick={() => {
+            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/overview');
+          }}
           onAddChannelClick={() => {
             props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/new_account'); //Leads to add account page
           }}

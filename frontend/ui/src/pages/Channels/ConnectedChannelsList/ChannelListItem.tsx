@@ -19,7 +19,6 @@ import {
 
 type ChannelItemProps = {
   channel: Channel;
-  source: string;
 } & ConnectedProps<typeof connector> &
   RouteComponentProps<{channelId: string}>;
 
@@ -79,27 +78,26 @@ const ChannelItem = (props: ChannelItemProps) => {
           <div className={styles.channelLogo}>
             <ChannelIcon channel={channel} />
           </div>
-          <div className={styles.channelNameButton}>
-            <div className={styles.container}>
-              <div className={styles.channelName}>{channel.metadata?.name}</div>
-              {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
-              {channel.connected && (
-                <div className={styles.connectedHint}>
-                  Connected <CheckMark />
-                </div>
-              )}
+
+          <div className={styles.channelName}>{channel.metadata?.name}</div>
+          {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
+          {channel.connected && (
+            <div className={styles.connectedHint}>
+              Connected <CheckMark />
             </div>
-            <div className={styles.listButtons}>
-              <Button styleVariant="link" type="button" onClick={() => props.history.push(editChannel())}>
-                Edit
-              </Button>
-              <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(true)}>
-                Disconnect
-              </Button>
-            </div>
+          )}
+
+          <div className={styles.listButtons}>
+            <Button styleVariant="link" type="button" onClick={() => props.history.push(editChannel())}>
+              Edit
+            </Button>
+            <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(true)}>
+              Disconnect
+            </Button>
           </div>
         </div>
       </div>
+
       {deletePopupVisible && (
         <SettingsModal
           style={{maxWidth: '420px'}}

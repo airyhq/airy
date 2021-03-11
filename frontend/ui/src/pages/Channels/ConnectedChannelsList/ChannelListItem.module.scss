@@ -28,21 +28,23 @@
 }
 
 .channelName {
-  flex: 1 1;
-  text-align: left;
-  padding: 0 8px;
-  color: var(--color-text-contrast);
-  padding: 20.5px 0;
-  width: 200px;
+  flex-grow: 1;
+  border-bottom: 1px solid var(--color-light-gray);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
 }
 
 .channelId {
-  flex: 1 1;
-  text-align: left;
-  padding: 0 8px;
-  color: var(--color-text-contrast);
-  padding: 20.5px 0;
-  width: 282px;
+  flex-grow: 1;
+  border-bottom: 1px solid var(--color-light-gray);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
 }
 
 .imageUrlLogo {
@@ -52,12 +54,12 @@
 }
 
 .connectedHint {
-  display: inline-flex;
-  flex-direction: row;
-  border: 1px solid var(--color-soft-green);
-  padding: 0 8px;
-  border-radius: 4px;
-  margin: 24px 0px 24px 8px;
+  flex-grow: 1;
+  border-bottom: 1px solid var(--color-light-gray);
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
 
   @include font-s;
   text-transform: uppercase;
@@ -74,7 +76,10 @@
 
 .listButtons {
   display: flex;
-  padding-left: 60vh;
+  align-items: center;
+  height: 50px;
+  border-bottom: 1px solid var(--color-light-gray);
+  
 }
 
 .disabledDisconnect {

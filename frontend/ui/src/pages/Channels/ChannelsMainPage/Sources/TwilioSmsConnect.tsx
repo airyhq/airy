@@ -65,10 +65,7 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
         imageUrl: smsUrlInput,
       })
       .then(() => {
-        props.history.replace({
-          pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.sms/#`,
-          state: {source: 'twilio.sms'},
-        });
+        props.history.replace(CHANNELS_CONNECTED_ROUTE + `/twilio.sms/#`);
       });
   };
 

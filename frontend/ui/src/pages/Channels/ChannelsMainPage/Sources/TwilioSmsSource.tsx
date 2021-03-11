@@ -61,7 +61,7 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
         <SmsWhatsappDialogue
           close={closeModalOnClick}
           callModal={() => {
-            props.history.push(CHANNELS_TWILIO_SMS_ROUTE);
+            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/new_account');
           }}
         />
       )}

@@ -42,17 +42,6 @@
   min-width: 400px;
   min-height: 94px;
   padding: 8px;
-  margin-left: 3px;
-  border: none;
-
-  background-color: inherit;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--color-airy-blue);
-    background-color: var(--color-background-blue);
-    box-shadow: 0px 0px 0px 3px var(--color-background-blue);
-  }
 }
 
 .extraPhoneInfo {

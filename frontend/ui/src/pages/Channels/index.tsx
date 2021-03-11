@@ -5,7 +5,6 @@ import {listChannels} from '../../actions/channel';
 import {getClientConfig} from '../../actions/config';
 import {StateModel} from '../../reducers/index';
 import styles from './index.module.scss';
-
 import {allChannelsConnected} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
 import ChannelsMainPage from './ChannelsMainPage';
@@ -17,10 +16,8 @@ import ChatPluginConnect from './ChannelsMainPage/Sources/ChatPluginConnect';
 import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../routes/routes';
 import TwilioSmsConnect from './ChannelsMainPage/Sources/TwilioSmsConnect';
 import TwilioWhatsappConnect from './ChannelsMainPage/Sources/TwilioWhatsappConnect';
-import ChannelsList from '../Channels/ConnectedChannelsList/ChannelsList';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../routes/routes';
 import {CHANNELS_TWILIO_WHATSAPP_ROUTE} from '../../routes/routes';
-import {CHANNELS_CONNECTED_ROUTE} from '../../routes/routes';
 
 const mapDispatchToProps = {
   listChannels,

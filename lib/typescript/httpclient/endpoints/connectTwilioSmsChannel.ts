@@ -3,7 +3,7 @@ import {ChannelPayload, ConnectTwilioSmsRequestPayload} from '../payload';
 const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';
 
-export default HttpClient.prototype.connectTwilioSmsChannel = async function(
+export default HttpClient.prototype.connectTwilioSmsChannel = async function (
   requestPayload: ConnectTwilioSmsRequestPayload
 ) {
   const response: ChannelPayload = await this.doFetchFromBackend('channels.twilio.sms.connect', {

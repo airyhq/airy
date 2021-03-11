@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import styles from './TwilioSmsConnect.module.scss';
 import {connect, ConnectedProps} from 'react-redux';
-import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {Channel} from 'httpclient';
-import {CHANNELS_CONNECTED_ROUTE, CHANNELS_TWILIO_WHATSAPP_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {connectTwilioWhatsapp} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';

@@ -4,18 +4,21 @@ import (
 	"cli/pkg/kube"
 	"context"
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
-	"log"
-	"os"
 )
 
 type Aws struct {
 }
 
 func (a *Aws) Provision() (kube.KubeCtx, error) {
+	// Use this to
+	//clientcmd.NewNonInteractiveClientConfig()
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		log.Fatal(err)

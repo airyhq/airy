@@ -14,7 +14,7 @@ export interface Attachement {
   };
 }
 
-export enum MessageSource {
+export enum SourceType {
   facebook = 'facebook',
   google = 'google',
   chatplugin = 'chat_plugin',

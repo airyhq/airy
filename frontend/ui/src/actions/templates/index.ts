@@ -12,16 +12,12 @@ export const listTemplatesAction = createAction(LIST_TEMPLATES, resolve => (temp
 
 export function listTemplates(requestPayload: ListTemplatesRequestPayload) {
   return function (dispatch: Dispatch<any>) {
-    return HttpClientInstance.listTemplates(requestPayload)
-      .then((response: Template[]) => {
-        if (response.length > 0) {
-          dispatch(listTemplatesAction(response));
-        }
+    return HttpClientInstance.listTemplates(requestPayload).then((response: Template[]) => {
+      if (response.length > 0) {
+        dispatch(listTemplatesAction(response));
+      }
 
-        return Promise.resolve(true);
-      })
-      .catch(error => {
-        return Promise.reject(error);
-      });
+      return Promise.resolve(true);
+    });
   };
 }

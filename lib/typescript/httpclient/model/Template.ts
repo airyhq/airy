@@ -1,9 +1,9 @@
-import {MessageSource} from './Message';
+import {SourceType} from './Message';
 
 export interface Template {
   id: string;
   name: string;
-  sourceType: MessageSource;
+  sourceType: SourceType;
   content: string;
   variables: any;
 }

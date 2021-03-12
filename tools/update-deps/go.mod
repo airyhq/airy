@@ -1,8 +1,7 @@
 module github.com/tools/update-deps
 
-go 1.15
+go 1.16
 
 require (
 	golang.org/x/mod v0.4.1
-	k8s.io/apimachinery v0.20.1
 )

@@ -19,7 +19,6 @@ type SmsWhatsappFormProps = {
   twilioNumberInput: string;
   twilioUrlInput: string;
   twilioNameInput: string;
-  channelId: string;
 
   handleNameInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleUrlInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -35,10 +34,10 @@ const connector = connect(mapStateToProps, null);
 
 const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
   const {channel} = props;
-  const [buttonTitle, setButtonTitle] = useState('Connect SMS Number');
+  const [buttonTitle, setButtonTitle] = useState('Connect Number');
   useEffect(() => {
     if (channel) {
-      setButtonTitle('Update SMS Number');
+      setButtonTitle('Update Number');
     }
   }, []);
 

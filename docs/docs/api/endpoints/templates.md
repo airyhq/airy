@@ -14,17 +14,17 @@ for more information.
 
 ```json5
 {
-  name: "my template name",
-  source_type: "facebook",
-  content: {
-    message: {
-      text: "[[salutation]]!"
+  "name": "my template name",
+  "source_type": "facebook",
+  "content": {
+    "message": {
+      "text": "[[salutation]]!"
     }
   },
   // source specific message content
-  variables: {
-    en: {
-      salutation: "%s"
+  "variables": {
+    "en": {
+      "salutation": "%s"
     }
   }
 }
@@ -52,7 +52,8 @@ Find templates whose name contains "NASA":
 
 ```json5
 {
-  name: "NASA" // optional
+  "source_type": "chatplugin",
+  "name": "NASA" // optional
 }
 ```
 
@@ -60,20 +61,20 @@ Find templates whose name contains "NASA":
 
 ```json5
 {
-  data: [
+  "data": [
     {
-      id: "TEMPLATE-UUID",
-      name: "Template for NASA",
-      source_type: "facebook",
-      content: {
-        message: {
-          text: "[[salutation]]!"
+      "id": "TEMPLATE-UUID",
+      "name": "Template for NASA",
+      "source_type": "facebook",
+      "content": {
+        "message": {
+          "text": "[[salutation]]!"
         }
       },
       // source specific message content
-      variables: {
-        en: {
-          salutation: "%s"
+      "variables": {
+        "en": {
+          "salutation": "%s"
         }
       }
     }
@@ -87,7 +88,7 @@ Find templates whose name contains "NASA":
 
 ```json5
 {
-  id: "TEMPLATE-UUID"
+  "id": "TEMPLATE-UUID"
 }
 ```
 
@@ -95,18 +96,18 @@ Find templates whose name contains "NASA":
 
 ```json5
 {
-  id: "TEMPLATE-UUID",
-  name: "{String}",
-  source_type: "facebook",
-  content: {
-    message: {
-      text: "[[salutation]]!"
+  "id": "TEMPLATE-UUID",
+  "name": "{String}",
+  "source_type": "facebook",
+  "content": {
+    "message": {
+      "text": "[[salutation]]!"
     }
   },
   // source specific message content
-  variables: {
-    en: {
-      salutation: "%s"
+  "variables": {
+    "en": {
+      "salutation": "%s"
     }
   }
 }
@@ -118,18 +119,18 @@ Find templates whose name contains "NASA":
 
 ```json5
 {
-  id: "template id",
-  name: "my template name",
-  source_type: "facebook",
-  content: {
-    message: {
-      text: "[[salutation]]!"
+  "id": "template id",
+  "name": "my template name",
+  "source_type": "facebook",
+  "content": {
+    "message": {
+      "text": "[[salutation]]!"
     }
   },
   // source specific message content
-  variables: {
-    en: {
-      salutation: "%s"
+  "variables": {
+    "en": {
+      "salutation": "%s"
     }
   }
 }
@@ -145,7 +146,7 @@ This endpoint returns _200_ if successful.
 
 ```json5
 {
-  id: "TEMPLATE-UUID"
+  "id": "TEMPLATE-UUID"
 }
 ```
 

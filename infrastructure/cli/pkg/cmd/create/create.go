@@ -4,14 +4,15 @@ import (
 	"cli/pkg/providers"
 	"fmt"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"os"
 )
 
 var (
-	provider  string
-	namespace string
-	version   string
-	CreateCmd = &cobra.Command{
+	providerName string
+	namespace    string
+	version      string
+	CreateCmd    = &cobra.Command{
 		Use:   "create",
 		Short: "Creates an instance of Airy Core",
 		Long:  ``,
@@ -20,16 +21,16 @@ var (
 )
 
 func init() {
-	CreateCmd.Flags().StringVar(&provider, "provider", "local", "One of the supported providers (aws|local|minikube).")
+	CreateCmd.Flags().StringVar(&providerName, "provider", "local", "One of the supported providers (aws|local|minikube).")
 	CreateCmd.Flags().StringVar(&namespace, "namespace", "default", "(optional) Kubernetes namespace that Airy should be installed to.")
 	CreateCmd.MarkFlagRequired("provider")
 
 }
 
 func create(cmd *cobra.Command, args []string) {
-	fmt.Println("⚙️  Creating core with provider", provider)
+	fmt.Println("⚙️  Creating core with provider", providerName)
 
-	provider := providers.MustGet(providers.ProviderName(provider))
+	provider := providers.MustGet(providers.ProviderName(providerName))
 
 	context, err := provider.Provision()
 	if err != nil {
@@ -53,9 +54,28 @@ func create(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
+	viper.Set("KubeConfig", context.KubeConfigPath)
+	viper.Set("ContextName", context.ContextName)
+	if err = viper.WriteConfig(); err != nil {
+		fmt.Println("could not store the kube context: ", err)
+		os.Exit(1)
+	}
+
 	fmt.Println("🚀 Starting core with default components")
 	fmt.Println("🎉 Your Airy Core is ready")
-	fmt.Println("\t Link to the API")
-	fmt.Println("\t Link to the UI")
-	fmt.Println("\t Link to more docs")
+
+	hosts, err := provider.GetHosts()
+	if err != nil {
+		fmt.Println("failed to get installation endpoints: ", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("\t Available hosts:")
+	for hostName, host := range hosts {
+		fmt.Printf("\t\t %s:\t %s", hostName, host)
+	}
+
+	fmt.Println()
+	fmt.Printf("For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
+	fmt.Println()
 }

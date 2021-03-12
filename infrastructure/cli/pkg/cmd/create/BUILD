@@ -16,6 +16,7 @@ go_library(
         "//infrastructure/cli/pkg/providers",
         "//infrastructure/cli/pkg/workspace",
         "@com_github_spf13_cobra//:cobra",
+        "@com_github_spf13_viper//:viper",
         "@io_k8s_api//batch/v1:go_default_library",
         "@io_k8s_api//core/v1:go_default_library",
         "@io_k8s_api//rbac/v1:go_default_library",

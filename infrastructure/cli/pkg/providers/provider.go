@@ -16,6 +16,7 @@ const (
 
 type Provider interface {
 	Provision() (kube.KubeCtx, error)
+	GetHosts() (map[string]string, error)
 	GetHelmOverrides() []string
 }
 

@@ -19,6 +19,10 @@ func (a *Aws) GetHelmOverrides() []string {
 	return []string{}
 }
 
+func (a *Aws) GetHosts() (map[string]string, error) {
+	return nil, nil
+}
+
 func (a *Aws) Provision() (kube.KubeCtx, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {

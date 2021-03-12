@@ -17,7 +17,7 @@ module.exports = {
     },
     hideableSidebar: true,
     prism: {
-      theme: require('prism-react-renderer/themes/github'),
+      theme: require('./src/plugins/prism_themes/github'),
       darkTheme: require('./src/plugins/prism_themes/monokai'),
       additionalLanguages: ['json5'],
     },

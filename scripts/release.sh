@@ -9,7 +9,7 @@ start() {
     create_issue
     create_release_branch
     update_release_version
-    commit_version
+    commit_version_and_changelog
 }
 
 create_issue() {
@@ -47,11 +47,13 @@ update_release_version() {
     echo -e "Updated VERSION file\n"
 }
 
-commit_version() {
-    command git add VERSION
+commit_version_and_changelog() {
+    # shellcheck disable=SC1091
+    source scripts/changelog_md.sh "${release_number}"
+    command git add VERSION docs/docs/changelog.md
     command git commit -m "Fixes #${issue_number}"
     command git push origin release/"${release_number}"
-    echo -e "Updated VERSION file\n"
+    echo -e "Updated VERSION file and changelog.md\n"
 }
 
 create_alpha_version() {

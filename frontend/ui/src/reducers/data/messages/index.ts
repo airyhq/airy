@@ -28,27 +28,6 @@ function mergeMessages(oldMessages: Message[], newMessages: Message[]): Message[
 export default function messagesReducer(state = initialState, action: Action): Messages {
   switch (action.type) {
     case getType(actions.loadingMessagesAction):
-      if (state.all[action.payload.conversationId]) {
-        return {
-          ...state,
-          all: {
-            ...state.all,
-            [action.payload.conversationId]: [
-              ...mergeMessages([...action.payload.messages], []),
-              ...state.all[action.payload.conversationId],
-            ],
-          },
-        };
-      } else {
-        return {
-          ...state,
-          all: {
-            ...state.all,
-            [action.payload.conversationId]: [...mergeMessages([...action.payload.messages], [])],
-          },
-        };
-      }
-
     case getType(actions.addMessagesAction):
       return {
         ...state,

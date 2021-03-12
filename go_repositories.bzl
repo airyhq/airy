@@ -60,6 +60,66 @@ def go_repositories():
         sum = "h1:idn718Q4B6AGu/h5Sxe66HYVdqdGu2l9Iebqhi/AEoA=",
         version = "v0.0.0-20190424111038-f61b66f89f4a",
     )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go_v2",
+        importpath = "github.com/aws/aws-sdk-go-v2",
+        sum = "h1:BS+UYpbsElC82gB+2E2jiCBg36i8HlubTB/dO/moQ9c=",
+        version = "v1.2.0",
+    )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go_v2_config",
+        importpath = "github.com/aws/aws-sdk-go-v2/config",
+        sum = "h1:ZAoq32boMzcaTW9bcUacBswAmHTbvlvDJICgHFZuECo=",
+        version = "v1.1.1",
+    )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go_v2_credentials",
+        importpath = "github.com/aws/aws-sdk-go-v2/credentials",
+        sum = "h1:NbvWIM1Mx6sNPTxowHgS2ewXCRp+NGTzUYb/96FZJbY=",
+        version = "v1.1.1",
+    )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go_v2_feature_ec2_imds",
+        importpath = "github.com/aws/aws-sdk-go-v2/feature/ec2/imds",
+        sum = "h1:EtEU7WRaWliitZh2nmuxEXrN0Cb8EgPUFGIoTMeqbzI=",
+        version = "v1.0.2",
+    )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go_v2_service_ec2",
+        importpath = "github.com/aws/aws-sdk-go-v2/service/ec2",
+        sum = "h1:xZYDtbub5yhn+ASvD26m76Cgb0k+0+ShE+nZwK9djUQ=",
+        version = "v1.1.1",
+    )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go_v2_service_eks",
+        importpath = "github.com/aws/aws-sdk-go-v2/service/eks",
+        sum = "h1:nK/Kl0TIfwaHUkcCj9+L6td2Xds7QNYMODJKWG1wPOY=",
+        version = "v1.1.1",
+    )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go_v2_service_internal_presigned_url",
+        importpath = "github.com/aws/aws-sdk-go-v2/service/internal/presigned-url",
+        sum = "h1:4AH9fFjUlVktQMznF+YN33aWNXaR4VgDXyP28qokJC0=",
+        version = "v1.0.2",
+    )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go_v2_service_sso",
+        importpath = "github.com/aws/aws-sdk-go-v2/service/sso",
+        sum = "h1:37QubsarExl5ZuCBlnRP+7l1tNwZPBSTqpTBrPH98RU=",
+        version = "v1.1.1",
+    )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go_v2_service_sts",
+        importpath = "github.com/aws/aws-sdk-go-v2/service/sts",
+        sum = "h1:TJoIfnIFubCX0ACVeJ0w46HEH5MwjwYN4iFhuYIhfIY=",
+        version = "v1.1.1",
+    )
+    go_repository(
+        name = "com_github_aws_smithy_go",
+        importpath = "github.com/aws/smithy-go",
+        sum = "h1:D6CSsM3gdxaGaqXnPgOBCeL6Mophqzu7KJOu7zW78sU=",
+        version = "v1.1.0",
+    )
 
     go_repository(
         name = "com_github_azure_go_autorest",
@@ -426,8 +486,8 @@ def go_repositories():
     go_repository(
         name = "com_github_google_go_cmp",
         importpath = "github.com/google/go-cmp",
-        sum = "h1:X2ev0eStA3AbceY54o37/0PQ/UWqKEiiO2dKL5OPaFM=",
-        version = "v0.5.2",
+        sum = "h1:L8R9j+yAqZuZjsqh/z+F1NCffTKKLShY6zXTItVIZ8M=",
+        version = "v0.5.4",
     )
     go_repository(
         name = "com_github_google_gofuzz",
@@ -637,14 +697,26 @@ def go_repositories():
     go_repository(
         name = "com_github_imdario_mergo",
         importpath = "github.com/imdario/mergo",
-        sum = "h1:JboBksRwiiAJWvIYJVo46AfV+IAIKZpfrSzVKj42R4Q=",
-        version = "v0.3.5",
+        sum = "h1:3tnifQM4i+fbajXKBHXWEH+KvNHqojZ778UH75j3bGA=",
+        version = "v0.3.11",
     )
     go_repository(
         name = "com_github_inconshreveable_mousetrap",
         importpath = "github.com/inconshreveable/mousetrap",
         sum = "h1:Z8tu5sraLXCXIcARxBp/8cbvlwVa7Z1NHg9XEKhtSvM=",
         version = "v1.0.0",
+    )
+    go_repository(
+        name = "com_github_jmespath_go_jmespath",
+        importpath = "github.com/jmespath/go-jmespath",
+        sum = "h1:BEgLn5cpjn8UN1mAw4NjwDrS35OdebyEtFe+9YPoQUg=",
+        version = "v0.4.0",
+    )
+    go_repository(
+        name = "com_github_jmespath_go_jmespath_internal_testify",
+        importpath = "github.com/jmespath/go-jmespath/internal/testify",
+        sum = "h1:shLQSRRSCCPj3f2gpwzGwWFoC7ycTf1rcQZHOlsJ6N8=",
+        version = "v1.5.1",
     )
 
     go_repository(
@@ -1032,8 +1104,8 @@ def go_repositories():
     go_repository(
         name = "com_github_spf13_cast",
         importpath = "github.com/spf13/cast",
-        sum = "h1:oget//CVOEoFewqQxwr0Ej5yjygnqGkvggSE/gB35Q8=",
-        version = "v1.3.0",
+        sum = "h1:nFm6S0SMdyzrzcmThSipiEubIDy8WEXKNZ0UOgiRpng=",
+        version = "v1.3.1",
     )
     go_repository(
         name = "com_github_spf13_cobra",
@@ -1087,25 +1159,12 @@ def go_repositories():
     )
 
     go_repository(
-        name = "com_github_ugorji_go_codec",
-        importpath = "github.com/ugorji/go/codec",
-        sum = "h1:3SVOIvH7Ae1KRYyQWRjXWJEA9sS/c/pjvH++55Gr648=",
-        version = "v0.0.0-20181204163529-d75b2dcb6bc8",
-    )
-
-    go_repository(
         name = "com_github_xiang90_probing",
         importpath = "github.com/xiang90/probing",
         sum = "h1:eY9dn8+vbi4tKz5Qo6v2eYzo7kUS51QINcR5jNpbZS8=",
         version = "v0.0.0-20190116061207-43a291ad63a2",
     )
 
-    go_repository(
-        name = "com_github_xordataexchange_crypt",
-        importpath = "github.com/xordataexchange/crypt",
-        sum = "h1:ESFSdwYZvkeru3RtdrYueztKhOBCSAAzS4Gf+k0tEow=",
-        version = "v0.0.3-0.20170626215501-b2862e3d0a77",
-    )
     go_repository(
         name = "com_github_yuin_gopher_lua",
         importpath = "github.com/yuin/gopher-lua",
@@ -1241,24 +1300,24 @@ def go_repositories():
         build_file_proto_mode = "disable_global",
         build_naming_convention = "go_default_library",
         importpath = "k8s.io/api",
-        sum = "h1:WwrYoZNM1W1aQEbyl8HNG+oWGzLpZQBlcerS9BQw9yI=",
-        version = "v0.20.0",
+        sum = "h1:ud1c3W3YNzGd6ABJlbFfKXBKXO+1KdGfcgGGNgFR03E=",
+        version = "v0.20.1",
     )
     go_repository(
         name = "io_k8s_apimachinery",
         build_file_proto_mode = "disable_global",
         build_naming_convention = "go_default_library",
         importpath = "k8s.io/apimachinery",
-        sum = "h1:jjzbTJRXk0unNS71L7h3lxGDH/2HPxMPaQY+MjECKL8=",
-        version = "v0.20.0",
+        sum = "h1:LAhz8pKbgR8tUwn7boK+b2HZdt7MiTu2mkYtFMUjTRQ=",
+        version = "v0.20.1",
     )
     go_repository(
         name = "io_k8s_client_go",
         build_file_proto_mode = "legacy",
         build_naming_convention = "go_default_library",
         importpath = "k8s.io/client-go",
-        sum = "h1:Xlax8PKbZsjX4gFvNtt4F5MoJ1V5prDvCuoq9B7iax0=",
-        version = "v0.20.0",
+        sum = "h1:Qquik0xNFbK9aUG92pxHYsyfea5/RPO9o9bSywNor+M=",
+        version = "v0.20.1",
     )
     go_repository(
         name = "io_k8s_gengo",

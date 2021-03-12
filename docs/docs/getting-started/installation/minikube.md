@@ -23,9 +23,6 @@ If you want to customize your `Airy Core` instance please see our [Configuration
 
 ## Public webhooks
 
-The public webhook URL is generated during the bootstrap process and are
-displayed after the process finishes.
-
 In order to integrate with the webhook of most sources on your local machine,
 we include a [ngrok](https://ngrok.com/) client as a sidecar to the ingress controller. 
 ngrok is an open source reverse proxy which
@@ -33,6 +30,12 @@ creates a secure tunnel from a public endpoint to a local service. The ngrok
 client connects to a ngrok server which has public access to the internet and
 then provides a reversed proxy connectivity back to the webhook services,
 running inside the Kubernetes cluster.
+
+To get the ngrok URL to your local Airy Core installation you can run:
+
+```sh
+echo "https://$(minikube -p airy-core kubectl -- get cm core-config -o jsonpath='{.data.CORE_ID}').tunnel.airy.co"
+```
 
 By default, the ngrok client is configured to use the ngrok server created by
 Airy and run on https://tunnel.airy.co. This configuration is specified in

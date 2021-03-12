@@ -116,7 +116,7 @@ This will open a modal box: add your Callback URL (your instance's Facebook Webh
 Your Facebook Webhook URL should have the following format:
 
 ```
-`https://fb-RANDOM_STRING.tunnel.airy.co/facebook`
+`https://RANDOM_STRING.tunnel.airy.co/facebook`
 ```
 
 Refer to [our section on the Vagrant box

@@ -48,7 +48,7 @@ func create(cmd *cobra.Command, args []string) {
 		fmt.Println("setting up Helm failed with err: ", err)
 		os.Exit(1)
 	}
-	if err := helm.InstallCharts(); err != nil {
+	if err := helm.InstallCharts(provider.GetHelmOverrides()); err != nil {
 		fmt.Println("installing Helm charts failed with err: ", err)
 		os.Exit(1)
 	}

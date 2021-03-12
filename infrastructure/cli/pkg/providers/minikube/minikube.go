@@ -16,6 +16,10 @@ const (
 type Minikube struct {
 }
 
+func (m *Minikube) GetHelmOverrides() []string {
+	return []string{"--set", "global.enableNgrok=true"}
+}
+
 func (m *Minikube) Provision() (kube.KubeCtx, error) {
 	if err := checkInstallation(); err != nil {
 		return kube.KubeCtx{}, err

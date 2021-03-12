@@ -15,6 +15,10 @@ import (
 type Aws struct {
 }
 
+func (a *Aws) GetHelmOverrides() []string {
+	return []string{}
+}
+
 func (a *Aws) Provision() (kube.KubeCtx, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {

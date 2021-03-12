@@ -24,9 +24,10 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = {
   onClose: () => void;
   selectTemplate: (t: Template) => void;
+  channelSource: string;
 } & ConnectedProps<typeof connector>;
 
-const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: Props) => {
+const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, channelSource}: Props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [templatesList, setTemplatesList] = useState(templates);
   const [loading, setLoading] = useState(true);
@@ -72,11 +73,11 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate}: P
   }, [searchQuery, templates]);
 
   useEffect(() => {
-    const listAllTemplatesPayload = {};
+    const listAllTemplatesFromSourceTypePayload = {sourceType: channelSource};
     let abort = false;
 
     if (templates.length === 0 && loading) {
-      listTemplates(listAllTemplatesPayload)
+      listTemplates(listAllTemplatesFromSourceTypePayload)
         .then(() => {
           if (templates.length === 0 && !abort) setLoading(false);
         })

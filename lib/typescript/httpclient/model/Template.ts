@@ -4,6 +4,6 @@ export interface Template {
   id: string;
   name: string;
   sourceType: MessageSource;
-  content: any;
+  content: string;
   variables: any;
 }

@@ -14,7 +14,7 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 
 import {StateModel} from '../../../reducers';
-import {getTextMessagePayload, RenderedContent} from 'httpclient';
+import {getTextMessagePayload, RenderedContent, Template} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 
@@ -124,12 +124,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
     const toggleTemplateModal = () => {
       if (isShowingEmojiDrawer) {
-        setIsShowingEmojiDrawer(!isShowingEmojiDrawer);
+        setIsShowingEmojiDrawer(false);
       }
       setIsShowingTemplateModal(!isShowingTemplateModal);
     };
 
-    const selectTemplate = template => {
+    const selectTemplate = (template: Template) => {
       const jsonTemplate = JSON.parse(template.content) as any;
 
       if (
@@ -162,7 +162,13 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     return (
       <div className={styles.messageActionsContainer}>
         <>
-          {isShowingTemplateModal && <TemplateSelector onClose={toggleTemplateModal} selectTemplate={selectTemplate} />}
+          {isShowingTemplateModal && (
+            <TemplateSelector
+              onClose={toggleTemplateModal}
+              selectTemplate={selectTemplate}
+              channelSource={channelSource}
+            />
+          )}
           {isShowingEmojiDrawer && (
             <div ref={emojiDiv} className={styles.emojiDrawer}>
               <Picker showPreview={false} onSelect={addEmoji} title="Emoji" />

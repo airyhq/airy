@@ -223,7 +223,13 @@ records and apply the Kubernetes manifest:
 kubectl apply -f infrastructure/helm-chart/templates/ingress.yaml
 ```
 
-You must set appropriate `host` attributes in the rules for the ingress routes.
+You must set appropriate `host` attributes in the rules for:
+
+- API endpoints (defaults to `api.airy`)
+- Webhooks endpoints (defaults to `webhooks.airy`)
+- Core UI (defaults to `ui.airy`)
+- Chat plugin (defaults to `chatplugin.airy`)
+- Tools (defaults to `tools.airy`)
 
 If you are not using Traefik, you can use the
 `infrastructure/helm-chart/templates/ingress.yaml` file as a guide to create
@@ -240,7 +246,7 @@ For more details please see our [Configuration Section](configuration.md).
 
 ### AKHQ
 
-AKHQ is a GUI for inspecting Apache Kafka. If enabled, it can be accessed under `http://{TOOLS-HOSTNAME}/tools/akhq`,
+AKHQ is a GUI for inspecting Apache Kafka. If enabled, it can be accessed under `http://{TOOLS-HOSTNAME}/akhq`,
 where {TOOLS-HOSTNAME} is the configured ingress hostname, set in the previous section.
 Username is `admin` and the auto-generated password can be retrieved from a configMap:
 

@@ -92,7 +92,4 @@ spec:
     - protocol: TCP
       port: 80
       name: web
-    - protocol: TCP
-      port: 8080
-      name: admin
   type: LoadBalancer

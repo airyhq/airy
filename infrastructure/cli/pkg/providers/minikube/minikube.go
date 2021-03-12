@@ -39,11 +39,11 @@ func checkInstallation() error {
 }
 
 func startCluster() error {
-	return runMinikube("start", "--cpus=4", "--memory=7168")
+	return runMinikube("start", "--driver=virtualbox", "--cpus=4", "--memory=7168")
 }
 
 func runMinikube(args ...string) error {
-	defaultArgs := []string{"--profile="+profile}
+	defaultArgs := []string{"--profile=" + profile}
 	cmd := exec.Command("minikube", append(defaultArgs, args...)...)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("running Minikube failed with err: %v\n%v", err, string(out))

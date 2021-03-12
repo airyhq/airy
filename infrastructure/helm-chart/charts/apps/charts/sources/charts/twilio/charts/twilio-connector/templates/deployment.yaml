@@ -70,28 +70,6 @@ spec:
               - name: Health-Check
                 value: health-check
             initialDelaySeconds: 60
-{{ if .Values.global.ngrokEnabled }}
-        - name: ngrok
-          command:
-            - /bin/bash
-            - -c
-            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="tw-${CORE_ID}" 8080
-          image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
-          env:
-            - name: CORE_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: core-config
-                  key: CORE_ID
-          imagePullPolicy: Always
-          resources:
-            limits:
-              cpu: 50m
-              memory: 64Mi
-          volumeMounts:
-            - mountPath: /etc/ngrok
-              name: ngrok-client-config
-{{ end }}
       initContainers:
       - name: wait
         image: busybox
@@ -114,8 +92,3 @@ spec:
         - name: provisioning-scripts
           configMap:
             name: provisioning-scripts
-{{ if .Values.global.ngrokEnabled }}
-        - name: ngrok-client-config
-          configMap:
-            name: ngrok-client-config
-{{ end }}

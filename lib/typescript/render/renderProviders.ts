@@ -9,7 +9,7 @@ type Provider = (messageRenderProps: MessageRenderProps) => JSX.Element;
 
 export const renderProviders: {[key: string]: Provider} = {
   facebook: FacebookRender,
-  chat_plugin: ChatPluginRender,
+  chatplugin: ChatPluginRender,
   'twilio.sms': TwilioSMSRender,
   'twilio.whatsapp': TwilioWhatsappRender,
   google: GoogleRender,

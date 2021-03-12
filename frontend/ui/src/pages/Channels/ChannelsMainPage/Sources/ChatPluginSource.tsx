@@ -11,7 +11,7 @@ import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../../../routes/routes';
 type ChatPluginProps = {pluginSource: Channel[]};
 
 const ChatPluginSource = (props: ChatPluginProps & RouteComponentProps) => {
-  const channels = props.pluginSource.filter((channel: Channel) => channel.source === 'chat_plugin');
+  const channels = props.pluginSource.filter((channel: Channel) => channel.source === 'chatplugin');
 
   return (
     <div style={{display: 'flex', flexGrow: 1}}>
@@ -27,15 +27,15 @@ const ChatPluginSource = (props: ChatPluginProps & RouteComponentProps) => {
       />
 
       <SourceInfo
-        source="chat_plugin"
+        source="chatplugin"
         channels={channels}
         connected="CONNECTED"
         placeholderImage={<AiryLogo />}
         isConnected="connected"
         onSourceInfoClick={() => {
           props.history.push({
-            pathname: CHANNELS_CONNECTED_ROUTE + `/chat_plugin`,
-            state: {source: 'chat_plugin'},
+            pathname: CHANNELS_CONNECTED_ROUTE + `/chatplugin`,
+            state: {source: 'chatplugin'},
           });
         }}
         onMoreChannelsClick={() => {

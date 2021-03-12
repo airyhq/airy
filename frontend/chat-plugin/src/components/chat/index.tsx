@@ -163,7 +163,7 @@ const Chat = (props: Props) => {
                               <MessageInfoWrapper fromContact={isFromContact(message)} isChatPlugin={true}>
                                 <SourceMessage
                                   message={message}
-                                  source="chat_plugin"
+                                  source="chatplugin"
                                   lastInGroup={lastInGroup}
                                   invertSides={true}
                                   commandCallback={commandCallback}

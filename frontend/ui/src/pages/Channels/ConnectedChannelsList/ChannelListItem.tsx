@@ -41,8 +41,6 @@ const ChannelItem = (props: ChannelItemProps) => {
         return <SMSLogo />;
       case ChannelSource.twilioWhatsapp:
         return <WhatsappLogo />;
-      case ChannelSource.chatPlugin:
-        return <AiryLogo />;
       default:
         return <AiryLogo />;
     }
@@ -60,13 +58,7 @@ const ChannelItem = (props: ChannelItemProps) => {
   };
 
   const disconnectChannel = (channelSource: string) => {
-    let source: string;
-    if (channelSource === 'chat_plugin') {
-      source = 'chatplugin';
-    } else {
-      source = channel.source;
-    }
-    props.disconnectChannel(source, disconnectChannelRequestPayload);
+    props.disconnectChannel(channelSource, disconnectChannelRequestPayload);
     setDeletePopupVisible(false);
   };
 

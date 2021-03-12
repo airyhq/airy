@@ -130,7 +130,7 @@ POST /channels.chatplugin.connect
 ```json5
 {
   "id": "1F679227-76C2-4302-BB12-703B2ADB0F66",
-  "source": "chat_plugin",
+  "source": "chatplugin",
   "source_channel_id": "website-identifier-42",
   "metadata": {
     "name": "website-identifier-42",

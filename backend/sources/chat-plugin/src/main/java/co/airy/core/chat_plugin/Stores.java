@@ -55,7 +55,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         final StreamsBuilder builder = new StreamsBuilder();
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(applicationCommunicationMessages)
-                .filter((messageId, message) -> "chat_plugin".equals(message.getSource()));
+                .filter((messageId, message) -> "chatplugin".equals(message.getSource()));
 
         // Messages store
         messageStream
@@ -86,7 +86,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .to(applicationCommunicationMessages);
 
         builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
-                .filter((channelId, channel) -> "chat_plugin".equals(channel.getSource())
+                .filter((channelId, channel) -> "chatplugin".equals(channel.getSource())
                                 && ChannelConnectionState.CONNECTED.equals(channel.getConnectionState()),
                         Materialized.as(channelStore));
 

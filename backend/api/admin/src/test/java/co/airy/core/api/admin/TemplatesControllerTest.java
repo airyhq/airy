@@ -23,8 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.concurrent.TimeUnit;
-
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
@@ -93,23 +92,13 @@ public class TemplatesControllerTest {
 
         assertThat(templateId, is(not(nullValue())));
 
-        //TODO wait for template to be there
-        TimeUnit.SECONDS.sleep(5);
-
-        webTestHelper.post("/templates.info", "{\"id\":\"" + templateId + "\"}", "user-id")
+        retryOnException(() -> webTestHelper.post("/templates.info", "{\"id\":\"" + templateId + "\"}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(is(templateId)))
                 .andExpect(jsonPath("$.content").value(is(content)))
                 .andExpect(jsonPath("$.variables.en.salutation").value(is("Hello")))
                 .andExpect(jsonPath("$.source_type").value(is(sourceType)))
-                .andExpect(jsonPath("$.name").value(is(name)));
-
-        webTestHelper.post("/templates.list", "{\"name\":\"" + name.substring(0, 3) + "\"}", "user-id")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()", is(1)))
-                .andExpect(jsonPath("$.data[0].id").value(is(templateId)))
-                .andExpect(jsonPath("$.data[0].source_type").value(is(sourceType)))
-                .andExpect(jsonPath("$.data[0].name").value(is(name)));
+                .andExpect(jsonPath("$.name").value(is(name))), "could not find template");
 
         webTestHelper.post("/templates.update", "{\"id\":\"" + templateId + "\", \"name\": \"new-template-name\", \"source_type\": \"google\", \"content\": " + content + "}", "user-id")
                 .andExpect(status().isOk())
@@ -119,14 +108,61 @@ public class TemplatesControllerTest {
                 .andExpect(jsonPath("$.variables.en.salutation").value(is("Hello")))
                 .andExpect(jsonPath("$.name").value(is("new-template-name")));
 
-        webTestHelper.post("/templates.info", "{\"id\":\"" + templateId + "\"}", "user-id")
+        retryOnException(() -> webTestHelper.post("/templates.info", "{\"id\":\"" + templateId + "\"}", "user-id")
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(is("new-template-name")));
-
-        webTestHelper.post("/templates.list", "{}", "user-id")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()", is(1)));
+                .andExpect(jsonPath("$.name").value(is("new-template-name"))), "could not update template");
 
         webTestHelper.post("/templates.delete", "{\"id\": \"" + templateId + "\"}", "user-id").andExpect(status().isOk());
+    }
+
+    @Test
+    void canListTemplates() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            final String name = "awesome-template-" + i;
+            final String sourceType = "google";
+            final String content = "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}";
+            final String payload = "{\"name\":\"" + name + "\",\"source_type\": \"" + sourceType + "\",\"content\":" + content + ",\"variables\": { \"en\": {\"salutation\": \"Hello\"}}}";
+
+            webTestHelper.post("/templates.create", payload, "user-id").andExpect(status().isCreated());
+        }
+
+        for (int i = 0; i < 5; i++) {
+            final String name = "awesome-template-" + i;
+            final String sourceType = "twilio.sms";
+            final String content = "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}";
+            final String payload = "{\"name\":\"" + name + "\",\"source_type\": \"" + sourceType + "\",\"content\":" + content + ",\"variables\": { \"en\": {\"salutation\": \"Hello\"}}}";
+
+            webTestHelper.post("/templates.create", payload, "user-id").andExpect(status().isCreated());
+        }
+
+        retryOnException(() -> webTestHelper.post("/templates.list",
+                "{\"source_type\": \"google\"}", "user-id")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()", is(10))), "could not list google templates");
+
+        retryOnException(() -> webTestHelper.post("/templates.list",
+                "{\"source_type\": \"google\", \"name\": \"awesome-template-\"}", "user-id")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()", is(10))), "could not list google templates by name");
+
+        retryOnException(() -> webTestHelper.post("/templates.list",
+                "{\"source_type\": \"google\", \"name\": \"awesome-template-1\"}", "user-id")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()", is(1))), "could not list google templates by name");
+
+        retryOnException(() -> webTestHelper.post("/templates.list",
+                "{\"source_type\": \"twilio.sms\"}", "user-id")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()", is(5))), "could not list twilio templates");
+
+        retryOnException(() -> webTestHelper.post("/templates.list",
+                "{\"source_type\": \"twilio.sms\", \"name\": \"awesome-template-\"}", "user-id")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()", is(5))), "could not list twilio templates by name");
+
+        retryOnException(() -> webTestHelper.post("/templates.list",
+                "{\"source_type\": \"twilio.sms\", \"name\": \"awesome-template-1\"}", "user-id")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()", is(1))), "could not list twilio templates by name");
     }
 }

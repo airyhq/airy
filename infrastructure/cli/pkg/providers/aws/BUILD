@@ -7,9 +7,11 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//infrastructure/cli/pkg/kube",
+        "@com_github_aws_aws_sdk_go//aws",
         "@com_github_aws_aws_sdk_go_v2_config//:config",
         "@com_github_aws_aws_sdk_go_v2_service_ec2//:ec2",
         "@com_github_aws_aws_sdk_go_v2_service_eks//:eks",
         "@com_github_aws_aws_sdk_go_v2_service_eks//types",
+        "@com_github_aws_aws_sdk_go_v2_service_iam//:iam",
     ],
 )

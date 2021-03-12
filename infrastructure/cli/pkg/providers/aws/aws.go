@@ -5,33 +5,67 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
+	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go/aws"
 )
+
+const RolePolicyDocument = `{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {"Service": "eks.amazonaws.com"},
+			"Action": "sts:AssumeRole"
+		}
+	]
+}`
+
+var letters = []rune("abcdefghijklmnopqrstuvwxyz")
 
 type Aws struct {
 }
 
 func (a *Aws) Provision() (kube.KubeCtx, error) {
-	// Use this to
-	//clientcmd.NewNonInteractiveClientConfig()
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// iamClient := iam.NewFromConfig(cfg)
-	// roleName := string("role-name")
-	// createIamResult, err := iamClient.CreateRole(context.TODO(), &iam.CreateRoleInput{})
+	id := RandString(8)
+	iamClient := iam.NewFromConfig(cfg)
+	input := &iam.CreateRoleInput{
+		AssumeRolePolicyDocument: aws.String(RolePolicyDocument),
+		Path:                     aws.String("/"),
+		RoleName:                 aws.String("Airy-EKS-Role"),
+	}
+	iamResult, err := iamClient.CreateRole(context.TODO(), input)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Printf("Created AWS Role with ARN: %s.\n", *iamResult.Role.Arn)
+	}
+	policyInput := &iam.AttachRolePolicyInput{
+		RoleName:  iamResult.Role.RoleName,
+		PolicyArn: aws.String("arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"),
+	}
+	_, errAttach := iamClient.AttachRolePolicy(context.TODO(), policyInput)
+	if errAttach != nil {
+		fmt.Printf("%v\n", errAttach.Error())
+	} else {
+		fmt.Printf("EKS policy attached.\n")
+	}
 
 	ec2Client := ec2.NewFromConfig(cfg)
 	CidrBlock := string("10.0.0.0/16")
 
-	log.Println("Creating VPC")
+	log.Printf("Creating VPC...\n")
 	createVpcResult, err := ec2Client.CreateVpc(context.TODO(), &ec2.CreateVpcInput{
 		CidrBlock: &CidrBlock,
 	})
@@ -39,8 +73,11 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	VpcId := createVpcResult.Vpc.VpcId
-	log.Println("creating first Subnet")
+	log.Printf("VPC created with id: %s\n", *VpcId)
+
+	log.Printf("Creating first subnet...")
 	CidrBlock = string("10.0.1.0/24")
 	AvailabilityZone := string("us-east-1a")
 	createFirstSubnetResult, err := ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
@@ -52,7 +89,7 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 		log.Fatal(err)
 	}
 
-	log.Println("creating second Subnet")
+	log.Printf("Creating second Subnet...")
 	CidrBlock = string("10.0.2.0/24")
 	AvailabilityZone = string("us-east-1b")
 	createSecondSubnetResult, err := ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
@@ -64,36 +101,52 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 		log.Fatal(err)
 	}
 
-	client := eks.NewFromConfig(cfg)
-	log.Println("Creating cluster")
+	eksClient := eks.NewFromConfig(cfg)
+	log.Printf("Creating EKS cluster...")
 
-	clusterName := string("go-test")
-	roleArn := string("arn:aws:iam::947726454442:role/eks_buildfarm_manager")
+	clusterName := "Airy-" + id
+	roleArn := iamResult.Role.Arn
 	var subnetIds []string
 	subnetIds = append(subnetIds, *createFirstSubnetResult.Subnet.SubnetId)
 	subnetIds = append(subnetIds, *createSecondSubnetResult.Subnet.SubnetId)
-	_, err = client.CreateCluster(context.TODO(), &eks.CreateClusterInput{
+	createdCluster, clusterErr := eksClient.CreateCluster(context.TODO(), &eks.CreateClusterInput{
 		Name:    &clusterName,
-		RoleArn: &roleArn,
+		RoleArn: roleArn,
 		ResourcesVpcConfig: &types.VpcConfigRequest{
 			SubnetIds: subnetIds,
 		},
 	})
 
-	if err != nil {
-		log.Fatal(err)
+	if clusterErr != nil {
+		log.Fatal(clusterErr)
+	} else {
+		fmt.Printf("Created EKS cluster %s\n", *createdCluster.Cluster.Name)
 	}
 
-	MaxResults := int32(10)
-	output, err := client.ListClusters(context.TODO(), &eks.ListClustersInput{
-		MaxResults: &MaxResults,
+	craetedNodeGroup, nodeGroupErr := eksClient.CreateNodegroup(context.TODO(), &eks.CreateNodegroupInput{
+		AmiType:       "AL2_x86_64",
+		ClusterName:   createdCluster.Cluster.Name,
+		InstanceTypes: []string{"c5.xlarge"},
+		NodeRole:      roleArn,
+		NodegroupName: aws.String("Airy"),
+		Subnets:       subnetIds,
 	})
-	if err != nil {
-		log.Fatal(err)
+
+	if nodeGroupErr != nil {
+		log.Fatal(nodeGroupErr)
+	} else {
+		fmt.Printf("Node group created %s.\n", *craetedNodeGroup.Nodegroup.NodegroupName)
 	}
 
-	log.Println(output)
-	fmt.Println("aws provider not yet implemented")
+	fmt.Printf("AWS provider not yet implemented\n")
 	os.Exit(1)
 	return kube.KubeCtx{}, nil
+}
+
+func RandString(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }

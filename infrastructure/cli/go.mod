@@ -1,6 +1,6 @@
 module cli
 
-go 1.15
+go 1.16
 
 require (
 	github.com/airyhq/airy/lib/go/httpclient v0.0.0
@@ -15,9 +15,9 @@ require (
 	github.com/spf13/viper v1.7.1
 	goji.io v2.0.2+incompatible
 	gopkg.in/yaml.v2 v2.4.0
-	k8s.io/api v0.20.1
-	k8s.io/apimachinery v0.20.1
-	k8s.io/client-go v0.20.1
+	k8s.io/api v0.19.0
+	k8s.io/apimachinery v0.19.0
+	k8s.io/client-go v0.19.0
 )
 
 replace github.com/airyhq/airy/lib/go/httpclient => ../../lib/go/httpclient

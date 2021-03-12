@@ -86,7 +86,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		if out, err = exec.Command("go", "get", ".").CombinedOutput(); err != nil {
+		if out, err = exec.Command("go", "get", "-v", ".").CombinedOutput(); err != nil {
 			log.Fatal(string(out))
 		}
 

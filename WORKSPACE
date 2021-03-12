@@ -136,7 +136,7 @@ go_embed_data_dependencies()
 
 go_register_toolchains(
     nogo = "@//:airy_nogo",
-    version = "1.15",
+    version = "1.16",
 )  # my_nogo is in the top-level BUILD file of this workspace
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")

@@ -37,7 +37,7 @@ Once you [signed up](/api/endpoints/users.md#signup), you must [log
 in](/api/authentication.md#login) so you can obtain a valid JWT token for the
 upcoming API calls:
 
-```bash
+```sh
 token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \

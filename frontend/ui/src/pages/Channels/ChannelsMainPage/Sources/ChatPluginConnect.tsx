@@ -49,9 +49,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
 
   useEffect(() => {
     if (channelId !== 'new' && channelId?.length) {
-      const channel = props.channels.find((channel: Channel) => {
-        return channel.id === channelId;
-      });
+      const channel = props.channels.find((channel: Channel) => channel.id === channelId);
       if (channel) {
         setDisplayName(channel.metadata?.name || '');
         setImageUrl(channel.metadata?.imageUrl || '');
@@ -76,7 +74,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
   const updateConnection = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     props.updateChannel({channelId: channelId, name: displayName, imageUrl: imageUrl}).then(() => {
-      props.history.replace(CHANNELS_CONNECTED_ROUTE + '/chat_plugin');
+      props.history.replace(CHANNELS_CONNECTED_ROUTE + '/chatplugin');
     });
   };
 

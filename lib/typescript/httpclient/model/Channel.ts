@@ -16,7 +16,7 @@ export interface Channel {
 export enum ChannelSource {
   facebook = 'facebook',
   google = 'google',
-  chatPlugin = 'chat_plugin',
+  chatPlugin = 'chatplugin',
   twilioSMS = 'twilio.sms',
   twilioWhatsapp = 'twilio.whatsapp',
 }

@@ -34,7 +34,7 @@ public class ContentMapper {
     }
 
     public List<Content> render(Message message, Map<String, String> metadata) throws Exception {
-        if (SenderType.APP_USER.equals(message.getSenderType()) || "chat_plugin".equals(message.getSource())) {
+        if (SenderType.APP_USER.equals(message.getSenderType()) || "chatplugin".equals(message.getSource())) {
             return outboundMapper.render(message.getContent());
         }
 

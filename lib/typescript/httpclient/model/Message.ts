@@ -17,7 +17,7 @@ export interface Attachement {
 export enum MessageSource {
   facebook = 'facebook',
   google = 'google',
-  chatplugin = 'chat_plugin',
+  chatplugin = 'chatplugin',
   smsTwilio = 'twilio.sms',
   whatsappTwilio = 'twilio.whatsapp',
 }

@@ -7,7 +7,7 @@ import {Channel} from 'httpclient';
 import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {connectTwilioWhatsapp} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
-import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';
+import SmsWhatsappForm from '../../Twilio/SmsWhatsappForm';
 import {allChannels} from '../../../../selectors/channels';
 import {LinkButton} from '@airyhq/components';
 interface TwilioWhatsappRouterProps {

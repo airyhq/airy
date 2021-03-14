@@ -7,7 +7,7 @@ import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
 import {ChannelSource} from 'httpclient';
-import SmsWhatsappDialogue from '../SourcesRequirement/SmsWhatsappDialogue';
+import SmsWhatsappDialogue from '../../Twilio/SmsWhatsappDialogue';
 
 type TwilioSmsSourceProps = {twilioSmsSource: Channel[]};
 
@@ -45,15 +45,10 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
             });
           }}
           onChannelClick={(channel: Channel) => {
-            props.history.push(
-              CHANNELS_TWILIO_SMS_ROUTE + `/${channel.id}` //Leads to edit page(/connected_twilio_sms route)
-            );
-          }}
-          onMoreChannelsClick={() => {
-            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/overview');
+            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + `/${channel.id}`);
           }}
           onAddChannelClick={() => {
-            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/new_account'); //Leads to add account page
+            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/new_account');
           }}
         />
       </div>

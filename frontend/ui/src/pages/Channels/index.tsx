@@ -10,14 +10,16 @@ import {setPageTitle} from '../../services/pageTitle';
 import ChannelsMainPage from './ChannelsMainPage';
 import FacebookConnect from './ChannelsMainPage/Sources/FacebookConnect';
 import ChannelsList from '../Channels/ConnectedChannelsList/ChannelsList';
-import {CHANNELS_FACEBOOK_ROUTE} from '../../routes/routes';
-import {CHANNELS_CONNECTED_ROUTE} from '../../routes/routes';
 import ChatPluginConnect from './ChannelsMainPage/Sources/ChatPluginConnect';
-import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../routes/routes';
 import TwilioSmsConnect from './ChannelsMainPage/Sources/TwilioSmsConnect';
 import TwilioWhatsappConnect from './ChannelsMainPage/Sources/TwilioWhatsappConnect';
-import {CHANNELS_TWILIO_SMS_ROUTE} from '../../routes/routes';
-import {CHANNELS_TWILIO_WHATSAPP_ROUTE} from '../../routes/routes';
+import {
+  CHANNELS_TWILIO_SMS_ROUTE,
+  CHANNELS_FACEBOOK_ROUTE,
+  CHANNELS_CONNECTED_ROUTE,
+  CHANNELS_CHAT_PLUGIN_ROUTE,
+  CHANNELS_TWILIO_WHATSAPP_ROUTE,
+} from '../../routes/routes';
 
 const mapDispatchToProps = {
   listChannels,

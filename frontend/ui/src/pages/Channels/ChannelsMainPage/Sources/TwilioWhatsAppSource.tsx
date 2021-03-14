@@ -6,7 +6,7 @@ import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
 import {ChannelSource} from 'httpclient';
 import {CHANNELS_CONNECTED_ROUTE, CHANNELS_TWILIO_WHATSAPP_ROUTE} from '../../../../routes/routes';
-import SmsWhatsappDialogue from '../SourcesRequirement/SmsWhatsappDialogue';
+import SmsWhatsappDialogue from '../../Twilio/SmsWhatsappDialogue';
 
 type TwilioWhatsAppSourceProps = {whatsappSmsSource: Channel[]};
 
@@ -44,15 +44,10 @@ const TwilioWhatsAppSource = (props: TwilioWhatsAppSourceProps & RouteComponentP
             });
           }}
           onChannelClick={(channel: Channel) => {
-            props.history.push(
-              CHANNELS_TWILIO_WHATSAPP_ROUTE + `/${channel.id}` //Leads to edit page(/connected_twilio_sms route)
-            );
-          }}
-          onMoreChannelsClick={() => {
-            props.history.push(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/overview');
+            props.history.push(CHANNELS_TWILIO_WHATSAPP_ROUTE + `/${channel.id}`);
           }}
           onAddChannelClick={() => {
-            props.history.push(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account'); //Leads to add account page
+            props.history.push(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account');
           }}
         />
       </div>

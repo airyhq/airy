@@ -1,5 +1,5 @@
-@import '../../../../assets/scss/fonts';
-@import '../../../../assets/scss/colors';
+@import '../../../../../assets/scss/fonts';
+@import '../../../../../assets/scss/colors';
 
 .background {
   position: fixed;
@@ -66,6 +66,12 @@
 .firstMessage {
   @include font-base;
   margin: 30px 20px 20px 0px;
+}
+
+.configMessage {
+  color: rgb(211, 97, 97);
+  text-decoration: none;
+  background-color: var(--color-light-gray);
 }
 
 .secondMessage {

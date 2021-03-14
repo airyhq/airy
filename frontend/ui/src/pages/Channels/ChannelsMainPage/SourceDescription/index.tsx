@@ -7,11 +7,7 @@ type SourceDescriptionProps = {
   title: string;
   text: string;
   displayButton: boolean;
-<<<<<<< HEAD
   id: string;
-=======
-  id?: string;
->>>>>>> 0d3a4d38 (resolve source connect conflict)
   onAddChannelClick?: () => void;
 };
 

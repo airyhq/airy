@@ -2,20 +2,12 @@ import React, {useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {disconnectChannel} from '../../../actions/channel';
 import {SettingsModal, Button} from '@airyhq/components';
-import {Channel, ChannelSource} from 'httpclient';
-import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.svg';
-import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
-import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
+import {Channel} from 'httpclient';
+import {ReactComponent as AiryLogoIcon} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
 import styles from './ChannelListItem.module.scss';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {
-  CHANNELS_CHAT_PLUGIN_ROUTE,
-  CHANNELS_TWILIO_SMS_ROUTE,
-  CHANNELS_TWILIO_WHATSAPP_ROUTE,
-} from '../../../routes/routes';
+import {IconChannelFilter} from '../../../components/IconChannelFilter';
 
 type ChannelItemProps = {
   channel: Channel;
@@ -40,6 +32,7 @@ const ChannelItem = (props: ChannelItemProps) => {
     channelId: channel.id,
   };
 
+<<<<<<< HEAD
   const getSourceLogo = (channel: Channel) => {
     switch (channel.source) {
       case ChannelSource.facebook:
@@ -62,6 +55,8 @@ const ChannelItem = (props: ChannelItemProps) => {
     return getSourceLogo(channel);
   };
 
+=======
+>>>>>>> 1ba29a45 (small fixes and resolves conflicts)
   const editChannel = () => {
     return {pathname: `/channels/${channel.source}/${channel.id}`, state: {channel: channel}};
   };
@@ -75,8 +70,8 @@ const ChannelItem = (props: ChannelItemProps) => {
     <>
       <div>
         <div className={styles.channelItem}>
-          <div className={styles.channelLogo}>
-            <ChannelIcon channel={channel} />
+          <div className={styles.channelLogoWrapper}>
+            {channel.metadata?.imageUrl ? <IconChannelFilter channel={channel} /> : <AiryLogoIcon />}
           </div>
 
           <div className={styles.channelName}>{channel.metadata?.name}</div>

@@ -30,11 +30,13 @@ const SmsWhatsappDialogue = (props: SmsWhatsappDialogueProps & RouteComponentPro
               </a>
               to the{' '}
               <a
+                className={styles.configMessage}
                 href="https://github.com/airyhq/airy/blob/develop/docs/docs/api/endpoints/channels.md"
                 target="_blank"
                 rel="noreferrer">
-                infrastructure/airy.conf field.{' '}
+                infrastructure/airy.conf{' '}
               </a>
+              file.
             </p>
 
             <p className={styles.secondMessage}>After that, you have to buy a number.</p>

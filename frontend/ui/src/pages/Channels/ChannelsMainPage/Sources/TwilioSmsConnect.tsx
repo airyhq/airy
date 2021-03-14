@@ -9,7 +9,7 @@ import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {connectTwilioSms, disconnectChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import {allChannels} from '../../../../selectors/channels';
-import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';
+import SmsWhatsappForm from '../../Twilio/SmsWhatsappForm';
 
 interface TwilioSmsRouterProps {
   channelId?: string;

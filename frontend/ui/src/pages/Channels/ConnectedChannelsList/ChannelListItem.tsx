@@ -71,21 +71,23 @@ const ChannelItem = (props: ChannelItemProps) => {
             <ChannelIcon channel={channel} />
           </div>
           <div className={styles.channelNameButton}>
-            <div className={styles.channelName}>
-              {channel.metadata?.name}
-              {channel.sourceChannelId}
+            <div className={styles.container}>
+              <div className={styles.channelName}>{channel.metadata?.name}</div>
+              <div className={styles.channelId}>{channel.sourceChannelId}</div>
               {channel.connected && (
                 <div className={styles.connectedHint}>
                   Connected <CheckMark />
                 </div>
               )}
             </div>
-            <Button styleVariant="link" type="button" onClick={() => props.history.push(editChannel())}>
-              Edit
-            </Button>
-            <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(true)}>
-              Disconnect
-            </Button>
+            <div className={styles.listButtons}>
+              <Button styleVariant="link" type="button" onClick={() => props.history.push(editChannel())}>
+                Edit
+              </Button>
+              <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(true)}>
+                Disconnect
+              </Button>
+            </div>
           </div>
         </div>
       </div>

@@ -65,8 +65,8 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
         imageUrl: smsUrlInput,
       })
       .then(() => {
-        props.history.push({
-          pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.sms`,
+        props.history.replace({
+          pathname: CHANNELS_CONNECTED_ROUTE + '/twilio.sms',
           state: {source: 'twilio.sms'},
         });
       });
@@ -84,17 +84,17 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
       placeholder="Purchased Number +158129485394"
       name="name"
       text="text"
-      twilloNumberInput={smsNumberInput}
+      twilioNumberInput={smsNumberInput}
       handleNumberInput={handleNumberInput}
       imageUrl="Image URL (optional)"
       urlPlaceholder="Add an URL"
       urlName="url"
       urlText="url"
-      twilloUrlInput={smsUrlInput}
+      twilioUrlInput={smsUrlInput}
       handleUrlInput={handleUrlInput}
       accountName="Add a Name (optional)"
       namePlaceholder="SMS Acme Berlin"
-      twilloNameInput={smsNameInput}
+      twilioNameInput={smsNameInput}
       handleNameInput={handleNameInput}
     />
   );

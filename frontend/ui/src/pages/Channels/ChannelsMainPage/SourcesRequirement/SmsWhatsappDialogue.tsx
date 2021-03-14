@@ -19,7 +19,7 @@ const SmsWhatsappDialogue = (props: SmsWhatsappDialogueProps & RouteComponentPro
           </button>
 
           <div className={styles.inviteWrapper}>
-            <h1 className={styles.headline}>Connect with Twillo First</h1>
+            <h1 className={styles.headline}>Connect with Twilio First</h1>
             <p className={styles.firstMessage}>
               Before you connect a number for SMS or Whatsapp, you must add a{' '}
               <a

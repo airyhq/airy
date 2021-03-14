@@ -40,7 +40,7 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           isConnected="connected"
           onSourceInfoClick={() => {
             props.history.push({
-              pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.sms`,
+              pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.sms/#`,
               state: {source: 'twilio.sms'},
             });
           }}

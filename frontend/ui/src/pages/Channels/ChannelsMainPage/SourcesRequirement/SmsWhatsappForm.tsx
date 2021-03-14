@@ -13,9 +13,9 @@ type SmsWhatsappFormProps = {
   text: string;
   urlText: string;
   imageUrl: string;
-  twilloNumberInput: string;
-  twilloUrlInput: string;
-  twilloNameInput: string;
+  twilioNumberInput: string;
+  twilioUrlInput: string;
+  twilioNameInput: string;
 
   handleNameInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleUrlInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -31,7 +31,7 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
           <Input
             label={props.twilioPhoneNumber}
             placeholder={props.placeholder}
-            value={props.twilloNumberInput}
+            value={props.twilioNumberInput}
             required={true}
             height={32}
             autoFocus={true}
@@ -44,7 +44,7 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
           <UrlInputField
             label={props.imageUrl}
             placeholder={props.urlPlaceholder}
-            value={props.twilloUrlInput}
+            value={props.twilioUrlInput}
             required={false}
             height={32}
             onChange={props.handleUrlInput}
@@ -56,14 +56,14 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
           <Input
             label={props.accountName}
             placeholder={props.namePlaceholder}
-            value={props.twilloNameInput}
+            value={props.twilioNameInput}
             required={false}
             height={32}
             onChange={props.handleNameInput}
             fontClass="font-s"
           />
         </div>
-        <Button type="submit" styleVariant="normal" disabled={props.twilloNumberInput.trim().length == 0}>
+        <Button type="submit" styleVariant="normal" disabled={props.twilioNumberInput.trim().length == 0}>
           Connect SMS Number
         </Button>
       </div>

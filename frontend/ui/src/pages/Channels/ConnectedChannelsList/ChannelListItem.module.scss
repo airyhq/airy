@@ -23,12 +23,26 @@
   border-bottom: 1px solid var(--color-light-gray);
 }
 
+.container{
+  display:flex;
+}
+
 .channelName {
   flex: 1 1;
   text-align: left;
   padding: 0 8px;
   color: var(--color-text-contrast);
   padding: 20.5px 0;
+  width:200px;
+}
+
+.channelId{
+  flex: 1 1;
+  text-align: left;
+  padding: 0 8px;
+  color: var(--color-text-contrast);
+  padding: 20.5px 0;
+  width:200px;
 }
 
 .imageUrlLogo {
@@ -43,7 +57,7 @@
   border: 1px solid var(--color-soft-green);
   padding: 0 8px;
   border-radius: 4px;
-  margin-left: 8px;
+  margin: 24px 0px 24px 8px;
 
   @include font-s;
   text-transform: uppercase;
@@ -56,6 +70,13 @@
     width: auto;
     margin-top: 5px;
   }
+}
+
+
+  .listButtons {
+    display: flex;
+   padding-left: 60vh;
+  
 }
 
 .disabledDisconnect {

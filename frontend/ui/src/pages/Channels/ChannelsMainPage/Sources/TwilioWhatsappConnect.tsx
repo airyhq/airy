@@ -82,17 +82,17 @@ const TwilioWhatsappConnect = (props: TwilioWhatsappProps) => {
         placeholder="Purchased Number +158129485394"
         name="name"
         text="text"
-        twilloNumberInput={whatsappNumberInput}
+        twilioNumberInput={whatsappNumberInput}
         handleNumberInput={handleNumberInput}
         imageUrl="Image URL (optional)"
         urlPlaceholder="Add an URL"
         urlName="url"
         urlText="url"
-        twilloUrlInput={whatsappUrlInput}
+        twilioUrlInput={whatsappUrlInput}
         handleUrlInput={handleUrlInput}
         accountName="Add a Name (optional)"
         namePlaceholder="SMS Acme Berlin"
-        twilloNameInput={whatsappNameInput}
+        twilioNameInput={whatsappNameInput}
         handleNameInput={handleNameInput}
       />
     </div>

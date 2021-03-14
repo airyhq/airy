@@ -75,7 +75,11 @@ const ChannelItem = (props: ChannelItemProps) => {
           </div>
 
           <div className={styles.channelName}>{channel.metadata?.name}</div>
-          {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
+          {isPhoneNumberSource() && channel.metadata?.name ? (
+            <div className={styles.channelId}>{channel.sourceChannelId}</div>
+          ) : (
+            <div>{channel.sourceChannelId}</div>
+          )}
           {channel.connected && (
             <div className={styles.connectedHint}>
               Connected <CheckMark />

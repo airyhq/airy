@@ -28,7 +28,14 @@ const TwilioWhatsappConnect = (props: TwilioWhatsappProps) => {
   const [whatsappNumberInput, setWhatsappNumberInput] = useState(channel?.sourceChannelId || '');
   const [whatsappNameInput, setWhatsappNameInput] = useState(channel?.metadata?.name || '');
   const [whatsappUrlInput, setWhatsappUrlInput] = useState(channel?.metadata?.imageUrl || '');
+  const [buttonTitle, setButtonTitle] = useState('Connect Whatsapp Number');
   const channelId = props.match.params.channelId;
+
+  useEffect(() => {
+    if (channel) {
+      setButtonTitle('Update Whatsapp Number');
+    }
+  }, []);
 
   useEffect(() => {
     if (channelId !== 'new_account') {
@@ -97,6 +104,7 @@ const TwilioWhatsappConnect = (props: TwilioWhatsappProps) => {
         namePlaceholder="Add a name"
         twilioNameInput={whatsappNameInput}
         handleNameInput={handleNameInput}
+        whatsappFormButton={buttonTitle}
       />
     </div>
   );

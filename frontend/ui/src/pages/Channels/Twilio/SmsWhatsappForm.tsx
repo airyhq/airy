@@ -1,9 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import styles from './SmsWhatsappForm.module.scss';
 import {Button, Input, UrlInputField} from '@airyhq/components';
-import {StateModel} from '../../../reducers';
-import _, {connect, ConnectedProps} from 'react-redux';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 type SmsWhatsappFormProps = {
   twilioPhoneNumber: string;
@@ -19,28 +16,16 @@ type SmsWhatsappFormProps = {
   twilioNumberInput: string;
   twilioUrlInput: string;
   twilioNameInput: string;
+  smsFormButton?: string;
+  whatsappFormButton?: string;
 
   handleNameInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleUrlInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleNumberInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
   connectTwilioSms: (e: React.ChangeEvent<HTMLFormElement>) => void;
-} & ConnectedProps<typeof connector> &
-  RouteComponentProps<{channelId: string}>;
-
-const mapStateToProps = (state: StateModel, props: RouteComponentProps<{channelId: string}>) => ({
-  channel: state.data.channels[props.match.params.channelId],
-});
-const connector = connect(mapStateToProps, null);
+};
 
 const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
-  const {channel} = props;
-  const [buttonTitle, setButtonTitle] = useState('Connect Number');
-  useEffect(() => {
-    if (channel) {
-      setButtonTitle('Update Number');
-    }
-  }, []);
-
   return (
     <form onSubmit={props.connectTwilioSms} className={styles.formContainer}>
       <div className={styles.formContent}>
@@ -81,11 +66,11 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
           />
         </div>
         <Button type="submit" styleVariant="normal" disabled={props.twilioNumberInput.trim().length == 0}>
-          {buttonTitle}
+          {props.smsFormButton} {props.whatsappFormButton}
         </Button>
       </div>
     </form>
   );
 };
 
-export default withRouter(connector(SmsWhatsappForm));
+export default SmsWhatsappForm;

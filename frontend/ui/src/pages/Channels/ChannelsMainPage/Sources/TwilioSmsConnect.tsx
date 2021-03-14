@@ -30,7 +30,14 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
   const [smsNumberInput, setSmsNumberInput] = useState(channel?.sourceChannelId || '');
   const [smsNameInput, setSmsNameInput] = useState(channel?.metadata?.name || '');
   const [smsUrlInput, setSmsUrlInput] = useState(channel?.metadata?.imageUrl || '');
+  const [buttonTitle, setButtonTitle] = useState('Connect Sms Number');
   const channelId = props.match.params.channelId;
+
+  useEffect(() => {
+    if (channel) {
+      setButtonTitle('Update Sms Number');
+    }
+  }, []);
 
   useEffect(() => {
     if (channelId !== 'new_account' && channelId?.length) {
@@ -95,6 +102,7 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
         namePlaceholder="Add a Name"
         twilioNameInput={smsNameInput}
         handleNameInput={handleNameInput}
+        smsFormButton={buttonTitle}
       />
     </div>
   );

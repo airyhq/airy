@@ -1,15 +1,15 @@
 import React from 'react';
 import styles from './SmsWhatsappDialogue.module.scss';
-import {connect, ConnectedProps} from 'react-redux';
-import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {Button} from '@airyhq/components';
-import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
-
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
-type SmsWhatsappDialogueProps = {close: () => void; callModal?: () => void} & RouteComponentProps;
+type SmsWhatsappDialogueProps = {
+  close: () => void;
+  callModal?: () => void;
+};
 
-const SmsWhatsappDialogue = (props: SmsWhatsappDialogueProps) => {
+const SmsWhatsappDialogue = (props: SmsWhatsappDialogueProps & RouteComponentProps) => {
   return (
     <div className={styles.background}>
       <div className={styles.dialog}>
@@ -47,10 +47,7 @@ const SmsWhatsappDialogue = (props: SmsWhatsappDialogueProps) => {
               for more details.
             </p>
             <Button type="submit" styleVariant="normal" onClick={props.callModal}>
-              {/* callModal={() => {
-                history.push(CHANNELS_TWILIO_SMS_ROUTE);
-              }}> */} Ready
-              to Connect
+              Ready to Connect
             </Button>
           </div>
         </div>

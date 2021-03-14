@@ -5,7 +5,6 @@ import {Channel} from 'httpclient';
 import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
-import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
 import {ChannelSource} from 'httpclient';
 import SmsWhatsappDialogue from '../SourcesRequirement/SmsWhatsappDialogue';
 
@@ -38,19 +37,17 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           connected="CONNECTED"
           placeholderImage={<SMSLogo />}
           isConnected="connected"
-          onAddChannelClick={() => {
-            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/new_account');
-          }}
           onChannelClick={(channel: Channel) => {
-            props.history.push({
-              pathname: CHANNELS_TWILIO_SMS_ROUTE + `/${channel.id}`, //Leads to edit page(/connected_twilio_sms route)
-            });
+            props.history.push(
+              CHANNELS_TWILIO_SMS_ROUTE + `/${channel.id}` //Leads to edit page(/connected_twilio_sms route)
+            );
           }}
-          // onAddChannelBoxClick={() => {
-          //   props.history.push({
-          //     pathname: CHANNELS_TWILIO_SMS_ROUTE_CONNECTED, //Leads to 3rd screen (connected channel page)
-          //   });
-          // }}
+          onMoreChannelsClick={() => {
+            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/overview');
+          }}
+          onAddChannelClick={() => {
+            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/new_account'); //Leads to add account page
+          }}
         />
       </div>
       {showModal && (

@@ -2,32 +2,23 @@ import React, {useState, useEffect} from 'react';
 import styles from './TwilioSmsConnect.module.scss';
 import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
+import {LinkButton} from '@airyhq/components';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
+import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
 import {Channel} from 'httpclient';
-import {CHANNELS_ROUTE} from '../../../../routes/routes';
-import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
-import {connectTwilioSms} from '../../../../actions/channel';
+import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
+import {connectTwilioSms, disconnectChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import {allChannels} from '../../../../selectors/channels';
 import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';
-
-// type TwilioSmsRouterProps = {
-//   channelId?: string;
-//   name: string;
-//   placeholder: string;
-//   required: boolean;
-//   height: number;
-//   value: string;
-//   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-//   history: History;
-// };
 interface TwilioSmsRouterProps {
   channelId?: string;
 }
 
-const mapDispatchToProps = {connectTwilioSms};
+const mapDispatchToProps = {connectTwilioSms, disconnectChannel};
 const mapStateToProps = (state: StateModel) => ({
   channels: Object.values(allChannels(state)),
+  twilioSmsSource: Object.values(allChannels(state)).filter((channel: Channel) => channel.source === 'twilio.sms'),
 });
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -40,7 +31,7 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
   const channelId = props.match.params.channelId;
 
   useEffect(() => {
-    if (channelId !== 'new_account') {
+    if (channelId !== 'new_account' && channelId?.length) {
       const channel = props.channels.find((channel: Channel) => {
         return channel.id === channelId;
       });
@@ -72,7 +63,7 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
         imageUrl: smsUrlInput,
       })
       .then(() => {
-        props.history.push(CHANNELS_TWILIO_SMS_ROUTE_CONNECTED);
+        props.history.push(CHANNELS_TWILIO_SMS_ROUTE + '/overview');
       })
       .then(() => setSmsNumberInput || setSmsUrlInput || setSmsNameInput(''));
   };
@@ -82,33 +73,76 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
     sendTwilioSmsData();
   };
 
+  const renderFormFields = () => (
+    <SmsWhatsappForm
+      connectTwilioSms={connectTwilioSms}
+      twilioPhoneNumber="Twilio Phone Number"
+      placeholder="Purchased Number +158129485394"
+      name="name"
+      text="text"
+      twilloNumberInput={smsNumberInput}
+      handleNumberInput={handleNumberInput}
+      imageUrl="Image URL (optional)"
+      urlPlaceholder="Add an URL"
+      urlName="url"
+      urlText="url"
+      twilloUrlInput={smsUrlInput}
+      handleUrlInput={handleUrlInput}
+      accountName="Add a Name (optional)"
+      namePlaceholder="SMS Acme Berlin"
+      twilloNameInput={smsNameInput}
+      handleNameInput={handleNameInput}
+    />
+  );
+
+  const disconnectChannel = (channel: Channel) => {
+    if (window.confirm('Do you really want to delete this channel?')) {
+      props.disconnectChannel('twilio.sms', {channelId: channel.id});
+    }
+  };
+
+  const renderOverviewPage = () => (
+    <div className={styles.overview}>
+      <ul>
+        {props.twilioSmsSource.map((channel: Channel) => (
+          <li key={channel.id} className={styles.listItem}>
+            <div className={styles.channelLogo}>
+              {channel.metadata?.imageUrl && (
+                <div className={styles.placeholderLogo}>
+                  <SMSLogo />{' '}
+                </div>
+              )}
+            </div>
+            <div className={styles.listChannelName}>{channel.metadata.name}</div>
+            <div className={styles.listChannelName}>{channel.sourceChannelId}</div>
+            <div className={styles.listButtons}>
+              <Link className={styles.listButtonEdit} to={`${CHANNELS_TWILIO_SMS_ROUTE}/${channel.id}`}>
+                Edit
+              </Link>
+              <LinkButton
+                type="button"
+                onClick={() => {
+                  disconnectChannel(channel);
+                }}>
+                Delete
+              </LinkButton>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>SMS</h1>
-      <Link to={CHANNELS_ROUTE} className={styles.backButton}>
+      <LinkButton onClick={props.history.goBack} type="button">
         <BackIcon className={styles.backIcon} />
-        Back to channels
-      </Link>
+        Back
+      </LinkButton>
 
-      <SmsWhatsappForm
-        connectTwilioSms={connectTwilioSms}
-        twilioPhoneNumber="Twilio Phone Number"
-        placeholder="Purchased Number +158129485394"
-        name="name"
-        text="text"
-        twilloNumberInput={smsNumberInput}
-        handleNumberInput={handleNumberInput}
-        imageUrl="Image URL (optional)"
-        urlPlaceholder="Add an URL"
-        urlName="url"
-        urlText="url"
-        twilloUrlInput={smsUrlInput}
-        handleUrlInput={handleUrlInput}
-        accountName="Add a Name (optional)"
-        namePlaceholder="SMS Acme Berlin"
-        twilloNameInput={smsNameInput}
-        handleNameInput={handleNameInput}
-      />
+      {channelId.length && channelId === `${channelId}` && channelId !== 'overview' && renderFormFields()}
+      {channelId.length > 0 && channelId === 'overview' && renderOverviewPage()}
     </div>
   );
 };

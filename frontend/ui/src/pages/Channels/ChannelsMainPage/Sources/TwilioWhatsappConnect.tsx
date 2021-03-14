@@ -5,7 +5,6 @@ import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {Channel} from 'httpclient';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
-import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
 import {connectTwilioWhatsapp} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';

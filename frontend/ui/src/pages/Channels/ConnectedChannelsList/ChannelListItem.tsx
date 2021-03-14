@@ -11,6 +11,7 @@ import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
 import styles from './ChannelListItem.module.scss';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_TWILIO_SMS_ROUTE} from '../../../routes/routes';
 
 type ChannelItemProps = {
   channel: Channel;

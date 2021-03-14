@@ -1,19 +1,21 @@
 import React, {useState} from 'react';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
 import {Channel} from 'httpclient';
 import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
+import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
 import {ChannelSource} from 'httpclient';
-import TwilioSmsModal from './TwilioSmsModal';
+import {TwilioModal} from '../SourcesModal/TwilioModal';
 
 type TwilioSmsSourceProps = {twilloSmsSource: Channel[]};
 
-const TwilioSmsSource = (props: TwilioSmsSourceProps) => {
+const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
   const channels = props.twilloSmsSource.filter((channel: Channel) => channel.source === 'twilio.sms');
 
   const [modalPopUp, setmodalPopUp] = useState(false);
 
-  const connectSmsChannel = () => {
+  const connectTwilioChannel = () => {
     setmodalPopUp(true);
   };
 
@@ -25,7 +27,12 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps) => {
           text="Deliver SMS with ease"
           image={<SMSLogo />}
           displayButton={!channels.length}
-          onAddChannelClick={connectSmsChannel}
+          id={ChannelSource.twilioSMS}
+          onAddChannelClick={connectTwilioChannel}
+          // onAddChannelClick={() => {
+          //   props.history.push(CHANNELS_TWILIO_SMS_ROUTE);
+          // }}
+          // onAddChannelClick={connectSmsChannel}
         />
 
         <SourceInfo
@@ -34,13 +41,18 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps) => {
           connected="CONNECTED"
           placeholderImage={<SMSLogo />}
           isConnected="connected"
-          addAChannel={<AddChannel />}
+          onAddChannelClick={() => {
+            props.history.push(CHANNELS_TWILIO_SMS_ROUTE);
+          }}
+          onChannelClick={(channel: Channel) => {
+            props.history.push(CHANNELS_TWILIO_SMS_ROUTE + `/${channel.id}`);
+          }}
         />
       </div>
 
-      {modalPopUp && <TwilioSmsModal />}
+      {modalPopUp && <TwilioModal />}
     </>
   );
 };
 
-export default TwilioSmsSource;
+export default withRouter(TwilioSmsSource);

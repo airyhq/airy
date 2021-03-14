@@ -1,0 +1,18 @@
+@import '../../../assets/scss/fonts.scss';
+@import '../../../assets/scss/colors.scss';
+.inviteWrapper {
+ width: 500px;
+}
+
+.headline {
+ @include font-xl;
+ font-weight: bold;
+}
+
+.invitationFields {
+ @include font-base;
+ display: flex;
+ flex-direction: column;
+ text-align: left;
+ margin: 30px 20px 20px 0px;
+}

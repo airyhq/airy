@@ -42,7 +42,7 @@ const SourceInfo = (props: SourceInfoProps) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
-                        {channel.metadata?.imageUrl ? (
+                        {source === 'facebook' && channel.metadata.imageUrl ? (
                           <img
                             src={channel.metadata?.imageUrl}
                             alt={channel.metadata?.name}

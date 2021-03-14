@@ -8,5 +8,4 @@ export const CHANNELS_CHAT_PLUGIN_ROUTE = '/channels/chatplugin';
 export const INBOX_ROUTE = '/inbox';
 export const INBOX_CONVERSATIONS_ROUTE = '/inbox/conversations';
 export const TAGS_ROUTE = '/tags';
-
 export const ROUTES_WITHOUT_NAVBAR = [LOGIN_ROUTE];

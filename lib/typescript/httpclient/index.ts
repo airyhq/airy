@@ -21,7 +21,7 @@ import {
 } from './payload';
 
 import {TagColor, Tag, Message} from './model';
-import { connectChannelMapper } from './mappers/connectChannelMapper';
+import {connectChannelMapper} from './mappers/connectChannelMapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
@@ -112,15 +112,25 @@ export class HttpClient {
     return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.userData']});
   }
 
-
-  public async connectTwilioSms(source:string, requestPayload: ConnectChannelRequestPayload) {
-    const response: ChannelPayload = await this.doFetchFromBackend(`channels.${source}.connect`,  connectChannelMapper(requestPayload));
+  public async connectTwilioSms(requestPayload: ConnectChannelRequestPayload) {
+    const response: ChannelPayload = await this.doFetchFromBackend('channels.twilio.sms.connect', {
+      phone_number: requestPayload.sourceChannelId,
+      name: requestPayload.name,
+      image_url: requestPayload.imageUrl,
+    });
 
     return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.userData']});
   }
 
+  public async connectTwilioWhatsapp(requestPayload: ConnectChannelRequestPayload) {
+    const response: ChannelPayload = await this.doFetchFromBackend('channels.twilio.whatsapp.connect', {
+      phone_number: requestPayload.sourceChannelId,
+      name: requestPayload.name,
+      image_url: requestPayload.imageUrl,
+    });
 
- 
+    return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.userData']});
+  }
 
   public async disconnectChannel(source: string, requestPayload: DisconnectChannelRequestPayload) {
     const response: ChannelsPayload = await this.doFetchFromBackend(

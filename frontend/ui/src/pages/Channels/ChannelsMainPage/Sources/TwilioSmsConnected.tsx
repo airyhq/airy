@@ -9,8 +9,6 @@ import {SearchField} from '@airyhq/components';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
 import {Channel} from 'httpclient';
 
-import SourceInfo from '../SourceInfo';
-
 type TwilioSmsConnectedProps = {twilloSmsSource: Channel[]};
 
 const TwilioSmsConnected = (props: TwilioSmsConnectedProps & RouteComponentProps) => {

@@ -3,5 +3,5 @@ export interface ConnectChannelFacebookRequestPayload {
   pageToken: string;
   name?: string;
   imageUrl?: string;
-  phoneNumber?:string
+  phoneNumber?: string;
 }

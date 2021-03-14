@@ -16,8 +16,10 @@ import {CHANNELS_CONNECTED_ROUTE} from '../../routes/routes';
 import ChatPluginConnect from './ChannelsMainPage/Sources/ChatPluginConnect';
 import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../routes/routes';
 import TwilioSmsConnect from './ChannelsMainPage/Sources/TwilioSmsConnect';
+import TwilioWhatsappConnect from './ChannelsMainPage/Sources/TwilioWhatsappConnect';
 import TwilioSmsConnected from './ChannelsMainPage/Sources/TwilioSmsConnected';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../routes/routes';
+import {CHANNELS_TWILIO_WHATSAPP_ROUTE} from '../../routes/routes';
 import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../routes/routes';
 
 const mapDispatchToProps = {
@@ -56,6 +58,7 @@ const Channels = (props: ChannelsConnectProps) => {
       <Route path={[`${CHANNELS_CONNECTED_ROUTE}/:source?`]} component={ChannelsList} />
       <Route path={[`${CHANNELS_TWILIO_SMS_ROUTE}/:channelId?`]} component={TwilioSmsConnect} />
       <Route path={[`${CHANNELS_TWILIO_SMS_ROUTE_CONNECTED}/:channelId?`]} component={TwilioSmsConnected} />
+      <Route path={[`${CHANNELS_TWILIO_WHATSAPP_ROUTE}/:channelId?`]} component={TwilioWhatsappConnect} />
       <Route path="/" render={renderChannels} />
     </Switch>
   );

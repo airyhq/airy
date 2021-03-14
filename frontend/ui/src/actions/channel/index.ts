@@ -45,14 +45,18 @@ export const connectFacebookChannel = (requestPayload: ConnectChannelFacebookReq
     return Promise.resolve(response);
   });
 
-export const connectChatPlugin = (requestPayload: ConnectChatPluginRequestPayload) => async (dispatch: Dispatch<any>) =>
-  HttpClientInstance.connectChatPluginChannel(requestPayload).then((response: Channel) => {
+export const connectChannelTwilioSms = (requestPayload: ConnectChannelRequestPayload) => async (
+  dispatch: Dispatch<any>
+) =>
+  HttpClientInstance.connectTwilioSms(requestPayload).then((response: Channel) => {
     dispatch(addChannelsAction([response]));
     return Promise.resolve(response);
   });
 
-  export const connectChannelTwilioSms = (requestPayload: ConnectChannelRequestPayload) => async (dispatch: Dispatch<any>) =>
-  HttpClientInstance.connectTwilioSms(requestPayload).then((response: Channel) => {
+export const connectChannelTwilioWhatsapp = (requestPayload: ConnectChannelRequestPayload) => async (
+  dispatch: Dispatch<any>
+) =>
+  HttpClientInstance.connectTwilioWhatsapp(requestPayload).then((response: Channel) => {
     dispatch(addChannelsAction([response]));
     return Promise.resolve(response);
   });

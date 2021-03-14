@@ -5,95 +5,84 @@ import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
 import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
-import {connectChannelTwilioSms} from '../../../../actions/channel';
+import {connectChannelTwilioWhatsapp} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';
 
-// type TwilioSmsRouterProps = {
-//   channelId?: string;
-//   name: string;
-//   placeholder: string;
-//   required: boolean;
-//   height: number;
-//   value: string;
-//   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-//   history: History;
-// };
-interface TwilioSmsRouterProps {
+interface TwilioWhatsappRouterProps {
   channelId?: string;
 }
-
-const mapDispatchToProps = {connectChannelTwilioSms};
+const mapDispatchToProps = {connectChannelTwilioWhatsapp};
 const mapStateToProps = (state: StateModel) => ({
   channel: state.data.channels,
 });
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type TwilioSmsProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<TwilioSmsRouterProps>;
+type TwilioWhatsappProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<TwilioWhatsappRouterProps>;
 
-const TwilioSmsConnect = (props: TwilioSmsProps) => {
-  const [smsNumberInput, setSmsNumberInput] = useState('');
-  const [smsNameInput, setSmsNameInput] = useState('');
-  const [smsUrlInput, setSmsUrlInput] = useState('');
+const TwilioWhatsappConnect = (props: TwilioWhatsappProps) => {
+  const [whatsappNumberInput, setWhatsappNumberInput] = useState('');
+  const [whatsappNameInput, setWhatsappNameInput] = useState('');
+  const [whatsappUrlInput, setWhatsappUrlInput] = useState('');
 
   const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSmsNumberInput(e.target.value);
+    setWhatsappNumberInput(e.target.value);
   };
 
   const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSmsNameInput(e.target.value);
+    setWhatsappNameInput(e.target.value);
   };
 
   const handleUrlInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSmsUrlInput(e.target.value);
+    setWhatsappUrlInput(e.target.value);
   };
 
-  const sendTwilioSmsData = () => {
-    props
-      .connectChannelTwilioSms({
-        sourceChannelId: smsNumberInput,
-        name: smsNameInput,
-        imageUrl: smsUrlInput,
-      })
-      .then(() => {
-        props.history.push(CHANNELS_TWILIO_SMS_ROUTE_CONNECTED);
-      });
+  const sendTwilioWhatsappData = () => {
+    props.connectChannelTwilioWhatsapp({
+      sourceChannelId: whatsappNumberInput,
+      name: whatsappNameInput,
+      imageUrl: whatsappUrlInput,
+    });
+    //   .then(() => {
+    //     props.history.push(CHANNELS_TWILIO_SMS_ROUTE_CONNECTED);
+    //   });
   };
 
-  const connectTwilioSms = (e: React.ChangeEvent<HTMLFormElement>): void => {
+  const connectTwilioWhatsapp = (e: React.ChangeEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    sendTwilioSmsData();
+    sendTwilioWhatsappData();
   };
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.headline}>SMS</h1>
+      <h1 className={styles.headline}>WhatsApp</h1>
+
       <Link to={CHANNELS_ROUTE} className={styles.backButton}>
         <BackIcon className={styles.backIcon} />
         Back to channels
       </Link>
 
       <SmsWhatsappForm
-        connectTwilioSms={connectTwilioSms}
+        connectTwilioSms={connectTwilioWhatsapp}
         twilioPhoneNumber="Twilio Phone Number"
         placeholder="Purchased Number +158129485394"
         name="name"
         text="text"
-        twilloNumberInput={smsNumberInput}
+        twilloNumberInput={whatsappNumberInput}
         handleNumberInput={handleNumberInput}
         imageUrl="Image URL (optional)"
         urlPlaceholder="Add an URL"
         urlName="url"
         urlText="url"
-        twilloUrlInput={smsUrlInput}
+        twilloUrlInput={whatsappUrlInput}
         handleUrlInput={handleUrlInput}
         accountName="Add a Name (optional)"
         namePlaceholder="SMS Acme Berlin"
-        twilloNameInput={smsNameInput}
+        twilloNameInput={whatsappNameInput}
         handleNameInput={handleNameInput}
       />
     </div>
   );
 };
 
-export default connector(withRouter(TwilioSmsConnect));
+export default connector(withRouter(TwilioWhatsappConnect));

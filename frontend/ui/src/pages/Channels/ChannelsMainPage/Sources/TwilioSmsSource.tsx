@@ -7,7 +7,7 @@ import SourceInfo from '../SourceInfo';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
 import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
 import {ChannelSource} from 'httpclient';
-import TwilioDialogue from '../SourcesRequirement/TwilioDialogue';
+import SmsWhatsappDialogue from '../SourcesRequirement/SmsWhatsappDialogue';
 
 type TwilioSmsSourceProps = {twilioSmsSource: Channel[]};
 
@@ -24,7 +24,7 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
     <>
       <div style={{display: 'flex', flexGrow: 1}}>
         <SourceDescription
-          title="SMS "
+          title="SMS"
           text="Deliver SMS with ease"
           image={<SMSLogo />}
           displayButton={!channels.length}
@@ -48,12 +48,19 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           }}
           // onAddChannelBoxClick={() => {
           //   props.history.push({
-          //     pathname: CHANNELS_TWILIO_SMS_ROUTE_CONNECTED, //Leads to edit page(/connected_twilio_sms route)
+          //     pathname: CHANNELS_TWILIO_SMS_ROUTE_CONNECTED, //Leads to 3rd screen (connected channel page)
           //   });
           // }}
         />
       </div>
-      {showModal && <TwilioDialogue close={closeModalOnClick} />}
+      {showModal && (
+        <SmsWhatsappDialogue
+          close={closeModalOnClick}
+          callModal={() => {
+            props.history.push(CHANNELS_TWILIO_SMS_ROUTE);
+          }}
+        />
+      )}
     </>
   );
 };

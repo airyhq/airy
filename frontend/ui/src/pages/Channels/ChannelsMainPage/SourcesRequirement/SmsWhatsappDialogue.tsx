@@ -1,22 +1,20 @@
 import React from 'react';
-import styles from './TwilioDialogue.module.scss';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
+import styles from './SmsWhatsappDialogue.module.scss';
+import {connect, ConnectedProps} from 'react-redux';
+import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {Button} from '@airyhq/components';
 import {CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
 
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
-type TwilioDialogueProps = {
-  history: History;
-  close: () => void;
-};
+type SmsWhatsappDialogueProps = {close: () => void; callModal?: () => void} & RouteComponentProps;
 
-const TwilioDialogue = ({close, history}: TwilioDialogueProps & RouteComponentProps) => {
+const SmsWhatsappDialogue = (props: SmsWhatsappDialogueProps) => {
   return (
     <div className={styles.background}>
       <div className={styles.dialog}>
         <div className={styles.dialogInner}>
-          <button onClick={close} className={styles.closeButton}>
+          <button onClick={props.close} className={styles.closeButton}>
             <CloseIcon title="Close dialog" />
           </button>
 
@@ -48,14 +46,11 @@ const TwilioDialogue = ({close, history}: TwilioDialogueProps & RouteComponentPr
               </a>
               for more details.
             </p>
-            <Button
-              type="submit"
-              styleVariant="normal"
-              onClick={() => {
+            <Button type="submit" styleVariant="normal" onClick={props.callModal}>
+              {/* callModal={() => {
                 history.push(CHANNELS_TWILIO_SMS_ROUTE);
-              }}>
-              {' '}
-              Ready to Connect
+              }}> */} Ready
+              to Connect
             </Button>
           </div>
         </div>
@@ -63,4 +58,4 @@ const TwilioDialogue = ({close, history}: TwilioDialogueProps & RouteComponentPr
     </div>
   );
 };
-export default withRouter(TwilioDialogue);
+export default withRouter(SmsWhatsappDialogue);

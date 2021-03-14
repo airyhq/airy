@@ -24,30 +24,10 @@
 }
 
 .headline {
-  @include font-base;
+  @include font-xl;
+  font-weight: bold;
   padding-top: 40px;
   padding-left: 40px;
-}
-
-.body {
-  @include font-base;
-  margin: 20px 40px 0px 40px;
-
-  ul {
-    margin-left: 20px;
-  }
-
-  li {
-    padding-top: 10px;
-  }
-
-  p {
-    padding-top: 15px;
-  }
-
-  a {
-    font-weight: normal;
-  }
 }
 
 .button {
@@ -83,4 +63,30 @@
   background: transparent;
   cursor: pointer;
   outline: none;
+}
+.inviteWrapper {
+  width: 500px;
+  margin: 20px 40px 0px 40px;
+}
+
+.firstMessage {
+  @include font-base;
+  margin: 30px 20px 20px 0px;
+}
+
+.configMessage {
+  @include font-base;
+  color: rgba(235, 32, 97, 0.866);
+  text-decoration: none;
+  background-color: var(--color-light-gray);
+}
+
+.secondMessage {
+  @include font-base;
+  margin: 30px 20px 20px 0px;
+}
+
+.thirdMessage {
+  @include font-base;
+  margin: 24px 0px 58px 0px;
 }

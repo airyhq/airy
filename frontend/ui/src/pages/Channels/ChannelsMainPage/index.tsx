@@ -5,7 +5,8 @@ import TwilioSmsSource from './Sources/TwilioSmsSource';
 import GoogleSource from './Sources/GoogleSource';
 import TwilioWhatsAppSource from './Sources/TwilioWhatsAppSource';
 import {ChannelSource} from 'httpclient';
-import {RequirementsDialog, SmsWhatsappDialogue} from '../Facebook/RequirementsDialog';
+import {RequirementsDialog} from '../Facebook/RequirementsDialog';
+import {SmsWhatsappDialogue} from '../Twilio/RequirementsDialog';
 import {
   CHANNELS_FACEBOOK_ROUTE,
   CHANNELS_TWILIO_SMS_ROUTE,

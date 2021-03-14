@@ -16,29 +16,27 @@ interface TwilioSmsRouterProps {
 }
 
 const mapDispatchToProps = {connectTwilioSms, disconnectChannel};
-const mapStateToProps = (state: StateModel) => ({
+const mapStateToProps = (state: StateModel, props: RouteComponentProps<{channelId: string}>) => ({
   channels: Object.values(allChannels(state)),
+  channel: state.data.channels[props.match.params.channelId],
 });
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type TwilioSmsProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<TwilioSmsRouterProps>;
+type TwilioSmsProps = {channelId?: string} & ConnectedProps<typeof connector> &
+  RouteComponentProps<TwilioSmsRouterProps>;
 
 const TwilioSmsConnect = (props: TwilioSmsProps) => {
-  const [smsNumberInput, setSmsNumberInput] = useState('');
-  const [smsNameInput, setSmsNameInput] = useState('');
-  const [smsUrlInput, setSmsUrlInput] = useState('');
+  const {channel} = props;
+  const [smsNumberInput, setSmsNumberInput] = useState(channel?.sourceChannelId || '');
+  const [smsNameInput, setSmsNameInput] = useState(channel?.metadata?.name || '');
+  const [smsUrlInput, setSmsUrlInput] = useState(channel?.metadata?.imageUrl || '');
   const channelId = props.match.params.channelId;
 
   useEffect(() => {
     if (channelId !== 'new_account' && channelId?.length) {
-      const channel = props.channels.find((channel: Channel) => {
+      props.channels.find((channel: Channel) => {
         return channel.id === channelId;
       });
-      if (channel) {
-        setSmsNumberInput(channel.sourceChannelId || '');
-        setSmsUrlInput(channel.metadata.imageUrl || '');
-        setSmsNameInput(channel.metadata.name || '');
-      }
     }
   }, [props.channels, channelId]);
 

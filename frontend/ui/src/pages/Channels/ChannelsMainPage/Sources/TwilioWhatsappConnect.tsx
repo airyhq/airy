@@ -14,29 +14,27 @@ interface TwilioWhatsappRouterProps {
   channelId?: string;
 }
 const mapDispatchToProps = {connectTwilioWhatsapp};
-const mapStateToProps = (state: StateModel) => ({
+const mapStateToProps = (state: StateModel, props: RouteComponentProps<{channelId: string}>) => ({
   channels: Object.values(allChannels(state)),
+  channel: state.data.channels[props.match.params.channelId],
 });
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type TwilioWhatsappProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<TwilioWhatsappRouterProps>;
+type TwilioWhatsappProps = {channelId?: string} & ConnectedProps<typeof connector> &
+  RouteComponentProps<TwilioWhatsappRouterProps>;
 
 const TwilioWhatsappConnect = (props: TwilioWhatsappProps) => {
-  const [whatsappNumberInput, setWhatsappNumberInput] = useState('');
-  const [whatsappNameInput, setWhatsappNameInput] = useState('');
-  const [whatsappUrlInput, setWhatsappUrlInput] = useState('');
+  const {channel} = props;
+  const [whatsappNumberInput, setWhatsappNumberInput] = useState(channel?.sourceChannelId || '');
+  const [whatsappNameInput, setWhatsappNameInput] = useState(channel?.metadata?.name || '');
+  const [whatsappUrlInput, setWhatsappUrlInput] = useState(channel?.metadata?.imageUrl || '');
   const channelId = props.match.params.channelId;
 
   useEffect(() => {
     if (channelId !== 'new_account') {
-      const channel = props.channels.find((channel: Channel) => {
+      props.channels.find((channel: Channel) => {
         return channel.id === channelId;
       });
-      if (channel) {
-        setWhatsappNumberInput(channel.sourceChannelId || '');
-        setWhatsappUrlInput(channel.metadata.imageUrl || '');
-        setWhatsappNameInput(channel.metadata.name || '');
-      }
     }
   }, [props.channels, channelId]);
 

@@ -6,6 +6,7 @@ import {
   CHANNELS_CHAT_PLUGIN_ROUTE,
   CHANNELS_ROUTE,
   CHANNELS_TWILIO_SMS_ROUTE,
+  CHANNELS_TWILIO_WHATSAPP_ROUTE,
 } from './../../../routes/routes';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
@@ -59,7 +60,7 @@ const ChannelsList = (props: ChannelsListProps) => {
         break;
       case ChannelSource.twilioWhatsapp:
         setName('Twilio Whatsapp');
-        setPath('');
+        setPath(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account');
         break;
       case ChannelSource.chatPlugin:
         setName('Chat Plugin');

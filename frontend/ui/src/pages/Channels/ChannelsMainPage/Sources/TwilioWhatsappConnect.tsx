@@ -4,11 +4,12 @@ import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {Channel} from 'httpclient';
-import {CHANNELS_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_CONNECTED_ROUTE, CHANNELS_TWILIO_WHATSAPP_ROUTE} from '../../../../routes/routes';
 import {connectTwilioWhatsapp} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';
 import {allChannels} from '../../../../selectors/channels';
+import {LinkButton} from '@airyhq/components';
 interface TwilioWhatsappRouterProps {
   channelId?: string;
 }
@@ -52,14 +53,18 @@ const TwilioWhatsappConnect = (props: TwilioWhatsappProps) => {
   };
 
   const sendTwilioWhatsappData = () => {
-    props.connectTwilioWhatsapp({
-      sourceChannelId: whatsappNumberInput,
-      name: whatsappNameInput,
-      imageUrl: whatsappUrlInput,
-    });
-    //   .then(() => {
-    //     props.history.push(CHANNELS_TWILIO_SMS_ROUTE_CONNECTED);
-    //   });
+    props
+      .connectTwilioWhatsapp({
+        sourceChannelId: whatsappNumberInput,
+        name: whatsappNameInput,
+        imageUrl: whatsappUrlInput,
+      })
+      .then(() => {
+        props.history.replace({
+          pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.whatsapp/#`,
+          state: {source: 'twilio.whatsapp'},
+        });
+      });
   };
 
   const connectTwilioWhatsapp = (e: React.ChangeEvent<HTMLFormElement>): void => {
@@ -71,10 +76,10 @@ const TwilioWhatsappConnect = (props: TwilioWhatsappProps) => {
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>WhatsApp</h1>
 
-      <Link to={CHANNELS_ROUTE} className={styles.backButton}>
+      <LinkButton onClick={props.history.goBack} type="button">
         <BackIcon className={styles.backIcon} />
-        Back to channels
-      </Link>
+        Back
+      </LinkButton>
 
       <SmsWhatsappForm
         connectTwilioSms={connectTwilioWhatsapp}

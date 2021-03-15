@@ -9,11 +9,11 @@ import {ReactComponent as FacebookIcon} from 'assets/images/icons/messenger_avat
 import {ReactComponent as AiryAvatar} from 'assets/images/icons/airy_avatar.svg';
 
 const sourceIconsMap = {
-  'google': GoogleIcon,
-  'facebook': FacebookIcon,
+  google: GoogleIcon,
+  facebook: FacebookIcon,
   'twilio.sms': SmsIcon,
   'twilio.whatsapp': WhatsappIcon,
-  'chatplugin': AiryAvatar,
+  chatplugin: AiryAvatar,
 };
 
 export const IconChannelFilter = ({channel}: {channel: Channel}) => {

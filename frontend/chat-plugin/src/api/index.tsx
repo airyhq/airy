@@ -8,7 +8,7 @@ declare const window: {
   };
 };
 
-const API_HOST = window.airy ? window.airy.host : 'airy.core';
+const API_HOST = window.airy ? window.airy.host : process.env.API_HOST;
 
 export const sendMessage = (message: TextContent | SuggestionResponse, token: string) => {
   return fetch(`//${API_HOST}/chatplugin.send`, {

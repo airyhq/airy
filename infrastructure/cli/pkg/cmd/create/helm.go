@@ -187,6 +187,7 @@ func (h *Helm) upsertAiryConfigMap() error {
 }
 
 func (h *Helm) cleanupJob() error {
+	return nil
 	jobsClient := h.clientset.BatchV1().Jobs(h.namespace)
 
 	deletionPolicy := v1.DeletePropagationBackground

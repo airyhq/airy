@@ -21,7 +21,7 @@ var (
 )
 
 func init() {
-	CreateCmd.Flags().StringVar(&providerName, "provider", "local", "One of the supported providers (aws|local|minikube).")
+	CreateCmd.Flags().StringVar(&providerName, "provider", "local", "One of the supported providers (aws|minikube).")
 	CreateCmd.Flags().StringVar(&namespace, "namespace", "default", "(optional) Kubernetes namespace that Airy should be installed to.")
 	CreateCmd.MarkFlagRequired("provider")
 
@@ -75,7 +75,12 @@ func create(cmd *cobra.Command, args []string) {
 		fmt.Printf("\t\t %s:\t %s", hostName, host)
 	}
 
+	if err = provider.PostInstallation(namespace); err != nil {
+		fmt.Println("failed to get installation endpoints: ", err)
+		os.Exit(1)
+	}
+
 	fmt.Println()
-	fmt.Printf("For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
+	fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
 	fmt.Println()
 }

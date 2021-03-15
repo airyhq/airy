@@ -41,6 +41,7 @@ in](/api/authentication.md#login) so you can obtain a valid JWT token for the
 upcoming API calls:
 
 ```bash
+host=$(mini)
 token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \
@@ -90,7 +91,6 @@ You can also consume the messages directly from the Kafka
 `application.communication.messages` topic:
 
 ```
-cd infrastructure && vagrant ssh
 kubectl exec -it kafka-0 -- /bin/bash
 kafka-console-consumer \
 --bootstrap-server airy-cp-kafka:9092 \

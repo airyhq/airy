@@ -18,6 +18,7 @@ type Provider interface {
 	Provision() (kube.KubeCtx, error)
 	GetHosts() (map[string]string, error)
 	GetHelmOverrides() []string
+	PostInstallation(namespace string) error
 }
 
 func MustGet(providerName ProviderName) Provider {

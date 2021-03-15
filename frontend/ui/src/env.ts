@@ -9,5 +9,5 @@ declare const window: {
 const templatedState: Env = window.AIRY_TEMPLATED_STATE || {};
 
 export const env: Env = {
-  API_HOST: templatedState.API_HOST || 'airy.core',
+  API_HOST: templatedState.API_HOST || process.env.API_HOST,
 };

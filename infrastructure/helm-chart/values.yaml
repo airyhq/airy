@@ -4,4 +4,3 @@ global:
   namespace: default
   ngrokEnabled: false
   ingress:
-    host: "airy.core"

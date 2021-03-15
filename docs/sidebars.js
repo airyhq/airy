@@ -6,7 +6,7 @@ module.exports = {
         {
           Installation: [
             'getting-started/installation/introduction',
-            'getting-started/installation/vagrant',
+            'getting-started/installation/minikube',
             'getting-started/installation/production',
             'getting-started/installation/configuration',
           ],

@@ -17,7 +17,7 @@ declare global {
   }
 }
 
-const API_HOST = window.airy ? window.airy.host : 'airy.core';
+const API_HOST = window.airy ? window.airy.host : process.env.API_HOST;
 // https: -> wss: and http: -> ws:
 const protocol = location.protocol.replace('http', 'ws');
 

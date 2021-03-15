@@ -6,12 +6,12 @@ sidebar_label: Minikube
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 The goal of this document is to provide an overview of how to run Airy Core on
-your local machine using [Minikube](https://minikube.sigs.k8s.io/).
+your local machine using [minikube](https://minikube.sigs.k8s.io/).
 
 ## Creating a cluster using the CLI
 
-First download and install Minikube from their [release page](https://github.com/kubernetes/minikube/releases) and the [Airy CLI](cli/installation.md).
-Now you can run this command, which will create a new Minikube cluster on your system and install Airy core on it:
+First download and install minikube from their [release page](https://github.com/kubernetes/minikube/releases) and the [Airy CLI](cli/installation.md).
+Now you can run this command, which will create a new minikube cluster on your system and install Airy core on it:
 
 ```bash
 airy create --provider=minikube
@@ -69,7 +69,7 @@ For more details please see our [Configuration Section](configuration.md).
 
 ## Uninstall Airy Core
 
-You can remove the Airy Core Minikube node from your machine completely running
+You can remove the Airy Core minikube node from your machine completely running
 the following command:
 
 ```sh

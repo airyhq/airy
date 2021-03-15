@@ -5,8 +5,7 @@ metadata:
   namespace: {{ .Values.global.namespace }}
 spec:
   rules:
-    - host: {{ .Values.global.ingress.host }}
-      http:
+    - http:
         paths:
           - path: /users.login
             pathType: Prefix
@@ -330,3 +329,6 @@ spec:
                 name: sources-chatplugin
                 port:
                   number: 80
+    {{ if .Values.global.ingress }}
+      host: {{ .Values.global.ingress.host }}
+    {{ end }}

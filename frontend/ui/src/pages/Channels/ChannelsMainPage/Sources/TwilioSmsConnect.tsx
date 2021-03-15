@@ -6,7 +6,7 @@ import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {Channel} from 'httpclient';
 import {CHANNELS_ROUTE} from '../../../../routes/routes';
 import {CHANNELS_TWILIO_SMS_ROUTE_CONNECTED} from '../../../../routes/routes';
-import {connectChannelTwilioSms} from '../../../../actions/channel';
+import {connectTwilioSms} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import {allChannels} from '../../../../selectors/channels';
 import SmsWhatsappForm from '../SourcesRequirement/SmsWhatsappForm';
@@ -25,7 +25,7 @@ interface TwilioSmsRouterProps {
   channelId?: string;
 }
 
-const mapDispatchToProps = {connectChannelTwilioSms};
+const mapDispatchToProps = {connectTwilioSms};
 const mapStateToProps = (state: StateModel) => ({
   channels: Object.values(allChannels(state)),
 });
@@ -66,7 +66,7 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
 
   const sendTwilioSmsData = () => {
     props
-      .connectChannelTwilioSms({
+      .connectTwilioSms({
         sourceChannelId: smsNumberInput,
         name: smsNameInput,
         imageUrl: smsUrlInput,

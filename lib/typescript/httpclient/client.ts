@@ -10,6 +10,8 @@ import {
   UntagConversationRequestPayload,
   ListMessagesRequestPayload,
   ConnectChatPluginRequestPayload,
+  ConnectTwilioSmsRequestPayload,
+  ConnectTwilioWhatsappRequestPayload,
   UpdateChannelRequestPayload,
   ListTemplatesRequestPayload,
   PaginatedResponse,
@@ -96,6 +98,10 @@ export class HttpClient {
   public connectFacebookChannel: ApiRequest<ConnectChannelFacebookRequestPayload, Channel>;
 
   public connectChatPluginChannel: ApiRequest<ConnectChatPluginRequestPayload, Channel>;
+
+  public connectTwilioSmsChannel: ApiRequest<ConnectTwilioSmsRequestPayload, Channel>;
+
+  public connectTwilioWhatsappChannel: ApiRequest<ConnectTwilioWhatsappRequestPayload, Channel>;
 
   public updateChannel: ApiRequest<UpdateChannelRequestPayload, Channel>;
 

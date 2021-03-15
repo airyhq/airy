@@ -1,6 +1,5 @@
 @import '../../../../assets/scss/fonts';
 @import '../../../../assets/scss/colors';
-
 .connectedContainer {
   display: flex;
   flex-direction: column;
@@ -8,12 +7,10 @@
   height: 120px;
   margin-bottom: 10px;
 }
-
 .connectedSum {
   margin-left: 16px;
   color: var(--color-text-gray);
 }
-
 .connectedChannelBox {
   display: flex;
   box-sizing: border-box;
@@ -36,7 +33,6 @@
     }
   }
 }
-
 .connectedChannel {
   display: flex;
   flex-wrap: wrap;
@@ -64,7 +60,6 @@
   max-width: 142px;
   text-overflow: ellipsis;
 }
-
 .extraChannel {
   display: flex;
   min-width: 88px;
@@ -80,6 +75,7 @@
 .connectedChannelData {
   @include font-base;
   display: flex;
+  align-items: center;
   margin: 4px;
   align-items: flex-start;
   border: none;
@@ -92,12 +88,11 @@
   &:hover {
     text-decoration: underline;
   }
-
+}
 
 .channelListEntry {
   display: inline-flex;
 }
-
 .placeholderLogo {
   height: 24px;
   width: 24px;
@@ -106,7 +101,6 @@
     width: 24px;
   }
 }
-
 .facebookImage {
   height: 20px;
   width: 20px;
@@ -130,7 +124,6 @@
 .channelButton {
   margin: 20px 0px 8px 0px;
 }
-
 .addChannelButton {
   position: relative;
   width: 40px;
@@ -143,7 +136,6 @@
   outline: none;
   cursor: pointer;
 }
-
 .channelButtonIcon {
   @include font-m;
   display: flex;
@@ -156,7 +148,6 @@
   border-radius: 50%;
   color: var(--color-text-gray);
   cursor: pointer;
-
   svg {
     height: 30px;
     width: 30px;
@@ -168,7 +159,5 @@
   &:hover {
     color: var(--color-airy-blue);
     background-color: var(--color-background-blue);
-    box-shadow: 0px 0px 0px 3px var(--color-background-blue);
   }
-}
 }

@@ -9,24 +9,20 @@ type SourceInfoProps = {
   channels: Channel[];
   connected: string;
   placeholderImage?: JSX.Element;
-  isConnected?: string;
+  isConnected: string;
   onAddChannelClick?: () => void;
   onSourceInfoClick?: () => void;
   onMoreChannelsClick?: () => void;
   onChannelClick?: (channel: Channel) => void;
-  onAddChannelBoxClick?: () => void;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
   const {source, channels} = props;
-
   const isPhoneNumberSource = () => {
     return source === 'twilio.sms' || source === 'twilio.whatsapp';
   };
-
   const channelsToShow = isPhoneNumberSource() ? 2 : 4;
   const hasExtraChannels = channels.length > channelsToShow;
-
   return (
     <>
       {channels && channels.length > 0 && (
@@ -37,14 +33,13 @@ const SourceInfo = (props: SourceInfoProps) => {
                 {channels.length} {props.connected}
               </p>
             </div>
-
             <div className={styles.connectedChannelBox}>
-              <div className={styles.connectedChannel} onClick={props.onAddChannelBoxClick}>
+              <div className={styles.connectedChannel}>
                 {channels.slice(0, channelsToShow).map((channel: Channel) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
-                        {source === 'facebook' && channel.metadata.imageUrl ? (
+                        {source === 'facebook' && channel.metadata?.imageUrl ? (
                           <img
                             src={channel.metadata?.imageUrl}
                             alt={channel.metadata?.name}
@@ -62,7 +57,6 @@ const SourceInfo = (props: SourceInfoProps) => {
                   );
                 })}
               </div>
-
               <div className={styles.extraChannel}>
                 {hasExtraChannels && (
                   <LinkButton onClick={props.onSourceInfoClick}>
@@ -85,5 +79,4 @@ const SourceInfo = (props: SourceInfoProps) => {
     </>
   );
 };
-
 export default SourceInfo;

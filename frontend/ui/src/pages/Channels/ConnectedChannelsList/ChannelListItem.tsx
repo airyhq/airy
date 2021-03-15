@@ -27,7 +27,12 @@ const ChannelItem = (props: ChannelItemProps) => {
   const {channel} = props;
   const [deletePopupVisible, setDeletePopupVisible] = useState(false);
 
+  const isPhoneNumberSource = () => {
+    return channel.source === 'twilio.sms' || channel.source === 'twilio.whatsapp';
+  };
+
   const disconnectChannelRequestPayload = {
+    source: channel.source,
     channelId: channel.id,
   };
 
@@ -57,8 +62,8 @@ const ChannelItem = (props: ChannelItemProps) => {
     return {pathname: `/channels/${channel.source}/${channel.id}`, state: {channel: channel}};
   };
 
-  const disconnectChannel = (channelSource: string) => {
-    props.disconnectChannel(channelSource, disconnectChannelRequestPayload);
+  const disconnectChannel = () => {
+    props.disconnectChannel(disconnectChannelRequestPayload);
     setDeletePopupVisible(false);
   };
 
@@ -69,15 +74,16 @@ const ChannelItem = (props: ChannelItemProps) => {
           <div className={styles.channelLogo}>
             <ChannelIcon channel={channel} />
           </div>
-          <div className={styles.channelNameButton}>
-            <div className={styles.channelName}>
-              {channel.metadata.name}
-              {channel.connected && (
-                <div className={styles.connectedHint}>
-                  Connected <CheckMark />
-                </div>
-              )}
+
+          <div className={styles.channelName}>{channel.metadata?.name}</div>
+          {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
+          {channel.connected && (
+            <div className={styles.connectedHint}>
+              Connected <CheckMark />
             </div>
+          )}
+
+          <div className={styles.listButtons}>
             <Button styleVariant="link" type="button" onClick={() => props.history.push(editChannel())}>
               Edit
             </Button>
@@ -87,6 +93,7 @@ const ChannelItem = (props: ChannelItemProps) => {
           </div>
         </div>
       </div>
+
       {deletePopupVisible && (
         <SettingsModal
           style={{maxWidth: '420px'}}
@@ -106,7 +113,7 @@ const ChannelItem = (props: ChannelItemProps) => {
               <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(false)}>
                 Cancel
               </Button>
-              <Button styleVariant="warning" type="submit" onClick={() => disconnectChannel(channel.source)}>
+              <Button styleVariant="warning" type="submit" onClick={() => disconnectChannel()}>
                 Disconnect Channel
               </Button>
             </div>

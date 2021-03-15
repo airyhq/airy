@@ -4,6 +4,7 @@ import {RouteComponentProps} from 'react-router-dom';
 
 import {User} from 'httpclient';
 import {listConversations} from '../../actions/conversations';
+import {listChannels} from '../../actions/channel';
 import {StateModel} from '../../reducers';
 
 import Messenger from './Messenger';
@@ -23,6 +24,7 @@ const mapStateToProps = (state: StateModel) => {
 
 const mapDispatchToProps = {
   listConversations,
+  listChannels,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -30,6 +32,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 const ConversationContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
   useEffect(() => {
     props.listConversations();
+    props.listChannels();
     setPageTitle('Inbox');
   }, []);
 

@@ -1,15 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
-import {CHANNELS_FACEBOOK_ROUTE, CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_ROUTE} from './../../../routes/routes';
+import {
+  CHANNELS_FACEBOOK_ROUTE,
+  CHANNELS_CHAT_PLUGIN_ROUTE,
+  CHANNELS_ROUTE,
+  CHANNELS_TWILIO_SMS_ROUTE,
+  CHANNELS_TWILIO_WHATSAPP_ROUTE,
+} from './../../../routes/routes';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as AddChannelIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {StateModel} from './../../../reducers';
-import {Channel} from 'httpclient';
+import {Channel, ChannelSource} from 'httpclient';
 import {allChannels} from './../../../selectors/channels';
-import {ChannelSource} from 'httpclient';
 import ChannelListItem from './ChannelListItem';
 import {SearchField} from '@airyhq/components';
 import styles from './ChannelsList.module.scss';
@@ -52,11 +57,11 @@ const ChannelsList = (props: ChannelsListProps) => {
         break;
       case ChannelSource.twilioSMS:
         setName('Twilio SMS');
-        setPath('');
+        setPath(CHANNELS_TWILIO_SMS_ROUTE + '/new_account');
         break;
       case ChannelSource.twilioWhatsapp:
         setName('Twilio Whatsapp');
-        setPath('');
+        setPath(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account');
         break;
       case ChannelSource.chatPlugin:
         setName('Chat Plugin');

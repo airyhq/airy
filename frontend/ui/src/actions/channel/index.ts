@@ -7,6 +7,8 @@ import {
   ExploreChannelRequestPayload,
   DisconnectChannelRequestPayload,
   ConnectChatPluginRequestPayload,
+  ConnectTwilioSmsRequestPayload,
+  ConnectTwilioWhatsappRequestPayload,
   UpdateChannelRequestPayload,
 } from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
@@ -47,6 +49,20 @@ export const connectFacebookChannel = (requestPayload: ConnectChannelFacebookReq
 
 export const connectChatPlugin = (requestPayload: ConnectChatPluginRequestPayload) => async (dispatch: Dispatch<any>) =>
   HttpClientInstance.connectChatPluginChannel(requestPayload).then((response: Channel) => {
+    dispatch(addChannelsAction([response]));
+    return Promise.resolve(response);
+  });
+
+export const connectTwilioSms = (requestPayload: ConnectTwilioSmsRequestPayload) => async (dispatch: Dispatch<any>) =>
+  HttpClientInstance.connectTwilioSmsChannel(requestPayload).then((response: Channel) => {
+    dispatch(addChannelsAction([response]));
+    return Promise.resolve(response);
+  });
+
+export const connectTwilioWhatsapp = (requestPayload: ConnectTwilioWhatsappRequestPayload) => async (
+  dispatch: Dispatch<any>
+) =>
+  HttpClientInstance.connectTwilioWhatsappChannel(requestPayload).then((response: Channel) => {
     dispatch(addChannelsAction([response]));
     return Promise.resolve(response);
   });

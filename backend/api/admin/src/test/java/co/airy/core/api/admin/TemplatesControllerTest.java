@@ -77,17 +77,17 @@ public class TemplatesControllerTest {
     @Test
     void canManageTemplates() throws Exception {
         final String name = "awesome-template";
-        final String sourceType = "facebook";
+        final String source = "facebook";
         final String content = "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}";
-        final String payload = "{\"name\":\"" + name + "\",\"source_type\": \"" + sourceType + "\",\"content\":" + content + ",\"variables\": { \"en\": {\"salutation\": \"Hello\"}}}";
+        final String payload = "{\"name\":\"" + name + "\",\"source\": \"" + source + "\",\"content\":" + content + "}";
 
-        final String createTagResponse = webTestHelper.post("/templates.create", payload, "user-id")
+        final String createTemplateResponse = webTestHelper.post("/templates.create", payload, "user-id")
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        final JsonNode jsonNode = objectMapper.readTree(createTagResponse);
+        final JsonNode jsonNode = objectMapper.readTree(createTemplateResponse);
         final String templateId = jsonNode.get("id").textValue();
 
         assertThat(templateId, is(not(nullValue())));
@@ -95,17 +95,15 @@ public class TemplatesControllerTest {
         retryOnException(() -> webTestHelper.post("/templates.info", "{\"id\":\"" + templateId + "\"}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(is(templateId)))
-                .andExpect(jsonPath("$.content").value(is(content)))
-                .andExpect(jsonPath("$.variables.en.salutation").value(is("Hello")))
-                .andExpect(jsonPath("$.source_type").value(is(sourceType)))
+                .andExpect(jsonPath("$.content.blueprint").value(is("text")))
+                .andExpect(jsonPath("$.source").value(is(source)))
                 .andExpect(jsonPath("$.name").value(is(name))), "could not find template");
 
-        webTestHelper.post("/templates.update", "{\"id\":\"" + templateId + "\", \"name\": \"new-template-name\", \"source_type\": \"google\", \"content\": " + content + "}", "user-id")
+        webTestHelper.post("/templates.update", "{\"id\":\"" + templateId + "\", \"name\": \"new-template-name\", \"source\": \"google\", \"content\": " + content + "}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(is(templateId)))
-                .andExpect(jsonPath("$.content").value(is(content)))
-                .andExpect(jsonPath("$.source_type").value(is("google")))
-                .andExpect(jsonPath("$.variables.en.salutation").value(is("Hello")))
+                .andExpect(jsonPath("$.content.blueprint").value(is("text")))
+                .andExpect(jsonPath("$.source").value(is("google")))
                 .andExpect(jsonPath("$.name").value(is("new-template-name")));
 
         retryOnException(() -> webTestHelper.post("/templates.info", "{\"id\":\"" + templateId + "\"}", "user-id")
@@ -117,51 +115,52 @@ public class TemplatesControllerTest {
 
     @Test
     void canListTemplates() throws Exception {
+        final String googleSource = "google";
+        final String googleContent = "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}";
+
         for (int i = 0; i < 10; i++) {
             final String name = "awesome-template-" + i;
-            final String sourceType = "google";
-            final String content = "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}";
-            final String payload = "{\"name\":\"" + name + "\",\"source_type\": \"" + sourceType + "\",\"content\":" + content + ",\"variables\": { \"en\": {\"salutation\": \"Hello\"}}}";
+            final String payload = "{\"name\":\"" + name + "\",\"source\": \"" + googleSource + "\",\"content\":" + googleContent + "}";
 
             webTestHelper.post("/templates.create", payload, "user-id").andExpect(status().isCreated());
         }
 
+        final String twilioSource = "twilio.sms";
+        final String twilioContent = "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}";
         for (int i = 0; i < 5; i++) {
             final String name = "awesome-template-" + i;
-            final String sourceType = "twilio.sms";
-            final String content = "{\"blueprint\":\"text\",\"payload\":\"[[salutation]]!\"}";
-            final String payload = "{\"name\":\"" + name + "\",\"source_type\": \"" + sourceType + "\",\"content\":" + content + ",\"variables\": { \"en\": {\"salutation\": \"Hello\"}}}";
+            final String payload = "{\"name\":\"" + name + "\",\"source\": \"" + twilioSource + "\",\"content\":" + twilioContent + "}";
 
             webTestHelper.post("/templates.create", payload, "user-id").andExpect(status().isCreated());
         }
 
         retryOnException(() -> webTestHelper.post("/templates.list",
-                "{\"source_type\": \"google\"}", "user-id")
+                "{\"source\": \"google\"}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(10))), "could not list google templates");
 
         retryOnException(() -> webTestHelper.post("/templates.list",
-                "{\"source_type\": \"google\", \"name\": \"awesome-template-\"}", "user-id")
+                "{\"source\": \"google\", \"name\": \"awesome-template-\"}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(10))), "could not list google templates by name");
 
         retryOnException(() -> webTestHelper.post("/templates.list",
-                "{\"source_type\": \"google\", \"name\": \"awesome-template-1\"}", "user-id")
+                "{\"source\": \"google\", \"name\": \"awesome-template-1\"}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(1))), "could not list google templates by name");
 
         retryOnException(() -> webTestHelper.post("/templates.list",
-                "{\"source_type\": \"twilio.sms\"}", "user-id")
+                "{\"source\": \"twilio.sms\"}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(5))), "could not list twilio templates");
 
         retryOnException(() -> webTestHelper.post("/templates.list",
-                "{\"source_type\": \"twilio.sms\", \"name\": \"awesome-template-\"}", "user-id")
+                "{\"source\": \"twilio.sms\", \"name\": \"awesome-template-\"}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(5))), "could not list twilio templates by name");
 
         retryOnException(() -> webTestHelper.post("/templates.list",
-                "{\"source_type\": \"twilio.sms\", \"name\": \"awesome-template-1\"}", "user-id")
+                "{\"source\": \"twilio.sms\", \"name\": \"awesome-template-1\"}", "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(1))), "could not list twilio templates by name");
     }

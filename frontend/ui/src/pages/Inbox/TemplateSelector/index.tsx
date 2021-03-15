@@ -73,11 +73,11 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, ch
   }, [searchQuery, templates]);
 
   useEffect(() => {
-    const listAllTemplatesFromSourceTypePayload = {sourceType: channelSource};
+    const listAllTemplatesFromSourcePayload = {source: channelSource};
     let abort = false;
 
     if (templates.length === 0 && loading) {
-      listTemplates(listAllTemplatesFromSourceTypePayload)
+      listTemplates(listAllTemplatesFromSourcePayload)
         .then(() => {
           if (templates.length === 0 && !abort) setLoading(false);
         })
@@ -154,10 +154,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, ch
                         selectTemplate(template);
                       }}>
                       <div className={styles.tempatePreviewName}>{template.name}</div>
-                      <SourceMessage
-                        message={{id: template.id, content: templateContent}}
-                        source={template.sourceType}
-                      />
+                      <SourceMessage message={{id: template.id, content: templateContent}} source={template.source} />
                     </div>
                   );
                 })}

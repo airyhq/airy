@@ -1,21 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
-export interface Attachement {
-  type: string;
-  payload: {
-    url?: string;
-    title?: string;
-    name?: string;
-    templateType?: string;
-    text?: string;
-  };
-  sender?: {
-    id: string;
-  };
-}
-
-export enum SourceType {
+export enum Source {
   facebook = 'facebook',
   google = 'google',
   chatplugin = 'chatplugin',

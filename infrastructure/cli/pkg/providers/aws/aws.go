@@ -135,7 +135,7 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 		ClusterName:   createdCluster.Cluster.Name,
 		InstanceTypes: []string{"c5.xlarge"},
 		NodeRole:      roleArn,
-		NodegroupName: aws.String("Airy"),
+		NodegroupName: aws.String("Airy-" + id),
 		Subnets:       subnetIds,
 	})
 

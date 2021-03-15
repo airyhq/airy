@@ -32,6 +32,7 @@ const ChannelItem = (props: ChannelItemProps) => {
   };
 
   const disconnectChannelRequestPayload = {
+    source: channel.source,
     channelId: channel.id,
   };
 
@@ -61,8 +62,8 @@ const ChannelItem = (props: ChannelItemProps) => {
     return {pathname: `/channels/${channel.source}/${channel.id}`, state: {channel: channel}};
   };
 
-  const disconnectChannel = (channelSource: string) => {
-    props.disconnectChannel(channelSource, disconnectChannelRequestPayload);
+  const disconnectChannel = () => {
+    props.disconnectChannel(disconnectChannelRequestPayload);
     setDeletePopupVisible(false);
   };
 
@@ -75,11 +76,7 @@ const ChannelItem = (props: ChannelItemProps) => {
           </div>
 
           <div className={styles.channelName}>{channel.metadata?.name}</div>
-          {isPhoneNumberSource() && channel.metadata?.name ? (
-            <div className={styles.channelId}>{channel.sourceChannelId}</div>
-          ) : (
-            !channel.metadata?.name && <div>{channel.sourceChannelId}</div>
-          )}
+          {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
           {channel.connected && (
             <div className={styles.connectedHint}>
               Connected <CheckMark />
@@ -116,7 +113,7 @@ const ChannelItem = (props: ChannelItemProps) => {
               <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(false)}>
                 Cancel
               </Button>
-              <Button styleVariant="warning" type="submit" onClick={() => disconnectChannel(channel.source)}>
+              <Button styleVariant="warning" type="submit" onClick={() => disconnectChannel()}>
                 Disconnect Channel
               </Button>
             </div>

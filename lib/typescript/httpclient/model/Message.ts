@@ -1,4 +1,5 @@
-import {MessagePayload} from '../payload/MessagePayload';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const camelcaseKeys = require('camelcase-keys');
 
 export interface Attachement {
   type: string;
@@ -56,6 +57,6 @@ export interface Message {
   sentAt: Date;
 }
 
-export interface MessagePayloadData {
-  data: MessagePayload[];
-}
+export const mapMessage = (payload): Message => {
+  return {...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}), sentAt: new Date(payload.sent_at)};
+};

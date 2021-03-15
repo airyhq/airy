@@ -1,6 +1,7 @@
 export * from './AiryRequestConfig';
 export * from './Channel';
 export * from './Contact';
+export * from './Config';
 export * from './Conversation';
 export * from './ConversationFilter';
 export * from './Message';

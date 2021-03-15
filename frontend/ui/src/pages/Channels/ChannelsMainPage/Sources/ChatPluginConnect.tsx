@@ -214,7 +214,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
 
   const disconnectChannel = (channel: Channel) => {
     if (window.confirm('Do you really want to delete this channel?')) {
-      props.disconnectChannel('chatplugin', {channelId: channel.id});
+      props.disconnectChannel({source: 'chatplugin', channelId: channel.id});
     }
   };
 

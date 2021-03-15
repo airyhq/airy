@@ -1,10 +1,10 @@
-import {ChannelPayload, UpdateChannelRequestPayload} from '../payload';
+import {UpdateChannelRequestPayload} from '../payload';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';
 
 export default HttpClient.prototype.updateChannel = async function (requestPayload: UpdateChannelRequestPayload) {
-  const response: ChannelPayload = await this.doFetchFromBackend(`channels.update`, {
+  const response = await this.doFetchFromBackend(`channels.update`, {
     channel_id: requestPayload.channelId,
     name: requestPayload.name,
     ...(requestPayload.imageUrl && {

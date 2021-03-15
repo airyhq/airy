@@ -85,6 +85,7 @@
 .placeholderLogo {
   height: 24px;
   width: 24px;
+  margin-right: 4px;
   svg {
     height: 24px;
     width: 24px;
@@ -93,17 +94,20 @@
 .facebookImage {
   height: 20px;
   width: 20px;
+  margin-right: 4px;
   border-radius: 50%;
 }
 
 .connectedChannelName {
   min-width: 168px;
-  margin: 0 4px 0 4px;
   max-width: 200px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   margin-right: 7px;
+  &:empty {
+    display: none;
+  }
 }
 
 .channelId {

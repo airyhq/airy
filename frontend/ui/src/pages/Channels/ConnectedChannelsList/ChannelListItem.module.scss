@@ -45,13 +45,16 @@
   display: flex;
   align-items: center;
   padding-left: 16px;
+  padding-right: 16px;
+  &:empty {
+    padding-right: 0px;
+  }
 }
 
 .channelId {
   height: 50px;
   display: flex;
   align-items: center;
-  padding-left: 16px;
 }
 
 .imageUrlLogo {

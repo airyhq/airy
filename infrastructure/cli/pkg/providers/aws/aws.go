@@ -7,6 +7,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -119,9 +120,15 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 
 	if clusterErr != nil {
 		log.Fatal(clusterErr)
+
 	} else {
 		fmt.Printf("Created EKS cluster %s\n", *createdCluster.Cluster.Name)
 	}
+
+	clusterReady := make(chan bool, 1)
+	go CheckClusterReady(eksClient, clusterName, clusterReady)
+
+	<-clusterReady
 
 	craetedNodeGroup, nodeGroupErr := eksClient.CreateNodegroup(context.TODO(), &eks.CreateNodegroupInput{
 		AmiType:       "AL2_x86_64",
@@ -149,4 +156,27 @@ func RandString(n int) string {
 		b[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+func CheckClusterReady(eksClient *eks.Client, clusterName string, clusterReady chan bool) {
+	fmt.Print("Waiting for cluster to be ready...\n")
+
+	for {
+		describeClusterResult, err := eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{
+			Name: &clusterName,
+		})
+
+		if err != nil {
+			fmt.Printf("Error fetching cluster information\n")
+			os.Exit(1)
+		}
+
+		if describeClusterResult.Cluster.Status == "ACTIVE" {
+			fmt.Print("Cluster is ready\n")
+			clusterReady <- true
+		} else {
+			time.Sleep(time.Second)
+		}
+	}
+
 }

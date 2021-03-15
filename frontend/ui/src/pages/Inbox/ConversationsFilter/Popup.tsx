@@ -170,11 +170,17 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       </div>
                     ) : (
                       <div className={styles.channelLogoWrapper}>
-                        {channel.metadata?.imageUrl ? <IconChannelFilter channel={channel} /> : <AiryLogoIcon />}
+                        {channel.metadata?.imageUrl ? (
+                          <img className={styles.metadataImage} src={channel.metadata?.imageUrl} />
+                        ) : channel.source ? (
+                          <IconChannelFilter channel={channel} />
+                        ) : (
+                          <AiryLogoIcon />
+                        )}
                       </div>
                     )}
 
-                    <div className={styles.pageName}>{channel.metadata?.name}</div>
+                    <div className={styles.pageName}>{channel.sourceChannelId}</div>
                   </div>
                 ))}
             </div>

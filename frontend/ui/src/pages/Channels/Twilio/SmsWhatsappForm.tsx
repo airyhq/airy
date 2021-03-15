@@ -35,7 +35,7 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
             placeholder={props.placeholder}
             value={props.twilioNumberInput}
             required={true}
-            height={32}
+            height={40}
             autoFocus={true}
             onChange={props.handleNumberInput}
             fontClass="font-s"
@@ -48,7 +48,7 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
             placeholder={props.urlPlaceholder}
             value={props.twilioUrlInput}
             required={false}
-            height={32}
+            height={40}
             onChange={props.handleUrlInput}
             fontClass="font-s"
           />
@@ -60,7 +60,7 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
             placeholder={props.namePlaceholder}
             value={props.twilioNameInput}
             required={false}
-            height={32}
+            height={40}
             onChange={props.handleNameInput}
             fontClass="font-s"
           />

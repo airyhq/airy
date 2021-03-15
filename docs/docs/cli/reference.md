@@ -96,7 +96,7 @@ airy create [flags]
 ```
   -h, --help               help for create
       --namespace string   (optional) Kubernetes namespace that Airy should be installed to. (default "default")
-      --provider string    One of the supported providers (aws|local|minikube). (default "local")
+      --provider string    One of the supported providers (aws|minikube). (default "local")
 ```
 
 #### Options inherited from parent commands

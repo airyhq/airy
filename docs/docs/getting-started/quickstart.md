@@ -41,16 +41,16 @@ in](/api/authentication.md#login) so you can obtain a valid JWT token for the
 upcoming API calls:
 
 ```bash
-host=$(mini)
+host=$(kubectl get cm core-config -o jsonpath='{.data.HOST}')
 token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \
 \"password\":\"the_answer_is_42\" \
-}" airy.core/users.login) | jq -r '.token')
+}" "$host/users.login") | jq -r '.token')
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 "{
     \"name\": \"chat plugin source\"
-}" airy.core/channels.chatplugin.connect
+}" "$host/channels.chatplugin.connect"
 ```
 
 <img alt="channels_connect" src={useBaseUrl('img/getting-started/quickstart/connect_chatplugin_channel.gif')} />
@@ -65,7 +65,7 @@ browser. This authenticates the chat plugin and enables you to send messages
 immediately:
 
 ```
-http://airy.core/chatplugin/example?channel_id=<channel_id>
+$host/chatplugin/example?channel_id=<channel_id>
 ```
 
 You can now type a message in the text box and send it 🎉
@@ -82,7 +82,7 @@ created. it should return the message you have just sent.
 
 ```bash
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
-airy.core/conversations.list | jq .
+"$host/conversations.list" | jq .
 ```
 
 ## Step 4: Consume directly from Apache Kafka

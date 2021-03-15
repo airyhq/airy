@@ -14,7 +14,7 @@ Here's an outline of the process:
 - We clean up the draft release and name it `x.y.z`
 - We run `./scripts/release.sh start x.y.z`
 - Once release days comes, we execute the following steps:
-  - We test our release (`airy create --provider=local`) and any
+  - We test our release (`airy create --provider=minikube`) and any
     additional hot-fix is committed directly to the release branch
   - Once we're satisfied with the release, we finish the release by running `./scripts/release.sh finish x.y.z`
   - We update the version string and the sha in the [Homebrew Formula](https://github.com/airyhq/homebrew-airy/blob/main/Formula/cli.rb) for the CLI.

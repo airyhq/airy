@@ -28,7 +28,7 @@ of your Chat Plugin server. When using the local minikube environment
 
 :::note
 
-`airy.core` is not publicly accessible. The setup will only work for local web pages.
+The host provided by Minikube not publicly accessible. The setup will only work for local web pages.
 
 :::
 

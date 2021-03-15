@@ -84,6 +84,7 @@ func (m *Minikube) GetHosts() (map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	endpoint = strings.TrimSpace(endpoint)
 	m.localEndpoint = endpoint
 	coreId, err := runWithOutput("kubectl", "--", "get", "cm", "core-config", "-o", "jsonpath='{.data.CORE_ID}'")
 	ngrokEndpoint := fmt.Sprintf("https://%s.tunnel.airy.co", strings.Trim(coreId, "'"))

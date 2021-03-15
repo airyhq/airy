@@ -73,14 +73,15 @@ func create(cmd *cobra.Command, args []string) {
 	fmt.Println("\t Available hosts:")
 	for hostName, host := range hosts {
 		fmt.Printf("\t\t %s:\t %s", hostName, host)
+		fmt.Println()
 	}
+	fmt.Println()
 
 	if err = provider.PostInstallation(namespace); err != nil {
 		fmt.Println("failed to get installation endpoints: ", err)
 		os.Exit(1)
 	}
 
-	fmt.Println()
 	fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
 	fmt.Println()
 }

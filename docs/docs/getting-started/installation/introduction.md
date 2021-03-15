@@ -7,7 +7,6 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import TLDR from "@site/src/components/TLDR";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
-import VagrantSVG from "@site/static/icons/vagrant.svg";
 import KafkaSVG from "@site/static/icons/kafka.svg";
 import RocketSVG from "@site/static/icons/rocket.svg";
 
@@ -32,10 +31,10 @@ description='Install the Airy Core CLI application'
 link='/cli/installation'
 />
 <ButtonBox
-icon={() => <VagrantSVG />}
-title='Local test environment with Vagrant'
+icon={() => <img style={{width:"32px", marginRight:"12px"}} alt="minikube" src={useBaseUrl('img/getting-started/installation/minikube.png')} />}
+title='Local test environment with Minikube'
 description='Step by step guide to run Airy Core on your local machine'
-link='getting-started/installation/vagrant'
+link='getting-started/installation/minikube'
 />
 <ButtonBox
 icon={() => <KafkaSVG />}

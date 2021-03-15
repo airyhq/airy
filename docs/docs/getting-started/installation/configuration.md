@@ -47,7 +47,7 @@ These settings are used to connect the **Airy Components** to your Kafka cluster
   - `endpoint` in `<HOSTNAME>:<PORT>` format
   - `dbName` name of the database in the PostgreSQL server
   - `username` these credentials will be passed to the **API Auth Component**
-  - `password` and they will be used to create the Postgres if you are deploying with **Vagrant**
+  - `password` and they will be used to create the Postgres database
 
 ### Components
 

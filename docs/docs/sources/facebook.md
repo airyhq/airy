@@ -74,7 +74,7 @@ Refer to the [Configuration
 Docs](/getting-started/installation/configuration.md#components) on how to input
 these values.
 
-Refer to the [test](getting-started/installation/vagrant.md#connect-sources)
+Refer to the [test](getting-started/installation/minikube.md#connect-sources)
 guide or the
 [production](getting-started/installation/production.md#connect-sources) one to
 set these variables in your Airy Core instance.
@@ -119,9 +119,7 @@ Your Facebook Webhook URL should have the following format:
 `https://RANDOM_STRING.tunnel.airy.co/facebook`
 ```
 
-Refer to [our section on the Vagrant box
-status](/getting-started/installation/vagrant#status) for information about how
-to find your Facebook Webhook URL.
+Refer to [the section on public webhooks](/getting-started/installation/minikube#public-webhooks) for information about how to find your Facebook Webhook URL.
 
 :::
 
@@ -131,7 +129,7 @@ successfully set to your Airy Core instance.
 
 :::note
 
-Refer to the [test](/getting-started/installation/vagrant.md#connect-sources)
+Refer to the [test](/getting-started/installation/minikube.md#connect-sources)
 guide or the
 [production](/getting-started/installation/production.md#connect-sources) one to
 set these variables in your Airy Core instance.

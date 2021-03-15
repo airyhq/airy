@@ -23,8 +23,8 @@ in to the UI**
 
 ## Introduction
 
-The easiest way to see the Airy Core UI in action is to launch the [Vagrant
-Box](getting-started/installation/vagrant.md) and then follow these three simple
+The easiest way to see the Airy Core UI in action is to launch the [minikube
+provider](getting-started/installation/minikube.md) and then follow these three simple
 steps.
 
 ## Step 1: Registration

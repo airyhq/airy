@@ -27,7 +27,7 @@
     "redux-starter-kit": "^0.8.1",
     "regenerator-runtime": "^0.13.5",
     "reselect": "4.0.0",
-    "typesafe-actions": "^4.4.2"
+    "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {
     "@babel/core": "7.8.4",

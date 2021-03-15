@@ -2,6 +2,7 @@ import _, {combineReducers, Reducer} from 'redux-starter-kit';
 import {User} from 'httpclient';
 import {Tags} from './tags';
 import {Settings} from './settings';
+import {Templates} from './templates';
 
 import user from './user';
 import conversations, {ConversationsState} from './conversations';
@@ -10,12 +11,14 @@ import settings from './settings';
 import config, {Config} from './config';
 import channels, {ChannelsState} from './channels';
 import messages, {Messages} from './messages';
+import templates from './templates';
 
 export * from './channels';
 export * from './conversations';
 export * from './settings';
 export * from './config';
 export * from './tags';
+export * from './templates';
 export {initialState} from './user';
 
 export type DataState = {
@@ -26,6 +29,7 @@ export type DataState = {
   settings: Settings;
   channels: ChannelsState;
   config: Config;
+  templates: Templates;
 };
 
 const reducers: Reducer = combineReducers<DataState>({
@@ -36,6 +40,7 @@ const reducers: Reducer = combineReducers<DataState>({
   settings,
   channels,
   config,
+  templates,
 });
 
 export default reducers;

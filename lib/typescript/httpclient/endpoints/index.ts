@@ -17,3 +17,4 @@ export * from './untagConversation';
 export * from './sendMessages';
 export * from './getConfig';
 export * from './updateChannel';
+export * from './listTemplates';

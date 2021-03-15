@@ -1,5 +1,5 @@
 import React from 'react';
-import {isFromContact, Message} from '../../../httpclient/model';
+import {isFromContact, RenderedContent} from '../../../httpclient/model';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
@@ -83,7 +83,7 @@ const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | Gene
   };
 };
 
-function facebookInbound(message: Message): ContentUnion {
+function facebookInbound(message: RenderedContent): ContentUnion {
   const messageJson = message.content;
 
   if (messageJson.message?.attachments?.length) {
@@ -116,19 +116,19 @@ function facebookInbound(message: Message): ContentUnion {
   };
 }
 
-function facebookOutbound(message: Message): ContentUnion {
-  const messageJson = message.content;
+function facebookOutbound(message: RenderedContent): ContentUnion {
+  const messageJson = message.content.message ?? message.content;
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {
       messageJson.quick_replies = messageJson.quick_replies.slice(0, 13);
     }
 
-    if (messageJson.attachment || messageJson.message?.attachments) {
+    if (messageJson.attachment || messageJson.attachments) {
       return {
         type: 'quickReplies',
-        attachment: parseAttachment(messageJson.attachment || messageJson.message?.attachments),
-        quickReplies: messageJson.quick_replies || messageJson.message?.quick_replies,
+        attachment: parseAttachment(messageJson.attachment || messageJson.attachments),
+        quickReplies: messageJson.quick_replies,
       };
     }
 
@@ -139,14 +139,14 @@ function facebookOutbound(message: Message): ContentUnion {
     };
   }
 
-  if (messageJson.attachment || messageJson.message?.attachments) {
-    return parseAttachment(messageJson.attachment || messageJson.message?.attachments[0]);
+  if (messageJson.attachment || messageJson.attachments) {
+    return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
 
-  if (messageJson.text || messageJson.message?.text) {
+  if (messageJson.text) {
     return {
       type: 'text',
-      text: messageJson.text || messageJson.message?.text,
+      text: messageJson.text,
     };
   }
 

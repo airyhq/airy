@@ -1,4 +1,4 @@
-import {Message} from 'httpclient';
+import {Message, RenderedContent} from 'httpclient';
 
 export function dateFormat(date: Date) {
   const now = new Date();
@@ -94,7 +94,7 @@ export function formatTimeOfMessageWithHours(message: Message) {
   return '';
 }
 
-export function formatDateOfMessage(message: Message) {
+export function formatDateOfMessage(message: RenderedContent) {
   if (!message) {
     return '';
   }

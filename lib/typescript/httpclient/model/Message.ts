@@ -14,7 +14,7 @@ export interface Attachement {
   };
 }
 
-export enum MessageSource {
+export enum SourceType {
   facebook = 'facebook',
   google = 'google',
   chatplugin = 'chatplugin',
@@ -48,10 +48,6 @@ export enum SenderType {
   appUser = 'app_user',
 }
 
-export function isFromContact(message: Message) {
-  return message?.senderType === SenderType.sourceContact;
-}
-
 export interface Message {
   id: string;
   content: any;
@@ -59,6 +55,7 @@ export interface Message {
   senderType: SenderType;
   sentAt: Date;
 }
+
 export interface MessagePayloadData {
   data: MessagePayload[];
 }

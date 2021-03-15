@@ -48,11 +48,14 @@ export const Carousel = ({children}) => {
     const resizeObserver = new ResizeObserver(() => {
       resetScrollButtons();
     });
-    resizeObserver.observe(carouselChildren.current);
-    resetScrollButtons();
-    carouselChildren.current.addEventListener('scroll', () => {
+
+    if (carouselChildren && carouselChildren.current) {
+      resizeObserver.observe(carouselChildren.current);
       resetScrollButtons();
-    });
+      carouselChildren.current.addEventListener('scroll', () => {
+        resetScrollButtons();
+      });
+    }
   }, [carouselChildren]);
 
   useEffect(() => {

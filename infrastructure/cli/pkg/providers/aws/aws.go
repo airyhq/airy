@@ -44,7 +44,7 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	input := &iam.CreateRoleInput{
 		AssumeRolePolicyDocument: aws.String(RolePolicyDocument),
 		Path:                     aws.String("/"),
-		RoleName:                 aws.String("Airy-EKS-Role"),
+		RoleName:                 aws.String("Airy-EKS-Role-" + id),
 	}
 	iamResult, err := iamClient.CreateRole(context.TODO(), input)
 	if err != nil {

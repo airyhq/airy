@@ -15,8 +15,7 @@ import java.util.UUID;
 public class UpdateTemplateRequestPayload {
     @NotNull
     private UUID id;
-    private String sourceType;
+    private String source;
     private String name;
     private JsonNode content;
-    private JsonNode variables;
 }

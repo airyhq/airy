@@ -1,5 +1,5 @@
 import React from 'react';
-import {isFromContact, RenderedContent} from '../../../../httpclient/model';
+import {isFromContact, RenderedContentUnion} from 'httpclient';
 import {Text} from '../../../components/Text';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../../shared';
 import {ContentUnion} from './twilioSMSModel';
@@ -17,7 +17,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-const inboundContent = (message: RenderedContent): ContentUnion => {
+const inboundContent = (message: RenderedContentUnion): ContentUnion => {
   const messageContent = message.content;
   const startText = messageContent.search('&Body=');
   const endText = messageContent.search('&FromCountry=');
@@ -32,7 +32,7 @@ const inboundContent = (message: RenderedContent): ContentUnion => {
   };
 };
 
-const outboundContent = (message: RenderedContent): ContentUnion => {
+const outboundContent = (message: RenderedContentUnion): ContentUnion => {
   const messageContent = message.content.message ?? message.content;
   return {
     type: 'text',

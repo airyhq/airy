@@ -14,7 +14,7 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 
 import {StateModel} from '../../../reducers';
-import {getTextMessagePayload, RenderedContent, Template} from 'httpclient';
+import {getTextMessagePayload, RenderedContentUnion, Template} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 
@@ -31,7 +31,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type MessageInputProps = {channelSource: string};
 
 interface SelectedTemplate {
-  message: RenderedContent;
+  message: RenderedContentUnion;
   sourceType: string;
 }
 
@@ -144,7 +144,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
         setInput('');
         setIsShowingTemplateModal(false);
         const templateContent = JSON.parse(template.content) as any;
-        setSelectedTemplate({message: {id: template.id, content: templateContent}, sourceType: template.sourceType});
+        setSelectedTemplate({message: {...template, content: templateContent}, sourceType: template.sourceType});
       }
       sendButtonRef.current.focus();
     };

@@ -1,5 +1,5 @@
 import React from 'react';
-import {isFromContact, RenderedContent} from '../../../httpclient/model';
+import {isFromContact, RenderedContentUnion} from 'httpclient';
 import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
@@ -24,16 +24,16 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       return <Text {...getDefaultMessageRenderingProps(props)} text={content.title} />;
 
     case 'image':
-      return <Image {...getDefaultMessageRenderingProps(props)} imageUrl={content.imageUrl} />;
+      return <Image imageUrl={content.imageUrl} />;
 
     case 'video':
-      return <Video {...getDefaultMessageRenderingProps(props)} videoUrl={content.videoUrl} />;
+      return <Video videoUrl={content.videoUrl} />;
 
     case 'buttonTemplate':
-      return <ButtonTemplate {...getDefaultMessageRenderingProps(props)} template={content} />;
+      return <ButtonTemplate template={content} />;
 
     case 'genericTemplate':
-      return <GenericTemplate {...getDefaultMessageRenderingProps(props)} template={content} />;
+      return <GenericTemplate template={content} />;
 
     case 'quickReplies':
       return (
@@ -83,7 +83,7 @@ const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | Gene
   };
 };
 
-function facebookInbound(message: RenderedContent): ContentUnion {
+function facebookInbound(message: RenderedContentUnion): ContentUnion {
   const messageJson = message.content;
 
   if (messageJson.message?.attachments?.length) {
@@ -116,7 +116,7 @@ function facebookInbound(message: RenderedContent): ContentUnion {
   };
 }
 
-function facebookOutbound(message: RenderedContent): ContentUnion {
+function facebookOutbound(message: RenderedContentUnion): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
   if (messageJson.quick_replies) {

@@ -154,10 +154,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, ch
                         selectTemplate(template);
                       }}>
                       <div className={styles.tempatePreviewName}>{template.name}</div>
-                      <SourceMessage
-                        message={{id: template.id, content: templateContent}}
-                        source={template.sourceType}
-                      />
+                      <SourceMessage message={{...template, content: templateContent}} source={template.sourceType} />
                     </div>
                   );
                 })}

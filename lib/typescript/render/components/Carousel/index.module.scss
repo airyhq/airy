@@ -3,7 +3,6 @@
 
 .wrapper {
   display: flex;
-  align-items: flex-end;
   flex-direction: column;
   margin-top: 5px;
   overflow: hidden;
@@ -15,7 +14,6 @@
   flex-direction: row;
   overflow: hidden;
   max-width: 100%;
-  align-items: flex-end;
 }
 
 .buttonScroll {

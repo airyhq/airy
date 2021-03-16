@@ -5,5 +5,4 @@ export interface Template {
   name: string;
   sourceType: SourceType;
   content: string;
-  variables: any;
 }

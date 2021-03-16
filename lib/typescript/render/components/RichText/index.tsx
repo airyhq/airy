@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import {RenderedContent} from 'httpclient';
+import {RenderedContentUnion} from 'httpclient';
 import styles from './index.module.scss';
 import {DefaultMessageRenderingProps} from '..';
 
 type RichTextRenderProps = DefaultMessageRenderingProps & {
-  message: RenderedContent;
+  message: RenderedContentUnion;
   text: string;
   fallback: string;
   containsRichText: boolean;

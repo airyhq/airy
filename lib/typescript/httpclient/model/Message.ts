@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
+import {Content} from './Content';
 
 export interface Attachement {
   type: string;
@@ -49,9 +50,7 @@ export enum SenderType {
   appUser = 'app_user',
 }
 
-export interface Message {
-  id: string;
-  content: any;
+export interface Message extends Content {
   deliveryState: MessageState;
   senderType: SenderType;
   sentAt: Date;

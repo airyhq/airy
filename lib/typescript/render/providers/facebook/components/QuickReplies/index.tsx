@@ -12,19 +12,15 @@ export type QuickRepliesRenderProps = DefaultMessageRenderingProps & {
   quickReplies: QuickReply[];
 };
 
-export const QuickReplies = ({quickReplies, contact, fromContact, text, attachment}: QuickRepliesRenderProps) => (
+export const QuickReplies = ({quickReplies, fromContact, text, attachment}: QuickRepliesRenderProps) => (
   <div className={styles.wrapper}>
-    {text && <Text contact={contact} fromContact={fromContact} text={text} />}
+    {text && <Text text={text} fromContact={fromContact} />}
 
-    {attachment && 'text' in attachment && <Text contact={contact} fromContact={fromContact} text={attachment.text} />}
+    {attachment && 'text' in attachment && <Text text={attachment.text} fromContact={fromContact} />}
 
-    {attachment && 'imageUrl' in attachment && (
-      <Image contact={contact} fromContact={fromContact} imageUrl={attachment.imageUrl} />
-    )}
+    {attachment && 'imageUrl' in attachment && <Image imageUrl={attachment.imageUrl} />}
 
-    {attachment && 'videoUrl' in attachment && (
-      <Video contact={contact} fromContact={fromContact} videoUrl={attachment.videoUrl} />
-    )}
+    {attachment && 'videoUrl' in attachment && <Video videoUrl={attachment.videoUrl} />}
 
     <div className={styles.container}>
       {quickReplies.map(({title, image_url}) => (

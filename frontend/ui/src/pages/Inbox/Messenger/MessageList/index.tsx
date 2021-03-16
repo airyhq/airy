@@ -17,7 +17,7 @@ import {formatDateOfMessage} from '../../../../services/format/date';
 import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 import {isSameDay} from 'dates';
-import {getSource, isFromContact, RenderedContent} from 'httpclient';
+import {getSource, isFromContact, RenderedContentUnion} from 'httpclient';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime} from 'dates';
 
@@ -96,12 +96,12 @@ const MessageList = (props: MessageListProps) => {
     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
   };
 
-  const hasDateChanged = (prevMessage: RenderedContent, message: RenderedContent) => {
+  const hasDateChanged = (prevMessage: RenderedContentUnion, message: RenderedContentUnion) => {
     if (prevMessage == null) {
       return true;
     }
 
-    return !isSameDay(prevMessage.sentAt, message.sentAt);
+    if ('sentAt' in prevMessage && 'sentAt' in message) return !isSameDay(prevMessage.sentAt, message.sentAt);
   };
 
   const isLoadingConversation = () => {
@@ -159,20 +159,20 @@ const MessageList = (props: MessageListProps) => {
   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
       {messages &&
-        messages.map((message: RenderedContent, index: number) => {
+        messages.map((message: RenderedContentUnion, index: number) => {
           const prevMessage = messages[index - 1];
           const nextMessage = messages[index + 1];
           const shouldShowContact = !isFromContact(prevMessage) && !isFromContact(message);
           const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
 
           const contactToShow = shouldShowContact ? conversation.metadata.contact : null;
-          const sentAt = lastInGroup ? formatTime(message.sentAt) : null;
+          const sentAt = lastInGroup && 'sentAt' in message ? formatTime(message.sentAt) : null;
 
           return (
             <div key={message.id} id={`message-item-${message.id}`}>
               {hasDateChanged(prevMessage, message) && (
                 <div key={`date-${message.id}`} className={styles.dateHeader}>
-                  {formatDateOfMessage(message)}
+                  {'sentAt' in message ? formatDateOfMessage(message) : ''}
                 </div>
               )}
               <MessageInfoWrapper

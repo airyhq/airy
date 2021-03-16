@@ -3,7 +3,7 @@ import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared'
 import {Suggestions} from './components/Suggestions';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './googleModel';
-import {RenderedContent, isFromContact} from 'httpclient';
+import {RenderedContentUnion, isFromContact} from 'httpclient';
 import {Image} from '../../components/Image';
 
 export const GoogleRender = (props: MessageRenderProps) => {
@@ -18,7 +18,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
 
     case 'image':
-      return <Image {...getDefaultMessageRenderingProps(props)} imageUrl={content.imageUrl} />;
+      return <Image imageUrl={content.imageUrl} />;
 
     case 'suggestions':
       return (
@@ -33,7 +33,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-function googleInbound(message: RenderedContent): ContentUnion {
+function googleInbound(message: RenderedContentUnion): ContentUnion {
   const messageJson = message.content.message;
 
   if (messageJson.suggestionResponse) {
@@ -84,7 +84,7 @@ function googleInbound(message: RenderedContent): ContentUnion {
   };
 }
 
-function googleOutbound(message: RenderedContent): ContentUnion {
+function googleOutbound(message: RenderedContentUnion): ContentUnion {
   const messageJson = message.content.message ?? message.content;
   const maxNumberOfSuggestions = 13;
 

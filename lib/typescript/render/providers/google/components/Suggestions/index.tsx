@@ -17,11 +17,11 @@ type SuggestionsRendererProps = DefaultMessageRenderingProps & {
   suggestions: SuggestionsUnion[];
 };
 
-export const Suggestions = ({text, fallback, image, suggestions, contact, fromContact}: SuggestionsRendererProps) => (
+export const Suggestions = ({text, fallback, image, suggestions, fromContact}: SuggestionsRendererProps) => (
   <div className={styles.suggestionsWrapper}>
-    {image && <Image contact={contact} fromContact={fromContact} imageUrl={image.fileUrl} altText={image.altText} />}
+    {image && <Image imageUrl={image.fileUrl} altText={image.altText} />}
 
-    {(text || fallback) && <Text contact={contact} fromContact={fromContact} text={text ?? fallback} />}
+    {(text || fallback) && <Text text={text ?? fallback} fromContact={fromContact} />}
 
     <div className={styles.suggestionsContainer}>
       {(suggestions as SuggestionsUnion[]).map(elem => {

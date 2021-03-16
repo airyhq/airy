@@ -24,7 +24,7 @@ in to the UI**
 ## Introduction
 
 The easiest way to see the Airy Core UI in action is to launch the [minikube
-provider](getting-started/installation/minikube.md) and then follow these three simple
+provider](getting-started/installation/minikube.md) and then follow these three
 steps.
 
 ## Step 1: Registration

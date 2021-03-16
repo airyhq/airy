@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   width: 582px;
-  height: 477px;
+  height: 360px;
   background: white;
   border-radius: 8px;
   position: relative;
@@ -28,29 +28,6 @@
   font-weight: bold;
   padding-top: 40px;
   padding-left: 40px;
-}
-
-.button {
-  background-color: var(--color-airy-blue);
-  width: 205px;
-  height: 40px;
-  color: white;
-  border-radius: 4px;
-  align-items: center;
-  margin-top: 32px;
-  margin-left: 40px;
-  margin-bottom: 40px;
-
-  button {
-    @include font-base;
-    width: 205px;
-    height: 40px;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: white;
-    cursor: pointer;
-  }
 }
 
 .closeButton {

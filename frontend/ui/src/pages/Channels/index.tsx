@@ -12,8 +12,8 @@ import MainPage from './MainPage';
 import FacebookConnect from './Providers/Facebook/Messenger/FacebookConnect';
 import ChatPluginConnect from './Providers/Airy/ChatPlugin/ChatPluginConnect';
 import ConnectedChannelsList from './ConnectedChannelsList';
-import TwilioSmsConnect from './Providers/Twilio/TwilioSmsConnect';
-import TwilioWhatsappConnect from './Providers/Twilio/TwilioWhatsappConnect';
+import TwilioSmsConnect from './Providers/Twilio/SMS/TwilioSmsConnect';
+import TwilioWhatsappConnect from './Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
 
 import styles from './index.module.scss';
 

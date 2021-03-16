@@ -2,9 +2,9 @@ import React from 'react';
 
 import {Button, Input, UrlInputField} from '@airyhq/components';
 
-import styles from './SmsWhatsappForm.module.scss';
+import styles from './TwilioSmsWhatsappConnect.module.scss';
 
-type SmsWhatsappFormProps = {
+type TwilioSmsWhatsappConnectProps = {
   twilioPhoneNumber: string;
   placeholder: string;
   urlPlaceholder: string;
@@ -27,7 +27,7 @@ type SmsWhatsappFormProps = {
   connectTwilioSms: (e: React.ChangeEvent<HTMLFormElement>) => void;
 };
 
-const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
+const TwilioSmsWhatsappConnect = (props: TwilioSmsWhatsappConnectProps) => {
   return (
     <form onSubmit={props.connectTwilioSms} className={styles.formContainer}>
       <div className={styles.formContent}>
@@ -75,4 +75,4 @@ const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
   );
 };
 
-export default SmsWhatsappForm;
+export default TwilioSmsWhatsappConnect;

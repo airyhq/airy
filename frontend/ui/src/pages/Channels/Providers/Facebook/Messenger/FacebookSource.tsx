@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
-import {Channel, ChannelSource} from 'httpclient';
+import {Channel, SourceType} from 'httpclient';
 import ConnectedChannelsBySourceCard from '../../../ConnectedChannelsBySourceCard';
 import SourceTypeDescriptionCard from '../../../SourceTypeDescriptionCard';
 import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/messenger_avatar.svg';
@@ -10,7 +10,7 @@ import {CHANNELS_FACEBOOK_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../../
 
 type FacebookSourceProps = {
   facebookSource: Channel[];
-  showDialogAction: (source: string) => void;
+  addChannelAction: (source: string) => void;
 };
 
 const FacebookSource = (props: FacebookSourceProps & RouteComponentProps) => {
@@ -23,8 +23,8 @@ const FacebookSource = (props: FacebookSourceProps & RouteComponentProps) => {
         text="Connect multiple Facebook pages"
         image={<MessengerAvatarIcon />}
         displayButton={!channels.length}
-        id={ChannelSource.facebook}
-        onAddChannelClick={() => props.showDialogAction(ChannelSource.facebook)}
+        id={SourceType.facebook}
+        onAddChannelClick={() => props.addChannelAction(SourceType.facebook)}
       />
 
       <ConnectedChannelsBySourceCard

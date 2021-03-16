@@ -1,14 +1,14 @@
 import React from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
-import {Channel, ChannelSource} from 'httpclient';
-import ConnectedChannelsBySourceCard from '../../ConnectedChannelsBySourceCard';
-import SourceTypeDescriptionCard from '../../SourceTypeDescriptionCard';
+import {Channel, SourceType} from 'httpclient';
+import ConnectedChannelsBySourceCard from '../../../ConnectedChannelsBySourceCard';
+import SourceTypeDescriptionCard from '../../../SourceTypeDescriptionCard';
 import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/sms_avatar.svg';
 
-import {CHANNELS_CONNECTED_ROUTE, CHANNELS_TWILIO_SMS_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_CONNECTED_ROUTE, CHANNELS_TWILIO_SMS_ROUTE} from '../../../../../routes/routes';
 
-type TwilioSmsSourceProps = {twilioSmsSource: Channel[]; showDialogAction: (source: string) => void};
+type TwilioSmsSourceProps = {twilioSmsSource: Channel[]; addChannelAction: (source: string) => void};
 
 const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
   const channels = props.twilioSmsSource.filter((channel: Channel) => channel.source === 'twilio.sms');
@@ -21,8 +21,8 @@ const TwilioSmsSource = (props: TwilioSmsSourceProps & RouteComponentProps) => {
           text="Deliver SMS with ease"
           image={<SMSAvatarIcon />}
           displayButton={!channels.length}
-          id={ChannelSource.twilioSMS}
-          onAddChannelClick={() => props.showDialogAction(ChannelSource.twilioSMS)}
+          id={SourceType.twilioSMS}
+          onAddChannelClick={() => props.addChannelAction(SourceType.twilioSMS)}
         />
 
         <ConnectedChannelsBySourceCard

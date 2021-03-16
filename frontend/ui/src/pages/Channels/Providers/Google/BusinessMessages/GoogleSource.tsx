@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {Channel, ChannelSource} from 'httpclient';
-import ConnectedChannelsBySourceCard from '../../ConnectedChannelsBySourceCard';
-import SourceTypeDescriptionCard from '../../SourceTypeDescriptionCard';
+import {Channel, SourceType} from 'httpclient';
+import ConnectedChannelsBySourceCard from '../../../ConnectedChannelsBySourceCard';
+import SourceTypeDescriptionCard from '../../../SourceTypeDescriptionCard';
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/google_avatar.svg';
 
 type GoogleSourceProps = {googleSource: Channel[]};
@@ -17,7 +17,7 @@ const GoogleSource = (props: GoogleSourceProps) => {
         text="Be there when people search"
         image={<GoogleAvatarIcon />}
         displayButton={!channels.length}
-        id={ChannelSource.google}
+        id={SourceType.google}
       />
 
       <ConnectedChannelsBySourceCard

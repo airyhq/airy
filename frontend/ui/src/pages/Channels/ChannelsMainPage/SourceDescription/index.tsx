@@ -8,7 +8,7 @@ type SourceDescriptionProps = {
   text: string;
   displayButton: boolean;
   id: string;
-  dataCy?: string;
+  dataCyButton?: string;
   onAddChannelClick?: () => void;
 };
 
@@ -30,7 +30,7 @@ const SourceDescription = (props: SourceDescriptionProps) => {
             type="button"
             className={styles.addChannelButton}
             onClick={props.onAddChannelClick}
-            data-cy={props.dataCy}>
+            data-cy={props.dataCyButton}>
             <div className={styles.channelButtonIcon} title="Add a channel">
               <AddIcon />
             </div>

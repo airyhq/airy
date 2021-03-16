@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@airyhq/components": "latest",
+    "@airyhq/components": "^0.4.14",
     "@stomp/stompjs": "^6.1.0",
     "@types/node": "12.11.1",
     "@types/react": "16.9.34",

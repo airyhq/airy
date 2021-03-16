@@ -15,7 +15,8 @@ type SourceInfoProps = {
   onMoreChannelsClick?: () => void;
   onChannelClick?: (channel: Channel) => void;
   onSourceInfoClick?: () => void;
-  dataCy?: string;
+  dataCyButton?: string;
+  dataCyChannelName?: string;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
@@ -39,7 +40,10 @@ const SourceInfo = (props: SourceInfoProps) => {
               <div className={styles.connectedChannel}>
                 {channels.slice(0, channelsToShow).map((channel: Channel) => {
                   return (
-                    <li key={channel.sourceChannelId} className={styles.channelListEntry}>
+                    <li
+                      key={channel.sourceChannelId}
+                      className={styles.channelListEntry}
+                      data-cy={props.dataCyChannelName}>
                       <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
                         {source === 'facebook' && channel.metadata?.imageUrl ? (
                           <img
@@ -77,7 +81,7 @@ const SourceInfo = (props: SourceInfoProps) => {
               type="button"
               className={styles.addChannelButton}
               onClick={props.onAddChannelClick}
-              data-cy={props.dataCy}>
+              data-cy={props.dataCyButton}>
               <div className={styles.channelButtonIcon} title="Add a channel">
                 <AddChannel />
               </div>

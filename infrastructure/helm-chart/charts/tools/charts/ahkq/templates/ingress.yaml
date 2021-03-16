@@ -17,4 +17,8 @@ spec:
                 name: akhq
                 port:
                   number: 8080
-{{- end }}
+    {{ if .Values.global.ingress }}
+      host: {{ .Values.global.ingress.host }}
+    {{ end }}
+
+  {{- end }}

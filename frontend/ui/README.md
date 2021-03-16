@@ -40,6 +40,7 @@ In order to communicate with our API endpoints, you need a valid [JWT](https://j
 ### Endpoints
 
 In order to communicate with the instance's API you need to get the host assigned to it by minikube by running:
+
 ```
 host=$(minikube -p airy-core -n kube-system service --url traefik)
 ```

@@ -1,28 +1,33 @@
-import React, {useState, useEffect, useRef, KeyboardEvent} from 'react';
+import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {useParams} from 'react-router-dom';
-import styles from './index.module.scss';
-import {sendMessages} from '../../../actions/messages';
-import TemplateSelector from '../TemplateSelector';
-import 'emoji-mart/css/emoji-mart.css';
+import {withRouter, useParams} from 'react-router-dom';
+import {Button} from '@airyhq/components';
+import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 import {Picker} from 'emoji-mart';
 import {SourceMessage} from 'render';
+import {getTextMessagePayload, Message, RenderedContent, Template} from 'httpclient';
+import 'emoji-mart/css/emoji-mart.css';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
+import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
 
+import {ConversationRouteProps} from '../index';
+import {sendMessages} from '../../../actions/messages';
+import TemplateSelector from '../TemplateSelector';
 import {StateModel} from '../../../reducers';
-import {getTextMessagePayload, RenderedContent, Template} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
-import {cyMessageSendButton, cyMessageTextArea} from 'handles';
+import {getCurrentMessages} from '../../../selectors/conversations';
+
+import styles from './index.module.scss';
 
 const mapDispatchToProps = {sendMessages};
 
-const mapStateToProps = (state: StateModel) => {
+const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
-    messages: state.data.messages.all,
+    messages: getCurrentMessages(state, ownProps),
     listTemplates,
   };
 };
@@ -41,6 +46,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const [input, setInput] = useState('');
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+  const [isShowingSuggestedReplies, setIsShowingSuggestedReplies] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
 
   const textAreaRef = useRef(null);
@@ -189,54 +195,81 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     );
   };
 
+  const getLastMessageWithSuggestedReplies = useCallback(() => {
+    const lastMessages = props.messages
+      ?.filter((message: Message) => message.senderType == 'source_contact')
+      .slice(props.messages.length - 5)
+      .reverse();
+    return lastMessages?.find(
+      (message: Message) => message.metadata?.suggestions && Object.keys(message.metadata.suggestions).length > 0
+    );
+  }, [props.messages]);
+
+  const toggleSuggestedReplies = () => {
+    setIsShowingSuggestedReplies(!isShowingSuggestedReplies);
+  };
+
   return (
-    <form className={`${styles.container} ${styles.flexWrap}`}>
-      <div className={`${styles.messageWrap} ${styles.flexWrap}`}>
-        <div className={styles.inputWrap}>
-          {!selectedTemplate && (
-            <>
-              <textarea
-                className={styles.messageTextArea}
-                ref={textAreaRef}
-                rows={1}
-                name="inputBar"
-                placeholder="Enter a message..."
-                autoFocus={true}
-                value={input}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                data-cy={cyMessageTextArea}
-              />
-              <InputOptions />
-            </>
-          )}
-
-          {selectedTemplate && (
-            <div className={styles.templateSelector}>
-              <button className={styles.removeTemplateButton} onClick={() => setSelectedTemplate(null)}>
-                <Close />
-              </button>
-              <SourceMessage message={selectedTemplate.message} source={selectedTemplate.source} />
+    <div className={styles.container}>
+      {getLastMessageWithSuggestedReplies() && (
+        <div className={styles.suggestionsRow}>
+          {isShowingSuggestedReplies && <div>Replies!</div>}
+          <Button type="button" styleVariant="outline" onClick={toggleSuggestedReplies}>
+            <div className={styles.suggestionButton}>
+              Suggestions
+              <ChevronDownIcon className={isShowingSuggestedReplies ? styles.chevronUp : styles.chevronDown} />
             </div>
-          )}
+          </Button>
         </div>
-      </div>
+      )}
+      <form className={styles.inputForm}>
+        <div className={styles.messageWrap}>
+          <div className={styles.inputWrap}>
+            {!selectedTemplate && (
+              <>
+                <textarea
+                  className={styles.messageTextArea}
+                  ref={textAreaRef}
+                  rows={1}
+                  name="inputBar"
+                  placeholder="Enter a message..."
+                  autoFocus={true}
+                  value={input}
+                  onChange={handleChange}
+                  onKeyDown={handleKeyDown}
+                  data-cy={cyMessageTextArea}
+                />
+                <InputOptions />
+              </>
+            )}
 
-      <div className={styles.sendDiv}>
-        <button
-          type="button"
-          ref={sendButtonRef}
-          className={`${styles.sendButton} ${(input || selectedTemplate) && styles.sendButtonActive}`}
-          onClick={handleClick}
-          disabled={input.trim().length == 0 && !selectedTemplate}
-          data-cy={cyMessageSendButton}>
-          <div className={styles.sendButtonText}>
-            <Paperplane />
+            {selectedTemplate && (
+              <div className={styles.templateSelector}>
+                <button className={styles.removeTemplateButton} onClick={() => setSelectedTemplate(null)}>
+                  <Close />
+                </button>
+                <SourceMessage message={selectedTemplate.message} source={selectedTemplate.source} />
+              </div>
+            )}
           </div>
-        </button>
-      </div>
-    </form>
+        </div>
+
+        <div className={styles.sendDiv}>
+          <button
+            type="button"
+            ref={sendButtonRef}
+            className={`${styles.sendButton} ${(input || selectedTemplate) && styles.sendButtonActive}`}
+            onClick={handleClick}
+            disabled={input.trim().length == 0 && !selectedTemplate}
+            data-cy={cyMessageSendButton}>
+            <div className={styles.sendButtonText}>
+              <Paperplane />
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 
-export default connector(MessageInput);
+export default withRouter(connector(MessageInput));

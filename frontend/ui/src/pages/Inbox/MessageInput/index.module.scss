@@ -3,18 +3,54 @@
 
 .container {
   display: flex;
-  flex-grow: 1;
-  align-items: center;
-}
-
-.flexWrap {
-  display: flex;
-  flex-grow: 1;
+  flex-direction: column;
   margin-bottom: 14px;
   margin-top: 24px;
 }
 
+.inputForm {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.suggestionsRow {
+  margin-left: 14px;
+}
+
+.suggestionButton {
+  display: flex;
+  align-items: center;
+
+  .chevronDown {
+    path {
+      fill: var(--color-airy-blue);
+    }
+  }
+
+  &:hover {
+    .chevronDown {
+      path {
+        fill: white;
+      }
+    }
+  }
+}
+
+.chevronDown {
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  transform: scaleY(-1);
+}
+
+.chevronUp {
+  @extend .chevronDown;
+  transform: scaleY(1);
+}
+
 .messageWrap {
+  flex-grow: 1;
   border: 1px solid var(--color-light-gray);
   border-color: var(--color-airy-blue);
   border-radius: 8px;

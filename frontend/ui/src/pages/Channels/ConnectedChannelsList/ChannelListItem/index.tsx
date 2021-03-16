@@ -32,13 +32,12 @@ const ChannelListItem = (props: ChannelListItemProps) => {
   const {channel} = props;
   const [deletePopupVisible, setDeletePopupVisible] = useState(false);
 
-  const isPhoneNumberSource = () => {
-    return channel.source === 'twilio.sms' || channel.source === 'twilio.whatsapp';
+  const togglePopupVisibility = () => {
+    setDeletePopupVisible(!deletePopupVisible);
   };
 
-  const disconnectChannelRequestPayload = {
-    source: channel.source,
-    channelId: channel.id,
+  const isPhoneNumberSource = () => {
+    return channel.source === 'twilio.sms' || channel.source === 'twilio.whatsapp';
   };
 
   const getSourceLogo = (channel: Channel) => {
@@ -69,13 +68,12 @@ const ChannelListItem = (props: ChannelListItemProps) => {
     return getSourceLogo(channel);
   };
 
-  const editChannel = () => {
-    return {pathname: `/channels/${channel.source}/${channel.id}`, state: {channel: channel}};
-  };
-
   const disconnectChannel = () => {
-    props.disconnectChannel(disconnectChannelRequestPayload);
-    setDeletePopupVisible(false);
+    props.disconnectChannel({
+      source: channel.source,
+      channelId: channel.id,
+    });
+    togglePopupVisibility();
   };
 
   return (
@@ -95,10 +93,18 @@ const ChannelListItem = (props: ChannelListItemProps) => {
           )}
 
           <div className={styles.listButtons}>
-            <Button styleVariant="link" type="button" onClick={() => props.history.push(editChannel())}>
+            <Button
+              styleVariant="link"
+              type="button"
+              onClick={() =>
+                props.history.push({
+                  pathname: `/channels/${channel.source}/${channel.id}`,
+                  state: {channel: channel},
+                })
+              }>
               Edit
             </Button>
-            <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(true)}>
+            <Button styleVariant="link" type="button" onClick={togglePopupVisibility}>
               Disconnect
             </Button>
           </div>
@@ -106,10 +112,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
       </div>
 
       {deletePopupVisible && (
-        <SettingsModal
-          style={{maxWidth: '420px'}}
-          title="Confirm Channel Disconnection"
-          close={() => setDeletePopupVisible(false)}>
+        <SettingsModal style={{maxWidth: '420px'}} title="Confirm Channel Disconnection" close={togglePopupVisibility}>
           <div className={styles.disconnectModal}>
             <p>
               You are about to disconnect a channel. You will not receive any new messages in Airy or be able to send
@@ -121,10 +124,10 @@ const ChannelListItem = (props: ChannelListItemProps) => {
             </p>
             <div className={styles.modalSeparator} />
             <div className={styles.modalButtons}>
-              <Button styleVariant="link" type="button" onClick={() => setDeletePopupVisible(false)}>
+              <Button styleVariant="link" type="button" onClick={togglePopupVisibility}>
                 Cancel
               </Button>
-              <Button styleVariant="warning" type="submit" onClick={() => disconnectChannel()}>
+              <Button styleVariant="warning" type="submit" onClick={disconnectChannel}>
                 Disconnect Channel
               </Button>
             </div>

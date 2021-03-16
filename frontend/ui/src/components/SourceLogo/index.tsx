@@ -79,9 +79,9 @@ const SourceLogo = (props: SourceLogoProps) => {
         marginBottom: `${marginBottom}px`,
         marginLeft: `${marginLeft}px`,
         paddingTop: `${paddingTop}px`,
-        paddingRight: `${paddingRight}`,
-        paddingBottom: `${paddingBottom}`,
-        paddingLeft: `${paddingLeft}`,
+        paddingRight: `${paddingRight}px`,
+        paddingBottom: `${paddingBottom}px`,
+        paddingLeft: `${paddingLeft}px`,
       }}>
       {channel?.metadata?.imageUrl || imageUrl ? getCustomLogo(channel) : getSourceLogo(channel)}
     </div>

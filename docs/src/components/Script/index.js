@@ -1,18 +1,16 @@
 import React, {useEffect} from 'react';
 
-export default ({src, id, attributes}) => {
+export default ({src, id, ...props}) => {
   const anchorId = 'script-anchor-' + id;
   useEffect(() => {
     const script = document.createElement('script');
 
     script.src = src;
     script.async = true;
-    if (id) {
-      script.id = id;
-    }
+    script.id = id;
 
-    Object.keys(attributes).forEach(key => {
-      script.setAttribute(key, attributes[key]);
+    Object.keys(props).forEach(key => {
+      script.setAttribute(key, props[key]);
     });
 
     document.getElementById(anchorId).appendChild(script);

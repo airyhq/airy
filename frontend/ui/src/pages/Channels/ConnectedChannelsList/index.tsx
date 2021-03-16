@@ -74,13 +74,9 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
     }
   };
 
-  const searchFieldState = () => {
-    if (showingSearchField) {
-      setShowingSearchField(false);
-      setSearchText('');
-    } else {
-      setShowingSearchField(true);
-    }
+  const showSearchFieldToggle = () => {
+    setShowingSearchField(!showingSearchField);
+    setSearchText('');
   };
 
   return (
@@ -100,7 +96,7 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
             )}
           </div>
           <div className={styles.buttons}>
-            <button onClick={() => searchFieldState()}>{showingSearchField ? <CloseIcon /> : <SearchIcon />}</button>
+            <button onClick={showSearchFieldToggle}>{showingSearchField ? <CloseIcon /> : <SearchIcon />}</button>
             <button onClick={() => props.history.push(path)}>
               <PLusIcon />
             </button>

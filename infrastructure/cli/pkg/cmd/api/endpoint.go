@@ -1,10 +1,11 @@
 package api
 
 import (
+	"cli/pkg/core"
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var endpointCmd = &cobra.Command{
@@ -15,6 +16,12 @@ var endpointCmd = &cobra.Command{
 }
 
 func endpoint(cmd *cobra.Command, args []string) {
-	endpoint := viper.Get("apihost")
-	fmt.Println(endpoint)
+	hosts := core.LoadHostsFromConfig()
+	url := hosts.Api.Url
+	if url == "" {
+		fmt.Println("Could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+		os.Exit(1)
+	}
+
+	fmt.Println(url)
 }

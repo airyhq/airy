@@ -31,7 +31,7 @@ description='To get going with the Quickstart, you must install Airy first. Once
 link='/getting-started/installation/introduction'
 />
 
-## Step 1: How to setup your first source
+## Step 1: Set up your first source
 
 Once you [signed up](/api/endpoints/users.md#signup), you must [log
 in](/api/authentication.md#login) so you can obtain a valid JWT token for the
@@ -42,11 +42,11 @@ token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \
 \"password\":\"the_answer_is_42\" \
-}" airy.core/users.login) | jq -r '.token')
+}" $(airy api endpoint)/users.login) | jq -r '.token')
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 "{
     \"name\": \"chat plugin source\"
-}" airy.core/channels.chatplugin.connect
+}" $(airy api endpoint)/channels.chatplugin.connect
 ```
 
 <img alt="channels_connect" src={useBaseUrl('img/sources/chatplugin/connect_chatplugin_channel.gif')} />
@@ -61,7 +61,7 @@ browser. This authenticates the chat plugin and enables you to send messages
 immediately:
 
 ```
-http://airy.core/chatplugin/example?channel_id=<channel_id>
+$(airy api endpoint)/chatplugin/example?channel_id=<channel_id>
 ```
 
 You can now type a message in the text box and send it 🎉
@@ -78,7 +78,7 @@ created. it should return the message you have just sent.
 
 ```bash
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
-airy.core/conversations.list | jq .
+$(airy api endpoint)/conversations.list | jq .
 ```
 
 ## Step 4: Consume directly from Apache Kafka

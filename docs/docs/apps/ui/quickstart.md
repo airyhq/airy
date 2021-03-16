@@ -48,8 +48,7 @@ airy api signup
 
 ## Step 2: Open the UI
 
-Either go to [airy.core/ui/login](http://airy.core/ui/login) in your browser or execute
-this [CLI command](cli/reference.md#api-login):
+Run this [CLI command](cli/reference.md#ui):
 
 ```bash
 airy ui

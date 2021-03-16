@@ -54,9 +54,7 @@ func create(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	viper.Set("KubeConfig", context.KubeConfigPath)
-	viper.Set("ContextName", context.ContextName)
-	if err = viper.WriteConfig(); err != nil {
+	if err = context.Store(); err != nil {
 		fmt.Println("could not store the kube context: ", err)
 		os.Exit(1)
 	}
@@ -70,17 +68,25 @@ func create(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	fmt.Println("\t Available hosts:")
-	for hostName, host := range hosts {
-		fmt.Printf("\t\t %s:\t %s", hostName, host)
+	fmt.Println("\t 👩‍🍳 Available hosts:")
+	hosts.ForEach(func(resource string, url string, description string) {
+		fmt.Printf("\t\t %s %s:\t %s", resource, description, url)
 		fmt.Println()
-	}
+	})
 	fmt.Println()
+
+	if err = hosts.Store(); err != nil {
+		fmt.Println("could not store the hosts: ", err)
+		os.Exit(1)
+	}
 
 	if err = provider.PostInstallation(namespace); err != nil {
 		fmt.Println("failed to get installation endpoints: ", err)
 		os.Exit(1)
 	}
+
+	viper.Set("provider", provider)
+	viper.WriteConfig()
 
 	fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
 	fmt.Println()

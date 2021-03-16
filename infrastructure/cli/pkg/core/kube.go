@@ -1,6 +1,7 @@
-package kube
+package core
 
 import (
+	"github.com/spf13/viper"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -38,4 +39,10 @@ func (c *KubeCtx) GetClientSet() (*kubernetes.Clientset, error) {
 	}
 
 	return kubernetes.NewForConfig(config)
+}
+
+func (c *KubeCtx) Store() error {
+	viper.Set("KubeConfig", c.KubeConfigPath)
+	viper.Set("ContextName", c.ContextName)
+	return viper.WriteConfig()
 }

@@ -1,7 +1,7 @@
 package aws
 
 import (
-	"cli/pkg/kube"
+	"cli/pkg/core"
 	"context"
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -19,15 +19,15 @@ func (a *Aws) GetHelmOverrides() []string {
 	return []string{}
 }
 
-func (a *Aws) GetHosts() (map[string]string, error) {
-	return nil, nil
+func (a *Aws) GetHosts() (core.AvailableHosts, error) {
+	return core.AvailableHosts{}, nil
 }
 
 func (a *Aws) PostInstallation(namespace string) error {
 	return nil
 }
 
-func (a *Aws) Provision() (kube.KubeCtx, error) {
+func (a *Aws) Provision() (core.KubeCtx, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		log.Fatal(err)
@@ -104,5 +104,5 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	log.Println(output)
 	fmt.Println("aws provider not yet implemented")
 	os.Exit(1)
-	return kube.KubeCtx{}, nil
+	return core.KubeCtx{}, nil
 }

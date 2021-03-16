@@ -1,7 +1,8 @@
 package minikube
 
 import (
-	"cli/pkg/kube"
+	"bufio"
+	"cli/pkg/core"
 	"context"
 	"fmt"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -18,29 +19,29 @@ const (
 )
 
 type Minikube struct {
-	context kube.KubeCtx
-	localEndpoint string
+	context       core.KubeCtx
+	hosts         core.AvailableHosts
 }
 
 func (m *Minikube) GetHelmOverrides() []string {
 	return []string{"--set", "global.enableNgrok=true"}
 }
 
-func (m *Minikube) Provision() (kube.KubeCtx, error) {
+func (m *Minikube) Provision() (core.KubeCtx, error) {
 	if err := checkInstallation(); err != nil {
-		return kube.KubeCtx{}, err
+		return core.KubeCtx{}, err
 	}
 
 	if err := startCluster(); err != nil {
-		return kube.KubeCtx{}, err
+		return core.KubeCtx{}, err
 	}
 
 	homeDir := homedir.HomeDir()
 	if homeDir == "" {
-		return kube.KubeCtx{}, fmt.Errorf("could not find the kubeconfig")
+		return core.KubeCtx{}, fmt.Errorf("could not find the kubeconfig")
 	}
 
-	ctx := kube.New(filepath.Join(homeDir, ".kube", "config"), profile)
+	ctx := core.New(filepath.Join(homeDir, ".kube", "config"), profile)
 	m.context = ctx
 	return ctx, nil
 }
@@ -59,7 +60,7 @@ func (m *Minikube) PostInstallation(namespace string) error {
 		return err
 	}
 
-	parsedUrl, err := url.Parse(m.localEndpoint)
+	parsedUrl, err := url.Parse(m.hosts.Api.Url)
 	if err != nil {
 		return err
 	}
@@ -79,17 +80,24 @@ func startCluster() error {
 	return run("start", "--driver=virtualbox", "--cpus=4", "--memory=7168")
 }
 
-func (m *Minikube) GetHosts() (map[string]string, error) {
+func (m *Minikube) GetHosts() (core.AvailableHosts, error) {
 	endpoint, err := runWithOutput("--namespace=kube-system", "service", "--url", "traefik")
 	if err != nil {
-		return nil, err
+		return core.AvailableHosts{}, err
 	}
-	endpoint = strings.TrimSpace(endpoint)
-	m.localEndpoint = endpoint
+	endpoint = firstLine(endpoint)
 	coreId, err := runWithOutput("kubectl", "--", "get", "cm", "core-config", "-o", "jsonpath='{.data.CORE_ID}'")
-	ngrokEndpoint := fmt.Sprintf("https://%s.tunnel.airy.co", strings.Trim(coreId, "'"))
+	if err != nil {
+		return core.AvailableHosts{}, err
+	}
 
-	return map[string]string{"Local": endpoint, "Ngrok": ngrokEndpoint}, err
+	ngrokEndpoint := fmt.Sprintf("https://%s.tunnel.airy.co", strings.Trim(coreId, "'"))
+	m.hosts = core.AvailableHosts{
+		Api: core.Host{Url: endpoint, Description: "local"},
+		Ui: core.Host{Url: endpoint + "/ui/", Description: "local"},
+		Webhook: core.Host{Url: ngrokEndpoint, Description: "ngrok"},
+	}
+	return m.hosts, err
 }
 
 func run(args ...string) error {
@@ -105,4 +113,12 @@ func runWithOutput(args ...string) (string, error) {
 		return string(out), fmt.Errorf("running Minikube failed with err: %v\n%v", err, string(out))
 	}
 	return string(out), nil
+}
+
+func firstLine(cmdOutput string) string {
+	sc := bufio.NewScanner(strings.NewReader(cmdOutput))
+	for sc.Scan() {
+		return strings.TrimSpace(sc.Text())
+	}
+	return ""
 }

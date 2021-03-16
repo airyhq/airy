@@ -1,15 +1,14 @@
 package ui
 
 import (
+	"cli/pkg/core"
 	"fmt"
+	"os"
 	"os/exec"
 	"runtime"
 
 	"github.com/spf13/cobra"
 )
-
-//TODO make this a config
-const url = "http://airy.core/"
 
 // UICmd opens the Airy Core UI
 var UICmd = &cobra.Command{
@@ -21,6 +20,13 @@ var UICmd = &cobra.Command{
 }
 
 func ui(cmd *cobra.Command, args []string) {
+	hosts := core.LoadHostsFromConfig()
+	url := hosts.Ui.Url
+	if url == "" {
+		fmt.Println("Could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+		os.Exit(1)
+	}
+
 	var err error
 
 	switch runtime.GOOS {

@@ -6,7 +6,10 @@ go_library(
     srcs = ["ui.go"],
     importpath = "cli/pkg/cmd/ui",
     visibility = ["//visibility:public"],
-    deps = ["@com_github_spf13_cobra//:cobra"],
+    deps = [
+        "//infrastructure/cli/pkg/core",
+        "@com_github_spf13_cobra//:cobra",
+    ],
 )
 
 check_pkg(name = "buildifier")

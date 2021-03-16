@@ -5,6 +5,7 @@ go_library(
     name = "api",
     srcs = [
         "api.go",
+        "endpoint.go",
         "login.go",
         "signup.go",
     ],

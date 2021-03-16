@@ -41,7 +41,7 @@ in](/api/authentication.md#login) so you can obtain a valid JWT token for the
 upcoming API calls:
 
 ```bash
-host=$(kubectl get cm core-config -o jsonpath='{.data.HOST}')
+host=$(kubectl get cm hostnames -o jsonpath='{.data.HOST}')
 token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \
@@ -81,6 +81,7 @@ created. it should return the message you have just sent.
 <img alt="conversations.list" src={useBaseUrl('img/getting-started/quickstart/conversation_list.gif')} />
 
 ```bash
+host=$(kubectl get cm hostnames -o jsonpath='{.data.HOST}')
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
 "$host/conversations.list" | jq .
 ```

@@ -107,8 +107,8 @@ func initConfig() {
 }
 
 func init() {
-	apiHost := ""
-	RootCmd.PersistentFlags().StringVar(&apiHost, "apihost", "http://airy.core", "Airy Core HTTP API host")
+	apihost := ""
+	RootCmd.PersistentFlags().StringVar(&apihost, "apihost", "", "Airy Core HTTP API endpoint")
 	viper.BindPFlag("apihost", RootCmd.PersistentFlags().Lookup("apihost"))
 	viper.SetDefault("apihost", "http://airy.core")
 

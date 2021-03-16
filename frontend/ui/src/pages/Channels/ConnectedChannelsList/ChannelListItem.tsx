@@ -2,16 +2,11 @@ import React, {useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {disconnectChannel} from '../../../actions/channel';
 import {SettingsModal, Button} from '@airyhq/components';
-import {Channel, ChannelSource} from 'httpclient';
-import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.svg';
-import {ReactComponent as SMSLogo} from 'assets/images/icons/sms_avatar.svg';
-import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
+import {Channel} from 'httpclient';
 import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
 import styles from './ChannelListItem.module.scss';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {fallbackImage} from '../../../services/image/index';
+import SourceLogo from '../../../components/SourceLogo';
 
 type ChannelItemProps = {
   channel: Channel;
@@ -37,34 +32,6 @@ const ChannelItem = (props: ChannelItemProps) => {
     channelId: channel.id,
   };
 
-  const getSourceLogo = (channel: Channel) => {
-    switch (channel.source) {
-      case ChannelSource.facebook:
-        return <FacebookLogo />;
-      case ChannelSource.google:
-        return <GoogleLogo />;
-      case ChannelSource.twilioSMS:
-        return <SMSLogo />;
-      case ChannelSource.twilioWhatsapp:
-        return <WhatsappLogo />;
-      default:
-        return <AiryLogo />;
-    }
-  };
-
-  const ChannelIcon = ({channel}: {channel: Channel}) => {
-    if (channel?.metadata?.imageUrl) {
-      return (
-        <img
-          onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event, channel.source)}
-          className={styles.imageUrlLogo}
-          src={channel.metadata.imageUrl}
-        />
-      );
-    }
-    return getSourceLogo(channel);
-  };
-
   const editChannel = () => {
     return {pathname: `/channels/${channel.source}/${channel.id}`, state: {channel: channel}};
   };
@@ -78,10 +45,7 @@ const ChannelItem = (props: ChannelItemProps) => {
     <>
       <div>
         <div className={styles.channelItem}>
-          <div className={styles.channelLogo}>
-            <ChannelIcon channel={channel} />
-          </div>
-
+          <SourceLogo channel={channel} imageWidth={40} imageHeight={40} marginRight={8} />
           <div className={styles.channelName}>{channel.metadata?.name}</div>
           {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
           {channel.connected && (
@@ -89,7 +53,6 @@ const ChannelItem = (props: ChannelItemProps) => {
               Connected <CheckMark />
             </div>
           )}
-
           <div className={styles.listButtons}>
             <Button styleVariant="link" type="button" onClick={() => props.history.push(editChannel())}>
               Edit

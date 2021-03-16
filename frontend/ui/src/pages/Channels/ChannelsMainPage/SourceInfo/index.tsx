@@ -2,7 +2,7 @@ import React from 'react';
 import {Channel} from 'httpclient';
 import {LinkButton} from '@airyhq/components';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
-import {fallbackImage} from '../../../../services/image/index';
+import SourceLogo from '../../../../components/SourceLogo';
 import styles from './index.module.scss';
 
 type SourceInfoProps = {
@@ -40,18 +40,7 @@ const SourceInfo = (props: SourceInfoProps) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
-                        {source === 'facebook' && channel.metadata?.imageUrl ? (
-                          <img
-                            src={channel.metadata?.imageUrl}
-                            alt={channel.metadata?.name}
-                            className={styles.facebookImage}
-                            onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                              fallbackImage(event, channel.source);
-                            }}
-                          />
-                        ) : (
-                          <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
-                        )}
+                        <SourceLogo channel={channel} imageHeight={20} imageWidth={20} marginRight={4} />
                         <div className={styles.connectedChannelName}>{channel.metadata?.name}</div>
                         {isPhoneNumberSource() && (
                           <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>

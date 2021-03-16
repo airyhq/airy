@@ -2,7 +2,7 @@
 
 The WebSocketClient Library includes a WebSocket client for Airy's WebSocket API.
 
-The library exports a WebsocketClient class. To use the library, you need to instantiate the class with the authentication token, the callback map and your api url.
+The library exports a WebSocketClient class. To use the library, you need to instantiate the class with the authentication token, the callback map and your api url.
 
 For example:
 

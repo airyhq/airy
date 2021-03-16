@@ -37,14 +37,14 @@ client connects to a ngrok server which has public access to the internet and
 then provides a reversed proxy connectivity back to the webhook services,
 running inside the Kubernetes cluster.
 
-To get the ngrok URL to your local Airy Core installation you can run:
+To get the ngrok URL of your local Airy Core installation you can run:
 
 ```sh
 echo "https://$(minikube -p airy-core kubectl -- get cm core-config -o jsonpath='{.data.CORE_ID}').tunnel.airy.co"
 ```
 
 By default, the ngrok client is configured to use the ngrok server created by
-Airy and run on https://tunnel.airy.co. This configuration is specified in
+Airy and runs on https://tunnel.airy.co. This configuration is specified in
 the `ngrok-client-config` ConfigMap.
 
 ```

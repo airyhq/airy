@@ -15,6 +15,7 @@ import {
   cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
+  cyChannelsChatPluginFormBackButton,
 } from 'handles';
 
 const mapDispatchToProps = {
@@ -284,7 +285,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
         )}
       </div>
 
-      <LinkButton onClick={props.history.goBack} type="button">
+      <LinkButton onClick={props.history.goBack} type="button" dataCy={cyChannelsChatPluginFormBackButton}>
         <BackIcon className={styles.backIcon} />
         Back
       </LinkButton>

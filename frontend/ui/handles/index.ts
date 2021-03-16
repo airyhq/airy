@@ -22,4 +22,5 @@ export const cyChannelsChatPluginAddButton = 'channelsChatPluginAddButton';
 export const cyChannelsChatPluginConnectButton = 'channelsChatPluginConnectButton';
 export const cyChannelsChatPluginFormNameInput = 'channelsChatPluginFormNameInput';
 export const cyChannelsChatPluginFormSubmitButton = 'channelsChatPluginFormSubmitButton';
+export const cyChannelsChatPluginFormBackButton = 'channelsChatPluginFormBackButton';
 export const cyChannelsChatPluginList = 'channelsChatPluginList';

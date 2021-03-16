@@ -37,13 +37,10 @@ const SourceInfo = (props: SourceInfoProps) => {
               </p>
             </div>
             <div className={styles.connectedChannelBox}>
-              <div className={styles.connectedChannel}>
+              <div className={styles.connectedChannel} data-cy={props.dataCyChannelName}>
                 {channels.slice(0, channelsToShow).map((channel: Channel) => {
                   return (
-                    <li
-                      key={channel.sourceChannelId}
-                      className={styles.channelListEntry}
-                      data-cy={props.dataCyChannelName}>
+                    <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
                         {source === 'facebook' && channel.metadata?.imageUrl ? (
                           <img

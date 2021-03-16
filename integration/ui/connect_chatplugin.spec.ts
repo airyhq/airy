@@ -3,6 +3,7 @@ import {
   cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
+  cyChannelsChatPluginFormBackButton,
   cyChannelsChatPluginList,
 } from 'handles';
 
@@ -25,7 +26,10 @@ describe('Connect chatplugin channel', () => {
     cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(chatPluginName);
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
-    cy.visit('/channels');
-    cy.get(`[data-cy=${cyChannelsChatPluginList}]`);
+    cy.get(`[data-cy=${cyChannelsChatPluginFormBackButton}]`).click();
+    cy.get(`[data-cy=${cyChannelsChatPluginList}]`)
+      .children()
+      .filter(`:contains(${chatPluginName})`)
+      .should('have.length', 1);
   });
 });

@@ -9,9 +9,9 @@ import styles from './index.module.scss';
 
 type SourceLogoProps = {
   channel: Channel;
+  imageHeight: number;
+  imageWidth: number;
   imageUrl?: string;
-  imageHeight?: number;
-  imageWidth?: number;
   marginTop?: number;
   marginRight?: number;
   marginBottom?: number;

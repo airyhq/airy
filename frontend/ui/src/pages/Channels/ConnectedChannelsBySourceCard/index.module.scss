@@ -8,10 +8,12 @@
   height: 120px;
   margin-bottom: 10px;
 }
+
 .connectedSum {
   margin-left: 16px;
   color: var(--color-text-gray);
 }
+
 .connectedChannelBox {
   display: flex;
   box-sizing: border-box;
@@ -34,6 +36,7 @@
     }
   }
 }
+
 .connectedChannel {
   display: flex;
   flex-wrap: wrap;
@@ -47,9 +50,10 @@
 
 .extraPhoneInfo {
   overflow: hidden;
-  max-width: 142px;
+  max-width: 160px;
   text-overflow: ellipsis;
 }
+
 .extraChannel {
   display: flex;
   min-width: 88px;
@@ -74,15 +78,12 @@
   text-align: left;
   cursor: pointer;
   outline: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 .channelListEntry {
   display: inline-flex;
 }
+
 .placeholderLogo {
   height: 24px;
   width: 24px;
@@ -118,6 +119,7 @@
 .channelButton {
   margin: 20px 0px 8px 0px;
 }
+
 .addChannelButton {
   position: relative;
   width: 40px;
@@ -130,6 +132,7 @@
   outline: none;
   cursor: pointer;
 }
+
 .channelButtonIcon {
   @include font-m;
   display: flex;

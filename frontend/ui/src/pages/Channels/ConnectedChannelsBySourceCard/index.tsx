@@ -1,30 +1,25 @@
 import React from 'react';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
+
+import {Channel, SourceType} from 'httpclient';
+import {SourceTypeInfo} from '../MainPage';
 
 import {LinkButton} from '@airyhq/components';
-import {Channel} from 'httpclient';
 import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plus-circle.svg';
 
 import styles from './index.module.scss';
 
 type ConnectedChannelsBySourceCardProps = {
-  source: string;
+  sourceTypeInfo: SourceTypeInfo;
   channels: Channel[];
   connected: string;
-  placeholderImage?: JSX.Element;
-  isConnected: string;
-  onAddChannelClick?: () => void;
-  onMoreChannelsClick?: () => void;
-  onChannelClick?: (channel: Channel) => void;
-  onSourceInfoClick?: () => void;
 };
 
-const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps) => {
-  const {source, channels} = props;
-  const isPhoneNumberSource = () => {
-    return source === 'twilio.sms' || source === 'twilio.whatsapp';
-  };
-  const channelsToShow = isPhoneNumberSource() ? 2 : 4;
-  const hasExtraChannels = channels.length > channelsToShow;
+const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps & RouteComponentProps) => {
+  const {sourceTypeInfo, channels} = props;
+
+  const hasExtraChannels = channels.length > sourceTypeInfo.channelsToShow;
+
   return (
     <>
       {channels && channels.length > 0 && (
@@ -35,23 +30,25 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
                 {channels.length} {props.connected}
               </p>
             </div>
-            <div className={styles.connectedChannelBox}>
+            <div
+              className={styles.connectedChannelBox}
+              onClick={() => props.history.push(sourceTypeInfo.channelsListRoute)}>
               <div className={styles.connectedChannel}>
-                {channels.slice(0, channelsToShow).map((channel: Channel) => {
+                {channels.slice(0, sourceTypeInfo.channelsToShow).map((channel: Channel) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
-                      <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
-                        {source === 'facebook' && channel.metadata?.imageUrl ? (
+                      <button className={styles.connectedChannelData}>
+                        {sourceTypeInfo.type === SourceType.facebook && channel.metadata?.imageUrl ? (
                           <img
                             src={channel.metadata?.imageUrl}
                             alt={channel.metadata?.name}
                             className={styles.facebookImage}
                           />
                         ) : (
-                          <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
+                          <div className={styles.placeholderLogo}>{sourceTypeInfo.image} </div>
                         )}
                         <div className={styles.connectedChannelName}>{channel.metadata?.name}</div>
-                        {isPhoneNumberSource() && (
+                        {sourceTypeInfo.channelsToShow === 2 && (
                           <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>
                         )}
                       </button>
@@ -59,10 +56,10 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
                   );
                 })}
               </div>
-              <div className={styles.extraChannel} onClick={props.onSourceInfoClick}>
+              <div className={styles.extraChannel}>
                 {hasExtraChannels && (
-                  <LinkButton onClick={props.onSourceInfoClick}>
-                    +{channels.length - channelsToShow} {props.isConnected}
+                  <LinkButton>
+                    +{channels.length - sourceTypeInfo.channelsToShow} {sourceTypeInfo.itemInfoString}
                   </LinkButton>
                 )}
               </div>
@@ -70,7 +67,10 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
           </div>
 
           <div className={styles.channelButton}>
-            <button type="button" className={styles.addChannelButton} onClick={props.onAddChannelClick}>
+            <button
+              type="button"
+              className={styles.addChannelButton}
+              onClick={() => props.history.push(sourceTypeInfo.newChannelRoute)}>
               <div className={styles.channelButtonIcon} title="Add a channel">
                 <PlusCircleIcon />
               </div>
@@ -81,4 +81,4 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
     </>
   );
 };
-export default ConnectedChannelsBySourceCard;
+export default withRouter(ConnectedChannelsBySourceCard);

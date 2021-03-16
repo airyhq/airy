@@ -30,7 +30,7 @@ If you want to customize your `Airy Core` instance please see our [Configuration
 ## Public webhooks
 
 In order to integrate with the webhook of most sources on your local machine,
-we include a [ngrok](https://ngrok.com/) client as a sidecar to the ingress controller.
+we include a [ngrok](https://ngrok.com/) as a deployment to tunnel the traffic to the ingress controller.
 ngrok is an open source reverse proxy which
 creates a secure tunnel from a public endpoint to a local service. The ngrok
 client connects to a ngrok server which has public access to the internet and

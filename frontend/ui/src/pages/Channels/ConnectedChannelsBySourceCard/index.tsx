@@ -2,11 +2,10 @@ import React from 'react';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 import {LinkButton} from '@airyhq/components';
-import {Channel, SourceType} from 'httpclient';
+import {Channel} from 'httpclient';
 import {SourceTypeInfo} from '../MainPage';
-import {fallbackImage} from '../../../services/image/index';
 import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plus-circle.svg';
-
+import SourceLogo from '../../../components/SourceLogo';
 import styles from './index.module.scss';
 
 type ConnectedChannelsBySourceCardProps = {
@@ -40,18 +39,7 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData}>
-                        {sourceTypeInfo.type === SourceType.facebook && channel.metadata?.imageUrl ? (
-                          <img
-                            src={channel.metadata?.imageUrl}
-                            alt={channel.metadata?.name}
-                            className={styles.facebookImage}
-                            onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                              fallbackImage(event, channel.source);
-                            }}
-                          />
-                        ) : (
-                          <div className={styles.placeholderLogo}>{sourceTypeInfo.image} </div>
-                        )}
+                        <SourceLogo channel={channel} imageHeight={20} imageWidth={20} marginRight={4} />
                         <div className={styles.connectedChannelName}>{channel.metadata?.name}</div>
                         {sourceTypeInfo.channelsToShow === 2 && (
                           <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>

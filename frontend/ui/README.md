@@ -45,9 +45,9 @@ In order to communicate with our API endpoints, you need a valid [JWT](https://j
 
 ### Endpoints
 
-To communicate with our signup endpoint and register your email, open another terminal and type in the terminal `curl -X POST -H 'Content-Type: application/json' -d '{"first_name": "your_name","last_name": "your_last_name","password": "your_password","email": "your_email@airy.co"}' http://api.airy/users.signup`
+To communicate with our signup endpoint and register your email, open another terminal and type in the terminal `curl -X POST -H 'Content-Type: application/json' -d '{"first_name": "your_name","last_name": "your_last_name","password": "your_password","email": "your_email@airy.co"}' http://airy.core/users.signup`
 
-To sign in, type in the terminal `token=$(echo $(curl -H 'Content-Type: application/json' -d \"{ \\"email\":\"your_email@airy.co\",\\"password\":\"your_last_name\" \}" api.airy/users.login) | jq -r '.token')`
+To sign in, type in the terminal `token=$(echo $(curl -H 'Content-Type: application/json' -d \"{ \\"email\":\"your_email@airy.co\",\\"password\":\"your_last_name\" \}" airy.core/users.login) | jq -r '.token')`
 
 Aside from Curl, [PostMan](https://www.postman.com/downloads/) and other API testing tools could also be used to access the endpoints.
 

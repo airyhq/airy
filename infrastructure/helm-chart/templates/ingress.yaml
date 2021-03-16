@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.global.namespace }}
 spec:
   rules:
-    - host: {{ .Values.global.ingress.apiHost }}
+    - host: {{ .Values.global.ingress.host }}
       http:
         paths:
           - path: /users.login
@@ -72,6 +72,13 @@ spec:
                 port:
                   number: 80
           - path: /messages.send
+            pathType: Prefix
+            backend:
+              service:
+                name: api-communication
+                port:
+                  number: 80
+          - path: /messages.suggestReplies
             pathType: Prefix
             backend:
               service:
@@ -274,9 +281,6 @@ spec:
                 name: sources-twilio-connector
                 port:
                   number: 80
-    - host: {{ .Values.global.ingress.webhooksHost }}
-      http:
-        paths:
           - path: /facebook
             pathType: Prefix
             backend:
@@ -298,19 +302,6 @@ spec:
                 name: sources-twilio-connector
                 port:
                   number: 80
-    - host: {{ .Values.global.ingress.uiHost }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-ui
-                port:
-                  number: 80
-    - host: {{ .Values.global.ingress.chatpluginHost }}
-      http:
-        paths:
           - path: /ws.chatplugin
             pathType: Prefix
             backend:
@@ -337,12 +328,5 @@ spec:
             backend:
               service:
                 name: sources-chatplugin
-                port:
-                  number: 80
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-chat-plugin
                 port:
                   number: 80

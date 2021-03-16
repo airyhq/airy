@@ -1,7 +1,7 @@
 export interface ConnectChannelRequestApiPayload {
-  source: string;
-  source_channel_id: string;
-  token: string;
+  page_id: string;
+  page_token: string;
   name?: string;
   image_url?: string;
+  phone_number?: string;
 }

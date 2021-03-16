@@ -14,7 +14,7 @@ const render = async () => {
   const App = (await import('./App')).default;
   const RootContainer = () => (
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_PATH}>
         <App />
       </BrowserRouter>
     </Provider>

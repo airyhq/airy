@@ -54,15 +54,15 @@ func main() {
 		log.Println("Updated go.mod")
 	}
 
-	err = exec.Command("go", "get", ".").Start()
+	out, err := exec.Command("go", "get", ".").CombinedOutput()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(string(out))
 	}
 	log.Println("Installed packages and updating go.sum using go get")
 
-	err = exec.Command("bazel", "run", "//:gazelle", "--", "-update-repos", "-from_file=go.mod", "-prune").Start()
+	out, err = exec.Command("bazel", "run", "//:gazelle", "--", "update-repos", "-from_file=go.mod", "-prune").CombinedOutput()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(string(out))
 	}
 	log.Println("Updated go_repositories.bzl with Gazelle")
 
@@ -86,8 +86,8 @@ func main() {
 			log.Fatal(err)
 		}
 
-		if err = exec.Command("go", "get", ".").Start(); err != nil {
-			log.Fatal(err)
+		if out, err = exec.Command("go", "get", "-v", ".").CombinedOutput(); err != nil {
+			log.Fatal(string(out))
 		}
 
 		log.Printf("Modified %v", sourceModule.Path)

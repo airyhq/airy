@@ -1,11 +1,10 @@
+load("//tools/lint:web.bzl", "web_lint")
 load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
 load("@com_github_airyhq_bazel_tools//web:web_app.bzl", "web_app")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/build:container_release.bzl", "container_release")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
-
-check_pkg()
 
 check_pkg(name = "buildifier")
 
@@ -16,6 +15,7 @@ module_deps = [
     "//lib/typescript/render",
     "//lib/typescript/dates",
     "//lib/typescript/websocketclient",
+    "//frontend/ui/handles",
 ]
 
 ts_web_library(
@@ -46,6 +46,9 @@ web_app(
     entry = "frontend/ui/src/index.js",
     index = ":index.html",
     module_deps = module_deps,
+    output = {
+        "publicPath": "/ui",
+    },
     static_assets = "//frontend/ui/public",
 )
 
@@ -76,3 +79,5 @@ container_release(
     registry = "ghcr.io/airyhq/frontend",
     repository = "ui",
 )
+
+web_lint()

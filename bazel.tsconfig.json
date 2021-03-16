@@ -54,6 +54,12 @@
       ],
       "*": [
         "./*"
+      ],
+      "handles": [
+        "./frontend/ui/handles"
+      ],
+      "chat-plugin-handles": [
+        "./frontend/chat-plugin/handles"
       ]
     }
   },

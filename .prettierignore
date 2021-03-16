@@ -1,3 +1,5 @@
-docs/docs/cli/reference.md
+**/*/cli/reference.md
+**/*/changelog.md
 build/
 bazel-*
+**/*/.docusaurus

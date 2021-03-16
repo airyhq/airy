@@ -50,12 +50,12 @@ const SOURCE_INFO = {
     avatar: () => <SmsAvatar />,
   },
   'twilio.whatsapp': {
-    text: 'Whatsapp number',
+    text: 'WhatsApp number',
     icon: () => <WhatsappIcon />,
     avatar: () => <WhatsappAvatar />,
   },
-  chat_plugin: {
-    text: 'Airy Chat plugin',
+  chatplugin: {
+    text: 'Airy Live Chat plugin',
     icon: () => <AiryIcon />,
     avatar: () => <AiryAvatar />,
   },
@@ -72,8 +72,7 @@ const IconChannel: React.FC<IconChannelProps> = ({
     channel = PlaceholderChannelData;
   }
 
-  //TODO: This has to go once the backend returns the source
-  const channelInfo = SOURCE_INFO[channel.source || 'chat_plugin'];
+  const channelInfo = SOURCE_INFO[channel.source];
   const fbFallback = SOURCE_INFO['facebook'];
 
   if (icon && showName) {
@@ -83,35 +82,47 @@ const IconChannel: React.FC<IconChannelProps> = ({
         <p>{channel.metadata?.name}</p>
       </div>
     );
-  } else if (showAvatar && showName) {
+  }
+
+  if (showAvatar && showName) {
     return (
       <div className={styles.avatarName}>
         {channelInfo.avatar()}
         <p>{channel.metadata?.name}</p>
       </div>
     );
-  } else if (icon && text) {
+  }
+
+  if (icon && text) {
     return (
       <div className={styles.iconText}>
         {channelInfo.icon()}
         <p>{channelInfo.text}</p>
       </div>
     );
-  } else if (showAvatar && text) {
+  }
+
+  if (showAvatar && text) {
     return (
       <div className={styles.avatarText}>
         {channelInfo.avatar()}
         <p>{channelInfo.text}</p>
       </div>
     );
-  } else if (icon) {
+  }
+
+  if (icon) {
     return <>{channelInfo.icon()}</>;
-  } else if (showAvatar) {
+  }
+
+  if (showAvatar) {
     return <>{channelInfo.avatar()}</>;
   }
+
   return (
     <>
-      {fbFallback.icon()} {fbFallback.text}
+      {' '}
+      {fbFallback.icon()} {fbFallback.text}{' '}
     </>
   );
 };

@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "9cf55cc0a42d68f0198883b04493ce7c7b3113ed",
+    commit = "b34a57be44e3cdf739e074dde1c3db5b5347cc35",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1614958086 +0100",
+    shallow_since = "1615392891 +0100",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -119,10 +119,10 @@ pinned_maven_install()
 # This needs to come before any rules_docker usage as it brings its own version of Gazelle
 http_archive(
     name = "bazel_gazelle",
-    sha256 = "b85f48fa105c4403326e9525ad2b2cc437babaa6e15a3fc0b1dbab0ab064bc7c",
+    sha256 = "62ca106be173579c0a167deb23358fdfe71ffa1e4cfdddf5582af26520f1c66f",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.22.2/bazel-gazelle-v0.22.2.tar.gz",
-        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.22.2/bazel-gazelle-v0.22.2.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.23.0/bazel-gazelle-v0.23.0.tar.gz",
+        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.23.0/bazel-gazelle-v0.23.0.tar.gz",
     ],
 )
 
@@ -134,7 +134,10 @@ load("@io_bazel_rules_go//extras:embed_data_deps.bzl", "go_embed_data_dependenci
 
 go_embed_data_dependencies()
 
-go_register_toolchains(nogo = "@//:airy_nogo")  # my_nogo is in the top-level BUILD file of this workspace
+go_register_toolchains(
+    nogo = "@//:airy_nogo",
+    version = "1.16",
+)  # my_nogo is in the top-level BUILD file of this workspace
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
@@ -227,9 +230,9 @@ yarn_install(
 
 git_repository(
     name = "com_github_atlassian_bazel_tools",
-    commit = "dc5e715035b6b17f24f1d40a7eac08f8f2ac8a11",
-    remote = "https://github.com/atlassian/bazel-tools.git",
-    shallow_since = "1597268988 +1000",
+    commit = "e45e55f213b6804115eed1b6eb4ffc3bcf7a0cc4",
+    remote = "https://github.com/ash2k/bazel-tools.git",
+    shallow_since = "1614900742 +1100",
 )
 
 load("@com_github_atlassian_bazel_tools//multirun:deps.bzl", "multirun_dependencies")

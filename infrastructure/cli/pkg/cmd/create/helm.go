@@ -1,6 +1,7 @@
 package create
 
 import (
+	"cli/pkg/workspace"
 	"context"
 	"fmt"
 	batchv1 "k8s.io/api/batch/v1"
@@ -165,7 +166,7 @@ func (h *Helm) upsertAiryConfigMap() error {
 	cm, _ := h.clientset.CoreV1().ConfigMaps(h.namespace).Get(context.TODO(), airyConfigMap, v1.GetOptions{})
 
 	cmData := map[string]string{
-		"airy-config-map.yaml": Data,
+		"airy-config-map.yaml": workspace.Defaults,
 	}
 
 	if cm.GetName() != "" {

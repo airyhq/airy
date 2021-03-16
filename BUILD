@@ -15,6 +15,7 @@ alias(
 
 fix_prettier(
     name = "fix_prettier",
+    config = "//:.prettierrc.json",
     ignore = "//:.prettierignore",
 )
 
@@ -100,6 +101,7 @@ java_library(
     exports = [
         "@maven//:javax_servlet_javax_servlet_api",
         "@maven//:javax_validation_validation_api",
+        "@maven//:org_hibernate_validator_hibernate_validator",
         "@maven//:org_springframework_boot_spring_boot",
         "@maven//:org_springframework_boot_spring_boot_autoconfigure",
         "@maven//:org_springframework_boot_spring_boot_loader",
@@ -174,6 +176,7 @@ java_library(
 exports_files(
     [
         "package.json",
+        ".eslintrc",
         ".prettierrc.json",
         ".prettierignore",
         "yarn.lock",

@@ -1,7 +1,7 @@
-export interface ConnectChannelRequestPayload {
-  source: string;
-  sourceChannelId: string;
-  token: string;
+export interface ConnectChannelFacebookRequestPayload {
+  pageId: string;
+  pageToken: string;
   name?: string;
   imageUrl?: string;
+  phoneNumber?: string;
 }

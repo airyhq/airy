@@ -19,3 +19,6 @@ package-lock.json
 
 # Misc
 .DS_Store
+
+# Testing
+cypress

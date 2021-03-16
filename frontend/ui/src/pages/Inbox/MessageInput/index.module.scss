@@ -11,6 +11,7 @@
   display: flex;
   flex-grow: 1;
   margin-bottom: 14px;
+  margin-top: 24px;
 }
 
 .messageWrap {
@@ -18,13 +19,13 @@
   border-color: var(--color-airy-blue);
   border-radius: 8px;
   display: flex;
-  flex-direction: column;
   align-items: normal;
-  margin-left: 20px;
+  margin-left: 14px;
 }
 
 .inputWrap {
   display: flex;
+  width: 100%;
 }
 
 .messageTextArea {
@@ -44,7 +45,7 @@
 
 .sendDiv {
   display: flex;
-  margin: 0px 24px 14px 0px;
+  margin: 0px 24px 0px 0px;
 }
 
 .sendButton {
@@ -83,4 +84,135 @@
 
 .sendButtonText svg {
   position: relative;
+}
+
+.messageActionsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 0 6px 5px 5px;
+}
+
+.messageActionsContainer svg {
+  height: 20px;
+  cursor: pointer;
+}
+
+.messageActionsContainer g,
+.sendButton g {
+  fill: inherit;
+}
+
+.messageActionsContainer .emoji {
+  height: 24px;
+  top: 2px;
+  position: relative;
+}
+
+.iconButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  margin-left: 4px;
+  width: 30px;
+  height: 30px;
+
+  svg {
+    width: 22px;
+    pointer-events: none;
+    path {
+      fill: #a0abb2;
+    }
+  }
+
+  .actionToolTip {
+    @include font-s;
+    position: absolute;
+    background-color: var(--color-text-contrast);
+    color: white;
+    border-radius: 4px;
+    padding: 2px 8px;
+    display: none;
+    bottom: 33px;
+    z-index: 2;
+  }
+}
+
+.iconButton:hover {
+  background-color: var(--color-background-blue);
+  border-radius: 50%;
+  svg {
+    path {
+      fill: #4bb3fd;
+    }
+  }
+
+  .actionToolTip {
+    display: block;
+  }
+}
+
+.iconButton:focus {
+  outline: none;
+}
+
+.templateButton {
+  background: transparent;
+  border: none;
+}
+
+.emojiDrawer {
+  position: absolute;
+  right: 72px;
+  bottom: 75px;
+}
+
+.templateSelector {
+  width: 164px;
+  max-height: 184px;
+  height: auto;
+  overflow: hidden;
+  position: relative;
+  margin: 0 8px 8px 8px;
+  border-radius: 16px;
+}
+
+.removeTemplateButton {
+  position: absolute;
+  top: 3px;
+  right: 1px;
+  border: none;
+  outline: none;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  border-radius: 50%;
+  border: 1px solid white;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.removeTemplateButton svg {
+  width: 8px;
+  height: 8px;
+  margin-left: -1px;
+  margin-top: -1px;
+}
+
+.removeTemplateButton:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.removeTemplateButton object {
+  width: 12px;
+  height: 12px;
 }

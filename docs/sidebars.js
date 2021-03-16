@@ -22,7 +22,15 @@ module.exports = {
     {
       '💬 Sources': [
         'sources/introduction',
-        'sources/chat-plugin',
+        {
+          'Airy Live Chat Plugin': [
+            'sources/chatplugin/overview',
+            'sources/chatplugin/demo',
+            'sources/chatplugin/quickstart',
+            'sources/chatplugin/installation',
+            'sources/chatplugin/customization',
+          ],
+        },
         'sources/facebook',
         'sources/google',
         'sources/sms-twilio',
@@ -37,6 +45,7 @@ module.exports = {
           'HTTP Endpoints': [
             'api/endpoints/introduction',
             'api/endpoints/channels',
+            'api/endpoints/chatplugin',
             'api/endpoints/conversations',
             'api/endpoints/messages',
             'api/endpoints/metadata',
@@ -74,5 +83,6 @@ module.exports = {
     {
       '📚 Guides': ['guides/contributing'],
     },
+    'changelog',
   ],
 };

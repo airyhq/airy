@@ -3,6 +3,7 @@ import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.sv
 import {Channel} from 'httpclient';
 import SourceDescription from '../SourceDescription';
 import SourceInfo from '../SourceInfo';
+import {ChannelSource} from 'httpclient';
 
 type GoogleSourceProps = {googleSource: Channel[]};
 
@@ -16,6 +17,7 @@ const GoogleSource = (props: GoogleSourceProps) => {
         text="Be there when people search"
         image={<GoogleLogo />}
         displayButton={!channels.length}
+        id={ChannelSource.google}
       />
 
       <SourceInfo

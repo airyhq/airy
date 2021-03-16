@@ -1,11 +1,10 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
-load("@npm//@bazel/typescript:index.bzl", "ts_library")
+load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
 
-ts_library(
+ts_web_library(
     name = "specs",
     srcs = glob(["*.spec.ts"]),
-    tsconfig = ":tsconfig.json",
     deps = [
+        "//frontend/ui/handles",
         "@npm//cypress",
     ],
 )
@@ -14,18 +13,5 @@ filegroup(
     name = "specs_output",
     srcs = [":specs"],
     output_group = "es5_sources",
-)
-
-nodejs_binary(
-    name = "cypress",
-    data = [
-        ":cypress.json",
-        ":specs_output",
-        "@npm//cypress",
-    ],
-    entry_point = "@npm//:node_modules/cypress/bin/cypress",
-    templated_args = [
-        "open",
-        "-C $(rootpath :cypress.json)",
-    ],
+    visibility = ["//integration:__pkg__"],
 )

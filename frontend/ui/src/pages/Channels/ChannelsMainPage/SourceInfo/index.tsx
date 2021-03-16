@@ -13,18 +13,16 @@ type SourceInfoProps = {
   onAddChannelClick?: () => void;
   onMoreChannelsClick?: () => void;
   onChannelClick?: (channel: Channel) => void;
+  onSourceInfoClick?: () => void;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
   const {source, channels} = props;
-
   const isPhoneNumberSource = () => {
     return source === 'twilio.sms' || source === 'twilio.whatsapp';
   };
-
   const channelsToShow = isPhoneNumberSource() ? 2 : 4;
   const hasExtraChannels = channels.length > channelsToShow;
-
   return (
     <>
       {channels && channels.length > 0 && (
@@ -41,7 +39,7 @@ const SourceInfo = (props: SourceInfoProps) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
-                        {channel.metadata?.imageUrl ? (
+                        {source === 'facebook' && channel.metadata?.imageUrl ? (
                           <img
                             src={channel.metadata?.imageUrl}
                             alt={channel.metadata?.name}
@@ -59,9 +57,9 @@ const SourceInfo = (props: SourceInfoProps) => {
                   );
                 })}
               </div>
-              <div className={styles.extraChannel}>
+              <div className={styles.extraChannel} onClick={props.onSourceInfoClick}>
                 {hasExtraChannels && (
-                  <LinkButton onClick={props.onMoreChannelsClick}>
+                  <LinkButton onClick={props.onSourceInfoClick}>
                     +{channels.length - channelsToShow} {props.isConnected}
                   </LinkButton>
                 )}
@@ -81,5 +79,4 @@ const SourceInfo = (props: SourceInfoProps) => {
     </>
   );
 };
-
 export default SourceInfo;

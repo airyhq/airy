@@ -4,11 +4,7 @@ global:
   containerRegistry: ghcr.io/airyhq
   namespace: default
   ingress:
-    apiHost: api.airy
-    webhooksHost: webhooks.airy
-    uiHost: ui.airy
-    chatpluginHost: chatplugin.airy
-    toolsHost: tools.airy
+    host: airy.core
 prerequisites:
   # Configuration for the Kafka cluster
   kafka:

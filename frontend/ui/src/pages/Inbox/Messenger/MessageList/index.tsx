@@ -3,6 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 import {debounce} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
+import {cyMessageList} from 'handles';
 
 import {Message} from 'httpclient';
 import {SourceMessage} from 'render';
@@ -16,7 +17,7 @@ import {formatDateOfMessage} from '../../../../services/format/date';
 import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 import {isSameDay} from 'dates';
-import {getSource, isFromContact} from 'httpclient';
+import {getSource, isFromContact, RenderedContent} from 'httpclient';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime} from 'dates';
 
@@ -95,7 +96,7 @@ const MessageList = (props: MessageListProps) => {
     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
   };
 
-  const hasDateChanged = (prevMessage: Message, message: Message) => {
+  const hasDateChanged = (prevMessage: RenderedContent, message: RenderedContent) => {
     if (prevMessage == null) {
       return true;
     }
@@ -133,7 +134,13 @@ const MessageList = (props: MessageListProps) => {
         return;
       }
 
-      if (hasPreviousMessages() && messageListRef.current.scrollTop === 0 && !isLoadingConversation()) {
+      if (
+        hasPreviousMessages() &&
+        messageListRef &&
+        messageListRef.current &&
+        messageListRef.current.scrollTop === 0 &&
+        !isLoadingConversation()
+      ) {
         debouncedListPreviousMessages(conversation.id);
       }
 
@@ -150,9 +157,9 @@ const MessageList = (props: MessageListProps) => {
   );
 
   return (
-    <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll}>
+    <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
       {messages &&
-        messages.map((message: Message, index: number) => {
+        messages.map((message: RenderedContent, index: number) => {
           const prevMessage = messages[index - 1];
           const nextMessage = messages[index + 1];
           const shouldShowContact = !isFromContact(prevMessage) && !isFromContact(message);

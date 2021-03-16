@@ -5,7 +5,7 @@
   "fields": [
     {"name": "id", "type": "string"},
     {"name": "name", "type": "string"},
-    {"name": "content", "type": "string"},
-    {"name": "variables", "type": "string"}
+    {"name": "source", "type": "string"},
+    {"name": "content", "type": "string"}
   ]
 }

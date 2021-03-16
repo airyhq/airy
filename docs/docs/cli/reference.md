@@ -3,7 +3,7 @@ title: Command Reference
 sidebar_label: Reference
 ---
 
-##  Api Login
+## Api Login
 
 Login into an Airy Core instance
 
@@ -22,14 +22,14 @@ airy api login [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
+      --apihost string      Airy Core HTTP API host (default "http://airy.core")
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
 
 ***
 
-##  Api Signup
+## Api Signup
 
 Signs users up in Airy Core
 
@@ -50,14 +50,14 @@ airy api signup [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
+      --apihost string      Airy Core HTTP API host (default "http://airy.core")
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
 
 ***
 
-##  Config Apply
+## Config Apply
 
 Applies configuration values from airy.yaml configuration to an Airy Core instance
 
@@ -74,7 +74,7 @@ airy config apply [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string       Airy Core HTTP API host (default "http://api.airy")
+      --apihost string       Airy Core HTTP API host (default "http://airy.core")
       --cli-config string    config file (default is $HOME/.airy/cli.yaml)
       --config string        Configuration file for an Airy Core instance (default "./airy.yaml")
       --kube-config string   Kubernetes config file for the cluster of an Airy Core instance (default "~/.airy/kube.conf")
@@ -83,7 +83,7 @@ airy config apply [flags]
 
 ***
 
-##  Create
+## Create
 
 Creates an instance of Airy Core
 
@@ -102,14 +102,14 @@ airy create [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
+      --apihost string      Airy Core HTTP API host (default "http://airy.core")
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
 
 ***
 
-##  Init
+## Init
 
 Inits your airy configuration
 
@@ -126,14 +126,14 @@ airy init [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
+      --apihost string      Airy Core HTTP API host (default "http://airy.core")
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
 
 ***
 
-##  Status
+## Status
 
 Reports the status of an Airy Core instance
 
@@ -150,14 +150,14 @@ airy status [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
+      --apihost string      Airy Core HTTP API host (default "http://airy.core")
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
 
 ***
 
-##  Ui
+## Ui
 
 Opens the Airy Core UI in your local browser
 
@@ -174,14 +174,14 @@ airy ui [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
+      --apihost string      Airy Core HTTP API host (default "http://airy.core")
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
 
 ***
 
-##  Version
+## Version
 
 Prints version information
 
@@ -198,7 +198,7 @@ airy version [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://api.airy")
+      --apihost string      Airy Core HTTP API host (default "http://airy.core")
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 

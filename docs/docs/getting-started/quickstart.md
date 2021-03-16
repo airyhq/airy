@@ -33,23 +33,23 @@ link='/getting-started/installation/introduction'
 
 ## Step 1: How to setup your first source
 
-The [Airy Live Chat Plugin](/sources/chat-plugin.md) source is well suited for a
+The [Airy Live Chat Plugin](/sources/chatplugin/overview.md) source is well suited for a
 first integration because it does not require any configuration.
 
 Once you [signed up](/api/endpoints/users.md#signup), you must [log
 in](/api/authentication.md#login) so you can obtain a valid JWT token for the
 upcoming API calls:
 
-```bash
+```sh
 token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \
 \"password\":\"the_answer_is_42\" \
-}" api.airy/users.login) | jq -r '.token')
+}" airy.core/users.login) | jq -r '.token')
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 "{
     \"name\": \"chat plugin source\"
-}" api.airy/channels.chatplugin.connect
+}" airy.core/channels.chatplugin.connect
 ```
 
 <img alt="channels_connect" src={useBaseUrl('img/getting-started/quickstart/connect_chatplugin_channel.gif')} />
@@ -64,7 +64,7 @@ browser. This authenticates the chat plugin and enables you to send messages
 immediately:
 
 ```
-http://chatplugin.airy/example?channel_id=<channel_id>
+http://airy.core/chatplugin/ui/example?channel_id=<channel_id>
 ```
 
 You can now type a message in the text box and send it 🎉
@@ -81,7 +81,7 @@ created. it should return the message you have just sent.
 
 ```bash
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
-api.airy/conversations.list | jq .
+airy.core/conversations.list | jq .
 ```
 
 ## Step 4: Consume directly from Apache Kafka

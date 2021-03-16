@@ -84,7 +84,7 @@ public class ChannelsController {
     @PostMapping("/channels.chatplugin.connect")
     ResponseEntity<?> connect(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
         final String sourceChannelId = requestPayload.getName();
-        final String sourceIdentifier = "chat_plugin";
+        final String sourceIdentifier = "chatplugin";
 
         final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, sourceChannelId).toString();
 

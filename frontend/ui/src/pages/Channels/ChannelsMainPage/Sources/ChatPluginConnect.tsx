@@ -8,7 +8,7 @@ import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 
 import {env} from '../../../../env';
-import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import {allChannels} from '../../../../selectors/channels';
@@ -49,9 +49,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
 
   useEffect(() => {
     if (channelId !== 'new' && channelId?.length) {
-      const channel = props.channels.find((channel: Channel) => {
-        return channel.id === channelId;
-      });
+      const channel = props.channels.find((channel: Channel) => channel.id === channelId);
       if (channel) {
         setDisplayName(channel.metadata?.name || '');
         setImageUrl(channel.metadata?.imageUrl || '');
@@ -76,7 +74,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
   const updateConnection = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     props.updateChannel({channelId: channelId, name: displayName, imageUrl: imageUrl}).then(() => {
-      props.history.replace(CHANNELS_CHAT_PLUGIN_ROUTE);
+      props.history.replace(CHANNELS_CONNECTED_ROUTE + '/chatplugin');
     });
   };
 
@@ -158,7 +156,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
   (function(w, d, s, n) {
     w[n] = w[n] || {};
     w[n].channelId = "${channelId}";
-    w[n].host = "${'//' + env.CHATPLUGIN_HOST}";
+    w[n].host = "${'//' + env.API_HOST}";
     var f = d.getElementsByTagName(s)[0],
       j = d.createElement(s);
     j.async = true;
@@ -216,7 +214,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
 
   const disconnectChannel = (channel: Channel) => {
     if (window.confirm('Do you really want to delete this channel?')) {
-      props.disconnectChannel('chatplugin', {channelId: channel.id});
+      props.disconnectChannel({source: 'chatplugin', channelId: channel.id});
     }
   };
 

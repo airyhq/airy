@@ -14,16 +14,11 @@ for more information.
 
 ```json5
 {
-  name: "my template name",
-  content: {
-    message: {
-      text: "[[salutation]]!"
-    }
-  },
-  // source specific message content
-  variables: {
-    en: {
-      salutation: "%s"
+  "name": "my template name",
+  "source": "chatplugin",
+  "content": {
+    "message": {
+      "text": "[[salutation]]!"
     }
   }
 }
@@ -47,11 +42,12 @@ This endpoint allows you to query templates, filtering by name.
 
 **Sample request**
 
-Find templates whose name contains "NASA":
+Find templates whose name contains "Ada":
 
 ```json5
 {
-  name: "NASA" // optional
+  "source": "chatplugin",
+  "name": "Ada" // optional
 }
 ```
 
@@ -59,19 +55,14 @@ Find templates whose name contains "NASA":
 
 ```json5
 {
-  data: [
+  "data": [
     {
-      id: "TEMPLATE-UUID",
-      name: "Template for NASA",
-      content: {
-        message: {
-          text: "[[salutation]]!"
-        }
-      },
-      // source specific message content
-      variables: {
-        en: {
-          salutation: "%s"
+      "id": "TEMPLATE-UUID",
+      "name": "Template for Ada Lovelance day",
+      "source": "chatplugin",
+      "content": {
+        "message": {
+          "text": "[[salutation]]!"
         }
       }
     }
@@ -85,7 +76,7 @@ Find templates whose name contains "NASA":
 
 ```json5
 {
-  id: "TEMPLATE-UUID"
+  "id": "TEMPLATE-UUID"
 }
 ```
 
@@ -93,17 +84,12 @@ Find templates whose name contains "NASA":
 
 ```json5
 {
-  id: "TEMPLATE-UUID",
-  name: "{String}",
-  content: {
-    message: {
-      text: "[[salutation]]!"
-    }
-  },
-  // source specific message content
-  variables: {
-    en: {
-      salutation: "%s"
+  "id": "TEMPLATE-UUID",
+  "name": "{String}",
+  "source": "chatplugin",
+  "content": {
+    "message": {
+      "text": "[[salutation]]!"
     }
   }
 }
@@ -115,17 +101,12 @@ Find templates whose name contains "NASA":
 
 ```json5
 {
-  id: "template id",
-  name: "my template name",
-  content: {
-    message: {
-      text: "[[salutation]]!"
-    }
-  },
-  // source specific message content
-  variables: {
-    en: {
-      salutation: "%s"
+  "id": "template id",
+  "name": "my template name",
+  "source_type": "chatplugin",
+  "content": {
+    "message": {
+      "text": "[[salutation]]!"
     }
   }
 }
@@ -141,7 +122,7 @@ This endpoint returns _200_ if successful.
 
 ```json5
 {
-  id: "TEMPLATE-UUID"
+  "id": "TEMPLATE-UUID"
 }
 ```
 

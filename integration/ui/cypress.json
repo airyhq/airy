@@ -1,5 +1,0 @@
-{
-    "baseUrl": "http://ui.airy",
-    "integrationFolder": "integration",
-    "testFiles": "**/*.spec.js"
-}

@@ -1,5 +1,5 @@
 import {Dispatch} from 'redux';
-import {createAction} from 'typesafe-actions';
+import _typesafe, {createAction} from 'typesafe-actions';
 import {Message, PaginatedResponse, SendMessagesRequestPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
@@ -10,12 +10,13 @@ const MESSAGES_ADDED = '@@messages/ADDED';
 
 export const loadingMessagesAction = createAction(
   MESSAGES_LOADING,
-  resolve => (messagesInfo: {conversationId: string; messages: Message[]}) => resolve(messagesInfo)
-);
+  (messagesInfo: {conversationId: string; messages: Message[]}) => messagesInfo
+)<{conversationId: string; messages: Message[]}>();
+
 export const addMessagesAction = createAction(
   MESSAGES_ADDED,
-  resolve => (messagesInfo: {conversationId: string; messages: Message[]}) => resolve(messagesInfo)
-);
+  (messagesInfo: {conversationId: string; messages: Message[]}) => messagesInfo
+)<{conversationId: string; messages: Message[]}>();
 
 export function listMessages(conversationId: string) {
   return async (dispatch: Dispatch<any>) => {

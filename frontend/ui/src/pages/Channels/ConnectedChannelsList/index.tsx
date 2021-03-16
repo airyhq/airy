@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
+import {sortBy} from 'lodash-es';
 
 import {StateModel} from './../../../reducers';
 import {allChannels} from './../../../selectors/channels';
@@ -34,15 +35,18 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps<{sourc
 const connector = connect(mapStateToProps, null);
 
 const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
+
   const {channels} = props;
+
   const [name, setName] = useState('');
   const [path, setPath] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showingSearchField, setShowingSearchField] = useState(false);
+
   const source = props.match.params.source;
 
   const filteredChannels = channels.filter((channel: Channel) =>
-    channel?.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
+    channel.metadata?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
   useEffect(() => {
@@ -108,11 +112,8 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
         Back to channels
       </Link>
       <div className={styles.channelsList}>
-        {filteredChannels.length > 0 ? (
-          filteredChannels
-            .sort((channelA: Channel, channelB: Channel) =>
-              channelA.metadata.name.toLowerCase().localeCompare(channelB.metadata.name.toLowerCase())
-            )
+        {filteredChannels.length > 0 ? (          
+            sortBy(filteredChannels, (channel: Channel) => channel.metadata.name.toLowerCase())            
             .map((channel: Channel) => (
               <div key={channel.id} className={styles.connectedChannel}>
                 <ChannelListItem channel={channel} />

@@ -110,7 +110,7 @@ func runWithOutput(args ...string) (string, error) {
 	cmd := exec.Command("minikube", append(defaultArgs, args...)...)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return string(out), fmt.Errorf("running Minikube failed with err: %v\n%v", err, string(out))
+		return string(out), fmt.Errorf("running minikube failed with err: %v\n%v", err, string(out))
 	}
 	return string(out), nil
 }

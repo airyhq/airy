@@ -35,7 +35,7 @@
     "@bazel/bazelisk": "^1.7.5",
     "@bazel/ibazel": "^0.14.0",
     "@bazel/typescript": "^3.2.2",
-    "@svgr/webpack": "^5.4.0",
+    "@svgr/webpack": "^5.5.0",
     "@types/lodash-es": "^4.17.4",
     "@types/react-window-infinite-loader": "^1.0.3",
     "@types/resize-observer-browser": "^0.1.5",

@@ -31,8 +31,13 @@ public class Connector {
 
     public Message sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();
-        final String from = sendMessageRequest.getChannel().getSourceChannelId();
-        final String to = sendMessageRequest.getSourceConversationId();
+        String from = sendMessageRequest.getChannel().getSourceChannelId();
+        String to = sendMessageRequest.getSourceConversationId();
+
+        if (sendMessageRequest.getChannel().getSource().equals("twilio.sms")) {
+            from = "whatsapp:+" + from;
+            to = "whatsapp:+" + to;
+        }
         try {
             final JsonNode messageNode = mapper.readTree(message.getContent());
             api.sendMessage(from, to, messageNode.get("text").textValue());

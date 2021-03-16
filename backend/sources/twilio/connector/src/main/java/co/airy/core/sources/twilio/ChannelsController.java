@@ -3,7 +3,6 @@ package co.airy.core.sources.twilio;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
@@ -12,7 +11,6 @@ import co.airy.uuid.UUIDv5;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,19 +28,24 @@ import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 
 @RestController
 public class ChannelsController {
-    private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
-
     private final Stores stores;
-    private final KafkaProducer<String, Channel> producer;
 
-    public ChannelsController(Stores stores, KafkaProducer<String, Channel> producer) {
+    public ChannelsController(Stores stores) {
         this.stores = stores;
-        this.producer = producer;
     }
 
     @PostMapping("/channels.twilio.sms.connect")
     ResponseEntity<?> connectSms(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        final String channelId = UUIDv5.fromNamespaceAndName("twilio.sms", requestPayload.getPhoneNumber()).toString();
+        return connectChannel("twilio.sms", requestPayload);
+    }
+
+    @PostMapping("/channels.twilio.whatsapp.connect")
+    ResponseEntity<?> connectWhatsapp(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
+        return connectChannel("twilio.whatsapp", requestPayload);
+    }
+
+    private ResponseEntity<?> connectChannel(String source, ConnectChannelRequestPayload requestPayload) {
+        final String channelId = UUIDv5.fromNamespaceAndName(source, requestPayload.getPhoneNumber()).toString();
 
         final Channel channel = Channel.newBuilder()
                 .setId(channelId)
@@ -50,32 +53,12 @@ public class ChannelsController {
                 .setSource("twilio.sms")
                 .setSourceChannelId(requestPayload.getPhoneNumber())
                 .build();
-
-        return connectChannel(channel, requestPayload.getName(), requestPayload.getImageUrl());
-    }
-
-    @PostMapping("/channels.twilio.whatsapp.connect")
-    ResponseEntity<?> connectWhatsapp(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        final String phoneNumber = "whatsapp:" + requestPayload.getPhoneNumber();
-        final String channelId = UUIDv5.fromNamespaceAndName("twilio.whatsapp", phoneNumber).toString();
-
-        final Channel channel = Channel.newBuilder()
-                .setId(channelId)
-                .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setSource("twilio.whatsapp")
-                .setSourceChannelId(phoneNumber)
-                .build();
-
-        return connectChannel(channel, requestPayload.getName(), requestPayload.getImageUrl());
-    }
-
-    private ResponseEntity<?> connectChannel(Channel channel, String name, String imageUrl) {
         try {
             List<Metadata> metadataList = new ArrayList<>();
-            metadataList.add(newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.NAME, name));
+            metadataList.add(newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.NAME, requestPayload.getName()));
 
-            if (imageUrl != null) {
-                metadataList.add(newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.IMAGE_URL, imageUrl));
+            if (requestPayload.getImageUrl() != null) {
+                metadataList.add(newChannelMetadata(channel.getId(), MetadataKeys.ChannelKeys.IMAGE_URL, requestPayload.getImageUrl()));
             }
 
             final ChannelContainer container = ChannelContainer.builder()

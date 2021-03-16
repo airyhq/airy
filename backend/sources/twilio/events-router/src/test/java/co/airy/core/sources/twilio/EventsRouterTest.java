@@ -75,7 +75,7 @@ class EventsRouterTest {
         testHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                         .setId(channelId)
-                        .setSourceChannelId("whatsapp:+" + externalChannelId)
+                        .setSourceChannelId(externalChannelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
                         .setSource("twilio.whatsapp")
                         .build())

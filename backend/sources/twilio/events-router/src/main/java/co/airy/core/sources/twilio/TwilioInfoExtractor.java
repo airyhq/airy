@@ -10,8 +10,8 @@ public class TwilioInfoExtractor {
         Map<String, String> twilioContent = parseUrlEncoded(payload);
 
         return TwilioEventInfo.builder()
-                .to(twilioContent.get("To"))
-                .from(twilioContent.get("From"))
+                .to(twilioContent.get("To").replace("whatsapp:+", ""))
+                .from(twilioContent.get("From").replace("whatsapp:+", ""))
                 .payload(payload)
                 .build();
     }

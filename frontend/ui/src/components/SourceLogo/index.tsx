@@ -22,7 +22,7 @@ type SourceLogoProps = {
   paddingLeft?: number;
 };
 
-export const fallbackImageUrl = (event: SyntheticEvent<HTMLImageElement, Event>, source: string) => {
+const fallbackImageUrl = (event: SyntheticEvent<HTMLImageElement, Event>, source: string) => {
   event.currentTarget.src = `https://s3.amazonaws.com/assets.airy.co/${source}_avatar.svg`;
   event.currentTarget.alt = 'fallback image';
 };

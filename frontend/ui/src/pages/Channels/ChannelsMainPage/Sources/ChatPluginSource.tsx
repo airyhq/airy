@@ -7,6 +7,7 @@ import SourceDescription from '../SourceDescription';
 import {ChannelSource} from 'httpclient';
 import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {CHANNELS_CHAT_PLUGIN_ROUTE} from '../../../../routes/routes';
+import {cyChannelsChatPluginAddButton} from 'handles';
 
 type ChatPluginProps = {pluginSource: Channel[]};
 
@@ -21,6 +22,7 @@ const ChatPluginSource = (props: ChatPluginProps & RouteComponentProps) => {
         image={<AiryLogo />}
         displayButton={!channels.length}
         id={ChannelSource.chatPlugin}
+        dataCy={cyChannelsChatPluginAddButton}
         onAddChannelClick={() => {
           props.history.push(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
         }}
@@ -32,6 +34,7 @@ const ChatPluginSource = (props: ChatPluginProps & RouteComponentProps) => {
         connected="CONNECTED"
         placeholderImage={<AiryLogo />}
         isConnected="connected"
+        dataCy={cyChannelsChatPluginAddButton}
         onSourceInfoClick={() => {
           props.history.push({
             pathname: CHANNELS_CONNECTED_ROUTE + `/chatplugin`,

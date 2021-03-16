@@ -15,6 +15,7 @@ type SourceInfoProps = {
   onMoreChannelsClick?: () => void;
   onChannelClick?: (channel: Channel) => void;
   onSourceInfoClick?: () => void;
+  dataCy?: string;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
@@ -72,7 +73,11 @@ const SourceInfo = (props: SourceInfoProps) => {
           </div>
 
           <div className={styles.channelButton}>
-            <button type="button" className={styles.addChannelButton} onClick={props.onAddChannelClick}>
+            <button
+              type="button"
+              className={styles.addChannelButton}
+              onClick={props.onAddChannelClick}
+              data-cy={props.dataCy}>
               <div className={styles.channelButtonIcon} title="Add a channel">
                 <AddChannel />
               </div>

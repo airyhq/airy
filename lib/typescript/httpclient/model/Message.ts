@@ -1,23 +1,10 @@
-import {MessagePayload} from '../payload/MessagePayload';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const camelcaseKeys = require('camelcase-keys');
 
-export interface Attachement {
-  type: string;
-  payload: {
-    url?: string;
-    title?: string;
-    name?: string;
-    templateType?: string;
-    text?: string;
-  };
-  sender?: {
-    id: string;
-  };
-}
-
-export enum MessageSource {
+export enum Source {
   facebook = 'facebook',
   google = 'google',
-  chatplugin = 'chat_plugin',
+  chatplugin = 'chatplugin',
   smsTwilio = 'twilio.sms',
   whatsappTwilio = 'twilio.whatsapp',
 }
@@ -48,10 +35,6 @@ export enum SenderType {
   appUser = 'app_user',
 }
 
-export function isFromContact(message: Message) {
-  return message?.senderType === SenderType.sourceContact;
-}
-
 export interface Message {
   id: string;
   content: any;
@@ -59,6 +42,7 @@ export interface Message {
   senderType: SenderType;
   sentAt: Date;
 }
-export interface MessagePayloadData {
-  data: MessagePayload[];
-}
+
+export const mapMessage = (payload): Message => {
+  return {...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}), sentAt: new Date(payload.sent_at)};
+};

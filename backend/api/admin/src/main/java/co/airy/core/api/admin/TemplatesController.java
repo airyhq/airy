@@ -38,9 +38,8 @@ public class TemplatesController {
         final Template template = Template.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setName(payload.getName())
-                .setSourceType(payload.getSourceType())
+                .setSource(payload.getSource())
                 .setContent(objectMapper.writeValueAsString(payload.getContent()))
-                .setVariables(objectMapper.writeValueAsString(payload.getVariables()))
                 .build();
 
         try {
@@ -75,7 +74,7 @@ public class TemplatesController {
     @PostMapping("/templates.list")
     ResponseEntity<?> listTemplates(@RequestBody @Valid ListTemplatesRequestPayload payload) {
         final List<TemplatePayload> response = stores.getTemplates().stream()
-                .filter(t-> t.getSourceType().equals(payload.getSourceType()))
+                .filter(t -> t.getSource().equals(payload.getSource()))
                 .filter(t -> (payload.getName() == null || payload.getName().isEmpty()) || t.getName().contains(payload.getName()))
                 .map(TemplatePayload::fromTemplate)
                 .collect(toList());
@@ -99,12 +98,8 @@ public class TemplatesController {
             template.setContent(objectMapper.writeValueAsString(payload.getContent()));
         }
 
-        if (payload.getVariables() != null) {
-            template.setVariables(objectMapper.writeValueAsString(payload.getVariables()));
-        }
-
-        if (payload.getSourceType() != null) {
-            template.setSourceType(payload.getSourceType());
+        if (payload.getSource() != null) {
+            template.setSource(payload.getSource());
         }
 
         try {

@@ -37,7 +37,7 @@ Once you [signed up](/api/endpoints/users.md#signup), you must [log
 in](/api/authentication.md#login) so you can obtain a valid JWT token for the
 upcoming API calls:
 
-```bash
+```sh
 token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \
@@ -61,7 +61,7 @@ browser. This authenticates the chat plugin and enables you to send messages
 immediately:
 
 ```
-$(airy api endpoint)/chatplugin/example?channel_id=<channel_id>
+$(airy api endpoint)/chatplugin/ui/example?channel_id=<channel_id>
 ```
 
 You can now type a message in the text box and send it 🎉
@@ -76,7 +76,7 @@ created. it should return the message you have just sent.
 
 <img alt="conversations.list" src={useBaseUrl('img/sources/chatplugin/conversation_list.gif')} />
 
-```bash
+```sh
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
 $(airy api endpoint)/conversations.list | jq .
 ```

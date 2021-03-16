@@ -13,7 +13,7 @@ import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
 import {AiryWidgetConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import {MessagePayload, SenderType, MessageState, isFromContact, Message} from 'httpclient';
+import {SenderType, MessageState, isFromContact, Message} from 'httpclient';
 import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -91,7 +91,7 @@ const Chat = (props: Props) => {
   };
 
   const onReceive = (data: IMessage) => {
-    const messagePayload = (JSON.parse(data.body) as any).message as MessagePayload;
+    const messagePayload = (JSON.parse(data.body) as any).message;
     const newMessage = {
       ...camelcaseKeys(messagePayload, {deep: true, stopPaths: ['content']}),
       sentAt: new Date(messagePayload.sent_at),
@@ -163,7 +163,7 @@ const Chat = (props: Props) => {
                               <MessageInfoWrapper fromContact={isFromContact(message)} isChatPlugin={true}>
                                 <SourceMessage
                                   message={message}
-                                  source="chat_plugin"
+                                  source="chatplugin"
                                   lastInGroup={lastInGroup}
                                   invertSides={true}
                                   commandCallback={commandCallback}

@@ -76,7 +76,7 @@ public class ChatControllerTest {
     private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(UUID.randomUUID().toString())
-            .setSource("chat_plugin")
+            .setSource("chatplugin")
             .setSourceChannelId("some custom identifier")
             .build();
 

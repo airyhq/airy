@@ -1,6 +1,6 @@
 import {Dispatch} from 'redux';
-import {createAction} from 'typesafe-actions';
-import {Conversation, ConversationFilter, PaginatedResponse} from 'httpclient';
+import _typesafe, {createAction} from 'typesafe-actions';
+import {Conversation, ConversationFilter, PaginatedResponse, Pagination} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 
 import {StateModel} from '../../reducers';
@@ -12,27 +12,29 @@ export const SET_FILTERED_CONVERSATIONS = '@@conversations/SET_FILTERED';
 export const MERGE_FILTERED_CONVERSATIONS = '@@conversations/MERGE_FILTERED';
 export const UPDATE_CONVERSATION_FILTER = '@@conversation/UPDATE_FILTER';
 
-export const resetFilteredConversationAction = createAction(RESET_FILTERED_CONVERSATIONS);
+export const resetFilteredConversationAction = createAction(RESET_FILTERED_CONVERSATIONS)();
 export const setFilteredConversationsAction = createAction(
   SET_FILTERED_CONVERSATIONS,
-  resolve => (
-    conversations: Conversation[],
-    filter: ConversationFilter,
-    paginationData: {previousCursor: string; nextCursor: string; total: number}
-  ) => resolve({conversations, filter, paginationData})
-);
+  (conversations: Conversation[], filter: ConversationFilter, paginationData: Pagination) => ({
+    conversations,
+    filter,
+    paginationData,
+  })
+)<{conversations: Conversation[]; filter: ConversationFilter; paginationData: Pagination}>();
+
 export const mergeFilteredConversationsAction = createAction(
   MERGE_FILTERED_CONVERSATIONS,
-  resolve => (
+  (
     conversations: Conversation[],
     filter: ConversationFilter,
     paginationData: {previousCursor: string; nextCursor: string; total: number}
-  ) => resolve({conversations, filter, paginationData})
-);
+  ) => ({conversations, filter, paginationData})
+)<{conversations: Conversation[]; filter: ConversationFilter; paginationData: Pagination}>();
+
 export const updateFilteredConversationsAction = createAction(
   UPDATE_CONVERSATION_FILTER,
-  resolve => (filter: ConversationFilter) => resolve({filter})
-);
+  (filter: ConversationFilter) => ({filter})
+)<{filter: ConversationFilter}>();
 
 export const setSearch = (currentFilter: ConversationFilter, displayName: string) => {
   return setFilter({

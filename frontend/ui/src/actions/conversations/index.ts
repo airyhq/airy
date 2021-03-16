@@ -1,6 +1,6 @@
 import {Dispatch} from 'redux';
-import {createAction} from 'typesafe-actions';
-import {Conversation, PaginatedResponse} from 'httpclient';
+import _typesafe, {createAction} from 'typesafe-actions';
+import {Conversation, Pagination, PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
 import {mergeMetadataAction, setMetadataAction} from '../metadata';
@@ -10,44 +10,42 @@ const CONVERSATIONS_LOADING = '@@conversations/LOADING';
 const CONVERSATIONS_MERGE = '@@conversations/MERGE';
 const CONVERSATION_ADD_ERROR = '@@conversations/ADD_ERROR_TO_CONVERSATION';
 const CONVERSATION_REMOVE_ERROR = '@@conversations/REMOVE_ERROR_FROM_CONVERSATION';
-const CONVERSATION_ADD_TAG = '@@conversations/CONVERSATION_ADD_TAG';
 const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
 const CONVERSATION_UPDATE_PAGINATION_DATA = '@@conversation/UPDATE_PAGINATION_DATA';
 
-export const loadingConversationAction = createAction(CONVERSATION_LOADING, resolve => (conversationId: string) =>
-  resolve(conversationId)
-);
+export const loadingConversationAction = createAction(
+  CONVERSATION_LOADING,
+  (conversationId: string) => conversationId
+)<string>();
 
-export const loadingConversationsAction = createAction(CONVERSATIONS_LOADING, resolve => () => resolve());
+export const loadingConversationsAction = createAction(CONVERSATIONS_LOADING)();
 
 export const mergeConversationsAction = createAction(
   CONVERSATIONS_MERGE,
-  resolve => (
-    conversations: Conversation[],
-    paginationData?: {previousCursor: string; nextCursor: string; total: number}
-  ) => resolve({conversations, paginationData})
-);
+  (conversations: Conversation[], paginationData?: Pagination) => ({
+    conversations,
+    paginationData,
+  })
+)<{conversations: Conversation[]; paginationData: Pagination}>();
 
 export const addErrorToConversationAction = createAction(
   CONVERSATION_ADD_ERROR,
-  resolve => (conversationId: string, errorMessage: string) => resolve({conversationId, errorMessage})
-);
+  (conversationId: string, errorMessage: string) => ({conversationId, errorMessage})
+)<{conversationId: string; errorMessage: string}>();
 
-export const removeErrorFromConversationAction = createAction(
-  CONVERSATION_REMOVE_ERROR,
-  resolve => (conversationId: string) => resolve({conversationId})
-);
+export const removeErrorFromConversationAction = createAction(CONVERSATION_REMOVE_ERROR, (conversationId: string) => ({
+  conversationId,
+}))<{conversationId: string}>();
 
 export const removeTagFromConversationAction = createAction(
   CONVERSATION_REMOVE_TAG,
-  resolve => (conversationId: string, tagId: string) => resolve({conversationId, tagId})
-);
+  (conversationId: string, tagId: string) => ({conversationId, tagId})
+)<{conversationId: string; tagId: string}>();
 
 export const updateMessagesPaginationDataAction = createAction(
   CONVERSATION_UPDATE_PAGINATION_DATA,
-  resolve => (conversationId: string, paginationData: {previousCursor: string; nextCursor: string; total: number}) =>
-    resolve({conversationId, paginationData})
-);
+  (conversationId: string, paginationData: Pagination) => ({conversationId, paginationData})
+)<{conversationId: string; paginationData: Pagination}>();
 
 export const listConversations = () => async (dispatch: Dispatch<any>) => {
   dispatch(loadingConversationsAction());

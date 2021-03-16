@@ -15,16 +15,10 @@ for more information.
 ```json5
 {
   "name": "my template name",
-  "source_type": "facebook",
+  "source": "chatplugin",
   "content": {
     "message": {
       "text": "[[salutation]]!"
-    }
-  },
-  // source specific message content
-  "variables": {
-    "en": {
-      "salutation": "%s"
     }
   }
 }
@@ -48,12 +42,12 @@ This endpoint allows you to query templates, filtering by name.
 
 **Sample request**
 
-Find templates whose name contains "NASA":
+Find templates whose name contains "Ada":
 
 ```json5
 {
-  "source_type": "chatplugin",
-  "name": "NASA" // optional
+  "source": "chatplugin",
+  "name": "Ada" // optional
 }
 ```
 
@@ -64,17 +58,11 @@ Find templates whose name contains "NASA":
   "data": [
     {
       "id": "TEMPLATE-UUID",
-      "name": "Template for NASA",
-      "source_type": "facebook",
+      "name": "Template for Ada Lovelance day",
+      "source": "chatplugin",
       "content": {
         "message": {
           "text": "[[salutation]]!"
-        }
-      },
-      // source specific message content
-      "variables": {
-        "en": {
-          "salutation": "%s"
         }
       }
     }
@@ -98,16 +86,10 @@ Find templates whose name contains "NASA":
 {
   "id": "TEMPLATE-UUID",
   "name": "{String}",
-  "source_type": "facebook",
+  "source": "chatplugin",
   "content": {
     "message": {
       "text": "[[salutation]]!"
-    }
-  },
-  // source specific message content
-  "variables": {
-    "en": {
-      "salutation": "%s"
     }
   }
 }
@@ -121,16 +103,10 @@ Find templates whose name contains "NASA":
 {
   "id": "template id",
   "name": "my template name",
-  "source_type": "facebook",
+  "source_type": "chatplugin",
   "content": {
     "message": {
       "text": "[[salutation]]!"
-    }
-  },
-  // source specific message content
-  "variables": {
-    "en": {
-      "salutation": "%s"
     }
   }
 }

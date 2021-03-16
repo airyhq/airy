@@ -8,15 +8,16 @@ import {
   SendMessagesRequestPayload,
   TagConversationRequestPayload,
   UntagConversationRequestPayload,
-  MessagePayload,
   ListMessagesRequestPayload,
   ConnectChatPluginRequestPayload,
+  ConnectTwilioSmsRequestPayload,
+  ConnectTwilioWhatsappRequestPayload,
   UpdateChannelRequestPayload,
+  ListTemplatesRequestPayload,
+  PaginatedResponse,
 } from './payload';
 
-import {Tag, Message} from './model';
-/* eslint-disable @typescript-eslint/no-var-requires */
-const camelcaseKeys = require('camelcase-keys');
+import {Tag, Message, Channel, User, Conversation, Config, Template} from './model';
 
 export function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
@@ -26,6 +27,9 @@ type FetchOptions = {
   ignoreAuthToken?: boolean;
 };
 
+interface ApiRequest<T, K = void> {
+  (requestPaylod: T): Promise<K>;
+}
 export class HttpClient {
   public readonly apiUrlConfig?: string;
   public token?: string;
@@ -87,45 +91,47 @@ export class HttpClient {
     return this.parseBody(response);
   }
 
-  private mapMessage = (payload: MessagePayload): Message => {
-    return {...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}), sentAt: new Date(payload.sent_at)};
-  };
+  public listChannels: ApiRequest<void, Channel[]>;
 
-  public listChannels: () => Promise<any>;
+  public exploreFacebookChannels: ApiRequest<ExploreChannelRequestPayload, Channel[]>;
 
-  public exploreFacebookChannels: (requestPayload: ExploreChannelRequestPayload) => Promise<any>;
+  public connectFacebookChannel: ApiRequest<ConnectChannelFacebookRequestPayload, Channel>;
 
-  public connectFacebookChannel: (requestPayload: ConnectChannelFacebookRequestPayload) => Promise<any>;
+  public connectChatPluginChannel: ApiRequest<ConnectChatPluginRequestPayload, Channel>;
 
-  public connectChatPluginChannel: (requestPayload: ConnectChatPluginRequestPayload) => Promise<any>;
+  public connectTwilioSmsChannel: ApiRequest<ConnectTwilioSmsRequestPayload, Channel>;
 
-  public updateChannel: (requestPayload: UpdateChannelRequestPayload) => Promise<any>;
+  public connectTwilioWhatsappChannel: ApiRequest<ConnectTwilioWhatsappRequestPayload, Channel>;
 
-  public disconnectChannel: (source: string, requestPayload: DisconnectChannelRequestPayload) => Promise<any>;
+  public updateChannel: ApiRequest<UpdateChannelRequestPayload, Channel>;
 
-  public listConversations: (conversationListRequest: ListConversationsRequestPayload) => Promise<any>;
+  public disconnectChannel: ApiRequest<DisconnectChannelRequestPayload>;
 
-  public getConversationInfo: (conversationId: string) => Promise<any>;
+  public listConversations: ApiRequest<ListConversationsRequestPayload, PaginatedResponse<Conversation>>;
 
-  public readConversations: (conversationId: string) => Promise<any>;
+  public getConversationInfo: ApiRequest<string, Conversation>;
 
-  public listMessages: (conversationListRequest: ListMessagesRequestPayload) => Promise<any>;
+  public readConversations: ApiRequest<string>;
 
-  public listTags: () => Promise<any>;
+  public listMessages: ApiRequest<ListMessagesRequestPayload, PaginatedResponse<Message>>;
 
-  public createTag: (requestPayload: CreateTagRequestPayload) => Promise<any>;
+  public listTags: ApiRequest<void, Tag[]>;
 
-  public updateTag: (tag: Tag) => Promise<any>;
+  public createTag: ApiRequest<CreateTagRequestPayload, Tag>;
 
-  public deleteTag: (id: string) => Promise<any>;
+  public updateTag: ApiRequest<Tag>;
 
-  public loginViaEmail: (requestPayload: LoginViaEmailRequestPayload) => Promise<any>;
+  public deleteTag: ApiRequest<string>;
 
-  public tagConversation: (requestPayload: TagConversationRequestPayload) => Promise<any>;
+  public loginViaEmail: ApiRequest<LoginViaEmailRequestPayload, User>;
 
-  public untagConversation: (requestPayload: UntagConversationRequestPayload) => Promise<any>;
+  public tagConversation: ApiRequest<TagConversationRequestPayload>;
 
-  public sendMessages: (requestPayload: SendMessagesRequestPayload) => Promise<any>;
+  public untagConversation: ApiRequest<UntagConversationRequestPayload>;
 
-  public getConfig: () => Promise<any>;
+  public sendMessages: ApiRequest<SendMessagesRequestPayload, Message>;
+
+  public getConfig: ApiRequest<void, Config>;
+
+  public listTemplates: ApiRequest<ListTemplatesRequestPayload, Template[]>;
 }

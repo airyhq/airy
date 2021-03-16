@@ -40,7 +40,7 @@ Once you [signed up](/api/endpoints/users.md#signup), you must [log
 in](/api/authentication.md#login) so you can obtain a valid JWT token for the
 upcoming API calls:
 
-```bash
+```sh
 host=$(airy api endpoint)
 token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
@@ -65,7 +65,7 @@ browser. This authenticates the chat plugin and enables you to send messages
 immediately:
 
 ```
-$host/chatplugin/example?channel_id=<channel_id>
+$host/chatplugin/chatplugin/ui/example?channel_id=<channel_id>
 ```
 
 You can now type a message in the text box and send it 🎉

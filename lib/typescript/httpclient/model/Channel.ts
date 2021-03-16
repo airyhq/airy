@@ -11,12 +11,13 @@ export interface Channel {
   source: string;
   sourceChannelId: string;
   connected: boolean;
+  phoneNumber?: string;
 }
 
 export enum ChannelSource {
   facebook = 'facebook',
   google = 'google',
-  chatPlugin = 'chat_plugin',
+  chatPlugin = 'chatplugin',
   twilioSMS = 'twilio.sms',
   twilioWhatsapp = 'twilio.whatsapp',
 }

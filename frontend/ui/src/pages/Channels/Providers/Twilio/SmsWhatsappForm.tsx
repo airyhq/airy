@@ -1,0 +1,78 @@
+import React from 'react';
+
+import {Button, Input, UrlInputField} from '@airyhq/components';
+
+import styles from './SmsWhatsappForm.module.scss';
+
+type SmsWhatsappFormProps = {
+  twilioPhoneNumber: string;
+  placeholder: string;
+  urlPlaceholder: string;
+  namePlaceholder: string;
+  name: string;
+  urlName: string;
+  accountName: string;
+  text: string;
+  urlText: string;
+  imageUrl: string;
+  twilioNumberInput: string;
+  twilioUrlInput: string;
+  twilioNameInput: string;
+  smsFormButton?: string;
+  whatsappFormButton?: string;
+
+  handleNameInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleUrlInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleNumberInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  connectTwilioSms: (e: React.ChangeEvent<HTMLFormElement>) => void;
+};
+
+const SmsWhatsappForm = (props: SmsWhatsappFormProps) => {
+  return (
+    <form onSubmit={props.connectTwilioSms} className={styles.formContainer}>
+      <div className={styles.formContent}>
+        <div className={styles.formContentNumber}>
+          <Input
+            label={props.twilioPhoneNumber}
+            placeholder={props.placeholder}
+            value={props.twilioNumberInput}
+            required={true}
+            height={40}
+            autoFocus={true}
+            onChange={props.handleNumberInput}
+            fontClass="font-s"
+          />
+        </div>
+
+        <div className={styles.formContentNumber}>
+          <UrlInputField
+            label={props.imageUrl}
+            placeholder={props.urlPlaceholder}
+            value={props.twilioUrlInput}
+            required={false}
+            height={40}
+            onChange={props.handleUrlInput}
+            fontClass="font-s"
+          />
+        </div>
+
+        <div className={styles.formContentName}>
+          <Input
+            label={props.accountName}
+            placeholder={props.namePlaceholder}
+            value={props.twilioNameInput}
+            required={false}
+            height={40}
+            onChange={props.handleNameInput}
+            fontClass="font-s"
+          />
+        </div>
+        <Button type="submit" styleVariant="normal" disabled={props.twilioNumberInput.trim().length == 0}>
+          {props.smsFormButton} {props.whatsappFormButton}
+        </Button>
+      </div>
+    </form>
+  );
+};
+
+export default SmsWhatsappForm;

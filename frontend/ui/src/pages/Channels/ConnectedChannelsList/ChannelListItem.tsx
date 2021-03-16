@@ -11,6 +11,7 @@ import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as CheckMark} from 'assets/images/icons/checkmark.svg';
 import styles from './ChannelListItem.module.scss';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {fallbackImage} from '../../../services/image/index';
 
 type ChannelItemProps = {
   channel: Channel;
@@ -53,7 +54,13 @@ const ChannelItem = (props: ChannelItemProps) => {
 
   const ChannelIcon = ({channel}: {channel: Channel}) => {
     if (channel?.metadata?.imageUrl) {
-      return <img className={styles.imageUrlLogo} src={channel.metadata.imageUrl} />;
+      return (
+        <img
+          onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event, channel.source)}
+          className={styles.imageUrlLogo}
+          src={channel.metadata.imageUrl}
+        />
+      );
     }
     return getSourceLogo(channel);
   };

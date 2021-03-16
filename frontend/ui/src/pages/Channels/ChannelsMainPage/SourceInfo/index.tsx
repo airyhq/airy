@@ -2,6 +2,7 @@ import React from 'react';
 import {Channel} from 'httpclient';
 import {LinkButton} from '@airyhq/components';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
+import {fallbackImage} from '../../../../services/image/index';
 import styles from './index.module.scss';
 
 type SourceInfoProps = {
@@ -44,6 +45,9 @@ const SourceInfo = (props: SourceInfoProps) => {
                             src={channel.metadata?.imageUrl}
                             alt={channel.metadata?.name}
                             className={styles.facebookImage}
+                            onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                              fallbackImage(event, channel.source);
+                            }}
                           />
                         ) : (
                           <div className={styles.placeholderLogo}>{props.placeholderImage} </div>

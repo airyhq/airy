@@ -2,18 +2,18 @@ import React, {useState, useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
-import {connectTwilioSms, disconnectChannel} from '../../../../actions/channel';
-import {StateModel} from '../../../../reducers';
-import {allChannels} from '../../../../selectors/channels';
+import {connectTwilioSms, disconnectChannel} from '../../../../../actions/channel';
+import {StateModel} from '../../../../../reducers';
+import {allChannels} from '../../../../../selectors/channels';
 
 import {LinkButton} from '@airyhq/components';
 import {Channel} from 'httpclient';
-import SmsWhatsappForm from '../../Providers/Twilio/SmsWhatsappForm';
+import TwilioSmsWhatsappConnect from '../TwilioSmsWhatsappConnect';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
 
 import styles from './TwilioSmsConnect.module.scss';
 
-import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 
 interface TwilioSmsRouterProps {
   channelId?: string;
@@ -88,7 +88,7 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
         Back
       </LinkButton>
 
-      <SmsWhatsappForm
+      <TwilioSmsWhatsappConnect
         connectTwilioSms={connectTwilioSms}
         twilioPhoneNumber="Twilio Phone Number"
         placeholder="Purchased Number +123456789"

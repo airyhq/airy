@@ -5,7 +5,7 @@ import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {disconnectChannel} from '../../../../actions/channel';
 
 import {SettingsModal, Button} from '@airyhq/components';
-import {Channel, ChannelSource} from 'httpclient';
+import {Channel, SourceType} from 'httpclient';
 import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/google_avatar.svg';
 import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/sms_avatar.svg';
@@ -41,13 +41,13 @@ const ChannelListItem = (props: ChannelListItemProps) => {
 
   const getSourceLogo = (channel: Channel) => {
     switch (channel.source) {
-      case ChannelSource.facebook:
+      case SourceType.facebook:
         return <MessengerAvatarIcon />;
-      case ChannelSource.google:
+      case SourceType.google:
         return <GoogleAvatarIcon />;
-      case ChannelSource.twilioSMS:
+      case SourceType.twilioSMS:
         return <SMSAvatarIcon />;
-      case ChannelSource.twilioWhatsapp:
+      case SourceType.twilioWhatsapp:
         return <WhatsAppAvatarIcon />;
       default:
         return <AiryAvatarIcon />;

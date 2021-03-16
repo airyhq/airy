@@ -3,14 +3,13 @@ import React from 'react';
 import {Button, SettingsModal} from '@airyhq/components';
 import close from 'assets/images/icons/close.svg';
 
-import styles from './RequirementsDialog.module.scss';
+import styles from './index.module.scss';
 
-type RequirementsDialogProps = {
+type FacebookMessengerRequirementsDialogProps = {
   onClose: () => void;
-  onAddChannel: () => void;
 };
 
-export const RequirementsDialog = (props: RequirementsDialogProps) => {
+export const FacebookMessengerRequirementsDialog = (props: FacebookMessengerRequirementsDialogProps) => {
   return (
     <SettingsModal style={{maxWidth: '582px'}} title="Connect Messenger" close={() => props.onClose()}>
       <div className={styles.backgroundContainer}>
@@ -38,11 +37,6 @@ export const RequirementsDialog = (props: RequirementsDialogProps) => {
               </a>{' '}
               for more information.
             </p>
-          </div>
-          <div className={styles.button}>
-            <Button styleVariant="normal" type="button" onClick={() => props.onAddChannel()}>
-              I&apos;m ready to connect
-            </Button>
           </div>
         </div>
       </div>

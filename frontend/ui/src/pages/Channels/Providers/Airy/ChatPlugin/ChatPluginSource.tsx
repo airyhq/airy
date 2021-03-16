@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
-import {Channel, ChannelSource} from 'httpclient';
+import {Channel, SourceType} from 'httpclient';
 import ConnectedChannelsBySourceCard from '../../../ConnectedChannelsBySourceCard';
 import SourceTypeDescriptionCard from '../../../SourceTypeDescriptionCard';
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airy_avatar.svg';
@@ -20,7 +20,7 @@ const ChatPluginSource = (props: ChatPluginProps & RouteComponentProps) => {
         text="Best of class browser messenger"
         image={<AiryAvatarIcon />}
         displayButton={!channels.length}
-        id={ChannelSource.chatPlugin}
+        id={SourceType.chatPlugin}
         onAddChannelClick={() => {
           props.history.push(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
         }}

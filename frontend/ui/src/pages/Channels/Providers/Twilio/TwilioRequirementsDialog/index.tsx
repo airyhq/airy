@@ -3,14 +3,13 @@ import React from 'react';
 import {Button, SettingsModal} from '@airyhq/components';
 import close from 'assets/images/icons/close.svg';
 
-import styles from './RequirementsDialog.module.scss';
+import styles from './index.module.scss';
 
-type RequirementsDialogProps = {
+type TwilioRequirementsDialogProps = {
   onClose: () => void;
-  onAddChannel: () => void;
 };
 
-export const SmsWhatsappDialogue = (props: RequirementsDialogProps) => {
+export const TwilioRequirementsDialog = (props: TwilioRequirementsDialogProps) => {
   return (
     <SettingsModal style={{maxWidth: '582px'}} title="Connect Messenger" close={props.onClose}>
       <div className={styles.container}>
@@ -47,9 +46,6 @@ export const SmsWhatsappDialogue = (props: RequirementsDialogProps) => {
             </a>{' '}
             for more details.
           </p>
-          <Button type="submit" styleVariant="normal" onClick={props.onAddChannel}>
-            Ready to Connect
-          </Button>
         </div>
       </div>
     </SettingsModal>

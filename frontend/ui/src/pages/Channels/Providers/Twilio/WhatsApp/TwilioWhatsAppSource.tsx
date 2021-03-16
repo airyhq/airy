@@ -1,14 +1,14 @@
 import React from 'react';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 
-import {Channel, ChannelSource} from 'httpclient';
-import ConnectedChannelsBySourceCard from '../../ConnectedChannelsBySourceCard';
-import SourceTypeDescriptionCard from '../../SourceTypeDescriptionCard';
+import {Channel, SourceType} from 'httpclient';
+import SourceTypeDescriptionCard from '../../../SourceTypeDescriptionCard';
+import ConnectedChannelsBySourceCard from '../../../ConnectedChannelsBySourceCard';
 import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
 
-import {CHANNELS_CONNECTED_ROUTE, CHANNELS_TWILIO_WHATSAPP_ROUTE} from '../../../../routes/routes';
+import {CHANNELS_CONNECTED_ROUTE, CHANNELS_TWILIO_WHATSAPP_ROUTE} from '../../../../../routes/routes';
 
-type TwilioWhatsAppSourceProps = {whatsappSmsSource: Channel[]; showDialogAction: (source: string) => void};
+type TwilioWhatsAppSourceProps = {whatsappSmsSource: Channel[]; addChannelAction: (source: string) => void};
 
 const TwilioWhatsAppSource = (props: TwilioWhatsAppSourceProps & RouteComponentProps) => {
   const channels = props.whatsappSmsSource.filter((channel: Channel) => channel.source === 'twilio.whatsapp');
@@ -21,8 +21,8 @@ const TwilioWhatsAppSource = (props: TwilioWhatsAppSourceProps & RouteComponentP
           text="World #1 chat app"
           image={<WhatsappLogo />}
           displayButton={!channels.length}
-          id={ChannelSource.twilioWhatsapp}
-          onAddChannelClick={() => props.showDialogAction(ChannelSource.twilioWhatsapp)}
+          id={SourceType.twilioWhatsapp}
+          onAddChannelClick={() => props.addChannelAction(SourceType.twilioWhatsapp)}
         />
 
         <ConnectedChannelsBySourceCard

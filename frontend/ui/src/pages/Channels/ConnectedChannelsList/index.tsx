@@ -5,7 +5,7 @@ import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {StateModel} from './../../../reducers';
 import {allChannels} from './../../../selectors/channels';
 
-import {Channel, ChannelSource} from 'httpclient';
+import {Channel, SourceType} from 'httpclient';
 import ChannelListItem from './ChannelListItem';
 import {SearchField} from '@airyhq/components';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
@@ -51,23 +51,23 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
 
   const setPageTitle = () => {
     switch (source) {
-      case ChannelSource.facebook:
+      case SourceType.facebook:
         setName('Facebook Messenger');
         setPath(CHANNELS_FACEBOOK_ROUTE);
         break;
-      case ChannelSource.google:
+      case SourceType.google:
         setName('Google');
         setPath('');
         break;
-      case ChannelSource.twilioSMS:
+      case SourceType.twilioSMS:
         setName('Twilio SMS');
         setPath(CHANNELS_TWILIO_SMS_ROUTE + '/new_account');
         break;
-      case ChannelSource.twilioWhatsapp:
+      case SourceType.twilioWhatsapp:
         setName('Twilio Whatsapp');
         setPath(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account');
         break;
-      case ChannelSource.chatPlugin:
+      case SourceType.chatPlugin:
         setName('Chat Plugin');
         setPath(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
         break;

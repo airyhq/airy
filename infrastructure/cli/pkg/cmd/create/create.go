@@ -34,29 +34,24 @@ func create(cmd *cobra.Command, args []string) {
 
 	context, err := provider.Provision()
 	if err != nil {
-		fmt.Println("could not provision cluster: ", err)
-		os.Exit(1)
+		Exit("could not provision cluster: ", err)
 	}
 
 	clientset, err := context.GetClientSet()
 	if err != nil {
-		fmt.Println("could not get clientset: ", err)
-		os.Exit(1)
+		Exit("could not get clientset: ", err)
 	}
 
 	helm := New(clientset, version, namespace)
 	if err := helm.Setup(); err != nil {
-		fmt.Println("setting up Helm failed with err: ", err)
-		os.Exit(1)
+		Exit("setting up Helm failed with err: ", err)
 	}
 	if err := helm.InstallCharts(provider.GetHelmOverrides()); err != nil {
-		fmt.Println("installing Helm charts failed with err: ", err)
-		os.Exit(1)
+		Exit("installing Helm charts failed with err: ", err)
 	}
 
 	if err = context.Store(); err != nil {
-		fmt.Println("could not store the kube context: ", err)
-		os.Exit(1)
+		Exit("could not store the kube context: ", err)
 	}
 
 	fmt.Println("🚀 Starting core with default components")
@@ -64,8 +59,7 @@ func create(cmd *cobra.Command, args []string) {
 
 	hosts, err := provider.GetHosts()
 	if err != nil {
-		fmt.Println("failed to get installation endpoints: ", err)
-		os.Exit(1)
+		Exit("failed to get installation endpoints: ", err)
 	}
 
 	fmt.Println("\t 👩‍🍳 Available hosts:")
@@ -76,13 +70,11 @@ func create(cmd *cobra.Command, args []string) {
 	fmt.Println()
 
 	if err = hosts.Store(); err != nil {
-		fmt.Println("could not store the hosts: ", err)
-		os.Exit(1)
+		Exit("could not store the hosts: ", err)
 	}
 
 	if err = provider.PostInstallation(namespace); err != nil {
-		fmt.Println("failed to get installation endpoints: ", err)
-		os.Exit(1)
+		Exit("failed to get installation endpoints: ", err)
 	}
 
 	viper.Set("provider", provider)
@@ -90,4 +82,9 @@ func create(cmd *cobra.Command, args []string) {
 
 	fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
 	fmt.Println()
+}
+
+func Exit(msg ...interface{}) {
+	fmt.Print("❌ ", fmt.Sprintln(msg))
+	os.Exit(1)
 }

@@ -42,7 +42,7 @@ In order to communicate with our API endpoints, you need a valid [JWT](https://j
 In order to communicate with the instance's API you need to get the host assigned to it by minikube by running:
 
 ```
-host=$(minikube -p airy-core -n kube-system service --url traefik)
+host=$(airy api endpoint)
 ```
 
 To call the signup endpoint and register your email, open another terminal and type in the terminal `curl -X POST -H 'Content-Type: application/json' -d '{"first_name": "your_name","last_name": "your_last_name","password": "your_password","email": "your_email@airy.co"}' "$host/users.signup"`

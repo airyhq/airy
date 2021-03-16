@@ -11,6 +11,7 @@ type SearchFieldProps = {
   setValue: (value: string) => void;
   resetClicked?: () => void;
   autoFocus?: boolean;
+  dataCy?: string;
 };
 
 export const SearchField: React.FC<SearchFieldProps> = ({
@@ -20,6 +21,7 @@ export const SearchField: React.FC<SearchFieldProps> = ({
   setValue,
   resetClicked,
   autoFocus,
+  dataCy,
 }: SearchFieldProps): JSX.Element => {
   const inputRef = createRef<HTMLInputElement>();
   const resetButton = useCallback(() => {
@@ -30,7 +32,7 @@ export const SearchField: React.FC<SearchFieldProps> = ({
   }, [value, setValue]);
 
   return (
-    <div className={styles.component}>
+    <div className={styles.component} data-cy={dataCy}>
       <div className={styles.searchIcon}>
         <img className={styles.searchIcon} src={searchIcon} />
       </div>

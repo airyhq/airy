@@ -16,6 +16,8 @@ import {Button, Input, LinkButton} from '@airyhq/components';
 import {getCurrentConversation} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 
+import {cyShowTagsDialog, cyTagsDialogInput, cyTagsDialogButton} from 'handles';
+
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
     conversation: getCurrentConversation(state, ownProps),
@@ -132,6 +134,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             maxLength={50}
             validation={checkIfExists}
             showErrors
+            dataCy={cyTagsDialogInput}
           />
           {filteredTags.length > 0 ? (
             filteredTags.map(tag => {
@@ -156,7 +159,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                 editing
               />
               <div className={styles.addTagsButtonRow}>
-                <Button type="submit" styleVariant="small">
+                <Button type="submit" styleVariant="small" dataCy={cyTagsDialogButton}>
                   Create Tag
                 </Button>
               </div>
@@ -186,7 +189,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>
               <h3 className={styles.tagsHeaderTitle}>Tags</h3>
-              <LinkButton onClick={showAddTags} type="button">
+              <LinkButton onClick={showAddTags} type="button" dataCy={cyShowTagsDialog}>
                 {showTagsDialog ? 'Close' : '+ Add Tag'}{' '}
               </LinkButton>
             </div>

@@ -1,6 +1,7 @@
 package create
 
 import (
+	"cli/pkg/kube"
 	"cli/pkg/providers"
 	"fmt"
 	"github.com/spf13/cobra"
@@ -37,6 +38,8 @@ func create(cmd *cobra.Command, args []string) {
 		Exit("could not provision cluster: ", err)
 	}
 
+	fmt.Println("✅ Cluster provisioned")
+
 	clientset, err := context.GetClientSet()
 	if err != nil {
 		Exit("could not get clientset: ", err)
@@ -46,6 +49,9 @@ func create(cmd *cobra.Command, args []string) {
 	if err := helm.Setup(); err != nil {
 		Exit("setting up Helm failed with err: ", err)
 	}
+
+	fmt.Println("🚀 Starting core with default components")
+
 	if err := helm.InstallCharts(provider.GetHelmOverrides()); err != nil {
 		Exit("installing Helm charts failed with err: ", err)
 	}
@@ -54,30 +60,27 @@ func create(cmd *cobra.Command, args []string) {
 		Exit("could not store the kube context: ", err)
 	}
 
-	fmt.Println("🚀 Starting core with default components")
+	if err = provider.PostInstallation(namespace); err != nil {
+		Exit("failed to run post installation hook: ", err)
+	}
+
 	fmt.Println("🎉 Your Airy Core is ready")
 
-	hosts, err := provider.GetHosts()
+	hosts, err := kube.GetHosts(clientset, namespace)
 	if err != nil {
-		Exit("failed to get installation endpoints: ", err)
+		Exit("failed to get hosts from installation")
 	}
 
 	fmt.Println("\t 👩‍🍳 Available hosts:")
-	hosts.ForEach(func(resource string, url string, description string) {
-		fmt.Printf("\t\t %s %s:\t %s", resource, description, url)
+	for hostName, host := range hosts {
+		fmt.Printf("\t\t %s:\t %s", explainHost(hostName), host)
 		fmt.Println()
-	})
+	}
+
 	fmt.Println()
 
-	if err = hosts.Store(); err != nil {
-		Exit("could not store the hosts: ", err)
-	}
-
-	if err = provider.PostInstallation(namespace); err != nil {
-		Exit("failed to get installation endpoints: ", err)
-	}
-
 	viper.Set("provider", provider)
+	viper.Set("namespace", namespace)
 	viper.WriteConfig()
 
 	fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
@@ -87,4 +90,15 @@ func create(cmd *cobra.Command, args []string) {
 func Exit(msg ...interface{}) {
 	fmt.Print("❌ ", fmt.Sprintln(msg))
 	os.Exit(1)
+}
+
+func explainHost(hostName string) string {
+	switch hostName {
+	case "HOST":
+		return "api"
+	case "NGROK":
+		return "ngrok"
+	}
+
+	return hostName
 }

@@ -8,7 +8,8 @@ metadata:
     traefik.frontend.rule.type: PathPrefixStrip
 spec:
   rules:
-    - http:
+    - host: {{ get (urlParse .Values.global.host) "host" }}
+      http:
         paths:
           - path: /ui
             pathType: Prefix
@@ -24,7 +25,3 @@ spec:
                 name: frontend-chat-plugin
                 port:
                   number: 80
-  {{ if .Values.global.ingress }}
-      host: {{ .Values.global.ingress.host }}
-  {{ end }}
-

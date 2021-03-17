@@ -17,6 +17,7 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/viper v1.7.1
+	github.com/txn2/txeh v1.3.0 // indirect
 	goji.io v2.0.2+incompatible
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/api v0.19.0

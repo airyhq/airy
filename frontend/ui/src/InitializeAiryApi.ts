@@ -6,7 +6,7 @@ import {logoutUser} from './actions/user';
 
 const authToken = getAuthToken();
 
-export const HttpClientInstance = new HttpClient(`//${env.API_HOST}`, authToken, error => {
+export const HttpClientInstance = new HttpClient(env.API_HOST, authToken, error => {
   console.error('Unauthorized request, logging out user');
   console.error(error);
 

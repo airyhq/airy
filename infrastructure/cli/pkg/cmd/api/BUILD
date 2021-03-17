@@ -12,7 +12,7 @@ go_library(
     importpath = "cli/pkg/cmd/api",
     visibility = ["//visibility:public"],
     deps = [
-        "//infrastructure/cli/pkg/core",
+        "//infrastructure/cli/pkg/kube",
         "//lib/go/httpclient",
         "//lib/go/httpclient/payloads",
         "@com_github_spf13_cobra//:cobra",

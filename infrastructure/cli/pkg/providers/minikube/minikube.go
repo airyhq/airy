@@ -1,13 +1,11 @@
 package minikube
 
 import (
-	"bufio"
-	"cli/pkg/core"
+	"cli/pkg/kube"
 	"context"
 	"fmt"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/util/homedir"
-	"net/url"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -16,59 +14,34 @@ import (
 const (
 	minikube = "minikube"
 	profile  = "airy-core"
+	hostAlias     = "airy.core"
 )
 
 type Minikube struct {
-	context       core.KubeCtx
-	hosts         core.AvailableHosts
+	context kube.KubeCtx
 }
 
 func (m *Minikube) GetHelmOverrides() []string {
-	return []string{"--set", "global.enableNgrok=true"}
+	return []string{"--set", "global.enableNgrok=true", "--set", "global.host=http://airy.core", "--set", "global.nodePort=80"}
 }
 
-func (m *Minikube) Provision() (core.KubeCtx, error) {
+func (m *Minikube) Provision() (kube.KubeCtx, error) {
 	if err := checkInstallation(); err != nil {
-		return core.KubeCtx{}, err
+		return kube.KubeCtx{}, err
 	}
 
 	if err := startCluster(); err != nil {
-		return core.KubeCtx{}, err
+		return kube.KubeCtx{}, err
 	}
 
 	homeDir := homedir.HomeDir()
 	if homeDir == "" {
-		return core.KubeCtx{}, fmt.Errorf("could not find the kubeconfig")
+		return kube.KubeCtx{}, fmt.Errorf("could not find the kubeconfig")
 	}
 
-	ctx := core.New(filepath.Join(homeDir, ".kube", "config"), profile)
+	ctx := kube.New(filepath.Join(homeDir, ".kube", "config"), profile)
 	m.context = ctx
 	return ctx, nil
-}
-
-// Updates the host configmap with the service url
-func (m *Minikube) PostInstallation(namespace string) error {
-	clientset, err := m.context.GetClientSet()
-	if err != nil {
-		return err
-	}
-
-	configMaps := clientset.CoreV1().ConfigMaps(namespace)
-
-	configMap, err := configMaps.Get(context.TODO(), "hostnames", metav1.GetOptions{})
-	if err != nil {
-		return err
-	}
-
-	parsedUrl, err := url.Parse(m.hosts.Api.Url)
-	if err != nil {
-		return err
-	}
-
-	configMap.Data["HOST"] = parsedUrl.Host
-	_, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{})
-
-	return err
 }
 
 func checkInstallation() error {
@@ -77,27 +50,7 @@ func checkInstallation() error {
 }
 
 func startCluster() error {
-	return run("start", "--driver=virtualbox", "--cpus=4", "--memory=7168")
-}
-
-func (m *Minikube) GetHosts() (core.AvailableHosts, error) {
-	endpoint, err := runWithOutput("--namespace=kube-system", "service", "--url", "traefik")
-	if err != nil {
-		return core.AvailableHosts{}, err
-	}
-	endpoint = firstLine(endpoint)
-	coreId, err := runWithOutput("kubectl", "--", "get", "cm", "core-config", "-o", "jsonpath='{.data.CORE_ID}'")
-	if err != nil {
-		return core.AvailableHosts{}, err
-	}
-
-	ngrokEndpoint := fmt.Sprintf("https://%s.tunnel.airy.co", strings.Trim(coreId, "'"))
-	m.hosts = core.AvailableHosts{
-		Api: core.Host{Url: endpoint, Description: "local"},
-		Ui: core.Host{Url: endpoint + "/ui/", Description: "local"},
-		Webhook: core.Host{Url: ngrokEndpoint, Description: "ngrok"},
-	}
-	return m.hosts, err
+	return run("start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535")
 }
 
 func run(args ...string) error {
@@ -115,10 +68,28 @@ func runWithOutput(args ...string) (string, error) {
 	return string(out), nil
 }
 
-func firstLine(cmdOutput string) string {
-	sc := bufio.NewScanner(strings.NewReader(cmdOutput))
-	for sc.Scan() {
-		return strings.TrimSpace(sc.Text())
+func (m *Minikube) PostInstallation(namespace string) error {
+	clientset, err := m.context.GetClientSet()
+	if err != nil {
+		return err
 	}
-	return ""
+
+	configMaps := clientset.CoreV1().ConfigMaps(namespace)
+	configMap, err := configMaps.Get(context.TODO(), "hostnames", metav1.GetOptions{})
+	if err != nil {
+		return err
+	}
+
+	coreId, err := runWithOutput("kubectl", "--", "get", "cm", "core-config", "-o", "jsonpath='{.data.CORE_ID}'")
+	if err != nil {
+		return err
+	}
+	ngrokEndpoint := fmt.Sprintf("https://%s.tunnel.airy.co", strings.Trim(coreId, "'"))
+
+	configMap.Data["NGROK"] = ngrokEndpoint
+	if _, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{}); err != nil {
+		return err
+	}
+
+	return AddHostRecord()
 }

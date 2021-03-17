@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"cli/pkg/core"
+	"cli/pkg/kube"
 	"cli/pkg/providers/aws"
 	"cli/pkg/providers/minikube"
 	"fmt"
@@ -15,8 +15,7 @@ const (
 )
 
 type Provider interface {
-	Provision() (core.KubeCtx, error)
-	GetHosts() (core.AvailableHosts, error)
+	Provision() (kube.KubeCtx, error)
 	GetHelmOverrides() []string
 	PostInstallation(namespace string) error
 }

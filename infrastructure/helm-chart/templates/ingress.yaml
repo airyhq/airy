@@ -5,7 +5,8 @@ metadata:
   namespace: {{ .Values.global.namespace }}
 spec:
   rules:
-    - http:
+    - host: {{ get (urlParse .Values.global.host) "host" }}
+      http:
         paths:
           - path: /users.login
             pathType: Prefix
@@ -329,6 +330,3 @@ spec:
                 name: sources-chatplugin
                 port:
                   number: 80
-    {{ if .Values.global.ingress }}
-      host: {{ .Values.global.ingress.host }}
-    {{ end }}

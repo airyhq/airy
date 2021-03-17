@@ -13,6 +13,7 @@ go_library(
         "version": "{STABLE_VERSION}",
     },
     deps = [
+        "//infrastructure/cli/pkg/kube",
         "//infrastructure/cli/pkg/providers",
         "//infrastructure/cli/pkg/workspace",
         "@com_github_spf13_cobra//:cobra",

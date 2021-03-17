@@ -1,4 +1,4 @@
-package core
+package kube
 
 import (
 	"github.com/spf13/viper"
@@ -45,4 +45,8 @@ func (c *KubeCtx) Store() error {
 	viper.Set("KubeConfig", c.KubeConfigPath)
 	viper.Set("ContextName", c.ContextName)
 	return viper.WriteConfig()
+}
+
+func Load() KubeCtx {
+	return New(viper.GetString("KubeConfig"), viper.GetString("ContextName"))
 }

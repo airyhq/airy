@@ -22,11 +22,11 @@ rules:
       - list
       - watch
   - apiGroups:
-    - extensions
+      - extensions
     resources:
-    - ingresses/status
+      - ingresses/status
     verbs:
-    - update
+      - update
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -37,9 +37,9 @@ roleRef:
   kind: ClusterRole
   name: traefik-ingress-controller
 subjects:
-- kind: ServiceAccount
-  name: traefik-ingress-controller
-  namespace: kube-system
+  - kind: ServiceAccount
+    name: traefik-ingress-controller
+    namespace: kube-system
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -68,17 +68,17 @@ spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
       containers:
-      - image: traefik:v1.7
-        name: traefik-ingress-lb
-        ports:
-        - name: http
-          containerPort: 80
-        - name: admin
-          containerPort: 8080
-        args:
-        - --api
-        - --kubernetes
-        - --logLevel=INFO
+        - image: traefik:v1.7
+          name: traefik-ingress-lb
+          ports:
+            - name: http
+              containerPort: 80
+            - name: admin
+              containerPort: 8080
+          args:
+            - --api
+            - --kubernetes
+            - --logLevel=INFO
 ---
 kind: Service
 apiVersion: v1
@@ -91,5 +91,24 @@ spec:
   ports:
     - protocol: TCP
       port: 80
+      targetPort: 80
       name: web
   type: LoadBalancer
+{{ if .Values.global.nodePort }}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: traefik-node-port
+  namespace: kube-system
+spec:
+  selector:
+    k8s-app: traefik-ingress-lb
+  ports:
+    - protocol: TCP
+      port: 80
+      nodePort: {{ .Values.global.nodePort }}
+      targetPort: 80
+      name: web
+  type: NodePort
+{{end}}

@@ -139,7 +139,56 @@ go_register_toolchains(
     version = "1.16",
 )  # airy_nogo is in the top-level BUILD file of this workspace
 
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
+
+go_repository(
+    name = "com_github_armon_consul_api",
+    importpath = "github.com/armon/consul-api",
+    sum = "h1:G1bPvciwNyF7IUmKXNt9Ak3m6u9DE1rF+RmtIkBpVdA=",
+    version = "v0.0.0-20180202201655-eb2c6b5be1b6",
+)
+
+go_repository(
+    name = "com_github_coreos_go_etcd",
+    importpath = "github.com/coreos/go-etcd",
+    sum = "h1:bXhRBIXoTm9BYHS3gE0TtQuyNZyeEMux2sDi4oo5YOo=",
+    version = "v2.0.0+incompatible",
+)
+
+go_repository(
+    name = "com_github_cpuguy83_go_md2man",
+    importpath = "github.com/cpuguy83/go-md2man",
+    sum = "h1:BSKMNlYxDvnunlTymqtgONjNnaRV1sTpcovwwjF22jk=",
+    version = "v1.0.10",
+)
+
+go_repository(
+    name = "com_github_russross_blackfriday",
+    importpath = "github.com/russross/blackfriday",
+    sum = "h1:HyvC0ARfnZBqnXwABFeSZHpKvJHJJfPz81GNueLj0oo=",
+    version = "v1.5.2",
+)
+
+go_repository(
+    name = "com_github_txn2_txeh",
+    importpath = "github.com/txn2/txeh",
+    sum = "h1:vnbv63htVMZCaQgLqVBxKvj2+HHHFUzNW7I183zjg3E=",
+    version = "v1.3.0",
+)
+
+go_repository(
+    name = "com_github_ugorji_go_codec",
+    importpath = "github.com/ugorji/go/codec",
+    sum = "h1:3SVOIvH7Ae1KRYyQWRjXWJEA9sS/c/pjvH++55Gr648=",
+    version = "v0.0.0-20181204163529-d75b2dcb6bc8",
+)
+
+go_repository(
+    name = "com_github_xordataexchange_crypt",
+    importpath = "github.com/xordataexchange/crypt",
+    sum = "h1:ESFSdwYZvkeru3RtdrYueztKhOBCSAAzS4Gf+k0tEow=",
+    version = "v0.0.3-0.20170626215501-b2862e3d0a77",
+)
 
 gazelle_dependencies()
 

@@ -56,8 +56,8 @@
 
 .extraChannel {
   display: flex;
-  min-width: 88px;
-  width: 100%;
+  width: 140px;
+  justify-content: center;
   min-height: 20px;
   padding: 0 24px 0 24px;
   cursor: pointer;
@@ -101,7 +101,6 @@
 }
 
 .connectedChannelName {
-  min-width: 168px;
   max-width: 200px;
   text-overflow: ellipsis;
   white-space: nowrap;

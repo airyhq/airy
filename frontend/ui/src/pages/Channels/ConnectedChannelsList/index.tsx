@@ -35,7 +35,6 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps<{sourc
 const connector = connect(mapStateToProps, null);
 
 const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
-
   const {channels} = props;
 
   const [name, setName] = useState('');
@@ -112,13 +111,14 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
         Back to channels
       </Link>
       <div className={styles.channelsList}>
-        {filteredChannels.length > 0 ? (          
-            sortBy(filteredChannels, (channel: Channel) => channel.metadata.name.toLowerCase())            
-            .map((channel: Channel) => (
+        {filteredChannels.length > 0 ? (
+          sortBy(filteredChannels, (channel: Channel) => channel.metadata.name.toLowerCase()).map(
+            (channel: Channel) => (
               <div key={channel.id} className={styles.connectedChannel}>
                 <ChannelListItem channel={channel} />
               </div>
-            ))
+            )
+          )
         ) : (
           <div className={styles.emptyState}>
             <h1 className={styles.noSearchMatch}>Result not found.</h1>

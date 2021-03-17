@@ -1,15 +1,10 @@
 import React from 'react';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 
+import {LinkButton} from '@airyhq/components';
 import {Channel, SourceType} from 'httpclient';
 import {SourceTypeInfo} from '../MainPage';
-
-import {LinkButton} from '@airyhq/components';
-<<<<<<< HEAD
-import {Channel} from 'httpclient';
 import {fallbackImage} from '../../../services/image/index';
-=======
->>>>>>> removed unnecessary code
 import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plus-circle.svg';
 
 import styles from './index.module.scss';

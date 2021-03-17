@@ -24,3 +24,6 @@ export const cyChannelsChatPluginConnectButton = 'channelsChatPluginConnectButto
 export const cyChannelsChatPluginFormNameInput = 'channelsChatPluginFormNameInput';
 export const cyChannelsChatPluginFormSubmitButton = 'channelsChatPluginFormSubmitButton';
 export const cyChannelsChatPluginFormBackButton = 'channelsChatPluginFormBackButton';
+export const cyBubble = 'bubble';
+export const cyInputbarTextarea = 'inputbarTextarea';
+export const cyInputbarButton = 'inputbarButton';

@@ -186,6 +186,7 @@ const MessageList = (props: MessageListProps) => {
                   message={message}
                   contact={contactToShow}
                   lastInGroup={lastInGroup}
+                  type="message"
                 />
               </MessageInfoWrapper>
             </div>

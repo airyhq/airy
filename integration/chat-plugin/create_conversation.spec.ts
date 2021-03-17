@@ -3,10 +3,10 @@ import {cyBubble, cyInputbarTextarea, cyInputbarButton} from 'chat-plugin-handle
 describe(
   'Chatplugin',
   {
-    baseUrl: 'http://airy.core/chatplugin',
+    baseUrl: 'http://airy.core/chatplugin/ui',
   },
   () => {
-    const channelId = 'db2e1b00-143b-578e-be91-6d45a3038fae';
+    const channelId = 'bbeff18c-6517-5506-b464-8353b8923d46';
     const messageChatplugin = 'Hello from Chatplugin!';
 
     it('Creates a chat plugin conversation', () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {isFromContact, RenderedContentUnion} from 'httpclient';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
+import {getDefaultRenderingProps, MessageRenderProps} from '../../shared';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {Video} from '../../components/Video';
@@ -18,10 +18,10 @@ export const FacebookRender = (props: MessageRenderProps) => {
 function render(content: ContentUnion, props: MessageRenderProps) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
+      return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
 
     case 'postback':
-      return <Text {...getDefaultMessageRenderingProps(props)} text={content.title} />;
+      return <Text {...getDefaultRenderingProps(props)} text={content.title} />;
 
     case 'image':
       return <Image imageUrl={content.imageUrl} />;
@@ -38,7 +38,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
     case 'quickReplies':
       return (
         <QuickReplies
-          {...getDefaultMessageRenderingProps(props)}
+          {...getDefaultRenderingProps(props)}
           text={content.text}
           attachment={content.attachment}
           quickReplies={content.quickReplies}
@@ -47,33 +47,33 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-const parseAttachment = (attachement: SimpleAttachment | ButtonAttachment | GenericAttachment): AttachmentUnion => {
-  if (attachement.type === 'image') {
+const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | GenericAttachment): AttachmentUnion => {
+  if (attachment.type === 'image') {
     return {
       type: 'image',
-      imageUrl: attachement.payload.url,
+      imageUrl: attachment.payload.url,
     };
   }
 
-  if (attachement.type === 'template' && attachement.payload.template_type == 'button') {
+  if (attachment.type === 'template' && attachment.payload.template_type == 'button') {
     return {
       type: 'buttonTemplate',
-      text: attachement.payload.text,
-      buttons: attachement.payload.buttons,
+      text: attachment.payload.text,
+      buttons: attachment.payload.buttons,
     };
   }
 
-  if (attachement.type === 'template' && attachement.payload.template_type == 'generic') {
+  if (attachment.type === 'template' && attachment.payload.template_type == 'generic') {
     return {
       type: 'genericTemplate',
-      elements: attachement.payload.elements,
+      elements: attachment.payload.elements,
     };
   }
 
-  if (attachement.type === 'video') {
+  if (attachment.type === 'video') {
     return {
       type: 'video',
-      videoUrl: attachement.payload.url,
+      videoUrl: attachment.payload.url,
     };
   }
 

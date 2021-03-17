@@ -1,7 +1,7 @@
 import React from 'react';
 import {isFromContact, RenderedContentUnion} from 'httpclient';
 import {Text} from '../../../components/Text';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../../shared';
+import {getDefaultRenderingProps, MessageRenderProps} from '../../../shared';
 import {ContentUnion} from './twilioWhatsappModel';
 
 export const TwilioWhatsappRender = (props: MessageRenderProps) => {
@@ -13,7 +13,7 @@ export const TwilioWhatsappRender = (props: MessageRenderProps) => {
 function render(content: ContentUnion, props: MessageRenderProps) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
+      return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
   }
 }
 

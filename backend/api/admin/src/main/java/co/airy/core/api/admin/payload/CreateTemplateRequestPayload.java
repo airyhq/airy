@@ -15,10 +15,7 @@ public class CreateTemplateRequestPayload {
     @NotNull
     private String name;
     @NotNull
-    private String sourceType;
+    private String source;
     @NotNull
     private JsonNode content;
-    @Valid
-    @NotNull
-    private JsonNode variables;
 }

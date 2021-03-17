@@ -12,5 +12,5 @@ import javax.validation.constraints.NotNull;
 public class ListTemplatesRequestPayload {
     private String name;
     @NotNull
-    private String sourceType;
+    private String source;
 }

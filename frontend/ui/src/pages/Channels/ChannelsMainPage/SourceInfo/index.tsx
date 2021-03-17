@@ -2,6 +2,7 @@ import React from 'react';
 import {Channel} from 'httpclient';
 import {LinkButton} from '@airyhq/components';
 import {ReactComponent as AddChannel} from 'assets/images/icons/plus-circle.svg';
+import {fallbackImage} from 'sharedServices/fallbackImage';
 import styles from './index.module.scss';
 
 type SourceInfoProps = {
@@ -11,21 +12,18 @@ type SourceInfoProps = {
   placeholderImage?: JSX.Element;
   isConnected: string;
   onAddChannelClick?: () => void;
-  onSourceInfoClick?: () => void;
   onMoreChannelsClick?: () => void;
   onChannelClick?: (channel: Channel) => void;
+  onSourceInfoClick?: () => void;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
   const {source, channels} = props;
-
   const isPhoneNumberSource = () => {
     return source === 'twilio.sms' || source === 'twilio.whatsapp';
   };
-
   const channelsToShow = isPhoneNumberSource() ? 2 : 4;
   const hasExtraChannels = channels.length > channelsToShow;
-
   return (
     <>
       {channels && channels.length > 0 && (
@@ -42,11 +40,14 @@ const SourceInfo = (props: SourceInfoProps) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData} onClick={() => props.onChannelClick(channel)}>
-                        {channel.metadata?.imageUrl ? (
+                        {source === 'facebook' && channel.metadata?.imageUrl ? (
                           <img
                             src={channel.metadata?.imageUrl}
                             alt={channel.metadata?.name}
                             className={styles.facebookImage}
+                            onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                              fallbackImage(event, channel.source);
+                            }}
                           />
                         ) : (
                           <div className={styles.placeholderLogo}>{props.placeholderImage} </div>
@@ -82,5 +83,4 @@ const SourceInfo = (props: SourceInfoProps) => {
     </>
   );
 };
-
 export default SourceInfo;

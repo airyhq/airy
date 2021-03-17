@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {MediaRenderProps} from '../RichCard/Media';
-import {DefaultMessageRenderingProps} from '../index';
+import {DefaultRenderingProps} from '../index';
 import {RichCard, Suggestion} from '../RichCard';
 import {Carousel} from '../Carousel';
+import {CommandUnion} from '../../shared';
 
 type Card = {
   id?: string;
@@ -13,13 +14,14 @@ type Card = {
   suggestions: Suggestion[];
 };
 
-export type RichCardCarouselRenderProps = DefaultMessageRenderingProps & {
+export type RichCardCarouselRenderProps = DefaultRenderingProps & {
   cardWidth: string;
   cardContents: [Card];
+  commandCallback?: (command: CommandUnion) => void;
 };
 
 export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
-  const {cardContents, cardWidth, fromContact} = props;
+  const {cardContents, cardWidth} = props;
 
   return (
     <Carousel>
@@ -31,7 +33,6 @@ export const RichCardCarousel = (props: RichCardCarouselRenderProps) => {
               description={card.description}
               media={card.media}
               suggestions={card.suggestions}
-              fromContact={fromContact}
               cardWidth={cardWidth}
               commandCallback={props.commandCallback}
             />

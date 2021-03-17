@@ -2,21 +2,7 @@
 const camelcaseKeys = require('camelcase-keys');
 import {Content} from './Content';
 
-export interface Attachement {
-  type: string;
-  payload: {
-    url?: string;
-    title?: string;
-    name?: string;
-    templateType?: string;
-    text?: string;
-  };
-  sender?: {
-    id: string;
-  };
-}
-
-export enum SourceType {
+export enum Source {
   facebook = 'facebook',
   google = 'google',
   chatplugin = 'chatplugin',

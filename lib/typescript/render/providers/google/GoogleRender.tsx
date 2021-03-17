@@ -1,5 +1,5 @@
 import React from 'react';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
+import {getDefaultRenderingProps, MessageRenderProps} from '../../shared';
 import {Suggestions} from './components/Suggestions';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './googleModel';
@@ -15,7 +15,7 @@ export const GoogleRender = (props: MessageRenderProps) => {
 function render(content: ContentUnion, props: MessageRenderProps) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
+      return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
 
     case 'image':
       return <Image imageUrl={content.imageUrl} />;
@@ -23,7 +23,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
     case 'suggestions':
       return (
         <Suggestions
-          {...getDefaultMessageRenderingProps(props)}
+          {...getDefaultRenderingProps(props)}
           text={content.text}
           image={content.image}
           fallback={content.fallback}

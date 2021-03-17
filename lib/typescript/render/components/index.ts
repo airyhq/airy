@@ -1,6 +1,3 @@
-import {CommandUnion} from '../shared';
-
-export interface DefaultMessageRenderingProps {
+export interface DefaultRenderingProps {
   fromContact?: boolean;
-  commandCallback?: (command: CommandUnion) => void;
 }

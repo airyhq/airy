@@ -7,6 +7,7 @@
   align-items: center;
   flex-grow: 1;
   height: 64px;
+  border-bottom: 1px solid var(--color-light-gray);
 }
 
 .channelLogo {
@@ -23,12 +24,37 @@
   border-bottom: 1px solid var(--color-light-gray);
 }
 
+.container {
+  display: flex;
+}
+
+.channelLogoWrapper {
+  margin-right: 4px;
+  flex: none;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
 .channelName {
-  flex: 1 1;
-  text-align: left;
-  padding: 0 8px;
-  color: var(--color-text-contrast);
-  padding: 20.5px 0;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  &:empty {
+    padding-right: 0px;
+  }
+}
+
+.channelId {
+  height: 50px;
+  display: flex;
+  align-items: center;
 }
 
 .imageUrlLogo {
@@ -44,6 +70,7 @@
   padding: 0 8px;
   border-radius: 4px;
   margin-left: 8px;
+  width: 110px;
 
   @include font-s;
   text-transform: uppercase;
@@ -58,13 +85,20 @@
   }
 }
 
+.listButtons {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  position: absolute;
+  right: 44px;
+}
+
 .disabledDisconnect {
   width: 20%;
   display: flex;
   height: 60px;
   align-items: center;
   justify-content: flex-end;
-  color: var(--color-text-gray);
   margin: 0 4px;
   padding: 0 16px;
 }

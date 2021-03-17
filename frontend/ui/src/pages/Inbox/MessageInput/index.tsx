@@ -32,7 +32,7 @@ type MessageInputProps = {channelSource: string};
 
 interface SelectedTemplate {
   message: RenderedContentUnion;
-  sourceType: string;
+  source: string;
 }
 
 const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
@@ -144,7 +144,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
         setInput('');
         setIsShowingTemplateModal(false);
         const templateContent = JSON.parse(template.content) as any;
-        setSelectedTemplate({message: {...template, content: templateContent}, sourceType: template.sourceType});
+        setSelectedTemplate({message: {...template, content: templateContent}, source: template.source});
       }
       sendButtonRef.current.focus();
     };
@@ -220,7 +220,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
               <button className={styles.removeTemplateButton} onClick={() => setSelectedTemplate(null)}>
                 <Close />
               </button>
-              <SourceMessage message={selectedTemplate.message} source={selectedTemplate.sourceType} />
+              <SourceMessage message={selectedTemplate.message} source={selectedTemplate.source} type="template" />
             </div>
           )}
         </div>

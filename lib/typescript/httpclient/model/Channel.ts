@@ -11,6 +11,7 @@ export interface Channel {
   source: string;
   sourceChannelId: string;
   connected: boolean;
+  phoneNumber?: string;
 }
 
 export enum ChannelSource {

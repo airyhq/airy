@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {DefaultMessageRenderingProps} from '../../../../components/index';
+import {DefaultRenderingProps} from '../../../../components/index';
 import {Text} from '../../../../components/Text';
 import {Video} from '../../../../components/Video';
 import {Image} from '../../../../components/Image';
 import {QuickReply, AttachmentUnion} from '../../facebookModel';
 
-export type QuickRepliesRenderProps = DefaultMessageRenderingProps & {
+export type QuickRepliesRenderProps = DefaultRenderingProps & {
   text?: string;
   attachment?: AttachmentUnion;
   quickReplies: QuickReply[];

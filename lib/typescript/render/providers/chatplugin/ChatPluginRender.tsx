@@ -1,5 +1,5 @@
 import React from 'react';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
+import {getDefaultRenderingProps, MessageRenderProps} from '../../shared';
 import {RichText} from '../../components/RichText';
 import {RichCard} from '../../components/RichCard';
 import {RichCardCarousel} from '../../components/RichCardCarousel';
@@ -12,7 +12,7 @@ export const ChatPluginRender = (props: MessageRenderProps) => {
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
-  const defaultProps = getDefaultMessageRenderingProps(props);
+  const defaultProps = {...getDefaultRenderingProps(props), commandCallback: props.commandCallback};
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
   const propsToUse = props.invertSides ? invertedProps : defaultProps;
 

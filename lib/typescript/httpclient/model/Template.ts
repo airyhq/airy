@@ -1,8 +1,7 @@
-import {SourceType} from './Message';
+import {Source} from './Message';
+import {Content} from './Content';
 
-export interface Template {
-  id: string;
+export interface Template extends Content {
   name: string;
-  sourceType: SourceType;
-  content: string;
+  source: Source;
 }

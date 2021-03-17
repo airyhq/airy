@@ -17,23 +17,23 @@ import lombok.NoArgsConstructor;
 public class TemplatePayload {
     private String id;
     private String name;
-    private String sourceType;
-    private String content;
-    private JsonNode variables;
+    private String source;
+    private JsonNode content;
+
+    private static final ObjectMapper mapper = new ObjectMapper();
+
     public static TemplatePayload fromTemplate(final Template template) {
-        final ObjectMapper mapper = new ObjectMapper();
-        JsonNode variables;
+        JsonNode content;
         try {
-            variables = mapper.readTree(template.getVariables());
+            content = mapper.readTree(template.getContent());
         } catch (JsonProcessingException e) {
-            variables = JsonNodeFactory.instance.objectNode();
+            content = JsonNodeFactory.instance.objectNode();
         }
         return TemplatePayload.builder()
                 .id(template.getId())
                 .name(template.getName())
-                .content(template.getContent())
-                .variables(variables)
-                .sourceType(template.getSourceType())
+                .content(content)
+                .source(template.getSource())
                 .build();
     }
 }

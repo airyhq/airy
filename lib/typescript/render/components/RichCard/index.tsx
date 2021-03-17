@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {Media, MediaRenderProps} from './Media';
-import {DefaultMessageRenderingProps} from '../index';
+import {DefaultRenderingProps} from '../index';
+import {CommandUnion} from '../../shared';
 
 export type Suggestion = {
   reply?: {
@@ -20,12 +21,13 @@ export type Suggestion = {
   };
 };
 
-export type RichCardRenderProps = DefaultMessageRenderingProps & {
+export type RichCardRenderProps = DefaultRenderingProps & {
   title?: string;
   description?: string;
   suggestions: Suggestion[];
   media: MediaRenderProps;
   cardWidth?: string;
+  commandCallback?: (command: CommandUnion) => void;
 };
 
 export const RichCard = ({title, description, suggestions, media, cardWidth, commandCallback}: RichCardRenderProps) => {

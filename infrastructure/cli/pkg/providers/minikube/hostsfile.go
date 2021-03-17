@@ -27,13 +27,15 @@ func AddHostRecord() error {
 		return err
 	}
 
-
 	hosts.AddHost(minikubeIp, hostAlias)
-	fmt.Printf("Adding an entry to your hosts file so that you can access Airy Core at http://%s", hostAlias)
+	fmt.Printf("🚨 Adding an entry to your hosts file so that you can access Airy Core at http://%s", hostAlias)
 	fmt.Println()
 	fmt.Println("You will be asked for your password")
 
 	content := hosts.RenderHostsFile()
+	// The built-in .Save() command from github.com/txn2/txeh crashes if we lack permission
+	// Therefore we write the rendered hostfile to a tmp file and overwrite the
+	// existing host file with a sudo command that has access to the process stdin
 	err = ioutil.WriteFile("/tmp/airy-core.host", []byte(content), 0644)
 	if err != nil {
 		return err

@@ -22,6 +22,7 @@ This will print URLs for accessing the UIs and APIs as seen in this recording:
 <div id="asciicast-A9sTPeYDKJ2ky2hauwumzFEwQ" ></div>
 
 import Script from "@site/src/components/Script";
+// TODO re-record
 
 <Script data-rows="12" id="asciicast-A9sTPeYDKJ2ky2hauwumzFEwQ" src="https://asciinema.org/a/A9sTPeYDKJ2ky2hauwumzFEwQ.js"></Script>
 

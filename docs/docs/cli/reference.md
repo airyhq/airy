@@ -98,10 +98,9 @@ airy config apply [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string       Airy Core HTTP API endpoint
-      --cli-config string    config file (default is $HOME/.airy/cli.yaml)
-      --config string        Configuration file for an Airy Core instance (default "./airy.yaml")
-      --kube-config string   Kubernetes config file for the cluster of an Airy Core instance (default "~/.airy/kube.conf")
+      --apihost string      Airy Core HTTP API endpoint
+      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+      --config string       Configuration file for an Airy Core instance (default "./airy.yaml")
 ```
 
 

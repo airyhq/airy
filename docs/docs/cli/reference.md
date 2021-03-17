@@ -54,6 +54,19 @@ airy api signup [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
+***
+## Cheat Sheet
+
+| Command             | Effect                                                                             |
+| ------------------- | ---------------------------------------------------------------------------------- |
+| `airy init`         | Inits your airy configuration                                                      |
+| `airy status`       | Reports the status of an Airy Core instance                                        |
+| `airy config apply` | Applies configuration values from airy.yaml configuration to an Airy Core instance |
+| `airy ui`           | Opens the Airy Core UI in your local browser                                       |
+| `airy api signup`   | Creates a default user                                                             |
+| `airy api login`    | Returns a valid jwt token                                                          |
+| `airy api login`    | Returns a valid jwt token                                                          |
+| `airy --help`       | Prints all available commands with parameters                                      |
 
 ***
 

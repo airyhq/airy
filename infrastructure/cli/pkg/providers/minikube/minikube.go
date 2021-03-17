@@ -22,7 +22,7 @@ type Minikube struct {
 }
 
 func (m *Minikube) GetHelmOverrides() []string {
-	return []string{"--set", "global.enableNgrok=true", "--set", "global.host=http://airy.core", "--set", "global.nodePort=80"}
+	return []string{"--set", "global.ngrokEnabled=true", "--set", "global.host=http://airy.core", "--set", "global.nodePort=80"}
 }
 
 func (m *Minikube) Provision() (kube.KubeCtx, error) {
@@ -79,6 +79,9 @@ func (m *Minikube) PostInstallation(namespace string) error {
 	if err != nil {
 		return err
 	}
+
+	// Ensure that kubectl is downloaded so that the progressbar does not pollute the output
+	run("kubectl", "version")
 
 	coreId, err := runWithOutput("kubectl", "--", "get", "cm", "core-config", "-o", "jsonpath='{.data.CORE_ID}'")
 	if err != nil {

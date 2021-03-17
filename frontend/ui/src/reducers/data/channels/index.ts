@@ -10,11 +10,17 @@ export interface ChannelsState {
   [channelId: string]: Channel;
 }
 
+const cleanUpChannelPayload = (channel: Channel): Channel => {
+  console.log(channel);
+  channel.sourceChannelId = channel.sourceChannelId.replace('whatsapp:', '');
+  return channel;
+};
+
 const setChannel = (state: ChannelsState, channel: Channel) => {
   if (channel.metadata != null) {
     return {
       ...state,
-      [channel.id]: channel,
+      [channel.id]: cleanUpChannelPayload(channel),
     };
   }
 

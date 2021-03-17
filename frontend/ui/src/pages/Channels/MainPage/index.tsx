@@ -135,7 +135,7 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
       <div className={styles.wrapper}>
         {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
         {sourceTypesInfo.map((infoItem: SourceTypeInfo) => (
-          <div style={{display: 'flex', flexGrow: 1}}>
+          <div style={{display: 'flex', flexGrow: 1}} key={infoItem.type}>
             <SourceTypeDescriptionCard
               sourceTypeInfo={infoItem}
               displayButton={!channelsBySourceType(infoItem.type).length}

@@ -3,17 +3,20 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {Button, Input, LinkButton} from '@airyhq/components';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {Channel} from 'httpclient';
-
 import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
-
 import {env} from '../../../../env';
 import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 import {allChannels} from '../../../../selectors/channels';
-
 import styles from './ChatPluginConnect.module.scss';
+import {
+  cyChannelsChatPluginConnectButton,
+  cyChannelsChatPluginFormNameInput,
+  cyChannelsChatPluginFormSubmitButton,
+  cyChannelsChatPluginFormBackButton,
+} from 'handles';
 
 const mapDispatchToProps = {
   connectChatPlugin,
@@ -94,6 +97,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           required
           height={32}
           fontClass="font-s"
+          dataCy={cyChannelsChatPluginFormNameInput}
         />
       </div>
 
@@ -120,7 +124,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
       <div>
         <p className={styles.newPageParagraph}>Add Airy Live Chat to your website and application</p>
 
-        <Button type="button" onClick={() => setShowNewPage(false)}>
+        <Button type="button" onClick={() => setShowNewPage(false)} dataCy={cyChannelsChatPluginConnectButton}>
           Connect Airy Live Chat
         </Button>
       </div>
@@ -131,7 +135,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           <div className={styles.settings}>
             <form className={styles.form} onSubmit={createNewConnection}>
               {renderFormFields()}
-              <Button type="submit" styleVariant="small">
+              <Button type="submit" styleVariant="small" dataCy={cyChannelsChatPluginFormSubmitButton}>
                 Save
               </Button>
             </form>
@@ -281,7 +285,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
         )}
       </div>
 
-      <LinkButton onClick={props.history.goBack} type="button">
+      <LinkButton onClick={props.history.goBack} type="button" dataCy={cyChannelsChatPluginFormBackButton}>
         <BackIcon className={styles.backIcon} />
         Back
       </LinkButton>

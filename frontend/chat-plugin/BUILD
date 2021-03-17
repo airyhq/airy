@@ -10,6 +10,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 module_deps = [
     "//frontend/assets",
+    "//frontend/sharedServices",
     "//lib/typescript/types",
     "//lib/typescript/httpclient",
     "//lib/typescript/render",

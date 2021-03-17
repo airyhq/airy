@@ -14,7 +14,7 @@ export const Image = ({imageUrl, altText}: ImageRenderProps) => (
       className={styles.messageListItemImageBlock}
       src={imageUrl}
       alt={altText ?? null}
-      onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event, 'media')}
+      onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event, 'mediaImage')}
     />
   </div>
 );

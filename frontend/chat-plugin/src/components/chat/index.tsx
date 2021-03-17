@@ -167,6 +167,7 @@ const Chat = (props: Props) => {
                                   lastInGroup={lastInGroup}
                                   invertSides={true}
                                   commandCallback={commandCallback}
+                                  type="message"
                                 />
                               </MessageInfoWrapper>
                             )

@@ -19,6 +19,6 @@ export const Media = ({height, contentInfo: {altText, fileUrl}}: MediaRenderProp
     className={`${styles.mediaImage} ${
       height === MediaHeight.tall ? styles.tall : height === MediaHeight.medium ? styles.medium : styles.short
     }`}
-    onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event, 'media')}
+    onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event, 'mediaImage')}
   />
 );

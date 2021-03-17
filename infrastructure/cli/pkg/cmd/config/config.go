@@ -51,7 +51,7 @@ var applyConfigCmd = &cobra.Command{
 }
 
 func init() {
-	ConfigCmd.PersistentFlags().StringVar(&kubeConfigFile, "kube-config", "", "Kubernetes config file for the cluster of an Airy Core instance (default \"~/.airy/kube.conf\")")
+	ConfigCmd.PersistentFlags().StringVar(&kubeConfigFile, "kube-config", "", "Kubernetes config file for the cluster of an Airy Core instance (default \"~/.kube/config\")")
 	ConfigCmd.PersistentFlags().StringVar(&configFile, "config", "./airy.yaml", "Configuration file for an Airy Core instance")
 	if kubeConfigFile == "" {
 		home, err := homedir.Dir()
@@ -59,7 +59,7 @@ func init() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		kubeConfigFile = path.Join(home, ".airy/kube.conf")
+		kubeConfigFile = path.Join(home, ".kube/config")
 	}
 	ConfigCmd.AddCommand(applyConfigCmd)
 }

@@ -79,8 +79,21 @@ These settings are used to enable or disable some external tools, used to monito
 
 ## Applying the configuration
 
-If you made changes in `airy.yaml` and want to apply it to your instance you can use the [airy config apply](/cli/reference.md#config-apply) by running the following [Airy CLI](/cli/introduction.md) command.
+If you made changes in `airy.yaml` and want to apply it to your instance you can use the [airy config apply](/cli/reference.md#config-apply) command. 
+First you should make sure that you are on the **correct kubernetes context** where your `Airy Core` is running.
+The context was installed to the default kubernetes config file `~/.kube/config` by the `airy create` command. You can view the current context with the following command:
+```bash
+kubectl config current-context
+```
+
+If you are not on the correct kubernetes context, you can view and switch to the desired context with the following command (example with context `airy-core`):
+```bash
+kubectl config get-contexts
+kubectl config use-context airy-core
+```
+
+Then run the following [Airy CLI](/cli/introduction.md) command.
 
 ```bash
-airy config apply --config ./airy.yaml --kube-config /path/to/your/kube.conf
+airy config apply --config ./airy.yaml
 ```

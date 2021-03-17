@@ -15,6 +15,8 @@ type SourceInfoProps = {
   onMoreChannelsClick?: () => void;
   onChannelClick?: (channel: Channel) => void;
   onSourceInfoClick?: () => void;
+  dataCyAddChannelButton?: string;
+  dataCyChannelList?: string;
 };
 
 const SourceInfo = (props: SourceInfoProps) => {
@@ -35,7 +37,7 @@ const SourceInfo = (props: SourceInfoProps) => {
               </p>
             </div>
             <div className={styles.connectedChannelBox}>
-              <div className={styles.connectedChannel}>
+              <div className={styles.connectedChannel} data-cy={props.dataCyChannelList}>
                 {channels.slice(0, channelsToShow).map((channel: Channel) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
@@ -72,7 +74,11 @@ const SourceInfo = (props: SourceInfoProps) => {
           </div>
 
           <div className={styles.channelButton}>
-            <button type="button" className={styles.addChannelButton} onClick={props.onAddChannelClick}>
+            <button
+              type="button"
+              className={styles.addChannelButton}
+              onClick={props.onAddChannelClick}
+              data-cy={props.dataCyAddChannelButton}>
               <div className={styles.channelButtonIcon} title="Add a channel">
                 <AddChannel />
               </div>

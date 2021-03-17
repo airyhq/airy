@@ -24,13 +24,13 @@ func ui(cmd *cobra.Command, args []string) {
 	kubeCtx := kube.Load()
 	set, err := kubeCtx.GetClientSet()
 	if err != nil {
-		fmt.Println("Could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+		fmt.Println("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
 		os.Exit(1)
 	}
 
 	hosts, err := kube.GetHosts(set, viper.GetString("namespace"))
 	if err != nil {
-		fmt.Println("Could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+		fmt.Println("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
 		os.Exit(1)
 	}
 

@@ -24,14 +24,14 @@ the `<head>` section:
 You must replace `CHANNEL_ID` with the channel id obtained when
 [connecting](#connecting-a-channel) the source and `SCRIPT_HOST` with the host
 of your Chat Plugin server. When using the local minikube environment
-`SCRIPT_HOST` must be set to host variable obtained in the [installation process](getting-started/installation/minikube.md).
+`SCRIPT_HOST` must be set to `airy.core`.
 
 :::note
 
-The host provided by minikube not publicly accessible. The setup will only work for local web pages.
+`airy.core` not publicly accessible. The setup will only work for local web pages.
 
 :::
 
 To test the setup, replace the `CHANNEL_ID` in the URL
-`/chatplugin/example?channel_id=CHANNEL_ID` and open it in your
+`http://airy.core/chatplugin/example?channel_id=CHANNEL_ID` and open it in your
 browser.

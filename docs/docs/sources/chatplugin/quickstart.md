@@ -42,11 +42,11 @@ token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \
 \"password\":\"the_answer_is_42\" \
-}" $(airy api endpoint)/users.login) | jq -r '.token')
+}" http://airy.core/users.login) | jq -r '.token')
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 "{
     \"name\": \"chat plugin source\"
-}" $(airy api endpoint)/channels.chatplugin.connect
+}" http://airy.core/channels.chatplugin.connect
 ```
 
 <img alt="channels_connect" src={useBaseUrl('img/sources/chatplugin/connect_chatplugin_channel.gif')} />
@@ -61,7 +61,7 @@ browser. This authenticates the chat plugin and enables you to send messages
 immediately:
 
 ```
-$(airy api endpoint)/chatplugin/ui/example?channel_id=<channel_id>
+http://airy.core/chatplugin/ui/example?channel_id=<channel_id>
 ```
 
 You can now type a message in the text box and send it 🎉
@@ -78,7 +78,7 @@ created. it should return the message you have just sent.
 
 ```sh
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
-$(airy api endpoint)/conversations.list | jq .
+http://airy.core/conversations.list | jq .
 ```
 
 ## Step 4: Consume directly from Apache Kafka

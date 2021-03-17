@@ -9,7 +9,7 @@ import {
 
 describe('Connect chatplugin channel', () => {
   it('Logs into the UI', () => {
-    const chatPluginName = 'Chatplugin';
+    const chatPluginName = 'Cypress Chatplugin';
 
     cy.visit('/login');
 

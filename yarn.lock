@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@airyhq/components@^0.4.14":
+"@airyhq/components@latest":
   version "0.4.14"
   resolved "https://registry.yarnpkg.com/@airyhq/components/-/components-0.4.14.tgz#56be7549db8eeffaa2863c4ae31d708e49d27704"
   integrity sha512-lfSCb2hAXyfXuN3TyjFcpS46kG61+iUCBKsnDQ/0NOJUVaw3dAlJ0Pu9N3uc3nEde/wIXDIug+zIIm7xfartnA==

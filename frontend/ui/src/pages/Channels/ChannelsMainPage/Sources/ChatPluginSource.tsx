@@ -22,7 +22,7 @@ const ChatPluginSource = (props: ChatPluginProps & RouteComponentProps) => {
         image={<AiryLogo />}
         displayButton={!channels.length}
         id={ChannelSource.chatPlugin}
-        dataCyButton={cyChannelsChatPluginAddButton}
+        dataCyAddChannelButton={cyChannelsChatPluginAddButton}
         onAddChannelClick={() => {
           props.history.push(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
         }}
@@ -34,8 +34,8 @@ const ChatPluginSource = (props: ChatPluginProps & RouteComponentProps) => {
         connected="CONNECTED"
         placeholderImage={<AiryLogo />}
         isConnected="connected"
-        dataCyButton={cyChannelsChatPluginAddButton}
-        dataCyChannelName={cyChannelsChatPluginList}
+        dataCyAddChannelButton={cyChannelsChatPluginAddButton}
+        dataCyChannelList={cyChannelsChatPluginList}
         onSourceInfoClick={() => {
           props.history.push({
             pathname: CHANNELS_CONNECTED_ROUTE + `/chatplugin`,

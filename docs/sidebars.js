@@ -3,6 +3,7 @@ module.exports = {
     {
       '🚀 Getting Started': [
         'getting-started/introduction',
+        'getting-started/components',
         {
           Installation: [
             'getting-started/installation/introduction',

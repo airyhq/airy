@@ -28,7 +28,7 @@ const mapStateToProps = (state: StateModel) => {
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-type MessageInputProps = {channelSource: string};
+type MessageInputProps = {sourceType: string};
 
 interface SelectedTemplate {
   message: Template;
@@ -36,7 +36,7 @@ interface SelectedTemplate {
 }
 
 const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
-  const {channelSource} = props;
+  const {sourceType} = props;
 
   const [input, setInput] = useState('');
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
@@ -71,7 +71,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       return;
     }
 
-    props.sendMessages(getTextMessagePayload(channelSource, currentConversationId, input)).then(() => setInput(''));
+    props.sendMessages(getTextMessagePayload(sourceType, currentConversationId, input)).then(() => setInput(''));
   };
 
   const handleClick = () => {
@@ -162,11 +162,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       <div className={styles.messageActionsContainer}>
         <>
           {isShowingTemplateModal && (
-            <TemplateSelector
-              onClose={toggleTemplateModal}
-              selectTemplate={selectTemplate}
-              channelSource={channelSource}
-            />
+            <TemplateSelector onClose={toggleTemplateModal} selectTemplate={selectTemplate} sourceType={sourceType} />
           )}
           {isShowingEmojiDrawer && (
             <div ref={emojiDiv} className={styles.emojiDrawer}>

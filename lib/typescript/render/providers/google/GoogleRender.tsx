@@ -2,6 +2,8 @@ import React from 'react';
 import {getDefaultRenderingProps, RenderPropsUnion} from '../../shared';
 import {Suggestions} from './components/Suggestions';
 import {Text} from '../../components/Text';
+import {RichCard} from '../../components/RichCard';
+import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {ContentUnion} from './googleModel';
 import {RenderedContentUnion, isFromContact} from 'httpclient';
 import {Image} from '../../components/Image';
@@ -30,11 +32,48 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           suggestions={content.suggestions}
         />
       );
+
+    case 'richCard':
+      return (
+        <RichCard
+          title={content.title}
+          description={content.description}
+          media={content.media}
+          suggestions={content.suggestions}
+        />
+      );
+
+    case 'richCardCarousel':
+      return <RichCardCarousel cardWidth={content.cardWidth} cardContents={content.cardContents} />;
   }
 }
 
 function googleInbound(message: RenderedContentUnion): ContentUnion {
   const messageJson = message.content.message;
+
+  if (messageJson.richCard?.standaloneCard) {
+    const {
+      richCard: {
+        standaloneCard: {cardContent},
+      },
+    } = messageJson;
+
+    return {
+      type: 'richCard',
+      ...(cardContent.title && {title: cardContent.title}),
+      ...(cardContent.description && {description: cardContent.description}),
+      media: cardContent.media,
+      suggestions: cardContent.suggestions,
+    };
+  }
+
+  if (messageJson.richCard?.carouselCard) {
+    return {
+      type: 'richCardCarousel',
+      cardWidth: messageJson.richCard.carouselCard.cardWidth,
+      cardContents: messageJson.richCard.carouselCard.cardContents,
+    };
+  }
 
   if (messageJson.suggestionResponse) {
     return {
@@ -87,6 +126,30 @@ function googleInbound(message: RenderedContentUnion): ContentUnion {
 function googleOutbound(message: RenderedContentUnion): ContentUnion {
   const messageJson = message.content.message ?? message.content;
   const maxNumberOfSuggestions = 13;
+
+  if (messageJson.richCard?.standaloneCard) {
+    const {
+      richCard: {
+        standaloneCard: {cardContent},
+      },
+    } = messageJson;
+
+    return {
+      type: 'richCard',
+      ...(cardContent.title && {title: cardContent.title}),
+      ...(cardContent.description && {description: cardContent.description}),
+      media: cardContent.media,
+      suggestions: cardContent.suggestions,
+    };
+  }
+
+  if (messageJson.richCard?.carouselCard) {
+    return {
+      type: 'richCardCarousel',
+      cardWidth: messageJson.richCard.carouselCard.cardWidth,
+      cardContents: messageJson.richCard.carouselCard.cardContents,
+    };
+  }
 
   if (messageJson.suggestions) {
     if (messageJson.suggestions.length > maxNumberOfSuggestions) {

@@ -1,7 +1,7 @@
-import {Source} from './Message';
+import {SourceType} from './Channel';
 import {Content} from './Content';
 
 export interface Template extends Content {
   name: string;
-  source: Source;
+  source: SourceType;
 }

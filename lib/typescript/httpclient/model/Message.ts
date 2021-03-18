@@ -2,14 +2,6 @@
 const camelcaseKeys = require('camelcase-keys');
 import {Content} from './Content';
 
-export enum Source {
-  facebook = 'facebook',
-  google = 'google',
-  chatplugin = 'chatplugin',
-  smsTwilio = 'twilio.sms',
-  whatsappTwilio = 'twilio.whatsapp',
-}
-
 export enum MessageType {
   audio = 'audio',
   file = 'file',

@@ -25,17 +25,10 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = {
   onClose: () => void;
   selectTemplate: (t: Template) => void;
-  channelSource: string;
+  sourceType: string;
 } & ConnectedProps<typeof connector>;
 
-const TemplateSelector = ({
-  listTemplates,
-  onClose,
-  templates,
-  selectTemplate,
-  channelSource,
-  templatesSource,
-}: Props) => {
+const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, sourceType, templatesSource}: Props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [templatesList, setTemplatesList] = useState(templates);
   const [listTemplatesError, setListTemplatesError] = useState(false);
@@ -81,10 +74,10 @@ const TemplateSelector = ({
   }, [searchQuery, templates]);
 
   useEffect(() => {
-    const listAllTemplatesFromSourcePayload = {source: channelSource};
+    const listAllTemplatesFromSourcePayload = {source: sourceType};
     let abort;
 
-    if (channelSource !== templatesSource) {
+    if (sourceType !== templatesSource) {
       listTemplates(listAllTemplatesFromSourcePayload)
         .then()
         .catch(() => {
@@ -95,7 +88,7 @@ const TemplateSelector = ({
     return () => {
       abort = true;
     };
-  }, [channelSource, templatesSource]);
+  }, [sourceType, templatesSource]);
 
   const renderEmpty = () => {
     return (
@@ -131,7 +124,7 @@ const TemplateSelector = ({
     <div className={styles.component} ref={componentRef}>
       {listTemplatesError ? (
         renderError()
-      ) : templates.length === 0 && channelSource === templatesSource ? (
+      ) : templates.length === 0 && sourceType === templatesSource ? (
         renderEmpty()
       ) : (
         <>

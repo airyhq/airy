@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/components';
-
+import {cyTagsSearchField, cyTagsTable} from 'handles';
 import {ReactComponent as Plus} from 'assets/images/icons/plus.svg';
 
 import {listTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
@@ -165,7 +165,12 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
         <div className={styles.organizationContainer} key="1">
           <div className={styles.tagsHeader}>
             <div className={styles.searchContainer}>
-              <SearchField placeholder="Search for tags" value={this.state.tagQuery} setValue={this.handleSearch} />
+              <SearchField
+                placeholder="Search for tags"
+                value={this.state.tagQuery}
+                setValue={this.handleSearch}
+                dataCy={cyTagsSearchField}
+              />
             </div>
             <button onClick={this.handleTagDrawer} className={styles.addButton}>
               Add tag <Plus className={styles.plusButton} />
@@ -173,7 +178,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
           </div>
           {this.state.createDrawer && <SimpleTagForm onClose={this.handleTagDrawer} />}
           {tags.length > 0 ? (
-            <table className={styles.tagsTable}>
+            <table className={styles.tagsTable} data-cy={cyTagsTable}>
               <tbody>
                 <tr>
                   <th className={styles.tagsTableHeader}>Tag name</th>

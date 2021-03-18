@@ -3,6 +3,7 @@ module.exports = {
     {
       '🚀 Getting Started': [
         'getting-started/introduction',
+        'getting-started/components',
         {
           Installation: [
             'getting-started/installation/introduction',
@@ -12,7 +13,7 @@ module.exports = {
           ],
         },
         {
-          'Command Line Interface': ['cli/introduction', 'cli/installation', 'cli/reference'],
+          'Command Line Interface': ['cli/installation', 'cli/reference'],
         },
         'getting-started/quickstart',
         'getting-started/troubleshooting',
@@ -59,11 +60,7 @@ module.exports = {
       ],
     },
     {
-      '✨ Apps': [
-        {
-          UI: ['apps/ui/introduction', 'apps/ui/quickstart', 'apps/ui/inbox', 'apps/ui/tags', 'apps/ui/components'],
-        },
-      ],
+      '💎 UI': ['apps/ui/introduction', 'apps/ui/quickstart', 'apps/ui/inbox', 'apps/ui/tags', 'apps/ui/components'],
     },
     {
       '🛠️ Integrations': [

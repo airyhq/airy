@@ -79,7 +79,7 @@ These settings are used to enable or disable some external tools, used to monito
 
 ## Applying the configuration
 
-If you made changes in `airy.yaml` and want to apply it to your instance you can use the [airy config apply](/cli/reference.md#config-apply) by running the following [Airy CLI](/cli/introduction.md) command.
+If you made changes in `airy.yaml` and want to apply it to your instance you can use the [airy config apply](/cli/reference.md#config-apply) by running the following [Airy CLI](/cli/installation.md) command.
 
 ```bash
 airy config apply --config ./airy.yaml --kube-config /path/to/your/kube.conf

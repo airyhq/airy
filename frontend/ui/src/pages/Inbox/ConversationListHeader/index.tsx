@@ -11,6 +11,8 @@ import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
 
 import styles from './index.module.scss';
 
+import {cySearchButton, cySearchField, cySearchFieldBackButton} from 'handles';
+
 const mapStateToProps = (state: StateModel) => {
   return {
     user: state.data.user,
@@ -59,7 +61,7 @@ const ConversationListHeader = (props: ConnectedProps<typeof connector>) => {
 
   const renderSearchInput = isShowingSearchInput ? (
     <div className={styles.containerSearchField}>
-      <button type="button" className={styles.backButton} onClick={onClickBack}>
+      <button type="button" className={styles.backButton} onClick={onClickBack} data-cy={cySearchFieldBackButton}>
         <BackIcon className={styles.backIcon} />
       </button>
       <div className={styles.searchFieldWidth}>
@@ -69,13 +71,14 @@ const ConversationListHeader = (props: ConnectedProps<typeof connector>) => {
           setValue={setValue}
           resetClicked={onClickSearch}
           autoFocus={true}
+          dataCy={cySearchField}
         />
       </div>
     </div>
   ) : (
     <div className={styles.containerSearchHeadline}>
       <div className={styles.headline}>Inbox</div>
-      <div className={styles.searchBox}>
+      <div className={styles.searchBox} data-cy={cySearchButton}>
         <button type="button" className={styles.searchButton} onClick={onClickSearch}>
           <IconSearch className={styles.searchIcon} title="Search" />
         </button>

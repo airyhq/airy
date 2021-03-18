@@ -5,5 +5,7 @@
     "env": {
         "username": "grace@example.com",
         "password": "the_answer_is_42"
-    }
+    },
+    "viewportHeight": 800,
+    "viewportWidth": 1280
 }

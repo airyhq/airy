@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {ComponentType} from 'react';
 import {ListOnItemsRenderedProps, ListChildComponentProps, VariableSizeList as List} from 'react-window';
 import styles from './index.module.scss';
+import {cyConversationList} from 'handles';
 
 type ResizableWindowProps = {
   itemCount: number;
@@ -63,7 +64,7 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
   render() {
     const {itemCount, itemSize, width, children, onItemsRendered} = this.props;
     return (
-      <div ref={this.resizeRef} className={styles.resizableWindowList}>
+      <div ref={this.resizeRef} className={styles.resizableWindowList} data-cy={cyConversationList}>
         <List
           ref={this.setRef}
           height={this.state.height}

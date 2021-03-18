@@ -5,7 +5,7 @@
   "dependencies": {
     "@airyhq/components": "latest",
     "@stomp/stompjs": "^6.1.0",
-    "@types/node": "12.11.1",
+    "@types/node": "14.14.35",
     "@types/react": "16.9.34",
     "@types/react-dom": "16.9.2",
     "@types/react-redux": "7.1.16",
@@ -47,7 +47,7 @@
     "css-loader": "^3.5.2",
     "cypress": "^6.5.0",
     "ejs-compiled-loader": "^1.1.0",
-    "eslint": "^7.21.0",
+    "eslint": "^7.22.0",
     "eslint-plugin-react": "^7.22.0",
     "express": "^4.17.1",
     "file-loader": "^6.2.0",

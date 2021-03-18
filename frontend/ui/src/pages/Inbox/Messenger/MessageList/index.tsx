@@ -183,10 +183,10 @@ const MessageList = (props: MessageListProps) => {
                 isChatPlugin={false}>
                 <SourceMessage
                   source={getSource(conversation)}
-                  message={message}
+                  renderedContent={message}
                   contact={contactToShow}
                   lastInGroup={lastInGroup}
-                  type="message"
+                  contentType="message"
                 />
               </MessageInfoWrapper>
             </div>

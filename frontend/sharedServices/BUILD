@@ -12,7 +12,6 @@ ts_web_library(
     name = "sharedServices",
     deps = module_deps + [
         "@npm//@types/react",
-        "@npm//@types/react-dom",
         "@npm//react",
     ],
 )

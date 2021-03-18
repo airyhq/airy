@@ -8,7 +8,7 @@ import {ContentUnion} from './chatPluginModel';
 import {RenderedContentUnion} from 'httpclient';
 
 export const ChatPluginRender = (props: MessageRenderProps) => {
-  return render(mapContent(props.message), props);
+  return render(mapContent(props.renderedContent), props);
 };
 
 function render(content: ContentUnion, props: MessageRenderProps) {
@@ -25,7 +25,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       return (
         <RichText
           {...propsToUse}
-          message={props.message}
+          message={props.renderedContent}
           text={content.text}
           fallback={content.fallback}
           containsRichText={content.containsRichtText}

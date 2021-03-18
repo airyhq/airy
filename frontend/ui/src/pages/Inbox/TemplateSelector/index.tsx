@@ -145,7 +145,6 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, ch
             <div className={styles.templateList}>
               {templatesList &&
                 templatesList.map((template, id) => {
-                  const templateContent = JSON.parse(template.content) as any;
                   return (
                     <div
                       className={styles.templatePreviewWrapper}
@@ -154,7 +153,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, ch
                         selectTemplate(template);
                       }}>
                       <div className={styles.tempatePreviewName}>{template.name}</div>
-                      <SourceMessage message={templateContent} source={template.source} type="template" />
+                      <SourceMessage renderedContent={template} source={template.source} contentType="template" />
                     </div>
                   );
                 })}

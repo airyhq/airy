@@ -16,12 +16,13 @@ export interface SuggestedReplyCommand extends Command {
 export type CommandUnion = SuggestedReplyCommand;
 
 interface RenderProps {
-  message: RenderedContentUnion;
+  contentType: 'message' | 'template';
+  renderedContent: RenderedContentUnion;
   source: string;
 }
 
 export interface MessageRenderProps extends RenderProps {
-  type: 'message';
+  contentType: 'message';
   contact?: Contact;
   lastInGroup: boolean;
   invertSides?: boolean;
@@ -29,13 +30,13 @@ export interface MessageRenderProps extends RenderProps {
 }
 
 export interface TemplateRenderProps extends RenderProps {
-  type: 'template';
+  contentType: 'template';
 }
 
 export type RenderPropsUnion = MessageRenderProps | TemplateRenderProps;
 
 export const getDefaultRenderingProps = (props: RenderPropsUnion): DefaultRenderingProps => {
-  const fromContact = isFromContact(props.message);
+  const fromContact = isFromContact(props.renderedContent);
 
   return {
     fromContact,

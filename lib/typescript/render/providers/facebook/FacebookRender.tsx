@@ -10,7 +10,7 @@ import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 
 export const FacebookRender = (props: MessageRenderProps) => {
-  const message = props.message;
+  const message = props.renderedContent;
   const content = isFromContact(message) ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };

@@ -130,7 +130,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     };
 
     const selectTemplate = (template: Template) => {
-      const jsonTemplate = JSON.parse(template.content) as any;
+      const jsonTemplate = template.content;
 
       if (
         jsonTemplate.message.text &&
@@ -143,8 +143,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       } else {
         setInput('');
         setIsShowingTemplateModal(false);
-        const templateContent = JSON.parse(template.content) as any;
-        setSelectedTemplate({message: {...template, content: templateContent}, source: template.source});
+        setSelectedTemplate({message: template, source: template.source});
       }
       sendButtonRef.current.focus();
     };
@@ -220,7 +219,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
               <button className={styles.removeTemplateButton} onClick={() => setSelectedTemplate(null)}>
                 <Close />
               </button>
-              <SourceMessage message={selectedTemplate.message} source={selectedTemplate.source} type="template" />
+              <SourceMessage
+                renderedContent={selectedTemplate.message}
+                source={selectedTemplate.source}
+                contentType="template"
+              />
             </div>
           )}
         </div>

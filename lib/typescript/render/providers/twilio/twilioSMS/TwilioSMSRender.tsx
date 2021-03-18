@@ -5,8 +5,8 @@ import {getDefaultRenderingProps, MessageRenderProps} from '../../../shared';
 import {ContentUnion} from './twilioSMSModel';
 
 export const TwilioSMSRender = (props: MessageRenderProps) => {
-  const {message} = props;
-  const content = isFromContact(message) ? inboundContent(message) : outboundContent(message);
+  const {renderedContent} = props;
+  const content = isFromContact(renderedContent) ? inboundContent(renderedContent) : outboundContent(renderedContent);
   return render(content, props);
 };
 

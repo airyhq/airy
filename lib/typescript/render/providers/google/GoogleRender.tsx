@@ -7,7 +7,7 @@ import {RenderedContentUnion, isFromContact} from 'httpclient';
 import {Image} from '../../components/Image';
 
 export const GoogleRender = (props: MessageRenderProps) => {
-  const message = props.message;
+  const message = props.renderedContent;
   const content = isFromContact(message) ? googleInbound(message) : googleOutbound(message);
   return render(content, props);
 };
@@ -18,7 +18,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
 
     case 'image':
-      return <Image imageUrl={content.imageUrl} />;
+      return <Image imageUrl={content.imageUrl} altText="image sent via GBM" />;
 
     case 'suggestions':
       return (

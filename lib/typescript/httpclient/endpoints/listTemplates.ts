@@ -9,7 +9,7 @@ export default HttpClient.prototype.listTemplates = async function listTemplates
 ) {
   const response = await this.doFetchFromBackend('templates.list', {
     name: requestPayload.name,
-    source_type: requestPayload.source,
+    source: requestPayload.source,
   });
 
   return camelcaseKeys(response.data);

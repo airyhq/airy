@@ -1,4 +1,36 @@
 {{ if .Values.global.ngrokEnabled }}
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: 'airy-core-ngrok'
+  namespace: {{ .Values.global.namespace }}
+spec:
+  rules:
+    - host: '*.tunnel.airy.co'
+      http:
+        paths:
+          - path: /facebook
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-facebook-connector
+                port:
+                  number: 80
+          - path: /google
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-google-connector
+                port:
+                  number: 80
+          - path: /twilio
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-twilio-connector
+                port:
+                  number: 80
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

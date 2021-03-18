@@ -43,7 +43,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
           suggestions={content.suggestions}
         />
       );
-      
+
     case 'richCardCarousel':
       return (
         <RichCardCarousel

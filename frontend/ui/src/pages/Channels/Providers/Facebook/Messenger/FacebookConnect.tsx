@@ -86,8 +86,10 @@ const FacebookConnect = (props: FacebookProps) => {
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setId(event.target.value)}
           minLength={6}
           required={true}
-          height={33}
-          hint={errorMessage}></Input>
+          height={32}
+          hint={errorMessage}
+          fontClass="font-base"
+        />
         <Input
           id="token"
           label="Token"
@@ -95,8 +97,10 @@ const FacebookConnect = (props: FacebookProps) => {
           value={token}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setToken(event.target.value)}
           required={true}
-          height={33}
-          hint={errorMessage}></Input>
+          height={32}
+          hint={errorMessage}
+          fontClass="font-base"
+        />
         <Input
           id="name"
           label="Name (optional)"
@@ -104,7 +108,9 @@ const FacebookConnect = (props: FacebookProps) => {
           hint="The standard name will be the same as the Facebook Page"
           value={name}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
-          height={33}></Input>
+          height={32}
+          fontClass="font-base"
+        />
         <Input
           id="image"
           label="Image URL (optional)"
@@ -112,7 +118,9 @@ const FacebookConnect = (props: FacebookProps) => {
           hint="The standard picture is the same as the Facebook Page"
           value={image}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setImage(event.target.value)}
-          height={33}></Input>
+          height={32}
+          fontClass="font-base"
+        />
       </div>
       <Button styleVariant="normal" disabled={buttonStatus()} onClick={() => connectNewChannel()}>
         {buttonTitle}

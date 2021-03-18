@@ -1,78 +1,124 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {connect, ConnectedProps} from 'react-redux';
 
-import {Button, Input, UrlInputField} from '@airyhq/components';
+import {connectTwilioSms, connectTwilioWhatsapp} from '../../../../actions/channel';
+
+import {Button, Input, LinkButton, UrlInputField} from '@airyhq/components';
+import {Channel, SourceType} from 'httpclient';
+import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrow-left-2.svg';
 
 import styles from './TwilioSmsWhatsappConnect.module.scss';
 
-type TwilioSmsWhatsappConnectProps = {
-  twilioPhoneNumber: string;
-  placeholder: string;
-  urlPlaceholder: string;
-  namePlaceholder: string;
-  name: string;
-  urlName: string;
-  accountName: string;
-  text: string;
-  urlText: string;
-  imageUrl: string;
-  twilioNumberInput: string;
-  twilioUrlInput: string;
-  twilioNameInput: string;
-  smsFormButton?: string;
-  whatsappFormButton?: string;
+import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 
-  handleNameInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleUrlInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleNumberInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  connectTwilioSms: (e: React.ChangeEvent<HTMLFormElement>) => void;
-};
+type TwilioSmsWhatsappConnectProps = {
+  channel?: Channel;
+  source: string;
+  pageTitle: string;
+  buttonText: string;
+} & ConnectedProps<typeof connector> &
+  RouteComponentProps;
+
+const mapDispatchToProps = {connectTwilioWhatsapp, connectTwilioSms};
+
+const connector = connect(null, mapDispatchToProps);
 
 const TwilioSmsWhatsappConnect = (props: TwilioSmsWhatsappConnectProps) => {
+  const {channel, source, pageTitle, buttonText, history, connectTwilioWhatsapp, connectTwilioSms} = props;
+
+  const [numberInput, setNumberInput] = useState(channel?.sourceChannelId || '');
+  const [nameInput, setNameInput] = useState(channel?.metadata?.name || '');
+  const [imageUrlInput, setImageUrlInput] = useState(channel?.metadata?.imageUrl || '');
+
+  const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setNumberInput(e.target.value);
+  };
+
+  const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setNameInput(e.target.value);
+  };
+
+  const handleImageUrlInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setImageUrlInput(e.target.value);
+  };
+
+  const connectTwilioChannel = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const connectPayload = {
+      sourceChannelId: numberInput,
+      name: nameInput,
+      imageUrl: imageUrlInput,
+    };
+
+    if (source === SourceType.twilioWhatsapp) {
+      connectTwilioWhatsapp(connectPayload).then(() => {
+        history.replace({
+          pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.whatsapp/#`,
+          state: {source: 'twilio.whatsapp'},
+        });
+      });
+    }
+    if (source === SourceType.twilioSMS) {
+      connectTwilioSms(connectPayload).then(() => {
+        history.replace(CHANNELS_CONNECTED_ROUTE + `/twilio.sms/#`);
+      });
+    }
+  };
+
   return (
-    <form onSubmit={props.connectTwilioSms} className={styles.formContainer}>
-      <div className={styles.formContent}>
-        <div className={styles.formContentNumber}>
-          <Input
-            label={props.twilioPhoneNumber}
-            placeholder={props.placeholder}
-            value={props.twilioNumberInput}
-            required={true}
-            height={40}
-            autoFocus={true}
-            onChange={props.handleNumberInput}
-            fontClass="font-s"
-          />
+    <div className={styles.wrapper}>
+      <h1 className={styles.headline}>{pageTitle}</h1>
+      <LinkButton onClick={history.goBack} type="button">
+        <ArrowLeft className={styles.backIcon} />
+        Back
+      </LinkButton>
+      <form
+        onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => connectTwilioChannel(e)}
+        className={styles.formContainer}>
+        <div className={styles.formContent}>
+          <div className={styles.formContentNumber}>
+            <Input
+              label="Twilio Phone Number"
+              placeholder="Purchased Number +123456789"
+              value={numberInput}
+              required={true}
+              height={32}
+              autoFocus={true}
+              onChange={handleNumberInput}
+              fontClass="font-base"
+            />
+          </div>
+          <div className={styles.formContentName}>
+            <Input
+              label="Add a Name (optional)"
+              placeholder="Add a name"
+              value={nameInput}
+              required={false}
+              height={32}
+              onChange={handleNameInput}
+              fontClass="font-base"
+            />
+          </div>
+          <div className={styles.formContentNumber}>
+            <UrlInputField
+              label="Image URL (optional)"
+              placeholder="Add an URL"
+              value={imageUrlInput}
+              required={false}
+              height={32}
+              onChange={handleImageUrlInput}
+              fontClass="font-base"
+            />
+          </div>
+          <Button type="submit" styleVariant="normal" disabled={numberInput.trim().length === 0}>
+            {buttonText}
+          </Button>
         </div>
-
-        <div className={styles.formContentNumber}>
-          <UrlInputField
-            label={props.imageUrl}
-            placeholder={props.urlPlaceholder}
-            value={props.twilioUrlInput}
-            required={false}
-            height={40}
-            onChange={props.handleUrlInput}
-            fontClass="font-s"
-          />
-        </div>
-
-        <div className={styles.formContentName}>
-          <Input
-            label={props.accountName}
-            placeholder={props.namePlaceholder}
-            value={props.twilioNameInput}
-            required={false}
-            height={40}
-            onChange={props.handleNameInput}
-            fontClass="font-s"
-          />
-        </div>
-        <Button type="submit" styleVariant="normal" disabled={props.twilioNumberInput.trim().length == 0}>
-          {props.smsFormButton} {props.whatsappFormButton}
-        </Button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
-export default TwilioSmsWhatsappConnect;
+export default withRouter(connector(TwilioSmsWhatsappConnect));

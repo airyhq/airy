@@ -67,8 +67,8 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           imageUrl: imageUrl,
         }),
       })
-      .then((channel: Channel) => {
-        props.history.replace(CHANNELS_CHAT_PLUGIN_ROUTE + '/' + channel.id);
+      .then(() => {
+        props.history.replace(CHANNELS_CONNECTED_ROUTE + '/chatplugin');
       });
   };
 
@@ -94,7 +94,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           autoFocus
           required
           height={32}
-          fontClass="font-s"
+          fontClass="font-base"
         />
       </div>
 
@@ -110,7 +110,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           placeholder="(optionaly) add an image url"
           hint="max. 1024x1024 pixel PNG"
           height={32}
-          fontClass="font-s"
+          fontClass="font-base"
         />
       </div>
     </>
@@ -154,17 +154,17 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
 
   const generateCode = () => {
     return `<script>
-  (function(w, d, s, n) {
-    w[n] = w[n] || {};
-    w[n].channelId = "${channelId}";
-    w[n].host = "${'//' + env.API_HOST}";
-    var f = d.getElementsByTagName(s)[0],
-      j = d.createElement(s);
-    j.async = true;
-    j.src = w[n].host + "/s.js";
-    f.parentNode.insertBefore(j, f);
-  })(window, document, "script", "airy");
-</script>`;
+      (function(w, d, s, n) {
+        w[n] = w[n] || {};
+        w[n].channelId = "${channelId}";
+        w[n].host = "${'//' + env.API_HOST}";
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s);
+        j.async = true;
+        j.src = w[n].host + "/s.js";
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "airy");
+    </script>`;
   };
 
   const copyToClipboard = () => {

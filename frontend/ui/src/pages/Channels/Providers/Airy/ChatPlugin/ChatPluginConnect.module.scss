@@ -15,9 +15,11 @@
 }
 
 .headline {
-  @include font-xl;
-  font-weight: bold;
-  margin-bottom: 8px;
+  h1 {
+    @include font-xl;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
 }
 
 .backButton {
@@ -142,9 +144,9 @@
 }
 
 .codeArea {
-  @include font-s;
+  @include font-base;
   width: 40em;
-  height: 17em;
+  height: 19.2em;
   background-color: var(--color-background-gray);
   color: var(--color-text-contrast);
   border-radius: 8px;

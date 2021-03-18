@@ -2,39 +2,30 @@ import React, {useState, useEffect} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
-import {connectTwilioSms, disconnectChannel} from '../../../../../actions/channel';
 import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
-
-import {LinkButton} from '@airyhq/components';
-import {Channel} from 'httpclient';
+import {Channel, SourceType} from 'httpclient';
 import TwilioSmsWhatsappConnect from '../TwilioSmsWhatsappConnect';
-import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
-
-import styles from './TwilioSmsConnect.module.scss';
-
-import {CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 
 interface TwilioSmsRouterProps {
   channelId?: string;
 }
 
-const mapDispatchToProps = {connectTwilioSms, disconnectChannel};
 const mapStateToProps = (state: StateModel, props: RouteComponentProps<{channelId: string}>) => ({
   channels: Object.values(allChannels(state)),
   channel: state.data.channels[props.match.params.channelId],
 });
-const connector = connect(mapStateToProps, mapDispatchToProps);
+
+const connector = connect(mapStateToProps);
 
 type TwilioSmsProps = {channelId?: string} & ConnectedProps<typeof connector> &
   RouteComponentProps<TwilioSmsRouterProps>;
 
 const TwilioSmsConnect = (props: TwilioSmsProps) => {
-  const {channel} = props;
-  const [smsNumberInput, setSmsNumberInput] = useState(channel?.sourceChannelId || '');
-  const [smsNameInput, setSmsNameInput] = useState(channel?.metadata?.name || '');
-  const [smsUrlInput, setSmsUrlInput] = useState(channel?.metadata?.imageUrl || '');
+  const {channels, channel} = props;
+
   const [buttonTitle, setButtonTitle] = useState('Connect Sms Number');
+
   const channelId = props.match.params.channelId;
 
   useEffect(() => {
@@ -45,70 +36,19 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
 
   useEffect(() => {
     if (channelId !== 'new_account' && channelId?.length) {
-      props.channels.find((channel: Channel) => {
-        return channel.id === channelId;
+      channels.find((item: Channel) => {
+        return item.id === channelId;
       });
     }
-  }, [props.channels, channelId]);
-
-  const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSmsNumberInput(e.target.value);
-  };
-
-  const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSmsNameInput(e.target.value);
-  };
-
-  const handleUrlInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSmsUrlInput(e.target.value);
-  };
-
-  const sendTwilioSmsData = () => {
-    props
-      .connectTwilioSms({
-        sourceChannelId: smsNumberInput,
-        name: smsNameInput,
-        imageUrl: smsUrlInput,
-      })
-      .then(() => {
-        props.history.replace(CHANNELS_CONNECTED_ROUTE + `/twilio.sms/#`);
-      });
-  };
-
-  const connectTwilioSms = (e: React.ChangeEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    sendTwilioSmsData();
-  };
+  }, [channels, channelId]);
 
   return (
-    <div className={styles.wrapper}>
-      <h1 className={styles.headline}>SMS</h1>
-      <LinkButton onClick={props.history.goBack} type="button">
-        <ArrowLeftIcon className={styles.backIcon} />
-        Back
-      </LinkButton>
-
-      <TwilioSmsWhatsappConnect
-        connectTwilioSms={connectTwilioSms}
-        twilioPhoneNumber="Twilio Phone Number"
-        placeholder="Purchased Number +123456789"
-        name="name"
-        text="text"
-        twilioNumberInput={smsNumberInput}
-        handleNumberInput={handleNumberInput}
-        imageUrl="Image URL (optional)"
-        urlPlaceholder="Add an URL"
-        urlName="url"
-        urlText="url"
-        twilioUrlInput={smsUrlInput}
-        handleUrlInput={handleUrlInput}
-        accountName="Add a Name (optional)"
-        namePlaceholder="Add a Name"
-        twilioNameInput={smsNameInput}
-        handleNameInput={handleNameInput}
-        smsFormButton={buttonTitle}
-      />
-    </div>
+    <TwilioSmsWhatsappConnect
+      channel={channel}
+      source={SourceType.twilioSMS}
+      pageTitle="SMS"
+      buttonText={buttonTitle}
+    />
   );
 };
 

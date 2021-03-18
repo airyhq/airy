@@ -90,8 +90,8 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     title: 'Google Business Messages',
     description: 'Be there when people search',
     image: <GoogleAvatarIcon />,
-    newChannelRoute: '',
-    channelsListRoute: '',
+    newChannelRoute: '/',
+    channelsListRoute: '/',
     configKey: 'sources-google',
     channelsToShow: 4,
     itemInfoString: 'channels',
@@ -107,6 +107,7 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
       case SourceType.facebook:
         return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
       case SourceType.google:
+        return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
         break;
       case SourceType.chatPlugin:
         break;

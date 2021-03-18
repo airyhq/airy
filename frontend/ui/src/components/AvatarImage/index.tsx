@@ -14,7 +14,7 @@ const AvatarImage = (props: AvatarProps) => {
 
   return (
     <div className={styles.avatar}>
-      <img className={styles.avatarImage} src={contact.avatarUrl || fallbackAvatar} />
+      <img className={styles.avatarImage} src={(contact && contact.avatarUrl) || fallbackAvatar} />
     </div>
   );
 };

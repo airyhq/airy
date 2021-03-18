@@ -14,7 +14,7 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 
 import {StateModel} from '../../../reducers';
-import {getTextMessagePayload, RenderedContentUnion, Template} from 'httpclient';
+import {getTextMessagePayload, Template} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 
@@ -31,7 +31,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type MessageInputProps = {channelSource: string};
 
 interface SelectedTemplate {
-  message: RenderedContentUnion;
+  message: Template;
   source: string;
 }
 
@@ -47,6 +47,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const sendButtonRef = useRef(null);
   const emojiDiv = useRef<HTMLDivElement>(null);
 
+  const conversationIdParams = useParams();
+  const currentConversationId: string = conversationIdParams[Object.keys(conversationIdParams)[0]];
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setInput(e.target.value);
   };
@@ -58,9 +61,6 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       textAreaRef.current.style.height = scrollHeight + 'px';
     }
   }, [input]);
-
-  const conversationIdParams = useParams();
-  const currentConversationId: string = conversationIdParams[Object.keys(conversationIdParams)[0]];
 
   const sendMessage = () => {
     if (selectedTemplate) {

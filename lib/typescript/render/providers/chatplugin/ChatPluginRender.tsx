@@ -1,5 +1,5 @@
 import React from 'react';
-import {getDefaultRenderingProps, MessageRenderProps} from '../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../shared';
 import {RichText} from '../../components/RichText';
 import {RichCard} from '../../components/RichCard';
 import {RichCardCarousel} from '../../components/RichCardCarousel';
@@ -7,14 +7,17 @@ import {Text} from '../../components/Text';
 import {ContentUnion} from './chatPluginModel';
 import {RenderedContentUnion} from 'httpclient';
 
-export const ChatPluginRender = (props: MessageRenderProps) => {
+export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.renderedContent), props);
 };
 
-function render(content: ContentUnion, props: MessageRenderProps) {
-  const defaultProps = {...getDefaultRenderingProps(props), commandCallback: props.commandCallback};
+function render(content: ContentUnion, props: RenderPropsUnion) {
+  const defaultProps = {
+    ...getDefaultRenderingProps(props),
+    commandCallback: 'commandCallback' in props ? props.commandCallback : null,
+  };
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
-  const propsToUse = props.invertSides ? invertedProps : defaultProps;
+  const propsToUse = 'invertSides' in props ? invertedProps : defaultProps;
 
   switch (content.type) {
     case 'text':

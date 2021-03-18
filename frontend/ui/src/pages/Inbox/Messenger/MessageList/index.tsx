@@ -5,7 +5,7 @@ import {debounce} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
 import {cyMessageList} from 'handles';
 
-import {Message} from 'httpclient';
+import {Message, getSource, isFromContact} from 'httpclient';
 import {SourceMessage} from 'render';
 
 import {StateModel} from '../../../../reducers';
@@ -16,10 +16,8 @@ import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
 import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
-import {isSameDay} from 'dates';
-import {getSource, isFromContact, RenderedContentUnion} from 'httpclient';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
-import {formatTime} from 'dates';
+import {formatTime, isSameDay} from 'dates';
 
 type MessageListProps = ConnectedProps<typeof connector>;
 
@@ -96,7 +94,7 @@ const MessageList = (props: MessageListProps) => {
     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
   };
 
-  const hasDateChanged = (prevMessage: RenderedContentUnion, message: RenderedContentUnion) => {
+  const hasDateChanged = (prevMessage: Message, message: Message) => {
     if (prevMessage == null) {
       return true;
     }
@@ -145,8 +143,10 @@ const MessageList = (props: MessageListProps) => {
       }
 
       const entireHeightScrolled =
+        messageListRef &&
+        messageListRef.current &&
         messageListRef.current.scrollHeight - 1 <=
-        messageListRef.current.clientHeight + messageListRef.current.scrollTop;
+          messageListRef.current.clientHeight + messageListRef.current.scrollTop;
 
       if (stickBottom !== entireHeightScrolled) {
         setStickBottom(entireHeightScrolled);
@@ -159,20 +159,19 @@ const MessageList = (props: MessageListProps) => {
   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
       {messages &&
-        messages.map((message: RenderedContentUnion, index: number) => {
+        messages.map((message: Message, index: number) => {
           const prevMessage = messages[index - 1];
           const nextMessage = messages[index + 1];
-          const shouldShowContact = !isFromContact(prevMessage) && !isFromContact(message);
+
           const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
 
-          const contactToShow = shouldShowContact ? conversation.metadata.contact : null;
-          const sentAt = lastInGroup && 'sentAt' in message ? formatTime(message.sentAt) : null;
+          const sentAt = lastInGroup ? formatTime(message.sentAt) : null;
 
           return (
             <div key={message.id} id={`message-item-${message.id}`}>
               {hasDateChanged(prevMessage, message) && (
                 <div key={`date-${message.id}`} className={styles.dateHeader}>
-                  {'sentAt' in message ? formatDateOfMessage(message) : ''}
+                  {formatDateOfMessage(message)}
                 </div>
               )}
               <MessageInfoWrapper
@@ -181,13 +180,7 @@ const MessageList = (props: MessageListProps) => {
                 sentAt={sentAt}
                 lastInGroup={lastInGroup}
                 isChatPlugin={false}>
-                <SourceMessage
-                  source={getSource(conversation)}
-                  renderedContent={message}
-                  contact={contactToShow}
-                  lastInGroup={lastInGroup}
-                  contentType="message"
-                />
+                <SourceMessage source={getSource(conversation)} renderedContent={message} contentType="message" />
               </MessageInfoWrapper>
             </div>
           );

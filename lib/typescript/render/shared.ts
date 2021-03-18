@@ -1,4 +1,4 @@
-import {isFromContact, RenderedContentUnion, Contact} from 'httpclient';
+import {isFromContact, RenderedContentUnion} from 'httpclient';
 import {DefaultRenderingProps} from './components';
 
 export interface Command {
@@ -23,8 +23,6 @@ interface RenderProps {
 
 export interface MessageRenderProps extends RenderProps {
   contentType: 'message';
-  contact?: Contact;
-  lastInGroup: boolean;
   invertSides?: boolean;
   commandCallback?: (command: CommandUnion) => void;
 }

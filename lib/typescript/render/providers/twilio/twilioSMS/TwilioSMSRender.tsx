@@ -1,16 +1,16 @@
 import React from 'react';
 import {isFromContact, RenderedContentUnion} from 'httpclient';
 import {Text} from '../../../components/Text';
-import {getDefaultRenderingProps, MessageRenderProps} from '../../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../../shared';
 import {ContentUnion} from './twilioSMSModel';
 
-export const TwilioSMSRender = (props: MessageRenderProps) => {
+export const TwilioSMSRender = (props: RenderPropsUnion) => {
   const {renderedContent} = props;
   const content = isFromContact(renderedContent) ? inboundContent(renderedContent) : outboundContent(renderedContent);
   return render(content, props);
 };
 
-function render(content: ContentUnion, props: MessageRenderProps) {
+function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
       return <Text {...getDefaultRenderingProps(props)} text={content.text} />;

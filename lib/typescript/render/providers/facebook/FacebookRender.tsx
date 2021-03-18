@@ -1,6 +1,6 @@
 import React from 'react';
 import {isFromContact, RenderedContentUnion} from 'httpclient';
-import {getDefaultRenderingProps, MessageRenderProps} from '../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../shared';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {Video} from '../../components/Video';
@@ -9,13 +9,13 @@ import {AttachmentUnion, SimpleAttachment, ContentUnion, ButtonAttachment, Gener
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 
-export const FacebookRender = (props: MessageRenderProps) => {
+export const FacebookRender = (props: RenderPropsUnion) => {
   const message = props.renderedContent;
   const content = isFromContact(message) ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };
 
-function render(content: ContentUnion, props: MessageRenderProps) {
+function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
       return <Text {...getDefaultRenderingProps(props)} text={content.text} />;

@@ -184,7 +184,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
               <AvatarImage contact={contact} />
             </div>
 
-            <div className={styles.displayName}>{contact.displayName}</div>
+            <div className={styles.displayName}>{contact && contact.displayName}</div>
           </div>
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>

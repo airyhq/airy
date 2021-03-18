@@ -1,18 +1,18 @@
 import React from 'react';
-import {getDefaultRenderingProps, MessageRenderProps} from '../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../shared';
 import {Suggestions} from './components/Suggestions';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './googleModel';
 import {RenderedContentUnion, isFromContact} from 'httpclient';
 import {Image} from '../../components/Image';
 
-export const GoogleRender = (props: MessageRenderProps) => {
+export const GoogleRender = (props: RenderPropsUnion) => {
   const message = props.renderedContent;
   const content = isFromContact(message) ? googleInbound(message) : googleOutbound(message);
   return render(content, props);
 };
 
-function render(content: ContentUnion, props: MessageRenderProps) {
+function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
       return <Text {...getDefaultRenderingProps(props)} text={content.text} />;

@@ -16,6 +16,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: StateModel) => {
   return {
     templates: state.data.templates.all,
+    templatesSource: (state.data.templates.all[0] && state.data.templates.all[0].source) ?? null,
   };
 };
 
@@ -27,7 +28,14 @@ type Props = {
   channelSource: string;
 } & ConnectedProps<typeof connector>;
 
-const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, channelSource}: Props) => {
+const TemplateSelector = ({
+  listTemplates,
+  onClose,
+  templates,
+  selectTemplate,
+  channelSource,
+  templatesSource,
+}: Props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [templatesList, setTemplatesList] = useState(templates);
   const [loading, setLoading] = useState(true);
@@ -76,20 +84,19 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, ch
     const listAllTemplatesFromSourcePayload = {source: channelSource};
     let abort = false;
 
-    if (templates.length === 0 && loading) {
+    if (templatesSource !== channelSource)
       listTemplates(listAllTemplatesFromSourcePayload)
         .then(() => {
-          if (templates.length === 0 && !abort) setLoading(false);
+          if (!abort) setLoading(false);
         })
         .catch(() => {
           if (!abort) setListTemplatesError(true);
         });
-    }
 
     return () => {
       abort = true;
     };
-  }, [templates, loading]);
+  }, [channelSource, templatesSource]);
 
   const renderEmpty = () => {
     return (

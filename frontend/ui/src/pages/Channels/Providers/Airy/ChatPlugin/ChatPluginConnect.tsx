@@ -14,6 +14,13 @@ import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.
 
 import styles from './ChatPluginConnect.module.scss';
 
+import {
+  cyChannelsChatPluginConnectButton,
+  cyChannelsChatPluginFormNameInput,
+  cyChannelsChatPluginFormSubmitButton,
+  cyChannelsChatPluginFormBackButton,
+} from 'handles';
+
 import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 
 const mapDispatchToProps = {
@@ -95,6 +102,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           required
           height={32}
           fontClass="font-base"
+          dataCy={cyChannelsChatPluginFormNameInput}
         />
       </div>
 
@@ -121,7 +129,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
       <div>
         <p className={styles.newPageParagraph}>Add Airy Live Chat to your website and application</p>
 
-        <Button type="button" onClick={() => setShowNewPage(false)}>
+        <Button type="button" onClick={() => setShowNewPage(false)} dataCy={cyChannelsChatPluginConnectButton}>
           Connect Airy Live Chat
         </Button>
       </div>
@@ -132,7 +140,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           <div className={styles.settings}>
             <form className={styles.form} onSubmit={createNewConnection}>
               {renderFormFields()}
-              <Button type="submit" styleVariant="small">
+              <Button type="submit" styleVariant="small" dataCy={cyChannelsChatPluginFormSubmitButton}>
                 Save
               </Button>
             </form>
@@ -281,8 +289,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           </div>
         )}
       </div>
-
-      <LinkButton onClick={props.history.goBack} type="button">
+      <LinkButton onClick={props.history.goBack} type="button" dataCy={cyChannelsChatPluginFormBackButton}>
         <ArrowLeftIcon className={styles.backIcon} />
         Back
       </LinkButton>

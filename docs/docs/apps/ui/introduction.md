@@ -45,8 +45,3 @@ Additional features like [Filters, Search](inbox) and [Tags](tags) help you.
         link='apps/ui/components'
     />
 </ButtonBoxList>
-
-**Overview**
-
-<img alt="Demo Tags"
-src={useBaseUrl('img/apps/ui/demotags.gif')} />

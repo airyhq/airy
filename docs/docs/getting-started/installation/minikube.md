@@ -63,7 +63,7 @@ change the setting for `server_addr` in the ConfigMap.
 
 ## Where to go from here
 
-Now that you have a running local installation of Minikube you can connect it to messaging sources. Check out the 
+Now that you have a running local installation of Minikube you can connect it to messaging sources. Check out the
 [source documentation](/sources/introduction.md) to learn more.
 
 ## Third party tools

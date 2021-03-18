@@ -72,7 +72,7 @@ Airy’s Inbox supports all [Google’s Rich Cards variants from Rich Cards to C
             "height": "TALL",
             "contentInfo":{
               "altText": "Google logo",
-              "fileUrl": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+              "fileUrl": "https://picsum.photos/200",
               "forceRefresh": "false"
             }
           },
@@ -141,7 +141,7 @@ link='sources/chatplugin/overview'
                   "media":{
                      "height":"MEDIUM",
                      "contentInfo":{
-                        "fileUrl":"https://storage.googleapis.com/kitchen-sink-sample-images/cute-dog.jpg",
+                        "fileUrl":"https://picsum.photos/200",
                         "forceRefresh":"false"
                      }
                   }
@@ -160,7 +160,7 @@ link='sources/chatplugin/overview'
                   "media":{
                      "height":"MEDIUM",
                      "contentInfo":{
-                        "fileUrl":"https://storage.googleapis.com/kitchen-sink-sample-images/elephant.jpg",
+                        "fileUrl":"https://picsum.photos/200",
                         "forceRefresh":"false"
                      }
                   }

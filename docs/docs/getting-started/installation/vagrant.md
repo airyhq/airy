@@ -45,7 +45,7 @@ hosts file yourself.
 
 After the bootstrap process finishes, it will download the Kubernetes
 configuration file to the local host machine under `~/.airy/kube.conf`. That
-file is required for the Airy Command Line tool [Airy CLI](/cli/introduction.md), in order to access
+file is required for the Airy Command Line tool [Airy CLI](/cli/installation.md), in order to access
 the Kubernetes cluster where your Airy Core instance is running. You can also
 use that configuration file with the `kubectl` utility, for example:
 

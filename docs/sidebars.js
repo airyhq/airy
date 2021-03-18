@@ -13,7 +13,7 @@ module.exports = {
           ],
         },
         {
-          'Command Line Interface': ['cli/introduction', 'cli/installation', 'cli/reference'],
+          'Command Line Interface': ['cli/installation', 'cli/reference'],
         },
         'getting-started/quickstart',
         'getting-started/troubleshooting',

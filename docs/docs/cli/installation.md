@@ -10,6 +10,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <TLDR>
+
+The Airy CLI is a developer tool to help you **build**, **test**, and **manage**
+the Airy Core directly from your terminal.
+
+</TLDR>
+
+<TLDR>
 Install the CLI quickly with our step-by-step guide or build it from source
 </TLDR>
 

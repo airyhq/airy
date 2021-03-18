@@ -17,8 +17,7 @@ the Airy Core directly from your terminal.
 </TLDR>
 
 <TLDR>
-
-Install the CLI quickly with our step-by-step guide or build it from source.
+Install the CLI quickly with our step-by-step guide or build it from source
 </TLDR>
 
 Installing the Airy CLI is easy and straightforward.

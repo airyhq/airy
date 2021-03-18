@@ -1165,6 +1165,13 @@ def go_repositories():
         version = "v0.0.0-20190109142713-0ad062ec5ee5",
     )
     go_repository(
+        name = "com_github_twinproduction_go_color",
+        importpath = "github.com/TwinProduction/go-color",
+        sum = "h1:8n59tqmLmt8jyRsY44RPy2ixPDDw0FcVoAhlYeyz3Jw=",
+        version = "v1.0.0",
+    )
+
+    go_repository(
         name = "com_github_txn2_txeh",
         importpath = "github.com/txn2/txeh",
         sum = "h1:vnbv63htVMZCaQgLqVBxKvj2+HHHFUzNW7I183zjg3E=",

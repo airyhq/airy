@@ -10,7 +10,7 @@ import (
 )
 
 func AddHostRecord() error {
-	minikubeIp, err := runWithOutput("ip")
+	minikubeIp, err := runGetOutput("ip")
 	if err != nil {
 		return err
 	}

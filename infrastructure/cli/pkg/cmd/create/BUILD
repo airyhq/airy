@@ -13,11 +13,13 @@ go_library(
         "version": "{STABLE_VERSION}",
     },
     deps = [
+        "//infrastructure/cli/pkg/console",
         "//infrastructure/cli/pkg/kube",
         "//infrastructure/cli/pkg/providers",
         "//infrastructure/cli/pkg/workspace",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",
+        "@com_github_twinproduction_go_color//:go-color",
         "@io_k8s_api//batch/v1:go_default_library",
         "@io_k8s_api//core/v1:go_default_library",
         "@io_k8s_api//rbac/v1:go_default_library",

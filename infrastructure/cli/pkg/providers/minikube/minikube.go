@@ -6,6 +6,7 @@ import (
 	"fmt"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/util/homedir"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -50,22 +51,29 @@ func checkInstallation() error {
 }
 
 func startCluster() error {
-	return run("start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535")
+	return runPrintOutput("start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535")
 }
 
-func run(args ...string) error {
-	_, err := runWithOutput(args...)
-	return err
+func runPrintOutput(args ...string) error {
+	cmd := getCmd(args...)
+	fmt.Printf("$ %s %s\n\n", cmd.Path, strings.Join(cmd.Args, " "))
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
 
-func runWithOutput(args ...string) (string, error) {
-	defaultArgs := []string{"--profile=" + profile}
-	cmd := exec.Command("minikube", append(defaultArgs, args...)...)
+func runGetOutput(args ...string) (string, error) {
+	cmd := getCmd(args...)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return string(out), fmt.Errorf("running minikube failed with err: %v\n%v", err, string(out))
 	}
 	return string(out), nil
+}
+
+func getCmd(args ...string) *exec.Cmd {
+	defaultArgs := []string{"--profile=" + profile}
+	return exec.Command("minikube", append(defaultArgs, args...)...)
 }
 
 func (m *Minikube) PostInstallation(namespace string) error {
@@ -81,9 +89,9 @@ func (m *Minikube) PostInstallation(namespace string) error {
 	}
 
 	// Ensure that kubectl is downloaded so that the progressbar does not pollute the output
-	run("kubectl", "version")
+	runGetOutput("kubectl", "version")
 
-	coreId, err := runWithOutput("kubectl", "--", "get", "cm", "core-config", "-o", "jsonpath='{.data.CORE_ID}'")
+	coreId, err := runGetOutput("kubectl", "--", "get", "cm", "core-config", "-o", "jsonpath='{.data.CORE_ID}'")
 	if err != nil {
 		return err
 	}

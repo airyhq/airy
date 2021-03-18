@@ -5,7 +5,7 @@ import {withRouter, RouteComponentProps} from 'react-router-dom';
 import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
 import {Channel, SourceType} from 'httpclient';
-import TwilioSmsWhatsappConnect from '../TwilioSmsWhatsappConnect';
+import TwilioConnect from '../TwilioConnect';
 
 interface TwilioSmsRouterProps {
   channelId?: string;
@@ -42,14 +42,7 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
     }
   }, [channels, channelId]);
 
-  return (
-    <TwilioSmsWhatsappConnect
-      channel={channel}
-      source={SourceType.twilioSMS}
-      pageTitle="SMS"
-      buttonText={buttonTitle}
-    />
-  );
+  return <TwilioConnect channel={channel} source={SourceType.twilioSMS} pageTitle="SMS" buttonText={buttonTitle} />;
 };
 
 export default connector(withRouter(TwilioSmsConnect));

@@ -8,11 +8,11 @@ import {Button, Input, LinkButton, UrlInputField} from '@airyhq/components';
 import {Channel, SourceType} from 'httpclient';
 import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrow-left-2.svg';
 
-import styles from './TwilioSmsWhatsappConnect.module.scss';
+import styles from './TwilioConnect.module.scss';
 
 import {CHANNELS_CONNECTED_ROUTE} from '../../../../routes/routes';
 
-type TwilioSmsWhatsappConnectProps = {
+type TwilioConnectProps = {
   channel?: Channel;
   source: string;
   pageTitle: string;
@@ -24,7 +24,7 @@ const mapDispatchToProps = {connectTwilioWhatsapp, connectTwilioSms};
 
 const connector = connect(null, mapDispatchToProps);
 
-const TwilioSmsWhatsappConnect = (props: TwilioSmsWhatsappConnectProps) => {
+const TwilioConnect = (props: TwilioConnectProps) => {
   const {channel, source, pageTitle, buttonText, history, connectTwilioWhatsapp, connectTwilioSms} = props;
 
   const [numberInput, setNumberInput] = useState(channel?.sourceChannelId || '');
@@ -121,4 +121,4 @@ const TwilioSmsWhatsappConnect = (props: TwilioSmsWhatsappConnectProps) => {
   );
 };
 
-export default withRouter(connector(TwilioSmsWhatsappConnect));
+export default withRouter(connector(TwilioConnect));

@@ -12,9 +12,9 @@ import (
 )
 
 const (
-	minikube = "minikube"
-	profile  = "airy-core"
-	hostAlias     = "airy.core"
+	minikube  = "minikube"
+	profile   = "airy-core"
+	hostAlias = "airy.core"
 )
 
 type Minikube struct {

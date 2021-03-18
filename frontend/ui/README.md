@@ -26,11 +26,14 @@ The Airy UI is a fully featured user interactive frontend project that showcases
 You can run the backend required for development of the Airy Demo UI locally by installing Airy Core using the
 [minikube provider](/docs/docs/getting-started/installation/minikube.md):
 
+To ensure that you develop against the latest state of the `create` command you can build and run the executable
+from the repository:
+
 ```
-$ airy create --provider=minikube
+$ bazel run //infrastructure/cli -- create --provider=minikube
 ```
 
-When the bootstrap process finishes, open another terminal and run `$ ./scripts/web-dev.sh //frontend/demo:bundle_server`
+When the bootstrap process finishes, open another terminal and run `$ ./scripts/web-dev.sh //frontend/ui:bundle_server`
 Then open `http://localhost:8080/` in a web browser to access the Airy Demo UI
 
 ### Authentication
@@ -58,8 +61,8 @@ Aside from Curl, [PostMan](https://www.postman.com/downloads/) and other API tes
 To start the app in development mode, run these commands:
 
 ```
-yarn
-yarn ibazel run //frontend/ui:bundle_server
+$ yarn
+$ ./scripts/web-dev.sh //frontend/ui:bundle_server
 ```
 
 After it started, open a web browser to [`localhost:8080`](http://localhost:8080). Login with the user you created above.

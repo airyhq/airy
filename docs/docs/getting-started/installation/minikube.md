@@ -61,14 +61,14 @@ If you prefer to use your own ngrok implementation or point the ngrok client to
 connect to the service provided by the ngrok company at `https://ngrok.io`,
 change the setting for `server_addr` in the ConfigMap.
 
-## Connect sources
+## Where to go from here
 
-Integrating sources into the `Airy Core` often requires specific configuration
-settings, refer to the [source specific docs](/sources/introduction.md) for details.
+Now that you have a running local installation of Minikube you can connect it to messaging sources. Check out the 
+[source documentation](/sources/introduction.md) to learn more.
 
-## External tools
+## Third party tools
 
-The optional external tools can be activated in the `airy.yaml` configuration file, under the `tools` section.
+Third party tools can be activated in the `airy.yaml` configuration file, under the `tools` section.
 For more details please see our [Configuration Section](configuration.md).
 
 ## Uninstall Airy Core

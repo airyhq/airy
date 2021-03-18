@@ -106,7 +106,9 @@ airy create [flags]
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
+
 ***
+
 ## Init
 
 Inits your airy configuration

@@ -5,12 +5,18 @@ sidebar_label: Inbox
 
 import ButtonBox from "@site/src/components/ButtonBox";
 import AiryBubbleSVG from "@site/static/icons/airy-bubble.svg";
+import PriceTag from "@site/static/icons/price-tag.svg";
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+## Introduction
 
 Airy’s Inbox gives you an UI for all your conversations.
 
-See all conversations from the sources you connected, no matter if they come via the Live Chat Plugin, Facebook Messenger, Google’s Business Messages, SMS, WhatsApp or a custom source.
+See all conversations from the sources you connected, no matter if they come via the [Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source.
 
 The inbox supports not only text messages but a variety of different message types.
+
+## Message Types
 
 **Send & Receive Messages**
 
@@ -20,12 +26,76 @@ Each of these sources have different character limits.
 **Facebook Templates**
 
 A template is a simple structured message that can include a title, subtitle, image, and up to three buttons.
-Airy’s Inbox supports all templates that Facebook supports, from Generic Templates to Button Templates.
+Airy’s Inbox supports all templates that Facebook supports, from [Generic Templates](https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic) to [Button Templates](https://developers.facebook.com/docs/messenger-platform/send-messages/template/button).
+
+**Sample request**
+
+```json5
+"payload": {
+  "template_type":"generic",
+  "elements":[
+     {
+      "title":"<TITLE_TEXT>",
+      "image_url":"<IMAGE_URL_TO_DISPLAY>",
+      "subtitle":"<SUBTITLE_TEXT>",
+      "default_action": {
+        "type": "web_url",
+        "url": "<DEFAULT_URL_TO_OPEN>",
+        "messenger_extensions": <TRUE | FALSE>,
+        "webview_height_ratio": "<COMPACT | TALL | FULL>"
+      },
+      "buttons":[<BUTTON_OBJECT>, ...]
+    },
+    ...
+  ]
+}
+```
 
 **Google’s Rich Cards**
 
 Rich Cards are Google’s templates: a simple structured message that can include a title, description, media and up to 4 suggested replies (buttons).
-Airy’s Inbox supports all Google’s Rich Cards variants from Rich Cards to Carousels.
+Airy’s Inbox supports all [Google’s Rich Cards variants from Rich Cards to Carousels](https://developers.google.com/business-communications/business-messages/guides/build/send).
+
+**Sample request**
+
+```json5
+{
+   "conversation_id": "UUID",
+   "message": {
+    "fallback": "Hello, world!\n\nReply with \"A\" or \"B\"",
+    "richCard": {
+      "standaloneCard": {
+        "cardContent": {
+          "title": "Hello, world!",
+          "description": "Sent with Business Messages.",
+          "media": {
+            "height": "TALL",
+            "contentInfo":{
+              "altText": "Google logo",
+              "fileUrl": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+              "forceRefresh": "false"
+            }
+          },
+          "suggestions": [
+            {
+              "reply": {
+                "text": "Suggestion #1",
+                "postbackData": "suggestion_1"
+              }
+            },
+            {
+              "reply": {
+                "text": "Suggestion #2",
+                "postbackData": "suggestion_2"
+              }
+            }
+          ]
+        }
+      }
+    }      
+   }
+}
+```
 
 **Render Templates for Chat Plugin**
 
@@ -38,6 +108,69 @@ title='Airy Live Chat Plugin'
 description='The Airy Live Chat Plugin enables conversations with website visitors through a web chat plugin'
 link='sources/chatplugin/overview'
 />
+<br/>
+
+**Sample RichCard Carousel Message**
+
+<img alt="Rich Card Carousel Example" src={useBaseUrl('img/apps/ui/RichCardCarouselExample.png')} />
+
+
+
+**Sample request**
+
+```json5
+{
+   "conversation_id":"UUID",
+   "message":{
+      "fallback":"Card #1\n #1\n\nCard #2\n\n\nReply with \"Card #1\" or \"Card #2\"",
+      "richCard":{
+         "carouselCard":{
+            "cardWidth":"MEDIUM",
+            "cardContents":[
+               {
+                  "title":"Card #1",
+                  "description":"The description for card #1",
+                  "suggestions":[
+                     {
+                        "reply":{
+                           "text":"Card #1",
+                           "postbackData":"card_1"
+                        }
+                     }
+                  ],
+                  "media":{
+                     "height":"MEDIUM",
+                     "contentInfo":{
+                        "fileUrl":"https://storage.googleapis.com/kitchen-sink-sample-images/cute-dog.jpg",
+                        "forceRefresh":"false"
+                     }
+                  }
+               },
+               {
+                  "title":"Card #2",
+                  "description":"The description for card #2",
+                  "suggestions":[
+                     {
+                        "reply":{
+                           "text":"Card #2",
+                           "postbackData":"card_2"
+                        }
+                     }
+                  ],
+                  "media":{
+                     "height":"MEDIUM",
+                     "contentInfo":{
+                        "fileUrl":"https://storage.googleapis.com/kitchen-sink-sample-images/elephant.jpg",
+                        "forceRefresh":"false"
+                     }
+                  }
+               },
+            ]
+         }
+      }
+   }
+}
+```
 
 ## Search & Filter
 
@@ -50,9 +183,13 @@ The inbox enables you to search by:
 - Name
 - Tags
 
-**Tags**
-
-Tag your conversations for easy filtering, searching & segmenting
+<ButtonBox
+icon={() => <PriceTag />}
+title='Tags'
+description='Tag your conversations for easy filtering, searching & segmenting'
+link='apps/ui/tags'
+/>
+<br/>
 
 **Filter**
 
@@ -63,3 +200,5 @@ The inbox can filter by:
 - Read/Unread Conversations
 - Sources
 - Tags
+
+<img alt="Filter Inbox" src={useBaseUrl('img/apps/ui/FilteringInbox.gif')} />

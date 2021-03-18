@@ -107,7 +107,6 @@ airy create [flags]
 ```
 
 ***
-
 ## Init
 
 Inits your airy configuration

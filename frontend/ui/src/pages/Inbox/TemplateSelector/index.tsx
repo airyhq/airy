@@ -16,7 +16,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: StateModel) => {
   return {
     templates: state.data.templates.all,
-    templatesSource: (state.data.templates.all[0] && state.data.templates.all[0].source) ?? null,
+    templatesSource: state.data.templates.source,
   };
 };
 
@@ -38,8 +38,8 @@ const TemplateSelector = ({
 }: Props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [templatesList, setTemplatesList] = useState(templates);
-  const [loading, setLoading] = useState(true);
   const [listTemplatesError, setListTemplatesError] = useState(false);
+
   const componentRef = useRef(null);
 
   const keyDown = useCallback(
@@ -82,16 +82,15 @@ const TemplateSelector = ({
 
   useEffect(() => {
     const listAllTemplatesFromSourcePayload = {source: channelSource};
-    let abort = false;
+    let abort;
 
-    if (templatesSource !== channelSource)
+    if (channelSource !== templatesSource) {
       listTemplates(listAllTemplatesFromSourcePayload)
-        .then(() => {
-          if (!abort) setLoading(false);
-        })
+        .then()
         .catch(() => {
           if (!abort) setListTemplatesError(true);
         });
+    }
 
     return () => {
       abort = true;
@@ -130,9 +129,9 @@ const TemplateSelector = ({
 
   return (
     <div className={styles.component} ref={componentRef}>
-      {listTemplatesError && !searchQuery ? (
+      {listTemplatesError ? (
         renderError()
-      ) : !loading && templates.length === 0 && !searchQuery ? (
+      ) : templates.length === 0 && channelSource === templatesSource ? (
         renderEmpty()
       ) : (
         <>
@@ -151,6 +150,7 @@ const TemplateSelector = ({
           ) : (
             <div className={styles.templateList}>
               {templatesList &&
+                templatesList.length &&
                 templatesList.map((template, id) => {
                   return (
                     <div

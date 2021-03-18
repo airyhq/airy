@@ -99,7 +99,7 @@ const MessageList = (props: MessageListProps) => {
       return true;
     }
 
-    if ('sentAt' in prevMessage && 'sentAt' in message) return !isSameDay(prevMessage.sentAt, message.sentAt);
+    return !isSameDay(prevMessage.sentAt, message.sentAt);
   };
 
   const isLoadingConversation = () => {

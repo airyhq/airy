@@ -22,7 +22,7 @@
     "react-redux": "7.2.2",
     "react-router-dom": "5.2.0",
     "react-window": "1.8.5",
-    "react-window-infinite-loader": "1.0.5",
+    "react-window-infinite-loader": "1.0.7",
     "redux": "^4.0.5",
     "redux-starter-kit": "^0.8.1",
     "regenerator-runtime": "^0.13.5",

@@ -21,7 +21,7 @@ This will print URLs for accessing the UIs and APIs as seen in this recording:
 
 import Script from "@site/src/components/Script";
 
-<Script data-cols="90" id="asciicast-KbVzZDkkDF3Sj5ZHe0X4I3QiG" src="https://asciinema.org/a/KbVzZDkkDF3Sj5ZHe0X4I3QiG.js"></Script>
+<Script data-cols="90" id="asciicast-KHz6yTASgqwnKT5FB7Gt7jF1k" src="https://asciinema.org/a/KHz6yTASgqwnKT5FB7Gt7jF1k.js"></Script>
 
 If you want to customize your `Airy Core` instance please see our [Configuration Section](configuration.md).
 

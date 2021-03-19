@@ -14,5 +14,5 @@
     },
     "viewportHeight": 800,
     "viewportWidth": 1280,
-    "supportFile": "integration/cypress/support/index.ts"
+    "supportFile": "integration/cypress/support"
 }

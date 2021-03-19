@@ -48,7 +48,6 @@ describe('Creates and Deletes Tag', () => {
     cy.get(`[data-cy=${cyTagsDialogButton}]`).click();
 
     cy.visit('/tags');
-    cy.wait(500);
     cy.get(`[data-cy=${cyTagsSearchField}]`).type(Cypress.env('tagName'));
     cy.get(`[data-cy=${cyTagsTable}]`).children().children().its('length').should('be.gte', 2);
     cy.get(`[data-cy=${cyTagsTable}]`).children().children();

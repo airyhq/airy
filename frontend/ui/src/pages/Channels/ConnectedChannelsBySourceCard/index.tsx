@@ -33,7 +33,7 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
             <div
               className={styles.connectedChannelBox}
               onClick={() => props.history.push(sourceTypeInfo.channelsListRoute)}>
-              <div className={styles.connectedChannel} data-cy={sourceTypeInfo.dataCyChannelList}>
+              <div className={styles.connectedChannel}>
                 {channels.slice(0, sourceTypeInfo.channelsToShow).map((channel: Channel) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>

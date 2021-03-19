@@ -9,13 +9,14 @@ import {
   cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
-  cyChannelsChatPluginFormBackButton,
   cyTagsTableRowDisplayDeleteModal,
   cyTagsTableRowDisplayDeleteModalInput,
   cyTagsTableRowDisplayDeleteModalButton,
+  cyChannelsChatPluginList,
 } from 'handles';
 
 describe('Creates and Deletes Tag', () => {
+
   it('Login', () => {
     cy.visit('/login');
     cy.get('form')
@@ -34,7 +35,10 @@ describe('Creates and Deletes Tag', () => {
     cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
-    // cy.get(`[data-cy=${cyChannelsChatPluginFormBackButton}]`).click();
+    cy.wait(500);
+    cy.url().should('include', '/channels/connected');
+    cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(':contains("Cypress Chatplugin")')
+  
 
     // cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
     // cy.get(`[data-cy=${cyBubble}]`).click();

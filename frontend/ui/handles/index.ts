@@ -33,4 +33,4 @@ export const cyChannelsGoogleList = 'channelsGoogleList';
 export const cyChannelsChatPluginConnectButton = 'channelsChatPluginConnectButton';
 export const cyChannelsChatPluginFormNameInput = 'channelsChatPluginFormNameInput';
 export const cyChannelsChatPluginFormSubmitButton = 'channelsChatPluginFormSubmitButton';
-export const cyChannelsChatPluginFormBackButton = 'channelsChatPluginFormBackButton';
+

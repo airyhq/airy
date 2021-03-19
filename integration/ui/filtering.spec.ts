@@ -7,7 +7,7 @@ import {
   cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
-  cyChannelsChatPluginFormBackButton,
+  cyChannelsChatPluginList,
 } from 'handles';
 
 describe('Filters conversation', () => {
@@ -20,16 +20,18 @@ describe('Filters conversation', () => {
       })
       .submit();
 
-    cy.wait(500);
+      cy.wait(500);
 
-    cy.visit('/channels');
-    cy.wait(500);
-    cy.url().should('include', '/channels');
-    cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
-    cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
-    cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
-    cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
-    // cy.get(`[data-cy=${cyChannelsChatPluginFormBackButton}]`).click();
+      cy.visit('/channels');
+      cy.wait(500);
+      cy.url().should('include', '/channels');
+      cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
+      cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
+      cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
+      cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
+      cy.wait(500);
+      cy.url().should('include', '/channels/connected');
+      cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(':contains("Cypress Chatplugin")')
 
     // cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + (Cypress.env('channelId')));
     // cy.get(`[data-cy=${cyBubble}]`).click();

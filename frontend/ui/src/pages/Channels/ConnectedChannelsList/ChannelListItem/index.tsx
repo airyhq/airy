@@ -16,6 +16,7 @@ import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airy_avatar.
 import {ReactComponent as CheckMarkIcon} from 'assets/images/icons/checkmark.svg';
 
 import styles from './index.module.scss';
+import {cyChannelsChatPluginList} from 'handles';
 
 type ChannelListItemProps = {
   channel: Channel;
@@ -84,7 +85,9 @@ const ChannelListItem = (props: ChannelListItemProps) => {
             <ChannelIcon channel={channel} />
           </div>
 
-          <div className={styles.channelName}>{channel.metadata?.name}</div>
+          <div className={styles.channelName} data-cy={cyChannelsChatPluginList}>
+            {channel.metadata?.name}
+          </div>
           {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
           {channel.connected && (
             <div className={styles.connectedHint}>

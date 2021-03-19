@@ -11,9 +11,13 @@ To start using the API, you need to **authenticate first**.
 
 </TLDR>
 
-In order to communicate with the Airy Core API, you need a valid
-[JWT Token](https://jwt.io/) token. The login endpoint [login](#login) returns such a short-lived
-token which can be used to authenticate with endpoints via the [Bearer Authorization header](https://tools.ietf.org/html/rfc6750#section-2.1).
+In order to communicate with the Airy Core API, you need either a valid, short-lived
+[JWT](https://jwt.io/) or an API token. 
+
+The jwt can be obtained by calling the login endpoint [login](#login), while the API token needs to be
+applied as a cluster [configuration](getting-started/installation/configuration.md).
+ 
+To use either token type for authentication you can set them as a value on the [Bearer Authorization header](https://tools.ietf.org/html/rfc6750#section-2.1) when making requests.
 
 ## Login
 

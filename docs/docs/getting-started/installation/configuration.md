@@ -66,6 +66,7 @@ cluster, PostgreSQL, and Redis.
 - `api`
 
   - `jwtSecret` must be set to a long secure secret in production environments
+  - `token` set to a long secure secret to use for machine [API authentication](api/authentication.md)
   - `allowedOrigins` your sites origin to prevent CORS-based attacks
 
 - `sources`

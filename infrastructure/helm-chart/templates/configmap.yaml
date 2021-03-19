@@ -4,4 +4,4 @@ metadata:
   name: hostnames
   namespace: {{ .Values.global.namespace }}
 data:
-  HOST: {{ .Values.global.ingress.host }}
+  HOST: {{ .Values.global.host }}

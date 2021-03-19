@@ -72,8 +72,8 @@ func (h *Helm) Setup() error {
 	return nil
 }
 
-func (h *Helm) InstallCharts() error {
-	return h.runHelm([]string{"install", "--values", "/apps/config/airy-config-map.yaml", "core", "/apps/helm-chart/"})
+func (h *Helm) InstallCharts(overrides []string) error {
+	return h.runHelm(append([]string{"install", "--values", "/apps/config/airy-config-map.yaml", "core", "/apps/helm-chart/"}, overrides...))
 }
 
 func (h *Helm) runHelm(args []string) error {

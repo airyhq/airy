@@ -3,6 +3,30 @@ title: Command Reference
 sidebar_label: Reference
 ---
 
+## Api Endpoint
+
+Get the endpoint of the Airy Core API
+
+```
+airy api endpoint [flags]
+```
+
+#### Options
+
+```
+  -h, --help   help for endpoint
+```
+
+#### Options inherited from parent commands
+
+```
+      --apihost string      Airy Core HTTP API endpoint
+      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+```
+
+
+***
+
 ## Api Login
 
 Login into an Airy Core instance
@@ -22,7 +46,7 @@ airy api login [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://airy.core")
+      --apihost string      Airy Core HTTP API endpoint
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
@@ -50,7 +74,7 @@ airy api signup [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://airy.core")
+      --apihost string      Airy Core HTTP API endpoint
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
@@ -74,10 +98,9 @@ airy config apply [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string       Airy Core HTTP API host (default "http://airy.core")
-      --cli-config string    config file (default is $HOME/.airy/cli.yaml)
-      --config string        Configuration file for an Airy Core instance (default "./airy.yaml")
-      --kube-config string   Kubernetes config file for the cluster of an Airy Core instance (default "~/.airy/kube.conf")
+      --apihost string      Airy Core HTTP API endpoint
+      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+      --config string       Configuration file for an Airy Core instance (default "./airy.yaml")
 ```
 
 
@@ -96,13 +119,13 @@ airy create [flags]
 ```
   -h, --help               help for create
       --namespace string   (optional) Kubernetes namespace that Airy should be installed to. (default "default")
-      --provider string    One of the supported providers (aws|local|minikube). (default "local")
+      --provider string    One of the supported providers (aws|minikube). (default "local")
 ```
 
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://airy.core")
+      --apihost string      Airy Core HTTP API endpoint
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
@@ -126,7 +149,7 @@ airy init [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://airy.core")
+      --apihost string      Airy Core HTTP API endpoint
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
@@ -150,7 +173,7 @@ airy status [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://airy.core")
+      --apihost string      Airy Core HTTP API endpoint
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
@@ -174,7 +197,7 @@ airy ui [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://airy.core")
+      --apihost string      Airy Core HTTP API endpoint
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 
@@ -198,7 +221,7 @@ airy version [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API host (default "http://airy.core")
+      --apihost string      Airy Core HTTP API endpoint
       --cli-config string   config file (default is $HOME/.airy/cli.yaml)
 ```
 

@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.global.namespace }}
 spec:
   rules:
-    - host: {{ .Values.global.ingress.host }}
+    - host: {{ get (urlParse .Values.global.host) "host" }}
       http:
         paths:
           - path: /users.login

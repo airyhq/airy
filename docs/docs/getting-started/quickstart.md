@@ -45,11 +45,11 @@ token=$(echo $(curl -H 'Content-Type: application/json' -d \
 "{ \
 \"email\":\"grace@example.com\", \
 \"password\":\"the_answer_is_42\" \
-}" airy.core/users.login) | jq -r '.token')
+}" http://airy.core/users.login) | jq -r '.token')
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 "{
     \"name\": \"chat plugin source\"
-}" airy.core/channels.chatplugin.connect
+}" http://airy.core/channels.chatplugin.connect
 ```
 
 <img alt="channels_connect" src={useBaseUrl('img/getting-started/quickstart/connect_chatplugin_channel.gif')} />
@@ -81,7 +81,7 @@ created. it should return the message you have just sent.
 
 ```bash
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
-airy.core/conversations.list | jq .
+http://airy.core/conversations.list | jq .
 ```
 
 ## Step 4: Consume directly from Apache Kafka
@@ -90,7 +90,6 @@ You can also consume the messages directly from the Kafka
 `application.communication.messages` topic:
 
 ```
-cd infrastructure && vagrant ssh
 kubectl exec -it kafka-0 -- /bin/bash
 kafka-console-consumer \
 --bootstrap-server airy-cp-kafka:9092 \

@@ -47,7 +47,7 @@ These settings are used to connect the **Airy Components** to your Kafka cluster
   - `endpoint` in `<HOSTNAME>:<PORT>` format
   - `dbName` name of the database in the PostgreSQL server
   - `username` these credentials will be passed to the **API Auth Component**
-  - `password` and they will be used to create the Postgres if you are deploying with **Vagrant**
+  - `password` and they will be used to create the Postgres database
 
 ### Components
 
@@ -82,5 +82,5 @@ These settings are used to enable or disable some external tools, used to monito
 If you made changes in `airy.yaml` and want to apply it to your instance you can use the [airy config apply](/cli/reference.md#config-apply) by running the following [Airy CLI](/cli/installation.md) command.
 
 ```bash
-airy config apply --config ./airy.yaml --kube-config /path/to/your/kube.conf
+airy config apply --config ./airy.yaml
 ```

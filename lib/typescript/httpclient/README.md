@@ -6,14 +6,14 @@ The library exports a HttpClient class with public methods that make requests to
 
 To use the library, you need to instantiate the class with the authentification token and your api url.
 
-Both the authentification token and api url are optional (the default api url is "http://airy.core"), but communication with the endpoints always requires a token, except for the /users.login and /users.signup endpoints.
+The authentication token is optional, but all endpoints except for `/users.login` and `/users.signup` will fail without it.
 
 For example:
 
 ```
 import { HttpClient} from 'httpclient';
 
-const myInstance = new HttpClient(authtoken, apiUrl);
+const myInstance = new HttpClient(apiUrl, authToken);
 
 myInstance.listChannels()
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"golang.org/x/mod/modfile"
 	"io/ioutil"
 	"log"
@@ -26,7 +27,10 @@ func main() {
 	packages := flag.Args()
 	if len(packages) == 0 {
 		packages = FindSourceModules("./")
-		log.Printf("Found %v go.mod files to merge: %v", len(packages), packages)
+		log.Printf("Found %v go.mod files to merge:", len(packages))
+		for _, pkg := range packages {
+			fmt.Println("\t", pkg)
+		}
 	}
 
 	rootModule := LoadModule("go.mod")
@@ -60,7 +64,8 @@ func main() {
 	}
 	log.Println("Installed packages and updating go.sum using go get")
 
-	out, err = exec.Command("bazel", "run", "//:gazelle", "--", "update-repos", "-from_file=go.mod", "-prune").CombinedOutput()
+	out, err = exec.Command("bazel", "run", "//:gazelle", "--", "update-repos",
+		"-from_file=go.mod", "-prune", "-to_macro=go_repositories.bzl%go_repositories").CombinedOutput()
 	if err != nil {
 		log.Fatal(string(out))
 	}

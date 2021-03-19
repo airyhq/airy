@@ -23,8 +23,8 @@ in to the UI**
 
 ## Introduction
 
-The easiest way to see the Airy Core UI in action is to launch the [Vagrant
-Box](getting-started/installation/vagrant.md) and then follow these three simple
+The easiest way to see the Airy Core UI in action is to launch the [minikube
+provider](getting-started/installation/minikube.md) and then follow these three
 steps.
 
 ## Step 1: Registration
@@ -48,8 +48,7 @@ airy api signup
 
 ## Step 2: Open the UI
 
-Either go to [airy.core/ui/login](http://airy.core/ui/login) in your browser or execute
-this [CLI command](cli/reference.md#api-login):
+Run this [CLI command](cli/reference.md#ui):
 
 ```bash
 airy ui

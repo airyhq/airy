@@ -1,15 +1,12 @@
 package config
 
 import (
+	"cli/pkg/kube"
 	"fmt"
-	"os"
-	"path"
-
-	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
+	"os"
 )
 
-var kubeConfigFile string
 var configFile string
 
 // ConfigCmd subcommand for Airy Core
@@ -25,20 +22,26 @@ func applyConfig(cmd *cobra.Command, args []string) {
 		fmt.Println("error parsing configuration file: ", err)
 		os.Exit(1)
 	}
+	kubeCtx := kube.Load()
+	clientset, err := kubeCtx.GetClientSet()
+	if err != nil {
+		fmt.Println("Could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+		os.Exit(1)
+	}
 
-	if twilioApply(conf, kubeConfigFile) {
+	if twilioApply(conf, clientset) {
 		fmt.Println("Twilio configuration applied.")
 	}
 
-	if facebookApply(conf, kubeConfigFile) {
+	if facebookApply(conf, clientset) {
 		fmt.Println("Facebook configuration applied.")
 	}
 
-	if googleApply(conf, kubeConfigFile) {
+	if googleApply(conf, clientset) {
 		fmt.Println("Google configuration applied.")
 	}
 
-	if webhooksApply(conf, kubeConfigFile) {
+	if webhooksApply(conf, clientset) {
 		fmt.Println("Webhooks configuration applied.")
 	}
 }
@@ -51,15 +54,6 @@ var applyConfigCmd = &cobra.Command{
 }
 
 func init() {
-	ConfigCmd.PersistentFlags().StringVar(&kubeConfigFile, "kube-config", "", "Kubernetes config file for the cluster of an Airy Core instance (default \"~/.airy/kube.conf\")")
 	ConfigCmd.PersistentFlags().StringVar(&configFile, "config", "./airy.yaml", "Configuration file for an Airy Core instance")
-	if kubeConfigFile == "" {
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-		kubeConfigFile = path.Join(home, ".airy/kube.conf")
-	}
 	ConfigCmd.AddCommand(applyConfigCmd)
 }

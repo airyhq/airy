@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
 spec:
   rules:
-    - host: {{ .Values.global.ingress.host }}
+    - host: {{ get (urlParse .Values.global.host) "host" }}
       http:
         paths:
           - path: /tools/akhq
@@ -18,4 +18,4 @@ spec:
                 name: akhq
                 port:
                   number: 8080
-{{- end }}
+  {{- end }}

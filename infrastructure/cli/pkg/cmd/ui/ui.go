@@ -1,15 +1,15 @@
 package ui
 
 import (
+	"cli/pkg/kube"
 	"fmt"
+	"github.com/spf13/viper"
+	"os"
 	"os/exec"
 	"runtime"
 
 	"github.com/spf13/cobra"
 )
-
-//TODO make this a config
-const url = "http://airy.core/"
 
 // UICmd opens the Airy Core UI
 var UICmd = &cobra.Command{
@@ -21,7 +21,20 @@ var UICmd = &cobra.Command{
 }
 
 func ui(cmd *cobra.Command, args []string) {
-	var err error
+	kubeCtx := kube.Load()
+	set, err := kubeCtx.GetClientSet()
+	if err != nil {
+		fmt.Println("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+		os.Exit(1)
+	}
+
+	hosts, err := kube.GetHosts(set, viper.GetString("namespace"))
+	if err != nil {
+		fmt.Println("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+		os.Exit(1)
+	}
+
+	url := fmt.Sprintf("%s/ui/", hosts["HOST"])
 
 	switch runtime.GOOS {
 	case "linux":

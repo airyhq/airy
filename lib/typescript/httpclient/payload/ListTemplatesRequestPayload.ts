@@ -1,6 +1,6 @@
-import {SourceType} from '../model/Channel';
+import {Source} from '../model/Channel';
 
 export interface ListTemplatesRequestPayload {
   name?: string;
-  source: SourceType;
+  source: Source;
 }

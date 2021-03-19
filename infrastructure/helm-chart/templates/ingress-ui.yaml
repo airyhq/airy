@@ -8,7 +8,7 @@ metadata:
     traefik.frontend.rule.type: PathPrefixStrip
 spec:
   rules:
-    - host: {{ .Values.global.ingress.host }}
+    - host: {{ get (urlParse .Values.global.host) "host" }}
       http:
         paths:
           - path: /ui

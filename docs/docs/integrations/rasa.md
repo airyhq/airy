@@ -86,7 +86,7 @@ The connector requires the following configuration values:
 
 - `auth_token` the Airy Core JWT token you used
   to connect the webhook.
-- `api_host` The url where you host your Airy Core API (`http://airy.core` for a local installation).
+- `api_host` The url where you host your Airy Core API.
 
 Add them to your existing Rasa `credentials.yml`:
 

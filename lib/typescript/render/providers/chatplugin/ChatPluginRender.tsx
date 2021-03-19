@@ -28,7 +28,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return (
         <RichText
           {...propsToUse}
-          message={props.renderedContent}
+          message={props.content}
           text={content.text}
           fallback={content.fallback}
           containsRichText={content.containsRichtText}

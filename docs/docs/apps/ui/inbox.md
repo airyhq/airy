@@ -133,7 +133,7 @@ link='sources/chatplugin/overview'
 
 ```json5
 {
-  "conversation_id": "UUID",
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
     "fallback": 'Card #1\n #1\n\nCard #2\n\n\nReply with "Card #1" or "Card #2"',
     "richCard": {

@@ -5,7 +5,7 @@ import {Text} from '../../../../components/Text';
 import {Video} from '../../../../components/Video';
 import {Image} from '../../../../components/Image';
 import {QuickReply, AttachmentUnion} from '../../facebookModel';
-import {fallbackImage} from 'sharedServices/fallbackImage';
+import {fallbackImage} from '../../../../services/fallbackImage';
 
 export type QuickRepliesRenderProps = DefaultRenderingProps & {
   text?: string;

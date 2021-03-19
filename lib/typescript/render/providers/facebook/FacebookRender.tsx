@@ -1,6 +1,6 @@
 import React from 'react';
 import {isFromContact, RenderedContentUnion} from 'httpclient';
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {Video} from '../../components/Video';

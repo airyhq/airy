@@ -1,5 +1,5 @@
 import React from 'react';
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
 import {Suggestions} from './components/Suggestions';
 import {Text} from '../../components/Text';
 import {RichCard} from '../../components/RichCard';

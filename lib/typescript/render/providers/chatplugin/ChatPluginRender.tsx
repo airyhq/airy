@@ -1,5 +1,5 @@
 import React from 'react';
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
 import {RichText} from '../../components/RichText';
 import {RichCard} from '../../components/RichCard';
 import {RichCardCarousel} from '../../components/RichCardCarousel';

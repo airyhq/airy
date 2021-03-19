@@ -7,7 +7,7 @@ type ButtonTemplateRendererProps = DefaultMessageRenderingProps & {
   template: ButtonTemplateModel;
 };
 
-export const ButtonTemplate = ({template}: ButtonTemplateRendererProps) => (
+export const ButtonTemplate = ({sentAt, template}: ButtonTemplateRendererProps) => (
   <div className={styles.wrapper}>
     <div className={styles.template}>
       <div className={styles.tempateText}>{template.text}</div>
@@ -25,5 +25,6 @@ export const ButtonTemplate = ({template}: ButtonTemplateRendererProps) => (
         );
       })}
     </div>
+    {sentAt && <div className={styles.messageTime}>{sentAt}</div>}
   </div>
 );

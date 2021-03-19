@@ -27,7 +27,11 @@ const SourceTypeDescriptionCard = (props: SourceTypeDescriptionCardProps) => {
 
       {displayButton && (
         <div className={styles.channelButton}>
-          <button type="button" className={styles.addChannelButton} onClick={addChannelAction}>
+          <button
+            type="button"
+            className={styles.addChannelButton}
+            onClick={addChannelAction}
+            data-cy={sourceTypeInfo.dataCyAddChannelButton}>
             <div className={styles.channelButtonIcon} title="Add a channel">
               <PlusCircleIcon />
             </div>

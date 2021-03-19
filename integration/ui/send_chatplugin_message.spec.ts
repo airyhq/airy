@@ -24,16 +24,19 @@ describe('Send chatplugin Message', () => {
     cy.wait(500);
 
     cy.visit('/channels');
+    cy.wait(500);
+    cy.url().should('include', '/channels');
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
-    cy.get(`[data-cy=${cyChannelsChatPluginFormBackButton}]`).click();
+    // cy.get(`[data-cy=${cyChannelsChatPluginFormBackButton}]`).click();
 
     // cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + (Cypress.env('channelId')));
     // cy.get(`[data-cy=${cyBubble}]`).click();
     // cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     // cy.get(`[data-cy=${cyInputbarButton}]`).click();
+
     cy.visit('/');
     cy.url().should('include', '/inbox');
     cy.get(`[data-cy=${cyMessageTextArea}]`).type(Cypress.env('messageInbox'));

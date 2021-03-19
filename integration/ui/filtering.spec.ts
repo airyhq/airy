@@ -11,9 +11,6 @@ import {
 } from 'handles';
 
 describe('Filters conversation', () => {
-  const channelId = '3502a0a7-933d-5410-b5fc-51f041146d89';
-  const messageChatplugin = 'Hello from Cypress Inbox!';
-
   it('Login', () => {
     cy.visit('/login');
     cy.get('form')
@@ -26,16 +23,19 @@ describe('Filters conversation', () => {
     cy.wait(500);
 
     cy.visit('/channels');
+    cy.wait(500);
+    cy.url().should('include', '/channels');
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
-    cy.get(`[data-cy=${cyChannelsChatPluginFormBackButton}]`).click();
+    // cy.get(`[data-cy=${cyChannelsChatPluginFormBackButton}]`).click();
 
     // cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + (Cypress.env('channelId')));
     // cy.get(`[data-cy=${cyBubble}]`).click();
     // cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     // cy.get(`[data-cy=${cyInputbarButton}]`).click();
+
     cy.visit('/');
     cy.url().should('include', '/conversations');
 

@@ -28,26 +28,41 @@ Each of these sources have different character limits.
 A template is a simple structured message that can include a title, subtitle, image, and up to three buttons.
 Airy’s Inbox supports all templates that Facebook supports, from [Generic Templates](https://developers.facebook.com/docs/messenger-platform/send-messages/template/generic) to [Button Templates](https://developers.facebook.com/docs/messenger-platform/send-messages/template/button).
 
+**Sample Button Template Message**
+
+<img alt="Button Template Example" src={useBaseUrl('img/apps/ui/FacebookButtonTemplate.png')} />
+
 **Sample request**
 
 ```json5
-"payload": {
-  "template_type":"generic",
-  "elements":[
-     {
-      "title":"<TITLE_TEXT>",
-      "image_url":"<IMAGE_URL_TO_DISPLAY>",
-      "subtitle":"<SUBTITLE_TEXT>",
-      "default_action": {
-        "type": "web_url",
-        "url": "<DEFAULT_URL_TO_OPEN>",
-        "messenger_extensions": <TRUE | FALSE>,
-        "webview_height_ratio": "<COMPACT | TALL | FULL>"
-      },
-      "buttons":[<BUTTON_OBJECT>, ...]
-    },
-    ...
-  ]
+{
+   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+   "message":{
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"button",
+        "text":"What do you want to do next?",
+        "buttons":[
+          {
+            "type":"web_url",
+            "url":"https://www.messenger.com",
+            "title":"Visit Messenger"
+          },
+                    {
+            "type":"web_url",
+            "url":"https://www.messenger.com",
+            "title":"Visit Website"
+          },
+                    {
+            "type":"web_url",
+            "url":"https://www.messenger.com",
+            "title":"Test Button"
+          }
+        ]
+      }
+    }
+  }
 }
 ```
 
@@ -60,7 +75,7 @@ Airy’s Inbox supports all [Google’s Rich Cards variants from Rich Cards to C
 
 ```json5
 {
-   "conversation_id": "UUID",
+   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
    "message": {
     "fallback": "Hello, world!\n\nReply with \"A\" or \"B\"",
     "richCard": {
@@ -112,7 +127,7 @@ link='sources/chatplugin/overview'
 
 **Sample RichCard Carousel Message**
 
-<img alt="Rich Card Carousel Example" src={useBaseUrl('img/apps/ui/RichCardCarouselExample.png')} />
+<img alt="Rich Card Carousel Example" src={useBaseUrl('img/apps/ui/RichCardCarousel.gif')} />
 
 
 
@@ -141,7 +156,7 @@ link='sources/chatplugin/overview'
                   "media":{
                      "height":"MEDIUM",
                      "contentInfo":{
-                        "fileUrl":"https://picsum.photos/200",
+                        "fileUrl":"https://picsum.photos/id/237/200",
                         "forceRefresh":"false"
                      }
                   }
@@ -160,7 +175,7 @@ link='sources/chatplugin/overview'
                   "media":{
                      "height":"MEDIUM",
                      "contentInfo":{
-                        "fileUrl":"https://picsum.photos/200",
+                        "fileUrl":"https://picsum.photos/id/238/200",
                         "forceRefresh":"false"
                      }
                   }

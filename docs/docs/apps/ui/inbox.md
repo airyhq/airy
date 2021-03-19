@@ -36,28 +36,28 @@ Airy’s Inbox supports all templates that Facebook supports, from [Generic Temp
 
 ```json5
 {
-   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
-   "message":{
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"button",
-        "text":"What do you want to do next?",
-        "buttons":[
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "message": {
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "button",
+        "text": "What do you want to do next?",
+        "buttons": [
           {
-            "type":"web_url",
-            "url":"https://www.messenger.com",
-            "title":"Visit Messenger"
+            "type": "web_url",
+            "url": "https://www.messenger.com",
+            "title": "Visit Messenger"
           },
-                    {
-            "type":"web_url",
-            "url":"https://www.messenger.com",
-            "title":"Visit Website"
+          {
+            "type": "web_url",
+            "url": "https://www.messenger.com",
+            "title": "Visit Website"
           },
-                    {
-            "type":"web_url",
-            "url":"https://www.messenger.com",
-            "title":"Test Button"
+          {
+            "type": "web_url",
+            "url": "https://www.messenger.com",
+            "title": "Test Button"
           }
         ]
       }
@@ -75,9 +75,9 @@ Airy’s Inbox supports all [Google’s Rich Cards variants from Rich Cards to C
 
 ```json5
 {
-   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
-   "message": {
-    "fallback": "Hello, world!\n\nReply with \"A\" or \"B\"",
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "message": {
+    "fallback": 'Hello, world!\n\nReply with "A" or "B"',
     "richCard": {
       "standaloneCard": {
         "cardContent": {
@@ -85,7 +85,7 @@ Airy’s Inbox supports all [Google’s Rich Cards variants from Rich Cards to C
           "description": "Sent with Business Messages.",
           "media": {
             "height": "TALL",
-            "contentInfo":{
+            "contentInfo": {
               "altText": "Google logo",
               "fileUrl": "https://picsum.photos/200",
               "forceRefresh": "false"
@@ -107,8 +107,8 @@ Airy’s Inbox supports all [Google’s Rich Cards variants from Rich Cards to C
           ]
         }
       }
-    }      
-   }
+    }
+  }
 }
 ```
 
@@ -129,61 +129,59 @@ link='sources/chatplugin/overview'
 
 <img alt="Rich Card Carousel Example" src={useBaseUrl('img/apps/ui/RichCardCarousel.gif')} />
 
-
-
 **Sample request**
 
 ```json5
 {
-   "conversation_id":"UUID",
-   "message":{
-      "fallback":"Card #1\n #1\n\nCard #2\n\n\nReply with \"Card #1\" or \"Card #2\"",
-      "richCard":{
-         "carouselCard":{
-            "cardWidth":"MEDIUM",
-            "cardContents":[
-               {
-                  "title":"Card #1",
-                  "description":"The description for card #1",
-                  "suggestions":[
-                     {
-                        "reply":{
-                           "text":"Card #1",
-                           "postbackData":"card_1"
-                        }
-                     }
-                  ],
-                  "media":{
-                     "height":"MEDIUM",
-                     "contentInfo":{
-                        "fileUrl":"https://picsum.photos/id/237/200",
-                        "forceRefresh":"false"
-                     }
-                  }
-               },
-               {
-                  "title":"Card #2",
-                  "description":"The description for card #2",
-                  "suggestions":[
-                     {
-                        "reply":{
-                           "text":"Card #2",
-                           "postbackData":"card_2"
-                        }
-                     }
-                  ],
-                  "media":{
-                     "height":"MEDIUM",
-                     "contentInfo":{
-                        "fileUrl":"https://picsum.photos/id/238/200",
-                        "forceRefresh":"false"
-                     }
-                  }
-               },
-            ]
-         }
+  "conversation_id": "UUID",
+  "message": {
+    "fallback": 'Card #1\n #1\n\nCard #2\n\n\nReply with "Card #1" or "Card #2"',
+    "richCard": {
+      "carouselCard": {
+        "cardWidth": "MEDIUM",
+        "cardContents": [
+          {
+            "title": "Card #1",
+            "description": "The description for card #1",
+            "suggestions": [
+              {
+                "reply": {
+                  "text": "Card #1",
+                  "postbackData": "card_1"
+                }
+              }
+            ],
+            "media": {
+              "height": "MEDIUM",
+              "contentInfo": {
+                "fileUrl": "https://picsum.photos/id/237/200",
+                "forceRefresh": "false"
+              }
+            }
+          },
+          {
+            "title": "Card #2",
+            "description": "The description for card #2",
+            "suggestions": [
+              {
+                "reply": {
+                  "text": "Card #2",
+                  "postbackData": "card_2"
+                }
+              }
+            ],
+            "media": {
+              "height": "MEDIUM",
+              "contentInfo": {
+                "fileUrl": "https://picsum.photos/id/238/200",
+                "forceRefresh": "false"
+              }
+            }
+          }
+        ]
       }
-   }
+    }
+  }
 }
 ```
 

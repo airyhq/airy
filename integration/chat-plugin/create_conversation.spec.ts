@@ -6,7 +6,7 @@ describe(
     baseUrl: 'http://airy.core/chatplugin/ui',
   },
   () => {
-    const channelId = 'bbeff18c-6517-5506-b464-8353b8923d46';
+    const channelId = '3502a0a7-933d-5410-b5fc-51f041146d89';
     const messageChatplugin = 'Hello from Chatplugin!';
 
     it('Creates a chat plugin conversation', () => {

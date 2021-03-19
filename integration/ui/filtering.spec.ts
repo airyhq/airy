@@ -1,9 +1,20 @@
-import {cySearchButton, cySearchField, cyConversationList} from 'handles';
+import {cyBubble, cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
+import {
+  cySearchButton,
+  cySearchField,
+  cyConversationList,
+  cyChannelsChatPluginAddButton,
+  cyChannelsChatPluginConnectButton,
+  cyChannelsChatPluginFormNameInput,
+  cyChannelsChatPluginFormSubmitButton,
+  cyChannelsChatPluginFormBackButton,
+} from 'handles';
 
-describe('Login', () => {
-  it('Filters conversation', () => {
-    const searchQuery = 'Inbox';
+describe('Filters conversation', () => {
+  const channelId = '3502a0a7-933d-5410-b5fc-51f041146d89';
+  const messageChatplugin = 'Hello from Cypress Inbox!';
 
+  it('Login', () => {
     cy.visit('/login');
     cy.get('form')
       .within(() => {
@@ -12,12 +23,26 @@ describe('Login', () => {
       })
       .submit();
 
+    cy.wait(500);
+
+    cy.visit('/channels');
+    cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
+    cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
+    cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
+    cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
+    cy.get(`[data-cy=${cyChannelsChatPluginFormBackButton}]`).click();
+
+    // cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + (Cypress.env('channelId')));
+    // cy.get(`[data-cy=${cyBubble}]`).click();
+    // cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
+    // cy.get(`[data-cy=${cyInputbarButton}]`).click();
+    cy.visit('/');
     cy.url().should('include', '/conversations');
 
     cy.get(`[data-cy=${cyConversationList}]`).children().children().children().its('length').should('gte', 1);
 
     cy.get(`[data-cy=${cySearchButton}]`).click();
-    cy.get(`[data-cy=${cySearchField}]`).get('input').type(searchQuery);
+    cy.get(`[data-cy=${cySearchField}]`).get('input').type(Cypress.env('searchQuery'));
 
     cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('eq', 1);
   });

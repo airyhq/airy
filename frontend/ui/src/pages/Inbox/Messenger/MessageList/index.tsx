@@ -180,7 +180,7 @@ const MessageList = (props: MessageListProps) => {
                 sentAt={sentAt}
                 lastInGroup={lastInGroup}
                 isChatPlugin={false}>
-                <SourceMessage source={getSource(conversation)} renderedContent={message} contentType="message" />
+                <SourceMessage source={getSource(conversation)} content={message} contentType="message" />
               </MessageInfoWrapper>
             </div>
           );

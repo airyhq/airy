@@ -1,12 +1,12 @@
 import React from 'react';
 import {isFromContact, RenderedContentUnion} from 'httpclient';
 import {Text} from '../../../components/Text';
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../../props';
 import {ContentUnion} from './twilioWhatsappModel';
 
 export const TwilioWhatsappRender = (props: RenderPropsUnion) => {
-  const {renderedContent} = props;
-  const content = isFromContact(renderedContent) ? inboundContent(renderedContent) : outboundContent(renderedContent);
+  const message = props.content;
+  const content = isFromContact(message) ? inboundContent(message) : outboundContent(message);
   return render(content, props);
 };
 

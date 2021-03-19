@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef, KeyboardEvent} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {useParams} from 'react-router-dom';
 import styles from './index.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import TemplateSelector from '../TemplateSelector';
@@ -14,29 +13,32 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 
 import {StateModel} from '../../../reducers';
-import {getTextMessagePayload, Template, SourceType} from 'httpclient';
+import {getTextMessagePayload, Template, Source} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
+import {getCurrentConversation} from '../../../selectors/conversations';
+import {ConversationRouteProps} from '../index';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 
 const mapDispatchToProps = {sendMessages};
 
-const mapStateToProps = (state: StateModel) => {
+const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
     messages: state.data.messages.all,
+    conversation: getCurrentConversation(state, ownProps),
     listTemplates,
   };
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-type MessageInputProps = {sourceType: SourceType};
+type MessageInputProps = {Source: Source};
 
 interface SelectedTemplate {
   message: Template;
-  source: SourceType;
+  source: Source;
 }
 
 const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
-  const {sourceType} = props;
+  const {Source, conversation} = props;
 
   const [input, setInput] = useState('');
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
@@ -46,9 +48,6 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
   const emojiDiv = useRef<HTMLDivElement>(null);
-
-  const conversationIdParams = useParams();
-  const currentConversationId: string = conversationIdParams[Object.keys(conversationIdParams)[0]];
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setInput(e.target.value);
@@ -66,12 +65,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     if (selectedTemplate) {
       setSelectedTemplate(null);
       props
-        .sendMessages({conversationId: currentConversationId, message: selectedTemplate.message.content})
+        .sendMessages({conversationId: conversation.id, message: selectedTemplate.message.content})
         .then(() => setInput(''));
       return;
     }
 
-    props.sendMessages(getTextMessagePayload(sourceType, currentConversationId, input)).then(() => setInput(''));
+    props.sendMessages(getTextMessagePayload(Source, conversation.id, input)).then(() => setInput(''));
   };
 
   const handleClick = () => {
@@ -164,7 +163,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       <div className={styles.messageActionsContainer}>
         <>
           {isShowingTemplateModal && (
-            <TemplateSelector onClose={toggleTemplateModal} selectTemplate={selectTemplate} sourceType={sourceType} />
+            <TemplateSelector onClose={toggleTemplateModal} selectTemplate={selectTemplate} Source={Source} />
           )}
           {isShowingEmojiDrawer && (
             <div ref={emojiDiv} className={styles.emojiDrawer}>
@@ -218,7 +217,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
                 <Close />
               </button>
               <SourceMessage
-                renderedContent={selectedTemplate.message}
+                content={selectedTemplate.message}
                 source={selectedTemplate.source}
                 contentType="template"
               />

@@ -2,9 +2,9 @@ import React from 'react';
 import {renderProviders} from './renderProviders';
 
 import {Text} from './components/Text';
-import {getDefaultRenderingProps, RenderPropsUnion} from './shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from './props';
 
-export * from './shared';
+export * from './props';
 
 type SourceMessageState = {
   hasError: boolean;

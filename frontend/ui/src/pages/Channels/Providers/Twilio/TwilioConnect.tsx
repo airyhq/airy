@@ -5,7 +5,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {connectTwilioSms, connectTwilioWhatsapp} from '../../../../actions/channel';
 
 import {Button, Input, LinkButton, UrlInputField} from '@airyhq/components';
-import {Channel, SourceType} from 'httpclient';
+import {Channel, Source} from 'httpclient';
 import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrow-left-2.svg';
 
 import styles from './TwilioConnect.module.scss';
@@ -52,7 +52,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
       imageUrl: imageUrlInput,
     };
 
-    if (source === SourceType.twilioWhatsapp) {
+    if (source === Source.twilioWhatsapp) {
       connectTwilioWhatsapp(connectPayload).then(() => {
         history.replace({
           pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.whatsapp/#`,
@@ -60,7 +60,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
         });
       });
     }
-    if (source === SourceType.twilioSMS) {
+    if (source === Source.twilioSMS) {
       connectTwilioSms(connectPayload).then(() => {
         history.replace(CHANNELS_CONNECTED_ROUTE + `/twilio.sms/#`);
       });

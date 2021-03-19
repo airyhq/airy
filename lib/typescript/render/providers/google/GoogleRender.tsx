@@ -9,7 +9,7 @@ import {RenderedContentUnion, isFromContact} from 'httpclient';
 import {Image} from '../../components/Image';
 
 export const GoogleRender = (props: RenderPropsUnion) => {
-  const message = props.renderedContent;
+  const message = props.content;
   const content = isFromContact(message) ? googleInbound(message) : googleOutbound(message);
   return render(content, props);
 };

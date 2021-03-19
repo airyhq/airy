@@ -8,7 +8,7 @@ import {ContentUnion} from './chatPluginModel';
 import {RenderedContentUnion} from 'httpclient';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
-  return render(mapContent(props.renderedContent), props);
+  return render(mapContent(props.content), props);
 };
 
 function render(content: ContentUnion, props: RenderPropsUnion) {

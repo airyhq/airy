@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {fallbackImage} from 'sharedServices/fallbackImage';
+import {fallbackImage} from '../../services/fallbackImage';
 
 type ImageRenderProps = {
   imageUrl: string;
@@ -13,7 +13,7 @@ export const Image = ({imageUrl, altText}: ImageRenderProps) => (
       className={styles.messageListItemImageBlock}
       src={imageUrl}
       alt={altText ?? null}
-      onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event, 'mediaImage')}
+      onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event)}
     />
   </div>
 );

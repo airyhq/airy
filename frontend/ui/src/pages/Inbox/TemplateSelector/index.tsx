@@ -3,7 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
 import {SearchField, ErrorNotice} from '@airyhq/components';
-import {Template, SourceType} from 'httpclient';
+import {Template, Source} from 'httpclient';
 import {StateModel} from '../../../reducers';
 import emptyState from 'assets/images/empty-state/templates-empty-state.png';
 import notFoundState from 'assets/images/not-found/templates-not-found.png';
@@ -25,10 +25,10 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = {
   onClose: () => void;
   selectTemplate: (t: Template) => void;
-  sourceType: SourceType;
+  Source: Source;
 } & ConnectedProps<typeof connector>;
 
-const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, sourceType, templatesSource}: Props) => {
+const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, Source, templatesSource}: Props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [templatesList, setTemplatesList] = useState(templates);
   const [listTemplatesError, setListTemplatesError] = useState(false);
@@ -74,10 +74,10 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
   }, [searchQuery, templates]);
 
   useEffect(() => {
-    const listAllTemplatesFromSourcePayload = {source: sourceType};
+    const listAllTemplatesFromSourcePayload = {source: Source};
     let abort;
 
-    if (sourceType !== templatesSource) {
+    if (Source !== templatesSource) {
       listTemplates(listAllTemplatesFromSourcePayload)
         .then()
         .catch(() => {
@@ -88,7 +88,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
     return () => {
       abort = true;
     };
-  }, [sourceType, templatesSource]);
+  }, [Source, templatesSource]);
 
   const renderEmpty = () => {
     return (
@@ -124,7 +124,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
     <div className={styles.component} ref={componentRef}>
       {listTemplatesError ? (
         renderError()
-      ) : templates.length === 0 && sourceType === templatesSource ? (
+      ) : templates.length === 0 && Source === templatesSource ? (
         renderEmpty()
       ) : (
         <>
@@ -153,7 +153,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
                         selectTemplate(template);
                       }}>
                       <div className={styles.tempatePreviewName}>{template.name}</div>
-                      <SourceMessage renderedContent={template} source={template.source} contentType="template" />
+                      <SourceMessage content={template} source={template.source} contentType="template" />
                     </div>
                   );
                 })}

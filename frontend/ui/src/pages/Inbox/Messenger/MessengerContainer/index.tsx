@@ -9,7 +9,7 @@ import styles from './index.module.scss';
 import ConversationMetadata from '../ConversationMetadata';
 import MessageInput from '../../MessageInput';
 import {allConversations, getCurrentConversation} from '../../../../selectors/conversations';
-import {SourceType} from 'httpclient';
+import {Source} from 'httpclient';
 
 const mapStateToProps = (state: StateModel, ownProps) => ({
   conversations: allConversations(state),
@@ -32,7 +32,7 @@ const MessengerContainer = ({conversations, currentConversation}: MessengerConta
       ) : (
         <div className={styles.messageDisplay}>
           <MessageList />
-          {currentConversation && <MessageInput sourceType={currentConversation.channel.source as SourceType} />}
+          {currentConversation && <MessageInput Source={currentConversation.channel.source as Source} />}
         </div>
       )}
     </div>

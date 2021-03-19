@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {Media, MediaRenderProps} from './Media';
-import {CommandUnion} from '../../shared';
+import {CommandUnion} from '../../props';
 
 export type Suggestion = {
   reply?: {

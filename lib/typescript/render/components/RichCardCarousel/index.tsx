@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import {MediaRenderProps} from '../RichCard/Media';
 import {RichCard, Suggestion} from '../RichCard';
 import {Carousel} from '../Carousel';
-import {CommandUnion} from '../../shared';
+import {CommandUnion} from '../../props';
 
 type Card = {
   id?: string;

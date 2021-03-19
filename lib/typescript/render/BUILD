@@ -8,7 +8,6 @@ ts_web_library(
     name = "render",
     deps = [
         "//frontend/assets",
-        "//frontend/sharedServices",
         "//lib/typescript/dates",
         "//lib/typescript/httpclient",
         "//lib/typescript/types",

@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {Media, MediaRenderProps} from './Media';
-import {DefaultRenderingProps} from '../index';
 import {CommandUnion} from '../../shared';
 
 export type Suggestion = {
@@ -21,7 +20,7 @@ export type Suggestion = {
   };
 };
 
-export type RichCardRenderProps = DefaultRenderingProps & {
+export type RichCardRenderProps = {
   title?: string;
   description?: string;
   suggestions: Suggestion[];

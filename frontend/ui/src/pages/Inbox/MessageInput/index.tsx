@@ -14,7 +14,7 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 
 import {StateModel} from '../../../reducers';
-import {getTextMessagePayload, Template} from 'httpclient';
+import {getTextMessagePayload, Template, SourceType} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 
@@ -28,11 +28,11 @@ const mapStateToProps = (state: StateModel) => {
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-type MessageInputProps = {sourceType: string};
+type MessageInputProps = {sourceType: SourceType};
 
 interface SelectedTemplate {
   message: Template;
-  source: string;
+  source: SourceType;
 }
 
 const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
@@ -136,7 +136,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
         jsonTemplate.message.text &&
         !jsonTemplate.message.suggestions &&
         !jsonTemplate.message.quick_replies &&
-        !jsonTemplate.message.containsRichText
+        !jsonTemplate.message.containsRichText &&
+        !jsonTemplate.message.attachments &&
+        !jsonTemplate.message.attachment
       ) {
         setInput(jsonTemplate.message.text);
         setIsShowingTemplateModal(false);

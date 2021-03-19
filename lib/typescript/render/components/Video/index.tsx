@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {DefaultRenderingProps} from '../index';
 
-type VideoRenderProps = DefaultRenderingProps & {
+type VideoRenderProps = {
   videoUrl: string;
 };
 

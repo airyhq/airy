@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {MediaRenderProps} from '../RichCard/Media';
-import {DefaultRenderingProps} from '../index';
 import {RichCard, Suggestion} from '../RichCard';
 import {Carousel} from '../Carousel';
 import {CommandUnion} from '../../shared';
@@ -14,7 +13,7 @@ type Card = {
   suggestions: Suggestion[];
 };
 
-export type RichCardCarouselRenderProps = DefaultRenderingProps & {
+export type RichCardCarouselRenderProps = {
   cardWidth: string;
   cardContents: [Card];
   commandCallback?: (command: CommandUnion) => void;

@@ -1,9 +1,8 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {DefaultRenderingProps} from '../index';
 import {fallbackImage} from 'sharedServices/fallbackImage';
 
-type ImageRenderProps = DefaultRenderingProps & {
+type ImageRenderProps = {
   imageUrl: string;
   altText?: string;
 };

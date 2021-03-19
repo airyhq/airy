@@ -3,7 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
 import {SearchField, ErrorNotice} from '@airyhq/components';
-import {Template} from 'httpclient';
+import {Template, SourceType} from 'httpclient';
 import {StateModel} from '../../../reducers';
 import emptyState from 'assets/images/empty-state/templates-empty-state.png';
 import notFoundState from 'assets/images/not-found/templates-not-found.png';
@@ -25,7 +25,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = {
   onClose: () => void;
   selectTemplate: (t: Template) => void;
-  sourceType: string;
+  sourceType: SourceType;
 } & ConnectedProps<typeof connector>;
 
 const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, sourceType, templatesSource}: Props) => {

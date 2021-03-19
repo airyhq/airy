@@ -12,7 +12,8 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "preserveConstEnums": true,
+    "isolatedModules": false,
     "sourceMap": true,
     "jsx": "react",
     "paths": {

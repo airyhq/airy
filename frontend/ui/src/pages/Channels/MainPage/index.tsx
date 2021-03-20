@@ -50,6 +50,7 @@ export type SourceTypeInfo = {
   channelsToShow: number;
   itemInfoString: string;
   dataCyAddChannelButton: string;
+  dataCyChannelList: string;
 };
 
 const sourceTypesInfo: SourceTypeInfo[] = [
@@ -64,6 +65,7 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     channelsToShow: 4,
     itemInfoString: 'channels',
     dataCyAddChannelButton: cyChannelsChatPluginAddButton,
+    dataCyChannelList: cyChannelsChatPluginList,
   },
   {
     type: SourceType.facebook,
@@ -76,6 +78,7 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     channelsToShow: 4,
     itemInfoString: 'channels',
     dataCyAddChannelButton: cyChannelsFacebookAddButton,
+    dataCyChannelList: cyChannelsFacebookList,
   },
   {
     type: SourceType.twilioSMS,
@@ -88,6 +91,7 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     channelsToShow: 2,
     itemInfoString: 'phones',
     dataCyAddChannelButton: cyChannelsTwilioSmsAddButton,
+    dataCyChannelList: cyChannelsTwilioSmsList,
   },
   {
     type: SourceType.twilioWhatsapp,
@@ -100,6 +104,7 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     channelsToShow: 2,
     itemInfoString: 'phones',
     dataCyAddChannelButton: cyChannelsTwilioWhatsappAddButton,
+    dataCyChannelList: cyChannelsTwilioWhatsappList,
   },
   {
     type: SourceType.google,
@@ -112,6 +117,7 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     channelsToShow: 4,
     itemInfoString: 'channels',
     dataCyAddChannelButton: cyChannelsGoogleAddButton,
+    dataCyChannelList: cyChannelsGoogleList,
   },
 ];
 

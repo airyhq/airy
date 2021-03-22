@@ -27,35 +27,35 @@ Business Messages, and so on).
 
 <ButtonBoxList>
 <ButtonBox
-    icon={() => <AiryBubbleSVG />}
+    icon={<AiryBubbleSVG />}
     title='Airy Live Chat Plugin'
     description='The Airy Live Chat Plugin enables conversations with website visitors through a web chat plugin'
     link='/sources/chatplugin/overview'
 />
 
 <ButtonBox
-icon={() => <FacebookMessengerSVG />}
+icon={<FacebookMessengerSVG />}
 title='Facebook Messenger'
 description='Send and receive messages from Facebook Pages'
 link='sources/facebook'
 />
 
 <ButtonBox
-icon={() => <GoogleSVG />}
+icon={<GoogleSVG />}
 title='Google’s Business Messages'
 description='Start conversations from Google Maps & Google Search'
 link='sources/google'
 />
 
 <ButtonBox
-icon={() => <WhatsAppSVG />}
+icon={<WhatsAppSVG />}
 title='WhatsApp Business API'
 description='Connect with more than 1.5 billion people on WhatsApp'
 link='sources/whatsapp-twilio'
 />
 
 <ButtonBox
-icon={() => <SmsSVG />}
+icon={<SmsSVG />}
 title='SMS'
 description='Connect Text Messaging to Airy & send and receive SMS'
 link='sources/sms-twilio'

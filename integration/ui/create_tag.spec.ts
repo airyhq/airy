@@ -20,7 +20,7 @@ import {cyBubble, cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handle
 
 describe('Creates and Deletes Tag', () => {
   it('Login', () => {
-  (cy as any).login(Cypress.env('username'),Cypress.env('password'));
+    (cy as any).login(Cypress.env('username'), Cypress.env('password'));
 
     cy.visit('/channels');
     cy.wait(500);

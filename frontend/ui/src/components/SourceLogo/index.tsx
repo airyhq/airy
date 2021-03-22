@@ -4,7 +4,7 @@ import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avata
 import {ReactComponent as SmsLogo} from 'assets/images/icons/sms_avatar.svg';
 import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
-import {Channel, ChannelSource} from 'httpclient';
+import {Channel, SourceType} from 'httpclient';
 import styles from './index.module.scss';
 
 type SourceLogoProps = {
@@ -22,7 +22,7 @@ type SourceLogoProps = {
   paddingLeft?: number;
 };
 
-const fallbackImageUrl = (event: SyntheticEvent<HTMLImageElement, Event>, source: string) => {
+export const fallbackImageUrl = (event: SyntheticEvent<HTMLImageElement, Event>, source: string) => {
   event.currentTarget.src = `https://s3.amazonaws.com/assets.airy.co/${source}_avatar.svg`;
   event.currentTarget.alt = 'fallback image';
 };
@@ -55,13 +55,13 @@ const SourceLogo = (props: SourceLogoProps) => {
 
   const getSourceLogo = (channel: Channel) => {
     switch (channel.source) {
-      case ChannelSource.facebook:
+      case SourceType.facebook:
         return <FacebookLogo />;
-      case ChannelSource.google:
+      case SourceType.google:
         return <GoogleLogo />;
-      case ChannelSource.twilioSMS:
+      case SourceType.twilioSMS:
         return <SmsLogo />;
-      case ChannelSource.twilioWhatsapp:
+      case SourceType.twilioWhatsapp:
         return <WhatsappLogo />;
       default:
         return <AiryLogo />;

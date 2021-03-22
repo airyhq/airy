@@ -225,7 +225,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
               onClose={toggleSuggestedReplies}
               suggestions={getLastMessageWithSuggestedReplies().metadata.suggestions}
               selectSuggestedReply={selectSuggestedReply}
-              source={channelSource}
+              source={sourceType}
             />
           )}
 

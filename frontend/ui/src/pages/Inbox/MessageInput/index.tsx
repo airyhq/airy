@@ -23,7 +23,6 @@ import {getCurrentMessages} from '../../../selectors/conversations';
 
 import styles from './index.module.scss';
 import SuggestedReplySelector from '../SuggestedReplySelector';
-import {SuggestionsContent} from 'render/providers/google/googleModel';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -62,7 +61,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   useEffect(() => {
     if (input) {
       textAreaRef.current.style.height = '0px';
-      const scrollHeight = textAreaRef.current.scrollHeight;
+      const scrollHeight = Math.min(100, textAreaRef.current.scrollHeight);
       textAreaRef.current.style.height = scrollHeight + 'px';
     }
   }, [input]);

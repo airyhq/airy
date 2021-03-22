@@ -12,9 +12,11 @@
   display: flex;
   flex-grow: 1;
   align-items: center;
+  margin-top: 8px;
 }
 
 .suggestionsRow {
+  position: relative;
   margin-left: 14px;
 }
 
@@ -87,7 +89,6 @@
 .sendButton {
   position: relative;
   width: 40px;
-  height: 70px;
   margin-left: 8px;
   transition: 0.2s ease-in-out all;
   top: 1px;

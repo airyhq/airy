@@ -6,111 +6,46 @@
   flex-direction: column;
   border: 1px solid var(--color-dark-elements-gray);
   border-radius: 8px;
-  padding: 16px 16px;
+  padding: 16px 0;
   position: absolute;
-  bottom: 78px;
+  bottom: 33px;
+  left: 0px;
   right: 72px;
-  left: 14px;
+
   background-color: var(--color-template-highlight);
 }
 
-.topLine {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 16px;
-}
-
-.searchField {
-  flex-grow: 1;
-}
-
-.templateList {
-  max-height: 500px; // Old Firefox fallback
+.suggestionList {
   max-height: calc(100vh - 230px);
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
-  margin-left: -24px;
 }
 
-.templatePreviewWrapper {
-  position: relative;
+.suggestionPreviewWrapper {
   display: flex;
   flex-direction: column;
-  margin-left: 24px;
-  margin-bottom: 16px;
+  margin-top: -5px;
+  padding-left: 16px;
+  padding-right: 16px;
   overflow: hidden;
   cursor: pointer;
-}
-
-.tempatePreviewName {
-  @include font-s;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.emptyMessage {
-  text-align: center;
-  width: 100%;
-}
-
-.emptyImagePlaceholder {
-  max-width: 100%;
+  width: max-content;
   height: auto;
-  width: auto;
-  max-height: 350px;
+  flex-shrink: 0;
+  max-width: 320px;
+  max-height: 400px;
 }
 
-.emptyMessageText {
-  text-align: left;
-  margin: 0 3rem 1rem 3rem;
-  h1 {
-    @include font-l;
-    font-weight: 900;
-    margin-bottom: 8px;
-    color: var(--color-airy-dark-blue);
+.fadeOutWrapper {
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 400px;
+    width: 100%;
+    background: linear-gradient(180deg, rgba(2, 0, 36, 0) 0%, rgba(0, 0, 0, 0) 320px, rgb(255, 255, 255) 394px);
   }
-  p {
-    @include font-base;
-    color: var(--color-text-gray);
-    margin-bottom: 16px;
-  }
-}
-
-.emptySeparator {
-  width: 40px;
-  height: 4px;
-  background-color: var(--color-accent-magenta);
-  margin-bottom: 8px;
-}
-
-.notFoundMessage {
-  text-align: center;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.notFoundImage {
-  flex-grow: 1;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.notFoundText {
-  h2 {
-    font-weight: 700;
-  }
-
-  p {
-    color: var(--color-text-gray);
-    margin-bottom: 32px;
-  }
-}
-
-.errorMessage {
-  @include font-base;
-  color: var(--color-text-gray);
 }

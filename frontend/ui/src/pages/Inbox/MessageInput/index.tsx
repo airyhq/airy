@@ -5,7 +5,7 @@ import {Button} from '@airyhq/components';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 import {Picker} from 'emoji-mart';
 import {SourceMessage} from 'render';
-import {getTextMessagePayload, Message, RenderedContent, Template} from 'httpclient';
+import {getTextMessagePayload, Message, RenderedContent, SuggestedReply, Template} from 'httpclient';
 import 'emoji-mart/css/emoji-mart.css';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
@@ -22,6 +22,8 @@ import {listTemplates} from '../../../actions/templates';
 import {getCurrentMessages} from '../../../selectors/conversations';
 
 import styles from './index.module.scss';
+import SuggestedReplySelector from '../SuggestedReplySelector';
+import {SuggestionsContent} from 'render/providers/google/googleModel';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -209,11 +211,25 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     setIsShowingSuggestedReplies(!isShowingSuggestedReplies);
   };
 
+  const selectSuggestedReply = (reply: SuggestedReply) => {
+    setInput(reply.content.text);
+    setIsShowingSuggestedReplies(false);
+    sendButtonRef.current.focus();
+  };
+
   return (
     <div className={styles.container}>
       {getLastMessageWithSuggestedReplies() && (
         <div className={styles.suggestionsRow}>
-          {isShowingSuggestedReplies && <div>Replies!</div>}
+          {isShowingSuggestedReplies && (
+            <SuggestedReplySelector
+              onClose={toggleSuggestedReplies}
+              suggestions={getLastMessageWithSuggestedReplies().metadata.suggestions}
+              selectSuggestedReply={selectSuggestedReply}
+              source={channelSource}
+            />
+          )}
+
           <Button type="button" styleVariant="outline" onClick={toggleSuggestedReplies}>
             <div className={styles.suggestionButton}>
               Suggestions

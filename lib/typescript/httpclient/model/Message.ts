@@ -35,13 +35,15 @@ export enum SenderType {
   appUser = 'app_user',
 }
 
+export interface SuggestedReply {
+  content: {
+    text: string;
+  };
+}
+
 export interface MessageMetadata {
   suggestions?: {
-    [suggestionId: string]: {
-      content: {
-        text: string;
-      };
-    };
+    [suggestionId: string]: SuggestedReply;
   };
 }
 

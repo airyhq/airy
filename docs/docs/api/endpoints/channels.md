@@ -154,43 +154,7 @@ import ConnectGoogle from './connect-google.mdx'
 
 ### SMS - Twilio
 
-After you created a Twilio phone number you must [point its webhook
-integration](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-java#configure-your-webhook-url)
-to your running Airy Core instance.
-
-Next call the Platform API:
-
-```
-POST /channels.twilio.sms.connect
-```
-
-- `phone_number` The phone number as listed in your [Twilio
-  dashboard](https://www.twilio.com/console/phone-numbers/). It must _not_ contain
-  spaces and must include the country code.
-- `name` Custom name for the connected phone number
-- `image_url` Custom image URL
-
-**Sample request**
-
-```json5
-{
-  "phone_number": "+491234567",
-  "name": "SMS for receipts",
-  "image_url": "https://example.com/custom-image.jpg" // optional
-}
-```
-
-**Sample response**
-
-```json5
-{
-  "id": "channel-uuid-1",
-  "metadata": {"name": "SMS for receipts", "image_url": "https://example.com/custom-image.jpg"},
-  "source": "twilio.sms",
-  "source_channel_id": "+491234567",
-  "connected": true
-}
-```
+<ConnectSMSTwilio />
 
 ### Whatsapp - Twilio
 

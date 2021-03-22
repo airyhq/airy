@@ -1,14 +1,10 @@
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import SuccessBox from '@site/src/components/SuccessBox';
 
-This document provides a step by step guide to integrate Facebook with your Airy
-Core Platform instance.
+Twilio is a communication platform specialized in phone services.
 
-:::tip What you will learn
-
-- The required steps to configure the Twilio source
-- How to connect a Twilio account to Airy Core
-
-:::
+Airy Core supports Twilio as a provider of 2 different sources:
+Twilio WhatsApp and Twilio SMS.
 
 ## Configuration
 
@@ -25,7 +21,8 @@ Let's proceed step by step.
 
 ### Step 1: Find the authToken and accountSid
 
-To connect a TWilio source you must have a Twilio account and a bought phone number. If you don't have one, head to Twilio's website: create an account
+First, to connect Twilio with your Airy Core instance, you must have a Twilio account and a bought
+phone number. If this is not your case, head over to Twilio's website: create an account
 and buy a phone number.
 
 Once you have a Twilio account, log in, and find your [Twilio auth
@@ -39,7 +36,8 @@ https://www.twilio.com/console
 <img alt="Twilio token" src={useBaseUrl('img/sources/twilio/twilio_token.png')} />
 
 Copy and paste your Auth token and Account Sid as strings below `sources/twilio` in `infrastructure/airy.yaml`.
-Make sure the Auth token and Account Sid are contain within a pair of either single quotation marks '' or double quotation marks "".
+Make sure the Auth token and Account Sid are contain within a pair of either single quotation marks '' or double quotation marks "";
+paste the tokens as they are and do not add or remove spaces.
 
 ```
 twilio:

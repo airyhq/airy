@@ -58,7 +58,7 @@
     "react-hot-loader": "^4.13.0",
     "reselect": "4.0.0",
     "sass-loader": "^10",
-    "style-loader": "^1.1.4",
+    "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^4.2.3",
     "typescript": "3.7.4",
     "url-loader": "^4.1.1",

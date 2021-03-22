@@ -99,15 +99,6 @@ import GoogleMessagesSend from '../api/endpoints/google-messages-send.mdx'
 
 <GoogleMessagesSend />
 
-## Send and receive messages with the Inbox UI
+import InboxMessages from './inbox-messages.mdx'
 
-Now that you connected Google's Business Messages to your instance and started a conversation, you can see the conversations, messages in the [Airy Inbox](/apps/ui/inbox), and use it to respond to the messages.
-
-The [Inbox's UI](/apps/ui/inbox) is able render the messages types you can send from Google's Business Messages, such as Rich Cards or Suggestions.
-
-<ButtonBox
-icon={() => <InboxSVG />}
-title='Inbox'
-description="Receive messages from Google's Business Messages and send messages using the Inbox UI"
-link='apps/ui/inbox'
-/>
+<InboxMessages />

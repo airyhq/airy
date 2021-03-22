@@ -1,11 +1,6 @@
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import SuccessBox from '@site/src/components/SuccessBox';
 
-Twilio is a communication platform specialized in phone services.
-
-Airy Core supports Twilio as a provider of 2 different sources:
-Twilio WhatsApp and Twilio SMS.
-
 ## Configuration
 
 The Twilio source requires the following configuration:
@@ -13,16 +8,16 @@ The Twilio source requires the following configuration:
 - [Configuration](#configuration)
   - [Step 1: Find the authToken and accountSid](#step-1-find-the-authToken-and-accountSid)
   - [Step 2: Configure the webhook integration](#step-2-configure-the-webhook-integration)
-- [Connect a Twilio source to your instance](#connect-a-twilio-source-to-your-instance)
-- [Send messages from a Twilio source](#send-messages-from-a-twilio-source)
+- [Connect a Twilio provider to your instance](#connect-a-twilio-source-to-your-instance)
+- [Send messages from a Twilio provider](#send-messages-from-a-twilio-source)
 - [Send and receive messages with the Inbox UI](#send-and-receive-messages-with-the-inbox-ui)
 
 Let's proceed step by step.
 
 ### Step 1: Find the authToken and accountSid
 
-First, to connect Twilio with your Airy Core instance, you must have a Twilio account and a bought
-phone number. If this is not your case, head over to Twilio's website: create an account
+First, to connect a Twilio provider to your Airy Core instance, you must have a Twilio account and a bought
+phone number. If this is not your case, head over to [Twilio's website](https://www.twilio.com/): create an account
 and buy a phone number.
 
 Once you have a Twilio account, log in, and find your [Twilio auth
@@ -36,7 +31,7 @@ https://www.twilio.com/console
 <img alt="Twilio token" src={useBaseUrl('img/sources/twilio/twilio_token.png')} />
 
 Copy and paste your Auth token and Account Sid as strings below `sources/twilio` in `infrastructure/airy.yaml`.
-Make sure the Auth token and Account Sid are contain within a pair of either single quotation marks '' or double quotation marks "";
+Make sure the Auth token and Account Sid are contained within a pair of either single quotation marks '' or double quotation marks "";
 paste the tokens as they are and do not add or remove spaces.
 
 ```
@@ -60,13 +55,14 @@ set these variables in your Airy Core instance.
 
 ### Step 2: Configure the webhook integration
 
-Once you have edited the `airy.yaml`, create an [Airy Core instance]
-(/getting-started/installation/Minikube). Once you have successfully created an Airy Core instance, you are ready to configure
-the webhook.
+After editing the `airy.yaml` file, create an [Airy Core instance](/getting-started/installation/Minikube).
 
-On the Twilio dashboard, open the left menu sidebar and
-go to the Phone numbers section. Copy and paste your Twilio Webhook URL as the incoming Webhook url of your phone number (below 'A MESSAGE
-COMES IN').
+You are now ready to configure the Webhook.
+
+On the Twilio dashboard, open the left menu sidebar and go to the Phone numbers section.
+
+Select the phone number that you want to use and copy and paste your Twilio Webhook URL as the Webhook URL of your phone number (in 'Messaging', below 'A MESSAGE
+COMES IN', 'Webhook' should be selected from the dropdown).
 
 ```
 https://www.twilio.com/console/phone-numbers
@@ -82,9 +78,9 @@ https://www.twilio.com/console/phone-numbers
 Your Twilio Webhook URL should have the following format:
 
 ```
-`https://RANDOM_STRING.tunnel.airy.co/twilio`
+https://RANDOM_STRING.tunnel.airy.co/twilio
 ```
 
-Refer to [the section on public webhooks](/getting-started/installation/minikube#public-webhooks) for information about how to find your Facebook Webhook URL.
+Refer to [the section on public webhooks](/getting-started/installation/minikube#public-webhooks) for information about Webhook URLs.
 
 :::

@@ -1,13 +1,13 @@
 import React, {CSSProperties, SyntheticEvent} from 'react';
-import {ReactComponent as GoogleLogo} from 'assets/images/icons/google_avatar.svg';
-import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as SmsLogo} from 'assets/images/icons/sms_avatar.svg';
-import {ReactComponent as FacebookLogo} from 'assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as AiryLogo} from 'assets/images/icons/airy_avatar.svg';
+import {ReactComponent as GoogleAvatar} from 'assets/images/icons/google_avatar.svg';
+import {ReactComponent as WhatsappAvatar} from 'assets/images/icons/whatsapp_avatar.svg';
+import {ReactComponent as SmsAvatar} from 'assets/images/icons/sms_avatar.svg';
+import {ReactComponent as FacebookAvatar} from 'assets/images/icons/messenger_avatar.svg';
+import {ReactComponent as AiryAvatar} from 'assets/images/icons/airy_avatar.svg';
 import {Channel, SourceType} from 'httpclient';
 import styles from './index.module.scss';
 
-type SourceLogoProps = {
+type ChannelAvatarProps = {
   channel: Channel;
   style?: CSSProperties;
   imageUrl?: string;
@@ -15,10 +15,10 @@ type SourceLogoProps = {
 
 const fallbackImageUrl = (event: SyntheticEvent<HTMLImageElement, Event>, source: string) => {
   event.currentTarget.src = `https://s3.amazonaws.com/assets.airy.co/${source}_avatar.svg`;
-  event.currentTarget.alt = 'fallback image';
+  event.currentTarget.alt = `${source} fallback image`;
 };
 
-const SourceLogo = (props: SourceLogoProps) => {
+const ChannelAvatar = (props: ChannelAvatarProps) => {
   const {channel, imageUrl, style} = props;
 
   const getCustomLogo = (channel: Channel) => {
@@ -31,26 +31,26 @@ const SourceLogo = (props: SourceLogoProps) => {
     );
   };
 
-  const getSourceLogo = (channel: Channel) => {
+  const getChannelAvatar = (channel: Channel) => {
     switch (channel.source) {
       case SourceType.facebook:
-        return <FacebookLogo />;
+        return <FacebookAvatar />;
       case SourceType.google:
-        return <GoogleLogo />;
+        return <GoogleAvatar />;
       case SourceType.twilioSMS:
-        return <SmsLogo />;
+        return <SmsAvatar />;
       case SourceType.twilioWhatsapp:
-        return <WhatsappLogo />;
+        return <WhatsappAvatar />;
       default:
-        return <AiryLogo />;
+        return <AiryAvatar />;
     }
   };
 
   return (
     <div className={styles.image} style={style}>
-      {channel?.metadata?.imageUrl || imageUrl ? getCustomLogo(channel) : getSourceLogo(channel)}
+      {channel.metadata?.imageUrl || imageUrl ? getCustomLogo(channel) : getChannelAvatar(channel)}
     </div>
   );
 };
 
-export default SourceLogo;
+export default ChannelAvatar;

@@ -4,7 +4,7 @@ import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {LinkButton} from '@airyhq/components';
 import {Channel} from 'httpclient';
 import {SourceTypeInfo} from '../MainPage';
-import SourceLogo from '../../../components/SourceLogo';
+import ChannelAvatar from '../../../components/ChannelAvatar';
 import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plus-circle.svg';
 
 import styles from './index.module.scss';
@@ -40,7 +40,7 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData}>
-                        <SourceLogo channel={channel} style={{width: '20px', height: '20px', marginRight: '4px'}} />
+                        <ChannelAvatar channel={channel} style={{width: '20px', height: '20px', marginRight: '4px'}} />
                         <div className={styles.connectedChannelName}>{channel.metadata?.name}</div>
                         {sourceTypeInfo.channelsToShow === 2 && (
                           <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>

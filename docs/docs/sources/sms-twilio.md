@@ -14,8 +14,6 @@ import SuccessBox from "@site/src/components/SuccessBox";
 
 </TLDR>
 
-[Twilio](https://www.twilio.com/) is a communication platform specialized in phone services. Airy Core supports Twilio as a provider of 2 different sources: Twilio WhatsApp and Twilio SMS.
-
 This document provides a step by step guide to integrate a Twilio SMS source with your Airy
 Core Platform instance.
 
@@ -29,9 +27,15 @@ The Twilio SMS source provides a channel for sending and receiving SMS using the
 
 :::
 
-import TwilioSource from './twilio-source.mdx'
+## Configuration
 
-<TwilioSource />
+import TwilioConfig from './twilio-config.mdx'
+
+<TwilioConfig />
+
+import TwilioSources from './twilio-sources.mdx'
+
+<TwilioSources />
 
 <SuccessBox>
 
@@ -39,7 +43,7 @@ Success! You are now ready to connect a Twilio.SMS source to your Airy Core inst
 
 </SuccessBox>
 
-### Connect a Twilio.SMS source to your instance
+### Connect a Twilio provider to your instance
 
 There are 2 options to connect a Twilio.SMS source to your instance:
 
@@ -50,20 +54,14 @@ We cover both options in this document.
 
 ## Connect a Twilio.SMS source via API request
 
-You connect connect a Twilio.SMS source by sending a request to the [Channels endpoint](/api/endpoints/channels#facebook).
+You connect connect a Twilio.SMS source by sending a request to the Channels endpoint.
 
 <ButtonBox
 icon={() => <BoltSVG />}
 title='Channels endpoint'
 description='Connect a Twilio.SMS source to your Airy Core instance through the Channels endpoint'
-link='api/endpoints/channels#twilioSms'
+link='api/endpoints/channels#sms'
 />
-
-<br />
-
-import ConnectTwilioSms from '../api/endpoints/connect-twilioSms.mdx'
-
-<ConnectTwilioSms />
 
 ## Connect a Twilio.SMS source via the UI
 
@@ -83,7 +81,7 @@ Your twilio.sms channel will appear as connected in the UI.
 http://localhost:8080/ui/channels/connected/twilio.sms/
 ```
 
-## Send messages from a Twilio.SMS source
+## Send and receive messages with the Inbox UI
 
 After connecting the source to your instance, it's time to create a conversation between your
 Airy Core instance and a Twilio.SMS source.
@@ -91,26 +89,9 @@ Airy Core instance and a Twilio.SMS source.
 Send a text message (SMS) from a mobile phone to the Twilio phone number you have used.
 This will create a conversation: a Twilio.SMS conversation will appear in the UI with the text message you have sent.
 
-If the channel has been successfully connected, but the message you sent does not appear in a conversation and a conversation is not created, please see below for debugging advices.
-
 import DebuggingTwilio from './debugging-twilio.mdx'
 
 <DebuggingTwilio />
-
-Once the conversation has been successfully created, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
-
-<ButtonBox
-icon={() => <BoltSVG />}
-title='Messages endpoint'
-description='Send messages to your Airy Core instance from a Twilio.SMS source through the Messages endpoint'
-link='api/endpoints/messages#send'
-/>
-
-<br />
-
-import MessagesSend from '../api/endpoints/messages-send.mdx'
-
-<MessagesSend />
 
 import InboxMessages from './inbox-messages.mdx'
 

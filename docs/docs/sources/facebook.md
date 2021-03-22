@@ -205,19 +205,6 @@ import ConnectFacebook from '../api/endpoints/connect-facebook.mdx'
 
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
 
-<ButtonBox
-icon={<BoltSVG />}
-title='Messages endpoint'
-description='Send messages to your Airy Core instance from a Facebook source through the Messages endpoint'
-link='api/endpoints/messages#send'
-/>
-
-<br />
-
-import MessagesSend from '../api/endpoints/messages-send.mdx'
-
-<MessagesSend />
-
 import InboxMessages from './inbox-messages.mdx'
 
 <InboxMessages />

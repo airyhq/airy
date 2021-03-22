@@ -24,7 +24,7 @@
     "react-window": "1.8.6",
     "react-window-infinite-loader": "1.0.7",
     "redux": "^4.0.5",
-    "redux-starter-kit": "^0.8.1",
+    "redux-starter-kit": "^2.0.0",
     "regenerator-runtime": "^0.13.5",
     "reselect": "4.0.0",
     "typesafe-actions": "^5.1.0"

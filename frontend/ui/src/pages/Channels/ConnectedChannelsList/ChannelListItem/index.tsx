@@ -6,7 +6,7 @@ import {disconnectChannel} from '../../../../actions/channel';
 import {SettingsModal, Button} from '@airyhq/components';
 import {Channel} from 'httpclient';
 import {ReactComponent as CheckMarkIcon} from 'assets/images/icons/checkmark.svg';
-import SourceLogo from '../../../../components/SourceLogo';
+import ChannelAvatar from '../../../../components/ChannelAvatar';
 
 import styles from './index.module.scss';
 
@@ -46,7 +46,7 @@ const ChannelListItem = (props: ChannelListItemProps) => {
       <div>
         <div className={styles.channelItem}>
           <div className={styles.channelLogo}>
-            <SourceLogo channel={channel} style={{width: '40px', height: '40px'}} />
+            <ChannelAvatar channel={channel} style={{width: '40px', height: '40px'}} />
           </div>
           <div className={styles.channelName}>{channel.metadata?.name}</div>
           {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}

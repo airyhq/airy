@@ -11,7 +11,7 @@ import Tag from '../../../components/Tag';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
 import styles from './Popup.module.scss';
 import {allChannels} from '../../../selectors/channels';
-import SourceLogo from '../../../components/SourceLogo';
+import ChannelAvatar from '../../../components/ChannelAvatar';
 
 function mapStateToProps(state: StateModel) {
   return {
@@ -168,7 +168,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                         <CheckmarkIcon aria-hidden />
                       </div>
                     ) : (
-                      <SourceLogo channel={channel} style={{height: '24px', width: '24px', marginRight: '4px'}} />
+                      <ChannelAvatar channel={channel} style={{height: '24px', width: '24px', marginRight: '4px'}} />
                     )}
 
                     <div className={styles.pageName}>{channel.sourceChannelId}</div>

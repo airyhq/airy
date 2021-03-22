@@ -1,6 +1,5 @@
-import {combineReducers} from 'redux-starter-kit';
 import {ActionType, getType} from 'typesafe-actions';
-import _, {CombinedState} from 'redux';
+import _, {CombinedState, combineReducers} from 'redux';
 
 import * as authActions from '../actions/user';
 import {clearUserData} from '../cookies';

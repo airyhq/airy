@@ -189,7 +189,7 @@ Success! You are now ready to connect a Facebook page to your Airy Core instance
 The next step is to send a request to the [Channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
 
 <ButtonBox
-icon={() => <BoltSVG />}
+icon={<BoltSVG />}
 title='Channels endpoint'
 description='Connect a Facebook source to your Airy Core instance through the Channels endpoint'
 link='api/endpoints/channels#facebook'
@@ -206,7 +206,7 @@ import ConnectFacebook from '../api/endpoints/connect-facebook.mdx'
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
 
 <ButtonBox
-icon={() => <BoltSVG />}
+icon={<BoltSVG />}
 title='Messages endpoint'
 description='Send messages to your Airy Core instance from a Facebook source through the Messages endpoint'
 link='api/endpoints/messages#send'

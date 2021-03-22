@@ -1,5 +1,5 @@
 ---
-title: Installation
+title: Install the Airy CLI
 sidebar_label: Installation
 hide_table_of_contents: false
 ---
@@ -12,16 +12,12 @@ import TabItem from '@theme/TabItem';
 <TLDR>
 
 The Airy CLI is a developer tool to help you **build**, **test**, and **manage**
-the Airy Core directly from your terminal.
+Airy Core instances directly from your terminal.
 
 </TLDR>
 
-<TLDR>
-Install the CLI quickly with our step-by-step guide or build it from source
-</TLDR>
-
-Installing the Airy CLI is easy and straightforward.
-You can follow the next steps for a quick setup:
+Installing the Airy CLI is easy and straightforward. You can follow the next
+steps for a quick setup:
 
 - [Step 1: Check the requirements](installation.md#step-1-check-the-requirements)
 - [Step 2: Install the Airy CLI](installation.md#step-2-install-the-airy-cli)

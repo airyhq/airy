@@ -3,17 +3,10 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 import {disconnectChannel} from '../../../../actions/channel';
-import {fallbackImage} from '../../../../services/image/index';
-
 import {SettingsModal, Button} from '@airyhq/components';
-import {Channel, SourceType} from 'httpclient';
-
-import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/messenger_avatar.svg';
-import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/google_avatar.svg';
-import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/sms_avatar.svg';
-import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsapp_avatar.svg';
-import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airy_avatar.svg';
+import {Channel} from 'httpclient';
 import {ReactComponent as CheckMarkIcon} from 'assets/images/icons/checkmark.svg';
+import ChannelAvatar from '../../../../components/ChannelAvatar';
 
 import styles from './index.module.scss';
 
@@ -40,34 +33,6 @@ const ChannelListItem = (props: ChannelListItemProps) => {
     return channel.source === 'twilio.sms' || channel.source === 'twilio.whatsapp';
   };
 
-  const getSourceLogo = (channel: Channel) => {
-    switch (channel.source) {
-      case SourceType.facebook:
-        return <MessengerAvatarIcon />;
-      case SourceType.google:
-        return <GoogleAvatarIcon />;
-      case SourceType.twilioSMS:
-        return <SMSAvatarIcon />;
-      case SourceType.twilioWhatsapp:
-        return <WhatsAppAvatarIcon />;
-      default:
-        return <AiryAvatarIcon />;
-    }
-  };
-
-  const ChannelIcon = ({channel}: {channel: Channel}) => {
-    if (channel?.metadata?.imageUrl) {
-      return (
-        <img
-          onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event, channel.source)}
-          className={styles.imageUrlLogo}
-          src={channel.metadata.imageUrl}
-        />
-      );
-    }
-    return getSourceLogo(channel);
-  };
-
   const disconnectChannel = () => {
     props.disconnectChannel({
       source: channel.source,
@@ -81,9 +46,8 @@ const ChannelListItem = (props: ChannelListItemProps) => {
       <div>
         <div className={styles.channelItem}>
           <div className={styles.channelLogo}>
-            <ChannelIcon channel={channel} />
+            <ChannelAvatar channel={channel} style={{width: '40px', height: '40px'}} />
           </div>
-
           <div className={styles.channelName}>{channel.metadata?.name}</div>
           {isPhoneNumberSource() && <div className={styles.channelId}>{channel.sourceChannelId}</div>}
           {channel.connected && (

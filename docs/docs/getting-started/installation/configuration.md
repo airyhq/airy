@@ -1,24 +1,37 @@
 ---
-title: Configuration
+title: Configuration your Airy Core instance
 sidebar_label: Configuration
 ---
 
-## Airy Core Configuration File
+import TLDR from "@site/src/components/TLDR";
 
-The `infrastructure/airy.tpl.yaml` file contains examples of all possible configuration options. Create your own `airy.yaml` like so:
+<TLDR>
 
-```bash
-cd infrastructure
-cp airy.tpl.yaml airy.yaml
+Use an airy.yaml configuration file to customize your Airy Core instance
+
+</TLDR>
+
+The configuration workflow is as simple as:
+
+```sh
+$EDITOR airy.yaml # create your airy.yaml
+airy config --config path/to/airy.yml # apply your config!
 ```
 
-We will guide you through the different sections so you can make the changes you are looking for. Keys can also be omitted for services which you do not wish to configure.
+Your Airy Core instance will start and stop components accordingly to your
+configuration. For example, if you do not wish to start Facebook components, it
+is enough not to provide any facebook specific configuration.
+
+Now let's have a look at the different sections so you can make the changes you
+are looking for.
 
 ### Global
 
 - `appImageTag` the image tag of the container images for the **Airy Components**
 
-  If you want to launch an older version refer to our [Releases](https://github.com/airyhq/airy/releases) for the correct version number or if you are feeling adventurous try `develop` at your own risk.
+  If you want to launch an older version refer to our
+  [Releases](https://github.com/airyhq/airy/releases) for the correct version
+  number or if you are feeling adventurous try `develop` at your own risk.
 
 - `containerRegistry` the URL of the container registry
 
@@ -28,7 +41,8 @@ We will guide you through the different sections so you can make the changes you
 
 ### Prerequisites
 
-These settings are used to connect the **Airy Components** to your Kafka cluster, PostgreSQL and Redis.
+These settings are used to connect the **Airy Components** to your Kafka
+cluster, PostgreSQL, and Redis.
 
 - `kafka`
 
@@ -41,11 +55,9 @@ These settings are used to connect the **Airy Components** to your Kafka cluster
   - `hostname`
   - `port`
 
-  Redis is needed as a queue for the [Webhooks](/api/webhook.md)
-
 - `postgres`
   - `endpoint` in `<HOSTNAME>:<PORT>` format
-  - `dbName` name of the database in the PostgreSQL server
+  - `dbName` name of the PostgreSQL database
   - `username` these credentials will be passed to the **API Auth Component**
   - `password` and they will be used to create the Postgres database
 
@@ -53,7 +65,8 @@ These settings are used to connect the **Airy Components** to your Kafka cluster
 
 - `api`
 
-  - `jwtSecret` should be set to a long secure secret in production environments
+  - `jwtSecret` must be set to a long secure secret in production environments
+  - `token` set to a long secure secret to use for machine [API authentication](api/authentication.md)
   - `allowedOrigins` your sites origin to prevent CORS-based attacks
 
 - `sources`
@@ -62,7 +75,8 @@ These settings are used to connect the **Airy Components** to your Kafka cluster
   - `google`
   - `twilio`
 
-  The **Airy Controller** only starts configured sources. To keep system load to a minimum, only add the sources you are using.
+  The **Airy Controller** only starts configured sources. To keep system load to
+  a minimum, only add the sources you are using.
 
 - `webhooks`
   - `name`
@@ -72,14 +86,17 @@ These settings are used to connect the **Airy Components** to your Kafka cluster
 
 ### Tools
 
-These settings are used to enable or disable some external tools, used to monitor or debug the **Airy Core**.
+These settings are used to enable or disable some external tools, used to
+monitor or debug the **Airy Core**.
 
 - `akhq` Kafka GUI for Apache Kafka (For more information visit [akhq.io](https://akhq.io/))
   - `enabled` set to either `true` to start AKHQ or `false` (default) to disable it.
 
 ## Applying the configuration
 
-If you made changes in `airy.yaml` and want to apply it to your instance you can use the [airy config apply](/cli/reference.md#config-apply) by running the following [Airy CLI](/cli/installation.md) command.
+If you made changes in `airy.yaml` and want to apply it to your instance you can
+use the [airy config apply](/cli/reference.md#config-apply) by running the
+following [Airy CLI](/cli/installation.md) command.
 
 ```bash
 airy config apply --config ./airy.yaml

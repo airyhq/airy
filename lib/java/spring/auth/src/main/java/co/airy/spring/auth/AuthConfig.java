@@ -1,6 +1,7 @@
 package co.airy.spring.auth;
 
 import co.airy.spring.jwt.Jwt;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -25,9 +26,11 @@ import java.util.List;
 public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final Jwt jwt;
     private final String[] ignoreAuthPatterns;
+    private final String apiToken;
 
-    public AuthConfig(Jwt jwt, List<IgnoreAuthPattern> ignorePatternBeans) {
+    public AuthConfig(Jwt jwt, @Value("${token:#{null}}") String apiToken, List<IgnoreAuthPattern> ignorePatternBeans) {
         this.jwt = jwt;
+        this.apiToken = apiToken;
         this.ignoreAuthPatterns = ignorePatternBeans.stream()
                 .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
                 .toArray(String[]::new);
@@ -39,7 +42,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 // Don't let Spring create its own session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt, this.apiToken))
                 .authorizeRequests(authorize -> authorize
                         .antMatchers("/actuator/**", "/ws*").permitAll()
                         .antMatchers(ignoreAuthPatterns).permitAll()

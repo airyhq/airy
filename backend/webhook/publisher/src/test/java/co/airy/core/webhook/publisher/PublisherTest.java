@@ -86,7 +86,6 @@ public class PublisherTest {
         kafkaTestHelper.produceRecord(
                 new ProducerRecord<>(applicationCommunicationWebhooks.name(), "339ab777-92aa-43a5-b452-82e73c50fc59",
                         Webhook.newBuilder()
-                                .setApiSecret("such secret")
                                 .setEndpoint("http://somesalesforce.com/form")
                                 .setHeaders(Map.of())
                                 .setId("339ab777-92aa-43a5-b452-82e73c50fc59")

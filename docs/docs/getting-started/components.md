@@ -12,7 +12,7 @@ import ElectricPlugSVG from "@site/static/icons/electric-plug.svg";
 import FishingPoleSVG from "@site/static/icons/fishing-pole.svg";
 import GearSVG from "@site/static/icons/gear.svg";
 
-The platform contains the following core components:
+The Airy Core platform contains the following core components:
 
 <ButtonBoxList>
 <ButtonBox 

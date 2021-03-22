@@ -1,5 +1,5 @@
 ---
-title: Minikube
+title: Run Airy on Minikube
 sidebar_label: Minikube
 ---
 

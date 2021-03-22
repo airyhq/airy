@@ -52,4 +52,5 @@ and reloading the appropriate `Airy Components` based on the provided configurat
 ## Airy CLI
 
 Every release features a command line binary, used to configure and fetch status
-information from your Airy Core instance. This tool is referred to as the [Airy CLI](/cli/installation.md) throughout the documentation.
+information from your Airy Core instance. This tool is referred to as the [Airy
+CLI](/cli/installation.md) throughout the documentation.

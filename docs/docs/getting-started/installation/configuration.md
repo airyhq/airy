@@ -1,5 +1,5 @@
 ---
-title: Configuration
+title: Configuration your Airy Core instance
 sidebar_label: Configuration
 ---
 

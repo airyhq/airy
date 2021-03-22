@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: ChatPlugin Overview
 sidebar_label: Overview
 ---
 
@@ -33,7 +33,7 @@ Out of the box Airy’s Live Chat Plugin supports:
 ## How it's build
 
 The Airy Live Chat Plugin is JavaScript library built with
-[preact](https://preactjs.com/)and
+[preact](https://preactjs.com/) and
 [TypeScript](https://www.typescriptlang.org/).
 
 The library makes heavy use of [render

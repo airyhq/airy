@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: Welcome to Airy!
 sidebar_label: Introduction
 slug: /
 ---

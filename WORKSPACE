@@ -30,6 +30,7 @@ maven_install(
         "com.fasterxml.jackson.core:jackson-core:2.10.0",
         "com.fasterxml.jackson.core:jackson-databind:2.10.0",
         "com.fasterxml.jackson.module:jackson-module-afterburner:2.10.0",
+        "com.github.everit-org.json-schema:org.everit.json.schema:1.12.2",
         "com.google.auth:google-auth-library-oauth2-http:0.20.0",
         "com.jayway.jsonpath:json-path:2.4.0",
         "com.twilio.sdk:twilio:7.51.0",

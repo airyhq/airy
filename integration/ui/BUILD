@@ -4,10 +4,7 @@ ts_web_library(
     name = "specs",
     srcs = glob(["*.spec.ts"]),
     deps = [
-<<<<<<< HEAD
-=======
         "//frontend/chat-plugin/handles:chat-plugin-handles",
->>>>>>> 7c74e61b (independent test for filter and sending messages)
         "//frontend/ui/handles",
         "@npm//cypress",
     ],

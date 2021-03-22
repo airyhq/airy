@@ -16,6 +16,8 @@ import {
   cyChannelsFormBackButton,
 } from 'handles';
 
+import {cyBubble, cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
+
 describe('Creates and Deletes Tag', () => {
   it('Login', () => {
     cy.visit('/login');
@@ -41,10 +43,10 @@ describe('Creates and Deletes Tag', () => {
     cy.wait(500);
     cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(':contains("Cypress Chatplugin")');
 
-    // cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
-    // cy.get(`[data-cy=${cyBubble}]`).click();
-    // cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
-    // cy.get(`[data-cy=${cyInputbarButton}]`).click();
+    cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
+    cy.get(`[data-cy=${cyBubble}]`).click();
+    cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
+    cy.get(`[data-cy=${cyInputbarButton}]`).click();
 
     cy.visit('/');
     cy.get(`[data-cy=${cyShowTagsDialog}]`).click();

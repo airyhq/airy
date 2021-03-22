@@ -1,4 +1,3 @@
-import {cyBubble, cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
 import {
   cySearchButton,
   cySearchField,
@@ -10,6 +9,8 @@ import {
   cyChannelsChatPluginList,
   cyChannelsFormBackButton,
 } from 'handles';
+
+import {cyBubble, cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
 
 describe('Filters conversation', () => {
   it('Login', () => {
@@ -36,10 +37,10 @@ describe('Filters conversation', () => {
     cy.wait(500);
     cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(':contains("Cypress Chatplugin")');
 
-    // cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + (Cypress.env('channelId')));
-    // cy.get(`[data-cy=${cyBubble}]`).click();
-    // cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
-    // cy.get(`[data-cy=${cyInputbarButton}]`).click();
+    cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
+    cy.get(`[data-cy=${cyBubble}]`).click();
+    cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
+    cy.get(`[data-cy=${cyInputbarButton}]`).click();
 
     cy.visit('/');
     cy.url().should('include', '/conversations');

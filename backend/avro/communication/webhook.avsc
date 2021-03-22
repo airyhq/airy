@@ -22,10 +22,6 @@
       ],
       "default": null
     },
-    {"name": "status", "type": {"name": "Status", "type": "enum", "symbols": ["Subscribed", "Unsubscribed"]}},
-    {
-      "name": "apiSecret",
-      "type": ["null", "string"], "default": null
-    }
+    {"name": "status", "type": {"name": "Status", "type": "enum", "symbols": ["Subscribed", "Unsubscribed"]}}
   ]
 }

@@ -26,6 +26,9 @@ spec:
         - name: app
           image: '{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}'
           imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: api-config
           env:
             - name: KAFKA_BROKERS
               valueFrom:
@@ -52,16 +55,6 @@ spec:
                 configMapKeyRef:
                   name: sources-google
                   key: GOOGLE_PARTNER_KEY
-            - name: JWT_SECRET
-              valueFrom:
-                configMapKeyRef:
-                  name: api-config
-                  key: JWT_SECRET
-            - name: ALLOWED_ORIGINS
-              valueFrom:
-                configMapKeyRef:
-                  name: api-config
-                  key: ALLOWED_ORIGINS
           livenessProbe:
             httpGet:
               path: /actuator/health

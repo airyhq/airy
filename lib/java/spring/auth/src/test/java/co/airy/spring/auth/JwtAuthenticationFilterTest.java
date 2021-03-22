@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {
         "auth.jwt-secret=424242424242424242424242424242424242424242424242424242",
+        "token=user-generated-api-token",
         "ALLOWED_ORIGINS=*"
 }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @AutoConfigureMockMvc
@@ -70,5 +71,18 @@ public class JwtAuthenticationFilterTest {
                 .header(HttpHeaders.AUTHORIZATION, token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.user_id", equalTo(userId)));
+    }
+
+    @Test
+    void authenticatesApiToken() throws Exception {
+        mvc.perform(post("/jwt.get")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, "hacker-generated-api-token"))
+                .andExpect(status().isForbidden());
+
+        mvc.perform(post("/jwt.get")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, "user-generated-api-token"))
+                .andExpect(status().isOk());
     }
 }

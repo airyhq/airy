@@ -25,10 +25,8 @@ describe('Connect chatplugin channel', () => {
     cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
-    cy.wait(500);
     cy.url().should('include', '/channels/connected');
     cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
-    cy.wait(500);
     cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(`:contains("${Cypress.env('chatPluginName')}")`);
   });
 });

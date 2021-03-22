@@ -36,7 +36,7 @@ describe('Send chatplugin Message', () => {
     cy.url().should('include', '/channels/connected');
     cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
     cy.wait(500);
-    cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(':contains("Cypress Chatplugin")');
+    cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(`:contains("${Cypress.env('chatPluginName')}")`);
 
     cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
     cy.get(`[data-cy=${cyBubble}]`).click();

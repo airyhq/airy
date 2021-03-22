@@ -9,8 +9,6 @@ import {
 
 describe('Connect chatplugin channel', () => {
   it('Logs into the UI', () => {
-    const chatPluginName = 'Cypress Chatplugin';
-
     cy.visit('/login');
 
     cy.get('form')
@@ -25,12 +23,12 @@ describe('Connect chatplugin channel', () => {
     cy.url().should('include', '/channels');
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
-    cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(chatPluginName);
+    cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
     cy.wait(500);
     cy.url().should('include', '/channels/connected');
     cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
     cy.wait(500);
-    cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(':contains("Cypress Chatplugin")');
+    cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(`:contains("${Cypress.env('chatPluginName')}")`);
   });
 });

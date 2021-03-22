@@ -25,7 +25,7 @@ directly in Apache Kafka.
 - [Step 4: Consume directly from Apache Kafka](#step-4-consume-directly-from-apache-kafka)
 
 <ButtonBox
-icon={() => <RocketSVG />}
+icon={<RocketSVG />}
 title='Did you already install the Airy CLI?'
 description='To get going with the Quickstart, you must install Airy first. Once the CLI is up and running you are good to go.'
 link='/getting-started/installation/introduction'

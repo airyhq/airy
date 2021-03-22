@@ -26,14 +26,13 @@ describe('Filters conversation', () => {
 
     cy.visit('/channels');
     cy.wait(500);
-    cy.url().should('include', '/channels');
+
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
-    cy.url().should('include', '/channels/connected');
+
     cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
-    cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(`:contains("${Cypress.env('chatPluginName')}")`);
 
     cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
     cy.get(`[data-cy=${cyBubble}]`).click();
@@ -41,9 +40,12 @@ describe('Filters conversation', () => {
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
 
     cy.visit('/');
-    cy.url().should('include', '/conversations');
-    cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('eq', 1);
+
+    cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('gte', 1);
+    cy.wait(500);
     cy.get(`[data-cy=${cySearchButton}]`).click();
+    cy.wait(500);
     cy.get(`[data-cy=${cySearchField}]`).get('input').type(Cypress.env('searchQuery'));
+    cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('eq', 1);
   });
 });

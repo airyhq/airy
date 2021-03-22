@@ -35,12 +35,25 @@ export enum SenderType {
   appUser = 'app_user',
 }
 
+export interface SuggestedReply {
+  content: {
+    text: string;
+  };
+}
+
+export interface MessageMetadata {
+  suggestions?: {
+    [suggestionId: string]: SuggestedReply;
+  };
+}
+
 export interface Message {
   id: string;
   content: any;
   deliveryState: MessageState;
   senderType: SenderType;
   sentAt: Date;
+  metadata?: MessageMetadata;
 }
 
 export const mapMessage = (payload): Message => {

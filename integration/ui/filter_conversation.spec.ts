@@ -42,9 +42,8 @@ describe('Filters conversation', () => {
 
     cy.visit('/');
     cy.url().should('include', '/conversations');
-    cy.get(`[data-cy=${cyConversationList}]`).children().children().children().its('length').should('gte', 1);
+    cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('eq', 1);
     cy.get(`[data-cy=${cySearchButton}]`).click();
     cy.get(`[data-cy=${cySearchField}]`).get('input').type(Cypress.env('searchQuery'));
-    cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('eq', 1);
   });
 });

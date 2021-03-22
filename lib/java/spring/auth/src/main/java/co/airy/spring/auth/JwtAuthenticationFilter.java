@@ -25,7 +25,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         super(authManager);
         this.jwt = jwt;
         this.apiToken = apiToken;
-        this.apiTokenPrincipal = String.format("api-token-%s", apiToken.substring(0, Math.min(apiToken.length(), 4)));
+        this.apiTokenPrincipal = apiToken == null ? null : String.format("api-token-%s", apiToken.substring(0, Math.min(apiToken.length(), 4)));
     }
 
     @Override

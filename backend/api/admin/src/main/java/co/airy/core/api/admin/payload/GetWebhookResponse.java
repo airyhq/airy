@@ -10,6 +10,5 @@ import java.util.Map;
 public class GetWebhookResponse {
     private String status;
     private String url;
-    private String apiSecret;
     private Map<String, String> headers;
 }

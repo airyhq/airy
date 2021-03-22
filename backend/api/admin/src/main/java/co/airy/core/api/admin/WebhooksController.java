@@ -73,7 +73,6 @@ public class WebhooksController {
     private GetWebhookResponse fromWebhook(Webhook webhook) {
         return GetWebhookResponse.builder()
                 .headers(webhook.getHeaders())
-                .apiSecret(webhook.getApiSecret())
                 .status(webhook.getStatus().toString())
                 .url(webhook.getEndpoint())
                 .build();

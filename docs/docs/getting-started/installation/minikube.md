@@ -80,5 +80,5 @@ You can remove the Airy Core minikube node from your machine completely running
 the following command:
 
 ```sh
-minikube -p airy-core destroy
+minikube -p airy-core delete
 ```

@@ -137,9 +137,9 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
         <p className={styles.newPageParagraph}>Add Airy Live Chat to your website and application</p>
         <div className={styles.formWrapper}>
           <div className={styles.settings}>
-            <form className={styles.form} onSubmit={createNewConnection}>
+            <form className={styles.form}>
               {renderFormFields()}
-              <Button type="submit" styleVariant="small" dataCy={cyChannelsChatPluginFormSubmitButton}>
+              <Button type="submit" styleVariant="small" dataCy={cyChannelsChatPluginFormSubmitButton} onClick={createNewConnection}>
                 Save
               </Button>
             </form>

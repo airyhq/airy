@@ -3,9 +3,29 @@ title: UI Components
 sidebar_label: UI Components
 ---
 
+import ButtonBox from "@site/src/components/ButtonBox";
+import GithubIconSVG from "@site/static/icons/githubIcon.svg";
+import ComponentsSVG from "@site/static/icons/information-architecture.svg";
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 We built Airy to fulfill all your conversational needs. Additionally we build some react components for your use so you can expand the UI with a matching design.
 
-Check out Components
-Buttons, Inputs, Loaders and all Airy UI Components in https://components.airy.co/.
+<ButtonBox
+icon={<ComponentsSVG />}
+iconInvertible={true}
+title='UI Components'
+description='Buttons, Inputs, Loaders and all Airy UI Components '
+link='https://components.airy.co/'
+/>
+<br/>
+<ButtonBox
+icon={<GithubIconSVG />}
+title='Component repo'
+description=' Directly access the code for each component '
+link='https://github.com/airyhq/components.'
+/>
+<br/>
 
-See the component repo here: https://github.com/airyhq/components. Directly access the code for each component.
+**Sample Button Component**
+
+<img alt="Button Template Example" src={useBaseUrl('img/apps/ui/storybookExample.png')} />

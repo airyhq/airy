@@ -59,9 +59,15 @@ You connect connect a Twilio.SMS source by sending a request to the Channels end
 <ButtonBox
 icon={() => <BoltSVG />}
 title='Channels endpoint'
-description='Connect a Twilio.SMS source to your Airy Core instance through the Channels endpoint'
+description='Connect a Twilio SMS source to your Airy Core instance through the Channels endpoint'
 link='api/endpoints/channels#sms'
 />
+
+<br />
+
+<ConnectTwilioSms />
+
+import ConnectTwilioSms from '../api/endpoints/connect-twilioSms.mdx'
 
 ## Connect a Twilio.SMS source via the UI
 

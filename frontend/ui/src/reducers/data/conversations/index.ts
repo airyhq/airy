@@ -1,6 +1,6 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
-import {cloneDeep, sortBy, merge, pickBy, pick} from 'lodash-es';
+import {cloneDeep, sortBy, merge, pickBy} from 'lodash-es';
 
 import {Conversation, ConversationFilter, Message} from 'httpclient';
 

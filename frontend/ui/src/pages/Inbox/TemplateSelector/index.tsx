@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
+import {ListenOutsideClick} from '@airyhq/components';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
 import {SearchField, ErrorNotice} from '@airyhq/components';
@@ -8,7 +9,6 @@ import {StateModel} from '../../../reducers';
 import emptyState from 'assets/images/empty-state/templates-empty-state.png';
 import notFoundState from 'assets/images/not-found/templates-not-found.png';
 import {SourceMessage} from 'render';
-import ListenOutsideClick from '../../../components/ListenOutsideClick';
 
 const mapDispatchToProps = {
   listTemplates,
@@ -93,7 +93,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
   };
 
   return (
-    <ListenOutsideClick onClose={onClose}>
+    <ListenOutsideClick onOuterClick={onClose}>
       <div className={styles.component} ref={componentRef}>
         {listTemplatesError && !searchQuery ? (
           renderError()

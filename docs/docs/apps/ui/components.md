@@ -6,7 +6,6 @@ sidebar_label: UI Components
 import ButtonBox from "@site/src/components/ButtonBox";
 import GithubIconSVG from "@site/static/icons/githubIcon.svg";
 import ComponentsSVG from "@site/static/icons/information-architecture.svg";
-import AiryBubbleSVG from "@site/static/icons/airy-bubble.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 We built Airy to fulfill all your conversational needs. Additionally we build some react components for your use so you can expand the UI with a matching design.

@@ -16,7 +16,7 @@ export interface SuggestedReplyCommand extends Command {
 export type CommandUnion = SuggestedReplyCommand;
 
 interface RenderProps {
-  contentType: 'message' | 'template';
+  contentType: 'message' | 'template' | 'suggestedReplies';
   content: RenderedContentUnion;
   source: string;
 }
@@ -31,7 +31,11 @@ export interface TemplateRenderProps extends RenderProps {
   contentType: 'template';
 }
 
-export type RenderPropsUnion = MessageRenderProps | TemplateRenderProps;
+export interface SuggestedRepliesRenderProps extends RenderProps {
+  contentType: 'suggestedReplies';
+}
+
+export type RenderPropsUnion = MessageRenderProps | TemplateRenderProps | SuggestedRepliesRenderProps;
 
 export const getDefaultRenderingProps = (props: RenderPropsUnion): DefaultRenderingProps => {
   const fromContact = isFromContact(props.content);

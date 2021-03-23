@@ -43,3 +43,5 @@ export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessa
     }
   }
 }
+
+export * from './components/Avatar';

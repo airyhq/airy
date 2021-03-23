@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
@@ -8,6 +8,7 @@ import {StateModel} from '../../../reducers';
 import emptyState from 'assets/images/empty-state/templates-empty-state.png';
 import notFoundState from 'assets/images/not-found/templates-not-found.png';
 import {SourceMessage} from 'render';
+import ListenOutsideClick from '../../../components/ListenOutsideClick';
 
 const mapDispatchToProps = {
   listTemplates,
@@ -25,45 +26,15 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = {
   onClose: () => void;
   selectTemplate: (t: Template) => void;
-  Source: Source;
+  source: Source;
 } & ConnectedProps<typeof connector>;
 
-const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, Source, templatesSource}: Props) => {
+const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, source, templatesSource}: Props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [templatesList, setTemplatesList] = useState(templates);
   const [listTemplatesError, setListTemplatesError] = useState(false);
 
   const componentRef = useRef(null);
-
-  const keyDown = useCallback(
-    e => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    },
-    [onClose]
-  );
-
-  const clickedOutside = useCallback(
-    e => {
-      if (componentRef.current === null || componentRef.current.contains(e.target)) {
-        return;
-      }
-
-      onClose();
-    },
-    [onClose]
-  );
-
-  useEffect(() => {
-    document.addEventListener('keydown', keyDown);
-    document.addEventListener('click', clickedOutside);
-
-    return () => {
-      document.removeEventListener('keydown', keyDown);
-      document.removeEventListener('click', clickedOutside);
-    };
-  }, [keyDown, clickedOutside]);
 
   useEffect(() => {
     templates = templates.filter((template: Template) =>
@@ -74,10 +45,10 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, So
   }, [searchQuery, templates]);
 
   useEffect(() => {
-    const listAllTemplatesFromSourcePayload = {source: Source};
+    const listAllTemplatesFromSourcePayload = {source: source};
     let abort;
 
-    if (Source !== templatesSource) {
+    if (source !== templatesSource) {
       listTemplates(listAllTemplatesFromSourcePayload)
         .then()
         .catch(() => {
@@ -88,7 +59,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, So
     return () => {
       abort = true;
     };
-  }, [Source, templatesSource]);
+  }, [source, templatesSource]);
 
   const renderEmpty = () => {
     return (
@@ -121,47 +92,49 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, So
   };
 
   return (
-    <div className={styles.component} ref={componentRef}>
-      {listTemplatesError ? (
-        renderError()
-      ) : templates.length === 0 && Source === templatesSource ? (
-        renderEmpty()
-      ) : (
-        <>
-          <div className={styles.topLine}>
-            <div className={styles.searchField}>
-              <SearchField
-                value={searchQuery}
-                setValue={(value: string) => setSearchQuery(value)}
-                autoFocus={true}
-                placeholder="Search for templates"
-              />
+    <ListenOutsideClick onClose={onClose}>
+      <div className={styles.component} ref={componentRef}>
+        {listTemplatesError ? (
+          renderError()
+        ) : templates.length === 0 && source === templatesSource ? (
+          renderEmpty()
+        ) : (
+          <>
+            <div className={styles.topLine}>
+              <div className={styles.searchField}>
+                <SearchField
+                  value={searchQuery}
+                  setValue={(value: string) => setSearchQuery(value)}
+                  autoFocus={true}
+                  placeholder="Search for templates"
+                />
+              </div>
             </div>
-          </div>
-          {templatesList.length === 0 && searchQuery.length > 0 ? (
-            renderNotFound()
-          ) : (
-            <div className={styles.templateList}>
-              {templatesList &&
-                templatesList.length &&
-                templatesList.map((template, id) => {
-                  return (
-                    <div
-                      className={styles.templatePreviewWrapper}
-                      key={id}
-                      onClick={() => {
-                        selectTemplate(template);
-                      }}>
-                      <div className={styles.tempatePreviewName}>{template.name}</div>
-                      <SourceMessage content={template} source={template.source} contentType="template" />
-                    </div>
-                  );
-                })}
-            </div>
-          )}
-        </>
-      )}
-    </div>
+            {templatesList.length === 0 && searchQuery.length > 0 ? (
+              renderNotFound()
+            ) : (
+              <div className={styles.templateList}>
+                {templatesList &&
+                  templatesList.length &&
+                  templatesList.map((template, id) => {
+                    return (
+                      <div
+                        className={styles.templatePreviewWrapper}
+                        key={id}
+                        onClick={() => {
+                          selectTemplate(template);
+                        }}>
+                        <div className={styles.tempatePreviewName}>{template.name}</div>
+                        <SourceMessage content={template} source={template.source} contentType="template" />
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </ListenOutsideClick>
   );
 };
 

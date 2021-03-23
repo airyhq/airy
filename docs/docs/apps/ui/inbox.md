@@ -118,7 +118,7 @@ Airy’s Live Chat Plugin supports templates too. The template payload is the sa
 This enables you and your teams to interact with your website visitors in a richer way, and also enables chat bots in the templates.
 
 <ButtonBox
-icon={() => <AiryBubbleSVG />}
+icon={<AiryBubbleSVG />}
 title='Airy Live Chat Plugin'
 description='The Airy Live Chat Plugin enables conversations with website visitors through a web chat plugin'
 link='sources/chatplugin/overview'
@@ -185,7 +185,7 @@ link='sources/chatplugin/overview'
 }
 ```
 
-## Search & Filter
+## Search and filter
 
 **Search**
 
@@ -197,7 +197,7 @@ The inbox enables you to search by:
 - Tags
 
 <ButtonBox
-icon={() => <PriceTag />}
+icon={<PriceTag />}
 title='Tags'
 description='Tag your conversations for easy filtering, searching & segmenting'
 link='apps/ui/tags'
@@ -206,7 +206,8 @@ link='apps/ui/tags'
 
 **Filter**
 
-Filtering enables you to only show conversations in the inbox according to the filter currently set.
+Filtering enables you to only show conversations in the inbox according to the
+filter currently set.
 
 The inbox can filter by:
 

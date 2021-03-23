@@ -11,6 +11,7 @@ import Tag from '../../components/Tag';
 import {Tag as TagModel, TagColor} from 'httpclient';
 import {Settings} from '../../reducers/data/settings';
 import {StateModel} from '../../reducers';
+import {cyTagsTableRowDisplayDeleteModal} from 'handles';
 
 type TableRowProps = {
   tag: TagModel;
@@ -136,7 +137,11 @@ const TableRowComponent = (props: TableRowProps) => {
           <button type="button" className={styles.actionButton} onClick={() => setTagState({...tag, edit: true})}>
             <EditIcon className={styles.actionSVG} title="Edit tag" />
           </button>
-          <button type="button" className={styles.actionButton} onClick={deleteClicked}>
+          <button
+            type="button"
+            className={styles.actionButton}
+            onClick={deleteClicked}
+            data-cy={cyTagsTableRowDisplayDeleteModal}>
             <TrashIcon className={styles.actionSVG} title="Delete tag" />
           </button>
         </div>

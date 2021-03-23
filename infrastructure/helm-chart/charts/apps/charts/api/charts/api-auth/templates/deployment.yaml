@@ -25,6 +25,9 @@ spec:
       - name: app
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: api-config
         env:
         - name: DB_USERNAME
           valueFrom:
@@ -46,41 +49,6 @@ spec:
             configMapKeyRef:
               name: postgres-config
               key: POSTGRES_ENDPOINT
-        - name: JWT_SECRET
-          valueFrom:
-            configMapKeyRef:
-              name: api-config
-              key: JWT_SECRET
-        - name: MAIL_URL
-          valueFrom:
-            configMapKeyRef:
-              name: api-config
-              key: MAIL_URL
-        - name: MAIL_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: api-config
-              key: MAIL_PORT
-        - name: MAIL_USERNAME
-          valueFrom:
-            configMapKeyRef:
-              name: api-config
-              key: MAIL_USERNAME
-        - name: MAIL_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              name: api-config
-              key: MAIL_PASSWORD
-        - name: MAIL_FROM
-          valueFrom:
-            configMapKeyRef:
-              name: api-config
-              key: MAIL_FROM
-        - name: ALLOWED_ORIGINS
-          valueFrom:
-            configMapKeyRef:
-              name: api-config
-              key: ALLOWED_ORIGINS
         livenessProbe:
           httpGet:
             path: /actuator/health

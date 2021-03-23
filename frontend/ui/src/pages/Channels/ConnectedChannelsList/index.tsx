@@ -15,7 +15,7 @@ import {ReactComponent as PLusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
-
+import {cyChannelsFormBackButton} from 'handles';
 import {
   CHANNELS_FACEBOOK_ROUTE,
   CHANNELS_CHAT_PLUGIN_ROUTE,
@@ -106,10 +106,12 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
           </div>
         </div>
       </div>
-      <Link to={CHANNELS_ROUTE} className={styles.backButton}>
+
+      <Link to={CHANNELS_ROUTE} className={styles.backButton} data-cy={cyChannelsFormBackButton}>
         <ArrowLeftIcon className={styles.backIcon} />
         Back to channels
       </Link>
+
       <div className={styles.channelsList}>
         {filteredChannels.length > 0 ? (
           sortBy(filteredChannels, (channel: Channel) => channel.metadata.name.toLowerCase()).map(

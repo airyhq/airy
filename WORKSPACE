@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "26b09cbd5091d9cb2904abc0c5b2a50c4b76fb3a",
+    commit = "3382e1968deebb90f33320b504f7adca3f92c08b",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1615818859 +0100",
+    shallow_since = "1616430778 +0100",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -30,6 +30,7 @@ maven_install(
         "com.fasterxml.jackson.core:jackson-core:2.10.0",
         "com.fasterxml.jackson.core:jackson-databind:2.10.0",
         "com.fasterxml.jackson.module:jackson-module-afterburner:2.10.0",
+        "com.github.everit-org.json-schema:org.everit.json.schema:1.12.2",
         "com.google.auth:google-auth-library-oauth2-http:0.20.0",
         "com.jayway.jsonpath:json-path:2.4.0",
         "com.twilio.sdk:twilio:7.51.0",

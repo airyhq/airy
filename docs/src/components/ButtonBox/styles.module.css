@@ -69,3 +69,7 @@
   margin-right: 12px;
   fill: white;
 }
+
+.invertedIcon {
+  filter: invert(100%);
+}

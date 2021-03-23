@@ -32,6 +32,19 @@ export interface Message extends Content {
   deliveryState: MessageState;
   senderType: SenderType;
   sentAt: Date;
+  metadata?: MessageMetadata;
+}
+
+export interface SuggestedReply {
+  content: {
+    text: string;
+  };
+}
+
+export interface MessageMetadata {
+  suggestions?: {
+    [suggestionId: string]: SuggestedReply;
+  };
 }
 
 export const mapMessage = (payload): Message => {

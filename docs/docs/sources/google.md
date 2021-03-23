@@ -70,7 +70,7 @@ Once the verification process has been completed, Google's Business Messages wil
 After the configuration, you can connect Google's Business Messages source to your instance by sending a request to the [Channels endpoint](/api/endpoints/channels#google).
 
 <ButtonBox
-icon={() => <BoltSVG />}
+icon={<BoltSVG />}
 title='Channels endpoint'
 description="Connect Google's Business Messages source to your Airy Core instance through the Channels endpoint"
 link='api/endpoints/channels#google'
@@ -87,7 +87,7 @@ import ConnectGoogle from '../api/endpoints/connect-google.mdx'
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
 
 <ButtonBox
-icon={() => <BoltSVG />}
+icon={<BoltSVG />}
 title='Messages endpoint'
 description="Send messages to your Airy Core instance from Google's Business Messages through the Messages endpoint"
 link='api/endpoints/messages#send-from-googles-business-messages-source'
@@ -106,7 +106,7 @@ Now that you connected Google's Business Messages to your instance and started a
 The [Inbox's UI](/apps/ui/inbox) is able render the messages types you can send from Google's Business Messages, such as Rich Cards or Suggestions.
 
 <ButtonBox
-icon={() => <InboxSVG />}
+icon={<InboxSVG />}
 title='Inbox'
 description="Receive messages from Google's Business Messages and send messages using the Inbox UI"
 link='apps/ui/inbox'

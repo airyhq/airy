@@ -55,7 +55,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
             </div>
             <div className={styles.menuArea}>
               <div className={styles.menuItem}>
-                <ListenOutsideClick onOuterClick={hideFaqDropdown}>
+                <ListenOutsideClick onClose={hideFaqDropdown}>
                   <div className={styles.help} onClick={faqClickHandler}>
                     ?
                   </div>
@@ -84,7 +84,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
               </div>
 
               <div className={styles.menuItem}>
-                <ListenOutsideClick onOuterClick={hideAccountDropdown}>
+                <ListenOutsideClick onClose={hideAccountDropdown}>
                   <div className={styles.dropDown} onClick={accountClickHandler}>
                     <div className={styles.accountDetails}>
                       <div className={styles.accountName}>{props.firstName + ' ' + props.lastName}</div>

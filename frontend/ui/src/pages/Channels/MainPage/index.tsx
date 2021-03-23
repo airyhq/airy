@@ -14,7 +14,18 @@ import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avata
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/google_avatar.svg';
 
 import styles from './index.module.scss';
-
+import {
+  cyChannelsChatPluginAddButton,
+  cyChannelsChatPluginList,
+  cyChannelsFacebookAddButton,
+  cyChannelsFacebookList,
+  cyChannelsGoogleAddButton,
+  cyChannelsGoogleList,
+  cyChannelsTwilioSmsAddButton,
+  cyChannelsTwilioSmsList,
+  cyChannelsTwilioWhatsappAddButton,
+  cyChannelsTwilioWhatsappList,
+} from 'handles';
 import {
   CHANNELS_FACEBOOK_ROUTE,
   CHANNELS_TWILIO_SMS_ROUTE,
@@ -38,6 +49,8 @@ export type SourceInfo = {
   configKey: string;
   channelsToShow: number;
   itemInfoString: string;
+  dataCyAddChannelButton: string;
+  dataCyChannelList: string;
 };
 
 const SourcesInfo: SourceInfo[] = [
@@ -51,6 +64,8 @@ const SourcesInfo: SourceInfo[] = [
     configKey: 'sources-chatplugin',
     channelsToShow: 4,
     itemInfoString: 'channels',
+    dataCyAddChannelButton: cyChannelsChatPluginAddButton,
+    dataCyChannelList: cyChannelsChatPluginList,
   },
   {
     type: Source.facebook,
@@ -62,6 +77,8 @@ const SourcesInfo: SourceInfo[] = [
     configKey: 'sources-facebook',
     channelsToShow: 4,
     itemInfoString: 'channels',
+    dataCyAddChannelButton: cyChannelsFacebookAddButton,
+    dataCyChannelList: cyChannelsFacebookList,
   },
   {
     type: Source.twilioSMS,
@@ -73,6 +90,8 @@ const SourcesInfo: SourceInfo[] = [
     configKey: 'sources-twilio',
     channelsToShow: 2,
     itemInfoString: 'phones',
+    dataCyAddChannelButton: cyChannelsTwilioSmsAddButton,
+    dataCyChannelList: cyChannelsTwilioSmsList,
   },
   {
     type: Source.twilioWhatsapp,
@@ -84,6 +103,8 @@ const SourcesInfo: SourceInfo[] = [
     configKey: 'sources-twilio',
     channelsToShow: 2,
     itemInfoString: 'phones',
+    dataCyAddChannelButton: cyChannelsTwilioWhatsappAddButton,
+    dataCyChannelList: cyChannelsTwilioWhatsappList,
   },
   {
     type: Source.google,
@@ -95,6 +116,8 @@ const SourcesInfo: SourceInfo[] = [
     configKey: 'sources-google',
     channelsToShow: 4,
     itemInfoString: 'channels',
+    dataCyAddChannelButton: cyChannelsGoogleAddButton,
+    dataCyChannelList: cyChannelsGoogleList,
   },
 ];
 
@@ -137,7 +160,7 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
         {SourcesInfo.map((infoItem: SourceInfo) => (
           <div style={{display: 'flex', flexGrow: 1}} key={infoItem.type}>
             <SourceDescriptionCard
-              SourceInfo={infoItem}
+              sourceInfo={infoItem}
               displayButton={!channelsBySource(infoItem.type).length}
               addChannelAction={() => {
                 if (config.components[infoItem.configKey].enabled) {
@@ -148,7 +171,7 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
               }}
             />
             <ConnectedChannelsBySourceCard
-              SourceInfo={infoItem}
+              sourceInfo={infoItem}
               channels={channelsBySource(infoItem.type)}
               connected="CONNECTED"
             />

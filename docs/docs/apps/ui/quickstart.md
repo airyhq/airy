@@ -71,7 +71,8 @@ Now enter your credentials on the login page and click **Login**.
 ###
 
 <ButtonBox
-icon={() => <PrototypeSVG />}
+icon={<PrototypeSVG />}
+iconInvertible={true}
 title='Next Step: Discover the Inbox'
 description='Now that you can access the UI it is time to discover the Inbox and its features '
 link='apps/ui/inbox'

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -25,12 +24,7 @@ public class WebhooksController {
 
     @PostMapping("/webhooks.subscribe")
     public ResponseEntity<?> subscribe(@RequestBody @Valid WebhookSubscriptionPayload payload) {
-        final String apiSecret = Optional.ofNullable(stores.getWebhook())
-                .map(Webhook::getApiSecret)
-                .orElse(UUID.randomUUID().toString());
-
         final Webhook webhook = Webhook.newBuilder()
-                .setApiSecret(apiSecret)
                 .setId(UUID.randomUUID().toString())
                 .setEndpoint(payload.getUrl())
                 .setStatus(Status.Subscribed)
@@ -79,7 +73,6 @@ public class WebhooksController {
     private GetWebhookResponse fromWebhook(Webhook webhook) {
         return GetWebhookResponse.builder()
                 .headers(webhook.getHeaders())
-                .apiSecret(webhook.getApiSecret())
                 .status(webhook.getStatus().toString())
                 .url(webhook.getEndpoint())
                 .build();

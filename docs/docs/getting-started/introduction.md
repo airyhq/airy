@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: Welcome to Airy!
 sidebar_label: Introduction
 slug: /
 ---
@@ -50,7 +50,7 @@ conversational data to wherever you need it.
 
 <ButtonBoxList>
 <ButtonBox 
-    icon={() => <AiryBubbleSVG />}
+    icon={<AiryBubbleSVG />}
     title='What is Airy?' 
     description='Learn about Airys messaging platform and components' 
     link='getting-started/components'
@@ -59,7 +59,8 @@ conversational data to wherever you need it.
 
 <ButtonBoxList>
 <ButtonBox 
-    icon={() => <RocketSVG />}
+    icon={<RocketSVG />}
+    iconInvertible={true}
     title='Start Installation' 
     description='Install Airy with our CLI, locally or in the cloud' 
     link='cli/installation'
@@ -70,7 +71,8 @@ Once you have Airy installed, follow our Quick Start for guidance.
 
 <ButtonBoxList>
 <ButtonBox 
-    icon={() => <DiamondSVG />}
+    icon={<DiamondSVG />}
+    iconInvertible={true}
     title='To the Quick Start' 
     description='Learn the Airy Basics with our Quick Start' 
     link='getting-started/quickstart'

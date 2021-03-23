@@ -26,19 +26,20 @@ easy to install and works on macOS, Windows, and Linux.
 
 <ButtonBoxList>
 <ButtonBox
-icon={() => <RocketSVG />}
+icon={<RocketSVG />}
+iconInvertible={true}
 title='CLI'
 description='Install the Airy Core CLI application'
 link='/cli/installation'
 />
 <ButtonBox
-icon={() => <Minikube />}
+icon={<Minikube />}
 title='Local test environment with Minikube'
 description='Step by step guide to run Airy Core on your local machine'
 link='getting-started/installation/minikube'
 />
 <ButtonBox
-icon={() => <KafkaSVG />}
+icon={<KafkaSVG />}
 title='Production ready environment with Kafka'
 description='Manual step by step guide for running Airy Core in production'
 link='getting-started/installation/production'

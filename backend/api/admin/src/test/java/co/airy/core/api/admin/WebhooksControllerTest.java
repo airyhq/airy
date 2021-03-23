@@ -84,24 +84,19 @@ public class WebhooksControllerTest {
         webTestHelper.post("/webhooks.subscribe", payload, "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", equalTo(url)))
-                .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
-                .andExpect(jsonPath("$.api_secret", is(not(nullValue()))));
+                .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)));
 
         retryOnException(() -> webTestHelper.post("/webhooks.info", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.url", equalTo(url)))
-                        .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
-                        .andExpect(jsonPath("$.api_secret", is(not(nullValue())))),
+                        .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader))),
                 "Webhook was not stored"
         );
 
         webTestHelper.post("/webhooks.unsubscribe", payload, "user-id")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", equalTo(url)))
-                .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
-                .andExpect(jsonPath("$.api_secret", is(not(nullValue()))));
-
-        //TODO add assertion?
+                .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)));
     }
 
 }

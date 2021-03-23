@@ -6,7 +6,7 @@ export interface Content {
   content: any;
 }
 
-export type RenderedContentUnion = Message | Template;
+export type RenderedContentUnion = Message | Template | Content;
 
 export function isFromContact(message: RenderedContentUnion) {
   if (message && 'senderType' in message) return message?.senderType === SenderType.sourceContact;

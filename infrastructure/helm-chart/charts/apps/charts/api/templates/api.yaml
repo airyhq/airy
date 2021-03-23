@@ -9,5 +9,6 @@ data:
   MAIL_URL: {{ .Values.mailUrl }}
   MAIL_USERNAME: {{ .Values.mailUsername }}
   MAIL_PASSWORD: {{ .Values.mailPassword }}
-  JWT_SECRET: {{ randAlphaNum 128 | quote }}
+  JWT_SECRET: {{ .Values.jwtSecret | default (randAlphaNum 128) | quote }}
+  TOKEN: {{ .Values.token | default (randAlphaNum 24) | quote }}
   ALLOWED_ORIGINS: {{ .Values.allowedOrigins | quote }}

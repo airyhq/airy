@@ -6,28 +6,32 @@ import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plus-circle.
 import styles from './index.module.scss';
 
 type SourceDescriptionCardProps = {
-  SourceInfo: SourceInfo;
+  sourceInfo: SourceInfo;
   displayButton: boolean;
   addChannelAction?: () => void;
 };
 
 const SourceDescriptionCard = (props: SourceDescriptionCardProps) => {
-  const {SourceInfo, displayButton, addChannelAction} = props;
+  const {sourceInfo, displayButton, addChannelAction} = props;
 
   return (
     <>
       <div className={styles.requirementsDialogBackground}></div>
       <div className={styles.channelCard}>
-        <div className={styles.channelLogo}>{SourceInfo.image}</div>
+        <div className={styles.channelLogo}>{sourceInfo.image}</div>
         <div className={styles.channelTitleAndText}>
-          <p className={styles.channelTitle}>{SourceInfo.title}</p>
-          <p className={styles.channelText}>{SourceInfo.description}</p>
+          <p className={styles.channelTitle}>{sourceInfo.title}</p>
+          <p className={styles.channelText}>{sourceInfo.description}</p>
         </div>
       </div>
 
       {displayButton && (
         <div className={styles.channelButton}>
-          <button type="button" className={styles.addChannelButton} onClick={addChannelAction}>
+          <button
+            type="button"
+            className={styles.addChannelButton}
+            onClick={addChannelAction}
+            data-cy={sourceInfo.dataCyAddChannelButton}>
             <div className={styles.channelButtonIcon} title="Add a channel">
               <PlusCircleIcon />
             </div>

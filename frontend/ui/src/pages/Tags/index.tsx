@@ -16,6 +16,7 @@ import SimpleTagForm from './SimpleTagForm';
 import EmptyStateTags from './EmptyStateTags';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
+import {cyTagsTableRowDisplayDeleteModalInput, cyTagsTableRowDisplayDeleteModalButton} from 'handles';
 
 const initialState = {
   modal: {
@@ -141,11 +142,15 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
               onChange={this.handleDelete}
               onKeyDown={this.keyPressed}
               autoFocus={true}
+              dataCy={cyTagsTableRowDisplayDeleteModalInput}
             />
             <p className={styles.errorMessage}>{this.state.modal.error}</p>
             <div className={styles.confirmDeleteActions}>
               <LinkButton onClick={this.closeModal}>Cancel</LinkButton>
-              <Button styleVariant="warning" onClick={this.confirmDelete}>
+              <Button
+                styleVariant="warning"
+                onClick={this.confirmDelete}
+                dataCy={cyTagsTableRowDisplayDeleteModalButton}>
                 Delete
               </Button>
             </div>

@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: "1.0"
-description: Provisioning of Airy core
-name: provisioning
-version: 1.0

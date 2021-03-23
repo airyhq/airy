@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: redis-config
-  namespace: {{ .Values.global.namespace }}
-data:
-  REDIS_HOSTNAME: {{ .Values.redis.hostname }}
-  REDIS_PORT: "{{ .Values.redis.port }}"

@@ -36,6 +36,7 @@ ts_web_library(
         "@npm//@reduxjs/toolkit",
         "@npm//reselect",
         "@npm//typesafe-actions",
+        "@npm//camelcase-keys",
     ],
 )
 

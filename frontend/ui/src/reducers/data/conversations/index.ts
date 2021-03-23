@@ -1,6 +1,6 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
-import {cloneDeep, sortBy, merge, pickBy, pick} from 'lodash-es';
+import {cloneDeep, sortBy, merge, pickBy} from 'lodash-es';
 
 import {Conversation, ConversationFilter, Message} from 'httpclient';
 
@@ -207,8 +207,11 @@ function allReducer(
             ...state.items[action.payload.identifier],
             metadata: {
               // Ensure that there is always a display name present
-              ...pick(state.items[action.payload.identifier]?.metadata, 'contact.displayName'),
               ...(<MetadataEvent<ConversationMetadata>>action.payload).metadata,
+              contact: {
+                ...state.items[action.payload.identifier]?.metadata.contact,
+                ...(<MetadataEvent<ConversationMetadata>>action.payload).metadata.contact,
+              },
             },
           },
         },

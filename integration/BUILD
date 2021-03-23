@@ -1,4 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
+
+check_pkg(name = "buildifier")
 
 nodejs_binary(
     name = "cypress",

@@ -1,7 +1,7 @@
 import {
-  cyMessageTextArea,
-  cyMessageSendButton,
-  cyMessageList,
+  cySearchButton,
+  cySearchField,
+  cyConversationList,
   cyChannelsChatPluginAddButton,
   cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
@@ -12,10 +12,9 @@ import {
 
 import {cyBubble, cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
 
-describe('Send chatplugin Message', () => {
-  it('Logs into the UI', () => {
+describe('Filters conversation', () => {
+  it('Login', () => {
     cy.visit('/login');
-
     cy.get('form')
       .within(() => {
         cy.get('input[type=email]').type(Cypress.env('username'));
@@ -27,14 +26,13 @@ describe('Send chatplugin Message', () => {
 
     cy.visit('/channels');
     cy.wait(500);
+
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
 
     cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
-    cy.wait(500);
-    cy.get(`[data-cy=${cyChannelsChatPluginList}]`).filter(`:contains("${Cypress.env('chatPluginName')}")`);
 
     cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
     cy.get(`[data-cy=${cyBubble}]`).click();
@@ -42,9 +40,12 @@ describe('Send chatplugin Message', () => {
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
 
     cy.visit('/');
-    cy.url().should('include', '/inbox');
-    cy.get(`[data-cy=${cyMessageTextArea}]`).type(Cypress.env('messageInbox'));
-    cy.get(`[data-cy=${cyMessageSendButton}]`).click();
-    cy.get(`[data-cy=${cyMessageList}]`).children().its('length').should('be.gte', 1);
+
+    cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('gte', 1);
+    cy.wait(500);
+    cy.get(`[data-cy=${cySearchButton}]`).click();
+    cy.wait(500);
+    cy.get(`[data-cy=${cySearchField}]`).get('input').type(Cypress.env('searchQuery'));
+    cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('eq', 1);
   });
 });

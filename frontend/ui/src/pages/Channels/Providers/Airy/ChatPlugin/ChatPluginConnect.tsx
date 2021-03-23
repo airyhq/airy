@@ -18,7 +18,6 @@ import {
   cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
-  cyChannelsChatPluginFormBackButton,
 } from 'handles';
 
 import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
@@ -289,7 +288,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           </div>
         )}
       </div>
-      <LinkButton onClick={props.history.goBack} type="button" dataCy={cyChannelsChatPluginFormBackButton}>
+      <LinkButton onClick={props.history.goBack} type="button">
         <ArrowLeftIcon className={styles.backIcon} />
         Back
       </LinkButton>

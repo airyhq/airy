@@ -2,13 +2,10 @@ export const cyMessageList = 'messageList';
 export const cyInputBar = 'inputBar';
 export const cyMessageTextArea = 'messageTextArea';
 export const cyMessageSendButton = 'messageSendButton';
-
 export const cySearchButton = 'searchButton';
 export const cySearchField = 'searchField';
 export const cySearchFieldBackButton = 'searchFieldBackButton';
-
 export const cyConversationList = 'conversationList';
-
 export const cyShowTagsDialog = 'showTagsDialog';
 export const cyTagsDialogInput = 'tagsDialogInput';
 export const cyTagsDialogButton = 'tagsDialogButton';
@@ -18,9 +15,22 @@ export const cyTagsDialogColorSelectorGreen = 'tagsDialogColorSelectorGreen';
 export const cyTagsDialogColorSelectorPurple = 'tagsDialogColorSelectorPurple';
 export const cyTagsSearchField = 'tagsSearchField';
 export const cyTagsTable = 'tagsTable';
+export const cyTagsTableRowDisplayDeleteModal = 'tagsTableRowDisplayDeleteModal';
+export const cyTagsTableRowDisplayDeleteModalInput = 'tagsTableRowDisplayDeleteModalInput';
+export const cyTagsTableRowDisplayDeleteModalButton = 'tagsTableRowDisplayDeleteModalButton';
+
 export const cyChannelsChatPluginAddButton = 'channelsChatPluginAddButton';
+export const cyChannelsFacebookAddButton = 'channelsFacebookAddButton';
+export const cyChannelsTwilioSmsAddButton = 'channelsTwilioSmsAddButton';
+export const cyChannelsTwilioWhatsappAddButton = 'channelsTwilioWhatsappAddButton';
+export const cyChannelsGoogleAddButton = 'channelsGoogleAddButton';
 export const cyChannelsChatPluginList = 'channelsChatPluginList';
+export const cyChannelsFacebookList = 'channelsFacebookList';
+export const cyChannelsTwilioSmsList = 'channelsTwilioSmsList';
+export const cyChannelsTwilioWhatsappList = 'channelsTwilioWhatsappList';
+export const cyChannelsGoogleList = 'channelsGoogleList';
+
 export const cyChannelsChatPluginConnectButton = 'channelsChatPluginConnectButton';
 export const cyChannelsChatPluginFormNameInput = 'channelsChatPluginFormNameInput';
 export const cyChannelsChatPluginFormSubmitButton = 'channelsChatPluginFormSubmitButton';
-export const cyChannelsChatPluginFormBackButton = 'channelsChatPluginFormBackButton';
+export const cyChannelsFormBackButton = 'channelsFormBackButton';

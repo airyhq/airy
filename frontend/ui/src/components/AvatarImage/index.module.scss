@@ -1,5 +1,6 @@
 .avatar {
   display: flex;
+  flex-shrink: 0;
 }
 
 .avatarImage {

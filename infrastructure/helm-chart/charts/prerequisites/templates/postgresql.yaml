@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: postgres
+data:
+  POSTGRES_ENDPOINT: {{ .Values.postgresql.endpoint | default "postgres:5432" }}
+  POSTGRES_DB: {{ .Values.postgresql.dbName | default "admin" }}
+  POSTGRES_USER: {{ .Values.postgresql.username | default "postgresadmin" }}
+  POSTGRES_PASSWORD: {{ .Values.postgresql.password | default (randAlphaNum 16) }}

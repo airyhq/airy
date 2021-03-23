@@ -1,5 +1,5 @@
 {
-   "baseUrl": "http://airy.core/ui",
+    "baseUrl": "http://airy.core/ui",
     "integrationFolder": "integration",
     "testFiles": "**/*.spec.?s",
     "env": {
@@ -13,5 +13,6 @@
        "channelId": "3502a0a7-933d-5410-b5fc-51f041146d89"
     },
     "viewportHeight": 800,
-    "viewportWidth": 1280
+    "viewportWidth": 1280,
+    "video": false
 }

@@ -56,7 +56,7 @@ The public webhooks will be accessible on the public LoadBalancer which is creat
 To get the public URL of your AWS Airy Core installation you can run:
 
 ```sh
-kubectl --kubeconfig ~/.airy/kube.conf get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}' 
+kubectl --kubeconfig ~/.airy/kube.conf get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 ```
 
 ## Where to go from here
@@ -103,7 +103,7 @@ Delete the created IAM Role:
 
 ```sh
 for policy in $(aws iam list-attached-role-policies --role-name ${id} --query 'AttachedPolicies[].PolicyArn' --output text)
-do 
+do
     aws iam detach-role-policy --policy-arn ${policy} --role-name ${id}
 done
 aws iam delete-role --role-name ${id}

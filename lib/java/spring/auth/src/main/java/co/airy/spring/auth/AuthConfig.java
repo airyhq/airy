@@ -28,7 +28,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final String[] ignoreAuthPatterns;
     private final String apiToken;
 
-    public AuthConfig(Jwt jwt, @Value("${token:#{null}}") String apiToken, List<IgnoreAuthPattern> ignorePatternBeans) {
+    public AuthConfig(Jwt jwt, @Value("${system_token:#{null}}") String apiToken, List<IgnoreAuthPattern> ignorePatternBeans) {
         this.jwt = jwt;
         this.apiToken = apiToken;
         this.ignoreAuthPatterns = ignorePatternBeans.stream()

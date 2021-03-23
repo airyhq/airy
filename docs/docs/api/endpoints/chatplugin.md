@@ -82,6 +82,18 @@ endpoint](#authenticating-web-users) as an `Authorization` header.
 }
 ```
 
+You can also obtain a resume token on behalf of the user. To do so you need to call this endpoint with the
+system API token set on the `Authorization` header and with the channel and conversation id.
+
+**Sample request**
+
+```json5
+{
+  "channel_id": "channel-id",
+  "conversation_id": "channel-id"
+}
+```
+
 #### Send message
 
 You must set the `token` obtained on the [authorization endpoint](#authenticating-web-users) as an `Authorization`

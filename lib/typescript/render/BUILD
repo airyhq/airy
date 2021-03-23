@@ -11,6 +11,7 @@ ts_web_library(
         "//lib/typescript/dates",
         "//lib/typescript/httpclient",
         "//lib/typescript/types",
+        "@npm//@airyhq/components",
         "@npm//@types/node",
         "@npm//@types/react",
         "@npm//@types/resize-observer-browser",

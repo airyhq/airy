@@ -32,7 +32,7 @@ const MessengerContainer = ({conversations, currentConversation}: MessengerConta
       ) : (
         <div className={styles.messageDisplay}>
           <MessageList />
-          {currentConversation && <MessageInput Source={currentConversation.channel.source as Source} />}
+          {currentConversation && <MessageInput source={currentConversation.channel.source as Source} />}
         </div>
       )}
     </div>

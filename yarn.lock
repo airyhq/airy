@@ -3,9 +3,9 @@
 
 
 "@airyhq/components@latest":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@airyhq/components/-/components-0.5.1.tgz#0bb63c5b2fda321ef30c4dc75b8569a77dec221e"
-  integrity sha512-70oHLoAN6l2ZXC9M98uPbR6ixuZ6qH1VDc2ynDgaMVL9u2lQ+F63gtcu1n+7628rZ0LkkoQ4bAoa8GQszqvevg==
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@airyhq/components/-/components-0.6.0.tgz#20f7bb368e3e96a80973af1f8b176b6fc68f92c0"
+  integrity sha512-pi7cn9uPVhgC+t1/lE0CqYjj+poVrRAGiU9+b5Yx7cE8HJz04uNFGLtivMX4HJ1g43XAi8sQ3+OEkVdzp2KGxw==
   dependencies:
     "@crello/react-lottie" "^0.0.9"
     emoji-mart "^3.0.0"

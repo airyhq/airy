@@ -1,7 +1,7 @@
 import React from 'react';
+import {Carousel} from '@airyhq/components';
 import styles from './index.module.scss';
 import {GenericTemplate as GenericTemplateModel} from '../../facebookModel';
-import {Carousel} from 'render/components/Carousel';
 
 type GenericTemplateRendererProps = {
   template: GenericTemplateModel;

@@ -29,11 +29,10 @@ export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessa
   }
 
   render() {
-    if (this.state.hasError) {
+    const provider = renderProviders[this.props.source];
+    if (this.state.hasError || this.props.source === undefined || provider === undefined) {
       return this.errorFallback();
     }
-
-    const provider = renderProviders[this.props.source];
 
     try {
       return provider(this.props);

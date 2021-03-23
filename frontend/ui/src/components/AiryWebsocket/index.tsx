@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch => ({
   onChannel: (channel: Channel) => dispatch(setChannelAction(channel)),
   getConversationInfo: (conversationId: string) => dispatch(getConversationInfo(conversationId)),
   onMetadata: (metadataEvent: MetadataEvent) =>
-    dispatch(camelcaseKeys(setMetadataAction(metadataEvent), {deep: true, stopPaths: ['metadata.userData']})),
+    dispatch(camelcaseKeys(setMetadataAction(metadataEvent), {deep: true, stopPaths: ['metadata.user_data']})),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

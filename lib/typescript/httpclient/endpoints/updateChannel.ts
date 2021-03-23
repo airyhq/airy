@@ -12,5 +12,5 @@ export default HttpClient.prototype.updateChannel = async function (requestPaylo
     }),
   });
 
-  return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.userData']});
+  return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.user_data']});
 };

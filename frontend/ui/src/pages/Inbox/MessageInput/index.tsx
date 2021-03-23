@@ -59,11 +59,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   useEffect(() => {
-    if (input) {
-      textAreaRef.current.style.height = '0px';
-      const scrollHeight = Math.min(100, textAreaRef.current.scrollHeight);
-      textAreaRef.current.style.height = scrollHeight + 'px';
-    }
+    textAreaRef.current.style.height = '0px';
+    const scrollHeight = Math.min(100, textAreaRef.current.scrollHeight);
+    textAreaRef.current.style.height = scrollHeight + 'px';
   }, [input]);
 
   const conversationIdParams = useParams();

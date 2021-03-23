@@ -55,65 +55,65 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
             </div>
             <div className={styles.menuArea}>
               <div className={styles.menuItem}>
-                <ListenOutsideClick onClose={hideFaqDropdown}>
-                  <div className={styles.help} onClick={faqClickHandler}>
-                    ?
-                  </div>
-                </ListenOutsideClick>
+                <div className={styles.help} onClick={faqClickHandler}>
+                  ?
+                </div>
 
                 {isFaqDropdownOn && (
-                  <div className={styles.dropdown}>
-                    <a href="mailto:support@airy.co" className={styles.dropdownLine}>
-                      <span className={styles.dropdownIcon}>
-                        <ShortcutIcon />
-                      </span>
-                      <span>Contact us</span>
-                    </a>
-                    <a
-                      href="https://airy.co/faq"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.dropdownLine}>
-                      <span className={styles.dropdownIcon}>
-                        <ShortcutIcon />
-                      </span>
-                      <span>FAQ</span>
-                    </a>
-                  </div>
+                  <ListenOutsideClick onClose={hideFaqDropdown}>
+                    <div className={styles.dropdown}>
+                      <a href="mailto:support@airy.co" className={styles.dropdownLine}>
+                        <span className={styles.dropdownIcon}>
+                          <ShortcutIcon />
+                        </span>
+                        <span>Contact us</span>
+                      </a>
+                      <a
+                        href="https://airy.co/faq"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.dropdownLine}>
+                        <span className={styles.dropdownIcon}>
+                          <ShortcutIcon />
+                        </span>
+                        <span>FAQ</span>
+                      </a>
+                    </div>
+                  </ListenOutsideClick>
                 )}
               </div>
 
               <div className={styles.menuItem}>
-                <ListenOutsideClick onClose={hideAccountDropdown}>
-                  <div className={styles.dropDown} onClick={accountClickHandler}>
-                    <div className={styles.accountDetails}>
-                      <div className={styles.accountName}>{props.firstName + ' ' + props.lastName}</div>
-                    </div>
-                    <div className={`${styles.dropHint} ${isAccountDropdownOn ? styles.dropHintOpen : ''}`}>
-                      <span className={styles.chevronDown}>
-                        <ChevronDownIcon />
-                      </span>
-                    </div>
+                <div className={styles.dropDown} onClick={accountClickHandler}>
+                  <div className={styles.accountDetails}>
+                    <div className={styles.accountName}>{props.firstName + ' ' + props.lastName}</div>
                   </div>
-                </ListenOutsideClick>
+                  <div className={`${styles.dropHint} ${isAccountDropdownOn ? styles.dropHintOpen : ''}`}>
+                    <span className={styles.chevronDown}>
+                      <ChevronDownIcon />
+                    </span>
+                  </div>
+                </div>
 
                 {isAccountDropdownOn && (
-                  <div className={styles.dropdown}>
-                    <Link to={LOGOUT_ROUTE} className={styles.dropdownLine}>
-                      <span className={styles.dropdownIcon}>
-                        <LogoutIcon />
-                      </span>
-                      <span>Logout</span>
-                    </Link>
-                    <div className={styles.dropdownLastLine}>
-                      <a className={styles.dropdownLastLink} href="https://airy.co/terms-of-service">
-                        T&Cs
-                      </a>
-                      <a className={styles.dropdownLastLink} href="https://airy.co/privacy-policy">
-                        Privacy Policy
-                      </a>
+                  <ListenOutsideClick onClose={hideAccountDropdown}>
+                    <div className={styles.dropdown}>
+                      <Link to={LOGOUT_ROUTE} className={styles.dropdownLine}>
+                        <span className={styles.dropdownIcon}>
+                          <LogoutIcon />
+                        </span>
+                        <span>Logout</span>
+                      </Link>
+                      <div className={styles.dropdownLastLine}>
+                        <a className={styles.dropdownLastLink} href="https://airy.co/terms-of-service">
+                          T&Cs
+                        </a>
+                        <a className={styles.dropdownLastLink} href="https://airy.co/privacy-policy">
+                          Privacy Policy
+                        </a>
+                      </div>
                     </div>
-                  </div>
+                  </ListenOutsideClick>
                 )}
               </div>
             </div>

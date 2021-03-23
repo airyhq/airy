@@ -86,28 +86,6 @@ import ConnectGoogle from '../api/endpoints/connect-google.mdx'
 
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
 
-<ButtonBox
-icon={<BoltSVG />}
-title='Messages endpoint'
-description="Send messages to your Airy Core instance from Google's Business Messages through the Messages endpoint"
-link='api/endpoints/messages#send-from-googles-business-messages-source'
-/>
+import InboxMessages from './inbox-messages.mdx'
 
-<br />
-
-import GoogleMessagesSend from '../api/endpoints/google-messages-send.mdx'
-
-<GoogleMessagesSend />
-
-## Send and receive messages with the Inbox UI
-
-Now that you connected Google's Business Messages to your instance and started a conversation, you can see the conversations, messages in the [Airy Inbox](/apps/ui/inbox), and use it to respond to the messages.
-
-The [Inbox's UI](/apps/ui/inbox) is able render the messages types you can send from Google's Business Messages, such as Rich Cards or Suggestions.
-
-<ButtonBox
-icon={<InboxSVG />}
-title='Inbox'
-description="Receive messages from Google's Business Messages and send messages using the Inbox UI"
-link='apps/ui/inbox'
-/>
+<InboxMessages />

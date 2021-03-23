@@ -139,7 +139,11 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           <div className={styles.settings}>
             <form className={styles.form}>
               {renderFormFields()}
-              <Button type="submit" styleVariant="small" dataCy={cyChannelsChatPluginFormSubmitButton} onClick={createNewConnection}>
+              <Button
+                type="submit"
+                styleVariant="small"
+                dataCy={cyChannelsChatPluginFormSubmitButton}
+                onClick={createNewConnection}>
                 Save
               </Button>
             </form>

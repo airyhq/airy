@@ -74,8 +74,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
         <ArrowLeft className={styles.backIcon} />
         Back
       </LinkButton>
-      <form        
-        className={styles.formContainer}>
+      <form className={styles.formContainer}>
         <div className={styles.formContent}>
           <div className={styles.formContentNumber}>
             <Input
@@ -111,7 +110,11 @@ const TwilioConnect = (props: TwilioConnectProps) => {
               fontClass="font-base"
             />
           </div>
-          <Button type="submit" styleVariant="normal" disabled={numberInput.trim().length === 0} onClick={(e: React.ChangeEvent<HTMLFormElement>) => connectTwilioChannel(e)}>
+          <Button
+            type="submit"
+            styleVariant="normal"
+            disabled={numberInput.trim().length === 0}
+            onClick={(e: React.ChangeEvent<HTMLFormElement>) => connectTwilioChannel(e)}>
             {buttonText}
           </Button>
         </div>

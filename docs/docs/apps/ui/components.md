@@ -26,6 +26,6 @@ link='https://github.com/airyhq/components.'
 />
 <br/>
 
-**Sample Button**
+**Sample Button Component**
 
 <img alt="Button Template Example" src={useBaseUrl('img/apps/ui/storybookExample.png')} />

@@ -40,7 +40,7 @@
     "@types/react-window-infinite-loader": "^1.0.3",
     "@types/resize-observer-browser": "^0.1.5",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
-    "@typescript-eslint/parser": "^4.11.0",
+    "@typescript-eslint/parser": "^4.19.0",
     "babel-loader": "^8.0.6",
     "connect-history-api-fallback": "^1.6.0",
     "copy-webpack-plugin": "^6.4.1",

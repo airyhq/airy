@@ -3,7 +3,6 @@ title: Introduction
 sidebar_label: Introduction
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
 import GearSVG from "@site/static/icons/gear.svg";

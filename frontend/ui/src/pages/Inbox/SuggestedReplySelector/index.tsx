@@ -1,11 +1,11 @@
 import React, {useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {SourceMessage} from 'render';
+import {ListenOutsideClick} from '@airyhq/components';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
 import {SuggestedReply} from 'httpclient';
 import {StateModel} from '../../../reducers';
-import ListenOutsideClick from '../../../components/ListenOutsideClick';
 import {Carousel} from 'render/components/Carousel';
 
 const mapDispatchToProps = {
@@ -33,7 +33,7 @@ const SuggestedReplySelector = ({onClose, suggestions, selectSuggestedReply, sou
   const componentRef = useRef(null);
 
   return (
-    <ListenOutsideClick onClose={onClose}>
+    <ListenOutsideClick onOuterClick={onClose}>
       <div className={styles.component} ref={componentRef}>
         <div className={styles.suggestionList}>
           <Carousel>
@@ -47,7 +47,11 @@ const SuggestedReplySelector = ({onClose, suggestions, selectSuggestedReply, sou
                     selectSuggestedReply(suggestion);
                   }}>
                   <div className={styles.fadeOutWrapper}>
-                    <SourceMessage message={{id: id, content: suggestion.content}} source={source} />
+                    <SourceMessage
+                      content={{id: id, content: suggestion.content}}
+                      source={source}
+                      contentType="suggestedReplies"
+                    />
                   </div>
                 </div>
               );

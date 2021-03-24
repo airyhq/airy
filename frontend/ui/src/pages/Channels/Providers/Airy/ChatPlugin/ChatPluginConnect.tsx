@@ -18,7 +18,6 @@ import {
   cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
-  cyChannelsChatPluginFormBackButton,
 } from 'handles';
 
 import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
@@ -138,9 +137,13 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
         <p className={styles.newPageParagraph}>Add Airy Live Chat to your website and application</p>
         <div className={styles.formWrapper}>
           <div className={styles.settings}>
-            <form className={styles.form} onSubmit={createNewConnection}>
+            <form className={styles.form}>
               {renderFormFields()}
-              <Button type="submit" styleVariant="small" dataCy={cyChannelsChatPluginFormSubmitButton}>
+              <Button
+                type="submit"
+                styleVariant="small"
+                dataCy={cyChannelsChatPluginFormSubmitButton}
+                onClick={createNewConnection}>
                 Save
               </Button>
             </form>
@@ -289,7 +292,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           </div>
         )}
       </div>
-      <LinkButton onClick={props.history.goBack} type="button" dataCy={cyChannelsChatPluginFormBackButton}>
+      <LinkButton onClick={props.history.goBack} type="button">
         <ArrowLeftIcon className={styles.backIcon} />
         Back
       </LinkButton>

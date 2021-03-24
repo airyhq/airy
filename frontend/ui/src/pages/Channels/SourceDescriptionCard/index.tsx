@@ -1,33 +1,37 @@
 import React from 'react';
 
-import {SourceTypeInfo} from '../MainPage';
+import {SourceInfo} from '../MainPage';
 import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plus-circle.svg';
 
 import styles from './index.module.scss';
 
-type SourceTypeDescriptionCardProps = {
-  sourceTypeInfo: SourceTypeInfo;
+type SourceDescriptionCardProps = {
+  sourceInfo: SourceInfo;
   displayButton: boolean;
   addChannelAction?: () => void;
 };
 
-const SourceTypeDescriptionCard = (props: SourceTypeDescriptionCardProps) => {
-  const {sourceTypeInfo, displayButton, addChannelAction} = props;
+const SourceDescriptionCard = (props: SourceDescriptionCardProps) => {
+  const {sourceInfo, displayButton, addChannelAction} = props;
 
   return (
     <>
       <div className={styles.requirementsDialogBackground}></div>
       <div className={styles.channelCard}>
-        <div className={styles.channelLogo}>{sourceTypeInfo.image}</div>
+        <div className={styles.channelLogo}>{sourceInfo.image}</div>
         <div className={styles.channelTitleAndText}>
-          <p className={styles.channelTitle}>{sourceTypeInfo.title}</p>
-          <p className={styles.channelText}>{sourceTypeInfo.description}</p>
+          <p className={styles.channelTitle}>{sourceInfo.title}</p>
+          <p className={styles.channelText}>{sourceInfo.description}</p>
         </div>
       </div>
 
       {displayButton && (
         <div className={styles.channelButton}>
-          <button type="button" className={styles.addChannelButton} onClick={addChannelAction}>
+          <button
+            type="button"
+            className={styles.addChannelButton}
+            onClick={addChannelAction}
+            data-cy={sourceInfo.dataCyAddChannelButton}>
             <div className={styles.channelButtonIcon} title="Add a channel">
               <PlusCircleIcon />
             </div>
@@ -38,4 +42,4 @@ const SourceTypeDescriptionCard = (props: SourceTypeDescriptionCardProps) => {
   );
 };
 
-export default SourceTypeDescriptionCard;
+export default SourceDescriptionCard;

@@ -14,7 +14,7 @@ export interface Channel {
   phoneNumber?: string;
 }
 
-export enum SourceType {
+export enum Source {
   facebook = 'facebook',
   google = 'google',
   chatPlugin = 'chatplugin',

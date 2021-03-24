@@ -1,9 +1,3 @@
-import {Contact} from 'httpclient';
-import {CommandUnion} from '../shared';
-
-export interface DefaultMessageRenderingProps {
+export interface DefaultRenderingProps {
   fromContact?: boolean;
-  contact?: Contact;
-  sentAt?: string;
-  commandCallback?: (command: CommandUnion) => void;
 }

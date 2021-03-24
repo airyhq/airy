@@ -6,7 +6,7 @@ import {sortBy} from 'lodash-es';
 import {StateModel} from './../../../reducers';
 import {allChannels} from './../../../selectors/channels';
 
-import {Channel, SourceType} from 'httpclient';
+import {Channel, Source} from 'httpclient';
 import ChannelListItem from './ChannelListItem';
 import {SearchField} from '@airyhq/components';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
@@ -15,7 +15,7 @@ import {ReactComponent as PLusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
-
+import {cyChannelsFormBackButton} from 'handles';
 import {
   CHANNELS_FACEBOOK_ROUTE,
   CHANNELS_CHAT_PLUGIN_ROUTE,
@@ -54,23 +54,23 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
 
   const setPageTitle = () => {
     switch (source) {
-      case SourceType.facebook:
+      case Source.facebook:
         setName('Facebook Messenger');
         setPath(CHANNELS_FACEBOOK_ROUTE);
         break;
-      case SourceType.google:
+      case Source.google:
         setName('Google');
         setPath('');
         break;
-      case SourceType.twilioSMS:
+      case Source.twilioSMS:
         setName('Twilio SMS');
         setPath(CHANNELS_TWILIO_SMS_ROUTE + '/new_account');
         break;
-      case SourceType.twilioWhatsapp:
+      case Source.twilioWhatsapp:
         setName('Twilio Whatsapp');
         setPath(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account');
         break;
-      case SourceType.chatPlugin:
+      case Source.chatPlugin:
         setName('Chat Plugin');
         setPath(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
         break;
@@ -106,10 +106,12 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
           </div>
         </div>
       </div>
-      <Link to={CHANNELS_ROUTE} className={styles.backButton}>
+
+      <Link to={CHANNELS_ROUTE} className={styles.backButton} data-cy={cyChannelsFormBackButton}>
         <ArrowLeftIcon className={styles.backIcon} />
         Back to channels
       </Link>
+
       <div className={styles.channelsList}>
         {filteredChannels.length > 0 ? (
           sortBy(filteredChannels, (channel: Channel) => channel.metadata.name.toLowerCase()).map(

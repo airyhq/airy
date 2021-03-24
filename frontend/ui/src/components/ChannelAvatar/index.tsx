@@ -4,7 +4,7 @@ import {ReactComponent as WhatsappAvatar} from 'assets/images/icons/whatsapp_ava
 import {ReactComponent as SmsAvatar} from 'assets/images/icons/sms_avatar.svg';
 import {ReactComponent as FacebookAvatar} from 'assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as AiryAvatar} from 'assets/images/icons/airy_avatar.svg';
-import {Channel, SourceType} from 'httpclient';
+import {Channel, Source} from 'httpclient';
 import styles from './index.module.scss';
 
 type ChannelAvatarProps = {
@@ -33,13 +33,13 @@ const ChannelAvatar = (props: ChannelAvatarProps) => {
 
   const getChannelAvatar = (channel: Channel) => {
     switch (channel.source) {
-      case SourceType.facebook:
+      case Source.facebook:
         return <FacebookAvatar />;
-      case SourceType.google:
+      case Source.google:
         return <GoogleAvatar />;
-      case SourceType.twilioSMS:
+      case Source.twilioSMS:
         return <SmsAvatar />;
-      case SourceType.twilioWhatsapp:
+      case Source.twilioWhatsapp:
         return <WhatsappAvatar />;
       default:
         return <AiryAvatar />;

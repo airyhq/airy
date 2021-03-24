@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
-import {SourceType, Channel, Config} from 'httpclient';
+import {Source, Channel, Config} from 'httpclient';
 import {FacebookMessengerRequirementsDialog} from '../Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
 import {TwilioRequirementsDialog} from '../Providers/Twilio/TwilioRequirementsDialog';
-import SourceTypeDescriptionCard from '../SourceTypeDescriptionCard';
+import SourceDescriptionCard from '../SourceDescriptionCard';
 import ConnectedChannelsBySourceCard from '../ConnectedChannelsBySourceCard';
 
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airy_avatar.svg';
@@ -14,7 +14,18 @@ import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avata
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/google_avatar.svg';
 
 import styles from './index.module.scss';
-
+import {
+  cyChannelsChatPluginAddButton,
+  cyChannelsChatPluginList,
+  cyChannelsFacebookAddButton,
+  cyChannelsFacebookList,
+  cyChannelsGoogleAddButton,
+  cyChannelsGoogleList,
+  cyChannelsTwilioSmsAddButton,
+  cyChannelsTwilioSmsList,
+  cyChannelsTwilioWhatsappAddButton,
+  cyChannelsTwilioWhatsappList,
+} from 'handles';
 import {
   CHANNELS_FACEBOOK_ROUTE,
   CHANNELS_TWILIO_SMS_ROUTE,
@@ -28,8 +39,8 @@ type MainPageProps = {
   config: Config;
 };
 
-export type SourceTypeInfo = {
-  type: SourceType;
+export type SourceInfo = {
+  type: Source;
   title: string;
   description: string;
   image: JSX.Element;
@@ -38,11 +49,13 @@ export type SourceTypeInfo = {
   configKey: string;
   channelsToShow: number;
   itemInfoString: string;
+  dataCyAddChannelButton: string;
+  dataCyChannelList: string;
 };
 
-const sourceTypesInfo: SourceTypeInfo[] = [
+const SourcesInfo: SourceInfo[] = [
   {
-    type: SourceType.chatPlugin,
+    type: Source.chatPlugin,
     title: 'Airy Live Chat',
     description: 'Best of class browser messenger',
     image: <AiryAvatarIcon />,
@@ -51,9 +64,11 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     configKey: 'sources-chatplugin',
     channelsToShow: 4,
     itemInfoString: 'channels',
+    dataCyAddChannelButton: cyChannelsChatPluginAddButton,
+    dataCyChannelList: cyChannelsChatPluginList,
   },
   {
-    type: SourceType.facebook,
+    type: Source.facebook,
     title: 'Messenger',
     description: 'Connect multiple Facebook pages',
     image: <MessengerAvatarIcon />,
@@ -62,9 +77,11 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     configKey: 'sources-facebook',
     channelsToShow: 4,
     itemInfoString: 'channels',
+    dataCyAddChannelButton: cyChannelsFacebookAddButton,
+    dataCyChannelList: cyChannelsFacebookList,
   },
   {
-    type: SourceType.twilioSMS,
+    type: Source.twilioSMS,
     title: 'SMS',
     description: 'Deliver SMS with ease',
     image: <SMSAvatarIcon />,
@@ -73,9 +90,11 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     configKey: 'sources-twilio',
     channelsToShow: 2,
     itemInfoString: 'phones',
+    dataCyAddChannelButton: cyChannelsTwilioSmsAddButton,
+    dataCyChannelList: cyChannelsTwilioSmsList,
   },
   {
-    type: SourceType.twilioWhatsapp,
+    type: Source.twilioWhatsapp,
     title: 'Whatsapp',
     description: 'World #1 chat app',
     image: <WhatsappLogo />,
@@ -84,9 +103,11 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     configKey: 'sources-twilio',
     channelsToShow: 2,
     itemInfoString: 'phones',
+    dataCyAddChannelButton: cyChannelsTwilioWhatsappAddButton,
+    dataCyChannelList: cyChannelsTwilioWhatsappList,
   },
   {
-    type: SourceType.google,
+    type: Source.google,
     title: 'Google Business Messages',
     description: 'Be there when people search',
     image: <GoogleAvatarIcon />,
@@ -95,6 +116,8 @@ const sourceTypesInfo: SourceTypeInfo[] = [
     configKey: 'sources-google',
     channelsToShow: 4,
     itemInfoString: 'channels',
+    dataCyAddChannelButton: cyChannelsGoogleAddButton,
+    dataCyChannelList: cyChannelsGoogleList,
   },
 ];
 
@@ -104,22 +127,21 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
 
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
-      case SourceType.facebook:
+      case Source.facebook:
         return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case SourceType.google:
+      case Source.google:
         return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
         break;
-      case SourceType.chatPlugin:
+      case Source.chatPlugin:
         break;
-      case SourceType.twilioSMS:
+      case Source.twilioSMS:
         return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-      case SourceType.twilioWhatsapp:
+      case Source.twilioWhatsapp:
         return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
     }
   };
 
-  const channelsBySourceType = (sourceType: SourceType) =>
-    channels.filter((channel: Channel) => channel.source === sourceType);
+  const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
 
   return (
     <>
@@ -135,11 +157,11 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
 
       <div className={styles.wrapper}>
         {displayDialogFromSource !== '' && <OpenRequirementsDialog source={displayDialogFromSource} />}
-        {sourceTypesInfo.map((infoItem: SourceTypeInfo) => (
+        {SourcesInfo.map((infoItem: SourceInfo) => (
           <div style={{display: 'flex', flexGrow: 1}} key={infoItem.type}>
-            <SourceTypeDescriptionCard
-              sourceTypeInfo={infoItem}
-              displayButton={!channelsBySourceType(infoItem.type).length}
+            <SourceDescriptionCard
+              sourceInfo={infoItem}
+              displayButton={!channelsBySource(infoItem.type).length}
               addChannelAction={() => {
                 if (config.components[infoItem.configKey].enabled) {
                   props.history.push(infoItem.newChannelRoute);
@@ -149,8 +171,8 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
               }}
             />
             <ConnectedChannelsBySourceCard
-              sourceTypeInfo={infoItem}
-              channels={channelsBySourceType(infoItem.type)}
+              sourceInfo={infoItem}
+              channels={channelsBySource(infoItem.type)}
               connected="CONNECTED"
             />
           </div>

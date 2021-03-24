@@ -12,7 +12,7 @@ export default HttpClient.prototype.listConversations = async function (
   const response: PaginatedPayload<any> = await this.doFetchFromBackend('conversations.list', conversationListRequest);
 
   const conversationData = response.data.map(messagePayload => ({
-    ...camelcaseKeys(messagePayload, {deep: true, stopPaths: ['metadata.userData']}),
+    ...camelcaseKeys(messagePayload, {deep: true, stopPaths: ['metadata.user_data']}),
     createdAt: new Date(messagePayload.created_at),
     lastMessage: mapMessage(messagePayload.last_message),
   }));

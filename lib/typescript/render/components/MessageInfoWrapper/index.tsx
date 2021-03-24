@@ -1,13 +1,16 @@
 import React, {ReactNode} from 'react';
 import {Avatar} from '../Avatar';
-import {DefaultMessageRenderingProps} from '../../components/index';
+import {Contact} from 'httpclient';
+import {DefaultRenderingProps} from '../../components/index';
 import styles from './index.module.scss';
 
 type MessageInfoWrapperProps = {
-  children?: ReactNode;
+  children: ReactNode;
   lastInGroup?: boolean;
   isChatPlugin: boolean;
-} & DefaultMessageRenderingProps;
+  contact?: Contact;
+  sentAt?: string;
+} & DefaultRenderingProps;
 
 export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
   const {sentAt, contact, fromContact, children, lastInGroup, isChatPlugin} = props;

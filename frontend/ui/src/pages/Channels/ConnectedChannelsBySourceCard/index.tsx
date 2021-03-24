@@ -3,24 +3,22 @@ import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 import {LinkButton} from '@airyhq/components';
 import {Channel} from 'httpclient';
-import {SourceTypeInfo} from '../MainPage';
+import {SourceInfo} from '../MainPage';
 import ChannelAvatar from '../../../components/ChannelAvatar';
 import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plus-circle.svg';
 
 import styles from './index.module.scss';
 
 type ConnectedChannelsBySourceCardProps = {
-  sourceTypeInfo: SourceTypeInfo;
+  sourceInfo: SourceInfo;
   channels: Channel[];
   connected: string;
-  dataCyAddChannelButton?: string;
-  dataCyChannelList?: string;
 };
 
 const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps & RouteComponentProps) => {
-  const {sourceTypeInfo, channels, dataCyChannelList, dataCyAddChannelButton} = props;
+  const {sourceInfo, channels} = props;
 
-  const hasExtraChannels = channels.length > sourceTypeInfo.channelsToShow;
+  const hasExtraChannels = channels.length > sourceInfo.channelsToShow;
 
   return (
     <>
@@ -34,15 +32,15 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
             </div>
             <div
               className={styles.connectedChannelBox}
-              onClick={() => props.history.push(sourceTypeInfo.channelsListRoute)}>
-              <div className={styles.connectedChannel} data-cy={dataCyChannelList}>
-                {channels.slice(0, sourceTypeInfo.channelsToShow).map((channel: Channel) => {
+              onClick={() => props.history.push(sourceInfo.channelsListRoute)}>
+              <div className={styles.connectedChannel} data-cy={sourceInfo.dataCyChannelList}>
+                {channels.slice(0, sourceInfo.channelsToShow).map((channel: Channel) => {
                   return (
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData}>
                         <ChannelAvatar channel={channel} style={{width: '20px', height: '20px', marginRight: '4px'}} />
                         <div className={styles.connectedChannelName}>{channel.metadata?.name}</div>
-                        {sourceTypeInfo.channelsToShow === 2 && (
+                        {sourceInfo.channelsToShow === 2 && (
                           <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>
                         )}
                       </button>
@@ -53,7 +51,7 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
               <div className={styles.extraChannel}>
                 {hasExtraChannels && (
                   <LinkButton>
-                    +{channels.length - sourceTypeInfo.channelsToShow} {sourceTypeInfo.itemInfoString}
+                    +{channels.length - sourceInfo.channelsToShow} {sourceInfo.itemInfoString}
                   </LinkButton>
                 )}
               </div>
@@ -64,8 +62,8 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
             <button
               type="button"
               className={styles.addChannelButton}
-              onClick={() => props.history.push(sourceTypeInfo.newChannelRoute)}
-              data-cy={dataCyAddChannelButton}>
+              onClick={() => props.history.push(sourceInfo.newChannelRoute)}
+              data-cy={sourceInfo.dataCyAddChannelButton}>
               <div className={styles.channelButtonIcon} title="Add a channel">
                 <PlusCircleIcon />
               </div>

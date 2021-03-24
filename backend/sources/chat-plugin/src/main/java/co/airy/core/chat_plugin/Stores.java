@@ -112,7 +112,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public List<Message> getMessages(String conversationId) {
         final ReadOnlyKeyValueStore<String, MessagesTreeSet> messagesStore = getMessagesStore();
-
         final MessagesTreeSet messagesTreeSet = messagesStore.get(conversationId);
 
         return messagesTreeSet == null ? List.of() : new ArrayList<>(messagesTreeSet);

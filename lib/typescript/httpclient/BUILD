@@ -9,7 +9,9 @@ ts_web_library(
     deps = [
         "//lib/typescript/types",
         "@npm//@types/node",
+        "@npm//@types/node-fetch",
         "@npm//camelcase-keys",
+        "@npm//node-fetch",
     ],
 )
 

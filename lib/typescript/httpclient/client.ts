@@ -18,6 +18,7 @@ import {
 } from './payload';
 
 import {Tag, Message, Channel, User, Conversation, Config, Template} from './model';
+import fetch from 'node-fetch';
 
 export function isString(object: any) {
   return typeof object === 'string' || object instanceof String;

@@ -406,7 +406,7 @@ func (a *Aws) createKubeConfigFile(name string, endpoint *string, certificateDat
 	}
 
 	home, err := homedir.Dir()
-	kubeConfigFilePath := path.Join(home, "/.airy/kube.conf")
+	kubeConfigFilePath := path.Join(home, ".airy", "kube.conf")
 	kubeConfigFile, err := os.Create(kubeConfigFilePath)
 	defer kubeConfigFile.Close()
 

@@ -24,13 +24,13 @@ export const QuickReplies = ({quickReplies, fromContact, text, attachment}: Quic
     {attachment && 'videoUrl' in attachment && <Video videoUrl={attachment.videoUrl} />}
 
     <div className={styles.container}>
-      {quickReplies.map(({title, image_url}) => (
+      {quickReplies.map(({title, image_url: imageUrl}) => (
         <button key={title} className={styles.replyButton}>
-          {image_url && (
+          {imageUrl && (
             <img
               className={styles.quickReplyImage}
               alt={title}
-              src={image_url}
+              src={imageUrl}
               onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event, 'mediaImage')}
             />
           )}

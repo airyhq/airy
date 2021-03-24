@@ -115,6 +115,15 @@ Get the ID of the VPC:
 vpc_id=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=${id} --query 'Vpcs[0].VpcId' --output text)
 ```
 
+Delete all the load-balancers
+
+```sh
+for loadbalancer in $(aws elb describe-load-balancers --query "LoadBalancerDescriptions[?VPCId=='${vpc_id}'].LoadBalancerName" --output text)
+do
+  aws elb delete-load-balancer --load-balancer-name ${loadbalancer}
+done
+```
+
 Delete all used network interfaces
 
 ```sh
@@ -124,12 +133,12 @@ do
 done
 ```
 
-Delete the security groups created by the loadbalancer:
+Delete the security groups created by the load-balancers:
 
 ```sh
 for group in $(aws ec2 describe-security-groups --filters Name=vpc-id,Values=${vpc_id} --filters Name=tag-key,Values=kubernetes.io/cluster/${id} --query 'SecurityGroups[].GroupId' --output text)
 do
-  aws ec2 delete-security-group --group-id $group
+  aws ec2 delete-security-group --group-id ${group}
 done
 ```
 

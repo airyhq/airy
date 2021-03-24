@@ -186,6 +186,15 @@ Success! You are now ready to connect a Facebook page to your Airy Core instance
 
 ## Connect a Facebook page to your instance
 
+There are 2 options to connect a Facebook source to your instance:
+
+- you can connect the source via an API request (using curl or platforms such as Postman)
+- you can connect the source via the UI
+
+We cover both options in this document.
+
+## Connect a Facebook source via API request
+
 The next step is to send a request to the [Channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
 
 <ButtonBox
@@ -201,6 +210,29 @@ import ConnectFacebook from '../api/endpoints/connect-facebook.mdx'
 
 <ConnectFacebook />
 
+:::note
+
+If you encounter errors, please follow these debugging advices:
+
+- make sure that the tokens you have added to the airy.yaml file (refer back to step 1) have been applied to your Airy Core instance. An Airy Core instance should be created after editing the airy.yaml file.
+
+- verify your webhook integration (refer back to step 2). Make sure that your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the Page subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
+
+:::
+
+## Connect a Facebook source via the UI 
+
+You can connect a Facebook source via your Airy Core instance UI.
+
+On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu and select the Facebook channel. Add your Facebook Page ID and Page Access Token in the respective fields. You can optionally add a name and an image. 
+
+<img alt="Facebook connect" src={useBaseUrl('img/sources/facebook/facebook_ui.png')} />
+
+<br />
+
+Your can find your Facebook Page ID and Page Access Token on your app's dashboard on [Facebook For Developers](https://developers.facebook.com/): the Facebook Page ID is the ID of the page you want to connect and the Page Access Token is generated on the Messenger product section (refer back to the previous steps).
+
+
 ## Send messages from a Facebook source
 
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
@@ -208,3 +240,5 @@ After connecting the source to your instance, you will be able to send messages 
 import InboxMessages from './inbox-messages.mdx'
 
 <InboxMessages />
+
+

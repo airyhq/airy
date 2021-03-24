@@ -39,9 +39,9 @@ Now you can run this command, which will create Airy core in your AWS account:
 airy create --provider=aws
 ```
 
-By default, the installation will create a single EC2 Kubernetes node, as part of a single node group. You can scale your EKS cluster by adding more nodes or node groups, through the AWS web console or the AWS CLI.
+By default, the installation will create a single EC2 Kubernetes node, as part of a single node group. You can scale your EKS cluster by adding more nodes or node groups through the AWS web console or the AWS CLI.
 
-This will print URLs for accessing the UIs and APIs as seen in this recording:
+The `create` command will print URLs for accessing the UIs and APIs as seen in this recording:
 
 import Script from "@site/src/components/Script";
 
@@ -71,7 +71,7 @@ For more details please see our [Configuration Section](configuration.md).
 
 ## Uninstall Airy Core
 
-You can remove the Airy Core AWS installation by manually deleting the created AWS resources. For this you will need the [Aws CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
+You can remove the Airy Core AWS installation by deleting the Airy Core AWS resources with the [AWS CLI CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
 
 Retrieve the ID of the installation:
 

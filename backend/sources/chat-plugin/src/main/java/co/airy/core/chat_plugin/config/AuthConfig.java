@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -35,11 +36,15 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
                 .authorizeRequests()
-                .antMatchers("/actuator/**", "/ws.chatplugin").permitAll()
-                .mvcMatchers("/chatplugin.authenticate").permitAll()
                 .anyRequest().authenticated();
     }
 
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/actuator/**", "/ws.chatplugin")
+                .mvcMatchers("/chatplugin.authenticate", "/chatplugin.resumeToken");
+    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource(final Environment environment) {

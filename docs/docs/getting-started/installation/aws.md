@@ -61,7 +61,7 @@ kubectl --kubeconfig ~/.airy/kube.conf get --namespace kube-system service traef
 
 ## Where to go from here
 
-Now that you have a running local installation of Airy core on AWS you can connect it to messaging sources. Check out the
+Now that you have a running installation of Airy core on AWS you can connect it to messaging sources. Check out the
 [source documentation](/sources/introduction.md) to learn more.
 
 ## Third party tools

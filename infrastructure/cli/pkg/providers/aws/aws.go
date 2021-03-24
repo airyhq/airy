@@ -75,44 +75,6 @@ func (a *Aws) PostInstallation(namespace string) error {
 	return nil
 }
 
-func (a *Aws) updateIngress(ingressName string, loadBalancerUrl string, namespace string) error {
-	clientset, err := a.context.GetClientSet()
-	ingress, err := clientset.ExtensionsV1beta1().Ingresses(namespace).Get(context.TODO(), ingressName, metav1.GetOptions{})
-
-	if err != nil {
-		return err
-	}
-
-	ingress.Spec.Rules[0].Host = loadBalancerUrl
-
-	ingress, err = clientset.ExtensionsV1beta1().Ingresses(namespace).Update(context.TODO(), ingress, metav1.UpdateOptions{})
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (a *Aws) updateHostsConfigMap(loadBalancerUrl string, namespace string) error {
-	clientset, err := a.context.GetClientSet()
-	if err != nil {
-		return err
-	}
-	configMaps := clientset.CoreV1().ConfigMaps(namespace)
-
-	configMap, err := configMaps.Get(context.TODO(), "hostnames", metav1.GetOptions{})
-
-	if err != nil {
-		return err
-	}
-	configMap.Data["HOST"] = loadBalancerUrl
-	if _, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{}); err != nil {
-		return err
-	}
-	return nil
-}
-
 type KubeConfig struct {
 	ClusterName     string
 	EndpointUrl     string
@@ -165,13 +127,12 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	}
 	iamResult, err := iamClient.CreateRole(context.TODO(), createRoleInput)
 	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+		console.Exit("Error creating role: ", err)
 	}
 	fmt.Printf("Created AWS Role with ARN: %s.\n", *iamResult.Role.Arn)
 
 	roleName := iamResult.Role.RoleName
-	if err = AttachPolicies(iamClient, roleName); err != nil {
+	if err = a.attachPolicies(iamClient, roleName); err != nil {
 		console.Exit("Error attaching policies: ", err)
 	}
 
@@ -251,7 +212,7 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	fmt.Printf("Created EKS cluster named: %s\n", *cluster.Name)
 
 	clusterReady := make(chan bool, 1)
-	go CheckClusterReady(eksClient, name, clusterReady)
+	go a.checkClusterReady(eksClient, name, clusterReady)
 	<-clusterReady
 
 	nodeGroup, err := a.createNodeGroup(eksClient, name, roleArn, subnetIds)
@@ -495,16 +456,45 @@ func (a *Aws) createKubeConfigFile(name string, endpoint *string, certificateDat
 	return kubeConfigFilePath, nil
 }
 
-func RandString(n int) string {
-	rand.Seed(time.Now().UnixNano())
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
+func (a *Aws) updateIngress(ingressName string, loadBalancerUrl string, namespace string) error {
+	clientset, err := a.context.GetClientSet()
+	ingress, err := clientset.ExtensionsV1beta1().Ingresses(namespace).Get(context.TODO(), ingressName, metav1.GetOptions{})
+
+	if err != nil {
+		return err
 	}
-	return string(b)
+
+	ingress.Spec.Rules[0].Host = loadBalancerUrl
+
+	ingress, err = clientset.ExtensionsV1beta1().Ingresses(namespace).Update(context.TODO(), ingress, metav1.UpdateOptions{})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func AttachPolicies(iamClient *iam.Client, roleName *string) error {
+func (a *Aws) updateHostsConfigMap(loadBalancerUrl string, namespace string) error {
+	clientset, err := a.context.GetClientSet()
+	if err != nil {
+		return err
+	}
+	configMaps := clientset.CoreV1().ConfigMaps(namespace)
+
+	configMap, err := configMaps.Get(context.TODO(), "hostnames", metav1.GetOptions{})
+
+	if err != nil {
+		return err
+	}
+	configMap.Data["HOST"] = loadBalancerUrl
+	if _, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *Aws) attachPolicies(iamClient *iam.Client, roleName *string) error {
 	policies := [...]string{"arn:aws:iam::aws:policy/AmazonEKSClusterPolicy",
 		"arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
 		"arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
@@ -526,7 +516,7 @@ func AttachPolicies(iamClient *iam.Client, roleName *string) error {
 	return nil
 }
 
-func CheckClusterReady(eksClient *eks.Client, name string, clusterReady chan bool) {
+func (a *Aws) checkClusterReady(eksClient *eks.Client, name string, clusterReady chan bool) {
 	fmt.Print("Waiting for cluster to be ready...\n")
 
 	for {
@@ -548,7 +538,7 @@ func CheckClusterReady(eksClient *eks.Client, name string, clusterReady chan boo
 
 }
 
-func CheckNodeGroupReady(eksClient *eks.Client, name string, nodeGroupName string, nodeGroupReady chan bool) {
+func (a *Aws) checkNodeGroupReady(eksClient *eks.Client, name string, nodeGroupName string, nodeGroupReady chan bool) {
 	fmt.Print("Waiting for node group to be ready...\n")
 	for {
 		describeNodegroupResult, err := eksClient.DescribeNodegroup(context.TODO(), &eks.DescribeNodegroupInput{
@@ -567,4 +557,13 @@ func CheckNodeGroupReady(eksClient *eks.Client, name string, nodeGroupName strin
 			time.Sleep(time.Second)
 		}
 	}
+}
+
+func RandString(n int) string {
+	rand.Seed(time.Now().UnixNano())
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }

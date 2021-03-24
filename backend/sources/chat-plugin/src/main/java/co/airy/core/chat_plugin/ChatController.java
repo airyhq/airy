@@ -106,7 +106,7 @@ public class ChatController {
             return new Principal(requestPayload.getChannelId(), requestPayload.getConversationId());
         }
 
-        return jwt.authenticate(apiToken);
+        return jwt.authenticate(requestToken);
     }
 
     @PostMapping("/chatplugin.send")

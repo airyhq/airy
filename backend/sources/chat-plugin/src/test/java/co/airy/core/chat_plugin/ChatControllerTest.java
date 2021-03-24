@@ -105,7 +105,7 @@ public class ChatControllerTest {
         retryOnException(() -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()), "Application is not healthy");
     }
 
-    //@Test
+    @Test
     void authenticateSendAndReceive() throws Exception {
         final String authPayload = "{\"channel_id\":\"" + channel.getId() + "\"}";
 
@@ -136,7 +136,7 @@ public class ChatControllerTest {
         assertThat(node.get("text").toString(), containsString(messageText));
     }
 
-    //@Test
+    @Test
     void canResumeConversation() throws Exception {
         final String authPayload = "{\"channel_id\":\"" + channel.getId() + "\"}";
 

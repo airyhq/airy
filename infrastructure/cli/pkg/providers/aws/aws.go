@@ -30,7 +30,7 @@ type Aws struct {
 }
 
 func (a *Aws) GetHelmOverrides() []string {
-	return []string{"--set", "global.ngrokEnabled=false", "--set", "global.host=http://airy.core"}
+	return []string{"--set", "global.ngrokEnabled=false"}
 }
 
 func (a *Aws) PostInstallation(namespace string) error {
@@ -444,7 +444,7 @@ func (a *Aws) updateHostsConfigMap(loadBalancerUrl string, namespace string) err
 	if err != nil {
 		return err
 	}
-	configMap.Data["HOST"] = loadBalancerUrl
+	configMap.Data["HOST"] = "http://"+loadBalancerUrl
 	_, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{})
 
 	return err

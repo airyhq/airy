@@ -45,7 +45,7 @@ The `create` command will print URLs for accessing the UIs and APIs as seen in t
 
 import Script from "@site/src/components/Script";
 
-<Script data-cols="90" id="asciicast-PR1ZSQICDMm9JhtzJIVdg9HQX" src="https://asciinema.org/a/PR1ZSQICDMm9JhtzJIVdg9HQX"></Script>
+<Script data-cols="120" data-rows="32" id="asciicast-PR1ZSQICDMm9JhtzJIVdg9HQX" src="https://asciinema.org/a/PR1ZSQICDMm9JhtzJIVdg9HQX.js"></Script>
 
 If you want to customize your `Airy Core` instance please see our [Configuration Section](configuration.md).
 

@@ -2,7 +2,8 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "aws",
-    srcs = ["aws.go"],
+    srcs = ["aws.go", "files.go"],
+    embedsrcs = ["rolepolicy.json", "kubeConfigTemplate.yaml"],
     importpath = "cli/pkg/providers/aws",
     visibility = ["//visibility:public"],
     deps = [

@@ -23,22 +23,6 @@ import (
 	"github.com/mitchellh/go-homedir"
 )
 
-const RolePolicyDocument = `{
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Effect": "Allow",
-			"Principal": {"Service": "eks.amazonaws.com"},
-			"Action": "sts:AssumeRole"
-		},
-		{
-			"Effect": "Allow",
-			"Principal": {"Service": "ec2.amazonaws.com"},
-			"Action": "sts:AssumeRole"
-		}
-	]
-}`
-
 var letters = []rune("abcdefghijklmnopqrstuvwxyz")
 
 type Aws struct {
@@ -81,34 +65,6 @@ type KubeConfig struct {
 	EndpointUrl     string
 	CertificateData string
 }
-
-const KubeConfigTemplate = `
-apiVersion: v1
-clusters:
-- cluster:
-    server: {{.EndpointUrl}}
-    certificate-authority-data: {{.CertificateData}}
-  name: kubernetes
-contexts:
-- context:
-    cluster: kubernetes
-    user: aws
-  name: {{.ClusterName}}
-current-context: {{.ClusterName}}
-kind: Config
-preferences: {}
-users:
-- name: aws
-  user:
-    exec:
-      apiVersion: client.authentication.k8s.io/v1alpha1
-      command: aws
-      args:
-        - "eks"
-        - "get-token"
-        - "--cluster-name"
-        - "{{.ClusterName}}"
-`
 
 func (a *Aws) Provision() (kube.KubeCtx, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO())

@@ -142,27 +142,6 @@ go_register_toolchains(
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
-go_repository(
-    name = "com_github_aws_aws_sdk_go",
-    importpath = "github.com/aws/aws-sdk-go",
-    sum = "h1:OlePDQg2idesIZKPy8egpN51RIF3DHhtREnvgNpTZhE=",
-    version = "v1.37.29",
-)
-
-go_repository(
-    name = "com_github_aws_aws_sdk_go_v2_service_iam",
-    importpath = "github.com/aws/aws-sdk-go-v2/service/iam",
-    sum = "h1:dfpLUOEtz+DlRpeAA9vg/tM/VjAcDGBE47m2ZbdXrZU=",
-    version = "v1.1.1",
-)
-
-go_repository(
-    name = "com_github_thanhpk_randstr",
-    importpath = "github.com/thanhpk/randstr",
-    sum = "h1:IN78qu/bR+My+gHCvMEXhR/i5oriVHcTB/BJJIRTsNo=",
-    version = "v1.0.4",
-)
-
 gazelle_dependencies()
 
 git_repository(

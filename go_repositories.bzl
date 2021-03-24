@@ -59,6 +59,12 @@ def go_repositories():
         sum = "h1:BUAU3CGlLvorLI26FmByPp2eC2qla6E1Tw+scpcg/to=",
         version = "v0.0.0-20180808171621-7fddfc383310",
     )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go",
+        importpath = "github.com/aws/aws-sdk-go",
+        sum = "h1:OlePDQg2idesIZKPy8egpN51RIF3DHhtREnvgNpTZhE=",
+        version = "v1.37.29",
+    )
 
     go_repository(
         name = "com_github_aws_aws_sdk_go_v2",
@@ -96,6 +102,13 @@ def go_repositories():
         sum = "h1:nK/Kl0TIfwaHUkcCj9+L6td2Xds7QNYMODJKWG1wPOY=",
         version = "v1.1.1",
     )
+    go_repository(
+        name = "com_github_aws_aws_sdk_go_v2_service_iam",
+        importpath = "github.com/aws/aws-sdk-go-v2/service/iam",
+        sum = "h1:dfpLUOEtz+DlRpeAA9vg/tM/VjAcDGBE47m2ZbdXrZU=",
+        version = "v1.1.1",
+    )
+
     go_repository(
         name = "com_github_aws_aws_sdk_go_v2_service_internal_presigned_url",
         importpath = "github.com/aws/aws-sdk-go-v2/service/internal/presigned-url",
@@ -1156,6 +1169,12 @@ def go_repositories():
         importpath = "github.com/subosito/gotenv",
         sum = "h1:Slr1R9HxAlEKefgq5jn9U+DnETlIUa6HfgEzj0g5d7s=",
         version = "v1.2.0",
+    )
+    go_repository(
+        name = "com_github_thanhpk_randstr",
+        importpath = "github.com/thanhpk/randstr",
+        sum = "h1:IN78qu/bR+My+gHCvMEXhR/i5oriVHcTB/BJJIRTsNo=",
+        version = "v1.0.4",
     )
 
     go_repository(

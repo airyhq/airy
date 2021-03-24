@@ -26,6 +26,9 @@ spec:
         - name: app
           image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
           imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: api-config
           env:
           - name: KAFKA_BROKERS
             valueFrom:
@@ -59,16 +62,6 @@ spec:
               configMapKeyRef:
                 name: sources-facebook
                 key: FACEBOOK_APP_SECRET
-          - name: JWT_SECRET
-            valueFrom:
-              configMapKeyRef:
-                name: api-config
-                key: JWT_SECRET
-          - name: ALLOWED_ORIGINS
-            valueFrom:
-              configMapKeyRef:
-                name: api-config
-                key: ALLOWED_ORIGINS
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -77,28 +70,6 @@ spec:
               - name: Health-Check
                 value: health-check
             initialDelaySeconds: 60
-{{ if .Values.global.ngrokEnabled }}
-        - name: ngrok
-          command:
-            - /bin/bash
-            - -c
-            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="fb-${CORE_ID}" 8080
-          image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
-          env:
-            - name: CORE_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: core-config
-                  key: CORE_ID
-          imagePullPolicy: Always
-          resources:
-            limits:
-              cpu: 50m
-              memory: 64Mi
-          volumeMounts:
-            - mountPath: /etc/ngrok
-              name: ngrok-client-config
-{{ end }}
       initContainers:
       - name: wait
         image: busybox
@@ -121,8 +92,3 @@ spec:
         - name: provisioning-scripts
           configMap:
             name: provisioning-scripts
-{{ if .Values.global.ngrokEnabled }}
-        - name: ngrok-client-config
-          configMap:
-            name: ngrok-client-config
-{{ end }}

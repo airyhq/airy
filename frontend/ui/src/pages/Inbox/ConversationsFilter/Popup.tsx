@@ -1,18 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {sortBy} from 'lodash-es';
-import {ReactComponent as AiryLogoIcon} from 'assets/images/icons/airy_avatar.svg';
 import {SearchField, LinkButton, Button} from '@airyhq/components';
 import {Tag as TagModel, Channel, ConversationFilter} from 'httpclient';
 import {listTags} from '../../../actions/tags';
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
 import {StateModel} from '../../../reducers';
-import {IconChannelFilter} from '../../../components/IconChannelFilter';
 import DialogCustomizable from '../../../components/DialogCustomizable';
 import Tag from '../../../components/Tag';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
 import styles from './Popup.module.scss';
 import {allChannels} from '../../../selectors/channels';
+import ChannelAvatar from '../../../components/ChannelAvatar';
 
 function mapStateToProps(state: StateModel) {
   return {
@@ -169,15 +168,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                         <CheckmarkIcon aria-hidden />
                       </div>
                     ) : (
-                      <div className={styles.channelLogoWrapper}>
-                        {channel.metadata?.imageUrl ? (
-                          <img className={styles.metadataImage} src={channel.metadata?.imageUrl} />
-                        ) : channel.source ? (
-                          <IconChannelFilter channel={channel} />
-                        ) : (
-                          <AiryLogoIcon />
-                        )}
-                      </div>
+                      <ChannelAvatar channel={channel} style={{height: '24px', width: '24px', marginRight: '4px'}} />
                     )}
 
                     <div className={styles.pageName}>{channel.sourceChannelId}</div>

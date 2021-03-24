@@ -4,8 +4,8 @@ This app demos a minimal frontend that allows contacts to communicate with the [
 
 ## Develop
 
-Run with [Bazelisk](https://github.com/bazelbuild/bazelisk)
+Requires [Bazelisk](https://github.com/bazelbuild/bazelisk) and a running [minikube provider](/docs/docs/getting-started/installation/minikube.md) Core instance.
 
 ```bash
-ibazel run //frontend/chat-plugin:bundle_server
+./scripts/web-dev.sh //frontend/chat-plugin:bundle_server
 ```

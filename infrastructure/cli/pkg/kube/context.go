@@ -1,25 +1,31 @@
 package kube
 
 import (
+	"errors"
+	"github.com/spf13/viper"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
 type KubeCtx struct {
-	kubeConfigPath string
-	contextName string
+	KubeConfigPath string
+	ContextName    string
 }
 
 func New(kubeConfigPath, contextName string) KubeCtx {
 	return KubeCtx{
-		kubeConfigPath: kubeConfigPath,
-		contextName: contextName,
+		KubeConfigPath: kubeConfigPath,
+		ContextName:    contextName,
 	}
 }
 
 func (c *KubeCtx) GetClientSet() (*kubernetes.Clientset, error) {
-	if c.contextName == "" {
-		config, err := clientcmd.BuildConfigFromFlags("", c.kubeConfigPath)
+	if c.ContextName == "" {
+		if c.KubeConfigPath == "" {
+			return nil, errors.New("kube context is empty")
+		}
+
+		config, err := clientcmd.BuildConfigFromFlags("", c.KubeConfigPath)
 		if err != nil {
 			return nil, err
 		}
@@ -27,15 +33,25 @@ func (c *KubeCtx) GetClientSet() (*kubernetes.Clientset, error) {
 		return kubernetes.NewForConfig(config)
 	}
 
-	file, err := clientcmd.LoadFromFile(c.kubeConfigPath)
+	file, err := clientcmd.LoadFromFile(c.KubeConfigPath)
 	if err != nil {
 		return nil, err
 	}
 
-	config, err := clientcmd.NewNonInteractiveClientConfig(*file, c.contextName, nil, nil).ClientConfig()
+	config, err := clientcmd.NewNonInteractiveClientConfig(*file, c.ContextName, nil, nil).ClientConfig()
 	if err != nil {
 		return nil, err
 	}
 
 	return kubernetes.NewForConfig(config)
+}
+
+func (c *KubeCtx) Store() error {
+	viper.Set("KubeConfig", c.KubeConfigPath)
+	viper.Set("ContextName", c.ContextName)
+	return viper.WriteConfig()
+}
+
+func Load() KubeCtx {
+	return New(viper.GetString("KubeConfig"), viper.GetString("ContextName"))
 }

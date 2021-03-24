@@ -8,10 +8,10 @@ declare const window: {
   };
 };
 
-const API_HOST = window.airy ? window.airy.host : 'airy.core';
+const API_HOST = window.airy ? window.airy.host : process.env.API_HOST;
 
 export const sendMessage = (message: TextContent | SuggestionResponse, token: string) => {
-  return fetch(`//${API_HOST}/chatplugin.send`, {
+  return fetch(`${API_HOST}/chatplugin.send`, {
     method: 'POST',
     body: JSON.stringify(convertToBody(message)),
     headers: {
@@ -39,7 +39,7 @@ const convertToBody = (message: TextContent | SuggestionResponse) => {
 };
 
 export const getResumeToken = async (channelId: string, authToken: string) => {
-  const resumeChat = await fetch(`//${API_HOST}/chatplugin.resumeToken`, {
+  const resumeChat = await fetch(`${API_HOST}/chatplugin.resumeToken`, {
     method: 'POST',
     body: JSON.stringify({}),
     headers: {
@@ -53,7 +53,7 @@ export const getResumeToken = async (channelId: string, authToken: string) => {
 
 export const start = async (channelId: string, resumeToken: string) => {
   try {
-    const response = await fetch(`//${API_HOST}/chatplugin.authenticate`, {
+    const response = await fetch(`${API_HOST}/chatplugin.authenticate`, {
       method: 'POST',
       body: JSON.stringify({
         channel_id: channelId,

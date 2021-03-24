@@ -33,9 +33,10 @@ ts_web_library(
         "@npm//react-window",
         "@npm//react-window-infinite-loader",
         "@npm//redux",
-        "@npm//redux-starter-kit",
+        "@npm//@reduxjs/toolkit",
         "@npm//reselect",
         "@npm//typesafe-actions",
+        "@npm//camelcase-keys",
     ],
 )
 

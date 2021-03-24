@@ -8,5 +8,5 @@ export default HttpClient.prototype.exploreFacebookChannels = async function (
 ) {
   const response = await this.doFetchFromBackend('facebook.channels.explore', requestPayload);
 
-  return camelcaseKeys(response.data, {deep: true, stopPaths: ['metadata.userData']});
+  return camelcaseKeys(response.data, {deep: true, stopPaths: ['metadata.user_data']});
 };

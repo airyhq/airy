@@ -1,10 +1,9 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {DefaultMessageRenderingProps} from '../../../../components/index';
 import {GenericTemplate as GenericTemplateModel} from '../../facebookModel';
 import {Carousel} from 'render/components/Carousel';
 
-type GenericTemplateRendererProps = DefaultMessageRenderingProps & {
+type GenericTemplateRendererProps = {
   template: GenericTemplateModel;
 };
 

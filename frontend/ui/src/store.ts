@@ -1,10 +1,12 @@
-import _, {configureStore, getDefaultMiddleware} from 'redux-starter-kit';
+import {configureStore, getDefaultMiddleware, EnhancedStore} from '@reduxjs/toolkit';
 
 import rootReducer from './reducers';
 
-export const store = configureStore({
+export const store: EnhancedStore = configureStore({
   reducer: rootReducer,
   middleware: [
+    // This adds redux-thunk and development checks
+    // https://redux-toolkit.js.org/api/getDefaultMiddleware
     ...getDefaultMiddleware({
       serializableCheck: false,
     }),

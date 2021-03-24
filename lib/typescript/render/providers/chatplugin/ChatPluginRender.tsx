@@ -1,20 +1,23 @@
 import React from 'react';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
 import {RichText} from '../../components/RichText';
 import {RichCard} from '../../components/RichCard';
 import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {Text} from '../../components/Text';
 import {ContentUnion} from './chatPluginModel';
-import {RenderedContent} from 'httpclient';
+import {RenderedContentUnion} from 'httpclient';
 
-export const ChatPluginRender = (props: MessageRenderProps) => {
-  return render(mapContent(props.message), props);
+export const ChatPluginRender = (props: RenderPropsUnion) => {
+  return render(mapContent(props.content), props);
 };
 
-function render(content: ContentUnion, props: MessageRenderProps) {
-  const defaultProps = getDefaultMessageRenderingProps(props);
+function render(content: ContentUnion, props: RenderPropsUnion) {
+  const defaultProps = {
+    ...getDefaultRenderingProps(props),
+    commandCallback: 'commandCallback' in props ? props.commandCallback : null,
+  };
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
-  const propsToUse = props.invertSides ? invertedProps : defaultProps;
+  const propsToUse = 'invertSides' in props ? invertedProps : defaultProps;
 
   switch (content.type) {
     case 'text':
@@ -25,7 +28,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       return (
         <RichText
           {...propsToUse}
-          message={props.message}
+          message={props.content}
           text={content.text}
           fallback={content.fallback}
           containsRichText={content.containsRichtText}
@@ -46,7 +49,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
   }
 }
 
-function mapContent(message: RenderedContent): ContentUnion {
+function mapContent(message: RenderedContentUnion): ContentUnion {
   const messageContent = message.content.message ?? message.content;
 
   if (messageContent.richCard?.standaloneCard) {

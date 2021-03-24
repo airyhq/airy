@@ -1,13 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
-
-export enum Source {
-  facebook = 'facebook',
-  google = 'google',
-  chatplugin = 'chatplugin',
-  smsTwilio = 'twilio.sms',
-  whatsappTwilio = 'twilio.whatsapp',
-}
+import {Content} from './Content';
 
 export enum MessageType {
   audio = 'audio',
@@ -35,12 +28,23 @@ export enum SenderType {
   appUser = 'app_user',
 }
 
-export interface Message {
-  id: string;
-  content: any;
+export interface Message extends Content {
   deliveryState: MessageState;
   senderType: SenderType;
   sentAt: Date;
+  metadata?: MessageMetadata;
+}
+
+export interface SuggestedReply {
+  content: {
+    text: string;
+  };
+}
+
+export interface MessageMetadata {
+  suggestions?: {
+    [suggestionId: string]: SuggestedReply;
+  };
 }
 
 export const mapMessage = (payload): Message => {

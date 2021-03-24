@@ -1,13 +1,13 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {DefaultMessageRenderingProps} from '../../../../components/index';
+import {DefaultRenderingProps} from '../../../../components/index';
 import {SuggestionsUnion} from '../../googleModel';
 import {Image} from '../../../../components/Image';
 import {Text} from '../../../../components/Text';
 import linkIcon from 'assets/images/icons/link.svg';
 import phoneIcon from 'assets/images/icons/phone.svg';
 
-type SuggestionsRendererProps = DefaultMessageRenderingProps & {
+type SuggestionsRendererProps = DefaultRenderingProps & {
   text?: string;
   fallback?: string;
   image?: {
@@ -17,11 +17,11 @@ type SuggestionsRendererProps = DefaultMessageRenderingProps & {
   suggestions: SuggestionsUnion[];
 };
 
-export const Suggestions = ({text, fallback, image, suggestions, contact, fromContact}: SuggestionsRendererProps) => (
+export const Suggestions = ({text, fallback, image, suggestions, fromContact}: SuggestionsRendererProps) => (
   <div className={styles.suggestionsWrapper}>
-    {image && <Image contact={contact} fromContact={fromContact} imageUrl={image.fileUrl} altText={image.altText} />}
+    {image && <Image imageUrl={image.fileUrl} altText={image.altText} />}
 
-    {(text || fallback) && <Text contact={contact} fromContact={fromContact} text={text ?? fallback} />}
+    {(text || fallback) && <Text text={text ?? fallback} fromContact={fromContact} />}
 
     <div className={styles.suggestionsContainer}>
       {(suggestions as SuggestionsUnion[]).map(elem => {

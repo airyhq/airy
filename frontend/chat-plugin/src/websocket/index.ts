@@ -17,7 +17,8 @@ declare global {
   }
 }
 
-const API_HOST = window.airy ? window.airy.host : 'airy.core';
+const API_HOST = window.airy ? window.airy.host : process.env.API_HOST;
+const host = new URL(API_HOST).host;
 // https: -> wss: and http: -> ws:
 const protocol = location.protocol.replace('http', 'ws');
 
@@ -53,7 +54,7 @@ class WebSocket {
     this.token = token;
 
     this.client = new Client({
-      brokerURL: `${protocol}//${API_HOST}/ws.chatplugin`,
+      brokerURL: `${protocol}//${host}/ws.chatplugin`,
       connectHeaders: {
         Authorization: `Bearer ${token}`,
       },

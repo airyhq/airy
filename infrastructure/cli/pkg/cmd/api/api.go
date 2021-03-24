@@ -15,4 +15,5 @@ var APICmd = &cobra.Command{
 func init() {
 	APICmd.AddCommand(signupCmd)
 	APICmd.AddCommand(loginCmd)
+	APICmd.AddCommand(endpointCmd)
 }

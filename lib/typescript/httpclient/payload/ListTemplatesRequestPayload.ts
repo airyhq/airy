@@ -1,4 +1,6 @@
+import {Source} from '../model/Channel';
+
 export interface ListTemplatesRequestPayload {
   name?: string;
-  source: string;
+  source: Source;
 }

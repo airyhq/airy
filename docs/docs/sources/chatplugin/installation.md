@@ -1,5 +1,5 @@
 ---
-title: Installation
+title: Install the Airy Live Chat Plugin on your website
 sidebar_label: Installation
 ---
 
@@ -23,7 +23,7 @@ the `<head>` section:
 
 You must replace `CHANNEL_ID` with the channel id obtained when
 [connecting](#connecting-a-channel) the source and `SCRIPT_HOST` with the host
-of your Chat Plugin server. When using the local vagrant environment
+of your Chat Plugin server. When using the local minikube environment
 `SCRIPT_HOST` must be set to `airy.core`.
 
 :::note

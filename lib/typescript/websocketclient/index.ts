@@ -21,10 +21,10 @@ export class WebSocketClient {
   stompWrapper: StompWrapper;
   callbackMap: CallbackMap;
 
-  constructor(token: string, callbackMap: CallbackMap = {}, baseUrl: string) {
+  constructor(apiUrl: string, token: string, callbackMap: CallbackMap = {}) {
     this.token = token;
     this.callbackMap = callbackMap;
-    this.apiUrlConfig = `${protocol}//${baseUrl}/ws.communication`;
+    this.apiUrlConfig = `${protocol}//${new URL(apiUrl).host}/ws.communication`;
 
     this.stompWrapper = new StompWrapper(
       this.apiUrlConfig,
@@ -47,7 +47,7 @@ export class WebSocketClient {
     const json: EventPayloadUnion = JSON.parse(body) as any;
     switch (json.type) {
       case 'channel':
-        this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true, stopPaths: ['metadata.userData']}));
+        this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true, stopPaths: ['metadata.user_data']}));
         break;
       case 'message':
         this.callbackMap.onMessage?.(json.payload.conversation_id, json.payload.channel_id, {

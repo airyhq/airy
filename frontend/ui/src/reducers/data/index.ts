@@ -1,4 +1,4 @@
-import _, {combineReducers, Reducer} from 'redux-starter-kit';
+import _, {combineReducers, Reducer} from 'redux';
 import {User} from 'httpclient';
 import {Tags} from './tags';
 import {Settings} from './settings';

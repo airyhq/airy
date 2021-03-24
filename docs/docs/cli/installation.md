@@ -1,5 +1,5 @@
 ---
-title: Installation
+title: Install the Airy CLI
 sidebar_label: Installation
 hide_table_of_contents: false
 ---
@@ -10,11 +10,14 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <TLDR>
-Install the CLI quickly with our step-by-step guide or build it from source
+
+The Airy CLI is a developer tool to help you **build**, **test**, and **manage**
+Airy Core instances directly from your terminal.
+
 </TLDR>
 
-Installing the Airy CLI is easy and straightforward.
-You can follow the next steps for a quick setup:
+Installing the Airy CLI is easy and straightforward. You can follow the next
+steps for a quick setup:
 
 - [Step 1: Check the requirements](installation.md#step-1-check-the-requirements)
 - [Step 2: Install the Airy CLI](installation.md#step-2-install-the-airy-cli)
@@ -43,6 +46,25 @@ values={[
 {label: 'Linux', value: 'linux'},
 ]
 }>
+
+<TabItem value="homebrew">
+
+Make sure you have the [Xcode Command Line
+Tools](https://developer.apple.com/library/archive/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-WHAT_IS_THE_COMMAND_LINE_TOOLS_PACKAGE_)
+installed. Otherwise you can install them with:
+
+```bash
+xcode-select --install
+```
+
+Now you can get the CLI straight from our tap:
+
+```bash
+brew install airyhq/airy/cli
+```
+
+</TabItem>
+
 <TabItem value="mac">
 
 ```bash
@@ -64,22 +86,12 @@ For example, to download version 0.6.0 on macOS, type:
 
 curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/darwin/amd64/airy -o "airy"
 :::
-</TabItem>
 
-<TabItem value="homebrew">
+#### Move the **airy** binary to a file location on your system PATH
 
-Make sure you have the [Xcode Command Line
-Tools](https://developer.apple.com/library/archive/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-WHAT_IS_THE_COMMAND_LINE_TOOLS_PACKAGE_)
-installed. Otherwise you can install them with:
-
-```bash
-xcode-select --install
 ```
-
-Now you can get the CLI straight from our tap:
-
-```bash
-brew install airyhq/airy/cli
+sudo mv ./airy /usr/local/bin/airy && \
+sudo chown root: /usr/local/bin/airy
 ```
 
 </TabItem>
@@ -99,40 +111,12 @@ For example, to download version 0.6.0 on Linux, type:
 
 curl https://airy-core-binaries.s3.amazonaws.com/0.6.0/linux/amd64/airy -o "airy"
 :::
-</TabItem>
-</Tabs>
-
-<Tabs
-groupId="operating-systems"
-defaultValue="homebrew"
-values={[
-{label: 'Homebrew', value: 'homebrew'},
-{label: 'macOS', value: 'mac'},
-{label: 'Linux', value: 'linux'},
-]
-}>
-
-<TabItem value="mac">
-
-#### Move the **airy** binary to a file location on your system PATH
-
-```
-sudo mv ./airy /usr/local/bin/airy && \
-sudo chown root: /usr/local/bin/airy
-```
-
-</TabItem>
-
-<TabItem value="linux">
 
 #### Install the binary
 
 ```bash
 sudo install -o root -g root -m 0755 airy /usr/local/bin/airy
 ```
-
-</TabItem>
-<TabItem value="homebrew">
 
 </TabItem>
 </Tabs>

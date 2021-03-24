@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {WebSocketClient} from 'websocketclient';
 import {Message, Channel, MetadataEvent} from 'httpclient';
+import camelcaseKeys from 'camelcase-keys';
 
 import {env} from '../../env';
 import {StateModel} from '../../reducers';
@@ -28,7 +29,8 @@ const mapDispatchToProps = dispatch => ({
   addMessages: (conversationId: string, messages: Message[]) => dispatch(addMessagesAction({conversationId, messages})),
   onChannel: (channel: Channel) => dispatch(setChannelAction(channel)),
   getConversationInfo: (conversationId: string) => dispatch(getConversationInfo(conversationId)),
-  onMetadata: (metadataEvent: MetadataEvent) => dispatch(setMetadataAction(metadataEvent)),
+  onMetadata: (metadataEvent: MetadataEvent) =>
+    dispatch(camelcaseKeys(setMetadataAction(metadataEvent), {deep: true, stopPaths: ['metadata.user_data']})),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -53,17 +55,13 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
     }
     if (user.token) {
       setWebSocketClient(
-        new WebSocketClient(
-          user.token,
-          {
-            onMessage: (conversationId: string, _channelId: string, message: Message) => {
-              onMessage(conversationId, message);
-            },
-            onChannel,
-            onMetadata,
+        new WebSocketClient(env.API_HOST, user.token, {
+          onMessage: (conversationId: string, _channelId: string, message: Message) => {
+            onMessage(conversationId, message);
           },
-          env.API_HOST
-        )
+          onChannel,
+          onMetadata,
+        })
       );
     }
   };

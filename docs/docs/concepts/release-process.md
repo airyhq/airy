@@ -13,9 +13,11 @@ Here's an outline of the process:
 - We need a `GITHUB_TOKEN` environment variable with write permission to the org
 - We clean up the draft release and name it `x.y.z`
 - We run `./scripts/release.sh start x.y.z`
-- Once release days comes, we execute the following steps:
-  - We test our release (`airy create --provider=minikube`) and any
-    additional hot-fix is committed directly to the release branch
+- We test our release (`airy create --provider=minikube`) and any
+  additional hot-fix is committed directly to the release branch.
+  Testing can be done after all images are pushed by the CI.
+  The airy binary can be build from the `release/x.y.z` branch or downloaded from https://airy-core-binaries.s3.amazonaws.com/x.y.z-alpha/darwin/amd64/airy
+- Once release day comes, we execute the following steps:
   - Once we're satisfied with the release, we finish the release by running `./scripts/release.sh finish x.y.z`
   - We update the version string and the sha in the [Homebrew Formula](https://github.com/airyhq/homebrew-airy/blob/main/Formula/cli.rb) for the CLI.
   - We archive cards in the done column of the [work in progress](https://github.com/airyhq/airy/projects/1) board

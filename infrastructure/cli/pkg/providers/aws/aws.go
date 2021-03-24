@@ -433,11 +433,7 @@ func (a *Aws) updateIngress(ingressName string, loadBalancerUrl string, namespac
 
 	ingress, err = clientset.ExtensionsV1beta1().Ingresses(namespace).Update(context.TODO(), ingress, metav1.UpdateOptions{})
 
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 func (a *Aws) updateHostsConfigMap(loadBalancerUrl string, namespace string) error {

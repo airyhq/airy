@@ -1,8 +1,8 @@
 import React, {useState, useCallback} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, Link, RouteComponentProps} from 'react-router-dom';
+import {ListenOutsideClick} from '@airyhq/components';
 import {StateModel} from '../../reducers';
-import ListenOutsideClick from '../ListenOutsideClick';
 import {ReactComponent as LogoutIcon} from 'assets/images/icons/sign-out.svg';
 import {ReactComponent as ShortcutIcon} from 'assets/images/icons/shortcut.svg';
 import {ReactComponent as AiryLogo} from 'assets/images/logo/airy_primary_rgb.svg';
@@ -60,7 +60,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
                 </div>
 
                 {isFaqDropdownOn && (
-                  <ListenOutsideClick onClose={hideFaqDropdown}>
+                  <ListenOutsideClick onOuterClick={hideFaqDropdown}>
                     <div className={styles.dropdown}>
                       <a href="mailto:support@airy.co" className={styles.dropdownLine}>
                         <span className={styles.dropdownIcon}>
@@ -96,7 +96,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
                 </div>
 
                 {isAccountDropdownOn && (
-                  <ListenOutsideClick onClose={hideAccountDropdown}>
+                  <ListenOutsideClick onOuterClick={hideAccountDropdown}>
                     <div className={styles.dropdown}>
                       <Link to={LOGOUT_ROUTE} className={styles.dropdownLine}>
                         <span className={styles.dropdownIcon}>

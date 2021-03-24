@@ -15,6 +15,7 @@ go_library(
         "@com_github_aws_aws_sdk_go_v2_service_eks//:eks",
         "@com_github_aws_aws_sdk_go_v2_service_eks//types",
         "@com_github_aws_aws_sdk_go_v2_service_iam//:iam",
+        "@com_github_aws_aws_sdk_go_v2_service_iam//types",
         "@com_github_mitchellh_go_homedir//:go-homedir",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
     ],

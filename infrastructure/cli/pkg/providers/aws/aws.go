@@ -18,6 +18,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	eksTypes "github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/mitchellh/go-homedir"
 )
@@ -120,19 +121,14 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	name := "Airy-" + id
 	fmt.Printf("Creating Airy Core instance with id: %s\n", name)
 	iamClient := iam.NewFromConfig(cfg)
-	createRoleInput := &iam.CreateRoleInput{
-		AssumeRolePolicyDocument: aws.String(RolePolicyDocument),
-		Path:                     aws.String("/"),
-		RoleName:                 aws.String(name),
-	}
-	iamResult, err := iamClient.CreateRole(context.TODO(), createRoleInput)
+
+	role, err := a.createRole(iamClient, name)
 	if err != nil {
 		console.Exit("Error creating role: ", err)
 	}
-	fmt.Printf("Created AWS Role with ARN: %s.\n", *iamResult.Role.Arn)
+	fmt.Printf("Created AWS Role with ARN: %s.\n", *role.Arn)
 
-	roleName := iamResult.Role.RoleName
-	if err = a.attachPolicies(iamClient, roleName); err != nil {
+	if err = a.attachPolicies(iamClient, role.RoleName); err != nil {
 		console.Exit("Error attaching policies: ", err)
 	}
 
@@ -200,12 +196,11 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	eksClient := eks.NewFromConfig(cfg)
 	fmt.Print("Creating EKS cluster...\n")
 
-	roleArn := iamResult.Role.Arn
 	var subnetIds []string
 	subnetIds = append(subnetIds, *firstSubnet.SubnetId)
 	subnetIds = append(subnetIds, *secondSubnet.SubnetId)
 
-	cluster, err := a.createCluster(eksClient, name, roleArn, subnetIds)
+	cluster, err := a.createCluster(eksClient, name, role.Arn, subnetIds)
 	if err != nil {
 		console.Exit("Error creating cluster: ", err)
 	}
@@ -215,7 +210,7 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	go a.checkClusterReady(eksClient, name, clusterReady)
 	<-clusterReady
 
-	nodeGroup, err := a.createNodeGroup(eksClient, name, roleArn, subnetIds)
+	nodeGroup, err := a.createNodeGroup(eksClient, name, role.Arn, subnetIds)
 	if err != nil {
 		console.Exit("Error creating node group: ", err)
 	}
@@ -224,7 +219,7 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 
 	nodeGroupReady := make(chan bool, 1)
 	nodeGroupName := *nodeGroup.NodegroupName
-	go CheckNodeGroupReady(eksClient, name, nodeGroupName, nodeGroupReady)
+	go a.checkNodeGroupReady(eksClient, name, nodeGroupName, nodeGroupReady)
 	<-nodeGroupReady
 
 	describeClusterResult, err := eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{
@@ -244,6 +239,21 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 
 	a.context = ctx
 	return ctx, nil
+}
+
+func (a *Aws) createRole(iamClient *iam.Client, name string) (*iamTypes.Role, error) {
+	createRoleInput := &iam.CreateRoleInput{
+		AssumeRolePolicyDocument: aws.String(RolePolicyDocument),
+		Path:                     aws.String("/"),
+		RoleName:                 aws.String(name),
+	}
+	iamResult, err := iamClient.CreateRole(context.TODO(), createRoleInput)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return iamResult.Role, nil
 }
 
 func (a *Aws) createVpc(ec2Client *ec2.Client, cidr string, name string) (*ec2Types.Vpc, error) {

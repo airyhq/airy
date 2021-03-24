@@ -449,10 +449,9 @@ func (a *Aws) updateHostsConfigMap(loadBalancerUrl string, namespace string) err
 		return err
 	}
 	configMap.Data["HOST"] = loadBalancerUrl
-	if _, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{}); err != nil {
-		return err
-	}
-	return nil
+	_, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{})
+
+	return err
 }
 
 func (a *Aws) attachPolicies(iamClient *iam.Client, roleName *string) error {

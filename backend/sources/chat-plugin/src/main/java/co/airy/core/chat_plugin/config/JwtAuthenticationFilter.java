@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static co.airy.spring.web.Headers.getAuthToken;
+
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private final Jwt jwt;
 
@@ -26,10 +28,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
-        String authToken = req.getHeader(HttpHeaders.AUTHORIZATION);
-        if (authToken != null && authToken.startsWith("Bearer")) {
-            authToken = authToken.substring(7);
-        }
+        String authToken = getAuthToken(req);
 
         if (authToken == null) {
             chain.doFilter(req, res);

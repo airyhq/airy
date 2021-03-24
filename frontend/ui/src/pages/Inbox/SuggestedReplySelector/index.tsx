@@ -1,12 +1,11 @@
 import React, {useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {SourceMessage} from 'render';
-import {ListenOutsideClick} from '@airyhq/components';
+import {Carousel, ListenOutsideClick} from '@airyhq/components';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
 import {SuggestedReply} from 'httpclient';
 import {StateModel} from '../../../reducers';
-import {Carousel} from 'render/components/Carousel';
 
 const mapDispatchToProps = {
   listTemplates,

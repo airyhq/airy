@@ -1,17 +1,11 @@
 package co.airy.core.api.auth.controllers;
 
-import co.airy.core.api.auth.controllers.payload.AcceptInvitationRequestPayload;
-import co.airy.core.api.auth.controllers.payload.AcceptInvitationResponsePayload;
-import co.airy.core.api.auth.controllers.payload.InviteUserRequestPayload;
-import co.airy.core.api.auth.controllers.payload.InviteUserResponsePayload;
+import co.airy.core.api.auth.controllers.payload.ListResponsePayload;
 import co.airy.core.api.auth.controllers.payload.LoginRequestPayload;
-import co.airy.core.api.auth.controllers.payload.LoginResponsePayload;
 import co.airy.core.api.auth.controllers.payload.PasswordResetRequestPayload;
 import co.airy.core.api.auth.controllers.payload.SignupRequestPayload;
-import co.airy.core.api.auth.controllers.payload.SignupResponsePayload;
-import co.airy.core.api.auth.dao.InvitationDAO;
+import co.airy.core.api.auth.controllers.payload.UserPayload;
 import co.airy.core.api.auth.dao.UserDAO;
-import co.airy.core.api.auth.dto.Invitation;
 import co.airy.core.api.auth.dto.User;
 import co.airy.core.api.auth.services.Mail;
 import co.airy.core.api.auth.services.Password;
@@ -20,6 +14,7 @@ import co.airy.spring.jwt.Jwt;
 import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
+import org.postgresql.util.PSQLException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,26 +23,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static java.util.stream.Collectors.toList;
+
 @RestController
 public class UsersController {
     public static final String RESET_PWD_FOR = "reset_pwd_for";
-    private final InvitationDAO invitationDAO;
     private final UserDAO userDAO;
     private final Password passwordService;
     private final Jwt jwt;
     private final Mail mail;
     private final ExecutorService executor;
 
-    public UsersController(Password passwordService, UserDAO userDAO, InvitationDAO invitationDAO, Jwt jwt, Mail mail) {
+    public UsersController(Password passwordService, UserDAO userDAO, Jwt jwt, Mail mail) {
         this.passwordService = passwordService;
         this.userDAO = userDAO;
-        this.invitationDAO = invitationDAO;
         this.jwt = jwt;
         this.mail = mail;
         executor = Executors.newSingleThreadExecutor();
@@ -80,11 +75,11 @@ public class UsersController {
 
         try {
             userDAO.insert(user);
-        } catch (UnableToExecuteStatementException e) {
+        } catch (UnableToExecuteStatementException  e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        return ResponseEntity.ok(SignupResponsePayload.builder()
+        return ResponseEntity.ok(UserPayload.builder()
                 .firstName(firstName)
                 .lastName(lastName)
                 .token(jwt.tokenFor(userId.toString()))
@@ -94,7 +89,7 @@ public class UsersController {
     }
 
     @PostMapping("/users.login")
-    ResponseEntity<LoginResponsePayload> loginUser(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
+    ResponseEntity<UserPayload> loginUser(@RequestBody @Valid LoginRequestPayload loginRequestPayload) {
         final String password = loginRequestPayload.getPassword();
         final String email = loginRequestPayload.getEmail();
 
@@ -104,7 +99,7 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        return ResponseEntity.ok(LoginResponsePayload.builder()
+        return ResponseEntity.ok(UserPayload.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .token(jwt.tokenFor(user.getId().toString()))
@@ -161,50 +156,23 @@ public class UsersController {
         return jwt.tokenFor(userId, refreshClaim);
     }
 
-    //TODO: Write a custom ExceptionHandler for JDBI
-    @PostMapping("/users.invite")
-    ResponseEntity<InviteUserResponsePayload> inviteUser(@RequestBody @Valid InviteUserRequestPayload inviteUserRequestPayload) {
-        final UUID id = UUID.randomUUID();
-        final Instant now = Instant.now();
+    @PostMapping("/users.list")
+    ResponseEntity<ListResponsePayload> listUsers() {
+        final List<User> users = userDAO.list();
 
-        invitationDAO.insert(Invitation.builder()
-                .id(id)
-                .acceptedAt(null)
-                .createdAt(now)
-                .email(inviteUserRequestPayload.getEmail())
-                .sentAt(null)
-                .updatedAt(now)
-                .createdBy(null)
-                .build());
-        return ResponseEntity.status(HttpStatus.CREATED).body(InviteUserResponsePayload.builder()
-                .id(id)
-                .build());
+        ListResponsePayload listResponsePayload = new ListResponsePayload();
+
+        listResponsePayload.setData(users
+                .stream()
+                .map(u -> UserPayload.builder()
+                        .firstName(u.getFirstName())
+                        .lastName(u.getLastName())
+                        .token(null)
+                        .id(u.getId().toString())
+                        .build())
+                .collect(toList()));
+
+        return ResponseEntity.ok(listResponsePayload);
     }
 
-    @PostMapping("/users.accept-invitation")
-    ResponseEntity<?> acceptInvitation(@RequestBody @Valid AcceptInvitationRequestPayload payload) {
-        final Invitation invitation = invitationDAO.findById(payload.getId());
-
-        if (!invitationDAO.accept(invitation.getId(), Instant.now())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new EmptyResponsePayload());
-        }
-
-        final User user = User.builder()
-                .id(UUID.randomUUID())
-                .email(invitation.getEmail())
-                .firstName(payload.getFirstName())
-                .lastName(payload.getLastName())
-                .passwordHash(passwordService.hashPassword(payload.getPassword()))
-                .build();
-
-        userDAO.insert(user);
-
-        return ResponseEntity.ok(AcceptInvitationResponsePayload.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .token(jwt.tokenFor(user.getId().toString()))
-                .id(user.getId().toString())
-                .build()
-        );
-    }
 }

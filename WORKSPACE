@@ -140,7 +140,7 @@ go_register_toolchains(
     version = "1.16",
 )  # airy_nogo is in the top-level BUILD file of this workspace
 
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
 gazelle_dependencies()
 

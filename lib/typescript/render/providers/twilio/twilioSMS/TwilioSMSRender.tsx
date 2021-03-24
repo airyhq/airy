@@ -1,23 +1,23 @@
 import React from 'react';
-import {isFromContact, RenderedContent} from '../../../../httpclient/model';
+import {isFromContact, RenderedContentUnion} from 'httpclient';
 import {Text} from '../../../components/Text';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../../props';
 import {ContentUnion} from './twilioSMSModel';
 
-export const TwilioSMSRender = (props: MessageRenderProps) => {
-  const {message} = props;
+export const TwilioSMSRender = (props: RenderPropsUnion) => {
+  const message = props.content;
   const content = isFromContact(message) ? inboundContent(message) : outboundContent(message);
   return render(content, props);
 };
 
-function render(content: ContentUnion, props: MessageRenderProps) {
+function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
+      return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
   }
 }
 
-const inboundContent = (message: RenderedContent): ContentUnion => {
+const inboundContent = (message: RenderedContentUnion): ContentUnion => {
   const messageContent = message.content;
   const startText = messageContent.search('&Body=');
   const endText = messageContent.search('&FromCountry=');
@@ -32,7 +32,7 @@ const inboundContent = (message: RenderedContent): ContentUnion => {
   };
 };
 
-const outboundContent = (message: RenderedContent): ContentUnion => {
+const outboundContent = (message: RenderedContentUnion): ContentUnion => {
   const messageContent = message.content.message ?? message.content;
   return {
     type: 'text',

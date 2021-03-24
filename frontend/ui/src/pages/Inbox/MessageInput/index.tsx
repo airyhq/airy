@@ -1,11 +1,15 @@
 import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {withRouter, useParams} from 'react-router-dom';
+import styles from './index.module.scss';
+import {sendMessages} from '../../../actions/messages';
+import TemplateSelector from '../TemplateSelector';
+import 'emoji-mart/css/emoji-mart.css';
+import {withRouter} from 'react-router-dom';
 import {Button} from '@airyhq/components';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 import {Picker} from 'emoji-mart';
 import {SourceMessage} from 'render';
-import {getTextMessagePayload, Message, RenderedContent, SuggestedReply, Template} from 'httpclient';
+import {getTextMessagePayload, Message, SuggestedReply, Template} from 'httpclient';
 import 'emoji-mart/css/emoji-mart.css';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
@@ -15,34 +19,34 @@ import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
 
 import {ConversationRouteProps} from '../index';
-import {sendMessages} from '../../../actions/messages';
-import TemplateSelector from '../TemplateSelector';
 import {StateModel} from '../../../reducers';
+import {Source} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
+import {getCurrentConversation} from '../../../selectors/conversations';
 import {getCurrentMessages} from '../../../selectors/conversations';
 
-import styles from './index.module.scss';
 import SuggestedReplySelector from '../SuggestedReplySelector';
 
 const mapDispatchToProps = {sendMessages};
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
+    conversation: getCurrentConversation(state, ownProps),
     messages: getCurrentMessages(state, ownProps),
     listTemplates,
   };
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-type MessageInputProps = {sourceType: string};
+type MessageInputProps = {source: Source};
 
 interface SelectedTemplate {
-  message: RenderedContent;
-  source: string;
+  message: Template;
+  source: Source;
 }
 
 const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
-  const {sourceType} = props;
+  const {source, conversation} = props;
 
   const [input, setInput] = useState('');
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
@@ -64,19 +68,16 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     textAreaRef.current.style.height = scrollHeight + 'px';
   }, [input]);
 
-  const conversationIdParams = useParams();
-  const currentConversationId: string = conversationIdParams[Object.keys(conversationIdParams)[0]];
-
   const sendMessage = () => {
     if (selectedTemplate) {
       setSelectedTemplate(null);
       props
-        .sendMessages({conversationId: currentConversationId, message: selectedTemplate.message.content})
+        .sendMessages({conversationId: conversation.id, message: selectedTemplate.message.content})
         .then(() => setInput(''));
       return;
     }
 
-    props.sendMessages(getTextMessagePayload(sourceType, currentConversationId, input)).then(() => setInput(''));
+    props.sendMessages(getTextMessagePayload(source, conversation.id, input)).then(() => setInput(''));
   };
 
   const handleClick = () => {
@@ -135,21 +136,22 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     };
 
     const selectTemplate = (template: Template) => {
-      const jsonTemplate = JSON.parse(template.content) as any;
+      const jsonTemplate = template.content;
 
       if (
         jsonTemplate.message.text &&
         !jsonTemplate.message.suggestions &&
         !jsonTemplate.message.quick_replies &&
-        !jsonTemplate.message.containsRichText
+        !jsonTemplate.message.containsRichText &&
+        !jsonTemplate.message.attachments &&
+        !jsonTemplate.message.attachment
       ) {
         setInput(jsonTemplate.message.text);
         setIsShowingTemplateModal(false);
       } else {
         setInput('');
         setIsShowingTemplateModal(false);
-        const templateContent = JSON.parse(template.content) as any;
-        setSelectedTemplate({message: {id: template.id, content: templateContent}, source: template.source});
+        setSelectedTemplate({message: template, source: template.source});
       }
       sendButtonRef.current.focus();
     };
@@ -168,7 +170,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       <div className={styles.messageActionsContainer}>
         <>
           {isShowingTemplateModal && (
-            <TemplateSelector onClose={toggleTemplateModal} selectTemplate={selectTemplate} sourceType={sourceType} />
+            <TemplateSelector onClose={toggleTemplateModal} selectTemplate={selectTemplate} source={source} />
           )}
           {isShowingEmojiDrawer && (
             <div ref={emojiDiv} className={styles.emojiDrawer}>
@@ -223,7 +225,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
               onClose={toggleSuggestedReplies}
               suggestions={getLastMessageWithSuggestedReplies().metadata.suggestions}
               selectSuggestedReply={selectSuggestedReply}
-              source={sourceType}
+              source={source}
             />
           )}
 
@@ -261,7 +263,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
                 <button className={styles.removeTemplateButton} onClick={() => setSelectedTemplate(null)}>
                   <Close />
                 </button>
-                <SourceMessage message={selectedTemplate.message} source={selectedTemplate.source} />
+                <SourceMessage
+                  content={selectedTemplate.message}
+                  source={selectedTemplate.source}
+                  contentType="template"
+                />
               </div>
             )}
           </div>

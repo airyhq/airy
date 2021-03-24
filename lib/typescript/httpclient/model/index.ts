@@ -10,4 +10,4 @@ export * from './Pagination';
 export * from './Tag';
 export * from './User';
 export * from './Template';
-export * from './RenderedContent';
+export * from './Content';

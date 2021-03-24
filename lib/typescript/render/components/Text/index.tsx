@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {DefaultMessageRenderingProps} from '../index';
+import {DefaultRenderingProps} from '../index';
 
-type TextRenderProps = DefaultMessageRenderingProps & {
+type TextRenderProps = DefaultRenderingProps & {
   text: string;
 };
 

@@ -5,7 +5,7 @@ import {Tag as TagModel, TagColor, getTags} from 'httpclient';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
-import AvatarImage from '../../../../components/AvatarImage';
+import {Avatar} from 'render';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
 import {StateModel} from '../../../../reducers';
@@ -181,10 +181,10 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
         <div className={styles.metaPanel}>
           <div className={styles.contact}>
             <div className={styles.avatarImage}>
-              <AvatarImage contact={contact} />
+              <Avatar contact={contact} />
             </div>
 
-            <div className={styles.displayName}>{contact.displayName}</div>
+            <div className={styles.displayName}>{contact?.displayName}</div>
           </div>
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>

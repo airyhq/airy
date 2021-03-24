@@ -3,8 +3,10 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 import {disconnectChannel} from '../../../../actions/channel';
+
 import {SettingsModal, Button} from '@airyhq/components';
 import {Channel} from 'httpclient';
+
 import {ReactComponent as CheckMarkIcon} from 'assets/images/icons/checkmark.svg';
 import ChannelAvatar from '../../../../components/ChannelAvatar';
 

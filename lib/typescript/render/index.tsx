@@ -2,16 +2,16 @@ import React from 'react';
 import {renderProviders} from './renderProviders';
 
 import {Text} from './components/Text';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from './shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from './props';
 
-export * from './shared';
+export * from './props';
 
 type SourceMessageState = {
   hasError: boolean;
 };
 
-export class SourceMessage extends React.Component<MessageRenderProps, SourceMessageState> {
-  constructor(props: MessageRenderProps) {
+export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessageState> {
+  constructor(props: RenderPropsUnion) {
     super(props);
     this.state = {hasError: false};
   }
@@ -25,7 +25,7 @@ export class SourceMessage extends React.Component<MessageRenderProps, SourceMes
   }
 
   errorFallback() {
-    return <Text {...getDefaultMessageRenderingProps(this.props)} text="Could not render this content" />;
+    return <Text {...getDefaultRenderingProps(this.props)} text="Could not render this content" />;
   }
 
   render() {
@@ -43,3 +43,5 @@ export class SourceMessage extends React.Component<MessageRenderProps, SourceMes
     }
   }
 }
+
+export * from './components/Avatar';

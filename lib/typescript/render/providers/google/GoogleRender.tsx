@@ -1,31 +1,31 @@
 import React from 'react';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
 import {Suggestions} from './components/Suggestions';
 import {Text} from '../../components/Text';
 import {RichCard} from '../../components/RichCard';
 import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {ContentUnion} from './googleModel';
-import {RenderedContent, isFromContact} from 'httpclient';
+import {RenderedContentUnion, isFromContact} from 'httpclient';
 import {Image} from '../../components/Image';
 
-export const GoogleRender = (props: MessageRenderProps) => {
-  const message = props.message;
+export const GoogleRender = (props: RenderPropsUnion) => {
+  const message = props.content;
   const content = isFromContact(message) ? googleInbound(message) : googleOutbound(message);
   return render(content, props);
 };
 
-function render(content: ContentUnion, props: MessageRenderProps) {
+function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
+      return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
 
     case 'image':
-      return <Image {...getDefaultMessageRenderingProps(props)} imageUrl={content.imageUrl} />;
+      return <Image imageUrl={content.imageUrl} altText="image sent via GBM" />;
 
     case 'suggestions':
       return (
         <Suggestions
-          {...getDefaultMessageRenderingProps(props)}
+          {...getDefaultRenderingProps(props)}
           text={content.text}
           image={content.image}
           fallback={content.fallback}
@@ -36,7 +36,6 @@ function render(content: ContentUnion, props: MessageRenderProps) {
     case 'richCard':
       return (
         <RichCard
-          {...getDefaultMessageRenderingProps(props)}
           title={content.title}
           description={content.description}
           media={content.media}
@@ -45,17 +44,11 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       );
 
     case 'richCardCarousel':
-      return (
-        <RichCardCarousel
-          {...getDefaultMessageRenderingProps(props)}
-          cardWidth={content.cardWidth}
-          cardContents={content.cardContents}
-        />
-      );
+      return <RichCardCarousel cardWidth={content.cardWidth} cardContents={content.cardContents} />;
   }
 }
 
-function googleInbound(message: RenderedContent): ContentUnion {
+function googleInbound(message: RenderedContentUnion): ContentUnion {
   const messageJson = message.content.message;
 
   if (messageJson.richCard?.standaloneCard) {
@@ -130,7 +123,7 @@ function googleInbound(message: RenderedContent): ContentUnion {
   };
 }
 
-function googleOutbound(message: RenderedContent): ContentUnion {
+function googleOutbound(message: RenderedContentUnion): ContentUnion {
   const messageJson = message.content.message ?? message.content;
   const maxNumberOfSuggestions = 13;
 

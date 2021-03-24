@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {MediaHeight} from '../../../providers/chatplugin/chatPluginModel';
+import {fallbackImage} from '../../../services/fallbackImage';
 
 export type MediaRenderProps = {
   height: MediaHeight;
@@ -18,5 +19,6 @@ export const Media = ({height, contentInfo: {altText, fileUrl}}: MediaRenderProp
     className={`${styles.mediaImage} ${
       height === MediaHeight.tall ? styles.tall : height === MediaHeight.medium ? styles.medium : styles.short
     }`}
+    onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event)}
   />
 );

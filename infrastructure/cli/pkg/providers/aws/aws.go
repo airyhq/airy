@@ -218,8 +218,7 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	fmt.Printf("Node group created %s.\n", *nodeGroup.NodegroupName)
 
 	nodeGroupReady := make(chan bool, 1)
-	nodeGroupName := *nodeGroup.NodegroupName
-	go a.checkNodeGroupReady(eksClient, name, nodeGroupName, nodeGroupReady)
+	go a.checkNodeGroupReady(eksClient, name, *nodeGroup.NodegroupName, nodeGroupReady)
 	<-nodeGroupReady
 
 	describeClusterResult, err := eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{

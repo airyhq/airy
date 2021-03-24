@@ -68,6 +68,6 @@ Airy’s Live Chat Plugin supports the following messages types:
 
 **Samples**
 
-| RichCard                                                                                      | RichCardCarousel                                                                                               | Emojis Reply                                                                 |
+| RichCard                                                                                      | RichCardCarousel                                                                                               | Emojis                                                            |
 | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| <img alt="Rich Card Example" src={useBaseUrl('img/apps/ui/RichCardChatpluginExample.gif')} /> | <img alt="Rich Card Carousel Example" src={useBaseUrl('img/apps/ui/richCardCarouselChatpluginExample.gif')} /> | <img alt="Emoji Example" src={useBaseUrl('img/apps/ui/emojiExample.png')} /> |
+| <img alt="Rich Card Example" src={useBaseUrl('img/apps/ui/richCardChatpluginExample.gif')} /> | <img alt="Rich Card Carousel Example" src={useBaseUrl('img/apps/ui/richCardCarouselChatpluginExample.gif')} /> | <img alt="Emoji Example" src={useBaseUrl('img/apps/ui/emojiExample.png')} /> |

@@ -337,10 +337,8 @@ func (a *Aws) allowPublicIpOnSubnet(ec2Client *ec2.Client, subnetId *string) err
 			Value: true,
 		},
 	})
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return err
 }
 
 func (a *Aws) associateSubnetToRouteTable(ec2Client *ec2.Client, subnetId *string, routeTableId *string) error {
@@ -348,10 +346,8 @@ func (a *Aws) associateSubnetToRouteTable(ec2Client *ec2.Client, subnetId *strin
 		RouteTableId: routeTableId,
 		SubnetId:     subnetId,
 	})
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return err
 }
 
 func (a *Aws) createCluster(eksClient *eks.Client, name string, roleArn *string, subnetIds []string) (*eksTypes.Cluster, error) {

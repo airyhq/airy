@@ -5,7 +5,7 @@ module.exports = {
         'getting-started/introduction',
         'getting-started/components',
         {
-          Installation: [
+          'Setup & Deployment': [
             'getting-started/installation/introduction',
             'getting-started/installation/minikube',
             'getting-started/installation/aws',

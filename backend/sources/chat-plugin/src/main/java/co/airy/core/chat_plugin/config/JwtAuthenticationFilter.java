@@ -1,7 +1,6 @@
 package co.airy.core.chat_plugin.config;
 
 import co.airy.core.chat_plugin.Principal;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,10 +17,14 @@ import static co.airy.spring.web.Headers.getAuthToken;
 
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private final Jwt jwt;
+    private final String systemToken;
+    private final String systemTokenPrincipal;
 
-    public JwtAuthenticationFilter(AuthenticationManager authManager, Jwt jwt) {
+    public JwtAuthenticationFilter(AuthenticationManager authManager, Jwt jwt, String systemToken) {
         super(authManager);
         this.jwt = jwt;
+        this.systemToken = systemToken;
+        this.systemTokenPrincipal = systemToken == null ? null : String.format("system-token-%s", systemToken.substring(0, Math.min(systemToken.length(), 4)));
     }
 
     @Override
@@ -42,6 +45,10 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
+        if (systemToken != null && systemToken.equals(token)) {
+            return new UsernamePasswordAuthenticationToken(systemTokenPrincipal, null, List.of());
+        }
+
         final Principal principal = jwt.authenticate(token);
 
         if (principal != null) {

@@ -1,7 +1,6 @@
 package co.airy.spring.auth;
 
 import co.airy.spring.jwt.Jwt;
-import lombok.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,14 +17,14 @@ import java.util.List;
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private final Jwt jwt;
-    private final String apiToken;
+    private final String systemToken;
     private final String apiTokenPrincipal;
 
-    public JwtAuthenticationFilter(AuthenticationManager authManager, Jwt jwt, String apiToken) {
+    public JwtAuthenticationFilter(AuthenticationManager authManager, Jwt jwt, String systemToken) {
         super(authManager);
         this.jwt = jwt;
-        this.apiToken = apiToken;
-        this.apiTokenPrincipal = apiToken == null ? null : String.format("api-token-%s", apiToken.substring(0, Math.min(apiToken.length(), 4)));
+        this.systemToken = systemToken;
+        this.apiTokenPrincipal = systemToken == null ? null : String.format("system-token-%s", systemToken.substring(0, Math.min(systemToken.length(), 4)));
     }
 
     @Override
@@ -53,7 +52,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        if (apiToken != null && apiToken.equals(token)) {
+        if (systemToken != null && systemToken.equals(token)) {
             return new UsernamePasswordAuthenticationToken(apiTokenPrincipal, null, List.of());
         }
 

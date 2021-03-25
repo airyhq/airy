@@ -1,4 +1,4 @@
-import {cyBubble, cyInputbarTextarea, cyInputbarButton} from 'chat-plugin-handles';
+import {cyBubble, cyInputbarTextarea, cyInputbarButton, cyChatPluginListChat} from 'chat-plugin-handles';
 
 import {
   cyChannelsChatPluginAddButton,
@@ -29,24 +29,30 @@ describe('Create UI Conversation', () => {
     // cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     // cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
 
-    cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
+    cy.visit('http://localhost:8080/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
     cy.get(`[data-cy=${cyBubble}]`).click();
     cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
+
+    cy.wait(500);
+
+    cy.get(`[data-cy=${cyChatPluginListChat}]`).children().its('length').should('eq', 2);
+
     cy.wait(3500);
+
     cy.request('POST', 'http://airy.core/users.login', {
-      email: 'kazeem@airy.co',
-      password: 'test1234',
+      email: 'grace@example.com',
+      password: 'the_answer_is_42',
     }).then(response => {
-      const newToken = response.body['token'];
-      console.log('LoginToken', newToken);
+      const loginToken = response.body['token'];
+      console.log('LoginToken', loginToken);
 
       cy.request({
         method: 'POST',
         url: 'http://airy.core/conversations.list',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${newToken}`,
+          Authorization: `Bearer ${loginToken}`,
         },
         body: {
           cursor: null,
@@ -60,37 +66,22 @@ describe('Create UI Conversation', () => {
           url: 'http://airy.core/messages.send',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${newToken}`,
+            Authorization: `Bearer ${loginToken}`,
           },
           body: {
             conversation_id: `${conversationId}`,
             message: {
-              text: 'Today is Wednesday',
+              text: 'Wonderful Day',
             },
           },
         }).then(response => {
-          expect(response.body.content.text).to.contain('Today is Wednesday');
-
-          // cy.request('POST', 'http://airy.core/messages.send', {
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //     Authorization: `Bearer ${newToken}`,
-          //   },
-          //   conversation_id: `Bearer ${conversationId}`,
-          //   message: {
-          //     text: 'Hello World',
-          //   },
-          // }).then(response => {
-          //   expect(response).property('status').to.equal(200); // message sucessfully sent
-          //   expect(response).property('body').to.contain({
-          //     content: '{"text":"Hello World"}',
-          //   });
+          expect(response).property('status').to.equal(200);
         });
+        cy.wait(3500);
+
+        cy.get(`[data-cy=${cyChatPluginListChat}]`).children().its('length').should('eq', 3);
+        cy.get(`[data-cy=${cyChatPluginListChat}]`).filter(':contains("Wonderful Day")');
       });
     });
-
-    // cy.request('POST', 'http://airy.core/conversation.list'
-
-    // // send message on behalf of authenticated user
   });
 });

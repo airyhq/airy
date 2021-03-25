@@ -1,5 +1,5 @@
 {
-   "baseUrl": "http://localhost:8080/ui",
+    "baseUrl": "http://localhost:8080/ui",
     "integrationFolder": "integration",
     "testFiles": "**/*.spec.?s",
     "env": {
@@ -8,8 +8,8 @@
        "chatPluginName": "Cypress Chatplugin",
        "tagName": "Cypress Tag",
        "searchQuery": "Cypress Filter",
-       "messageInbox": "Good Night!",
-       "messageChatplugin": "Good Morning!",
+       "messageInbox": "Hello from Cypress Inbox!",
+       "messageChatplugin": "Hello from Cypress ChatPlugin, Today is Beautiful!",
        "channelId": "3502a0a7-933d-5410-b5fc-51f041146d89"
     },
     "viewportHeight": 800,

@@ -18,7 +18,7 @@ import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
-import {cyBubble} from 'chat-plugin-handles';
+import {cyBubble, cyChatPluginListChat} from 'chat-plugin-handles';
 
 let ws: WebSocket;
 
@@ -148,7 +148,7 @@ const Chat = (props: Props) => {
           <HeaderBarProp render={headerBar} />
           <div className={style.connectedContainer}>
             <div className={style.chat}>
-              <div id="messages" className={style.messages}>
+              <div id="messages" className={style.messages} data-cy={cyChatPluginListChat}>
                 {messages.map((message, index: number) => {
                   const nextMessage = messages[index + 1];
                   const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;

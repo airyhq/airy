@@ -187,6 +187,10 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	cluster = describeClusterResult.Cluster
 	kubeConfigFilePath, err := a.createKubeConfigFile(name, cluster.Endpoint, cluster.CertificateAuthority.Data)
 
+	if err != nil {
+		console.Exit("Error creating kube config file: ", err)
+	}
+
 	ctx := kube.KubeCtx{
 		KubeConfigPath: kubeConfigFilePath,
 		ContextName:    name,
@@ -402,6 +406,11 @@ func (a *Aws) createKubeConfigFile(name string, endpoint *string, certificateDat
 	}
 
 	home, err := homedir.Dir()
+
+	if err != nil {
+		return "", err
+	}
+
 	kubeConfigFilePath := path.Join(home, ".airy", "kube.conf")
 	kubeConfigFile, err := os.Create(kubeConfigFilePath)
 	defer kubeConfigFile.Close()
@@ -444,7 +453,7 @@ func (a *Aws) updateHostsConfigMap(loadBalancerUrl string, namespace string) err
 	if err != nil {
 		return err
 	}
-	configMap.Data["HOST"] = "http://"+loadBalancerUrl
+	configMap.Data["HOST"] = "http://" + loadBalancerUrl
 	_, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{})
 
 	return err

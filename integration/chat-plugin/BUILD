@@ -8,6 +8,7 @@ ts_web_library(
     srcs = glob(["*.spec.ts"]),
     deps = [
         "//frontend/chat-plugin/handles:chat-plugin-handles",
+        "//frontend/ui/handles",
         "@npm//cypress",
     ],
 )

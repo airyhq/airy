@@ -5,29 +5,27 @@ import {
   cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
-  cyChannelsChatPluginList,
-  cyChannelsFormBackButton,
 } from 'handles';
 
 describe('Create UI Conversation', () => {
   it('Creates a chat plugin conversation', () => {
-    // cy.visit('/login');
-    // cy.get('form')
-    //   .within(() => {
-    //     cy.get('input[type=email]').type(Cypress.env('username'));
-    //     cy.get('input[type=password]').type(Cypress.env('password'));
-    //   })
-    //   .submit();
+    cy.visit('/login');
+    cy.get('form')
+      .within(() => {
+        cy.get('input[type=email]').type(Cypress.env('username'));
+        cy.get('input[type=password]').type(Cypress.env('password'));
+      })
+      .submit();
 
-    // cy.wait(500);
+    cy.wait(500);
 
-    // cy.visit('/channels');
-    // cy.wait(500);
-    // cy.url().should('include', '/channels');
-    // cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
-    // cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
-    // cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
-    // cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
+    cy.visit('/channels');
+    cy.wait(500);
+    cy.url().should('include', '/channels');
+    cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
+    cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
+    cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
+    cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
 
     cy.visit('http://localhost:8080/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
     cy.get(`[data-cy=${cyBubble}]`).click();

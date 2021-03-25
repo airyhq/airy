@@ -23,7 +23,7 @@ type Minikube struct {
 }
 
 func (m *Minikube) GetHelmOverrides() []string {
-	return []string{"--set", "global.ngrokEnabled=true", "--set", "global.host=http://airy.core", "--set", "global.nodePort=80"}
+	return []string{"--set", "global.ngrokEnabled=true", "--set", "global.nodePort=80"}
 }
 
 func (m *Minikube) Provision() (kube.KubeCtx, error) {

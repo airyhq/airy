@@ -1,11 +1,11 @@
 package co.airy.core.chat_plugin.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,9 +24,11 @@ import java.util.List;
 )
 public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final Jwt jwt;
+    private final String systemToken;
 
-    public AuthConfig(Jwt jwt) {
+    public AuthConfig(Jwt jwt, @Value("${system_token:#{null}}") String systemToken) {
         this.jwt = jwt;
+        this.systemToken = systemToken;
     }
 
     @Override
@@ -34,17 +36,13 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 // Don't let Spring create its own session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt, systemToken))
                 .authorizeRequests()
+                .antMatchers("/actuator/**", "/ws.chatplugin").permitAll()
+                .mvcMatchers("/chatplugin.authenticate", "/chatplugin.resumeToken").permitAll()
                 .anyRequest().authenticated();
     }
 
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring()
-                .antMatchers("/actuator/**", "/ws.chatplugin")
-                .mvcMatchers("/chatplugin.authenticate", "/chatplugin.resumeToken");
-    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource(final Environment environment) {

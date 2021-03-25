@@ -120,6 +120,20 @@ spec:
         volumeMounts:
         - name: provisioning-scripts
           mountPath: /opt/provisioning
+      - name: fix-permissions
+        image: busybox
+        command:
+          - sh
+          - -c
+          - "chown -R 1000 /opt/kafka/"
+        volumeMounts:
+        {{- if .Values.persistence.enabled }}
+          {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
+          {{- range $k, $e := until $disksPerBroker }}
+          - name: datadir-{{$k}}
+            mountPath: /opt/kafka/data-{{$k}}
+          {{- end }}
+        {{- end }}
       volumes:
       {{- if not .Values.persistence.enabled }}
       - name: datadir-0

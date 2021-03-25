@@ -11,7 +11,7 @@ started.
 
 ## Work with the code
 
-The Airy Core uses [Bazel](https://bazel.build/) to build and test
+Airy Core uses [Bazel](https://bazel.build/) to build and test
 itself. We suggest you to install
 [bazelisk](https://github.com/bazelbuild/bazelisk), a small utility that will
 install the right version of Bazel for you.

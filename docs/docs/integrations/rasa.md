@@ -45,9 +45,9 @@ Airy Core to send and receive messages.
 
 ## Configuring Airy
 
-The Airy Core can forward messages from your sources (Messenger,
-WhatsApp etc.) to downstream messaging frameworks like Rasa, which can in turn
-reply using the Airy Core API.
+Airy Core can forward messages from your sources (Messenger, WhatsApp etc.) to
+downstream messaging frameworks like Rasa, which can in turn reply using the
+Airy Core API.
 
 To do this we follow the [webhook documentation](api/webhook.md) to forward in-
 and outbound messages to Rasa. When doing so set the `url` parameter so that it
@@ -98,9 +98,9 @@ channels.airy.AiryInput:
 
 Now you should have a working integration 🎉.
 
-To test the connection write a message to one of your channels: The Airy Core
-Platform will forward it to your Rasa installation, which will respond using the
-Airy Core API. This is what you should see in the logs of the demo repository:
+To test the connection write a message to one of your channels: Airy Core will
+forward it to your Rasa installation, which will respond using the Airy Core
+API. This is what you should see in the logs of the demo repository:
 
 <img alt="send message successful connection log"
 src={useBaseUrl('img/integrations/rasa/success.jpg')} />

@@ -1,5 +1,5 @@
 ---
-title: The Airy Core architecture
+title: Airy Core architecture
 sidebar_label: Architecture
 ---
 

@@ -55,6 +55,10 @@ func create(cmd *cobra.Command, args []string) {
 		console.Exit("could not get clientset: ", err)
 	}
 
+	if err = context.Store(); err != nil {
+		console.Exit("could not store the kube context: ", err)
+	}
+
 	helm := New(clientset, version, namespace)
 	if err := helm.Setup(); err != nil {
 		console.Exit("setting up Helm failed with err: ", err)
@@ -64,10 +68,6 @@ func create(cmd *cobra.Command, args []string) {
 
 	if err := helm.InstallCharts(provider.GetHelmOverrides()); err != nil {
 		console.Exit("installing Helm charts failed with err: ", err)
-	}
-
-	if err = context.Store(); err != nil {
-		console.Exit("could not store the kube context: ", err)
 	}
 
 	if err = provider.PostInstallation(namespace); err != nil {

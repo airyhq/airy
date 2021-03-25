@@ -30,7 +30,7 @@
     "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {
-    "@babel/core": "7.8.4",
+    "@babel/core": "7.13.10",
     "@babel/preset-env": "^7.13.12",
     "@bazel/bazelisk": "^1.7.5",
     "@bazel/ibazel": "^0.14.0",

@@ -1,6 +1,6 @@
 ---
 title: Install Airy Core
-sidebar_label: Introduction
+sidebar_label: Installation
 ---
 
 import TLDR from "@site/src/components/TLDR";

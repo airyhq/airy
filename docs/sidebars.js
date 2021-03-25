@@ -5,7 +5,7 @@ module.exports = {
         'getting-started/introduction',
         'getting-started/components',
         {
-          Installation: [
+          'Setup & Deployment': [
             'getting-started/installation/introduction',
             'getting-started/installation/minikube',
             'getting-started/installation/production',
@@ -27,8 +27,8 @@ module.exports = {
           'Airy Live Chat Plugin': [
             'sources/chatplugin/overview',
             'sources/chatplugin/demo',
-            'sources/chatplugin/quickstart',
             'sources/chatplugin/installation',
+            'sources/chatplugin/quickstart',
             'sources/chatplugin/customization',
           ],
         },
@@ -60,7 +60,7 @@ module.exports = {
       ],
     },
     {
-      '💎 UI': ['apps/ui/introduction', 'apps/ui/quickstart', 'apps/ui/inbox', 'apps/ui/tags', 'apps/ui/components'],
+      '💎 UI': ['ui/introduction', 'ui/quickstart', 'ui/inbox', 'ui/tags', 'ui/components'],
     },
     {
       '🛠️ Integrations': [

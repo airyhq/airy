@@ -27,7 +27,7 @@ link='http://airy.core/ui/channels'
 
 **Sample**
 
-<img alt="Connect Channel Example" src={useBaseUrl('img/apps/ui/connectChannelExample.gif')} />
+<img alt="Connect Channel Example" src={useBaseUrl('img/ui/connectChannelExample.gif')} />
 
 <br/>
 

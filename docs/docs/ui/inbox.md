@@ -30,7 +30,7 @@ Airy’s Inbox supports all templates that Facebook supports, from [Generic Temp
 
 **Sample Button Template Message**
 
-<img alt="Button Template Example" src={useBaseUrl('img/apps/ui/FacebookButtonTemplate.png')} />
+<img alt="Button Template Example" src={useBaseUrl('img/ui/FacebookButtonTemplate.png')} />
 
 **Sample request**
 
@@ -127,7 +127,7 @@ link='sources/chatplugin/overview'
 
 **Sample RichCard Carousel Message**
 
-<img alt="Rich Card Carousel Example" src={useBaseUrl('img/apps/ui/RichCardCarousel.gif')} />
+<img alt="Rich Card Carousel Example" src={useBaseUrl('img/ui/RichCardCarousel.gif')} />
 
 **Sample request**
 
@@ -200,7 +200,7 @@ The inbox enables you to search by:
 icon={<PriceTag />}
 title='Tags'
 description='Tag your conversations for easy filtering, searching & segmenting'
-link='apps/ui/tags'
+link='ui/tags'
 />
 <br/>
 
@@ -215,4 +215,4 @@ The inbox can filter by:
 - Sources
 - Tags
 
-<img alt="Filter Inbox" src={useBaseUrl('img/apps/ui/FilteringInbox.gif')} />
+<img alt="Filter Inbox" src={useBaseUrl('img/ui/FilteringInbox.gif')} />

@@ -16,16 +16,13 @@ in to the UI**
 
 </TLDR>
 
-- [Introduction](#introduction)
+The easiest way to see the Airy Core UI in action is to launch the [minikube
+provider](getting-started/installation/minikube.md) and then follow these three
+steps:
+
 - [Step 1: Registration](#step-1-registration)
 - [Step 2: Open the UI](#step-2-open-the-ui)
 - [Step 3: Login](#step-3-login)
-
-## Introduction
-
-The easiest way to see the Airy Core UI in action is to launch the [minikube
-provider](getting-started/installation/minikube.md) and then follow these three
-steps.
 
 ## Step 1: Registration
 
@@ -58,7 +55,7 @@ airy ui
 
 Now enter your credentials on the login page and click **Login**.
 
-<img alt="login" src={useBaseUrl('img/apps/ui/login.gif')} />
+<img alt="login" src={useBaseUrl('img/ui/login.gif')} />
 
 <SuccessBox>
 
@@ -75,5 +72,5 @@ icon={<PrototypeSVG />}
 iconInvertible={true}
 title='Next Step: Discover the Inbox'
 description='Now that you can access the UI it is time to discover the Inbox and its features '
-link='apps/ui/inbox'
+link='ui/inbox'
 />

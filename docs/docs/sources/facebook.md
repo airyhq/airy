@@ -36,8 +36,9 @@ The Facebook source requires the following configuration:
   - [Step 2: Configure the webhook integration](#step-2-configure-the-webhook-integration)
   - [Step 3: Obtain the page token](#step-3-obtain-the-page-token)
 - [Connect a Facebook page to your instance](#connect-a-facebook-page-to-your-instance)
+- [Connect a Facebook source via API request](#connect-a-facebook-source-via-api-request)
+- [Connect a Facebook source via the UI](#connect-a-facebook-source-via-the-ui)
 - [Send messages from a Facebook source](#send-messages-from-a-facebook-source)
-- [Send and receive messages with the Inbox UI](#send-and-receive-messages-with-the-inbox-ui)
 
 Let's proceed step by step.
 

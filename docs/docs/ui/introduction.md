@@ -24,27 +24,27 @@ Additional features like [Filters, Search](inbox) and [Tags](tags) help you.
         iconInvertible={true}
         title='UI Quickstart'
         description='Step by Step Guide on getting up and running with the UI'
-        link='apps/ui/quickstart'
+        link='ui/quickstart'
     />
     <ButtonBox
         icon={<DesktopComputerSVG />}
         iconInvertible={true}
         title='Inbox'
         description='One inbox to see all your conversations & respond to them'
-        link='apps/ui/inbox'
+        link='ui/inbox'
     />
     <ButtonBox
         icon={<LabelSVG />}
         iconInvertible={true}
         title='Tags'
         description='Tag your conversations for easy filtering, searching & segmenting'
-        link='apps/ui/tags'
+        link='ui/tags'
     />    
     <ButtonBox
         icon={<ComponentsSVG />}
         iconInvertible={true}
         title='UI Components'
         description='Buttons, Inputs, Loaders and all Airy UI Components '
-        link='apps/ui/components'
+        link='ui/components'
     />
 </ButtonBoxList>

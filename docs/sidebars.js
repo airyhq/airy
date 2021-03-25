@@ -36,7 +36,7 @@ module.exports = {
         'sources/google',
         'sources/sms-twilio',
         'sources/whatsapp-twilio',
-        'apps/ui/channels'
+        'apps/ui/channels',
       ],
     },
     {
@@ -61,7 +61,15 @@ module.exports = {
       ],
     },
     {
-      '💎 UI': ['apps/ui/introduction', 'apps/ui/quickstart', 'apps/ui/inbox', 'apps/ui/channels', 'apps/ui/tags', 'apps/ui/components', 'ui/suggestedReplies'],
+      '💎 UI': [
+        'ui/introduction',
+        'ui/quickstart',
+        'ui/inbox',
+        'ui/channels',
+        'ui/tags',
+        'ui/components',
+        'ui/suggestedReplies',
+      ],
     },
     {
       '🛠️ Integrations': [

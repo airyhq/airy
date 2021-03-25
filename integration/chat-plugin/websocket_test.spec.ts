@@ -36,7 +36,7 @@ describe('Create UI Conversation', () => {
 
     cy.get(`[data-cy=${cyChatPluginListChat}]`).children().its('length').should('eq', 2);
 
-    cy.wait(3500);
+    cy.wait(2500);
 
     cy.request('POST', 'http://airy.core/users.login', {
       email: 'grace@example.com',
@@ -75,7 +75,7 @@ describe('Create UI Conversation', () => {
         }).then(response => {
           expect(response).property('status').to.equal(200);
         });
-        cy.wait(3500);
+        cy.wait(3000);
 
         cy.get(`[data-cy=${cyChatPluginListChat}]`).children().its('length').should('eq', 3);
         cy.get(`[data-cy=${cyChatPluginListChat}]`).filter(':contains("Wonderful Day")');

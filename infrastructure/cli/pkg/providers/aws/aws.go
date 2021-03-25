@@ -163,7 +163,18 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	fmt.Printf("Created EKS cluster named: %s\n", *cluster.Name)
 
 	fmt.Print("Waiting for cluster to be ready...\n")
-	a.checkClusterReady(eksClient, name)
+	a.waitUntilResourceReady(eksClient, func() bool {
+		describeClusterResult, err := eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{
+			Name: aws.String(name),
+		})
+
+		if err != nil {
+			fmt.Print("Error fetching cluster information. Trying it again.\n")
+			return false
+		}
+
+		return describeClusterResult.Cluster.Status == "ACTIVE"
+	})
 
 	nodeGroup, err := a.createNodeGroup(eksClient, name, role.Arn, subnetIds)
 	if err != nil {
@@ -171,8 +182,20 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	}
 
 	fmt.Printf("Node group created %s.\n", *nodeGroup.NodegroupName)
+	fmt.Print("Waiting for node group to be ready...\n")
+	a.waitUntilResourceReady(eksClient, func() bool {
+		describeNodegroupResult, err := eksClient.DescribeNodegroup(context.TODO(), &eks.DescribeNodegroupInput{
+			ClusterName:   aws.String(name),
+			NodegroupName: aws.String(name),
+		})
 
-	a.checkNodeGroupReady(eksClient, name, *nodeGroup.NodegroupName)
+		if err != nil {
+			fmt.Print("Error fetching node group information. Trying it again.")
+			return false
+		}
+
+		return describeNodegroupResult.Nodegroup.Status == "ACTIVE"
+	})
 
 	describeClusterResult, err := eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{
 		Name: aws.String(name),
@@ -478,55 +501,21 @@ func (a *Aws) attachPolicies(iamClient *iam.Client, roleName *string) error {
 	return nil
 }
 
-func (a *Aws) checkClusterReady(eksClient *eks.Client, name string) {
+func (a *Aws) waitUntilResourceReady(eksClient *eks.Client, f func() bool) {
 	timeout := time.After(20 * time.Minute)
 	tick := time.Tick(500 * time.Millisecond)
 	for {
 		select {
 		case <-tick:
-			describeClusterResult, err := eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{
-				Name: aws.String(name),
-			})
-
-			if err != nil {
-				fmt.Print("Error fetching cluster information. Trying it again.\n")
-			}
-
-			if describeClusterResult.Cluster.Status == "ACTIVE" {
+			if f() {
 				return
 			}
 		case <-timeout:
-			fmt.Print("Timeout when checking if cluster is ready\n")
+			fmt.Print("Timeout when checking if resource is ready\n")
 			return
 		}
 	}
 
-}
-
-func (a *Aws) checkNodeGroupReady(eksClient *eks.Client, name string, nodeGroupName string) {
-	fmt.Print("Waiting for node group to be ready...\n")
-
-	timeout := time.After(20 * time.Minute)
-	tick := time.Tick(500 * time.Millisecond)
-	for {
-		select {
-		case <-tick:
-			describeNodegroupResult, err := eksClient.DescribeNodegroup(context.TODO(), &eks.DescribeNodegroupInput{
-				ClusterName:   aws.String(name),
-				NodegroupName: &nodeGroupName,
-			})
-
-			if err != nil {
-				fmt.Print("Error fetching node group information. Trying it again.")
-			}
-
-			if describeNodegroupResult.Nodegroup.Status == "ACTIVE" {
-				return
-			}
-		case <-timeout:
-			return
-		}
-	}
 }
 
 func RandString(n int) string {

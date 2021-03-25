@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 <TLDR>
 
-Install Airy Core on AWS with one command.
+Run Airy Core on AWS with one command.
 
 </TLDR>
 
@@ -51,7 +51,8 @@ If you want to customize your `Airy Core` instance please see our [Configuration
 
 ## Public webhooks
 
-The public webhooks will be accessible on the public LoadBalancer which is created by the Ingress loadBalancer Kubernetes service.
+The public webhooks will be accessible on the public LoadBalancer which is
+created by the Ingress loadBalancer Kubernetes service.
 
 To get the public URL of your AWS Airy Core installation you can run:
 

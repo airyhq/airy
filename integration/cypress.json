@@ -8,8 +8,8 @@
        "chatPluginName": "Cypress Chatplugin",
        "tagName": "Cypress Tag",
        "searchQuery": "Cypress Filter",
-       "messageInbox": "Hello from Cypress Inbox!",
-       "messageChatplugin": "Hello from Cypress Chatplugin!",
+       "messageInbox": "Good Night!",
+       "messageChatplugin": "Good Morning!",
        "channelId": "3502a0a7-933d-5410-b5fc-51f041146d89"
     },
     "viewportHeight": 800,

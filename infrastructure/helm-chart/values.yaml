@@ -3,4 +3,4 @@ global:
   containerRegistry: ghcr.io/airyhq
   namespace: default
   ngrokEnabled: false
-  host:
+  host: http://airy.core

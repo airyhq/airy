@@ -8,7 +8,7 @@ module.exports = {
           'Setup & Deployment': [
             'getting-started/installation/introduction',
             'getting-started/installation/minikube',
-            'getting-started/installation/production',
+            'getting-started/installation/aws',
             'getting-started/installation/configuration',
           ],
         },

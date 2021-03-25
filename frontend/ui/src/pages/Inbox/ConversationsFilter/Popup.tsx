@@ -171,7 +171,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       <ChannelAvatar channel={channel} style={{height: '24px', width: '24px', marginRight: '4px'}} />
                     )}
 
-                    <div className={styles.pageName}>{channel.sourceChannelId}</div>
+                    <div className={styles.pageName}>{channel.metadata?.name || channel.sourceChannelId}</div>
                   </div>
                 ))}
             </div>

@@ -162,6 +162,7 @@ func (a *Aws) Provision() (kube.KubeCtx, error) {
 	}
 	fmt.Printf("Created EKS cluster named: %s\n", *cluster.Name)
 
+	fmt.Print("Waiting for cluster to be ready...\n")
 	a.checkClusterReady(eksClient, name)
 
 	nodeGroup, err := a.createNodeGroup(eksClient, name, role.Arn, subnetIds)
@@ -478,9 +479,7 @@ func (a *Aws) attachPolicies(iamClient *iam.Client, roleName *string) error {
 }
 
 func (a *Aws) checkClusterReady(eksClient *eks.Client, name string) {
-	fmt.Print("Waiting for cluster to be ready...\n")
-
-	timeout := time.After(10 * time.Minute)
+	timeout := time.After(20 * time.Minute)
 	tick := time.Tick(500 * time.Millisecond)
 	for {
 		select {
@@ -490,13 +489,14 @@ func (a *Aws) checkClusterReady(eksClient *eks.Client, name string) {
 			})
 
 			if err != nil {
-				fmt.Print("Error fetching cluster information. Trying it again.")
+				fmt.Print("Error fetching cluster information. Trying it again.\n")
 			}
 
 			if describeClusterResult.Cluster.Status == "ACTIVE" {
 				return
 			}
 		case <-timeout:
+			fmt.Print("Timeout when checking if cluster is ready\n")
 			return
 		}
 	}
@@ -506,7 +506,7 @@ func (a *Aws) checkClusterReady(eksClient *eks.Client, name string) {
 func (a *Aws) checkNodeGroupReady(eksClient *eks.Client, name string, nodeGroupName string) {
 	fmt.Print("Waiting for node group to be ready...\n")
 
-	timeout := time.After(10 * time.Minute)
+	timeout := time.After(20 * time.Minute)
 	tick := time.Tick(500 * time.Millisecond)
 	for {
 		select {

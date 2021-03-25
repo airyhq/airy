@@ -17,7 +17,7 @@ As soon as suggested replies have been successfully added to a message (i.e. the
 
 The screenshot below shows a sample conversation in the UI of an Airy Core instance: two suggested replies have been added to the contact's last message ('Great that it worked. Is there anything else you need?' and 'Have a nice day!'). The user clicks on the Suggestions button at the top left of the conversation's input and selects the suggested reply 'Have a nice day!'.
 
-<img alt="suggestedReplies" src={useBaseUrl('img/apps/ui/suggested-replies.gif')}/>
+<img alt="suggestedReplies" src={useBaseUrl('img/ui/suggested-replies.gif')}/>
 
 ## API request to add suggested replies
 
@@ -30,7 +30,7 @@ link='api/endpoints/messages#suggest-replies'
 
 <br />
 
-import SuggestReplies from '../../api/endpoints/suggest-replies.mdx'
+import SuggestReplies from '../api/endpoints/suggest-replies.mdx'
 
 <SuggestReplies />
 

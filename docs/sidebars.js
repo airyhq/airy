@@ -60,14 +60,7 @@ module.exports = {
       ],
     },
     {
-      '💎 UI': [
-        'apps/ui/introduction',
-        'apps/ui/quickstart',
-        'apps/ui/inbox',
-        'apps/ui/tags',
-        'apps/ui/components',
-        'apps/ui/suggestedReplies',
-      ],
+      '💎 UI': ['ui/introduction', 'ui/quickstart', 'ui/inbox', 'ui/tags', 'ui/components', 'ui/suggestedReplies'],
     },
     {
       '🛠️ Integrations': [

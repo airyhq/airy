@@ -59,6 +59,10 @@ As a security measure, every request sent by Google is signed and verified
 against your partner key. You must also set the environment variable
 `GOOGLE_PARTNER_KEY` to your partner key.
 
+import ApplyVariablesNote from './applyVariables-note.mdx'
+
+<ApplyVariablesNote />
+
 <SuccessBox>
 
 Once the verification process has been completed, Google's Business Messages will immediately start sending events to your Airy Core instance 🎉

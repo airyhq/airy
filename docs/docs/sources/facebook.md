@@ -68,18 +68,9 @@ You will find your `App Secret` on this page:
 
 Copy and paste your App ID and App Secret as strings next to `appId` and `appSecret` below `sources/facebook` in `infrastructure/airy.yaml`.
 
-:::note
+import ApplyVariablesNote from './applyVariables-note.mdx'
 
-Refer to the [Configuration
-Docs](/getting-started/installation/configuration.md#components) on how to input
-these values.
-
-Refer to the [test](getting-started/installation/minikube.md#connect-sources)
-guide or the
-[production](getting-started/installation/production.md#connect-sources) one to
-set these variables in your Airy Core instance.
-
-:::
+<ApplyVariablesNote />
 
 ### Step 2: Configure the webhook integration
 
@@ -127,14 +118,7 @@ If you encounter errors, please make sure that the Verify Token matches the
 `webhookSecret` in `infrastructure/airy.yaml` and that your variables have been
 successfully set to your Airy Core instance.
 
-:::note
-
-Refer to the [test](/getting-started/installation/minikube.md#connect-sources)
-guide or the
-[production](/getting-started/installation/production.md#connect-sources) one to
-set these variables in your Airy Core instance.
-
-:::
+<ApplyVariablesNote />
 
 Once the verification process has been completed, Facebook will immediately
 start sending events to your Airy Core instance.
@@ -220,11 +204,11 @@ If you encounter errors, please follow these debugging advices:
 
 :::
 
-## Connect a Facebook source via the UI 
+## Connect a Facebook source via the UI
 
 You can connect a Facebook source via your Airy Core instance UI.
 
-On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu and select the Facebook channel. Add your Facebook Page ID and Page Access Token in the respective fields. You can optionally add a name and an image. 
+On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu and select the Facebook channel. Add your Facebook Page ID and Page Access Token in the respective fields. You can optionally add a name and an image.
 
 <img alt="Facebook connect" src={useBaseUrl('img/sources/facebook/facebook_ui.png')} />
 
@@ -232,6 +216,9 @@ On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu an
 
 Your can find your Facebook Page ID and Page Access Token on your app's dashboard on [Facebook For Developers](https://developers.facebook.com/): the Facebook Page ID is the ID of the page you want to connect and the Page Access Token is generated on the Messenger product section (refer back to the previous steps).
 
+Make sure the variables have been successfully applied to your instance, otherwise you won't be able to connect the Facebook channel through the UI.
+
+<ApplyVariablesNote />
 
 ## Send messages from a Facebook source
 
@@ -240,5 +227,3 @@ After connecting the source to your instance, you will be able to send messages 
 import InboxMessages from './inbox-messages.mdx'
 
 <InboxMessages />
-
-

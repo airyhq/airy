@@ -79,6 +79,12 @@ On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu an
 
 Your twilio.sms channel will appear as connected in the UI.
 
+Make sure the variables have been successfully applied to your instance, otherwise you won't be able to connect the Twilio SMS channel through the UI.
+
+import ApplyVariablesNote from './applyVariables-note.mdx'
+
+<ApplyVariablesNote />
+
 ## Send and receive messages with the Inbox UI
 
 After connecting the source to your instance, it's time to create a conversation between your

@@ -6,7 +6,6 @@ sidebar_label: Introduction
 import TLDR from "@site/src/components/TLDR";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
-import KafkaSVG from "@site/static/icons/kafka.svg";
 import AwsSVG from "@site/static/icons/aws.svg";
 import Minikube from "@site/static/icons/minikube.svg";
 import RocketSVG from "@site/static/icons/rocket.svg";
@@ -43,11 +42,5 @@ icon={<AwsSVG />}
 title='Production ready environment with AWS'
 description='Step by step guide to run Airy Core on AWS'
 link='getting-started/installation/aws'
-/>
-<ButtonBox
-icon={<KafkaSVG />}
-title='Production ready environment with Kafka'
-description='Manual step by step guide for running Airy Core in production'
-link='getting-started/installation/production'
 />
 </ButtonBoxList>

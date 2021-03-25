@@ -26,11 +26,11 @@ import java.util.List;
 public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final Jwt jwt;
     private final String[] ignoreAuthPatterns;
-    private final String apiToken;
+    private final String systemToken;
 
-    public AuthConfig(Jwt jwt, @Value("${system_token:#{null}}") String apiToken, List<IgnoreAuthPattern> ignorePatternBeans) {
+    public AuthConfig(Jwt jwt, @Value("${system_token:#{null}}") String systemToken, List<IgnoreAuthPattern> ignorePatternBeans) {
         this.jwt = jwt;
-        this.apiToken = apiToken;
+        this.systemToken = systemToken;
         this.ignoreAuthPatterns = ignorePatternBeans.stream()
                 .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
                 .toArray(String[]::new);
@@ -42,7 +42,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 // Don't let Spring create its own session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt, this.apiToken))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt, this.systemToken))
                 .authorizeRequests(authorize -> authorize
                         .antMatchers("/actuator/**", "/ws*").permitAll()
                         .antMatchers(ignoreAuthPatterns).permitAll()

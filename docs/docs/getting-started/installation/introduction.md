@@ -3,7 +3,6 @@ title: Install Airy Core
 sidebar_label: Introduction
 ---
 
-import useBaseUrl from "@docusaurus/useBaseUrl";
 import TLDR from "@site/src/components/TLDR";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";

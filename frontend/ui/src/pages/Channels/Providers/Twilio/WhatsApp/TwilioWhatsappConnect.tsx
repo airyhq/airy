@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 
 import {allChannels} from '../../../../../selectors/channels';
-import {Channel, SourceType} from 'httpclient';
+import {Channel, Source} from 'httpclient';
 import TwilioConnect from '../TwilioConnect';
 import {StateModel} from '../../../../../reducers';
 
@@ -43,7 +43,7 @@ const TwilioWhatsappConnect = (props: TwilioWhatsappProps) => {
   }, [channels, channelId]);
 
   return (
-    <TwilioConnect channel={channel} source={SourceType.twilioWhatsapp} pageTitle="Whatsapp" buttonText={buttonTitle} />
+    <TwilioConnect channel={channel} source={Source.twilioWhatsapp} pageTitle="Whatsapp" buttonText={buttonTitle} />
   );
 };
 

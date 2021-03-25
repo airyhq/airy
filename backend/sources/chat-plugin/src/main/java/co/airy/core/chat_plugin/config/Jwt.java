@@ -26,9 +26,9 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @Component
 public class Jwt {
     private static final Logger log = AiryLoggerFactory.getLogger(Jwt.class);
-    public static final String SESSION_ID_CLAIM = "session_id";
+    public static final String CONVERSATION_ID_CLAIM = "conversation_id";
     public static final String CHANNEL_ID_CLAIM = "channel_id";
-    public static final String RESUME_SESSION_ID_CLAIM = "resume_session_id";
+    public static final String RESUME_CONVERSATION_ID_CLAIM = "resume_conversation_id";
     public static final String RESUME_CHANNEL_ID_CLAIM = "resume_channel_id";
     private final Key signingKey;
 
@@ -36,16 +36,15 @@ public class Jwt {
         this.signingKey = parseSigningKey(tokenKey);
     }
 
-    public String getAuthToken(String sessionId, String channelId) {
+    public String getAuthToken(String conversationId, String channelId) {
         Date now = Date.from(Instant.now());
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put(SESSION_ID_CLAIM, sessionId);
+        claims.put(CONVERSATION_ID_CLAIM, conversationId);
         claims.put(CHANNEL_ID_CLAIM, channelId);
 
         JwtBuilder builder = Jwts.builder()
-                .setId(sessionId)
-                .setSubject(sessionId)
+                .setSubject(conversationId)
                 .setIssuedAt(now)
                 .addClaims(claims)
                 .signWith(signingKey, SignatureAlgorithm.HS256);
@@ -56,16 +55,15 @@ public class Jwt {
         return builder.compact();
     }
 
-    public String getResumeToken(String sessionId, String channelId) {
+    public String getResumeToken(String conversationId, String channelId) {
         Date now = Date.from(Instant.now());
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put(RESUME_SESSION_ID_CLAIM, sessionId);
+        claims.put(RESUME_CONVERSATION_ID_CLAIM, conversationId);
         claims.put(RESUME_CHANNEL_ID_CLAIM, channelId);
 
         JwtBuilder builder = Jwts.builder()
-                .setId(sessionId)
-                .setSubject(sessionId)
+                .setSubject(conversationId)
                 .setIssuedAt(now)
                 .addClaims(claims)
                 .signWith(signingKey, SignatureAlgorithm.HS256);
@@ -89,9 +87,9 @@ public class Jwt {
         }
 
         try {
-            final String sessionId = (String) claims.get(SESSION_ID_CLAIM);
+            final String conversationId = (String) claims.get(CONVERSATION_ID_CLAIM);
             final String channelId = (String) claims.get(CHANNEL_ID_CLAIM);
-            return new Principal(channelId, sessionId);
+            return new Principal(channelId, conversationId);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new HttpClientErrorException(UNAUTHORIZED, "Unauthorized", null, null, Charset.defaultCharset());
@@ -111,9 +109,9 @@ public class Jwt {
         }
 
         try {
-            final String sessionId = (String) claims.get(RESUME_SESSION_ID_CLAIM);
+            final String conversationId = (String) claims.get(RESUME_CONVERSATION_ID_CLAIM);
             final String channelId = (String) claims.get(RESUME_CHANNEL_ID_CLAIM);
-            return new Principal(channelId, sessionId);
+            return new Principal(channelId, conversationId);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new HttpClientErrorException(UNAUTHORIZED, "Unauthorized", null, null, Charset.defaultCharset());

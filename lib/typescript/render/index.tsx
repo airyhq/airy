@@ -2,16 +2,16 @@ import React from 'react';
 import {renderProviders} from './renderProviders';
 
 import {Text} from './components/Text';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from './shared';
+import {getDefaultRenderingProps, RenderPropsUnion} from './props';
 
-export * from './shared';
+export * from './props';
 
 type SourceMessageState = {
   hasError: boolean;
 };
 
-export class SourceMessage extends React.Component<MessageRenderProps, SourceMessageState> {
-  constructor(props: MessageRenderProps) {
+export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessageState> {
+  constructor(props: RenderPropsUnion) {
     super(props);
     this.state = {hasError: false};
   }
@@ -25,15 +25,14 @@ export class SourceMessage extends React.Component<MessageRenderProps, SourceMes
   }
 
   errorFallback() {
-    return <Text {...getDefaultMessageRenderingProps(this.props)} text="Could not render this content" />;
+    return <Text {...getDefaultRenderingProps(this.props)} text="Could not render this content" />;
   }
 
   render() {
-    if (this.state.hasError) {
+    const provider = renderProviders[this.props.source];
+    if (this.state.hasError || this.props.source === undefined || provider === undefined) {
       return this.errorFallback();
     }
-
-    const provider = renderProviders[this.props.source];
 
     try {
       return provider(this.props);
@@ -43,3 +42,5 @@ export class SourceMessage extends React.Component<MessageRenderProps, SourceMes
     }
   }
 }
+
+export * from './components/Avatar';

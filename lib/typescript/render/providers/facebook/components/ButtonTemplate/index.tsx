@@ -1,9 +1,8 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {DefaultMessageRenderingProps} from '../../../../components/index';
 import {ButtonTemplate as ButtonTemplateModel} from '../../facebookModel';
 
-type ButtonTemplateRendererProps = DefaultMessageRenderingProps & {
+type ButtonTemplateRendererProps = {
   template: ButtonTemplateModel;
 };
 

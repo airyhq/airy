@@ -8,5 +8,5 @@ export default HttpClient.prototype.connectChatPluginChannel = async function (
 ) {
   const response = await this.doFetchFromBackend('channels.chatplugin.connect', camelcaseKeys(requestPayload));
 
-  return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.userData']});
+  return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.user_data']});
 };

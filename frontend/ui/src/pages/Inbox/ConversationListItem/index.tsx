@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
-import AvatarImage from '../../../components/AvatarImage';
+import {Avatar} from 'render';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
@@ -57,7 +57,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
             unread ? styles.unread : ''
           }`}>
           <div className={styles.profileImage}>
-            <AvatarImage contact={participant} />
+            <Avatar contact={participant} />
           </div>
           <div className={styles.contactDetails}>
             <div className={styles.topRow}>

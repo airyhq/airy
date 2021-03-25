@@ -11,6 +11,7 @@ export type TemplateState = {
 
 export type Templates = {
   all: Template[];
+  source: string;
 };
 
 const defaultState = {
@@ -22,7 +23,8 @@ export default function templatesReducer(state = defaultState, action: Action): 
     case getType(actions.listTemplatesAction):
       return {
         ...state,
-        all: action.payload,
+        all: action.payload.templates,
+        source: action.payload.source,
       };
 
     default:

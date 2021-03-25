@@ -1,5 +1,6 @@
 package co.airy.core.chat_plugin.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -23,9 +24,11 @@ import java.util.List;
 )
 public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final Jwt jwt;
+    private final String systemToken;
 
-    public AuthConfig(Jwt jwt) {
+    public AuthConfig(Jwt jwt, @Value("${system_token:#{null}}") String systemToken) {
         this.jwt = jwt;
+        this.systemToken = systemToken;
     }
 
     @Override
@@ -33,10 +36,10 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 // Don't let Spring create its own session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt, systemToken))
                 .authorizeRequests()
                 .antMatchers("/actuator/**", "/ws.chatplugin").permitAll()
-                .mvcMatchers("/chatplugin.authenticate").permitAll()
+                .mvcMatchers("/chatplugin.authenticate", "/chatplugin.resumeToken").permitAll()
                 .anyRequest().authenticated();
     }
 

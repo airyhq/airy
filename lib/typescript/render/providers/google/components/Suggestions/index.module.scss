@@ -4,13 +4,14 @@
 .suggestionsWrapper {
   width: 100%;
   margin-top: 5px;
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .suggestionsContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
   position: relative;
   margin-top: 5px;
 }
@@ -21,7 +22,7 @@
   height: auto;
   display: flex;
   justify-content: center;
-  margin: 0px 0px 5px 5px;
+  margin-bottom: 5px;
   padding: 4px 8px;
   align-items: center;
   border-radius: 16px;

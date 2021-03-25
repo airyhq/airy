@@ -7,5 +7,5 @@ export default HttpClient.prototype.getConversationInfo = async function (conver
     conversation_id: conversationId,
   });
 
-  return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.userData']});
+  return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.user_data']});
 };

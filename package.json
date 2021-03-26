@@ -27,6 +27,7 @@
     "redux": "^4.0.5",
     "regenerator-runtime": "^0.13.5",
     "reselect": "4.0.0",
+    "shellcheck": "^1.0.0",
     "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {

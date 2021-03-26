@@ -5,6 +5,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@io_bazel_rules_go//go:def.bzl", "TOOLS_NOGO", "nogo")
+load("@com_github_airyhq_bazel_tools//lint:shellcheck.bzl", "shellcheck")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -26,6 +27,13 @@ multirun(
         "@com_github_airyhq_bazel_tools//lint:fix_buildifier",
     ],
     visibility = ["//visibility:public"],
+)
+
+shellcheck(
+    scrs = glob([
+        "scripts/*.sh",
+        "infrastructure/**/*.sh",
+    ]),
 )
 
 container_image(

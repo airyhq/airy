@@ -152,11 +152,11 @@ Airy Core](/getting-started/installation/introduction.md)
 1. Build the cli target with Bazel:
 
 ```bash
-bazel build //infrastructure/cli:airy
+bazel build //cli:airy
 ```
 
 2. Move the **airy** binary to a file location on your system PATH.
 
 ```bash
-sudo cp bazel-out/darwin-fastbuild/bin/infrastructure/cli/airy /usr/local/bin/airy
+sudo cp bazel-out/darwin-fastbuild/bin/cli/airy /usr/local/bin/airy
 ```

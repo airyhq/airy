@@ -1,3 +1,5 @@
+import {CustomConfig} from './App';
+
 export type RenderCtrl = {
   toggleHideChat: () => void;
 };
@@ -6,7 +8,7 @@ export type RenderProp = (ctrl?: RenderCtrl) => JSX.Element;
 
 export type AuthConfiguration = {
   channelId: string;
-  welcomeMessage?: {};
+  config?: CustomConfig;
 };
 
 export type AiryWidgetConfiguration = AuthConfiguration & {

@@ -33,8 +33,10 @@ const defaultWelcomeMessage: Message = {
 type Props = AiryWidgetConfiguration;
 
 const Chat = (props: Props) => {
-  if (props.welcomeMessage) {
-    defaultWelcomeMessage.content = props.welcomeMessage;
+  const {config} = props;
+
+  if (config && config.welcomeMessage) {
+    defaultWelcomeMessage.content = config.welcomeMessage;
   }
 
   const [installError, setInstallError] = useState('');
@@ -119,17 +121,29 @@ const Chat = (props: Props) => {
 
   const headerBar = props.headerBarProp
     ? () => props.headerBarProp(ctrl)
-    : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} />;
+    : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} config={props.config} />;
 
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
     : () => (
-        <AiryInputBar sendMessage={sendMessage} messageString={messageString} setMessageString={setMessageString} />
+        <AiryInputBar
+          sendMessage={sendMessage}
+          messageString={messageString}
+          setMessageString={setMessageString}
+          config={props.config}
+        />
       );
 
   const bubble = props.bubbleProp
     ? () => props.bubbleProp(ctrl)
-    : () => <AiryBubble isChatHidden={isChatHidden} toggleHideChat={ctrl.toggleHideChat} dataCyId={cyBubble} />;
+    : () => (
+        <AiryBubble
+          isChatHidden={isChatHidden}
+          toggleHideChat={ctrl.toggleHideChat}
+          dataCyId={cyBubble}
+          config={props.config}
+        />
+      );
 
   if (installError) {
     return null;

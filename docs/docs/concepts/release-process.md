@@ -17,7 +17,7 @@ permission to the airy org to function correctly
 
 Once a release day comes, we execute the following steps:
 
-- We clean up the draft release and name it `x.y.z`
+- We clean up the draft release
 - We run `./scripts/release.sh start x.y.z`
 - We test the release using `airy create --provider=minikube`. Note that:
   - Any additional hot-fix is committed directly to the release branch

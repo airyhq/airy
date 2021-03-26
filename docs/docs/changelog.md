@@ -3,7 +3,7 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 
+## 0.14.0
 
 #### Changes
 
@@ -23,7 +23,7 @@ sidebar_label: 📝 Changelog
 - [[#1328](https://github.com/airyhq/airy/issues/1328)] Develop version of airy CLI is not… [[#1330](https://github.com/airyhq/airy/pull/1330)]
 - [[#1267](https://github.com/airyhq/airy/issues/1267)] Created generic logo component [[#1329](https://github.com/airyhq/airy/pull/1329)]
 - [[#677](https://github.com/airyhq/airy/issues/677)] Render Suggested Replies [[#1324](https://github.com/airyhq/airy/pull/1324)]
-- API key authentication [[#1316](https://github.com/airyhq/airy/pull/1316)]
+- [[#1036](https://github.com/airyhq/airy/issues/1036)] API key authentication [[#1316](https://github.com/airyhq/airy/pull/1316)]
 - [[#968](https://github.com/airyhq/airy/issues/968)] Improve UI/Inbox docs [[#1280](https://github.com/airyhq/airy/pull/1280)]
 - [[#1041](https://github.com/airyhq/airy/issues/1041)] Minikube provider [[#1179](https://github.com/airyhq/airy/pull/1179)]
 - [[#1278](https://github.com/airyhq/airy/issues/1278)] GIFs in docs are too large [[#1295](https://github.com/airyhq/airy/pull/1295)]
@@ -34,7 +34,7 @@ sidebar_label: 📝 Changelog
 
 #### 🐛 Bug Fixes
 
-- Fix/1239 message wrapper for render library [[#1297](https://github.com/airyhq/airy/pull/1297)]
+- [[#1239](https://github.com/airyhq/airy/issues/1239)] Fix message wrapper for render library [[#1297](https://github.com/airyhq/airy/pull/1297)]
 - [[#1306](https://github.com/airyhq/airy/issues/1306)] Fix contact metadata problem [[#1349](https://github.com/airyhq/airy/pull/1349)]
 - [[#1343](https://github.com/airyhq/airy/issues/1343)] Save button doesn't work for adding a… [[#1347](https://github.com/airyhq/airy/pull/1347)]
 - [[#1298](https://github.com/airyhq/airy/issues/1298)] MessageTextArea in inbox doesn't shrink… [[#1340](https://github.com/airyhq/airy/pull/1340)]
@@ -70,9 +70,9 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.13.1/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.13.1/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.13.1/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.14.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.14.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.14.0/windows/amd64/airy.exe)
 
 ## 0.13.0
 

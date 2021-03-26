@@ -1,4 +1,4 @@
-import {cyBubble, cyInputbarTextarea, cyInputbarButton, cyChatPluginListChat} from 'chat-plugin-handles';
+import {cyBubble, cyInputbarTextarea, cyInputbarButton, cyChatPluginMessageList} from 'chat-plugin-handles';
 
 import {
   cyChannelsChatPluginAddButton,
@@ -27,20 +27,20 @@ describe('Create UI Conversation', () => {
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
 
-    cy.visit('http://localhost:8080/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
+    cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
     cy.get(`[data-cy=${cyBubble}]`).click();
     cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
 
     cy.wait(500);
 
-    cy.get(`[data-cy=${cyChatPluginListChat}]`).children().its('length').should('eq', 2);
+    cy.get(`[data-cy=${cyChatPluginMessageList}]`).children().its('length').should('eq', 2);
 
     cy.wait(2500);
 
     cy.request('POST', 'http://airy.core/users.login', {
-      email: 'grace@example.com',
-      password: 'the_answer_is_42',
+      email: Cypress.env('username'),
+      password: Cypress.env('password'),
     }).then(response => {
       const loginToken = response.body['token'];
       console.log('LoginToken', loginToken);
@@ -77,8 +77,7 @@ describe('Create UI Conversation', () => {
         });
         cy.wait(3000);
 
-        cy.get(`[data-cy=${cyChatPluginListChat}]`).children().its('length').should('eq', 3);
-        cy.get(`[data-cy=${cyChatPluginListChat}]`).filter(':contains("Wonderful Day")');
+        cy.get(`[data-cy=${cyChatPluginMessageList}]`).children().its('length').should('eq', 3);
       });
     });
   });

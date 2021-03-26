@@ -7,8 +7,8 @@ import {
   cyChannelsChatPluginFormSubmitButton,
 } from 'handles';
 
-describe('Create UI Conversation', () => {
-  it('Creates a chat plugin conversation', () => {
+describe('Sends message from Inbox to Chatplugin', () => {
+  it('Login', () => {
     cy.visit('/login');
     cy.get('form')
       .within(() => {
@@ -69,7 +69,7 @@ describe('Create UI Conversation', () => {
           body: {
             conversation_id: `${conversationId}`,
             message: {
-              text: 'Wonderful Day',
+              text: Cypress.env('websocketMessage'),
             },
           },
         }).then(response => {

@@ -96,7 +96,7 @@ rename_draft_release() {
     )
     command curl -H "Authorization: token ${GITHUB_TOKEN}" -X PATCH \
         https://api.github.com/repos/airyhq/airy/releases/"$release_id" \
-        -d "{\"name\":\"${release_number}\", \"tag_name\":\"${release_number}}"
+        -d "{\"name\":\"${release_number}\", \"tag_name\":\"${release_number}\"}"
 
 }
 

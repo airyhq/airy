@@ -21,8 +21,6 @@ describe('Filters conversation', () => {
       })
       .submit();
 
-    cy.wait(500);
-
     cy.visit('/channels');
     cy.wait(500);
 
@@ -49,7 +47,6 @@ describe('Filters conversation', () => {
       .invoke('text')
       .then(text => {
         cy.get(`[data-cy=${cySearchButton}]`).click();
-        cy.wait(500);
         cy.get(`[data-cy=${cySearchField}]`).get('input').type(text.replace('Chatplugin ', ''));
         cy.get(`[data-cy=${cyConversationList}]`).children().children().children().its('length').should('eq', 1);
       });

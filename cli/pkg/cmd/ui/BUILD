@@ -7,7 +7,7 @@ go_library(
     importpath = "cli/pkg/cmd/ui",
     visibility = ["//visibility:public"],
     deps = [
-        "//infrastructure/cli/pkg/kube",
+        "//cli/pkg/kube",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",
     ],

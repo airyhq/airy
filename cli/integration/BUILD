@@ -25,8 +25,8 @@ go_test(
         "version_test.go",
     ],
     data = [
-        "//infrastructure/cli:airy",
-        "//infrastructure/cli/integration/golden:golden_files",
+        "//cli:airy",
+        "//cli/integration/golden:golden_files",
     ],
     embed = [":integration"],
 )

@@ -30,7 +30,7 @@ To ensure that you develop against the latest state of the `create` command you 
 from the repository:
 
 ```
-$ bazel run //infrastructure/cli -- create --provider=minikube
+$ bazel run //cli -- create --provider=minikube
 ```
 
 When the bootstrap process finishes, open another terminal and run `$ ./scripts/web-dev.sh //frontend/ui:bundle_server`

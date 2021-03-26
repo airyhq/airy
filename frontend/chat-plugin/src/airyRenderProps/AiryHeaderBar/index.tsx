@@ -1,15 +1,21 @@
 import React from 'react';
+import {CustomConfig} from '../../App';
 import style from './index.module.scss';
 
 type Props = {
   toggleHideChat: () => void;
+  config?: CustomConfig;
 };
 
 const AiryHeaderBar = (props: Props) => {
+  const {config} = props;
+
   return (
     <div className={style.header}>
       <div className={style.headerInfo}>
-        <h1 className={style.headerTitle}>Customer Chat</h1>
+        <h1 className={style.headerTitle} style={config?.accentColor && {color: config.accentColor}}>
+          Customer Chat
+        </h1>
       </div>
       <button className={style.closeButton} onClick={() => props.toggleHideChat()}>
         <svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1">

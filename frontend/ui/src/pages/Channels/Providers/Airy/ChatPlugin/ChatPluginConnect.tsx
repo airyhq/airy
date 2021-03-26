@@ -163,6 +163,11 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
     setCurrentPage('installDoc');
   };
 
+  const showCustomisation = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setCurrentPage('customisation');
+  };
+
   const generateCode = () => {
     return `<script>
       (function(w, d, s, n) {
@@ -183,6 +188,49 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
     document.execCommand('copy');
   };
 
+  const ConnectContent = () => {
+    switch (currentPage) {
+      case 'settings':
+        return (
+          <div className={styles.formWrapper}>
+            <div className={styles.settings}>
+              <form className={styles.form} onSubmit={updateConnection}>
+                {renderFormFields()}
+                <Button type="submit" styleVariant="small">
+                  Update
+                </Button>
+              </form>
+            </div>
+          </div>
+        );
+      case 'installDoc':
+        return (
+          <div className={styles.formWrapper}>
+            <div className={styles.installDocs}>
+              <div className={styles.installHint}>
+                Add this code inside the tag <code>&lt;head&gt;</code>:
+              </div>
+              <div>
+                <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={generateCode()}></textarea>
+              </div>
+              <Button onClick={copyToClipboard}>Copy code</Button>
+            </div>
+          </div>
+        );
+      case 'customisation':
+        return (
+          <div className={styles.formWrapper}>
+            customShit
+            <iframe
+              src="http://airy.core/chatplugin/ui/example?channel_id=81afdc00-9bc5-505f-b985-b2a80523e7aa"
+              height="750"
+              width="400"
+            />
+          </div>
+        );
+    }
+  };
+
   const renderChannelPage = () => (
     <div>
       <p className={styles.updatePageParagraph}>Add Airy Live Chat to your website and application</p>
@@ -197,30 +245,13 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
             Install app
           </a>
         </li>
+        <li className={currentPage == 'customisation' ? styles.tabEntrySelected : styles.tabEntry}>
+          <a href="#" onClick={showCustomisation}>
+            Customise
+          </a>
+        </li>
       </ul>
-      <div className={styles.formWrapper}>
-        {currentPage === 'settings' ? (
-          <div className={styles.settings}>
-            <form className={styles.form} onSubmit={updateConnection}>
-              {renderFormFields()}
-
-              <Button type="submit" styleVariant="small">
-                Update
-              </Button>
-            </form>
-          </div>
-        ) : (
-          <div className={styles.installDocs}>
-            <div className={styles.installHint}>
-              Add this code inside the tag <code>&lt;head&gt;</code>:
-            </div>
-            <div>
-              <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={generateCode()}></textarea>
-            </div>
-            <Button onClick={copyToClipboard}>Copy code</Button>
-          </div>
-        )}
-      </div>
+      <ConnectContent />
     </div>
   );
 

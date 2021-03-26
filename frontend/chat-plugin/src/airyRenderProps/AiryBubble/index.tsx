@@ -1,13 +1,44 @@
 import React from 'react';
+import {CustomConfig} from '../../App';
 import style from './index.module.scss';
 
 type Props = {
   isChatHidden: boolean;
   toggleHideChat: () => void;
   dataCyId?: string;
+  config?: CustomConfig;
 };
 
 const AiryBubble = (props: Props) => {
+  const {config} = props;
+
+  const BubbleImage = () => {
+    if (config?.bubbleIcon) {
+      return (
+        <img
+          style={{
+            padding: '10px 6px 8px 6px',
+            maxHeight: '60px',
+            maxWidth: '60px',
+            objectFit: 'contain',
+            borderRadius: '50%',
+          }}
+          src={config.bubbleIcon}
+        />
+      );
+    }
+    return (
+      <svg height="40" className={style.bubbleIcon} viewBox="0 0 39 40" width="39" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#fff" fillRule="evenodd" transform="translate(.030165 .02054)">
+          <path d="m37.1887765 33.360495-10.066549 4.0324258-13.4940785-33.36076733 10.066549-4.03215347z" />
+          <path d="m17.3157765 18.1023243-11.86678434 4.7221039 7.08317644-16.54846533z" />
+          <path d="m25.3931725 38.0753564-19.37490191-13.3660891 12.03396081-4.7839109z" />
+          <path d="m11.5947451 30.9400594-11.5947451 4.6153713 4.16898039-9.7363614z" />
+        </g>
+      </svg>
+    );
+  };
+
   return (
     <div className={style.hideBubble} onClick={() => props.toggleHideChat()} data-cy={props.dataCyId}>
       {!props.isChatHidden ? (
@@ -27,14 +58,7 @@ const AiryBubble = (props: Props) => {
           </g>
         </svg>
       ) : (
-        <svg height="40" className={style.bubbleIcon} viewBox="0 0 39 40" width="39" xmlns="http://www.w3.org/2000/svg">
-          <g fill="#fff" fillRule="evenodd" transform="translate(.030165 .02054)">
-            <path d="m37.1887765 33.360495-10.066549 4.0324258-13.4940785-33.36076733 10.066549-4.03215347z" />
-            <path d="m17.3157765 18.1023243-11.86678434 4.7221039 7.08317644-16.54846533z" />
-            <path d="m25.3931725 38.0753564-19.37490191-13.3660891 12.03396081-4.7839109z" />
-            <path d="m11.5947451 30.9400594-11.5947451 4.6153713 4.16898039-9.7363614z" />
-          </g>
-        </svg>
+        <BubbleImage />
       )}
     </div>
   );

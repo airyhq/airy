@@ -25,4 +25,4 @@ require (
 	k8s.io/client-go v0.19.0
 )
 
-replace github.com/airyhq/airy/lib/go/httpclient => ../../lib/go/httpclient
+replace github.com/airyhq/airy/lib/go/httpclient => ../lib/go/httpclient

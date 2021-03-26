@@ -11,7 +11,7 @@ go_library(
     importpath = "cli/pkg/cmd/config",
     visibility = ["//visibility:public"],
     deps = [
-        "//infrastructure/cli/pkg/kube",
+        "//cli/pkg/kube",
         "@com_github_spf13_cobra//:cobra",
         "@in_gopkg_yaml_v2//:yaml_v2",
         "@io_k8s_api//core/v1:go_default_library",

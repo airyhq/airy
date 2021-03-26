@@ -6,7 +6,6 @@ import {
   cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
-  cyChannelsChatPluginList,
   cyChannelsFormBackButton,
 } from 'handles';
 

@@ -4,16 +4,20 @@ import (
 	"cli/pkg/console"
 	"cli/pkg/kube"
 	"cli/pkg/providers"
+	"cli/pkg/workspace"
 	"fmt"
 	"github.com/TwinProduction/go-color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"os"
+	"path/filepath"
 )
 
 var (
 	providerName string
 	namespace    string
 	version      string
+	initOnly     bool
 	CreateCmd    = &cobra.Command{
 		Use:   "create",
 		Short: "Creates an instance of Airy Core",
@@ -23,19 +27,38 @@ var (
 )
 
 func init() {
-	CreateCmd.Flags().StringVar(&providerName, "provider", "local", "One of the supported providers (aws|minikube).")
+	CreateCmd.Flags().StringVar(&providerName, "provider", "minikube", "One of the supported providers (aws|minikube).")
 	CreateCmd.Flags().StringVar(&namespace, "namespace", "default", "(optional) Kubernetes namespace that Airy should be installed to.")
+	CreateCmd.Flags().BoolVar(&initOnly, "init-only", false, "Only create the airy config directory and exit")
 	CreateCmd.MarkFlagRequired("provider")
 
 }
 
 func create(cmd *cobra.Command, args []string) {
+	cfgDir, err := os.Getwd()
+	if err != nil {
+		console.Exit(err)
+	}
+
+	if len(args) > 0 {
+		cfgDir = filepath.Join(cfgDir, args[0])
+	}
+
+	dir, err := workspace.Create(cfgDir)
+	if err != nil {
+		console.Exit("could not initialize Airy config directory at", cfgDir, err)
+	}
+	fmt.Println("📁 Initialized Airy config directory at", cfgDir)
+	if initOnly == true {
+		os.Exit(0)
+	}
+
 	fmt.Println("⚙️  Creating core with provider", providerName)
 
 	provider := providers.MustGet(providers.ProviderName(providerName))
 
-	middleware := console.IndentOutput(func (input string) string {
-		return color.Colorize(color.Yellow, "#\t" + input)
+	middleware := console.IndentOutput(func(input string) string {
+		return color.Colorize(color.Yellow, "#\t"+input)
 	})
 
 	fmt.Println()
@@ -59,7 +82,7 @@ func create(cmd *cobra.Command, args []string) {
 		console.Exit("could not store the kube context: ", err)
 	}
 
-	helm := New(clientset, version, namespace)
+	helm := New(clientset, version, namespace, dir.GetAiryYaml())
 	if err := helm.Setup(); err != nil {
 		console.Exit("setting up Helm failed with err: ", err)
 	}

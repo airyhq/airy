@@ -1,6 +1,24 @@
 package workspace
 
-import _ "embed"
+import (
+	"embed"
+	"path/filepath"
+)
 
-//go:embed defaults.yaml
-var Defaults string
+const cliConfigFileName = "cli.yaml"
+
+// content holds our static web server content.
+//go:embed template
+var templateDir embed.FS
+
+type ConfigDir struct {
+	Path string
+}
+
+func (f ConfigDir) GetAiryYaml() string {
+	return filepath.Join(f.Path, "airy.yaml")
+}
+
+func (f ConfigDir) GetPath(fileName string) string {
+	return filepath.Join(f.Path, fileName)
+}

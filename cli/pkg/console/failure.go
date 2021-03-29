@@ -6,7 +6,7 @@ import (
 )
 
 func Exit(msg ...interface{}) {
-	fmt.Print("❌ ", fmt.Sprintln(msg))
+	fmt.Print("❌ ", fmt.Sprintln(msg...))
 	os.Exit(1)
 }
 

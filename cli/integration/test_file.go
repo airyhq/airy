@@ -1,18 +1,19 @@
 package integration
 
 import (
-	"io/ioutil"
-	"path/filepath"
+	"embed"
 	"testing"
 
 	"github.com/kr/pretty"
 )
 
+//go:embed golden
+var goldenDir embed.FS
+
 // TestFile struct
 type TestFile struct {
 	t    *testing.T
 	name string
-	dir  string
 }
 
 // Diff function
@@ -22,21 +23,16 @@ func Diff(expected, actual interface{}) []string {
 
 // NewGoldenFile function
 func NewGoldenFile(t *testing.T, name string) *TestFile {
-	return &TestFile{t: t, name: name + ".golden", dir: "./golden/"}
-}
-
-func (tf *TestFile) path() string {
-	tf.t.Helper()
-	return filepath.Join(tf.dir, tf.name)
+	return &TestFile{t: t, name: name + ".golden"}
 }
 
 // Load method
 func (tf *TestFile) Load() string {
 	tf.t.Helper()
 
-	content, err := ioutil.ReadFile(tf.path())
+	content, err := goldenDir.ReadFile(tf.name)
 	if err != nil {
-		tf.t.Fatalf("could not read file %s: %v", tf.name, err)
+		tf.t.Fatalf("test file not found %s: %v", tf.name, err)
 	}
 
 	return string(content)

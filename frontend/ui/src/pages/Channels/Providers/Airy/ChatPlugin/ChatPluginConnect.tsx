@@ -220,12 +220,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
       case 'customisation':
         return (
           <div className={styles.formWrapper}>
-            Test
-            <iframe
-              src="http://airy.core/chatplugin/ui/example?channel_id=81afdc00-9bc5-505f-b985-b2a80523e7aa"
-              height="750"
-              width="400"
-            />
+            Test            
           </div>
         );
     }

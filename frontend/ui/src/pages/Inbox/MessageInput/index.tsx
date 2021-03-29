@@ -166,6 +166,8 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       handleEmojiDrawer();
     };
 
+    console.log("aitor");
+    console.log(source);
     return (
       <div className={styles.messageActionsContainer}>
         <>

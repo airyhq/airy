@@ -1,4 +1,5 @@
 load("//tools/lint:web.bzl", "web_lint")
+load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
 load("//tools/build/npm:rules.bzl", "assemble_npm", "deploy_npm")
 load("@com_github_airyhq_bazel_tools//web:web_library.bzl", "web_library")
@@ -58,5 +59,7 @@ deploy_npm(
     snapshot = "https://registry.npmjs.org/",
     target = ":assemble-npm",
 )
+
+check_pkg(name = "buildifier")
 
 web_lint()

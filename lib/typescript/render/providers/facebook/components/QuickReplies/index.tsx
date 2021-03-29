@@ -5,7 +5,7 @@ import {Text} from '../../../../components/Text';
 import {Video} from '../../../../components/Video';
 import {Image} from '../../../../components/Image';
 import {QuickReply, AttachmentUnion} from '../../facebookModel';
-import {fallbackImage} from '../../../../services/fallbackImage';
+import {ImageWithFallback} from 'render/components/ImageWithFallback';
 
 export type QuickRepliesRenderProps = DefaultRenderingProps & {
   text?: string;
@@ -26,14 +26,7 @@ export const QuickReplies = ({quickReplies, fromContact, text, attachment}: Quic
     <div className={styles.container}>
       {quickReplies.map(({title, image_url: imageUrl}) => (
         <button key={title} className={styles.replyButton}>
-          {imageUrl && (
-            <img
-              className={styles.quickReplyImage}
-              alt={title}
-              src={imageUrl}
-              onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackImage(event, 'mediaImage')}
-            />
-          )}
+          {imageUrl && <ImageWithFallback className={styles.quickReplyImage} alt={title} src={imageUrl} />}
           <h1 key={title} className={styles.title}>
             {title}
           </h1>

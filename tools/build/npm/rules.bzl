@@ -126,7 +126,7 @@ deploy_npm = rule(
         ),
         "_deployment_script_template": attr.label(
             allow_single_file = True,
-            default = "//tools/build/:deploy.py",
+            default = "//tools/build/npm:deploy.py",
         ),
         "_npm": attr.label(
             default = Label("@nodejs//:npm"),

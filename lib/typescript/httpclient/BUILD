@@ -37,7 +37,7 @@ genrule(
         "package.json",
         "README.md",
         ":dist",
-        ":httpClient",
+        ":httpclient",
     ],
     outs = ["httpclient"],
     cmd = """

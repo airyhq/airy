@@ -48,16 +48,13 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
     const listAllTemplatesFromSourcePayload = {source: source};
     let abort;
 
-    console.log("potato");
-    console.log(source);
-    console.log(templatesSource);
-    // if (source !== templatesSource) {
+    if (source !== templatesSource) {
       listTemplates(listAllTemplatesFromSourcePayload)
         .then()
         .catch(() => {
           if (!abort) setListTemplatesError(true);
         });
-    // }
+    }
 
     return () => {
       abort = true;

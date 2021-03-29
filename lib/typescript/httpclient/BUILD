@@ -39,7 +39,7 @@ genrule(
         ":dist",
         ":httpClient",
     ],
-    outs = ["http-client_lib"],
+    outs = ["http-client"],
     cmd = """
     mkdir -p $(OUTS)/{src,dist} && cp -R $(location :dist) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \
@@ -49,7 +49,7 @@ genrule(
 
 assemble_npm(
     name = "assemble-npm",
-    target = ":http-client_lib",
+    target = ":httpclient",
     version_file = ":VERSION",
 )
 

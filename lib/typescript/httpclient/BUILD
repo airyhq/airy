@@ -39,7 +39,7 @@ genrule(
         ":dist",
         ":httpclient",
     ],
-    outs = ["httpclient"],
+    outs = ["httpclient_lib"],
     cmd = """
     mkdir -p $(OUTS)/{src,dist} && cp -R $(location :dist) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \

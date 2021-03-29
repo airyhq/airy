@@ -49,7 +49,7 @@ genrule(
 
 assemble_npm(
     name = "assemble-npm",
-    target = "httpclient",
+    target = ":httpclient",
     version_file = ":VERSION",
 )
 

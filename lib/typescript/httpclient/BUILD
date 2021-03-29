@@ -24,7 +24,7 @@ web_library(
         "camelcase-keys": "camelcase-keys",
     },
     output = {
-        "library": "@airyhq/httpClient",
+        "library": "@airyhq/http-client",
         "globalObject": "this",
         "libraryTarget": "umd",
         "filename": "index.ts",
@@ -39,7 +39,7 @@ genrule(
         ":dist",
         ":httpClient",
     ],
-    outs = ["httpClient_lib"],
+    outs = ["http-client_lib"],
     cmd = """
     mkdir -p $(OUTS)/{src,dist} && cp -R $(location :dist) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \
@@ -49,7 +49,7 @@ genrule(
 
 assemble_npm(
     name = "assemble-npm",
-    target = ":httpClient_lib",
+    target = ":http-client_lib",
     version_file = ":VERSION",
 )
 

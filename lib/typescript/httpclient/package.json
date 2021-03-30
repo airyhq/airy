@@ -1,6 +1,6 @@
 {
   "name": "@airyhq/http-client",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Airy http client library",
   "main": "dist/index.js",
   "typings": "index.d.ts",

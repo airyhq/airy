@@ -21,8 +21,6 @@ describe('Filters conversation', () => {
       })
       .submit();
 
-    cy.wait(500);
-
     cy.visit('/channels');
     cy.wait(500);
 
@@ -42,9 +40,15 @@ describe('Filters conversation', () => {
 
     cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('gte', 1);
     cy.wait(500);
-    cy.get(`[data-cy=${cySearchButton}]`).click();
-    cy.wait(500);
-    cy.get(`[data-cy=${cySearchField}]`).get('input').type(Cypress.env('searchQuery'));
-    cy.get(`[data-cy=${cyConversationList}]`).children().children().its('length').should('eq', 1);
+
+    cy.get(`[data-cy=${cyConversationList}]`)
+      .first()
+      .contains(/^Chatplugin \w*$/)
+      .invoke('text')
+      .then(text => {
+        cy.get(`[data-cy=${cySearchButton}]`).click();
+        cy.get(`[data-cy=${cySearchField}]`).get('input').type(text.replace('Chatplugin ', ''));
+        cy.get(`[data-cy=${cyConversationList}]`).children().children().children().its('length').should('eq', 1);
+      });
   });
 });

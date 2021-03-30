@@ -2,11 +2,9 @@ package integration
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
-	"path"
 	"testing"
 
 	"goji.io"
@@ -42,7 +40,7 @@ func (ms *MockServer) Serve() {
 
 func mockEndpoint(endpoint string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		data, err := ioutil.ReadFile(path.Join("golden", endpoint+".golden"))
+		data, err := goldenDir.ReadFile("golden/" + endpoint + ".golden")
 		if err != nil {
 			fmt.Fprint(w, err)
 		}

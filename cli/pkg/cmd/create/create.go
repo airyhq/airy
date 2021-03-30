@@ -10,7 +10,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
-	"path/filepath"
 )
 
 var (
@@ -35,16 +34,12 @@ func init() {
 }
 
 func create(cmd *cobra.Command, args []string) {
-	cfgDir, err := os.Getwd()
-	if err != nil {
-		console.Exit(err)
-	}
-
+	cfgDir := ""
 	if len(args) > 0 {
-		cfgDir = filepath.Join(cfgDir, args[0])
+		cfgDir = args[0]
 	}
 
-	dir, err := workspace.Create(cfgDir)
+	dir, err := workspace.Create(args[0])
 	if err != nil {
 		console.Exit("could not initialize Airy config directory at", cfgDir, err)
 	}

@@ -31,9 +31,8 @@ func TestCli(t *testing.T) {
 	if err = ioutil.WriteFile(filepath.Join(dir, "cli.yaml"), file, 0700); err != nil {
 		t.Fatal(err)
 	}
-
 	tests := []test{
-		{"login", []string{"--config-dir", dir, "api", "login", "--apihost", ms.Host, "--config-dir", dir}, "cli.login", false},
+		{"login", []string{"--config-dir", dir, "api", "login", "--apihost", ms.Host}, "cli.login", false},
 		{"no args", []string{}, "cli.no-args", false},
 	}
 

@@ -30,7 +30,7 @@ func NewGoldenFile(t *testing.T, name string) *TestFile {
 func (tf *TestFile) Load() string {
 	tf.t.Helper()
 
-	content, err := goldenDir.ReadFile(tf.name)
+	content, err := goldenDir.ReadFile("golden/" + tf.name)
 	if err != nil {
 		tf.t.Fatalf("test file not found %s: %v", tf.name, err)
 	}

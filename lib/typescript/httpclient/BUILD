@@ -27,7 +27,7 @@ web_library(
         "library": "@airyhq/http-client",
         "globalObject": "this",
         "libraryTarget": "umd",
-        "filename": "index.ts",
+        "filename": "index.js",
     },
 )
 

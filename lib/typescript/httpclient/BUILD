@@ -41,9 +41,9 @@ genrule(
     ],
     outs = ["httpclient_lib"],
     cmd = """
-    mkdir -p $(OUTS)/{src,dist} && cp -R $(location :dist) $(OUTS) \
+    mkdir -p $(OUTS)/{dist} && cp -R $(location :dist) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \
-    && mv $(RULEDIR)/src $(OUTS)
+    && mv $(RULEDIR)/$(OUTS)
 """,
 )
 

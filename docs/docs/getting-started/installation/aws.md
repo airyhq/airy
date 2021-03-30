@@ -29,7 +29,7 @@ Apart from the EKS cluster, the installation will create all the necessary AWS r
 
 For creating the cluster you would need to setup your local AWS environment, by [configuring your local AWS profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) for the AWS account where all the resources will be created.
 
-Download and install the [Airy CLI](cli/installation.md).
+Download and install the [Airy CLI](cli/introduction.md).
 
 Export your AWS_PROFILE as described in the [AWS documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
 

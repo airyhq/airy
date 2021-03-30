@@ -1,9 +1,13 @@
 ---
-title: Command Reference
-sidebar_label: Reference
+title: Command Usage
+sidebar_label: Usage
 ---
 
-## Api Endpoint
+## Api
+
+Interacts with the Airy Core HTTP API
+
+### Endpoint
 
 Get the endpoint of the Airy Core API
 
@@ -27,7 +31,7 @@ airy api endpoint [flags]
 
 ***
 
-## Api Login
+### Login
 
 Login into an Airy Core instance
 
@@ -53,7 +57,7 @@ airy api login [flags]
 
 ***
 
-## Api Signup
+### Signup
 
 Signs users up in Airy Core
 
@@ -81,7 +85,11 @@ airy api signup [flags]
 
 ***
 
-## Config Apply
+## Config
+
+Manages an Airy Core instance via airy.yaml
+
+### Apply
 
 Applies configuration values from airy.yaml configuration to an Airy Core instance
 

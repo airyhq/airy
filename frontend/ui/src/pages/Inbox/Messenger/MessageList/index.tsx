@@ -1,12 +1,13 @@
 import React, {useEffect, useState, createRef, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
-import {debounce} from 'lodash-es';
+import {debounce, isEmpty} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
 import {cyMessageList} from 'handles';
 
-import {Message, getSource, isFromContact} from 'httpclient';
+import {Message, Suggestions, getSource, isFromContact} from 'httpclient';
 import {SourceMessage} from 'render';
+import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
 
 import {StateModel} from '../../../../reducers';
 
@@ -19,7 +20,9 @@ import {ConversationRouteProps} from '../../index';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime, isSameDay} from 'dates';
 
-type MessageListProps = ConnectedProps<typeof connector>;
+type MessageListProps = ConnectedProps<typeof connector> & {
+  showSuggestedReplies: (sugggestions: Suggestions) => void;
+};
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
@@ -44,7 +47,7 @@ function usePrevious(value: Message[] | string) {
 }
 
 const MessageList = (props: MessageListProps) => {
-  const {listMessages, listPreviousMessages, messages, conversation} = props;
+  const {listMessages, listPreviousMessages, showSuggestedReplies, messages, conversation} = props;
   const [stickBottom, setStickBottom] = useState(true);
 
   const prevMessages = usePrevious(messages);
@@ -156,6 +159,12 @@ const MessageList = (props: MessageListProps) => {
     {leading: true}
   );
 
+  const hasSuggestions = (message: Message) => !isEmpty(message.metadata?.suggestions);
+
+  const showSuggestions = (message: Message) => {
+    showSuggestedReplies(message.metadata.suggestions);
+  };
+
   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
       {messages &&
@@ -166,6 +175,12 @@ const MessageList = (props: MessageListProps) => {
           const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
 
           const sentAt = lastInGroup ? formatTime(message.sentAt) : null;
+
+          const messageDecoration = hasSuggestions(message) ? (
+            <button type="button" className={styles.suggestionWrapper} onClick={() => showSuggestions(message)}>
+              <LightBulbIcon className={styles.suggestionIcon} title="Show suggestions" />
+            </button>
+          ) : null;
 
           return (
             <div key={message.id} id={`message-item-${message.id}`}>
@@ -179,7 +194,8 @@ const MessageList = (props: MessageListProps) => {
                 contact={conversation.metadata.contact}
                 sentAt={sentAt}
                 lastInGroup={lastInGroup}
-                isChatPlugin={false}>
+                isChatPlugin={false}
+                decoration={messageDecoration}>
                 <SourceMessage source={getSource(conversation)} content={message} contentType="message" />
               </MessageInfoWrapper>
             </div>

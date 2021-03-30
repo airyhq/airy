@@ -20,3 +20,26 @@
   color: var(--color-text-gray);
   width: max-content;
 }
+
+.suggestionWrapper {
+  margin: 8px;
+  padding: 8px 0 0 0;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: white;
+
+  &:hover {
+    .suggestionIcon {
+      path {
+        fill: var(--color-airy-blue);
+      }
+    }
+  }
+}
+
+.suggestionIcon {
+  path {
+    fill: var(--color-text-gray);
+  }
+}

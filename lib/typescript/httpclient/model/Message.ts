@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
-import { Source } from './Channel';
 import {Content} from './Content';
 
 export enum MessageType {

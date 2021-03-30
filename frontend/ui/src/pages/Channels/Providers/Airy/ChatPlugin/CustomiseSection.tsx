@@ -5,7 +5,7 @@ import styles from './CustomiseSection.module.scss';
 interface CustomiseSectionProps {}
 
 export const CustomiseSection = ({}: CustomiseSectionProps) => {
-	
+
   const [bubbleIconUrl, setBubbleIconUrl] = useState('');
   const [sendMessageIconUrl, setSendMessageIconUrl] = useState('');
   const [primaryColor, setPrimaryColor] = useState('');
@@ -31,7 +31,7 @@ export const CustomiseSection = ({}: CustomiseSectionProps) => {
         value={sendMessageIconUrl}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setSendMessageIconUrl(e.target.value);
-        }}
+        }}		
         label="Input Icon URL"
         placeholder="(optionaly) add an image url"
         height={32}
@@ -62,6 +62,9 @@ export const CustomiseSection = ({}: CustomiseSectionProps) => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setAccentColor(e.target.value);
           }}
+					onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+						console.log(e.target.value);
+					}}
           placeholder="#FFFFFF"
           height={32}
           fontClass="font-base"

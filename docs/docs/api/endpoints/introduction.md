@@ -1,6 +1,6 @@
 ---
-title: Introduction
-sidebar_label: Introduction
+title: Overview
+sidebar_label: Overview
 ---
 
 The grouping of HTTP endpoints reflects the high-level entities of the [Airy

@@ -30,17 +30,23 @@ Business Location and your running instance of Airy Core.
 
 Google's Business Messages requires the following configuration:
 
-- [Step 1: Registration](#step-1-registration)
-- [Step 2: Editing of the yaml file in Airy Core](#step-2-editing-of-the-yaml-file-in-airy-core)
-- [Step 3: Verification by Google](#step-3-verification-by-google)
+- [Configuration](#configuration)
+  - [Step 1: Registration](#step-1-registration)
+  - [Step 2: Editing of the yaml file in Airy Core](#step-2-editing-of-the-yaml-file-in-airy-core)
+  - [Step 3: Verification by Google](#step-3-verification-by-google)
+- [Connecting Google's Business Messages to your Airy Core instance](#connecting-googles-business-messages-to-your-airy-core-instance)
+- [Send messages from Google's Business Messages source](#send-messages-from-googles-business-messages-source)
 
 Let's proceed step by step.
 
-## Step 1: Registration
+### Step 1: Registration
 
-You first need to be registered with Google's Business Messages before configuring this source. Refer to [Google's Business Messages' guides](https://developers.google.com/business-communications/business-messages/guides) to find more information about this source and the registration process.
+You first need to be registered with Google's Business Messages before
+configuring this source. Refer to [Google's Business Messages'
+guides](https://developers.google.com/business-communications/business-messages/guides)
+to find more information about this source and the registration process.
 
-## Step 2: Editing of the yaml file in Airy Core
+### Step 2: Editing of the yaml file in Airy Core
 
 Once you are registered, head over to your Google Service Account and create a key in json format.
 
@@ -53,11 +59,15 @@ Copy the Google Service Account key file provided by Google to
 GOOGLE_SA_FILE=<CONTENT OF THE FILE>
 ```
 
-## Step 3: Verification by Google
+### Step 3: Verification by Google
 
 As a security measure, every request sent by Google is signed and verified
 against your partner key. You must also set the environment variable
 `GOOGLE_PARTNER_KEY` to your partner key.
+
+import ApplyVariablesNote from './applyVariables-note.mdx'
+
+<ApplyVariablesNote />
 
 <SuccessBox>
 

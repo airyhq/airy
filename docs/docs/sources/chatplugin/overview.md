@@ -1,5 +1,5 @@
 ---
-title: ChatPlugin Overview
+title: Live Chat overview
 sidebar_label: Overview
 ---
 
@@ -7,6 +7,7 @@ import TLDR from "@site/src/components/TLDR";
 import ButtonBox from "@site/src/components/ButtonBox";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import HammerAndWrenchSVG from "@site/static/icons/hammer-and-wrench.svg";
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <TLDR>
 
@@ -57,4 +58,16 @@ Completely customize your Live Chat and make it match your brand:
 
 ## Supported message types
 
-TODO
+Airy’s Live Chat Plugin supports the following messages types:
+
+- Text messages
+- Emoji's
+- Rich Cards
+- Rich Card Carousels
+- Suggested Replies
+
+**Samples**
+
+| RichCard                                                                                 | RichCardCarousel                                                                                          | Emojis                                                                  |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| <img alt="Rich Card Example" src={useBaseUrl('img/ui/richCardChatpluginExample.gif')} /> | <img alt="Rich Card Carousel Example" src={useBaseUrl('img/ui/richCardCarouselChatpluginExample.gif')} /> | <img alt="Emoji Example" src={useBaseUrl('img/ui/emojiExample.png')} /> |

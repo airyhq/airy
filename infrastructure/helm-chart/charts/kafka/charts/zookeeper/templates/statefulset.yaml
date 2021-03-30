@@ -46,6 +46,18 @@ spec:
                     values:
                     - {{ .Release.Name }}
               topologyKey: "kubernetes.io/hostname"
+      initContainers:
+      - name: fix-permissions
+        image: busybox
+        command:
+          - sh
+          - -c
+          - "chown -R 1000 /var/lib/zookeeper/"
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/zookeeper/data
+        - name: datalogdir
+          mountPath: /var/lib/zookeeper/log
       containers:
       - name: {{ template "cp-zookeeper.name" . }}-server
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"

@@ -1,7 +1,8 @@
 import React from 'react';
+import {Carousel} from '@airyhq/components';
 import styles from './index.module.scss';
 import {GenericTemplate as GenericTemplateModel} from '../../facebookModel';
-import {Carousel} from 'render/components/Carousel';
+import {ImageWithFallback} from 'render/components/ImageWithFallback';
 
 type GenericTemplateRendererProps = {
   template: GenericTemplateModel;
@@ -12,7 +13,7 @@ export const GenericTemplate = ({template}: GenericTemplateRendererProps) => {
     <Carousel>
       {template.elements.map((element, idx) => (
         <div key={`template-${idx}`} className={styles.template}>
-          {element.image_url?.length && <img className={styles.templateImage} src={element.image_url} />}
+          {element.image_url?.length && <ImageWithFallback className={styles.templateImage} src={element.image_url} />}
           <div className={styles.innerTemplate}>
             <div className={styles.templateTitle}>{element.title}</div>
             <div className={styles.templateSubtitle}>{element.subtitle}</div>

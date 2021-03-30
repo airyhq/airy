@@ -199,7 +199,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const getLastMessageWithSuggestedReplies = useCallback(() => {
     const lastMessages = props.messages
       ?.filter((message: Message) => message.senderType == 'source_contact')
-      .slice(props.messages.length - 5)
+      .slice(-5)
       .reverse();
     return lastMessages?.find(
       (message: Message) => message.metadata?.suggestions && Object.keys(message.metadata.suggestions).length > 0

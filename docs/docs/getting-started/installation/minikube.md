@@ -1,9 +1,13 @@
 ---
-title: Run Airy on Minikube
+title: Run Airy on minikube
 sidebar_label: Minikube
 ---
 
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import TLDR from "@site/src/components/TLDR";
+
+<TLDR>
+Run Airy on minikube with one command
+</TLDR>
 
 The goal of this document is to provide an overview of how to run Airy Core on
 your local machine using [minikube](https://minikube.sigs.k8s.io/).

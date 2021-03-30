@@ -1,5 +1,5 @@
 ---
-title: Install the Airy Live Chat Plugin on your website
+title: Website installation
 sidebar_label: Installation
 ---
 

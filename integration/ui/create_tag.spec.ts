@@ -12,7 +12,6 @@ import {
   cyTagsTableRowDisplayDeleteModal,
   cyTagsTableRowDisplayDeleteModalInput,
   cyTagsTableRowDisplayDeleteModalButton,
-  cyChannelsChatPluginList,
   cyChannelsFormBackButton,
 } from 'handles';
 

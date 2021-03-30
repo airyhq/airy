@@ -43,7 +43,7 @@ genrule(
     cmd = """
     mkdir -p $(OUTS)/{dist} && cp -R $(location :dist) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \
-    && mv $(RULEDIR)/index.js $(OUTS)
+    && mv $(RULEDIR) $(OUTS)
 """,
 )
 

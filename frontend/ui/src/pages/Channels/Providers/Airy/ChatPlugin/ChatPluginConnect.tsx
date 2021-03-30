@@ -21,6 +21,7 @@ import {
 } from 'handles';
 
 import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
+import {CustomiseSection} from './CustomiseSection';
 
 const mapDispatchToProps = {
   connectChatPlugin,
@@ -220,7 +221,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
       case 'customisation':
         return (
           <div className={styles.formWrapper}>
-            Test            
+            <CustomiseSection />
           </div>
         );
     }

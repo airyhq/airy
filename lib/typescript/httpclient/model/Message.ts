@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
+import { Source } from './Channel';
 import {Content} from './Content';
 
 export enum MessageType {
@@ -35,10 +36,10 @@ export interface Message extends Content {
   metadata?: MessageMetadata;
 }
 
-export interface SuggestedReply {
+export interface SuggestedReply extends Content {
   content: {
     text: string;
-  };
+  }
 }
 
 export interface Suggestions {
@@ -50,5 +51,5 @@ export interface MessageMetadata {
 }
 
 export const mapMessage = (payload): Message => {
-  return {...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}), sentAt: new Date(payload.sent_at)};
+  return {...camelcaseKeys(payload, {deep: true, stopPaths: ['content', 'metadata']}), sentAt: new Date(payload.sent_at)};
 };

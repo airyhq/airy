@@ -9,7 +9,7 @@ import {Button} from '@airyhq/components';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 import {Picker} from 'emoji-mart';
 import {SourceMessage} from 'render';
-import {getTextMessagePayload, Message, SuggestedReply, Suggestions, Template} from 'httpclient';
+import {getTextMessagePayload, Message, SuggestedReply, Suggestions, Template, Source} from 'httpclient';
 import 'emoji-mart/css/emoji-mart.css';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
@@ -20,7 +20,6 @@ import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-dow
 
 import {ConversationRouteProps} from '../index';
 import {StateModel} from '../../../reducers';
-import {Source} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
 import {getCurrentConversation} from '../../../selectors/conversations';
 import {getCurrentMessages} from '../../../selectors/conversations';
@@ -51,13 +50,18 @@ interface SelectedTemplate {
   source: Source;
 }
 
+interface SelectedSuggestedReply {
+  message: SuggestedReply;
+}
+
 const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
-  const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies} = props;
+  const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies, sendMessages} = props;
 
   const [input, setInput] = useState('');
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
+  const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
@@ -76,13 +80,18 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const sendMessage = () => {
     if (selectedTemplate) {
       setSelectedTemplate(null);
-      props
-        .sendMessages({conversationId: conversation.id, message: selectedTemplate.message.content})
+      sendMessages({conversationId: conversation.id, message: selectedTemplate.message.content})
+        .then(() => setInput(''));
+      return;
+    }
+    if (selectedSuggestedReply) {
+      setSelectedSuggestedReply(null);
+      sendMessages({conversationId: conversation.id, message: selectedSuggestedReply.message.content})
         .then(() => setInput(''));
       return;
     }
 
-    props.sendMessages(getTextMessagePayload(source, conversation.id, input)).then(() => setInput(''));
+    sendMessages(getTextMessagePayload(source, conversation.id, input)).then(() => setInput(''));
   };
 
   const handleClick = () => {
@@ -144,17 +153,16 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       const jsonTemplate = template.content;
 
       if (
-        jsonTemplate.message.text &&
-        !jsonTemplate.message.suggestions &&
-        !jsonTemplate.message.quick_replies &&
-        !jsonTemplate.message.containsRichText &&
-        !jsonTemplate.message.attachments &&
-        !jsonTemplate.message.attachment
+        jsonTemplate.text &&
+        !jsonTemplate.suggestions &&
+        !jsonTemplate.quick_replies &&
+        !jsonTemplate.containsRichText &&
+        !jsonTemplate.attachments &&
+        !jsonTemplate.attachment
       ) {
-        setInput(jsonTemplate.message.text);
+        setInput(jsonTemplate.text);
         setIsShowingTemplateModal(false);
-      } else {
-        setInput('');
+      } else {  
         setIsShowingTemplateModal(false);
         setSelectedTemplate({message: template, source: template.source});
       }
@@ -251,7 +259,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       <form className={styles.inputForm}>
         <div className={styles.messageWrap}>
           <div className={styles.inputWrap}>
-            {!selectedTemplate && (
+            {!selectedTemplate && !selectedSuggestedReply && (
               <>
                 <textarea
                   className={styles.messageTextArea}
@@ -268,10 +276,22 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
                 <InputOptions />
               </>
             )}
+            {selectedSuggestedReply && (
+              <div className={styles.suggestionRepliesSelector}>
+                <button className={styles.removeButton} onClick={() => setSelectedSuggestedReply(null)}>
+                  <Close />
+                </button>
+                <SourceMessage
+                  content={selectedSuggestedReply.message}
+                  source={source}
+                  contentType="suggestedReplies"
+                />
+              </div>
+            )}
 
             {selectedTemplate && (
               <div className={styles.templateSelector}>
-                <button className={styles.removeTemplateButton} onClick={() => setSelectedTemplate(null)}>
+                <button className={styles.removeButton} onClick={() => setSelectedTemplate(null)}>
                   <Close />
                 </button>
                 <SourceMessage
@@ -288,9 +308,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           <button
             type="button"
             ref={sendButtonRef}
-            className={`${styles.sendButton} ${(input || selectedTemplate) && styles.sendButtonActive}`}
+            className={`${styles.sendButton} ${
+              (input || selectedTemplate || selectedSuggestedReply) && styles.sendButtonActive
+            }`}
             onClick={handleClick}
-            disabled={input.trim().length == 0 && !selectedTemplate}
+            disabled={input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply}
             data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <Paperplane />

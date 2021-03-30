@@ -18,7 +18,6 @@ sidebar_label: 📝 Changelog
 #### 🐛 Bug Fixes
 
 - [[#1392](https://github.com/airyhq/airy/issues/1392)] Cypress testing for filtering is false positive [[#1402](https://github.com/airyhq/airy/pull/1402)]
-- [[#1383](https://github.com/airyhq/airy/issues/1383)] Change size of message bubble [[#1398](https://github.com/airyhq/airy/pull/1398)]
 - [[#1097](https://github.com/airyhq/airy/issues/1097)] Fix CORS issue introduced by PR #1350 [[#1371](https://github.com/airyhq/airy/pull/1371)]
 - [[#1369](https://github.com/airyhq/airy/issues/1369)] Improved filtering for channels [[#1375](https://github.com/airyhq/airy/pull/1375)]
 

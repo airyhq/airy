@@ -36,12 +36,7 @@ export interface Message extends Content {
   metadata?: MessageMetadata;
 }
 
-export interface SuggestedReply extends Content {
-  content: {
-    text: string;
-  }
-}
-
+export interface SuggestedReply extends Content {}
 export interface Suggestions {
   [suggestionId: string]: SuggestedReply;
 }

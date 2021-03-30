@@ -232,6 +232,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const selectSuggestedReply = (reply: SuggestedReply) => {
     setInput(reply.content.text);
     hideSuggestedReplies();
+    if (reply.content.text) {
+      setInput(reply.content.text);
+    } else {
+      setSelectedSuggestedReply({message: reply});
+    }
     sendButtonRef.current.focus();
   };
 

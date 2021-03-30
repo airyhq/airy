@@ -18,7 +18,7 @@ ts_web_library(
 web_library(
     name = "dist",
     app_lib = ":httpclient",
-    entry = "typescript/httpclient/index.ts",
+    entry = "typescript/httpclient/index.js",
     externals = {
         "@types/node": "@types/node",
         "camelcase-keys": "camelcase-keys",

@@ -39,9 +39,13 @@ Now you can run this command, which will create Airy core in your AWS account:
 airy create --provider=aws
 ```
 
-By default, the installation will create a single EC2 Kubernetes node, as part of a single node group. You can scale your EKS cluster by adding more nodes or node groups through the AWS web console or the AWS CLI.
+This will execute the following actions:
 
-The `create` command will print URLs for accessing the UIs and APIs as seen in this recording:
+1. Create the `my-airy` directory and populate it with the configuration that the CLI will need. All subsequent commands need to either be run from this directory or use the `--config-dir` flag.
+2. Start an Airy Core cluster in your AWS account.
+3. Print URLs for accessing the UIs and APIs (see recording).
+
+By default, the installation will create a single EC2 Kubernetes node, as part of a single node group. You can scale your EKS cluster by adding more nodes or node groups through the AWS web console or the AWS CLI.
 
 import Script from "@site/src/components/Script";
 

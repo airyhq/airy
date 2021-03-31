@@ -5,6 +5,8 @@
 .vscode/
 .ijwb/
 
+# config dir for creating a local dev instance
+airy_dev
 
 dist/
 bazel-*

@@ -21,7 +21,7 @@ airy api endpoint [flags]
 
 ```
       --apihost string      Airy Core HTTP API endpoint
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+      --config-dir string   config directory of an airy core instance (default is the cwd)
 ```
 
 
@@ -47,7 +47,7 @@ airy api login [flags]
 
 ```
       --apihost string      Airy Core HTTP API endpoint
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+      --config-dir string   config directory of an airy core instance (default is the cwd)
 ```
 
 
@@ -75,7 +75,7 @@ airy api signup [flags]
 
 ```
       --apihost string      Airy Core HTTP API endpoint
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+      --config-dir string   config directory of an airy core instance (default is the cwd)
 ```
 
 
@@ -99,8 +99,7 @@ airy config apply [flags]
 
 ```
       --apihost string      Airy Core HTTP API endpoint
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
-      --config string       Configuration file for an Airy Core instance (default "./airy.yaml")
+      --config-dir string   config directory of an airy core instance (default is the cwd)
 ```
 
 
@@ -110,47 +109,28 @@ airy config apply [flags]
 
 Creates an instance of Airy Core
 
+#### Synopsis
+
+Creates a config directory (default .) with default configuration and starts an Airy Core instance using the given provider
+
 ```
-airy create [flags]
+airy create [config directory] [flags]
 ```
 
 #### Options
 
 ```
   -h, --help               help for create
+      --init-only          Only create the airy config directory and exit
       --namespace string   (optional) Kubernetes namespace that Airy should be installed to. (default "default")
-      --provider string    One of the supported providers (aws|minikube). (default "local")
+      --provider string    One of the supported providers (aws|minikube). (default "minikube")
 ```
 
 #### Options inherited from parent commands
 
 ```
       --apihost string      Airy Core HTTP API endpoint
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
-```
-
-
-***
-
-## Init
-
-Inits your airy configuration
-
-```
-airy init [flags]
-```
-
-#### Options
-
-```
-  -h, --help   help for init
-```
-
-#### Options inherited from parent commands
-
-```
-      --apihost string      Airy Core HTTP API endpoint
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+      --config-dir string   config directory of an airy core instance (default is the cwd)
 ```
 
 
@@ -174,7 +154,7 @@ airy status [flags]
 
 ```
       --apihost string      Airy Core HTTP API endpoint
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+      --config-dir string   config directory of an airy core instance (default is the cwd)
 ```
 
 
@@ -198,7 +178,7 @@ airy ui [flags]
 
 ```
       --apihost string      Airy Core HTTP API endpoint
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+      --config-dir string   config directory of an airy core instance (default is the cwd)
 ```
 
 
@@ -222,7 +202,7 @@ airy version [flags]
 
 ```
       --apihost string      Airy Core HTTP API endpoint
-      --cli-config string   config file (default is $HOME/.airy/cli.yaml)
+      --config-dir string   config directory of an airy core instance (default is the cwd)
 ```
 
 

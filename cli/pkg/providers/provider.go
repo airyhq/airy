@@ -4,7 +4,9 @@ import (
 	"cli/pkg/kube"
 	"cli/pkg/providers/aws"
 	"cli/pkg/providers/minikube"
+	"cli/pkg/workspace"
 	"fmt"
+	"io"
 )
 
 type ProviderName string
@@ -15,18 +17,18 @@ const (
 )
 
 type Provider interface {
-	Provision() (kube.KubeCtx, error)
+	Provision(dir workspace.ConfigDir) (kube.KubeCtx, error)
 	GetHelmOverrides() []string
 	PostInstallation(namespace string) error
 }
 
-func MustGet(providerName ProviderName) Provider {
+func MustGet(providerName ProviderName, w io.Writer) Provider {
 	if providerName == Minikube {
-		return &minikube.Minikube{}
+		return minikube.New(w)
 	}
 
 	if providerName == Aws {
-		return &aws.Aws{}
+		return aws.New(w)
 	}
 
 	panic(fmt.Sprintf("unknown provider \"%v\"", providerName))

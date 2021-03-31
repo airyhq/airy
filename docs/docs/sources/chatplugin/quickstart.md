@@ -19,7 +19,7 @@ We are going to use Airy's Live Chat Plugin as our first source. We then use the
 plugin to send messages, and check them out in the UI, your terminal and
 directly in Apache Kafka.
 
-Airy's Live Chat Plugin can be connected as a source both through API request and through the 
+Airy's Live Chat Plugin can be connected as a source both through API request and through the
 Airy UI. Each step covers both options.
 
 - [Step 1: How to setup your first source](#step-1-how-to-setup-your-first-source)
@@ -57,17 +57,31 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 The ID from the response is the `channel_id`. It is required for
 the next steps, so note it down.
 
-Alternatively, you can connect Airy's Live Chat Plugin via the [UI](ui/introduction). 
+Alternatively, you can connect an Airy's Live Chat Plugin channel via the [UI](../../ui/introduction).
 
-On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu and select the Airy Live Chat channel from the list: click on the cross button on the right. Next, click on the blue button "Connect Airy Live Chat". 
+On your instance's Airy Core UI, click on the 'Channels' icon on the left sidebar menu. Then, click on the button displaying a cross icon next to the Airy Live Chat channel.
 
-Enter a display name and optionally an image url in the respective field. The display name will be used as the name of the conversation; the image url will be used as the image icon of the conversation. If you do not enter an image url, or if it is invalid, a fallback image is used.
+<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel.png')} />
 
-An Airy's Live Chat Plugin source will appear as connected in the UI. At any time, you can edit the display name and image url of your channels by clicking on the button showing the 
-connected channels.
+Next, click on the blue button "Connect Airy Live Chat".
 
-When you connect an Airy's Live Chat Plugin source through the UI, you can find its `channel_id` by clicking in the Install App tab in the edit channel section. The `channel_id` 
-is underlined in the screenshot below. The `channel_id` is required for the next steps, so note it down.
+<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-connect.png')} />
+
+Enter a display name and optionally an image URL in the respective fields. The display name will be used as the [conversation](../../getting-started/glossary/#conversation)'s name while the image URL will be used as its icon in the [Inbox UI](../../ui/inbox). A fallback image will be used if you do not enter a valid image URL. Click on the Save button.
+
+<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-connect-form.png')} />
+
+An Airy's Live Chat Plugin [channel](../../getting-started/glossary/#channel) will appear as connected in the [Channels UI](../../ui/channels). Next, click on the button showing the connected channels.
+
+<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel-list.png')} />
+
+This will bring you to a page where you can edit or disconnect each channel. Click on 'Edit'.
+
+<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel-connected.png')} />
+
+<img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-id.png')} />
+
+Click on the 'Install app' tab. Here you will find the `channel_id`, which is located in the sample code (underlined in the screenshot below). It is required for the next steps, so note it down.
 
 ## Step 2: Send messages via the Chat Plugin
 
@@ -91,10 +105,22 @@ created. it should return the message you have just sent.
 
 <img alt="conversations.list" src={useBaseUrl('img/sources/chatplugin/conversation_list.gif')} />
 
+<br />
+
 ```sh
 curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
 http://airy.core/conversations.list | jq .
 ```
+
+The [conversations](../../getting-started/glossary/#conversation) and their [messages](../../getting-started/glossary/#message) are also listed in the [Inbox UI](../../ui/inbox).
+
+The screenshot below shows a conversation list in the [Inbox UI](../../ui/inbox). In this example, all the [conversation](../../getting-started/glossary/#conversation) have been created by connecting an Airy Live Chat [channel](../../getting-started/glossary/#channel) to an Airy Core instance.
+
+Each time you connect a new [channel](../../getting-started/glossary/#channel), a new [conversation](../../getting-started/glossary/#conversation) is created and added in the [Inbox UI](../../ui/inbox). You can then use it to respond to messages
+
+You can connect as many [channels](../../getting-started/glossary/#channel) as you want for each [source](../../getting-started/glossary/#source). The [Inbox UI](../../ui/inbox) displays all your conversations, across all [sources](../../getting-started/glossary/#source).
+
+<img alt="conversations list UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-conversations.png')} />
 
 ## Step 4: Consume directly from Apache Kafka
 

@@ -3,9 +3,9 @@ package main
 import (
 	"golang.org/x/mod/modfile"
 	"golang.org/x/mod/semver"
+	"io/fs"
 	"io/ioutil"
 	"log"
-	"os"
 	"path/filepath"
 	"strings"
 )
@@ -15,10 +15,27 @@ type SourceModule struct {
 	Module modfile.File
 }
 
+func skipDir(path string) bool {
+	switch filepath.Base(path) {
+	case ".git":
+	case "node_modules":
+	case "pkg":
+	case "vendor":
+	default:
+		return false
+	}
+
+	return true
+}
+
 func FindSourceModules(rootPath string) []string {
 	paths := make([]string, 0)
 
-	err := filepath.Walk(rootPath, func(path string, f os.FileInfo, err error) error {
+	err := filepath.WalkDir(rootPath, func(path string, d fs.DirEntry, err error) error {
+		if skipDir(path) {
+			return fs.SkipDir
+		}
+
 		// Exclude the root go mod
 		if filepath.Base(path) == "go.mod" && path != "go.mod" {
 			paths = append(paths, path)

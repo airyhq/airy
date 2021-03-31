@@ -30,7 +30,7 @@ This will execute the following actions:
 
 import Script from "@site/src/components/Script";
 
-<Script data-cols="90" id="asciicast-KHz6yTASgqwnKT5FB7Gt7jF1k" src="https://asciinema.org/a/KHz6yTASgqwnKT5FB7Gt7jF1k.js"></Script>
+<Script data-cols="90" id="asciicast-NHuy672OHO4I4rvXMCZAG6H2P" src="https://asciinema.org/a/NHuy672OHO4I4rvXMCZAG6H2P.js"></Script>
 
 If you want to customize your `Airy Core` instance please see our [Configuration
 Section](configuration.md).

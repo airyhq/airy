@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: Sources
 sidebar_label: Introduction
 ---
 
@@ -24,7 +24,11 @@ One of the crucial features Airy Core provides is the ability to process
 conversational data from a variety of sources (like Facebook Messenger, Google
 Business Messages, and so on).
 
-Connect sources programmatically with our sources guides or simply by clicking with our Channels UI.
+You can connect sources through API requests or using our [Channels UI](/ui/channels). Our sources guides covers both options, step-by-step.
+
+It's important to understand the difference between a [source](/getting-started/glossary/#source) and a [channel](/getting-started/glossary/#channel). A [channel](/getting-started/glossary/#channel) represents a connection between a [source](/getting-started/glossary/#source) and the Airy Core Platform: multiple [channels](/getting-started/glossary/#channel) can thus use the same [source](/getting-started/glossary/#source) for different [conversations](/getting-started/glossary/#conversation). When a [channel](/getting-started/glossary/#channel) is connected, a [conversation](/getting-started/glossary/#conversation) is created between the [source](/getting-started/glossary/#source) and the Airy Core instance.
+
+You can connect as many [channels](/getting-started/glossary/#channel) as you want for each [source](/getting-started/glossary/#source).The [Inbox UI](/ui/inbox) displays all your [conversations](/getting-started/glossary/#conversation), across all [sources](/getting-started/glossary/#source).
 
 <ButtonBox
 icon={<ChannelsUI />}

@@ -19,6 +19,9 @@ We are going to use Airy's Live Chat Plugin as our first source. We then use the
 plugin to send messages, and check them out in the UI, your terminal and
 directly in Apache Kafka.
 
+Airy's Live Chat Plugin can be connected as a source both through API request and through the 
+Airy UI. Each step covers both options.
+
 - [Step 1: How to setup your first source](#step-1-how-to-setup-your-first-source)
 - [Step 2: Send messages via the Chat Plugin](#step-2-send-messages-via-the-chat-plugin)
 - [Step 3: Use the HTTP API to list conversations](#step-3-use-the-http-api-to-list-conversations)
@@ -53,6 +56,18 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
 
 The ID from the response is the `channel_id`. It is required for
 the next steps, so note it down.
+
+Alternatively, you can connect Airy's Live Chat Plugin via the [UI](ui/introduction). 
+
+On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu and select the Airy Live Chat channel from the list: click on the cross button on the right. Next, click on the blue button "Connect Airy Live Chat". 
+
+Enter a display name and optionally an image url in the respective field. The display name will be used as the name of the conversation; the image url will be used as the image icon of the conversation. If you do not enter an image url, or if it is invalid, a fallback image is used.
+
+An Airy's Live Chat Plugin source will appear as connected in the UI. At any time, you can edit the display name and image url of your channels by clicking on the button showing the 
+connected channels.
+
+When you connect an Airy's Live Chat Plugin source through the UI, you can find its `channel_id` by clicking in the Install App tab in the edit channel section. The `channel_id` 
+is underlined in the screenshot below. The `channel_id` is required for the next steps, so note it down.
 
 ## Step 2: Send messages via the Chat Plugin
 

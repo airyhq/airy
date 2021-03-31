@@ -3,6 +3,11 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.15.1
+
+Hotfix
+
+- [[#1427](https://github.com/airyhq/airy/issues/1427)] Fix broken ui pod config for aws deployment
 ## 0.15.0
 
 #### 🚀 Features
@@ -23,13 +28,14 @@ sidebar_label: 📝 Changelog
 
 #### 📚 Documentation
 
-- [[#1355](https://github.com/airyhq/airy/issues/1355)] add debugging advices to all sources [[#1368](https://github.com/airyhq/airy/pull/1368)]
-- [[#1318](https://github.com/airyhq/airy/issues/1318)] Improve components page [[#1360](https://github.com/airyhq/airy/pull/1360)]
 - [[#1363](https://github.com/airyhq/airy/issues/1363)] Added suggested replies doc [[#1381](https://github.com/airyhq/airy/pull/1381)]
+- [[#1355](https://github.com/airyhq/airy/issues/1355)] Add debugging advices to all sources [[#1368](https://github.com/airyhq/airy/pull/1368)]
+- [[#1318](https://github.com/airyhq/airy/issues/1318)] Improve components page [[#1360](https://github.com/airyhq/airy/pull/1360)]
 
 #### 🧰 Maintenance
 
 - [[#1045](https://github.com/airyhq/airy/issues/1045)] Automated testing of the web socket [[#1382](https://github.com/airyhq/airy/pull/1382)]
+- Move CLI to root [[#1401](https://github.com/airyhq/airy/pull/1401)]
 - Bump @babel/core from 7.8.4 to 7.13.10 [[#1186](https://github.com/airyhq/airy/pull/1186)]
 - Bump webpack from 4.46.0 to 5.27.2 [[#1352](https://github.com/airyhq/airy/pull/1352)]
 - Minor tweaks to titles and paragraphs [[#1379](https://github.com/airyhq/airy/pull/1379)]

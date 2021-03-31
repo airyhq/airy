@@ -41,10 +41,12 @@ export interface SuggestedReply {
   };
 }
 
+export interface Suggestions {
+  [suggestionId: string]: SuggestedReply;
+}
+
 export interface MessageMetadata {
-  suggestions?: {
-    [suggestionId: string]: SuggestedReply;
-  };
+  suggestions?: Suggestions;
 }
 
 export const mapMessage = (payload): Message => {

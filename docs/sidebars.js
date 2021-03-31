@@ -27,8 +27,8 @@ module.exports = {
           'Airy Live Chat Plugin': [
             'sources/chatplugin/overview',
             'sources/chatplugin/demo',
-            'sources/chatplugin/installation',
             'sources/chatplugin/quickstart',
+            'sources/chatplugin/installation',
             'sources/chatplugin/customization',
           ],
         },
@@ -36,6 +36,7 @@ module.exports = {
         'sources/google',
         'sources/sms-twilio',
         'sources/whatsapp-twilio',
+        'ui/channels',
       ],
     },
     {
@@ -60,7 +61,15 @@ module.exports = {
       ],
     },
     {
-      '💎 UI': ['ui/introduction', 'ui/quickstart', 'ui/inbox', 'ui/tags', 'ui/components', 'ui/suggestedReplies'],
+      '💎 UI': [
+        'ui/introduction',
+        'ui/quickstart',
+        'ui/inbox',
+        'ui/channels',
+        'ui/tags',
+        'ui/components',
+        'ui/suggestedReplies',
+      ],
     },
     {
       '🛠️ Integrations': [

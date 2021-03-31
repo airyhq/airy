@@ -23,6 +23,7 @@ import {StateModel} from '../../../reducers';
 import {listTemplates} from '../../../actions/templates';
 import {getCurrentConversation} from '../../../selectors/conversations';
 import {getCurrentMessages} from '../../../selectors/conversations';
+import {isTextMessage} from '../../../services/types/messageTypes';
 
 import SuggestedReplySelector from '../SuggestedReplySelector';
 import {isEmpty} from 'lodash-es';
@@ -78,19 +79,15 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   }, [input]);
 
   const sendMessage = () => {
-    if (selectedTemplate) {
+    if (selectedTemplate || selectedSuggestedReply) {
       setSelectedTemplate(null);
-      sendMessages({conversationId: conversation.id, message: selectedTemplate.message.content})
-        .then(() => setInput(''));
-      return;
-    }
-    if (selectedSuggestedReply) {
       setSelectedSuggestedReply(null);
-      sendMessages({conversationId: conversation.id, message: selectedSuggestedReply.message.content})
-        .then(() => setInput(''));
+      sendMessages({
+        conversationId: conversation.id,
+        message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+      }).then(() => setInput(''));
       return;
     }
-
     sendMessages(getTextMessagePayload(source, conversation.id, input)).then(() => setInput(''));
   };
 
@@ -152,14 +149,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     const selectTemplate = (template: Template) => {
       const jsonTemplate = template.content;
 
-      if (
-        jsonTemplate.text &&
-        !jsonTemplate.suggestions &&
-        !jsonTemplate.quick_replies &&
-        !jsonTemplate.containsRichText &&
-        !jsonTemplate.attachments &&
-        !jsonTemplate.attachment
-      ) {
+      if (isTextMessage(template)) {
         setInput(jsonTemplate.text);
         setIsShowingTemplateModal(false);
       } else {  
@@ -230,9 +220,8 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   const selectSuggestedReply = (reply: SuggestedReply) => {
-    setInput(reply.content.text);
     hideSuggestedReplies();
-    if (reply.content.text) {
+    if (isTextMessage(reply)) {
       setInput(reply.content.text);
     } else {
       setSelectedSuggestedReply({message: reply});

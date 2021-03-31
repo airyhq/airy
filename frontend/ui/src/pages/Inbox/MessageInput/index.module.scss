@@ -216,7 +216,7 @@
 }
 
 .suggestionRepliesSelector {
-  max-height: 184px;
+  max-width: 580px;
   height: auto;
   overflow: hidden;
   position: relative;
@@ -239,13 +239,13 @@
   border: 1px solid white;
   cursor: pointer;
   z-index: 1;
-}
 
-.removeButton svg {
-  width: 8px;
-  height: 8px;
-  margin-left: -1px;
-  margin-top: -1px;
+  svg {
+    width: 8px;
+    height: 8px;
+    margin-left: -1px;
+    margin-top: -1px;
+  }
 }
 
 .removeButton:after {

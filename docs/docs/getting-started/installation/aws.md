@@ -53,6 +53,8 @@ import Script from "@site/src/components/Script";
 
 If you want to customize your `Airy Core` instance please see our [Configuration Section](configuration.md).
 
+After the installation, you can also interact with the components of `Airy Core` with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line utility. The kubeconfig for the installed `Airy Core` can be found in the file `~/.airy/kube.conf`.
+
 ## Public webhooks
 
 The public webhooks will be accessible on the public LoadBalancer which is
@@ -76,7 +78,7 @@ For more details please see our [Configuration Section](configuration.md).
 
 ## Uninstall Airy Core
 
-You can remove the Airy Core AWS installation by deleting the Airy Core AWS resources with the [AWS CLI CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
+You can remove the Airy Core AWS installation by deleting the Airy Core AWS resources with the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
 
 Retrieve the ID of the installation:
 

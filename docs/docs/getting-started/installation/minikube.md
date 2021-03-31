@@ -35,6 +35,9 @@ import Script from "@site/src/components/Script";
 If you want to customize your `Airy Core` instance please see our [Configuration
 Section](configuration.md).
 
+After the installation, you can also interact with the components of `Airy Core` with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line utility.
+The kubeconfig for the installed `Airy Core` is added to the default kubeconfig file `~/.kube/config`, under the context `airy-core`.
+
 ## Public webhooks
 
 In order to integrate with the webhook of most sources on your local machine,

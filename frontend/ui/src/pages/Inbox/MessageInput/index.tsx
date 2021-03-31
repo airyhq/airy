@@ -152,7 +152,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       if (isTextMessage(template)) {
         setInput(jsonTemplate.text);
         setIsShowingTemplateModal(false);
-      } else {  
+      } else {
         setIsShowingTemplateModal(false);
         setSelectedTemplate({message: template, source: template.source});
       }

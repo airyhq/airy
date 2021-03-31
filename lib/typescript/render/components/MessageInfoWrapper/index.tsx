@@ -10,10 +10,11 @@ type MessageInfoWrapperProps = {
   isChatPlugin: boolean;
   contact?: Contact;
   sentAt?: string;
+  decoration?: ReactNode;
 } & DefaultRenderingProps;
 
 export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
-  const {sentAt, contact, fromContact, children, lastInGroup, isChatPlugin} = props;
+  const {sentAt, contact, fromContact, children, lastInGroup, isChatPlugin, decoration} = props;
 
   const isContact = isChatPlugin ? !fromContact : fromContact;
 
@@ -35,6 +36,7 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
         <div className={styles.contactContent} style={lastInGroup == false ? {marginLeft: '48px'} : {}}>
           {children}
         </div>
+        {decoration}
       </div>
       <div className={styles.time}>{sentAt}</div>
     </>

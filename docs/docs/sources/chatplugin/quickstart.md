@@ -19,7 +19,7 @@ We are going to use Airy's Live Chat Plugin as our first source. We then use the
 plugin to send messages, and check them out in the UI, your terminal and
 directly in Apache Kafka.
 
-- [Step 1: How to setup your first source](#step-1-how-to-setup-your-first-source)
+- [Step 1: Set up your first source](#step-1-set-up-your-first-source)
 - [Step 2: Send messages via the Chat Plugin](#step-2-send-messages-via-the-chat-plugin)
 - [Step 3: Use the HTTP API to list conversations](#step-3-use-the-http-api-to-list-conversations)
 - [Step 4: Consume directly from Apache Kafka](#step-4-consume-directly-from-apache-kafka)
@@ -88,8 +88,8 @@ You can also consume the messages directly from the Kafka
 
 ```
 kubectl exec -it kafka-0 -- /bin/bash
-kafka-console-consumer \
---bootstrap-server airy-cp-kafka:9092 \
+kafka-console-consumer.sh \
+--bootstrap-server kafka:9092 \
 --topic application.communication.messages \
 --from-beginning
 ```

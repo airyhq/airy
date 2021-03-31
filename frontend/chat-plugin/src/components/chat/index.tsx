@@ -19,6 +19,7 @@ import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 import {cyBubble, cyChatPluginMessageList} from 'chat-plugin-handles';
+import {getResumeTokenFromStorage} from '../../storage';
 
 let ws: WebSocket;
 
@@ -39,7 +40,7 @@ const Chat = (props: Props) => {
 
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
-  const [isChatHidden, setIsChatHidden] = useState(true);
+  const [isChatHidden, setIsChatHidden] = useState(getResumeTokenFromStorage(props.channelId) ? false : true);
   const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
   const [messageString, setMessageString] = useState('');
   const [connectionState, setConnectionState] = useState(null);

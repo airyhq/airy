@@ -11,6 +11,7 @@ import FacebookMessengerSVG from "@site/static/icons/facebook-messenger.svg";
 import GoogleSVG from "@site/static/icons/google.svg";
 import WhatsAppSVG from "@site/static/icons/whatsapp.svg";
 import SmsSVG from "@site/static/icons/sms.svg";
+import ChannelsUI from "@site/static/icons/channelsUi-icon.svg";
 
 <TLDR>
 
@@ -22,6 +23,16 @@ Plugin, Facebook Messenger, WhatsApp, your own custom sources.
 One of the crucial features Airy Core provides is the ability to process
 conversational data from a variety of sources (like Facebook Messenger, Google
 Business Messages, and so on).
+
+Connect sources programmatically with our sources guides or simply by clicking with our Channels UI.
+
+<ButtonBox
+icon={<ChannelsUI />}
+title='Channels'
+iconInvertible={true}
+description='With the Channels UI you can connect your sources via UI'
+link='http://airy.core/ui/channels'
+/>
 
 ## Sources guides
 
@@ -60,6 +71,7 @@ title='SMS'
 description='Connect Text Messaging to Airy & send and receive SMS'
 link='sources/sms-twilio'
 />
+
 </ButtonBoxList>
 
 ## How it works

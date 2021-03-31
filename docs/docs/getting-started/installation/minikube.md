@@ -18,17 +18,14 @@ First download and install minikube from their [release
 page](https://github.com/kubernetes/minikube/releases) and the [Airy
 CLI](cli/installation.md). Now you can run this command:
 
-, which will create a new
-minikube cluster on your system and install Airy core on it:
-
 ```bash
 airy create --provider=minikube my-airy
 ```
 
 This will execute the following actions:
-1. Create the `my-airy` directory and populate it with configuration that the CLI will need. All subsequent commands need to be run from this directory or using the `--config-dir` flag
-2. Start a Minikube cluster on your system and install Airy Core on it
-3. Print URLs for accessing the UIs and APIs as seen in this recording:
+1. Create the `my-airy` directory and populate it with the configuration that the CLI will need. All subsequent commands need to either be run from this directory or use the `--config-dir` flag.
+2. Start a Minikube cluster on your system and install Airy Core on it.
+3. Print URLs for accessing the UIs and APIs (see recording).
 
 import Script from "@site/src/components/Script";
 

@@ -2,11 +2,12 @@ package minikube
 
 import (
 	"cli/pkg/kube"
+	"cli/pkg/workspace"
 	"context"
 	"fmt"
+	"io"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/util/homedir"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -18,20 +19,27 @@ const (
 	hostAlias = "airy.core"
 )
 
-type Minikube struct {
+type provider struct {
 	context kube.KubeCtx
+	w       io.Writer
 }
 
-func (m *Minikube) GetHelmOverrides() []string {
+func New(w io.Writer) *provider {
+	return &provider{
+		w: w,
+	}
+}
+
+func (m *provider) GetHelmOverrides() []string {
 	return []string{"--set", "global.ngrokEnabled=true", "--set", "global.nodePort=80"}
 }
 
-func (m *Minikube) Provision() (kube.KubeCtx, error) {
+func (m *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
 	if err := checkInstallation(); err != nil {
 		return kube.KubeCtx{}, err
 	}
 
-	if err := startCluster(); err != nil {
+	if err := m.startCluster(); err != nil {
 		return kube.KubeCtx{}, err
 	}
 
@@ -50,15 +58,17 @@ func checkInstallation() error {
 	return err
 }
 
-func startCluster() error {
-	return runPrintOutput("start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535")
+func (m *provider) startCluster() error {
+	return m.runPrintOutput("start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535")
 }
 
-func runPrintOutput(args ...string) error {
+func (m *provider) runPrintOutput(args ...string) error {
 	cmd := getCmd(args...)
-	fmt.Printf("$ %s %s\n\n", cmd.Path, strings.Join(cmd.Args, " "))
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	fmt.Fprintf(m.w, "$ %s %s", cmd.Path, strings.Join(cmd.Args, " "))
+	fmt.Fprintln(m.w)
+	fmt.Fprintln(m.w)
+	cmd.Stdout = m.w
+	cmd.Stderr = m.w
 	return cmd.Run()
 }
 
@@ -73,10 +83,10 @@ func runGetOutput(args ...string) (string, error) {
 
 func getCmd(args ...string) *exec.Cmd {
 	defaultArgs := []string{"--profile=" + profile}
-	return exec.Command("minikube", append(defaultArgs, args...)...)
+	return exec.Command(minikube, append(defaultArgs, args...)...)
 }
 
-func (m *Minikube) PostInstallation(namespace string) error {
+func (m *provider) PostInstallation(namespace string) error {
 	clientset, err := m.context.GetClientSet()
 	if err != nil {
 		return err

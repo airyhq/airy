@@ -7,6 +7,7 @@ go_library(
     importpath = "cli/pkg/cmd/status",
     visibility = ["//visibility:public"],
     deps = [
+        "//cli/pkg/console",
         "//lib/go/httpclient",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",

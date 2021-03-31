@@ -18,9 +18,10 @@ var (
 	version      string
 	initOnly     bool
 	CreateCmd    = &cobra.Command{
-		Use:   "create",
+		Use:   "create [config directory]",
 		Short: "Creates an instance of Airy Core",
-		Long:  ``,
+		Long:  `Creates a config directory (default .) with default configuration and starts an Airy Core instance using the given provider`,
+		Args:  cobra.MaximumNArgs(1),
 		Run:   create,
 	}
 )
@@ -39,7 +40,7 @@ func create(cmd *cobra.Command, args []string) {
 		cfgDir = args[0]
 	}
 
-	dir, err := workspace.Create(args[0])
+	dir, err := workspace.Create(cfgDir)
 	if err != nil {
 		console.Exit("could not initialize Airy config directory at", cfgDir, err)
 	}
@@ -50,18 +51,16 @@ func create(cmd *cobra.Command, args []string) {
 
 	fmt.Println("⚙️  Creating core with provider", providerName)
 
-	provider := providers.MustGet(providers.ProviderName(providerName))
-
-	middleware := console.IndentOutput(func(input string) string {
-		return color.Colorize(color.Yellow, "#\t"+input)
+	w := console.GetMiddleware(func(input string) string {
+		return color.Colorize(color.Cyan, "#\t"+input)
 	})
+	provider := providers.MustGet(providers.ProviderName(providerName), w)
 
-	fmt.Println()
-	fmt.Println(providerName, "provider output:")
-	fmt.Println()
-	context, err := provider.Provision()
-	fmt.Println()
-	middleware.Close()
+	fmt.Fprintln(w)
+	fmt.Fprintln(w, providerName, "provider output:")
+	fmt.Fprintln(w)
+	context, err := provider.Provision(dir)
+	fmt.Fprintln(w)
 	if err != nil {
 		console.Exit("could not provision cluster: ", err)
 	}

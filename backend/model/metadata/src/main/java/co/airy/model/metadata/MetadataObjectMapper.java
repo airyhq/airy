@@ -2,6 +2,7 @@ package co.airy.model.metadata;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.model.metadata.dto.MetadataMap;
+import co.airy.model.metadata.dto.MetadataNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -65,13 +66,14 @@ public class MetadataObjectMapper {
     }
 
     private static void setValue(ObjectNode node, String key, String value) {
-        if (key.endsWith("count")) {
+        final MetadataNode metadataNode = new MetadataNode(key, value);
+        if (metadataNode.getValueType().equals(MetadataNode.ValueType.NUMBER)) {
             try {
                 node.put(key, Integer.valueOf(value));
                 return;
             } catch (NumberFormatException expected) {
             }
-        } else if (key.endsWith("content")) {
+        } else if (metadataNode.getValueType().equals(MetadataNode.ValueType.OBJECT)) {
             // This condition allows us to store message content in metadata
             try {
                 node.set(key, objectMapper.readTree(value));

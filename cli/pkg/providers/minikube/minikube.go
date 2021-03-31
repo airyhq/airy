@@ -30,16 +30,16 @@ func New(w io.Writer) *provider {
 	}
 }
 
-func (m *provider) GetHelmOverrides() []string {
+func (p *provider) GetHelmOverrides() []string {
 	return []string{"--set", "global.ngrokEnabled=true", "--set", "global.nodePort=80"}
 }
 
-func (m *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
+func (p *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
 	if err := checkInstallation(); err != nil {
 		return kube.KubeCtx{}, err
 	}
 
-	if err := m.startCluster(); err != nil {
+	if err := p.startCluster(); err != nil {
 		return kube.KubeCtx{}, err
 	}
 
@@ -49,7 +49,7 @@ func (m *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
 	}
 
 	ctx := kube.New(filepath.Join(homeDir, ".kube", "config"), profile)
-	m.context = ctx
+	p.context = ctx
 	return ctx, nil
 }
 
@@ -58,17 +58,17 @@ func checkInstallation() error {
 	return err
 }
 
-func (m *provider) startCluster() error {
-	return m.runPrintOutput("start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535")
+func (p *provider) startCluster() error {
+	return p.runPrintOutput("start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535")
 }
 
-func (m *provider) runPrintOutput(args ...string) error {
+func (p *provider) runPrintOutput(args ...string) error {
 	cmd := getCmd(args...)
-	fmt.Fprintf(m.w, "$ %s %s", cmd.Path, strings.Join(cmd.Args, " "))
-	fmt.Fprintln(m.w)
-	fmt.Fprintln(m.w)
-	cmd.Stdout = m.w
-	cmd.Stderr = m.w
+	fmt.Fprintf(p.w, "$ %s %s", cmd.Path, strings.Join(cmd.Args, " "))
+	fmt.Fprintln(p.w)
+	fmt.Fprintln(p.w)
+	cmd.Stdout = p.w
+	cmd.Stderr = p.w
 	return cmd.Run()
 }
 
@@ -86,8 +86,8 @@ func getCmd(args ...string) *exec.Cmd {
 	return exec.Command(minikube, append(defaultArgs, args...)...)
 }
 
-func (m *provider) PostInstallation(namespace string) error {
-	clientset, err := m.context.GetClientSet()
+func (p *provider) PostInstallation(namespace string) error {
+	clientset, err := p.context.GetClientSet()
 	if err != nil {
 		return err
 	}

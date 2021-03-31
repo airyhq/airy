@@ -23,6 +23,7 @@ airy create --provider=minikube my-airy
 ```
 
 This will execute the following actions:
+
 1. Create the `my-airy` directory and populate it with the configuration that the CLI will need. All subsequent commands need to either be run from this directory or use the `--config-dir` flag.
 2. Start a Minikube cluster on your system and install Airy Core on it.
 3. Print URLs for accessing the UIs and APIs (see recording).

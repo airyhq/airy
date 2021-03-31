@@ -39,12 +39,12 @@ func New(w io.Writer) *provider {
 	}
 }
 
-func (a *provider) GetHelmOverrides() []string {
+func (p *provider) GetHelmOverrides() []string {
 	return []string{"--set", "global.ngrokEnabled=false"}
 }
 
-func (a *provider) PostInstallation(namespace string) error {
-	clientset, err := a.context.GetClientSet()
+func (p *provider) PostInstallation(namespace string) error {
+	clientset, err := p.context.GetClientSet()
 	if err != nil {
 		return err
 	}
@@ -56,14 +56,14 @@ func (a *provider) PostInstallation(namespace string) error {
 
 	loadBalancerUrl := ingressService.Status.LoadBalancer.Ingress[0].Hostname
 
-	if err = a.updateIngress("airy-core", loadBalancerUrl, namespace); err != nil {
+	if err = p.updateIngress("airy-core", loadBalancerUrl, namespace); err != nil {
 		return err
 	}
-	if err = a.updateIngress("airy-core-ui", loadBalancerUrl, namespace); err != nil {
+	if err = p.updateIngress("airy-core-ui", loadBalancerUrl, namespace); err != nil {
 		return err
 	}
 
-	if err = a.updateHostsConfigMap(loadBalancerUrl, namespace); err != nil {
+	if err = p.updateHostsConfigMap(loadBalancerUrl, namespace); err != nil {
 		return err
 	}
 
@@ -76,7 +76,7 @@ type KubeConfig struct {
 	CertificateData string
 }
 
-func (a *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
+func (p *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		console.Exit(err)
@@ -84,129 +84,129 @@ func (a *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
 
 	id := RandString(8)
 	name := "Airy-" + id
-	fmt.Fprintf(a.w, "Creating Airy Core instance with id: %s\n", name)
-	a.iamClient = iam.NewFromConfig(cfg)
+	fmt.Fprintf(p.w, "Creating Airy Core instance with id: %s\n", name)
+	p.iamClient = iam.NewFromConfig(cfg)
 
-	role, err := a.createRole(name)
+	role, err := p.createRole(name)
 	if err != nil {
 		console.Exit("Error creating role: ", err)
 	}
-	fmt.Fprintf(a.w, "Created AWS Role with ARN: %s.\n", *role.Arn)
+	fmt.Fprintf(p.w, "Created AWS Role with ARN: %s.\n", *role.Arn)
 
-	if err = a.attachPolicies(role.RoleName); err != nil {
+	if err = p.attachPolicies(role.RoleName); err != nil {
 		console.Exit("Error attaching policies: ", err)
 	}
 
-	fmt.Fprintf(a.w, "EKS policies attached.\n")
+	fmt.Fprintf(p.w, "EKS policies attached.\n")
 
-	a.ec2Client = ec2.NewFromConfig(cfg)
-	vpc, err := a.createVpc("192.168.0.0/16", name)
+	p.ec2Client = ec2.NewFromConfig(cfg)
+	vpc, err := p.createVpc("192.168.0.0/16", name)
 
 	if err != nil {
 		console.Exit("Error creating vpc: ", err)
 	}
 
 	VpcId := vpc.VpcId
-	fmt.Fprintf(a.w, "VPC created with id: %s\n", *VpcId)
+	fmt.Fprintf(p.w, "VPC created with id: %s\n", *VpcId)
 
-	fmt.Fprintf(a.w, "Enabling DNS on VPC\n")
-	if err = a.enableDNSOnVpc(VpcId); err != nil {
+	fmt.Fprintf(p.w, "Enabling DNS on VPC\n")
+	if err = p.enableDNSOnVpc(VpcId); err != nil {
 		console.Exit("Error enabling DNS on VPC", err)
 	}
 
-	fmt.Fprintf(a.w, "Creating Internet Gateway\n")
-	internetGateway, err := a.createInternetGateway(VpcId)
+	fmt.Fprintf(p.w, "Creating Internet Gateway\n")
+	internetGateway, err := p.createInternetGateway(VpcId)
 	if err != nil {
 		console.Exit("Could not create internet gateway: ", err)
 	}
 
-	fmt.Fprintf(a.w, "Creating route Table\n")
-	routeTable, err := a.createRoute(VpcId, name, internetGateway)
+	fmt.Fprintf(p.w, "Creating route Table\n")
+	routeTable, err := p.createRoute(VpcId, name, internetGateway)
 	if err != nil {
 		console.Exit("Error creating route table: ", err)
 	}
 
-	fmt.Fprintf(a.w, "Creating first subnet\n")
-	firstSubnet, err := a.createSubnet(VpcId, name, "192.168.64.0/18", "us-east-1a")
+	fmt.Fprintf(p.w, "Creating first subnet\n")
+	firstSubnet, err := p.createSubnet(VpcId, name, "192.168.64.0/18", "us-east-1a")
 	if err != nil {
 		console.Exit("Error creating subnet: ", err)
 	}
 
-	fmt.Fprintf(a.w, "Creating second subnet\n")
-	secondSubnet, err := a.createSubnet(VpcId, name, "192.168.128.0/18", "us-east-1b")
+	fmt.Fprintf(p.w, "Creating second subnet\n")
+	secondSubnet, err := p.createSubnet(VpcId, name, "192.168.128.0/18", "us-east-1b")
 	if err != nil {
 		console.Exit("Error creating subnet: ", err)
 	}
 
-	fmt.Fprintf(a.w, "Allowing public IP on first subnet\n")
-	if err = a.allowPublicIpOnSubnet(firstSubnet.SubnetId); err != nil {
+	fmt.Fprintf(p.w, "Allowing public IP on first subnet\n")
+	if err = p.allowPublicIpOnSubnet(firstSubnet.SubnetId); err != nil {
 		console.Exit("Error allowing public IP on first subnet: ", err)
 	}
 
-	fmt.Fprintf(a.w, "Allowing public IP on second subnet\n")
-	if err = a.allowPublicIpOnSubnet(secondSubnet.SubnetId); err != nil {
+	fmt.Fprintf(p.w, "Allowing public IP on second subnet\n")
+	if err = p.allowPublicIpOnSubnet(secondSubnet.SubnetId); err != nil {
 		console.Exit("Error allowing public IP on second subnet: ", err)
 	}
 
-	fmt.Fprintf(a.w, "Associating first subnet to route table\n")
-	if err = a.associateSubnetToRouteTable(firstSubnet.SubnetId, routeTable.RouteTableId); err != nil {
+	fmt.Fprintf(p.w, "Associating first subnet to route table\n")
+	if err = p.associateSubnetToRouteTable(firstSubnet.SubnetId, routeTable.RouteTableId); err != nil {
 		console.Exit("Error associating first subnet to route rable: ", err)
 	}
 
-	fmt.Fprintf(a.w, "Associating second subnet to route table\n")
-	if err = a.associateSubnetToRouteTable(secondSubnet.SubnetId, routeTable.RouteTableId); err != nil {
+	fmt.Fprintf(p.w, "Associating second subnet to route table\n")
+	if err = p.associateSubnetToRouteTable(secondSubnet.SubnetId, routeTable.RouteTableId); err != nil {
 		console.Exit("Error associating second subnet to route rable: ", err)
 	}
 
-	a.eksClient = eks.NewFromConfig(cfg)
-	fmt.Fprintf(a.w, "Creating EKS cluster...\n")
+	p.eksClient = eks.NewFromConfig(cfg)
+	fmt.Fprintf(p.w, "Creating EKS cluster...\n")
 
 	var subnetIds []string
 	subnetIds = append(subnetIds, *firstSubnet.SubnetId)
 	subnetIds = append(subnetIds, *secondSubnet.SubnetId)
 
-	cluster, err := a.createCluster(name, role.Arn, subnetIds)
+	cluster, err := p.createCluster(name, role.Arn, subnetIds)
 	if err != nil {
 		console.Exit("Error creating cluster: ", err)
 	}
-	fmt.Fprintf(a.w, "Created EKS cluster named: %s\n", *cluster.Name)
+	fmt.Fprintf(p.w, "Created EKS cluster named: %s\n", *cluster.Name)
 
-	fmt.Fprintf(a.w, "Waiting for cluster to be ready...\n")
-	a.waitUntilResourceReady(func() bool {
-		describeClusterResult, err := a.eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{
+	fmt.Fprintf(p.w, "Waiting for cluster to be ready...\n")
+	p.waitUntilResourceReady(func() bool {
+		describeClusterResult, err := p.eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{
 			Name: aws.String(name),
 		})
 
 		if err != nil {
-			fmt.Fprintf(a.w, "Error fetching cluster information. Trying it again.\n")
+			fmt.Fprintf(p.w, "Error fetching cluster information. Trying it again.\n")
 			return false
 		}
 
 		return describeClusterResult.Cluster.Status == "ACTIVE"
 	})
 
-	nodeGroup, err := a.createNodeGroup(name, role.Arn, subnetIds)
+	nodeGroup, err := p.createNodeGroup(name, role.Arn, subnetIds)
 	if err != nil {
 		console.Exit("Error creating node group: ", err)
 	}
 
-	fmt.Fprintf(a.w, "Node group created %s.\n", *nodeGroup.NodegroupName)
-	fmt.Fprintf(a.w, "Waiting for node group to be ready...\n")
-	a.waitUntilResourceReady(func() bool {
-		describeNodegroupResult, err := a.eksClient.DescribeNodegroup(context.TODO(), &eks.DescribeNodegroupInput{
+	fmt.Fprintf(p.w, "Node group created %s.\n", *nodeGroup.NodegroupName)
+	fmt.Fprintf(p.w, "Waiting for node group to be ready...\n")
+	p.waitUntilResourceReady(func() bool {
+		describeNodegroupResult, err := p.eksClient.DescribeNodegroup(context.TODO(), &eks.DescribeNodegroupInput{
 			ClusterName:   aws.String(name),
 			NodegroupName: aws.String(name),
 		})
 
 		if err != nil {
-			fmt.Fprintf(a.w, "Error fetching node group information. Trying it again.")
+			fmt.Fprintf(p.w, "Error fetching node group information. Trying it again.")
 			return false
 		}
 
 		return describeNodegroupResult.Nodegroup.Status == "ACTIVE"
 	})
 
-	describeClusterResult, err := a.eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{
+	describeClusterResult, err := p.eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{
 		Name: aws.String(name),
 	})
 	if err != nil {
@@ -219,7 +219,7 @@ func (a *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
 		EndpointUrl:     *cluster.Endpoint,
 		CertificateData: *cluster.CertificateAuthority.Data,
 	}
-	kubeConfigFilePath, err := a.createKubeConfigFile(dir, kubeConfig)
+	kubeConfigFilePath, err := p.createKubeConfigFile(dir, kubeConfig)
 
 	if err != nil {
 		console.Exit("Error creating kube config file: ", err)
@@ -230,17 +230,17 @@ func (a *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
 		ContextName:    name,
 	}
 
-	a.context = ctx
+	p.context = ctx
 	return ctx, nil
 }
 
-func (a *provider) createRole(name string) (*iamTypes.Role, error) {
+func (p *provider) createRole(name string) (*iamTypes.Role, error) {
 	createRoleInput := &iam.CreateRoleInput{
 		AssumeRolePolicyDocument: aws.String(RolePolicyDocument),
 		Path:                     aws.String("/"),
 		RoleName:                 aws.String(name),
 	}
-	iamResult, err := a.iamClient.CreateRole(context.TODO(), createRoleInput)
+	iamResult, err := p.iamClient.CreateRole(context.TODO(), createRoleInput)
 
 	if err != nil {
 		return nil, err
@@ -249,7 +249,7 @@ func (a *provider) createRole(name string) (*iamTypes.Role, error) {
 	return iamResult.Role, nil
 }
 
-func (a *provider) createVpc(cidr string, name string) (*ec2Types.Vpc, error) {
+func (p *provider) createVpc(cidr string, name string) (*ec2Types.Vpc, error) {
 	vpcTagList := ec2Types.TagSpecification{
 		ResourceType: ec2Types.ResourceTypeVpc,
 		Tags: []ec2Types.Tag{
@@ -259,7 +259,7 @@ func (a *provider) createVpc(cidr string, name string) (*ec2Types.Vpc, error) {
 		},
 	}
 
-	createVpcResult, err := a.ec2Client.CreateVpc(context.TODO(), &ec2.CreateVpcInput{
+	createVpcResult, err := p.ec2Client.CreateVpc(context.TODO(), &ec2.CreateVpcInput{
 		CidrBlock:         aws.String(cidr),
 		TagSpecifications: []ec2Types.TagSpecification{vpcTagList},
 	})
@@ -270,8 +270,8 @@ func (a *provider) createVpc(cidr string, name string) (*ec2Types.Vpc, error) {
 	return createVpcResult.Vpc, nil
 }
 
-func (a *provider) enableDNSOnVpc(vpcId *string) error {
-	_, err := a.ec2Client.ModifyVpcAttribute(context.TODO(), &ec2.ModifyVpcAttributeInput{
+func (p *provider) enableDNSOnVpc(vpcId *string) error {
+	_, err := p.ec2Client.ModifyVpcAttribute(context.TODO(), &ec2.ModifyVpcAttributeInput{
 		VpcId: vpcId,
 		EnableDnsSupport: &ec2Types.AttributeBooleanValue{
 			Value: true,
@@ -282,7 +282,7 @@ func (a *provider) enableDNSOnVpc(vpcId *string) error {
 		return err
 	}
 
-	_, err = a.ec2Client.ModifyVpcAttribute(context.TODO(), &ec2.ModifyVpcAttributeInput{
+	_, err = p.ec2Client.ModifyVpcAttribute(context.TODO(), &ec2.ModifyVpcAttributeInput{
 		VpcId: vpcId,
 		EnableDnsHostnames: &ec2Types.AttributeBooleanValue{
 			Value: true,
@@ -292,13 +292,13 @@ func (a *provider) enableDNSOnVpc(vpcId *string) error {
 	return err
 }
 
-func (a *provider) createInternetGateway(vpcId *string) (*ec2Types.InternetGateway, error) {
-	createInternetGatewayResult, err := a.ec2Client.CreateInternetGateway(context.TODO(), &ec2.CreateInternetGatewayInput{})
+func (p *provider) createInternetGateway(vpcId *string) (*ec2Types.InternetGateway, error) {
+	createInternetGatewayResult, err := p.ec2Client.CreateInternetGateway(context.TODO(), &ec2.CreateInternetGatewayInput{})
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = a.ec2Client.AttachInternetGateway(context.TODO(), &ec2.AttachInternetGatewayInput{
+	_, err = p.ec2Client.AttachInternetGateway(context.TODO(), &ec2.AttachInternetGatewayInput{
 		InternetGatewayId: createInternetGatewayResult.InternetGateway.InternetGatewayId,
 		VpcId:             vpcId,
 	})
@@ -308,7 +308,7 @@ func (a *provider) createInternetGateway(vpcId *string) (*ec2Types.InternetGatew
 	return createInternetGatewayResult.InternetGateway, nil
 }
 
-func (a *provider) createRoute(vpcId *string, name string, internetGateway *ec2Types.InternetGateway) (*ec2Types.RouteTable, error) {
+func (p *provider) createRoute(vpcId *string, name string, internetGateway *ec2Types.InternetGateway) (*ec2Types.RouteTable, error) {
 	routeTableTagList := ec2Types.TagSpecification{
 		ResourceType: ec2Types.ResourceTypeRouteTable,
 		Tags: []ec2Types.Tag{
@@ -320,14 +320,14 @@ func (a *provider) createRoute(vpcId *string, name string, internetGateway *ec2T
 			},
 		},
 	}
-	createRouteTable, err := a.ec2Client.CreateRouteTable(context.TODO(), &ec2.CreateRouteTableInput{
+	createRouteTable, err := p.ec2Client.CreateRouteTable(context.TODO(), &ec2.CreateRouteTableInput{
 		VpcId:             vpcId,
 		TagSpecifications: []ec2Types.TagSpecification{routeTableTagList},
 	})
 	if err != nil {
 		return nil, err
 	}
-	_, err = a.ec2Client.CreateRoute(context.TODO(), &ec2.CreateRouteInput{
+	_, err = p.ec2Client.CreateRoute(context.TODO(), &ec2.CreateRouteInput{
 		RouteTableId:         createRouteTable.RouteTable.RouteTableId,
 		DestinationCidrBlock: aws.String("0.0.0.0/0"),
 		GatewayId:            internetGateway.InternetGatewayId,
@@ -339,7 +339,7 @@ func (a *provider) createRoute(vpcId *string, name string, internetGateway *ec2T
 	return createRouteTable.RouteTable, nil
 }
 
-func (a *provider) createSubnet(vpcId *string, name string, cidr string, region string) (*ec2Types.Subnet, error) {
+func (p *provider) createSubnet(vpcId *string, name string, cidr string, region string) (*ec2Types.Subnet, error) {
 	subnetTagList := ec2Types.TagSpecification{
 		ResourceType: ec2Types.ResourceTypeSubnet,
 		Tags: []ec2Types.Tag{
@@ -351,7 +351,7 @@ func (a *provider) createSubnet(vpcId *string, name string, cidr string, region 
 			},
 		},
 	}
-	subnetResult, err := a.ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
+	subnetResult, err := p.ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
 		VpcId:             vpcId,
 		CidrBlock:         aws.String(cidr),
 		AvailabilityZone:  aws.String(region),
@@ -365,8 +365,8 @@ func (a *provider) createSubnet(vpcId *string, name string, cidr string, region 
 
 }
 
-func (a *provider) allowPublicIpOnSubnet(subnetId *string) error {
-	_, err := a.ec2Client.ModifySubnetAttribute(context.TODO(), &ec2.ModifySubnetAttributeInput{
+func (p *provider) allowPublicIpOnSubnet(subnetId *string) error {
+	_, err := p.ec2Client.ModifySubnetAttribute(context.TODO(), &ec2.ModifySubnetAttributeInput{
 		SubnetId: subnetId,
 		MapPublicIpOnLaunch: &ec2Types.AttributeBooleanValue{
 			Value: true,
@@ -376,8 +376,8 @@ func (a *provider) allowPublicIpOnSubnet(subnetId *string) error {
 	return err
 }
 
-func (a *provider) associateSubnetToRouteTable(subnetId *string, routeTableId *string) error {
-	_, err := a.ec2Client.AssociateRouteTable(context.TODO(), &ec2.AssociateRouteTableInput{
+func (p *provider) associateSubnetToRouteTable(subnetId *string, routeTableId *string) error {
+	_, err := p.ec2Client.AssociateRouteTable(context.TODO(), &ec2.AssociateRouteTableInput{
 		RouteTableId: routeTableId,
 		SubnetId:     subnetId,
 	})
@@ -385,8 +385,8 @@ func (a *provider) associateSubnetToRouteTable(subnetId *string, routeTableId *s
 	return err
 }
 
-func (a *provider) createCluster(name string, roleArn *string, subnetIds []string) (*eksTypes.Cluster, error) {
-	createdCluster, err := a.eksClient.CreateCluster(context.TODO(), &eks.CreateClusterInput{
+func (p *provider) createCluster(name string, roleArn *string, subnetIds []string) (*eksTypes.Cluster, error) {
+	createdCluster, err := p.eksClient.CreateCluster(context.TODO(), &eks.CreateClusterInput{
 		Name:    aws.String(name),
 		RoleArn: roleArn,
 		Version: aws.String("1.19"),
@@ -404,9 +404,9 @@ func (a *provider) createCluster(name string, roleArn *string, subnetIds []strin
 
 }
 
-func (a *provider) createNodeGroup(name string, roleArn *string, subnetIds []string) (*eksTypes.Nodegroup, error) {
+func (p *provider) createNodeGroup(name string, roleArn *string, subnetIds []string) (*eksTypes.Nodegroup, error) {
 	tagKey := "kubernetes.io/cluster/" + name
-	createdNodeGroup, err := a.eksClient.CreateNodegroup(context.TODO(), &eks.CreateNodegroupInput{
+	createdNodeGroup, err := p.eksClient.CreateNodegroup(context.TODO(), &eks.CreateNodegroupInput{
 		AmiType:       "AL2_x86_64",
 		ClusterName:   aws.String(name),
 		InstanceTypes: []string{"c5.xlarge"},
@@ -423,7 +423,7 @@ func (a *provider) createNodeGroup(name string, roleArn *string, subnetIds []str
 	return createdNodeGroup.Nodegroup, nil
 }
 
-func (a *provider) createKubeConfigFile(dir workspace.ConfigDir, kubeConfig KubeConfig) (string, error) {
+func (p *provider) createKubeConfigFile(dir workspace.ConfigDir, kubeConfig KubeConfig) (string, error) {
 	tmpl, err := template.New("kube-template").Parse(KubeConfigTemplate)
 	if err != nil {
 		console.Exit("error parsing template", err)
@@ -439,8 +439,8 @@ func (a *provider) createKubeConfigFile(dir workspace.ConfigDir, kubeConfig Kube
 	return path, tmpl.Execute(kubeConfigFile, kubeConfig)
 }
 
-func (a *provider) updateIngress(ingressName string, loadBalancerUrl string, namespace string) error {
-	clientset, err := a.context.GetClientSet()
+func (p *provider) updateIngress(ingressName string, loadBalancerUrl string, namespace string) error {
+	clientset, err := p.context.GetClientSet()
 	if err != nil {
 		return err
 	}
@@ -455,8 +455,8 @@ func (a *provider) updateIngress(ingressName string, loadBalancerUrl string, nam
 	return err
 }
 
-func (a *provider) updateHostsConfigMap(loadBalancerUrl string, namespace string) error {
-	clientset, err := a.context.GetClientSet()
+func (p *provider) updateHostsConfigMap(loadBalancerUrl string, namespace string) error {
+	clientset, err := p.context.GetClientSet()
 	if err != nil {
 		return err
 	}
@@ -473,7 +473,7 @@ func (a *provider) updateHostsConfigMap(loadBalancerUrl string, namespace string
 	return err
 }
 
-func (a *provider) attachPolicies(roleName *string) error {
+func (p *provider) attachPolicies(roleName *string) error {
 	policies := [...]string{"arn:aws:iam::aws:policy/AmazonEKSClusterPolicy",
 		"arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
 		"arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
@@ -485,9 +485,9 @@ func (a *provider) attachPolicies(roleName *string) error {
 			RoleName:  roleName,
 			PolicyArn: aws.String(policyName),
 		}
-		_, errAttach := a.iamClient.AttachRolePolicy(context.TODO(), policyInput)
+		_, errAttach := p.iamClient.AttachRolePolicy(context.TODO(), policyInput)
 		if errAttach != nil {
-			fmt.Fprintf(a.w, "%v\n", errAttach.Error())
+			fmt.Fprintf(p.w, "%v\n", errAttach.Error())
 			return errAttach
 		}
 	}
@@ -495,7 +495,7 @@ func (a *provider) attachPolicies(roleName *string) error {
 	return nil
 }
 
-func (a *provider) waitUntilResourceReady(f func() bool) {
+func (p *provider) waitUntilResourceReady(f func() bool) {
 	timeout := time.After(20 * time.Minute)
 	tick := time.Tick(500 * time.Millisecond)
 	for {
@@ -505,7 +505,7 @@ func (a *provider) waitUntilResourceReady(f func() bool) {
 				return
 			}
 		case <-timeout:
-			fmt.Fprintf(a.w, "Timeout when checking if resource is ready\n")
+			fmt.Fprintf(p.w, "Timeout when checking if resource is ready\n")
 			return
 		}
 	}

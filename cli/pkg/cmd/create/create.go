@@ -42,9 +42,9 @@ func create(cmd *cobra.Command, args []string) {
 
 	dir, err := workspace.Create(cfgDir)
 	if err != nil {
-		console.Exit("could not initialize Airy config directory at", cfgDir, err)
+		console.Exit("could not initialize Airy config directory", err)
 	}
-	fmt.Println("📁 Initialized Airy config directory at", cfgDir)
+	fmt.Println("📁 Initialized Airy config directory at", dir.GetPath("."))
 	if initOnly == true {
 		os.Exit(0)
 	}

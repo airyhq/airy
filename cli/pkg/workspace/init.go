@@ -49,7 +49,6 @@ func getConfigPath(path string) string {
 	return path
 }
 
-
 func Create(path string) (ConfigDir, error) {
 	path = getConfigPath(path)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
@@ -70,12 +69,12 @@ func Create(path string) (ConfigDir, error) {
 		}
 	}
 
-	// Init viper config
-	err = viper.WriteConfigAs(filepath.Join(path, cliConfigFileName))
 	viper.AddConfigPath(getConfigPath(path))
 	viper.SetConfigType("yaml")
 	viper.SetConfigName(cliConfigFileName)
 
+	// Init viper config
+	err = viper.WriteConfigAs(filepath.Join(path, cliConfigFileName))
 	return ConfigDir{Path: path}, err
 }
 

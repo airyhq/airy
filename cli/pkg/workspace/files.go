@@ -7,7 +7,6 @@ import (
 
 const cliConfigFileName = "cli.yaml"
 
-// content holds our static web server content.
 //go:embed template
 var templateDir embed.FS
 

@@ -16,11 +16,11 @@ conversations, and consume directly from Kafka**
 </TLDR>
 
 We are going to use Airy's Live Chat Plugin as our first source. We then use the
-plugin to send messages, and check them out in the UI, your terminal and
-directly in Apache Kafka.
+plugin to send messages, and check them out in the [UI](../../ui/introduction),
+your terminal and directly in Apache Kafka.
 
-Airy's Live Chat Plugin can be connected as a source both through API request and through the
-Airy UI. Each step covers both options.
+Airy's Live Chat Plugin can be connected both through API request and the
+[UI](../../ui/introduction). This document covers both options.
 
 - [Step 1: How to setup your first source](#step-1-how-to-setup-your-first-source)
 - [Step 2: Send messages via the Chat Plugin](#step-2-send-messages-via-the-chat-plugin)
@@ -112,13 +112,11 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{
 http://airy.core/conversations.list | jq .
 ```
 
-The [conversations](../../getting-started/glossary/#conversation) and their [messages](../../getting-started/glossary/#message) are also listed in the [Inbox UI](../../ui/inbox).
+The [Inbox UI](../../ui/inbox) lists all your [conversations](../../getting-started/glossary/#conversation), across all [sources](../../getting-started/glossary/#source).
 
-The screenshot below shows a conversation list in the [Inbox UI](../../ui/inbox). In this example, all the [conversation](../../getting-started/glossary/#conversation) have been created by connecting an Airy Live Chat [channel](../../getting-started/glossary/#channel) to an Airy Core instance.
+The screenshot below shows a conversation list in the [Inbox UI](../../ui/inbox). In this example, all the [conversations](../../getting-started/glossary/#conversation) have been created by connecting an Airy Live Chat [channel](../../getting-started/glossary/#channel) to an Airy Core instance.
 
-Each time you connect a new [channel](../../getting-started/glossary/#channel), a new [conversation](../../getting-started/glossary/#conversation) is created and added in the [Inbox UI](../../ui/inbox). You can then use it to respond to messages
-
-You can connect as many [channels](../../getting-started/glossary/#channel) as you want for each [source](../../getting-started/glossary/#source). The [Inbox UI](../../ui/inbox) displays all your conversations, across all [sources](../../getting-started/glossary/#source).
+Each time you connect a new [channel](../../getting-started/glossary/#channel), a new [conversation](../../getting-started/glossary/#conversation) is created and added in the [Inbox UI](../../ui/inbox). You can then use it to respond to [messages](../../getting-started/glossary/#message).
 
 <img alt="conversations list UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-conversations.png')} />
 

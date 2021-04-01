@@ -1,7 +1,6 @@
 package co.airy.core.sources.facebook;
 
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,24 +43,15 @@ public class MessageParser {
         final boolean isEcho = message != null && message.get("is_echo") != null && message.get("is_echo").asBoolean();
         final String appId = (message != null && message.get("app_id") != null && !message.get("app_id").isNull()) ? message.get("app_id").asText() : null;
 
-        SenderType senderType;
         String senderId;
 
-        if (!isEcho) {
-            senderType = SenderType.SOURCE_CONTACT;
-            senderId = getSourceConversationId(webhookMessaging);
-        } else if (appId != null && !appId.equals(this.facebookAppId)) {
-            senderType = SenderType.SOURCE_USER;
-            senderId = appId;
-        } else if(appId == null) {
-            senderType = SenderType.SOURCE_USER;
-            senderId = getSourceConversationId(webhookMessaging);
-        } else {
-            // Filter out echoes coming from this app
-            throw new NotAMessageException();
-        }
-
         final Map<String, String> headers = new HashMap<>();
+
+        if(appId != null && !this.facebookAppId.equals(appId)) {
+            senderId = appId;
+        } else {
+            senderId = getSourceConversationId(webhookMessaging);
+        }
 
         if (postbackNode != null) {
             if (postbackNode.get("payload") != null) {
@@ -70,6 +60,7 @@ public class MessageParser {
                 headers.put("postback.payload", "__empty__");
             }
         }
+        boolean isFromContact = !isEcho;
 
         Optional.ofNullable(postbackNode)
                 .map(node -> node.get("referral"))
@@ -77,9 +68,10 @@ public class MessageParser {
 
         return Message.newBuilder()
                 .setContent(payload)
-                .setSenderType(senderType)
                 .setSenderId(senderId)
+                .setIsFromContact(isFromContact)
                 .setHeaders(headers)
+                .setSenderId(senderId)
                 .setSentAt(webhookMessaging.get("timestamp").asLong());
     }
 }

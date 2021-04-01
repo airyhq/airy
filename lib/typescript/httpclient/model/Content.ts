@@ -1,5 +1,5 @@
 import {Template} from './Template';
-import {Message, SenderType} from './Message';
+import {Message} from './Message';
 
 export interface Content {
   id: string;
@@ -8,6 +8,10 @@ export interface Content {
 
 export type RenderedContentUnion = Message | Template | Content;
 
-export function isFromContact(message: RenderedContentUnion) {
-  if (message && 'senderType' in message) return message?.senderType === SenderType.sourceContact;
+export function isFromContact(content: RenderedContentUnion) {
+  if (content && 'fromContact' in content) {
+    return content?.fromContact;
+  } else {
+    return false;
+  }
 }

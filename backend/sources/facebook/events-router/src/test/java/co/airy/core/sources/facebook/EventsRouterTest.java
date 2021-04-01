@@ -3,7 +3,6 @@ package co.airy.core.sources.facebook;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -162,6 +161,7 @@ class EventsRouterTest {
         assertThat(messages, hasSize(1));
 
         Message message = messages.get(0);
-        assertThat(message.getSenderType(), is(SenderType.SOURCE_USER));
+        assertThat(message.getIsFromContact(), is(false));
+        assertThat(message.getSenderId(), is("1912214878880084"));
     }
 }

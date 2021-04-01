@@ -16,15 +16,9 @@ export enum MessageState {
   delivered = 'DELIVERED',
 }
 
-export enum SenderType {
-  sourceContact = 'source_contact',
-  sourceUser = 'source_user',
-  appUser = 'app_user',
-}
-
 export interface Message extends Content {
   deliveryState: MessageState;
-  senderType: SenderType;
+  fromContact: boolean;
   sentAt: Date;
   metadata?: MessageMetadata;
 }

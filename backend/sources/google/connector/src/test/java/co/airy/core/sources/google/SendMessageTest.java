@@ -2,7 +2,6 @@ package co.airy.core.sources.google;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.google.services.Api;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
@@ -100,7 +99,7 @@ class SendMessageTest {
                                 .setSource("google")
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setSenderId(sourceConversationId)
-                                .setSenderType(SenderType.SOURCE_CONTACT)
+                                .setIsFromContact(true)
                                 .setDeliveryState(DeliveryState.DELIVERED)
                                 .setConversationId(conversationId)
                                 .setChannelId(channelId)
@@ -115,7 +114,7 @@ class SendMessageTest {
                         .setId(messageId)
                         .setSentAt(Instant.now().toEpochMilli())
                         .setSenderId("user-id")
-                        .setSenderType(SenderType.APP_USER)
+                        .setIsFromContact(false)
                         .setDeliveryState(DeliveryState.PENDING)
                         .setConversationId(conversationId)
                         .setChannelId(channelId)

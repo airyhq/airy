@@ -38,31 +38,25 @@ helm install prometheus prometheus-community/kube-prometheus-stack
 
 ### Customizing Prometheus
 
-Many of Prometheus' parameters can be changed in the configuration file located
-under `infrastructure/tools/prometheus/values.yaml`.
+To access Prometheus, Grafana and Alertmanager from outside the cluster you have
+to put your hostname in the respective `hosts: []` variable in
+`infrastructure/tools/prometheus/values.yaml` and then create the Kubernetes ingress with:
 
 `helm upgrade prometheus --values infrastructure/tools/prometheus/values.yaml`
+
+Now you can access Prometheus under `<your_hostname>/prometheus`.
 
 ### Visualisation with Grafana
 
 [Grafana](https://grafana.com/) is a very powerful visualization tool which can
-used for all sorts of dashboard and monitoring requirements.
+be used for all sorts of dashboard and monitoring requirements.
 
-To access Grafana you can forward its port to http://localhost:3000 with the
-following command
-`kubectl port-forward svc/prometheus-grafana :80`
+Access Grafana under `<your_hostname>/grafana`.
 
 #### Load Predefined Dashboards
 
 ### Monitoring with alerts
 
-### Aggregating data to a Prometheus server outside of the Kubernetes cluster
+Access the Alertmanager under `<your_hostname>/alertmanager`.
 
-[Federation
-Endppoint](https://prometheus.io/docs/prometheus/latest/federation/)
-
-https://www.reddit.com/r/kubernetes/comments/c3gc39/monitoring_k8s_by_prometheus_outside_cluster/
-
-https://medium.com/thg-tech-blog/monitoring-multiple-kubernetes-clusters-88cf34442fa3
-
-https://www.robustperception.io/scaling-and-federating-prometheus
+## Aggregating data to a Prometheus server outside of the Kubernetes cluster

@@ -70,6 +70,8 @@ Access Grafana under `/grafana` and login with the
 If the `defaultDashboardsEnabled` is set to true you can find the default
 dashboards under `/grafana/dashboards`
 
+For Redis we recommend to import this (dashboard)[https://grafana.com/grafana/dashboards/763].
+
 ### Monitoring with alerts
 
 Access the Alertmanager under `/alertmanager`.

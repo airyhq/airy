@@ -12,5 +12,8 @@ spec:
   - port: 16379
     targetPort: 16379
     name: gossip
+  - port: 9121
+    targetPort: 9121
+    name: exporter
   selector:
     app: redis-cluster

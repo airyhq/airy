@@ -1,12 +1,9 @@
 alertmanager:
-  enabled: true
-  apiVersion: v2
   ingress:
     enabled: true
     hosts: []
     paths: ['/alertmanager']
 grafana:
-  enabled: true
   defaultDashboardsEnabled: true
   adminPassword: prom-operator
   ingress:
@@ -14,9 +11,11 @@ grafana:
     hosts: []
     path: /grafana
 prometheus:
-  enabled: true
   ingress:
     enabled: true
     hosts: []
     paths: ['/alertmanager']
-    additionalScrapeConfigs: []
+    additionalScrapeConfigs:
+    - job_name: redis_exporter
+      static_configs:
+      - targets: ['redis-cluster:9121']

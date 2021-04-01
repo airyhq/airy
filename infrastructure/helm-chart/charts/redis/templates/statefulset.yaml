@@ -35,6 +35,14 @@ spec:
         - name: data
           mountPath: /data
           readOnly: false
+      - name: redis-exporter
+        image: "{{ .Values.prometheusExporterImage }}:{{ .Values.prometheusExporterImageTag }}"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 9121
       volumes:
       - name: conf
         configMap:

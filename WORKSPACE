@@ -97,6 +97,8 @@ maven_install(
         "org.springframework.security:spring-security-core:5.1.2.RELEASE",
         "org.springframework.security:spring-security-crypto:5.3.0.RELEASE",
         "org.rocksdb:rocksdbjni:5.18.3",
+        "org.springframework.metrics:spring-metrics:0.5.1.RELEASE",
+        "io.prometheus:simpleclient_common:0.10.0",
     ],
     excluded_artifacts = [
         "ch.qos.logback:logback-classic",

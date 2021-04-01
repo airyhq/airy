@@ -1,4 +1,7 @@
-# How to monitor Airy Core
+---
+title: How to monitor Airy Core
+sidebar_label: Operations
+---
 
 ## Why Prometheus
 
@@ -16,7 +19,8 @@ Manager](https://prometheus.io/docs/alerting/latest/alertmanager/),
 language](https://prometheus.io/docs/prometheus/latest/querying/basics/) to
 retrieve the data and visualization tools like
 [Grafana](https://prometheus.io/docs/visualization/grafana/)
-![image](https://user-images.githubusercontent.com/54705263/111768039-b2772200-88a7-11eb-9635-020895eb0c72.png
+
+![image](https://user-images.githubusercontent.com/54705263/111768039-b2772200-88a7-11eb-9635-020895eb0c72.png)
 
 ## Kubernetes Prometheus Stack
 
@@ -26,15 +30,13 @@ Prometheus community.
 
 ### Installing the helm chart
 
-Make sure your kubectx is set to the Airy Core instance and you have Helm installed.
+Make sure your kubectx is set to the Airy Core instance and you have [Helm](https://helm.sh/) installed.
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 helm install prometheus prometheus-community/kube-prometheus-stack
 ```
-
-`kubectl --namespace monitoring port-forward svc/prometheus-k8s 9090`
 
 ### Customizing Prometheus
 
@@ -44,19 +46,30 @@ to put your hostname in the respective `hosts: []` variable in
 
 `helm upgrade prometheus --values infrastructure/tools/prometheus/values.yaml`
 
-Now you can access Prometheus under `<your_hostname>/prometheus`.
+Now you can access Prometheus under `/prometheus`.
 
-### Visualisation with Grafana
+### Grafana Dashboards
 
 [Grafana](https://grafana.com/) is a very powerful visualization tool which can
 be used for all sorts of dashboard and monitoring requirements.
 
-Access Grafana under `<your_hostname>/grafana`.
+`k edit cm prometheus-grafana`
 
-#### Load Predefined Dashboards
+```yaml
+[server]
+    domain = <your_hostname>
+    root_url = <your_hostname>/grafana
+    serve_from_sub_path = true
+```
+
+Access Grafana under `/grafana` and login with the
+`adminPassword` you set in the `values.yaml`.
+
+#### Access Predefined Dashboards
+
+If the `defaultDashboardsEnabled` is set to true you can find the default
+dashboards under `/grafana/dashboards`
 
 ### Monitoring with alerts
 
-Access the Alertmanager under `<your_hostname>/alertmanager`.
-
-## Aggregating data to a Prometheus server outside of the Kubernetes cluster
+Access the Alertmanager under `/alertmanager`.

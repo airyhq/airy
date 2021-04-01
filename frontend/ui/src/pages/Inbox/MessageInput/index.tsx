@@ -198,15 +198,21 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             </div>
           )}
           <button
-            className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''} ${
+              disconnectedChannelToolTip ? styles.disabledIconButton : styles.activeIconButton
+            }`}
             type="button"
+            disabled={disconnectedChannelToolTip ? true : false}
             onClick={() => handleEmojiDrawer()}>
             <div className={styles.actionToolTip}>Emojis</div>
             <Smiley aria-hidden />
           </button>
           <button
-            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''} ${
+              disconnectedChannelToolTip ? styles.disabledIconButton : styles.activeIconButton
+            }`}
             type="button"
+            disabled={disconnectedChannelToolTip ? true : false}
             onClick={() => toggleTemplateModal()}>
             <div className={styles.actionToolTip}>Templates</div>
             <TemplateAlt aria-hidden />
@@ -305,7 +311,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             <div className={styles.disconnectedChannelToolTip}>
               <p className={styles.disconnectedChannelToolTipText}>
                 {' '}
-                Sending messages is disabled because the channel was disconnected.{' '}
+                Sending messages is disabled because this channel was disconnected.{' '}
               </p>
             </div>
           )}

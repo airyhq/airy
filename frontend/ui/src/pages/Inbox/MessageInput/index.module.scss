@@ -151,7 +151,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   position: relative;
   margin-left: 4px;
   width: 30px;
@@ -176,6 +175,14 @@
     bottom: 33px;
     z-index: 2;
   }
+}
+
+.disabledIconButton {
+  cursor: not-allowed;
+}
+
+.activeIconButton {
+  cursor: pointer;
 }
 
 .iconButton:hover {

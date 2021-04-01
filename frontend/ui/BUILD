@@ -37,6 +37,7 @@ ts_web_library(
         "@npm//reselect",
         "@npm//typesafe-actions",
         "@npm//camelcase-keys",
+        "@npm//react-color",
     ],
 )
 

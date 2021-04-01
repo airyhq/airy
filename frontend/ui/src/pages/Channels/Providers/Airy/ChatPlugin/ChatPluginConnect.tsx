@@ -48,7 +48,6 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
   const [imageUrl, setImageUrl] = useState('');
   const [currentPage, setCurrentPage] = useState('settings');
   const channelId = props.match.params.channelId;
-  const codeAreaRef = createRef<HTMLTextAreaElement>();
 
   useEffect(() => {
     setShowNewPage(true);
@@ -98,7 +97,6 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           }}
           label="Display Name"
           placeholder="Add a name"
-          autoFocus
           required
           height={32}
           fontClass="font-base"
@@ -115,7 +113,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
             setImageUrl(e.target.value);
           }}
           label="Image URL"
-          placeholder="(optionaly) add an image url"
+          placeholder="(optionally) add an image url"
           hint="max. 1024x1024 pixel PNG"
           height={32}
           fontClass="font-base"
@@ -128,7 +126,6 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
     return showNewPage ? (
       <div>
         <p className={styles.newPageParagraph}>Add Airy Live Chat to your website and application</p>
-
         <Button type="button" onClick={() => setShowNewPage(false)} dataCy={cyChannelsChatPluginConnectButton}>
           Connect Airy Live Chat
         </Button>
@@ -159,34 +156,9 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
     setCurrentPage('settings');
   };
 
-  const showInstallDoc = (event: MouseEvent<HTMLAnchorElement>) => {
+  const showCustomization = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    setCurrentPage('installDoc');
-  };
-
-  const showCustomisation = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    setCurrentPage('customisation');
-  };
-
-  const generateCode = () => {
-    return `<script>
-      (function(w, d, s, n) {
-        w[n] = w[n] || {};
-        w[n].channelId = "${channelId}";
-        w[n].host = "${env.API_HOST}";
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s);
-        j.async = true;
-        j.src = w[n].host + "/s.js";
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "airy");
-    </script>`;
-  };
-
-  const copyToClipboard = () => {
-    codeAreaRef.current?.select();
-    document.execCommand('copy');
+    setCurrentPage('install-customization');
   };
 
   const ConnectContent = () => {
@@ -204,24 +176,10 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
             </div>
           </div>
         );
-      case 'installDoc':
+      case 'install-customization':
         return (
           <div className={styles.formWrapper}>
-            <div className={styles.installDocs}>
-              <div className={styles.installHint}>
-                Add this code inside the tag <code>&lt;head&gt;</code>:
-              </div>
-              <div>
-                <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={generateCode()}></textarea>
-              </div>
-              <Button onClick={copyToClipboard}>Copy code</Button>
-            </div>
-          </div>
-        );
-      case 'customisation':
-        return (
-          <div className={styles.formWrapper}>
-            <CustomiseSection />
+            <CustomiseSection channelId={channelId} host={env.API_HOST} />
           </div>
         );
     }
@@ -236,14 +194,9 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
             Settings
           </a>
         </li>
-        <li className={currentPage == 'installDoc' ? styles.tabEntrySelected : styles.tabEntry}>
-          <a href="#" onClick={showInstallDoc}>
-            Install app
-          </a>
-        </li>
-        <li className={currentPage == 'customisation' ? styles.tabEntrySelected : styles.tabEntry}>
-          <a href="#" onClick={showCustomisation}>
-            Customise
+        <li className={currentPage == 'install-customization' ? styles.tabEntrySelected : styles.tabEntry}>
+          <a href="#" onClick={showCustomization}>
+            Install & Customize
           </a>
         </li>
       </ul>

@@ -116,9 +116,6 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
       );
     }
 
-    console.log(filteredPaginationData.filteredTotal);
-    console.log(conversationsPaginationData.total);
-
     if (conversationsPaginationData.total) {
       return (
         <div className={styles.filterCount}>

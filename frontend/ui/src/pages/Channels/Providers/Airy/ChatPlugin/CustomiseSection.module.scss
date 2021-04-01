@@ -1,3 +1,14 @@
+@import 'assets/scss/fonts.scss';
+
+.customiseContainer {
+  margin-top: 28px;
+}
+
+.colorPickerWrapper {
+  position: absolute;
+  padding: 46px 24px 46px 0px;
+}
+
 .colorPicker {
   display: flex;
   place-items: flex-end;
@@ -11,4 +22,31 @@
   border-radius: 20%;
   margin-right: 4px;
   margin-bottom: 8px;
+}
+
+.codeAreaContainer {
+  margin-right: 16px;
+}
+
+.installHint {
+  font-weight: bold;
+  margin-bottom: 8px;
+  code {
+    color: var(--color-red-alert);
+    background-color: var(--color-background-gray);
+    padding: 2px;
+  }
+}
+
+.codeArea {
+  @include font-base;
+  width: 40em;
+  height: 19.2em;
+  background-color: var(--color-background-gray);
+  color: var(--color-text-contrast);
+  border-radius: 8px;
+  border: 1px solid var(--color-dark-elements-gray);
+  resize: none;
+  padding: 8px;
+  margin-bottom: 16px;
 }

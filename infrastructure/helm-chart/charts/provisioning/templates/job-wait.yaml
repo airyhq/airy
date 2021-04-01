@@ -1,0 +1,103 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-api-auth
+  annotations:
+    "helm.sh/hook": "post-install"  
+spec:
+  template:
+    spec:
+      containers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
+        env:
+        - name: SERVICE_URL
+          value: api-auth.{{ .Values.global.namespace }}:80
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+      restartPolicy: Never
+  backoffLimit: 3
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-api-communication
+  annotations:
+    "helm.sh/hook": "post-install"  
+spec:
+  template:
+    spec:
+      containers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
+        env:
+        - name: SERVICE_URL
+          value: api-communication.{{ .Values.global.namespace }}:80
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+      restartPolicy: Never
+  backoffLimit: 3
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-frontend-ui
+  annotations:
+    "helm.sh/hook": "post-install"  
+spec:
+  template:
+    spec:
+      containers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
+        env:
+        - name: SERVICE_URL
+          value: frontend-ui.{{ .Values.global.namespace }}:80
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+      restartPolicy: Never
+  backoffLimit: 3
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-frontend-chat-plugin
+  annotations:
+    "helm.sh/hook": "post-install"  
+spec:
+  template:
+    spec:
+      containers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
+        env:
+        - name: SERVICE_URL
+          value: frontend-chat-plugin.{{ .Values.global.namespace }}:80
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+      restartPolicy: Never
+  backoffLimit: 3

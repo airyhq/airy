@@ -112,8 +112,8 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     const formatter = new Intl.NumberFormat('en-US');
 
     if (
-      filteredPaginationData.filteredTotal != undefined &&
-      filteredPaginationData.filteredTotal != filteredPaginationData.total
+      filteredPaginationData.filteredTotal !== undefined &&
+      filteredPaginationData.filteredTotal !== filteredPaginationData.total
     ) {
       return (
         <div className={styles.filterCount}>

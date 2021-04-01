@@ -7,5 +7,6 @@ export default HttpClient.prototype.sendMessages = async function (requestPayloa
     conversation_id: requestPayload.conversationId,
     message: requestPayload.message,
   });
+
   return mapMessage(response);
 };

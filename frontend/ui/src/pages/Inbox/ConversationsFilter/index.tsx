@@ -6,7 +6,7 @@ import {ConversationFilter} from 'httpclient';
 import {StateModel} from '../../../reducers';
 
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
-import {isFilterActive} from '../../../selectors/conversations';
+import {allConversations, isFilterActive} from '../../../selectors/conversations';
 
 import {ReactComponent as ChevronLeft} from 'assets/images/icons/chevron_left.svg';
 import Popup from './Popup';
@@ -19,6 +19,7 @@ const mapStateToProps = (state: StateModel) => {
     isFilterActive: isFilterActive(state),
     conversationsPaginationData: state.data.conversations.all.paginationData,
     filteredPaginationData: state.data.conversations.filtered.paginationData,
+    conversations: allConversations(state),
   };
 };
 
@@ -40,7 +41,9 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
 
   useEffect(() => {
     resetFilter();
-  });
+    itemsCount();
+  }),
+    [props.conversations];
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
@@ -108,10 +111,13 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     const {conversationsPaginationData, filteredPaginationData} = props;
     const formatter = new Intl.NumberFormat('en-US');
 
-    if (filteredPaginationData.loaded) {
+    if (
+      filteredPaginationData.filteredTotal != undefined &&
+      filteredPaginationData.filteredTotal != filteredPaginationData.total
+    ) {
       return (
         <div className={styles.filterCount}>
-          {`Filtered: ${filteredPaginationData.filteredTotal} Total: ${filteredPaginationData.total}`}
+          {`Filtered: ${filteredPaginationData.filteredTotal} Total: ${props.conversations.length}`}
         </div>
       );
     }
@@ -119,9 +125,7 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     if (conversationsPaginationData.total) {
       return (
         <div className={styles.filterCount}>
-          {`${formatter.format(
-            filteredPaginationData.filteredTotal || conversationsPaginationData.total
-          )} Conversations`}
+          {`${formatter.format(filteredPaginationData.filteredTotal || props.conversations.length)} Conversations`}
         </div>
       );
     }

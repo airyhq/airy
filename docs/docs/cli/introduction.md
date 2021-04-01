@@ -1,6 +1,6 @@
 ---
 title: Install the Airy CLI
-sidebar_label: Installation
+sidebar_label: Introduction
 hide_table_of_contents: false
 ---
 
@@ -16,12 +16,17 @@ Airy Core instances directly from your terminal.
 
 </TLDR>
 
+import Script from "@site/src/components/Script";
+
+<Script data-cols="120" data-rows="32" id="asciicast-403849" src="https://asciinema.org/a/403849.js"></Script>
+
 Installing the Airy CLI is easy and straightforward. You can follow the next
 steps for a quick setup:
 
-- [Step 1: Check the requirements](installation.md#step-1-check-the-requirements)
-- [Step 2: Install the Airy CLI](installation.md#step-2-install-the-airy-cli)
-- [Step 3: Verify your installation](installation.md#step-3-verify-your-installation)
+- [Step 1: Check the requirements](introduction.md#step-1-check-the-requirements)
+- [Step 2: Install the Airy CLI](introduction.md#step-2-install-the-airy-cli)
+- [Step 3: Verify your installation](introduction.md#step-3-verify-your-installation)
+- [Step 4: Initialize the setup](introduction.md#step-4-initialize-the-setup)
 
 ### Step 1: Check the requirements
 
@@ -30,7 +35,7 @@ on macOS, Linux and Windows and we provide pre-built executable binaries for
 **x86-64**.
 
 If you are running on a different platform you can also [build it
-yourself](installation.md#building-from-source).
+yourself](introduction.md#building-from-source).
 
 ### Step 2: Install the Airy CLI
 
@@ -126,6 +131,15 @@ Make sure the output matches the version number you expect:
 
 ```bash
 airy version
+```
+
+### Step 4: Initialize the setup
+
+The [airy init](cli/usage.md#init) will create a `cli.yaml` file which stores
+your `apiHost` and `apiJwtToken`:
+
+```bash
+airy init
 ```
 
 <SuccessBox>

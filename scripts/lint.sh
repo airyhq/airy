@@ -7,9 +7,9 @@ bazel run //infrastructure/tools/topics:app > /tmp/topics-output
 cmp /tmp/topics-output infrastructure/helm-chart/charts/provisioning/templates/kafka-create-topics.yaml
 echo
 echo "Check cli doc is in sync"
-cp docs/docs/cli/reference.md /tmp/
+cp docs/docs/cli/usage.md /tmp/
 bazel run //docs/cli-doc:generate_cli_docs
-cmp docs/docs/cli/reference.md  /tmp/reference.md
+cmp docs/docs/cli/usage.md  /tmp/usage.md
 echo
 echo "Running Prettier, Buildifier and Checkstyle"
 bazel test --test_tag_filters=lint //...

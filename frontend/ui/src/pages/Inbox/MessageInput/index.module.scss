@@ -273,9 +273,9 @@
   border-radius: 4px;
   z-index: 1;
   background-color: var(--color-light-gray);
-}
 
-.disconnectedChannelToolTipText {
-  @include font-s;
-  color: var(--color-text-contrast);
+  p {
+    @include font-s;
+    color: var(--color-text-contrast);
+  }
 }

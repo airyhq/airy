@@ -77,6 +77,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   useEffect(() => {
     if (!conversation.channel.connected) {
       setDisconnectedChannelToolTip(true);
+      setInput('');
       textAreaRef.current.style.cursor = 'not-allowed';
     } else {
       setDisconnectedChannelToolTip(false);
@@ -309,10 +310,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
         <div className={styles.sendDiv}>
           {disconnectedChannelToolTip && (
             <div className={styles.disconnectedChannelToolTip}>
-              <p className={styles.disconnectedChannelToolTipText}>
-                {' '}
-                Sending messages is disabled because this channel was disconnected.{' '}
-              </p>
+              <p>Sending messages is disabled because this channel was disconnected.</p>
             </div>
           )}
           <button

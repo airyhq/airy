@@ -26,7 +26,9 @@ Once a release day comes, we execute the following steps:
   - You must wait for all the images to be pushed via CI.
 - Once we're satisfied with the release, we publish the release:
   - We run `./scripts/release.sh finish x.y.z`
-  - We update the version string and the sha in the [Homebrew Formula](https://github.com/airyhq/homebrew-airy/blob/main/Formula/cli.rb) for the CLI.
+  - We update the version string to `x.y.z` and the sha to `https://airy-core-binaries.s3.amazonaws.com/x.y.z/darwin/amd64/airy_darwin_sha256sum.txt` in the [Homebrew
+    Formula](https://github.com/airyhq/homebrew-airy/blob/main/Formula/cli.rb)
+    for the CLI.
   - We archive cards in the done column of the [work in progress](https://github.com/airyhq/airy/projects/1) board
   - We tag the draft release with the tag `x.y.z` and publish it.
   - We announce the release!

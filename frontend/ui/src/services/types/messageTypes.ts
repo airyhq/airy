@@ -18,10 +18,10 @@ export const isVideoMessage = (content: Content) => content.content.attachment.t
 export const isImageMessage = (content: Content) => content.content.attachment.type === 'image';
 
 export const isButtonTemplateMessage = (content: Content) =>
-  content.content.attachment.type === 'template' && content.content.attachment.payload.template_type == 'button';
+  content.content.attachment.type === 'template' && content.content.attachment.payload.template_type === 'button';
 
 export const isGenericTemplateMessage = (content: Content) =>
-  content.content.attachment.type === 'template' && content.content.attachment.payload.template_type == 'generic';
+  content.content.attachment.type === 'template' && content.content.attachment.payload.template_type === 'generic';
 
 export const isRichCardMessage = (content: Content) => content.content.richCard?.standaloneCard != null;
 

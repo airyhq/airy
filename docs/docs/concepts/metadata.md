@@ -11,9 +11,8 @@ For this reason we introduced an extension to the data model that we call metada
 of the Airy Core platform is an optional document you can attach to a subject, which consists of a
 namespace i.e. "conversation" and an identifier within that namespace i.e. the conversation id.
 
-Our [HTTP APIs](/api/endpoints/introduction.md) expose this metadata, see for instance the 
-`conversation.metadata` field, and it can be streamed via the [websocket](/api/websocket.md) and [webhook](/api/webhook.md). 
- 
+Our [HTTP APIs](/api/endpoints/introduction.md) expose this metadata, see for instance the
+`conversation.metadata` field, and it can be streamed via the [websocket](/api/websocket.md) and [webhook](/api/webhook.md).
 
 ### Subject
 
@@ -33,7 +32,7 @@ JSON dot notation to reflect nested data. Take for instance the following series
 for a conversation:
 
 | Key                | Value  |
-|--------------------|--------|
+| ------------------ | ------ |
 | contact.first_name | Grace  |
 | contact.last_name  | Hopper |
 | state              | open   |
@@ -46,7 +45,7 @@ The API payloads expose this list as the following metadata document:
     "first_name": "Grace",
     "last_name": "Hopper"
   },
-  "state":  "open"
+  "state": "open"
 }
 ```
 
@@ -54,8 +53,8 @@ The API payloads expose this list as the following metadata document:
 
 Currently, this design introduces two limitations on the structure of metadata:
 
--  We do not allow JSON arrays as there is no standard way of encoding atomic list updates on the key
--  When inserting metadata all values need to be strings.
+- We do not allow JSON arrays as there is no standard way of encoding atomic list updates on the key
+- When inserting metadata all values need to be strings.
 
 For the second limitation we have introduced implicit mappings that allow you to write strings
 but return other data types when accessing them on the API:

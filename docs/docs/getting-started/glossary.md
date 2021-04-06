@@ -111,7 +111,7 @@ automations.
 ## Metadata
 
 Metadata is optional data attached to a subject such as a conversation, channel or a message. Have a look
-at [this page](concepts/metadata.md) for an in-depth explanation. 
+at [this page](concepts/metadata.md) for an in-depth explanation.
 
 ### Tag
 

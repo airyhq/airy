@@ -14,7 +14,6 @@ values of type string or object values (i.e. no lists or numbers).
 
 **Sample Request**
 
-
 ```json5
 {
   "id": "{String}", // subject namespace identifier

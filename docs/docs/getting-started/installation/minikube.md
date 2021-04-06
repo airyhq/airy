@@ -15,19 +15,22 @@ your local machine using [minikube](https://minikube.sigs.k8s.io/).
 ## Creating a cluster
 
 First download and install minikube from their [release
-page](https://github.com/kubernetes/minikube/releases) and the [Airy
-CLI](cli/installation.md). Now you can run this command, which will create a new
+page](https://github.com/kubernetes/minikube/releases) and the [Airy CLI](cli/introduction.md). Now you can run this command, which will create a new
 minikube cluster on your system and install Airy core on it:
 
 ```bash
-airy create --provider=minikube
+airy create --provider=minikube my-airy
 ```
 
-This will print URLs for accessing the UIs and APIs as seen in this recording:
+This will execute the following actions:
+
+1. Create the `my-airy` directory and populate it with the configuration that the CLI will need. All subsequent commands need to either be run from this directory or use the `--config-dir` flag.
+2. Start a Minikube cluster on your system and install Airy Core on it.
+3. Print URLs for accessing the UIs and APIs (see recording).
 
 import Script from "@site/src/components/Script";
 
-<Script data-cols="90" id="asciicast-KHz6yTASgqwnKT5FB7Gt7jF1k" src="https://asciinema.org/a/KHz6yTASgqwnKT5FB7Gt7jF1k.js"></Script>
+<Script data-cols="90" id="asciicast-NHuy672OHO4I4rvXMCZAG6H2P" src="https://asciinema.org/a/NHuy672OHO4I4rvXMCZAG6H2P.js"></Script>
 
 If you want to customize your `Airy Core` instance please see our [Configuration
 Section](configuration.md).

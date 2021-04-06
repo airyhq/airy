@@ -1,10 +1,11 @@
 package config
 
 import (
+	"cli/pkg/console"
 	"cli/pkg/kube"
+	"cli/pkg/workspace"
 	"fmt"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var configFile string
@@ -17,16 +18,20 @@ var ConfigCmd = &cobra.Command{
 }
 
 func applyConfig(cmd *cobra.Command, args []string) {
-	conf, err := parseConf(configFile)
+	cfgDir, err := cmd.Flags().GetString("config-dir")
 	if err != nil {
-		fmt.Println("error parsing configuration file: ", err)
-		os.Exit(1)
+		console.Exit(err)
+	}
+	dir := workspace.Init(cfgDir)
+
+	conf, err := parseConf(dir.GetAiryYaml())
+	if err != nil {
+		console.Exit("error parsing configuration file: ", err)
 	}
 	kubeCtx := kube.Load()
 	clientset, err := kubeCtx.GetClientSet()
 	if err != nil {
-		fmt.Println("Could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
-		os.Exit(1)
+		console.Exit("Could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
 	}
 
 	if twilioApply(conf, clientset) {
@@ -54,6 +59,5 @@ var applyConfigCmd = &cobra.Command{
 }
 
 func init() {
-	ConfigCmd.PersistentFlags().StringVar(&configFile, "config", "./airy.yaml", "Configuration file for an Airy Core instance")
 	ConfigCmd.AddCommand(applyConfigCmd)
 }

@@ -91,8 +91,8 @@ You can also consume the messages directly from the Kafka
 
 ```
 kubectl exec -it kafka-0 -- /bin/bash
-kafka-console-consumer \
---bootstrap-server airy-cp-kafka:9092 \
+kafka-console-consumer.sh \
+--bootstrap-server kafka:9092 \
 --topic application.communication.messages \
 --from-beginning
 ```

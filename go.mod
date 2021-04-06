@@ -8,7 +8,6 @@ go 1.16
 require (
 	github.com/alicebob/miniredis/v2 v2.13.3
 	github.com/go-redis/redis/v8 v8.2.2
-	github.com/spf13/cobra v1.1.1
 	github.com/TwinProduction/go-color v1.0.0
 	github.com/aws/aws-sdk-go v1.37.29
 	github.com/aws/aws-sdk-go-v2/config v1.1.1
@@ -19,6 +18,7 @@ require (
 	github.com/kr/pretty v0.2.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cast v1.3.1 // indirect
+	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.7.1
 	github.com/thanhpk/randstr v1.0.4
 	github.com/txn2/txeh v1.3.0

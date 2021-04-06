@@ -1,15 +1,15 @@
 package create
 
 import (
-	"cli/pkg/workspace"
 	"context"
 	"fmt"
+	"io/ioutil"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	watch "k8s.io/apimachinery/pkg/watch"
+	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -17,18 +17,20 @@ const airyConfigMap = "airy-config-map"
 const serviceAccountName = "helm-account"
 
 type Helm struct {
-	name      string
-	version   string
-	namespace string
-	clientset *kubernetes.Clientset
+	name       string
+	version    string
+	namespace  string
+	clientset  *kubernetes.Clientset
+	configPath string
 }
 
-func New(clientset *kubernetes.Clientset, version string, namespace string) Helm {
+func New(clientset *kubernetes.Clientset, version string, namespace string, configPath string) Helm {
 	return Helm{
-		name:      "helm-runner",
-		namespace: namespace,
-		version:   version,
-		clientset: clientset,
+		name:       "helm-runner",
+		namespace:  namespace,
+		version:    version,
+		clientset:  clientset,
+		configPath: configPath,
 	}
 }
 
@@ -165,8 +167,13 @@ func (h *Helm) runHelm(args []string) error {
 func (h *Helm) upsertAiryConfigMap() error {
 	cm, _ := h.clientset.CoreV1().ConfigMaps(h.namespace).Get(context.TODO(), airyConfigMap, v1.GetOptions{})
 
+	file, err := ioutil.ReadFile(h.configPath)
+	if err != nil {
+		return err
+	}
+
 	cmData := map[string]string{
-		"airy-config-map.yaml": workspace.Defaults,
+		"airy-config-map.yaml": string(file),
 	}
 
 	if cm.GetName() != "" {
@@ -175,7 +182,7 @@ func (h *Helm) upsertAiryConfigMap() error {
 		return err
 	}
 
-	_, err := h.clientset.CoreV1().ConfigMaps(h.namespace).Create(context.TODO(),
+	_, err = h.clientset.CoreV1().ConfigMaps(h.namespace).Create(context.TODO(),
 		&corev1.ConfigMap{
 			ObjectMeta: v1.ObjectMeta{
 				Name:      airyConfigMap,

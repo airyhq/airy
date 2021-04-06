@@ -1,6 +1,7 @@
 package co.airy.core.api.communication.lucene;
 
 import co.airy.core.api.communication.dto.ConversationIndex;
+import co.airy.model.metadata.dto.MetadataNode;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntPoint;
@@ -31,6 +32,12 @@ public class DocumentMapper {
 
         for (String tagId : conversation.getTagIds()) {
             document.add(new TextField("tag_ids", tagId, Field.Store.YES));
+        }
+
+        for (MetadataNode node : conversation.getMetadata()) {
+            final String key = String.format("metadata.%s", node.getKey());
+            // Index but don't store metadata
+            document.add(new TextField(key, node.getValue(), Field.Store.NO));
         }
 
         return document;

@@ -81,7 +81,7 @@ class ConversationsListTest {
                     Map.of(MetadataKeys.ConversationKeys.TAGS + "." + tagId, "", MetadataKeys.ConversationKeys.TAGS + "." + anotherTagId, ""),
                     1),
             TestConversation.from(conversationIdToFind, defaultChannel, Map.of(MetadataKeys.ConversationKeys.TAGS + "." + tagId, ""), 1),
-            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 2),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, Map.of("user_data.erp.id", "abc"), 2),
             TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 5)
     );
 
@@ -139,6 +139,12 @@ class ConversationsListTest {
     }
 
     @Test
+    void canFilterByDisplayNameIgnoringCasing() throws Exception {
+        String payload = "{\"filters\": \"display_name:" + firstNameToFind.toLowerCase() + "\"}";
+        checkConversationsFound(payload, 1);
+    }
+
+    @Test
     void canFilterByTagIds() throws Exception {
         checkConversationsFound("{\"filters\": \"tag_ids:(" + tagId + ")\"}", 2);
 
@@ -169,6 +175,11 @@ class ConversationsListTest {
     @Test
     void canFilterForUnknownNames() throws Exception {
         checkConversationsFound("{\"filters\": \"display_name:Ada\"}", 0);
+    }
+
+    @Test
+    void canFilterByMetadata() throws Exception {
+        checkConversationsFound("{\"filters\": \"metadata.user_data.erp.id:abc\"}", 1);
     }
 
     private void checkConversationsFound(String payload, int count) throws InterruptedException {

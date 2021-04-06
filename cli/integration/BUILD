@@ -8,6 +8,13 @@ go_library(
         "runner.go",
         "test_file.go",
     ],
+    embedsrcs = [
+        "golden/cli.login.golden",
+        "golden/cli.no-args.golden",
+        "golden/cli.version.golden",
+        "golden/cli.yaml",
+        "golden/users.signup.golden",
+    ],
     importpath = "cli/integration",
     visibility = ["//visibility:public"],
     deps = [
@@ -20,13 +27,11 @@ go_library(
 go_test(
     name = "integration_test",
     srcs = [
-        "api_login_test.go",
-        "noargs_test.go",
+        "cli_test.go",
         "version_test.go",
     ],
     data = [
         "//cli:airy",
-        "//cli/integration/golden:golden_files",
     ],
     embed = [":integration"],
 )

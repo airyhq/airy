@@ -16,7 +16,7 @@
 
 ---
 
-![Airy_Explainer_Highlevel_Readme](https://user-images.githubusercontent.com/12533283/112460549-51e05d00-8d5f-11eb-802b-385c425dfaaf.png)
+![Airy_Explainer_Highlevel_Readme](https://user-images.githubusercontent.com/124274/113720584-18a8d500-96ef-11eb-97c3-362eebd6253d.jpeg)
 
 Airy Core is an open source, fully-featured, production ready conversational
 platform. With Airy you can process conversational data from a variety of

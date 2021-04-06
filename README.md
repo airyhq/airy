@@ -87,7 +87,7 @@ An [API](https://airy.co/docs/core/api/introduction) to access conversational
 data with blazing fast HTTP endpoints.
 
 
-- **🔌[WebSockets](https://airy.co/docs/core/api/websocket) to power real-time applications
+- 🔌[WebSockets](https://airy.co/docs/core/api/websocket) to power real-time applications
 
 A [WebSocket server](https://airy.co/docs/core/api/websocket) that allows
 clients to receive near real-time updates about data flowing through the system.

@@ -29,4 +29,4 @@ for os in "linux" "darwin" "windows"; do
     aws s3 cp $airy_bin_sha_path "$s3_basepath/"
 done
 
-aws s3 cp ./VERSION s3://$bucket_name/stable.txt
+aws s3 cp VERSION s3://$bucket_name/stable.txt

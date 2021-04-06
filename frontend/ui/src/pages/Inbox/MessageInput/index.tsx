@@ -76,14 +76,14 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
   useEffect(() => {
     if (!conversation.channel.connected) {
-      setDisconnectedChannelToolTip(true);
       setInput('');
       textAreaRef.current.style.cursor = 'not-allowed';
     } else {
-      setDisconnectedChannelToolTip(false);
       textAreaRef.current.style.cursor = 'auto';
     }
-  }, [conversation]);
+
+    setDisconnectedChannelToolTip(!conversation.channel.connected);
+  }, [conversation.channel.connected]);
 
   const sendMessage = () => {
     if (!conversation.channel.connected) {

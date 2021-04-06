@@ -11,16 +11,16 @@ For this reason we introduced an extension to the data model that we call metada
 of the Airy Core platform is an optional document you can attach to a subject, which consists of a
 namespace i.e. "conversation" and an identifier within that namespace i.e. the conversation id.
 
-Our [HTTP APIs](/api/endpoints/introduction.md) exposes this metadata, see for instance the 
+Our [HTTP APIs](/api/endpoints/introduction.md) expose this metadata, see for instance the 
 `conversation.metadata` field, and it can be streamed via the [websocket](/api/websocket.md) and [webhook](/api/webhook.md). 
  
 
 ### Subject
 
-A metadata subject is comprised of a namespace such as `conversation` and a namespace identifier, which is
+A metadata subject consists of a namespace such as `conversation` and a namespace identifier, which is
 the identifier that uniquely identifies the entity the metadata is bound to within the namespace.
 
-Therefore the subject of a conversation with id `123` would be `conversation:123`.
+Therefore, the subject of a conversation with id `123` would be `conversation:123`.
 
 ### Document
 
@@ -49,6 +49,8 @@ The API payloads expose this list as the following metadata document:
   "state":  "open"
 }
 ```
+
+### Limitations
 
 Currently, this design introduces two limitations on the structure of metadata:
 

@@ -1,0 +1,64 @@
+@import '../../../../assets/scss/fonts';
+@import '../../../../assets/scss/colors';
+
+.background {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    background-color: var(--color-text-gray);
+    opacity: 0.5;
+  }
+}
+
+.closeButton {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+    outline: none;
+    position:absolute;
+     top:8px; 
+     right:10px;
+    svg {
+      width: 14px;
+      height: 14px;
+      path {
+        fill: black;
+      }
+    }
+  }
+
+.dialog {
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.dialogInner {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+}
+
+.headline{
+display:flex;
+justify-content: center;
+}
+
+.inviteWrapper {
+  width: 500px;
+}

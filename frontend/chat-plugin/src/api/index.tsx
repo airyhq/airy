@@ -51,6 +51,17 @@ export const getResumeToken = async (channelId: string, authToken: string) => {
   setResumeTokenInStorage(channelId, jsonResumeToken.resume_token);
 };
 
+export const endChat = (channelId: string, authToken: string) => {
+  return fetch(`${API_HOST}/channels.chatplugin.disconnect`, {
+    method: 'POST',
+    body: JSON.stringify({channel_id: channelId}),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+};
+
 export const start = async (channelId: string, resumeToken: string) => {
   try {
     const response = await fetch(`${API_HOST}/chatplugin.authenticate`, {

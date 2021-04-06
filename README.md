@@ -93,7 +93,7 @@ A [WebSocket server](https://airy.co/docs/core/api/websocket) that allows
 clients to receive near real-time updates about data flowing through the system.
 
 
-- **🎣[Webhook](https://airy.co/docs/core/api/webhook) to listen to events and participate programmatically in conversations
+- 🎣[Webhook](https://airy.co/docs/core/api/webhook) to listen to events and participate programmatically in conversations
 
 A webhook integration server that allows its users to programmatically
 participate in conversations by sending messages (the webhook integration

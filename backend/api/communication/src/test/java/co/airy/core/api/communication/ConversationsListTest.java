@@ -139,6 +139,12 @@ class ConversationsListTest {
     }
 
     @Test
+    void canFilterByDisplayNameIgnoringCasing() throws Exception {
+        String payload = "{\"filters\": \"display_name:" + firstNameToFind.toLowerCase() + "\"}";
+        checkConversationsFound(payload, 1);
+    }
+
+    @Test
     void canFilterByTagIds() throws Exception {
         checkConversationsFound("{\"filters\": \"tag_ids:(" + tagId + ")\"}", 2);
 

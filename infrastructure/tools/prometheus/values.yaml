@@ -1,0 +1,22 @@
+alertmanager:
+  enabled: true
+  apiVersion: v2
+  ingress:
+    enabled: true
+    hosts: []
+    paths: ['/alertmanager']
+grafana:
+  enabled: true
+  defaultDashboardsEnabled: true
+  adminPassword: prom-operator
+  ingress:
+    enabled: true
+    hosts: []
+    path: /grafana
+prometheus:
+  enabled: true
+  ingress:
+    enabled: true
+    hosts: []
+    paths: ['/alertmanager']
+    additionalScrapeConfigs: []

@@ -35,12 +35,7 @@ export interface Message extends Content {
   metadata?: MessageMetadata;
 }
 
-export interface SuggestedReply {
-  content: {
-    text: string;
-  };
-}
-
+export interface SuggestedReply extends Content {}
 export interface Suggestions {
   [suggestionId: string]: SuggestedReply;
 }
@@ -50,5 +45,8 @@ export interface MessageMetadata {
 }
 
 export const mapMessage = (payload): Message => {
-  return {...camelcaseKeys(payload, {deep: true, stopPaths: ['content']}), sentAt: new Date(payload.sent_at)};
+  return {
+    ...camelcaseKeys(payload, {deep: true, stopPaths: ['content', 'metadata']}),
+    sentAt: new Date(payload.sent_at),
+  };
 };

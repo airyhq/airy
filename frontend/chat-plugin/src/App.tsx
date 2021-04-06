@@ -31,7 +31,7 @@ export default class App extends Component {
   }
 }
 
-export type CustomConfig = {
+export type Config = {
   welcomeMessage?: {};
   headerText?: string;
   headerTextColor?: string;
@@ -42,7 +42,7 @@ export type CustomConfig = {
   sendMessageIcon?: string;
 };
 
-export const config: CustomConfig = {
+export const config: Config = {
   welcomeMessage: {
     fallback: 'Hello!\n\nWelcome to Airy!',
     richCard: {

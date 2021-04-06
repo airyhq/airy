@@ -1,12 +1,12 @@
 import React from 'react';
-import {CustomConfig} from '../../App';
+import {Config} from '../../App';
 import style from './index.module.scss';
 
 type Props = {
   isChatHidden: boolean;
   toggleHideChat: () => void;
   dataCyId?: string;
-  config?: CustomConfig;
+  config?: Config;
 };
 
 const AiryBubble = (props: Props) => {

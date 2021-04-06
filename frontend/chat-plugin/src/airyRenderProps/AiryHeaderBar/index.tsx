@@ -1,10 +1,10 @@
 import React from 'react';
-import {CustomConfig} from '../../App';
+import {Config} from '../../App';
 import style from './index.module.scss';
 
 type Props = {
   toggleHideChat: () => void;
-  config?: CustomConfig;
+  config?: Config;
 };
 
 const AiryHeaderBar = (props: Props) => {

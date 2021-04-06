@@ -1,5 +1,5 @@
 import AiryWidget from './AiryWidget';
-import {CustomConfig} from './App';
+import {Config} from './App';
 
 const body = document.getElementsByTagName('body')[0];
 
@@ -28,7 +28,7 @@ declare const window: {
   airy: {
     host: string;
     channelId: string;
-    config?: CustomConfig;
+    config?: Config;
   };
 };
 

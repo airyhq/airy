@@ -122,7 +122,7 @@ const Chat = (props: Props) => {
 
   const headerBar = props.headerBarProp
     ? () => props.headerBarProp(ctrl)
-    : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} config={props.config} />;
+    : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} config={config} />;
 
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
@@ -131,7 +131,7 @@ const Chat = (props: Props) => {
           sendMessage={sendMessage}
           messageString={messageString}
           setMessageString={setMessageString}
-          config={props.config}
+          config={config}
         />
       );
 
@@ -142,7 +142,7 @@ const Chat = (props: Props) => {
           isChatHidden={isChatHidden}
           toggleHideChat={ctrl.toggleHideChat}
           dataCyId={cyBubble}
-          config={props.config}
+          config={config}
         />
       );
 

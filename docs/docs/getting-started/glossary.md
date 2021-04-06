@@ -110,19 +110,12 @@ automations.
 
 ## Metadata
 
-Metadata is data attached to a conversation consisting of a set of Key/Value
-pairs. A key can use the dot notation to represent namespaces.
-
-e.g.
-
-| Key                        | Value   |
-| -------------------------- | ------- |
-| "sender.id"                | "123A"  |
-| "sender.contact.first_name | "Grace" |
+Metadata is optional data attached to a subject such as a conversation, channel or a message. Have a look
+at [this page](concepts/metadata.md) for an in-depth explanation.
 
 ### Tag
 
-A tag is a specialized metadata, which is used to tag
+A tag is a special use case of metadata, which is used to tag
 [conversations](#conversation). As the use case of tagging conversations is so
 common, Airy Core provides specialized endpoints and filters for tagging
 conversations.

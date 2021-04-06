@@ -84,6 +84,7 @@ module.exports = {
         'concepts/design-principles',
         'concepts/release-process',
         'concepts/kafka',
+        'concepts/metadata',
       ],
     },
     {

@@ -8,10 +8,10 @@ is not enough for users to address the wide variety of messaging workflows that 
 suggesting replies, attaching contact information etc.
 
 For this reason we introduced an extension to the data model that we call metadata. Metadata in the context
-of the Airy Core platform is an optional document that gets attached to a subject, which consists of a
+of the Airy Core platform is an optional document you can attach to a subject, which consists of a
 namespace i.e. "conversation" and an identifier within that namespace i.e. the conversation id.
 
-This metadata then gets exposed on our [HTTP APIs](/api/endpoints/introduction.md), see for instance the 
+Our [HTTP APIs](/api/endpoints/introduction.md) exposes this metadata, see for instance the 
 `conversation.metadata` field, and it can be streamed via the [websocket](/api/websocket.md) and [webhook](/api/webhook.md). 
  
 
@@ -20,7 +20,7 @@ This metadata then gets exposed on our [HTTP APIs](/api/endpoints/introduction.m
 A metadata subject is comprised of a namespace such as `conversation` and a namespace identifier, which is
 the identifier that uniquely identifies the entity the metadata is bound to within the namespace.
 
-So the subject of a conversation with id `123` would be `conversation:123`.
+Therefore the subject of a conversation with id `123` would be `conversation:123`.
 
 ### Document
 
@@ -38,7 +38,7 @@ for a conversation:
 | contact.last_name  | Hopper |
 | state              | open   |
 
-For the API payloads this gets assembled to the following metadata document:
+The API payloads expose this list as the following metadata document:
 
 ```json5
 {

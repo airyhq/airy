@@ -33,6 +33,9 @@ export default class App extends Component {
 
 export type CustomConfig = {
   welcomeMessage?: {};
+  headerText?: string;
+  headerTextColor?: string;
+  backgroundColor?: string;
   primaryColor?: string;
   accentColor?: string;
   bubbleIcon?: string;
@@ -67,4 +70,9 @@ export const config: CustomConfig = {
       },
     },
   },
+  primaryColor: 'green',
+  accentColor: 'green',
+  backgroundColor: 'red',
+  headerText: 'Potato 1',
+  headerTextColor: 'white',
 };

@@ -158,7 +158,9 @@ const Chat = (props: Props) => {
   return (
     <div className={style.main}>
       {!isChatHidden && (
-        <div className={`${style.container} ${styleFor(animation)}`}>
+        <div
+          className={`${style.container} ${styleFor(animation)}`}
+          style={config.backgroundColor && {backgroundColor: config.backgroundColor}}>
           <HeaderBarProp render={headerBar} />
           <div className={style.connectedContainer}>
             <div className={style.chat}>

@@ -1,5 +1,5 @@
 import React, {createRef, useState} from 'react';
-import {Button, Input, ListenOutsideClick, UrlInputField} from '@airyhq/components';
+import {Button, Input, ListenOutsideClick} from '@airyhq/components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
 
@@ -12,6 +12,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [headerText, setHeaderText] = useState('');
   const [bubbleIconUrl, setBubbleIconUrl] = useState('');
   const [sendMessageIconUrl, setSendMessageIconUrl] = useState('');
+  const [headerTextColor, setHeaderTextColor] = useState('');
+  const [showHeaderTextColorPicker, setShowHeaderTextColorPicker] = useState(false);
   const [primaryColor, setPrimaryColor] = useState('');
   const [showPrimaryColorPicker, setShowPrimaryColorPicker] = useState(false);
   const [accentColor, setAccentColor] = useState('');
@@ -20,6 +22,10 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useState(false);
 
   const codeAreaRef = createRef<HTMLTextAreaElement>();
+
+  const toggleShowHeaderTextColorPicker = () => {
+    setShowHeaderTextColorPicker(!showHeaderTextColorPicker);
+  };
 
   const toggleShowPrimaryColorPicker = () => {
     setShowPrimaryColorPicker(!showPrimaryColorPicker);
@@ -38,6 +44,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       headerText === '' &&
       bubbleIconUrl === '' &&
       sendMessageIconUrl === '' &&
+      headerTextColor === '' &&
       primaryColor === '' &&
       accentColor === '' &&
       backgroundColor === ''
@@ -48,6 +55,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     if (headerText !== '') config += `\n              headerText: '${headerText}'`;
     if (bubbleIconUrl !== '') config += `\n              bubbleIcon: '${bubbleIconUrl}'`;
     if (sendMessageIconUrl !== '') config += `\n              sendMessageIcon: '${sendMessageIconUrl}'`;
+    if (headerTextColor !== '') config += `\n              headerTextColor: '${headerTextColor}'`;
     if (primaryColor !== '') config += `\n              primaryColor: '${primaryColor}'`;
     if (accentColor !== '') config += `\n              accentColor: '${accentColor}'`;
     if (backgroundColor !== '') config += `\n              backgroundColor: '${backgroundColor}'`;
@@ -127,6 +135,44 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           fontClass="font-base"
           showErrors={false}
         />
+        <p>Header Text Color</p>
+        <div className={styles.colorPicker}>
+          {showHeaderTextColorPicker && (
+            <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowHeaderTextColorPicker}>
+              <SketchPicker
+                color={headerTextColor}
+                onChangeComplete={(color: {hex: string}) => {
+                  setHeaderTextColor(color.hex.toUpperCase());
+                }}
+              />
+            </ListenOutsideClick>
+          )}
+          <div
+            className={styles.colorPickerSample}
+            style={{backgroundColor: headerTextColor}}
+            onClick={toggleShowHeaderTextColorPicker}
+          />
+          <Input
+            type="text"
+            name="Header Text Color"
+            value={headerTextColor}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setHeaderTextColor(e.target.value);
+            }}
+            onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              if (value !== '') {
+                const newHeaderTextColor = value.startsWith('#') ? value : '#' + value;
+                setHeaderTextColor(newHeaderTextColor.toUpperCase());
+              } else {
+                setHeaderTextColor('');
+              }
+            }}
+            placeholder="#FFFFFF"
+            height={32}
+            fontClass="font-base"
+          />
+        </div>
         <p>Primary Color</p>
         <div className={styles.colorPicker}>
           {showPrimaryColorPicker && (

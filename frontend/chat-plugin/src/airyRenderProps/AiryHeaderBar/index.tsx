@@ -10,11 +10,20 @@ type Props = {
 const AiryHeaderBar = (props: Props) => {
   const {config} = props;
 
+  const customStyle = {
+    ...(config?.accentColor && {
+      color: config?.accentColor,
+    }),
+    ...(config?.headerTextColor && {
+      color: config?.headerTextColor,
+    }),
+  };
+
   return (
     <div className={style.header}>
       <div className={style.headerInfo}>
-        <h1 className={style.headerTitle} style={config?.accentColor && {color: config.accentColor}}>
-          Customer Chat
+        <h1 className={style.headerTitle} style={customStyle}>
+          {config.headerText || 'Customer Chat'}
         </h1>
       </div>
       <button className={style.closeButton} onClick={() => props.toggleHideChat()}>

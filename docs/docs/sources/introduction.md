@@ -21,14 +21,14 @@ Plugin, Facebook Messenger, WhatsApp, your own custom sources.
 </TLDR>
 
 One of the crucial features Airy Core provides is the ability to process
-conversational data from a variety of sources (like Facebook Messenger, Google
-Business Messages, and so on).
+conversational data from a variety of sources such as Facebook Messenger,Google
+Business Messages, Twilio.WhatsApp or Twilio.SMS.
 
 You can connect sources through API requests or using our [Channels UI](/ui/channels). Our sources guides covers both options, step-by-step.
 
 It's important to understand the difference between a [source](/getting-started/glossary/#source) and a [channel](/getting-started/glossary/#channel). A [channel](/getting-started/glossary/#channel) represents a connection between a [source](/getting-started/glossary/#source) and your Airy Core instance: multiple [channels](/getting-started/glossary/#channel) can thus use the same [source](/getting-started/glossary/#source) for different [conversations](/getting-started/glossary/#conversation).
 
-Connecting a [channel](/getting-started/glossary/#channel) gives the possibility of starting a [conversation](/getting-started/glossary/#conversation) between a [source](/getting-started/glossary/#source) and your Airy Core instance. A [conversation](/getting-started/glossary/#conversation) is created once a [channel](/getting-started/glossary/#channel) has been connected and as soon as a [message](/getting-started/glossary/#message) has been sent between your Airy Core instance and the source.
+Connecting a [channel](/getting-started/glossary/#channel) gives the possibility of starting a [conversation](/getting-started/glossary/#conversation) between a [source](/getting-started/glossary/#source) and your Airy Core instance. Once a [channel](/getting-started/glossary/#channel) has been connected, your Airy core instance will start ingesting [messages](/getting-started/glossary/#message) and create new [conversations](/getting-started/glossary/#conversation) accordingly.
 
 You can connect as many [channels](/getting-started/glossary/#channel) as you want for each [source](/getting-started/glossary/#source).The [Inbox UI](/ui/inbox) displays all your [conversations](/getting-started/glossary/#conversation), across all [sources](/getting-started/glossary/#source).
 

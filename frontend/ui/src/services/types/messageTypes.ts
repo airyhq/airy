@@ -13,29 +13,15 @@ export const isTextMessage = (content: Content) => {
   }
 };
 
-export const isVideoMessage = (content: Content) => {
-  if (content.content.attachment.type === 'video') {
-    return true;
-  }
-};
+export const isVideoMessage = (content: Content) => content.content.attachment.type === 'video';
 
-export const isImageMessage = (content: Content) => {
-  if (content.content.attachment.type === 'image') {
-    return true;
-  }
-};
+export const isImageMessage = (content: Content) => content.content.attachment.type === 'image';
 
-export const isButtonTemplateMessage = (content: Content) => {
-  if (content.content.attachment.type === 'template' && content.content.attachment.payload.template_type == 'button') {
-    return true;
-  }
-};
+export const isButtonTemplateMessage = (content: Content) =>
+  content.content.attachment.type === 'template' && content.content.attachment.payload.template_type == 'button';
 
-export const isGenericTemplateMessage = (content: Content) => {
-  if (content.content.attachment.type === 'template' && content.content.attachment.payload.template_type == 'generic') {
-    return true;
-  }
-};
+export const isGenericTemplateMessage = (content: Content) =>
+  content.content.attachment.type === 'template' && content.content.attachment.payload.template_type == 'generic';
 
 export const isRichCardMessage = (content: Content) => content.content.richCard?.standaloneCard != null;
 

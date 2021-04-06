@@ -100,7 +100,7 @@ participate in conversations by sending messages (the webhook integration
 exposes events users can "listen" to and react programmatically.)
 
 
-- **💎[UI: From an inbox to dashboards](https://airy.co/docs/core/apps/ui/introduction)
+- 💎[UI: From an inbox to dashboards](https://airy.co/docs/core/apps/ui/introduction)
 
 Not every message can be handled by code, this is why Airy comes with different
 UIs ready for you and your teams to use.

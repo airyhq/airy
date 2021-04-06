@@ -25,30 +25,6 @@ export const isImageMessage = (content: Content) => {
   }
 };
 
-export const isRichCardMessage = (content: Content) => {
-  if (content.content.richCard?.standaloneCard) {
-    return true;
-  }
-};
-
-export const isRichCardCarouselMessage = (content: Content) => {
-  if (content.content.richCard?.carouselCard) {
-    return true;
-  }
-};
-
-export const isRichTextMessage = (content: Content) => {
-  if (content.content.containsRichText) {
-    return true;
-  }
-};
-
-export const isSuggestedReplyMessage = (content: Content) => {
-  if (content.content.suggestions) {
-    return true;
-  }
-};
-
 export const isButtonTemplateMessage = (content: Content) => {
   if (content.content.attachment.type === 'template' && content.content.attachment.payload.template_type == 'button') {
     return true;
@@ -61,8 +37,12 @@ export const isGenericTemplateMessage = (content: Content) => {
   }
 };
 
-export const isQuickReplyMessage = (content: Content) => {
-  if (content.content.quick_replies) {
-    return true;
-  }
-};
+export const isRichCardMessage = (content: Content) => content.content.richCard?.standaloneCard != null;
+
+export const isRichCardCarouselMessage = (content: Content) => content.content.richCard?.carouselCard != null;
+
+export const isRichTextMessage = (content: Content) => content.content.containsRichText != null;
+
+export const isSuggestedReplyMessage = (content: Content) => content.content.suggestions != null;
+
+export const isQuickReplyMessage = (content: Content) => content.content.quick_replies != null;

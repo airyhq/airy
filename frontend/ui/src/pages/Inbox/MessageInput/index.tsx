@@ -79,16 +79,16 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   }, [input]);
 
   const sendMessage = () => {
-    if (selectedTemplate || selectedSuggestedReply) {
-      setSelectedTemplate(null);
-      setSelectedSuggestedReply(null);
-      sendMessages({
-        conversationId: conversation.id,
-        message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
-      }).then(() => setInput(''));
-      return;
-    }
-    sendMessages(getTextMessagePayload(source, conversation.id, input)).then(() => setInput(''));
+    setSelectedSuggestedReply(null);
+    setSelectedTemplate(null);
+    sendMessages(
+      selectedTemplate || selectedSuggestedReply
+        ? {
+            conversationId: conversation.id,
+            message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+          }
+        : getTextMessagePayload(source, conversation.id, input)
+    ).then(() => setInput(''));
   };
 
   const handleClick = () => {

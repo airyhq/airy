@@ -20,6 +20,7 @@ import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 const camelcaseKeys = require('camelcase-keys');
 import {cyBubble, cyChatPluginMessageList} from 'chat-plugin-handles';
 import {getResumeTokenFromStorage} from '../../storage';
+import ModalDialogue from '../../components/modal';
 
 let ws: WebSocket;
 
@@ -44,6 +45,12 @@ const Chat = (props: Props) => {
   const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
   const [messageString, setMessageString] = useState('');
   const [connectionState, setConnectionState] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const closeModalOnClick = () => setShowModal(false);
+  const disconnectChat = () => {
+    closeModalOnClick();
+  };
 
   useEffect(() => {
     ws = new WebSocket(props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
@@ -120,7 +127,7 @@ const Chat = (props: Props) => {
 
   const headerBar = props.headerBarProp
     ? () => props.headerBarProp(ctrl)
-    : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} />;
+    : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} setShowModal={setShowModal} />;
 
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
@@ -188,6 +195,22 @@ const Chat = (props: Props) => {
         </div>
       )}
       <BubbleProp render={bubble} />
+      {showModal && (
+        <ModalDialogue close={closeModalOnClick}>
+          <>
+            <div className={style.buttonWrapper}>
+              <button className={style.cancelButton} onClick={closeModalOnClick}>
+                {' '}
+                Cancel
+              </button>
+              <button className={style.endChatButton} onClick={disconnectChat}>
+                {' '}
+                End Chat
+              </button>
+            </div>
+          </>
+        </ModalDialogue>
+      )}
     </div>
   );
 };

@@ -1,22 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import style from './index.module.scss';
 import {ReactComponent as CloseButton} from '../../../../assets/images/icons/close-button.svg';
 import {ReactComponent as MinimizeButton} from '../../../../assets/images/icons/minimize-button.svg';
-import ModalDialogue from '../../components/modal';
 
 type AiryHeaderBarProps = {
   toggleHideChat: () => void;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const AiryHeaderBar = (props: AiryHeaderBarProps) => {
-  const [showModal, setShowModal] = useState(false);
-
-  const closeModalOnClick = () => setShowModal(false);
-
-  const disconnectChat = () => {
-    closeModalOnClick();
-  };
-
   return (
     <>
       <div className={style.header}>
@@ -28,27 +20,10 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
           <MinimizeButton />
         </button>
 
-        <button className={style.closeButton} onClick={() => setShowModal(true)} title="End chat">
+        <button className={style.closeButton} onClick={() => props.setShowModal(true)} title="End chat">
           <CloseButton />
         </button>
       </div>
-
-      {showModal && (
-        <ModalDialogue close={closeModalOnClick}>
-          <>
-            <div className={style.buttonWrapper}>
-              <button className={style.cancelButton} onClick={closeModalOnClick}>
-                {' '}
-                Cancel
-              </button>
-              <button className={style.endChatButton} onClick={disconnectChat}>
-                {' '}
-                End Chat
-              </button>
-            </div>
-          </>
-        </ModalDialogue>
-      )}
     </>
   );
 };

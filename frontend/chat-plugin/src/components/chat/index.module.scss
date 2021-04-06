@@ -96,3 +96,21 @@
   align-items: center;
   color: white;
 }
+
+.buttonWrapper {
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    margin: 0 8px;
+  }
+}
+
+.cancelButton{
+  
+}
+
+.endChatButton{
+
+}

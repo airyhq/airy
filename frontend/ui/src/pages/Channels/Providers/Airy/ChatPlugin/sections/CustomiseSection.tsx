@@ -101,7 +101,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           height={32}
           fontClass="font-base"
         />
-        <UrlInputField
+        <Input
+          type="url"
           name="bubbleIconUrl"
           value={bubbleIconUrl}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,8 +112,10 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           placeholder="(optionally) add an image url"
           height={32}
           fontClass="font-base"
+          showErrors={false}
         />
-        <UrlInputField
+        <Input
+          type="text"
           name="sendMessageIconUrl"
           value={sendMessageIconUrl}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +125,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           placeholder="(optionally) add an image url"
           height={32}
           fontClass="font-base"
+          showErrors={false}
         />
         <p>Primary Color</p>
         <div className={styles.colorPicker}>

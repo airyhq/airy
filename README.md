@@ -81,7 +81,7 @@ sources. We make sense of the data and reshape it into source independent
 contacts, conversations, and messages.
 
 
-- **⚡[APIs](https://airy.co/docs/core/api/introduction) to access your data
+- ⚡[APIs](https://airy.co/docs/core/api/introduction) to access your data
 
 An [API](https://airy.co/docs/core/api/introduction) to access conversational
 data with blazing fast HTTP endpoints.

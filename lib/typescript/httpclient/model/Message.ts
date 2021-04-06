@@ -10,12 +10,6 @@ export enum MessageType {
   video = 'video',
 }
 
-export enum MessageAlignment {
-  left = 'LEFT',
-  right = 'RIGHT',
-  center = 'CENTER',
-}
-
 export enum MessageState {
   pending = 'PENDING',
   failed = 'FAILED',

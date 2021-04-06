@@ -70,7 +70,7 @@ conversational data to wherever you need it.
 
 Airy Core contains the following components:
 
-- **💬 Connectors for all [conversational sources](https://airy.co/docs/core/sources/introduction)
+- 💬 Connectors for all [conversational sources](https://airy.co/docs/core/sources/introduction)
 
 Connect anything from our free open-source [live chat
 plugin](https://airy.co/docs/core/sources/chat-plugin) to Facebook

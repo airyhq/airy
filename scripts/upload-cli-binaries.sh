@@ -2,7 +2,6 @@
 set -eo pipefail
 IFS=$'\n\t'
 
-branch=$1
 arch="amd64"
 bucket_name="airy-core-binaries"
 version=$(cat ./VERSION)
@@ -12,15 +11,15 @@ for os in "linux" "darwin" "windows"; do
     airy_bin_sha_path=bazel-bin/cli/airy_"$os"_sha256sum.txt
     if [[ ${os} = "windows" ]]; then filename="airy.exe"; else filename="airy"; fi
 
-    case $branch in
-    develop)
-        s3_basepath="s3://$bucket_name/develop/$os/$arch"
+    case ${GITHUB_BRANCH} in
+    refs/heads/develop)
+        s3_basepath=s3://$bucket_name/develop/$os/$arch
         ;;
-    release*)
-        s3_basepath="s3://$bucket_name/$version-rc/$os/$arch"
+    refs/heads/release*)
+        s3_basepath=s3://$bucket_name/$version-rc/$os/$arch
         ;;
-    main)
-        s3_basepath="s3://$bucket_name/$version/$os/$arch"
+    refs/heads/main)
+        s3_basepath=s3://$bucket_name/$version/$os/$arch
         ;;
     esac
 

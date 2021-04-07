@@ -11,29 +11,31 @@
         w[n] = w[n] || {};
         w[n].channelId = search.get('channel_id');
         w[n].host = '{*API_HOST*}';
-        w[n].welcomeMessage = {
-          fallback: 'Hello!\n\nWelcome to Airy!',
-          richCard: {
-            standaloneCard: {
-              cardContent: {
-                title: 'Hey there!',
-                description: 'Welcome to Airy!',
-                media: {
-                  height: 'MEDIUM',
-                  contentInfo: {
-                    altText: 'Airy logo',
-                    fileUrl: 'https://picsum.photos/200',
-                    forceRefresh: 'false',
-                  },
-                },
-                suggestions: [
-                  {
-                    reply: {
-                      text: "Let's start",
-                      postbackData: '/start',
+        w[n].config = {
+          welcomeMessage: {
+            fallback: 'Hello!\n\nWelcome to Airy!',
+            richCard: {
+              standaloneCard: {
+                cardContent: {
+                  title: 'Hey there!',
+                  description: 'Welcome to Airy!',
+                  media: {
+                    height: 'MEDIUM',
+                    contentInfo: {
+                      altText: 'Airy logo',
+                      fileUrl: 'https://picsum.photos/200',
+                      forceRefresh: 'false',
                     },
                   },
-                ],
+                  suggestions: [
+                    {
+                      reply: {
+                        text: "Let's start",
+                        postbackData: '/start',
+                      },
+                    },
+                  ],
+                },
               },
             },
           },

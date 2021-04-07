@@ -69,10 +69,5 @@ export const config: Config = {
         },
       },
     },
-  },
-  primaryColor: 'green',
-  accentColor: 'green',
-  backgroundColor: 'red',
-  headerText: 'Potato 1',
-  headerTextColor: 'white',
+  }
 };

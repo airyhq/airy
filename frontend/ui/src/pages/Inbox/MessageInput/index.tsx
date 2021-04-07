@@ -166,11 +166,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
       if (isTextMessage(template)) {
         setInput(jsonTemplate.text);
-        setIsShowingTemplateModal(false);
       } else {
-        setIsShowingTemplateModal(false);
         setSelectedTemplate({message: template, source: template.source});
       }
+
+      setIsShowingTemplateModal(false);
       sendButtonRef.current.focus();
     };
 
@@ -333,7 +333,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
               (input || selectedTemplate) && !disconnectedChannelToolTip && styles.sendButtonActive
             }`}
             onClick={handleClick}
-            disabled={(input.trim().length == 0 && !selectedTemplate) && !selectedSuggestedReply || disconnectedChannelToolTip}
+            disabled={
+              (input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply) || disconnectedChannelToolTip
+            }
             data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <Paperplane />

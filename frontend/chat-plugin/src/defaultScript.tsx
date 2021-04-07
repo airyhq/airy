@@ -1,4 +1,5 @@
 import AiryWidget from './AiryWidget';
+import {Config} from './App';
 
 const body = document.getElementsByTagName('body')[0];
 
@@ -27,14 +28,14 @@ declare const window: {
   airy: {
     host: string;
     channelId: string;
-    welcomeMessage: {};
+    config?: Config;
   };
 };
 
 if (window.airy.channelId) {
   new AiryWidget({
     channelId: window.airy.channelId,
-    welcomeMessage: window.airy.welcomeMessage,
+    config: window.airy.config,
   }).render(anchor);
 } else {
   console.log(

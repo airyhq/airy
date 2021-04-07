@@ -216,7 +216,6 @@
 }
 
 .templateSelector {
-  width: 164px;
   max-height: 184px;
   height: auto;
   overflow: hidden;
@@ -225,7 +224,16 @@
   border-radius: 16px;
 }
 
-.removeTemplateButton {
+.suggestionRepliesSelector {
+  max-width: 580px;
+  height: auto;
+  overflow: hidden;
+  position: relative;
+  margin: 0 8px 8px 8px;
+  border-radius: 16px;
+}
+
+.removeButton {
   position: absolute;
   top: 3px;
   right: 1px;
@@ -240,16 +248,16 @@
   border: 1px solid white;
   cursor: pointer;
   z-index: 1;
+
+  svg {
+    width: 8px;
+    height: 8px;
+    margin-left: -1px;
+    margin-top: -1px;
+  }
 }
 
-.removeTemplateButton svg {
-  width: 8px;
-  height: 8px;
-  margin-left: -1px;
-  margin-top: -1px;
-}
-
-.removeTemplateButton:after {
+.removeButton:after {
   content: '';
   position: absolute;
   top: 0;
@@ -258,7 +266,7 @@
   left: 0;
 }
 
-.removeTemplateButton object {
+.removeButton object {
   width: 12px;
   height: 12px;
 }

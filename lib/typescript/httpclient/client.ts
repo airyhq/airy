@@ -19,7 +19,7 @@ import {
 
 import {Tag, Message, Channel, User, Conversation, Config, Template} from './model';
 
-export function isString(object: any) {
+function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
 }
 
@@ -30,6 +30,7 @@ type FetchOptions = {
 interface ApiRequest<T, K = void> {
   (requestPaylod: T): Promise<K>;
 }
+
 export class HttpClient {
   public readonly apiUrlConfig?: string;
   public token?: string;

@@ -140,6 +140,9 @@ const Chat = (props: Props) => {
     if (command.type === 'suggestedReply') {
       ws.onSend({type: 'suggestionResponse', text: command.payload.text, postbackData: command.payload.postbackData});
     }
+    if (command.type === 'quickReplies') {
+      ws.onSend({type: 'quickReplies', text: command.payload.text, postbackData: command.payload.postbackData});
+    }
   };
 
   return (

@@ -1,7 +1,7 @@
 import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 import {start, getResumeToken, sendMessage} from '../api';
-import {SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
+import {QuickReplyCommand, SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
 import {Message} from 'httpclient';
 import {getResumeTokenFromStorage, resetStorage} from '../storage';
 
@@ -77,7 +77,7 @@ class WebSocket {
     this.client.activate();
   };
 
-  onSend = (message: TextContent | SuggestionResponse) => sendMessage(message, this.token);
+  onSend = (message: TextContent | SuggestionResponse | QuickReplyCommand) => sendMessage(message, this.token);
 
   start = async () => {
     const resumeToken = getResumeTokenFromStorage(this.channelId);

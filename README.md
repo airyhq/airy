@@ -13,7 +13,6 @@
 [![License](https://img.shields.io/github/license/airyhq/airy)](https://github.com/airyhq/airy/blob/develop/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/airyhq/airy/projects)
 
-
 ---
 
 ![Airy_Explainer_Highlevel_Readme](https://user-images.githubusercontent.com/124274/113720584-18a8d500-96ef-11eb-97c3-362eebd6253d.jpeg)
@@ -43,6 +42,7 @@ amount of conversations and messages simultaneously and stream the relevant
 conversational data to wherever you need it.
 
 ---
+
 ## About Airy
 
 - **What does Airy do? 🚀**
@@ -64,6 +64,7 @@ conversational data to wherever you need it.
   [The Airy Community will help](https://airy.co/community)
 
 ---
+
 ## Components
 
 ![Airy_Explainer_Components_Readme (1)](https://user-images.githubusercontent.com/12533283/112460661-6de3fe80-8d5f-11eb-8274-8446fbfcf5c8.png)
@@ -80,18 +81,15 @@ Kafka](https://kafka.apache.org) to process incoming webhook data from different
 sources. We make sense of the data and reshape it into source independent
 contacts, conversations, and messages.
 
-
 - ⚡[APIs](https://airy.co/docs/core/api/introduction) to access your data
 
 An [API](https://airy.co/docs/core/api/introduction) to access conversational
 data with blazing fast HTTP endpoints.
 
-
 - 🔌[WebSockets](https://airy.co/docs/core/api/websocket) to power real-time applications
 
 A [WebSocket server](https://airy.co/docs/core/api/websocket) that allows
 clients to receive near real-time updates about data flowing through the system.
-
 
 - 🎣[Webhook](https://airy.co/docs/core/api/webhook) to listen to events and participate programmatically in conversations
 
@@ -99,12 +97,10 @@ A webhook integration server that allows its users to programmatically
 participate in conversations by sending messages (the webhook integration
 exposes events users can "listen" to and react programmatically.)
 
-
 - 💎[UI: From an inbox to dashboards](https://airy.co/docs/core/apps/ui/introduction)
 
 Not every message can be handled by code, this is why Airy comes with different
 UIs ready for you and your teams to use.
-
 
 ## How to contribute
 

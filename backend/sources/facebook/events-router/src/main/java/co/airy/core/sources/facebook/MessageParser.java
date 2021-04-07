@@ -60,7 +60,6 @@ public class MessageParser {
                 headers.put("postback.payload", "__empty__");
             }
         }
-        boolean isFromContact = !isEcho;
 
         Optional.ofNullable(postbackNode)
                 .map(node -> node.get("referral"))
@@ -69,7 +68,7 @@ public class MessageParser {
         return Message.newBuilder()
                 .setContent(payload)
                 .setSenderId(senderId)
-                .setIsFromContact(isFromContact)
+                .setIsFromContact(!isEcho)
                 .setHeaders(headers)
                 .setSenderId(senderId)
                 .setSentAt(webhookMessaging.get("timestamp").asLong());

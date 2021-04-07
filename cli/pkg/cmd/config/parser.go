@@ -1,11 +1,8 @@
 package config
 
 import (
-	"fmt"
-	"io/ioutil"
-	"os"
-
 	"gopkg.in/yaml.v2"
+	"io/ioutil"
 )
 
 type globalConf struct {
@@ -43,8 +40,7 @@ type airyConf struct {
 func parseConf(configFile string) (airyConf, error) {
 	data, err := ioutil.ReadFile(configFile)
 	if err != nil {
-		fmt.Println("error reading configuration file: ", err)
-		os.Exit(1)
+		return airyConf{}, err
 	}
 
 	conf := airyConf{
@@ -54,10 +50,6 @@ func parseConf(configFile string) (airyConf, error) {
 	}
 
 	err = yaml.Unmarshal(data, &conf)
-	if err != nil {
-		fmt.Println("error parsing configuration file: ", err)
-		os.Exit(1)
-	}
 
-	return conf, nil
+	return conf, err
 }

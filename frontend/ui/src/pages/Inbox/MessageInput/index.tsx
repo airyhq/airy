@@ -9,7 +9,7 @@ import {Button} from '@airyhq/components';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 import {Picker} from 'emoji-mart';
 import {SourceMessage} from 'render';
-import {getTextMessagePayload, Message, SuggestedReply, Template} from 'httpclient';
+import {getTextMessagePayload, Message, SuggestedReply, Suggestions, Template, Source} from 'httpclient';
 import 'emoji-mart/css/emoji-mart.css';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
@@ -20,12 +20,13 @@ import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-dow
 
 import {ConversationRouteProps} from '../index';
 import {StateModel} from '../../../reducers';
-import {Source} from 'httpclient';
 import {listTemplates} from '../../../actions/templates';
 import {getCurrentConversation} from '../../../selectors/conversations';
 import {getCurrentMessages} from '../../../selectors/conversations';
+import {isTextMessage} from '../../../services/types/messageTypes';
 
 import SuggestedReplySelector from '../SuggestedReplySelector';
+import {isEmpty} from 'lodash-es';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -38,21 +39,30 @@ const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) =>
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-type MessageInputProps = {source: Source};
+type MessageInputProps = {
+  source: Source;
+  suggestions: Suggestions;
+  showSuggestedReplies: (suggestions: Suggestions) => void;
+  hideSuggestedReplies: () => void;
+};
 
 interface SelectedTemplate {
   message: Template;
   source: Source;
 }
 
+interface SelectedSuggestedReply {
+  message: SuggestedReply;
+}
+
 const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
-  const {source, conversation} = props;
+  const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies, sendMessages} = props;
 
   const [input, setInput] = useState('');
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
-  const [isShowingSuggestedReplies, setIsShowingSuggestedReplies] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
+  const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
@@ -69,15 +79,16 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   }, [input]);
 
   const sendMessage = () => {
-    if (selectedTemplate) {
-      setSelectedTemplate(null);
-      props
-        .sendMessages({conversationId: conversation.id, message: selectedTemplate.message.content})
-        .then(() => setInput(''));
-      return;
-    }
-
-    props.sendMessages(getTextMessagePayload(source, conversation.id, input)).then(() => setInput(''));
+    setSelectedSuggestedReply(null);
+    setSelectedTemplate(null);
+    sendMessages(
+      selectedTemplate || selectedSuggestedReply
+        ? {
+            conversationId: conversation.id,
+            message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+          }
+        : getTextMessagePayload(source, conversation.id, input)
+    ).then(() => setInput(''));
   };
 
   const handleClick = () => {
@@ -138,18 +149,10 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     const selectTemplate = (template: Template) => {
       const jsonTemplate = template.content;
 
-      if (
-        jsonTemplate.message.text &&
-        !jsonTemplate.message.suggestions &&
-        !jsonTemplate.message.quick_replies &&
-        !jsonTemplate.message.containsRichText &&
-        !jsonTemplate.message.attachments &&
-        !jsonTemplate.message.attachment
-      ) {
-        setInput(jsonTemplate.message.text);
+      if (isTextMessage(template)) {
+        setInput(jsonTemplate.text);
         setIsShowingTemplateModal(false);
       } else {
-        setInput('');
         setIsShowingTemplateModal(false);
         setSelectedTemplate({message: template, source: template.source});
       }
@@ -199,20 +202,30 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const getLastMessageWithSuggestedReplies = useCallback(() => {
     const lastMessages = props.messages
       ?.filter((message: Message) => message.senderType == 'source_contact')
-      .slice(-5)
+      .slice(props.messages.length - 5)
       .reverse();
     return lastMessages?.find(
       (message: Message) => message.metadata?.suggestions && Object.keys(message.metadata.suggestions).length > 0
     );
   }, [props.messages]);
 
+  const hasSuggestions = () => !isEmpty(suggestions);
+
   const toggleSuggestedReplies = () => {
-    setIsShowingSuggestedReplies(!isShowingSuggestedReplies);
+    if (hasSuggestions()) {
+      hideSuggestedReplies();
+    } else {
+      showSuggestedReplies(getLastMessageWithSuggestedReplies().metadata.suggestions);
+    }
   };
 
   const selectSuggestedReply = (reply: SuggestedReply) => {
-    setInput(reply.content.text);
-    setIsShowingSuggestedReplies(false);
+    hideSuggestedReplies();
+    if (isTextMessage(reply)) {
+      setInput(reply.content.text);
+    } else {
+      setSelectedSuggestedReply({message: reply});
+    }
     sendButtonRef.current.focus();
   };
 
@@ -220,19 +233,19 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     <div className={styles.container}>
       {getLastMessageWithSuggestedReplies() && (
         <div className={styles.suggestionsRow}>
-          {isShowingSuggestedReplies && (
+          {hasSuggestions() && (
             <SuggestedReplySelector
               onClose={toggleSuggestedReplies}
-              suggestions={getLastMessageWithSuggestedReplies().metadata.suggestions}
+              suggestions={suggestions}
               selectSuggestedReply={selectSuggestedReply}
               source={source}
             />
           )}
 
-          <Button type="button" styleVariant="outline" onClick={toggleSuggestedReplies}>
+          <Button type="button" styleVariant="outline-big" onClick={toggleSuggestedReplies}>
             <div className={styles.suggestionButton}>
               Suggestions
-              <ChevronDownIcon className={isShowingSuggestedReplies ? styles.chevronUp : styles.chevronDown} />
+              <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
             </div>
           </Button>
         </div>
@@ -240,7 +253,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       <form className={styles.inputForm}>
         <div className={styles.messageWrap}>
           <div className={styles.inputWrap}>
-            {!selectedTemplate && (
+            {!selectedTemplate && !selectedSuggestedReply && (
               <>
                 <textarea
                   className={styles.messageTextArea}
@@ -257,10 +270,22 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
                 <InputOptions />
               </>
             )}
+            {selectedSuggestedReply && (
+              <div className={styles.suggestionRepliesSelector}>
+                <button className={styles.removeButton} onClick={() => setSelectedSuggestedReply(null)}>
+                  <Close />
+                </button>
+                <SourceMessage
+                  content={selectedSuggestedReply.message}
+                  source={source}
+                  contentType="suggestedReplies"
+                />
+              </div>
+            )}
 
             {selectedTemplate && (
               <div className={styles.templateSelector}>
-                <button className={styles.removeTemplateButton} onClick={() => setSelectedTemplate(null)}>
+                <button className={styles.removeButton} onClick={() => setSelectedTemplate(null)}>
                   <Close />
                 </button>
                 <SourceMessage
@@ -277,9 +302,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           <button
             type="button"
             ref={sendButtonRef}
-            className={`${styles.sendButton} ${(input || selectedTemplate) && styles.sendButtonActive}`}
+            className={`${styles.sendButton} ${
+              (input || selectedTemplate || selectedSuggestedReply) && styles.sendButtonActive
+            }`}
             onClick={handleClick}
-            disabled={input.trim().length == 0 && !selectedTemplate}
+            disabled={input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply}
             data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <Paperplane />

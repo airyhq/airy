@@ -63,7 +63,7 @@ conversational data to wherever you need it.
     iconInvertible={true}
     title='Start Installation' 
     description='Install Airy with our CLI, locally or in the cloud' 
-    link='cli/installation'
+    link='cli/introduction'
 />
 </ButtonBoxList>
 

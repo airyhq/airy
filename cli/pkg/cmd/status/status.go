@@ -1,6 +1,7 @@
 package status
 
 import (
+	"cli/pkg/console"
 	"fmt"
 	"os"
 	"text/tabwriter"
@@ -26,8 +27,7 @@ func status(cmd *cobra.Command, args []string) {
 	res, err := c.Config()
 
 	if err != nil {
-		fmt.Println("could not read status: ", err)
-		os.Exit(1)
+		console.Exit("could not read status: ", err)
 	}
 
 	w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)

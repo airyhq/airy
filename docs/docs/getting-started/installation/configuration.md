@@ -95,8 +95,8 @@ monitor or debug the **Airy Core**.
 ## Applying the configuration
 
 If you made changes in `airy.yaml` and want to apply it to your instance you can
-use the [airy config apply](/cli/reference.md#config-apply) by running the
-following [Airy CLI](/cli/installation.md) command.
+use the [airy config apply](/cli/usage.md#config-apply) by running the
+following [Airy CLI](/cli/introduction.md) command.
 
 ```bash
 airy config apply --config ./airy.yaml

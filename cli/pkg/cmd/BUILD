@@ -16,7 +16,7 @@ go_library(
         "//cli/pkg/cmd/create",
         "//cli/pkg/cmd/status",
         "//cli/pkg/cmd/ui",
-        "@com_github_mitchellh_go_homedir//:go-homedir",
+        "//cli/pkg/workspace",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",
     ],

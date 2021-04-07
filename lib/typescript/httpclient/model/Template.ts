@@ -1,4 +1,4 @@
-import {Source} from './Channel';
+import {Source} from './Source';
 import {Content} from './Content';
 
 export interface Template extends Content {

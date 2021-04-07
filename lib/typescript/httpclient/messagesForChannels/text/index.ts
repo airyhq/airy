@@ -6,13 +6,6 @@ export const getTextMessagePayload = (
   text: string
 ): SendMessagesRequestPayload => {
   switch (channel) {
-    case 'chat_plugin' || 'twilio.sms' || 'facebook' || 'twilio.whatsapp':
-      return {
-        conversationId,
-        message: {
-          text,
-        },
-      };
     case 'google':
       return {
         conversationId,

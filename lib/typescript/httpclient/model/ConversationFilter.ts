@@ -3,7 +3,7 @@ export interface ConversationFilter {
   unreadOnly?: boolean;
   displayName?: string;
   createdAt?: string;
-  byTags?: Array<string>;
-  byChannels?: Array<string>;
-  bySources?: Array<string>;
+  byTags?: string[];
+  byChannels?: string[];
+  bySources?: string[];
 }

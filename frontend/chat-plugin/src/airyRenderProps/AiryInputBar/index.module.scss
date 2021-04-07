@@ -21,7 +21,7 @@
   outline: none;
   box-sizing: border-box;
   &:focus {
-    border: 1px solid #1578d4;
+    border: 1px solid var(--color-airy-accent);
   }
 }
 
@@ -63,8 +63,17 @@
   border: none;
   height: 32px;
   width: 32px;
-  background: #1578d4;
+  background: var(--color-airy-accent);
   border-radius: 100%;
   align-self: center;
   cursor: pointer;
+
+  img {
+    display: block;
+    max-width: 28px;
+    max-height: 28px;
+    width: auto;
+    height: auto;
+    padding: 0px 1px 1px 0px;
+  }
 }

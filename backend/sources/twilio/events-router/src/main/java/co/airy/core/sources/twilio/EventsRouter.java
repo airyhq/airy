@@ -67,7 +67,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                                 messageId,
                                 Message.newBuilder()
                                         .setSenderId(sourceConversationId)
-                                        .setIsFromContact(true) //is this true
+                                        .setIsFromContact(true)
                                         .setSource(channel.getSource())
                                         .setContent(payload)
                                         .setDeliveryState(DeliveryState.DELIVERED)

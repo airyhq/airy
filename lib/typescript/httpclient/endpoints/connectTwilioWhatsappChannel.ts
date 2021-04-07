@@ -3,14 +3,12 @@ import {ConnectTwilioWhatsappRequestPayload} from '../payload';
 const camelcaseKeys = require('camelcase-keys');
 import {HttpClient} from '../client';
 
-export default HttpClient.prototype.connectTwilioWhatsappChannel = async function (
-  requestPayload: ConnectTwilioWhatsappRequestPayload
-) {
-  const response = await this.doFetchFromBackend('channels.twilio.whatsapp.connect', {
-    phone_number: requestPayload.sourceChannelId,
-    name: requestPayload.name,
-    image_url: requestPayload.imageUrl,
-  });
-
-  return camelcaseKeys(response, {deep: true, stopPaths: ['metadata.user_data']});
+export const connectTwilioWhatsappChannelDef = {
+  endpoint: 'channels.twilio.whatsapp.connect',
+  mapRequest: ({sourceChannelId, name, imageUrl}) => ({
+    phone_number: sourceChannelId,
+    name,
+    image_url: imageUrl,
+  }),
+  mapResponse: response => camelcaseKeys(response, {deep: true, stopPaths: ['metadata.user_data']}),
 };

@@ -1,0 +1,8 @@
+{
+  "extends": "./bazel.tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "moduleResolution": "Node",
+    "module": "esnext"
+  }
+}

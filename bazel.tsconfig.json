@@ -16,6 +16,12 @@
     "sourceMap": true,
     "jsx": "react",
     "paths": {
+      "assets": [
+        "./frontend/assets"
+      ],
+      "assets/*": [
+        "./frontend/assets/*"
+      ],
       "components": [
         "./frontend/components/src"
       ],
@@ -62,8 +68,5 @@
         "./frontend/chat-plugin/handles"
       ]
     }
-  },
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }

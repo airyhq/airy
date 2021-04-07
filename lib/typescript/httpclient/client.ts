@@ -18,6 +18,25 @@ import {
 } from './payload';
 
 import {Tag, Message, Channel, User, Conversation, Config, Template} from './model';
+import {
+  listChannelsDef,
+  listConversationsDef,
+  exploreFacebookChannelsDef,
+  connectFacebookChannelDef,
+  connectChatPluginChannelDef,
+  connectTwilioSmsChannelDef,
+  connectTwilioWhatsappChannelDef,
+  updateChannelDef,
+  disconnectChannelDef,
+  getConversationInfoDef,
+  readConversationsDef,
+  listMessagesDef,
+  listTagsDef,
+  createTagDef,
+  loginViaEmailDef,
+  updateTagDef,
+  deleteTagDef,
+} from './endpoints';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
@@ -28,13 +47,20 @@ type FetchOptions = {
 };
 
 interface ApiRequest<T, K = void> {
-  (requestPaylod: T): Promise<K>;
+  (requestPayload: T): Promise<K>;
+}
+
+interface EndpointDefinition<T, K = void> {
+  endpoint: string | ((requestPayload: T) => string);
+  mapRequest: (requestPayload: T) => any;
+  mapResponse: (any) => K;
+  opts?: FetchOptions;
 }
 
 export class HttpClient {
   public readonly apiUrlConfig?: string;
   public token?: string;
-  private unauthorizedErrorCallback?: (body: any) => void;
+  private readonly unauthorizedErrorCallback?: (body: any) => void;
 
   constructor(apiUrlConfig: string, token?: string, unauthorizedErrorCallback?: (body: any) => void) {
     this.token = token;
@@ -47,7 +73,7 @@ export class HttpClient {
       try {
         return await response.json();
       } catch {
-        // NOP
+        // NOOP
       }
     }
 
@@ -92,39 +118,48 @@ export class HttpClient {
     return this.parseBody(response);
   }
 
-  public listChannels: ApiRequest<void, Channel[]>;
+  public listChannels = this.getRequest<void, Channel[]>(listChannelsDef);
 
-  public exploreFacebookChannels: ApiRequest<ExploreChannelRequestPayload, Channel[]>;
+  public exploreFacebookChannels = this.getRequest<ExploreChannelRequestPayload, Channel[]>(exploreFacebookChannelsDef);
 
-  public connectFacebookChannel: ApiRequest<ConnectChannelFacebookRequestPayload, Channel>;
+  public connectFacebookChannel = this.getRequest<ConnectChannelFacebookRequestPayload, Channel>(
+    connectFacebookChannelDef
+  );
 
-  public connectChatPluginChannel: ApiRequest<ConnectChatPluginRequestPayload, Channel>;
+  public connectChatPluginChannel = this.getRequest<ConnectChatPluginRequestPayload, Channel>(
+    connectChatPluginChannelDef
+  );
 
-  public connectTwilioSmsChannel: ApiRequest<ConnectTwilioSmsRequestPayload, Channel>;
+  public connectTwilioSmsChannel = this.getRequest<ConnectTwilioSmsRequestPayload, Channel>(connectTwilioSmsChannelDef);
 
-  public connectTwilioWhatsappChannel: ApiRequest<ConnectTwilioWhatsappRequestPayload, Channel>;
+  public connectTwilioWhatsappChannel = this.getRequest<ConnectTwilioWhatsappRequestPayload, Channel>(
+    connectTwilioWhatsappChannelDef
+  );
 
-  public updateChannel: ApiRequest<UpdateChannelRequestPayload, Channel>;
+  public updateChannel = this.getRequest<UpdateChannelRequestPayload, Channel>(updateChannelDef);
 
-  public disconnectChannel: ApiRequest<DisconnectChannelRequestPayload>;
+  public disconnectChannel = this.getRequest<DisconnectChannelRequestPayload>(disconnectChannelDef);
 
-  public listConversations: ApiRequest<ListConversationsRequestPayload, PaginatedResponse<Conversation>>;
+  public listConversations: ApiRequest<
+    ListConversationsRequestPayload,
+    PaginatedResponse<Conversation>
+  > = this.getRequest(listConversationsDef);
 
-  public getConversationInfo: ApiRequest<string, Conversation>;
+  public getConversationInfo = this.getRequest<string, Conversation>(getConversationInfoDef);
 
-  public readConversations: ApiRequest<string>;
+  public readConversations = this.getRequest<string>(readConversationsDef);
 
-  public listMessages: ApiRequest<ListMessagesRequestPayload, PaginatedResponse<Message>>;
+  public listMessages = this.getRequest<ListMessagesRequestPayload, PaginatedResponse<Message>>(listMessagesDef);
 
-  public listTags: ApiRequest<void, Tag[]>;
+  public listTags = this.getRequest<void, Tag[]>(listTagsDef);
 
-  public createTag: ApiRequest<CreateTagRequestPayload, Tag>;
+  public createTag = this.getRequest<CreateTagRequestPayload, Tag>(createTagDef);
 
-  public updateTag: ApiRequest<Tag>;
+  public updateTag = this.getRequest<Tag>(updateTagDef);
 
-  public deleteTag: ApiRequest<string>;
+  public deleteTag = this.getRequest<string>(deleteTagDef);
 
-  public loginViaEmail: ApiRequest<LoginViaEmailRequestPayload, User>;
+  public loginViaEmail = this.getRequest<LoginViaEmailRequestPayload, User>(loginViaEmailDef);
 
   public tagConversation: ApiRequest<TagConversationRequestPayload>;
 
@@ -135,4 +170,17 @@ export class HttpClient {
   public getConfig: ApiRequest<void, Config>;
 
   public listTemplates: ApiRequest<ListTemplatesRequestPayload, Template[]>;
+
+  private getRequest<K, V = void>({
+    endpoint,
+    mapRequest,
+    mapResponse,
+    opts,
+  }: EndpointDefinition<K, V>): ApiRequest<K, V> {
+    return async (requestPayload: K) => {
+      endpoint = typeof endpoint === 'string' ? endpoint : endpoint(requestPayload);
+      const response = await this.doFetchFromBackend(endpoint, mapRequest(requestPayload), opts);
+      return mapResponse(response);
+    };
+  }
 }

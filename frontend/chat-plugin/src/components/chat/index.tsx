@@ -48,6 +48,8 @@ const Chat = (props: Props) => {
   const [connectionState, setConnectionState] = useState(null);
 
   useEffect(() => {
+    if (config.showMode) return;
+
     ws = new WebSocket(props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
       setConnectionState(state);
     });
@@ -90,6 +92,7 @@ const Chat = (props: Props) => {
   };
 
   const sendMessage = (text: string) => {
+    if (config.showMode) return;
     ctrl.sendMessage(text);
   };
 

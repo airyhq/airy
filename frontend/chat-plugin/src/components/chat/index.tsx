@@ -46,13 +46,23 @@ const Chat = (props: Props) => {
   const [messageString, setMessageString] = useState('');
   const [connectionState, setConnectionState] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [newConversation, setNewConversation] = useState(false);
 
   const closeModalOnClick = () => setShowModal(false);
 
   const cancelChatSession = () => {
+    setNewConversation(false);
     resetStorage(props.channelId);
     closeModalOnClick();
   };
+
+  const refreshPage = () => {
+    window.location.reload(false);
+  };
+
+  useEffect(() => {
+    setNewConversation(true);
+  }, []);
 
   useEffect(() => {
     ws = new WebSocket(props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
@@ -133,14 +143,24 @@ const Chat = (props: Props) => {
 
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
-    : () => (
-        <AiryInputBar
-          sendMessage={sendMessage}
-          messageString={messageString}
-          setMessageString={setMessageString}
-          cancelChatSession={cancelChatSession}
-        />
-      );
+    : () =>
+        newConversation ? (
+          <AiryInputBar
+            sendMessage={sendMessage}
+            messageString={messageString}
+            setMessageString={setMessageString}
+            setNewConversation={setNewConversation}
+          />
+        ) : (
+          <div>
+            <p className={style.newConversation}>Your conversation has ended. Thank you for chatting with us today.</p>
+            <div>
+              <a href="" onClick={refreshPage} className={style.newConversationLink}>
+                Click Here To Start a New Conversation
+              </a>
+            </div>
+          </div>
+        );
 
   const bubble = props.bubbleProp
     ? () => props.bubbleProp(ctrl)
@@ -193,7 +213,7 @@ const Chat = (props: Props) => {
                   );
                 })}
               </div>
-              {<InputBarProp render={inputBar} />}
+              <InputBarProp render={inputBar} />
 
               {connectionState === ConnectionState.Disconnected && (
                 <div className={style.disconnectedOverlay}>Reconnecting...</div>

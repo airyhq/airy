@@ -24,21 +24,21 @@
 }
 
 .closeButton {
-    border: none;
-    background-color: rgba(0, 0, 0, 0);
-    cursor: pointer;
-    outline: none;
-    position:absolute;
-     top:8px; 
-     right:10px;
-    svg {
-      width: 14px;
-      height: 14px;
-      path {
-        fill: black;
-      }
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  svg {
+    width: 14px;
+    height: 14px;
+    path {
+      fill: black;
     }
   }
+}
 
 .dialog {
   z-index: 1;
@@ -54,9 +54,9 @@
   position: relative;
 }
 
-.headline{
-display:flex;
-justify-content: center;
+.headline {
+  display: flex;
+  justify-content: center;
 }
 
 .inviteWrapper {

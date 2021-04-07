@@ -76,9 +76,8 @@ class WebSocket {
 
     this.client.activate();
   };
-  
+
   onSend = (message: TextContent | SuggestionResponse) => sendMessage(message, this.token);
-  
 
   start = async () => {
     const resumeToken = getResumeTokenFromStorage(this.channelId);

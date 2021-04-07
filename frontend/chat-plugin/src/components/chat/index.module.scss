@@ -62,6 +62,21 @@
   flex-grow: 1;
   overflow: auto;
 }
+.newConversation {
+  display: flex;
+  justify-content: center;
+  padding-left: 22px;
+  font-family: 'Lato', sans-serif;
+  color: #1578d4;
+}
+
+.newConversationLink {
+  display: flex;
+  justify-content: center;
+  padding-left: 24px;
+  font-family: 'Lato', sans-serif;
+  color: #1578d4;
+}
 
 .messages {
   overflow-y: scroll;
@@ -107,10 +122,8 @@
   }
 }
 
-.cancelButton{
-  
+.cancelButton {
 }
 
-.endChatButton{
-
+.endChatButton {
 }

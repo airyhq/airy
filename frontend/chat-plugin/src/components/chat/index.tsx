@@ -19,8 +19,8 @@ import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 import {cyBubble, cyChatPluginMessageList} from 'chat-plugin-handles';
-import {getResumeTokenFromStorage} from '../../storage';
-import ModalDialogue from '../../components/modal';
+import {getResumeTokenFromStorage, resetStorage} from '../../storage';
+import {ModalDialogue} from '../../components/modal';
 
 let ws: WebSocket;
 
@@ -48,7 +48,9 @@ const Chat = (props: Props) => {
   const [showModal, setShowModal] = useState(false);
 
   const closeModalOnClick = () => setShowModal(false);
-  const disconnectChat = () => {
+
+  const cancelChatSession = () => {
+    resetStorage(props.channelId);
     closeModalOnClick();
   };
 
@@ -132,7 +134,12 @@ const Chat = (props: Props) => {
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
     : () => (
-        <AiryInputBar sendMessage={sendMessage} messageString={messageString} setMessageString={setMessageString} />
+        <AiryInputBar
+          sendMessage={sendMessage}
+          messageString={messageString}
+          setMessageString={setMessageString}
+          cancelChatSession={cancelChatSession}
+        />
       );
 
   const bubble = props.bubbleProp
@@ -186,7 +193,8 @@ const Chat = (props: Props) => {
                   );
                 })}
               </div>
-              <InputBarProp render={inputBar} />
+              {<InputBarProp render={inputBar} />}
+
               {connectionState === ConnectionState.Disconnected && (
                 <div className={style.disconnectedOverlay}>Reconnecting...</div>
               )}
@@ -203,7 +211,7 @@ const Chat = (props: Props) => {
                 {' '}
                 Cancel
               </button>
-              <button className={style.endChatButton} onClick={disconnectChat}>
+              <button className={style.endChatButton} onClick={cancelChatSession}>
                 {' '}
                 End Chat
               </button>

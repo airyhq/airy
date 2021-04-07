@@ -7,7 +7,7 @@ type ModalDialogueProps = {
   children: JSX.Element;
 };
 
-const ModalDialogue = ({close, children}: ModalDialogueProps) => {
+export const ModalDialogue = ({close, children}: ModalDialogueProps) => {
   return (
     <div className={styles.background}>
       <div className={styles.dialog}>
@@ -24,4 +24,3 @@ const ModalDialogue = ({close, children}: ModalDialogueProps) => {
     </div>
   );
 };
-export default ModalDialogue;

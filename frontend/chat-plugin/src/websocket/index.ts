@@ -1,6 +1,6 @@
 import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
-import {start, getResumeToken, sendMessage, endChat} from '../api';
+import {start, getResumeToken, sendMessage} from '../api';
 import {SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
 import {Message} from 'httpclient';
 import {getResumeTokenFromStorage, resetStorage} from '../storage';
@@ -78,7 +78,6 @@ class WebSocket {
   };
   
   onSend = (message: TextContent | SuggestionResponse) => sendMessage(message, this.token);
-  onEndChat = () => endChat( this.channelId, this.token);
   
 
   start = async () => {

@@ -62,23 +62,9 @@ Unique message id for deduplication.
   - `postback.payload` string postback payloads used for source automations
   - `postback.referral` string facebook specific referral identifier
 
-- `senderType` string
+- `fromContact` boolean
 
-What type of actor inserted the message. One of:
-
-    - `source_contact` sent to the source by a contact
-    - `source_user` sent to the source by the user but not via app
-    - `app_user` sent to source via app
-
-- `senderId` string
-
-Identifies the participant that sent the message. Interpretation is based on the value of `senderType`:
-
-| senderType     | senderId                                            |
-| -------------- | --------------------------------------------------- |
-| SOURCE_CONTACT | source contact id (e.g. Facebook page scoped id)    |
-| SOURCE_USER    | source dependent (e.g. Facebook third party app id) |
-| APP_USER       | app channel id                                      |
+Indicates whether the message was sent by a contact or not.
 
 - `conversationId` uuid
 

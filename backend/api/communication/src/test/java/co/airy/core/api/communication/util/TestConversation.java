@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import lombok.Data;
@@ -85,11 +84,11 @@ public class TestConversation {
                     .setSenderId("source-conversation-id")
                     .setDeliveryState(DeliveryState.DELIVERED)
                     .setSource("facebook")
-                    .setSenderType(SenderType.SOURCE_CONTACT)
                     .setConversationId(conversationId)
                     .setHeaders(Map.of())
                     .setChannelId(channel.getId())
                     .setContent("{\"message\":{\"text\":\"hello world\"}}")
+                    .setIsFromContact(true)
                     .build()));
         }
 

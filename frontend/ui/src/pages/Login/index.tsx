@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 
-import {ErrorNotice, Input, Button} from '@airyhq/components';
+import {ErrorNotice, Input, Button} from 'components';
 
 import {loginViaEmail} from '../../actions/user';
 

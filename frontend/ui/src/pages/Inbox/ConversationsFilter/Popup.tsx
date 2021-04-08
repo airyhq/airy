@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {sortBy} from 'lodash-es';
-import {SearchField, LinkButton, Button} from '@airyhq/components';
+import {SearchField, LinkButton, Button} from 'components';
 import {Tag as TagModel, Channel, ConversationFilter} from 'model';
 import {listTags} from '../../../actions/tags';
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';

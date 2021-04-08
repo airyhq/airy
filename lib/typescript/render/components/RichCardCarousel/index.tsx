@@ -1,5 +1,5 @@
 import React from 'react';
-import {Carousel} from '@airyhq/components';
+import {Carousel} from 'components';
 import styles from './index.module.scss';
 import {MediaRenderProps} from '../RichCard/Media';
 import {RichCard, Suggestion} from '../RichCard';

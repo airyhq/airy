@@ -1,5 +1,5 @@
 import React from 'react';
-import {Carousel} from '@airyhq/components';
+import {Carousel} from 'components';
 import styles from './index.module.scss';
 import {GenericTemplate as GenericTemplateModel} from '../../facebookModel';
 import {ImageWithFallback} from 'render/components/ImageWithFallback';

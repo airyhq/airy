@@ -8,7 +8,7 @@ import {allChannels} from './../../../selectors/channels';
 
 import {Channel, Source} from 'model';
 import ChannelListItem from './ChannelListItem';
-import {SearchField} from '@airyhq/components';
+import {SearchField} from 'components';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
 import {ReactComponent as PLusIcon} from 'assets/images/icons/plus.svg';

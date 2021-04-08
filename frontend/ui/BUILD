@@ -10,6 +10,7 @@ check_pkg(name = "buildifier")
 
 module_deps = [
     "//frontend/assets",
+    "//lib/typescript/components",
     "//lib/typescript/types",
     "//lib/typescript/model",
     "//lib/typescript/httpclient",

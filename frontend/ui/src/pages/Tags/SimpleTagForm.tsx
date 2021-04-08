@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {createTag, listTags, errorTag, filterTags} from '../../actions/tags';
 import {filteredTags} from '../../selectors/tags';
 
-import {Button, Input} from '@airyhq/components';
+import {Button, Input} from 'components';
 import DialogCustomizable from '../../components/DialogCustomizable';
 import ColorSelector from '../../components/ColorSelector';
 

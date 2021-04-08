@@ -30,7 +30,7 @@ Switch to the **Install & Customize** register and start customizing your Airy C
 
 If you are happy with your customization, copy it and add this code inside the tag `<head>`.
 
-## Advanced cumstomization
+## Advanced customization
 
 It is not possible to customize the Airy Chat Plugin if you use the Plug & Play Installation.
 

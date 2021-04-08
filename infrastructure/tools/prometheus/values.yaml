@@ -25,7 +25,7 @@ prometheus:
   - name: "spring-apps"
     selector:
       matchLabels:
-        type: spring
+        core.airy.co/prometheus: spring
     namespaceSelector:
       matchNames: ["default"]
     endpoints:

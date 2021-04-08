@@ -1,6 +1,20 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: webhook-consumer
+  namespace: {{ .Values.global.namespace }}
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  type: NodePort
+  selector:
+    app: webhook-consumer
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: webhook-publisher
   namespace: {{ .Values.global.namespace }}
   labels:

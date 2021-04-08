@@ -7,6 +7,8 @@ metadata:
     app: sources-facebook-connector
     type: sources
     core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.component }}"
 spec:
   replicas: 0
   selector:
@@ -24,7 +26,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+          image: "{{ .Values.global.containerRegistry}}/{{ .Values.imageConnector }}:{{ .Values.global.appImageTag }}"
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -88,6 +90,88 @@ spec:
         volumeMounts:
           - name: provisioning-scripts
             mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-facebook-events-router
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: sources-facebook-events-router
+    type: sources
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.component }}"
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: sources-facebook-events-router
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-facebook-events-router
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/{{ .Values.imageEventsRouter }}:{{ .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_SCHEMA_REGISTRY_URL
+        - name: KAFKA_COMMIT_INTERVAL_MS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_COMMIT_INTERVAL_MS
+        - name: FACEBOOK_APP_ID
+          valueFrom:
+            configMapKeyRef:
+              name: sources-facebook
+              key: FACEBOOK_APP_ID
+        - name: SERVICE_NAME
+          value: facebook-events-router
+        livenessProbe:
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3
+      initContainers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: REPLICAS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_MINIMUM_REPLICAS
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
       volumes:
         - name: provisioning-scripts
           configMap:

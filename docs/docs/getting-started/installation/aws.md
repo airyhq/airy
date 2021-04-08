@@ -1,6 +1,7 @@
 ---
 title: AWS
 sidebar_label: AWS
+hide_table_of_contents: false
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -27,13 +28,12 @@ Apart from the EKS cluster, the installation will create all the necessary AWS r
 - EKS cluster and EKS node groups
 - EC2 instances, as part of the created node group
 
-## Requirements
+:::note
 
 Prior to starting this guide, you should have created an [AWS account](https://aws.amazon.com/free)
 
 We recommend installing the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-
-### Configure AWS CLI
+:::
 
 Once you have installed the AWS CLI, you now need to configure the application to be able to connect to your AWS account
 

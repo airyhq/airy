@@ -5,7 +5,7 @@ import {Text} from '../../components/Text';
 import {RichCard} from '../../components/RichCard';
 import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {ContentUnion} from './googleModel';
-import {RenderedContentUnion, isFromContact} from 'httpclient';
+import {RenderedContentUnion, isFromContact} from 'model';
 import {Image} from '../../components/Image';
 
 export const GoogleRender = (props: RenderPropsUnion) => {

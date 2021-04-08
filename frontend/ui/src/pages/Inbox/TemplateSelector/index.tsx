@@ -4,7 +4,7 @@ import {ListenOutsideClick} from '@airyhq/components';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
 import {SearchField, ErrorNotice} from '@airyhq/components';
-import {Template, Source} from 'httpclient';
+import {Template, Source} from 'model';
 import {StateModel} from '../../../reducers';
 import emptyState from 'assets/images/empty-state/templates-empty-state.png';
 import notFoundState from 'assets/images/not-found/templates-not-found.png';

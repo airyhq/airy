@@ -7,7 +7,7 @@ package(default_visibility = ["//visibility:public"])
 ts_web_library(
     name = "websocketclient",
     deps = [
-        "//lib/typescript/httpclient",
+        "//lib/typescript/model",
         "//lib/typescript/types",
         "@npm//@stomp/stompjs",
         "@npm//@types/node",

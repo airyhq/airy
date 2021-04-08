@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 
-import {User} from 'httpclient';
+import {User} from 'model';
 import {listConversations} from '../../actions/conversations';
 import {listChannels} from '../../actions/channel';
 import {StateModel} from '../../reducers';

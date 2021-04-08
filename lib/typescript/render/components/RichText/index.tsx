@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import {RenderedContentUnion} from 'httpclient';
+import {RenderedContentUnion} from 'model';
 import styles from './index.module.scss';
 import {DefaultRenderingProps} from '..';
 

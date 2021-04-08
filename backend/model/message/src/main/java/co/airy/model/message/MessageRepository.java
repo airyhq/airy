@@ -20,15 +20,6 @@ public class MessageRepository {
         return message.getUpdatedAt() == null;
     }
 
-    // In preparation for https://github.com/airyhq/airy/issues/572
-    public static boolean isFromContact(Message message) {
-        return message.getIsFromContact();
-    }
-
-    public static boolean isFromAiry(Message message) {
-        return !message.getIsFromContact();
-    }
-
     public static Object resolveContent(Message message) {
         return resolveContent(message, new MetadataMap());
     }

@@ -6,16 +6,17 @@ sidebar_label: Minikube
 import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
-Run Airy on minikube with one command
+Run Airy on minikube with one command.
 </TLDR>
 
 The goal of this document is to provide an overview of how to run Airy Core on
 your local machine using [minikube](https://minikube.sigs.k8s.io/).
 
-## Creating a cluster
+## Create a minikube cluster
 
 First download and install minikube from their [release
-page](https://github.com/kubernetes/minikube/releases) and the [Airy CLI](cli/introduction.md). Now you can run this command, which will create a new
+page](https://github.com/kubernetes/minikube/releases) and the [Airy
+CLI](cli/introduction.md). Now you can run this command, which will create a new
 minikube cluster on your system and install Airy core on it:
 
 ```bash
@@ -38,15 +39,15 @@ Section](configuration.md).
 After the installation, you can also interact with the components of `Airy Core` with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line utility.
 `airy create` adds the kubeconfig of your Airy Core instance to the default kubeconfig file `~/.kube/config`, under the context `airy-core`.
 
-## Public webhooks
+## Integrate public webhooks
 
-In order to integrate with the webhook of most sources on your local machine,
-we include a [ngrok](https://ngrok.com/) as a deployment to tunnel the traffic to the ingress controller.
-ngrok is an open source reverse proxy which
-creates a secure tunnel from a public endpoint to a local service. The ngrok
-client connects to a ngrok server which has public access to the internet and
-then provides a reversed proxy connectivity back to the webhook services,
-running inside the Kubernetes cluster.
+In order to integrate with the webhook of most sources on your local machine, we
+include a [ngrok](https://ngrok.com/) as a deployment to tunnel the traffic to
+the ingress controller. ngrok is an open source reverse proxy which creates a
+secure tunnel from a public endpoint to a local service. The ngrok client
+connects to a ngrok server which has public access to the internet and then
+provides a reversed proxy connectivity back to the webhook services, running
+inside the Kubernetes cluster.
 
 To get the ngrok URL of your local Airy Core installation you can run:
 
@@ -74,10 +75,11 @@ If you prefer to use your own ngrok implementation or point the ngrok client to
 connect to the service provided by the ngrok company at `https://ngrok.io`,
 change the setting for `server_addr` in the ConfigMap.
 
-## Where to go from here
+## Next steps
 
-Now that you have a running local installation of Minikube you can connect it to messaging sources. Check out the
-[source documentation](/sources/introduction.md) to learn more.
+Now that you have a running local installation of Minikube you can connect it to
+messaging sources. Check out the [source
+documentation](/sources/introduction.md) to learn more.
 
 ## Third party tools
 

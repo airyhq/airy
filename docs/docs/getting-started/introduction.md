@@ -26,6 +26,16 @@ conversational platform.
 
 <Image lightModePath="img/getting-started/introduction-light.png" darkModePath="img/getting-started/introduction-dark.png"/>
 
+<h3>Get Airy up and running with one command</h3>
+
+```bash
+# Install the Airy CLI
+brew install airyhq/airy/cli
+
+# Create Airy with one command
+airy create --provider=aws
+```
+
 ## What Airy is used for
 
 With Airy Core you can process conversational data from a variety of sources:

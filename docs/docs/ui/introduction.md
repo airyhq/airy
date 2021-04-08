@@ -9,7 +9,6 @@ import GearSVG from "@site/static/icons/gear.svg";
 import DesktopComputerSVG from "@site/static/icons/desktop-computer.svg";
 import LabelSVG from "@site/static/icons/label.svg";
 import UsersSVG from "@site/static/icons/users.svg";
-import ComponentsSVG from "@site/static/icons/information-architecture.svg";
 import CommentBubbleSVG from "@site/static/icons/comment-bubble.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
@@ -42,13 +41,6 @@ Airy UI comes with an open-source, customizable [inbox](inbox), filled with the 
         link='ui/tags'
     />    
     <ButtonBox
-        icon={<ComponentsSVG />}
-        iconInvertible={true}
-        title='UI Components'
-        description='Buttons, Inputs, Loaders and all Airy UI Components '
-        link='ui/components'
-    />
-        <ButtonBox
         icon={<CommentBubbleSVG />}
         iconInvertible={true}
         title='Suggested Replies'

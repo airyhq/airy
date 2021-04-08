@@ -1,4 +1,4 @@
-import {MessageState, Metadata, MetadataEvent} from 'httpclient';
+import {MessageState, Metadata, MetadataEvent} from 'model';
 
 interface Event {
   type: 'message' | 'channel' | 'metadata';

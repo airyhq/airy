@@ -5,7 +5,7 @@ import {debounce, isEmpty} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
 import {cyMessageList} from 'handles';
 
-import {Message, Suggestions, getSource, isFromContact} from 'httpclient';
+import {Message, Suggestions, getSource, isFromContact} from 'model';
 import {SourceMessage} from 'render';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
 

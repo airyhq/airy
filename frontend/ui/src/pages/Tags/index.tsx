@@ -7,7 +7,7 @@ import {ReactComponent as Plus} from 'assets/images/icons/plus.svg';
 
 import {listTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
 import {filteredTags} from '../../selectors/tags';
-import {Tag} from 'httpclient';
+import {Tag} from 'model';
 import {ModalType} from '../../types';
 
 import styles from './index.module.scss';

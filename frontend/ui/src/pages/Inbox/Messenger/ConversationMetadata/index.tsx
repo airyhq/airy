@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Tag as TagModel, TagColor, getTags} from 'httpclient';
+import {Tag as TagModel, TagColor, getTags} from 'model';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';

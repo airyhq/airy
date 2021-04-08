@@ -4,7 +4,7 @@ import {SourceMessage} from 'render';
 import {Carousel, ListenOutsideClick} from '@airyhq/components';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
-import {SuggestedReply} from 'httpclient';
+import {SuggestedReply} from 'model';
 import {StateModel} from '../../../reducers';
 
 const mapDispatchToProps = {

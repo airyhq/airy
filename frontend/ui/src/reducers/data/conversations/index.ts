@@ -2,13 +2,13 @@ import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
 import {cloneDeep, sortBy, merge, pickBy} from 'lodash-es';
 
-import {Conversation, ConversationFilter, Message} from 'httpclient';
+import {Conversation, ConversationFilter, Message} from 'model';
 
 import * as metadataActions from '../../../actions/metadata';
 import * as actions from '../../../actions/conversations';
 import * as filterActions from '../../../actions/conversationsFilter';
 import * as messageActions from '../../../actions/messages';
-import {MetadataEvent, ConversationMetadata} from 'httpclient';
+import {MetadataEvent, ConversationMetadata} from 'model';
 
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 type FilterAction = ActionType<typeof filterActions>;

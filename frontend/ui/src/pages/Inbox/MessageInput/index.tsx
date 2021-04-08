@@ -9,7 +9,8 @@ import {Button} from '@airyhq/components';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 import {Picker} from 'emoji-mart';
 import {SourceMessage} from 'render';
-import {getTextMessagePayload, Message, SuggestedReply, Suggestions, Template, Source} from 'httpclient';
+import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
+import {getTextMessagePayload} from 'httpclient';
 import 'emoji-mart/css/emoji-mart.css';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';

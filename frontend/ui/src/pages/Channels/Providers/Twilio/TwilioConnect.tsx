@@ -5,7 +5,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {connectTwilioSms, connectTwilioWhatsapp} from '../../../../actions/channel';
 
 import {Button, Input, LinkButton, UrlInputField} from '@airyhq/components';
-import {Channel, Source} from 'httpclient';
+import {Channel, Source} from 'model';
 import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrow-left-2.svg';
 
 import styles from './TwilioConnect.module.scss';

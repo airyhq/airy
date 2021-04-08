@@ -8,7 +8,7 @@ import {ReactComponent as EditIcon} from 'assets/images/icons/edit.svg';
 import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
 import Tag from '../../components/Tag';
-import {Tag as TagModel, TagColor} from 'httpclient';
+import {Tag as TagModel, TagColor} from 'model';
 import {Settings} from '../../reducers/data/settings';
 import {StateModel} from '../../reducers';
 import {cyTagsTableRowDisplayDeleteModal} from 'handles';

@@ -1,6 +1,6 @@
 import {ListMessagesRequestPayload, PaginatedPayload} from '../payload';
 import {HttpClient} from '../client';
-import {mapMessage} from '../model';
+import {mapMessage} from 'model';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');

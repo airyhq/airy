@@ -9,7 +9,7 @@ import styles from './index.module.scss';
 import ConversationMetadata from '../ConversationMetadata';
 import MessageInput from '../../MessageInput';
 import {allConversations, getCurrentConversation} from '../../../../selectors/conversations';
-import {Source, Suggestions} from 'httpclient';
+import {Source, Suggestions} from 'model';
 
 const mapStateToProps = (state: StateModel, ownProps) => ({
   conversations: allConversations(state),

@@ -22,6 +22,12 @@
       "components/*": [
         "./frontend/components/src/*"
       ],
+      "model": [
+        "./lib/typescript/model"
+      ],
+      "model/*": [
+        "./lib/typescript/model/*"
+      ],
       "httpclient": [
         "./lib/typescript/httpclient"
       ],

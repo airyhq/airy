@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import {Button, Input} from '@airyhq/components';
-import {Channel} from 'httpclient';
+import {Channel} from 'model';
 
 import {CustomiseSection} from './CustomiseSection';
 

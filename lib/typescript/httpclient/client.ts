@@ -17,7 +17,7 @@ import {
   PaginatedResponse,
 } from './payload';
 
-import {Tag, Message, Channel, User, Conversation, Config, Template} from './model';
+import {Tag, Message, Channel, User, Conversation, Config, Template} from 'model';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;

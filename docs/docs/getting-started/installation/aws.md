@@ -33,7 +33,7 @@ Prior to starting this guide, you should have created an [AWS account](https://a
 
 We recommend installing the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 
-### Configuring
+### Configure AWS CLI
 
 Once you have installed the AWS CLI, you now need to configure the application to be able to connect to your AWS account
 

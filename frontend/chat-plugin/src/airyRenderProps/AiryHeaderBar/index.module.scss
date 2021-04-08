@@ -54,24 +54,3 @@
   border-radius: 100%;
   cursor: pointer;
 }
-
-.disconnectModal {
-  p {
-    color: var(--color-text-contrast);
-    font-family: Lato;
-    font-size: 16px;
-    letter-spacing: 0;
-    line-height: 24px;
-    margin-bottom: 16px;
-  }
-  a {
-    font-weight: 400;
-  }
-}
-
-.modalSeparator {
-  margin-top: 24px;
-  margin-bottom: 24px;
-  height: 1px;
-  background: var(--color-light-gray);
-}

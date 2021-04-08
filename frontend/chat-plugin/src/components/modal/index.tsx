@@ -16,7 +16,7 @@ export const ModalDialogue = ({close, children}: ModalDialogueProps) => {
             <CloseIcon title="Close dialog" />
           </button>
           <div className={styles.inviteWrapper}>
-            <h3 className={styles.headline}>Are you sure you want to end this chat?</h3>
+            <p>Are you sure you want to end this chat?</p>
           </div>
           {children}
         </div>

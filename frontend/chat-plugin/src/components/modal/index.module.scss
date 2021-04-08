@@ -48,17 +48,21 @@
 }
 
 .dialogInner {
+  width: 500px;
   background-color: white;
   border-radius: 8px;
-  padding: 16px;
+  padding: 10px 14px 36px 0px;
   position: relative;
-}
-
-.headline {
-  display: flex;
-  justify-content: center;
 }
 
 .inviteWrapper {
   width: 500px;
+  p {
+    display: flex;
+    justify-content: center;
+    color: var(--color-text-gray);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+  }
 }

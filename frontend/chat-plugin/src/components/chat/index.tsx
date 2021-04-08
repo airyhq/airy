@@ -21,6 +21,7 @@ const camelcaseKeys = require('camelcase-keys');
 import {cyBubble, cyChatPluginMessageList} from 'chat-plugin-handles';
 import {getResumeTokenFromStorage, resetStorage} from '../../storage';
 import {ModalDialogue} from '../../components/modal';
+import {start} from '../../api';
 
 let ws: WebSocket;
 
@@ -48,22 +49,6 @@ const Chat = (props: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [newConversation, setNewConversation] = useState(false);
 
-  const closeModalOnClick = () => setShowModal(false);
-
-  const cancelChatSession = () => {
-    setNewConversation(false);
-    resetStorage(props.channelId);
-    closeModalOnClick();
-  };
-
-  const refreshPage = () => {
-    window.location.reload(false);
-  };
-
-  useEffect(() => {
-    setNewConversation(true);
-  }, []);
-
   useEffect(() => {
     ws = new WebSocket(props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
       setConnectionState(state);
@@ -77,6 +62,10 @@ const Chat = (props: Props) => {
   useEffect(() => {
     updateScroll();
   }, [messages]);
+
+  useEffect(() => {
+    setNewConversation(true);
+  }, []);
 
   const setInitialMessages = (initialMessages: Array<Message>) => {
     setMessages([...messages, ...initialMessages]);
@@ -137,6 +126,18 @@ const Chat = (props: Props) => {
     }
   };
 
+  const closeModalOnClick = () => setShowModal(false);
+
+  const cancelChatSession = () => {
+    setNewConversation(false);
+    resetStorage(props.channelId);
+    closeModalOnClick();
+  };
+
+  const reAuthenticate = () => {
+    start(props.channelId, props.resumeToken);
+  };
+
   const headerBar = props.headerBarProp
     ? () => props.headerBarProp(ctrl)
     : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} setShowModal={setShowModal} />;
@@ -153,9 +154,13 @@ const Chat = (props: Props) => {
           />
         ) : (
           <div>
-            <p className={style.newConversation}>Your conversation has ended. Thank you for chatting with us today.</p>
+            <div className={style.paragraphWrapper}>
+              <p className={style.newConversation}>Your conversation has ended. Thank you for</p>{' '}
+              <p className={style.newConversationLine}>chatting with us today.</p>
+            </div>
+
             <div>
-              <a href="" onClick={refreshPage} className={style.newConversationLink}>
+              <a href="" onClick={reAuthenticate} className={style.newConversationLink}>
                 Click Here To Start a New Conversation
               </a>
             </div>

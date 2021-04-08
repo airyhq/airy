@@ -27,12 +27,14 @@ declare const window: {
   airy: {
     host: string;
     channelId: string;
+    resumeToken: string;
     welcomeMessage: {};
   };
 };
 
 if (window.airy.channelId) {
   new AiryWidget({
+    resumeToken: window.airy.resumeToken,
     channelId: window.airy.channelId,
     welcomeMessage: window.airy.welcomeMessage,
   }).render(anchor);

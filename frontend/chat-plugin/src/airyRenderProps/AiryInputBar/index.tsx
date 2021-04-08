@@ -2,14 +2,14 @@ import React, {ChangeEvent, FormEvent, KeyboardEvent, createRef, useEffect} from
 import style from './index.module.scss';
 import {cyInputbarTextarea, cyInputbarButton} from 'chat-plugin-handles';
 
-type Props = {
+type AiryInputBarProps = {
   sendMessage: (text: string) => void;
   messageString: string;
   setMessageString: (text: string) => void;
   setNewConversation: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const AiryInputBar = (props: Props) => {
+const AiryInputBar = (props: AiryInputBarProps) => {
   const textInputRef = createRef<HTMLTextAreaElement>();
   const dataCyButtonId = cyInputbarButton;
   const dataCyTextareaId = cyInputbarTextarea;

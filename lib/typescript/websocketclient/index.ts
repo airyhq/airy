@@ -22,7 +22,6 @@ export class WebSocketClient {
   callbackMap: CallbackMap;
 
   constructor(apiUrl: string, token: string, callbackMap: CallbackMap = {}) {
-    console.debug('apiUrl', apiUrl);
     this.token = token;
     this.callbackMap = callbackMap;
     this.apiUrlConfig = `${protocol}//${new URL(apiUrl).host}/ws.communication`;

@@ -1,8 +1,10 @@
 {
   "extends": "./bazel.tsconfig.json",
   "compilerOptions": {
-    "target": "esnext",
-    "moduleResolution": "Node",
-    "module": "esnext"
-  }
+    "noEmit": true
+  },
+  "include": [
+    "./frontend/**/*",
+    "./lib/typescript/**/*"
+  ]
 }

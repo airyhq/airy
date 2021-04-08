@@ -9,13 +9,3 @@ export interface User {
   onboarded?: boolean;
   error?: string;
 }
-
-export enum AUTH_STATE {
-  NOT_AUTHENTICATED,
-  REFRESHING,
-  AUTHENTICATED_AND_LOADED,
-}
-
-export const authState = (state: User) => {
-  return state.id ? AUTH_STATE.NOT_AUTHENTICATED : AUTH_STATE.REFRESHING;
-};

@@ -8,6 +8,7 @@ export * from './Message';
 export * from './Metadata';
 export * from './Pagination';
 export * from './Source';
+export * from './SuggestedReply';
 export * from './Tag';
 export * from './Template';
 export * from './User';

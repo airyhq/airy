@@ -8,6 +8,8 @@ import TLDR from "@site/src/components/TLDR";
 import SuccessBox from "@site/src/components/SuccessBox";
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import ButtonBox from "@site/src/components/ButtonBox";
+import DiamondSVG from "@site/static/icons/diamond.svg";
 
 <TLDR>
 
@@ -24,6 +26,30 @@ Apart from the EKS cluster, the installation will create all the necessary AWS r
 - IAM roles and policy attachments
 - EKS cluster and EKS node groups
 - EC2 instances, as part of the created node group
+
+## Requirements
+
+Prior to starting this guide, you should have created an [AWS account](https://aws.amazon.com/free)
+
+We recommend installing the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+
+### Configuring
+
+Once you have installed the AWS CLI, you now need to configure the application to be able to connect to your AWS account
+
+```
+aws configure
+```
+
+Through aws configure, the AWS CLI will prompt you for four pieces of information. The first two are required. These are your [AWS access key ID and AWS secret access key](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html), which serve as your account credentials. You can generate new credentials within AWS Identity and Access Management (IAM) if you do not already have them. The other information you will need is region and output format, which you can leave as default for the time being.
+
+```
+aws configure
+AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
+AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+Default region name [None]: us-west-2
+Default output format [None]: json
+```
 
 ## Creating a cluster
 
@@ -55,6 +81,24 @@ If you want to customize your `Airy Core` instance please see our [Configuration
 
 After the installation, you can also interact with the components of `Airy Core` with the [kubectl](https://kubernetes.io/docs/tasks/tools/) command line utility. You can find the kubeconfig of your Airy Core instance in `~/.airy/kube.conf`.
 
+### Verification
+
+After the installation process, you can verify that all the pods are running with
+
+```
+kubectl get pods --kubeconfig ./kube.conf
+```
+
+### Common issues
+
+AWS has a limit on the number of objects you create depending on your account.
+
+```
+Error creating vpc:  operation error EC2: CreateVpc, https response error StatusCode: 400, RequestID: 64210ff5-9aca-4ab7-b993-3727637a59d6, api error VpcLimitExceeded: The maximum number of VPCs has been reached.
+```
+
+When encountering this, you can delete some of the resources just as described on [here](/getting-started/installation/aws#uninstall-airy-core)
+
 ## Public webhooks
 
 The public webhooks will be accessible on the public LoadBalancer which is
@@ -70,6 +114,25 @@ kubectl --kubeconfig ~/.airy/kube.conf get --namespace kube-system service traef
 
 Now that you have a running installation of Airy core on AWS you can connect it to messaging sources. Check out the
 [source documentation](/sources/introduction.md) to learn more.
+
+You can also check out the following content
+
+<ButtonBoxList>
+<ButtonBox
+    icon={<DiamondSVG />}
+    iconInvertible={true}
+    title='Sources'
+    description='Sources'
+    link='sources/introduction'
+/>
+<ButtonBox
+    icon={<DiamondSVG />}
+    iconInvertible={true}
+    title='To the Quick Start'
+    description='Learn the Airy Basics with our Quick Start'
+    link='getting-started/quickstart'
+/>
+</ButtonBoxList>
 
 ## Third party tools
 

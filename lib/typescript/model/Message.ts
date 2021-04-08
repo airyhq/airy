@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 import {Content} from './Content';
+import {Suggestions} from './SuggestedReply';
 
 export enum MessageType {
   audio = 'audio',
@@ -21,11 +22,6 @@ export interface Message extends Content {
   fromContact: boolean;
   sentAt: Date;
   metadata?: MessageMetadata;
-}
-
-export interface SuggestedReply extends Content {}
-export interface Suggestions {
-  [suggestionId: string]: SuggestedReply;
 }
 
 export interface MessageMetadata {

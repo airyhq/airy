@@ -24,7 +24,7 @@ web_app(
         "react-dom": "preact/compat",
     },
     app_lib = ":app",
-    entry = "frontend/chat-plugin/src/iframe.js",
+    entry = "frontend/chat-plugin/src/iframe",
     index = ":development.html",
     module_deps = module_deps,
     output = {

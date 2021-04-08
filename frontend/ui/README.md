@@ -66,3 +66,10 @@ $ ./scripts/web-dev.sh //frontend/ui:bundle_server
 ```
 
 After it started, open a web browser to [`localhost:8080`](http://localhost:8080). Login with the user you created above.
+
+The web server does not perform Typescript type checking. To do so you can either run type checks after you are done
+or start another process:
+
+```
+$ ibazel build //frontend/ui:app
+```

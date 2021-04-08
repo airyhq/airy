@@ -11,8 +11,11 @@ ts_web_library(
         "@npm//@types/node",
         "@npm//@types/react",
         "@npm//react",
+        "@npm//react-modal",
+        "@npm//react-autosize-textarea",
         "@npm//react-router-dom",
         "@npm//emoji-mart",
+        "@npm//@crello/react-lottie",
         "@npm//@types/resize-observer-browser",
     ],
 )

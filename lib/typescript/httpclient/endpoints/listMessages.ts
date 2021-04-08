@@ -1,4 +1,4 @@
-import {mapMessage} from '../model';
+import {mapMessage} from 'model';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');

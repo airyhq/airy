@@ -1,5 +1,5 @@
 import {StompWrapper} from './stompWrapper';
-import {Message, Channel, MetadataEvent} from 'httpclient';
+import {Message, Channel, MetadataEvent} from 'model';
 import {EventPayloadUnion} from './payload';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');

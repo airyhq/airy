@@ -5,7 +5,6 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -107,11 +106,11 @@ public class WebSocketControllerTest {
                 .setSentAt(Instant.now().toEpochMilli())
                 .setUpdatedAt(null)
                 .setSenderId("sourceConversationId")
-                .setSenderType(SenderType.APP_USER)
                 .setDeliveryState(DeliveryState.DELIVERED)
                 .setConversationId("conversationId")
                 .setChannelId("channelId")
                 .setContent("{\"text\":\"hello world\"}")
+                .setIsFromContact(true)
                 .build();
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message));

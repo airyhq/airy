@@ -8,7 +8,7 @@ import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions/channel';
 
 import {Button, LinkButton} from '@airyhq/components';
-import {Channel} from 'httpclient';
+import {Channel} from 'model';
 
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
 import {EditChatPlugin} from './sections/EditChatPlugin';

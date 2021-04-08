@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 
 import {allChannels} from '../../../../../selectors/channels';
-import {Channel, Source} from 'httpclient';
+import {Channel, Source} from 'model';
 import TwilioConnect from '../TwilioConnect';
 import {StateModel} from '../../../../../reducers';
 

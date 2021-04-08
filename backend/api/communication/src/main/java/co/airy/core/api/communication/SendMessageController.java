@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.payload.SendMessageRequestPayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -67,8 +66,8 @@ public class SendMessageController {
                 .setDeliveryState(DeliveryState.PENDING)
                 .setSource(channel.getSource())
                 .setSenderId(auth.getPrincipal().toString())
-                .setSenderType(SenderType.APP_USER)
                 .setSentAt(Instant.now().toEpochMilli())
+                .setIsFromContact(false)
                 .build();
 
         producer.send(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message)).get();

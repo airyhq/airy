@@ -13,7 +13,7 @@ import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
 import {AiryWidgetConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import {SenderType, MessageState, isFromContact, Message} from 'httpclient';
+import {MessageState, isFromContact, Message} from 'model';
 import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -27,7 +27,7 @@ const defaultWelcomeMessage: Message = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   content: {text: 'Hello! How can we help you?'},
   deliveryState: MessageState.delivered,
-  senderType: SenderType.appUser,
+  fromContact: false,
   sentAt: new Date(),
 };
 
@@ -48,6 +48,8 @@ const Chat = (props: Props) => {
   const [connectionState, setConnectionState] = useState(null);
 
   useEffect(() => {
+    if (config.showMode) return;
+
     ws = new WebSocket(props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
       setConnectionState(state);
     });
@@ -90,6 +92,7 @@ const Chat = (props: Props) => {
   };
 
   const sendMessage = (text: string) => {
+    if (config.showMode) return;
     ctrl.sendMessage(text);
   };
 

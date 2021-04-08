@@ -3,7 +3,6 @@ package co.airy.core.media;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.media.services.MediaUpload;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
@@ -123,7 +122,7 @@ public class MessagesTest {
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setUpdatedAt(null)
                                 .setSenderId("sourceConversationId")
-                                .setSenderType(SenderType.SOURCE_CONTACT)
+                                .setIsFromContact(true)
                                 .setDeliveryState(DeliveryState.DELIVERED)
                                 .setConversationId("conversationId")
                                 .setChannelId("channelId")

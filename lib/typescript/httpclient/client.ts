@@ -1,3 +1,4 @@
+import {Tag, Message, Channel, User, Conversation, Config, Template} from 'model';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelFacebookRequestPayload,
@@ -16,8 +17,6 @@ import {
   ListTemplatesRequestPayload,
   PaginatedResponse,
 } from './payload';
-
-import {Tag, Message, Channel, User, Conversation, Config, Template} from './model';
 import {
   listChannelsDef,
   listConversationsDef,

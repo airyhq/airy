@@ -7,7 +7,7 @@ import {Avatar} from 'render';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
-import {Message} from 'httpclient';
+import {Message} from 'model';
 import {MergedConversation} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations} from '../../../actions/conversations';

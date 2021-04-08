@@ -2,7 +2,7 @@ import React from 'react';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 import {LinkButton} from '@airyhq/components';
-import {Channel} from 'httpclient';
+import {Channel} from 'model';
 import {SourceInfo} from '../MainPage';
 import ChannelAvatar from '../../../components/ChannelAvatar';
 import {ReactComponent as PlusCircleIcon} from 'assets/images/icons/plus-circle.svg';

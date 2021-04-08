@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {WebSocketClient} from 'websocketclient';
-import {Message, Channel, MetadataEvent} from 'httpclient';
+import {Message, Channel, MetadataEvent} from 'model';
 import camelcaseKeys from 'camelcase-keys';
 
 import {env} from '../../env';

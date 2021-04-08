@@ -1,5 +1,5 @@
 import React from 'react';
-import {isFromContact, RenderedContentUnion} from 'httpclient';
+import {isFromContact, RenderedContentUnion} from 'model';
 import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';

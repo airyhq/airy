@@ -9,7 +9,8 @@ import {Button} from '@airyhq/components';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 import {Picker} from 'emoji-mart';
 import {SourceMessage} from 'render';
-import {getTextMessagePayload, Message, SuggestedReply, Suggestions, Template, Source} from 'httpclient';
+import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
+import {getTextMessagePayload} from 'httpclient';
 import 'emoji-mart/css/emoji-mart.css';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
@@ -201,7 +202,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
   const getLastMessageWithSuggestedReplies = useCallback(() => {
     const lastMessages = props.messages
-      ?.filter((message: Message) => message.senderType == 'source_contact')
+      ?.filter((message: Message) => message.fromContact)
       .slice(props.messages.length - 5)
       .reverse();
     return lastMessages?.find(

@@ -1,7 +1,7 @@
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/messages';
 import * as metadataActions from '../../../actions/metadata';
-import {Message, MessageMetadata} from 'httpclient';
+import {Message, MessageMetadata} from 'model';
 import {cloneDeep, merge, sortBy} from 'lodash-es';
 
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;

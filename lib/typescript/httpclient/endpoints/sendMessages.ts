@@ -1,4 +1,4 @@
-import {mapMessage} from '../model';
+import {mapMessage} from 'model';
 
 export const sendMessagesDef = {
   endpoint: 'messages.send',

@@ -2,7 +2,6 @@ package co.airy.core.webhook.publisher;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
 import co.airy.core.webhook.publisher.payload.QueueMessage;
@@ -112,7 +111,7 @@ public class PublisherTest {
                             .setSentAt(now)
                             .setUpdatedAt(null)
                             .setSenderId("sourceConversationId")
-                            .setSenderType(SenderType.APP_USER)
+                            .setIsFromContact(false)
                             .setDeliveryState(DeliveryState.DELIVERED)
                             .setConversationId("conversationId")
                             .setChannelId("channelId")
@@ -127,7 +126,7 @@ public class PublisherTest {
                             .setSentAt(now)
                             .setUpdatedAt(now) // field presence identifies message as update
                             .setSenderId("sourceConversationId")
-                            .setSenderType(SenderType.APP_USER)
+                            .setIsFromContact(false)
                             .setDeliveryState(DeliveryState.DELIVERED)
                             .setConversationId("conversationId")
                             .setChannelId("channelId")

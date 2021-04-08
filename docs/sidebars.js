@@ -61,15 +61,7 @@ module.exports = {
       ],
     },
     {
-      '💎 UI': [
-        'ui/introduction',
-        'ui/quickstart',
-        'ui/inbox',
-        'ui/channels',
-        'ui/tags',
-        'ui/components',
-        'ui/suggestedReplies',
-      ],
+      '💎 UI': ['ui/introduction', 'ui/quickstart', 'ui/inbox', 'ui/channels', 'ui/tags', 'ui/suggestedReplies'],
     },
     {
       '🛠️ Integrations': [

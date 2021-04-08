@@ -8,10 +8,10 @@ ts_web_library(
     name = "render",
     deps = [
         "//frontend/assets",  #TODO FIX ME
+        "//lib/typescript/components",
         "//lib/typescript/dates",
         "//lib/typescript/model",
         "//lib/typescript/types",
-        "@npm//@airyhq/components",
         "@npm//@types/node",
         "@npm//@types/react",
         "@npm//@types/resize-observer-browser",

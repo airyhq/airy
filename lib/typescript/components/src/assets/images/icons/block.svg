@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
+    <title>icon/interfaces/block</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="04-FF-blocking-your-experience" transform="translate(-379.000000, -216.000000)" fill="#D51548">
+            <g id="icon/interfaces/block" transform="translate(377.000000, 214.000000)">
+                <path d="M7.99914676,24.9436623 C10.1222748,26.8442761 12.9261705,28 16,28 C22.627417,28 28,22.627417 28,16 C28,12.9261705 26.8442761,10.1222748 24.9436623,7.99914676 L7.99914676,24.9436623 L7.99914676,24.9436623 Z M7.05633772,24.0008532 L24.0008532,7.05633772 C21.8777252,5.15572388 19.0738295,4 16,4 C9.372583,4 4,9.372583 4,16 C4,19.0738295 5.15572388,21.8777252 7.05633772,24.0008532 L7.05633772,24.0008532 Z M16,29.3333333 C8.63620334,29.3333333 2.66666667,23.3637967 2.66666667,16 C2.66666667,8.63620334 8.63620334,2.66666667 16,2.66666667 C23.3637967,2.66666667 29.3333333,8.63620334 29.3333333,16 C29.3333333,23.3637967 23.3637967,29.3333333 16,29.3333333 Z" id="Combined-Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

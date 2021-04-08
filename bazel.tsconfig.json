@@ -23,10 +23,10 @@
         "./frontend/assets/*"
       ],
       "components": [
-        "./frontend/components/src"
+        "./lib/typescript/components/src"
       ],
       "components/*": [
-        "./frontend/components/src/*"
+        "./lib/typescript/components/src/*"
       ],
       "model": [
         "./lib/typescript/model"

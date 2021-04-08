@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@airyhq/components": "latest",
     "@reduxjs/toolkit": "^1.5.1",
     "@stomp/stompjs": "^6.1.0",
     "@types/node": "14.14.37",
@@ -13,6 +12,7 @@
     "@types/react-router-dom": "^5.1.7",
     "camelcase-keys": "^6.2.2",
     "core-js": "3",
+    "emoji-mart": "3.0.0",
     "linkifyjs": "^2.1.9",
     "lodash-es": "^4.17.21",
     "preact": "^10.5.12",
@@ -26,6 +26,7 @@
     "react-window": "1.8.6",
     "react-window-infinite-loader": "1.0.7",
     "redux": "^4.0.5",
+    "reselect": "4.0.0",
     "regenerator-runtime": "^0.13.5",
     "reselect": "4.0.0",
     "typesafe-actions": "^5.1.0"

@@ -22,7 +22,6 @@ module_deps = [
 ts_web_library(
     name = "app",
     deps = module_deps + [
-        "@npm//@airyhq/components",
         "@npm//@types/node",
         "@npm//@types/react",
         "@npm//@types/react-dom",

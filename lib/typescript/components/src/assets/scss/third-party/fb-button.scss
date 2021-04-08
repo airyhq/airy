@@ -1,0 +1,12 @@
+@import '../../scss/fonts.scss';
+
+.kep-login-facebook.metro {
+  border-radius: 4px !important;
+  padding: 15px;
+  width: 100%;
+  text-transform: none;
+  @include font-base;
+  font-family: inherit;
+  font-weight: 400;
+  -webkit-font-smoothing: inherit;
+}

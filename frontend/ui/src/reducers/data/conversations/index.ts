@@ -207,10 +207,10 @@ function allReducer(
             ...state.items[action.payload.identifier],
             metadata: {
               // Ensure that there is always a display name present
-              ...(<MetadataEvent<ConversationMetadata>>action.payload).metadata,
+              ...(action.payload as MetadataEvent<ConversationMetadata>).metadata,
               contact: {
                 ...state.items[action.payload.identifier]?.metadata.contact,
-                ...(<MetadataEvent<ConversationMetadata>>action.payload).metadata.contact,
+                ...(action.payload as MetadataEvent<ConversationMetadata>).metadata.contact,
               },
             },
           },

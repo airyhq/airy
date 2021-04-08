@@ -46,7 +46,7 @@ web_app(
     name = "bundle",
     app_lib = ":app",
     dev_index = "development.html",
-    entry = "frontend/ui/src/index.js",
+    entry = "frontend/ui/src/index",
     index = ":index.html",
     module_deps = module_deps,
     output = {

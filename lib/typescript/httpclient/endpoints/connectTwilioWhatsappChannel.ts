@@ -1,7 +1,5 @@
-import {ConnectTwilioWhatsappRequestPayload} from '../payload';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
-import {HttpClient} from '../client';
 
 export const connectTwilioWhatsappChannelDef = {
   endpoint: 'channels.twilio.whatsapp.connect',

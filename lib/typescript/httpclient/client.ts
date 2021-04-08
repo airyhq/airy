@@ -36,6 +36,11 @@ import {
   loginViaEmailDef,
   updateTagDef,
   deleteTagDef,
+  tagConversationDef,
+  untagConversationDef,
+  sendMessagesDef,
+  getConfigDef,
+  listTemplatesDef,
 } from './endpoints';
 
 function isString(object: any) {
@@ -161,15 +166,15 @@ export class HttpClient {
 
   public loginViaEmail = this.getRequest<LoginViaEmailRequestPayload, User>(loginViaEmailDef);
 
-  public tagConversation: ApiRequest<TagConversationRequestPayload>;
+  public tagConversation = this.getRequest<TagConversationRequestPayload>(tagConversationDef);
 
-  public untagConversation: ApiRequest<UntagConversationRequestPayload>;
+  public untagConversation = this.getRequest<UntagConversationRequestPayload>(untagConversationDef);
 
-  public sendMessages: ApiRequest<SendMessagesRequestPayload, Message>;
+  public sendMessages = this.getRequest<SendMessagesRequestPayload, Message>(sendMessagesDef);
 
-  public getConfig: ApiRequest<void, Config>;
+  public getConfig = this.getRequest<void, Config>(getConfigDef);
 
-  public listTemplates: ApiRequest<ListTemplatesRequestPayload, Template[]>;
+  public listTemplates = this.getRequest<ListTemplatesRequestPayload, Template[]>(listTemplatesDef);
 
   private getRequest<K, V = void>({
     endpoint,

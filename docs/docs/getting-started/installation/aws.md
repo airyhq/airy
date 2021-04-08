@@ -91,7 +91,7 @@ kubectl get pods --kubeconfig ./kube.conf
 
 ### Common issues
 
-AWS has a limit on the number of objects you create depending on your account.
+AWS has a limit on the number of objects you can create depending on your account.
 
 ```
 Error creating vpc:  operation error EC2: CreateVpc, https response error StatusCode: 400, RequestID: 64210ff5-9aca-4ab7-b993-3727637a59d6, api error VpcLimitExceeded: The maximum number of VPCs has been reached.

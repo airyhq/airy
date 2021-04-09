@@ -104,13 +104,6 @@ class InputComponent extends Component<InputProps, IState> {
       return;
     }
 
-    /**
-     * In #1106 Thomas described that he also wants to prevent
-     * People to enter urls like http://example , which in itself
-     * is a valid url based on the specs, but we want to make sure
-     * the users also enter at least a domain + tld, so we check here
-     * if there is a dot inside of the field just to be save.
-     */
     if (!inputElement.value.match(/.*\w\.\w.*/)) {
       this.setState({
         validationResult: 'The URL is invalid',

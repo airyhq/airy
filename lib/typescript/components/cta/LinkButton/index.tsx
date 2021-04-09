@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 
 import styles from './style.module.scss';
 
-export const LinkButton = ({children, onClick, type, dataCy}) => (
+type Props = {
+  children: React.ReactNode;
+  href?: string;
+  type?: "submit" | "reset" | "button";
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  dataCy?: string;
+};
+
+export const LinkButton = ({children, onClick, type, dataCy}: Props) => (
   <button type={type} className={styles.button} onClick={onClick} data-cy={dataCy}>
     {children}
   </button>

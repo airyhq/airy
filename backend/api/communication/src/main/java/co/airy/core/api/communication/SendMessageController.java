@@ -10,7 +10,6 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
 import co.airy.model.metadata.dto.MetadataMap;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.KafkaProducer;

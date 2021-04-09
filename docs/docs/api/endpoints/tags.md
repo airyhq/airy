@@ -25,7 +25,9 @@ If the tag is successfully created, the request returns status code `201` (creat
 
 ```json5
 {
-  "id": "TAG-UUID"
+  "id": "TAG-UUID",
+  "name": "Urgent",
+  "color": "tag-red"
 }
 ```
 

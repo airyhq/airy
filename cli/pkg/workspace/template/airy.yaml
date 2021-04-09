@@ -1,5 +1,5 @@
 global:
-  appImageTag: develop
+  appImageTag: christophproschel
   containerRegistry: ghcr.io/airyhq
   namespace: default
   ngrokEnabled: false

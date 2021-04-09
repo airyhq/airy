@@ -10,7 +10,6 @@ import co.airy.core.chat_plugin.payload.ResumeTokenRequestPayload;
 import co.airy.core.chat_plugin.payload.ResumeTokenResponsePayload;
 import co.airy.core.chat_plugin.payload.SendMessageRequestPayload;
 import co.airy.model.message.dto.MessageResponsePayload;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

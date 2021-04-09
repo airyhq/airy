@@ -1,7 +1,6 @@
 package co.airy.core.sources.google;
 
 import co.airy.kafka.schema.source.SourceGoogleEvents;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;

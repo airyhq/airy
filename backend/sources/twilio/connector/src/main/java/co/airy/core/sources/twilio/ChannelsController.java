@@ -7,7 +7,6 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
 import lombok.AllArgsConstructor;
 import lombok.Data;

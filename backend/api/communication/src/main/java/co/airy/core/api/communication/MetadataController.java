@@ -5,7 +5,6 @@ import co.airy.core.api.communication.payload.UpsertMetadataRequestPayload;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.MetadataObjectMapper;
 import co.airy.model.metadata.Subject;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

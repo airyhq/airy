@@ -1,8 +1,8 @@
 package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.Metadata;
 import co.airy.core.api.admin.payload.ChannelsResponsePayload;
 import co.airy.model.channel.ChannelPayload;
 import co.airy.model.channel.dto.ChannelContainer;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

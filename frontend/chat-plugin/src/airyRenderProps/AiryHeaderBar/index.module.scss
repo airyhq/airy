@@ -40,4 +40,25 @@
   background: transparent;
   border-radius: 100%;
   cursor: pointer;
+
+  path {
+    fill: #fff;
+  }
+}
+
+.minimizeButton {
+  outline: none;
+  position: absolute;
+  right: 12%;
+  padding: 2px 0 0 2px;
+  border: none;
+  height: 32px;
+  width: 32px;
+  background: #1578d4;
+  border-radius: 100%;
+  cursor: pointer;
+
+  path {
+    fill: #fff;
+  }
 }

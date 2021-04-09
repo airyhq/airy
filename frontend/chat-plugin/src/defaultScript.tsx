@@ -28,6 +28,7 @@ declare const window: {
   airy: {
     host: string;
     channelId: string;
+    resumeToken?: string;
     config?: Config;
   };
 };
@@ -35,6 +36,7 @@ declare const window: {
 if (window.airy.channelId) {
   new AiryWidget({
     channelId: window.airy.channelId,
+    resumeToken: window.airy.resumeToken,
     config: window.airy.config,
   }).render(anchor);
 } else {

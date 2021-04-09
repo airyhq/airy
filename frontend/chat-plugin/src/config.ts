@@ -8,6 +8,7 @@ export type RenderProp = (ctrl?: RenderCtrl) => JSX.Element;
 
 export type AuthConfiguration = {
   channelId: string;
+  resumeToken?: string;
   config?: Config;
 };
 

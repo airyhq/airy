@@ -34,20 +34,19 @@ Switch to the **Install & Customize** register and start customizing your Airy C
 
 If you are happy with your customization, copy it and add this code inside the tag `<head>`.
 
-| Option name | Option description |
-| ----------- | ------------------ |
-| Header text | Set the header text of your Airy Chat Plugin |
-| Chat Plugin Icon | Set your company icon here |
-| Input Icon | Set your icon as `sendButton` |
-| Primary Color | Set your primary color |
-| Accent Color | Set your accent color  |
-| Background Color | Set your background color |
+| Option name      | Option description                                                                           |
+| ---------------- | -------------------------------------------------------------------------------------------- |
+| Header text      | Set the header text of your Airy Chat Plugin                                                 |
+| Chat Plugin Icon | Set your company icon which appears on the button that opens and closes the Airy Chat Plugin |
+| Input Icon       | Set your icon as `sendButton` and replace the default paperplane                             |
+| Primary Color    | Set your primary color as the topbar, border of `textArea` or text color of `buttons`        |
+| Accent Color     | Set your accent color as the `sendButton`                                                    |
+| Background Color | Set the background color of the entire Airy Chat Plugin                                      |
 
 **Sample**
 
-
-| Default Style | Customized Style |
-| ------------- | ---------------- |
+| Default Style                                                                                                   | Customized Style                                                                                                   |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | <img alt="Basic Customization Example" src={useBaseUrl('img/sources/chatplugin/defaultStyleChatplugin.png')} /> | <img alt="Basic Customization Example" src={useBaseUrl('img/sources/chatplugin/customizedStyleChatplugin.png')} /> |
 
 ### Advanced customization

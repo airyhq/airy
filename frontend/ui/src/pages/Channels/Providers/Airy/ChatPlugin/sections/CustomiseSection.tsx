@@ -1,5 +1,5 @@
 import React, {createRef, useState} from 'react';
-import {Button, Input, ListenOutsideClick} from '@airyhq/components';
+import {Button, Input, ListenOutsideClick} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
 

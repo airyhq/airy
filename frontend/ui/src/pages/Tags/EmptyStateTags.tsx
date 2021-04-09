@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button} from '@airyhq/components';
+import {Button} from 'components';
 import {ReactComponent as EmptyImage} from 'assets/images/empty-state/tags-empty-state.svg';
 
 import SimpleTagForm from './SimpleTagForm';

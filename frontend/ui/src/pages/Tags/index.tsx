@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
-import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/components';
+import {SettingsModal, LinkButton, Button, SearchField, Input} from 'components';
 import {cyTagsSearchField, cyTagsTable} from 'handles';
 import {ReactComponent as Plus} from 'assets/images/icons/plus.svg';
 

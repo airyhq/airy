@@ -7,7 +7,7 @@ import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions/channel';
 
-import {Button, LinkButton} from '@airyhq/components';
+import {Button, LinkButton} from 'components';
 import {Channel} from 'model';
 
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';

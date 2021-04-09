@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {SettingsModal} from '@airyhq/components';
+import {SettingsModal} from 'components';
 import close from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';

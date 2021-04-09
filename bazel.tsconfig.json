@@ -17,16 +17,16 @@
     "jsx": "react",
     "paths": {
       "assets": [
-        "./frontend/assets"
+        "./lib/typescript/assets"
       ],
       "assets/*": [
-        "./frontend/assets/*"
+        "./lib/typescript/assets/*"
       ],
       "components": [
-        "./frontend/components/src"
+        "./lib/typescript/components"
       ],
       "components/*": [
-        "./frontend/components/src/*"
+        "./lib/typescript/components/*"
       ],
       "model": [
         "./lib/typescript/model"

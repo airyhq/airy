@@ -5,7 +5,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {connectFacebookChannel} from '../../../../../actions/channel';
 import {StateModel} from '../../../../../reducers';
 
-import {Button, Input, LinkButton} from '@airyhq/components';
+import {Button, Input, LinkButton} from 'components';
 import {ConnectChannelFacebookRequestPayload} from 'httpclient';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
 

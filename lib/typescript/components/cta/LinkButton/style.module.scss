@@ -1,0 +1,12 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.button {
+  @include font-base;
+  border: 0;
+  padding: 0;
+  background-color: white;
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--color-airy-blue);
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 
-import {LinkButton} from '@airyhq/components';
+import {LinkButton} from 'components';
 import {Channel} from 'model';
 import {SourceInfo} from '../MainPage';
 import ChannelAvatar from '../../../components/ChannelAvatar';

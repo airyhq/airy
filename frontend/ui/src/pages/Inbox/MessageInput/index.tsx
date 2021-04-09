@@ -5,7 +5,7 @@ import {sendMessages} from '../../../actions/messages';
 import TemplateSelector from '../TemplateSelector';
 import 'emoji-mart/css/emoji-mart.css';
 import {withRouter} from 'react-router-dom';
-import {Button} from '@airyhq/components';
+import {Button} from 'components';
 import {cyMessageSendButton, cyMessageTextArea} from 'handles';
 import {Picker} from 'emoji-mart';
 import {SourceMessage} from 'render';

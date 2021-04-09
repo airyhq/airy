@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {ListenOutsideClick} from '@airyhq/components';
+import {ListenOutsideClick} from 'components';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
-import {SearchField, ErrorNotice} from '@airyhq/components';
+import {SearchField, ErrorNotice} from 'components';
 import {Template, Source} from 'model';
 import {StateModel} from '../../../reducers';
 import emptyState from 'assets/images/empty-state/templates-empty-state.png';

@@ -1,11 +1,11 @@
-import React, { MouseEventHandler } from 'react';
+import React, {MouseEventHandler} from 'react';
 
 import styles from './style.module.scss';
 
 type Props = {
   children: React.ReactNode;
   href?: string;
-  type?: "submit" | "reset" | "button";
+  type?: 'submit' | 'reset' | 'button';
   onClick?: MouseEventHandler<HTMLButtonElement>;
   dataCy?: string;
 };

@@ -7,9 +7,9 @@ package(default_visibility = ["//visibility:public"])
 ts_web_library(
     name = "render",
     deps = [
-        "//frontend/assets",  #TODO FIX ME        
-        "//lib/typescript/dates",
+        "//frontend/assets",  #TODO FIX ME
         "//lib/typescript/components",
+        "//lib/typescript/dates",
         "//lib/typescript/model",
         "//lib/typescript/types",
         "@npm//@types/node",

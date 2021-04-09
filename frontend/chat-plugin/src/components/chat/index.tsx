@@ -21,6 +21,7 @@ const camelcaseKeys = require('camelcase-keys');
 import {cyBubble, cyChatPluginMessageList} from 'chat-plugin-handles';
 import {getResumeTokenFromStorage, resetStorage} from '../../storage';
 import {ModalDialogue} from '../../components/modal';
+import NewConversation from '../../components/newConversation';
 import {start} from '../../api';
 
 let ws: WebSocket;
@@ -135,7 +136,7 @@ const Chat = (props: Props) => {
   };
 
   const reAuthenticate = () => {
-    start(props.channelId, props.resumeToken);
+    start(props.channelId, getResumeTokenFromStorage(props.channelId));
   };
 
   const headerBar = props.headerBarProp
@@ -153,18 +154,7 @@ const Chat = (props: Props) => {
             setNewConversation={setNewConversation}
           />
         ) : (
-          <div>
-            <div className={style.paragraphWrapper}>
-              <p className={style.newConversation}>Your conversation has ended. Thank you for</p>{' '}
-              <p className={style.newConversationLine}>chatting with us today.</p>
-            </div>
-
-            <div>
-              <a href="" onClick={reAuthenticate} className={style.newConversationLink}>
-                Click Here To Start a New Conversation
-              </a>
-            </div>
-          </div>
+          <NewConversation reAuthenticate={reAuthenticate} />
         );
 
   const bubble = props.bubbleProp

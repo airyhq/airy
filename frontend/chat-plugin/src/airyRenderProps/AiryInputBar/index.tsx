@@ -15,12 +15,9 @@ const AiryInputBar = (props: AiryInputBarProps) => {
   const dataCyTextareaId = cyInputbarTextarea;
 
   useEffect(() => {
-    if (textInputRef.current === null) {
-      return;
-    }
     textInputRef.current.selectionStart = props.messageString.length;
     textInputRef.current.selectionEnd = props.messageString.length;
-  }, [props.messageString, textInputRef]);
+  }, []);
 
   const resizeTextarea = () => {
     const textArea = textInputRef.current;

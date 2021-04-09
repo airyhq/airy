@@ -1,20 +1,16 @@
 import React, {Component} from 'react';
-
 import style from './App.module.scss';
 import Chat from './components/chat';
-import {getResumeTokenFromStorage} from './storage';
 
 export default class App extends Component {
   render() {
     const queryParams = new URLSearchParams(window.location.search);
     const channelId = queryParams.get('channel_id');
-    const resumeToken = getResumeTokenFromStorage(channelId);
 
     return (
       <div className={style.container}>
         {channelId ? (
           <Chat
-            resumeToken={resumeToken}
             channelId={channelId}
             welcomeMessage={{
               fallback: 'Hello!\n\nWelcome to Airy!',

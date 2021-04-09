@@ -27,7 +27,7 @@ declare const window: {
   airy: {
     host: string;
     channelId: string;
-    resumeToken: string;
+    resumeToken?: string;
     welcomeMessage: {};
   };
 };

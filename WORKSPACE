@@ -42,6 +42,7 @@ maven_install(
         "io.jsonwebtoken:jjwt-impl:0.10.5",
         "io.jsonwebtoken:jjwt-jackson:0.10.5",
         "io.lettuce:lettuce-core:5.3.3.RELEASE",
+        "io.micrometer:micrometer-registry-prometheus:1.6.5",
         "io.zonky.test:embedded-database-spring-test:1.5.1",
         "javax.activation:javax.activation-api:1.2.0",
         "javax.validation:validation-api:2.0.1.Final",

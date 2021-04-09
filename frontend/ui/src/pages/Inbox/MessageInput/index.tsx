@@ -63,6 +63,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
+  const [disconnectedChannelToolTip, setDisconnectedChannelToolTip] = useState(false);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
 
   const textAreaRef = useRef(null);
@@ -79,7 +80,21 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     textAreaRef.current.style.height = scrollHeight + 'px';
   }, [input]);
 
+  useEffect(() => {
+    if (!conversation.channel.connected) {
+      setInput('');
+      textAreaRef.current.style.cursor = 'not-allowed';
+    } else {
+      textAreaRef.current.style.cursor = 'auto';
+    }
+
+    setDisconnectedChannelToolTip(!conversation.channel.connected);
+  }, [conversation.channel.connected]);
+
   const sendMessage = () => {
+    if (!conversation.channel.connected) {
+      return;
+    }
     setSelectedSuggestedReply(null);
     setSelectedTemplate(null);
     sendMessages(
@@ -152,11 +167,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
       if (isTextMessage(template)) {
         setInput(jsonTemplate.text);
-        setIsShowingTemplateModal(false);
       } else {
-        setIsShowingTemplateModal(false);
         setSelectedTemplate({message: template, source: template.source});
       }
+
+      setIsShowingTemplateModal(false);
       sendButtonRef.current.focus();
     };
 
@@ -182,15 +197,21 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             </div>
           )}
           <button
-            className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''} ${
+              disconnectedChannelToolTip ? styles.disabledIconButton : styles.activeIconButton
+            }`}
             type="button"
+            disabled={disconnectedChannelToolTip ? true : false}
             onClick={() => handleEmojiDrawer()}>
             <div className={styles.actionToolTip}>Emojis</div>
             <Smiley aria-hidden />
           </button>
           <button
-            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''} ${
+              disconnectedChannelToolTip ? styles.disabledIconButton : styles.activeIconButton
+            }`}
             type="button"
+            disabled={disconnectedChannelToolTip ? true : false}
             onClick={() => toggleTemplateModal()}>
             <div className={styles.actionToolTip}>Templates</div>
             <TemplateAlt aria-hidden />
@@ -261,12 +282,13 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
                   ref={textAreaRef}
                   rows={1}
                   name="inputBar"
-                  placeholder="Enter a message..."
-                  autoFocus={true}
+                  placeholder={disconnectedChannelToolTip ? '' : 'Enter a message...'}
+                  autoFocus={disconnectedChannelToolTip ? false : true}
                   value={input}
                   onChange={handleChange}
                   onKeyDown={handleKeyDown}
                   data-cy={cyMessageTextArea}
+                  disabled={disconnectedChannelToolTip ? true : false}
                 />
                 <InputOptions />
               </>
@@ -300,14 +322,21 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
         </div>
 
         <div className={styles.sendDiv}>
+          {disconnectedChannelToolTip && (
+            <div className={styles.disconnectedChannelToolTip}>
+              <p>Sending messages is disabled because this channel was disconnected.</p>
+            </div>
+          )}
           <button
             type="button"
             ref={sendButtonRef}
             className={`${styles.sendButton} ${
-              (input || selectedTemplate || selectedSuggestedReply) && styles.sendButtonActive
+              (input || selectedTemplate) && !disconnectedChannelToolTip && styles.sendButtonActive
             }`}
             onClick={handleClick}
-            disabled={input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply}
+            disabled={
+              (input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply) || disconnectedChannelToolTip
+            }
             data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <Paperplane />

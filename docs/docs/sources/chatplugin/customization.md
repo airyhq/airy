@@ -7,7 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Introduction
 
-We support two ways of customizing your Airy Chat Plugin. For most use cases the [basic customization](#basic-customization) is all you need as it supports the essential options to customize the experience. If you need full control  of every aspect of the plugin, we offer the possibility of [advanced customization](#advanced-customization) with Render Props.
+We support two ways of customizing your Airy Chat Plugin. For most use cases the [basic customization](#basic-customization) is all you need as it supports the essential options to customize the experience. If you need full control of every aspect of the plugin, we offer the possibility of [advanced customization](#advanced-customization) with Render Props.
 
 ## How to customize the Airy Chat Plugin
 

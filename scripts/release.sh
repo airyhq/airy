@@ -9,8 +9,8 @@ start() {
     create_issue
     create_release_branch
     update_release_version
-    commit_version_and_changelog
     rename_draft_release
+    commit_version_and_changelog
 }
 
 create_issue() {
@@ -91,13 +91,12 @@ merge_develop() {
 
 rename_draft_release() {
     release_id=$(
-        command curl -H "Authorization: token ${GITHUB_TOKEN}" -X GET \
+        command curl -s -H "Authorization: token ${GITHUB_TOKEN}" -X GET \
             https://api.github.com/repos/airyhq/airy/releases | jq '.[0].id'
     )
-    command curl -H "Authorization: token ${GITHUB_TOKEN}" -X PATCH \
+    command curl -s -H "Authorization: token ${GITHUB_TOKEN}" -X PATCH \
         https://api.github.com/repos/airyhq/airy/releases/"$release_id" \
-        -d "{\"name\":\"${release_number}\", \"tag_name\":\"${release_number}\"}"
-
+        -d "{\"name\":\"${release_number}\", \"tag_name\":\"${release_number}\"}" > /dev/null
 }
 
 if [[ -z ${1+x} || -z ${2+x} ]]; then

@@ -2,8 +2,19 @@ import React, {ReactNode} from 'react';
 
 import styles from './style.module.scss';
 
-export const Button = ({children, onClick, type, styleVariant, disabled, tabIndex, dataCy}: buttonProps) => {
-  const styleFor = variant => {
+type styleVariantType = 'small' | 'normal' | 'outline' | 'outline-big' | 'warning' | 'link' | 'text';
+type ButtonProps = {
+  children: ReactNode;
+  onClick?: (event?) => void;
+  type?: 'submit' | 'button' | 'reset';
+  disabled?: boolean;
+  styleVariant?: styleVariantType;
+  tabIndex?: any;
+  dataCy?: string;
+};
+
+export const Button = ({children, onClick, type, styleVariant, disabled, tabIndex, dataCy}: ButtonProps) => {
+  const styleFor = (variant: styleVariantType) => {
     switch (variant) {
       case 'small':
         return styles.smallButton;
@@ -28,25 +39,9 @@ export const Button = ({children, onClick, type, styleVariant, disabled, tabInde
       disabled={disabled || false}
       className={styleFor(styleVariant)}
       onClick={onClick}
-      //@ts-ignore
       tabIndex={tabIndex}
       data-cy={dataCy}>
       {children}
     </button>
   );
-};
-
-type buttonProps = {
-  /** button text */
-  children: ReactNode;
-  /** button clicked callback */
-  onClick?: (event?) => void;
-  /** the button type */
-  type?: 'submit' | 'button' | 'reset';
-  disabled?: boolean;
-  /** the button style variation */
-  styleVariant?: 'small' | 'normal' | 'outline' | 'outline-big' | 'warning' | 'link' | 'text';
-  tabIndex?: any;
-  /** a handle for Cypress */
-  dataCy?: string;
 };

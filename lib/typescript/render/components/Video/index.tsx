@@ -25,9 +25,6 @@ export const Video = ({videoUrl}: VideoRenderProps) => {
     setVideoFailed(true);
   };
 
-  console.log('rendering it');
-  console.log(videoUrl);
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.item}>

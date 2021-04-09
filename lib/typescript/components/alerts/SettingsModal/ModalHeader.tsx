@@ -4,7 +4,7 @@ import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 type ModalHeaderProps = {
   title: string;
-  close: (event: any) => void;
+  close: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const ModalHeader = ({title, close}: ModalHeaderProps) => {

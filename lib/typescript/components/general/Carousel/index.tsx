@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef} from 'react';
 import styles from './index.module.scss';
-import {ReactComponent as LeftArrow} from '../../assets/images/icons/leftArrow.svg';
-import {ReactComponent as RightArrow} from '../../assets/images/icons/rightArrow.svg';
+import {ReactComponent as LeftArrow} from 'assets/images/icons/leftArrow.svg';
+import {ReactComponent as RightArrow} from 'assets/images/icons/rightArrow.svg';
 
 export const Carousel = ({children}) => {
   const carouselChildren = useRef<HTMLDivElement>(null);

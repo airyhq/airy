@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="850" src="../assets/airy_demo_login.png" alt="Airy Login" />
+    <img width="850" src="assets/airy_demo_login.png" alt="Airy Login" />
     </a>
 </p>
 

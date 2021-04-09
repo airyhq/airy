@@ -9,7 +9,7 @@ load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 check_pkg(name = "buildifier")
 
 module_deps = [
-    "//frontend/assets",
+    "//lib/typescript/assets",
     "//lib/typescript/components",
     "//lib/typescript/types",
     "//lib/typescript/model",

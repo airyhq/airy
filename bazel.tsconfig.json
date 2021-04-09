@@ -17,10 +17,10 @@
     "jsx": "react",
     "paths": {
       "assets": [
-        "./frontend/assets"
+        "./lib/typescript/assets"
       ],
       "assets/*": [
-        "./frontend/assets/*"
+        "./lib/typescript/assets/*"
       ],
       "components": [
         "./lib/typescript/components"

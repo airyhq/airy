@@ -3,7 +3,7 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 
+## 0.16.0
 
 #### 🚀 Features
 

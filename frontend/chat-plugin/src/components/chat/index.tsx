@@ -13,7 +13,7 @@ import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
 import {AiryWidgetConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import {SenderType, MessageState, isFromContact, Message} from 'httpclient';
+import {MessageState, isFromContact, Message} from 'model';
 import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -27,15 +27,17 @@ const defaultWelcomeMessage: Message = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   content: {text: 'Hello! How can we help you?'},
   deliveryState: MessageState.delivered,
-  senderType: SenderType.appUser,
+  fromContact: false,
   sentAt: new Date(),
 };
 
 type Props = AiryWidgetConfiguration;
 
 const Chat = (props: Props) => {
-  if (props.welcomeMessage) {
-    defaultWelcomeMessage.content = props.welcomeMessage;
+  const {config} = props;
+
+  if (config && config.welcomeMessage) {
+    defaultWelcomeMessage.content = config.welcomeMessage;
   }
 
   const [installError, setInstallError] = useState('');
@@ -46,6 +48,8 @@ const Chat = (props: Props) => {
   const [connectionState, setConnectionState] = useState(null);
 
   useEffect(() => {
+    if (config.showMode) return;
+
     ws = new WebSocket(props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
       setConnectionState(state);
     });
@@ -88,6 +92,7 @@ const Chat = (props: Props) => {
   };
 
   const sendMessage = (text: string) => {
+    if (config.showMode) return;
     ctrl.sendMessage(text);
   };
 
@@ -120,17 +125,29 @@ const Chat = (props: Props) => {
 
   const headerBar = props.headerBarProp
     ? () => props.headerBarProp(ctrl)
-    : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} />;
+    : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} config={config} />;
 
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
     : () => (
-        <AiryInputBar sendMessage={sendMessage} messageString={messageString} setMessageString={setMessageString} />
+        <AiryInputBar
+          sendMessage={sendMessage}
+          messageString={messageString}
+          setMessageString={setMessageString}
+          config={config}
+        />
       );
 
   const bubble = props.bubbleProp
     ? () => props.bubbleProp(ctrl)
-    : () => <AiryBubble isChatHidden={isChatHidden} toggleHideChat={ctrl.toggleHideChat} dataCyId={cyBubble} />;
+    : () => (
+        <AiryBubble
+          isChatHidden={isChatHidden}
+          toggleHideChat={ctrl.toggleHideChat}
+          dataCyId={cyBubble}
+          config={config}
+        />
+      );
 
   if (installError) {
     return null;
@@ -148,7 +165,9 @@ const Chat = (props: Props) => {
   return (
     <div className={style.main}>
       {!isChatHidden && (
-        <div className={`${style.container} ${styleFor(animation)}`}>
+        <div
+          className={`${style.container} ${styleFor(animation)}`}
+          style={config.backgroundColor && {backgroundColor: config.backgroundColor}}>
           <HeaderBarProp render={headerBar} />
           <div className={style.connectedContainer}>
             <div className={style.chat}>

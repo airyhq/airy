@@ -1,4 +1,4 @@
-import {isFromContact, RenderedContentUnion} from 'httpclient';
+import {isFromContact, RenderedContentUnion} from 'model';
 import {DefaultRenderingProps} from './components';
 
 export interface Command {

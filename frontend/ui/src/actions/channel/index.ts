@@ -1,8 +1,9 @@
 import _typesafe, {createAction} from 'typesafe-actions';
 import _, {Dispatch} from 'redux';
 
+import {Channel} from 'model';
+
 import {
-  Channel,
   ConnectChannelFacebookRequestPayload,
   ExploreChannelRequestPayload,
   DisconnectChannelRequestPayload,
@@ -11,6 +12,7 @@ import {
   ConnectTwilioWhatsappRequestPayload,
   UpdateChannelRequestPayload,
 } from 'httpclient';
+
 import {HttpClientInstance} from '../../InitializeAiryApi';
 
 const SET_CURRENT_CHANNELS = '@@channel/SET_CHANNELS';

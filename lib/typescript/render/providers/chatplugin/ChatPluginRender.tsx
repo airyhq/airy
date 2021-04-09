@@ -5,8 +5,8 @@ import {RichCard} from '../../components/RichCard';
 import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {Text} from '../../components/Text';
 import {AttachmentUnion, ContentUnion, SimpleAttachment} from './chatPluginModel';
-import {RenderedContentUnion} from 'httpclient';
 import {QuickReplies} from './components/QuickReplies/index';
+import {RenderedContentUnion} from 'model';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.content), props);

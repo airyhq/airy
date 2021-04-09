@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.source.SourceTwilioEvents;
@@ -68,7 +67,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                                 messageId,
                                 Message.newBuilder()
                                         .setSenderId(sourceConversationId)
-                                        .setSenderType(SenderType.SOURCE_CONTACT)
+                                        .setIsFromContact(true)
                                         .setSource(channel.getSource())
                                         .setContent(payload)
                                         .setDeliveryState(DeliveryState.DELIVERED)

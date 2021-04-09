@@ -28,7 +28,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;
 
-import static co.airy.model.message.MessageRepository.isFromContact;
 import static co.airy.model.metadata.MetadataRepository.getId;
 
 @Component
@@ -62,7 +61,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                 .aggregate(SendMessageRequest::new,
                         (conversationId, message, aggregate) -> {
                             final SendMessageRequest.SendMessageRequestBuilder requestBuilder = aggregate.toBuilder();
-                            if (isFromContact(message)) {
+                            if (message.getIsFromContact()) {
                                 requestBuilder.sourceConversationId(message.getSenderId());
                             }
                             return requestBuilder.build();

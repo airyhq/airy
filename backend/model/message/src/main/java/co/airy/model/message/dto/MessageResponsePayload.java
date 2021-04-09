@@ -18,9 +18,9 @@ import static co.airy.model.metadata.MetadataObjectMapper.getMetadataPayload;
 public class MessageResponsePayload {
     private String id;
     private Object content;
-    private String senderType;
     private String sentAt;
     private String deliveryState;
+    private boolean isFromContact;
     private String source;
     private JsonNode metadata;
 
@@ -28,7 +28,7 @@ public class MessageResponsePayload {
         final Message message = messageContainer.getMessage();
         return MessageResponsePayload.builder()
                 .content(resolveContent(message, messageContainer.getMetadataMap()))
-                .senderType(message.getSenderType().toString().toLowerCase())
+                .isFromContact(message.getIsFromContact())
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))
@@ -40,7 +40,7 @@ public class MessageResponsePayload {
     public static MessageResponsePayload fromMessage(Message message) {
         return MessageResponsePayload.builder()
                 .content(resolveContent(message))
-                .senderType(message.getSenderType().toString().toLowerCase())
+                .isFromContact(message.getIsFromContact())
                 .deliveryState(message.getDeliveryState().toString().toLowerCase())
                 .id(message.getId())
                 .sentAt(isoFromMillis(message.getSentAt()))

@@ -1,4 +1,4 @@
-import {Content} from 'httpclient';
+import {Content} from 'model';
 
 export const isTextMessage = (content: Content) => {
   if (

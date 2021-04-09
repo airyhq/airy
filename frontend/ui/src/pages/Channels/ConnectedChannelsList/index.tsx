@@ -6,7 +6,7 @@ import {sortBy} from 'lodash-es';
 import {StateModel} from './../../../reducers';
 import {allChannels} from './../../../selectors/channels';
 
-import {Channel, Source} from 'httpclient';
+import {Channel, Source} from 'model';
 import ChannelListItem from './ChannelListItem';
 import {SearchField} from '@airyhq/components';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';

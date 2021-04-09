@@ -1,4 +1,4 @@
-import {Message} from 'httpclient';
+import {Message} from 'model';
 
 export function dateFormat(date: Date) {
   const now = new Date();

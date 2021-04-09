@@ -1,7 +1,8 @@
 import _typesafe, {createAction} from 'typesafe-actions';
 import _, {Dispatch} from 'redux';
 
-import {User, LoginViaEmailRequestPayload} from 'httpclient';
+import {User} from 'model';
+import {LoginViaEmailRequestPayload} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {clearUserData} from '../../cookies';
 

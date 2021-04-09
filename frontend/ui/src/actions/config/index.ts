@@ -1,4 +1,4 @@
-import {Config} from 'httpclient';
+import {Config} from 'model';
 import _, {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
 

@@ -11,7 +11,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 module_deps = [
     "//frontend/assets",
     "//lib/typescript/types",
-    "//lib/typescript/httpclient",
+    "//lib/typescript/model",
     "//lib/typescript/render",
     "//lib/typescript/dates",
     "//frontend/chat-plugin/handles:chat-plugin-handles",
@@ -24,7 +24,7 @@ web_app(
         "react-dom": "preact/compat",
     },
     app_lib = ":app",
-    entry = "frontend/chat-plugin/src/iframe.js",
+    entry = "frontend/chat-plugin/src/iframe",
     index = ":development.html",
     module_deps = module_deps,
     output = {

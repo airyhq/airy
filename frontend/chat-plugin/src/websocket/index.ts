@@ -2,7 +2,7 @@ import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 import {start, getResumeToken, sendMessage} from '../api';
 import {QuickReplyCommand, SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
-import {Message} from 'httpclient';
+import {Message} from 'model';
 import {getResumeTokenFromStorage, resetStorage} from '../storage';
 
 /* eslint-disable @typescript-eslint/no-var-requires */

@@ -1,7 +1,7 @@
 import React from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
-import {Tag as TagModel} from 'httpclient';
+import {Tag as TagModel} from 'model';
 import {Settings} from '../../reducers/data/settings';
 
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';

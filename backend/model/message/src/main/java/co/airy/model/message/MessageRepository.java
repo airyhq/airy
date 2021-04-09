@@ -2,7 +2,6 @@ package co.airy.model.message;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.model.metadata.dto.MetadataMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,15 +18,6 @@ public class MessageRepository {
 
     public static boolean isNewMessage(Message message) {
         return message.getUpdatedAt() == null;
-    }
-
-    // In preparation for https://github.com/airyhq/airy/issues/572
-    public static boolean isFromContact(Message message) {
-        return message.getSenderType().equals(SenderType.SOURCE_CONTACT);
-    }
-
-    public static boolean isFromAiry(Message message) {
-        return message.getSenderType().equals(SenderType.APP_USER);
     }
 
     public static Object resolveContent(Message message) {

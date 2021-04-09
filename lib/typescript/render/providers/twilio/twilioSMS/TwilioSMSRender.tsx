@@ -1,5 +1,5 @@
 import React from 'react';
-import {isFromContact, RenderedContentUnion} from 'httpclient';
+import {isFromContact, RenderedContentUnion} from 'model';
 import {Text} from '../../../components/Text';
 import {getDefaultRenderingProps, RenderPropsUnion} from '../../../props';
 import {ContentUnion} from './twilioSMSModel';

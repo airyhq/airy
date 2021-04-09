@@ -4,7 +4,7 @@ import {ReactComponent as WhatsappAvatar} from 'assets/images/icons/whatsapp_ava
 import {ReactComponent as SmsAvatar} from 'assets/images/icons/sms_avatar.svg';
 import {ReactComponent as FacebookAvatar} from 'assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as AiryAvatar} from 'assets/images/icons/airy_avatar.svg';
-import {Channel, Source} from 'httpclient';
+import {Channel, Source} from 'model';
 import styles from './index.module.scss';
 
 type ChannelAvatarProps = {

@@ -8,7 +8,6 @@ import co.airy.model.channel.ChannelPayload;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +21,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
@@ -37,9 +37,9 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.list")
-    ResponseEntity<ChannelsResponsePayload> listChannels(@RequestBody @Valid ListChannelRequestPayload requestPayload) {
+    ResponseEntity<ChannelsResponsePayload> listChannels(@RequestBody(required = false) @Valid ListChannelRequestPayload requestPayload) {
         final List<ChannelContainer> channels = stores.getChannels();
-        final String sourceToFilter = requestPayload.getSource();
+        final String sourceToFilter = Optional.ofNullable(requestPayload).map(ListChannelRequestPayload::getSource).orElse(null);
         return ResponseEntity.ok(new ChannelsResponsePayload(channels.stream()
                 .filter((container) -> sourceToFilter == null || sourceToFilter.equals(container.getChannel().getSource()))
                 .map(ChannelPayload::fromChannelContainer)
@@ -50,7 +50,7 @@ public class ChannelsController {
     ResponseEntity<?> getChannel(@RequestBody @Valid GetChannelRequestPayload requestPayload) {
         final ChannelContainer container = stores.getChannel(requestPayload.getChannelId().toString());
         if (container == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmptyResponsePayload());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         return ResponseEntity.ok(fromChannelContainer(container));
@@ -61,7 +61,7 @@ public class ChannelsController {
         final String channelId = requestPayload.getChannelId().toString();
         final ChannelContainer container = stores.getChannel(channelId);
         if (container == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmptyResponsePayload());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         final MetadataMap metadataMap = container.getMetadataMap();
@@ -127,7 +127,7 @@ public class ChannelsController {
 
         final Channel channel = container.getChannel();
         if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-            return ResponseEntity.accepted().body(new EmptyResponsePayload());
+            return ResponseEntity.noContent().build();
         }
 
         channel.setConnectionState(ChannelConnectionState.DISCONNECTED);
@@ -139,7 +139,7 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
 
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
 }

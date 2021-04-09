@@ -62,7 +62,7 @@ public class ChatController {
         } else if (channelId != null) {
             principal = createConversation(channelId.toString());
         } else {
-            return ResponseEntity.badRequest().body(new EmptyResponsePayload());
+            return ResponseEntity.badRequest().build();
         }
 
         final String authToken = jwt.getAuthToken(principal.getConversationId(), principal.getChannelId());

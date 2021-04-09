@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,13 +60,14 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.list")
-    ResponseEntity<?> conversationList(@RequestBody @Valid ConversationListRequestPayload requestPayload) throws Exception {
-        final String queryFilter = requestPayload.getFilters();
+    ResponseEntity<?> conversationList(@RequestBody(required = false) @Valid ConversationListRequestPayload request) {
+        request = Optional.ofNullable(request).orElse(new ConversationListRequestPayload());
+        final String queryFilter = request.getFilters();
         if (queryFilter == null) {
-            return listConversations(requestPayload);
+            return listConversations(request);
         }
 
-        return queryConversations(requestPayload);
+        return queryConversations(request);
     }
 
     private ResponseEntity<?> queryConversations(ConversationListRequestPayload requestPayload) {
@@ -184,7 +186,7 @@ public class ConversationsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
-        return ResponseEntity.accepted().body(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/conversations.tag")
@@ -206,7 +208,7 @@ public class ConversationsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
-        return ResponseEntity.accepted().body(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/conversations.untag")
@@ -228,6 +230,6 @@ public class ConversationsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }
 
-        return ResponseEntity.accepted().body(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 }

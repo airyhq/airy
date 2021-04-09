@@ -56,8 +56,8 @@ interface ApiRequest<T, K = void> {
 
 interface EndpointDefinition<T, K = void> {
   endpoint: string | ((requestPayload: T) => string);
-  mapRequest: (requestPayload: T) => any;
-  mapResponse: (any) => K;
+  mapRequest?: (requestPayload: T) => any;
+  mapResponse?: (any) => K;
   opts?: FetchOptions;
 }
 
@@ -183,8 +183,9 @@ export class HttpClient {
   }: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {
       endpoint = typeof endpoint === 'string' ? endpoint : endpoint(requestPayload);
+      requestPayload = mapRequest ? mapRequest(requestPayload) : requestPayload;
       const response = await this.doFetchFromBackend(endpoint, mapRequest(requestPayload), opts);
-      return mapResponse(response);
+      return mapResponse ? mapResponse(response) : response;
     };
   }
 }

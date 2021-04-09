@@ -110,7 +110,7 @@ public class TemplatesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(is("new-template-name"))), "could not update template");
 
-        webTestHelper.post("/templates.delete", "{\"id\": \"" + templateId + "\"}", "user-id").andExpect(status().isOk());
+        webTestHelper.post("/templates.delete", "{\"id\": \"" + templateId + "\"}", "user-id").andExpect(status().isNoContent());
     }
 
     @Test

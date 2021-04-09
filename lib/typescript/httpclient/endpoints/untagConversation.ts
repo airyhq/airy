@@ -4,5 +4,4 @@ export const untagConversationDef = {
     conversation_id: conversationId,
     tag_id: tagId,
   }),
-  mapResponse: response => response,
 };

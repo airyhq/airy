@@ -49,12 +49,12 @@ public class SendMessageController {
         final Conversation conversation = conversationsStore.get(payload.getConversationId().toString());
 
         if (conversation == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmptyResponsePayload());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         final Channel channel = conversation.getChannel();
         if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new EmptyResponsePayload());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         final Message message = Message.newBuilder()

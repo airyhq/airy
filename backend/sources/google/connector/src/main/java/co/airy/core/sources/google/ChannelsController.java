@@ -83,7 +83,7 @@ public class ChannelsController {
         }
 
         if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-            return ResponseEntity.accepted().body(new EmptyResponsePayload());
+            return ResponseEntity.noContent().build();
         }
 
         channel.setConnectionState(ChannelConnectionState.DISCONNECTED);
@@ -95,7 +95,7 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
 
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 }
 

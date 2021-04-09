@@ -7,6 +7,5 @@ const tagMapper = {
 
 export const listTagsDef = {
   endpoint: 'tags.list',
-  mapRequest: () => ({}),
   mapResponse: response => response.data.map(t => ({id: t.id, names: t.name, color: tagMapper[t.color] || 'tag-blue'})),
 };

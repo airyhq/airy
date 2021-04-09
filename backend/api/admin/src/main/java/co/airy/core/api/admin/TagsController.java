@@ -87,14 +87,14 @@ public class TagsController {
     }
 
     @PostMapping("/tags.delete")
-    ResponseEntity<EmptyResponsePayload> deleteTag(@RequestBody @Valid DeleteTagRequestPayload payload) {
+    ResponseEntity<Void> deleteTag(@RequestBody @Valid DeleteTagRequestPayload payload) {
         final Tag tag = stores.getTagsStore().get(payload.getId().toString());
         if (tag == null) {
             return ResponseEntity.notFound().build();
         }
 
         stores.deleteTag(tag);
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/tags.update")
@@ -120,6 +120,6 @@ public class TagsController {
         } catch (ExecutionException | InterruptedException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 }

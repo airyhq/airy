@@ -58,7 +58,7 @@ public class WebhookController implements DisposableBean {
     @PostMapping("/google")
     ResponseEntity<?> accept(@RequestBody String event, @RequestHeader("X-Goog-Signature") String signature) {
         if (!validRequest(event, signature)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new EmptyResponsePayload());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         String requestId = UUID.randomUUID().toString();

@@ -68,7 +68,7 @@ public class TemplatesController {
             return ResponseEntity.notFound().build();
         }
         stores.deleteTemplate(template);
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/templates.list")

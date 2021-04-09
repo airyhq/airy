@@ -115,7 +115,7 @@ public class UsersController {
         // We execute async so that attackers cannot infer the presence of an email address
         // based on response time.
         executor.submit(() -> requestResetFor(email));
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/users.password-reset")
@@ -134,7 +134,7 @@ public class UsersController {
 
         userDAO.changePassword(UUID.fromString(userId), passwordService.hashPassword(payload.getNewPassword()));
 
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
     private void requestResetFor(String email) {

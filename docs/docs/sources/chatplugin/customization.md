@@ -5,9 +5,13 @@ sidebar_label: Basic & advanced customization
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
+## Introduction
+
+We support two ways of customizing your Airy Chat Plugin. For most use cases the [basic customization](#basic-customization) is all you need as it supports the essential options to customize. If you need full control we offer the possibility of [advanced customization](#advanced-customization) with Render Props.
+
 ## How to customize the Airy Chat Plugin
 
-## Basic customization
+### Basic customization
 
 After setting up your [first source](/sources/chatplugin/quickstart#step-1-set-up-your-first-source) you can customize your Airy Chat Plugin to your needs.
 
@@ -30,9 +34,23 @@ Switch to the **Install & Customize** register and start customizing your Airy C
 
 If you are happy with your customization, copy it and add this code inside the tag `<head>`.
 
-## Advanced customization
+| Option name | Option description |
+| ----------- | ------------------ |
+| Header text | Set the header text of your Airy Chat Plugin |
+| Chat Plugin Icon | Set your company icon here |
+| Input Icon | Set your icon as `sendButton` |
+| Primary Color | Set your primary color |
+| Accent Color | Set your accent color  |
+| Background Color | Set your background color |
 
-It is not possible to customize the Airy Chat Plugin if you use the Plug & Play Installation.
+**Sample**
+
+
+| Default Style | Customized Style |
+| ------------- | ---------------- |
+| <img alt="Basic Customization Example" src={useBaseUrl('img/sources/chatplugin/defaultStyleChatplugin.png')} /> | <img alt="Basic Customization Example" src={useBaseUrl('img/sources/chatplugin/customizedStyleChatplugin.png')} /> |
+
+### Advanced customization
 
 Installing the Airy Chat Plugin as a library allows you to customize the interface as much as you want using **["Render Props"](https://reactjs.org/docs/render-props.html)**.
 The Airy Chat Plugin provides you with four Render Props. All Render Props parameters are optional. If you omit all of them, the Airy Chat Plugin will render the default styling and behavior.

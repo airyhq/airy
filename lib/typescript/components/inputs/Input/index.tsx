@@ -31,7 +31,7 @@ class InputComponent extends Component<InputProps, IState> {
 
   componentDidMount = () => {
     const {inputRef, value} = this.props;
-    if (!!value) {
+    if (value) {
       this.validateInput((inputRef || this.inputRef).current);
     }
   };
@@ -232,10 +232,7 @@ class InputComponent extends Component<InputProps, IState> {
 
     inputRef.current.value = message;
 
-    this.onChange({
-      persist: () => {},
-      target: inputRef.current,
-    });
+    this.onChange({target: inputRef.current});
 
     this.handleEmojiDrawer();
   };

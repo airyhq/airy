@@ -30,8 +30,7 @@ Once a release day comes, we execute the following steps:
     Formula](https://github.com/airyhq/homebrew-airy/blob/main/Formula/cli.rb)
     for the CLI.
   - We archive cards in the done column of the [work in progress](https://github.com/airyhq/airy/projects/1) board
-  - We tag the draft release with the tag `x.y.z` and publish it.
-  - We announce the release!
+  - We publish the release and announce it!
 
 As part of the release process we are also releasing a command line client - the
 `Airy CLI`.

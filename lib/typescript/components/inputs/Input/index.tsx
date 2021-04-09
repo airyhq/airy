@@ -2,9 +2,9 @@ import React, {Component, Fragment} from 'react';
 import {Picker} from 'emoji-mart';
 
 import styles from './style.module.scss';
-import {ReactComponent as CheckmarkIcon} from '../../../assets/images/icons/checkmark.svg';
-import {ReactComponent as CloseIcon} from '../../../assets/images/icons/close.svg';
-import {ReactComponent as SmileyIcon} from '../../../assets/images/icons/smiley.svg';
+import {ReactComponent as CheckmarkIcon} from '../../assets/images/icons/checkmark.svg';
+import {ReactComponent as CloseIcon} from '../../assets/images/icons/close.svg';
+import {ReactComponent as SmileyIcon} from '../../assets/images/icons/smiley.svg';
 
 class InputComponent extends Component<InputProps, IState> {
   public static defaultProps = {

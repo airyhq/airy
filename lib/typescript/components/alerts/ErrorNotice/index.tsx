@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReactComponent as ExclamationIcon} from '../../../assets/images/icons/exclamation.svg';
+import {ReactComponent as ExclamationIcon} from '../../assets/images/icons/exclamation.svg';
 
 import styles from './style.module.scss';
 

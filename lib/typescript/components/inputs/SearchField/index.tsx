@@ -1,7 +1,7 @@
 import React, {createRef, useCallback} from 'react';
 
-import {ReactComponent as CloseIcon} from '../../../assets/images/icons/close.svg';
-import {ReactComponent as SearchIcon} from '../../../assets/images/icons/search.svg';
+import {ReactComponent as CloseIcon} from '../../assets/images/icons/close.svg';
+import {ReactComponent as SearchIcon} from '../../assets/images/icons/search.svg';
 import styles from './style.module.scss';
 
 type Props = {

@@ -1,0 +1,75 @@
+@import '../../../../assets/scss/fonts';
+@import '../../../../assets/scss/colors';
+
+.background {
+  position: absolute;
+  height: 121%;
+  right: 0;
+  top: 0;
+  padding: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:before {
+    content: '';
+    width: 97%;
+    height: 72%;
+    position: absolute;
+    top: 8px;
+    left: 3px;
+    padding-bottom: 6px;
+    border-radius: 8px;
+    background-color: var(--color-text-gray);
+    opacity: 0.5;
+  }
+}
+
+.closeButton {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  svg {
+    width: 14px;
+    height: 14px;
+    path {
+      fill: black;
+    }
+  }
+}
+
+.dialog {
+  z-index: 1;
+  display: flex;
+  width: 375px;
+  height: 350px;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px 9px 0px 16px;
+}
+
+.dialogInner {
+  width: 340px;
+  height: 150px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 18px 14px 36px 10px;
+  position: relative;
+}
+
+.inviteWrapper {
+  width: 500px;
+  p {
+    display: flex;
+    color: var(--color-text-gray);
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    padding-left: 9px;
+  }
+}

@@ -145,7 +145,7 @@ Find users whose name ends with "Lovelace":
 
 `POST /conversations.read`
 
-Resets the unread count of a conversation and returns status code `202 (Accepted)`.
+Resets the unread count of a conversation.
 
 **Sample request**
 
@@ -155,11 +155,7 @@ Resets the unread count of a conversation and returns status code `202 (Accepted
 }
 ```
 
-**Sample response**
-
-```json5
-{}
-```
+**Empty response (204)**
 
 ## Tag a conversation
 
@@ -177,11 +173,7 @@ tag](/api/endpoints/tags.md#create). Returns status code `200` if successful.
 }
 ```
 
-**Sample response**
-
-```json5
-{}
-```
+**Empty response (204)**
 
 ## Untag a conversation
 
@@ -196,8 +188,4 @@ tag](/api/endpoints/tags.md#create). Returns status code `200` if successful.
 }
 ```
 
-**Sample response**
-
-```json5
-{}
-```
+**Empty response (204)**

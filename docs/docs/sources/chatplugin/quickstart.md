@@ -108,7 +108,7 @@ created. it should return the message you have just sent.
 <br />
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
+curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" \
 http://airy.core/conversations.list | jq .
 ```
 

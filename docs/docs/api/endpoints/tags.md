@@ -25,7 +25,9 @@ If the tag is successfully created, the request returns status code `201` (creat
 
 ```json5
 {
-  "id": "TAG-UUID"
+  "id": "TAG-UUID",
+  "name": "Urgent",
+  "color": "tag-red"
 }
 ```
 
@@ -45,11 +47,7 @@ If the tag is successfully created, the request returns status code `201` (creat
 
 If action is successful, the request returns status code `200`.
 
-**Sample response**
-
-```json5
-{}
-```
+**Empty response (204)**
 
 ## Delete
 
@@ -65,11 +63,7 @@ If action is successful, the request returns status code `200`.
 
 If action is successful, returns HTTP status `200`.
 
-**Sample response**
-
-```json5
-{}
-```
+**Empty response (204)**
 
 ## List
 

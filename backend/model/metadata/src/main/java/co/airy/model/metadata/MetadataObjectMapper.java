@@ -3,8 +3,6 @@ package co.airy.model.metadata;
 import co.airy.avro.communication.Metadata;
 import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.model.metadata.dto.MetadataNode;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;

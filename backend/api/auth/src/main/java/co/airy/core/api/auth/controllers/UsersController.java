@@ -11,10 +11,8 @@ import co.airy.core.api.auth.services.Mail;
 import co.airy.core.api.auth.services.Password;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.jwt.Jwt;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
-import org.postgresql.util.PSQLException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -115,7 +113,7 @@ public class UsersController {
         // We execute async so that attackers cannot infer the presence of an email address
         // based on response time.
         executor.submit(() -> requestResetFor(email));
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/users.password-reset")
@@ -134,7 +132,7 @@ public class UsersController {
 
         userDAO.changePassword(UUID.fromString(userId), passwordService.hashPassword(payload.getNewPassword()));
 
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
     private void requestResetFor(String email) {

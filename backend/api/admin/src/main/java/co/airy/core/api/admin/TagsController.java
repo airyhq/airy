@@ -3,12 +3,10 @@ package co.airy.core.api.admin;
 import co.airy.avro.communication.Tag;
 import co.airy.avro.communication.TagColor;
 import co.airy.core.api.admin.payload.CreateTagRequestPayload;
-import co.airy.core.api.admin.payload.CreateTagResponsePayload;
 import co.airy.core.api.admin.payload.DeleteTagRequestPayload;
 import co.airy.core.api.admin.payload.ListTagsResponsePayload;
 import co.airy.core.api.admin.payload.TagResponsePayload;
 import co.airy.core.api.admin.payload.UpdateTagRequestPayload;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
@@ -64,7 +62,11 @@ public class TagsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        return ResponseEntity.status(201).body(CreateTagResponsePayload.builder().id(tag.getId()).build());
+        return ResponseEntity.status(201).body(TagResponsePayload.builder()
+                .id(tag.getId())
+                .name(tag.getName())
+                .color(tag.getColor().toString())
+                .build());
     }
 
     @PostMapping("/tags.list")
@@ -87,14 +89,14 @@ public class TagsController {
     }
 
     @PostMapping("/tags.delete")
-    ResponseEntity<EmptyResponsePayload> deleteTag(@RequestBody @Valid DeleteTagRequestPayload payload) {
+    ResponseEntity<Void> deleteTag(@RequestBody @Valid DeleteTagRequestPayload payload) {
         final Tag tag = stores.getTagsStore().get(payload.getId().toString());
         if (tag == null) {
             return ResponseEntity.notFound().build();
         }
 
         stores.deleteTag(tag);
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/tags.update")
@@ -120,6 +122,6 @@ public class TagsController {
         } catch (ExecutionException | InterruptedException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 }

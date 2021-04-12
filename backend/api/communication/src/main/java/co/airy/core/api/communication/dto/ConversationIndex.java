@@ -1,12 +1,10 @@
 package co.airy.core.api.communication.dto;
 
-import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.model.metadata.dto.MetadataNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.avro.generic.GenericData;
 
 import java.io.Serializable;
 import java.util.ArrayList;

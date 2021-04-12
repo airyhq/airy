@@ -14,9 +14,8 @@ export const listMessagesDef = {
       page_size: conversationListRequest.pageSize,
     };
   },
-  mapResponse: response => {
-    const mappedMessageData = response.data.map(messagePayload => mapMessage(messagePayload));
-
-    return {data: mappedMessageData, paginationData: camelcaseKeys(response.pagination_data)};
-  },
+  mapResponse: response => ({
+    data: response.data.map(messagePayload => mapMessage(messagePayload)),
+    paginationData: camelcaseKeys(response.pagination_data),
+  }),
 };

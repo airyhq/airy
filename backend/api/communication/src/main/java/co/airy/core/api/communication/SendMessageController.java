@@ -10,7 +10,6 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
 import co.airy.model.metadata.dto.MetadataMap;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -49,12 +48,12 @@ public class SendMessageController {
         final Conversation conversation = conversationsStore.get(payload.getConversationId().toString());
 
         if (conversation == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmptyResponsePayload());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         final Channel channel = conversation.getChannel();
         if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new EmptyResponsePayload());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         final Message message = Message.newBuilder()

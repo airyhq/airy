@@ -1,0 +1,6 @@
+apihost: http://airy.core
+apijwttoken: ""
+contextname: airy-core
+kubeconfig: /Users/kazeemadetunji/.kube/config
+namespace: default
+provider: {}

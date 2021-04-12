@@ -2,10 +2,10 @@
 @import '../../../../assets/scss/colors';
 
 .background {
-  position: fixed;
-  top: 0;
+  position: absolute;
+  height: 121%;
   right: 0;
-  bottom: 0;
+  top: 0;
   z-index: 10;
   display: flex;
   justify-content: center;
@@ -13,9 +13,10 @@
 
   &:before {
     content: '';
-    width: 100%;
-    height: 100%;
+    width: 98%;
+    height: 73%;
     position: absolute;
+    top: 6px;
     left: 0;
     background-color: var(--color-text-gray);
     opacity: 0.5;
@@ -48,7 +49,7 @@
 }
 
 .dialogInner {
-  width: 500px;
+  width: 356px;
   background-color: white;
   border-radius: 8px;
   padding: 10px 14px 36px 0px;
@@ -59,10 +60,10 @@
   width: 500px;
   p {
     display: flex;
-    justify-content: center;
     color: var(--color-text-gray);
     font-family: 'Lato', sans-serif;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 20px;
+    padding-left: 9px;
   }
 }

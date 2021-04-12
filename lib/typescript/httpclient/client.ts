@@ -183,9 +183,9 @@ export class HttpClient {
   }: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {
       endpoint = typeof endpoint === 'string' ? endpoint : endpoint(requestPayload);
-      requestPayload = !!mapRequest ? mapRequest(requestPayload) : requestPayload;
+      requestPayload = mapRequest ? mapRequest(requestPayload) : requestPayload;
       const response = await this.doFetchFromBackend(endpoint, requestPayload, opts);
-      return !!mapResponse ? mapResponse(response) : response;
+      return mapResponse ? mapResponse(response) : response;
     };
   }
 }

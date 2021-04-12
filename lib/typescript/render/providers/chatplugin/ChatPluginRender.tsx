@@ -6,7 +6,7 @@ import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {Text} from '../../components/Text';
 import {AttachmentUnion, ContentUnion, SimpleAttachment} from './chatPluginModel';
 import {QuickReplies} from './components/QuickReplies/index';
-import {RenderedContentUnion} from 'model';
+import { Message } from 'model';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.content), props);
@@ -59,7 +59,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   }
 }
 
-function mapContent(message: RenderedContentUnion): ContentUnion {
+function mapContent(message: Message): ContentUnion {
   const messageContent = message.content.message ?? message.content;
 
   if (messageContent.quick_replies) {

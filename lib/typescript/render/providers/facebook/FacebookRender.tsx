@@ -1,5 +1,5 @@
 import React from 'react';
-import {isFromContact, RenderedContentUnion} from 'model';
+import {isFromContact, Message} from 'model';
 import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
@@ -83,7 +83,7 @@ const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | Gener
   };
 };
 
-function facebookInbound(message: RenderedContentUnion): ContentUnion {
+function facebookInbound(message: Message): ContentUnion {
   const messageJson = message.content;
 
   if (messageJson.message?.attachments?.length) {
@@ -116,7 +116,7 @@ function facebookInbound(message: RenderedContentUnion): ContentUnion {
   };
 }
 
-function facebookOutbound(message: RenderedContentUnion): ContentUnion {
+function facebookOutbound(message: Message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
   if (messageJson.quick_replies) {

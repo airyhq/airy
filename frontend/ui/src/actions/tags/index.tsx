@@ -22,6 +22,7 @@ export const errorTagAction = createAction(ERROR_TAG, (status: string) => status
 export function listTags() {
   return function (dispatch: Dispatch<any>) {
     return HttpClientInstance.listTags().then((response: Tag[]) => {
+      console.log(response);
       dispatch(fetchTagAction(response));
     });
   };

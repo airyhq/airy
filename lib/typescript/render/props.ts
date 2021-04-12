@@ -1,4 +1,4 @@
-import {isFromContact, RenderedContentUnion} from 'model';
+import {Content, isFromContact} from 'model';
 import {DefaultRenderingProps} from './components';
 
 export interface Command {
@@ -25,7 +25,7 @@ export type CommandUnion = SuggestedReplyCommand | QuickReplyCommand;
 
 interface RenderProps {
   contentType: 'message' | 'template' | 'suggestedReplies' | 'quickReplies';
-  content: RenderedContentUnion;
+  content: Content;
   source: string;
 }
 

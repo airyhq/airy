@@ -5,7 +5,7 @@ import {Text} from '../../components/Text';
 import {RichCard} from '../../components/RichCard';
 import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {ContentUnion} from './googleModel';
-import {RenderedContentUnion, isFromContact} from 'model';
+import {isFromContact, Message} from 'model';
 import {Image} from '../../components/Image';
 
 export const GoogleRender = (props: RenderPropsUnion) => {
@@ -48,7 +48,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   }
 }
 
-function googleInbound(message: RenderedContentUnion): ContentUnion {
+function googleInbound(message: Message): ContentUnion {
   const messageJson = message.content.message;
 
   if (messageJson.richCard?.standaloneCard) {
@@ -123,7 +123,7 @@ function googleInbound(message: RenderedContentUnion): ContentUnion {
   };
 }
 
-function googleOutbound(message: RenderedContentUnion): ContentUnion {
+function googleOutbound(message: Message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
   const maxNumberOfSuggestions = 13;
 

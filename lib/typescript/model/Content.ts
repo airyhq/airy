@@ -1,14 +1,9 @@
 import {Template} from './Template';
 import {Message} from './Message';
 
-export interface Content {
-  id: string;
-  content: any;
-}
+export type Content = any;
 
-export type RenderedContentUnion = Message | Template | Content;
-
-export function isFromContact(content: RenderedContentUnion) {
+export function isFromContact(content: Message | Template) {
   if (content && 'fromContact' in content) {
     return content?.fromContact;
   } else {

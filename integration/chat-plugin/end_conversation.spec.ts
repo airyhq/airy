@@ -8,7 +8,7 @@ import {
 } from 'handles';
 
 describe('Websocket test', () => {
-  it('Send message from Inbox to Chatplugin and assert Websocket is working', () => {
+  it('Send message from Inbox to Chatplugin, end the current conversation and begin a new one', () => {
     cy.visit('/ui/login');
     cy.get('form')
       .within(() => {

@@ -331,7 +331,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             type="button"
             ref={sendButtonRef}
             className={`${styles.sendButton} ${
-              (input || selectedTemplate) && !disconnectedChannelToolTip && styles.sendButtonActive
+              (input || selectedTemplate || selectedSuggestedReply) && !disconnectedChannelToolTip && styles.sendButtonActive
             }`}
             onClick={handleClick}
             disabled={

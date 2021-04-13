@@ -1,6 +1,6 @@
-import {CreateTagRequestPayload} from '../payload';
-import {HttpClient} from '../client';
-import {TagColor} from '../model';
+import {CreateTagRequestPayload} from './payload';
+import {HttpClient} from '../../client';
+import {TagColor} from './model';
 
 export default HttpClient.prototype.createTag = async function createTag(requestPayload: CreateTagRequestPayload) {
   const response = await this.doFetchFromBackend('tags.create', requestPayload);

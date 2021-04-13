@@ -43,7 +43,7 @@ genrule(
     cmd = """
     mkdir -p $(OUTS)/{dist} && cp -R $(location :dist) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \
-    && mv $(RULEDIR)/endpoints $(RULEDIR)/messagesForChannels $(RULEDIR)/model $(RULEDIR)/payload $(OUTS)
+    && mv $(RULEDIR)/src $(OUTS)
 """,
 )
 

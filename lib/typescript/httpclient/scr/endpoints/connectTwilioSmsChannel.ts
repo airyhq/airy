@@ -1,7 +1,7 @@
-import {ConnectTwilioSmsRequestPayload} from '../payload';
+import {ConnectTwilioSmsRequestPayload} from './payload';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
-import {HttpClient} from '../client';
+import {HttpClient} from '../../client';
 
 export default HttpClient.prototype.connectTwilioSmsChannel = async function (
   requestPayload: ConnectTwilioSmsRequestPayload

@@ -1,5 +1,5 @@
-import {UntagConversationRequestPayload} from '../payload';
-import {HttpClient} from '../client';
+import {UntagConversationRequestPayload} from './payload';
+import {HttpClient} from '../../client';
 
 export default HttpClient.prototype.untagConversation = function untagConversation(
   requestPayload: UntagConversationRequestPayload

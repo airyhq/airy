@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
-import {ConnectChannelFacebookRequestPayload} from '../payload';
-import {HttpClient} from '../client';
+import {ConnectChannelFacebookRequestPayload} from './payload';
+import {HttpClient} from '../../client';
 
 export default HttpClient.prototype.connectFacebookChannel = async function (
   requestPayload: ConnectChannelFacebookRequestPayload

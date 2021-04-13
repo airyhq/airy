@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
-import {LoginViaEmailRequestPayload} from '../payload';
-import {HttpClient} from '../client';
+import {LoginViaEmailRequestPayload} from './payload';
+import {HttpClient} from '../../client';
 
 export default HttpClient.prototype.loginViaEmail = async function loginViaEmail(
   requestPayload: LoginViaEmailRequestPayload

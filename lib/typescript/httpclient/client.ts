@@ -15,9 +15,9 @@ import {
   UpdateChannelRequestPayload,
   ListTemplatesRequestPayload,
   PaginatedResponse,
-} from './payload';
+} from './scr/endpoints/payload';
 
-import {Tag, Message, Channel, User, Conversation, Config, Template} from './model';
+import {Tag, Message, Channel, User, Conversation, Config, Template} from './scr/endpoints/model';
 
 export function isString(object: any) {
   return typeof object === 'string' || object instanceof String;

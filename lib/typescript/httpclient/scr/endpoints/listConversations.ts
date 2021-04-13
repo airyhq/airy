@@ -1,8 +1,8 @@
-import {PaginatedPayload, ListConversationsRequestPayload} from '../payload';
+import {PaginatedPayload, ListConversationsRequestPayload} from './payload';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
-import {HttpClient} from '../client';
-import {mapMessage} from '../model';
+import {HttpClient} from '../../client';
+import {mapMessage} from './model';
 
 export default HttpClient.prototype.listConversations = async function (
   conversationListRequest: ListConversationsRequestPayload

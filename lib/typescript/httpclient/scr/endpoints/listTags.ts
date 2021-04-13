@@ -1,4 +1,4 @@
-import {HttpClient} from '../client';
+import {HttpClient} from '../../client';
 
 export default HttpClient.prototype.listTags = async function () {
   const response = await this.doFetchFromBackend('tags.list');

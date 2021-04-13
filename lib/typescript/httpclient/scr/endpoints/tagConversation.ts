@@ -1,5 +1,5 @@
-import {TagConversationRequestPayload} from '../payload';
-import {HttpClient} from '../client';
+import {TagConversationRequestPayload} from './payload';
+import {HttpClient} from '../../client';
 
 export default HttpClient.prototype.tagConversation = function (requestPayload: TagConversationRequestPayload) {
   return this.doFetchFromBackend('conversations.tag', {

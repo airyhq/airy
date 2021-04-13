@@ -1,18 +1,18 @@
 package main
 
 import (
+	"consumer/pkg/worker"
 	"encoding/json"
 	"log"
 	"net/http"
 	"os"
-	"beanstalk-worker/pkg/scheduler"
 )
 
 func main() {
-	schedulerTask := scheduler.Start(os.Getenv("BEANSTALK_HOSTNAME"), os.Getenv("BEANSTALK_PORT"))
+	workerTask := worker.Start(os.Getenv("BEANSTALK_HOSTNAME"), os.Getenv("BEANSTALK_PORT"))
 
 	http.HandleFunc("/status", func(w http.ResponseWriter, r *http.Request) {
-		errors, err := json.Marshal(schedulerTask.GetStatus())
+		errors, err := json.Marshal(workerTask.GetErrors())
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

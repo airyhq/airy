@@ -1,4 +1,4 @@
-module beanstalk-worker
+module consumer
 
 go 1.16
 

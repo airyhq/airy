@@ -1,4 +1,4 @@
-# gazelle:prefix beanstalk-worker
+# gazelle:prefix consumer
 
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
@@ -6,14 +6,14 @@ load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 load("//tools/build:container_release.bzl", "container_release")
 
 go_binary(
-    name = "beanstalk-worker_binary",
-    embed = [":beanstalk-worker_lib"],
+    name = "consumer_binary",
+    embed = [":consumer_lib"],
     visibility = ["//visibility:public"],
 )
 
 go_image(
     name = "image",
-    embed = [":beanstalk-worker_lib"],
+    embed = [":consumer_lib"],
 )
 
 container_release(
@@ -24,9 +24,9 @@ container_release(
 check_pkg(name = "buildifier")
 
 go_library(
-    name = "beanstalk-worker_lib",
+    name = "consumer_lib",
     srcs = ["main.go"],
-    importpath = "beanstalk-worker",
+    importpath = "consumer",
     visibility = ["//visibility:private"],
-    deps = ["//backend/webhook/beanstalk-worker/pkg/scheduler"],
+    deps = ["//backend/webhook/consumer/pkg/worker"],
 )

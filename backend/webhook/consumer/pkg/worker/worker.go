@@ -1,7 +1,9 @@
-package consumer
+package worker
 
 import (
-	"github.com/beanstalkd/go-beanstalk"
+	"errors"
+
+	beanstalk "github.com/beanstalkd/go-beanstalk"
 
 	"bytes"
 	"encoding/json"
@@ -29,9 +31,22 @@ type AiryMessage struct {
 	Body     map[string]interface{}
 }
 
-func StartConsumer(beanstalk *beanstalk.Conn) Task {
+var backoffSchedule = []time.Duration{
+	0 * time.Second,
+	1 * time.Second,
+	3 * time.Second,
+	10 * time.Second,
+}
+
+func Start(hostname, port string) Task {
+	conn, err := beanstalk.Dial("tcp", fmt.Sprintf("%s:%s", hostname, port))
+
+	if err != nil {
+		log.Fatal("Failed to connect to Beanstalk", err)
+	}
+
 	t := &Task{
-		beanstalk: beanstalk,
+		beanstalk: conn,
 		done:      make(chan bool),
 		errors:    make([]ConsumerError, 0),
 	}
@@ -42,19 +57,32 @@ func StartConsumer(beanstalk *beanstalk.Conn) Task {
 		}
 	}()
 
-	log.Printf("Consumer scheduled")
+	log.Printf("Consumer started")
 	return *t
 }
 
-func (t *Task) GetErrors() []ConsumerError {
-	return t.errors
-}
+func (t *Task) Run() {
+	id, body, err := t.beanstalk.Reserve(1 * time.Minute)
 
-var backoffSchedule = []time.Duration{
-	0 * time.Second,
-	1 * time.Second,
-	3 * time.Second,
-	10 * time.Second,
+	if errors.Is(err, beanstalk.ErrTimeout) {
+		return
+	}
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	for _, backoff := range backoffSchedule {
+		time.Sleep(backoff)
+		err = t.HandleMessage(string(body))
+		if err != nil {
+			t.logError(err)
+		} else {
+			break
+		}
+	}
+	t.beanstalk.Delete(id)
 }
 
 func (t *Task) HandleMessage(message string) error {
@@ -100,24 +128,9 @@ func (t *Task) logError(err error) {
 		Err: err,
 		T:   time.Now(),
 	})
+	log.Println(len(t.errors))
 }
 
-func (t *Task) Run() {
-	id, body, err := t.beanstalk.Reserve(1 * time.Minute)
-
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	for _, backoff := range backoffSchedule {
-		time.Sleep(backoff)
-		err = t.HandleMessage(string(body))
-		if err != nil {
-			t.logError(err)
-		} else {
-			break
-		}
-	}
-	t.beanstalk.Delete(id)
+func (t *Task) GetErrors() []ConsumerError {
+	return t.errors
 }

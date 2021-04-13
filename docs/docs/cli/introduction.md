@@ -26,7 +26,6 @@ steps for a quick setup:
 - [Step 1: Check the requirements](introduction.md#step-1-check-the-requirements)
 - [Step 2: Install the Airy CLI](introduction.md#step-2-install-the-airy-cli)
 - [Step 3: Verify your installation](introduction.md#step-3-verify-your-installation)
-- [Step 4: Initialize the setup](introduction.md#step-4-initialize-the-setup)
 
 ### Step 1: Check the requirements
 

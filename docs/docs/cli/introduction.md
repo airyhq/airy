@@ -133,15 +133,6 @@ Make sure the output matches the version number you expect:
 airy version
 ```
 
-### Step 4: Initialize the setup
-
-The [airy init](cli/usage.md#init) will create a `cli.yaml` file which stores
-your `apiHost` and `apiJwtToken`:
-
-```bash
-airy init
-```
-
 <SuccessBox>
 
 :tada: Congratulations!

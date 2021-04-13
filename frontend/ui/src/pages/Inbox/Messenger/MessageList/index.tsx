@@ -55,7 +55,7 @@ const MessageList = (props: MessageListProps) => {
 
   const messageListRef = createRef<HTMLDivElement>();
 
-  useEffect(() => {  
+  useEffect(() => {
     if (!messages || messages.length === 0) {
       conversation && listMessages(conversation.id);
       scrollBottom();

@@ -18,7 +18,7 @@ import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
-import {cyBubble, cyChatPluginMessageList} from 'chat-plugin-handles';
+import {cyBubble, cyChatPluginMessageList, cyChatPluginEndChatModalButton} from 'chat-plugin-handles';
 import {getResumeTokenFromStorage, resetStorage} from '../../storage';
 import {ModalDialogue} from '../../components/modal';
 import NewConversation from '../../components/newConversation';
@@ -243,7 +243,10 @@ const Chat = (props: Props) => {
                 {' '}
                 Cancel
               </button>
-              <button className={style.endChatButton} onClick={cancelChatSession}>
+              <button
+                className={style.endChatButton}
+                onClick={cancelChatSession}
+                data-cy={cyChatPluginEndChatModalButton}>
                 {' '}
                 End Chat
               </button>

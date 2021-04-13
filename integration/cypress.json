@@ -1,5 +1,5 @@
 {
-    "baseUrl": "http://localhost:8080",
+    "baseUrl": "http://airy.core",
     "integrationFolder": "integration",
     "testFiles": "**/*.spec.?s",
     "env": {
@@ -10,6 +10,7 @@
        "searchQuery": "Cypress Filter",
        "messageInbox": "Hello from Cypress Inbox!",
        "messageChatplugin": "Hello from Cypress ChatPlugin!",
+       "newNessageChatplugin": "Hello once again from Cypress ChatPlugin!",
        "websocketMessage": "Websocket Test Message",
        "channelId": "3502a0a7-933d-5410-b5fc-51f041146d89"
     },

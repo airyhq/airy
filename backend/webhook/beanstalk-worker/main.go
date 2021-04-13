@@ -5,14 +5,14 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"redis-worker/pkg/scheduler"
+	"beanstalk-worker/pkg/scheduler"
 )
 
 func main() {
-	schedulerTask := scheduler.Start(os.Getenv("REDIS_HOSTNAME"), os.Getenv("REDIS_PORT"))
+	schedulerTask := scheduler.Start(os.Getenv("BEANSTALK_HOSTNAME"), os.Getenv("BEANSTALK_PORT"))
 
 	http.HandleFunc("/status", func(w http.ResponseWriter, r *http.Request) {
-		errors, err := json.Marshal(schedulerTask.GetStatuses())
+		errors, err := json.Marshal(schedulerTask.GetStatus())
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

@@ -2108,12 +2108,12 @@
                     "jakarta.annotation:jakarta.annotation-api:1.3.5",
                     "io.netty:netty-resolver:4.1.51.Final",
                     "org.scala-lang.modules:scala-java8-compat_2.12:0.9.0",
-                    "io.netty:netty-handler:4.1.51.Final",
                     "org.apache.zookeeper:zookeeper-jute:3.5.8",
                     "org.eclipse.jetty.websocket:javax-websocket-client-impl:9.4.39.v20210325",
                     "org.jetbrains.kotlin:kotlin-stdlib-common:1.3.71",
                     "org.jetbrains.kotlin:kotlin-scripting-jvm:1.3.50",
                     "org.apache.yetus:audience-annotations:0.5.0",
+                    "io.netty:netty-common:4.1.48.Final",
                     "org.json:json:20201115",
                     "org.scala-lang:scala-reflect:2.12.10",
                     "com.damnhandy:handy-uri-templates:2.1.8",
@@ -2618,40 +2618,12 @@
                 "url": "https://repo1.maven.org/maven2/io/micrometer/micrometer-registry-prometheus/1.6.5/micrometer-registry-prometheus-1.6.5.jar"
             },
             {
-                "coord": "io.netty:netty-buffer:4.1.51.Final",
+                "coord": "io.netty:netty-buffer:4.1.48.Final",
                 "dependencies": [
-                    "io.netty:netty-common:4.1.51.Final"
+                    "io.netty:netty-common:4.1.48.Final"
                 ],
                 "directDependencies": [
-                    "io.netty:netty-common:4.1.51.Final"
-                ],
-                "exclusions": [
-                    "ch.qos.logback:logback-classic",
-                    "org.springframework.boot:spring-boot-starter-tomcat",
-                    "org.springframework.boot:spring-boot-starter-logging",
-                    "org.slf4j:slf4j-log4j12"
-                ],
-                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-buffer/4.1.51.Final/netty-buffer-4.1.51.Final.jar",
-                "mirror_urls": [
-                    "https://packages.confluent.io/maven/io/netty/netty-buffer/4.1.51.Final/netty-buffer-4.1.51.Final.jar",
-                    "https://repo1.maven.org/maven2/io/netty/netty-buffer/4.1.51.Final/netty-buffer-4.1.51.Final.jar",
-                    "https://jitpack.io/io/netty/netty-buffer/4.1.51.Final/netty-buffer-4.1.51.Final.jar"
-                ],
-                "sha256": "c3c3b710e1b5a8df3d60cd4602e0a743481d5e609e4aa852fa2629e4e412d245",
-                "url": "https://repo1.maven.org/maven2/io/netty/netty-buffer/4.1.51.Final/netty-buffer-4.1.51.Final.jar"
-            },
-            {
-                "coord": "io.netty:netty-codec:4.1.51.Final",
-                "dependencies": [
-                    "io.netty:netty-buffer:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final",
-                    "io.netty:netty-resolver:4.1.51.Final",
-                    "io.netty:netty-transport:4.1.51.Final"
-                ],
-                "directDependencies": [
-                    "io.netty:netty-buffer:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final",
-                    "io.netty:netty-transport:4.1.51.Final"
+                    "io.netty:netty-common:4.1.48.Final"
                 ],
                 "exclusions": [
                     "*:jline",
@@ -2667,51 +2639,52 @@
                     "ch.qos.logback:logback-classic",
                     "org.springframework.boot:spring-boot-starter-logging"
                 ],
-                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-codec/4.1.51.Final/netty-codec-4.1.51.Final.jar",
+                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-buffer/4.1.48.Final/netty-buffer-4.1.48.Final.jar",
                 "mirror_urls": [
-                    "https://packages.confluent.io/maven/io/netty/netty-codec/4.1.51.Final/netty-codec-4.1.51.Final.jar",
-                    "https://repo1.maven.org/maven2/io/netty/netty-codec/4.1.51.Final/netty-codec-4.1.51.Final.jar",
-                    "https://jitpack.io/io/netty/netty-codec/4.1.51.Final/netty-codec-4.1.51.Final.jar"
+                    "https://packages.confluent.io/maven/io/netty/netty-buffer/4.1.48.Final/netty-buffer-4.1.48.Final.jar",
+                    "https://repo1.maven.org/maven2/io/netty/netty-buffer/4.1.48.Final/netty-buffer-4.1.48.Final.jar",
+                    "https://jitpack.io/io/netty/netty-buffer/4.1.48.Final/netty-buffer-4.1.48.Final.jar"
                 ],
-                "sha256": "ff741aaa35f7048a6be7c700aa4851bf643917648ea5b7c0cbada2f3848c2bee",
-                "url": "https://repo1.maven.org/maven2/io/netty/netty-codec/4.1.51.Final/netty-codec-4.1.51.Final.jar"
+                "sha256": "7efc8f98224c703ef09a409e5ddffbe14f5b4b6f527d3836c1647b4d9eff8cec",
+                "url": "https://repo1.maven.org/maven2/io/netty/netty-buffer/4.1.48.Final/netty-buffer-4.1.48.Final.jar"
             },
             {
-                "coord": "io.netty:netty-common:4.1.51.Final",
+                "coord": "io.netty:netty-codec:4.1.48.Final",
+                "dependencies": [
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-resolver:4.1.48.Final",
+                    "io.netty:netty-transport:4.1.48.Final",
+                    "io.netty:netty-buffer:4.1.48.Final"
+                ],
+                "directDependencies": [
+                    "io.netty:netty-buffer:4.1.48.Final",
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-transport:4.1.48.Final"
+                ],
+                "exclusions": [
+                    "javax.jms:jms",
+                    "org.slf4j:slf4j-log4j12",
+                    "junit:junit",
+                    "org.springframework.boot:spring-boot-starter-tomcat",
+                    "com.sun.jmx:jmxri",
+                    "com.sun.jdmk:jmxtools",
+                    "ch.qos.logback:logback-classic",
+                    "org.springframework.boot:spring-boot-starter-logging"
+                ],
+                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-codec/4.1.48.Final/netty-codec-4.1.48.Final.jar",
+                "mirror_urls": [
+                    "https://packages.confluent.io/maven/io/netty/netty-codec/4.1.48.Final/netty-codec-4.1.48.Final.jar",
+                    "https://repo1.maven.org/maven2/io/netty/netty-codec/4.1.48.Final/netty-codec-4.1.48.Final.jar",
+                    "https://jitpack.io/io/netty/netty-codec/4.1.48.Final/netty-codec-4.1.48.Final.jar"
+                ],
+                "sha256": "81b4c316163a591b4f74fd2dc23a3ea45359cb817d0a9c4fc7f37dc9edfdbea8",
+                "url": "https://repo1.maven.org/maven2/io/netty/netty-codec/4.1.48.Final/netty-codec-4.1.48.Final.jar"
+            },
+            {
+                "coord": "io.netty:netty-common:4.1.48.Final",
                 "dependencies": [],
                 "directDependencies": [],
                 "exclusions": [
-                    "ch.qos.logback:logback-classic",
-                    "org.springframework.boot:spring-boot-starter-tomcat",
-                    "org.springframework.boot:spring-boot-starter-logging",
-                    "org.slf4j:slf4j-log4j12"
-                ],
-                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-common/4.1.51.Final/netty-common-4.1.51.Final.jar",
-                "mirror_urls": [
-                    "https://packages.confluent.io/maven/io/netty/netty-common/4.1.51.Final/netty-common-4.1.51.Final.jar",
-                    "https://repo1.maven.org/maven2/io/netty/netty-common/4.1.51.Final/netty-common-4.1.51.Final.jar",
-                    "https://jitpack.io/io/netty/netty-common/4.1.51.Final/netty-common-4.1.51.Final.jar"
-                ],
-                "sha256": "110e06515f43913a2bbac23e1aa78b7f59ae09d466b00af5fcf399a4f9af1b6b",
-                "url": "https://repo1.maven.org/maven2/io/netty/netty-common/4.1.51.Final/netty-common-4.1.51.Final.jar"
-            },
-            {
-                "coord": "io.netty:netty-handler:4.1.51.Final",
-                "dependencies": [
-                    "io.netty:netty-buffer:4.1.51.Final",
-                    "io.netty:netty-codec:4.1.51.Final",
-                    "io.netty:netty-resolver:4.1.51.Final",
-                    "io.netty:netty-transport:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final"
-                ],
-                "directDependencies": [
-                    "io.netty:netty-buffer:4.1.51.Final",
-                    "io.netty:netty-codec:4.1.51.Final",
-                    "io.netty:netty-resolver:4.1.51.Final",
-                    "io.netty:netty-transport:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final"
-                ],
-                "exclusions": [
                     "*:jline",
                     "*:netty",
                     "*:jmxtools",
@@ -2725,51 +2698,87 @@
                     "ch.qos.logback:logback-classic",
                     "org.springframework.boot:spring-boot-starter-logging"
                 ],
-                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-handler/4.1.51.Final/netty-handler-4.1.51.Final.jar",
+                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-common/4.1.48.Final/netty-common-4.1.48.Final.jar",
                 "mirror_urls": [
-                    "https://packages.confluent.io/maven/io/netty/netty-handler/4.1.51.Final/netty-handler-4.1.51.Final.jar",
-                    "https://repo1.maven.org/maven2/io/netty/netty-handler/4.1.51.Final/netty-handler-4.1.51.Final.jar",
-                    "https://jitpack.io/io/netty/netty-handler/4.1.51.Final/netty-handler-4.1.51.Final.jar"
+                    "https://packages.confluent.io/maven/io/netty/netty-common/4.1.48.Final/netty-common-4.1.48.Final.jar",
+                    "https://repo1.maven.org/maven2/io/netty/netty-common/4.1.48.Final/netty-common-4.1.48.Final.jar",
+                    "https://jitpack.io/io/netty/netty-common/4.1.48.Final/netty-common-4.1.48.Final.jar"
                 ],
-                "sha256": "4461970f04f4d5eb9112ad94255ce1987394ce64de6c3c87690bf0865c936258",
-                "url": "https://repo1.maven.org/maven2/io/netty/netty-handler/4.1.51.Final/netty-handler-4.1.51.Final.jar"
+                "sha256": "e44a2369566fd1fa8a0f30b12e2801de8fb405b9d1fa3894a58b6262065a9916",
+                "url": "https://repo1.maven.org/maven2/io/netty/netty-common/4.1.48.Final/netty-common-4.1.48.Final.jar"
             },
             {
-                "coord": "io.netty:netty-resolver:4.1.51.Final",
+                "coord": "io.netty:netty-handler:4.1.48.Final",
                 "dependencies": [
-                    "io.netty:netty-common:4.1.51.Final"
+                    "io.netty:netty-transport:4.1.48.Final",
+                    "io.netty:netty-buffer:4.1.48.Final",
+                    "io.netty:netty-resolver:4.1.48.Final",
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-codec:4.1.48.Final"
                 ],
                 "directDependencies": [
-                    "io.netty:netty-common:4.1.51.Final"
+                    "io.netty:netty-transport:4.1.48.Final",
+                    "io.netty:netty-buffer:4.1.48.Final",
+                    "io.netty:netty-resolver:4.1.48.Final",
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-codec:4.1.48.Final"
                 ],
                 "exclusions": [
-                    "ch.qos.logback:logback-classic",
+                    "javax.jms:jms",
+                    "org.slf4j:slf4j-log4j12",
+                    "junit:junit",
                     "org.springframework.boot:spring-boot-starter-tomcat",
-                    "org.springframework.boot:spring-boot-starter-logging",
-                    "org.slf4j:slf4j-log4j12"
+                    "com.sun.jmx:jmxri",
+                    "com.sun.jdmk:jmxtools",
+                    "ch.qos.logback:logback-classic",
+                    "org.springframework.boot:spring-boot-starter-logging"
                 ],
-                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-resolver/4.1.51.Final/netty-resolver-4.1.51.Final.jar",
+                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-handler/4.1.48.Final/netty-handler-4.1.48.Final.jar",
                 "mirror_urls": [
-                    "https://packages.confluent.io/maven/io/netty/netty-resolver/4.1.51.Final/netty-resolver-4.1.51.Final.jar",
-                    "https://repo1.maven.org/maven2/io/netty/netty-resolver/4.1.51.Final/netty-resolver-4.1.51.Final.jar",
-                    "https://jitpack.io/io/netty/netty-resolver/4.1.51.Final/netty-resolver-4.1.51.Final.jar"
+                    "https://packages.confluent.io/maven/io/netty/netty-handler/4.1.48.Final/netty-handler-4.1.48.Final.jar",
+                    "https://repo1.maven.org/maven2/io/netty/netty-handler/4.1.48.Final/netty-handler-4.1.48.Final.jar",
+                    "https://jitpack.io/io/netty/netty-handler/4.1.48.Final/netty-handler-4.1.48.Final.jar"
                 ],
-                "sha256": "c8a77765e481fbf5906c596eb441de49096b354bcae0356b7404ac5e96399350",
-                "url": "https://repo1.maven.org/maven2/io/netty/netty-resolver/4.1.51.Final/netty-resolver-4.1.51.Final.jar"
+                "sha256": "757f83c7891ad2ebad209f02d8dbca0121e03f7062c2d4ec9d00eba1a0d403d5",
+                "url": "https://repo1.maven.org/maven2/io/netty/netty-handler/4.1.48.Final/netty-handler-4.1.48.Final.jar"
+            },
+            {
+                "coord": "io.netty:netty-resolver:4.1.48.Final",
+                "dependencies": [
+                    "io.netty:netty-common:4.1.48.Final"
+                ],
+                "directDependencies": [
+                    "io.netty:netty-common:4.1.48.Final"
+                ],
+                "exclusions": [
+                    "org.slf4j:slf4j-log4j12",
+                    "org.springframework.boot:spring-boot-starter-tomcat",
+                    "ch.qos.logback:logback-classic",
+                    "org.springframework.boot:spring-boot-starter-logging",
+                    "log4j:log4j"
+                ],
+                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-resolver/4.1.48.Final/netty-resolver-4.1.48.Final.jar",
+                "mirror_urls": [
+                    "https://packages.confluent.io/maven/io/netty/netty-resolver/4.1.48.Final/netty-resolver-4.1.48.Final.jar",
+                    "https://repo1.maven.org/maven2/io/netty/netty-resolver/4.1.48.Final/netty-resolver-4.1.48.Final.jar",
+                    "https://jitpack.io/io/netty/netty-resolver/4.1.48.Final/netty-resolver-4.1.48.Final.jar"
+                ],
+                "sha256": "fb125914398ebef821def3dbb1642f9f360f39d182f00149ef3db845ebf06ad2",
+                "url": "https://repo1.maven.org/maven2/io/netty/netty-resolver/4.1.48.Final/netty-resolver-4.1.48.Final.jar"
             },
             {
                 "coord": "io.netty:netty-transport-native-epoll:4.1.48.Final",
                 "dependencies": [
-                    "io.netty:netty-buffer:4.1.51.Final",
-                    "io.netty:netty-resolver:4.1.51.Final",
-                    "io.netty:netty-transport:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final",
+                    "io.netty:netty-transport:4.1.48.Final",
+                    "io.netty:netty-buffer:4.1.48.Final",
+                    "io.netty:netty-resolver:4.1.48.Final",
+                    "io.netty:netty-common:4.1.48.Final",
                     "io.netty:netty-transport-native-unix-common:4.1.48.Final"
                 ],
                 "directDependencies": [
-                    "io.netty:netty-buffer:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final",
-                    "io.netty:netty-transport:4.1.51.Final",
+                    "io.netty:netty-buffer:4.1.48.Final",
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-transport:4.1.48.Final",
                     "io.netty:netty-transport-native-unix-common:4.1.48.Final"
                 ],
                 "exclusions": [
@@ -2798,15 +2807,15 @@
             {
                 "coord": "io.netty:netty-transport-native-unix-common:4.1.48.Final",
                 "dependencies": [
-                    "io.netty:netty-buffer:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final",
-                    "io.netty:netty-resolver:4.1.51.Final",
-                    "io.netty:netty-transport:4.1.51.Final"
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-resolver:4.1.48.Final",
+                    "io.netty:netty-transport:4.1.48.Final",
+                    "io.netty:netty-buffer:4.1.48.Final"
                 ],
                 "directDependencies": [
-                    "io.netty:netty-buffer:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final",
-                    "io.netty:netty-transport:4.1.51.Final"
+                    "io.netty:netty-buffer:4.1.48.Final",
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-transport:4.1.48.Final"
                 ],
                 "exclusions": [
                     "javax.jms:jms",
@@ -2828,31 +2837,32 @@
                 "url": "https://repo1.maven.org/maven2/io/netty/netty-transport-native-unix-common/4.1.48.Final/netty-transport-native-unix-common-4.1.48.Final.jar"
             },
             {
-                "coord": "io.netty:netty-transport:4.1.51.Final",
+                "coord": "io.netty:netty-transport:4.1.48.Final",
                 "dependencies": [
-                    "io.netty:netty-buffer:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final",
-                    "io.netty:netty-resolver:4.1.51.Final"
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-resolver:4.1.48.Final",
+                    "io.netty:netty-buffer:4.1.48.Final"
                 ],
                 "directDependencies": [
-                    "io.netty:netty-buffer:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final",
-                    "io.netty:netty-resolver:4.1.51.Final"
+                    "io.netty:netty-buffer:4.1.48.Final",
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-resolver:4.1.48.Final"
                 ],
                 "exclusions": [
-                    "ch.qos.logback:logback-classic",
+                    "org.slf4j:slf4j-log4j12",
                     "org.springframework.boot:spring-boot-starter-tomcat",
+                    "ch.qos.logback:logback-classic",
                     "org.springframework.boot:spring-boot-starter-logging",
-                    "org.slf4j:slf4j-log4j12"
+                    "log4j:log4j"
                 ],
-                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-transport/4.1.51.Final/netty-transport-4.1.51.Final.jar",
+                "file": "v1/https/repo1.maven.org/maven2/io/netty/netty-transport/4.1.48.Final/netty-transport-4.1.48.Final.jar",
                 "mirror_urls": [
-                    "https://packages.confluent.io/maven/io/netty/netty-transport/4.1.51.Final/netty-transport-4.1.51.Final.jar",
-                    "https://repo1.maven.org/maven2/io/netty/netty-transport/4.1.51.Final/netty-transport-4.1.51.Final.jar",
-                    "https://jitpack.io/io/netty/netty-transport/4.1.51.Final/netty-transport-4.1.51.Final.jar"
+                    "https://packages.confluent.io/maven/io/netty/netty-transport/4.1.48.Final/netty-transport-4.1.48.Final.jar",
+                    "https://repo1.maven.org/maven2/io/netty/netty-transport/4.1.48.Final/netty-transport-4.1.48.Final.jar",
+                    "https://jitpack.io/io/netty/netty-transport/4.1.48.Final/netty-transport-4.1.48.Final.jar"
                 ],
-                "sha256": "e5be259f35a246bf504ad93ea8f5df31872b5abebfb751380eab95d5dc840d44",
-                "url": "https://repo1.maven.org/maven2/io/netty/netty-transport/4.1.51.Final/netty-transport-4.1.51.Final.jar"
+                "sha256": "6b4ba9e09a8e060bad2540845491b5fa1ca73614d157860e657f4027c91e72fd",
+                "url": "https://repo1.maven.org/maven2/io/netty/netty-transport/4.1.48.Final/netty-transport-4.1.48.Final.jar"
             },
             {
                 "coord": "io.opencensus:opencensus-api:0.24.0",
@@ -2908,29 +2918,6 @@
                 ],
                 "sha256": "7155273bbb1ed3d477ea33cf19d7bbc0b285ff395f43b29ae576722cf247000f",
                 "url": "https://repo1.maven.org/maven2/io/opencensus/opencensus-contrib-http-util/0.24.0/opencensus-contrib-http-util-0.24.0.jar"
-            },
-            {
-                "coord": "io.projectreactor:reactor-core:3.3.9.RELEASE",
-                "dependencies": [
-                    "org.reactivestreams:reactive-streams:1.0.3"
-                ],
-                "directDependencies": [
-                    "org.reactivestreams:reactive-streams:1.0.3"
-                ],
-                "exclusions": [
-                    "ch.qos.logback:logback-classic",
-                    "org.springframework.boot:spring-boot-starter-tomcat",
-                    "org.springframework.boot:spring-boot-starter-logging",
-                    "org.slf4j:slf4j-log4j12"
-                ],
-                "file": "v1/https/repo1.maven.org/maven2/io/projectreactor/reactor-core/3.3.9.RELEASE/reactor-core-3.3.9.RELEASE.jar",
-                "mirror_urls": [
-                    "https://packages.confluent.io/maven/io/projectreactor/reactor-core/3.3.9.RELEASE/reactor-core-3.3.9.RELEASE.jar",
-                    "https://repo1.maven.org/maven2/io/projectreactor/reactor-core/3.3.9.RELEASE/reactor-core-3.3.9.RELEASE.jar",
-                    "https://jitpack.io/io/projectreactor/reactor-core/3.3.9.RELEASE/reactor-core-3.3.9.RELEASE.jar"
-                ],
-                "sha256": "2e72796bf56a03e767a5fa1e0e1027b5c9b3737489922ce28138349796b2ed19",
-                "url": "https://repo1.maven.org/maven2/io/projectreactor/reactor-core/3.3.9.RELEASE/reactor-core-3.3.9.RELEASE.jar"
             },
             {
                 "coord": "io.prometheus:simpleclient:0.9.0",
@@ -4043,23 +4030,23 @@
                 "coord": "org.apache.curator:curator-test:4.2.0",
                 "dependencies": [
                     "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
+                    "io.netty:netty-transport:4.1.48.Final",
                     "com.google.j2objc:j2objc-annotations:1.3",
                     "com.google.code.findbugs:jsr305:3.0.2",
                     "org.slf4j:slf4j-api:1.7.30",
                     "org.apache.zookeeper:zookeeper:3.5.8",
                     "log4j:log4j:1.2.17",
-                    "io.netty:netty-buffer:4.1.51.Final",
                     "io.netty:netty-transport-native-epoll:4.1.48.Final",
-                    "io.netty:netty-codec:4.1.51.Final",
+                    "io.netty:netty-buffer:4.1.48.Final",
                     "com.google.errorprone:error_prone_annotations:2.3.4",
-                    "io.netty:netty-resolver:4.1.51.Final",
-                    "io.netty:netty-handler:4.1.51.Final",
                     "org.apache.zookeeper:zookeeper-jute:3.5.8",
+                    "io.netty:netty-resolver:4.1.48.Final",
                     "org.apache.yetus:audience-annotations:0.5.0",
-                    "io.netty:netty-transport:4.1.51.Final",
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-handler:4.1.48.Final",
                     "com.google.guava:failureaccess:1.0.1",
                     "com.google.guava:guava:29.0-jre",
-                    "io.netty:netty-common:4.1.51.Final",
+                    "io.netty:netty-codec:4.1.48.Final",
                     "io.netty:netty-transport-native-unix-common:4.1.48.Final",
                     "org.checkerframework:checker-qual:2.11.1"
                 ],
@@ -4328,6 +4315,7 @@
             {
                 "coord": "org.apache.kafka:kafka_2.12:5.5.1-ccs",
                 "dependencies": [
+                    "io.netty:netty-transport:4.1.48.Final",
                     "org.apache.kafka:kafka-clients:5.5.1-ccs",
                     "com.thoughtworks.paranamer:paranamer:2.8",
                     "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.10.2",
@@ -4346,11 +4334,11 @@
                     "io.netty:netty-codec:4.1.51.Final",
                     "io.netty:netty-resolver:4.1.51.Final",
                     "org.scala-lang.modules:scala-java8-compat_2.12:0.9.0",
-                    "io.netty:netty-handler:4.1.51.Final",
                     "org.apache.zookeeper:zookeeper-jute:3.5.8",
+                    "io.netty:netty-resolver:4.1.48.Final",
                     "org.apache.yetus:audience-annotations:0.5.0",
+                    "io.netty:netty-common:4.1.48.Final",
                     "org.scala-lang:scala-reflect:2.12.10",
-                    "io.netty:netty-transport:4.1.51.Final",
                     "com.yammer.metrics:metrics-core:2.2.0",
                     "org.scala-lang:scala-library:2.12.10",
                     "io.netty:netty-common:4.1.51.Final",
@@ -4572,6 +4560,29 @@
                 "url": "https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox/8.7.0/lucene-sandbox-8.7.0.jar"
             },
             {
+                "coord": "org.apache.mina:mina-core:2.1.3",
+                "dependencies": [
+                    "org.slf4j:slf4j-api:1.7.30"
+                ],
+                "directDependencies": [
+                    "org.slf4j:slf4j-api:1.7.30"
+                ],
+                "exclusions": [
+                    "ch.qos.logback:logback-classic",
+                    "org.springframework.boot:spring-boot-starter-tomcat",
+                    "org.springframework.boot:spring-boot-starter-logging",
+                    "org.slf4j:slf4j-log4j12"
+                ],
+                "file": "v1/https/repo1.maven.org/maven2/org/apache/mina/mina-core/2.1.3/mina-core-2.1.3.jar",
+                "mirror_urls": [
+                    "https://packages.confluent.io/maven/org/apache/mina/mina-core/2.1.3/mina-core-2.1.3.jar",
+                    "https://repo1.maven.org/maven2/org/apache/mina/mina-core/2.1.3/mina-core-2.1.3.jar",
+                    "https://jitpack.io/org/apache/mina/mina-core/2.1.3/mina-core-2.1.3.jar"
+                ],
+                "sha256": "28bfef56fb8fedeee0ddc1cb6d7297a6c7dd04b3299b50968a77216c25593941",
+                "url": "https://repo1.maven.org/maven2/org/apache/mina/mina-core/2.1.3/mina-core-2.1.3.jar"
+            },
+            {
                 "coord": "org.apache.velocity:velocity-engine-core:2.2",
                 "dependencies": [
                     "org.slf4j:slf4j-api:1.7.30",
@@ -4650,26 +4661,26 @@
             {
                 "coord": "org.apache.zookeeper:zookeeper:3.5.8",
                 "dependencies": [
+                    "io.netty:netty-transport:4.1.48.Final",
                     "org.slf4j:slf4j-api:1.7.30",
                     "log4j:log4j:1.2.17",
-                    "io.netty:netty-buffer:4.1.51.Final",
                     "io.netty:netty-transport-native-epoll:4.1.48.Final",
-                    "io.netty:netty-codec:4.1.51.Final",
-                    "io.netty:netty-resolver:4.1.51.Final",
-                    "io.netty:netty-handler:4.1.51.Final",
+                    "io.netty:netty-buffer:4.1.48.Final",
                     "org.apache.zookeeper:zookeeper-jute:3.5.8",
+                    "io.netty:netty-resolver:4.1.48.Final",
                     "org.apache.yetus:audience-annotations:0.5.0",
-                    "io.netty:netty-transport:4.1.51.Final",
-                    "io.netty:netty-common:4.1.51.Final",
+                    "io.netty:netty-common:4.1.48.Final",
+                    "io.netty:netty-handler:4.1.48.Final",
+                    "io.netty:netty-codec:4.1.48.Final",
                     "io.netty:netty-transport-native-unix-common:4.1.48.Final"
                 ],
                 "directDependencies": [
                     "org.slf4j:slf4j-api:1.7.30",
                     "log4j:log4j:1.2.17",
                     "io.netty:netty-transport-native-epoll:4.1.48.Final",
-                    "io.netty:netty-handler:4.1.51.Final",
                     "org.apache.zookeeper:zookeeper-jute:3.5.8",
-                    "org.apache.yetus:audience-annotations:0.5.0"
+                    "org.apache.yetus:audience-annotations:0.5.0",
+                    "io.netty:netty-handler:4.1.48.Final"
                 ],
                 "exclusions": [
                     "javax.jms:jms",
@@ -6868,25 +6879,6 @@
                 "url": "https://repo1.maven.org/maven2/org/projectlombok/lombok/1.18.10/lombok-1.18.10.jar"
             },
             {
-                "coord": "org.reactivestreams:reactive-streams:1.0.3",
-                "dependencies": [],
-                "directDependencies": [],
-                "exclusions": [
-                    "ch.qos.logback:logback-classic",
-                    "org.springframework.boot:spring-boot-starter-tomcat",
-                    "org.springframework.boot:spring-boot-starter-logging",
-                    "org.slf4j:slf4j-log4j12"
-                ],
-                "file": "v1/https/repo1.maven.org/maven2/org/reactivestreams/reactive-streams/1.0.3/reactive-streams-1.0.3.jar",
-                "mirror_urls": [
-                    "https://packages.confluent.io/maven/org/reactivestreams/reactive-streams/1.0.3/reactive-streams-1.0.3.jar",
-                    "https://repo1.maven.org/maven2/org/reactivestreams/reactive-streams/1.0.3/reactive-streams-1.0.3.jar",
-                    "https://jitpack.io/org/reactivestreams/reactive-streams/1.0.3/reactive-streams-1.0.3.jar"
-                ],
-                "sha256": "1dee0481072d19c929b623e155e14d2f6085dc011529a0a0dbefc84cf571d865",
-                "url": "https://repo1.maven.org/maven2/org/reactivestreams/reactive-streams/1.0.3/reactive-streams-1.0.3.jar"
-            },
-            {
                 "coord": "org.reflections:reflections:0.9.12",
                 "dependencies": [
                     "org.javassist:javassist:3.26.0-GA"
@@ -7671,7 +7663,7 @@
                 "url": "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot/2.4.5/spring-boot-2.4.5.jar"
             },
             {
-                "coord": "org.springframework.data:spring-data-commons:2.3.3.RELEASE",
+                "coord": "org.springframework.data:spring-data-commons:2.3.1.RELEASE",
                 "dependencies": [
                     "org.slf4j:slf4j-api:1.7.30",
                     "org.springframework:spring-beans:5.3.6",
@@ -7689,14 +7681,14 @@
                     "org.springframework.boot:spring-boot-starter-logging",
                     "org.slf4j:slf4j-log4j12"
                 ],
-                "file": "v1/https/repo1.maven.org/maven2/org/springframework/data/spring-data-commons/2.3.3.RELEASE/spring-data-commons-2.3.3.RELEASE.jar",
+                "file": "v1/https/repo1.maven.org/maven2/org/springframework/data/spring-data-commons/2.3.1.RELEASE/spring-data-commons-2.3.1.RELEASE.jar",
                 "mirror_urls": [
-                    "https://packages.confluent.io/maven/org/springframework/data/spring-data-commons/2.3.3.RELEASE/spring-data-commons-2.3.3.RELEASE.jar",
-                    "https://repo1.maven.org/maven2/org/springframework/data/spring-data-commons/2.3.3.RELEASE/spring-data-commons-2.3.3.RELEASE.jar",
-                    "https://jitpack.io/org/springframework/data/spring-data-commons/2.3.3.RELEASE/spring-data-commons-2.3.3.RELEASE.jar"
+                    "https://packages.confluent.io/maven/org/springframework/data/spring-data-commons/2.3.1.RELEASE/spring-data-commons-2.3.1.RELEASE.jar",
+                    "https://repo1.maven.org/maven2/org/springframework/data/spring-data-commons/2.3.1.RELEASE/spring-data-commons-2.3.1.RELEASE.jar",
+                    "https://jitpack.io/org/springframework/data/spring-data-commons/2.3.1.RELEASE/spring-data-commons-2.3.1.RELEASE.jar"
                 ],
-                "sha256": "f53742d93faf5dfb63318c173be4f5443dbba804753ce811cdb6be3260b399bc",
-                "url": "https://repo1.maven.org/maven2/org/springframework/data/spring-data-commons/2.3.3.RELEASE/spring-data-commons-2.3.3.RELEASE.jar"
+                "sha256": "75b5eb8c1e5f36fd01ec87a7835b6a371567e724b540cc4427d64fcb7c5cb75e",
+                "url": "https://repo1.maven.org/maven2/org/springframework/data/spring-data-commons/2.3.1.RELEASE/spring-data-commons-2.3.1.RELEASE.jar"
             },
             {
                 "coord": "org.springframework.data:spring-data-keyvalue:2.3.3.RELEASE",
@@ -8149,7 +8141,7 @@
                 "url": "https://repo1.maven.org/maven2/org/springframework/spring-test/5.3.6/spring-test-5.3.6.jar"
             },
             {
-                "coord": "org.springframework:spring-tx:5.2.8.RELEASE",
+                "coord": "org.springframework:spring-tx:5.2.7.RELEASE",
                 "dependencies": [
                     "org.springframework:spring-beans:5.3.6",
                     "org.springframework:spring-core:5.3.6",
@@ -8165,14 +8157,14 @@
                     "org.springframework.boot:spring-boot-starter-logging",
                     "org.slf4j:slf4j-log4j12"
                 ],
-                "file": "v1/https/repo1.maven.org/maven2/org/springframework/spring-tx/5.2.8.RELEASE/spring-tx-5.2.8.RELEASE.jar",
+                "file": "v1/https/repo1.maven.org/maven2/org/springframework/spring-tx/5.2.7.RELEASE/spring-tx-5.2.7.RELEASE.jar",
                 "mirror_urls": [
-                    "https://packages.confluent.io/maven/org/springframework/spring-tx/5.2.8.RELEASE/spring-tx-5.2.8.RELEASE.jar",
-                    "https://repo1.maven.org/maven2/org/springframework/spring-tx/5.2.8.RELEASE/spring-tx-5.2.8.RELEASE.jar",
-                    "https://jitpack.io/org/springframework/spring-tx/5.2.8.RELEASE/spring-tx-5.2.8.RELEASE.jar"
+                    "https://packages.confluent.io/maven/org/springframework/spring-tx/5.2.7.RELEASE/spring-tx-5.2.7.RELEASE.jar",
+                    "https://repo1.maven.org/maven2/org/springframework/spring-tx/5.2.7.RELEASE/spring-tx-5.2.7.RELEASE.jar",
+                    "https://jitpack.io/org/springframework/spring-tx/5.2.7.RELEASE/spring-tx-5.2.7.RELEASE.jar"
                 ],
-                "sha256": "df2aeb728d5c95938c5b301175b1d48b3281ef56bd17b13bd010555cc954a31f",
-                "url": "https://repo1.maven.org/maven2/org/springframework/spring-tx/5.2.8.RELEASE/spring-tx-5.2.8.RELEASE.jar"
+                "sha256": "85cbcf1b9452e262652df77edc8938813e815574a93de8be39269d8f7a71beab",
+                "url": "https://repo1.maven.org/maven2/org/springframework/spring-tx/5.2.7.RELEASE/spring-tx-5.2.7.RELEASE.jar"
             },
             {
                 "coord": "org.springframework:spring-web:5.3.6",

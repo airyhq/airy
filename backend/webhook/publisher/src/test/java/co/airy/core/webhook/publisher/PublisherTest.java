@@ -72,7 +72,7 @@ public class PublisherTest {
     Publisher publisher;
 
     @MockBean
-    private RedisQueue redisQueue;
+    private BeanstalkPublisher beanstalkPublisher;
 
     @BeforeEach
     void beforeEach() throws InterruptedException {
@@ -95,7 +95,7 @@ public class PublisherTest {
         TimeUnit.SECONDS.sleep(2);
 
         ArgumentCaptor<QueueMessage> batchCaptor = ArgumentCaptor.forClass(QueueMessage.class);
-        doNothing().when(redisQueue).publishMessage(Mockito.anyString(), batchCaptor.capture());
+        doNothing().when(beanstalkPublisher).publishMessage(batchCaptor.capture());
 
         List<ProducerRecord<String, Message>> messages = new ArrayList<>();
 

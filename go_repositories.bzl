@@ -171,6 +171,13 @@ def go_repositories():
         version = "v0.5.0",
     )
     go_repository(
+        name = "com_github_beanstalkd_go_beanstalk",
+        importpath = "github.com/beanstalkd/go-beanstalk",
+        sum = "h1:IiNwYbAoVBDs5xEOmleGoX+DRD3Moz99EpATbl8672w=",
+        version = "v0.1.0",
+    )
+
+    go_repository(
         name = "com_github_beorn7_perks",
         importpath = "github.com/beorn7/perks",
         sum = "h1:HWo1m869IqiPhD389kmkxeTalrjNbbJTC8LXupb+sl0=",

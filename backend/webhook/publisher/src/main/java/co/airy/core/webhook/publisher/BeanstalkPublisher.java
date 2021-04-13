@@ -2,33 +2,35 @@ package co.airy.core.webhook.publisher;
 
 import co.airy.core.webhook.publisher.payload.QueueMessage;
 import co.airy.log.AiryLoggerFactory;
+import com.dinstone.beanstalkc.JobProducer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.slf4j.Logger;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RedisQueue {
-    private static final Logger log = AiryLoggerFactory.getLogger(RedisQueue.class);
+public class BeanstalkPublisher {
+    private static final Logger log = AiryLoggerFactory.getLogger(BeanstalkPublisher.class);
 
     final ObjectMapper objectMapper = new ObjectMapper()
             .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
             .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-    private final RedisTemplate<String, String> redisTemplate;
+    private final JobProducer beanstalkdJobProducer;
 
-    RedisQueue(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
+    BeanstalkPublisher(JobProducer beanstalkdJobProducer) {
+        this.beanstalkdJobProducer = beanstalkdJobProducer;
     }
 
-    void publishMessage(String webhookId, QueueMessage message) {
+
+    void publishMessage(QueueMessage message) {
         try {
-            redisTemplate.opsForList().leftPush(webhookId, objectMapper.writeValueAsString(message));
+            beanstalkdJobProducer.putJob(1, 1, 5000, objectMapper.writeValueAsString(message).getBytes());
+            log.info("Send Webhook message");
         } catch (JsonProcessingException e) {
-            log.error("failed to publish message to redis", e);
+            log.error("failed to publish message to Beanstalkd", e);
         }
     }
 }

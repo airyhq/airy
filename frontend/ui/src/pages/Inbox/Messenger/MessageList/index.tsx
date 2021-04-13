@@ -21,7 +21,7 @@ import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime, isSameDay} from 'dates';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
-  showSuggestedReplies: (sugggestions: Suggestions) => void;
+  showSuggestedReplies: (suggestions: Suggestions) => void;
 };
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {

@@ -94,6 +94,9 @@ public class EventsRouterTest {
 
         List<Message> messages = kafkaTestHelper.consumeValues(1, applicationCommunicationMessages.name());
         assertThat(messages, hasSize(1));
+
+        final Message message = messages.get(0);
+        assert(message.getIsFromContact());
     }
 
     @Test

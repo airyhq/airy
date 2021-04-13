@@ -1,16 +1,13 @@
 package co.airy.mapping;
 
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.DataUrl;
 import co.airy.mapping.model.Text;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +31,7 @@ public class ContentMapper {
     }
 
     public List<Content> render(Message message, Map<String, String> metadata) throws Exception {
-        if (SenderType.APP_USER.equals(message.getSenderType()) || "chatplugin".equals(message.getSource())) {
+        if (!message.getIsFromContact()) {
             return outboundMapper.render(message.getContent());
         }
 

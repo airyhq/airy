@@ -1,4 +1,4 @@
-import {SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
+import {QuickReplyCommand, SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
 import {setResumeTokenInStorage} from '../storage';
 
 declare const window: {
@@ -10,7 +10,7 @@ declare const window: {
 
 const API_HOST = window.airy ? window.airy.host : process.env.API_HOST;
 
-export const sendMessage = (message: TextContent | SuggestionResponse, token: string) => {
+export const sendMessage = (message: TextContent | SuggestionResponse | QuickReplyCommand, token: string) => {
   return fetch(`${API_HOST}/chatplugin.send`, {
     method: 'POST',
     body: JSON.stringify(convertToBody(message)),
@@ -21,8 +21,8 @@ export const sendMessage = (message: TextContent | SuggestionResponse, token: st
   });
 };
 
-const convertToBody = (message: TextContent | SuggestionResponse) => {
-  if (message.type == 'suggestionResponse') {
+const convertToBody = (message: TextContent | SuggestionResponse | QuickReplyCommand) => {
+  if (message.type == ('suggestionResponse' || 'quickReplies')) {
     return {
       message: {
         text: message.text,

@@ -1,6 +1,6 @@
 import _redux from 'redux';
 import _, {createSelector} from 'reselect';
-import {Tag} from 'httpclient';
+import {Tag} from 'model';
 import {StateModel} from '../reducers';
 
 const tags = (state: StateModel) => state.data.tags.all;

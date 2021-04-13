@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import {Button, Input} from '@airyhq/components';
+import {Button, Input} from 'components';
 
 import styles from './ConnectNewChatPlugin.module.scss';
 

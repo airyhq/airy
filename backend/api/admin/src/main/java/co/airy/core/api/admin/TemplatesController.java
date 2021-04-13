@@ -8,7 +8,6 @@ import co.airy.core.api.admin.payload.ListTemplatesRequestPayload;
 import co.airy.core.api.admin.payload.TemplatesResponsePayload;
 import co.airy.core.api.admin.payload.UpdateTemplateRequestPayload;
 import co.airy.model.template.TemplatePayload;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -68,7 +67,7 @@ public class TemplatesController {
             return ResponseEntity.notFound().build();
         }
         stores.deleteTemplate(template);
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/templates.list")

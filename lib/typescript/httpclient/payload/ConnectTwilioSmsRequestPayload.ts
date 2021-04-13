@@ -1,5 +1,5 @@
 export interface ConnectTwilioSmsRequestPayload {
-  sourceChannelId?: string;
+  sourceChannelId: string;
   name?: string;
   imageUrl?: string;
   phoneNumber?: string;

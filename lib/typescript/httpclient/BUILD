@@ -7,6 +7,7 @@ package(default_visibility = ["//visibility:public"])
 ts_web_library(
     name = "httpclient",
     deps = [
+        "//lib/typescript/model",
         "//lib/typescript/types",
         "@npm//@types/node",
         "@npm//camelcase-keys",

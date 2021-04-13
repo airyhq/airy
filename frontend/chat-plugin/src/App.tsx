@@ -40,6 +40,7 @@ export type Config = {
   accentColor?: string;
   bubbleIcon?: string;
   sendMessageIcon?: string;
+  showMode: boolean;
 };
 
 export const config: Config = {
@@ -70,4 +71,5 @@ export const config: Config = {
       },
     },
   },
+  showMode: false,
 };

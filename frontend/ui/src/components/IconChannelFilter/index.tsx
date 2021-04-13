@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Channel} from 'httpclient';
+import {Channel} from 'model';
 
 import {ReactComponent as GoogleIcon} from 'assets/images/icons/google_avatar.svg';
 import {ReactComponent as WhatsappIcon} from 'assets/images/icons/whatsapp_avatar.svg';

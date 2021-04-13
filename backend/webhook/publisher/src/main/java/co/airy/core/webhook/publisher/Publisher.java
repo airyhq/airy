@@ -1,6 +1,5 @@
 package co.airy.core.webhook.publisher;
 
-import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.Status;

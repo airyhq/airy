@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -89,10 +88,10 @@ class UnreadCountTest {
                         .setSenderId("source-conversation-id")
                         .setDeliveryState(DeliveryState.DELIVERED)
                         .setSource("facebook")
-                        .setSenderType(SenderType.APP_USER)
                         .setConversationId(conversationId)
                         .setChannelId(channel.getId())
                         .setContent("from airy")
+                        .setIsFromContact(false)
                         .build())
         ));
 
@@ -103,7 +102,7 @@ class UnreadCountTest {
                         .andExpect(jsonPath("$.metadata.unread_count", equalTo(unreadMessages))),
                 "Conversation not showing unread count");
 
-        webTestHelper.post("/conversations.read", payload, userId).andExpect(status().isAccepted());
+        webTestHelper.post("/conversations.read", payload, userId).andExpect(status().isNoContent());
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info", payload, userId)

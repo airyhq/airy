@@ -9,8 +9,10 @@ load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 check_pkg(name = "buildifier")
 
 module_deps = [
-    "//frontend/assets",
+    "//lib/typescript/assets",
+    "//lib/typescript/components",
     "//lib/typescript/types",
+    "//lib/typescript/model",
     "//lib/typescript/httpclient",
     "//lib/typescript/render",
     "//lib/typescript/dates",
@@ -21,7 +23,6 @@ module_deps = [
 ts_web_library(
     name = "app",
     deps = module_deps + [
-        "@npm//@airyhq/components",
         "@npm//@types/node",
         "@npm//@types/react",
         "@npm//@types/react-dom",
@@ -45,7 +46,7 @@ web_app(
     name = "bundle",
     app_lib = ":app",
     dev_index = "development.html",
-    entry = "frontend/ui/src/index.js",
+    entry = "frontend/ui/src/index",
     index = ":index.html",
     module_deps = module_deps,
     output = {

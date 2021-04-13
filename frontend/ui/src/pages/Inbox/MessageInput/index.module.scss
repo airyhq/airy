@@ -1,5 +1,5 @@
-@import '../../../assets/scss/colors.scss';
-@import '../../../assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
 
 .container {
   display: flex;
@@ -82,6 +82,7 @@
 }
 
 .sendDiv {
+  position: relative;
   display: flex;
   margin: 0px 24px 0px 0px;
 }
@@ -150,7 +151,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   position: relative;
   margin-left: 4px;
   width: 30px;
@@ -175,6 +175,14 @@
     bottom: 33px;
     z-index: 2;
   }
+}
+
+.disabledIconButton {
+  cursor: not-allowed;
+}
+
+.activeIconButton {
+  cursor: pointer;
 }
 
 .iconButton:hover {
@@ -204,6 +212,7 @@
   position: absolute;
   right: 72px;
   bottom: 75px;
+  z-index: 2;
 }
 
 .templateSelector {
@@ -260,4 +269,21 @@
 .removeButton object {
   width: 12px;
   height: 12px;
+}
+
+.disconnectedChannelToolTip {
+  width: 184px;
+  height: auto;
+  position: absolute;
+  bottom: 50px;
+  right: -8px;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 1;
+  background-color: var(--color-light-gray);
+
+  p {
+    @include font-s;
+    color: var(--color-text-contrast);
+  }
 }

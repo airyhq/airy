@@ -13,13 +13,16 @@ import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
 import {AiryWidgetConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import {SenderType, MessageState, isFromContact, Message} from 'httpclient';
+import {MessageState, isFromContact, Message} from 'model';
 import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 import {cyBubble, cyChatPluginMessageList} from 'chat-plugin-handles';
-import {getResumeTokenFromStorage} from '../../storage';
+import {getResumeTokenFromStorage, resetStorage} from '../../storage';
+import {ModalDialogue} from '../../components/modal';
+import NewConversation from '../../components/newConversation';
+import {start} from '../../api';
 
 let ws: WebSocket;
 
@@ -27,7 +30,7 @@ const defaultWelcomeMessage: Message = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   content: {text: 'Hello! How can we help you?'},
   deliveryState: MessageState.delivered,
-  senderType: SenderType.appUser,
+  fromContact: false,
   sentAt: new Date(),
 };
 
@@ -46,8 +49,12 @@ const Chat = (props: Props) => {
   const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
   const [messageString, setMessageString] = useState('');
   const [connectionState, setConnectionState] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [newConversation, setNewConversation] = useState(false);
 
   useEffect(() => {
+    if (config.showMode) return;
+
     ws = new WebSocket(props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
       setConnectionState(state);
     });
@@ -60,6 +67,10 @@ const Chat = (props: Props) => {
   useEffect(() => {
     updateScroll();
   }, [messages]);
+
+  useEffect(() => {
+    setNewConversation(true);
+  }, []);
 
   const setInitialMessages = (initialMessages: Array<Message>) => {
     setMessages([...messages, ...initialMessages]);
@@ -90,6 +101,7 @@ const Chat = (props: Props) => {
   };
 
   const sendMessage = (text: string) => {
+    if (config.showMode) return;
     ctrl.sendMessage(text);
   };
 
@@ -120,20 +132,36 @@ const Chat = (props: Props) => {
     }
   };
 
+  const closeModalOnClick = () => setShowModal(false);
+
+  const cancelChatSession = () => {
+    setNewConversation(false);
+    resetStorage(props.channelId);
+    closeModalOnClick();
+  };
+
+  const reAuthenticate = () => {
+    start(props.channelId, getResumeTokenFromStorage(props.channelId));
+  };
+
   const headerBar = props.headerBarProp
     ? () => props.headerBarProp(ctrl)
-    : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} config={config} />;
+    : () => <AiryHeaderBar toggleHideChat={ctrl.toggleHideChat} config={config} setShowModal={setShowModal} />;
 
   const inputBar = props.inputBarProp
     ? () => props.inputBarProp(ctrl)
-    : () => (
-        <AiryInputBar
-          sendMessage={sendMessage}
-          messageString={messageString}
-          setMessageString={setMessageString}
-          config={config}
-        />
-      );
+    : () =>
+        newConversation ? (
+          <AiryInputBar
+            sendMessage={sendMessage}
+            messageString={messageString}
+            setMessageString={setMessageString}
+            config={config}
+            setNewConversation={setNewConversation}
+          />
+        ) : (
+          <NewConversation reAuthenticate={reAuthenticate} />
+        );
 
   const bubble = props.bubbleProp
     ? () => props.bubbleProp(ctrl)
@@ -153,6 +181,9 @@ const Chat = (props: Props) => {
   const commandCallback = (command: CommandUnion) => {
     if (command.type === 'suggestedReply') {
       ws.onSend({type: 'suggestionResponse', text: command.payload.text, postbackData: command.payload.postbackData});
+    }
+    if (command.type === 'quickReplies') {
+      ws.onSend({type: 'quickReplies', text: command.payload.text, postbackData: command.payload.postbackData});
     }
   };
 
@@ -204,6 +235,22 @@ const Chat = (props: Props) => {
         </div>
       )}
       <BubbleProp render={bubble} />
+      {showModal && (
+        <ModalDialogue close={closeModalOnClick}>
+          <>
+            <div className={style.buttonWrapper}>
+              <button className={style.cancelButton} onClick={closeModalOnClick}>
+                {' '}
+                Cancel
+              </button>
+              <button className={style.endChatButton} onClick={cancelChatSession}>
+                {' '}
+                End Chat
+              </button>
+            </div>
+          </>
+        </ModalDialogue>
+      )}
     </div>
   );
 };

@@ -80,7 +80,7 @@ created. it should return the message you have just sent.
 <img alt="conversations.list" src={useBaseUrl('img/getting-started/quickstart/conversation_list.gif')} />
 
 ```bash
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
+curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" \
 http://airy.core/conversations.list | jq .
 ```
 

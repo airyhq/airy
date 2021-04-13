@@ -5,9 +5,9 @@ alertmanager:
     enabled: true
     hosts: []
     paths: ['/alertmanager']
+  routePrefix: /alertmanager
 grafana:
   enabled: true
-  defaultDashboardsEnabled: true
   adminPassword: prom-operator
   ingress:
     enabled: true
@@ -18,5 +18,17 @@ prometheus:
   ingress:
     enabled: true
     hosts: []
-    paths: ['/alertmanager']
-    additionalScrapeConfigs: []
+    paths: ['/prometheus']
+  prometheusSpec:
+    routePrefix: /prometheus
+  additionalServiceMonitors:
+  - name: "spring-apps"
+    selector:
+      matchLabels:
+        core.airy.co/prometheus: spring
+    namespaceSelector:
+      matchNames: ["default"]
+    endpoints:
+      - port: web 
+        interval: 30s
+        path: actuator/prometheus

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 
-import {SearchField} from '@airyhq/components';
+import {SearchField} from 'components';
 import {StateModel} from '../../../reducers';
 
 import {setSearch, resetFilteredConversationAction} from '../../../actions/conversationsFilter';

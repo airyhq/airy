@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import {Avatar} from '../Avatar';
-import {Contact} from 'httpclient';
+import {Contact} from 'model';
 import {DefaultRenderingProps} from '../../components/index';
 import styles from './index.module.scss';
 
@@ -33,7 +33,9 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
             <Avatar contact={contact} />
           </div>
         )}
-        <div className={styles.contactContent} style={lastInGroup == false ? {marginLeft: '48px'} : {}}>
+        <div
+          className={styles.contactContent}
+          style={lastInGroup === false && isChatPlugin === false ? {marginLeft: '48px'} : {}}>
           {children}
         </div>
         {decoration}

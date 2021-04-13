@@ -10,6 +10,7 @@ custom_java_library(
         "//:jackson",
         "//:spring",
         "//lib/java/log",
+        "@maven//:io_micrometer_micrometer_registry_prometheus",
         "@maven//:javax_xml_bind_jaxb_api",
         "@maven//:org_springframework_boot_spring_boot",
         "@maven//:org_springframework_boot_spring_boot_autoconfigure",

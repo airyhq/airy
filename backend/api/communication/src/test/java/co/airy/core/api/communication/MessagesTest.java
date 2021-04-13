@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.date.format.DateFormat;
 import co.airy.kafka.test.KafkaTestHelper;
@@ -116,11 +115,11 @@ public class MessagesTest {
                         .setSenderId("source-conversation-id")
                         .setDeliveryState(DeliveryState.DELIVERED)
                         .setSource("facebook")
-                        .setSenderType(SenderType.SOURCE_CONTACT)
                         .setConversationId(conversationId)
                         .setHeaders(Map.of())
                         .setChannelId(channel.getId())
                         .setContent("{\"text\":\"" + text + "\"}")
+                        .setIsFromContact(true)
                         .build()),
                 new ProducerRecord<>(applicationCommunicationMetadata.name(), "metadata-id",
                         newMessageMetadata(messageId, "metadata_key", "message metadata value"))
@@ -150,11 +149,11 @@ public class MessagesTest {
                         .setSenderId("source-conversation-id")
                         .setDeliveryState(DeliveryState.DELIVERED)
                         .setSource("facebook")
-                        .setSenderType(SenderType.SOURCE_CONTACT)
                         .setConversationId(conversationId)
                         .setHeaders(Map.of())
                         .setChannelId(channel.getId())
                         .setContent(String.format("{\"url\":\"%s\"}", sourceUrl))
+                        .setIsFromContact(true)
                         .build()),
                 new ProducerRecord<>(applicationCommunicationMetadata.name(), "metadata-id",
                         newMessageMetadata(messageId, "data_" + sourceUrl, persistentUrl))
@@ -199,11 +198,11 @@ public class MessagesTest {
                                 .setSource("twilio.sms")
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setSenderId(sourceConversationId)
-                                .setSenderType(SenderType.SOURCE_CONTACT)
                                 .setDeliveryState(DeliveryState.DELIVERED)
                                 .setConversationId(conversationId)
                                 .setChannelId(channelId)
                                 .setContent(content)
+                                .setIsFromContact(true)
                                 .build())
         ));
 
@@ -226,11 +225,11 @@ public class MessagesTest {
                                 .setSource("twilio.sms")
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setSenderId("sourceConversationId")
-                                .setSenderType(SenderType.SOURCE_CONTACT)
                                 .setDeliveryState(DeliveryState.DELIVERED)
                                 .setConversationId(UUID.randomUUID().toString())
                                 .setChannelId(channelId)
                                 .setContent("content")
+                                .setIsFromContact(true)
                                 .build())
         ));
 

@@ -81,7 +81,7 @@ public class MetadataControllerTest {
                 () -> webTestHelper.post("/metadata.upsert",
                         "{\"subject\": \"message\", \"id\": \"" + messageId + "\", \"data\": {\"sentFrom\": \"iPhone\"}}",
                         "user-id")
-                        .andExpect(status().isOk()),
+                        .andExpect(status().isNoContent()),
                 "Error upserting metadata"
         );
 

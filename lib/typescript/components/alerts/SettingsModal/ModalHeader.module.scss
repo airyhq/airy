@@ -1,0 +1,38 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.modalHeader {
+  @include font-m;
+  color: var(--color-text-contrast);
+  margin-bottom: 16px;
+  padding-right: 32px;
+}
+
+.headline {
+  font-weight: 900;
+}
+
+.closeButton {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  line-height: 20px;
+  padding: 3px 6px;
+  background: none;
+  margin-left: 10px;
+  font-weight: 100;
+  outline: none;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+}
+
+.closeIcon {
+  svg {
+    width: 16px;
+    height: 16px;
+    path {
+      stroke: #aaa;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {filter} from 'lodash-es';
-import {ConversationFilter} from 'httpclient';
+import {ConversationFilter} from 'model';
 
 import {StateModel} from '../../../reducers';
 

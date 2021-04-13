@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
-import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/components';
+import {SettingsModal, LinkButton, Button, SearchField, Input} from 'components';
 import {cyTagsSearchField, cyTagsTable} from 'handles';
 import {ReactComponent as Plus} from 'assets/images/icons/plus.svg';
 
 import {listTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
 import {filteredTags} from '../../selectors/tags';
-import {Tag} from 'httpclient';
+import {Tag} from 'model';
 import {ModalType} from '../../types';
 
 import styles from './index.module.scss';

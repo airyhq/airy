@@ -12,7 +12,7 @@ import ConversationListHeader from '../ConversationListHeader';
 import ConversationsFilter from '../ConversationsFilter';
 import ConversationListItem from '../ConversationListItem';
 import NoConversations from '../NoConversations';
-import {SimpleLoader} from '@airyhq/components';
+import {SimpleLoader} from 'components';
 
 import {MergedConversation, StateModel} from '../../../reducers';
 

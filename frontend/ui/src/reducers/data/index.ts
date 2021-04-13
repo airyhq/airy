@@ -1,5 +1,5 @@
 import _, {combineReducers, Reducer} from 'redux';
-import {User} from 'httpclient';
+import {User} from 'model';
 import {Tags} from './tags';
 import {Settings} from './settings';
 import {Templates} from './templates';

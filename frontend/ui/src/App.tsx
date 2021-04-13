@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, Route, Switch, Redirect, RouteComponentProps} from 'react-router-dom';
 
-import {AiryLoader} from '@airyhq/components';
+import {AiryLoader} from 'components';
 import TopBar from './components/TopBar';
 import Login from './pages/Login';
 import Channels from './pages/Channels';

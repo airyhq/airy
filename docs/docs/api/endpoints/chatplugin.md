@@ -68,12 +68,6 @@ previous conversation using the [resume endpoint](#get-a-resume-token).
 You must set the `token` obtained on the [authorization
 endpoint](#authenticating-web-users) as an `Authorization` header.
 
-**Sample request**
-
-```json5
-{}
-```
-
 **Sample response**
 
 ```json5

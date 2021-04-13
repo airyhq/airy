@@ -4,14 +4,12 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.payload.SendMessageRequestPayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
 import co.airy.model.metadata.dto.MetadataMap;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -50,12 +48,12 @@ public class SendMessageController {
         final Conversation conversation = conversationsStore.get(payload.getConversationId().toString());
 
         if (conversation == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EmptyResponsePayload());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         final Channel channel = conversation.getChannel();
         if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new EmptyResponsePayload());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         final Message message = Message.newBuilder()
@@ -67,8 +65,8 @@ public class SendMessageController {
                 .setDeliveryState(DeliveryState.PENDING)
                 .setSource(channel.getSource())
                 .setSenderId(auth.getPrincipal().toString())
-                .setSenderType(SenderType.APP_USER)
                 .setSentAt(Instant.now().toEpochMilli())
+                .setIsFromContact(false)
                 .build();
 
         producer.send(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message)).get();

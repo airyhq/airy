@@ -5,7 +5,6 @@ import co.airy.core.api.communication.payload.UpsertMetadataRequestPayload;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.MetadataObjectMapper;
 import co.airy.model.metadata.Subject;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,7 @@ public class MetadataController {
                     .peek((metadata) -> metadata.setKey(String.format("%s.%s", MetadataKeys.USER_DATA, metadata.getKey())))
                     .collect(toList());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new EmptyResponsePayload());
+            return ResponseEntity.badRequest().build();
         }
 
         for (Metadata metadata : metadataList) {
@@ -46,6 +45,6 @@ public class MetadataController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
             }
         }
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 }

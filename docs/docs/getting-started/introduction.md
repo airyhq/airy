@@ -5,6 +5,7 @@ slug: /
 ---
 
 import TLDR from "@site/src/components/TLDR";
+import Image from "@site/src/components/Image";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
 import RocketSVG from "@site/static/icons/rocket.svg";
@@ -16,14 +17,26 @@ import FishingPoleSVG from "@site/static/icons/fishing-pole.svg";
 import GearSVG from "@site/static/icons/gear.svg";
 import AiryBubbleSVG from "@site/static/icons/airy-bubble.svg";
 
-## What is Airy Core?
-
 <TLDR>
 
 Airy Core is an **open source**, **fully-featured**, **production-ready**
-messaging platform.
+conversational platform.
 
 </TLDR>
+
+<Image lightModePath="img/getting-started/introduction-light.png" darkModePath="img/getting-started/introduction-dark.png"/>
+
+<h3>Get Airy up and running with one command</h3>
+
+```bash
+# Install the Airy CLI
+brew install airyhq/airy/cli
+
+# Create Airy with one command
+airy create --provider=aws
+```
+
+## What Airy is used for
 
 With Airy Core you can process conversational data from a variety of sources:
 
@@ -46,42 +59,27 @@ Since Airy's infrastructure is built around Apache Kafka, it can process a large
 amount of conversations and messages simultaneously and stream the relevant
 conversational data to wherever you need it.
 
-## Get Started
+## Next steps
 
 <ButtonBoxList>
-<ButtonBox 
+<ButtonBox
     icon={<AiryBubbleSVG />}
-    title='What is Airy?' 
-    description='Learn about Airys messaging platform and components' 
+    title="What are Airy's components?"
+    description="Learn about Airy's messaging platform and components"
     link='getting-started/components'
 />
-</ButtonBoxList>
-
-<ButtonBoxList>
-<ButtonBox 
+<ButtonBox
     icon={<RocketSVG />}
     iconInvertible={true}
-    title='Start Installation' 
-    description='Install Airy with our CLI, locally or in the cloud' 
-    link='cli/introduction'
+    title='Installation'
+    description='Install Airy locally or in the cloud of your choice'
+    link='getting-started/installation/introduction'
 />
-</ButtonBoxList>
-
-Once you have Airy installed, follow our Quick Start for guidance.
-
-<ButtonBoxList>
-<ButtonBox 
+<ButtonBox
     icon={<DiamondSVG />}
     iconInvertible={true}
-    title='To the Quick Start' 
-    description='Learn the Airy Basics with our Quick Start' 
+    title='To the Quick Start'
+    description='Learn the Airy Basics with our Quick Start'
     link='getting-started/quickstart'
 />
 </ButtonBoxList>
-
-We'll guide you through the following journey:
-
-- Connect your first Source
-- Send Messages
-- Use the API to list conversations
-- Consume directly from Kafka

@@ -7,7 +7,6 @@ import co.airy.core.api.communication.payload.MessageSuggestRepliesRequestPayloa
 import co.airy.core.api.communication.payload.PaginationData;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
-import co.airy.model.metadata.MetadataKeys;
 import co.airy.pagination.Page;
 import co.airy.pagination.Paginator;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
@@ -23,7 +22,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 import static co.airy.model.message.dto.MessageResponsePayload.fromMessageContainer;
 import static co.airy.model.metadata.MetadataKeys.MessageKeys.SUGGESTIONS;

@@ -75,7 +75,11 @@ func (h *Helm) Setup() error {
 }
 
 func (h *Helm) InstallCharts(overrides []string) error {
-	return h.runHelm(append([]string{"install", "--values", "/apps/config/airy-config-map.yaml", "core", "/apps/helm-chart/"}, overrides...))
+	return h.runHelm(append([]string{"install",
+		"--values", "/apps/config/airy-config-map.yaml",
+		"--set", "global.appImageTag=" + h.version,
+		"--set", "global.namespace=" + h.namespace,
+		"core", "/apps/helm-chart/"}, overrides...))
 }
 
 func (h *Helm) runHelm(args []string) error {

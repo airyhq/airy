@@ -7,7 +7,6 @@ go_library(
     importpath = "github.com/airyhq/airy/infrastructure/controller/pkg/endpoints",
     visibility = ["//visibility:public"],
     deps = [
-        "@io_k8s_api//apps/v1:go_default_library",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
         "@io_k8s_client_go//kubernetes:go_default_library",
     ],

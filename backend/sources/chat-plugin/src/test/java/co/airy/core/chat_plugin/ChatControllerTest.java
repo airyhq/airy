@@ -69,7 +69,7 @@ public class ChatControllerTest {
     @Value("${local.server.port}")
     private int port;
 
-    @Value("${system_token}")
+    @Value("${systemToken}")
     private String systemToken;
 
     private static KafkaTestHelper kafkaTestHelper;

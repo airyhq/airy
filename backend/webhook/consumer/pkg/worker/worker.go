@@ -128,7 +128,6 @@ func (t *Task) logError(err error) {
 		Err: err,
 		T:   time.Now(),
 	})
-	log.Println(len(t.errors))
 }
 
 func (t *Task) GetErrors() []ConsumerError {

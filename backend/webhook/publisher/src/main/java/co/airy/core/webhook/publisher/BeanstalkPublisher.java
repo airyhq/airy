@@ -27,10 +27,9 @@ public class BeanstalkPublisher {
 
     void publishMessage(QueueMessage message) {
         try {
-            beanstalkdJobProducer.putJob(1, 1, 5000, objectMapper.writeValueAsString(message).getBytes());
-            log.info("Send Webhook message");
+            beanstalkdJobProducer.putJob(1, 1, 5000, objectMapper.writeValueAsBytes(message));
         } catch (JsonProcessingException e) {
-            log.error("failed to publish message to Beanstalkd", e);
+            log.error("Failed to publish message to Beanstalkd", e);
         }
     }
 }

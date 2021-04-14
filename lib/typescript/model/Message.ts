@@ -17,7 +17,9 @@ export enum MessageState {
   delivered = 'DELIVERED',
 }
 
-export interface Message extends Content {
+export interface Message {
+  id: string;
+  content: Content;
   deliveryState: MessageState;
   fromContact: boolean;
   sentAt: Date;

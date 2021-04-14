@@ -1,4 +1,4 @@
-import {Content, isFromContact} from 'model';
+import {Content} from 'model';
 import {DefaultRenderingProps} from './components';
 
 export interface Command {

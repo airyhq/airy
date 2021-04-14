@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -32,10 +32,10 @@ import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.web.client.ExpectedCount.min;
+import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -91,25 +91,15 @@ public class ClientConfigControllerTest {
 
     @Test
     public void canReturnConfig() throws Exception {
-        mockServer.expect(min(1), requestTo(new URI("http://sources-chatplugin.default/actuator/health")))
+        mockServer.expect(once(), requestTo(new URI("http://airy-controller.default/components")))
                 .andExpect(method(HttpMethod.GET))
-                .andRespond(withStatus(HttpStatus.OK));
-
-        mockServer.expect(min(1), requestTo(new URI("http://sources-facebook-connector.default/actuator/health")))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withStatus(HttpStatus.OK));
-
-        mockServer.expect(min(1), requestTo(new URI("http://sources-twilio-connector.default/actuator/health")))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withStatus(HttpStatus.OK));
-
-        mockServer.expect(min(1), requestTo(new URI("http://sources-google-connector.default/actuator/health")))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withStatus(HttpStatus.OK));
+                .andRespond(
+                        withSuccess("{\"components\": [\"api-communication\"]}", MediaType.APPLICATION_JSON)
+                );
 
         retryOnException(() -> webTestHelper.post("/client.config", "{}", "user-id")
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.components.*", hasSize(4)))
+                        .andExpect(jsonPath("$.components.*", hasSize(1)))
                         .andExpect(jsonPath("$.components.*.enabled", everyItem(is(true)))),
                 "client.config call failed");
     }

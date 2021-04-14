@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: "1.0"
-description: A Helm chart for the Facebook Connector app
-name: sources-facebook-connector
-version: 1.0

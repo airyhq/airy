@@ -46,7 +46,7 @@ const Chat = (props: Props) => {
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
   const [isChatHidden, setIsChatHidden] = useState(
-    config.showMode ? false : getResumeTokenFromStorage(props.channelId) ? false : true
+    config.showMode || getResumeTokenFromStorage(props.channelId) ? false : true
   );
   const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
   const [messageString, setMessageString] = useState('');

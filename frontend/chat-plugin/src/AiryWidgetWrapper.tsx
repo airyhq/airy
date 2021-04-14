@@ -8,9 +8,10 @@ type AiryWidgetWrapperProps = AiryWidgetConfiguration & {
 
 export function AiryWidgetWrapper(config: AiryWidgetWrapperProps) {
   const chatPluginParentDiv = document.querySelector(config.chatPluginParentDiv);
-  const chatPluginDiv = document.querySelector('#demo');
+  const chatPluginDiv = document.querySelector('#chatplugin');
+
   const anchor = document.createElement('div');
-  anchor.setAttribute('id', 'demo');
+  anchor.setAttribute('id', 'chatplugin');
   anchor.style.cssText = `
   position: fixed;
   width: -webkit-fill-available;

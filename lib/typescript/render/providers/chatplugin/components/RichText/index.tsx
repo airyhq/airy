@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+
+import {DefaultRenderingProps} from '../../../../components';
+import {Message} from 'model';
+
 import styles from './index.module.scss';
-import {DefaultRenderingProps} from '..';
-import { Message } from 'model';
 
 type RichTextRenderProps = DefaultRenderingProps & {
   message: Message;

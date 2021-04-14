@@ -1,16 +1,18 @@
 import React from 'react';
+
 import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
-import {Suggestions} from './components/Suggestions';
-import {Text} from '../../components/Text';
-import {RichCard} from '../../components/RichCard';
-import {RichCardCarousel} from '../../components/RichCardCarousel';
 import {ContentUnion} from './googleModel';
-import {isFromContact, Message} from 'model';
+import {Message} from 'model';
+
+import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
+import {Suggestions} from './components/Suggestions';
+import {RichCard} from './components/RichCard';
+import {RichCardCarousel} from './components/RichCardCarousel';
 
 export const GoogleRender = (props: RenderPropsUnion) => {
-  const message = props.content;
-  const content = isFromContact(message) ? googleInbound(message) : googleOutbound(message);
+  const message: Message = props.content;
+  const content = message.fromContact ? googleInbound(message) : googleOutbound(message);
   return render(content, props);
 };
 

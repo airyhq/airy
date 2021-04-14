@@ -1,11 +1,13 @@
 import React from 'react';
-import styles from './index.module.scss';
+
 import {DefaultRenderingProps} from '../../../../components/index';
 import {Text} from '../../../../components/Text';
 import {Video} from '../../../../components/Video';
 import {Image} from '../../../../components/Image';
 import {QuickReply, AttachmentUnion} from '../../facebookModel';
 import {ImageWithFallback} from 'render/components/ImageWithFallback';
+
+import styles from './index.module.scss';
 
 export type QuickRepliesRenderProps = DefaultRenderingProps & {
   text?: string;

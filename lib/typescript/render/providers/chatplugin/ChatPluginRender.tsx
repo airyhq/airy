@@ -1,12 +1,13 @@
 import React from 'react';
+
 import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
-import {RichText} from '../../components/RichText';
-import {RichCard} from '../../components/RichCard';
-import {RichCardCarousel} from '../../components/RichCardCarousel';
-import {Text} from '../../components/Text';
 import {AttachmentUnion, ContentUnion, SimpleAttachment} from './chatPluginModel';
+import {Message} from 'model';
+import {Text} from '../../components/Text';
+import {RichText} from './components/RichText';
+import {RichCard} from './components/RichCard';
+import {RichCardCarousel} from './components/RichCardCarousel';
 import {QuickReplies} from './components/QuickReplies/index';
-import { Message } from 'model';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.content), props);

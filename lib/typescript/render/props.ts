@@ -31,6 +31,7 @@ interface RenderProps {
 
 export interface MessageRenderProps extends RenderProps {
   contentType: 'message';
+  fromContact: boolean;
   invertSides?: boolean;
   commandCallback?: (command: CommandUnion) => void;
 }
@@ -53,7 +54,7 @@ export type RenderPropsUnion =
   | QuickRepliesRenderProps;
 
 export const getDefaultRenderingProps = (props: RenderPropsUnion): DefaultRenderingProps => {
-  const fromContact = isFromContact(props.content);
+  const fromContact = props instanceof MessageChannel ? (props.content as MessageRenderProps).fromContact : false;
 
   return {
     fromContact,

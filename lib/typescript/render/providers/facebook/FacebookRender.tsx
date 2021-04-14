@@ -1,5 +1,5 @@
 import React from 'react';
-import {isFromContact, Message} from 'model';
+import {Message} from 'model';
 import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
@@ -10,8 +10,8 @@ import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
-  const message = props.content;
-  const content = isFromContact(message) ? facebookInbound(message) : facebookOutbound(message);
+  const message: Message = props.content;
+  const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };
 

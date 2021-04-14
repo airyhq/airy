@@ -1,7 +1,9 @@
 import React from 'react';
-import styles from './index.module.scss';
-import {MediaHeight} from '../../../providers/chatplugin/chatPluginModel';
+
+import {MediaHeight} from '../../../chatPluginModel';
 import {ImageWithFallback} from 'render/components/ImageWithFallback';
+
+import styles from './index.module.scss';
 
 export type MediaRenderProps = {
   height: MediaHeight;

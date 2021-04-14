@@ -1,7 +1,8 @@
-import React, {createRef, useState} from 'react';
+import React, {createRef, useEffect, useState} from 'react';
 import {Button, Input, ListenOutsideClick} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
+import {AiryWidgetWrapper} from 'chat-plugin';
 
 interface CustomiseSectionProps {
   channelId: string;
@@ -20,6 +21,20 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [showAccentColorPicker, setShowAccentColorPicker] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState('');
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useState(false);
+  const [demoConfig, setDemoConfig] = useState<any>({
+    config: {
+      headerText: headerText || 'hey',
+      headerTextColor: headerTextColor || '#e84d1e',
+      backgroundColor: backgroundColor || '#e84d1e',
+      primaryColor: primaryColor || '#e84d1e',
+      accentColor: accentColor || '#e84d1e',
+      bubbleIcon: bubbleIconUrl || '#e84d1e',
+      sendMessageIcon: sendMessageIconUrl || '#e84d1e',
+      showMode: true,
+    },
+    channelId: channelId,
+    domNode: 'div.demoChatPlugin',
+  });
 
   const codeAreaRef = createRef<HTMLTextAreaElement>();
 
@@ -64,6 +79,32 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         w[n].config = {${config}          
         };`;
   };
+
+  useEffect(() => {
+    setDemoConfig({
+      config: {
+        headerText: headerText || 'hey',
+        headerTextColor: headerTextColor || '#e84d1e',
+        backgroundColor: backgroundColor || '#e84d1e',
+        primaryColor: primaryColor || '#e84d1e',
+        accentColor: accentColor || '#e84d1e',
+        bubbleIcon: bubbleIconUrl || '#e84d1e',
+        sendMessageIcon: sendMessageIconUrl || '#e84d1e',
+        showMode: true,
+      },
+      channelId: channelId,
+      domNode: 'div.demoChatPlugin',
+    });
+  }, [
+    channelId,
+    headerText,
+    headerTextColor,
+    backgroundColor,
+    primaryColor,
+    accentColor,
+    bubbleIconUrl,
+    sendMessageIconUrl,
+  ]);
 
   const copyToClipboard = () => {
     codeAreaRef.current?.select();
@@ -286,6 +327,9 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             height={32}
             fontClass="font-base"
           />
+        </div>
+        <div className="demoChatPlugin">
+          <AiryWidgetWrapper {...demoConfig} />
         </div>
       </div>
     </>

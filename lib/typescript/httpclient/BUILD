@@ -50,7 +50,7 @@ genrule(
 assemble_npm(
     name = "assemble-npm",
     target = ":npm_library",
-    version_file = ":VERSION",
+    version_file = "//:VERSION",
 )
 
 deploy_npm(

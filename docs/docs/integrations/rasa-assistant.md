@@ -1,6 +1,6 @@
 ---
-title: Rasa integration
-sidebar_label: Rasa
+title: Rasa Chat Assisstent
+sidebar_label: Rasa Assisstent
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -32,14 +32,14 @@ array of messaging channels and service them in a single inbox. For Rasa, you
 can think of it as a forward messaging router that will persist your data and
 make it available for export to anywhere within your organization.
 
-This guide covers how to configure your Rasa installation so that it can use the
+This guide covers how to configure your Rasa installation so that it can use
 Airy Core to send and receive messages.
 
 :::note Prerequisites
 
 - A running Airy Core installation [Get
   Started](getting-started/installation/introduction.md)
-- A local Rasa setup: For convenience, we recommend [the Docker setup](https://rasa.com/docs/rasa/docker/building-in-docker/) or [a demo repository](https://github.com/airyhq/rasa-demo) we created for this guide
+- A local Rasa setup: For convenience, we recommend [the Docker setup](https://rasa.com/docs/rasa/docker/building-in-docker/) or [the demo repository](https://github.com/airyhq/rasa-demo) we created for this guide
 
 :::
 
@@ -84,16 +84,15 @@ copy this [connector
 file](https://github.com/airyhq/rasa-demo/blob/master/channels/airy.py) into it.
 The connector requires the following configuration values:
 
-- `auth_token` the Airy Core JWT token you used
-  to connect the webhook.
+- `system_token` the Airy Core system token used for authenticating with the API.
 - `api_host` The url where you host your Airy Core API.
 
 Add them to your existing Rasa `credentials.yml`:
 
 ```yaml
 channels.airy.AiryInput:
-  api_host: "your JWT authentication token"
-  auth_token: "http://airy.core"
+  api_host: "http://airy.core"
+  system_token: "the system api token for Airy Core"
 ```
 
 Now you should have a working integration 🎉.

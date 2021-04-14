@@ -86,7 +86,7 @@ public class ChannelsController {
         final String sourceChannelId = requestPayload.getName();
         final String sourceIdentifier = "chatplugin";
 
-        final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, sourceChannelId).toString();
+        final String channelId = UUID.randomUUID().toString();
 
         List<Metadata> metadataList = new ArrayList<>();
         metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, requestPayload.getName()));

@@ -2,13 +2,13 @@ import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
 import {cloneDeep, sortBy, merge, pickBy} from 'lodash-es';
 
-import {Conversation, ConversationFilter, Message} from 'httpclient';
+import {Conversation, ConversationFilter, Message} from 'model';
 
 import * as metadataActions from '../../../actions/metadata';
 import * as actions from '../../../actions/conversations';
 import * as filterActions from '../../../actions/conversationsFilter';
 import * as messageActions from '../../../actions/messages';
-import {MetadataEvent, ConversationMetadata} from 'httpclient';
+import {MetadataEvent, ConversationMetadata} from 'model';
 
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 type FilterAction = ActionType<typeof filterActions>;
@@ -207,10 +207,10 @@ function allReducer(
             ...state.items[action.payload.identifier],
             metadata: {
               // Ensure that there is always a display name present
-              ...(<MetadataEvent<ConversationMetadata>>action.payload).metadata,
+              ...(action.payload as MetadataEvent<ConversationMetadata>).metadata,
               contact: {
                 ...state.items[action.payload.identifier]?.metadata.contact,
-                ...(<MetadataEvent<ConversationMetadata>>action.payload).metadata.contact,
+                ...(action.payload as MetadataEvent<ConversationMetadata>).metadata.contact,
               },
             },
           },

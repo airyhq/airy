@@ -99,7 +99,7 @@ public class TagsControllerTest {
 
         webTestHelper.post("/tags.update",
                 "{\"id\": \"" + tagId + "\", \"name\": \"new-name\", \"color\": \"" + color + "\"}", "user-id")
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         webTestHelper.post("/tags.list", "{}", "user-id")
                 .andExpect(status().isOk())
@@ -108,7 +108,7 @@ public class TagsControllerTest {
                 .andExpect(jsonPath("$.data[0].name").value(is("new-name")))
                 .andExpect(jsonPath("$.data[0].color").value(is("RED")));
 
-        webTestHelper.post("/tags.delete", "{\"id\": \"" + tagId + "\"}", "user-id").andExpect(status().isOk());
+        webTestHelper.post("/tags.delete", "{\"id\": \"" + tagId + "\"}", "user-id").andExpect(status().isNoContent());
 
         //TODO wait for tag deletion
         TimeUnit.SECONDS.sleep(5);

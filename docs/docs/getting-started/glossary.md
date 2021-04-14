@@ -62,23 +62,9 @@ Unique message id for deduplication.
   - `postback.payload` string postback payloads used for source automations
   - `postback.referral` string facebook specific referral identifier
 
-- `senderType` string
+- `fromContact` boolean
 
-What type of actor inserted the message. One of:
-
-    - `source_contact` sent to the source by a contact
-    - `source_user` sent to the source by the user but not via app
-    - `app_user` sent to source via app
-
-- `senderId` string
-
-Identifies the participant that sent the message. Interpretation is based on the value of `senderType`:
-
-| senderType     | senderId                                            |
-| -------------- | --------------------------------------------------- |
-| SOURCE_CONTACT | source contact id (e.g. Facebook page scoped id)    |
-| SOURCE_USER    | source dependent (e.g. Facebook third party app id) |
-| APP_USER       | app channel id                                      |
+Indicates whether the message was sent by a contact or not.
 
 - `conversationId` uuid
 
@@ -110,19 +96,12 @@ automations.
 
 ## Metadata
 
-Metadata is data attached to a conversation consisting of a set of Key/Value
-pairs. A key can use the dot notation to represent namespaces.
-
-e.g.
-
-| Key                        | Value   |
-| -------------------------- | ------- |
-| "sender.id"                | "123A"  |
-| "sender.contact.first_name | "Grace" |
+Metadata is optional data attached to a subject such as a conversation, channel or a message. Have a look
+at [this page](concepts/metadata.md) for an in-depth explanation.
 
 ### Tag
 
-A tag is a specialized metadata, which is used to tag
+A tag is a special use case of metadata, which is used to tag
 [conversations](#conversation). As the use case of tagging conversations is so
 common, Airy Core provides specialized endpoints and filters for tagging
 conversations.

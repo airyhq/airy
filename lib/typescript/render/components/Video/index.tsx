@@ -1,17 +1,42 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './index.module.scss';
 
 type VideoRenderProps = {
   videoUrl: string;
 };
 
-export const Video = ({videoUrl}: VideoRenderProps) => (
-  <div className={styles.wrapper}>
-    <div className={styles.item}>
-      <video className={styles.video} controls>
-        <source src={videoUrl} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+/**
+ * This is a global list of videos that failed to load.
+ * Sadly the render component is not able to fix wrong payloads in the
+ * redux store and this is the only way for it to remember failed states
+ * and not start flickering on every redraw of the messages
+ */
+const failedUrls = [];
+
+export const Video = ({videoUrl}: VideoRenderProps) => {
+  const [isVideoFailed, setVideoFailed] = useState(failedUrls.includes(videoUrl));
+
+  useEffect(() => {
+    setVideoFailed(failedUrls.includes(videoUrl));
+  }, [videoUrl]);
+
+  const loadingFailed = () => {
+    failedUrls.push(videoUrl);
+    setVideoFailed(true);
+  };
+
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.item}>
+        {isVideoFailed ? (
+          <div>Loading of video failed</div>
+        ) : (
+          <video className={styles.video} controls onError={loadingFailed}>
+            <source src={videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};

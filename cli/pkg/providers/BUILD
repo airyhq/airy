@@ -9,5 +9,6 @@ go_library(
         "//cli/pkg/kube",
         "//cli/pkg/providers/aws",
         "//cli/pkg/providers/minikube",
+        "//cli/pkg/workspace",
     ],
 )

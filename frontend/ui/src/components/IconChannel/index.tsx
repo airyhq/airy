@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react';
-import {Channel} from 'httpclient';
+import {Channel} from 'model';
 
 import {ReactComponent as FacebookIcon} from 'assets/images/icons/facebook_rounded.svg';
 import {ReactComponent as GoogleIcon} from 'assets/images/icons/google-messages.svg';

@@ -30,7 +30,7 @@ To register a new user in the Airy Core you can use the **users.signup**
 [endpoint](api/endpoints/users.md#signup).
 
 Alternatively you can run the
-following [CLI command](cli/reference.md#api-signup) to create a default user.
+following [CLI command](cli/usage.md#api-signup) to create a default user.
 You can also pass your own email and password as parameters. Otherwise these default
 credentials will be used:
 
@@ -45,7 +45,7 @@ airy api signup
 
 ## Step 2: Open the UI
 
-Run this [CLI command](cli/reference.md#ui):
+Run this [CLI command](cli/usage.md#ui):
 
 ```bash
 airy ui

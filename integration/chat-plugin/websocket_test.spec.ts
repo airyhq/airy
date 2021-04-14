@@ -7,9 +7,9 @@ import {
   cyChannelsChatPluginFormSubmitButton,
 } from 'handles';
 
-describe('Sends message from Inbox to Chatplugin', () => {
-  it('Login', () => {
-    cy.visit('/login');
+describe('Websocket test', () => {
+  it('Send message from Inbox to Chatplugin and assert Websocket is working', () => {
+    cy.visit('/ui/login');
     cy.get('form')
       .within(() => {
         cy.get('input[type=email]').type(Cypress.env('username'));
@@ -19,7 +19,7 @@ describe('Sends message from Inbox to Chatplugin', () => {
 
     cy.wait(500);
 
-    cy.visit('/channels');
+    cy.visit('/ui/channels');
     cy.wait(500);
     cy.url().should('include', '/channels');
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
@@ -27,7 +27,7 @@ describe('Sends message from Inbox to Chatplugin', () => {
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
 
-    cy.visit('http://airy.core/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
+    cy.visit('/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
     cy.get(`[data-cy=${cyBubble}]`).click();
     cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
@@ -38,7 +38,7 @@ describe('Sends message from Inbox to Chatplugin', () => {
 
     cy.wait(2500);
 
-    cy.request('POST', 'http://airy.core/users.login', {
+    cy.request('POST', '/users.login', {
       email: Cypress.env('username'),
       password: Cypress.env('password'),
     }).then(response => {
@@ -47,7 +47,7 @@ describe('Sends message from Inbox to Chatplugin', () => {
 
       cy.request({
         method: 'POST',
-        url: 'http://airy.core/conversations.list',
+        url: '/conversations.list',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${loginToken}`,
@@ -61,7 +61,7 @@ describe('Sends message from Inbox to Chatplugin', () => {
 
         cy.request({
           method: 'POST',
-          url: 'http://airy.core/messages.send',
+          url: '/messages.send',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${loginToken}`,

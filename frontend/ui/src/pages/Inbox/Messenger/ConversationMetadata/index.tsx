@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Tag as TagModel, TagColor, getTags} from 'httpclient';
+import {Tag as TagModel, TagColor, getTags} from 'model';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
@@ -12,7 +12,7 @@ import {StateModel} from '../../../../reducers';
 
 import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
-import {Button, Input, LinkButton} from '@airyhq/components';
+import {Button, Input, LinkButton} from 'components';
 import {getCurrentConversation} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 

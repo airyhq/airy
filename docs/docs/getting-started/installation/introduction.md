@@ -17,7 +17,7 @@ You can deploy Airy Core in many different ways: **locally** or
 
  </TLDR>
 
-We recommend to [install](/cli/installation.md) the Airy CLI first which will
+We recommend to [install](/cli/introduction.md) the Airy CLI first which will
 aid you in the process of installing and managing your Airy Core instance. It is
 easy to install and works on macOS, Windows, and Linux.
 
@@ -29,7 +29,7 @@ icon={<RocketSVG />}
 iconInvertible={true}
 title='CLI'
 description='Install the Airy Core CLI application'
-link='/cli/installation'
+link='/cli/introduction'
 />
 <ButtonBox
 icon={<Minikube />}

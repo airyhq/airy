@@ -80,7 +80,7 @@ created. it should return the message you have just sent.
 <img alt="conversations.list" src={useBaseUrl('img/getting-started/quickstart/conversation_list.gif')} />
 
 ```bash
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
+curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" \
 http://airy.core/conversations.list | jq .
 ```
 
@@ -91,8 +91,8 @@ You can also consume the messages directly from the Kafka
 
 ```
 kubectl exec -it kafka-0 -- /bin/bash
-kafka-console-consumer \
---bootstrap-server airy-cp-kafka:9092 \
+kafka-console-consumer.sh \
+--bootstrap-server kafka:9092 \
 --topic application.communication.messages \
 --from-beginning
 ```

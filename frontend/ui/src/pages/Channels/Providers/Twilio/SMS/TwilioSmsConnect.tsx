@@ -4,7 +4,7 @@ import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
-import {Channel, Source} from 'httpclient';
+import {Channel, Source} from 'model';
 import TwilioConnect from '../TwilioConnect';
 
 interface TwilioSmsRouterProps {

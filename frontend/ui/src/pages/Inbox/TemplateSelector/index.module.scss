@@ -1,5 +1,5 @@
-@import '../../../assets/scss/colors.scss';
-@import '../../../assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
 
 .component {
   display: flex;
@@ -12,6 +12,7 @@
   right: 72px;
   left: 14px;
   background-color: var(--color-template-highlight);
+  z-index: 2;
 }
 
 .topLine {

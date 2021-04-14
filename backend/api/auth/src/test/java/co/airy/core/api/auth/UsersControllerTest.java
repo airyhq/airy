@@ -119,7 +119,7 @@ public class UsersControllerTest {
         final String passwordResetRequest = "{\"email\":\"" + email + "\",\"password\":\"trustno1\"}";
 
         webTestHelper.post("/users.request-password-reset", passwordResetRequest)
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         retryOnException(() -> Mockito.verify(mail).send(Mockito.eq(email), anyString(), anyString()),
                 "could not send email");
@@ -142,14 +142,14 @@ public class UsersControllerTest {
         doNothing().when(mail).send(Mockito.eq(email), anyString(), anyString());
 
         webTestHelper.post("/users.request-password-reset", requestPasswordRequest)
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         Map<String, Object> refreshClaim = Map.of("reset_pwd_for", userId);
         final String token = jwt.tokenFor(userId, refreshClaim);
 
         final String passwordResetRequest = "{\"token\":\"" + token + "\", \"new_password\": \"super-safe-password\"}";
 
-        webTestHelper.post("/users.password-reset", passwordResetRequest).andExpect(status().isOk());
+        webTestHelper.post("/users.password-reset", passwordResetRequest).andExpect(status().isNoContent());
     }
 
     @Test

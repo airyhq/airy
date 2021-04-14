@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState, MouseEvent, createRef} from 'react';
+import React from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 
@@ -7,18 +7,16 @@ import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions/channel';
 
-import {Button, Input, LinkButton} from '@airyhq/components';
-import {Channel} from 'httpclient';
+import {Button, LinkButton} from 'components';
+import {Channel} from 'model';
+
+import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
+import {EditChatPlugin} from './sections/EditChatPlugin';
+
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
 
 import styles from './ChatPluginConnect.module.scss';
-
-import {
-  cyChannelsChatPluginConnectButton,
-  cyChannelsChatPluginFormNameInput,
-  cyChannelsChatPluginFormSubmitButton,
-} from 'handles';
 
 import {CHANNELS_CHAT_PLUGIN_ROUTE, CHANNELS_CONNECTED_ROUTE} from '../../../../../routes/routes';
 
@@ -42,30 +40,9 @@ interface ChatPluginRouterProps {
 type ChatPluginProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<ChatPluginRouterProps>;
 
 const ChatPluginConnect = (props: ChatPluginProps) => {
-  const [showNewPage, setShowNewPage] = useState(true);
-  const [displayName, setDisplayName] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [currentPage, setCurrentPage] = useState('settings');
   const channelId = props.match.params.channelId;
-  const codeAreaRef = createRef<HTMLTextAreaElement>();
 
-  useEffect(() => {
-    setShowNewPage(true);
-    setCurrentPage('settings');
-  }, []);
-
-  useEffect(() => {
-    if (channelId !== 'new' && channelId?.length) {
-      const channel = props.channels.find((channel: Channel) => channel.id === channelId);
-      if (channel) {
-        setDisplayName(channel.metadata?.name || '');
-        setImageUrl(channel.metadata?.imageUrl || '');
-      }
-    }
-  }, [props.channels, channelId]);
-
-  const createNewConnection = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const createNewConnection = (displayName: string, imageUrl?: string) => {
     props
       .connectChatPlugin({
         name: displayName,
@@ -78,151 +55,11 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
       });
   };
 
-  const updateConnection = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const updateConnection = (displayName: string, imageUrl?: string) => {
     props.updateChannel({channelId: channelId, name: displayName, imageUrl: imageUrl}).then(() => {
       props.history.replace(CHANNELS_CONNECTED_ROUTE + '/chatplugin');
     });
   };
-
-  const renderFormFields = () => (
-    <>
-      <div className={styles.formRow}>
-        <Input
-          type="text"
-          name="displayName"
-          value={displayName}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setDisplayName(e.target.value);
-          }}
-          label="Display Name"
-          placeholder="Add a name"
-          autoFocus
-          required
-          height={32}
-          fontClass="font-base"
-          dataCy={cyChannelsChatPluginFormNameInput}
-        />
-      </div>
-
-      <div className={styles.formRow}>
-        <Input
-          type="url"
-          name="url"
-          value={imageUrl}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setImageUrl(e.target.value);
-          }}
-          label="Image URL"
-          placeholder="(optionaly) add an image url"
-          hint="max. 1024x1024 pixel PNG"
-          height={32}
-          fontClass="font-base"
-        />
-      </div>
-    </>
-  );
-
-  const renderNewPage = () => {
-    return showNewPage ? (
-      <div>
-        <p className={styles.newPageParagraph}>Add Airy Live Chat to your website and application</p>
-
-        <Button type="button" onClick={() => setShowNewPage(false)} dataCy={cyChannelsChatPluginConnectButton}>
-          Connect Airy Live Chat
-        </Button>
-      </div>
-    ) : (
-      <div>
-        <p className={styles.newPageParagraph}>Add Airy Live Chat to your website and application</p>
-        <div className={styles.formWrapper}>
-          <div className={styles.settings}>
-            <form className={styles.form}>
-              {renderFormFields()}
-              <Button
-                type="submit"
-                styleVariant="small"
-                dataCy={cyChannelsChatPluginFormSubmitButton}
-                onClick={createNewConnection}>
-                Save
-              </Button>
-            </form>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const showSettings = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    setCurrentPage('settings');
-  };
-
-  const showInstallDoc = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    setCurrentPage('installDoc');
-  };
-
-  const generateCode = () => {
-    return `<script>
-      (function(w, d, s, n) {
-        w[n] = w[n] || {};
-        w[n].channelId = "${channelId}";
-        w[n].host = "${env.API_HOST}";
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s);
-        j.async = true;
-        j.src = w[n].host + "/s.js";
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "airy");
-    </script>`;
-  };
-
-  const copyToClipboard = () => {
-    codeAreaRef.current?.select();
-    document.execCommand('copy');
-  };
-
-  const renderChannelPage = () => (
-    <div>
-      <p className={styles.updatePageParagraph}>Add Airy Live Chat to your website and application</p>
-      <ul className={styles.tabView}>
-        <li className={currentPage == 'settings' ? styles.tabEntrySelected : styles.tabEntry}>
-          <a href="#" onClick={showSettings}>
-            Settings
-          </a>
-        </li>
-        <li className={currentPage == 'installDoc' ? styles.tabEntrySelected : styles.tabEntry}>
-          <a href="#" onClick={showInstallDoc}>
-            Install app
-          </a>
-        </li>
-      </ul>
-      <div className={styles.formWrapper}>
-        {currentPage === 'settings' ? (
-          <div className={styles.settings}>
-            <form className={styles.form} onSubmit={updateConnection}>
-              {renderFormFields()}
-
-              <Button type="submit" styleVariant="small">
-                Update
-              </Button>
-            </form>
-          </div>
-        ) : (
-          <div className={styles.installDocs}>
-            <div className={styles.installHint}>
-              Add this code inside the tag <code>&lt;head&gt;</code>:
-            </div>
-            <div>
-              <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={generateCode()}></textarea>
-            </div>
-            <Button onClick={copyToClipboard}>Copy code</Button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
 
   const disconnectChannel = (channel: Channel) => {
     if (window.confirm('Do you really want to delete this channel?')) {
@@ -230,7 +67,11 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
     }
   };
 
-  const renderOverviewPage = () => (
+  const openNewPage = () => {
+    props.history.push(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
+  };
+
+  const OverviewSection = () => (
     <div className={styles.overview}>
       <ul>
         {props.channels.map((channel: Channel) => (
@@ -264,20 +105,15 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
     </div>
   );
 
-  const openNewPage = () => {
-    props.history.push(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
-  };
-
-  const renderPage = () => {
+  const PageContent = () => {
     if (channelId === 'new') {
-      return renderNewPage();
+      return <ConnectNewChatPlugin createNewConnection={createNewConnection} />;
     }
-
     if (channelId?.length > 0) {
-      return renderChannelPage();
+      const channel = props.channels.find((channel: Channel) => channel.id === channelId);
+      return <EditChatPlugin channel={channel} host={env.API_HOST} updateConnection={updateConnection} />;
     }
-
-    return renderOverviewPage();
+    return <OverviewSection />;
   };
 
   return (
@@ -296,8 +132,7 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
         <ArrowLeftIcon className={styles.backIcon} />
         Back
       </LinkButton>
-
-      {renderPage()}
+      <PageContent />
     </div>
   );
 };

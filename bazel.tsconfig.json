@@ -16,11 +16,23 @@
     "sourceMap": true,
     "jsx": "react",
     "paths": {
+      "assets": [
+        "./lib/typescript/assets"
+      ],
+      "assets/*": [
+        "./lib/typescript/assets/*"
+      ],
       "components": [
-        "./frontend/components/src"
+        "./lib/typescript/components"
       ],
       "components/*": [
-        "./frontend/components/src/*"
+        "./lib/typescript/components/*"
+      ],
+      "model": [
+        "./lib/typescript/model"
+      ],
+      "model/*": [
+        "./lib/typescript/model/*"
       ],
       "httpclient": [
         "./lib/typescript/httpclient"
@@ -62,8 +74,5 @@
         "./frontend/chat-plugin/handles"
       ]
     }
-  },
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }

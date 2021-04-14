@@ -7,7 +7,6 @@ import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.uuid.UUIDv5;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -109,7 +108,7 @@ public class ChannelsController {
         }
 
         if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-            return ResponseEntity.accepted().body(new EmptyResponsePayload());
+            return ResponseEntity.noContent().build();
         }
 
         channel.setConnectionState(ChannelConnectionState.DISCONNECTED);
@@ -121,7 +120,7 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
 
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
 }

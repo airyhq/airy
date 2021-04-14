@@ -83,7 +83,7 @@ class ConversationsTagTest {
 
         webTestHelper.post("/conversations.tag",
                 "{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}", userId)
-                .andExpect(status().isAccepted());
+                .andExpect(status().isNoContent());
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
@@ -96,7 +96,7 @@ class ConversationsTagTest {
 
         webTestHelper.post("/conversations.untag",
                 "{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}", userId)
-                .andExpect(status().isAccepted());
+                .andExpect(status().isNoContent());
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
-import {Source, Channel, Config} from 'httpclient';
+import {Source, Channel, Config} from 'model';
 import {FacebookMessengerRequirementsDialog} from '../Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
 import {TwilioRequirementsDialog} from '../Providers/Twilio/TwilioRequirementsDialog';
 import SourceDescriptionCard from '../SourceDescriptionCard';

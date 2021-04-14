@@ -3,7 +3,6 @@ package co.airy.core.chat_plugin;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.chat_plugin.config.Jwt;
 import co.airy.core.chat_plugin.payload.AuthenticationRequestPayload;
 import co.airy.core.chat_plugin.payload.AuthenticationResponsePayload;
@@ -11,12 +10,10 @@ import co.airy.core.chat_plugin.payload.ResumeTokenRequestPayload;
 import co.airy.core.chat_plugin.payload.ResumeTokenResponsePayload;
 import co.airy.core.chat_plugin.payload.SendMessageRequestPayload;
 import co.airy.model.message.dto.MessageResponsePayload;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -64,7 +61,7 @@ public class ChatController {
         } else if (channelId != null) {
             principal = createConversation(channelId.toString());
         } else {
-            return ResponseEntity.badRequest().body(new EmptyResponsePayload());
+            return ResponseEntity.badRequest().build();
         }
 
         final String authToken = jwt.getAuthToken(principal.getConversationId(), principal.getChannelId());
@@ -129,8 +126,8 @@ public class ChatController {
                     .setDeliveryState(DeliveryState.DELIVERED)
                     .setSource(channel.getSource())
                     .setSenderId(principal.getConversationId())
-                    .setSenderType(SenderType.SOURCE_CONTACT)
                     .setSentAt(Instant.now().toEpochMilli())
+                    .setIsFromContact(true)
                     .build();
 
             stores.sendMessage(message);

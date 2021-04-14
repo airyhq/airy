@@ -10,6 +10,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//cli/pkg/kube",
+        "//cli/pkg/workspace",
         "@com_github_txn2_txeh//:txeh",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
         "@io_k8s_client_go//util/homedir:go_default_library",

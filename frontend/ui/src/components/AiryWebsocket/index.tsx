@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {WebSocketClient} from 'websocketclient';
-import {Message, Channel, MetadataEvent} from 'httpclient';
+import {Message, Channel, MetadataEvent} from 'model';
 import camelcaseKeys from 'camelcase-keys';
 
 import {env} from '../../env';
@@ -30,7 +30,12 @@ const mapDispatchToProps = dispatch => ({
   onChannel: (channel: Channel) => dispatch(setChannelAction(channel)),
   getConversationInfo: (conversationId: string) => dispatch(getConversationInfo(conversationId)),
   onMetadata: (metadataEvent: MetadataEvent) =>
-    dispatch(camelcaseKeys(setMetadataAction(metadataEvent), {deep: true, stopPaths: ['metadata.user_data']})),
+    dispatch(
+      camelcaseKeys(setMetadataAction(metadataEvent), {
+        deep: true,
+        stopPaths: ['payload.metadata.user_data', 'payload.metadata.tags'],
+      })
+    ),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

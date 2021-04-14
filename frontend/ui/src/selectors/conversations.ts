@@ -1,6 +1,6 @@
 import _, {createSelector} from 'reselect';
 import {filter, pickBy, reverse, sortBy, values} from 'lodash-es';
-import {Conversation} from 'httpclient';
+import {Conversation} from 'model';
 import {MergedConversation, StateModel} from '../reducers';
 import {ConversationMap} from '../reducers/data/conversations';
 import {ConversationRouteProps} from '../pages/Inbox';

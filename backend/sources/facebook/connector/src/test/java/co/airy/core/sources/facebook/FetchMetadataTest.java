@@ -5,7 +5,6 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.api.model.UserProfile;
 import co.airy.kafka.schema.Topic;
@@ -113,11 +112,11 @@ class FetchMetadataTest {
                                 .setSource("facebook")
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setSenderId(sourceConversationId)
-                                .setSenderType(SenderType.SOURCE_CONTACT)
                                 .setDeliveryState(DeliveryState.DELIVERED)
                                 .setConversationId("conversationId")
                                 .setChannelId(channelId)
                                 .setContent("{\"text\":\"hello world\"}")
+                                .setIsFromContact(true)
                                 .build())
         ));
 

@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import {Avatar} from '../Avatar';
-import {Contact} from 'httpclient';
+import {Contact} from 'model';
 import {DefaultRenderingProps} from '../../components/index';
 import styles from './index.module.scss';
 
@@ -10,10 +10,11 @@ type MessageInfoWrapperProps = {
   isChatPlugin: boolean;
   contact?: Contact;
   sentAt?: string;
+  decoration?: ReactNode;
 } & DefaultRenderingProps;
 
 export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
-  const {sentAt, contact, fromContact, children, lastInGroup, isChatPlugin} = props;
+  const {sentAt, contact, fromContact, children, lastInGroup, isChatPlugin, decoration} = props;
 
   const isContact = isChatPlugin ? !fromContact : fromContact;
 
@@ -32,9 +33,12 @@ export const MessageInfoWrapper = (props: MessageInfoWrapperProps) => {
             <Avatar contact={contact} />
           </div>
         )}
-        <div className={styles.contactContent} style={lastInGroup == false ? {marginLeft: '48px'} : {}}>
+        <div
+          className={styles.contactContent}
+          style={lastInGroup === false && isChatPlugin === false ? {marginLeft: '48px'} : {}}>
           {children}
         </div>
+        {decoration}
       </div>
       <div className={styles.time}>{sentAt}</div>
     </>

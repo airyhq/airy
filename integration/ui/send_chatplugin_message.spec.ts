@@ -12,9 +12,9 @@ import {
 
 import {cyBubble, cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
 
-describe('Send chatplugin Message', () => {
-  it('Logs into the UI', () => {
-    cy.visit('/login');
+describe('Send chat plugin message', () => {
+  it('Send chat plugin message', () => {
+    cy.visit('/ui/login');
 
     cy.get('form')
       .within(() => {
@@ -25,7 +25,7 @@ describe('Send chatplugin Message', () => {
 
     cy.wait(500);
 
-    cy.visit('/channels');
+    cy.visit('/ui/channels');
     cy.wait(500);
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
@@ -41,7 +41,7 @@ describe('Send chatplugin Message', () => {
     cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
 
-    cy.visit('/');
+    cy.visit('/ui/');
     cy.url().should('include', '/inbox');
     cy.get(`[data-cy=${cyMessageTextArea}]`).type(Cypress.env('messageInbox'));
     cy.get(`[data-cy=${cyMessageSendButton}]`).click();

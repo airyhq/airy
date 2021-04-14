@@ -1,5 +1,5 @@
 import React, {SyntheticEvent} from 'react';
-import {Contact} from 'httpclient';
+import {Contact} from 'model';
 import styles from './index.module.scss';
 
 type AvatarProps = {

@@ -3,7 +3,6 @@ package co.airy.core.api.communication.lucene;
 import co.airy.core.api.communication.dto.ConversationIndex;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.log.AiryLoggerFactory;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
@@ -33,7 +32,8 @@ public class LuceneProvider implements LuceneStore {
     public LuceneProvider() throws IOException {
         boolean testMode = System.getenv("TEST_TARGET") != null;
         FSDirectory dir = FSDirectory.open(Paths.get(testMode ? System.getenv("TEST_TMPDIR") : "/tmp/lucene"));
-        IndexWriterConfig config = new IndexWriterConfig(new WhitespaceAnalyzer());
+        IndexWriterConfig config = new IndexWriterConfig(AiryAnalyzer.build());
+
         writer = new IndexWriter(dir, config);
         reader = DirectoryReader.open(writer, true, true);
         documentMapper = new DocumentMapper();

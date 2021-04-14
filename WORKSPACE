@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "4141e06b0fab583f98486dbd9eff843cc58edf9f",
+    commit = "2577f95b79aeef4c70a6aad1805b19ec707dbfa2",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1616595376 +0100",
+    shallow_since = "1617890651 +0200",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -42,6 +42,7 @@ maven_install(
         "io.jsonwebtoken:jjwt-impl:0.10.5",
         "io.jsonwebtoken:jjwt-jackson:0.10.5",
         "io.lettuce:lettuce-core:5.3.3.RELEASE",
+        "io.micrometer:micrometer-registry-prometheus:1.6.5",
         "io.zonky.test:embedded-database-spring-test:1.5.1",
         "javax.activation:javax.activation-api:1.2.0",
         "javax.validation:validation-api:2.0.1.Final",

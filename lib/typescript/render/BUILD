@@ -7,11 +7,11 @@ package(default_visibility = ["//visibility:public"])
 ts_web_library(
     name = "render",
     deps = [
-        "//frontend/assets",
+        "//lib/typescript/assets",
+        "//lib/typescript/components",
         "//lib/typescript/dates",
-        "//lib/typescript/httpclient",
+        "//lib/typescript/model",
         "//lib/typescript/types",
-        "@npm//@airyhq/components",
         "@npm//@types/node",
         "@npm//@types/react",
         "@npm//@types/resize-observer-browser",

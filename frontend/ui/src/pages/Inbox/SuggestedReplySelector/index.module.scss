@@ -1,5 +1,5 @@
-@import '../../../assets/scss/colors.scss';
-@import '../../../assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
 
 .component {
   display: flex;
@@ -11,6 +11,7 @@
   bottom: 33px;
   left: 0px;
   right: 72px;
+  margin-bottom: 5px;
 
   background-color: var(--color-template-highlight);
 }
@@ -33,7 +34,7 @@
   width: max-content;
   height: auto;
   flex-shrink: 0;
-  max-width: 320px;
+  max-width: 400px;
   max-height: 400px;
 }
 
@@ -46,6 +47,7 @@
     left: 0;
     height: 400px;
     width: 100%;
-    background: linear-gradient(180deg, rgba(2, 0, 36, 0) 0%, rgba(0, 0, 0, 0) 320px, rgb(255, 255, 255) 394px);
+    background: linear-gradient(180deg, rgba(2, 0, 36, 0) 0%, rgba(0, 0, 0, 0) 320px, rgb(255, 255, 255) 394px),
+      linear-gradient(90deg, rgba(2, 0, 36, 0) 0%, rgba(0, 0, 0, 0) 200px, rgb(255, 255, 255) 360px);
   }
 }

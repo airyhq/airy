@@ -23,17 +23,16 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useState(false);
   const [demoConfig, setDemoConfig] = useState<any>({
     config: {
-      headerText: headerText || 'hey',
-      headerTextColor: headerTextColor || '#e84d1e',
-      backgroundColor: backgroundColor || '#e84d1e',
-      primaryColor: primaryColor || '#e84d1e',
-      accentColor: accentColor || '#e84d1e',
-      bubbleIcon: bubbleIconUrl || '#e84d1e',
-      sendMessageIcon: sendMessageIconUrl || '#e84d1e',
+      headerText: headerText || null,
+      headerTextColor: headerTextColor || null,
+      primaryColor: primaryColor || null,
+      accentColor: accentColor || null,
+      bubbleIcon: bubbleIconUrl || null,
+      sendMessageIcon: sendMessageIconUrl || null,
       showMode: true,
     },
     channelId: channelId,
-    domNode: 'div.demoChatPlugin',
+    chatPluginParentDiv: 'div.demoChatPlugin',
   });
 
   const codeAreaRef = createRef<HTMLTextAreaElement>();
@@ -83,17 +82,17 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   useEffect(() => {
     setDemoConfig({
       config: {
-        headerText: headerText || 'hey',
-        headerTextColor: headerTextColor || '#e84d1e',
-        backgroundColor: backgroundColor || '#e84d1e',
-        primaryColor: primaryColor || '#e84d1e',
-        accentColor: accentColor || '#e84d1e',
-        bubbleIcon: bubbleIconUrl || '#e84d1e',
-        sendMessageIcon: sendMessageIconUrl || '#e84d1e',
+        headerText: headerText || null,
+        headerTextColor: headerTextColor || null,
+        backgroundColor: backgroundColor || null,
+        primaryColor: primaryColor || null,
+        accentColor: accentColor || null,
+        bubbleIcon: bubbleIconUrl || null,
+        sendMessageIcon: sendMessageIconUrl || null,
         showMode: true,
       },
       channelId: channelId,
-      domNode: 'div.demoChatPlugin',
+      chatPluginParentDiv: 'div.demoChatPlugin',
     });
   }, [
     channelId,

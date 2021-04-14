@@ -3,12 +3,15 @@ import AiryWidget from './AiryWidget';
 import {AiryWidgetConfiguration} from './config';
 
 type AiryWidgetWrapperProps = AiryWidgetConfiguration & {
-  domNode: string;
+  chatPluginParentDiv: string;
 };
 
 export function AiryWidgetWrapper(config: AiryWidgetWrapperProps) {
-  const chatPluginDiv = document.querySelector(config.domNode);
-  const chatStyle = `
+  const chatPluginParentDiv = document.querySelector(config.chatPluginParentDiv);
+  const chatPluginDiv = document.querySelector('#demo');
+  const anchor = document.createElement('div');
+  anchor.setAttribute('id', 'demo');
+  anchor.style.cssText = `
   position: fixed;
   width: -webkit-fill-available;
   width: -moz-available;
@@ -24,24 +27,15 @@ export function AiryWidgetWrapper(config: AiryWidgetWrapperProps) {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   `;
-  const anchor = document.createElement('div');
-  anchor.setAttribute('id', 'demo');
-  anchor.style.cssText = chatStyle;
-
-  const updatedAnchor = document.createElement('div');
-  updatedAnchor.setAttribute('id', 'demo');
-  updatedAnchor.style.cssText = chatStyle;
-
-  const chatDiv = document.querySelector('#demo');
 
   useEffect(() => {
-    if (chatDiv && chatPluginDiv !== null) {
-      new AiryWidget({...config}).render(updatedAnchor);
-      chatDiv.remove();
-      chatPluginDiv.appendChild(updatedAnchor);
-    } else if (chatPluginDiv !== null) {
+    if (chatPluginParentDiv) {
+      if (chatPluginDiv) {
+        chatPluginDiv.remove();
+      }
+
       new AiryWidget({...config}).render(anchor);
-      chatPluginDiv.appendChild(anchor);
+      chatPluginParentDiv.appendChild(anchor);
     }
   }, [config]);
 

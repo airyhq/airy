@@ -8,7 +8,7 @@ import {
   cyChatPluginStartNewConversation,
 } from 'chat-plugin-handles';
 
-describe('Websocket test', () => {
+describe('End ChatPlugin Conversation', () => {
   it('Send message from Inbox to Chatplugin, ends the current conversation and starts a new conversation', () => {
     cy.visit('/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
     cy.get(`[data-cy=${cyBubble}]`).click();

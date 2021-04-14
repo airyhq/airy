@@ -1,6 +1,6 @@
 ---
-title: Rasa Chat Assisstent
-sidebar_label: Rasa Assisstent
+title: Rasa Chat Assistant
+sidebar_label: Rasa Assistant
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';

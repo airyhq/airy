@@ -6,11 +6,14 @@ load("@com_github_airyhq_bazel_tools//web:web_library.bzl", "web_library")
 
 package(default_visibility = ["//visibility:public"])
 
+module_deps = [
+    "//lib/typescript/model",
+    "//lib/typescript/types",
+]
+
 ts_web_library(
     name = "httpclient",
-    deps = [
-        "//lib/typescript/model",
-        "//lib/typescript/types",
+    deps = module_deps + [
         "@npm//@types/node",
         "@npm//camelcase-keys",
     ],
@@ -20,6 +23,7 @@ web_library(
     name = "dist",
     app_lib = ":httpclient",
     entry = "lib/typescript/httpclient/index.js",
+    module_deps= module_deps,
     externals = {
         "@types/node": "@types/node",
         "camelcase-keys": "camelcase-keys",

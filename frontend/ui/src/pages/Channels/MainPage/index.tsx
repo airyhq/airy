@@ -163,8 +163,7 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
               sourceInfo={infoItem}
               displayButton={!channelsBySource(infoItem.type).length}
               addChannelAction={() => {
-              // TODO: its aitors fault
-                if (config.components[infoItem.configKey].enabled) {
+                if (config.components.map(e => e.name).includes(infoItem.configKey)) {
                   props.history.push(infoItem.newChannelRoute);
                 } else {
                   setDisplayDialogFromSource(infoItem.type);

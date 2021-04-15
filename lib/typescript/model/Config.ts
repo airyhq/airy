@@ -1,17 +1,4 @@
 export interface Config {
-  components: {
-    'sources-chatplugin': {
-      enabled: boolean;
-    };
-    'sources-facebook': {
-      enabled: boolean;
-    };
-    'sources-google': {
-      enabled: boolean;
-    };
-    'sources-twilio': {
-      enabled: boolean;
-    };
-  };
-  features: {};
+  components: {name: string, enabled: boolean}[];
+  features: {}[];
 }

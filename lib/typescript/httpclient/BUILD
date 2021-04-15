@@ -23,11 +23,11 @@ web_library(
     name = "dist",
     app_lib = ":httpclient",
     entry = "lib/typescript/httpclient/index.js",
-    module_deps= module_deps,
     externals = {
         "@types/node": "@types/node",
         "camelcase-keys": "camelcase-keys",
     },
+    module_deps = module_deps,
     output = {
         "library": "@airyhq/http-client",
         "globalObject": "this",

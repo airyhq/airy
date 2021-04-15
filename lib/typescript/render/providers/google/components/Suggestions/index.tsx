@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {DefaultRenderingProps} from '../../../../components/index';
+import {DefaultRenderingProps} from '../../../../props';
 import {SuggestionsUnion} from '../../googleModel';
 import {Image} from '../../../../components/Image';
 import {Text} from '../../../../components/Text';

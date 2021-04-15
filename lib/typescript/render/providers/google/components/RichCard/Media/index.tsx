@@ -14,12 +14,19 @@ export type MediaRenderProps = {
   };
 };
 
+const getHeight = (height: MediaHeight): string => {
+  switch (height) {
+    case MediaHeight.short:
+      return styles.short;
+    case MediaHeight.medium:
+      return styles.medium;
+    case MediaHeight.tall:
+      return styles.tall;
+    default:
+      return styles.medium;
+  }
+};
+
 export const Media = ({height, contentInfo: {altText, fileUrl}}: MediaRenderProps) => (
-  <ImageWithFallback
-    src={fileUrl}
-    alt={altText}
-    className={`${styles.mediaImage} ${
-      height === MediaHeight.tall ? styles.tall : height === MediaHeight.medium ? styles.medium : styles.short
-    }`}
-  />
+  <ImageWithFallback src={fileUrl} alt={altText} className={`${styles.mediaImage} ${getHeight(height)}`} />
 );

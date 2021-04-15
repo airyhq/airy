@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import {Avatar} from '../Avatar';
 import {Contact} from 'model';
-import {DefaultRenderingProps} from '../../components/index';
+import {DefaultRenderingProps} from '../../props';
 import styles from './index.module.scss';
 
 type MessageInfoWrapperProps = {

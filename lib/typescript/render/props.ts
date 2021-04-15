@@ -1,5 +1,7 @@
 import {Content} from 'model';
-import {DefaultRenderingProps} from './components';
+export interface DefaultRenderingProps {
+  fromContact?: boolean;
+}
 
 export interface Command {
   type: string;
@@ -53,7 +55,7 @@ export type RenderPropsUnion =
   | QuickRepliesRenderProps;
 
 export const getDefaultRenderingProps = (props: RenderPropsUnion): DefaultRenderingProps => {
-  const fromContact = props instanceof MessageChannel ? props.content.fromContact : false;
+  const fromContact = props.content.fromContact || false;
   return {
     fromContact,
   };

@@ -1,4 +1,4 @@
-import {MessageState, Metadata, MetadataEvent} from 'model';
+import {DeliveryState, Metadata, MetadataEvent} from 'model';
 
 interface Event {
   type: 'message' | 'channel' | 'metadata';
@@ -7,7 +7,7 @@ interface Event {
 interface MessagePayload {
   id: string;
   content: string;
-  delivery_state: MessageState;
+  delivery_state: DeliveryState;
   from_contact: boolean;
   sent_at: Date;
   metadata: any;

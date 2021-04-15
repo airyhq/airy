@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {DefaultRenderingProps} from '../../../../components/index';
+import {DefaultRenderingProps} from '../../../../props';
 import {Text} from '../../../../components/Text';
 import {Video} from '../../../../components/Video';
 import {Image} from '../../../../components/Image';

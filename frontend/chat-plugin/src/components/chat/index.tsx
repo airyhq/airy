@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react';
 import {IMessage} from '@stomp/stompjs';
 
 import {AiryWidgetConfiguration} from '../../config';
-import {MessageState, Message} from 'model';
+import {DeliveryState, Message} from 'model';
 
 import WebSocket, {ConnectionState} from '../../websocket';
 import MessageProp from '../../components/message';
@@ -31,7 +31,7 @@ let ws: WebSocket;
 const defaultWelcomeMessage: Message = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   content: {text: 'Hello! How can we help you?'},
-  deliveryState: MessageState.delivered,
+  deliveryState: DeliveryState.delivered,
   fromContact: false,
   sentAt: new Date(),
 };

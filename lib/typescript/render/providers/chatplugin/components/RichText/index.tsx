@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
-import {DefaultRenderingProps} from '../../../../components';
+import {DefaultRenderingProps} from '../../../../props';
 import {Message} from 'model';
 
 import styles from './index.module.scss';

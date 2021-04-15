@@ -16,7 +16,7 @@ import {
   UpdateChannelRequestPayload,
   ListTemplatesRequestPayload,
   PaginatedResponse,
-} from './payload';
+} from './src/payload';
 import {
   listChannelsDef,
   listConversationsDef,
@@ -40,7 +40,7 @@ import {
   sendMessagesDef,
   getConfigDef,
   listTemplatesDef,
-} from './endpoints';
+} from './src/endpoints';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;

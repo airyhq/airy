@@ -1,0 +1,25 @@
+{
+  "name": "@airyhq/http-client",
+  "version": "0.1.0",
+  "description": "Airy http client library",
+  "main": "dist/index.js",
+  "browser": {
+    "./dist/index.js": "./dist/index.browser.js",
+    "./dist/index.esm.js": "./dist/index.browser.esm.js"
+  },
+  "typings": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airyhq/airy.git"
+  },
+  "author": "Airy, Inc.",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/airyhq/airy/issues"
+  },
+  "homepage": "https://github.com/airyhq/airy#readme",
+  "dependencies": {
+    "@types/node": "^14.14.37",
+    "camelcase-keys": "^6.2.2"
+  }
+}

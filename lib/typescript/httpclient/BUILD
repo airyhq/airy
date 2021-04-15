@@ -48,6 +48,8 @@ genrule(
 """,
 )
 
+exports_files(["VERSION"])
+
 assemble_npm(
     name = "assemble-npm",
     target = ":npm_library",
@@ -60,8 +62,6 @@ deploy_npm(
     snapshot = "https://registry.npmjs.org/",
     target = ":assemble-npm",
 )
-
-exports_files(["VERSION"])
 
 check_pkg(name = "buildifier")
 

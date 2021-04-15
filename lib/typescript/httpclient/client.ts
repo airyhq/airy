@@ -42,7 +42,7 @@ import {
   listTemplatesDef,
 } from './src/endpoints';
 
-export function isString(object: any) {
+function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
 }
 

@@ -7,8 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 :::note Prerequisites
 
-This guide assumes that you have completed the [Rasa Chat assistant guide](/integrations/rasa-assistant.md). This
-means that you have:
+This guide assumes that you completed the [Rasa Chat assistant guide](/integrations/rasa-assistant.md), which means you have:
 
 - a running Airy Core instance
 - a Rasa setup connected to that instance with a custom channel (see the [demo repository](https://github.com/airyhq/rasa-demo))
@@ -17,10 +16,10 @@ means that you have:
 
 ## Motivation
 
-Chatbots can serve a wide variety of simple use cases like answering frequently asked questions or booking flows.
+Chatbots can serve a wide variety of use cases like answering frequently asked questions or booking flows.
 Customer support however often requires a human agent to serve user questions with a high degree of quality. With Airy
 Core you can get the best of both worlds by using nlp frameworks like Rasa to suggest a set of replies to the agent.
-This way agents can handle the vast majority of simple use cases with the click of a button (see screenshot).
+This way agents can handle the vast majority of use cases with the click of a button (see screenshot).
 
 ## Configuring Rasa
 
@@ -50,7 +49,7 @@ stories:
       - action: utter_happy
 ```
 
-Now we only need to update our [custom Rasa connector](https://rasa.com/docs/rasa/connectors/custom-connectors/) for Airy Core to this response type. For
+Now we need to update our [custom Rasa connector](https://rasa.com/docs/rasa/connectors/custom-connectors/) for Airy Core to this response type. For
 this we extend the [send_response method](https://github.com/airyhq/rasa-demo/blob/4f2fdd6063385cea805f2d70755733de347e8792/channels/airy.py#L32) in the Airy connector so that it calls the [suggest replies API](/api/endpoints/messages#suggested-replies) whenever
 it encounters a custom response payload:
 

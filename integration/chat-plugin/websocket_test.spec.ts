@@ -43,7 +43,6 @@ describe('Websocket test', () => {
       password: Cypress.env('password'),
     }).then(response => {
       const loginToken = response.body['token'];
-      console.log('LoginToken', loginToken);
 
       cy.request({
         method: 'POST',

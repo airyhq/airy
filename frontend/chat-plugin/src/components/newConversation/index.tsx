@@ -1,5 +1,6 @@
 import React from 'react';
 import style from './index.module.scss';
+import {cyChatPluginStartNewConversation} from 'chat-plugin-handles';
 
 type newConversationProps = {
   reAuthenticate: () => void;
@@ -14,7 +15,11 @@ const NewConversation = (props: newConversationProps) => {
       </div>
 
       <div>
-        <a href="" onClick={props.reAuthenticate} className={style.newConversationLink}>
+        <a
+          href=""
+          onClick={props.reAuthenticate}
+          className={style.newConversationLink}
+          data-cy={cyChatPluginStartNewConversation}>
           Click Here To Start a New Conversation
         </a>
       </div>

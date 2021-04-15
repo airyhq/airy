@@ -34,8 +34,7 @@ latest.
       // source message payload
       "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
-      "sender_type": "{string/enum}",
-      // See glossary
+      "from_contact": true,
       "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
       "source": "{String}",

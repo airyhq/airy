@@ -39,8 +39,7 @@ field informs the client of the kind of update that is encoded in the payload.
       // source message payload
       "delivery_state": "pending|failed|delivered",
       // delivery state of message, one of pending, failed, delivered
-      "sender_type": "{string/enum}",
-      // See glossary
+      "from_contact": true,
       "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
       "source": "{String}"

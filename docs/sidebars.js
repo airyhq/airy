@@ -66,7 +66,7 @@ module.exports = {
     {
       '🛠️ Integrations': [
         {
-          'Conversational AI /NLP': ['integrations/rasa'],
+          'Conversational AI /NLP': ['integrations/rasa-assistant', 'integrations/rasa-suggested-replies'],
         },
       ],
     },

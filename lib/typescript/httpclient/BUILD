@@ -61,6 +61,8 @@ deploy_npm(
     target = ":assemble-npm",
 )
 
+exports_files(["VERSION"])
+
 check_pkg(name = "buildifier")
 
 web_lint()

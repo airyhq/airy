@@ -9,6 +9,20 @@ interface CustomiseSectionProps {
   host: string;
 }
 
+interface DemoConfig {
+  config: {
+    headerText: string;
+    headerTextColor: string;
+    primaryColor: string;
+    accentColor: string;
+    bubbleIcon: string;
+    sendMessageIcon: string;
+    showMode: boolean;
+  };
+  channelId: string;
+  chatPluginParentDiv: string;
+}
+
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [headerText, setHeaderText] = useState('');
   const [bubbleIconUrl, setBubbleIconUrl] = useState('');
@@ -21,7 +35,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [showAccentColorPicker, setShowAccentColorPicker] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState('');
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useState(false);
-  const [demoConfig, setDemoConfig] = useState<any>({
+  const [demoConfig, setDemoConfig] = useState<DemoConfig>({
     config: {
       headerText: headerText || null,
       headerTextColor: headerTextColor || null,

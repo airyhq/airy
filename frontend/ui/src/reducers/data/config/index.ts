@@ -5,12 +5,10 @@ type Action = ActionType<typeof actions>;
 
 export type Config = {
   components: {name: string; enabled: boolean}[];
-  features: {}[];
 };
 
 const defaultState = {
   components: [],
-  features: [],
 };
 
 export default function configReducer(state = defaultState, action: Action): Config {

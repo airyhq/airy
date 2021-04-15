@@ -19,7 +19,6 @@ public class ClientConfigController {
     public ResponseEntity<ClientConfigResponsePayload> getConfig() {
         return ResponseEntity.ok(ClientConfigResponsePayload.builder()
                 .components(serviceDiscovery.getComponents())
-                .features(List.of())
                 .build());
     }
 }

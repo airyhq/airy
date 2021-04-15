@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -14,5 +13,4 @@ import java.util.Set;
 @AllArgsConstructor
 public class ClientConfigResponsePayload {
     private Set<ComponentResponsePayload> components;
-    private List<FeatureResponsePayload> features;
 }

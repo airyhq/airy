@@ -4,8 +4,8 @@ import * as actions from '../../../actions/config';
 type Action = ActionType<typeof actions>;
 
 export type Config = {
-    components: {name: string, enabled: boolean}[];
-    features: {}[];
+  components: {name: string; enabled: boolean}[];
+  features: {}[];
 };
 
 const defaultState = {

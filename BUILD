@@ -180,6 +180,7 @@ exports_files(
         ".prettierrc.json",
         ".prettierignore",
         "yarn.lock",
+        "VERSION",
     ],
 )
 

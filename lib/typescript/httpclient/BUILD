@@ -48,8 +48,6 @@ genrule(
 """,
 )
 
-exports_files(["VERSION"])
-
 assemble_npm(
     name = "assemble-npm",
     target = ":npm_library",

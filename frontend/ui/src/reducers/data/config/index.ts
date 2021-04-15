@@ -4,11 +4,11 @@ import * as actions from '../../../actions/config';
 type Action = ActionType<typeof actions>;
 
 export type Config = {
-  components: {name: string; enabled: boolean}[];
+  components: {[key: string]: {enabled: boolean}};
 };
 
 const defaultState = {
-  components: [],
+  components: {},
 };
 
 export default function configReducer(state = defaultState, action: Action): Config {

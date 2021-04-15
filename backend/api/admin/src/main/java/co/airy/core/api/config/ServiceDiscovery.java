@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 @Component
@@ -15,28 +17,25 @@ public class ServiceDiscovery {
     private final String namespace;
     private final RestTemplate restTemplate;
 
-    private Set<ComponentResponsePayload> components = new CopyOnWriteArraySet<>();
+    private Map<String, Map<String, Object>> components = new ConcurrentHashMap<>();
 
     public ServiceDiscovery(@Value("${kubernetes.namespace}") String namespace, RestTemplate restTemplate) {
         this.namespace = namespace;
         this.restTemplate = restTemplate;
     }
 
-    public Set<ComponentResponsePayload> getComponents() {
+    public Map<String, Map<String, Object>> getComponents() {
         return components;
     }
 
     @Scheduled(fixedRate = 1_000)
     private void updateComponentsStatus() {
         final ResponseEntity<ComponentsResponsePayload> response = restTemplate.getForEntity("http://airy-controller.default/components", ComponentsResponsePayload.class);
-        Set<ComponentResponsePayload> newComponents = new HashSet<>();
+        Map<String, Map<String, Object>> newComponents = new ConcurrentHashMap<>();
         for (String component: response.getBody().getComponents()) {
-            newComponents.add(ComponentResponsePayload.builder()
-                    .enabled(true)
-                    .name(component)
-                    .build());
+            newComponents.put(component, Map.of("enabled", true));
         }
         components.clear();
-        components.addAll(newComponents);
+        components.putAll(newComponents);
     }
 }

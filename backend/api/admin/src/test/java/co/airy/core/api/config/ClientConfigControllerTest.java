@@ -31,6 +31,7 @@ import java.net.URI;
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -100,7 +101,7 @@ public class ClientConfigControllerTest {
         retryOnException(() -> webTestHelper.post("/client.config", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.components.*", hasSize(1)))
-                        .andExpect(jsonPath("$.components[0].name", is("api-communication")))
+                        .andExpect(jsonPath("$.components", hasKey("api-communication")))
                         .andExpect(jsonPath("$.components.*.enabled", everyItem(is(true)))),
                 "client.config call failed");
     }

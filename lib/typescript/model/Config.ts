@@ -1,3 +1,3 @@
 export interface Config {
-  components: {name: string; enabled: boolean}[];
+  components: {[key: string]: {enabled: boolean}};
 }

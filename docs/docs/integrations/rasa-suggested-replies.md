@@ -16,7 +16,6 @@ This guide assumes that you completed the [Rasa Chat assistant guide](/integrati
 
 ## How it works
 
-
 <img alt="see suggested replies in the Airy inbox when receiving a contact greeting"
 src={useBaseUrl('img/integrations/rasa/suggested-replies.gif')} />
 
@@ -62,7 +61,6 @@ stories:
       - action: utter_happy
 ```
 
-
 ### Step 3: Extend the Airy connector
 
 Now we need to update our [custom Rasa connector](https://rasa.com/docs/rasa/connectors/custom-connectors/) for Airy Core to this response type. For
@@ -100,4 +98,3 @@ rasa train
 
 Finally, we start the Rasa server, open the Airy Inbox at (http://airy.core for local deployments), where we should
 see the suggested replies whenever a contact greets us (see gif above).
-

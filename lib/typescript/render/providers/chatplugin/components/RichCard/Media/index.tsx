@@ -1,4 +1,4 @@
-import React, {CSSProperties} from 'react';
+import React from 'react';
 
 import {MediaHeight} from '../../../chatPluginModel';
 import {ImageWithFallback} from 'render/components/ImageWithFallback';

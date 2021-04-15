@@ -99,6 +99,24 @@ export const readConversations = (conversationId: string) => (dispatch: Dispatch
   );
 };
 
+export const conversationState = (id: string, subject: string, data: any, state?: string) => (
+  dispatch: Dispatch<any>
+) => {
+  HttpClientInstance.metadataUpsert({id, subject, data}).then(() =>
+    dispatch(
+      setMetadataAction({
+        subject: 'conversation',
+        identifier: id,
+        metadata: {
+          userData: {
+            state: state,
+          },
+        },
+      })
+    )
+  );
+};
+
 export const addTagToConversation = (conversationId: string, tagId: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.tagConversation({conversationId, tagId}).then(() =>
     dispatch(

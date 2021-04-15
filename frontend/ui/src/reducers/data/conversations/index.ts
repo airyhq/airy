@@ -212,6 +212,7 @@ function allReducer(
                 ...state.items[action.payload.identifier]?.metadata.contact,
                 ...(action.payload as MetadataEvent<ConversationMetadata>).metadata.contact,
               },
+              state: action.payload.metadata.state,
             },
           },
         },

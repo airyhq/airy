@@ -15,3 +15,4 @@ export * from './SendMessagesRequestPayload';
 export * from './TagConversationRequestPayload';
 export * from './UntagConversationRequestPayload';
 export * from './UpdateChannelRequestPayload';
+export * from './MetadataUpsertRequestPayload';

@@ -175,6 +175,8 @@ export class HttpClient {
 
   public listTemplates = this.getRequest<ListTemplatesRequestPayload, Template[]>(listTemplatesDef);
 
+  public metadataUpsert = this.getRequest<MetadataUpsertRequestPayload>(metadataUpsertDef);
+
   private getRequest<K, V = void>({
     endpoint,
     mapRequest,

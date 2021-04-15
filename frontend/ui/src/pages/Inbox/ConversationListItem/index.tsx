@@ -1,5 +1,5 @@
-import React, {CSSProperties, useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import React, {CSSProperties, useEffect, useState} from 'react';
+import {Link, withRouter} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
@@ -8,11 +8,14 @@ import {Avatar} from 'render';
 import {formatTimeOfMessage} from '../../../services/format/date';
 
 import {Message} from 'model';
-import {MergedConversation} from '../../../reducers';
+import {MergedConversation, StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
-import {readConversations} from '../../../actions/conversations';
+import {readConversations, conversationState} from '../../../actions/conversations';
 
 import styles from './index.module.scss';
+import {ConversationRouteProps} from '../index';
+import {getCurrentConversation} from '../../../selectors/conversations';
+import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
 
 interface FormattedMessageProps {
   message: Message;
@@ -26,9 +29,17 @@ type ConversationListItemProps = {
 
 const mapDispatchToProps = {
   readConversations,
+  conversationState,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
+  return {
+    conversationId: getCurrentConversation(state, ownProps).id,
+    currentConversationState: getCurrentConversation(state, ownProps).metadata.userData.state,
+  };
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
   if (message?.content) {
@@ -38,10 +49,44 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
 };
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, style, readConversations} = props;
+  const {
+    conversation,
+    active,
+    style,
+    readConversations,
+    conversationId,
+    conversationState,
+    currentConversationState,
+  } = props;
+  const [state, setState] = useState(currentConversationState);
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
+
+  const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    state === 'OPEN' ? setState('CLOSED') : setState('OPEN');
+    conversationState(conversationId, 'conversation', {state: state});
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const OpenStateButton = () => {
+    return (
+      <div className={styles.openStateButton} title="Set to closed">
+        <button onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)} />
+      </div>
+    );
+  };
+
+  const ClosedStateButton = () => {
+    return (
+      <div className={styles.closedStateButton} title="Set to open">
+        <button onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)}>
+          <Checkmark />
+        </button>
+      </div>
+    );
+  };
 
   useEffect(() => {
     if (active && unread) {
@@ -64,6 +109,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
               <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>
                 {participant && participant.displayName}
               </div>
+              {currentConversationState === 'OPEN' ? <ClosedStateButton /> : <OpenStateButton />}
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
               <FormattedMessage message={conversation.lastMessage} />
@@ -81,4 +127,4 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   );
 };
 
-export default connector(ConversationListItem);
+export default withRouter(connector(ConversationListItem));

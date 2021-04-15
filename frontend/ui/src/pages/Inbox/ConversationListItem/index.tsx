@@ -1,4 +1,4 @@
-import React, {CSSProperties, useEffect, useState} from 'react';
+import React, {CSSProperties, useEffect} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
@@ -35,7 +35,6 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
     conversationId: getCurrentConversation(state, ownProps).id,
-    currentConversationState: getCurrentConversation(state, ownProps).metadata.userData.state,
   };
 };
 
@@ -49,23 +48,15 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
 };
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {
-    conversation,
-    active,
-    style,
-    readConversations,
-    conversationId,
-    conversationState,
-    currentConversationState,
-  } = props;
-  const [state, setState] = useState(currentConversationState);
+  const {conversation, active, style, readConversations, conversationId} = props;
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
+  const conversationState = conversation.metadata.userData.conversation_state;
 
   const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    state === 'OPEN' ? setState('CLOSED') : setState('OPEN');
-    conversationState(conversationId, 'conversation', {state: state});
+    const newState = conversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
+    conversationState(conversationId, 'conversation', {state: newState});
     event.preventDefault();
     event.stopPropagation();
   };
@@ -109,7 +100,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
               <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>
                 {participant && participant.displayName}
               </div>
-              {currentConversationState === 'OPEN' ? <ClosedStateButton /> : <OpenStateButton />}
+              {conversationState === 'OPEN' ? <ClosedStateButton /> : <OpenStateButton />}
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
               <FormattedMessage message={conversation.lastMessage} />

@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {DefaultRenderingProps} from '../../props';
 
-type TextRenderProps = DefaultRenderingProps & {
+type TextRenderProps = {
   text: string;
+  fromContact?: boolean;
 };
 
 export const Text = ({text, fromContact}: TextRenderProps) => (

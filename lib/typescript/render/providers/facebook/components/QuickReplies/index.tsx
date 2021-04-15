@@ -1,6 +1,5 @@
 import React from 'react';
 
-import {DefaultRenderingProps} from '../../../../props';
 import {Text} from '../../../../components/Text';
 import {Video} from '../../../../components/Video';
 import {Image} from '../../../../components/Image';
@@ -9,9 +8,10 @@ import {ImageWithFallback} from 'render/components/ImageWithFallback';
 
 import styles from './index.module.scss';
 
-export type QuickRepliesRenderProps = DefaultRenderingProps & {
+export type QuickRepliesRenderProps = {
   text?: string;
   attachment?: AttachmentUnion;
+  fromContact?: boolean;
   quickReplies: QuickReply[];
 };
 

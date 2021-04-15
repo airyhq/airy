@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
-import {DefaultRenderingProps} from '../../../../props';
 import {Message} from 'model';
 
 import styles from './index.module.scss';
 
-type RichTextRenderProps = DefaultRenderingProps & {
+type RichTextRenderProps = {
   message: Message;
   text: string;
+  fromContact: boolean;
   fallback: string;
   containsRichText: boolean;
 };

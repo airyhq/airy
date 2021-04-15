@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
+import {RenderPropsUnion} from '../../props';
 import {AttachmentUnion, ContentUnion, SimpleAttachment} from './chatPluginModel';
 import {Message} from 'model';
 import {Text} from '../../components/Text';
@@ -15,7 +15,7 @@ export const ChatPluginRender = (props: RenderPropsUnion) => {
 
 function render(content: ContentUnion, props: RenderPropsUnion) {
   const defaultProps = {
-    ...getDefaultRenderingProps(props),
+    fromContact: props.content.fromContact || false,
     commandCallback: 'commandCallback' in props ? props.commandCallback : null,
   };
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};

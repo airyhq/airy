@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
+import {RenderPropsUnion} from '../../props';
 import {ContentUnion} from './googleModel';
 import {Message} from 'model';
 
@@ -19,7 +19,7 @@ export const GoogleRender = (props: RenderPropsUnion) => {
 function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
+      return <Text fromContact={props.content.fromContact || false} text={content.text} />;
 
     case 'image':
       return <Image imageUrl={content.imageUrl} altText="image sent via GBM" />;
@@ -27,7 +27,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'suggestions':
       return (
         <Suggestions
-          {...getDefaultRenderingProps(props)}
+          fromContact={props.content.fromContact || false}
           text={content.text}
           image={content.image}
           fallback={content.fallback}

@@ -1,8 +1,4 @@
 import {Content} from 'model';
-export interface DefaultRenderingProps {
-  fromContact?: boolean;
-}
-
 export interface Command {
   type: string;
 }
@@ -53,10 +49,3 @@ export type RenderPropsUnion =
   | TemplateRenderProps
   | SuggestedRepliesRenderProps
   | QuickRepliesRenderProps;
-
-export const getDefaultRenderingProps = (props: RenderPropsUnion): DefaultRenderingProps => {
-  const fromContact = props.content.fromContact || false;
-  return {
-    fromContact,
-  };
-};

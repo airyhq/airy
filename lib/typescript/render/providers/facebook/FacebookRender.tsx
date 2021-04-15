@@ -1,6 +1,6 @@
 import React from 'react';
 import {Message} from 'model';
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
+import {RenderPropsUnion} from '../../props';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {Video} from '../../components/Video';
@@ -18,10 +18,10 @@ export const FacebookRender = (props: RenderPropsUnion) => {
 function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
+      return <Text fromContact={props.content.fromContact || false} text={content.text} />;
 
     case 'postback':
-      return <Text {...getDefaultRenderingProps(props)} text={content.title} />;
+      return <Text fromContact={props.content.fromContact || false} text={content.title} />;
 
     case 'image':
       return <Image imageUrl={content.imageUrl} />;
@@ -38,7 +38,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'quickReplies':
       return (
         <QuickReplies
-          {...getDefaultRenderingProps(props)}
+          fromContact={props.content.fromContact || false}
           text={content.text}
           attachment={content.attachment}
           quickReplies={content.quickReplies}

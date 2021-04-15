@@ -14,14 +14,25 @@ This guide assumes that you completed the [Rasa Chat assistant guide](/integrati
 
 :::
 
-## Motivation
+## How it works
+
+
+<img alt="see suggested replies in the Airy inbox when receiving a contact greeting"
+src={useBaseUrl('img/integrations/rasa/suggested-replies.gif')} />
 
 Chatbots can serve a wide variety of use cases like answering frequently asked questions or booking flows.
 Customer support however often requires a human agent to serve user questions with a high degree of quality. With Airy
-Core you can get the best of both worlds by using nlp frameworks like Rasa to suggest a set of replies to the agent.
+Core you can get the best of both worlds by using NLP frameworks like Rasa to suggest a set of replies to the agent.
 This way agents can handle the vast majority of use cases with the click of a button (see screenshot).
 
 ## Configuring Rasa
+
+- [Step 1: Add a custom response type](#step-1-add-a-custom-response-type)
+- [Step 2: Update the user stories](#step-2-update-the-user-stories)
+- [Step 3: Extend the Airy connector](#step-3-extend-the-airy-connector)
+- [Step 4: Retrain and restart](#step-4-consume-directly-from-apache-kafka)
+
+### Step 1: Add a custom response type
 
 The easiest way to instruct Rasa to suggest replies for a given user messages is by adding them as a [custom response type](https://rasa.com/docs/rasa/responses/#custom-output-payloads). To do this we add the following block to the `responses` section in our `domain.yaml`:
 
@@ -37,6 +48,8 @@ responses:
             text: "Hi, what can I help you with?"
 ```
 
+### Step 2: Update the user stories
+
 Now we can use this new response type in our `stories.yaml` to let the bot know when to suggest replies:
 
 ```yaml
@@ -48,6 +61,9 @@ stories:
       - intent: mood_great
       - action: utter_happy
 ```
+
+
+### Step 3: Extend the Airy connector
 
 Now we need to update our [custom Rasa connector](https://rasa.com/docs/rasa/connectors/custom-connectors/) for Airy Core to this response type. For
 this we extend the [send_response method](https://github.com/airyhq/rasa-demo/blob/4f2fdd6063385cea805f2d70755733de347e8792/channels/airy.py#L32) in the Airy connector so that it calls the [suggest replies API](/api/endpoints/messages#suggested-replies) whenever
@@ -74,8 +90,14 @@ async def send_response(self, recipient_id: Text, message: Dict[Text, Any]) -> N
         requests.post("{}/messages.send".format(self.api_host), headers=headers, json=body)
 ```
 
-Now we can restart the Rasa server, open the Airy Inbox at (http://airy.core for local deployments), and we should
-see the suggested replies whenever a contact greets us:
+### Step 4: Retrain and restart
 
-<img alt="see suggested replies in the Airy inbox when receiving a contact greeting"
-src={useBaseUrl('img/integrations/rasa/suggested-replies.jpg')} />
+Now we need to stop the server and retrain the model:
+
+```shell script
+rasa train
+```
+
+Finally, we start the Rasa server, open the Airy Inbox at (http://airy.core for local deployments), where we should
+see the suggested replies whenever a contact greets us (see gif above).
+

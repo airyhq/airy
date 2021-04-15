@@ -100,6 +100,7 @@ public class ClientConfigControllerTest {
         retryOnException(() -> webTestHelper.post("/client.config", "{}", "user-id")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.components.*", hasSize(1)))
+                        .andExpect(jsonPath("$.components[0].name", is("api-communication")))
                         .andExpect(jsonPath("$.components.*.enabled", everyItem(is(true)))),
                 "client.config call failed");
     }

@@ -11,14 +11,16 @@ export enum MessageType {
   video = 'video',
 }
 
-export enum MessageState {
+export enum DeliveryState {
   pending = 'PENDING',
   failed = 'FAILED',
   delivered = 'DELIVERED',
 }
 
-export interface Message extends Content {
-  deliveryState: MessageState;
+export interface Message {
+  id: string;
+  content: Content;
+  deliveryState: DeliveryState;
   fromContact: boolean;
   sentAt: Date;
   metadata?: MessageMetadata;

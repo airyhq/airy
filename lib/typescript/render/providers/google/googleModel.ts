@@ -1,5 +1,3 @@
-import {Suggestion} from '../../components/RichCard';
-
 export enum MediaHeight {
   short = 'SHORT',
   medium = 'MEDIUM',
@@ -31,8 +29,25 @@ export interface RichCardContent extends Content {
       forceRefresh: boolean;
     };
   };
-  suggestions: Suggestion[];
+  suggestions: RichCardSuggestion[];
 }
+
+export type RichCardSuggestion = {
+  reply?: {
+    text: string;
+    postbackData: string;
+  };
+  action?: {
+    text: string;
+    postbackData: string;
+    openUrlAction?: {
+      url: string;
+    };
+    dialAction?: {
+      phoneNumber: string;
+    };
+  };
+};
 
 export interface RichCardCarouselContent extends Content {
   type: 'richCardCarousel';

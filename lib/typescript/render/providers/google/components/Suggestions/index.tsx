@@ -1,15 +1,18 @@
 import React from 'react';
-import styles from './index.module.scss';
-import {DefaultRenderingProps} from '../../../../components/index';
+
 import {SuggestionsUnion} from '../../googleModel';
 import {Image} from '../../../../components/Image';
 import {Text} from '../../../../components/Text';
+
 import linkIcon from 'assets/images/icons/link.svg';
 import phoneIcon from 'assets/images/icons/phone.svg';
 
-type SuggestionsRendererProps = DefaultRenderingProps & {
+import styles from './index.module.scss';
+
+type SuggestionsRendererProps = {
   text?: string;
   fallback?: string;
+  fromContact?: boolean;
   image?: {
     fileUrl: string;
     altText: string;

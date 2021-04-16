@@ -1,6 +1,5 @@
 import React from 'react';
-import styles from './index.module.scss';
-import {DefaultRenderingProps} from '../../../../components/index';
+
 import {Text} from '../../../../components/Text';
 import {Video} from '../../../../components/Video';
 import {Image} from '../../../../components/Image';
@@ -8,9 +7,12 @@ import {ImageWithFallback} from 'render/components/ImageWithFallback';
 import {QuickReply, AttachmentUnion} from 'render/providers/chatplugin/chatPluginModel';
 import {CommandUnion} from 'render/props';
 
-export type QuickRepliesRenderProps = DefaultRenderingProps & {
+import styles from './index.module.scss';
+
+export type QuickRepliesRenderProps = {
   text?: string;
   attachment?: AttachmentUnion;
+  fromContact?: boolean;
   quickReplies: QuickReply[];
   commandCallback?: (command: CommandUnion) => void;
 };

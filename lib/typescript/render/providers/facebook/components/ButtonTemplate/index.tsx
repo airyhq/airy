@@ -1,6 +1,8 @@
 import React from 'react';
-import styles from './index.module.scss';
+
 import {ButtonTemplate as ButtonTemplateModel} from '../../facebookModel';
+
+import styles from './index.module.scss';
 
 type ButtonTemplateRendererProps = {
   template: ButtonTemplateModel;

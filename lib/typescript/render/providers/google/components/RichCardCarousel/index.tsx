@@ -1,16 +1,19 @@
 import React from 'react';
+
 import {Carousel} from 'components';
-import styles from './index.module.scss';
 import {MediaRenderProps} from '../RichCard/Media';
-import {RichCard, Suggestion} from '../RichCard';
-import {CommandUnion} from '../../props';
+import {RichCard} from '../RichCard';
+import {RichCardSuggestion} from '../../googleModel';
+import {CommandUnion} from '../../../../props';
+
+import styles from './index.module.scss';
 
 type Card = {
   id?: string;
   title?: string;
   description?: string;
   media: MediaRenderProps;
-  suggestions: Suggestion[];
+  suggestions: RichCardSuggestion[];
 };
 
 export type RichCardCarouselRenderProps = {

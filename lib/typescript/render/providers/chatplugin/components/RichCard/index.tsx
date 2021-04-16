@@ -1,36 +1,22 @@
 import React from 'react';
-import styles from './index.module.scss';
-import {Media, MediaRenderProps} from './Media';
-import {CommandUnion} from '../../props';
 
-export type Suggestion = {
-  reply?: {
-    text: string;
-    postbackData: string;
-  };
-  action?: {
-    text: string;
-    postbackData: string;
-    openUrlAction?: {
-      url: string;
-    };
-    dialAction?: {
-      phoneNumber: string;
-    };
-  };
-};
+import {Media, MediaRenderProps} from './Media';
+import {CommandUnion} from '../../../../props';
+import {RichCardSuggestion} from '../../chatPluginModel';
+
+import styles from './index.module.scss';
 
 export type RichCardRenderProps = {
   title?: string;
   description?: string;
-  suggestions: Suggestion[];
+  suggestions: RichCardSuggestion[];
   media: MediaRenderProps;
   cardWidth?: string;
   commandCallback?: (command: CommandUnion) => void;
 };
 
 export const RichCard = ({title, description, suggestions, media, cardWidth, commandCallback}: RichCardRenderProps) => {
-  const clickSuggestion = (suggestion: Suggestion) => {
+  const clickSuggestion = (suggestion: RichCardSuggestion) => {
     if (suggestion.reply) {
       commandCallback &&
         commandCallback({
@@ -61,7 +47,7 @@ export const RichCard = ({title, description, suggestions, media, cardWidth, com
           {title && <h2 className={styles.title}>{title}</h2>}
           {description && <span className={styles.description}>{description}</span>}
           <div className={styles.suggestionsContainer}>
-            {suggestions.map((suggestion: Suggestion, idx: number) => (
+            {suggestions.map((suggestion: RichCardSuggestion, idx: number) => (
               <button
                 type="button"
                 key={idx}

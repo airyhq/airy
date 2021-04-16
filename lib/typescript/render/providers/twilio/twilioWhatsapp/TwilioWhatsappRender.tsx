@@ -1,23 +1,23 @@
 import React from 'react';
-import {isFromContact, RenderedContentUnion} from 'model';
+import {Message} from 'model';
 import {Text} from '../../../components/Text';
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../../props';
+import {RenderPropsUnion} from '../../../props';
 import {ContentUnion} from './twilioWhatsappModel';
 
 export const TwilioWhatsappRender = (props: RenderPropsUnion) => {
-  const message = props.content;
-  const content = isFromContact(message) ? inboundContent(message) : outboundContent(message);
+  const message: Message = props.content;
+  const content = message.fromContact ? inboundContent(message) : outboundContent(message);
   return render(content, props);
 };
 
 function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
+      return <Text fromContact={props.content.fromContact || false} text={content.text} />;
   }
 }
 
-const inboundContent = (message: RenderedContentUnion): ContentUnion => {
+const inboundContent = (message: Message): ContentUnion => {
   const messageContent = message.content;
   const startText = messageContent.search('&Body=');
   const endText = messageContent.search('&To=whatsapp');
@@ -32,7 +32,7 @@ const inboundContent = (message: RenderedContentUnion): ContentUnion => {
   };
 };
 
-const outboundContent = (message: RenderedContentUnion): ContentUnion => {
+const outboundContent = (message: Message): ContentUnion => {
   const messageContent = message.content.message ?? message.content;
   return {
     type: 'text',

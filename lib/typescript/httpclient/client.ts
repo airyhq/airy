@@ -1,11 +1,10 @@
-import {Tag, Message, Channel, User, Conversation, Config, Template} from 'model';
+import {Tag, Message, Channel, Conversation, Config, Template} from 'model';
 import {
   ExploreChannelRequestPayload,
   ConnectChannelFacebookRequestPayload,
   DisconnectChannelRequestPayload,
   ListConversationsRequestPayload,
   CreateTagRequestPayload,
-  LoginViaEmailRequestPayload,
   SendMessagesRequestPayload,
   TagConversationRequestPayload,
   UntagConversationRequestPayload,
@@ -32,7 +31,6 @@ import {
   listMessagesDef,
   listTagsDef,
   createTagDef,
-  loginViaEmailDef,
   updateTagDef,
   deleteTagDef,
   tagConversationDef,
@@ -46,10 +44,6 @@ function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
 }
 
-type FetchOptions = {
-  ignoreAuthToken?: boolean;
-};
-
 interface ApiRequest<T, K = void> {
   (requestPayload: T): Promise<K>;
 }
@@ -58,16 +52,13 @@ interface EndpointDefinition<T, K = void> {
   endpoint: string | ((requestPayload: T) => string);
   mapRequest?: (requestPayload: T) => any;
   mapResponse?: (any) => K;
-  opts?: FetchOptions;
 }
 
 export class HttpClient {
   public readonly apiUrlConfig?: string;
-  public token?: string;
   private readonly unauthorizedErrorCallback?: (body: any) => void;
 
-  constructor(apiUrlConfig: string, token?: string, unauthorizedErrorCallback?: (body: any) => void) {
-    this.token = token;
+  constructor(apiUrlConfig: string, unauthorizedErrorCallback?: (body: any) => void) {
     this.apiUrlConfig = apiUrlConfig;
     this.unauthorizedErrorCallback = unauthorizedErrorCallback;
   }
@@ -98,14 +89,11 @@ export class HttpClient {
     };
   }
 
-  private async doFetchFromBackend(url: string, body?: any, options?: FetchOptions): Promise<any> {
+  private async doFetchFromBackend(url: string, body?: any): Promise<any> {
     const headers = {
       Accept: 'application/json',
     };
 
-    if (options?.ignoreAuthToken != true && this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`;
-    }
     if (!(body instanceof FormData)) {
       if (!isString(body)) {
         body = JSON.stringify(body);
@@ -163,8 +151,6 @@ export class HttpClient {
 
   public deleteTag = this.getRequest<string>(deleteTagDef);
 
-  public loginViaEmail = this.getRequest<LoginViaEmailRequestPayload, User>(loginViaEmailDef);
-
   public tagConversation = this.getRequest<TagConversationRequestPayload>(tagConversationDef);
 
   public untagConversation = this.getRequest<UntagConversationRequestPayload>(untagConversationDef);
@@ -175,16 +161,11 @@ export class HttpClient {
 
   public listTemplates = this.getRequest<ListTemplatesRequestPayload, Template[]>(listTemplatesDef);
 
-  private getRequest<K, V = void>({
-    endpoint,
-    mapRequest,
-    mapResponse,
-    opts,
-  }: EndpointDefinition<K, V>): ApiRequest<K, V> {
+  private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {
       endpoint = typeof endpoint === 'string' ? endpoint : endpoint(requestPayload);
       requestPayload = mapRequest ? mapRequest(requestPayload) : requestPayload;
-      const response = await this.doFetchFromBackend(endpoint, requestPayload, opts);
+      const response = await this.doFetchFromBackend(endpoint, requestPayload);
       return mapResponse ? mapResponse(response) : response;
     };
   }

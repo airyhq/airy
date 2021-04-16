@@ -13,7 +13,6 @@ export * from './listTags';
 export * from './createTag';
 export * from './updateTag';
 export * from './deleteTag';
-export * from './loginViaEmail';
 export * from './tagConversation';
 export * from './untagConversation';
 export * from './sendMessages';

@@ -4,19 +4,16 @@ The HttpClient Library includes a HTTP client for making requests to Airy's API.
 
 The library exports a HttpClient class with public methods that make requests to Airy's API.
 
-To use the library, you need to instantiate the class with the authentification token and your api url.
-
-The authentication token is optional, but all endpoints except for `/users.login` and `/users.signup` will fail without it.
+To use the library, you need to instantiate the class with an Airy Core API URL.
 
 For example:
 
-```
+```typescript
 import { HttpClient} from 'httpclient';
 
-const myInstance = new HttpClient(apiUrl, authToken);
-
+const myInstance = new HttpClient("http://airy.core");
 myInstance.listChannels()
-
+    .then((channels) => console.debug("Channels", channels))
 ```
 
 Here is a list of the public methods the library's class includes:
@@ -49,7 +46,3 @@ TAGS
 - createTag
 - updateTag
 - deleteTag
-
-USER
-
-- loginViaEmail

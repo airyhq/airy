@@ -5,25 +5,20 @@ type ErrorCallback = () => void;
 
 export class StompWrapper {
   stompClient: Client;
-  authToken: string;
   onError: ErrorCallback;
   url: string;
 
   queues: StompSubscription[];
   queueMapping: QueueMappingType;
 
-  constructor(url: string, queueMapping: QueueMappingType, authToken: string, onError: ErrorCallback) {
+  constructor(url: string, queueMapping: QueueMappingType, onError: ErrorCallback) {
     this.url = url;
     this.queueMapping = queueMapping;
-    this.authToken = authToken;
     this.onError = onError;
   }
 
   initConnection = () => {
     this.stompClient = new Client({
-      connectHeaders: {
-        Authorization: `Bearer ${this.authToken}`,
-      },
       brokerURL: this.url,
       reconnectDelay: 2000,
       onConnect: this.stompOnConnect,
@@ -62,9 +57,8 @@ export class StompWrapper {
     });
   };
 
-  refreshSocket = userToken => {
+  refreshSocket = () => {
     this.destroyConnection();
-    this.authToken = userToken;
     this.initConnection();
   };
 }

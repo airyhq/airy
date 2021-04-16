@@ -58,17 +58,15 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
     if (webSocketClient) {
       webSocketClient.destroyConnection();
     }
-    if (user.token) {
-      setWebSocketClient(
-        new WebSocketClient(env.API_HOST, user.token, {
-          onMessage: (conversationId: string, _channelId: string, message: Message) => {
-            onMessage(conversationId, message);
-          },
-          onChannel,
-          onMetadata,
-        })
-      );
-    }
+    setWebSocketClient(
+      new WebSocketClient(env.API_HOST, {
+        onMessage: (conversationId: string, _channelId: string, message: Message) => {
+          onMessage(conversationId, message);
+        },
+        onChannel,
+        onMetadata,
+      })
+    );
   };
 
   useEffect(refreshSocket, [user.token]);

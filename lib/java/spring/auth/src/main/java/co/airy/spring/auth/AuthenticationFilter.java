@@ -1,6 +1,5 @@
 package co.airy.spring.auth;
 
-import co.airy.spring.jwt.Jwt;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,15 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
-
-    private final Jwt jwt;
+public class AuthenticationFilter extends BasicAuthenticationFilter {
     private final String systemToken;
     private final String apiTokenPrincipal;
 
-    public JwtAuthenticationFilter(AuthenticationManager authManager, Jwt jwt, String systemToken) {
+    public AuthenticationFilter(AuthenticationManager authManager, String systemToken) {
         super(authManager);
-        this.jwt = jwt;
         this.systemToken = systemToken;
         this.apiTokenPrincipal = systemToken == null ? null : String.format("system-token-%s", systemToken.substring(0, Math.min(systemToken.length(), 4)));
     }
@@ -56,12 +52,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             return new UsernamePasswordAuthenticationToken(apiTokenPrincipal, null, List.of());
         }
 
-        final String user = jwt.authenticate(token);
-
-        if (user != null) {
-            return new UsernamePasswordAuthenticationToken(user, null, List.of());
-        }
         return null;
     }
-
 }

@@ -65,7 +65,6 @@ class UnreadCountTest {
 
     @Test
     void canResetUnreadCount() throws Exception {
-        final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId(UUID.randomUUID().toString())
@@ -97,15 +96,15 @@ class UnreadCountTest {
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
 
-        retryOnException(() -> webTestHelper.post("/conversations.info", payload, userId)
+        retryOnException(() -> webTestHelper.post("/conversations.info", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.metadata.unread_count", equalTo(unreadMessages))),
                 "Conversation not showing unread count");
 
-        webTestHelper.post("/conversations.read", payload, userId).andExpect(status().isNoContent());
+        webTestHelper.post("/conversations.read", payload).andExpect(status().isNoContent());
 
         retryOnException(
-                () -> webTestHelper.post("/conversations.info", payload, userId)
+                () -> webTestHelper.post("/conversations.info", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.metadata.unread_count", equalTo(0))),
                 "Conversation unread count did not reset");

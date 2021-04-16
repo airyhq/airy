@@ -14,13 +14,13 @@ public class TestApp {
     @PostMapping("/jwt.get")
     ResponseEntity<?> echoPrincipal(Authentication authentication) {
         final String userId = (String) authentication.getPrincipal();
-        return ResponseEntity.ok(new JwtDetails(userId));
+        return ResponseEntity.ok(new PrincipalDetails(userId));
     }
 }
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-class JwtDetails {
+class PrincipalDetails {
     private String userId;
 }

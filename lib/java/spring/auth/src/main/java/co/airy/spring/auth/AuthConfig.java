@@ -1,6 +1,5 @@
 package co.airy.spring.auth;
 
-import co.airy.spring.jwt.Jwt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,12 +23,10 @@ import java.util.List;
         jsr250Enabled = true
 )
 public class AuthConfig extends WebSecurityConfigurerAdapter {
-    private final Jwt jwt;
     private final String[] ignoreAuthPatterns;
     private final String systemToken;
 
-    public AuthConfig(Jwt jwt, @Value("${system_token:#{null}}") String systemToken, List<IgnoreAuthPattern> ignorePatternBeans) {
-        this.jwt = jwt;
+    public AuthConfig(@Value("${system_token:#{null}}") String systemToken, List<IgnoreAuthPattern> ignorePatternBeans) {
         this.systemToken = systemToken;
         this.ignoreAuthPatterns = ignorePatternBeans.stream()
                 .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
@@ -41,15 +38,16 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .csrf().disable()
                 // Don't let Spring create its own session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwt, this.systemToken))
-                .authorizeRequests(authorize -> authorize
-                        .antMatchers("/actuator/**", "/ws*").permitAll()
-                        .antMatchers(ignoreAuthPatterns).permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        if (this.systemToken != null) {
+            http.addFilter(new AuthenticationFilter(authenticationManager(), this.systemToken))
+                    .authorizeRequests(authorize -> authorize
+                            .antMatchers("/actuator/**", "/ws*").permitAll()
+                            .antMatchers(ignoreAuthPatterns).permitAll()
+                            .anyRequest().authenticated()
+                    );
+        }
     }
 
     @Bean

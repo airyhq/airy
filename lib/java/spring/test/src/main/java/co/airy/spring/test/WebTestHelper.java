@@ -1,7 +1,7 @@
 package co.airy.spring.test;
 
 
-import co.airy.spring.jwt.Jwt;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -9,7 +9,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static co.airy.test.Timing.retryOnException;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,21 +16,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Component
 public class WebTestHelper {
     private final MockMvc mvc;
-    private final Jwt jwt;
+    private final String systemToken;
 
-    WebTestHelper(MockMvc mvc, Jwt jwt) {
+    WebTestHelper(MockMvc mvc, @Value("${system_token:#{null}}") String systemToken) {
         this.mvc = mvc;
-        this.jwt = jwt;
+        this.systemToken = systemToken;
     }
 
     public void waitUntilHealthy() throws InterruptedException {
         retryOnException(() -> get("/actuator/health").andExpect(status().isOk()), "Application is not healthy");
-    }
-
-    public ResultActions post(String url, String body, String userId) throws Exception {
-        return this.mvc.perform(MockMvcRequestBuilders.post(url)
-                .headers(buildHeaders(userId))
-                .content(body));
     }
 
     public ResultActions post(String url, String body) throws Exception {
@@ -44,10 +37,12 @@ public class WebTestHelper {
         return this.mvc.perform(MockMvcRequestBuilders.get(url));
     }
 
-    private HttpHeaders buildHeaders(final String userId) {
+    private HttpHeaders buildHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add(CONTENT_TYPE, APPLICATION_JSON.toString());
-        headers.setBearerAuth(jwt.tokenFor(userId));
+        if (this.systemToken != null) {
+            headers.setBearerAuth(this.systemToken);
+        }
         return headers;
     }
 }

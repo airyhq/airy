@@ -7,6 +7,10 @@ metadata:
     app: frontend-ui
     type: frontend
     core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.component }}"
+  annotations:
+    core.airy.co/config-items-mandatory: "API_HOST"
 spec:
   replicas: 1
   selector:

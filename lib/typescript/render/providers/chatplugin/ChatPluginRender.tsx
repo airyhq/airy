@@ -1,12 +1,13 @@
 import React from 'react';
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
-import {RichText} from '../../components/RichText';
-import {RichCard} from '../../components/RichCard';
-import {RichCardCarousel} from '../../components/RichCardCarousel';
-import {Text} from '../../components/Text';
+
+import {RenderPropsUnion} from '../../props';
 import {AttachmentUnion, ContentUnion, SimpleAttachment} from './chatPluginModel';
+import {Message} from 'model';
+import {Text} from '../../components/Text';
+import {RichText} from './components/RichText';
+import {RichCard} from './components/RichCard';
+import {RichCardCarousel} from './components/RichCardCarousel';
 import {QuickReplies} from './components/QuickReplies/index';
-import {RenderedContentUnion} from 'model';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.content), props);
@@ -14,7 +15,7 @@ export const ChatPluginRender = (props: RenderPropsUnion) => {
 
 function render(content: ContentUnion, props: RenderPropsUnion) {
   const defaultProps = {
-    ...getDefaultRenderingProps(props),
+    fromContact: props.content.fromContact || false,
     commandCallback: 'commandCallback' in props ? props.commandCallback : null,
   };
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
@@ -59,7 +60,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   }
 }
 
-function mapContent(message: RenderedContentUnion): ContentUnion {
+function mapContent(message: Message): ContentUnion {
   const messageContent = message.content.message ?? message.content;
 
   if (messageContent.quick_replies) {

@@ -13,5 +13,4 @@ import java.util.Map;
 @AllArgsConstructor
 public class ClientConfigResponsePayload {
     private Map<String, Map<String, Object>> components;
-    private Map<String, String> features;
 }

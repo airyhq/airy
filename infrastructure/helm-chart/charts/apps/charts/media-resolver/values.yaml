@@ -1,8 +1,3 @@
+component: media-resolver
+mandatory: false
 image: media/resolver
-storage:
-  s3:
-    key: "changeme"
-    secret: "changeme"
-    bucket: "changeme"
-    region: "changeme"
-    path: "path"

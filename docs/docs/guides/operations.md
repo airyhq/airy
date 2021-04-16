@@ -55,7 +55,7 @@ be used for all sorts of dashboard and monitoring requirements.
 
 `k edit cm prometheus-grafana`
 
-```yaml
+```toml
 [server]
     domain = <your_hostname>
     root_url = <your_hostname>/grafana

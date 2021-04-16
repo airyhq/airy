@@ -1,23 +1,25 @@
 import React from 'react';
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
-import {Suggestions} from './components/Suggestions';
-import {Text} from '../../components/Text';
-import {RichCard} from '../../components/RichCard';
-import {RichCardCarousel} from '../../components/RichCardCarousel';
+
+import {RenderPropsUnion} from '../../props';
 import {ContentUnion} from './googleModel';
-import {RenderedContentUnion, isFromContact} from 'model';
+import {Message} from 'model';
+
+import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
+import {Suggestions} from './components/Suggestions';
+import {RichCard} from './components/RichCard';
+import {RichCardCarousel} from './components/RichCardCarousel';
 
 export const GoogleRender = (props: RenderPropsUnion) => {
-  const message = props.content;
-  const content = isFromContact(message) ? googleInbound(message) : googleOutbound(message);
+  const message: Message = props.content;
+  const content = message.fromContact ? googleInbound(message) : googleOutbound(message);
   return render(content, props);
 };
 
 function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
+      return <Text fromContact={props.content.fromContact || false} text={content.text} />;
 
     case 'image':
       return <Image imageUrl={content.imageUrl} altText="image sent via GBM" />;
@@ -25,7 +27,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'suggestions':
       return (
         <Suggestions
-          {...getDefaultRenderingProps(props)}
+          fromContact={props.content.fromContact || false}
           text={content.text}
           image={content.image}
           fallback={content.fallback}
@@ -48,7 +50,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   }
 }
 
-function googleInbound(message: RenderedContentUnion): ContentUnion {
+function googleInbound(message: Message): ContentUnion {
   const messageJson = message.content.message;
 
   if (messageJson.richCard?.standaloneCard) {
@@ -123,7 +125,7 @@ function googleInbound(message: RenderedContentUnion): ContentUnion {
   };
 }
 
-function googleOutbound(message: RenderedContentUnion): ContentUnion {
+function googleOutbound(message: Message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
   const maxNumberOfSuggestions = 13;
 

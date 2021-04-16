@@ -155,10 +155,11 @@ For more details please see our [Configuration Section](configuration.md).
 
 You can remove the Airy Core AWS installation by deleting the Airy Core AWS resources with the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
 
-Retrieve the ID of the installation:
+Retrieve the ID of the installation, in this case `my-airy` is the name of the installation that was passed on the creation process:
 
 ```sh
-id=$(cat ~/.airy/cli.yaml | grep contextname | awk '{ print $2; }')
+cd my-airy
+id=$(cat cli.yaml | grep contextname | awk '{ print $2; }')
 echo ${id}
 ```
 

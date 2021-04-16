@@ -14,7 +14,7 @@ describe('End ChatPlugin Conversation', () => {
     cy.get(`[data-cy=${cyBubble}]`).click();
     cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
-    cy.get(`[data-cy=${cyChatPluginMessageList}]`).children().should('have.length', 2)
+    cy.get(`[data-cy=${cyChatPluginMessageList}]`).children().should('have.length', 2);
 
     cy.wait(500);
 
@@ -26,6 +26,6 @@ describe('End ChatPlugin Conversation', () => {
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
     cy.wait(500);
 
-    cy.get(`[data-cy=${cyChatPluginMessageList}]`).children().should('have.length', 2)
+    cy.get(`[data-cy=${cyChatPluginMessageList}]`).children().should('have.length', 2);
   });
 });

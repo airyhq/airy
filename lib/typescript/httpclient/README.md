@@ -9,11 +9,10 @@ To use the library, you need to instantiate the class with an Airy Core API URL.
 For example:
 
 ```typescript
-import { HttpClient} from 'httpclient';
+import {HttpClient} from "httpclient";
 
 const myInstance = new HttpClient("http://airy.core");
-myInstance.listChannels()
-    .then((channels) => console.debug("Channels", channels))
+myInstance.listChannels().then(channels => console.debug("Channels", channels));
 ```
 
 Here is a list of the public methods the library's class includes:

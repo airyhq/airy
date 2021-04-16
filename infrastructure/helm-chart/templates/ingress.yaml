@@ -8,20 +8,6 @@ spec:
     - host: {{ get (urlParse .Values.global.host) "host" }}
       http:
         paths:
-          - path: /users.login
-            pathType: Prefix
-            backend:
-              service:
-                name: api-auth
-                port:
-                  number: 80
-          - path: /users.signup
-            pathType: Prefix
-            backend:
-              service:
-                name: api-auth
-                port:
-                  number: 80
           - path: /ws.communication
             pathType: Prefix
             backend:

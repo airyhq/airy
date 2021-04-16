@@ -25,12 +25,11 @@ which run as part of Airy Core:
 
 - sources-`SOURCE_NAME`-webhook - Ingest events from the `SOURCE_NAME` source
 - sources-`SOURCE_NAME`-events-router - Process messages from a `SOURCE_NAME` source
-- sources-`SOURCE_NAME`-connector - Send events (mostly messages) to a `SOURCE_NAME` source and extracts metadata
+- sources-`SOURCE_NAME`-connector - Send and receives events (mostly messages) to and from a `SOURCE_NAME` source and extracts metadata
 
 ## API
 
 - api-admin - Backend services for administration of messaging sources and destinations
-- api-auth - Backend services for authentication and authorization
 - api-communication - Backend services which expose conversations and messages
 
 ## Webhook

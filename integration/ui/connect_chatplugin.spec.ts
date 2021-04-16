@@ -9,15 +9,6 @@ import {
 
 describe('Connect chatplugin channel', () => {
   it('Connect chatplugin channel', () => {
-    cy.visit('/ui/login');
-
-    cy.get('form')
-      .within(() => {
-        cy.get('input[type=email]').type(Cypress.env('username'));
-        cy.get('input[type=password]').type(Cypress.env('password'));
-      })
-      .submit();
-
     cy.visit('/ui/channels');
     cy.wait(500);
     cy.url().should('include', '/ui/channels');

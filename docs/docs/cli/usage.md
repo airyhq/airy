@@ -31,60 +31,6 @@ airy api endpoint [flags]
 
 ***
 
-### Login
-
-Login into an Airy Core instance
-
-```
-airy api login [flags]
-```
-
-#### Options
-
-```
-  -e, --email string      Email (default "grace@example.com")
-  -h, --help              help for login
-  -p, --password string   Password (default "the_answer_is_42")
-```
-
-#### Options inherited from parent commands
-
-```
-      --apihost string      Airy Core HTTP API endpoint
-      --config-dir string   config directory of an airy core instance (default is the cwd)
-```
-
-
-***
-
-### Signup
-
-Signs users up in Airy Core
-
-```
-airy api signup [flags]
-```
-
-#### Options
-
-```
-  -e, --email string       Email (default "grace@hopper.com")
-  -f, --firstName string   First name (default "Grace")
-  -h, --help               help for signup
-  -l, --lastName string    Last name (default "Hopper")
-  -p, --password string    Password (default "the_answer_is_42")
-```
-
-#### Options inherited from parent commands
-
-```
-      --apihost string      Airy Core HTTP API endpoint
-      --config-dir string   config directory of an airy core instance (default is the cwd)
-```
-
-
-***
-
 ## Config
 
 Manages an Airy Core instance via airy.yaml

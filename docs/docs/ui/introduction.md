@@ -20,13 +20,6 @@ Airy UI comes with an open-source, customizable [inbox](inbox), filled with the 
 
 <ButtonBoxList>
     <ButtonBox
-        icon={<GearSVG />}
-        iconInvertible={true}
-        title='UI Quickstart'
-        description='Step by Step Guide on getting up and running with the UI'
-        link='ui/quickstart'
-    />
-    <ButtonBox
         icon={<DesktopComputerSVG />}
         iconInvertible={true}
         title='Inbox'

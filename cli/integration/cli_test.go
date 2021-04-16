@@ -32,7 +32,6 @@ func TestCli(t *testing.T) {
 		t.Fatal(err)
 	}
 	tests := []test{
-		{"login", []string{"--config-dir", dir, "api", "login", "--apihost", ms.Host}, "cli.login", false},
 		{"no args", []string{}, "cli.no-args", false},
 	}
 

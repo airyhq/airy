@@ -9,7 +9,6 @@ go_library(
         "test_file.go",
     ],
     embedsrcs = [
-        "golden/cli.login.golden",
         "golden/cli.no-args.golden",
         "golden/cli.version.golden",
         "golden/cli.yaml",

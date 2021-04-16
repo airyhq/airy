@@ -9,16 +9,6 @@ import {
 
 describe('Websocket test', () => {
   it('Send message from Inbox to Chatplugin and assert Websocket is working', () => {
-    cy.visit('/ui/login');
-    cy.get('form')
-      .within(() => {
-        cy.get('input[type=email]').type(Cypress.env('username'));
-        cy.get('input[type=password]').type(Cypress.env('password'));
-      })
-      .submit();
-
-    cy.wait(500);
-
     cy.visit('/ui/channels');
     cy.wait(500);
     cy.url().should('include', '/channels');

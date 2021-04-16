@@ -10,7 +10,7 @@ import AiryInputBar from '../../airyRenderProps/AiryInputBar';
 import style from './index.module.scss';
 import HeaderBarProp from '../../components/headerBar';
 import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
-import {AiryWidgetConfiguration} from '../../config';
+import {AiryChatPluginConfiguration} from '../../config';
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 import {MessageState, isFromContact, Message} from 'model';
@@ -34,7 +34,7 @@ const defaultWelcomeMessage: Message = {
   sentAt: new Date(),
 };
 
-type Props = AiryWidgetConfiguration;
+type Props = AiryChatPluginConfiguration;
 
 const Chat = (props: Props) => {
   const {config} = props;
@@ -43,11 +43,15 @@ const Chat = (props: Props) => {
     defaultWelcomeMessage.content = config.welcomeMessage;
   }
 
+  const chatHiddenInitialState = (): boolean => {
+    if (config.showMode === true) return false;
+    if (getResumeTokenFromStorage(props.channelId)) return true;
+    return false;
+  };
+
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
-  const [isChatHidden, setIsChatHidden] = useState(
-    config.showMode || getResumeTokenFromStorage(props.channelId) ? false : true
-  );
+  const [isChatHidden, setIsChatHidden] = useState(chatHiddenInitialState());
   const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
   const [messageString, setMessageString] = useState('');
   const [connectionState, setConnectionState] = useState(null);
@@ -65,6 +69,10 @@ const Chat = (props: Props) => {
       setInstallError(error.message);
     });
   }, []);
+
+  useEffect(() => {
+    setAnimation('');
+  }, [config]);
 
   useEffect(() => {
     updateScroll();

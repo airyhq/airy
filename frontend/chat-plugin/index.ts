@@ -1,1 +1,1 @@
-export * from './src/AiryWidgetWrapper';
+export * from './src/AiryChatPlugin';

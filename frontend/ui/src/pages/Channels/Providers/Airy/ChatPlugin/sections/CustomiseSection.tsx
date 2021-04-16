@@ -14,13 +14,13 @@ interface DemoConfig {
     headerText: string;
     headerTextColor: string;
     primaryColor: string;
+    backgroundColor: string;
     accentColor: string;
     bubbleIcon: string;
     sendMessageIcon: string;
     showMode: boolean;
   };
   channelId: string;
-  chatPluginParentDiv: string;
 }
 
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
@@ -40,13 +40,13 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       headerText: headerText || null,
       headerTextColor: headerTextColor || null,
       primaryColor: primaryColor || null,
+      backgroundColor: backgroundColor || null,
       accentColor: accentColor || null,
       bubbleIcon: bubbleIconUrl || null,
       sendMessageIcon: sendMessageIconUrl || null,
       showMode: true,
     },
     channelId: channelId,
-    chatPluginParentDiv: 'div.demoChatPlugin',
   });
 
   const codeAreaRef = createRef<HTMLTextAreaElement>();
@@ -106,7 +106,6 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         showMode: true,
       },
       channelId: channelId,
-      chatPluginParentDiv: 'div.demoChatPlugin',
     });
   }, [
     channelId,
@@ -340,10 +339,10 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             height={32}
             fontClass="font-base"
           />
-        </div>
-        <div className="demoChatPlugin">
-          <AiryWidgetWrapper {...demoConfig} />
-        </div>
+        </div>        
+      </div>
+      <div className="demoChatPlugin">
+        <AiryWidgetWrapper {...demoConfig} />
       </div>
     </>
   );

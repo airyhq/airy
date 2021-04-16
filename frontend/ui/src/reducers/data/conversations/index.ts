@@ -1,4 +1,4 @@
-import {action, ActionType, getType} from 'typesafe-actions';
+import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
 import {cloneDeep, sortBy, merge, pickBy} from 'lodash-es';
 

@@ -1,4 +1,4 @@
 export interface SetStateConversationRequestPayload {
-    conversationId: string;
-    state: string; 
+  conversationId: string;
+  state: string;
 }

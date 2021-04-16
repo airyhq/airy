@@ -107,9 +107,7 @@ export const readConversations = (conversationId: string) => (dispatch: Dispatch
 
 export const conversationState = (conversationId: string, state: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.setStateConversation({conversationId, state}).then(() =>
-    dispatch(
-      setStateConversationAction(conversationId, state)
-    )
+    dispatch(setStateConversationAction(conversationId, state))
   );
 };
 

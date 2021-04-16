@@ -50,7 +50,7 @@ web_library(
 )
 
 ts_web_library(
-    name = "chat-plugin",
+    name = "app",
     tsconfig = ":widget_tsconfig",
     deps = module_deps + [
         "@npm//@stomp/stompjs",

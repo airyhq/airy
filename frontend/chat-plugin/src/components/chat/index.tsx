@@ -2,7 +2,6 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import {IMessage} from '@stomp/stompjs';
 
-import {AiryWidgetConfiguration} from '../../config';
 import {DeliveryState, Message} from 'model';
 
 import WebSocket, {ConnectionState} from '../../websocket';

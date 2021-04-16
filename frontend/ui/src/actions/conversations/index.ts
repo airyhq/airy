@@ -13,6 +13,7 @@ const CONVERSATION_ADD_ERROR = '@@conversations/ADD_ERROR_TO_CONVERSATION';
 const CONVERSATION_REMOVE_ERROR = '@@conversations/REMOVE_ERROR_FROM_CONVERSATION';
 const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
 const CONVERSATION_UPDATE_PAGINATION_DATA = '@@conversation/UPDATE_PAGINATION_DATA';
+const CONVERSATION_SET_STATE = '@@conversations/CONVERSATION_SET_STATE';
 
 export const loadingConversationAction = createAction(
   CONVERSATION_LOADING,
@@ -47,6 +48,11 @@ export const updateMessagesPaginationDataAction = createAction(
   CONVERSATION_UPDATE_PAGINATION_DATA,
   (conversationId: string, paginationData: Pagination) => ({conversationId, paginationData})
 )<{conversationId: string; paginationData: Pagination}>();
+
+export const setStateConversationAction = createAction(
+  CONVERSATION_SET_STATE,
+  (conversationId: string, state: string) => ({conversationId, state})
+)<{conversationId: string; state: string}>();
 
 export const listConversations = () => async (dispatch: Dispatch<any>) => {
   dispatch(loadingConversationsAction());
@@ -99,20 +105,10 @@ export const readConversations = (conversationId: string) => (dispatch: Dispatch
   );
 };
 
-export const conversationState = (id: string, subject: string, data: any, state?: string) => (
-  dispatch: Dispatch<any>
-) => {
-  HttpClientInstance.metadataUpsert({id, subject, data}).then(() =>
+export const conversationState = (conversationId: string, state: string) => (dispatch: Dispatch<any>) => {
+  HttpClientInstance.setStateConversation({conversationId, state}).then(() =>
     dispatch(
-      setMetadataAction({
-        subject: 'conversation',
-        identifier: id,
-        metadata: {
-          userData: {
-            state: state,
-          },
-        },
-      })
+      setStateConversationAction(conversationId, state)
     )
   );
 };

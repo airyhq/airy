@@ -48,15 +48,15 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
 };
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, style, readConversations, conversationId} = props;
+  const {conversation, active, style, readConversations, conversationId, conversationState} = props;
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
-  const conversationState = conversation.metadata.userData.conversation_state;
+  const currentConversationState = conversation.metadata.userData.conversation_state;
 
   const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    const newState = conversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
-    conversationState(conversationId, 'conversation', {state: newState});
+    const newState = currentConversationState === ('' || 'OPEN') ? 'CLOSED' : 'OPEN';
+    conversationState(conversationId, newState);
     event.preventDefault();
     event.stopPropagation();
   };
@@ -100,7 +100,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
               <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>
                 {participant && participant.displayName}
               </div>
-              {conversationState === 'OPEN' ? <ClosedStateButton /> : <OpenStateButton />}
+              {currentConversationState === 'OPEN' ? <ClosedStateButton /> : <OpenStateButton />}
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
               <FormattedMessage message={conversation.lastMessage} />

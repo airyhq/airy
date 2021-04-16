@@ -21,3 +21,4 @@ export * from './getConfig';
 export * from './updateChannel';
 export * from './listTemplates';
 export * from './metadataUpsert';
+export * from './setStateConversation';

@@ -1,4 +1,4 @@
-import {ActionType, getType} from 'typesafe-actions';
+import {action, ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
 import {cloneDeep, sortBy, merge, pickBy} from 'lodash-es';
 
@@ -193,6 +193,22 @@ function allReducer(
   action: Action | MessageAction
 ): AllConversationsState {
   switch (action.type) {
+    case getType(actions.setStateConversationAction):
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [action.payload.conversationId]: {
+            id: action.payload.conversationId,
+            ...state.items[action.payload.conversationId],
+            metadata: {
+              ...state.items[action.payload.conversationId].metadata,
+              state: action.payload.state,
+            },
+          },
+        },
+      };
+
     case getType(metadataActions.setMetadataAction):
       if (action.payload.subject !== 'conversation') {
         return state;
@@ -212,7 +228,6 @@ function allReducer(
                 ...state.items[action.payload.identifier]?.metadata.contact,
                 ...(action.payload as MetadataEvent<ConversationMetadata>).metadata.contact,
               },
-              state: action.payload.metadata.state,
             },
           },
         },

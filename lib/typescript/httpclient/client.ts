@@ -16,6 +16,8 @@ import {
   UpdateChannelRequestPayload,
   ListTemplatesRequestPayload,
   PaginatedResponse,
+  MetadataUpsertRequestPayload,
+  SetStateConversationRequestPayload,
 } from './src/payload';
 import {
   listChannelsDef,
@@ -40,6 +42,8 @@ import {
   sendMessagesDef,
   getConfigDef,
   listTemplatesDef,
+  metadataUpsertDef,
+  setStateConversationDef,
 } from './src/endpoints';
 
 function isString(object: any) {
@@ -176,6 +180,8 @@ export class HttpClient {
   public listTemplates = this.getRequest<ListTemplatesRequestPayload, Template[]>(listTemplatesDef);
 
   public metadataUpsert = this.getRequest<MetadataUpsertRequestPayload>(metadataUpsertDef);
+
+  public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
 
   private getRequest<K, V = void>({
     endpoint,

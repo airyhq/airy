@@ -18,7 +18,7 @@ module_deps = [
     "//lib/typescript/dates",
     "//lib/typescript/websocketclient",
     "//frontend/ui/handles",
-    "//frontend/chat-plugin",
+    "//frontend/chat-plugin:app",
 ]
 
 ts_web_library(

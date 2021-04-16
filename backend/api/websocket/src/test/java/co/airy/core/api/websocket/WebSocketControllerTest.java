@@ -14,7 +14,6 @@ import co.airy.model.event.payload.ChannelEvent;
 import co.airy.model.event.payload.MessageEvent;
 import co.airy.model.event.payload.MetadataEvent;
 import co.airy.spring.core.AirySpringBootApplication;
-import co.airy.spring.jwt.Jwt;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -74,9 +73,6 @@ public class WebSocketControllerTest {
     @Autowired
     private WebTestHelper webTestHelper;
 
-    @Autowired
-    private Jwt jwt;
-
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
@@ -99,7 +95,7 @@ public class WebSocketControllerTest {
 
     @Test
     void canReceiveMessageEvents() throws Exception {
-        final CompletableFuture<MessageEvent> future = subscribe(port, MessageEvent.class, QUEUE_EVENTS, jwt);
+        final CompletableFuture<MessageEvent> future = subscribe(port, MessageEvent.class, QUEUE_EVENTS);
         final Message message = Message.newBuilder()
                 .setId("messageId")
                 .setSource("facebook")
@@ -125,7 +121,7 @@ public class WebSocketControllerTest {
 
     @Test
     void canReceiveChannelEvents() throws Exception {
-        final CompletableFuture<ChannelEvent> future = subscribe(port, ChannelEvent.class, QUEUE_EVENTS, jwt);
+        final CompletableFuture<ChannelEvent> future = subscribe(port, ChannelEvent.class, QUEUE_EVENTS);
 
         final Channel channel = Channel.newBuilder()
                 .setId(UUID.randomUUID().toString())
@@ -143,7 +139,7 @@ public class WebSocketControllerTest {
 
     @Test
     void canReceiveMetadataEvents() throws Exception {
-        final CompletableFuture<MetadataEvent> future = subscribe(port, MetadataEvent.class, QUEUE_EVENTS, jwt);
+        final CompletableFuture<MetadataEvent> future = subscribe(port, MetadataEvent.class, QUEUE_EVENTS);
 
         final Metadata metadata = Metadata.newBuilder()
                 .setKey("contact.displayName")
@@ -161,7 +157,7 @@ public class WebSocketControllerTest {
         assertThat(recMetadata.getPayload().getMetadata().get("contact").get("displayName").textValue(), equalTo(metadata.getValue()));
     }
 
-    private static StompSession connectToWs(int port, Jwt jwt) throws ExecutionException, InterruptedException {
+    private static StompSession connectToWs(int port) throws ExecutionException, InterruptedException {
         final WebSocketStompClient stompClient = new WebSocketStompClient(new StandardWebSocketClient());
         MappingJackson2MessageConverter messageConverter = new MappingJackson2MessageConverter();
         ObjectMapper objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
@@ -170,14 +166,13 @@ public class WebSocketControllerTest {
 
         StompHeaders connectHeaders = new StompHeaders();
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
-        connectHeaders.add(AUTHORIZATION, "Bearer " + jwt.tokenFor("userId"));
 
         return stompClient.connect("ws://localhost:" + port + "/ws.communication", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
         }).get();
     }
 
-    public static <T> CompletableFuture<T> subscribe(int port, Class<T> payloadType, String topic, Jwt jwt) throws ExecutionException, InterruptedException {
-        final StompSession stompSession = connectToWs(port, jwt);
+    public static <T> CompletableFuture<T> subscribe(int port, Class<T> payloadType, String topic) throws ExecutionException, InterruptedException {
+        final StompSession stompSession = connectToWs(port);
 
         final CompletableFuture<T> completableFuture = new CompletableFuture<>();
 

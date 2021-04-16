@@ -15,12 +15,12 @@ import java.util.List;
 
 public class AuthenticationFilter extends BasicAuthenticationFilter {
     private final String systemToken;
-    private final String apiTokenPrincipal;
+    private final String systemTokenPrincipal;
 
     public AuthenticationFilter(AuthenticationManager authManager, String systemToken) {
         super(authManager);
         this.systemToken = systemToken;
-        this.apiTokenPrincipal = systemToken == null ? null : String.format("system-token-%s", systemToken.substring(0, Math.min(systemToken.length(), 4)));
+        this.systemTokenPrincipal = systemToken == null ? null : String.format("system-token-%s", systemToken.substring(0, Math.min(systemToken.length(), 4)));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
         if (systemToken != null && systemToken.equals(token)) {
-            return new UsernamePasswordAuthenticationToken(apiTokenPrincipal, null, List.of());
+            return new UsernamePasswordAuthenticationToken(systemTokenPrincipal, null, List.of());
         }
 
         return null;

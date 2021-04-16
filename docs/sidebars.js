@@ -53,7 +53,6 @@ module.exports = {
             'api/endpoints/metadata',
             'api/endpoints/tags',
             'api/endpoints/templates',
-            'api/endpoints/users',
           ],
         },
         'api/websocket',
@@ -61,7 +60,7 @@ module.exports = {
       ],
     },
     {
-      '💎 UI': ['ui/introduction', 'ui/quickstart', 'ui/inbox', 'ui/channels', 'ui/tags', 'ui/suggestedReplies'],
+      '💎 UI': ['ui/introduction', 'ui/inbox', 'ui/channels', 'ui/tags', 'ui/suggestedReplies'],
     },
     {
       '🛠️ Integrations': [

@@ -36,7 +36,7 @@ link='/getting-started/installation/introduction'
 
 ## Step 1: Set up your first source
 
-```sh
+```shell script
 curl -H "Content-Type: application/json" -d \
 "{
     \"name\": \"chat plugin source\"

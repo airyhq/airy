@@ -12,6 +12,7 @@ import co.airy.core.api.communication.payload.ConversationByIdRequestPayload;
 import co.airy.core.api.communication.payload.ConversationListRequestPayload;
 import co.airy.core.api.communication.payload.ConversationListResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
+import co.airy.core.api.communication.payload.ConversationSetStateRequestPayload;
 import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.PaginationData;
 import co.airy.model.metadata.MetadataKeys;
@@ -39,6 +40,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 import static co.airy.model.metadata.MetadataRepository.newConversationTag;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -224,6 +226,48 @@ public class ConversationsController {
             final Subject subject = new Subject("conversation", conversationId);
             final String metadataKey = String.format("%s.%s", MetadataKeys.ConversationKeys.TAGS, tagId);
             stores.deleteMetadata(subject, metadataKey);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/conversations.setState")
+    ResponseEntity<?> conversationSetState(@RequestBody @Valid ConversationSetStateRequestPayload requestPayload) {
+        final String conversationId = requestPayload.getConversationId().toString();
+        final String state = requestPayload.getState();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.STATE, state);
+
+        try {
+            stores.storeMetadata(metadata);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/conversations.removeState")
+    ResponseEntity<?> conversationRemoveState(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
+        final String conversationId = requestPayload.getConversationId().toString();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            final Subject subject = new Subject("conversation", conversationId);
+            stores.deleteMetadata(subject, MetadataKeys.ConversationKeys.STATE);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
         }

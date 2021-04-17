@@ -187,3 +187,32 @@ tag](/api/endpoints/tags.md#create). Returns status code `200` if successful.
 ```
 
 **Empty response (204)**
+
+## Set the state of a conversation
+
+`POST /conversations.setState`
+
+**Sample request**
+
+```json5
+{
+  "conversation_id": "CONVERSATION_ID",
+  "state": "open"
+}
+```
+
+**Empty response (204)**
+
+## Remove the state of a conversation
+
+`POST /conversations.removeState`
+
+**Sample request**
+
+```json5
+{
+  "conversation_id": "CONVERSATION_ID"
+}
+```
+
+**Empty response (204)**

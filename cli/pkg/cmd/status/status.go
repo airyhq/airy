@@ -31,7 +31,7 @@ func status(cmd *cobra.Command, args []string) {
 	if err != nil {
 		console.Exit("Could not get kubernetes client", err)
 	}
-	cm, _ := clientset.CoreV1().ConfigMaps("default").Get(context.TODO(), "api-config", v1.GetOptions{})
+	cm, _ := clientset.CoreV1().ConfigMaps(viper.GetString("namespace")).Get(context.TODO(), "api-config", v1.GetOptions{})
 
 	c.Token = cm.Data["SYSTEM_TOKEN"]
 

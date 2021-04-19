@@ -52,7 +52,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
-  const currentConversationState = conversation.metadata.userData.conversation_state;
+  const currentConversationState = conversation.metadata.state;  
 
   const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const newState = currentConversationState === ('' || 'OPEN') ? 'CLOSED' : 'OPEN';
@@ -100,7 +100,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
               <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>
                 {participant && participant.displayName}
               </div>
-              {currentConversationState === 'OPEN' ? <ClosedStateButton /> : <OpenStateButton />}
+              {currentConversationState === 'OPEN' ? <OpenStateButton /> : <ClosedStateButton />}
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
               <FormattedMessage message={conversation.lastMessage} />

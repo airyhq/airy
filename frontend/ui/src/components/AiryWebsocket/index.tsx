@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {WebSocketClient} from 'websocketclient';
 import {Message, Channel, MetadataEvent} from 'model';
@@ -65,6 +65,8 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
       })
     );
   };
+
+  useEffect(() => refreshSocket(), []);
 
   return <AiryWebSocketContext.Provider value={{refreshSocket}}>{children}</AiryWebSocketContext.Provider>;
 };

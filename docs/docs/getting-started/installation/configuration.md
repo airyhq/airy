@@ -42,7 +42,7 @@ are looking for.
 ### Prerequisites
 
 These settings are used to connect the **Airy Components** to your Kafka
-cluster, PostgreSQL, and Redis.
+cluster and Redis.
 
 - `kafka`
 
@@ -54,12 +54,6 @@ cluster, PostgreSQL, and Redis.
 
   - `hostname`
   - `port`
-
-- `postgres`
-  - `endpoint` in `<HOSTNAME>:<PORT>` format
-  - `dbName` name of the PostgreSQL database
-  - `username` these credentials will be passed to the **API Auth Component**
-  - `password` and they will be used to create the Postgres database
 
 ### Components
 

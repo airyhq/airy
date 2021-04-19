@@ -24,8 +24,6 @@ func NewMockServer(t *testing.T) *MockServer {
 	}
 
 	mux := goji.NewMux()
-	mux.HandleFunc(pat.Post("/users.signup"), mockEndpoint("users.signup"))
-	mux.HandleFunc(pat.Post("/users.login"), mockEndpoint("users.signup"))
 
 	return &MockServer{
 		l:    listener,

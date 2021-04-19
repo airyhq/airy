@@ -5,6 +5,7 @@ import {SearchField} from 'components';
 import {StateModel} from '../../../reducers';
 
 import {setSearch, resetFilteredConversationAction} from '../../../actions/conversationsFilter';
+import {allConversations} from '../../../selectors/conversations';
 
 import {ReactComponent as IconSearch} from 'assets/images/icons/search.svg';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
@@ -17,6 +18,7 @@ const mapStateToProps = (state: StateModel) => {
   return {
     user: state.data.user,
     currentFilter: state.data.conversations.filtered.currentFilter || {},
+    conversations: allConversations(state),
   };
 };
 
@@ -59,6 +61,12 @@ const ConversationListHeader = (props: ConnectedProps<typeof connector>) => {
     handleSearch(value);
   };
 
+  const InboxConversationCount = () => {
+    const {conversations} = props;
+
+    return <div className={styles.headline}>{`Inbox (${conversations.length})`}</div>;
+  };
+
   const renderSearchInput = isShowingSearchInput ? (
     <div className={styles.containerSearchField}>
       <button type="button" className={styles.backButton} onClick={onClickBack} data-cy={cySearchFieldBackButton}>
@@ -77,7 +85,7 @@ const ConversationListHeader = (props: ConnectedProps<typeof connector>) => {
     </div>
   ) : (
     <div className={styles.containerSearchHeadline}>
-      <div className={styles.headline}>Inbox</div>
+      <InboxConversationCount />
       <div className={styles.searchBox} data-cy={cySearchButton}>
         <button type="button" className={styles.searchButton} onClick={onClickSearch}>
           <IconSearch className={styles.searchIcon} title="Search" />

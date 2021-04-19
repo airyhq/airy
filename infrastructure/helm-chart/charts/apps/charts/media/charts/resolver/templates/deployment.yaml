@@ -28,9 +28,6 @@ spec:
         - name: app
           image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
           imagePullPolicy: Always
-          envFrom:
-            - configMapRef:
-                name: user-storage
           env:
             - name: KAFKA_BROKERS
               valueFrom:
@@ -48,7 +45,32 @@ spec:
                   name: kafka-config
                   key: KAFKA_COMMIT_INTERVAL_MS
             - name: SERVICE_NAME
-              value: media-resolver
+              value: "{{ .Values.component }}"
+            - name: STORAGE_S3_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ .Values.component }}"
+                  key: s3Key
+            - name: STORAGE_S3_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ .Values.component }}"
+                  key: s3Secret
+            - name: STORAGE_S3_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ .Values.component }}"
+                  key: s3Bucket
+            - name: STORAGE_S3_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ .Values.component }}"
+                  key: s3Region
+            - name: STORAGE_S3_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ .Values.component }}"
+                  key: s3Path
           livenessProbe:
             httpGet:
               path: /actuator/health

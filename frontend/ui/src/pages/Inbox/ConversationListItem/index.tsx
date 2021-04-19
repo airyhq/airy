@@ -1,5 +1,5 @@
 import React, {CSSProperties, useEffect} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
@@ -8,13 +8,11 @@ import {Avatar} from 'render';
 import {formatTimeOfMessage} from '../../../services/format/date';
 
 import {Message} from 'model';
-import {MergedConversation, StateModel} from '../../../reducers';
+import {MergedConversation} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations, conversationState} from '../../../actions/conversations';
 
 import styles from './index.module.scss';
-import {ConversationRouteProps} from '../index';
-import {getCurrentConversation} from '../../../selectors/conversations';
 import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
 
 interface FormattedMessageProps {
@@ -32,13 +30,7 @@ const mapDispatchToProps = {
   conversationState,
 };
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
-  return {
-    conversationId: getCurrentConversation(state, ownProps).id,
-  };
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
   if (message?.content) {
@@ -48,15 +40,15 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
 };
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, style, readConversations, conversationId, conversationState} = props;
+  const {conversation, active, style, readConversations, conversationState} = props;
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
-  const currentConversationState = conversation.metadata.state;  
+  const currentConversationState = conversation.metadata.state;
 
   const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    const newState = currentConversationState === ('' || 'OPEN') ? 'CLOSED' : 'OPEN';
-    conversationState(conversationId, newState);
+    const newState = currentConversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
+    conversationState(conversation.id, newState);
     event.preventDefault();
     event.stopPropagation();
   };
@@ -118,4 +110,4 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   );
 };
 
-export default withRouter(connector(ConversationListItem));
+export default connector(ConversationListItem);

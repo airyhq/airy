@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestApp {
 
-    @PostMapping("/jwt.get")
+    @PostMapping("/principal.get")
     ResponseEntity<?> echoPrincipal(Authentication authentication) {
         final String userId = (String) authentication.getPrincipal();
         return ResponseEntity.ok(new PrincipalDetails(userId));

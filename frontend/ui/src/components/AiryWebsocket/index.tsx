@@ -18,12 +18,9 @@ export const AiryWebSocketContext = React.createContext({
   refreshSocket: null,
 });
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    conversations: allConversations(state),
-    user: state.data.user,
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  conversations: allConversations(state),
+});
 
 const mapDispatchToProps = dispatch => ({
   addMessages: (conversationId: string, messages: Message[]) => dispatch(addMessagesAction({conversationId, messages})),
@@ -41,7 +38,7 @@ const mapDispatchToProps = dispatch => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
-  const {children, conversations, getConversationInfo, user, addMessages, onChannel, onMetadata} = props;
+  const {children, conversations, getConversationInfo, addMessages, onChannel, onMetadata} = props;
   const [webSocketClient, setWebSocketClient] = useState(null);
 
   const onMessage = (conversationId: string, message: Message) => {
@@ -68,8 +65,6 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
       })
     );
   };
-
-  useEffect(refreshSocket, [user.token]);
 
   return <AiryWebSocketContext.Provider value={{refreshSocket}}>{children}</AiryWebSocketContext.Provider>;
 };

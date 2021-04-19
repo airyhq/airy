@@ -1,7 +1,6 @@
 package co.airy.spring.auth;
 
 import co.airy.spring.core.AirySpringBootApplication;
-import co.airy.spring.jwt.Jwt;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +29,9 @@ public class JwtAuthenticationFilterTest {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private Jwt jwt;
-
     @Test
     void rejectsMissingJwt() throws Exception {
-        mvc.perform(post("/jwt.get"))
+        mvc.perform(post("/principal.get"))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$").doesNotExist());
     }
@@ -44,7 +40,7 @@ public class JwtAuthenticationFilterTest {
     void setsCorsHeaders() throws Exception {
         final String origin = "http://example.org";
 
-        mvc.perform(options("/jwt.get")
+        mvc.perform(options("/principal.get")
                 .header("Access-Control-Request-Method", "GET")
                 .header("Origin", origin))
                 .andExpect(status().isOk())
@@ -53,7 +49,7 @@ public class JwtAuthenticationFilterTest {
 
     @Test
     void rejectsInvalidJwt() throws Exception {
-        mvc.perform(post("/jwt.get")
+        mvc.perform(post("/principal.get")
                 .header(HttpHeaders.AUTHORIZATION, "not a jwt")
         )
                 .andExpect(status().isForbidden())
@@ -61,25 +57,13 @@ public class JwtAuthenticationFilterTest {
     }
 
     @Test
-    void authenticatesUser() throws Exception {
-        final String userId = "user-id";
-        final String token = jwt.tokenFor(userId);
-
-        mvc.perform(post("/jwt.get")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, token))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.user_id", equalTo(userId)));
-    }
-
-    @Test
-    void authenticatesApiToken() throws Exception {
-        mvc.perform(post("/jwt.get")
+    void authenticatesSystemToken() throws Exception {
+        mvc.perform(post("/principal.get")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, "hacker-generated-api-token"))
                 .andExpect(status().isForbidden());
 
-        mvc.perform(post("/jwt.get")
+        mvc.perform(post("/principal.get")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, "user-generated-api-token"))
                 .andExpect(status().isOk());

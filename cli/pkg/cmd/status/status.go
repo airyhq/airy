@@ -2,10 +2,13 @@ package status
 
 import (
 	"cli/pkg/console"
+	"context"
 	"fmt"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"os"
 	"text/tabwriter"
 
+	"cli/pkg/kube"
 	"github.com/airyhq/airy/lib/go/httpclient"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -22,7 +25,15 @@ var StatusCmd = &cobra.Command{
 func status(cmd *cobra.Command, args []string) {
 	c := httpclient.NewClient(viper.GetString("apihost"))
 
-	c.JWTToken = viper.GetString("apiJWTToken")
+	kubeCtx := kube.Load()
+	clientset, err := kubeCtx.GetClientSet()
+
+	if err != nil {
+		console.Exit("Could not get kubernetes client", err)
+	}
+	cm, _ := clientset.CoreV1().ConfigMaps("default").Get(context.TODO(), "api-config", v1.GetOptions{})
+
+	c.Token = cm.Data["SYSTEM_TOKEN"]
 
 	res, err := c.Config()
 

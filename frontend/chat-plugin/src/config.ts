@@ -12,7 +12,7 @@ export type AuthConfiguration = {
   config?: Config;
 };
 
-export type AiryWidgetConfiguration = AuthConfiguration & {
+export type AiryChatPluginConfiguration = AuthConfiguration & {
   headerBarProp?: RenderProp;
   inputBarProp?: RenderProp;
   airyMessageProp?: RenderProp;

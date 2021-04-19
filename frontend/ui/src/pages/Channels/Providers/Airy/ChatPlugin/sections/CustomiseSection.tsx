@@ -2,10 +2,25 @@ import React, {createRef, useState} from 'react';
 import {Button, Input, ListenOutsideClick} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
+import {AiryChatPlugin} from 'chat-plugin';
 
 interface CustomiseSectionProps {
   channelId: string;
   host: string;
+}
+
+interface DemoConfig {
+  config: {
+    headerText?: string;
+    headerTextColor?: string;
+    primaryColor?: string;
+    backgroundColor?: string;
+    accentColor?: string;
+    bubbleIcon?: string;
+    sendMessageIcon?: string;
+    showMode: boolean;
+  };
+  channelId: string;
 }
 
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
@@ -63,6 +78,20 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     return `
         w[n].config = {${config}          
         };`;
+  };
+
+  const demoConfig: DemoConfig = {
+    config: {
+      showMode: true,
+      ...(headerText && {headerText}),
+      ...(headerTextColor && {headerTextColor}),
+      ...(primaryColor && {primaryColor}),
+      ...(accentColor && {accentColor}),
+      ...(backgroundColor && {backgroundColor}),
+      ...(bubbleIconUrl && {bubbleIcon: bubbleIconUrl}),
+      ...(sendMessageIconUrl && {sendMessageIcon: sendMessageIconUrl}),
+    },
+    channelId,
   };
 
   const copyToClipboard = () => {
@@ -287,6 +316,9 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
+      </div>
+      <div className="demoChatPlugin">
+        <AiryChatPlugin config={demoConfig} />
       </div>
     </>
   );

@@ -33,8 +33,8 @@ export const EditChatPlugin = ({channel, host, updateConnection}: EditChatPlugin
   };
 
   const ConnectContent = () => {
-    const [displayName, setDisplayName] = useState(channel.metadata?.name || '');
-    const [imageUrl, setImageUrl] = useState(channel.metadata?.imageUrl || '');
+    const [displayName, setDisplayName] = useState(channel?.metadata?.name || '');
+    const [imageUrl, setImageUrl] = useState(channel?.metadata?.imageUrl || '');
 
     switch (currentPage) {
       case 'settings':

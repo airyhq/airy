@@ -65,7 +65,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         ref={textInputRef}
         className={style.textArea}
         placeholder={'Enter a message...'}
-        autoFocus={true}
+        autoFocus={!config.showMode ? true : false}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         value={props.messageString}

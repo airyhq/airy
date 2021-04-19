@@ -117,8 +117,8 @@ const ConversationList = (props: ConversationListProps) => {
     <section className={styles.conversationListContainerContacts}>
       <div className={styles.conversationListContainer}>
         <section className={styles.conversationListContainerFilterBox}>
-          <ConversationListHeader />
-          <ConversationsFilter onFilterVisibilityChanged={() => resizeList()} />
+          <ConversationListHeader onFilterVisibilityChanged={() => resizeList()} />
+          <ConversationsFilter />
         </section>
       </div>
       <section className={styles.conversationListContactList}>{renderConversationList()}</section>

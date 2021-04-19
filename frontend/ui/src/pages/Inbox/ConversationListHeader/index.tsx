@@ -8,10 +8,12 @@ import {setSearch, resetFilteredConversationAction} from '../../../actions/conve
 
 import {ReactComponent as IconSearch} from 'assets/images/icons/search.svg';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
+import {ReactComponent as FilterIcon} from 'assets/images/icons/filter-alt.svg';
 
 import styles from './index.module.scss';
 
 import {cySearchButton, cySearchField, cySearchFieldBackButton} from 'handles';
+import Popup from '../ConversationsFilter/Popup';
 
 const mapStateToProps = (state: StateModel) => {
   return {
@@ -28,11 +30,16 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const ConversationListHeader = (props: ConnectedProps<typeof connector>) => {
-  const {setSearch, resetFilteredConversationAction, currentFilter} = props;
+type ConversationListHeaderProps = {
+  onFilterVisibilityChanged: () => void;
+} & ConnectedProps<typeof connector>;
+
+const ConversationListHeader = (props: ConversationListHeaderProps) => {
+  const {setSearch, resetFilteredConversationAction, currentFilter, onFilterVisibilityChanged} = props;
 
   const [isShowingSearchInput, setIsShowingSearchInput] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     resetFilteredConversationAction();
@@ -66,6 +73,12 @@ const ConversationListHeader = (props: ConnectedProps<typeof connector>) => {
     return <div className={styles.headline}>{`Inbox (${totalConversations})`}</div>;
   };
 
+  const toggleFilter = () => {
+    setIsFilterOpen(!isFilterOpen);
+    onFilterVisibilityChanged();
+    console.log('dkasdjaslkdjals');
+  };
+
   const renderSearchInput = isShowingSearchInput ? (
     <div className={styles.containerSearchField}>
       <button type="button" className={styles.backButton} onClick={onClickBack} data-cy={cySearchFieldBackButton}>
@@ -90,6 +103,11 @@ const ConversationListHeader = (props: ConnectedProps<typeof connector>) => {
           <IconSearch className={styles.searchIcon} title="Search" />
         </button>
       </div>
+      {isFilterOpen && (
+        <div className={styles.popup}>
+          <Popup closeCallback={toggleFilter} />
+        </div>
+      )}
     </div>
   );
 

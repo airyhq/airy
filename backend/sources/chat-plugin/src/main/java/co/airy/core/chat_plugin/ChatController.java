@@ -41,7 +41,7 @@ public class ChatController {
     private final Jwt jwt;
     private final String apiToken;
 
-    public ChatController(Stores stores, Jwt jwt, ObjectMapper objectMapper, @Value("${system_token:#{null}}") String apiToken) {
+    public ChatController(Stores stores, Jwt jwt, ObjectMapper objectMapper, @Value("${systemToken:#{null}}") String apiToken) {
         this.stores = stores;
         this.jwt = jwt;
         this.objectMapper = objectMapper;

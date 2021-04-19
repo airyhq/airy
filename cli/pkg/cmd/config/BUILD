@@ -5,7 +5,6 @@ go_library(
     name = "config",
     srcs = [
         "config.go",
-        "configmaps.go",
         "parser.go",
     ],
     importpath = "cli/pkg/cmd/config",
@@ -16,9 +15,7 @@ go_library(
         "//cli/pkg/workspace",
         "@com_github_spf13_cobra//:cobra",
         "@in_gopkg_yaml_v2//:yaml_v2",
-        "@io_k8s_api//core/v1:go_default_library",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
-        "@io_k8s_client_go//kubernetes:go_default_library",
     ],
 )
 

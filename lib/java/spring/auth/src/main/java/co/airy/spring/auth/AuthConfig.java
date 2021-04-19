@@ -26,7 +26,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final String[] ignoreAuthPatterns;
     private final String systemToken;
 
-    public AuthConfig(@Value("${system_token:#{null}}") String systemToken, List<IgnoreAuthPattern> ignorePatternBeans) {
+    public AuthConfig(@Value("${systemToken:#{null}}") String systemToken, List<IgnoreAuthPattern> ignorePatternBeans) {
         this.systemToken = systemToken;
         this.ignoreAuthPatterns = ignorePatternBeans.stream()
                 .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
@@ -52,7 +52,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource(final Environment environment) {
-        final String allowed = environment.getProperty("ALLOWED_ORIGINS", "");
+        final String allowed = environment.getProperty("allowedOrigins", "");
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin(allowed);

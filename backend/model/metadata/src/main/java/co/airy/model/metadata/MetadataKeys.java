@@ -8,6 +8,7 @@ public class MetadataKeys {
     public static class ConversationKeys {
         public static final String TAGS = "tags";
         public static final String UNREAD_COUNT = "unread_count";
+        public static final String STATE = "state";
 
         public static final String CONTACT = "contact";
 

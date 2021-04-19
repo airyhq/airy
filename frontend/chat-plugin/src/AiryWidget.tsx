@@ -1,12 +1,12 @@
 import React from 'react';
 import {render} from 'react-dom';
 import Chat from './components/chat';
-import {AiryWidgetConfiguration} from './config';
+import {AiryChatPluginConfiguration} from './config';
 
 export default class {
-  config: AiryWidgetConfiguration;
+  config: AiryChatPluginConfiguration;
 
-  constructor(config: AiryWidgetConfiguration) {
+  constructor(config: AiryChatPluginConfiguration) {
     this.config = config;
   }
 

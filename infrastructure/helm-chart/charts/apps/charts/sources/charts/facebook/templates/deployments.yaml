@@ -30,7 +30,7 @@ spec:
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
-                name: api-config
+                name: security
           env:
           - name: KAFKA_BROKERS
             valueFrom:
@@ -52,18 +52,18 @@ spec:
           - name: FACEBOOK_WEBHOOK_SECRET
             valueFrom:
               configMapKeyRef:
-                name: sources-facebook
-                key: FACEBOOK_WEBHOOK_SECRET
+                name: "{{ .Values.component }}"
+                key: WebhookSecret
           - name: FACEBOOK_APP_ID
             valueFrom:
               configMapKeyRef:
-                name: sources-facebook
-                key: FACEBOOK_APP_ID
+                name: "{{ .Values.component }}"
+                key: appId
           - name: FACEBOOK_APP_SECRET
             valueFrom:
               configMapKeyRef:
-                name: sources-facebook
-                key: FACEBOOK_APP_SECRET
+                name: "{{ .Values.component }}"
+                key: appSecret
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -144,8 +144,8 @@ spec:
         - name: FACEBOOK_APP_ID
           valueFrom:
             configMapKeyRef:
-              name: sources-facebook
-              key: FACEBOOK_APP_ID
+              name: "{{ .Values.component }}"
+              key: appId
         - name: SERVICE_NAME
           value: facebook-events-router
         livenessProbe:

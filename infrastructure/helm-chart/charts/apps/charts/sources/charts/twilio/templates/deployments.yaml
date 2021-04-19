@@ -30,7 +30,7 @@ spec:
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
-                name: api-config
+                name: security
           env:
           - name: KAFKA_BROKERS
             valueFrom:
@@ -50,13 +50,13 @@ spec:
           - name: TWILIO_AUTH_TOKEN
             valueFrom:
               configMapKeyRef:
-                name: sources-twilio
-                key: TWILIO_AUTH_TOKEN
+                name: "{{ .Values.component }}"
+                key: authToken
           - name: TWILIO_ACCOUNT_SID
             valueFrom:
               configMapKeyRef:
-                name: sources-twilio
-                key: TWILIO_ACCOUNT_SID
+                name: "{{ .Values.component }}"
+                key: accountSid
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -139,13 +139,13 @@ spec:
         - name: TWILIO_AUTH_TOKEN
           valueFrom:
             configMapKeyRef:
-              name: sources-twilio
-              key: TWILIO_AUTH_TOKEN
+              name: "{{ .Values.component }}"
+              key: authToken
         - name: TWILIO_ACCOUNT_SID
           valueFrom:
             configMapKeyRef:
-              name: sources-twilio
-              key: TWILIO_ACCOUNT_SID
+              name: "{{ .Values.component }}"
+              key: accountSid
         livenessProbe:
           tcpSocket:
             port: 6000

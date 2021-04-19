@@ -19,8 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(properties = {
-        "system_token=user-generated-api-token",
-        "ALLOWED_ORIGINS=*"
+        "ALLOWED_ORIGINS=*",
+        "systemToken=user-generated-api-token",
+        "allowedOrigins=*"
 }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)

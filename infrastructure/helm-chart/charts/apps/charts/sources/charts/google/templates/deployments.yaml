@@ -30,7 +30,7 @@ spec:
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
-                name: api-config
+                name: security
           env:
             - name: KAFKA_BROKERS
               valueFrom:
@@ -50,13 +50,13 @@ spec:
             - name: GOOGLE_SA_FILE
               valueFrom:
                 configMapKeyRef:
-                  name: sources-google
-                  key: GOOGLE_SA_FILE
+                  name: "{{ .Values.component }}"
+                  key: saFile
             - name: GOOGLE_PARTNER_KEY
               valueFrom:
                 configMapKeyRef:
-                  name: sources-google
-                  key: GOOGLE_PARTNER_KEY
+                  name: "{{ .Values.component }}"
+                  key: partnerKey
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -137,13 +137,13 @@ spec:
         - name: GOOGLE_SA_FILE
           valueFrom:
             configMapKeyRef:
-              name: sources-google
-              key: GOOGLE_SA_FILE
+              name: "{{ .Values.component }}"
+              key: saFile
         - name: GOOGLE_PARTNER_KEY
           valueFrom:
             configMapKeyRef:
-              name: sources-google
-              key: GOOGLE_PARTNER_KEY
+              name: "{{ .Values.component }}"
+              key: partnerKey
         livenessProbe:
           tcpSocket:
             port: 6000

@@ -30,7 +30,7 @@ spec:
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
-              name: api-config
+              name: security
         env:
         - name: KAFKA_BROKERS
           valueFrom:

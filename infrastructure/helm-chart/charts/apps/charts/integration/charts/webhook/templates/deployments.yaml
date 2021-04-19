@@ -44,8 +44,8 @@ spec:
         - name: WEBHOOK_NAME
           valueFrom:
             configMapKeyRef:
-              name: webhooks-config
-              key: NAME
+              name: "{{ .Values.component }}"
+              key: name
         livenessProbe:
             httpGet:
               path: /health
@@ -90,8 +90,6 @@ metadata:
     core.airy.co/managed: "true"
     core.airy.co/mandatory: "{{ .Values.mandatory }}"
     core.airy.co/component: "{{ .Values.component }}"
-  annotations:
-    core.airy.co/config-items-optional: "WEBHOOK_NAME"
 spec:
   replicas: 0
   selector:
@@ -142,8 +140,8 @@ spec:
         - name: WEBHOOK_NAME
           valueFrom:
             configMapKeyRef:
-              name: webhooks-config
-              key: NAME
+              name: "{{ .Values.component }}"
+              key: name
         livenessProbe:
           tcpSocket:
             port: 6000

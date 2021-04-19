@@ -17,7 +17,6 @@ const mapStateToProps = (state: StateModel) => {
   return {
     conversationsFilter: state.data.conversations.filtered.currentFilter,
     isFilterActive: isFilterActive(state),
-    conversationsPaginationData: state.data.conversations.all.paginationData,
     filteredPaginationData: state.data.conversations.filtered.paginationData,
     conversations: allConversations(state),
   };
@@ -108,8 +107,7 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   };
 
   const itemsCount = () => {
-    const {conversationsPaginationData, filteredPaginationData} = props;
-    const formatter = new Intl.NumberFormat('en-US');
+    const {filteredPaginationData} = props;
 
     if (
       filteredPaginationData.filteredTotal !== undefined &&
@@ -118,14 +116,6 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
       return (
         <div className={styles.filterCount}>
           {`Filtered: ${filteredPaginationData.filteredTotal} Total: ${props.conversations.length}`}
-        </div>
-      );
-    }
-
-    if (conversationsPaginationData.total) {
-      return (
-        <div className={styles.filterCount}>
-          {`${formatter.format(filteredPaginationData.filteredTotal || props.conversations.length)} Conversations`}
         </div>
       );
     }

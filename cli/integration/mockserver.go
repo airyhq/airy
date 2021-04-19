@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"goji.io"
-	"goji.io/pat"
 )
 
 type MockServer struct {

@@ -63,7 +63,7 @@ ts_web_library(
         "@npm//react",
         "@npm//react-dom",
         "@npm//camelcase-keys",
-    ]
+    ],
 )
 
 ts_config(

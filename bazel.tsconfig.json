@@ -75,6 +75,9 @@
       ],
       "chat-plugin": [
         "./frontend/chat-plugin"
+      ],
+      "chat-plugin/*": [
+        "./frontend/chat-plugin/*"
       ]
     }
   }

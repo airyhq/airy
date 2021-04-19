@@ -18,7 +18,6 @@ go_library(
     deps = [
         "@com_github_kr_pretty//:pretty",
         "@io_goji//:goji.io",
-        "@io_goji//pat",
     ],
 )
 

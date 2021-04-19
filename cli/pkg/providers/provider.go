@@ -17,7 +17,7 @@ const (
 )
 
 type Provider interface {
-	Provision(dir workspace.ConfigDir) (kube.KubeCtx, error)
+	Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error)
 	GetHelmOverrides() []string
 	PostInstallation(namespace string) error
 }

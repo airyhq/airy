@@ -6,13 +6,13 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/model/template/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//backend/avro/communication:template-avro",
+        "//backend/avro:template-avro",
         "//lib/java/kafka/schema:application-communication-templates",
     ],
     deps = [
         "//:jackson",
         "//:lombok",
-        "//backend/avro/communication:template-avro",
+        "//backend/avro:template-avro",
         "//backend/model/metadata",
     ],
 )

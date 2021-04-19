@@ -5,7 +5,7 @@ load("//tools/build:junit5.bzl", "junit5")
 lib_deps = [
     "//:lombok",
     "//:jackson",
-    "//backend/avro/communication:metadata-avro",
+    "//backend/avro:metadata-avro",
     "//lib/java/log",
     "//lib/java/uuid",
 ]
@@ -15,7 +15,7 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/model/metadata/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//backend/avro/communication:metadata-avro",
+        "//backend/avro:metadata-avro",
         "//lib/java/kafka/schema:application-communication-metadata",
     ],
     deps = lib_deps,

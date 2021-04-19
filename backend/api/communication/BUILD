@@ -15,6 +15,7 @@ app_deps = [
     "//lib/java/date",
     "//lib/java/pagination",
     "//lib/java/spring/auth:spring-auth",
+    "//lib/java/spring/events:spring-events",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",

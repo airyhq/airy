@@ -18,6 +18,7 @@ module_deps = [
     "//lib/typescript/dates",
     "//lib/typescript/websocketclient",
     "//frontend/ui/handles",
+    "//frontend/chat-plugin/handles:chat-plugin-handles",
     "//frontend/chat-plugin",
 ]
 

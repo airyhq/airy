@@ -8,9 +8,6 @@ import {StateModel} from '../../../reducers';
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
 import {allConversations, isFilterActive} from '../../../selectors/conversations';
 
-import {ReactComponent as ChevronLeft} from 'assets/images/icons/chevron_left.svg';
-import Popup from './Popup';
-
 import styles from './index.module.scss';
 
 const mapStateToProps = (state: StateModel) => {
@@ -29,12 +26,10 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type ConversationsFilterProps = {
-  onFilterVisibilityChanged: () => void;
-} & ConnectedProps<typeof connector>;
+type ConversationsFilterProps = {} & ConnectedProps<typeof connector>;
 
 const ConversationsFilter = (props: ConversationsFilterProps) => {
-  const {conversationsFilter, setFilter, onFilterVisibilityChanged} = props;
+  const {conversationsFilter, setFilter} = props;
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -46,7 +41,6 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
-    onFilterVisibilityChanged();
   };
 
   const getActiveFilterCount = () => {
@@ -92,7 +86,6 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     if (conversationsFilter.byChannels && conversationsFilter.byChannels.length > 0) {
       activeFilters.push(`${conversationsFilter.byChannels.length} Channels`);
     }
-
     return (
       <div className={styles.filterHintRow}>
         {activeFilters.map((filter, key) => {
@@ -105,6 +98,8 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
       </div>
     );
   };
+
+  const currentStateFilter = () => {};
 
   const itemsCount = () => {
     const {filteredPaginationData} = props;
@@ -126,31 +121,21 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   return (
     <div>
       {itemsCount()}
-      <div className={styles.actionRow}>
-        {isFilterButtonActive() ? (
-          renderFilterStatus()
-        ) : (
-          <div>
-            <button
-              onClick={() => resetFilter()}
-              className={`${styles.shortcutButton} ${!isFilterActive ? styles.shortcutButtonActive : ''}`}>
+      <div className={styles.quickFilterContainer}>
+        <div className={styles.quickFilterButtons}>
+          <div className={styles.quickFilterButtonsBackground}>
+            <button id="allButton" className={styles.quickFilterButton}>
               All
             </button>
-            <button
-              onClick={activateUnreadFilter}
-              className={`${styles.shortcutButton} ${isFilterUnreadActive() ? styles.shortcutButtonActive : ''}`}>
-              Unread
+            <button id="openButton" className={styles.quickFilterButton}>
+              Open
+            </button>
+            <button id="closedButton" className={styles.quickFilterButton}>
+              Closed
             </button>
           </div>
-        )}
-        <div className={styles.filterButtonContainer}>
-          <button className={styles.filterButton} onClick={toggleFilter}>
-            Filter
-            <ChevronLeft aria-hidden className={`${styles.chevron} ${isFilterOpen ? styles.chevronOpen : ''}`} />
-          </button>
         </div>
       </div>
-      {isFilterOpen && <Popup closeCallback={toggleFilter} />}
     </div>
   );
 };

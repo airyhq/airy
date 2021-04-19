@@ -12,6 +12,7 @@
   justify-content: space-between;
   height: 40px;
   width: 100%;
+  align-items: center;
 }
 
 .containerSearchField {
@@ -65,6 +66,7 @@
   border: none;
   background-color: white;
   cursor: pointer;
+  outline: none;
 }
 
 .headline {
@@ -76,12 +78,18 @@
 .searchIcon {
   width: 22px;
   height: 22px;
-  padding-top: 2px;
+  padding-top: 1px;
   margin-right: 4px;
   position: relative;
-  top: 8px;
 
   path {
     fill: var(--color-text-gray);
   }
+}
+
+.filterButton {
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
 }

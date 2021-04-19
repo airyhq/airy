@@ -26,7 +26,7 @@ web_app(
         "react": "preact/compat",
         "react-dom": "preact/compat",
     },
-    app_lib = ":app",
+    app_lib = ":chat-plugin",
     entry = "frontend/chat-plugin/src/iframe",
     index = ":development.html",
     module_deps = module_deps,
@@ -41,7 +41,7 @@ web_library(
         "react": "preact/compat",
         "react-dom": "preact/compat",
     },
-    app_lib = ":app",
+    app_lib = ":chat-plugin",
     entry = "frontend/chat-plugin/src/defaultScript.js",
     module_deps = module_deps,
     output = {

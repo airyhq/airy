@@ -31,7 +31,6 @@ spec:
         envFrom:
           - configMapRef:
               name: api-config
-        envFrom:
           - configMapRef:
               name: security
         env:

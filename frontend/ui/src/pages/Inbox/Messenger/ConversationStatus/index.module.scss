@@ -1,0 +1,67 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.conversationStatus {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  width: 96px;
+  height: 26px;
+
+  border-bottom: 1px var(--color-light-gray) solid;
+
+  @include font-base;
+  color: var(--color-text-contrast);
+  margin-left: 5px;
+
+  align-items: center;
+}
+
+.conversationStatus .closedButtonWrapper {
+  text-align: center;
+  border-bottom: 3px transparent solid;
+  padding: 6px 0;
+}
+
+.conversationStatus .closedButton {
+  width: 100%;
+
+  cursor: pointer;
+
+  color: var(--color-text-gray);
+  line-height: 16px;
+}
+
+.conversationStatus.closed .closedButtonWrapper {
+  text-align: center;
+  border-bottom: 4px var(--color-red-alert) solid;
+}
+
+.conversationStatus.closed .closedButton {
+  font-weight: 700;
+  color: var(--color-text-contrast);
+}
+
+.conversationStatus .openButtonWrapper {
+  text-align: center;
+  border-bottom: 3px transparent solid;
+  padding: 6px 6px 6px 0;
+}
+
+.conversationStatus .openButton {
+  width: 100%;
+  cursor: pointer;
+
+  color: var(--color-text-gray);
+  line-height: 16px;
+}
+
+.conversationStatus.open .openButtonWrapper {
+  border-bottom: 4px var(--color-soft-green) solid;
+}
+
+.conversationStatus.open .openButton {
+  font-weight: 700;
+  color: var(--color-text-contrast);
+}

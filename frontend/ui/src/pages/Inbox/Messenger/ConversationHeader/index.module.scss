@@ -1,0 +1,71 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.container {
+  padding: 16px 16px 0 16px;
+}
+
+.headerContainer {
+  background-color: var(--color-background-gray);
+  border-radius: 8px;
+  display: flex;
+  height: auto;
+  flex-direction: row;
+  padding: 8px 16px;
+  justify-content: space-between;
+}
+
+.details {
+  display: flex;
+  height: auto;
+  flex-direction: column;
+}
+
+.status {
+  justify-content: flex-end;
+  align-self: center;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+}
+
+.contactName {
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 400;
+  margin-left: 8px;
+  color: var(--color-text-gray);
+}
+
+.separator {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 400;
+  color: var(--color-text-gray);
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  svg {
+    path {
+      fill: var(--color-text-gray);
+    }
+  }
+  div {
+    margin-right: 3px;
+  }
+}

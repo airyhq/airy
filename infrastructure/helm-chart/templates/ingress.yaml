@@ -64,6 +64,20 @@ spec:
                 name: api-communication
                 port:
                   number: 80
+          - path: /conversations.setState
+            pathType: Prefix
+            backend:
+              service:
+                name: api-communication
+                port:
+                  number: 80
+          - path: /conversations.removeState
+            pathType: Prefix
+            backend:
+              service:
+                name: api-communication
+                port:
+                  number: 80
           - path: /messages.list
             pathType: Prefix
             backend:

@@ -8,7 +8,6 @@ import ButtonBox from "@site/src/components/ButtonBox";
 import GearSVG from "@site/static/icons/gear.svg";
 import DesktopComputerSVG from "@site/static/icons/desktop-computer.svg";
 import LabelSVG from "@site/static/icons/label.svg";
-import UsersSVG from "@site/static/icons/users.svg";
 import CommentBubbleSVG from "@site/static/icons/comment-bubble.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 

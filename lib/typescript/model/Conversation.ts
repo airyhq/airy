@@ -9,6 +9,7 @@ export type ConversationMetadata = Metadata & {
   tags: {
     [tagId: string]: string;
   };
+  state: string;
 };
 
 export interface Conversation {

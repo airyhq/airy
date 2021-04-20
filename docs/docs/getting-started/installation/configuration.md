@@ -55,7 +55,6 @@ cluster and Redis.
   - `hostname`
   - `port`
 
-
 ### Security
 
 - `token` set to a long secure secret to use for machine [API authentication](api/authentication.md) (default: random generated)

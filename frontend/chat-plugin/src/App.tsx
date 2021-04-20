@@ -1,6 +1,16 @@
 import React, {Component} from 'react';
 import Chat from './components/chat';
 import style from './App.module.scss';
+import {Config} from './config';
+
+declare global {
+  interface Window {
+    airy: {
+      host: string;
+      channelId: string;
+    };
+  }
+}
 
 export default class App extends Component {
   render() {
@@ -19,10 +29,18 @@ export default class App extends Component {
       }),
     };
 
+    const apiHost: string = window.airy ? window.airy.host : process.env.API_HOST;
+
     return (
       <div className={style.container} style={customStyle}>
         {channelId ? (
-          <Chat channelId={channelId} config={config} />
+          <Chat
+            channelId={channelId}
+            apiHost={apiHost}
+            config={{
+              ...config,
+            }}
+          />
         ) : (
           <span style={{color: 'red'}}>Widget authorization failed. Please check your installation.</span>
         )}
@@ -30,18 +48,6 @@ export default class App extends Component {
     );
   }
 }
-
-export type Config = {
-  welcomeMessage?: {};
-  headerText?: string;
-  headerTextColor?: string;
-  backgroundColor?: string;
-  primaryColor?: string;
-  accentColor?: string;
-  bubbleIcon?: string;
-  sendMessageIcon?: string;
-  showMode: boolean;
-};
 
 export const config: Config = {
   welcomeMessage: {

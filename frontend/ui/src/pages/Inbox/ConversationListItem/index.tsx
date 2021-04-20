@@ -10,9 +10,10 @@ import {formatTimeOfMessage} from '../../../services/format/date';
 import {Message} from 'model';
 import {MergedConversation} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
-import {readConversations} from '../../../actions/conversations';
+import {readConversations, conversationState} from '../../../actions/conversations';
 
 import styles from './index.module.scss';
+import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
 
 interface FormattedMessageProps {
   message: Message;
@@ -26,6 +27,7 @@ type ConversationListItemProps = {
 
 const mapDispatchToProps = {
   readConversations,
+  conversationState,
 };
 
 const connector = connect(null, mapDispatchToProps);
@@ -38,10 +40,36 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
 };
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, style, readConversations} = props;
+  const {conversation, active, style, readConversations, conversationState} = props;
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
+  const currentConversationState = conversation.metadata.state;
+
+  const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const newState = currentConversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
+    conversationState(conversation.id, newState);
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const OpenStateButton = () => {
+    return (
+      <div className={styles.openStateButton} title="Set to closed">
+        <button onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)} />
+      </div>
+    );
+  };
+
+  const ClosedStateButton = () => {
+    return (
+      <div className={styles.closedStateButton} title="Set to open">
+        <button onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)}>
+          <Checkmark />
+        </button>
+      </div>
+    );
+  };
 
   useEffect(() => {
     if (active && unread) {
@@ -64,6 +92,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
               <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>
                 {participant && participant.displayName}
               </div>
+              {currentConversationState === 'OPEN' ? <OpenStateButton /> : <ClosedStateButton />}
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
               <FormattedMessage message={conversation.lastMessage} />

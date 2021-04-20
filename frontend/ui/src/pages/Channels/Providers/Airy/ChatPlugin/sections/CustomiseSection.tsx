@@ -2,25 +2,12 @@ import React, {createRef, useState} from 'react';
 import {Button, Input, ListenOutsideClick} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
-import {AiryChatPlugin} from 'chat-plugin';
+import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
+import {env} from '../../../../../../env';
 
 interface CustomiseSectionProps {
   channelId: string;
   host: string;
-}
-
-interface DemoConfig {
-  config: {
-    headerText?: string;
-    headerTextColor?: string;
-    primaryColor?: string;
-    backgroundColor?: string;
-    accentColor?: string;
-    bubbleIcon?: string;
-    sendMessageIcon?: string;
-    showMode: boolean;
-  };
-  channelId: string;
 }
 
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
@@ -54,7 +41,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     setShowBackgroundColorPicker(!showBackgroundColorPicker);
   };
 
-  const getConfig = () => {
+  const getTemplateConfig = () => {
     if (
       headerText === '' &&
       bubbleIconUrl === '' &&
@@ -80,7 +67,9 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         };`;
   };
 
-  const demoConfig: DemoConfig = {
+  const demoConfig: AiryChatPluginConfiguration = {
+    apiHost: env.API_HOST,
+    channelId,
     config: {
       showMode: true,
       ...(headerText && {headerText}),
@@ -91,7 +80,6 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       ...(bubbleIconUrl && {bubbleIcon: bubbleIconUrl}),
       ...(sendMessageIconUrl && {sendMessageIcon: sendMessageIconUrl}),
     },
-    channelId,
   };
 
   const copyToClipboard = () => {
@@ -104,7 +92,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       (function(w, d, s, n) {
         w[n] = w[n] || {};
         w[n].channelId = "${channelId}";
-        w[n].host = "${host}";${getConfig()}
+        w[n].host = "${host}";${getTemplateConfig()}
         var f = d.getElementsByTagName(s)[0],
           j = d.createElement(s);
         j.async = true;

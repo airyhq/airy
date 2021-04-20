@@ -229,17 +229,18 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
         </div>
         <p>Accent Color</p>
-        {showAccentColorPicker && (
-          <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowAccentColorPicker}>
-            <SketchPicker
-              color={accentColor}
-              onChangeComplete={(color: {hex: string}) => {
-                setAccentColor(color.hex.toUpperCase());
-              }}
-            />
-          </ListenOutsideClick>
-        )}
         <div className={styles.colorPicker}>
+          {showAccentColorPicker && (
+            <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowAccentColorPicker}>
+              <SketchPicker
+                color={accentColor}
+                onChangeComplete={(color: {hex: string}) => {
+                  setAccentColor(color.hex.toUpperCase());
+                }}
+              />
+            </ListenOutsideClick>
+          )}
+
           <div
             className={styles.colorPickerSample}
             style={{backgroundColor: accentColor}}
@@ -267,17 +268,17 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
         </div>
         <p>Background Color</p>
-        {showBackgroundColorPicker && (
-          <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowBackgroundColorPicker}>
-            <SketchPicker
-              color={backgroundColor}
-              onChangeComplete={(color: {hex: string}) => {
-                setBackgroundColor(color.hex.toUpperCase());
-              }}
-            />
-          </ListenOutsideClick>
-        )}
         <div className={styles.colorPicker}>
+          {showBackgroundColorPicker && (
+            <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowBackgroundColorPicker}>
+              <SketchPicker
+                color={backgroundColor}
+                onChangeComplete={(color: {hex: string}) => {
+                  setBackgroundColor(color.hex.toUpperCase());
+                }}
+              />
+            </ListenOutsideClick>
+          )}
           <div
             className={styles.colorPickerSample}
             style={{backgroundColor: backgroundColor}}

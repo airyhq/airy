@@ -33,7 +33,7 @@ func status(cmd *cobra.Command, args []string) {
 	}
 	cm, _ := clientset.CoreV1().ConfigMaps(viper.GetString("namespace")).Get(context.TODO(), "api-config", v1.GetOptions{})
 
-	c.Token = cm.Data["SYSTEM_TOKEN"]
+	c.Token = cm.Data["systemToken"]
 
 	res, err := c.Config()
 

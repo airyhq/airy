@@ -32,7 +32,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final String systemToken;
     private final String systemTokenPrincipal;
 
-    public WebSocketConfig(@Value("${system_token:#{null}}") String systemToken) {
+    public WebSocketConfig(@Value("${systemToken:#{null}}") String systemToken) {
         this.systemToken = systemToken;
         this.systemTokenPrincipal = systemToken == null ? null : String.format("system-token-%s", systemToken.substring(0, Math.min(systemToken.length(), 4)));
     }

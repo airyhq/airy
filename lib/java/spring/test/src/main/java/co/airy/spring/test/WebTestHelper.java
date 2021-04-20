@@ -18,7 +18,7 @@ public class WebTestHelper {
     private final MockMvc mvc;
     private final String systemToken;
 
-    WebTestHelper(MockMvc mvc, @Value("${system_token:#{null}}") String systemToken) {
+    WebTestHelper(MockMvc mvc, @Value("${systemToken:#{null}}") String systemToken) {
         this.mvc = mvc;
         this.systemToken = systemToken;
     }

@@ -137,12 +137,6 @@ const MessageList = (props: MessageListProps) => {
       ) {
         debouncedListPreviousMessages(conversation.id);
       }
-
-      const entireHeightScrolled =
-        messageListRef &&
-        messageListRef.current &&
-        messageListRef.current.scrollHeight - 1 <=
-          messageListRef.current.clientHeight + messageListRef.current.scrollTop;
     },
     100,
     {leading: true}

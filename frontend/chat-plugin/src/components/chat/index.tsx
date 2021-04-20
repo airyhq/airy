@@ -67,7 +67,7 @@ const Chat = (props: Props) => {
   useEffect(() => {
     if (config.showMode) return;
 
-    ws = new WebSocket(props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
+    ws = new WebSocket(props.apiHost, props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
       setConnectionState(state);
     });
     ws.start().catch(error => {

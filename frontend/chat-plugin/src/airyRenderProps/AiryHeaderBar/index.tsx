@@ -1,5 +1,5 @@
 import React from 'react';
-import {Config} from '../../App';
+import {Config} from '../../config';
 import style from './index.module.scss';
 import {ReactComponent as CloseButton} from 'assets/images/icons/close.svg';
 import {ReactComponent as MinimizeButton} from 'assets/images/icons/minimize-button.svg';

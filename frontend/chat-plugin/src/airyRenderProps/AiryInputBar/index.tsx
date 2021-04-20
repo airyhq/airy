@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, KeyboardEvent, createRef, useEffect} from 'react';
 import style from './index.module.scss';
 import {cyInputbarTextarea, cyInputbarButton} from 'chat-plugin-handles';
-import {Config} from '../../App';
+import {Config} from '../../config';
 
 type AiryInputBarProps = {
   sendMessage: (text: string) => void;

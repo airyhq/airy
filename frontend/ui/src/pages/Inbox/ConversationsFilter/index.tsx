@@ -32,10 +32,12 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   const {conversationsFilter, setFilter} = props;
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [currentFilterState, setCurrentFilterState] = useState('ALL');
 
   useEffect(() => {
     resetFilter();
     itemsCount();
+    currentStateFilter()
   }),
     [props.conversations];
 
@@ -99,7 +101,29 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     );
   };
 
-  const currentStateFilter = () => {};
+  const currentStateFilter = () => {
+    const allButton = document.getElementById('allButton')
+    const openButton = document.getElementById('openButton')
+    const closedButton = document.getElementById('closedButton')
+
+    switch (currentFilterState) {
+      case 'ALL':
+        allButton.className = styles.quickFilterButtonActive;
+        openButton.className = styles.quickFilterButton;
+        closedButton.className = styles.quickFilterButton;
+        break;
+      case 'OPEN':
+        allButton.className = styles.quickFilterButton;
+        openButton.className = styles.quickFilterButtonActive;
+        closedButton.className = styles.quickFilterButton;
+        break;
+      case 'CLOSED':
+        allButton.className = styles.quickFilterButton;
+        openButton.className = styles.quickFilterButton;
+        closedButton.className = styles.quickFilterButtonActive;
+        break;
+    }
+  };
 
   const itemsCount = () => {
     const {filteredPaginationData} = props;
@@ -124,13 +148,13 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
       <div className={styles.quickFilterContainer}>
         <div className={styles.quickFilterButtons}>
           <div className={styles.quickFilterButtonsBackground}>
-            <button id="allButton" className={styles.quickFilterButton}>
+            <button id="allButton" className={styles.quickFilterButton} onClick={() => setCurrentFilterState('ALL')}>
               All
             </button>
-            <button id="openButton" className={styles.quickFilterButton}>
+            <button id="openButton" className={styles.quickFilterButton} onClick={() => setCurrentFilterState('OPEN')}>
               Open
             </button>
-            <button id="closedButton" className={styles.quickFilterButton}>
+            <button id="closedButton" className={styles.quickFilterButton} onClick={() => setCurrentFilterState('CLOSED')}>
               Closed
             </button>
           </div>

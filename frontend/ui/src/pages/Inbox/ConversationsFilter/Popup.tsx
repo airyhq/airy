@@ -9,6 +9,7 @@ import {StateModel} from '../../../reducers';
 import DialogCustomizable from '../../../components/DialogCustomizable';
 import Tag from '../../../components/Tag';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
+import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark-circle.svg';
 import styles from './Popup.module.scss';
 import {allChannels} from '../../../selectors/channels';
 import ChannelAvatar from '../../../components/ChannelAvatar';
@@ -39,6 +40,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
 
   const [pageSearch, setPageSearch] = useState('');
   const [tagSearch, setTagSearch] = useState('');
+  const [conversationState, setConversationState] = useState('none');
+
 
   useEffect(() => {
     listTags();
@@ -97,6 +100,10 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     });
   };
 
+  const stateFilter = () => {
+
+  }
+
   return (
     <DialogCustomizable
       close={() => applyPressed()}
@@ -104,6 +111,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
       coverStyle={{backgroundColor: 'rgba(247,247,247,0.7)'}}>
       <div className={styles.content}>
         <div className={styles.filterColumn}>
+          <div className={styles.filterStateContainer}>
           <div className={styles.filterItem}>
             <h3>Read/Unread</h3>
             <div className={styles.filterRow}>
@@ -119,6 +127,25 @@ const PopUpFilter = (props: PopUpFilterProps) => {
               </button>
             </div>
           </div>
+        </div>
+        <div className={styles.filterColumn}>
+          <div className={styles.filterItem}>
+            <h3>State</h3>
+            <div className={styles.filterRow}>
+              <button
+                className={conversationState === 'OPEN' ? styles.filterButtonSelected : styles.filterButton}
+                onClick={() => console.log("OPEN")}>
+                Open
+              </button>
+              <button
+                className={conversationState === 'CLOSED' ? styles.filterButtonSelected : styles.filterButton}
+                onClick={() => console.log("DONE")}>
+                <CheckmarkCircleIcon />
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
         </div>
         <div className={styles.filterColumn}>
           <h3>By Tags</h3>

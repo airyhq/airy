@@ -37,7 +37,7 @@ spec:
             configMapKeyRef:
               name: security
               key: allowedOrigins
-        - name: JWT_SECRET
+        - name: jwtSecret
           valueFrom:
             configMapKeyRef:
               name: core-config

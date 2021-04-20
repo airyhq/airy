@@ -76,7 +76,6 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
     onFilterVisibilityChanged();
-    console.log('dkasdjaslkdjals');
   };
 
   const renderSearchInput = isShowingSearchInput ? (

@@ -61,7 +61,7 @@ const SourcesInfo: SourceInfo[] = [
     image: <AiryAvatarIcon />,
     newChannelRoute: CHANNELS_CHAT_PLUGIN_ROUTE + '/new',
     channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/chatplugin',
-    configKey: 'source-chat-plugin',
+    configKey: 'sources-chat-plugin',
     channelsToShow: 4,
     itemInfoString: 'channels',
     dataCyAddChannelButton: cyChannelsChatPluginAddButton,

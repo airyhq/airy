@@ -2,40 +2,34 @@
 @import 'assets/scss/fonts.scss';
 
 .conversationStatus {
+  width: 96px;
+  height: 26px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-
-  width: 96px;
-  height: 26px;
-
+  align-items: center;
+  margin-left: 5px;
   border-bottom: 1px var(--color-light-gray) solid;
-
   @include font-base;
   color: var(--color-text-contrast);
-  margin-left: 5px;
-
-  align-items: center;
 }
 
 .conversationStatus .closedButtonWrapper {
+  padding: 6px 6px 6px 0;
   text-align: center;
   border-bottom: 3px transparent solid;
-  padding: 6px 0;
 }
 
 .conversationStatus .closedButton {
   width: 100%;
-
-  cursor: pointer;
-
   color: var(--color-text-gray);
   line-height: 16px;
+  cursor: pointer;
 }
 
 .conversationStatus.closed .closedButtonWrapper {
+  border-bottom: 4px var(--color-soft-green) solid;
   text-align: center;
-  border-bottom: 4px var(--color-red-alert) solid;
 }
 
 .conversationStatus.closed .closedButton {
@@ -44,21 +38,20 @@
 }
 
 .conversationStatus .openButtonWrapper {
-  text-align: center;
   border-bottom: 3px transparent solid;
   padding: 6px 6px 6px 0;
+  text-align: center;
 }
 
 .conversationStatus .openButton {
   width: 100%;
-  cursor: pointer;
-
   color: var(--color-text-gray);
   line-height: 16px;
+  cursor: pointer;
 }
 
 .conversationStatus.open .openButtonWrapper {
-  border-bottom: 4px var(--color-soft-green) solid;
+  border-bottom: 4px var(--color-red-alert) solid;
 }
 
 .conversationStatus.open .openButton {

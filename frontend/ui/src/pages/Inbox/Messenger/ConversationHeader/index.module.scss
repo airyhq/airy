@@ -1,23 +1,23 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
 
-.container {
+.conversationHeader {
   padding: 16px 16px 0 16px;
 }
 
 .headerContainer {
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 8px 16px;
   background-color: var(--color-background-gray);
   border-radius: 8px;
-  display: flex;
-  height: auto;
-  flex-direction: row;
-  padding: 8px 16px;
-  justify-content: space-between;
 }
 
 .details {
-  display: flex;
   height: auto;
+  display: flex;
   flex-direction: column;
 }
 
@@ -33,7 +33,7 @@
   justify-content: center;
 }
 
-.contactInfo {
+.participantInfo {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -44,7 +44,7 @@
   }
 }
 
-.contactName {
+.participantName {
   font-size: 16px;
   line-height: 16px;
   font-weight: 400;

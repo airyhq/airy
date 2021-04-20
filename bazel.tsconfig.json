@@ -72,6 +72,12 @@
       ],
       "chat-plugin-handles": [
         "./frontend/chat-plugin/handles"
+      ],
+      "chat-plugin": [
+        "./frontend/chat-plugin"
+      ],
+      "chat-plugin/*": [
+        "./frontend/chat-plugin/*"
       ]
     }
   }

@@ -1,5 +1,5 @@
 import AiryWidget from './AiryWidget';
-import {Config} from './App';
+import {Config} from './config';
 
 const body = document.getElementsByTagName('body')[0];
 
@@ -35,6 +35,7 @@ declare const window: {
 
 if (window.airy.channelId) {
   new AiryWidget({
+    apiHost: window.airy.host,
     channelId: window.airy.channelId,
     resumeToken: window.airy.resumeToken,
     config: window.airy.config,

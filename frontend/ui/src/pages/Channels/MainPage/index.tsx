@@ -128,17 +128,14 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
       case Source.facebook:
-        return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
       case Source.google:
         return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-        break;
-      case Source.chatPlugin:
-        break;
       case Source.twilioSMS:
-        return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
       case Source.twilioWhatsapp:
         return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
     }
+
+    return null;
   };
 
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);

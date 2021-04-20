@@ -21,8 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {
         "auth.jwt-secret=424242424242424242424242424242424242424242424242424242",
-        "system_token=user-generated-api-token",
-        "ALLOWED_ORIGINS=*"
+        "systemToken=user-generated-api-token",
+        "allowedOrigins=*"
 }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)

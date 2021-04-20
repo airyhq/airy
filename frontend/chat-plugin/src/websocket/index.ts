@@ -8,17 +8,6 @@ import {getResumeTokenFromStorage, resetStorage} from '../storage';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
-declare global {
-  interface Window {
-    airy: {
-      host: string;
-      channelId: string;
-    };
-  }
-}
-
-const API_HOST = window.airy ? window.airy.host : process.env.API_HOST;
-const host = new URL(API_HOST).host;
 // https: -> wss: and http: -> ws:
 const protocol = location.protocol.replace('http', 'ws');
 
@@ -29,6 +18,7 @@ export enum ConnectionState {
 
 class WebSocket {
   client: Client;
+  apiHost: string;
   channelId: string;
   token: string;
   setInitialMessages: (messages: Array<Message>) => void;
@@ -38,11 +28,13 @@ class WebSocket {
   updateConnectionState: (state: ConnectionState) => void;
 
   constructor(
+    apiHost: string,
     channelId: string,
     onReceive: messageCallbackType,
     setInitialMessages: (messages: Array<Message>) => void,
     updateConnectionState: (state: ConnectionState) => void
   ) {
+    this.apiHost = new URL(apiHost).host;
     this.channelId = channelId;
     this.onReceive = onReceive;
     this.setInitialMessages = setInitialMessages;
@@ -54,12 +46,9 @@ class WebSocket {
     this.token = token;
 
     this.client = new Client({
-      brokerURL: `${protocol}//${host}/ws.chatplugin`,
+      brokerURL: `${protocol}//${this.apiHost}/ws.chatplugin`,
       connectHeaders: {
         Authorization: `Bearer ${token}`,
-      },
-      debug: function (str) {
-        console.info(str);
       },
       reconnectDelay: 0,
       heartbeatIncoming: 4000,

@@ -28,7 +28,7 @@
 }
 
 .conversationStatus.closed .closedButtonWrapper {
-  border-bottom: 4px var(--color-soft-green) solid;
+  border-bottom: 5px var(--color-soft-green) solid;
   text-align: center;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .conversationStatus.open .openButtonWrapper {
-  border-bottom: 4px var(--color-red-alert) solid;
+  border-bottom: 5px var(--color-red-alert) solid;
 }
 
 .conversationStatus.open .openButton {

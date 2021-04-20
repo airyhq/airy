@@ -1,6 +1,5 @@
 import React, {useEffect, createRef, CSSProperties} from 'react';
 import {AiryChatPluginConfiguration} from './config';
-import {setApiHost} from './api';
 import AiryWidget from './AiryWidget';
 
 import styles from './AiryChatPlugin.module.scss';

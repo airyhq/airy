@@ -102,12 +102,15 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
         <button type="button" className={styles.searchButton} onClick={onClickSearch}>
           <IconSearch className={styles.searchIcon} title="Search" />
         </button>
+        <button className={styles.filterButton} onClick={() => toggleFilter()}>
+          <FilterIcon />
+        </button>
+        {isFilterOpen && (
+          <div className={styles.popup}>
+            <Popup closeCallback={toggleFilter} />
+          </div>
+        )}
       </div>
-      {isFilterOpen && (
-        <div className={styles.popup}>
-          <Popup closeCallback={toggleFilter} />
-        </div>
-      )}
     </div>
   );
 

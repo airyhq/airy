@@ -7,6 +7,7 @@ import MessageList from '../MessageList';
 import {ReactComponent as EmptyStateImage} from 'assets/images/empty-state/inbox-empty-state.svg';
 import styles from './index.module.scss';
 import ConversationMetadata from '../ConversationMetadata';
+import ConversationHeader from '../ConversationHeader';
 import MessageInput from '../../MessageInput';
 import {allConversations, getCurrentConversation} from '../../../../selectors/conversations';
 import {Source, Suggestions} from 'model';
@@ -38,6 +39,7 @@ const MessengerContainer = ({conversations, currentConversation}: MessengerConta
           </div>
         ) : (
           <div className={styles.messageDisplay}>
+            {currentConversation && <ConversationHeader />}
             <MessageList showSuggestedReplies={showSuggestedReplies} />
             {currentConversation && (
               <MessageInput

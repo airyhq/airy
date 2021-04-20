@@ -14,47 +14,47 @@
   color: var(--color-text-contrast);
 }
 
-.conversationStatus .closedButtonWrapper {
+.closedButtonWrapper {
   padding: 6px 6px 6px 0;
   text-align: center;
   border-bottom: 3px transparent solid;
 }
 
-.conversationStatus .closedButton {
+.closedButton {
   width: 100%;
   color: var(--color-text-gray);
   line-height: 16px;
   cursor: pointer;
 }
 
-.conversationStatus.closed .closedButtonWrapper {
+.closed .closedButtonWrapper {
   border-bottom: 5px var(--color-soft-green) solid;
   text-align: center;
 }
 
-.conversationStatus.closed .closedButton {
+.closed .closedButton {
   font-weight: 700;
   color: var(--color-text-contrast);
 }
 
-.conversationStatus .openButtonWrapper {
+.openButtonWrapper {
   border-bottom: 3px transparent solid;
   padding: 6px 6px 6px 0;
   text-align: center;
 }
 
-.conversationStatus .openButton {
+.openButton {
   width: 100%;
   color: var(--color-text-gray);
   line-height: 16px;
   cursor: pointer;
 }
 
-.conversationStatus.open .openButtonWrapper {
+.open .openButtonWrapper {
   border-bottom: 5px var(--color-red-alert) solid;
 }
 
-.conversationStatus.open .openButton {
+.open .openButton {
   font-weight: 700;
   color: var(--color-text-contrast);
 }

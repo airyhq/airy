@@ -6,11 +6,12 @@ import (
 	"context"
 	"fmt"
 	"io"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/util/homedir"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/util/homedir"
 )
 
 const (
@@ -34,7 +35,7 @@ func (p *provider) GetHelmOverrides() []string {
 	return []string{"--set", "global.ngrokEnabled=true", "--set", "global.nodePort=80"}
 }
 
-func (p *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
+func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error) {
 	if err := checkInstallation(); err != nil {
 		return kube.KubeCtx{}, err
 	}

@@ -40,8 +40,6 @@ const PopUpFilter = (props: PopUpFilterProps) => {
 
   const [pageSearch, setPageSearch] = useState('');
   const [tagSearch, setTagSearch] = useState('');
-  const [conversationState, setConversationState] = useState('none');
-
 
   useEffect(() => {
     listTags();
@@ -73,6 +71,22 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     setFilter(newFilter);
   };
 
+  const toggleStateOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.stopPropagation();
+    const newFilter: ConversationFilter = {...filter};
+    newFilter.isStateOpen = !filter.isStateOpen;
+    newFilter.isStateClosed = filter.isStateOpen;
+    setFilter(newFilter);
+  };
+
+  const toggleStateClosed = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.stopPropagation();
+    const newFilter: ConversationFilter = {...filter};
+    newFilter.isStateClosed = !filter.isStateClosed;
+    newFilter.isStateOpen = filter.isStateClosed;
+    setFilter(newFilter);
+  };
+
   const isChannelSelected = (channelsList: Array<string>, channel: Channel) => {
     return (channelsList || []).includes(channel.id);
   };
@@ -100,10 +114,6 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     });
   };
 
-  const stateFilter = () => {
-
-  }
-
   return (
     <DialogCustomizable
       close={() => applyPressed()}
@@ -112,40 +122,40 @@ const PopUpFilter = (props: PopUpFilterProps) => {
       <div className={styles.content}>
         <div className={styles.filterColumn}>
           <div className={styles.filterStateContainer}>
-          <div className={styles.filterItem}>
-            <h3>Read/Unread</h3>
-            <div className={styles.filterRow}>
-              <button
-                className={filter.readOnly ? styles.filterButtonSelected : styles.filterButton}
-                onClick={e => toggleReadOnly(e)}>
-                Read Only
-              </button>
-              <button
-                className={filter.unreadOnly ? styles.filterButtonSelected : styles.filterButton}
-                onClick={e => toggleUnreadOnly(e)}>
-                Unread Only
-              </button>
+            <div className={styles.filterItem}>
+              <h3>Read/Unread</h3>
+              <div className={styles.filterRow}>
+                <button
+                  className={filter.readOnly ? styles.filterButtonSelected : styles.filterButton}
+                  onClick={e => toggleReadOnly(e)}>
+                  Read Only
+                </button>
+                <button
+                  className={filter.unreadOnly ? styles.filterButtonSelected : styles.filterButton}
+                  onClick={e => toggleUnreadOnly(e)}>
+                  Unread Only
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div className={styles.filterColumn}>
-          <div className={styles.filterItem}>
-            <h3>State</h3>
-            <div className={styles.filterRow}>
-              <button
-                className={conversationState === 'OPEN' ? styles.filterButtonSelected : styles.filterButton}
-                onClick={() => console.log("OPEN")}>
-                Open
-              </button>
-              <button
-                className={conversationState === 'CLOSED' ? styles.filterButtonSelected : styles.filterButton}
-                onClick={() => console.log("DONE")}>
-                <CheckmarkCircleIcon />
-                Done
-              </button>
+          <div className={styles.filterColumn}>
+            <div className={styles.filterItem}>
+              <h3>State</h3>
+              <div className={styles.filterRow}>
+                <button
+                  className={filter.isStateOpen ? styles.filterButtonSelected : styles.filterButton}
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleStateOpen(event)}>
+                  Open
+                </button>
+                <button
+                  className={filter.isStateClosed ? styles.filterButtonSelected : styles.filterButton}
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleStateClosed(event)}>
+                  <CheckmarkCircleIcon />
+                  Done
+                </button>
+              </div>
             </div>
           </div>
-        </div>
         </div>
         <div className={styles.filterColumn}>
           <h3>By Tags</h3>
@@ -197,7 +207,6 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                     ) : (
                       <ChannelAvatar channel={channel} style={{height: '24px', width: '24px', marginRight: '4px'}} />
                     )}
-
                     <div className={styles.pageName}>{channel.metadata?.name || channel.sourceChannelId}</div>
                   </div>
                 ))}

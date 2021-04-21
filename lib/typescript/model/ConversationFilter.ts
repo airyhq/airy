@@ -6,5 +6,6 @@ export interface ConversationFilter {
   byTags?: string[];
   byChannels?: string[];
   bySources?: string[];
-  byState?: string;
+  isStateOpen?: boolean;
+  isStateClosed?: boolean;
 }

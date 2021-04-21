@@ -37,7 +37,7 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   useEffect(() => {
     resetFilter();
     itemsCount();
-    currentStateFilter()
+    currentStateFilter();
   }),
     [props.conversations];
 
@@ -102,27 +102,47 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   };
 
   const currentStateFilter = () => {
-    const allButton = document.getElementById('allButton')
-    const openButton = document.getElementById('openButton')
-    const closedButton = document.getElementById('closedButton')
+    const allButton = document.getElementById('allButton');
+    const openButton = document.getElementById('openButton');
+    const closedButton = document.getElementById('closedButton');
 
-    switch (currentFilterState) {
-      case 'ALL':
-        allButton.className = styles.quickFilterButtonActive;
-        openButton.className = styles.quickFilterButton;
-        closedButton.className = styles.quickFilterButton;
-        break;
-      case 'OPEN':
-        allButton.className = styles.quickFilterButton;
-        openButton.className = styles.quickFilterButtonActive;
-        closedButton.className = styles.quickFilterButton;
-        break;
-      case 'CLOSED':
-        allButton.className = styles.quickFilterButton;
-        openButton.className = styles.quickFilterButton;
-        closedButton.className = styles.quickFilterButtonActive;
-        break;
+    if ((conversationsFilter.isStateOpen && conversationsFilter.isStateClosed) === undefined) {
+      allButton.className = styles.quickFilterButtonActive;
+      openButton.className = styles.quickFilterButton;
+      closedButton.className = styles.quickFilterButton;
+    } else if (conversationsFilter.isStateOpen === true && conversationsFilter.isStateClosed === false) {
+      allButton.className = styles.quickFilterButton;
+      openButton.className = styles.quickFilterButtonActive;
+      closedButton.className = styles.quickFilterButton;
+    } else if (conversationsFilter.isStateOpen === false && conversationsFilter.isStateClosed === true) {
+      allButton.className = styles.quickFilterButton;
+      openButton.className = styles.quickFilterButton;
+      closedButton.className = styles.quickFilterButtonActive;
     }
+  };
+
+  const setStateAll = () => {
+    setCurrentFilterState('ALL');
+    const newFilter: ConversationFilter = {...conversationsFilter};
+    newFilter.isStateOpen = undefined;
+    newFilter.isStateClosed = undefined;
+    setFilter(newFilter);
+  }
+
+  const setStateOpen = () => {
+    setCurrentFilterState('OPEN');
+    const newFilter: ConversationFilter = {...conversationsFilter};
+    newFilter.isStateOpen = true;
+    newFilter.isStateClosed = false;
+    setFilter(newFilter);
+  };
+
+  const setStateClosed = () => {
+    setCurrentFilterState('CLOSED');
+    const newFilter: ConversationFilter = {...conversationsFilter};
+    newFilter.isStateClosed = true;
+    newFilter.isStateOpen = false;  
+    setFilter(newFilter);
   };
 
   const itemsCount = () => {
@@ -148,13 +168,13 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
       <div className={styles.quickFilterContainer}>
         <div className={styles.quickFilterButtons}>
           <div className={styles.quickFilterButtonsBackground}>
-            <button id="allButton" className={styles.quickFilterButton} onClick={() => setCurrentFilterState('ALL')}>
+            <button id="allButton" className={styles.quickFilterButton} onClick={() => setStateAll()}>
               All
             </button>
-            <button id="openButton" className={styles.quickFilterButton} onClick={() => setCurrentFilterState('OPEN')}>
+            <button id="openButton" className={styles.quickFilterButton} onClick={() => setStateOpen()}>
               Open
             </button>
-            <button id="closedButton" className={styles.quickFilterButton} onClick={() => setCurrentFilterState('CLOSED')}>
+            <button id="closedButton" className={styles.quickFilterButton} onClick={() => setStateClosed()}>
               Closed
             </button>
           </div>

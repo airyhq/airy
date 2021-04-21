@@ -53,7 +53,7 @@ Default region name [None]: us-west-2
 Default output format [None]: json
 ```
 
-Apart from an EKS cluster, `airy create` will take car of all the necessary AWS
+Apart from an EKS cluster, `airy create` will take care of all the necessary AWS
 resources, such as:
 
 - VPC resources (VPC, subnets, route tables, public gateways)
@@ -73,10 +73,16 @@ Download and install the [Airy CLI](cli/introduction.md).
 Export your AWS_PROFILE as described in the [AWS
 documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
 
-Now you can run this command, which will create Airy core in your AWS account:
+Now you can run this command, which will create `Airy Core` in your AWS account:
 
 ```bash
 airy create --provider=aws
+```
+
+You can also use an existing VPC, without creating additional VPC resources:
+
+```bash
+airy create --provider aws --provider-config vpcId=myExistingVpcId
 ```
 
 This will execute the following actions:
@@ -135,7 +141,7 @@ kubectl --kubeconfig ~/.airy/kube.conf get --namespace kube-system service traef
 
 ## Next steps
 
-Now that you have a running installation of Airy core on AWS you can connect it
+Now that you have a running installation of `Airy Core` on AWS you can connect it
 to messaging sources. Check out our quickstart guide:
 
 <ButtonBox
@@ -191,6 +197,9 @@ do
 done
 aws iam delete-role --role-name ${id}
 ```
+
+If you used an existing VPC, then you already removed `Airy Core` from your infrastructure and there is no need to run any additional commands.
+If not, you can proceed with removing all the VPC resources, created exclusively for `Airy Core`.
 
 Get the ID of the VPC:
 

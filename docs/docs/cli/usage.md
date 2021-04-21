@@ -74,10 +74,11 @@ airy create [config directory] [flags]
 #### Options
 
 ```
-  -h, --help               help for create
-      --init-only          Only create the airy config directory and exit
-      --namespace string   (optional) Kubernetes namespace that Airy should be installed to. (default "default")
-      --provider string    One of the supported providers (aws|minikube). (default "minikube")
+  -h, --help                             help for create
+      --init-only                        Only create the airy config directory and exit
+      --namespace string                 (optional) Kubernetes namespace that Airy should be installed to. (default "default")
+      --provider string                  One of the supported providers (aws|minikube). (default "minikube")
+      --provider-config stringToString   Additional configuration for the providers. (default [])
 ```
 
 #### Options inherited from parent commands

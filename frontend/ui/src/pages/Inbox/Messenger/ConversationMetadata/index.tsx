@@ -40,10 +40,8 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [tagName, setTagName] = useState('');
 
-  useEffect(() => {
-    if (tags.length == 0) {
-      listTags();
-    }
+  useEffect(() => {    
+    listTags();    
   }, []);
 
   const showAddTags = () => {

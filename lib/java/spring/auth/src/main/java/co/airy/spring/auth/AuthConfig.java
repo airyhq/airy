@@ -55,7 +55,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         final String allowed = environment.getProperty("allowedOrigins", "");
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin(allowed);
+        config.addAllowedOriginPattern(allowed);
         config.addAllowedHeader("*");
         config.setAllowedMethods(List.of("GET", "POST"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

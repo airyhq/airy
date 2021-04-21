@@ -18,7 +18,7 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -86,7 +86,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 }
 
                 if (accessor == null || accessor.getUser() == null) {
-                    throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
                 }
 
                 return message;

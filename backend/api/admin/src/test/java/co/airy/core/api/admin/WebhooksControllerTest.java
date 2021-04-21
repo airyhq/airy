@@ -71,26 +71,26 @@ public class WebhooksControllerTest {
 
     @Test
     public void canManageWebhook() throws Exception {
-        webTestHelper.post("/webhooks.info", "{}", "user-id").andExpect(status().isNotFound());
+        webTestHelper.post("/webhooks.info", "{}").andExpect(status().isNotFound());
 
         final String url = "http://example.org/webhook";
         final String xAuthHeader = "auth token";
 
         final String payload = "{\"url\":\"" + url + "\",\"headers\":{\"X-Auth\":\"" + xAuthHeader + "\"}}";
 
-        webTestHelper.post("/webhooks.subscribe", payload, "user-id")
+        webTestHelper.post("/webhooks.subscribe", payload)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", equalTo(url)))
                 .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)));
 
-        retryOnException(() -> webTestHelper.post("/webhooks.info", "{}", "user-id")
+        retryOnException(() -> webTestHelper.post("/webhooks.info", "{}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.url", equalTo(url)))
                         .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader))),
                 "Webhook was not stored"
         );
 
-        webTestHelper.post("/webhooks.unsubscribe", payload, "user-id")
+        webTestHelper.post("/webhooks.unsubscribe", payload)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", equalTo(url)))
                 .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)));

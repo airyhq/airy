@@ -9,9 +9,9 @@ import (
 )
 
 type Client struct {
-	BaseURL  string
-	JWTToken string
-	c        *http.Client
+	BaseURL string
+	Token   string
+	c       *http.Client
 }
 
 func NewClient(baseURL string) *Client {
@@ -31,8 +31,8 @@ func (c *Client) post(endpoint string, payload []byte, res interface{}) error {
 
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Accept", "application/json; charset=utf-8")
-	if c.JWTToken != "" {
-		req.Header.Set("Authorization", c.JWTToken)
+	if c.Token != "" {
+		req.Header.Set("Authorization", c.Token)
 	}
 
 	r, err := c.c.Do(req)

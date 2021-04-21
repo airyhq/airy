@@ -78,7 +78,7 @@ public class TagsControllerTest {
         final String color = "tag-red";
         final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
 
-        final String createTagResponse = webTestHelper.post("/tags.create", payload, "user-id")
+        final String createTagResponse = webTestHelper.post("/tags.create", payload)
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
@@ -90,7 +90,7 @@ public class TagsControllerTest {
         //TODO wait for tag to be there
         TimeUnit.SECONDS.sleep(5);
 
-        webTestHelper.post("/tags.list", "{}", "user-id")
+        webTestHelper.post("/tags.list", "{}")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(1)))
                 .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
@@ -98,22 +98,22 @@ public class TagsControllerTest {
                 .andExpect(jsonPath("$.data[0].color").value(is("RED")));
 
         webTestHelper.post("/tags.update",
-                "{\"id\": \"" + tagId + "\", \"name\": \"new-name\", \"color\": \"" + color + "\"}", "user-id")
+                "{\"id\": \"" + tagId + "\", \"name\": \"new-name\", \"color\": \"" + color + "\"}")
                 .andExpect(status().isNoContent());
 
-        webTestHelper.post("/tags.list", "{}", "user-id")
+        webTestHelper.post("/tags.list", "{}")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(1)))
                 .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
                 .andExpect(jsonPath("$.data[0].name").value(is("new-name")))
                 .andExpect(jsonPath("$.data[0].color").value(is("RED")));
 
-        webTestHelper.post("/tags.delete", "{\"id\": \"" + tagId + "\"}", "user-id").andExpect(status().isNoContent());
+        webTestHelper.post("/tags.delete", "{\"id\": \"" + tagId + "\"}").andExpect(status().isNoContent());
 
         //TODO wait for tag deletion
         TimeUnit.SECONDS.sleep(5);
 
-        webTestHelper.post("/tags.list", "{}", "user-id")
+        webTestHelper.post("/tags.list", "{}")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()", is(0)));
     }

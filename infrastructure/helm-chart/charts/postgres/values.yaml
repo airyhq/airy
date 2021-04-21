@@ -1,4 +1,0 @@
-enabled: true
-image: postgres
-imageTag: 12.4-alpine
-resources: {}

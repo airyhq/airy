@@ -10,7 +10,6 @@ lib_deps = [
     "//:springboot_security",
     "//lib/java/log",
     "//lib/java/spring/core:spring-core",
-    "//lib/java/spring/jwt:airy-jwt",
     "@maven//:javax_servlet_javax_servlet_api",
     "@maven//:javax_xml_bind_jaxb_api",
 ]
@@ -20,7 +19,6 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/spring/auth/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//lib/java/spring/jwt:airy-jwt",
         "@maven//:org_springframework_security_spring_security_core",
     ],
     deps = lib_deps,

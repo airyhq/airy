@@ -9,18 +9,15 @@ go_library(
         "test_file.go",
     ],
     embedsrcs = [
-        "golden/cli.login.golden",
         "golden/cli.no-args.golden",
         "golden/cli.version.golden",
         "golden/cli.yaml",
-        "golden/users.signup.golden",
     ],
     importpath = "cli/integration",
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_kr_pretty//:pretty",
         "@io_goji//:goji.io",
-        "@io_goji//pat",
     ],
 )
 

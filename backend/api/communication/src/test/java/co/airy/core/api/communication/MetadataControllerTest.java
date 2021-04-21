@@ -79,16 +79,14 @@ public class MetadataControllerTest {
 
         retryOnException(
                 () -> webTestHelper.post("/metadata.upsert",
-                        "{\"subject\": \"message\", \"id\": \"" + messageId + "\", \"data\": {\"sentFrom\": \"iPhone\"}}",
-                        "user-id")
+                        "{\"subject\": \"message\", \"id\": \"" + messageId + "\", \"data\": {\"sentFrom\": \"iPhone\"}}")
                         .andExpect(status().isNoContent()),
                 "Error upserting metadata"
         );
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}",
-                        "user-id")
+                        "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.last_message.metadata.user_data.sentFrom", is("iPhone"))),
                 "Conversations list metadata is not present"
@@ -98,8 +96,7 @@ public class MetadataControllerTest {
     @Test
     void failsOnNonStringFieldValues() throws Exception {
         webTestHelper.post("/metadata.upsert",
-                "{\"subject\": \"channel\", \"id\": \"" + channel.getId() + "\", \"data\": {\"sentFrom\": 123}}",
-                "user-id")
+                "{\"subject\": \"channel\", \"id\": \"" + channel.getId() + "\", \"data\": {\"sentFrom\": 123}}")
                 .andExpect(status().isBadRequest());
     }
 }

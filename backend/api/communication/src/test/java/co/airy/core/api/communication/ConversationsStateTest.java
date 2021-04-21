@@ -62,7 +62,6 @@ class ConversationsStateTest {
 
     @Test
     void canSetandRemoveStateFromConversations() throws Exception {
-        final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId(UUID.randomUUID().toString())
@@ -75,19 +74,19 @@ class ConversationsStateTest {
         kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
 
         retryOnException(() -> webTestHelper.post("/conversations.info",
-                "{\"conversation_id\":\"" + conversationId + "\"}", userId)
+                "{\"conversation_id\":\"" + conversationId + "\"}")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(conversationId))), "conversation was not created");
 
         final String state = "open";
 
         webTestHelper.post("/conversations.setState",
-                "{\"conversation_id\":\"" + conversationId + "\",\"state\":\"" + state + "\"}", userId)
+                "{\"conversation_id\":\"" + conversationId + "\",\"state\":\"" + state + "\"}")
                 .andExpect(status().isNoContent());
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}", userId)
+                        "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk())
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
@@ -95,12 +94,12 @@ class ConversationsStateTest {
                 "conversation state was not set");
 
         webTestHelper.post("/conversations.removeState",
-                "{\"conversation_id\":\"" + conversationId + "\"}", userId)
+                "{\"conversation_id\":\"" + conversationId + "\"}")
                 .andExpect(status().isNoContent());
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}", userId)
+                        "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
                         .andExpect(jsonPath("$.metadata.state").doesNotExist()),

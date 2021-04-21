@@ -3,8 +3,8 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {sortBy} from 'lodash-es';
 
-import {StateModel} from './../../../reducers';
-import {allChannels} from './../../../selectors/channels';
+import {StateModel} from '../../../reducers';
+import {allChannels} from '../../../selectors/channels';
 
 import {Channel, Source} from 'model';
 import ChannelListItem from './ChannelListItem';
@@ -22,7 +22,7 @@ import {
   CHANNELS_ROUTE,
   CHANNELS_TWILIO_SMS_ROUTE,
   CHANNELS_TWILIO_WHATSAPP_ROUTE,
-} from './../../../routes/routes';
+} from '../../../routes/routes';
 
 type ConnectedChannelsListProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<{source: string}>;
 

@@ -91,7 +91,7 @@ public class MessagesTest {
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
         retryOnException(
-                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                () -> webTestHelper.post("/messages.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(messageCount)))
                         .andExpect(jsonPath("$.data[*].sent_at").value(contains(
@@ -127,7 +127,7 @@ public class MessagesTest {
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
         retryOnException(
-                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                () -> webTestHelper.post("/messages.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))
                         .andExpect(jsonPath("$.data[0].metadata.metadata_key", containsString("message metadata value"))),
@@ -161,7 +161,7 @@ public class MessagesTest {
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
         retryOnException(
-                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                () -> webTestHelper.post("/messages.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))
                         .andExpect(jsonPath("$.data[0].content.url", containsString(persistentUrl))),
@@ -208,7 +208,7 @@ public class MessagesTest {
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
         retryOnException(
-                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                () -> webTestHelper.post("/messages.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))
                         .andExpect(jsonPath("$.data[0].content", is(content))),
@@ -239,7 +239,7 @@ public class MessagesTest {
                 messageId, suggestionId, suggestionContent);
 
         retryOnException(
-                () -> webTestHelper.post("/messages.suggestReplies", payload, "user-id")
+                () -> webTestHelper.post("/messages.suggestReplies", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", equalTo(messageId)))
                         .andExpect(jsonPath(String.format("$.metadata.suggestions['%s'].content.text", suggestionId), equalTo("Hello world"))),

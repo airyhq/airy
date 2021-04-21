@@ -9,10 +9,8 @@ import co.airy.mapping.sources.facebook.FacebookMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.StreamUtils;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

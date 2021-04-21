@@ -31,7 +31,6 @@ ts_web_library(
         "@npm//@types/react-redux",
         "@npm//lodash-es",
         "@npm//react",
-        "@npm//react-facebook-login",
         "@npm//react-router-dom",
         "@npm//react-window",
         "@npm//react-window-infinite-loader",

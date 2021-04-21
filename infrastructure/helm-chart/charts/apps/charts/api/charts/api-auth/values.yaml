@@ -1,3 +1,0 @@
-component: api-auth
-mandatory: true
-image: api/auth

@@ -1,6 +1,4 @@
 export const ROOT_ROUTE = '/';
-export const LOGIN_ROUTE = '/login';
-export const LOGOUT_ROUTE = '/logout';
 export const CHANNELS_ROUTE = '/channels';
 export const CHANNELS_CONNECTED_ROUTE = '/channels/connected';
 export const CHANNELS_FACEBOOK_ROUTE = '/channels/facebook';
@@ -10,4 +8,4 @@ export const CHANNELS_TWILIO_WHATSAPP_ROUTE = '/channels/twilio.whatsapp';
 export const INBOX_ROUTE = '/inbox';
 export const INBOX_CONVERSATIONS_ROUTE = '/inbox/conversations';
 export const TAGS_ROUTE = '/tags';
-export const ROUTES_WITHOUT_NAVBAR = [LOGIN_ROUTE];
+export const ROUTES_WITHOUT_NAVBAR = [];

@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.startsWith;
 
 @SpringBootTest(classes = AirySpringBootApplication.class)
 public class ContentMapperTest {

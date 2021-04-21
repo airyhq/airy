@@ -36,17 +36,8 @@ link='/getting-started/installation/introduction'
 
 ## Step 1: Set up your first source
 
-Once you [signed up](/api/endpoints/users.md#signup), you must [log
-in](/api/authentication.md#login) so you can obtain a valid JWT token for the
-upcoming API calls:
-
-```sh
-token=$(echo $(curl -H 'Content-Type: application/json' -d \
-"{ \
-\"email\":\"grace@example.com\", \
-\"password\":\"the_answer_is_42\" \
-}" http://airy.core/users.login) | jq -r '.token')
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
+```shell script
+curl -H "Content-Type: application/json" -d \
 "{
     \"name\": \"chat plugin source\"
 }" http://airy.core/channels.chatplugin.connect
@@ -108,8 +99,7 @@ created. it should return the message you have just sent.
 <br />
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" \
-http://airy.core/conversations.list | jq .
+curl -XPOST http://airy.core/conversations.list | jq .
 ```
 
 The [Inbox UI](/ui/inbox) lists all your [conversations](/getting-started/glossary/#conversation), across all [sources](/getting-started/glossary/#source).

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {WebSocketClient} from 'websocketclient';
 import {Message, Channel, MetadataEvent} from 'model';
@@ -18,12 +18,9 @@ export const AiryWebSocketContext = React.createContext({
   refreshSocket: null,
 });
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    conversations: allConversations(state),
-    user: state.data.user,
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  conversations: allConversations(state),
+});
 
 const mapDispatchToProps = dispatch => ({
   addMessages: (conversationId: string, messages: Message[]) => dispatch(addMessagesAction({conversationId, messages})),
@@ -41,7 +38,7 @@ const mapDispatchToProps = dispatch => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
-  const {children, conversations, getConversationInfo, user, addMessages, onChannel, onMetadata} = props;
+  const {children, conversations, getConversationInfo, addMessages, onChannel, onMetadata} = props;
   const [webSocketClient, setWebSocketClient] = useState(null);
 
   const onMessage = (conversationId: string, message: Message) => {
@@ -58,20 +55,18 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
     if (webSocketClient) {
       webSocketClient.destroyConnection();
     }
-    if (user.token) {
-      setWebSocketClient(
-        new WebSocketClient(env.API_HOST, user.token, {
-          onMessage: (conversationId: string, _channelId: string, message: Message) => {
-            onMessage(conversationId, message);
-          },
-          onChannel,
-          onMetadata,
-        })
-      );
-    }
+    setWebSocketClient(
+      new WebSocketClient(env.API_HOST, {
+        onMessage: (conversationId: string, _channelId: string, message: Message) => {
+          onMessage(conversationId, message);
+        },
+        onChannel,
+        onMetadata,
+      })
+    );
   };
 
-  useEffect(refreshSocket, [user.token]);
+  useEffect(() => refreshSocket(), []);
 
   return <AiryWebSocketContext.Provider value={{refreshSocket}}>{children}</AiryWebSocketContext.Provider>;
 };

@@ -43,7 +43,7 @@ public class SendMessageController {
     }
 
     @PostMapping("/messages.send")
-    public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload, Authentication auth) throws ExecutionException, InterruptedException, JsonProcessingException {
+    public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException, JsonProcessingException {
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
         final Conversation conversation = conversationsStore.get(payload.getConversationId().toString());
 
@@ -64,7 +64,8 @@ public class SendMessageController {
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
                 .setSource(channel.getSource())
-                .setSenderId(auth.getPrincipal().toString())
+                // TODO add the oidc id here in https://github.com/airyhq/airy/issues/1518
+                .setSenderId("airy-core-anonymous")
                 .setSentAt(Instant.now().toEpochMilli())
                 .setIsFromContact(false)
                 .build();

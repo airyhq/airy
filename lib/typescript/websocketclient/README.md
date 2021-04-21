@@ -6,9 +6,8 @@ The library exports a WebSocketClient class. To use the library, you need to ins
 
 For example:
 
-```
+```typescript
 import { WebSocketClient} from 'websocketclient';
 
-const myInstance = new WebSocketClient(apiUrl, {onMessage: (conversationId, channelId, message) => console.log(message)});
-
+const client = new WebSocketClient(apiUrl, {onMessage: (conversationId, channelId, message) => console.log(message)});
 ```

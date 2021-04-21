@@ -11,8 +11,8 @@ For example:
 ```typescript
 import {HttpClient} from "httpclient";
 
-const myInstance = new HttpClient("http://airy.core");
-myInstance.listChannels().then(channels => console.debug("Channels", channels));
+const client = new HttpClient("http://airy.core");
+client.listChannels().then(channels => console.debug("channels", channels));
 ```
 
 Here is a list of the public methods the library's class includes:

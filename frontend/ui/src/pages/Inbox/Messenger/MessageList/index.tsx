@@ -1,4 +1,4 @@
-import React, {useEffect, useState, createRef, useRef} from 'react';
+import React, {useEffect, createRef, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 import {debounce, isEmpty} from 'lodash-es';
@@ -48,7 +48,6 @@ function usePrevious(value: Message[] | string) {
 
 const MessageList = (props: MessageListProps) => {
   const {listMessages, listPreviousMessages, showSuggestedReplies, messages, conversation} = props;
-  const [stickBottom, setStickBottom] = useState(true);
 
   const prevMessages = usePrevious(messages);
   const prevCurrentConversationId = usePrevious(conversation && conversation.id);
@@ -61,12 +60,6 @@ const MessageList = (props: MessageListProps) => {
       scrollBottom();
     }
   }, [conversation && conversation.id, messages]);
-
-  useEffect(() => {
-    if (stickBottom) {
-      scrollBottom();
-    }
-  }, [stickBottom]);
 
   useEffect(() => {
     if (hasPreviousMessages() && !scrollbarVisible() && !isLoadingConversation()) {
@@ -143,16 +136,6 @@ const MessageList = (props: MessageListProps) => {
         !isLoadingConversation()
       ) {
         debouncedListPreviousMessages(conversation.id);
-      }
-
-      const entireHeightScrolled =
-        messageListRef &&
-        messageListRef.current &&
-        messageListRef.current.scrollHeight - 1 <=
-          messageListRef.current.clientHeight + messageListRef.current.scrollTop;
-
-      if (stickBottom !== entireHeightScrolled) {
-        setStickBottom(entireHeightScrolled);
       }
     },
     100,

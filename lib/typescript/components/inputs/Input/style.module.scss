@@ -28,8 +28,10 @@
 .inputInvalid {
   .inputTitle {
     color: var(--color-red-alert);
+    display: flex;
 
     .icon svg {
+      margin-left: 6px;
       path {
         fill: var(--color-red-alert);
       }
@@ -50,11 +52,10 @@
 .inputValid {
   .inputTitle {
     color: var(--color-soft-green);
+    display: flex;
 
     .icon svg {
-      width: 12px;
-      height: 12px;
-
+      transform: scale(0.5, 0.668);
       path {
         fill: var(--color-soft-green);
       }
@@ -79,8 +80,8 @@
 }
 
 .icon {
-  display: inline-block;
-  margin-left: 4px;
+  display: flex;
+  align-items: center;
 }
 
 .inputTitleRow {

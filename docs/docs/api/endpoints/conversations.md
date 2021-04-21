@@ -72,8 +72,7 @@ Find users whose name ends with "Lovelace":
         // typed source message model
         state: "{String}",
         // delivery state of message, one of PENDING, FAILED, DELIVERED
-        sender_type: "{string/enum}",
-        // See glossary
+        "from_contact": true,
         sent_at: "{string}",
         //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
         "source": "{String}"
@@ -133,8 +132,7 @@ Find users whose name ends with "Lovelace":
     // typed source message model
     "delivery_state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
-    "sender_type": "{string/enum}",
-    // See glossary
+    "from_contact": true,
     "sent_at": "{string}"
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   }
@@ -185,6 +183,35 @@ tag](/api/endpoints/tags.md#create). Returns status code `200` if successful.
 {
   "conversation_id": "CONVERSATION_ID",
   "tag_id": "TAG_ID"
+}
+```
+
+**Empty response (204)**
+
+## Set the state of a conversation
+
+`POST /conversations.setState`
+
+**Sample request**
+
+```json5
+{
+  "conversation_id": "CONVERSATION_ID",
+  "state": "open"
+}
+```
+
+**Empty response (204)**
+
+## Remove the state of a conversation
+
+`POST /conversations.removeState`
+
+**Sample request**
+
+```json5
+{
+  "conversation_id": "CONVERSATION_ID"
 }
 ```
 

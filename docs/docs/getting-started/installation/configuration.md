@@ -25,7 +25,7 @@ is enough not to provide any facebook specific configuration.
 Now let's have a look at the different sections so you can make the changes you
 are looking for.
 
-### Global
+### Kubernetes
 
 - `appImageTag` the image tag of the container images for the **Airy Components**
 
@@ -61,13 +61,13 @@ cluster, PostgreSQL, and Redis.
   - `username` these credentials will be passed to the **API Auth Component**
   - `password` and they will be used to create the Postgres database
 
+### Security
+
+- `jwtSecret` must be set to a long secure secret in production environments (default: random generated)
+- `token` set to a long secure secret to use for machine [API authentication](api/authentication.md) (default: random generated)
+- `allowedOrigins` your sites origin to prevent CORS-based attacks (default: "\*")
+
 ### Components
-
-- `api`
-
-  - `jwtSecret` must be set to a long secure secret in production environments
-  - `token` set to a long secure secret to use for machine [API authentication](api/authentication.md)
-  - `allowedOrigins` your sites origin to prevent CORS-based attacks
 
 - `sources`
 
@@ -78,11 +78,16 @@ cluster, PostgreSQL, and Redis.
   The **Airy Controller** only starts configured sources. To keep system load to
   a minimum, only add the sources you are using.
 
-- `webhooks`
-  - `name`
-- `media-resolver`
-  - `storage`
-    - `s3` set these to your AWS S3 config to store source specific user data
+- `integration`
+  - `webhook`
+    - `name` set this to the name of your webhook integration
+- `media`
+  - `resolver`
+    - `s3Key` set this to your AWS S3 access key id
+    - `s3Secret` set this to your AWS S3 secret access key
+    - `s3Bucket` set this to your AWS S3 bucket
+    - `s3Region` set this to your AWS region
+    - `s3Path` set this to your AWS S3 path
 
 ### Tools
 

@@ -1,40 +1,24 @@
 package config
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
+
+	"gopkg.in/yaml.v2"
 )
 
-type globalConf struct {
+type kubernetesConf struct {
 	AppImageTag       string `yaml:"appImageTag"`
 	ContainerRegistry string `yaml:"containerRegistry"`
 	Namespace         string `yaml:"namespace"`
+	NgrokEnabled      string `yaml:"ngrokEnabled"`
 }
 
-type appsConf struct {
-	Sources struct {
-		Twilio struct {
-			AuthToken  string `yaml:"authToken"`
-			AccountSid string `yaml:"accountSid"`
-		}
-		Facebook struct {
-			AppID         string `yaml:"appId"`
-			AppSecret     string `yaml:"appSecret"`
-			WebhookSecret string `yaml:"webhookSecret"`
-		}
-		Google struct {
-			PartnerKey string `yaml:"partnerKey"`
-			SaFile     string `yaml:"saFile"`
-		}
-	}
-	Webhooks struct {
-		Name string `yaml:"name"`
-	}
-}
+type componentsConf map[string]map[string]string
 
 type airyConf struct {
-	Global globalConf
-	Apps   appsConf
+	Kubernetes kubernetesConf
+	Security   map[string]string
+	Components map[string]componentsConf
 }
 
 func parseConf(configFile string) (airyConf, error) {
@@ -42,14 +26,7 @@ func parseConf(configFile string) (airyConf, error) {
 	if err != nil {
 		return airyConf{}, err
 	}
-
-	conf := airyConf{
-		Global: globalConf{
-			Namespace: "default",
-		},
-	}
-
+	conf := airyConf{}
 	err = yaml.Unmarshal(data, &conf)
-
 	return conf, err
 }

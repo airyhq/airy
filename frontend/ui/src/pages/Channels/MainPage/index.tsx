@@ -61,7 +61,7 @@ const SourcesInfo: SourceInfo[] = [
     image: <AiryAvatarIcon />,
     newChannelRoute: CHANNELS_CHAT_PLUGIN_ROUTE + '/new',
     channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/chatplugin',
-    configKey: 'sources-chatplugin',
+    configKey: 'sources-chat-plugin',
     channelsToShow: 4,
     itemInfoString: 'channels',
     dataCyAddChannelButton: cyChannelsChatPluginAddButton,
@@ -128,17 +128,14 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
       case Source.facebook:
-        return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
       case Source.google:
         return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
-        break;
-      case Source.chatPlugin:
-        break;
       case Source.twilioSMS:
-        return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
       case Source.twilioWhatsapp:
         return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
     }
+
+    return null;
   };
 
   const channelsBySource = (Source: Source) => channels.filter((channel: Channel) => channel.source === Source);
@@ -163,7 +160,7 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
               sourceInfo={infoItem}
               displayButton={!channelsBySource(infoItem.type).length}
               addChannelAction={() => {
-                if (config.components[infoItem.configKey].enabled) {
+                if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
                   props.history.push(infoItem.newChannelRoute);
                 } else {
                   setDisplayDialogFromSource(infoItem.type);

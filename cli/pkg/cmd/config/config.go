@@ -4,8 +4,11 @@ import (
 	"cli/pkg/console"
 	"cli/pkg/kube"
 	"cli/pkg/workspace"
+	"context"
 	"fmt"
+
 	"github.com/spf13/cobra"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var configFile string
@@ -31,23 +34,45 @@ func applyConfig(cmd *cobra.Command, args []string) {
 	kubeCtx := kube.Load()
 	clientset, err := kubeCtx.GetClientSet()
 	if err != nil {
-		console.Exit("Could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
+		console.Exit("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
 	}
 
-	if twilioApply(conf, clientset) {
-		fmt.Println("Twilio configuration applied.")
+	if len(conf.Security) != 0 {
+		applyErr := kube.ApplyConfigMap("security", conf.Kubernetes.Namespace, conf.Security, map[string]string{}, clientset)
+		if applyErr != nil {
+			fmt.Printf("unable to apply configuration for \"security\"\n Error:\n %v\n", applyErr)
+		} else {
+			fmt.Printf("applied configuration for \"security\"\n")
+		}
 	}
 
-	if facebookApply(conf, clientset) {
-		fmt.Println("Facebook configuration applied.")
+	configuredComponents := make(map[string]bool)
+	for componentType, _ := range conf.Components {
+		for componentName, componentValues := range conf.Components[componentType] {
+			configmapName := componentType + "-" + componentName
+			labels := map[string]string{
+				"core.airy.co/component": configmapName,
+			}
+			applyErr := kube.ApplyConfigMap(configmapName, conf.Kubernetes.Namespace, componentValues, labels, clientset)
+			configuredComponents[configmapName] = true
+			if applyErr != nil {
+				fmt.Printf("unable to apply configuration for component: \"%s-%s\"\n Error:\n %v\n", componentType, componentName, applyErr)
+			} else {
+				fmt.Printf("applied configuration for component: \"%s-%s\"\n", componentType, componentName)
+			}
+		}
 	}
 
-	if googleApply(conf, clientset) {
-		fmt.Println("Google configuration applied.")
-	}
-
-	if webhooksApply(conf, clientset) {
-		fmt.Println("Webhooks configuration applied.")
+	configmapList, _ := clientset.CoreV1().ConfigMaps(conf.Kubernetes.Namespace).List(context.TODO(), v1.ListOptions{LabelSelector: "core.airy.co/component"})
+	for _, configmap := range configmapList.Items {
+		if !configuredComponents[configmap.ObjectMeta.Name] {
+			deleteErr := kube.DeleteConfigMap(configmap.ObjectMeta.Name, conf.Kubernetes.Namespace, clientset)
+			if deleteErr != nil {
+				fmt.Printf("unable to remove configuration for component %s.\n", configmap.ObjectMeta.Name)
+			} else {
+				fmt.Printf("removed configuration for component \"%s\".\n", configmap.ObjectMeta.Name)
+			}
+		}
 	}
 }
 

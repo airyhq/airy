@@ -2,7 +2,7 @@ import React from 'react';
 import {renderProviders} from './renderProviders';
 
 import {Text} from './components/Text';
-import {getDefaultRenderingProps, RenderPropsUnion} from './props';
+import {RenderPropsUnion} from './props';
 
 export * from './props';
 
@@ -25,7 +25,7 @@ export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessa
   }
 
   errorFallback() {
-    return <Text {...getDefaultRenderingProps(this.props)} text="Could not render this content" />;
+    return <Text fromContact={this.props.content.fromContact || false} text="Could not render this content" />;
   }
 
   render() {

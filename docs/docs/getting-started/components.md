@@ -65,6 +65,6 @@ Airy Core contains the following core components:
     iconInvertible={true}
     title='Integrations'
     description="Pre-made integrations into popular conversational tools, for example NLP tools like Rasa"
-    link='/integrations/rasa'
+    link='/integrations/rasa-assistant'
 />
 </ButtonBoxList>

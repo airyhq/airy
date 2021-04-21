@@ -2,6 +2,8 @@ import React, {createRef, useState} from 'react';
 import {Button, Input, ListenOutsideClick} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
+import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
+import {env} from '../../../../../../env';
 
 interface CustomiseSectionProps {
   channelId: string;
@@ -39,7 +41,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     setShowBackgroundColorPicker(!showBackgroundColorPicker);
   };
 
-  const getConfig = () => {
+  const getTemplateConfig = () => {
     if (
       headerText === '' &&
       bubbleIconUrl === '' &&
@@ -65,6 +67,21 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         };`;
   };
 
+  const demoConfig: AiryChatPluginConfiguration = {
+    apiHost: env.API_HOST,
+    channelId,
+    config: {
+      showMode: true,
+      ...(headerText && {headerText}),
+      ...(headerTextColor && {headerTextColor}),
+      ...(primaryColor && {primaryColor}),
+      ...(accentColor && {accentColor}),
+      ...(backgroundColor && {backgroundColor}),
+      ...(bubbleIconUrl && {bubbleIcon: bubbleIconUrl}),
+      ...(sendMessageIconUrl && {sendMessageIcon: sendMessageIconUrl}),
+    },
+  };
+
   const copyToClipboard = () => {
     codeAreaRef.current?.select();
     document.execCommand('copy');
@@ -75,7 +92,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       (function(w, d, s, n) {
         w[n] = w[n] || {};
         w[n].channelId = "${channelId}";
-        w[n].host = "${host}";${getConfig()}
+        w[n].host = "${host}";${getTemplateConfig()}
         var f = d.getElementsByTagName(s)[0],
           j = d.createElement(s);
         j.async = true;
@@ -287,6 +304,9 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
+      </div>
+      <div className="demoChatPlugin">
+        <AiryChatPlugin config={demoConfig} />
       </div>
     </>
   );

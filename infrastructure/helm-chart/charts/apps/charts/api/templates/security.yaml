@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: security
+  namespace: {{ .Values.global.namespace }}
+data:
+  jwtSecret: {{ .Values.jwtSecret | default (randAlphaNum 128) | quote }}
+  systemToken: {{ .Values.systemToken | default (randAlphaNum 24) | quote }}
+  allowedOrigins: {{ .Values.allowedOrigins | quote }}

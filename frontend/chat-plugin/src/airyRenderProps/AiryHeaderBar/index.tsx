@@ -1,8 +1,9 @@
 import React from 'react';
-import {Config} from '../../App';
+import {Config} from '../../config';
 import style from './index.module.scss';
 import {ReactComponent as CloseButton} from 'assets/images/icons/close.svg';
 import {ReactComponent as MinimizeButton} from 'assets/images/icons/minimize-button.svg';
+import {cyChatPluginHeaderBarCloseButton} from 'chat-plugin-handles';
 
 type AiryHeaderBarProps = {
   toggleHideChat: () => void;
@@ -35,7 +36,11 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
         <MinimizeButton />
       </button>
 
-      <button className={style.closeButton} onClick={showModalOnClick} title="End chat">
+      <button
+        className={style.closeButton}
+        onClick={showModalOnClick}
+        title="End chat"
+        data-cy={cyChatPluginHeaderBarCloseButton}>
         <CloseButton />
       </button>
     </div>

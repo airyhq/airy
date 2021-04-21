@@ -1,5 +1,5 @@
 import React from 'react';
-import {Config} from '../../App';
+import {Config} from '../../config';
 import style from './index.module.scss';
 
 type Props = {

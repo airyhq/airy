@@ -1,6 +1,6 @@
 import React from 'react';
-import {isFromContact, RenderedContentUnion} from 'model';
-import {getDefaultRenderingProps, RenderPropsUnion} from '../../props';
+import {Message} from 'model';
+import {RenderPropsUnion} from '../../props';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {Video} from '../../components/Video';
@@ -10,18 +10,18 @@ import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
-  const message = props.content;
-  const content = isFromContact(message) ? facebookInbound(message) : facebookOutbound(message);
+  const message: Message = props.content;
+  const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };
 
 function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultRenderingProps(props)} text={content.text} />;
+      return <Text fromContact={props.content.fromContact || false} text={content.text} />;
 
     case 'postback':
-      return <Text {...getDefaultRenderingProps(props)} text={content.title} />;
+      return <Text fromContact={props.content.fromContact || false} text={content.title} />;
 
     case 'image':
       return <Image imageUrl={content.imageUrl} />;
@@ -38,7 +38,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'quickReplies':
       return (
         <QuickReplies
-          {...getDefaultRenderingProps(props)}
+          fromContact={props.content.fromContact || false}
           text={content.text}
           attachment={content.attachment}
           quickReplies={content.quickReplies}
@@ -83,7 +83,7 @@ const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | Gener
   };
 };
 
-function facebookInbound(message: RenderedContentUnion): ContentUnion {
+function facebookInbound(message: Message): ContentUnion {
   const messageJson = message.content;
 
   if (messageJson.message?.attachments?.length) {
@@ -116,7 +116,7 @@ function facebookInbound(message: RenderedContentUnion): ContentUnion {
   };
 }
 
-function facebookOutbound(message: RenderedContentUnion): ContentUnion {
+function facebookOutbound(message: Message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
   if (messageJson.quick_replies) {

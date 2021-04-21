@@ -12,6 +12,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//infrastructure/controller/pkg/configmap-controller",
+        "//infrastructure/controller/pkg/endpoints",
         "@io_k8s_api//core/v1:go_default_library",
         "@io_k8s_client_go//kubernetes:go_default_library",
         "@io_k8s_client_go//tools/clientcmd:go_default_library",

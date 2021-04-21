@@ -1,5 +1,4 @@
-global:
-  appImageTag: develop
+kubernetes:
   containerRegistry: ghcr.io/airyhq
   namespace: default
   ngrokEnabled: false

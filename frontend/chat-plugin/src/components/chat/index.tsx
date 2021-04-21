@@ -2,39 +2,45 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import {IMessage} from '@stomp/stompjs';
 
+import {DeliveryState, Message} from 'model';
+
 import WebSocket, {ConnectionState} from '../../websocket';
 import MessageProp from '../../components/message';
 import InputBarProp from '../../components/inputBar';
 import AiryInputBar from '../../airyRenderProps/AiryInputBar';
 
-import style from './index.module.scss';
 import HeaderBarProp from '../../components/headerBar';
 import AiryHeaderBar from '../../airyRenderProps/AiryHeaderBar';
-import {AiryWidgetConfiguration} from '../../config';
+
+import {AiryChatPluginConfiguration} from '../../config';
+
 import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
-import {MessageState, isFromContact, Message} from 'model';
+
 import {SourceMessage, CommandUnion} from 'render';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
+
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
-import {cyBubble, cyChatPluginMessageList} from 'chat-plugin-handles';
+import {cyBubble, cyChatPluginMessageList, cyChatPluginEndChatModalButton} from 'chat-plugin-handles';
 import {getResumeTokenFromStorage, resetStorage} from '../../storage';
 import {ModalDialogue} from '../../components/modal';
 import NewConversation from '../../components/newConversation';
-import {start} from '../../api';
+import {setApiHost, start} from '../../api';
+
+import style from './index.module.scss';
 
 let ws: WebSocket;
 
 const defaultWelcomeMessage: Message = {
   id: '19527d24-9b47-4e18-9f79-fd1998b95059',
   content: {text: 'Hello! How can we help you?'},
-  deliveryState: MessageState.delivered,
+  deliveryState: DeliveryState.delivered,
   fromContact: false,
   sentAt: new Date(),
 };
 
-type Props = AiryWidgetConfiguration;
+type Props = AiryChatPluginConfiguration;
 
 const Chat = (props: Props) => {
   const {config} = props;
@@ -43,9 +49,15 @@ const Chat = (props: Props) => {
     defaultWelcomeMessage.content = config.welcomeMessage;
   }
 
+  const chatHiddenInitialState = (): boolean => {
+    if (config.showMode === true) return false;
+    if (getResumeTokenFromStorage(props.channelId)) return true;
+    return false;
+  };
+
   const [installError, setInstallError] = useState('');
   const [animation, setAnimation] = useState('');
-  const [isChatHidden, setIsChatHidden] = useState(getResumeTokenFromStorage(props.channelId) ? false : true);
+  const [isChatHidden, setIsChatHidden] = useState(chatHiddenInitialState());
   const [messages, setMessages] = useState<Message[]>([defaultWelcomeMessage]);
   const [messageString, setMessageString] = useState('');
   const [connectionState, setConnectionState] = useState(null);
@@ -54,15 +66,20 @@ const Chat = (props: Props) => {
 
   useEffect(() => {
     if (config.showMode) return;
+    setApiHost(props.apiHost);
 
-    ws = new WebSocket(props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
+    ws = new WebSocket(props.apiHost, props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
       setConnectionState(state);
     });
     ws.start().catch(error => {
       console.error(error);
       setInstallError(error.message);
     });
-  }, []);
+  }, [props.apiHost, props.channelId]);
+
+  useEffect(() => {
+    setAnimation('');
+  }, [config]);
 
   useEffect(() => {
     updateScroll();
@@ -197,9 +214,9 @@ const Chat = (props: Props) => {
           <div className={style.connectedContainer}>
             <div className={style.chat}>
               <div id="messages" className={style.messages} data-cy={cyChatPluginMessageList}>
-                {messages.map((message, index: number) => {
+                {messages.map((message: Message, index: number) => {
                   const nextMessage = messages[index + 1];
-                  const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
+                  const lastInGroup = nextMessage ? message.fromContact !== nextMessage.fromContact : true;
 
                   return (
                     <MessageProp
@@ -209,7 +226,7 @@ const Chat = (props: Props) => {
                           ? () => props.airyMessageProp(ctrl)
                           : () => (
                               <MessageInfoWrapper
-                                fromContact={isFromContact(message)}
+                                fromContact={message.fromContact}
                                 isChatPlugin={true}
                                 lastInGroup={lastInGroup}>
                                 <SourceMessage
@@ -243,7 +260,10 @@ const Chat = (props: Props) => {
                 {' '}
                 Cancel
               </button>
-              <button className={style.endChatButton} onClick={cancelChatSession}>
+              <button
+                className={style.endChatButton}
+                onClick={cancelChatSession}
+                data-cy={cyChatPluginEndChatModalButton}>
                 {' '}
                 End Chat
               </button>

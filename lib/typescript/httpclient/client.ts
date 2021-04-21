@@ -16,7 +16,9 @@ import {
   UpdateChannelRequestPayload,
   ListTemplatesRequestPayload,
   PaginatedResponse,
-} from './payload';
+  MetadataUpsertRequestPayload,
+  SetStateConversationRequestPayload,
+} from './src/payload';
 import {
   listChannelsDef,
   listConversationsDef,
@@ -40,7 +42,9 @@ import {
   sendMessagesDef,
   getConfigDef,
   listTemplatesDef,
-} from './endpoints';
+  metadataUpsertDef,
+  setStateConversationDef,
+} from './src/endpoints';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
@@ -174,6 +178,10 @@ export class HttpClient {
   public getConfig = this.getRequest<void, Config>(getConfigDef);
 
   public listTemplates = this.getRequest<ListTemplatesRequestPayload, Template[]>(listTemplatesDef);
+
+  public metadataUpsert = this.getRequest<MetadataUpsertRequestPayload>(metadataUpsertDef);
+
+  public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
 
   private getRequest<K, V = void>({
     endpoint,

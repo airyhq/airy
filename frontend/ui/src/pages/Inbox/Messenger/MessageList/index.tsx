@@ -5,7 +5,7 @@ import {debounce, isEmpty} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
 import {cyMessageList} from 'handles';
 
-import {Message, Suggestions, getSource, isFromContact} from 'model';
+import {Message, Suggestions, getSource} from 'model';
 import {SourceMessage} from 'render';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
 
@@ -21,7 +21,7 @@ import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime, isSameDay} from 'dates';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
-  showSuggestedReplies: (sugggestions: Suggestions) => void;
+  showSuggestedReplies: (suggestions: Suggestions) => void;
 };
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
@@ -172,7 +172,7 @@ const MessageList = (props: MessageListProps) => {
           const prevMessage = messages[index - 1];
           const nextMessage = messages[index + 1];
 
-          const lastInGroup = nextMessage ? isFromContact(message) !== isFromContact(nextMessage) : true;
+          const lastInGroup = nextMessage ? message.fromContact !== nextMessage.fromContact : true;
 
           const sentAt = lastInGroup ? formatTime(message.sentAt) : null;
 
@@ -190,7 +190,7 @@ const MessageList = (props: MessageListProps) => {
                 </div>
               )}
               <MessageInfoWrapper
-                fromContact={isFromContact(message)}
+                fromContact={message.fromContact}
                 contact={conversation.metadata.contact}
                 sentAt={sentAt}
                 lastInGroup={lastInGroup}

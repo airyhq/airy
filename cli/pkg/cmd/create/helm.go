@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -75,7 +76,12 @@ func (h *Helm) Setup() error {
 }
 
 func (h *Helm) InstallCharts(overrides []string) error {
-	return h.runHelm(append([]string{"install", "--values", "/apps/config/airy-config-map.yaml", "core", "/apps/helm-chart/"}, overrides...))
+	return h.runHelm(append([]string{"install",
+		"--values", "/apps/config/airy-config-map.yaml",
+		"--set", "global.appImageTag=" + h.version,
+		"--set", "global.namespace=" + h.namespace,
+		"--timeout", "10m0s",
+		"core", "/apps/helm-chart/"}, overrides...))
 }
 
 func (h *Helm) runHelm(args []string) error {

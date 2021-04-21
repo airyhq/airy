@@ -11,6 +11,7 @@ package main
 import (
 	"flag"
 	cm "github.com/airyhq/airy/infrastructure/controller/pkg/configmap-controller"
+	endpoints "github.com/airyhq/airy/infrastructure/controller/pkg/endpoints"
 	v1 "k8s.io/api/core/v1"
 	"os"
 
@@ -57,6 +58,8 @@ func main() {
 	stop := make(chan struct{})
 	defer close(stop)
 	go configMapController.Run(1, stop)
+
+	go endpoints.Serve(clientSet)
 
 	// Wait forever
 	select {}

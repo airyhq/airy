@@ -26,7 +26,7 @@ import {cyBubble, cyChatPluginMessageList, cyChatPluginEndChatModalButton} from 
 import {getResumeTokenFromStorage, resetStorage} from '../../storage';
 import {ModalDialogue} from '../../components/modal';
 import NewConversation from '../../components/newConversation';
-import {start} from '../../api';
+import {setApiHost, start} from '../../api';
 
 import style from './index.module.scss';
 
@@ -66,6 +66,7 @@ const Chat = (props: Props) => {
 
   useEffect(() => {
     if (config.showMode) return;
+    setApiHost(props.apiHost);
 
     ws = new WebSocket(props.apiHost, props.channelId, onReceive, setInitialMessages, (state: ConnectionState) => {
       setConnectionState(state);
@@ -74,7 +75,7 @@ const Chat = (props: Props) => {
       console.error(error);
       setInstallError(error.message);
     });
-  }, []);
+  }, [props.apiHost, props.channelId]);
 
   useEffect(() => {
     setAnimation('');

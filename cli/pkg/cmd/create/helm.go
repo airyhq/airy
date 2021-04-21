@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -79,6 +80,7 @@ func (h *Helm) InstallCharts(overrides []string) error {
 		"--values", "/apps/config/airy-config-map.yaml",
 		"--set", "global.appImageTag=" + h.version,
 		"--set", "global.namespace=" + h.namespace,
+		"--timeout", "10m0s",
 		"core", "/apps/helm-chart/"}, overrides...))
 }
 

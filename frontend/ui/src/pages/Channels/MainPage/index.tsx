@@ -3,6 +3,7 @@ import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import {Source, Channel, Config} from 'model';
 import {FacebookMessengerRequirementsDialog} from '../Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
+import {GoogleBusinessMessagesRequirementsDialog} from '../Providers/Google/GoogleBusinessMessagesRequirementsDialog';
 import {TwilioRequirementsDialog} from '../Providers/Twilio/TwilioRequirementsDialog';
 import SourceDescriptionCard from '../SourceDescriptionCard';
 import ConnectedChannelsBySourceCard from '../ConnectedChannelsBySourceCard';
@@ -128,8 +129,9 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
       case Source.facebook:
-      case Source.google:
         return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
+      case Source.google:
+        return <GoogleBusinessMessagesRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
       case Source.twilioSMS:
       case Source.twilioWhatsapp:
         return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
@@ -160,7 +162,7 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
               sourceInfo={infoItem}
               displayButton={!channelsBySource(infoItem.type).length}
               addChannelAction={() => {
-                if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
+                if (config.components[infoItem.configKey] && !config.components[infoItem.configKey].enabled) {
                   props.history.push(infoItem.newChannelRoute);
                 } else {
                   setDisplayDialogFromSource(infoItem.type);

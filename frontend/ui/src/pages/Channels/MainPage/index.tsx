@@ -3,6 +3,7 @@ import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import {Source, Channel, Config} from 'model';
 import {FacebookMessengerRequirementsDialog} from '../Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
+import {GoogleBusinessMessagesRequirementsDialog} from '../Providers/Google/GoogleBusinessMessagesRequirementsDialog';
 import {TwilioRequirementsDialog} from '../Providers/Twilio/TwilioRequirementsDialog';
 import SourceDescriptionCard from '../SourceDescriptionCard';
 import ConnectedChannelsBySourceCard from '../ConnectedChannelsBySourceCard';
@@ -113,7 +114,7 @@ const SourcesInfo: SourceInfo[] = [
     image: <GoogleAvatarIcon />,
     newChannelRoute: '/',
     channelsListRoute: '/',
-    configKey: 'sources-google',
+    configKey: '',
     channelsToShow: 4,
     itemInfoString: 'channels',
     dataCyAddChannelButton: cyChannelsGoogleAddButton,
@@ -128,8 +129,9 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
       case Source.facebook:
-      case Source.google:
         return <FacebookMessengerRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
+      case Source.google:
+        return <GoogleBusinessMessagesRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
       case Source.twilioSMS:
       case Source.twilioWhatsapp:
         return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;

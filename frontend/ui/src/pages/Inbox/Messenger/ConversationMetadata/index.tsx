@@ -40,8 +40,8 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [tagName, setTagName] = useState('');
 
-  useEffect(() => {    
-    listTags();    
+  useEffect(() => {
+    listTags();
   }, []);
 
   const showAddTags = () => {
@@ -115,9 +115,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     return (
       <Dialog close={() => setShowTagsDialog(false)}>
         <form className={styles.addTags} onSubmit={submitForm}>
-          <div className={styles.addTagHeadline}>Add a tag</div>
           <Input
             type="text"
+            label="Add a tag"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setTagName(e.target.value);
             }}
@@ -127,7 +127,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             placeholder="Please enter a tag name"
             autoComplete="off"
             autoFocus
-            fontClass="font-s"
+            fontClass="font-base"
             minLength={1}
             maxLength={50}
             validation={checkIfExists}
@@ -147,9 +147,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             })
           ) : (
             <div>
-              <div>
-                <Tag tag={{id: '', color: color, name: tagName}} />
-              </div>
+              {tagName.length > 0 && <Tag tag={{id: '', color: color, name: tagName}} />}
               <p className={styles.addTagsDescription}>Pick a color</p>
               <ColorSelector
                 handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value as TagColor)}

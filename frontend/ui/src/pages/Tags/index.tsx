@@ -32,7 +32,7 @@ const initialState = {
   },
   tagQuery: '',
   createDrawer: false,
-  emptyState: true,  
+  emptyState: true,
 };
 
 class Tags extends Component<ConnectedProps<typeof connector>, typeof initialState> {
@@ -222,7 +222,15 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
 
   render() {
     const {allTagsCount} = this.props;
-    return <div className={styles.tagsWrapper}>{allTagsCount == 0 && this.state.emptyState ? <EmptyStateTags removeEmptyState={this.removeEmptyStateAndCreateTag}/> : this.renderTagList()}</div>;
+    return (
+      <div className={styles.tagsWrapper}>
+        {allTagsCount == 0 && this.state.emptyState ? (
+          <EmptyStateTags removeEmptyState={this.removeEmptyStateAndCreateTag} />
+        ) : (
+          this.renderTagList()
+        )}
+      </div>
+    );
   }
 }
 

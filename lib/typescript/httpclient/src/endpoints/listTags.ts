@@ -1,4 +1,4 @@
-import { Tag } from "model";
+import {Tag} from 'model';
 
 const tagMapper = {
   BLUE: 'tag-blue',
@@ -9,5 +9,6 @@ const tagMapper = {
 
 export const listTagsDef = {
   endpoint: 'tags.list',
-  mapResponse: response => response.data.map((t: Tag) => ({id: t.id, name: t.name, color: tagMapper[t.color] || 'tag-blue'})),
+  mapResponse: response =>
+    response.data.map((t: Tag) => ({id: t.id, name: t.name, color: tagMapper[t.color] || 'tag-blue'})),
 };

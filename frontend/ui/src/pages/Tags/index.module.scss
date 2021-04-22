@@ -94,7 +94,7 @@
   @include font-base;
   display: flex;
   height: 38px;
-  align-items: center;  
+  align-items: center;
   color: var(--color-airy-blue);
   cursor: pointer;
   background: white;
@@ -108,8 +108,8 @@
     }
   }
 
-  .plusButton {    
-    margin-left: 4px;    
+  .plusButton {
+    margin-left: 4px;
   }
 }
 

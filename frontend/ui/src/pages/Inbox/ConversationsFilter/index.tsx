@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {filter} from 'lodash-es';
 import {ConversationFilter} from 'model';
 
 import {StateModel} from '../../../reducers';
@@ -30,9 +29,9 @@ type ConversationsFilterProps = {} & ConnectedProps<typeof connector>;
 
 const ConversationsFilter = (props: ConversationsFilterProps) => {
   const {conversationsFilter, setFilter} = props;
-
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [currentFilterState, setCurrentFilterState] = useState('ALL');
+  const allButton = useRef(null);
+  const openButton = useRef(null);
+  const closedButton = useRef(null);
 
   useEffect(() => {
     resetFilter();
@@ -41,107 +40,23 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   }),
     [props.conversations];
 
-  const toggleFilter = () => {
-    setIsFilterOpen(!isFilterOpen);
-  };
-
-  const getActiveFilterCount = () => {
-    return filter(Object.keys(conversationsFilter), (element: string) => {
-      return element !== 'displayName';
-    }).length;
-  };
-
-  const isOnlyOneFilterActive = () => {
-    return getActiveFilterCount() === 1;
-  };
-
-  const isFilterUnreadActive = () => {
-    return conversationsFilter.unreadOnly && isOnlyOneFilterActive();
-  };
-
-  const isFilterButtonActive = () => {
-    return (
-      getActiveFilterCount() > 1 ||
-      conversationsFilter.unreadOnly ||
-      (conversationsFilter.byTags && conversationsFilter.byTags.length > 0) ||
-      (conversationsFilter.byChannels && conversationsFilter.byChannels.length > 0)
-    );
-  };
-
-  const activateUnreadFilter = () => {
-    resetFilter();
-    const filter: ConversationFilter = {unreadOnly: true};
-    setFilter(filter);
-  };
-
-  const renderFilterStatus = () => {
-    const activeFilters = [];
-    if (conversationsFilter.readOnly) {
-      activeFilters.push('Read');
-    }
-    if (conversationsFilter.unreadOnly) {
-      activeFilters.push('Unread');
-    }
-    if (conversationsFilter.byTags && conversationsFilter.byTags.length > 0) {
-      activeFilters.push(`${conversationsFilter.byTags.length} Tags`);
-    }
-    if (conversationsFilter.byChannels && conversationsFilter.byChannels.length > 0) {
-      activeFilters.push(`${conversationsFilter.byChannels.length} Channels`);
-    }
-    return (
-      <div className={styles.filterHintRow}>
-        {activeFilters.map((filter, key) => {
-          return (
-            <div key={key} className={styles.filterHint} onClick={toggleFilter}>
-              {filter}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   const currentStateFilter = () => {
-    const allButton = document.getElementById('allButton');
-    const openButton = document.getElementById('openButton');
-    const closedButton = document.getElementById('closedButton');
+    allButton.current.className = styles.quickFilterButton;
+    openButton.current.className = styles.quickFilterButton;
+    closedButton.current.className = styles.quickFilterButton;
 
-    if ((conversationsFilter.isStateOpen && conversationsFilter.isStateClosed) === undefined) {
-      allButton.className = styles.quickFilterButtonActive;
-      openButton.className = styles.quickFilterButton;
-      closedButton.className = styles.quickFilterButton;
-    } else if (conversationsFilter.isStateOpen === true && conversationsFilter.isStateClosed === false) {
-      allButton.className = styles.quickFilterButton;
-      openButton.className = styles.quickFilterButtonActive;
-      closedButton.className = styles.quickFilterButton;
-    } else if (conversationsFilter.isStateOpen === false && conversationsFilter.isStateClosed === true) {
-      allButton.className = styles.quickFilterButton;
-      openButton.className = styles.quickFilterButton;
-      closedButton.className = styles.quickFilterButtonActive;
+    if (conversationsFilter.isStateOpen === undefined) {
+      allButton.current.className = styles.quickFilterButtonActive;
+    } else if (conversationsFilter.isStateOpen === true) {
+      openButton.current.className = styles.quickFilterButtonActive;
+    } else if (conversationsFilter.isStateOpen === false) {
+      closedButton.current.className = styles.quickFilterButtonActive;
     }
   };
 
-  const setStateAll = () => {
-    setCurrentFilterState('ALL');
+  const setStateOpen = (setOpen: boolean) => {
     const newFilter: ConversationFilter = {...conversationsFilter};
-    newFilter.isStateOpen = undefined;
-    newFilter.isStateClosed = undefined;
-    setFilter(newFilter);
-  }
-
-  const setStateOpen = () => {
-    setCurrentFilterState('OPEN');
-    const newFilter: ConversationFilter = {...conversationsFilter};
-    newFilter.isStateOpen = true;
-    newFilter.isStateClosed = false;
-    setFilter(newFilter);
-  };
-
-  const setStateClosed = () => {
-    setCurrentFilterState('CLOSED');
-    const newFilter: ConversationFilter = {...conversationsFilter};
-    newFilter.isStateClosed = true;
-    newFilter.isStateOpen = false;  
+    newFilter.isStateOpen = setOpen;
     setFilter(newFilter);
   };
 
@@ -168,13 +83,13 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
       <div className={styles.quickFilterContainer}>
         <div className={styles.quickFilterButtons}>
           <div className={styles.quickFilterButtonsBackground}>
-            <button id="allButton" className={styles.quickFilterButton} onClick={() => setStateAll()}>
+            <button ref={allButton} className={styles.quickFilterButton} onClick={() => setStateOpen(undefined)}>
               All
             </button>
-            <button id="openButton" className={styles.quickFilterButton} onClick={() => setStateOpen()}>
+            <button ref={openButton} className={styles.quickFilterButton} onClick={() => setStateOpen(true)}>
               Open
             </button>
-            <button id="closedButton" className={styles.quickFilterButton} onClick={() => setStateClosed()}>
+            <button ref={closedButton} className={styles.quickFilterButton} onClick={() => setStateOpen(false)}>
               Closed
             </button>
           </div>

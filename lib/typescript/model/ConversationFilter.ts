@@ -7,5 +7,4 @@ export interface ConversationFilter {
   byChannels?: string[];
   bySources?: string[];
   isStateOpen?: boolean;
-  isStateClosed?: boolean;
 }

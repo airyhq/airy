@@ -71,19 +71,10 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     setFilter(newFilter);
   };
 
-  const toggleStateOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const toggleState = (event: React.MouseEvent<HTMLElement, MouseEvent>, isOpen: boolean) => {
     event.stopPropagation();
     const newFilter: ConversationFilter = {...filter};
-    newFilter.isStateOpen = !filter.isStateOpen;
-    newFilter.isStateClosed = filter.isStateOpen;
-    setFilter(newFilter);
-  };
-
-  const toggleStateClosed = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.stopPropagation();
-    const newFilter: ConversationFilter = {...filter};
-    newFilter.isStateClosed = !filter.isStateClosed;
-    newFilter.isStateOpen = filter.isStateClosed;
+    newFilter.isStateOpen === isOpen ? (newFilter.isStateOpen = !isOpen) : (newFilter.isStateOpen = isOpen);
     setFilter(newFilter);
   };
 
@@ -143,13 +134,21 @@ const PopUpFilter = (props: PopUpFilterProps) => {
               <h3>State</h3>
               <div className={styles.filterRow}>
                 <button
-                  className={filter.isStateOpen ? styles.filterButtonSelected : styles.filterButton}
-                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleStateOpen(event)}>
+                  className={
+                    !filter.isStateOpen || filter.isStateOpen === undefined
+                      ? styles.filterButton
+                      : styles.filterButtonSelected
+                  }
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleState(event, true)}>
                   Open
                 </button>
                 <button
-                  className={filter.isStateClosed ? styles.filterButtonSelected : styles.filterButton}
-                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleStateClosed(event)}>
+                  className={
+                    filter.isStateOpen || filter.isStateOpen === undefined
+                      ? styles.filterButton
+                      : styles.filterButtonSelected
+                  }
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleState(event, false)}>
                   <CheckmarkCircleIcon />
                   Done
                 </button>

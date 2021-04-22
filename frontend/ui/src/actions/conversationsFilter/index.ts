@@ -110,10 +110,12 @@ const filterToLuceneSyntax = (filter: ConversationFilter): string | null => {
   if (filter.bySources && filter.bySources.length > 0) {
     filterQuery.push('source:(' + filter.bySources.join(' OR ') + ')');
   }
-  if (filter.isStateOpen) {
-    filterQuery.push('state:OPEN');    
-  } else if (filter.isStateClosed) {
-    filterQuery.push('state:CLOSED');
+  if (filter.isStateOpen !== undefined) {
+    if (filter.isStateOpen === true) {
+      filterQuery.push('id:* AND NOT metadata.state:CLOSED');
+    } else {
+      filterQuery.push('metadata.state:CLOSED');
+    }
   }
   return !filterQuery.length ? null : filterQuery.join(' AND ');
 };

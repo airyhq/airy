@@ -93,3 +93,12 @@
   border: none;
   outline: none;
 }
+
+.activeFilters {
+  @extend .filterButton;
+  svg {
+    path {
+      fill: var(--color-airy-blue);
+    }
+  }
+}

@@ -2,32 +2,57 @@ package main
 
 import (
 	"consumer/pkg/worker"
-	"encoding/json"
+	"context"
 	"log"
-	"net/http"
 	"os"
+	"os/signal"
+	"strconv"
+	"sync"
+	"syscall"
+	"time"
 )
 
 func main() {
-	workerTask := worker.Start(os.Getenv("BEANSTALK_HOSTNAME"), os.Getenv("BEANSTALK_PORT"))
+	maxBackOffSeconds, err := strconv.Atoi(os.Getenv("MAX_BACKOFF_SECONDS"))
+	if err != nil {
+		log.Fatal("MAX_BACKOFF_SECONDS not set")
+	}
 
-	http.HandleFunc("/status", func(w http.ResponseWriter, r *http.Request) {
-		errors, err := json.Marshal(workerTask.GetErrors())
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+	ctx, cancel := context.WithCancel(context.Background())
+	var wg sync.WaitGroup
 
-		w.Header().Set("Content-Type", "application/json")
-		_, err = w.Write(errors)
-		if err != nil {
-			log.Println(err)
-		}
-	})
+	webhookConfigStream := make(chan string)
 
-	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-	})
+	kafkaConsumerConfig := worker.KafkaConsumerConfig{
+		Brokers:           os.Getenv("KAFKA_BROKERS"),
+		SchemaRegistryURL: os.Getenv("KAFKA_SCHEMA_REGISTRY_URL"),
+		Group:             "WebhookConsumer",
+		Topics:            "application.communication.webhooks",
+	}
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	wg.Add(1)
+	go worker.StartKafkaConsumer(ctx, &wg, webhookConfigStream, kafkaConsumerConfig)
+
+	w, err := worker.Start(
+		ctx,
+		&wg,
+		webhookConfigStream,
+		os.Getenv("BEANSTALK_HOSTNAME"),
+		os.Getenv("BEANSTALK_PORT"),
+		time.Duration(maxBackOffSeconds)*time.Second,
+	)
+	if err != nil {
+		cancel()
+	}
+
+	wg.Add(1)
+	go w.StartServer(ctx, &wg)
+
+	sigterm := make(chan os.Signal, 1)
+	signal.Notify(sigterm, syscall.SIGINT, syscall.SIGTERM)
+
+	<-sigterm
+	log.Println("terminating: via signal")
+	cancel()
+	wg.Wait()
 }

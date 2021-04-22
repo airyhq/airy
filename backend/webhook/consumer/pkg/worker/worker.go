@@ -1,12 +1,15 @@
 package worker
 
 import (
+	"context"
+	"encoding/json"
 	"errors"
+	"sync"
 
-	beanstalk "github.com/beanstalkd/go-beanstalk"
+	"github.com/beanstalkd/go-beanstalk"
+	"github.com/jpillora/backoff"
 
 	"bytes"
-	"encoding/json"
 	"fmt"
 
 	"log"
@@ -14,100 +17,121 @@ import (
 	"time"
 )
 
-type ConsumerError struct {
+type Worker struct {
+	endpoint     string
+	customHeader map[string]string
+	beanstalk    *beanstalk.Conn
+	backoff      *backoff.Backoff
+	errors       []consumerError
+}
+type consumerError struct {
 	Err error
 	T   time.Time
 }
 
-type Task struct {
-	done      chan bool
-	beanstalk *beanstalk.Conn
-	errors    []ConsumerError
-}
-
-type AiryMessage struct {
+type webhookConfig struct {
+	Id       string
 	Endpoint string
-	Headers  map[string]string
-	Body     map[string]interface{}
+	Headers  map[string]map[string]string
+	Status   string
 }
 
-var backoffSchedule = []time.Duration{
-	0 * time.Second,
-	1 * time.Second,
-	3 * time.Second,
-	10 * time.Second,
-}
+func Start(
+	ctx context.Context,
+	wg *sync.WaitGroup,
+	webhookConfigStream chan string,
+	hostname, port string,
+	maxBackoff time.Duration,
+) (*Worker, error) {
 
-func Start(hostname, port string) Task {
 	conn, err := beanstalk.Dial("tcp", fmt.Sprintf("%s:%s", hostname, port))
 
 	if err != nil {
-		log.Fatal("Failed to connect to Beanstalk", err)
+		return nil, err
 	}
 
-	t := &Task{
-		beanstalk: conn,
-		done:      make(chan bool),
-		errors:    make([]ConsumerError, 0),
+	w := Worker{
+		endpoint:     "",
+		customHeader: make(map[string]string),
+		beanstalk:    conn,
+		backoff:      &backoff.Backoff{Max: maxBackoff},
+		errors:       make([]consumerError, 0),
 	}
 
-	go func() {
-		for {
-			t.Run()
-		}
-	}()
-
-	log.Printf("Consumer started")
-	return *t
+	wg.Add(2)
+	go w.Run(ctx, wg)
+	go w.updateWebhookConfig(ctx, wg, webhookConfigStream)
+	return &w, nil
 }
 
-func (t *Task) Run() {
-	id, body, err := t.beanstalk.Reserve(1 * time.Minute)
+func (w *Worker) Run(ctx context.Context, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("terminating worker: context canceled ")
+			return
+		default:
+			id, event, err := w.beanstalk.Reserve(1 * time.Minute)
+			if errors.Is(err, beanstalk.ErrTimeout) {
+				continue
+			}
+			if err != nil {
+				log.Println(err)
+				continue
+			}
 
-	if errors.Is(err, beanstalk.ErrTimeout) {
-		return
-	}
-
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	for _, backoff := range backoffSchedule {
-		time.Sleep(backoff)
-		err = t.HandleMessage(string(body))
-		if err != nil {
-			t.logError(err)
-		} else {
-			break
+			for {
+				select {
+				case <-ctx.Done():
+					log.Println("terminating worker: context canceled ")
+					return
+				default:
+					err = w.HandleEvent(event)
+					if err != nil {
+						w.logError(err)
+						time.Sleep(w.backoff.Duration())
+						continue
+					}
+					err = w.beanstalk.Delete(id)
+					if err != nil {
+						w.logError(err)
+					}
+					w.backoff.Reset()
+					break
+				}
+			}
 		}
 	}
-	t.beanstalk.Delete(id)
 }
 
-func (t *Task) HandleMessage(message string) error {
-	data := &AiryMessage{}
-
-	if err := json.Unmarshal([]byte(message), &data); err != nil {
-		return err
+func (w *Worker) updateWebhookConfig(ctx context.Context, wg *sync.WaitGroup, webhookConfigStream chan string) {
+	defer wg.Done()
+	log.Println("Started updateWebhookConfig routine")
+	select {
+	case <-ctx.Done():
+		log.Println("terminating updateWebhookConfig: context cancelled")
+	case config := <-webhookConfigStream:
+		var webhookConfig = webhookConfig{}
+		if err := json.Unmarshal([]byte(config), &webhookConfig); err != nil {
+			log.Fatal(err)
+		}
+		w.endpoint = webhookConfig.Endpoint
+		w.customHeader = webhookConfig.Headers["map"]
 	}
+}
 
-	jsonString, err := json.Marshal(data.Body)
-
-	if err != nil {
-		return err
-	}
-
-	req, _ := http.NewRequest("POST", data.Endpoint, bytes.NewBuffer(jsonString))
+func (w *Worker) HandleEvent(data []byte) error {
+	req, _ := http.NewRequest("POST", w.endpoint, bytes.NewBuffer(data))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "Airy/1.0")
 
-	for k, v := range data.Headers {
+	for k, v := range w.customHeader {
 		req.Header.Set(k, v)
 	}
 
 	client := &http.Client{
-		Timeout: 5 * time.Second,
+		Timeout: 10 * time.Second,
 	}
 	endpointResp, err := client.Do(req)
 
@@ -116,20 +140,20 @@ func (t *Task) HandleMessage(message string) error {
 	}
 
 	if endpointResp.StatusCode > 299 {
-		return fmt.Errorf("%v returned status code %v", data.Endpoint, endpointResp.StatusCode)
+		return fmt.Errorf("%v returned status code %v", w.endpoint, endpointResp.StatusCode)
 	}
 
 	return nil
 }
 
-func (t *Task) logError(err error) {
+func (t *Worker) logError(err error) {
 	log.Println(err)
-	t.errors = append(t.errors, ConsumerError{
+	t.errors = append(t.errors, consumerError{
 		Err: err,
 		T:   time.Now(),
 	})
 }
 
-func (t *Task) GetErrors() []ConsumerError {
+func (t *Worker) GetErrors() []consumerError {
 	return t.errors
 }

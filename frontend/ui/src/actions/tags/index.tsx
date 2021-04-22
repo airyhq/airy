@@ -29,8 +29,12 @@ export function listTags() {
 
 export function createTag(requestPayload: CreateTagRequestPayload) {
   return async (dispatch: Dispatch<any>) => {
+    console.log("request");
+      console.log(requestPayload);
     return HttpClientInstance.createTag(requestPayload)
       .then((response: Tag) => {
+        console.log("response");
+        console.log(response);
         dispatch(addTagAction(response));
         return Promise.resolve(response);
       })

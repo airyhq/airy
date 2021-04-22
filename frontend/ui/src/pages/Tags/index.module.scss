@@ -13,7 +13,7 @@
 .organizationSectionHeadline {
   @include font-l;
   font-weight: bold;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 }
 
 .organizationContainer {
@@ -91,13 +91,10 @@
 }
 
 .addButton {
+  @include font-base;
   display: flex;
-  flex-direction: row;
-  margin-left: 8px;
-  margin-top: 6px;
-  padding-top: 4px;
-  padding-bottom: 6px;
-  position: relative;
+  height: 38px;
+  align-items: center;  
   color: var(--color-airy-blue);
   cursor: pointer;
   background: white;
@@ -111,12 +108,8 @@
     }
   }
 
-  .plusButton {
-    display: inherit;
-    margin-left: 4px;
-    width: 12px;
-    position: relative;
-    top: 1px;
+  .plusButton {    
+    margin-left: 4px;    
   }
 }
 
@@ -149,7 +142,7 @@
   @include font-m;
   font-weight: 700;
   text-align: left;
-  padding-bottom: 41px;
+  padding-bottom: 0px;
   padding-left: 2px;
 }
 

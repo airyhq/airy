@@ -1,36 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 import {Button, Input} from 'components';
 
 import styles from './ConnectNewChatPlugin.module.scss';
 
-import {
-  cyChannelsChatPluginConnectButton,
-  cyChannelsChatPluginFormNameInput,
-  cyChannelsChatPluginFormSubmitButton,
-} from 'handles';
+import {cyChannelsChatPluginFormNameInput, cyChannelsChatPluginFormSubmitButton} from 'handles';
 
 interface ConnectNewChatPluginProps {
   createNewConnection(displayName: string, imageUrl?: string): void;
 }
 
 export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPluginProps) => {
-  const [showNewPage, setShowNewPage] = useState(true);
   const [displayName, setDisplayName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
 
-  useEffect(() => {
-    setShowNewPage(true);
-  }, []);
-
-  return showNewPage ? (
-    <div>
-      <p className={styles.newPageParagraph}>Add Airy Live Chat to your website and application</p>
-      <Button type="button" onClick={() => setShowNewPage(false)} dataCy={cyChannelsChatPluginConnectButton}>
-        Connect Airy Live Chat
-      </Button>
-    </div>
-  ) : (
+  return (
     <div>
       <p className={styles.newPageParagraph}>Add Airy Live Chat to your website and application</p>
       <div className={styles.formWrapper}>

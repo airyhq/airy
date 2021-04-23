@@ -1,5 +1,5 @@
 import React, {CSSProperties, useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
@@ -7,13 +7,15 @@ import {Avatar} from 'render';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
-import {Message} from 'model';
-import {MergedConversation} from '../../../reducers';
+import {Conversation, Message} from 'model';
+import {MergedConversation, StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations, conversationState} from '../../../actions/conversations';
 
 import styles from './index.module.scss';
 import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
+import { newestFilteredConversationFirst } from '../../../selectors/conversations';
+import { ConversationRouteProps } from '../index';
 
 interface FormattedMessageProps {
   message: Message;
@@ -30,7 +32,13 @@ const mapDispatchToProps = {
   conversationState,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
+  return {
+    filteredConversations: newestFilteredConversationFirst(state),
+  }
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
   if (message?.content) {
@@ -40,15 +48,30 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
 };
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, style, readConversations, conversationState} = props;
+  const {conversation, active, style, readConversations, conversationState, filteredConversations} = props;
+
+  const filteredItem = () => {
+    let filteredCon: Conversation
+    filteredConversations.map((filteredConversation: Conversation) => {
+      if (conversation.id === filteredConversation.id) {
+        filteredCon = filteredConversation
+      } 
+    })
+    return filteredCon
+  }  
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
-  const currentConversationState = conversation.metadata.state || 'OPEN';
+  const currentConversationState = filteredConversations.length > 0 ? filteredItem().metadata.state : (conversation.metadata.state || 'OPEN');
+  const currentId = filteredConversations.length > 0 ?  filteredItem().id : conversation.id;
 
-  const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  console.log(`filtered:    ${filteredItem()?.metadata?.state}`);
+  console.log(`conversation:   ${conversation.metadata.state}`);
+  
+  
+  const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {  
     const newState = currentConversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
-    conversationState(conversation.id, newState);
+    conversationState(currentId, newState);
     event.preventDefault();
     event.stopPropagation();
   };
@@ -75,7 +98,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
     if (active && unread) {
       return readConversations(conversation.id);
     }
-  }, [active, conversation]);
+  }, [active, conversation, currentConversationState]);
 
   return (
     <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>
@@ -110,4 +133,4 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   );
 };
 
-export default connector(ConversationListItem);
+export default withRouter(connector(ConversationListItem));

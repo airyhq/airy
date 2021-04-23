@@ -84,7 +84,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
       return element !== 'displayName';
     }).length;
   };
-
+  
   const renderSearchInput = isShowingSearchInput ? (
     <div className={styles.containerSearchField}>
       <button type="button" className={styles.backButton} onClick={onClickBack} data-cy={cySearchFieldBackButton}>
@@ -109,6 +109,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
           <IconSearch className={styles.searchIcon} title="Search" />
         </button>
         <button
+          title="Filter"
           id="filterButton"
           className={`${getActiveFilterCount() > 0 ? styles.activeFilters : styles.filterButton}`}
           onClick={() => toggleFilter()}>

@@ -10,6 +10,8 @@ import {StateModel} from '../../reducers';
 import Messenger from './Messenger';
 import {setPageTitle} from '../../services/pageTitle';
 
+import {allConversations} from '../../selectors/conversations';
+
 export type ConversationRouteProps = RouteComponentProps<{conversationId: string}>;
 
 interface InboxProps {
@@ -19,6 +21,7 @@ interface InboxProps {
 const mapStateToProps = (state: StateModel) => {
   return {
     user: state.data.user,
+    conversations: allConversations(state),
   };
 };
 
@@ -30,11 +33,16 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
+  const {conversations, listChannels, listConversations} = props;
+
   useEffect(() => {
-    props.listConversations();
-    props.listChannels();
-    setPageTitle('Inbox');
+    listConversations();
+    listChannels();
   }, []);
+
+  useEffect(() => {
+    setPageTitle(`Inbox (${conversations.length})`);
+  }, [conversations]);
 
   return <Messenger />;
 };

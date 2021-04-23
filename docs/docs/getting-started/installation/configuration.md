@@ -14,8 +14,8 @@ Use an airy.yaml configuration file to customize your Airy Core instance
 The configuration workflow is as simple as:
 
 ```sh
-$EDITOR airy.yaml # create your airy.yaml
-airy config --config path/to/airy.yml # apply your config!
+$EDITOR /path/to/config/directory/airy.yaml # edit your airy.yaml file
+airy config apply --config-dir /path/to/config/directory/ # apply your config
 ```
 
 Your Airy Core instance will start and stop components accordingly to your
@@ -97,5 +97,5 @@ use the [airy config apply](/cli/usage.md#config-apply) by running the
 following [Airy CLI](/cli/introduction.md) command.
 
 ```bash
-airy config apply --config ./airy.yaml
+airy config apply --config-dir /path/to/config/directory/
 ```

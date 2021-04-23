@@ -1,6 +1,6 @@
 import _, {createSelector} from 'reselect';
 import {filter, pickBy, reverse, sortBy, values} from 'lodash-es';
-import {Conversation} from 'model';
+import {Conversation, ConversationFilter} from 'model';
 import {MergedConversation, StateModel} from '../reducers';
 import {ConversationMap} from '../reducers/data/conversations';
 import {ConversationRouteProps} from '../pages/Inbox';
@@ -35,10 +35,44 @@ export const newestConversationFirst = createSelector(allConversations, conversa
 });
 
 export const newestFilteredConversationFirst = createSelector(
-  filteredConversationSelector,
-  (conversations: Conversation[]) => {
+  (state: StateModel) => state.data.conversations.all.items,
+  (state: StateModel) => state.data.conversations.filtered.items,
+  (state: StateModel) => state.data.conversations.filtered.currentFilter,
+  (conversationsMap: ConversationMap, filteredConversationsMap: ConversationMap, currentFilter: ConversationFilter) => {
+
+    const conversations = Object.keys(conversationsMap).map((cId: string) => ({...conversationsMap[cId]}));
+    const filteredConversations = Object.keys(filteredConversationsMap).map((cId: string) => ({...filteredConversationsMap[cId]}))
+
+    const updatedConversations: ConversationMap = {};
+    filteredConversations.map((filteredConversation: Conversation) => {
+      if (conversationsMap[filteredConversation.id]) {
+        updatedConversations[filteredConversation.id] = conversationsMap[filteredConversation.id];
+      } else {
+        updatedConversations[filteredConversation.id] = filteredConversationsMap[filteredConversation.id];
+      }      
+    });
+
+    conversations.map((conversation: Conversation) => {
+      if (!updatedConversations[conversation.id]) {
+        updatedConversations[conversation.id] = conversation;
+      }
+    });
+
+    const updatedFiltered = filter(updatedConversations, (conversation: Conversation) => {
+      if (currentFilter.isStateOpen !== undefined) {
+        if (currentFilter.isStateOpen) {
+          return conversation.metadata.state === "OPEN" || conversation.metadata.state === undefined;
+        } else {
+          return conversation.metadata.state === "CLOSED";
+        }
+      }
+      return true;
+    });
+
+    console.log(updatedConversations);
+
     return reverse(
-      sortBy(conversations, (conversation: Conversation) => conversation.lastMessage && conversation.lastMessage.sentAt)
+      sortBy(updatedFiltered, (conversation: Conversation) => conversation.lastMessage && conversation.lastMessage.sentAt)
     );
   }
 );

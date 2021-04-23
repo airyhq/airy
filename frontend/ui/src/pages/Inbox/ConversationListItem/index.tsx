@@ -7,7 +7,7 @@ import {Avatar} from 'render';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
-import {Conversation, Message} from 'model';
+import {Message} from 'model';
 import {MergedConversation, StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations, conversationState} from '../../../actions/conversations';
@@ -50,28 +50,13 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
 const ConversationListItem = (props: ConversationListItemProps) => {
   const {conversation, active, style, readConversations, conversationState, filteredConversations} = props;
 
-  const filteredItem = () => {
-    let filteredCon: Conversation
-    filteredConversations.map((filteredConversation: Conversation) => {
-      if (conversation.id === filteredConversation.id) {
-        filteredCon = filteredConversation
-      } 
-    })
-    return filteredCon
-  }  
-
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
-  const currentConversationState = filteredConversations.length > 0 ? filteredItem().metadata.state : (conversation.metadata.state || 'OPEN');
-  const currentId = filteredConversations.length > 0 ?  filteredItem().id : conversation.id;
-
-  console.log(`filtered:    ${filteredItem()?.metadata?.state}`);
-  console.log(`conversation:   ${conversation.metadata.state}`);
-  
+  const currentConversationState =  conversation.metadata.state || 'OPEN';
   
   const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {  
     const newState = currentConversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
-    conversationState(currentId, newState);
+    conversationState(conversation.id, newState);
     event.preventDefault();
     event.stopPropagation();
   };

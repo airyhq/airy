@@ -1,4 +1,4 @@
-package co.airy.spring.auth;
+package co.airy.spring.auth.test_app;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class TestApp {
+public class Controller {
 
     @PostMapping("/principal.get")
     ResponseEntity<?> echoPrincipal(Authentication authentication) {
         final String userId = (String) authentication.getPrincipal();
         return ResponseEntity.ok(new PrincipalDetails(userId));
+    }
+
+
+    @PostMapping("/data.get")
+    ResponseEntity<?> getData() {
+        return ResponseEntity.ok().build();
     }
 }
 

@@ -3,7 +3,44 @@ title: Authentication
 sidebar_label: Authentication
 ---
 
-By default, authentication is disabled. To protect your API endpoints you need to set the `security.systemToken`
-[cluster configuration](getting-started/installation/configuration.md) value in your `airy.yaml` and apply it.
+By default, authentication is disabled. There are two ways of protecting resources from unauthorized access.
+You can set `security.systemToken` in the [cluster configuration](getting-started/installation/configuration.md) to a secure secret value in your `airy.yaml` and apply it. Once that is done you authenticate by setting the token as a value on the [Bearer Authorization header](https://tools.ietf.org/html/rfc6750#section-2.1) when making requests.
 
-Once that is done you authenticate by setting the token as a value on the [Bearer Authorization header](https://tools.ietf.org/html/rfc6750#section-2.1) when making requests.
+This is fine for API only access, but it means that UI clients will no longer work since api keys are not meant for web authentication. Therefore Airy Core also supports [Open Id Connect (OIDC)](https://openid.net/connect/) to allow your agents to authenticate via an external provider. If you configure this in addition to the system token then both types of authentication will work when requesting APIs. If you only configure OIDC authentication then regular
+
+## Configuring OIDC
+
+OIDC is an authentication layer on top of the popular OAuth 2.0 authorization framework. With the added information of
+"who" made a request (authentication) Airy Core is able to offer audit and workflow features.
+
+### GitHub
+
+The easiest way to configure our OIDC is by using our GitHub preset. We will explain how to configure any OIDC provider further below. To get started you first need a GitHub OAuth app. You can follow [this guide](https://docs.github.com/en/developers/apps/creating-an-oauth-app) and as an Authorization Callback URL you need to put your Airy host with the 
+path `/login/oauth2/code/github`. So if your Airy Core instance is hosted at `https://airy.example.org` the Callback URL
+would be `https://airy.example.org/login/oauth2/code/github`  
+
+:::note
+
+You can always get your Airy host by running the CLI command `airy api endpoint`
+
+:::
+
+Now you can add your GitHub app configuration to the security section in your `airy.yaml`:
+
+```yaml
+security:
+  oidc:
+    allowedEmailPatterns: "*@airy.co,grace@example.org"
+    provider: "github"
+    clientId: "github oauth client id"
+    clientSecret: "github oauth client secret"
+```
+
+Since you don't want just any GitHub user to be able to access your Airy Core instance you are also required to add
+a list of emails or email wildcard patterns to define which users are authorized for use.
+
+Once this configuration is applied all requests to the 
+
+### Any open id provider
+
+TODO

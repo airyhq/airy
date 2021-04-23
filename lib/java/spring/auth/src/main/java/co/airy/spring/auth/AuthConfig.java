@@ -1,9 +1,11 @@
 package co.airy.spring.auth;
 
+import co.airy.spring.auth.oidc.OidcConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,12 +27,17 @@ import java.util.List;
 public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final String[] ignoreAuthPatterns;
     private final String systemToken;
+    private final OidcConfig oidcConfig;
 
-    public AuthConfig(@Value("${systemToken:#{null}}") String systemToken, List<IgnoreAuthPattern> ignorePatternBeans) {
+    public AuthConfig(@Value("${systemToken:#{null}}") String systemToken,
+                      List<IgnoreAuthPattern> ignorePatternBeans,
+                      OidcConfig oidcConfig
+    ) {
         this.systemToken = systemToken;
         this.ignoreAuthPatterns = ignorePatternBeans.stream()
                 .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
                 .toArray(String[]::new);
+        this.oidcConfig = oidcConfig;
     }
 
     @Override
@@ -43,10 +50,18 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         if (this.systemToken != null) {
             http.addFilter(new AuthenticationFilter(authenticationManager(), this.systemToken))
                     .authorizeRequests(authorize -> authorize
-                            .antMatchers("/actuator/**", "/ws*").permitAll()
+                            .antMatchers("/actuator/**").permitAll()
                             .antMatchers(ignoreAuthPatterns).permitAll()
                             .anyRequest().authenticated()
                     );
+        }
+
+        if (this.oidcConfig.isPresent()) {
+            http.authorizeRequests(authorize -> authorize
+                    .antMatchers("/actuator/**").permitAll()
+                    .antMatchers(ignoreAuthPatterns).permitAll()
+                    .anyRequest().authenticated()
+            ).oauth2Login(Customizer.withDefaults());
         }
     }
 

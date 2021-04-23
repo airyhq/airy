@@ -10,7 +10,7 @@ import {Tag as TagModel, TagColor} from 'model';
 import {Settings} from '../../reducers/data/settings';
 import {StateModel} from '../../reducers';
 
-import {ReactComponent as EditPencil2Icon} from 'assets/images/icons/edit-pencil.svg';
+import {ReactComponent as EditPencilIcon} from 'assets/images/icons/edit-pencil.svg';
 import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
 
 import styles from './TableRow.module.scss';
@@ -139,7 +139,7 @@ const TableRowComponent = (props: TableRowProps) => {
       <td style={{width: '25%'}}>
         <div className={styles.actions}>
           <button type="button" className={styles.actionButton} onClick={() => setTagState({...tag, edit: true})}>
-            <EditPencil2Icon className={styles.actionSVGEdit} title="Edit tag" />
+            <EditPencilIcon className={styles.actionSVGEdit} title="Edit tag" />
           </button>
           <button
             type="button"

@@ -1,16 +1,20 @@
 import React, {useState, useCallback} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
-import styles from './TableRow.module.scss';
 import {updateTag} from '../../actions/tags';
+
 import {Button, LinkButton} from 'components';
-import {ReactComponent as EditIcon} from 'assets/images/icons/edit.svg';
-import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
 import ColorSelector from '../../components/ColorSelector';
 import Tag from '../../components/Tag';
 import {Tag as TagModel, TagColor} from 'model';
 import {Settings} from '../../reducers/data/settings';
 import {StateModel} from '../../reducers';
+
+import {ReactComponent as EditPencilIcon} from 'assets/images/icons/edit-pencil.svg';
+import {ReactComponent as TrashIcon} from 'assets/images/icons/trash.svg';
+
+import styles from './TableRow.module.scss';
+
 import {cyTagsTableRowDisplayDeleteModal} from 'handles';
 
 type TableRowProps = {
@@ -135,7 +139,7 @@ const TableRowComponent = (props: TableRowProps) => {
       <td style={{width: '25%'}}>
         <div className={styles.actions}>
           <button type="button" className={styles.actionButton} onClick={() => setTagState({...tag, edit: true})}>
-            <EditIcon className={styles.actionSVG} title="Edit tag" />
+            <EditPencilIcon className={styles.actionSVGEdit} title="Edit tag" />
           </button>
           <button
             type="button"

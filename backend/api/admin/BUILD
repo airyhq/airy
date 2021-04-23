@@ -7,7 +7,7 @@ app_deps = [
     "//backend:base_app",
     "//:springboot_actuator",
     "//backend/model/channel",
-    "//backend:tag",
+    "//backend/model/tag",
     "//backend:webhook",
     "//backend/model/metadata",
     "//backend/model/template",

@@ -5,7 +5,7 @@ import co.airy.avro.communication.TagColor;
 import co.airy.core.api.admin.payload.CreateTagRequestPayload;
 import co.airy.core.api.admin.payload.DeleteTagRequestPayload;
 import co.airy.core.api.admin.payload.ListTagsResponsePayload;
-import co.airy.core.api.admin.payload.TagResponsePayload;
+import co.airy.core.api.admin.payload.TagPayload;
 import co.airy.core.api.admin.payload.UpdateTagRequestPayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
@@ -62,11 +62,7 @@ public class TagsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-        return ResponseEntity.status(201).body(TagResponsePayload.builder()
-                .id(tag.getId())
-                .name(tag.getName())
-                .color(tag.getColor().toString())
-                .build());
+        return ResponseEntity.status(201).body(TagPayload.fromTag(tag));
     }
 
     @PostMapping("/tags.list")
@@ -77,13 +73,7 @@ public class TagsController {
         List<Tag> tags = new ArrayList<>();
         iterator.forEachRemaining(kv -> tags.add(kv.value));
 
-        final List<TagResponsePayload> data = tags.stream()
-                .map(tag -> TagResponsePayload.builder()
-                        .id(tag.getId())
-                        .name(tag.getName())
-                        .color(tag.getColor().toString())
-                        .build()
-                ).collect(toList());
+        final List<TagPayload> data = tags.stream().map(TagPayload::fromTag).collect(toList());
 
         return ResponseEntity.ok().body(ListTagsResponsePayload.builder().data(data).build());
     }

@@ -77,6 +77,8 @@ maven_install(
         "org.springframework.boot:spring-boot-starter-web:2.4.5",
         "org.springframework.boot:spring-boot-starter-websocket:2.4.5",
         "org.springframework.boot:spring-boot-starter-security:2.4.5",
+        "org.springframework.boot:spring-boot-starter-oauth2-client:2.4.5",
+        "org.springframework.security.oauth:spring-security-oauth2:2.4.1.RELEASE",
         "org.springframework.retry:spring-retry:1.2.5.RELEASE",
         "org.springframework:spring-aop:4.1.4.RELEASE",
         "org.springframework:spring-context-support:5.3.6",

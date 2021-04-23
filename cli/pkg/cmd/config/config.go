@@ -37,9 +37,11 @@ func applyConfig(cmd *cobra.Command, args []string) {
 		console.Exit("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
 	}
 
-	if len(conf.Security) != 0 {
-		applyErr := kube.ApplyConfigMap("security", conf.Kubernetes.Namespace, conf.Security, map[string]string{}, clientset)
+	secData := conf.Security.getData()
+	if len(secData) != 0 {
+		applyErr := kube.ApplyConfigMap("security", conf.Kubernetes.Namespace, secData, map[string]string{}, clientset)
 		if applyErr != nil {
+			// TODO should we error here?
 			fmt.Printf("unable to apply configuration for \"security\"\n Error:\n %v\n", applyErr)
 		} else {
 			fmt.Printf("applied configuration for \"security\"\n")

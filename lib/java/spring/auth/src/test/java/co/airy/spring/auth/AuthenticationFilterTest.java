@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-public class JwtAuthenticationFilterTest {
+public class AuthenticationFilterTest {
 
     @Autowired
     private MockMvc mvc;

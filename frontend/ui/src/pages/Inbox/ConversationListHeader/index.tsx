@@ -5,7 +5,6 @@ import {SearchField} from 'components';
 import {StateModel} from '../../../reducers';
 
 import {setSearch, resetFilteredConversationAction} from '../../../actions/conversationsFilter';
-import {allConversations} from '../../../selectors/conversations';
 
 import {ReactComponent as IconSearch} from 'assets/images/icons/search.svg';
 import {ReactComponent as BackIcon} from 'assets/images/icons/arrow-left-2.svg';
@@ -18,7 +17,7 @@ const mapStateToProps = (state: StateModel) => {
   return {
     user: state.data.user,
     currentFilter: state.data.conversations.filtered.currentFilter || {},
-    conversations: allConversations(state),
+    totalConversations: state.data.conversations.all.paginationData.total,
   };
 };
 
@@ -62,9 +61,9 @@ const ConversationListHeader = (props: ConnectedProps<typeof connector>) => {
   };
 
   const InboxConversationCount = () => {
-    const {conversations} = props;
+    const {totalConversations} = props;
 
-    return <div className={styles.headline}>{`Inbox (${conversations.length})`}</div>;
+    return <div className={styles.headline}>{`Inbox (${totalConversations})`}</div>;
   };
 
   const renderSearchInput = isShowingSearchInput ? (

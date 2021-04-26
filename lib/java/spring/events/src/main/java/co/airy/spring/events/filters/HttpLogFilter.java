@@ -1,7 +1,6 @@
 package co.airy.spring.events.filters;
 
 import co.airy.spring.events.custom.HttpEventPublisher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,10 +17,14 @@ import java.util.stream.Collectors;
 @Component
 public class HttpLogFilter extends OncePerRequestFilter {
 
-    @Autowired
-    HttpEventPublisher httpEventPublisher;
+    private final HttpEventPublisher httpEventPublisher;
 
     private static final int MAX_JSON_LENGTH = 2048;
+
+    public HttpLogFilter(HttpEventPublisher httpEventPublisher) {
+        super();
+        this.httpEventPublisher = httpEventPublisher;
+    }
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         boolean isFirstRequest = !this.isAsyncDispatch(request);
@@ -31,10 +34,11 @@ public class HttpLogFilter extends OncePerRequestFilter {
         }
 
         try {
-            filterChain.doFilter(requestToUse, response);
-        } finally {
             publishEvent(requestToUse);
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
+        filterChain.doFilter(requestToUse, response);
     }
 
     private void publishEvent(HttpServletRequest request) {

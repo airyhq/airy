@@ -27,7 +27,7 @@ public class KafkaListener implements ApplicationListener<HttpEvent> {
                     .setHeaders(event.getHeaders())
                     .setUri(event.getUrl())
                     .build();
-            producer.send(new ProducerRecord<>(opsApplicationLogs.name(), UUID.randomUUID().toString(), log)).get();
+            producer.send(new ProducerRecord<>(opsApplicationLogs.name(), UUID.randomUUID().toString(), log));
         } catch (Exception e) {
             e.printStackTrace();
         }

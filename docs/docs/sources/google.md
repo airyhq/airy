@@ -53,17 +53,13 @@ Once you are registered, head over to your Google Service Account and create a k
 <img alt="Facebook token page" src={useBaseUrl('img/sources/google/key.png')} />
 
 Copy the Google Service Account key file provided by Google to
-`infrastructure/airy.yaml` as a one line string, below `sources/google`:
-
-```
-GOOGLE_SA_FILE=<CONTENT OF THE FILE>
-```
+your `airy.yaml` file as a one line string next to `saFile:` below `components/sources/google`:
 
 ### Step 3: Verification by Google
 
 As a security measure, every request sent by Google is signed and verified
-against your partner key. You must also set the environment variable
-`GOOGLE_PARTNER_KEY` to your partner key.
+against your partner key. You must also set the value for `partnerKey:` to your partner key,
+in your `airy.yaml` file, below `components/sources/google`.
 
 import ApplyVariablesNote from './applyVariables-note.mdx'
 

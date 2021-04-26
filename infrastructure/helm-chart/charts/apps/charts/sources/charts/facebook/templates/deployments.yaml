@@ -53,7 +53,7 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: "{{ .Values.component }}"
-                key: WebhookSecret
+                key: webhookSecret
           - name: FACEBOOK_APP_ID
             valueFrom:
               configMapKeyRef:

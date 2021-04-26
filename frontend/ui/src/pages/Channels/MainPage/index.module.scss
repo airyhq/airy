@@ -2,13 +2,12 @@
 @import 'assets/scss/colors.scss';
 
 .channelsHeadline {
-  @include font-base;
-  display: flex;
-  justify-content: space-between;
-  color: var(--color-text-contrast);
-  font-size: 39px;
+  @include font-xl;
   font-weight: 900;
   letter-spacing: 0;
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-contrast);  
   margin-bottom: 14px;
 }
 

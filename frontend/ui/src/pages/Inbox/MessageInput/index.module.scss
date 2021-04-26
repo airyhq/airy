@@ -214,12 +214,12 @@
 }
 
 .templateSelector {
-  max-height: 184px;
+  max-height: 164px;
   height: auto;
   overflow: hidden;
   position: relative;
   margin: 0 8px 8px 8px;
-  border-radius: 16px;
+  max-width: 300px;
 }
 
 .suggestionRepliesSelector {
@@ -248,8 +248,7 @@
   z-index: 1;
 
   svg {
-    width: 8px;
-    height: 8px;
+    transform: scale(-0.8);
     margin-left: -1px;
     margin-top: -1px;
   }

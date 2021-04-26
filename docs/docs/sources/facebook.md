@@ -67,7 +67,7 @@ You will find your `App Secret` on this page:
 
 <img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/secret.png')} />
 
-Copy and paste your App ID and App Secret as strings next to `appId` and `appSecret` below `sources/facebook` in `infrastructure/airy.yaml`.
+Copy and paste your App ID and App Secret as strings next to `appId:` and `appSecret:`, below `components/sources/facebook` in your `airy.yaml` file.
 
 import ApplyVariablesNote from './applyVariables-note.mdx'
 
@@ -75,7 +75,7 @@ import ApplyVariablesNote from './applyVariables-note.mdx'
 
 ### Step 2: Configure the webhook integration
 
-Facebook must first verify your integration with a challenge to start sending events to your running instance. To verify your Facebook webhook integration, set the environment variable `webhookSecret` in `infrastructure/airy.yaml` to a value of your choice.
+Facebook must first verify your integration with a challenge to start sending events to your running instance. To verify your Facebook webhook integration, set the value next to `webhookSecret:`, below `components/sources/facebook` in your `airy.yaml` file, to a value of your choice.
 
 You are now ready to configure the webhook integration. Click on the + icon next to "Products" on the left sidebar of your app's dashboard: scroll down, a list of products will appear.
 
@@ -97,7 +97,7 @@ https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/webhooks/
 
 Select "Page" from the dropdown (the default is "User") and click on the button "Subscribe to this object".
 
-This will open a modal box: add your Callback URL (your instance's Facebook Webhook URL) and Verify Token (the webhookSecret you added in `infrastructure/airy.yaml` in the previous step).
+This will open a modal box: add your Callback URL (your instance's Facebook Webhook URL) and Verify Token (the webhookSecret you added in your `airy.yaml` file in the previous step).
 
 <img alt="Facebook webhook" src={useBaseUrl('img/sources/facebook/webhook_2.png')} />
 
@@ -116,7 +116,7 @@ Refer to [the section on public webhooks](/getting-started/installation/minikube
 :::
 
 If you encounter errors, please make sure that the Verify Token matches the
-`webhookSecret` in `infrastructure/airy.yaml` and that your variables have been
+`webhookSecret` in your `airy.yaml` file and that your variables have been
 successfully set to your Airy Core instance.
 
 <ApplyVariablesNote />

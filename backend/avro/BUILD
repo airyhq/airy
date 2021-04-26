@@ -35,4 +35,9 @@ avro_java_library(
     srcs = ["template.avsc"],
 )
 
+avro_java_library(
+    name = "http-log",
+    srcs = ["http-log.avsc"],
+)
+
 check_pkg(name = "buildifier")

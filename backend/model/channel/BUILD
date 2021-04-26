@@ -6,13 +6,13 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/model/channel/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//backend/avro/communication:channel-avro",
+        "//backend/avro:channel-avro",
         "//lib/java/kafka/schema:application-communication-channels",
     ],
     deps = [
         "//:jackson",
         "//:lombok",
-        "//backend/avro/communication:channel-avro",
+        "//backend/avro:channel-avro",
         "//backend/model/metadata",
     ],
 )

@@ -23,7 +23,7 @@
     "react-dom": "16.14.0",
     "react-markdown": "^6.0.0",
     "react-modal": "^3.13.1",
-    "react-redux": "7.2.3",
+    "react-redux": "7.2.4",
     "react-router-dom": "5.2.0",
     "react-window": "1.8.6",
     "react-window-infinite-loader": "1.0.7",

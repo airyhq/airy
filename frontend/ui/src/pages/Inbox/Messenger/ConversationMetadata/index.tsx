@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Tag as TagModel, TagColor, getTags} from 'model';
+import {Tag as TagModel, TagColor} from 'model';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
@@ -66,16 +66,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     return tags.filter(tag => tag.id in (conversation.metadata.tags || {}));
   };
 
-  const tagSorter = (tagA: TagModel, tagB: TagModel) => {
-    if (tagA.name < tagB.name) {
-      return -1;
-    }
-    if (tagA.name > tagB.name) {
-      return 1;
-    }
-
-    return 0;
-  };
+  const tagSorter = (a: TagModel, b: TagModel) => a.name.localeCompare(b.name);
 
   const checkIfExists = (value: string) => {
     const usedTags = filterForUsedTags(tags);
@@ -166,9 +157,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     );
   };
 
-  const findTag = (tagId: string): TagModel => {
-    return tags.find(tag => tag.id === tagId);
-  };
+  const findTag = (tagId: string): TagModel => tags.find(tag => tag.id === tagId);
 
   const contact = conversation.metadata.contact;
   return (
@@ -179,7 +168,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             <div className={styles.avatarImage}>
               <Avatar contact={contact} />
             </div>
-
             <div className={styles.displayName}>{contact?.displayName}</div>
           </div>
           <div className={styles.tags}>
@@ -194,7 +182,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
             <div className={styles.tagList}>
               {tags &&
-                getTags(conversation)
+                Object.keys(conversation.metadata.tags || {})
                   .map(tagId => findTag(tagId))
                   .sort(tagSorter)
                   .map(tag => tag && <Tag key={tag.id} tag={tag} removeTag={() => removeTag(tag)} />)}

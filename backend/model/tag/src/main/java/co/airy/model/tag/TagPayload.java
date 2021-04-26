@@ -18,7 +18,7 @@ public class TagPayload {
     public static TagPayload fromTag(Tag tag) {
         return TagPayload.builder()
                 .id(tag.getId())
-                .color(tag.getColor().toString())
+                .color("tag-"+tag.getColor().toString().toLowerCase())
                 .name(tag.getName())
                 .build();
     }

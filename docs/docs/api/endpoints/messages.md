@@ -3,15 +3,15 @@ title: Messages
 sidebar_label: Messages
 ---
 
-Refer to our [messages](getting-started/glossary.md#message) definition
-for more information.
+Refer to our [message](getting-started/glossary.md#message) definition for more
+information.
 
 ## List
 
 `POST /messages.list`
 
-This is a [paginated](#pagination) endpoint. Messages are sorted from oldest to
-latest.
+This is a [paginated](api/endpoints/introduction#pagination) endpoint. Messages
+are sorted from oldest to latest.
 
 **Sample request**
 

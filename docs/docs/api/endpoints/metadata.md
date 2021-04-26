@@ -3,12 +3,14 @@ title: Metadata
 sidebar_label: Metadata
 ---
 
-Have a look at our [metadata design](concepts/metadata.md) for more information.
+Refer to our [metadata design](concepts/metadata.md) document for more
+information.
 
 ## Upsert
 
-This endpoint takes a `data` object and upserts the metadata for the `id`. The data may only contain
-values of type string or object values (i.e. no lists or numbers).
+This endpoint takes a `data` object and upserts the metadata for the `id`. The
+data may only contain values of type string or object values (i.e. no lists or
+numbers).
 
 `POST /metadata.upsert`
 

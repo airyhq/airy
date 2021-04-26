@@ -6,13 +6,13 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/model/tag/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//backend/avro/communication:tag-avro",
+        "//backend/avro:tag-avro",
         "//lib/java/kafka/schema:application-communication-tags",
     ],
     deps = [
         "//:jackson",
         "//:lombok",
-        "//backend/avro/communication:tag-avro",
+        "//backend/avro:tag-avro",
     ],
 )
 

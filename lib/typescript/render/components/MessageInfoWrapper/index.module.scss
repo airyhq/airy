@@ -20,6 +20,9 @@
 .memberContent {
   overflow-x: hidden;
   max-width: 100%;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
 }
 
 .avatar {

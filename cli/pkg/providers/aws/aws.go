@@ -113,9 +113,8 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 		if err != nil {
 			console.Exit("Error creating vpc: ", err)
 		}
-		fmt.Fprintf(p.w, "VPC created with id: %s.\n", *VpcId)
-
 		VpcId = vpc.VpcId
+		fmt.Fprintf(p.w, "VPC created with id: %s.\n", *VpcId)
 		fmt.Fprintf(p.w, "Enabling DNS on VPC...\n")
 		if err = p.enableDNSOnVpc(VpcId); err != nil {
 			console.Exit("Error enabling DNS on VPC.", err)
@@ -133,14 +132,18 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 			console.Exit("Error creating route table: ", err)
 		}
 
+		availabilityZones, azErr := p.ec2Client.DescribeAvailabilityZones(context.TODO(), &ec2.DescribeAvailabilityZonesInput{})
+		if azErr != nil {
+			console.Exit("Unable to get availability zones. Make sure you have set the ENV variable AWS_REGION")
+		}
 		fmt.Fprintf(p.w, "Creating first subnet...\n")
-		firstSubnet, err := p.createSubnet(VpcId, name, "192.168.64.0/18", "us-east-1a")
+		firstSubnet, err := p.createSubnet(VpcId, name, "192.168.64.0/18", *availabilityZones.AvailabilityZones[0].ZoneName)
 		if err != nil {
 			console.Exit("Error creating subnet: ", err)
 		}
 
 		fmt.Fprintf(p.w, "Creating second subnet\n")
-		secondSubnet, err := p.createSubnet(VpcId, name, "192.168.128.0/18", "us-east-1b")
+		secondSubnet, err := p.createSubnet(VpcId, name, "192.168.128.0/18", *availabilityZones.AvailabilityZones[1].ZoneName)
 		if err != nil {
 			console.Exit("Error creating subnet: ", err)
 		}
@@ -355,7 +358,7 @@ func (p *provider) createRoute(vpcId *string, name string, internetGateway *ec2T
 	return createRouteTable.RouteTable, nil
 }
 
-func (p *provider) createSubnet(vpcId *string, name string, cidr string, region string) (*ec2Types.Subnet, error) {
+func (p *provider) createSubnet(vpcId *string, name string, cidr string, availabilityZone string) (*ec2Types.Subnet, error) {
 	subnetTagList := ec2Types.TagSpecification{
 		ResourceType: ec2Types.ResourceTypeSubnet,
 		Tags: []ec2Types.Tag{
@@ -370,7 +373,7 @@ func (p *provider) createSubnet(vpcId *string, name string, cidr string, region 
 	subnetResult, err := p.ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
 		VpcId:             vpcId,
 		CidrBlock:         aws.String(cidr),
-		AvailabilityZone:  aws.String(region),
+		AvailabilityZone:  aws.String(availabilityZone),
 		TagSpecifications: []ec2Types.TagSpecification{subnetTagList},
 	})
 	if err != nil {

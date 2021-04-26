@@ -70,7 +70,7 @@ for the AWS account where all the resources will be created.
 
 Download and install the [Airy CLI](cli/introduction.md).
 
-Export your AWS_PROFILE as described in the [AWS
+Export your AWS_PROFILE and AWS_REGION as described in the [AWS
 documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
 
 Now you can run this command, which will create `Airy Core` in your AWS account:

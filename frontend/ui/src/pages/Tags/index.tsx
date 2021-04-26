@@ -175,10 +175,10 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   renderTagList() {
     const {tags} = this.props;
     return (
-      <div className={styles.cardRaised}>   
+      <div className={styles.cardRaised}>
         <div>
-          <h1 className={styles.organizationSectionHeadline}>Tags</h1>        
-        </div>             
+          <h1 className={styles.organizationSectionHeadline}>Tags</h1>
+        </div>
         <div className={styles.organizationContainer} key="1">
           <div className={styles.tagsHeader}>
             <div className={styles.searchContainer}>

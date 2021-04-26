@@ -19,7 +19,7 @@ interface InboxProps {
 const mapStateToProps = (state: StateModel) => {
   return {
     user: state.data.user,
-    totalConversations: state.data.conversations.all.paginationData.total || 0
+    totalConversations: state.data.conversations.all.paginationData.total || 0,
   };
 };
 

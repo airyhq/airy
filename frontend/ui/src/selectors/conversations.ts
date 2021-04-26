@@ -39,9 +39,10 @@ export const newestFilteredConversationFirst = createSelector(
   (state: StateModel) => state.data.conversations.filtered.items,
   (state: StateModel) => state.data.conversations.filtered.currentFilter,
   (conversationsMap: ConversationMap, filteredConversationsMap: ConversationMap, currentFilter: ConversationFilter) => {
-
     const conversations = Object.keys(conversationsMap).map((cId: string) => ({...conversationsMap[cId]}));
-    const filteredConversations = Object.keys(filteredConversationsMap).map((cId: string) => ({...filteredConversationsMap[cId]}))
+    const filteredConversations = Object.keys(filteredConversationsMap).map((cId: string) => ({
+      ...filteredConversationsMap[cId],
+    }));
 
     const updatedConversations: ConversationMap = {};
     filteredConversations.map((filteredConversation: Conversation) => {
@@ -49,7 +50,7 @@ export const newestFilteredConversationFirst = createSelector(
         updatedConversations[filteredConversation.id] = conversationsMap[filteredConversation.id];
       } else {
         updatedConversations[filteredConversation.id] = filteredConversationsMap[filteredConversation.id];
-      }      
+      }
     });
 
     conversations.map((conversation: Conversation) => {
@@ -59,39 +60,64 @@ export const newestFilteredConversationFirst = createSelector(
     });
 
     const updatedFiltered = filter(updatedConversations, (conversation: Conversation) => {
-      
       let isFullfield: boolean = true;
 
       if (currentFilter.isStateOpen !== undefined) {
         if (currentFilter.isStateOpen) {
-          isFullfield = conversation.metadata.state === "OPEN" || conversation.metadata.state === undefined;
+          isFullfield = conversation.metadata.state === 'OPEN' || conversation.metadata.state === undefined;
         } else {
-          isFullfield = conversation.metadata.state === "CLOSED";
+          isFullfield = conversation.metadata.state === 'CLOSED';
         }
         if (!isFullfield) return isFullfield;
       }
 
       if (currentFilter.readOnly) {
-        isFullfield = conversation.metadata.unreadCount === 0; 
+        isFullfield = conversation.metadata.unreadCount === 0;
       } else if (currentFilter.unreadOnly) {
-        isFullfield = conversation.metadata.unreadCount > 0; 
-      }  
-      if (!isFullfield) return isFullfield; 
-      
+        isFullfield = conversation.metadata.unreadCount > 0;
+      }
+      if (!isFullfield) return isFullfield;
+
       if (currentFilter.byTags) {
-        const conversationTags = Object.keys(conversation.metadata.tags || {}).map((id: string) => (id))        
-        const filterTags = Object.keys(currentFilter.byTags).map((id: string) => (currentFilter.byTags[id]));
+        const conversationTags = Object.keys(conversation.metadata.tags || {}).map((id: string) => id);
+        const filterTags = Object.keys(currentFilter.byTags).map((id: string) => currentFilter.byTags[id]);
 
         isFullfield = filterTags.every(function (tag) {
-          return (conversationTags.indexOf(tag) >= 0);
-        });      
+          return conversationTags.indexOf(tag) >= 0;
+        });
+      }
+      if (!isFullfield) return isFullfield;
+
+      if (currentFilter.byChannels?.length > 0) {
+        const channelId = conversation.channel.id;
+        const filterChannel = Object.keys(currentFilter.byChannels).map((id: string) => currentFilter.byChannels[id]);
+
+        isFullfield = filterChannel.includes(channelId);
+      }
+      if (!isFullfield) return isFullfield;
+
+      if (currentFilter.bySources) {
+        const conversationSource = conversation.channel.source;
+        const filterSource = Object.keys(currentFilter.bySources).map((id: string) => currentFilter.bySources[id]);
+
+        isFullfield = filterSource.includes(conversationSource);
+      }
+
+      if (currentFilter.displayName) {
+        const searchValue = currentFilter.displayName.toLowerCase();
+        const displayName = conversation.metadata.contact.displayName.toLowerCase();
+
+        isFullfield = displayName.includes(searchValue);
       }
 
       return isFullfield;
     });
 
     return reverse(
-      sortBy(updatedFiltered, (conversation: Conversation) => conversation.lastMessage && conversation.lastMessage.sentAt)
+      sortBy(
+        updatedFiltered,
+        (conversation: Conversation) => conversation.lastMessage && conversation.lastMessage.sentAt
+      )
     );
   }
 );

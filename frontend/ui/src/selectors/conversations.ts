@@ -59,17 +59,36 @@ export const newestFilteredConversationFirst = createSelector(
     });
 
     const updatedFiltered = filter(updatedConversations, (conversation: Conversation) => {
+      
+      let isFullfield: boolean = true;
+
       if (currentFilter.isStateOpen !== undefined) {
         if (currentFilter.isStateOpen) {
-          return conversation.metadata.state === "OPEN" || conversation.metadata.state === undefined;
+          isFullfield = conversation.metadata.state === "OPEN" || conversation.metadata.state === undefined;
         } else {
-          return conversation.metadata.state === "CLOSED";
+          isFullfield = conversation.metadata.state === "CLOSED";
         }
+        if (!isFullfield) return isFullfield;
       }
-      return true;
-    });
 
-    console.log(updatedConversations);
+      if (currentFilter.readOnly) {
+        isFullfield = conversation.metadata.unreadCount === 0; 
+      } else if (currentFilter.unreadOnly) {
+        isFullfield = conversation.metadata.unreadCount > 0; 
+      }  
+      if (!isFullfield) return isFullfield; 
+      
+      if (currentFilter.byTags) {
+        const conversationTags = Object.keys(conversation.metadata.tags || {}).map((id: string) => (id))        
+        const filterTags = Object.keys(currentFilter.byTags).map((id: string) => (currentFilter.byTags[id]));
+
+        isFullfield = filterTags.every(function (tag) {
+          return (conversationTags.indexOf(tag) >= 0);
+        });      
+      }
+
+      return isFullfield;
+    });
 
     return reverse(
       sortBy(updatedFiltered, (conversation: Conversation) => conversation.lastMessage && conversation.lastMessage.sentAt)

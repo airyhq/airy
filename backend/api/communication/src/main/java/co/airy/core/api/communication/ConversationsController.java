@@ -24,6 +24,7 @@ import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,7 +83,7 @@ public class ConversationsController {
                     .body(new RequestErrorResponsePayload("Failed to parse Lucene query: " + e.getMessage()));
         }
 
-        final LuceneQueryResult queryResult = conversationLuceneStore.query(query);
+        final LuceneQueryResult queryResult = conversationLuceneStore.query(query, requestPayload.getCursor(), requestPayload.getPageSize());
 
         final List<ConversationIndex> conversationIndices = queryResult.getConversations();
 
@@ -114,24 +115,35 @@ public class ConversationsController {
     }
 
     private ResponseEntity<ConversationListResponsePayload> listConversations(ConversationListRequestPayload requestPayload) {
-        final List<Conversation> allConversations = fetchAllConversations();
-        int totalSize = allConversations.size();
-        allConversations.sort(comparing(conversation -> ((Conversation) conversation).getLastMessageContainer().getMessage().getSentAt()).reversed());
+        final Query query;
+        query = new MatchAllDocsQuery();
 
-        final Paginator<Conversation> paginator = new Paginator<>(allConversations, Conversation::getId)
+        final ReadOnlyLuceneStore conversationLuceneStore = stores.getConversationLuceneStore();
+        final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
+        final LuceneQueryResult queryResult = conversationLuceneStore.query(query, requestPayload.getCursor(), requestPayload.getPageSize());
+
+        final List<ConversationIndex> conversationIndices = queryResult.getConversations();
+
+        final Paginator<ConversationIndex> paginator = new Paginator<>(conversationIndices, ConversationIndex::getId)
                 .from(requestPayload.getCursor()).perPage(requestPayload.getPageSize());
 
-        final Page<Conversation> page = paginator.page();
+        final Page<ConversationIndex> page = paginator.page();
 
-        final List<Conversation> conversationsPage = page.getData();
-        final List<Conversation> conversations = stores.addChannelMetadata(conversationsPage);
+        final List<Conversation> conversations = paginator.page().getData()
+                .stream()
+                .map((conversationIndex -> conversationsStore.get(conversationIndex.getId())))
+                .collect(toList());
+
+        final List<Conversation> enrichedConversations = stores.addChannelMetadata(conversations);
+
+        int totalSize = queryResult.getTotal();
 
         return ResponseEntity.ok(
                 ConversationListResponsePayload.builder()
-                        .data(conversations.stream().map(ConversationResponsePayload::fromConversation).collect(Collectors.toList()))
+                        .data(enrichedConversations.stream().map(ConversationResponsePayload::fromConversation).collect(Collectors.toList()))
                         .paginationData(
                                 PaginationData.builder()
-                                        .filteredTotal(allConversations.size())
+                                        .filteredTotal(enrichedConversations.size())
                                         .nextCursor(page.getNextCursor())
                                         .previousCursor(page.getPreviousCursor())
                                         .total(totalSize)

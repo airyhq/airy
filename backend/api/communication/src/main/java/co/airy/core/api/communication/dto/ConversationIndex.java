@@ -23,6 +23,7 @@ public class ConversationIndex implements Serializable {
     private Long createdAt;
     private Integer unreadMessageCount;
     private List<String> tagIds;
+    private Long lastMessageAt;
 
     @Builder.Default
     private List<MetadataNode> metadata = new ArrayList<>();
@@ -41,6 +42,7 @@ public class ConversationIndex implements Serializable {
                 .createdAt(conversation.getCreatedAt())
                 .tagIds(conversation.getTagIds())
                 .unreadMessageCount(conversation.getUnreadMessageCount())
+                .lastMessageAt(conversation.getLastMessageContainer().getMessage().getSentAt())
                 .build();
     }
 }

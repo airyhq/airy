@@ -106,9 +106,9 @@ class ConversationsListTest {
     }
 
     @Test
-    void canFetchAllConversations() throws Exception {
+    void canFetchAllConversationsInOrder() throws Exception {
         retryOnException(
-                () -> webTestHelper.post("/conversations.list", "{} ")
+                () -> webTestHelper.post("/conversations.list", "{}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
                         .andExpect(jsonPath("pagination_data.total", is(conversations.size())))
@@ -118,6 +118,16 @@ class ConversationsListTest {
                                         .map(DateFormat::isoFromMillis)
                                         .sorted(reverseOrder()).toArray()))),
                 String.format("Expected %s conversations in order", conversations.size()));
+    }
+
+    @Test
+    void canFetchPaginated() throws Exception {
+        final int cursor = conversations.size() + 1;
+        retryOnException(
+                () -> webTestHelper.post("/conversations.list", "{\"cursor\": \"" + cursor + "\"}")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data", hasSize(0))),
+                "Expected 0 conversations");
     }
 
     @Test

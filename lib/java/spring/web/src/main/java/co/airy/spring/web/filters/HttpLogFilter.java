@@ -1,4 +1,4 @@
-package co.airy.spring.events.filters;
+package co.airy.spring.web.filters;
 
 import co.airy.spring.events.custom.HttpEventPublisher;
 import org.springframework.http.server.ServletServerHttpRequest;

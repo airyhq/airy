@@ -12,6 +12,7 @@ custom_java_library(
         "//:spring",
         "//lib/java/log",
         "//lib/java/spring/core:spring-core",
+        "//lib/java/spring/events:spring-events",
         "@maven//:javax_servlet_javax_servlet_api",
         "@maven//:javax_xml_bind_jaxb_api",
         "@maven//:org_springframework_boot_spring_boot_autoconfigure",

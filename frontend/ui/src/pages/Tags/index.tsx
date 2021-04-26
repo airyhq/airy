@@ -176,9 +176,9 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
     const {tags} = this.props;
     return (
       <div className={styles.cardRaised}>
-        <header>
+        <div>
           <h1 className={styles.organizationSectionHeadline}>Tags</h1>
-        </header>
+        </div>
         <div className={styles.organizationContainer} key="1">
           <div className={styles.tagsHeader}>
             <div className={styles.searchContainer}>

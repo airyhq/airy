@@ -3,17 +3,17 @@
 
 .tagsWrapper {
   display: block;
-  padding-left: 96px;
-  padding-top: 88px;
+  border-radius: 10px;
   width: 100%;
-  overflow-y: auto;
+  margin: 88px 1.5em 0 100px;
   min-height: calc(100vh - 170px);
 }
 
 .organizationSectionHeadline {
-  @include font-l;
-  font-weight: bold;
-  margin-bottom: 24px;
+  @include font-xl;
+  font-weight: 900;
+  letter-spacing: 0;
+  margin: 6px 0px 24px 8px;
 }
 
 .organizationContainer {

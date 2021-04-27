@@ -99,6 +99,13 @@ spec:
                 name: api-admin
                 port:
                   number: 80
+          - path: /users.getProfile
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
           - path: /channels.list
             pathType: Prefix
             backend:

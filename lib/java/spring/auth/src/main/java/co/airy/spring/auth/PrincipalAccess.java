@@ -1,5 +1,6 @@
 package co.airy.spring.auth;
 
+import co.airy.spring.auth.oidc.ProfileData;
 import co.airy.spring.auth.token.TokenPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -26,5 +27,13 @@ public class PrincipalAccess {
         }
 
         return authentication.getName();
+    }
+
+    public static ProfileData getProfileData(Authentication authentication) {
+        if (!(authentication instanceof OAuth2AuthenticationToken)) {
+            return null;
+        }
+
+        return ProfileData.from((OAuth2AuthenticationToken) authentication);
     }
 }

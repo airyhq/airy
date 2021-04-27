@@ -4,7 +4,7 @@ import {ConversationFilter} from 'model';
 
 import {StateModel} from '../../../reducers';
 
-import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
+import {setFilter} from '../../../actions/conversationsFilter';
 import {allConversations, isFilterActive} from '../../../selectors/conversations';
 
 import styles from './index.module.scss';
@@ -20,7 +20,6 @@ const mapStateToProps = (state: StateModel) => {
 
 const mapDispatchToProps = {
   setFilter,
-  resetFilter,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -34,7 +33,6 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   const closedButton = useRef(null);
 
   useEffect(() => {
-    resetFilter();
     itemsCount();
     currentStateFilter();
   }),

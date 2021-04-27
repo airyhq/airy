@@ -1,26 +1,21 @@
-package co.airy.spring.auth;
+package co.airy.spring.auth.token;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-public class AuthenticationFilter extends BasicAuthenticationFilter {
+public class AuthenticationFilter extends OncePerRequestFilter {
     private final String systemToken;
-    private final String systemTokenPrincipal;
 
-    public AuthenticationFilter(AuthenticationManager authManager, String systemToken) {
-        super(authManager);
+    public AuthenticationFilter(String systemToken) {
         this.systemToken = systemToken;
-        this.systemTokenPrincipal = systemToken == null ? null : String.format("system-token-%s", systemToken.substring(0, Math.min(systemToken.length(), 4)));
     }
 
     @Override
@@ -37,19 +32,20 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(authToken);
+        TokenPrincipal authentication = getAuthentication(authToken);
         if (authentication == null) {
-            res.sendError(HttpServletResponse.SC_FORBIDDEN);
+            res.sendError(403, "system token does not match");
             return;
         }
 
+        authentication.setAuthenticated(true);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(String token) {
+    private TokenPrincipal getAuthentication(String token) {
         if (systemToken != null && systemToken.equals(token)) {
-            return new UsernamePasswordAuthenticationToken(systemTokenPrincipal, null, List.of());
+            return new TokenPrincipal(token);
         }
 
         return null;

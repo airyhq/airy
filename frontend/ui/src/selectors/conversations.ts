@@ -60,7 +60,7 @@ export const newestFilteredConversationFirst = createSelector(
     });
 
     const updatedFiltered = filter(updatedConversations, (conversation: Conversation) => {
-      let isFullfield: boolean = true;
+      let isFullfield = true;
 
       if (currentFilter.isStateOpen !== undefined) {
         if (currentFilter.isStateOpen) {
@@ -102,6 +102,7 @@ export const newestFilteredConversationFirst = createSelector(
 
         isFullfield = filterSource.includes(conversationSource);
       }
+      if (!isFullfield) return isFullfield;
 
       if (currentFilter.displayName) {
         const searchValue = currentFilter.displayName.toLowerCase();

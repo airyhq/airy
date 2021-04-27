@@ -105,6 +105,10 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     });
   };
 
+  const OpenIcon = () => {
+    return <div className={styles.openIconButton} />;
+  };
+
   return (
     <DialogCustomizable
       close={() => applyPressed()}
@@ -140,6 +144,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       : styles.filterButtonSelected
                   }
                   onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleState(event, true)}>
+                  <OpenIcon />
                   Open
                 </button>
                 <button

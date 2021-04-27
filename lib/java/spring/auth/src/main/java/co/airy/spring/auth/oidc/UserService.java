@@ -6,6 +6,8 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -35,12 +37,16 @@ public class UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2U
     }
 
     private OAuth2User addGithubEmails(OAuth2User user, OAuth2UserRequest userRequest) {
-        final List<EmailsResponse> userEmails = this.githubApi.getUserEmails(userRequest.getAccessToken().getTokenValue());
+        try {
+            final List<EmailsResponse> userEmails = this.githubApi.getUserEmails(userRequest.getAccessToken().getTokenValue());
 
-        final Map<String, Object> attributes = new HashMap<>(user.getAttributes());
-        attributes.put("emails", userEmails.stream().map(EmailsResponse::getEmail).collect(toList()));
+            final Map<String, Object> attributes = new HashMap<>(user.getAttributes());
+            attributes.put("emails", userEmails.stream().map(EmailsResponse::getEmail).collect(toList()));
 
-        return new DefaultOAuth2User(user.getAuthorities(), attributes, userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint()
-                .getUserNameAttributeName());
+            return new DefaultOAuth2User(user.getAuthorities(), attributes, userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint()
+                    .getUserNameAttributeName());
+        } catch (Exception e) {
+            throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INSUFFICIENT_SCOPE), e.getMessage());
+        }
     }
 }

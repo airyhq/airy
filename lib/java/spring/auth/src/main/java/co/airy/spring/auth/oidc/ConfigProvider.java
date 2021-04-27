@@ -1,7 +1,6 @@
 package co.airy.spring.auth.oidc;
 
 import lombok.Getter;
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +30,6 @@ public class ConfigProvider {
         }
 
         this.registration = builder
-                .scope("user:email")
                 .clientId(props.getClientId())
                 .clientSecret(props.getClientSecret()).build();
 

@@ -21,10 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +77,7 @@ public class ChatController {
         final Channel channel = stores.getChannel(channelId);
 
         if (channel == null) {
-            throw new HttpClientErrorException(NOT_FOUND, "Not Found", null, null, Charset.defaultCharset());
+            throw new ResponseStatusException(NOT_FOUND);
         }
 
         final String conversationId = UUID.randomUUID().toString();
@@ -98,7 +97,7 @@ public class ChatController {
         final String requestToken = getAuthToken(authHeader);
         if (apiToken != null && apiToken.equals(requestToken)) {
             if (requestPayload == null) {
-                throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }
             return new Principal(requestPayload.getChannelId(), requestPayload.getConversationId());
         }

@@ -55,10 +55,6 @@ func init() {
 	viper.BindPFlag("apihost", RootCmd.PersistentFlags().Lookup("apihost"))
 	viper.SetDefault("apihost", "http://airy.core")
 
-	apiJWTToken := ""
-	RootCmd.PersistentFlags().StringVarP(&apiJWTToken, "apiJWTToken", "", "", "apiJWTToken")
-	RootCmd.PersistentFlags().MarkHidden("apiJWTToken")
-	viper.BindPFlag("apiJWTToken", RootCmd.PersistentFlags().Lookup("apiJWTToken"))
 	RootCmd.PersistentFlags().StringVar(&cliConfigDir, "config-dir", "", "config directory of an airy core instance (default is the cwd)")
 	RootCmd.AddCommand(api.APICmd)
 	RootCmd.AddCommand(config.ConfigCmd)

@@ -7,12 +7,15 @@ import (
 	"context"
 	"fmt"
 	"io"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"math/rand"
 	"os"
+	"strings"
 	"text/template"
 	"time"
 
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	"github.com/TwinProduction/go-color"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	ec2Types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -76,15 +79,16 @@ type KubeConfig struct {
 	CertificateData string
 }
 
-func (p *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
+func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		console.Exit(err)
 	}
 
+	specifiedVpcId, _ := providerConfig["vpcId"]
 	id := RandString(8)
 	name := "Airy-" + id
-	fmt.Fprintf(p.w, "Creating Airy Core instance with id: %s\n", name)
+	fmt.Fprintf(p.w, "Creating Airy Core instance with id: %s. This might take a while.\n", name)
 	p.iamClient = iam.NewFromConfig(cfg)
 
 	role, err := p.createRole(name)
@@ -100,78 +104,93 @@ func (p *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
 	fmt.Fprintf(p.w, "EKS policies attached.\n")
 
 	p.ec2Client = ec2.NewFromConfig(cfg)
-	vpc, err := p.createVpc("192.168.0.0/16", name)
 
-	if err != nil {
-		console.Exit("Error creating vpc: ", err)
-	}
+	var VpcId *string
+	var subnetIds []string
 
-	VpcId := vpc.VpcId
-	fmt.Fprintf(p.w, "VPC created with id: %s\n", *VpcId)
+	if specifiedVpcId == "" {
+		vpc, err := p.createVpc("192.168.0.0/16", name)
+		if err != nil {
+			console.Exit("Error creating vpc: ", err)
+		}
+		VpcId = vpc.VpcId
+		fmt.Fprintf(p.w, "VPC created with id: %s.\n", *VpcId)
+		fmt.Fprintf(p.w, "Enabling DNS on VPC...\n")
+		if err = p.enableDNSOnVpc(VpcId); err != nil {
+			console.Exit("Error enabling DNS on VPC.", err)
+		}
 
-	fmt.Fprintf(p.w, "Enabling DNS on VPC\n")
-	if err = p.enableDNSOnVpc(VpcId); err != nil {
-		console.Exit("Error enabling DNS on VPC", err)
-	}
+		fmt.Fprintf(p.w, "Creating Internet Gateway...\n")
+		internetGateway, err := p.createInternetGateway(VpcId)
+		if err != nil {
+			console.Exit("Could not create internet gateway: ", err)
+		}
 
-	fmt.Fprintf(p.w, "Creating Internet Gateway\n")
-	internetGateway, err := p.createInternetGateway(VpcId)
-	if err != nil {
-		console.Exit("Could not create internet gateway: ", err)
-	}
+		fmt.Fprintf(p.w, "Creating route table...\n")
+		routeTable, err := p.createRoute(VpcId, name, internetGateway)
+		if err != nil {
+			console.Exit("Error creating route table: ", err)
+		}
 
-	fmt.Fprintf(p.w, "Creating route Table\n")
-	routeTable, err := p.createRoute(VpcId, name, internetGateway)
-	if err != nil {
-		console.Exit("Error creating route table: ", err)
-	}
+		availabilityZones, azErr := p.ec2Client.DescribeAvailabilityZones(context.TODO(), &ec2.DescribeAvailabilityZonesInput{})
+		if azErr != nil {
+			console.Exit("Unable to get availability zones. Make sure you have set the ENV variable AWS_REGION")
+		}
+		fmt.Fprintf(p.w, "Creating first subnet...\n")
+		firstSubnet, err := p.createSubnet(VpcId, name, "192.168.64.0/18", *availabilityZones.AvailabilityZones[0].ZoneName)
+		if err != nil {
+			console.Exit("Error creating subnet: ", err)
+		}
 
-	fmt.Fprintf(p.w, "Creating first subnet\n")
-	firstSubnet, err := p.createSubnet(VpcId, name, "192.168.64.0/18", "us-east-1a")
-	if err != nil {
-		console.Exit("Error creating subnet: ", err)
-	}
+		fmt.Fprintf(p.w, "Creating second subnet\n")
+		secondSubnet, err := p.createSubnet(VpcId, name, "192.168.128.0/18", *availabilityZones.AvailabilityZones[1].ZoneName)
+		if err != nil {
+			console.Exit("Error creating subnet: ", err)
+		}
 
-	fmt.Fprintf(p.w, "Creating second subnet\n")
-	secondSubnet, err := p.createSubnet(VpcId, name, "192.168.128.0/18", "us-east-1b")
-	if err != nil {
-		console.Exit("Error creating subnet: ", err)
-	}
+		fmt.Fprintf(p.w, "Allowing public IP on first subnet...\n")
+		if err = p.allowPublicIpOnSubnet(firstSubnet.SubnetId); err != nil {
+			console.Exit("Error allowing public IP on first subnet: ", err)
+		}
 
-	fmt.Fprintf(p.w, "Allowing public IP on first subnet\n")
-	if err = p.allowPublicIpOnSubnet(firstSubnet.SubnetId); err != nil {
-		console.Exit("Error allowing public IP on first subnet: ", err)
-	}
+		fmt.Fprintf(p.w, "Allowing public IP on second subnet...\n")
+		if err = p.allowPublicIpOnSubnet(secondSubnet.SubnetId); err != nil {
+			console.Exit("Error allowing public IP on second subnet: ", err)
+		}
 
-	fmt.Fprintf(p.w, "Allowing public IP on second subnet\n")
-	if err = p.allowPublicIpOnSubnet(secondSubnet.SubnetId); err != nil {
-		console.Exit("Error allowing public IP on second subnet: ", err)
-	}
+		fmt.Fprintf(p.w, "Associating first subnet to route table...\n")
+		if err = p.associateSubnetToRouteTable(firstSubnet.SubnetId, routeTable.RouteTableId); err != nil {
+			console.Exit("Error associating first subnet to route table: ", err)
+		}
 
-	fmt.Fprintf(p.w, "Associating first subnet to route table\n")
-	if err = p.associateSubnetToRouteTable(firstSubnet.SubnetId, routeTable.RouteTableId); err != nil {
-		console.Exit("Error associating first subnet to route rable: ", err)
-	}
+		fmt.Fprintf(p.w, "Associating second subnet to route table...\n")
+		if err = p.associateSubnetToRouteTable(secondSubnet.SubnetId, routeTable.RouteTableId); err != nil {
+			console.Exit("Error associating second subnet to route table: ", err)
+		}
 
-	fmt.Fprintf(p.w, "Associating second subnet to route table\n")
-	if err = p.associateSubnetToRouteTable(secondSubnet.SubnetId, routeTable.RouteTableId); err != nil {
-		console.Exit("Error associating second subnet to route rable: ", err)
+		subnetIds = append(subnetIds, *firstSubnet.SubnetId)
+		subnetIds = append(subnetIds, *secondSubnet.SubnetId)
+	} else {
+		VpcId = &specifiedVpcId
+		fmt.Fprintf(p.w, "Using existing VPC: %s.\n", *VpcId)
+		subnets, subnetErr := p.getSubnets(*VpcId)
+		if subnetErr != nil {
+			console.Exit("Unable to get subnets from VPC", subnetErr)
+		}
+		subnetIds = subnets
+		fmt.Fprintf(p.w, "Using subnets: %s.\n", strings.Join(subnets[:], ","))
 	}
 
 	p.eksClient = eks.NewFromConfig(cfg)
 	fmt.Fprintf(p.w, "Creating EKS cluster...\n")
 
-	var subnetIds []string
-	subnetIds = append(subnetIds, *firstSubnet.SubnetId)
-	subnetIds = append(subnetIds, *secondSubnet.SubnetId)
-
 	cluster, err := p.createCluster(name, role.Arn, subnetIds)
 	if err != nil {
 		console.Exit("Error creating cluster: ", err)
 	}
-	fmt.Fprintf(p.w, "Created EKS cluster named: %s\n", *cluster.Name)
+	fmt.Fprintf(p.w, "Created EKS cluster named: %s.\n", *cluster.Name)
 
-	fmt.Fprintf(p.w, "Waiting for cluster to be ready...\n")
+	fmt.Fprintf(p.w, "Waiting for cluster to be ready")
 	p.waitUntilResourceReady(func() bool {
 		describeClusterResult, err := p.eksClient.DescribeCluster(context.TODO(), &eks.DescribeClusterInput{
 			Name: aws.String(name),
@@ -191,7 +210,7 @@ func (p *provider) Provision(dir workspace.ConfigDir) (kube.KubeCtx, error) {
 	}
 
 	fmt.Fprintf(p.w, "Node group created %s.\n", *nodeGroup.NodegroupName)
-	fmt.Fprintf(p.w, "Waiting for node group to be ready...\n")
+	fmt.Fprintf(p.w, "Waiting for node group to be ready")
 	p.waitUntilResourceReady(func() bool {
 		describeNodegroupResult, err := p.eksClient.DescribeNodegroup(context.TODO(), &eks.DescribeNodegroupInput{
 			ClusterName:   aws.String(name),
@@ -339,7 +358,7 @@ func (p *provider) createRoute(vpcId *string, name string, internetGateway *ec2T
 	return createRouteTable.RouteTable, nil
 }
 
-func (p *provider) createSubnet(vpcId *string, name string, cidr string, region string) (*ec2Types.Subnet, error) {
+func (p *provider) createSubnet(vpcId *string, name string, cidr string, availabilityZone string) (*ec2Types.Subnet, error) {
 	subnetTagList := ec2Types.TagSpecification{
 		ResourceType: ec2Types.ResourceTypeSubnet,
 		Tags: []ec2Types.Tag{
@@ -354,7 +373,7 @@ func (p *provider) createSubnet(vpcId *string, name string, cidr string, region 
 	subnetResult, err := p.ec2Client.CreateSubnet(context.TODO(), &ec2.CreateSubnetInput{
 		VpcId:             vpcId,
 		CidrBlock:         aws.String(cidr),
-		AvailabilityZone:  aws.String(region),
+		AvailabilityZone:  aws.String(availabilityZone),
 		TagSpecifications: []ec2Types.TagSpecification{subnetTagList},
 	})
 	if err != nil {
@@ -363,6 +382,27 @@ func (p *provider) createSubnet(vpcId *string, name string, cidr string, region 
 
 	return subnetResult.Subnet, nil
 
+}
+
+func (p *provider) getSubnets(vpcId string) ([]string, error) {
+	var subnets []string
+	result, err := p.ec2Client.DescribeSubnets(context.TODO(), &ec2.DescribeSubnetsInput{
+		Filters: []ec2Types.Filter{
+			{
+				Name: aws.String("vpc-id"),
+				Values: []string{
+					*aws.String(vpcId),
+				},
+			},
+		},
+	})
+
+	for i := range result.Subnets {
+		if result.Subnets[i].MapPublicIpOnLaunch == true {
+			subnets = append(subnets, *result.Subnets[i].SubnetId)
+		}
+	}
+	return subnets, err
 }
 
 func (p *provider) allowPublicIpOnSubnet(subnetId *string) error {
@@ -497,13 +537,18 @@ func (p *provider) attachPolicies(roleName *string) error {
 
 func (p *provider) waitUntilResourceReady(f func() bool) {
 	timeout := time.After(20 * time.Minute)
-	tick := time.Tick(500 * time.Millisecond)
+	tick := time.Tick(10 * time.Second)
+	l := console.GetMiddleware(func(input string) string {
+		return color.Colorize(color.Cyan, input)
+	})
 	for {
 		select {
 		case <-tick:
 			if f() {
+				fmt.Fprintf(l, "\n")
 				return
 			}
+			fmt.Fprintf(l, ".")
 		case <-timeout:
 			fmt.Fprintf(p.w, "Timeout when checking if resource is ready\n")
 			return

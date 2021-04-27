@@ -73,8 +73,6 @@ class ConversationsListTest {
     private static final String tagId = UUID.randomUUID().toString();
     private static final String anotherTagId = UUID.randomUUID().toString();
 
-    private static final String userId = "user-id";
-
     private static final List<TestConversation> conversations = List.of(
             TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME, firstNameToFind), 1),
             TestConversation.from(UUID.randomUUID().toString(), channelToFind,
@@ -110,7 +108,7 @@ class ConversationsListTest {
     @Test
     void canFetchAllConversations() throws Exception {
         retryOnException(
-                () -> webTestHelper.post("/conversations.list", "{} ", userId)
+                () -> webTestHelper.post("/conversations.list", "{} ")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
                         .andExpect(jsonPath("pagination_data.total", is(conversations.size())))
@@ -184,7 +182,7 @@ class ConversationsListTest {
 
     private void checkConversationsFound(String payload, int count) throws InterruptedException {
         retryOnException(
-                () -> webTestHelper.post("/conversations.list", payload, userId)
+                () -> webTestHelper.post("/conversations.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(count)))
                         .andExpect(jsonPath("pagination_data.filtered_total", is(count)))

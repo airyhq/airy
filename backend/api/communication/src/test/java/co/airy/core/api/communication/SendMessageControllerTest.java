@@ -86,7 +86,7 @@ public class SendMessageControllerTest {
                         "\"message\":%s}",
                 conversationId, messagePayload);
 
-        final String response = webTestHelper.post("/messages.send", requestPayload, "user-id")
+        final String response = webTestHelper.post("/messages.send", requestPayload)
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 

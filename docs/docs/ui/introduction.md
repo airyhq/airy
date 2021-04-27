@@ -8,7 +8,6 @@ import ButtonBox from "@site/src/components/ButtonBox";
 import GearSVG from "@site/static/icons/gear.svg";
 import DesktopComputerSVG from "@site/static/icons/desktop-computer.svg";
 import LabelSVG from "@site/static/icons/label.svg";
-import UsersSVG from "@site/static/icons/users.svg";
 import CommentBubbleSVG from "@site/static/icons/comment-bubble.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
@@ -19,13 +18,6 @@ While the [Chat Plugin](sources/chatplugin/overview.md) is the open-source chat 
 Airy UI comes with an open-source, customizable [inbox](inbox), filled with the conversations of all your [sources](sources/introduction.md). Organize your conversations with features such as [Filters, Search](inbox), [Tags](tags) and add [suggested replies](suggestedReplies) to messages to improve response time.
 
 <ButtonBoxList>
-    <ButtonBox
-        icon={<GearSVG />}
-        iconInvertible={true}
-        title='UI Quickstart'
-        description='Step by Step Guide on getting up and running with the UI'
-        link='ui/quickstart'
-    />
     <ButtonBox
         icon={<DesktopComputerSVG />}
         iconInvertible={true}

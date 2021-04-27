@@ -1,0 +1,60 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.conversationStatus {
+  width: 96px;
+  height: 26px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 5px;
+  border-bottom: 1px var(--color-light-gray) solid;
+  @include font-base;
+  color: var(--color-text-contrast);
+}
+
+.closedButtonWrapper {
+  padding: 6px 6px 6px 0;
+  text-align: center;
+  border-bottom: 3px transparent solid;
+}
+
+.closedButton {
+  width: 100%;
+  color: var(--color-text-gray);
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.closed .closedButtonWrapper {
+  border-bottom: 5px var(--color-soft-green) solid;
+  text-align: center;
+}
+
+.closed .closedButton {
+  font-weight: 700;
+  color: var(--color-text-contrast);
+}
+
+.openButtonWrapper {
+  border-bottom: 3px transparent solid;
+  padding: 6px 6px 6px 0;
+  text-align: center;
+}
+
+.openButton {
+  width: 100%;
+  color: var(--color-text-gray);
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.open .openButtonWrapper {
+  border-bottom: 5px var(--color-red-alert) solid;
+}
+
+.open .openButton {
+  font-weight: 700;
+  color: var(--color-text-contrast);
+}

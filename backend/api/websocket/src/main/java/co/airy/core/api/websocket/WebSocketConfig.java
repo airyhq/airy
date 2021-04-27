@@ -1,8 +1,8 @@
 package co.airy.core.api.websocket;
 
 import co.airy.log.AiryLoggerFactory;
-import co.airy.spring.jwt.Jwt;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +18,7 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -29,10 +29,12 @@ import java.util.List;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private static final Logger log = AiryLoggerFactory.getLogger(WebSocketConfig.class);
-    private final Jwt jwt;
+    private final String systemToken;
+    private final String systemTokenPrincipal;
 
-    public WebSocketConfig(Jwt jwt) {
-        this.jwt = jwt;
+    public WebSocketConfig(@Value("${systemToken:#{null}}") String systemToken) {
+        this.systemToken = systemToken;
+        this.systemTokenPrincipal = systemToken == null ? null : String.format("system-token-%s", systemToken.substring(0, Math.min(systemToken.length(), 4)));
     }
 
     @Override
@@ -44,8 +46,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // TODO this is a temporary name. We can change it back to
-        // /ws.communication in https://github.com/airyhq/airy/issues/886
         registry.addEndpoint("/ws.communication").setAllowedOrigins("*");
     }
 
@@ -64,6 +64,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registration.interceptors(new ChannelInterceptor() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                if (systemToken == null) {
+                    return message;
+                }
+
                 final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
                 if (accessor != null && StompCommand.CONNECT.equals(accessor.getCommand())) {
@@ -73,15 +77,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                     }
 
                     try {
-                        final String userId = jwt.authenticate(authToken);
-                        accessor.setUser(new UsernamePasswordAuthenticationToken(userId, null, List.of()));
+                        if (systemToken.equals(authToken)) {
+                            accessor.setUser(new UsernamePasswordAuthenticationToken(systemTokenPrincipal, null, List.of()));
+                        }
                     } catch (Exception e) {
                         log.error(String.format("STOMP Command: %s, token: %s \n Failed to authenticate", accessor.getCommand(), authToken));
                     }
                 }
 
                 if (accessor == null || accessor.getUser() == null) {
-                    throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
                 }
 
                 return message;

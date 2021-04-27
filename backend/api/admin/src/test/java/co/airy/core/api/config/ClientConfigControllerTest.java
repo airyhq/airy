@@ -98,7 +98,7 @@ public class ClientConfigControllerTest {
                         withSuccess("{\"components\": [\"api-communication\"]}", MediaType.APPLICATION_JSON)
                 );
 
-        retryOnException(() -> webTestHelper.post("/client.config", "{}", "user-id")
+        retryOnException(() -> webTestHelper.post("/client.config", "{}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.components.*", hasSize(1)))
                         .andExpect(jsonPath("$.components", hasKey("api-communication")))

@@ -3,19 +3,23 @@ import _, {connect, ConnectedProps} from 'react-redux';
 
 import {SettingsModal, LinkButton, Button, SearchField, Input} from 'components';
 import {cyTagsSearchField, cyTagsTable} from 'handles';
+
 import {ReactComponent as Plus} from 'assets/images/icons/plus.svg';
 
 import {listTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
 import {filteredTags} from '../../selectors/tags';
+
 import {Tag} from 'model';
 import {ModalType} from '../../types';
 
-import styles from './index.module.scss';
 import {TableRow} from './TableRow';
 import SimpleTagForm from './SimpleTagForm';
 import EmptyStateTags from './EmptyStateTags';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
+
+import styles from './index.module.scss';
+
 import {cyTagsTableRowDisplayDeleteModalInput, cyTagsTableRowDisplayDeleteModalButton} from 'handles';
 
 const initialState = {
@@ -28,6 +32,7 @@ const initialState = {
   },
   tagQuery: '',
   createDrawer: false,
+  emptyState: true,
 };
 
 class Tags extends Component<ConnectedProps<typeof connector>, typeof initialState> {
@@ -63,6 +68,13 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
       createDrawer: !this.state.createDrawer,
     });
     this.props.errorTag('');
+  };
+
+  removeEmptyStateAndCreateTag = () => {
+    this.setState({
+      emptyState: false,
+    });
+    this.handleTagDrawer();
   };
 
   keyPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -164,9 +176,9 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
     const {tags} = this.props;
     return (
       <div className={styles.cardRaised}>
-        <header>
+        <div>
           <h1 className={styles.organizationSectionHeadline}>Tags</h1>
-        </header>
+        </div>
         <div className={styles.organizationContainer} key="1">
           <div className={styles.tagsHeader}>
             <div className={styles.searchContainer}>
@@ -210,7 +222,15 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
 
   render() {
     const {allTagsCount} = this.props;
-    return <div className={styles.tagsWrapper}>{allTagsCount == 0 ? <EmptyStateTags /> : this.renderTagList()}</div>;
+    return (
+      <div className={styles.tagsWrapper}>
+        {allTagsCount == 0 && this.state.emptyState ? (
+          <EmptyStateTags removeEmptyState={this.removeEmptyStateAndCreateTag} />
+        ) : (
+          this.renderTagList()
+        )}
+      </div>
+    );
   }
 }
 

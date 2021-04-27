@@ -6,18 +6,20 @@ import (
 	"cli/pkg/providers"
 	"cli/pkg/workspace"
 	"fmt"
+	"os"
+
 	"github.com/TwinProduction/go-color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"os"
 )
 
 var (
-	providerName string
-	namespace    string
-	version      string
-	initOnly     bool
-	CreateCmd    = &cobra.Command{
+	providerName   string
+	providerConfig map[string]string
+	namespace      string
+	version        string
+	initOnly       bool
+	CreateCmd      = &cobra.Command{
 		Use:   "create [config directory]",
 		Short: "Creates an instance of Airy Core",
 		Long:  `Creates a config directory (default .) with default configuration and starts an Airy Core instance using the given provider`,
@@ -28,6 +30,7 @@ var (
 
 func init() {
 	CreateCmd.Flags().StringVar(&providerName, "provider", "minikube", "One of the supported providers (aws|minikube).")
+	CreateCmd.Flags().StringToStringVar(&providerConfig, "provider-config", nil, "Additional configuration for the providers.")
 	CreateCmd.Flags().StringVar(&namespace, "namespace", "default", "(optional) Kubernetes namespace that Airy should be installed to.")
 	CreateCmd.Flags().BoolVar(&initOnly, "init-only", false, "Only create the airy config directory and exit")
 	CreateCmd.MarkFlagRequired("provider")
@@ -59,7 +62,7 @@ func create(cmd *cobra.Command, args []string) {
 	fmt.Fprintln(w)
 	fmt.Fprintln(w, providerName, "provider output:")
 	fmt.Fprintln(w)
-	context, err := provider.Provision(dir)
+	context, err := provider.Provision(providerConfig, dir)
 	fmt.Fprintln(w)
 	if err != nil {
 		console.Exit("could not provision cluster: ", err)

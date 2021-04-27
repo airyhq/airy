@@ -7,10 +7,6 @@ go_library(
     srcs = [
         "client_config_request_payload.go",
         "client_config_response_payload.go",
-        "login_request_payload.go",
-        "login_response_payload.go",
-        "signup_request_payload.go",
-        "signup_response_payload.go",
     ],
     importpath = "github.com/airyhq/airy/lib/go/httpclient/payloads",
     visibility = ["//visibility:public"],

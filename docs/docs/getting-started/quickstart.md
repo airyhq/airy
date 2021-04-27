@@ -36,17 +36,8 @@ link='/getting-started/installation/introduction'
 The [Airy Live Chat Plugin](/sources/chatplugin/overview.md) source is well suited for a
 first integration because it does not require any configuration.
 
-Once you [signed up](/api/endpoints/users.md#signup), you must [log
-in](/api/authentication.md#login) so you can obtain a valid JWT token for the
-upcoming API calls:
-
-```sh
-token=$(echo $(curl -H 'Content-Type: application/json' -d \
-"{ \
-\"email\":\"grace@example.com\", \
-\"password\":\"the_answer_is_42\" \
-}" http://airy.core/users.login) | jq -r '.token')
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
+```shell script
+curl -H "Content-Type: application/json" -d \
 "{
     \"name\": \"chat plugin source\"
 }" http://airy.core/channels.chatplugin.connect
@@ -77,19 +68,18 @@ To see how messages are flowing through the system, [list
 conversations](/api/endpoints/conversations.md#list) for the channel you have just
 created. it should return the message you have just sent.
 
-<img alt="conversations.list" src={useBaseUrl('img/getting-started/quickstart/conversation_list.gif')} />
-
-```bash
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" \
-http://airy.core/conversations.list | jq .
+```shell script
+curl -XPOST http://airy.core/conversations.list | jq .
 ```
+
+<img alt="conversations.list" src={useBaseUrl('img/getting-started/quickstart/conversation_list.gif')} />
 
 ## Step 4: Consume directly from Apache Kafka
 
 You can also consume the messages directly from the Kafka
 `application.communication.messages` topic:
 
-```
+```shell script
 kubectl exec -it kafka-0 -- /bin/bash
 kafka-console-consumer.sh \
 --bootstrap-server kafka:9092 \

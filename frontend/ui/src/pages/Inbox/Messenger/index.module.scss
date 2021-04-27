@@ -4,9 +4,10 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  border-radius: 10px;
   align-items: stretch;
   overflow: hidden;
-  margin: 72px 8px 0 90px;
+  margin: 88px 1.5em 0 100px;
 }
 
 .messengerContainerMiddlePanel {
@@ -16,7 +17,7 @@
   min-width: 320px;
   max-width: 320px;
   overflow: hidden;
-  margin: 16px 8px 0 8px;
+  margin: 0 8px 0 0;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }

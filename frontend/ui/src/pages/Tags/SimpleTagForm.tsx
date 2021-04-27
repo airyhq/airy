@@ -26,6 +26,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
   const [name, setName] = useState('');
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [showError, setShowError] = useState(true);
+
   const handleCreate = () => {
     if (name.trim().length) {
       createTag({name: name.trim(), color}).then((success: boolean) => {
@@ -51,10 +52,10 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
   };
 
   return (
-    <DialogCustomizable close={onClose} style={tags.length ? {right: 0, top: '32px'} : {top: '200px'}}>
+    <DialogCustomizable close={onClose} style={tags.length ? {right: 0, top: '32px'} : {top: '50px', right: '0px'}}>
       <div className={styles.tagCreate}>
-        <h4 className={styles.headline}>Add a tag</h4>
         <Input
+          label="Add a tag"
           type="text"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setName(e.target.value);
@@ -67,7 +68,8 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
           placeholder="Please enter a tag name"
           autoComplete="off"
           autoFocus={true}
-          fontClass="font-m"
+          fontClass="font-base"
+          minLength={1}
           maxLength={50}
         />
         <p className={styles.errorMessage}>{(!name.length || showError) && errorMessage}</p>

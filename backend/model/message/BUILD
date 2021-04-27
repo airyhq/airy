@@ -6,13 +6,13 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/model/message/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//backend/avro/communication:message-avro",
+        "//backend/avro:message-avro",
         "//lib/java/kafka/schema:application-communication-messages",
     ],
     deps = [
         "//:jackson",
         "//:lombok",
-        "//backend/avro/communication:message-avro",
+        "//backend/avro:message-avro",
         "//backend/model/metadata",
         "//lib/java/date",
     ],

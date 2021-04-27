@@ -4,6 +4,7 @@ metadata:
   name: security
   namespace: {{ .Values.global.namespace }}
 data:
-  jwtSecret: {{ .Values.jwtSecret | default (randAlphaNum 128) | quote }}
-  systemToken: {{ .Values.systemToken | default (randAlphaNum 24) | quote }}
+{{- if .Values.systemToken }}
+  systemToken: {{ .Values.systemToken | quote }}
+{{- end }}
   allowedOrigins: {{ .Values.allowedOrigins | quote }}

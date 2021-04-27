@@ -44,7 +44,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
-  const currentConversationState = conversation.metadata.state;
+  const currentConversationState = conversation.metadata.state || 'OPEN';
 
   const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const newState = currentConversationState === 'OPEN' ? 'CLOSED' : 'OPEN';

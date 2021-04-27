@@ -50,7 +50,7 @@ spec:
         command: ["/bin/sh", "/opt/provisioning/wait-for-service.sh"]
         env:
         - name: SERVICE_NAME
-          value: api-auth
+          value: sources-chatplugin
         - name: SERVICE_PORT
           value: "80"
         volumeMounts:

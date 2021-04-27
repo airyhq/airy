@@ -14,8 +14,8 @@ Use an airy.yaml configuration file to customize your Airy Core instance
 The configuration workflow is as simple as:
 
 ```sh
-$EDITOR airy.yaml # create your airy.yaml
-airy config --config path/to/airy.yml # apply your config!
+$EDITOR /path/to/config/directory/airy.yaml # edit your airy.yaml file
+airy config apply --config-dir /path/to/config/directory/ # apply your config
 ```
 
 Your Airy Core instance will start and stop components accordingly to your
@@ -42,7 +42,7 @@ are looking for.
 ### Prerequisites
 
 These settings are used to connect the **Airy Components** to your Kafka
-cluster, PostgreSQL, and Redis.
+cluster and Redis.
 
 - `kafka`
 
@@ -55,15 +55,8 @@ cluster, PostgreSQL, and Redis.
   - `hostname`
   - `port`
 
-- `postgres`
-  - `endpoint` in `<HOSTNAME>:<PORT>` format
-  - `dbName` name of the PostgreSQL database
-  - `username` these credentials will be passed to the **API Auth Component**
-  - `password` and they will be used to create the Postgres database
-
 ### Security
 
-- `jwtSecret` must be set to a long secure secret in production environments (default: random generated)
 - `token` set to a long secure secret to use for machine [API authentication](api/authentication.md) (default: random generated)
 - `allowedOrigins` your sites origin to prevent CORS-based attacks (default: "\*")
 
@@ -104,5 +97,5 @@ use the [airy config apply](/cli/usage.md#config-apply) by running the
 following [Airy CLI](/cli/introduction.md) command.
 
 ```bash
-airy config apply --config ./airy.yaml
+airy config apply --config-dir /path/to/config/directory/
 ```

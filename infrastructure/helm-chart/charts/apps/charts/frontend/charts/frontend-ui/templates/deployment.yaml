@@ -46,18 +46,6 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
           failureThreshold: 3
-      initContainers:
-        - name: wait
-          image: busybox
-          command: ['/bin/sh', '/opt/provisioning/wait-for-service.sh']
-          env:
-            - name: SERVICE_NAME
-              value: api-auth
-            - name: SERVICE_PORT
-              value: '80'
-          volumeMounts:
-            - name: provisioning-scripts
-              mountPath: /opt/provisioning
       volumes:
         - name: provisioning-scripts
           configMap:

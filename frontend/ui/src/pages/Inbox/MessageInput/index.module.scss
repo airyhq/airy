@@ -58,7 +58,7 @@
   border-radius: 8px;
   display: flex;
   align-items: normal;
-  margin-left: 14px;
+  margin-left: 16px;
 }
 
 .inputWrap {
@@ -84,7 +84,7 @@
 .sendDiv {
   position: relative;
   display: flex;
-  margin: 0px 24px 0px 0px;
+  margin-right: 16px;
 }
 
 .sendButton {
@@ -132,7 +132,7 @@
 }
 
 .messageActionsContainer svg {
-  height: 20px;
+  height: 22px;
   cursor: pointer;
 }
 
@@ -214,12 +214,12 @@
 }
 
 .templateSelector {
-  max-height: 184px;
+  max-height: 164px;
   height: auto;
   overflow: hidden;
   position: relative;
   margin: 0 8px 8px 8px;
-  border-radius: 16px;
+  max-width: 300px;
 }
 
 .suggestionRepliesSelector {
@@ -248,8 +248,7 @@
   z-index: 1;
 
   svg {
-    width: 8px;
-    height: 8px;
+    transform: scale(-0.8);
     margin-left: -1px;
     margin-top: -1px;
   }

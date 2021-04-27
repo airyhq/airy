@@ -6,15 +6,11 @@ go_library(
     srcs = [
         "api.go",
         "endpoint.go",
-        "login.go",
-        "signup.go",
     ],
     importpath = "cli/pkg/cmd/api",
     visibility = ["//visibility:public"],
     deps = [
         "//cli/pkg/kube",
-        "//lib/go/httpclient",
-        "//lib/go/httpclient/payloads",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",
     ],

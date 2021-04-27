@@ -9,11 +9,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.Charset;
 import java.security.Key;
 import java.time.Duration;
 import java.time.Instant;
@@ -74,7 +73,7 @@ public class Jwt {
         return builder.compact();
     }
 
-    public Principal authenticate(final String authHeader) throws HttpClientErrorException.Unauthorized {
+    public Principal authenticate(final String authHeader) throws ResponseStatusException {
         Claims claims = null;
         try {
             claims = extractClaims(authHeader);
@@ -83,7 +82,7 @@ public class Jwt {
         }
 
         if (claims == null) {
-            throw new HttpClientErrorException(UNAUTHORIZED, "Unauthorized", null, null, Charset.defaultCharset());
+            throw new ResponseStatusException(UNAUTHORIZED);
         }
 
         try {
@@ -92,11 +91,11 @@ public class Jwt {
             return new Principal(channelId, conversationId);
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new HttpClientErrorException(UNAUTHORIZED, "Unauthorized", null, null, Charset.defaultCharset());
+            throw new ResponseStatusException(UNAUTHORIZED);
         }
     }
 
-    public Principal authenticateResume(final String resumeToken) throws HttpClientErrorException.Unauthorized {
+    public Principal authenticateResume(final String resumeToken) throws ResponseStatusException {
         Claims claims = null;
         try {
             claims = extractClaims(resumeToken);
@@ -105,7 +104,7 @@ public class Jwt {
         }
 
         if (claims == null) {
-            throw new HttpClientErrorException(UNAUTHORIZED, "Unauthorized", null, null, Charset.defaultCharset());
+            throw new ResponseStatusException(UNAUTHORIZED);
         }
 
         try {
@@ -114,7 +113,7 @@ public class Jwt {
             return new Principal(channelId, conversationId);
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new HttpClientErrorException(UNAUTHORIZED, "Unauthorized", null, null, Charset.defaultCharset());
+            throw new ResponseStatusException(UNAUTHORIZED);
         }
     }
 

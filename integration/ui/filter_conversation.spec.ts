@@ -13,14 +13,6 @@ import {cyBubble, cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handle
 
 describe('Filter conversation', () => {
   it('Filter conversation', () => {
-    cy.visit('/ui/login');
-    cy.get('form')
-      .within(() => {
-        cy.get('input[type=email]').type(Cypress.env('username'));
-        cy.get('input[type=password]').type(Cypress.env('password'));
-      })
-      .submit();
-
     cy.visit('/ui/channels');
     cy.wait(500);
 

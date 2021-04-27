@@ -107,7 +107,7 @@ public class ChannelsControllerTest {
                                 .build())
         ));
 
-        retryOnException(() -> webTestHelper.post("/channels.list", "{}", "user-id")
+        retryOnException(() -> webTestHelper.post("/channels.list", "{}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data.length()", greaterThanOrEqualTo(1)))
                         .andExpect(jsonPath("$.data[*].id").value(not(contains(disconnectedChannel)))),
@@ -118,20 +118,20 @@ public class ChannelsControllerTest {
     void canUpdateChannel() throws Exception {
         final String expectedChannelName = "channel name";
 
-        retryOnException(() -> webTestHelper.post("/channels.info", String.format("{\"channel_id\":\"%s\"}", connectedChannel.getId()), "user-id")
+        retryOnException(() -> webTestHelper.post("/channels.info", String.format("{\"channel_id\":\"%s\"}", connectedChannel.getId()))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", equalTo(connectedChannel.getId())))
                         .andExpect(jsonPath("$.metadata.name", not(equalTo(expectedChannelName)))),
                 "/channels.info did not return the right channel");
 
         webTestHelper.post("/channels.update", String.format("{\"channel_id\":\"%s\",\"name\":\"%s\"}",
-                connectedChannel.getId(), expectedChannelName), "user-id")
+                connectedChannel.getId(), expectedChannelName))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", equalTo(connectedChannel.getId())))
                         .andExpect(jsonPath("$.metadata.name", not(equalTo(connectedChannel.getId()))))
                         .andExpect(jsonPath("$.source", equalTo(connectedChannel.getSource())));
 
-        retryOnException(() -> webTestHelper.post("/channels.info", String.format("{\"channel_id\":\"%s\"}", connectedChannel.getId()), "user-id")
+        retryOnException(() -> webTestHelper.post("/channels.info", String.format("{\"channel_id\":\"%s\"}", connectedChannel.getId()))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", equalTo(connectedChannel.getId())))
                         .andExpect(jsonPath("$.metadata.name", equalTo(expectedChannelName))),

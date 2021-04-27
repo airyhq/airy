@@ -15,14 +15,12 @@ type CallbackMap = {
 const protocol = location.protocol.replace('http', 'ws');
 
 export class WebSocketClient {
-  public readonly token?: string;
   public readonly apiUrlConfig?: string;
 
   stompWrapper: StompWrapper;
   callbackMap: CallbackMap;
 
-  constructor(apiUrl: string, token: string, callbackMap: CallbackMap = {}) {
-    this.token = token;
+  constructor(apiUrl: string, callbackMap: CallbackMap = {}) {
     this.callbackMap = callbackMap;
     this.apiUrlConfig = `${protocol}//${new URL(apiUrl).host}/ws.communication`;
 
@@ -33,7 +31,6 @@ export class WebSocketClient {
           this.onEvent(item.body);
         },
       },
-      this.token,
       this.onError
     );
     this.stompWrapper.initConnection();

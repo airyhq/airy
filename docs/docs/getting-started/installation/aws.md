@@ -130,9 +130,9 @@ on [here](/getting-started/installation/aws#uninstall-airy-core)
 
 ## Enable HTTPS
 
-This section explains all the steps needed to configure HTTPS on your `Airy Core` instance.
+This section guides you through the necessary steps to configure HTTPS on your `Airy Core` instance.
 
-Create a self-signing certificate (skip step if you already have your existing https certificate).
+Create a self-signing certificate (skip step if you already have an existing HTTPS certificate).
 The certificates will be created in your `~/.airy/certs` directory, using the OpenSSL utility.
 
 ```sh
@@ -150,7 +150,7 @@ Common Name (e.g. server FQDN or YOUR name) []:*.elb.amazonaws.com
 Email Address []:sre@airy.co
 ```
 
-Note that when generating the public certificate `public.crt` you must specify a common namd of fqdn, otherwise the certificate will not be used by the AWS LoadBalancer.
+Note that when generating the public certificate `public.crt` you must specify a common name of FQDN, otherwise the certificate will not be used by the AWS LoadBalancer.
 
 Next you should upload your certificates to the AWS certificates manager (ACM).
 
@@ -269,7 +269,7 @@ do
 done
 ```
 
-Delete all used network interfaces (iIf the command fails, please check if all the `loadbalancers` are deleted and run the previous command one more time):
+Delete all used network interfaces (iIf the command fails, check if all the `loadbalancers` are deleted and run the previous command one more time):
 
 ```sh
 for interface in $(aws ec2 describe-network-interfaces --filters Name=vpc-id,Values=${vpc_id} --query 'NetworkInterfaces[].NetworkInterfaceId' --output text)

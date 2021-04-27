@@ -2,12 +2,14 @@ package co.airy.spring.auth.oidc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class ProfileData {
     private String name;

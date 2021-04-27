@@ -1,16 +1,14 @@
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/tags';
 import {Tag} from 'model';
-import {DataState} from '../../data';
+import keyBy from 'lodash/keyBy';
 
 type Action = ActionType<typeof actions>;
 
-export type TagState = {
-  data: DataState;
-};
-
 export type Tags = {
-  all: Tag[];
+  all: {
+    [tagId: string]: Tag;
+  };
   query: string;
   error: string;
 };
@@ -40,36 +38,25 @@ export default function tagsReducer(state = defaultState, action: Action): any {
     case getType(actions.fetchTagAction):
       return {
         ...state,
-        all: action.payload,
+        all: keyBy(action.payload, 'id'),
       };
     case getType(actions.deleteTagAction):
+      const newAll = {...state.all};
+      delete newAll[action.payload];
       return {
         ...state,
-        all: state.all.filter((tag: Tag) => tag.id !== action.payload),
+        all: newAll,
       };
+    case getType(actions.editTagAction):
     case getType(actions.addTagAction): {
-      let updatedTag = false;
-      const mappedTags = state.all.map((tag: Tag) => {
-        if (tag.id === action.payload.id) {
-          updatedTag = true;
-          return {
-            ...tag,
-            ...action.payload,
-          };
-        }
-        return tag;
-      });
-
       return {
         ...state,
-        all: updatedTag ? mappedTags : state.all.concat([action.payload]),
+        all: {
+          ...state.all,
+          [action.payload.id]: action.payload,
+        },
       };
     }
-    case getType(actions.editTagAction):
-      return {
-        ...state,
-        all: state.all.map((tag: Tag) => (tag.id === action.payload.id ? action.payload : tag)),
-      };
     case getType(actions.errorTagAction):
       return {
         ...state,

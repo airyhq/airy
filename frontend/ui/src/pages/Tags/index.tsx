@@ -236,7 +236,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
 
 const mapStateToProps = (state: StateModel) => ({
   tags: filteredTags(state),
-  allTagsCount: state.data.tags.all.length,
+  allTagsCount: Object.keys(state.data.tags.all).length,
   tagQuery: state.data.tags.query,
   errorMessage: state.data.tags.error,
   userData: state.data.user,

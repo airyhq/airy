@@ -3,7 +3,7 @@ import _, {createSelector} from 'reselect';
 import {Tag} from 'model';
 import {StateModel} from '../reducers';
 
-const tags = (state: StateModel) => state.data.tags.all;
+const tags = (state: StateModel) => Object.values(state.data.tags.all);
 const queries = (state: StateModel) => state.data.tags.query;
 const filter = (tags: Tag[], filter: string) => {
   if (filter === '') {

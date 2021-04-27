@@ -128,15 +128,81 @@ Error creating vpc:  operation error EC2: CreateVpc, https response error Status
 When encountering this, you can delete some of the resources just as described
 on [here](/getting-started/installation/aws#uninstall-airy-core)
 
+## Enable HTTPS
+
+This section guides you through the necessary steps to configure HTTPS on your `Airy Core` instance.
+
+### Create a self-signed certificate
+
+You can skip this step if you already have an existing HTTPS certificate.
+In the example below, the certificates will be created in your `~/.airy/certs` directory, using the OpenSSL utility.
+
+```sh
+mkdir -p ~/.airy/certs/
+cd ~/.airy/certs/
+openssl genrsa 2048 > private.key
+openssl req -new -x509 -nodes -sha1 -days 3650 -extensions v3_ca -key private.key > public.crt
+-----
+Country Name (2 letter code) [DE]:DE
+State or Province Name (full name) [Berlin]:Berlin
+Locality Name (eg, city) []:Berlin
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Airy GmbH
+Organizational Unit Name (eg, section) []:Development
+Common Name (e.g. server FQDN or YOUR name) []:*.elb.amazonaws.com
+Email Address []:sre@airy.co
+```
+
+Note that when generating the public certificate `public.crt` you must specify a common name of FQDN, otherwise the certificate will not be used by the AWS LoadBalancer.
+
+### Upload certificates to AWS ACM
+
+```sh
+aws acm import-certificate --certificate fileb://public.crt --private-key fileb://private.key --region us-east-1
+```
+
+In case you have your own certificates, the same command for uploading the certificates applies. In case you have an additional file containing the certificate chain, for example `ca-bundle.crt`, you can use the following command instead:
+
+```sh
+aws acm import-certificate --certificate fileb://public.crt --certificate fileb://ca-bundle.crt --private-key fileb://private.key --region us-east-1
+```
+
+After the certificate has been uploaded to AWS ACM, you will need the unique ARN of the certificate,for the next step.
+
+### Configure the ingress service
+
+Locate and set your KUBECONFIG file:
+
+```sh
+export KUBECONFIG="PATH/TO/DIR/kube.conf"
+```
+
+Modify the existing ingress service to reconfigure the AWS LoadBalancer.
+
+```sh
+kubectl --kubeconfig ${KUBECONFIG} -n kube-system annotate service traefik "service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http"
+ARN="Your-unique-ACM-ARN" kubectl --kubeconfig ${KUBECONFIG} -n kube-system annotate service traefik "service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ARN}"
+kubectl --kubeconfig ${KUBECONFIG} -n kube-system annotate service traefik "service.beta.kubernetes.io/aws-load-balancer-ssl-ports=https"
+kubectl --kubeconfig ${KUBECONFIG} -n kube-system patch service traefik --patch '{"spec": { "type": "LoadBalancer", "ports": [ { "name": "https", "port": 443, "protocol": "TCP", "targetPort": 80 } ] } }'
+```
+
+### Print HTTPS endpoint
+
+At this point, the frontend and the API services of `Airy Core` should be accessible through https on the URL of the loadbalancer:
+
+```sh
+kubectl --kubeconfig ${KUBECONFIG} -n kube-system get service traefik --output jsonpath='https://{.status.loadBalancer.ingress[0].hostname}{"\n"}'
+```
+
 ## Integrate public webhooks
 
 The public webhooks will be accessible on the public LoadBalancer which is
 created by the Ingress loadBalancer Kubernetes service.
 
-To get the public URL of your AWS Airy Core installation you can run:
+To get the public URL of your AWS Airy Core installation run:
 
 ```sh
-kubectl --kubeconfig ~/.airy/kube.conf get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+export KUBECONFIG="PATH/TO/DIR/kube.conf"
+kubectl --kubeconfig ${KUBECONFIG} get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
 ```
 
 ## Next steps
@@ -171,7 +237,7 @@ echo ${id}
 
 Make sure that the ID was printed back to you, before proceeding with the deletion of the resources.
 
-Delete the EKS nodegroup.
+Delete the EKS nodegroup:
 
 ```sh
 node_group_name=$(aws eks list-nodegroups --cluster-name ${id} --query 'nodegroups[0]' --output text)
@@ -207,7 +273,7 @@ Get the ID of the VPC:
 vpc_id=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=${id} --query 'Vpcs[0].VpcId' --output text)
 ```
 
-Delete all the load-balancers
+Delete all the load-balancers:
 
 ```sh
 for loadbalancer in $(aws elb describe-load-balancers --query "LoadBalancerDescriptions[?VPCId=='${vpc_id}'].LoadBalancerName" --output text)
@@ -216,7 +282,7 @@ do
 done
 ```
 
-Delete all used network interfaces
+Delete all used network interfaces (iIf the command fails, check if all the `loadbalancers` are deleted and run the previous command one more time):
 
 ```sh
 for interface in $(aws ec2 describe-network-interfaces --filters Name=vpc-id,Values=${vpc_id} --query 'NetworkInterfaces[].NetworkInterfaceId' --output text)
@@ -234,7 +300,7 @@ do
 done
 ```
 
-Delete all the subnets in the VPC
+Delete all the subnets in the VPC:
 
 ```sh
 for subnet in $(aws ec2 describe-subnets --filters Name=vpc-id,Values=${vpc_id} --query 'Subnets[].SubnetId' --output text)
@@ -243,7 +309,7 @@ do
 done
 ```
 
-Delete the gateways and the routes in the VPC
+Delete the gateways and the routes in the VPC:
 
 ```sh
 for gateway in $(aws ec2 describe-internet-gateways --filters Name=attachment.vpc-id,Values=${vpc_id} --query 'InternetGateways[].InternetGatewayId' --output text)
@@ -251,6 +317,11 @@ do
     aws ec2 detach-internet-gateway --internet-gateway-id ${gateway} --vpc-id ${vpc_id}
     aws ec2 delete-internet-gateway --internet-gateway-id ${gateway}
 done
+```
+
+Delete the route tables (the command will always fail for the default route table, but you can still delete the VPC in the next step):
+
+```sh
 for route_table in $(aws ec2 describe-route-tables --filters Name=vpc-id,Values=${vpc_id} --query 'RouteTables[].RouteTableId' --output text)
 do
     aws ec2 delete-route-table --route-table-id ${route_table}

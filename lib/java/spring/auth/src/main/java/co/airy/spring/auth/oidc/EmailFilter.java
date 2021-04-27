@@ -33,6 +33,7 @@ public class EmailFilter extends OncePerRequestFilter {
             final OAuth2User user = ((OAuth2AuthenticationToken) auth).getPrincipal();
             final List<String> emails = getEmails(user);
 
+
             if (emails.stream().noneMatch(configProvider::emailMatches)) {
                 res.sendError(403, "Email not allowed");
                 return;

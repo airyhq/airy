@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {filter} from 'lodash-es';
 
 import {SearchField} from 'components';
 import {StateModel} from '../../../reducers';
@@ -80,12 +79,17 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
     onFilterVisibilityChanged();
   };
 
-  const getActiveFilterCount = () => {
-    return filter(Object.keys(currentFilter), (element: string) => {
-      return element !== 'displayName';
-    }).length;
+  const activeFilter = () => {
+    if (currentFilter.isStateOpen === undefined && currentFilter.displayName === (null || undefined)) {
+      return Object.keys(currentFilter).length - 2;
+    }
+    if (currentFilter.isStateOpen === undefined || currentFilter.displayName === (null || undefined)) {
+      return Object.keys(currentFilter).length - 1;
+    } else {
+      return Object.keys(currentFilter).length;
+    }
   };
-  
+
   const renderSearchInput = isShowingSearchInput ? (
     <div className={styles.containerSearchField}>
       <button type="button" className={styles.backButton} onClick={onClickBack} data-cy={cySearchFieldBackButton}>
@@ -112,7 +116,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
         <button
           title="Filter"
           id="filterButton"
-          className={`${getActiveFilterCount() > 0 ? styles.activeFilters : styles.filterButton}`}
+          className={`${activeFilter() > 0 ? styles.activeFilters : styles.filterButton}`}
           onClick={() => toggleFilter()}>
           <FilterIcon />
         </button>

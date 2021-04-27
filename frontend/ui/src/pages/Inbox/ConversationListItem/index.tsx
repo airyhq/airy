@@ -14,8 +14,7 @@ import {readConversations, conversationState} from '../../../actions/conversatio
 
 import styles from './index.module.scss';
 import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
-import { newestFilteredConversationFirst } from '../../../selectors/conversations';
-import { ConversationRouteProps } from '../index';
+import {newestFilteredConversationFirst} from '../../../selectors/conversations';
 
 interface FormattedMessageProps {
   message: Message;
@@ -32,11 +31,11 @@ const mapDispatchToProps = {
   conversationState,
 };
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
+const mapStateToProps = (state: StateModel) => {
   return {
     filteredConversations: newestFilteredConversationFirst(state),
-  }
-}
+  };
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -48,13 +47,13 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
 };
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, style, readConversations, conversationState, filteredConversations} = props;
+  const {conversation, active, style, readConversations, conversationState} = props;
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
-  const currentConversationState =  conversation.metadata.state || 'OPEN';
-  
-  const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {  
+  const currentConversationState = conversation.metadata.state || 'OPEN';
+
+  const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const newState = currentConversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
     conversationState(conversation.id, newState);
     event.preventDefault();

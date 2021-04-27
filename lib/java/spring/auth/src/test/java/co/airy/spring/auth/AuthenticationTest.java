@@ -20,11 +20,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(properties = {
         "allowedOrigins=*",
         "systemToken=user-generated-api-token",
-        "allowedOrigins=*"
 }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-public class AuthenticationFilterTest {
+public class AuthenticationTest {
 
     @Autowired
     private MockMvc mvc;
@@ -45,15 +44,6 @@ public class AuthenticationFilterTest {
                 .header("Origin", origin))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Access-Control-Allow-Origin", origin));
-    }
-
-    @Test
-    void rejectsInvalidJwt() throws Exception {
-        mvc.perform(post("/principal.get")
-                .header(HttpHeaders.AUTHORIZATION, "not a jwt")
-        )
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$").doesNotExist());
     }
 
     @Test

@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(properties = {
+        "systemToken=user-generated-api-token",
         "oidc.provider=github",
         "oidc.allowedEmailPatterns=grace@example.com",
         "oidc.clientId=oauth-registration-id",
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-public class GithubTest {
+public class OidcTest {
 
     @Autowired
     private MockMvc mvc;
@@ -36,5 +37,13 @@ public class GithubTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().exists("Location"))
                 .andExpect(jsonPath("$").doesNotExist());
+    }
+
+    @Test
+    void systemTokenAuthStillWorks() throws Exception {
+        mvc.perform(post("/principal.get")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, "user-generated-api-token"))
+                .andExpect(status().isOk());
     }
 }

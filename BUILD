@@ -138,6 +138,7 @@ java_library(
     exports = [
         "@maven//:org_springframework_boot_spring_boot_starter_security",
         "@maven//:org_springframework_boot_spring_boot_starter_oauth2_client",
+        "@maven//:org_springframework_security_spring_security_oauth2_core",
         "@maven//:org_springframework_security_oauth_spring_security_oauth2",
         "@maven//:org_springframework_security_spring_security_config",
         "@maven//:org_springframework_security_spring_security_core",

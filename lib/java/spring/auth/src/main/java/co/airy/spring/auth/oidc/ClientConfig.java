@@ -1,7 +1,7 @@
 package co.airy.spring.auth.oidc;
 
+import co.airy.spring.auth.oidc.github.GithubApi;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +15,8 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 @Configuration
 public class ClientConfig {
     @Bean
-    @ConditionalOnProperty("oidc.provider")
-    public ClientRegistrationRepository clientRegistrationRepository(OidcConfig config) {
+    @ConditionalOnProperty({"oidc.provider", "oidc.allowedEmailPatterns"})
+    public ClientRegistrationRepository clientRegistrationRepository(ConfigProvider config) {
         return new InMemoryClientRegistrationRepository(config.getRegistration());
     }
 
@@ -32,5 +32,10 @@ public class ClientConfig {
     public OAuth2AuthorizedClientRepository authorizedClientRepository(
             OAuth2AuthorizedClientService authorizedClientService) {
         return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);
+    }
+
+    @Bean
+    public UserService userService(GithubApi githubApi) {
+        return new UserService(githubApi);
     }
 }

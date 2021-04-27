@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties(prefix = "oidc")
-public class OidcProperties {
+public class UserProperties {
     private String allowedEmailPatterns;
     private String provider;
     private String clientId;

@@ -24,6 +24,7 @@ custom_java_library(
     visibility = ["//visibility:public"],
     exports = [
         "@maven//:org_springframework_security_spring_security_core",
+        "@maven//:org_springframework_security_spring_security_oauth2_core",
     ],
     deps = lib_deps,
 )

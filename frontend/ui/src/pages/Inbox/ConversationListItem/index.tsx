@@ -1,5 +1,5 @@
 import React, {CSSProperties, useEffect} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
@@ -117,4 +117,4 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   );
 };
 
-export default withRouter(connector(ConversationListItem));
+export default connector(ConversationListItem);

@@ -60,58 +60,55 @@ export const newestFilteredConversationFirst = createSelector(
     });
 
     const updatedFiltered = filter(updatedConversations, (conversation: Conversation) => {
-      let isFullfield = true;
+      let isFulfilled = true;
 
       if (currentFilter.isStateOpen !== undefined) {
         if (currentFilter.isStateOpen) {
-          isFullfield = conversation.metadata.state === 'OPEN' || conversation.metadata.state === undefined;
+          isFulfilled = conversation.metadata.state === 'OPEN' || conversation.metadata.state === undefined;
         } else {
-          isFullfield = conversation.metadata.state === 'CLOSED';
+          isFulfilled = conversation.metadata.state === 'CLOSED';
         }
-        if (!isFullfield) return isFullfield;
+        if (!isFulfilled) return isFulfilled;
       }
 
       if (currentFilter.readOnly) {
-        isFullfield = conversation.metadata.unreadCount === 0;
+        isFulfilled = conversation.metadata.unreadCount === 0;
       } else if (currentFilter.unreadOnly) {
-        isFullfield = conversation.metadata.unreadCount > 0;
+        isFulfilled = conversation.metadata.unreadCount > 0;
       }
-      if (!isFullfield) return isFullfield;
 
       if (currentFilter.byTags) {
         const conversationTags = Object.keys(conversation.metadata.tags || {}).map((id: string) => id);
         const filterTags = Object.keys(currentFilter.byTags).map((id: string) => currentFilter.byTags[id]);
 
-        isFullfield = filterTags.every(function (tag) {
+        isFulfilled = filterTags.every(function (tag) {
           return conversationTags.indexOf(tag) >= 0;
         });
       }
-      if (!isFullfield) return isFullfield;
 
       if (currentFilter.byChannels?.length > 0) {
         const channelId = conversation.channel.id;
         const filterChannel = Object.keys(currentFilter.byChannels).map((id: string) => currentFilter.byChannels[id]);
 
-        isFullfield = filterChannel.includes(channelId);
+        isFulfilled = filterChannel.includes(channelId);
       }
-      if (!isFullfield) return isFullfield;
 
-      if (currentFilter.bySources) {
+      if (currentFilter.bySources?.length > 0) {
         const conversationSource = conversation.channel.source;
         const filterSource = Object.keys(currentFilter.bySources).map((id: string) => currentFilter.bySources[id]);
 
-        isFullfield = filterSource.includes(conversationSource);
+        isFulfilled = filterSource.includes(conversationSource);
       }
-      if (!isFullfield) return isFullfield;
 
       if (currentFilter.displayName) {
         const searchValue = currentFilter.displayName.toLowerCase();
         const displayName = conversation.metadata.contact.displayName.toLowerCase();
 
-        isFullfield = displayName.includes(searchValue);
+        isFulfilled = displayName.includes(searchValue);
       }
+      if (!isFulfilled) return isFulfilled;
 
-      return isFullfield;
+      return isFulfilled;
     });
 
     return reverse(

@@ -9,13 +9,11 @@ export type Tags = {
   all: {
     [tagId: string]: Tag;
   };
-  query: string;
   error: string;
 };
 
 const defaultState = {
   all: [],
-  query: '',
   error: '',
 };
 
@@ -61,11 +59,6 @@ export default function tagsReducer(state = defaultState, action: Action): any {
       return {
         ...state,
         error: errorMessage(action.payload),
-      };
-    case getType(actions.filterTagAction):
-      return {
-        ...state,
-        query: action.payload,
       };
     default:
       return state;

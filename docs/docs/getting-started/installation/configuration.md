@@ -57,8 +57,8 @@ cluster and Redis.
 
 ### Security
 
-- `token` set to a long secure secret to use for machine [API authentication](api/authentication.md) (default: random generated)
-- `allowedOrigins` your sites origin to prevent CORS-based attacks (default: "\*")
+- `systemToken` set to a long secure secret to use for machine [API authentication](api/authentication.md)
+- `allowedOrigins` your site's origin to prevent CORS-based attacks (default: `"*"`)
 
 ### Components
 

@@ -45,17 +45,18 @@ export const newestFilteredConversationFirst = createSelector(
     }));
 
     const updatedConversations: ConversationMap = {};
+
     filteredConversations.map((filteredConversation: Conversation) => {
       if (conversationsMap[filteredConversation.id]) {
-        updatedConversations[filteredConversation.id] = conversationsMap[filteredConversation.id];
+        return (updatedConversations[filteredConversation.id] = conversationsMap[filteredConversation.id]);
       } else {
-        updatedConversations[filteredConversation.id] = filteredConversationsMap[filteredConversation.id];
+        return (updatedConversations[filteredConversation.id] = filteredConversationsMap[filteredConversation.id]);
       }
     });
 
     conversations.map((conversation: Conversation) => {
       if (!updatedConversations[conversation.id]) {
-        updatedConversations[conversation.id] = conversation;
+        return (updatedConversations[conversation.id] = conversation);
       }
     });
 

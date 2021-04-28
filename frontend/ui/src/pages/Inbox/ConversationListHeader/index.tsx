@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import {RouteComponentProps} from 'react-router-dom';
 
 import {SearchField} from 'components';
 import {StateModel} from '../../../reducers';
@@ -21,17 +21,18 @@ const mapDispatchToProps = {
   resetFilteredConversationAction,
 };
 
-const mapStateToProps = (state: StateModel) => ({  
+const mapStateToProps = (state: StateModel) => ({
   user: state.data.user,
   currentFilter: state.data.conversations.filtered.currentFilter || {},
-  totalConversations: state.data.conversations.all.paginationData.total,  
+  totalConversations: state.data.conversations.all.paginationData.total,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ConversationListHeaderProps = {
   onFilterVisibilityChanged: () => void;
-} & ConnectedProps<typeof connector> & RouteComponentProps;
+} & ConnectedProps<typeof connector> &
+  RouteComponentProps;
 
 const ConversationListHeader = (props: ConversationListHeaderProps) => {
   const {setSearch, resetFilteredConversationAction, currentFilter, onFilterVisibilityChanged} = props;

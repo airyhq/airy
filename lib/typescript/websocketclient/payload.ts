@@ -1,27 +1,7 @@
-import {DeliveryState, Metadata, MetadataEvent} from 'model';
+import {DeliveryState, Metadata, MetadataEvent, Tag} from 'model';
 
 interface Event {
-  type: 'message' | 'channel' | 'metadata';
-}
-
-interface MessagePayload {
-  id: string;
-  content: string;
-  delivery_state: DeliveryState;
-  from_contact: boolean;
-  sent_at: Date;
-  metadata: any;
-}
-
-interface ChannelPayload {
-  id: string;
-  metadata?: Metadata & {
-    name: string;
-    image_url?: string;
-  };
-  source: string;
-  source_channel_id: string;
-  connected: boolean;
+  type: 'message' | 'channel' | 'metadata' | 'tag';
 }
 
 export interface MessageEventPayload extends Event {
@@ -29,13 +9,29 @@ export interface MessageEventPayload extends Event {
   payload: {
     conversation_id: string;
     channel_id: string;
-    message: MessagePayload;
+    message: {
+      id: string;
+      content: string;
+      delivery_state: DeliveryState;
+      from_contact: boolean;
+      sent_at: Date;
+      metadata: any;
+    };
   };
 }
 
 export interface ChannelEventPayload extends Event {
   type: 'channel';
-  payload: ChannelPayload;
+  payload: {
+    id: string;
+    metadata?: Metadata & {
+      name: string;
+      image_url?: string;
+    };
+    source: string;
+    source_channel_id: string;
+    connected: boolean;
+  };
 }
 
 export interface MetadataEventPayload extends Event {
@@ -43,4 +39,9 @@ export interface MetadataEventPayload extends Event {
   payload: MetadataEvent;
 }
 
-export type EventPayloadUnion = MessageEventPayload | ChannelEventPayload | MetadataEventPayload;
+export interface TagEventPayload extends Event {
+  type: 'tag';
+  payload: Tag;
+}
+
+export type EventPayload = MessageEventPayload | ChannelEventPayload | MetadataEventPayload | TagEventPayload;

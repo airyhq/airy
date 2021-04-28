@@ -13,7 +13,7 @@ export type Tags = {
 };
 
 const defaultState = {
-  all: [],
+  all: {},
   error: '',
 };
 
@@ -45,8 +45,7 @@ export default function tagsReducer(state = defaultState, action: Action): any {
         ...state,
         all: newAll,
       };
-    case getType(actions.editTagAction):
-    case getType(actions.addTagAction): {
+    case getType(actions.upsertTagAction): {
       return {
         ...state,
         all: {

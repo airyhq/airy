@@ -73,11 +73,10 @@ func (w *Worker) Run(ctx context.Context, wg *sync.WaitGroup) {
 			return
 		default:
 			id, event, err := w.beanstalk.Reserve(1 * time.Minute)
-			if errors.Is(err, beanstalk.ErrTimeout) {
-				continue
-			}
 			if err != nil {
-				log.Println(err)
+				if !errors.Is(err, beanstalk.ErrTimeout) {
+					log.Println(err)
+				}
 				continue
 			}
 

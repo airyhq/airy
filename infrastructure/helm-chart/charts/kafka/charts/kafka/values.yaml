@@ -24,7 +24,7 @@ nodeport:
   enabled: true
   servicePort: 19092
   firstListenerPort: 31090
-cp-zookeeper:
+zookeeper:
   enabled: true
   servers: 1
   persistence:
@@ -32,3 +32,6 @@ cp-zookeeper:
     dataDirSize: 5Gi
     dataLogDirSize: 5Gi
   url: ""
+prometheusExporterImage: danielqsj/kafka-exporter
+prometheusExporterImageTag: v1.3.0
+prometheusExporterPort: 9308

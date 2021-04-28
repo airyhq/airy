@@ -3,7 +3,7 @@ alertmanager:
   apiVersion: v2
   ingress:
     enabled: true
-    hosts: []
+    hosts: ['a095b7a4ff9b046e785e4351fc153afb-763748821.us-east-1.elb.amazonaws.com']
     paths: ['/alertmanager']
   routePrefix: /alertmanager
 grafana:
@@ -11,13 +11,13 @@ grafana:
   adminPassword: prom-operator
   ingress:
     enabled: true
-    hosts: []
+    hosts: ['a095b7a4ff9b046e785e4351fc153afb-763748821.us-east-1.elb.amazonaws.com']
     path: /grafana
 prometheus:
   enabled: true
   ingress:
     enabled: true
-    hosts: []
+    hosts: ['a095b7a4ff9b046e785e4351fc153afb-763748821.us-east-1.elb.amazonaws.com']
     paths: ['/prometheus']
   prometheusSpec:
     routePrefix: /prometheus
@@ -32,3 +32,12 @@ prometheus:
       - port: web 
         interval: 30s
         path: actuator/prometheus
+  - name: "kafka"
+    selector:
+      matchLabels:
+        core.airy.co/prometheus: kafka
+    namespaceSelector:
+      matchNames: ["default"]
+    endpoints:
+      - port: prometheus 
+        interval: 30s

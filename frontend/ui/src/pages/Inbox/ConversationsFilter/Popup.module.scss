@@ -72,6 +72,8 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  outline: none;
+  max-height: 29px;
 
   svg {
     display: inline-block;
@@ -83,16 +85,15 @@
       fill: var(--color-soft-green);
     }
   }
+}
 
-  .openIcon {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background: none;
-    border: 2px solid #bf1a2f;
-    border-radius: 50%;
-    margin-right: 6px;
-  }
+.openIconButton {
+  width: 19px;
+  height: 19px;
+  background: none;
+  border: 2px solid #bf1a2f;
+  border-radius: 50%;
+  margin-right: 2px;
 }
 
 .filterButtonSelected {
@@ -100,6 +101,7 @@
   border: 1px solid var(--color-airy-blue);
   background-color: var(--color-airy-blue);
   color: white;
+  outline: none;
 
   path {
     stroke: white;
@@ -194,10 +196,12 @@
   }
 
   svg {
-    width: 8px;
-    height: 6px;
-    margin-left: 8px;
+    width: 24px;
+    height: 24px;
     margin-bottom: 2px;
+    border-radius: 50%;
+    padding-top: 2px;
+    padding-left: 2px;
   }
 }
 

@@ -8,12 +8,13 @@ import {Avatar} from 'render';
 import {formatTimeOfMessage} from '../../../services/format/date';
 
 import {Message} from 'model';
-import {MergedConversation} from '../../../reducers';
+import {MergedConversation, StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations, conversationState} from '../../../actions/conversations';
 
 import styles from './index.module.scss';
 import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
+import {newestFilteredConversationFirst} from '../../../selectors/conversations';
 
 interface FormattedMessageProps {
   message: Message;
@@ -30,7 +31,13 @@ const mapDispatchToProps = {
   conversationState,
 };
 
-const connector = connect(null, mapDispatchToProps);
+const mapStateToProps = (state: StateModel) => {
+  return {
+    filteredConversations: newestFilteredConversationFirst(state),
+  };
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
   if (message?.content) {
@@ -75,7 +82,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
     if (active && unread) {
       return readConversations(conversation.id);
     }
-  }, [active, conversation]);
+  }, [active, conversation, currentConversationState]);
 
   return (
     <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>

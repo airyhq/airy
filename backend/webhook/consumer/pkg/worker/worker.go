@@ -84,7 +84,7 @@ func (w *Worker) Run(ctx context.Context, wg *sync.WaitGroup) {
 			for {
 				select {
 				case <-ctx.Done():
-					log.Println("terminating worker: context canceled ")
+					log.Println("terminating worker: context cancelled")
 					return
 				default:
 					err = w.HandleEvent(event)

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import _, {connect, ConnectedProps} from 'react-redux';
 
 import {SearchField} from 'components';
 import {StateModel} from '../../../reducers';

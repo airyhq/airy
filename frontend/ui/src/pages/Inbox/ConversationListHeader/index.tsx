@@ -79,13 +79,13 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   };
 
   const activeFilter = () => {
+    const currentFilterLength = Object.keys(currentFilter).length;
+
     if (currentFilter.isStateOpen === undefined && currentFilter.displayName === (null || undefined)) {
-      return Object.keys(currentFilter).length - 2;
+      return currentFilterLength - 2;
     }
     if (currentFilter.isStateOpen === undefined || currentFilter.displayName === (null || undefined)) {
-      return Object.keys(currentFilter).length - 1;
-    } else {
-      return Object.keys(currentFilter).length;
+      return currentFilterLength - 1;
     }
   };
 

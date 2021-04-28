@@ -1,7 +1,7 @@
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/tags';
 import {Tag} from 'model';
-import keyBy from 'lodash/keyBy';
+import {omit, keyBy} from 'lodash';
 
 type Action = ActionType<typeof actions>;
 
@@ -39,11 +39,9 @@ export default function tagsReducer(state = defaultState, action: Action): any {
         all: keyBy(action.payload, 'id'),
       };
     case getType(actions.deleteTagAction):
-      const newAll = {...state.all};
-      delete newAll[action.payload];
       return {
         ...state,
-        all: newAll,
+        all: omit(state.all, action.payload),
       };
     case getType(actions.upsertTagAction): {
       return {

@@ -12,7 +12,6 @@ import styles from './index.module.scss';
 type ConnectedChannelsBySourceCardProps = {
   sourceInfo: SourceInfo;
   channels: Channel[];
-  connected: string;
 };
 
 const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps & RouteComponentProps) => {
@@ -26,9 +25,7 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
         <>
           <div className={styles.connectedContainer}>
             <div className={styles.connectedSum}>
-              <p>
-                {channels.length} {props.connected}
-              </p>
+              <p>{channels.length} Connected</p>
             </div>
             <div
               className={styles.connectedChannelBox}

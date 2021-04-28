@@ -3,5 +3,5 @@ export enum Source {
   google = 'google',
   chatPlugin = 'chatplugin',
   twilioSMS = 'twilio.sms',
-  twilioWhatsapp = 'twilio.whatsapp',
+  twilioWhatsApp = 'twilio.whatsapp',
 }

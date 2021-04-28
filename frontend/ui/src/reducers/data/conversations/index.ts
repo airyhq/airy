@@ -8,7 +8,6 @@ import * as metadataActions from '../../../actions/metadata';
 import * as actions from '../../../actions/conversations';
 import * as filterActions from '../../../actions/conversationsFilter';
 import * as messageActions from '../../../actions/messages';
-import {MetadataEvent, ConversationMetadata} from 'model';
 
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 type FilterAction = ActionType<typeof filterActions>;
@@ -58,7 +57,7 @@ export type ConversationsState = {
 };
 
 function mergeConversations(
-  oldConversation: {[conversation_id: string]: MergedConversation},
+  oldConversation: {[conversationId: string]: MergedConversation},
   newConversations: MergedConversation[]
 ): ConversationMap {
   newConversations.forEach((conversation: MergedConversation) => {
@@ -90,7 +89,7 @@ function mergeConversations(
 }
 
 function mergeFilteredConversations(
-  oldConversation: {[conversation_id: string]: MergedConversation},
+  oldConversation: {[conversationId: string]: MergedConversation},
   newConversations: MergedConversation[]
 ): ConversationMap {
   newConversations.forEach((conversation: MergedConversation) => {

@@ -32,3 +32,12 @@ prometheus:
       - port: web 
         interval: 30s
         path: actuator/prometheus
+  - name: "kafka"
+    selector:
+      matchLabels:
+        core.airy.co/prometheus: kafka
+    namespaceSelector:
+      matchNames: ["default"]
+    endpoints:
+      - port: prometheus 
+        interval: 30s

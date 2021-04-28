@@ -46,7 +46,7 @@ export const newestFilteredConversationFirst = createSelector(
 
     const updatedConversations: ConversationMap = {};
 
-    filteredConversations.map((filteredConversation: Conversation) => {
+    filteredConversations.forEach((filteredConversation: Conversation) => {
       if (conversationsMap[filteredConversation.id]) {
         updatedConversations[filteredConversation.id] = conversationsMap[filteredConversation.id];
       } else {
@@ -54,7 +54,7 @@ export const newestFilteredConversationFirst = createSelector(
       }
     });
 
-    conversations.map((conversation: Conversation) => {
+    conversations.forEach((conversation: Conversation) => {
       if (!updatedConversations[conversation.id]) {
         updatedConversations[conversation.id] = conversation;
       }

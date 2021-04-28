@@ -155,7 +155,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                   }
                   onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleState(event, false)}>
                   <CheckmarkCircleIcon />
-                  Done
+                  Closed
                 </button>
               </div>
             </div>

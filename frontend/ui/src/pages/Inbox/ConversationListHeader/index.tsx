@@ -89,11 +89,6 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
     }
   };
 
-  console.log(activeFilter());
-  console.log(Object.keys(currentFilter).length);
-
-  console.log(currentFilter);
-
   const renderSearchInput = isShowingSearchInput ? (
     <div className={styles.containerSearchField}>
       <button type="button" className={styles.backButton} onClick={onClickBack} data-cy={cySearchFieldBackButton}>

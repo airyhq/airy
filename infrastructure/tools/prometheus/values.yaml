@@ -3,7 +3,7 @@ alertmanager:
   apiVersion: v2
   ingress:
     enabled: true
-    hosts: ['a095b7a4ff9b046e785e4351fc153afb-763748821.us-east-1.elb.amazonaws.com']
+    hosts: []
     paths: ['/alertmanager']
   routePrefix: /alertmanager
 grafana:
@@ -11,13 +11,13 @@ grafana:
   adminPassword: prom-operator
   ingress:
     enabled: true
-    hosts: ['a095b7a4ff9b046e785e4351fc153afb-763748821.us-east-1.elb.amazonaws.com']
+    hosts: []
     path: /grafana
 prometheus:
   enabled: true
   ingress:
     enabled: true
-    hosts: ['a095b7a4ff9b046e785e4351fc153afb-763748821.us-east-1.elb.amazonaws.com']
+    hosts: []
     paths: ['/prometheus']
   prometheusSpec:
     routePrefix: /prometheus

@@ -70,7 +70,10 @@ Access Grafana under `/grafana` and login with the
 If the `defaultDashboardsEnabled` is set to true you can find the default
 Kubernetes dashboards under `/grafana/dashboards`
 
-For the spring apps we recommend to import this (dashboard)[https://grafana.com/grafana/dashboards/12464].
+For the spring apps we recommend to import this
+(dashboard)[https://grafana.com/grafana/dashboards/12464].
+
+And for Kafka this (dashboard)[https://grafana.com/grafana/dashboards/7589].
 
 ### Monitoring with alerts
 

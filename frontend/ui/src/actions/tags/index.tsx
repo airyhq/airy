@@ -18,10 +18,9 @@ export const deleteTagAction = createAction(DELETE_TAG, (id: string) => id)<stri
 export const errorTagAction = createAction(ERROR_TAG, (status: string) => status)<string>();
 
 export function listTags() {
-  return function (dispatch: Dispatch<any>) {
-    return HttpClientInstance.listTags().then((response: Tag[]) => {
-      dispatch(fetchTagAction(response));
-    });
+  return async function (dispatch: Dispatch<any>) {
+    const response = await HttpClientInstance.listTags();
+    dispatch(fetchTagAction(response));
   };
 }
 

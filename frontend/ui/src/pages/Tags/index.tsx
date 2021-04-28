@@ -43,7 +43,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   }
 
   handleSearch = (query: string) => {
-    this.setState({      query,  filteredTags: this.props.tags.filter(t => t.name.match(query))    });
+    this.setState({query, filteredTags: this.props.tags.filter(t => t.name.match(query))});
   };
 
   handleDelete = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +66,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   };
 
   removeEmptyStateAndCreateTag = () => {
-    this.setState({      emptyState: false    });
+    this.setState({emptyState: false});
     this.handleTagDrawer();
   };
 
@@ -195,7 +195,9 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
                   <th className={styles.tagsTableHeader}>Color</th>
                   <th />
                 </tr>
-                {tags.map((tag) => <TableRow key={tag.id} tag={tag} showModal={this.showModal} />)}
+                {tags.map(tag => (
+                  <TableRow key={tag.id} tag={tag} showModal={this.showModal} />
+                ))}
               </tbody>
             </table>
           ) : (
@@ -233,7 +235,7 @@ const mapStateToProps = (state: StateModel) => ({
 const mapDispatchToProps = {
   listTags,
   deleteTag,
-  errorTag
+  errorTag,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

@@ -160,7 +160,7 @@ const removeTagFromConversation = (state: AllConversationsState, conversationId,
         ...conversation,
         metadata: {
           ...conversation.metadata,
-          tags: pickBy(conversation.metadata?.tags, (value, key) => key !== tagId),
+          tags: pickBy(conversation.metadata?.tags, (_, key) => key !== tagId),
         },
       },
     },
@@ -221,15 +221,7 @@ function allReducer(
           [action.payload.identifier]: {
             id: action.payload.identifier,
             ...state.items[action.payload.identifier],
-            metadata: {
-              // Ensure that there is always a display name present
-              ...(action.payload as MetadataEvent<ConversationMetadata>).metadata,
-              state: action.payload.metadata.state || state.items[action.payload.identifier]?.metadata.state || 'OPEN',
-              contact: {
-                ...state.items[action.payload.identifier]?.metadata.contact,
-                ...(action.payload as MetadataEvent<ConversationMetadata>).metadata.contact,
-              },
-            },
+            metadata: merge({}, state.items[action.payload.identifier]?.metadata, action.payload.metadata),
           },
         },
       };

@@ -61,7 +61,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
   const tagSorter = (a: TagModel, b: TagModel) => a.name.localeCompare(b.name);
 
-  const conversationTags = () => 
+  const conversationTags = () =>
     Object.keys(conversation.metadata.tags || {})
       .map(tagId => tags[tagId])
       .filter(tag => tag !== undefined)

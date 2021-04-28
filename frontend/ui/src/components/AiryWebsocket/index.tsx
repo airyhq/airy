@@ -11,7 +11,7 @@ import {getConversationInfo} from '../../actions/conversations';
 import {setChannelAction} from '../../actions/channel';
 import {setMetadataAction} from '../../actions/metadata';
 import {allConversations} from '../../selectors/conversations';
-import { upsertTagAction } from '../../actions';
+import {upsertTagAction} from '../../actions';
 
 type AiryWebSocketProps = {} & ConnectedProps<typeof connector>;
 
@@ -32,7 +32,9 @@ const mapDispatchToProps = dispatch => ({
         stopPaths: ['payload.metadata.user_data', 'payload.metadata.tags'],
       })
     ),
-  onTag: (tag: Tag) => {dispatch(upsertTagAction(tag))},
+  onTag: (tag: Tag) => {
+    dispatch(upsertTagAction(tag));
+  },
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

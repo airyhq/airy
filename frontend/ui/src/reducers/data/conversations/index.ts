@@ -225,23 +225,6 @@ function allReducer(
           },
         },
       };
-
-    case getType(metadataActions.mergeMetadataAction):
-      if (action.payload.subject !== 'conversation') {
-        return state;
-      }
-
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [action.payload.identifier]: {
-            id: action.payload.identifier,
-            ...state.items[action.payload.identifier],
-            metadata: merge({}, state.items[action.payload.identifier]?.metadata, action.payload.metadata),
-          },
-        },
-      };
     case getType(actions.mergeConversationsAction):
       if (action.payload.paginationData) {
         return {

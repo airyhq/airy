@@ -16,23 +16,11 @@ export default class App extends Component {
   render() {
     const queryParams = new URLSearchParams(window.location.search);
     const channelId = queryParams.get('channel_id');
-
-    const customStyle = {
-      background: 'transparent',
-      ...(config?.primaryColor && {
-        '--color-airy-blue': config?.primaryColor,
-      }),
-      ...(config?.accentColor && {
-        '--color-airy-accent': config?.accentColor,
-        '--color-airy-blue-hover': config?.accentColor,
-        '--color-airy-blue-pressed': config?.accentColor,
-      }),
-    };
-
+    
     const apiHost: string = window.airy ? window.airy.host : process.env.API_HOST;
 
     return (
-      <div className={style.container} style={customStyle}>
+      <div className={style.container}>
         {channelId ? (
           <Chat
             channelId={channelId}
@@ -50,26 +38,52 @@ export default class App extends Component {
 }
 
 export const config: Config = {
+  headerTextColor: "#FFFFFF",
+  primaryColor: "#DF3817",
+  accentColor: "#DF3817",
+  backgroundColor: "#393536",
+  showMode: false,
+  headerText: "Test",
   welcomeMessage: {
-    fallback: 'Hello!\n\nWelcome to Airy!',
+    fallback: "Welcome to Just the Tonic! How can we help you today?",
     richCard: {
       standaloneCard: {
         cardContent: {
-          title: 'Hola!',
-          description: 'Welcome to Airy!',
           media: {
-            height: 'MEDIUM',
+            height: "MEDIUM",
             contentInfo: {
-              altText: 'Airy logo',
-              fileUrl: 'https://picsum.photos/200',
-              forceRefresh: 'false',
+              altText:
+                "Welcome to Just the Tonic! How can we help you today?",
+              fileUrl:
+                "https://airy-platform-media.s3.amazonaws.com/a09eb5ad-937d-4923-8e2e-74649ac1b12a",
             },
           },
+          title:
+            "Welcome to Just the Tonic! How can we help you today?",
+          description: "I have a question about:",
           suggestions: [
             {
               reply: {
-                text: "Let's start",
-                postbackData: '/start',
+                text: "Corona",
+                postbackData: "JTT-LC-covidupdate",
+              },
+            },
+            {
+              reply: {
+                text: "A Livestreamed Event",
+                postbackData: "JTT-LC-livestreamed-event",
+              },
+            },
+            {
+              reply: {
+                text: "A Club Event",
+                postbackData: "JTT-LC-club-event",
+              },
+            },
+            {
+              reply: {
+                text: "Discounts, Offers & News",
+                postbackData: "JTT-LC-news",
               },
             },
           ],
@@ -77,5 +91,4 @@ export const config: Config = {
       },
     },
   },
-  showMode: false,
 };

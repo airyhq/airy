@@ -49,6 +49,18 @@ const Chat = (props: Props) => {
     defaultWelcomeMessage.content = config.welcomeMessage;
   }
 
+  const customStyle = {
+    background: 'transparent',
+    ...(config?.primaryColor && {
+      '--color-airy-blue': config?.primaryColor,
+    }),
+    ...(config?.accentColor && {
+      '--color-airy-accent': config?.accentColor,
+      '--color-airy-blue-hover': config?.accentColor,
+      '--color-airy-blue-pressed': config?.accentColor,
+    }),
+  };
+
   const chatHiddenInitialState = (): boolean => {
     if (config.showMode === true) return false;
     if (getResumeTokenFromStorage(props.channelId)) return true;
@@ -205,7 +217,7 @@ const Chat = (props: Props) => {
   };
 
   return (
-    <div className={style.main}>
+    <div className={style.main} style={customStyle}>
       {!isChatHidden && (
         <div
           className={`${style.container} ${styleFor(animation)}`}

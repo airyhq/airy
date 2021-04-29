@@ -1,7 +1,6 @@
 package co.airy.spring.auth.token;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,7 +31,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        TokenPrincipal authentication = getAuthentication(authToken);
+        TokenAuth authentication = getAuthentication(authToken);
         if (authentication == null) {
             res.sendError(403, "system token does not match");
             return;
@@ -43,9 +42,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         chain.doFilter(req, res);
     }
 
-    private TokenPrincipal getAuthentication(String token) {
+    private TokenAuth getAuthentication(String token) {
         if (systemToken != null && systemToken.equals(token)) {
-            return new TokenPrincipal(token);
+            return new TokenAuth(token);
         }
 
         return null;

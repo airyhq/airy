@@ -4,6 +4,9 @@ import co.airy.log.AiryLoggerFactory;
 import co.airy.spring.auth.oidc.EmailFilter;
 import co.airy.spring.auth.oidc.ConfigProvider;
 import co.airy.spring.auth.oidc.UserService;
+import co.airy.spring.auth.session.AuthCookie;
+import co.airy.spring.auth.session.CookieSecurityContextRepository;
+import co.airy.spring.auth.session.Jwt;
 import co.airy.spring.auth.token.AuthenticationFilter;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +17,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -33,15 +37,18 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     private static final Logger log = AiryLoggerFactory.getLogger(AuthConfig.class);
     private final String[] ignoreAuthPatterns;
     private final String systemToken;
+    private final String jwtSecret;
     private final UserService userService;
     private final ConfigProvider configProvider;
 
     public AuthConfig(@Value("${systemToken:#{null}}") String systemToken,
+                      @Value("${jwtSecret:#{null}}") String jwtSecret,
                       List<IgnoreAuthPattern> ignorePatternBeans,
                       ConfigProvider configProvider,
                       UserService userService
     ) {
         this.systemToken = systemToken;
+        this.jwtSecret = jwtSecret;
         this.ignoreAuthPatterns = ignorePatternBeans.stream()
                 .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
                 .toArray(String[]::new);
@@ -52,11 +59,9 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors().and()
-                .csrf().disable();
-        /*
-        // TODO use a custom jwt session
+                .csrf().disable()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         if (systemToken != null || configProvider.isPresent()) {
             http.authorizeRequests(authorize -> authorize
@@ -72,10 +77,14 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
             if (configProvider.isPresent()) {
                 log.info("Oidc auth enabled with provider: {}", configProvider.getRegistration().getRegistrationId());
-                http.oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(this.userService)
-                        ))
+                http
+                        .securityContext().securityContextRepository(new CookieSecurityContextRepository(new Jwt(jwtSecret)))
+                        //.and().logout().permitAll().deleteCookies(AuthCookie.NAME)
+                        .and()
+                        .oauth2Login(oauth2 -> oauth2
+                                .userInfoEndpoint(userInfo -> userInfo
+                                        .userService(this.userService)
+                                ))
                         .addFilterAfter(new EmailFilter(configProvider), OAuth2LoginAuthenticationFilter.class);
             }
         }

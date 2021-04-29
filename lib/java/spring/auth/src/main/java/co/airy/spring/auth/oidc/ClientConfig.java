@@ -31,6 +31,7 @@ public class ClientConfig {
     @ConditionalOnBean(OAuth2AuthorizedClientService.class)
     public OAuth2AuthorizedClientRepository authorizedClientRepository(
             OAuth2AuthorizedClientService authorizedClientService) {
+        // TODO build a custom stateless implementation
         return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);
     }
 

@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {
         "systemToken=user-generated-api-token",
+        "jwtSecret=long-randomly-generated-secret-used-as-jwt-secret-key",
         "oidc.provider=github",
         "oidc.allowedEmailPatterns=grace@example.com",
         "oidc.clientId=oauth-registration-id",

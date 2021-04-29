@@ -15,7 +15,6 @@ export interface MessageEventPayload extends Event {
       delivery_state: DeliveryState;
       from_contact: boolean;
       sent_at: Date;
-      metadata: any;
     };
   };
 }

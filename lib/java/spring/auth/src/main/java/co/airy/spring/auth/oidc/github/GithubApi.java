@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class GithubApi implements ApplicationListener<ApplicationReadyEvent> {

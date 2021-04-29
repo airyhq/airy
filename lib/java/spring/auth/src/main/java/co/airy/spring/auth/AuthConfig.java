@@ -1,8 +1,8 @@
 package co.airy.spring.auth;
 
 import co.airy.log.AiryLoggerFactory;
-import co.airy.spring.auth.oidc.EmailFilter;
 import co.airy.spring.auth.oidc.ConfigProvider;
+import co.airy.spring.auth.oidc.EmailFilter;
 import co.airy.spring.auth.oidc.UserService;
 import co.airy.spring.auth.session.AuthCookie;
 import co.airy.spring.auth.session.CookieSecurityContextRepository;
@@ -79,7 +79,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 log.info("Oidc auth enabled with provider: {}", configProvider.getRegistration().getRegistrationId());
                 http
                         .securityContext().securityContextRepository(new CookieSecurityContextRepository(new Jwt(jwtSecret)))
-                        //.and().logout().permitAll().deleteCookies(AuthCookie.NAME)
+                        .and().logout().permitAll().deleteCookies(AuthCookie.NAME)
                         .and()
                         .oauth2Login(oauth2 -> oauth2
                                 .userInfoEndpoint(userInfo -> userInfo

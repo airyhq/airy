@@ -39,8 +39,31 @@ security:
 Since you don't want just any GitHub user to be able to access your Airy Core instance you are also required to add
 a list of emails or email wildcard patterns to define which users are authorized for use.
 
-Once this configuration is applied all requests to the 
+Once this configuration is applied all new requests to the Airy Core API will be redirected to the Github
+provider for login. If that login is successful the Airy Core platform will set a http only authentication cookie
+that will authenticate the current user session.
 
 ### Any open id provider
 
-TODO
+To configure any open id connect provider for authentication we expose the following configuration values:
+
+```yaml
+security:
+  oidc:
+    allowedEmailPatterns: "grace@example.org"
+    provider: "my-provider"
+    clientId: "client-id"
+    clientSecret: "client-secret"
+    scope: "openid,email" # comma separated list of scopes. Must include "openid"
+    clientAuthenticationMethod: "basic" # One of [basic,post,none] 
+    authorizationGrantType: "authorization_code" # One of [authorization_code,implicit,refresh_token,client_credentials,password]
+    authorizationUri: "https://my-provider.org/oauth2/v1/authorize"
+    tokenUri: "https://my-provider.org/oauth2/v1/token"
+    userInfoUri: "https://my-provider.org/oauth2/v1/userinfo"
+    userInfoAuthenticationMethod: "form" # One of [header,form,query]
+    userNameAttributeName: "id" # Field name within the OIDC identity token that uniquely identifies the user
+    issuerUri: "https://my-provider.org/jwt-issuer"
+    jwkSetUri: "https://my-provider.org/oauth2/v1/certs"
+```
+
+The redirect Uri to configure with your provider will always be of the form `{airy core host}/login/oauth2/code/{provider name}`.

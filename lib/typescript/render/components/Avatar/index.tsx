@@ -14,12 +14,10 @@ const fallbackAvatarImage = (event: SyntheticEvent<HTMLImageElement, Event>) => 
 };
 
 export const Avatar = ({contact}: AvatarProps) => (
-  <div className={styles.avatar}>
-    <img
-      alt={contact?.displayName || 'Unknown contact'}
-      className={styles.avatarImage}
-      src={contact?.avatarUrl || fallbackAvatar}
-      onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackAvatarImage(event)}
-    />
-  </div>
+  <img
+    alt={contact?.displayName || 'Unknown contact'}
+    className={styles.avatarImage}
+    src={contact?.avatarUrl || fallbackAvatar}
+    onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackAvatarImage(event)}
+  />
 );

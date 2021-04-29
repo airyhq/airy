@@ -87,18 +87,18 @@ class WebSocket {
     }
   };
 
-  onConnect = () => {    
+  onConnect = () => {
     this.client.subscribe('/user/queue/message', this.onReceive);
     this.isConnected = true;
     clearTimeout(this.reconnectTimeout);
     this.updateConnectionState(ConnectionState.Connected);
   };
 
-  tryReconnect = () => {    
+  tryReconnect = () => {
     this.reconnectTimeout = window.setTimeout(this.reconnect, 5000);
   };
 
-  reconnect = () => {    
+  reconnect = () => {
     if (!this.isConnected) {
       this.start();
     }

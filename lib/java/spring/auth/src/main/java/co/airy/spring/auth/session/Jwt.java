@@ -1,14 +1,11 @@
 package co.airy.spring.auth.session;
 
-import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.slf4j.Logger;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -21,7 +18,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Jwt {
-    private static final Logger log = AiryLoggerFactory.getLogger(Jwt.class);
     public static final String PRINCIPAL_CLAIM = "principal";
     private final ObjectMapper objectMapper;
     private final Key signingKey;

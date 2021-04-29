@@ -1,10 +1,10 @@
 package co.airy.spring.auth;
 
-import co.airy.spring.auth.oidc.ProfileData;
-import co.airy.spring.auth.token.TokenPrincipal;
+import co.airy.spring.auth.session.AiryAuth;
+import co.airy.spring.auth.session.UserProfile;
+import co.airy.spring.auth.token.TokenAuth;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class PrincipalAccess {
     public static final String ANON_PRINCIPAL = "airy-core-anonymous";
@@ -14,26 +14,25 @@ public class PrincipalAccess {
             return ANON_PRINCIPAL;
         }
 
-        if (authentication instanceof TokenPrincipal) {
-            return ((TokenPrincipal) authentication).getPrincipal();
+        if (authentication instanceof TokenAuth) {
+            return ((TokenAuth) authentication).getPrincipal();
         }
 
-        if (authentication instanceof OAuth2AuthenticationToken) {
-            final OAuth2User user = ((OAuth2AuthenticationToken) authentication).getPrincipal();
-
-            // e.g. github:4403838
-            return String.format("%s:%s", ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId(),
-                    user.getAttribute("id"));
+        final UserProfile userProfile = getUserProfile(authentication);
+        if (userProfile == null) {
+            throw new IllegalStateException("Uknown authentication type");
         }
 
-        return authentication.getName();
+        return userProfile.getId();
     }
 
-    public static ProfileData getProfileData(Authentication authentication) {
-        if (!(authentication instanceof OAuth2AuthenticationToken)) {
-            return null;
+    public static UserProfile getUserProfile(Authentication authentication) {
+        if (authentication instanceof OAuth2AuthenticationToken) {
+            return UserProfile.from((OAuth2AuthenticationToken) authentication);
+        } else if (authentication instanceof AiryAuth) {
+            return ((AiryAuth) authentication).getPrincipal();
         }
 
-        return ProfileData.from((OAuth2AuthenticationToken) authentication);
+        return null;
     }
 }

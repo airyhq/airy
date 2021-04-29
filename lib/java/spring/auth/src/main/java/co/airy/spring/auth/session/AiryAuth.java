@@ -1,25 +1,24 @@
-package co.airy.spring.auth.token;
+package co.airy.spring.auth.session;
 
-import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
-@Data
-public class TokenPrincipal implements Authentication {
-    private String token;
-    private String principal;
-    private boolean isAuthenticated = false;
+@NoArgsConstructor
+public class AiryAuth implements Authentication, Serializable {
+    private UserProfile userProfile;
+    private boolean isAuthenticated = true;
 
-    public TokenPrincipal(String token) {
-        this.principal = String.format("system-token-%s", token.substring(0, Math.min(token.length(), 4)));
+    public AiryAuth(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return null;
     }
 
     @Override
@@ -33,6 +32,11 @@ public class TokenPrincipal implements Authentication {
     }
 
     @Override
+    public UserProfile getPrincipal() {
+        return userProfile;
+    }
+
+    @Override
     public boolean isAuthenticated() {
         return this.isAuthenticated;
     }
@@ -42,9 +46,8 @@ public class TokenPrincipal implements Authentication {
         this.isAuthenticated = true;
     }
 
-
     @Override
     public String getName() {
-        return null;
+        return userProfile.getId();
     }
 }

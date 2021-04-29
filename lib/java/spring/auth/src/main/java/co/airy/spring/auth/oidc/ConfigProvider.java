@@ -23,7 +23,7 @@ public class ConfigProvider {
 
         ClientRegistration.Builder builder = ClientRegistration.withRegistrationId(props.getProvider());
         try {
-            final CommonOAuth2Provider commonProvider = CommonOAuth2Provider.valueOf(props.getProvider().toUpperCase());
+            final CommonProviders commonProvider = CommonProviders.valueOf(props.getProvider().toUpperCase());
             builder = commonProvider.getBuilder(props.getProvider());
         } catch (Exception expected) {
             // not a common oauth provider

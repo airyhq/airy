@@ -7,4 +7,5 @@ data:
 {{- if .Values.systemToken }}
   systemToken: {{ .Values.systemToken | quote }}
 {{- end }}
+  jwtSecret: {{ .Values.jwtSecret | default (randAlphaNum 128) | quote }}
   allowedOrigins: {{ .Values.allowedOrigins | quote }}

@@ -16,7 +16,7 @@ export default class App extends Component {
   render() {
     const queryParams = new URLSearchParams(window.location.search);
     const channelId = queryParams.get('channel_id');
-    
+
     const apiHost: string = window.airy ? window.airy.host : process.env.API_HOST;
 
     return (
@@ -38,52 +38,49 @@ export default class App extends Component {
 }
 
 export const config: Config = {
-  headerTextColor: "#FFFFFF",
-  primaryColor: "#DF3817",
-  accentColor: "#DF3817",
-  backgroundColor: "#393536",
+  headerTextColor: '#FFFFFF',
+  primaryColor: '#DF3817',
+  accentColor: '#DF3817',
+  backgroundColor: '#393536',
   showMode: false,
-  headerText: "Test",
+  headerText: 'Test',
   welcomeMessage: {
-    fallback: "Welcome to Just the Tonic! How can we help you today?",
+    fallback: 'Welcome to Just the Tonic! How can we help you today?',
     richCard: {
       standaloneCard: {
         cardContent: {
           media: {
-            height: "MEDIUM",
+            height: 'MEDIUM',
             contentInfo: {
-              altText:
-                "Welcome to Just the Tonic! How can we help you today?",
-              fileUrl:
-                "https://airy-platform-media.s3.amazonaws.com/a09eb5ad-937d-4923-8e2e-74649ac1b12a",
+              altText: 'Welcome to Just the Tonic! How can we help you today?',
+              fileUrl: 'https://airy-platform-media.s3.amazonaws.com/a09eb5ad-937d-4923-8e2e-74649ac1b12a',
             },
           },
-          title:
-            "Welcome to Just the Tonic! How can we help you today?",
-          description: "I have a question about:",
+          title: 'Welcome to Just the Tonic! How can we help you today?',
+          description: 'I have a question about:',
           suggestions: [
             {
               reply: {
-                text: "Corona",
-                postbackData: "JTT-LC-covidupdate",
+                text: 'Corona',
+                postbackData: 'JTT-LC-covidupdate',
               },
             },
             {
               reply: {
-                text: "A Livestreamed Event",
-                postbackData: "JTT-LC-livestreamed-event",
+                text: 'A Livestreamed Event',
+                postbackData: 'JTT-LC-livestreamed-event',
               },
             },
             {
               reply: {
-                text: "A Club Event",
-                postbackData: "JTT-LC-club-event",
+                text: 'A Club Event',
+                postbackData: 'JTT-LC-club-event',
               },
             },
             {
               reply: {
-                text: "Discounts, Offers & News",
-                postbackData: "JTT-LC-news",
+                text: 'Discounts, Offers & News',
+                postbackData: 'JTT-LC-news',
               },
             },
           ],

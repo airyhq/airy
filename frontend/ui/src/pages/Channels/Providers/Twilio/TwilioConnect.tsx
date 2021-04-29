@@ -52,7 +52,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
       imageUrl: imageUrlInput,
     };
 
-    if (source === Source.twilioWhatsapp) {
+    if (source === Source.twilioWhatsApp) {
       connectTwilioWhatsapp(connectPayload).then(() => {
         history.replace({
           pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.whatsapp/#`,

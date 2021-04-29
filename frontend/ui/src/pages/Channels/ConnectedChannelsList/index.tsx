@@ -66,7 +66,7 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
         setName('Twilio SMS');
         setPath(CHANNELS_TWILIO_SMS_ROUTE + '/new_account');
         break;
-      case Source.twilioWhatsapp:
+      case Source.twilioWhatsApp:
         setName('Twilio Whatsapp');
         setPath(CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account');
         break;

@@ -43,7 +43,7 @@ const TwilioWhatsappConnect = (props: TwilioWhatsappProps) => {
   }, [channels, channelId]);
 
   return (
-    <TwilioConnect channel={channel} source={Source.twilioWhatsapp} pageTitle="Whatsapp" buttonText={buttonTitle} />
+    <TwilioConnect channel={channel} source={Source.twilioWhatsApp} pageTitle="Whatsapp" buttonText={buttonTitle} />
   );
 };
 

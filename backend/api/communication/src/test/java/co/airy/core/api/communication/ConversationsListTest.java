@@ -34,9 +34,12 @@ import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -128,6 +131,23 @@ class ConversationsListTest {
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(0))),
                 "Expected 0 conversations");
+
+        assertThat(conversations.size(), is(5));
+        webTestHelper.post("/conversations.list", "{\"page_size\": 2, \"cursor\": 0}")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(2)))
+                .andExpect(jsonPath("$.pagination_data.previous_cursor", is(nullValue())));
+
+        webTestHelper.post("/conversations.list", "{\"page_size\": 2, \"cursor\": 1}")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pagination_data.filtered_total", is(2)))
+                .andExpect(jsonPath("$.pagination_data.total", is(5)))
+                .andExpect(jsonPath("$.data", hasSize(2)));
+
+        webTestHelper.post("/conversations.list", "{\"page_size\": 2, \"cursor\": 2}")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(1)));
+
     }
 
     @Test

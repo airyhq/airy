@@ -129,8 +129,6 @@ function googleOutbound(message: Message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
   const maxNumberOfSuggestions = 13;
 
-  console.log('message OUTBOUND', message);
-
   if (messageJson.richCard?.standaloneCard) {
     const {
       richCard: {

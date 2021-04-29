@@ -51,7 +51,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 }
 
 function googleInbound(message: Message): ContentUnion {
-  const messageJson = message.content.message;
+  const messageJson = message.content.message ?? message.content;
 
   if (messageJson.richCard?.standaloneCard) {
     const {
@@ -128,6 +128,8 @@ function googleInbound(message: Message): ContentUnion {
 function googleOutbound(message: Message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
   const maxNumberOfSuggestions = 13;
+
+  console.log('message OUTBOUND', message);
 
   if (messageJson.richCard?.standaloneCard) {
     const {

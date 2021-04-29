@@ -10,7 +10,7 @@ information.
 
 `POST /messages.list`
 
-This is a [paginated](api/endpoints/introduction#pagination) endpoint. Messages
+This is a [paginated](api/endpoints/introduction.md#pagination) endpoint. Messages
 are sorted from oldest to latest.
 
 **Sample request**

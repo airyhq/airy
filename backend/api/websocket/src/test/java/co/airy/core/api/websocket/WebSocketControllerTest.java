@@ -178,7 +178,7 @@ public class WebSocketControllerTest {
         assertNotNull(tagEvent);
         assertThat(tagEvent.getPayload().getId(), equalTo(tagId));
         assertThat(tagEvent.getPayload().getName(), equalTo("flag"));
-        assertThat(tagEvent.getPayload().getColor(), equalTo("RED"));
+        assertThat(tagEvent.getPayload().getColor(), equalTo("tag-red"));
     }
 
     private static StompSession connectToWs(int port) throws ExecutionException, InterruptedException {

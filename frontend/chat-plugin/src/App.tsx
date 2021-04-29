@@ -65,5 +65,6 @@ export const config: Config = {
       },
     },
   },
+  bubbleIcon: 'https://lh3.googleusercontent.com/fRQ5i4a5A0ETKJU9acF2zV5REvGD0DXltaRO5uduFnnAeYYzX_Xr0XlWi8tTJq2DGdQ',
   showMode: false,
 };

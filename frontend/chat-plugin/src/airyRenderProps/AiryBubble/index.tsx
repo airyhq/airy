@@ -17,11 +17,9 @@ const AiryBubble = (props: Props) => {
       return (
         <img
           style={{
-            padding: '10px 6px 8px 6px',
             maxHeight: '60px',
             maxWidth: '60px',
             objectFit: 'contain',
-            borderRadius: '50%',
           }}
           src={config.bubbleIcon}
         />

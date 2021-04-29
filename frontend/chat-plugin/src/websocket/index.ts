@@ -46,7 +46,7 @@ class WebSocket {
     this.token = token;
 
     this.client = new Client({
-      brokerURL: `${protocol}//${this.apiHost}/ws.chatplugin`,
+      brokerURL: `${protocol}//${this.apiHost}/ws.chatplugin2`,
       connectHeaders: {
         Authorization: `Bearer ${token}`,
       },
@@ -88,6 +88,7 @@ class WebSocket {
   };
 
   onConnect = () => {
+    console.log('onConnect');
     this.client.subscribe('/user/queue/message', this.onReceive);
     this.isConnected = true;
     clearTimeout(this.reconnectTimeout);
@@ -95,17 +96,19 @@ class WebSocket {
   };
 
   tryReconnect = () => {
+    console.log('tryReconnect');
     this.reconnectTimeout = window.setTimeout(this.reconnect, 5000);
   };
 
   reconnect = () => {
+    console.log('reconnect');
     if (!this.isConnected) {
-      this.reconnectTimeout = window.setTimeout(this.reconnect, 5000);
       this.start();
     }
   };
 
   onWebSocketClose = () => {
+    console.log('onClose');
     this.isConnected = false;
     this.updateConnectionState(ConnectionState.Disconnected);
     this.tryReconnect();

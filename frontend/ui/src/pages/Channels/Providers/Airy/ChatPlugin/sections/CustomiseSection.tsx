@@ -54,13 +54,13 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       return '';
     }
     let config = '';
-    if (headerText !== '') config += `\n              headerText: '${headerText}'`;
-    if (bubbleIconUrl !== '') config += `\n              bubbleIcon: '${bubbleIconUrl}'`;
-    if (sendMessageIconUrl !== '') config += `\n              sendMessageIcon: '${sendMessageIconUrl}'`;
-    if (headerTextColor !== '') config += `\n              headerTextColor: '${headerTextColor}'`;
-    if (primaryColor !== '') config += `\n              primaryColor: '${primaryColor}'`;
-    if (accentColor !== '') config += `\n              accentColor: '${accentColor}'`;
-    if (backgroundColor !== '') config += `\n              backgroundColor: '${backgroundColor}'`;
+    if (headerText !== '') config += `\n              headerText: '${headerText}',`;
+    if (bubbleIconUrl !== '') config += `\n              bubbleIcon: '${bubbleIconUrl}',`;
+    if (sendMessageIconUrl !== '') config += `\n              sendMessageIcon: '${sendMessageIconUrl}',`;
+    if (headerTextColor !== '') config += `\n              headerTextColor: '${headerTextColor}',`;
+    if (primaryColor !== '') config += `\n              primaryColor: '${primaryColor}',`;
+    if (accentColor !== '') config += `\n              accentColor: '${accentColor}',`;
+    if (backgroundColor !== '') config += `\n              backgroundColor: '${backgroundColor}',`;
 
     return `
         w[n].config = {${config}          
@@ -94,9 +94,9 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         w[n].channelId = "${channelId}";
         w[n].host = "${host}";${getTemplateConfig()}
         var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s);
+        j = d.createElement(s);
         j.async = true;
-        j.src = w[n].host + "/s.js";
+        j.src = w[n].host + '/chatplugin/ui/s.js';
         f.parentNode.insertBefore(j, f);
       })(window, document, "script", "airy");
     </script>`;

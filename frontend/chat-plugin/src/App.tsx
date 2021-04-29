@@ -17,22 +17,10 @@ export default class App extends Component {
     const queryParams = new URLSearchParams(window.location.search);
     const channelId = queryParams.get('channel_id');
 
-    const customStyle = {
-      background: 'transparent',
-      ...(config?.primaryColor && {
-        '--color-airy-blue': config?.primaryColor,
-      }),
-      ...(config?.accentColor && {
-        '--color-airy-accent': config?.accentColor,
-        '--color-airy-blue-hover': config?.accentColor,
-        '--color-airy-blue-pressed': config?.accentColor,
-      }),
-    };
-
     const apiHost: string = window.airy ? window.airy.host : process.env.API_HOST;
 
     return (
-      <div className={style.container} style={customStyle}>
+      <div className={style.container}>
         {channelId ? (
           <Chat
             channelId={channelId}

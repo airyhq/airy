@@ -38,49 +38,26 @@ export default class App extends Component {
 }
 
 export const config: Config = {
-  headerTextColor: '#FFFFFF',
-  primaryColor: '#DF3817',
-  accentColor: '#DF3817',
-  backgroundColor: '#393536',
-  showMode: false,
-  headerText: 'Test',
   welcomeMessage: {
-    fallback: 'Welcome to Just the Tonic! How can we help you today?',
+    fallback: 'Hello!\n\nWelcome to Airy!',
     richCard: {
       standaloneCard: {
         cardContent: {
+          title: 'Hola!',
+          description: 'Welcome to Airy!',
           media: {
             height: 'MEDIUM',
             contentInfo: {
-              altText: 'Welcome to Just the Tonic! How can we help you today?',
-              fileUrl: 'https://airy-platform-media.s3.amazonaws.com/a09eb5ad-937d-4923-8e2e-74649ac1b12a',
+              altText: 'Airy logo',
+              fileUrl: 'https://picsum.photos/200',
+              forceRefresh: 'false',
             },
           },
-          title: 'Welcome to Just the Tonic! How can we help you today?',
-          description: 'I have a question about:',
           suggestions: [
             {
               reply: {
-                text: 'Corona',
-                postbackData: 'JTT-LC-covidupdate',
-              },
-            },
-            {
-              reply: {
-                text: 'A Livestreamed Event',
-                postbackData: 'JTT-LC-livestreamed-event',
-              },
-            },
-            {
-              reply: {
-                text: 'A Club Event',
-                postbackData: 'JTT-LC-club-event',
-              },
-            },
-            {
-              reply: {
-                text: 'Discounts, Offers & News',
-                postbackData: 'JTT-LC-news',
+                text: "Let's start",
+                postbackData: '/start',
               },
             },
           ],
@@ -88,4 +65,5 @@ export const config: Config = {
       },
     },
   },
+  showMode: false,
 };

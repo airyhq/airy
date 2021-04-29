@@ -1,8 +1,7 @@
 import React, {useState, Fragment} from 'react';
 import {connect} from 'react-redux';
 
-import {createTag, listTags, errorTag, filterTags} from '../../actions/tags';
-import {filteredTags} from '../../selectors/tags';
+import {createTag, listTags, errorTag} from '../../actions/tags';
 
 import {Button, Input} from 'components';
 import DialogCustomizable from '../../components/DialogCustomizable';
@@ -98,7 +97,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    tags: filteredTags(state),
+    tags: Object.values(state.data.tags.all),
     errorMessage: state.data.tags.error,
   };
 };
@@ -107,7 +106,6 @@ const mapDispatchToProps = {
   createTag,
   errorTag,
   listTags,
-  filterTags,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

@@ -11,7 +11,7 @@ import ConnectedChannelsBySourceCard from '../ConnectedChannelsBySourceCard';
 import {ReactComponent as AiryAvatarIcon} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/sms_avatar.svg';
-import {ReactComponent as WhatsappLogo} from 'assets/images/icons/whatsapp_avatar.svg';
+import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsapp_avatar.svg';
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/google_avatar.svg';
 
 import styles from './index.module.scss';
@@ -95,10 +95,10 @@ const SourcesInfo: SourceInfo[] = [
     dataCyChannelList: cyChannelsTwilioSmsList,
   },
   {
-    type: Source.twilioWhatsapp,
-    title: 'Whatsapp',
+    type: Source.twilioWhatsApp,
+    title: 'WhatsApp',
     description: 'World #1 chat app',
-    image: <WhatsappLogo />,
+    image: <WhatsAppAvatarIcon />,
     newChannelRoute: CHANNELS_TWILIO_WHATSAPP_ROUTE + '/new_account',
     channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/twilio.whatsapp/#',
     configKey: 'sources-twilio',
@@ -133,7 +133,7 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
       case Source.google:
         return <GoogleBusinessMessagesRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
       case Source.twilioSMS:
-      case Source.twilioWhatsapp:
+      case Source.twilioWhatsApp:
         return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
     }
 
@@ -169,11 +169,7 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
                 }
               }}
             />
-            <ConnectedChannelsBySourceCard
-              sourceInfo={infoItem}
-              channels={channelsBySource(infoItem.type)}
-              connected="CONNECTED"
-            />
+            <ConnectedChannelsBySourceCard sourceInfo={infoItem} channels={channelsBySource(infoItem.type)} />
           </div>
         ))}
       </div>

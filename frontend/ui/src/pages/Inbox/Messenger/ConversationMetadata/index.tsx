@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Tag as TagModel, TagColor, getTags} from 'model';
+import {Tag as TagModel, TagColor} from 'model';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
@@ -17,6 +17,7 @@ import {getCurrentConversation} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 
 import {cyShowTagsDialog, cyTagsDialogInput, cyTagsDialogButton} from 'handles';
+import difference from 'lodash/difference';
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
@@ -58,31 +59,21 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     removeTagFromConversation(conversation.id, tag.id);
   };
 
-  const filterForUnusedTags = (tags: TagModel[]): TagModel[] => {
-    return tags.filter(tag => !(tag.id in (conversation.metadata.tags || {})));
-  };
+  const tagSorter = (a: TagModel, b: TagModel) => a.name.localeCompare(b.name);
 
-  const filterForUsedTags = (tags: TagModel[]): TagModel[] => {
-    return tags.filter(tag => tag.id in (conversation.metadata.tags || {}));
-  };
+  const conversationTags = () =>
+    Object.keys(conversation.metadata.tags || {})
+      .map(tagId => tags[tagId])
+      .filter(tag => tag !== undefined)
+      .sort(tagSorter);
 
-  const tagSorter = (tagA: TagModel, tagB: TagModel) => {
-    if (tagA.name < tagB.name) {
-      return -1;
-    }
-    if (tagA.name > tagB.name) {
-      return 1;
-    }
-
-    return 0;
-  };
-
-  const checkIfExists = (value: string) => {
-    const usedTags = filterForUsedTags(tags);
-    if (value.length == 0) {
+  const checkIfExists = (tagName: string) => {
+    const usedTags = conversationTags();
+    if (tagName.length === 0) {
       return true;
     }
-    if (usedTags.find(tag => tag.name === value)) {
+
+    if (usedTags.find(tag => tag.name === tagName)) {
       return 'Tag already added';
     }
 
@@ -90,15 +81,17 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const getFilteredTags = (): TagModel[] =>
-    filterForUnusedTags(tags)
+    difference(Object.keys(tags), Object.keys(conversation.metadata.tags || {}))
+      .map(id => tags[id])
+      .filter(tag => tag !== undefined)
       .sort(tagSorter)
-      .filter(tag => tag.name.startsWith(tagName));
+      .filter((tag: TagModel) => tag.name.startsWith(tagName));
 
   const submitForm = (event: FormEvent) => {
     event.preventDefault();
     const filteredTags = getFilteredTags();
 
-    if (filteredTags.length == 1) {
+    if (filteredTags.length === 1) {
       addTag(filteredTags[0]);
     } else if (filteredTags.length == 0 && tagName.trim().length > 0) {
       createTag({name: tagName.trim(), color}).then((tag: TagModel) => {
@@ -166,10 +159,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     );
   };
 
-  const findTag = (tagId: string): TagModel => {
-    return tags.find(tag => tag.id === tagId);
-  };
-
   const contact = conversation.metadata.contact;
   return (
     <div className={styles.content}>
@@ -179,7 +168,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             <div className={styles.avatarImage}>
               <Avatar contact={contact} />
             </div>
-
             <div className={styles.displayName}>{contact?.displayName}</div>
           </div>
           <div className={styles.tags}>
@@ -193,11 +181,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             {showTagsDialog && renderTagsDialog()}
 
             <div className={styles.tagList}>
-              {tags &&
-                getTags(conversation)
-                  .map(tagId => findTag(tagId))
-                  .sort(tagSorter)
-                  .map(tag => tag && <Tag key={tag.id} tag={tag} removeTag={() => removeTag(tag)} />)}
+              {conversationTags().map(tag => (
+                <Tag key={tag.id} tag={tag} removeTag={() => removeTag(tag)} />
+              ))}
             </div>
           </div>
         </div>

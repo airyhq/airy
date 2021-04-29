@@ -3,7 +3,7 @@ title: Tags
 sidebar_label: Tags
 ---
 
-Please refer to our [tag](getting-started/glossary.md#tag) definition for more
+Refer to our [tag](getting-started/glossary.md#tag) definition for more
 information.
 
 ## Create
@@ -19,7 +19,8 @@ information.
 }
 ```
 
-If the tag is successfully created, the request returns status code `201` (created) with the tag ID in the response body.
+If the tag is successfully created, the request returns status code `201`
+(created) with the tag ID in the response body.
 
 **Sample response**
 
@@ -45,8 +46,6 @@ If the tag is successfully created, the request returns status code `201` (creat
 }
 ```
 
-If action is successful, the request returns status code `200`.
-
 **Empty response (204)**
 
 ## Delete
@@ -60,8 +59,6 @@ If action is successful, the request returns status code `200`.
   "id": "ID-OF-THE-TAG"
 }
 ```
-
-If action is successful, returns HTTP status `200`.
 
 **Empty response (204)**
 
@@ -77,7 +74,7 @@ If action is successful, returns HTTP status `200`.
     {
       "id": "TAG-ID",
       "name": "name of the tag",
-      "color": "RED"
+      "color": "tag-red"
     }
   ]
 }

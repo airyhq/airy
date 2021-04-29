@@ -5,14 +5,18 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.Tag;
+import co.airy.avro.communication.TagColor;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.model.event.payload.ChannelEvent;
 import co.airy.model.event.payload.MessageEvent;
 import co.airy.model.event.payload.MetadataEvent;
+import co.airy.model.event.payload.TagEvent;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,7 +55,6 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {AirySpringBootApplication.class})
@@ -65,10 +68,10 @@ public class WebSocketControllerTest {
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
+    private static final ApplicationCommunicationTags applicationCommunicationTags = new ApplicationCommunicationTags();
 
     @Value("${local.server.port}")
     private int port;
-
 
     @Autowired
     private WebTestHelper webTestHelper;
@@ -78,7 +81,8 @@ public class WebSocketControllerTest {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 applicationCommunicationMessages,
                 applicationCommunicationChannels,
-                applicationCommunicationMetadata
+                applicationCommunicationMetadata,
+                applicationCommunicationTags
         );
         kafkaTestHelper.beforeAll();
     }
@@ -94,7 +98,7 @@ public class WebSocketControllerTest {
     }
 
     @Test
-    void canReceiveMessageEvents() throws Exception {
+    void canSendMessageEvents() throws Exception {
         final CompletableFuture<MessageEvent> future = subscribe(port, MessageEvent.class, QUEUE_EVENTS);
         final Message message = Message.newBuilder()
                 .setId("messageId")
@@ -120,7 +124,7 @@ public class WebSocketControllerTest {
     }
 
     @Test
-    void canReceiveChannelEvents() throws Exception {
+    void canSendChannelEvents() throws Exception {
         final CompletableFuture<ChannelEvent> future = subscribe(port, ChannelEvent.class, QUEUE_EVENTS);
 
         final Channel channel = Channel.newBuilder()
@@ -138,7 +142,7 @@ public class WebSocketControllerTest {
     }
 
     @Test
-    void canReceiveMetadataEvents() throws Exception {
+    void canSendMetadataEvents() throws Exception {
         final CompletableFuture<MetadataEvent> future = subscribe(port, MetadataEvent.class, QUEUE_EVENTS);
 
         final Metadata metadata = Metadata.newBuilder()
@@ -155,6 +159,26 @@ public class WebSocketControllerTest {
         assertThat(recMetadata.getPayload().getSubject(), equalTo("conversation"));
         assertThat(recMetadata.getPayload().getIdentifier(), equalTo("123"));
         assertThat(recMetadata.getPayload().getMetadata().get("contact").get("displayName").textValue(), equalTo(metadata.getValue()));
+    }
+
+    @Test
+    void canSendTagEvents() throws Exception {
+        final CompletableFuture<TagEvent> future = subscribe(port, TagEvent.class, QUEUE_EVENTS);
+
+        String tagId=UUID.randomUUID().toString();
+        final Tag tag = Tag.newBuilder()
+                .setId(tagId)
+                .setName("flag")
+                .setColor(TagColor.RED)
+                .build();
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationTags.name(), tagId, tag));
+
+        TagEvent tagEvent = future.get(30, TimeUnit.SECONDS);
+        assertNotNull(tagEvent);
+        assertThat(tagEvent.getPayload().getId(), equalTo(tagId));
+        assertThat(tagEvent.getPayload().getName(), equalTo("flag"));
+        assertThat(tagEvent.getPayload().getColor(), equalTo("tag-red"));
     }
 
     private static StompSession connectToWs(int port) throws ExecutionException, InterruptedException {

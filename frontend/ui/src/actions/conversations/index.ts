@@ -4,7 +4,7 @@ import {Conversation, Pagination} from 'model';
 import {PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
-import {mergeMetadataAction, setMetadataAction} from '../metadata';
+import {setMetadataAction} from '../metadata';
 
 const CONVERSATION_LOADING = '@@conversation/LOADING';
 const CONVERSATIONS_LOADING = '@@conversations/LOADING';
@@ -114,7 +114,7 @@ export const conversationState = (conversationId: string, state: string) => (dis
 export const addTagToConversation = (conversationId: string, tagId: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.tagConversation({conversationId, tagId}).then(() =>
     dispatch(
-      mergeMetadataAction({
+      setMetadataAction({
         subject: 'conversation',
         identifier: conversationId,
         metadata: {

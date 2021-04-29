@@ -39,7 +39,7 @@ const ChannelAvatar = (props: ChannelAvatarProps) => {
         return <GoogleAvatar />;
       case Source.twilioSMS:
         return <SmsAvatar />;
-      case Source.twilioWhatsapp:
+      case Source.twilioWhatsApp:
         return <WhatsappAvatar />;
       default:
         return <AiryAvatar />;

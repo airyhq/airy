@@ -24,7 +24,6 @@ import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 const camelcaseKeys = require('camelcase-keys');
 import {cyBubble, cyChatPluginMessageList, cyChatPluginEndChatModalButton} from 'chat-plugin-handles';
 import {getResumeTokenFromStorage, resetStorage} from '../../storage';
-import {ModalDialogue} from '../../components/modal';
 import NewConversation from '../../components/newConversation';
 import {setApiHost, start} from '../../api';
 
@@ -257,32 +256,33 @@ const Chat = (props: Props) => {
               </div>
               <InputBarProp render={inputBar} />
               {connectionState === ConnectionState.Disconnected && (
-                <div className={style.disconnectedOverlay}>Reconnecting...</div>
+                <div className={style.modalOverlay}>Reconnecting...</div>
+              )}
+              {showModal && (
+                <div className={style.modalOverlay}>
+                  <div className={style.modalCloseChat}>
+                    <p>Are you sure you want to end this chat?</p>
+                    <div className={style.buttonWrapper}>
+                      <button className={style.cancelButton} onClick={closeModalOnClick}>
+                        {' '}
+                        Cancel
+                      </button>
+                      <button
+                        className={style.endChatButton}
+                        onClick={cancelChatSession}
+                        data-cy={cyChatPluginEndChatModalButton}>
+                        {' '}
+                        End Chat
+                      </button>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
           </div>
         </div>
       )}
       <BubbleProp render={bubble} />
-      {showModal && (
-        <ModalDialogue close={closeModalOnClick}>
-          <>
-            <div className={style.buttonWrapper}>
-              <button className={style.cancelButton} onClick={closeModalOnClick}>
-                {' '}
-                Cancel
-              </button>
-              <button
-                className={style.endChatButton}
-                onClick={cancelChatSession}
-                data-cy={cyChatPluginEndChatModalButton}>
-                {' '}
-                End Chat
-              </button>
-            </div>
-          </>
-        </ModalDialogue>
-      )}
     </div>
   );
 };

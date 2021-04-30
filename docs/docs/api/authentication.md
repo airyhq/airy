@@ -15,9 +15,9 @@ OIDC is an authentication layer on top of the popular OAuth 2.0 authorization fr
 
 ### GitHub
 
-The easiest way to configure our OIDC is by using our GitHub preset. We will explain how to configure any OIDC provider further below. To get started you first need a GitHub OAuth app. You can follow [this guide](https://docs.github.com/en/developers/apps/creating-an-oauth-app) and as an Authorization Callback URL you need to put your Airy host with the 
+The easiest way to configure our OIDC is by using our GitHub preset. We will explain how to configure any OIDC provider further below. To get started you first need a GitHub OAuth app. You can follow [this guide](https://docs.github.com/en/developers/apps/creating-an-oauth-app) and as an Authorization Callback URL you need to put your Airy host with the
 path `/login/oauth2/code/github`. So if your Airy Core instance is hosted at `https://airy.example.org` the Callback URL
-would be `https://airy.example.org/login/oauth2/code/github`  
+would be `https://airy.example.org/login/oauth2/code/github`
 
 :::note
 
@@ -55,7 +55,7 @@ security:
     clientId: "client-id"
     clientSecret: "client-secret"
     scope: "openid,email" # comma separated list of scopes. Must include "openid"
-    clientAuthenticationMethod: "basic" # One of [basic,post,none] 
+    clientAuthenticationMethod: "basic" # One of [basic,post,none]
     authorizationGrantType: "authorization_code" # One of [authorization_code,implicit,refresh_token,client_credentials,password]
     authorizationUri: "https://my-provider.org/oauth2/v1/authorize"
     tokenUri: "https://my-provider.org/oauth2/v1/token"

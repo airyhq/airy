@@ -34,7 +34,7 @@ zookeeper:
     dataLogDirSize: 5Gi
   url: ""
 prometheus:
-  enabled: true
+  enabled: false
   exporterImage: danielqsj/kafka-exporter
   exporterImageTag: v1.3.0
   exporterPort: 9308

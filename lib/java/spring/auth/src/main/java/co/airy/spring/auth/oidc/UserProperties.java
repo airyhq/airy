@@ -22,17 +22,15 @@ public class UserProperties {
     private String clientId;
     private String clientSecret;
 
-    // Values for manually configuring providers
+    // Config values for manual provider configuration
     private String clientAuthenticationMethod;
-
     public ClientAuthenticationMethod getClientAuthenticationMethod() {
-        return new ClientAuthenticationMethod(clientAuthenticationMethod);
+        return Optional.ofNullable(clientAuthenticationMethod).map(ClientAuthenticationMethod::new).orElse(null);
     }
 
     private String authorizationGrantType;
-
     public AuthorizationGrantType getAuthorizationGrantType() {
-        return new AuthorizationGrantType(authorizationGrantType);
+        return Optional.ofNullable(authorizationGrantType).map(AuthorizationGrantType::new).orElse(null);
     }
 
     private String authorizationUri;
@@ -40,9 +38,8 @@ public class UserProperties {
     private String userInfoUri;
 
     private String userInfoAuthenticationMethod;
-
     public AuthenticationMethod getUserInfoAuthenticationMethod() {
-        return new AuthenticationMethod(userInfoAuthenticationMethod)
+        return Optional.ofNullable(userInfoAuthenticationMethod).map(AuthenticationMethod::new).orElse(null);
     }
 
     private String userNameAttributeName;

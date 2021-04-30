@@ -105,6 +105,9 @@ spec:
         {{- end }}
       - name: prometheus
         image: "{{ .Values.prometheusExporterImage }}:{{ .Values.prometheusExporterImageTag }}"
+        command: ["/bin/kafka_exporter"]
+        args:
+         - "--kafka.server=localhost:9092"
         resources:
           requests:
             cpu: 100m

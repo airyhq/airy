@@ -4,7 +4,6 @@ import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
-import co.airy.core.webhook.publisher.payload.QueueMessage;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
@@ -37,11 +36,11 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
     private final String webhooksStore = "webhook-store";
     private final String allWebhooksKey = "339ab777-92aa-43a5-b452-82e73c50fc59";
     private final KafkaStreamsWrapper streams;
-    private final RedisQueue redisQueuePublisher;
+    private final BeanstalkPublisher beanstalkdPublisher;
 
-    public Publisher(KafkaStreamsWrapper streams, RedisQueue redisQueuePublisher) {
+    public Publisher(KafkaStreamsWrapper streams, BeanstalkPublisher beanstalkdPublisher) {
         this.streams = streams;
-        this.redisQueuePublisher = redisQueuePublisher;
+        this.beanstalkdPublisher = beanstalkdPublisher;
     }
 
     private void startStream() {
@@ -70,12 +69,7 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
             final Webhook webhook = webhookStore.get(allWebhooksKey);
 
             if (webhook != null && webhook.getStatus().equals(Status.Subscribed)) {
-                redisQueuePublisher.publishMessage(webhook.getId(), QueueMessage.builder()
-                        .body(fromRecord(record))
-                        .endpoint(webhook.getEndpoint())
-                        .headers(webhook.getHeaders())
-                        .build()
-                );
+                beanstalkdPublisher.publishMessage(fromRecord(record));
             }
         } catch (Exception e) {
             log.error("failed to publish record", e);

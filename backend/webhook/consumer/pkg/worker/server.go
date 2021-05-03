@@ -1,18 +1,17 @@
-package main
+package worker
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"net/http"
-	"os"
-	"redis-worker/pkg/scheduler"
+	"sync"
 )
 
-func main() {
-	schedulerTask := scheduler.Start(os.Getenv("REDIS_HOSTNAME"), os.Getenv("REDIS_PORT"))
-
+func (worker *Worker) StartServer(ctx context.Context, wg *sync.WaitGroup) {
+	defer wg.Done()
 	http.HandleFunc("/status", func(w http.ResponseWriter, r *http.Request) {
-		errors, err := json.Marshal(schedulerTask.GetStatuses())
+		errors, err := json.Marshal(worker.GetErrors())
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -29,5 +28,13 @@ func main() {
 		w.WriteHeader(200)
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	go func() {
+		log.Println("serving on 8080")
+		err := http.ListenAndServe(":8080", nil)
+		if err != nil {
+			panic("ListenAndServe: " + err.Error())
+		}
+	}()
+	<-ctx.Done()
+	log.Println("terminating server: context cancelled")
 }

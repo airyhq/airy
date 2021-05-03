@@ -86,3 +86,8 @@ Create a variable containing all the datadirs created.
 {{- printf "/opt/kafka/data-%d/logs" $k -}}
 {{- end -}}
 {{- end -}}
+
+{{- define "kafka.prometheus.name" -}}
+{{- $name := "prometheus-prometheus-kafka-exporter" -}}
+{{- printf "%s" $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}

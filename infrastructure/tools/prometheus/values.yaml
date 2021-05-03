@@ -21,6 +21,10 @@ prometheus:
     paths: ['/prometheus']
   prometheusSpec:
     routePrefix: /prometheus
+    additionalScrapeConfigs:
+      - job_name: beanstalkd_exporter
+        static_configs:
+        - targets: ['beanstalk:8080']
   additionalServiceMonitors:
   - name: "spring-apps"
     selector:

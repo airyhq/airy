@@ -51,7 +51,7 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         ports:
-        - containerPort: 9092
+        - containerPort: {{ .Values.port }}
           name: kafka
         {{- if .Values.nodeport.enabled }}
           {{- $brokers := .Values.brokers | int }}
@@ -103,17 +103,6 @@ spec:
             mountPath: /opt/kafka/data-{{$k}}
           {{- end }}
         {{- end }}
-      - name: prometheus
-        image: "{{ .Values.prometheusExporterImage }}:{{ .Values.prometheusExporterImageTag }}"
-        resources:
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        imagePullPolicy: "{{ .Values.imagePullPolicy }}"
-        ports:
-        - containerPort: {{ .Values.prometheusExporterPort }}
-          name: prometheus
-
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}

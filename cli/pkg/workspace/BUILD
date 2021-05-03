@@ -6,8 +6,10 @@ go_library(
         "files.go",
         "init.go",
     ],
-    embedsrcs = ["template/airy.yaml"],
     importpath = "cli/pkg/workspace",
     visibility = ["//visibility:public"],
-    deps = ["@com_github_spf13_viper//:viper"],
+    deps = [
+        "//cli/pkg/workspace/template",
+        "@com_github_spf13_viper//:viper",
+    ],
 )

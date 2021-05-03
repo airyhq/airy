@@ -3,6 +3,7 @@ package minikube
 import (
 	"cli/pkg/kube"
 	"cli/pkg/workspace"
+	"cli/pkg/workspace/template"
 	"context"
 	"fmt"
 	"io"
@@ -31,8 +32,11 @@ func New(w io.Writer) *provider {
 	}
 }
 
-func (p *provider) GetHelmOverrides() []string {
-	return []string{"--set", "global.ngrokEnabled=true", "--set", "global.nodePort=80"}
+func (p *provider) GetOverrides() template.Variables {
+	return template.Variables{
+		NgrokEnabled: true,
+		Host:         "http://airy.core",
+	}
 }
 
 func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error) {

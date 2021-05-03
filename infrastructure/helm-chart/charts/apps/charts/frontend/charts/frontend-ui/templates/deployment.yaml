@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-ui
-  namespace: {{.Values.global.namespace}}
+  namespace: {{.Values.global.kubernetes.namespace}}
   labels:
     app: frontend-ui
     type: frontend
@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+        image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.kubernetes.appImageTag }}"
         imagePullPolicy: Always
         env:
         - name: API_HOST

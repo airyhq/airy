@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: beanstalkd
-  namespace: {{ .Values.global.namespace}}
+  namespace: {{ .Values.global.kubernetes.namespace}}
 spec:
   serviceName: beanstalkd
   replicas: 1

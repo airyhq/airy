@@ -2,10 +2,10 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: 'airy-core'
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Values.global.kubernetes.namespace }}
 spec:
   rules:
-    - host: {{ get (urlParse .Values.global.host) "host" }}
+    - host: {{ get (urlParse .Values.global.kubernetes.host) "host" }}
       http:
         paths:
           - path: /ws.communication

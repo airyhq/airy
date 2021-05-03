@@ -94,21 +94,3 @@ spec:
       targetPort: 80
       name: web
   type: LoadBalancer
-{{ if .Values.global.nodePort }}
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: traefik-node-port
-  namespace: kube-system
-spec:
-  selector:
-    k8s-app: traefik-ingress-lb
-  ports:
-    - protocol: TCP
-      port: 80
-      nodePort: {{ .Values.global.nodePort }}
-      targetPort: 80
-      name: web
-  type: NodePort
-{{end}}

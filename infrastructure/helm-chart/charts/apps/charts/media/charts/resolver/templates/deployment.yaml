@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
+          image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.kubernetes.appImageTag }}"
           imagePullPolicy: Always
           env:
             - name: KAFKA_BROKERS

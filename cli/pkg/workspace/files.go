@@ -1,14 +1,10 @@
 package workspace
 
 import (
-	"embed"
 	"path/filepath"
 )
 
 const cliConfigFileName = "cli.yaml"
-
-//go:embed template
-var templateDir embed.FS
 
 type ConfigDir struct {
 	Path string

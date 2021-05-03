@@ -6,7 +6,7 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: schema-registry
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: schema-registry
     release: {{ .Release.Name }}
@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: schema-registry-server
-          image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.imageTag }}"
+          image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
             - name: schema-registry

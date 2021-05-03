@@ -75,13 +75,11 @@ func (h *Helm) Setup() error {
 	return nil
 }
 
-func (h *Helm) InstallCharts(overrides []string) error {
+func (h *Helm) InstallCharts() error {
 	return h.runHelm(append([]string{"install",
 		"--values", "/apps/config/airy-config-map.yaml",
-		"--set", "global.appImageTag=" + h.version,
-		"--set", "global.namespace=" + h.namespace,
 		"--timeout", "10m0s",
-		"core", "/apps/helm-chart/"}, overrides...))
+		"core", "/apps/helm-chart/"}))
 }
 
 func (h *Helm) runHelm(args []string) error {
@@ -104,7 +102,7 @@ func (h *Helm) runHelm(args []string) error {
 					Containers: []corev1.Container{
 						{
 							Name:            "helm-runner",
-							Image:           "ghcr.io/airyhq/infrastructure/helm:" + h.version,
+							Image:           "ghcr.io/airyhq/infrastructure/helm:christophproschel",// + h.version,
 							Args:            args,
 							ImagePullPolicy: corev1.PullAlways,
 							VolumeMounts: []corev1.VolumeMount{
@@ -151,16 +149,13 @@ func (h *Helm) runHelm(args []string) error {
 	for event := range ch {
 		switch event.Type {
 		case watch.Error:
-			h.cleanupJob()
 			return fmt.Errorf("helm run failed with error %v", event.Object)
 		case watch.Added:
 		case watch.Modified:
 			job, _ := event.Object.(*batchv1.Job)
 			if job.Status.Succeeded == 1 {
-				h.cleanupJob()
 				return nil
 			} else if job.Status.Failed == 1 {
-				h.cleanupJob()
 				return fmt.Errorf("helm run failed with error %v", event.Object)
 			}
 		}

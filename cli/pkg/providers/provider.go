@@ -5,6 +5,7 @@ import (
 	"cli/pkg/providers/aws"
 	"cli/pkg/providers/minikube"
 	"cli/pkg/workspace"
+	"cli/pkg/workspace/template"
 	"fmt"
 	"io"
 )
@@ -18,7 +19,7 @@ const (
 
 type Provider interface {
 	Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error)
-	GetHelmOverrides() []string
+	GetOverrides() template.Variables
 	PostInstallation(namespace string) error
 }
 

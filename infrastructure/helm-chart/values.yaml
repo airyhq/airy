@@ -1,6 +1,0 @@
-global:
-  # required override: appImageTag
-  containerRegistry: ghcr.io/airyhq
-  namespace: default
-  ngrokEnabled: false
-  host: http://airy.core

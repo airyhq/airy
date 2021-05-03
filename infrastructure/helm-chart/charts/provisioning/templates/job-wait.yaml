@@ -13,7 +13,7 @@ spec:
         command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
         env:
         - name: SERVICE_URL
-          value: api-communication.{{ .Values.global.namespace }}:80
+          value: api-communication.{{ .Values.global.kubernetes.namespace }}:80
         volumeMounts:
         - name: provisioning-scripts
           mountPath: /opt/provisioning
@@ -39,7 +39,7 @@ spec:
         command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
         env:
         - name: SERVICE_URL
-          value: frontend-ui.{{ .Values.global.namespace }}:80
+          value: frontend-ui.{{ .Values.global.kubernetes.namespace }}:80
         volumeMounts:
         - name: provisioning-scripts
           mountPath: /opt/provisioning
@@ -65,7 +65,7 @@ spec:
         command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
         env:
         - name: SERVICE_URL
-          value: frontend-chat-plugin.{{ .Values.global.namespace }}:80
+          value: frontend-chat-plugin.{{ .Values.global.kubernetes.namespace }}:80
         volumeMounts:
         - name: provisioning-scripts
           mountPath: /opt/provisioning

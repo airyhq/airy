@@ -6,7 +6,7 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: {{ template "kafka.fullname" . }}
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: {{ template "kafka.name" . }}
     chart: {{ template "kafka.chart" . }}

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-facebook-connector
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: sources-facebook-connector
     type: sources
@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: "{{ .Values.global.containerRegistry}}/{{ .Values.imageConnector }}:{{ .Values.global.appImageTag }}"
+          image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.imageConnector }}:{{ .Values.global.kubernetes.appImageTag }}"
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -99,7 +99,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-facebook-events-router
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: sources-facebook-events-router
     type: sources
@@ -123,7 +123,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.imageEventsRouter }}:{{ .Values.global.appImageTag }}"
+        image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.imageEventsRouter }}:{{ .Values.global.kubernetes.appImageTag }}"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

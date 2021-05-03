@@ -4,6 +4,7 @@ import (
 	"cli/pkg/console"
 	"cli/pkg/kube"
 	"cli/pkg/workspace"
+	tmpl "cli/pkg/workspace/template"
 	"context"
 	"fmt"
 	"io"
@@ -42,8 +43,8 @@ func New(w io.Writer) *provider {
 	}
 }
 
-func (p *provider) GetHelmOverrides() []string {
-	return []string{"--set", "global.ngrokEnabled=false"}
+func (p *provider) GetOverrides() tmpl.Variables {
+	return tmpl.Variables{}
 }
 
 func (p *provider) PostInstallation(namespace string) error {

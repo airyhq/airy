@@ -10,7 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   ports:
-    - port: 9092
+    - port: {{ .Values.port }}
       name: broker
   clusterIP: None
   selector:

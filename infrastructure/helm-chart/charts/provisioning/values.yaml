@@ -1,2 +1,2 @@
 kafkaImage: ghcr.io/airyhq/infrastructure/kafka
-kafkaImageTag: 2.5.1
+kafkaImageTag: 2.8.0

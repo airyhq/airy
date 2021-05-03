@@ -1,6 +1,6 @@
 brokers: 1
 image: ghcr.io/airyhq/infrastructure/kafka
-imageTag: 2.5.1
+imageTag: 2.8.0
 imagePullPolicy: IfNotPresent
 imagePullSecrets:
 podManagementPolicy: OrderedReady

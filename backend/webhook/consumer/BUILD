@@ -1,4 +1,4 @@
-# gazelle:prefix redis-worker
+# gazelle:prefix consumer
 
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
@@ -6,14 +6,14 @@ load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 load("//tools/build:container_release.bzl", "container_release")
 
 go_binary(
-    name = "redis-worker_binary",
-    embed = [":redis-worker_lib"],
+    name = "consumer_binary",
+    embed = [":consumer_lib"],
     visibility = ["//visibility:public"],
 )
 
 go_image(
     name = "image",
-    embed = [":redis-worker_lib"],
+    embed = [":consumer_lib"],
 )
 
 container_release(
@@ -21,12 +21,12 @@ container_release(
     repository = "consumer",
 )
 
-go_library(
-    name = "redis-worker_lib",
-    srcs = ["main.go"],
-    importpath = "redis-worker",
-    visibility = ["//visibility:private"],
-    deps = ["//backend/webhook/redis-worker/pkg/scheduler"],
-)
-
 check_pkg(name = "buildifier")
+
+go_library(
+    name = "consumer_lib",
+    srcs = ["main.go"],
+    importpath = "consumer",
+    visibility = ["//visibility:private"],
+    deps = ["//backend/webhook/consumer/pkg/worker"],
+)

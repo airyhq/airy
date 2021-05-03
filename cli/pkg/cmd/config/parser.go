@@ -23,6 +23,8 @@ type airyConf struct {
 
 type securityConf struct {
 	SystemToken string `yaml:"systemToken"`
+	AllowedOrigins string `yaml:"allowedOrigins"`
+	JwtSecret string `yaml:"jwtSecret"`
 	Oidc map[string]string `yaml:"oidc"`
 }
 
@@ -31,6 +33,12 @@ func (s securityConf) getData() map[string]string {
 
 	if s.SystemToken != "" {
 		m["systemToken"] = s.SystemToken
+	}
+	if s.AllowedOrigins != "" {
+		m["allowedOrigins"] = s.AllowedOrigins
+	}
+	if s.JwtSecret != "" {
+		m["jwtSecret"] = s.JwtSecret
 	}
 
 	for key, value := range s.Oidc {

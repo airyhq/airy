@@ -20,7 +20,7 @@ public class PrincipalAccess {
 
         final UserProfile userProfile = getUserProfile(authentication);
         if (userProfile == null) {
-            throw new IllegalStateException("Uknown authentication type");
+            throw new IllegalStateException("Unknown authentication type");
         }
 
         return userProfile.getId();

@@ -107,16 +107,19 @@ func (w *Worker) Run(ctx context.Context, wg *sync.WaitGroup) {
 func (w *Worker) updateWebhookConfig(ctx context.Context, wg *sync.WaitGroup, webhookConfigStream chan string) {
 	defer wg.Done()
 	log.Println("Started updateWebhookConfig routine")
-	select {
-	case <-ctx.Done():
-		log.Println("terminating updateWebhookConfig: context cancelled")
-	case config := <-webhookConfigStream:
-		var webhookConfig = webhookConfig{}
-		if err := json.Unmarshal([]byte(config), &webhookConfig); err != nil {
-			log.Fatal(err)
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("terminating updateWebhookConfig: context cancelled")
+			return
+		case config := <-webhookConfigStream:
+			var webhookConfig = webhookConfig{}
+			if err := json.Unmarshal([]byte(config), &webhookConfig); err != nil {
+				log.Fatal(err)
+			}
+			w.endpoint = webhookConfig.Endpoint
+			w.customHeader = webhookConfig.Headers["map"]
 		}
-		w.endpoint = webhookConfig.Endpoint
-		w.customHeader = webhookConfig.Headers["map"]
 	}
 }
 

@@ -143,7 +143,7 @@ public class ConversationsController {
                         .data(enrichedConversations.stream().map(ConversationResponsePayload::fromConversation).collect(Collectors.toList()))
                         .paginationData(
                                 PaginationData.builder()
-                                        .filteredTotal(enrichedConversations.size())
+                                        .filteredTotal(totalSize)
                                         .nextCursor(page.getNextCursor())
                                         .previousCursor(page.getPreviousCursor())
                                         .total(totalSize)

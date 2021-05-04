@@ -2,7 +2,7 @@
 set -eo pipefail
 IFS=$'\n\t'
 
-brew install coreutils
+brew -q install coreutils wget
 
 AIRY_BIN=/usr/local/bin/airy_dev
 BUCKET=https://airy-core-binaries.s3.amazonaws.com/develop/darwin/amd64

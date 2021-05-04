@@ -13,7 +13,7 @@ custom_java_library(
         "//lib/java/kafka/schema:kafka-schema",
         "//lib/java/log",
         "@maven//:org_apache_curator_curator_test",
-        "@maven//:org_apache_kafka_kafka_2_12",
+        "@maven//:org_apache_kafka_kafka_2_13",
         "@maven//:org_apache_kafka_kafka_clients_test",
         "@maven//:org_apache_kafka_kafka_streams",
         "@maven//:org_eclipse_jetty_jetty_server",

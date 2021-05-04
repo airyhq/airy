@@ -16,10 +16,12 @@ type Consumer struct {
 	ready                chan bool
 	webhookConfigStream  chan string
 	schemaRegistryClient *srclient.SchemaRegistryClient
+	kafkaConsumerConfig  KafkaConsumerConfig
 }
 
 type KafkaConsumerConfig struct {
-	Brokers, SchemaRegistryURL, Topics, Group string
+	Brokers, SchemaRegistryURL, Topic, Group string
+	Partitions                               int
 }
 
 func StartKafkaConsumer(
@@ -38,6 +40,7 @@ func StartKafkaConsumer(
 		ready:                make(chan bool),
 		webhookConfigStream:  webhookConfigStream,
 		schemaRegistryClient: schemaRegistryClient,
+		kafkaConsumerConfig:  kafkaConsumerConfig,
 	}
 
 	client, err := sarama.NewConsumerGroup(strings.Split(kafkaConsumerConfig.Brokers, ","), kafkaConsumerConfig.Group, config)
@@ -47,7 +50,7 @@ func StartKafkaConsumer(
 
 	go func() {
 		for {
-			if err := client.Consume(ctx, strings.Split(kafkaConsumerConfig.Topics, ","), &consumer); err != nil {
+			if err := client.Consume(ctx, strings.Split(kafkaConsumerConfig.Topic, ","), &consumer); err != nil {
 				log.Panicf("Error from consumer: %v", err)
 			}
 			if ctx.Err() != nil {
@@ -67,7 +70,10 @@ func StartKafkaConsumer(
 	}
 }
 
-func (consumer *Consumer) Setup(sarama.ConsumerGroupSession) error {
+func (consumer *Consumer) Setup(session sarama.ConsumerGroupSession) error {
+	for p := 0; p < consumer.kafkaConsumerConfig.Partitions; p++ {
+		session.ResetOffset(consumer.kafkaConsumerConfig.Topic, int32(p), 0, "")
+	}
 	close(consumer.ready)
 	return nil
 }

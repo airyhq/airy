@@ -2,7 +2,7 @@
 set -eo pipefail
 IFS=$'\n\t'
 
-brew -q install coreutils wget
+brew install -q coreutils wget
 
 AIRY_BIN=/usr/local/bin/airy_dev
 BUCKET=https://airy-core-binaries.s3.amazonaws.com/develop/darwin/amd64
@@ -15,7 +15,7 @@ if [[ "$OLD_SHA" != "$NEW_SHA" ]]; then
   chmod +x $AIRY_BIN
 fi
 
-if [[ $1 == "create" ]]; then
+if [[ $1 == "create" && $2 == "--provider=minikube" ]]; then
 minikube delete -p airy-core
 fi
 

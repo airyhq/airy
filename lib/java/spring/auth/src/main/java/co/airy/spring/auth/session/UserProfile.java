@@ -21,15 +21,14 @@ public class UserProfile implements AuthenticatedPrincipal {
         final OAuth2User user = auth.getPrincipal();
 
         // e.g. github:4403838
-        final String id = String.format("%s:%s", auth.getAuthorizedClientRegistrationId(),
-                user.getAttribute("id"));
-
         if (user instanceof OidcUser) {
-            final OidcUserInfo userInfo = ((OidcUser) user).getUserInfo();
-            return new UserProfile(id, userInfo.getFullName(), ((OidcUser) user).getPicture());
+            final String id = String.format("%s:%s", auth.getAuthorizedClientRegistrationId(),
+                    user.getName());
+            return new UserProfile(id, ((OidcUser) user).getFullName(), ((OidcUser) user).getPicture());
         }
 
-
+        final String id = String.format("%s:%s", auth.getAuthorizedClientRegistrationId(),
+                user.getAttribute("id"));
         return new UserProfile(id, user.getAttribute("name"), user.getAttribute("avatar_url"));
     }
 }

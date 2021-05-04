@@ -3,6 +3,57 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.20.0
+
+#### Changes
+
+- Bump @types/react from 16.9.34 to 17.0.4 [[#1658](https://github.com/airyhq/airy/pull/1658)]
+
+#### 🚀 Features
+
+- [[#1518](https://github.com/airyhq/airy/issues/1518)] Add OIDC authentication backend [[#1623](https://github.com/airyhq/airy/pull/1623)]
+- [[#1505](https://github.com/airyhq/airy/issues/1505)] Rewrite Webhook queue with Beanstalkd [[#1536](https://github.com/airyhq/airy/pull/1536)]
+- [[#1687](https://github.com/airyhq/airy/issues/1687)] Kafka Prometheus exporter error on… [[#1688](https://github.com/airyhq/airy/pull/1688)]
+- [[#1615](https://github.com/airyhq/airy/issues/1615)] Expose tag events via websocket [[#1624](https://github.com/airyhq/airy/pull/1624)]
+- [[#1495](https://github.com/airyhq/airy/issues/1495)] Add kafka Prometheus exporter [[#1668](https://github.com/airyhq/airy/pull/1668)]
+- [[#1525](https://github.com/airyhq/airy/issues/1525)] Update quick filter [[#1660](https://github.com/airyhq/airy/pull/1660)]
+
+#### 🐛 Bug Fixes
+
+- [[#1698](https://github.com/airyhq/airy/issues/1698)] Webhook config error [[#1699](https://github.com/airyhq/airy/pull/1699)]
+- [[#1689](https://github.com/airyhq/airy/issues/1689)] Bug: Conversation Counter: Optimize Filter Use [[#1697](https://github.com/airyhq/airy/pull/1697)]
+- [[#1665](https://github.com/airyhq/airy/issues/1665)] Fix chatplugin reconnection problem [[#1682](https://github.com/airyhq/airy/pull/1682)]
+- [[#1646](https://github.com/airyhq/airy/issues/1646)] fix avatar images styling [[#1680](https://github.com/airyhq/airy/pull/1680)]
+- [[#1652](https://github.com/airyhq/airy/issues/1652)] Fix rendering messages with render library [[#1675](https://github.com/airyhq/airy/pull/1675)]
+- [[#1674](https://github.com/airyhq/airy/issues/1674)] Chatplugin customize problems [[#1678](https://github.com/airyhq/airy/pull/1678)]
+- [[#1666](https://github.com/airyhq/airy/issues/1666)] Fix chatplugin cors config [[#1667](https://github.com/airyhq/airy/pull/1667)]
+
+#### 📚 Documentation
+
+- [[#1676](https://github.com/airyhq/airy/issues/1676)] fix sending messages to google source [[#1677](https://github.com/airyhq/airy/pull/1677)]
+- [[#1661](https://github.com/airyhq/airy/issues/1661)] Fix token name in docs [[#1664](https://github.com/airyhq/airy/pull/1664)]
+
+#### 🧰 Maintenance
+
+- Bump @babel/preset-env from 7.14.0 to 7.14.1 [[#1705](https://github.com/airyhq/airy/pull/1705)]
+- Bump webpack from 5.36.1 to 5.36.2 [[#1692](https://github.com/airyhq/airy/pull/1692)]
+- Bump @babel/core from 7.13.16 to 7.14.0 [[#1685](https://github.com/airyhq/airy/pull/1685)]
+- Bump @babel/preset-env from 7.13.15 to 7.14.0 [[#1684](https://github.com/airyhq/airy/pull/1684)]
+- Bump webpack from 5.36.0 to 5.36.1 [[#1670](https://github.com/airyhq/airy/pull/1670)]
+- Bump @bazel/typescript from 3.4.1 to 3.4.2 [[#1671](https://github.com/airyhq/airy/pull/1671)]
+- Bump core-js from 3.11.0 to 3.11.1 [[#1672](https://github.com/airyhq/airy/pull/1672)]
+- Bump sass from 1.32.11 to 1.32.12 [[#1673](https://github.com/airyhq/airy/pull/1673)]
+- Bump webpack from 5.35.1 to 5.36.0 [[#1663](https://github.com/airyhq/airy/pull/1663)]
+- Bump @types/node from 15.0.0 to 15.0.1 [[#1662](https://github.com/airyhq/airy/pull/1662)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.19.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.19.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.19.1/windows/amd64/airy.exe)
+
 ## 0.19.0
 
 #### Changes

@@ -79,27 +79,31 @@ func (w *Worker) Run(ctx context.Context, wg *sync.WaitGroup) {
 				}
 				continue
 			}
+			w.processJob(ctx, id, event)
+		}
+	}
+}
 
-			for {
-				select {
-				case <-ctx.Done():
-					log.Println("terminating worker: context cancelled")
-					return
-				default:
-					err = w.HandleEvent(event)
-					if err != nil {
-						w.logError(err)
-						time.Sleep(w.backoff.Duration())
-						continue
-					}
-					err = w.beanstalk.Delete(id)
-					if err != nil {
-						w.logError(err)
-					}
-					w.backoff.Reset()
-					break
-				}
+func (w *Worker) processJob(ctx context.Context, jobId uint64, event []byte) {
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("terminating worker: context cancelled")
+			return
+		default:
+			err := w.HandleEvent(event)
+			if err != nil {
+				w.logError(err)
+				time.Sleep(w.backoff.Duration())
+				continue
 			}
+
+			err = w.beanstalk.Delete(jobId)
+			if err != nil {
+				w.logError(err)
+			}
+			w.backoff.Reset()
+			return
 		}
 	}
 }

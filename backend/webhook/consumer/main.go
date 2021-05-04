@@ -27,7 +27,8 @@ func main() {
 		Brokers:           os.Getenv("KAFKA_BROKERS"),
 		SchemaRegistryURL: os.Getenv("KAFKA_SCHEMA_REGISTRY_URL"),
 		Group:             "WebhookConsumer",
-		Topics:            "application.communication.webhooks",
+		Topic:             "application.communication.webhooks",
+		Partitions:        10,
 	}
 
 	wg.Add(1)

@@ -59,6 +59,8 @@ cluster and Redis.
 
 - `systemToken` set to a long secure secret to use for machine [API authentication](api/authentication.md)
 - `allowedOrigins` your site's origin to prevent CORS-based attacks (default: `"*"`)
+- `oidc` a map of values that when set enable and define [OIDC authentication](api/authentication.md#configuring-oidc)
+- `jwtSecret` used to create jwt http sessions derived from oidc authentication (default: randomized on installation)
 
 ### Components
 

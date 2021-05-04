@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import static co.airy.spring.web.Headers.getAuthToken;
+import static co.airy.core.chat_plugin.Headers.getAuthToken;
 
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private final Jwt jwt;

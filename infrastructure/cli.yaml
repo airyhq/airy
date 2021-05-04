@@ -1,5 +1,0 @@
-apihost: http://airy.core
-contextname: airy-core
-kubeconfig: /Users/t/.kube/config
-namespace: default
-provider: {}

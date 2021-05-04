@@ -2,7 +2,7 @@ import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/messages';
 import * as metadataActions from '../../../actions/metadata';
 import {Message, MessageMetadata} from 'model';
-import {cloneDeep, merge, sortBy} from 'lodash-es';
+import {cloneDeep, sortBy} from 'lodash-es';
 
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 
@@ -59,29 +59,6 @@ const setMetadata = (state: Messages, action: ActionType<typeof metadataActions>
     },
   };
 };
-const mergeMetadata = (state: Messages, action: ActionType<typeof metadataActions>) => {
-  const conversationId = findConversationId(state, action.payload.identifier);
-
-  if (conversationId == undefined) {
-    return state;
-  }
-
-  return {
-    ...state,
-    all: {
-      ...state.all,
-      [conversationId]: state.all[conversationId].map((message: Message) => {
-        if (message.id !== action.payload.identifier) {
-          return message;
-        }
-        return {
-          ...message,
-          metadata: merge({}, message.metadata, action.payload.metadata as MessageMetadata),
-        };
-      }),
-    },
-  };
-};
 
 export default function messagesReducer(state = initialState, action: Action): Messages {
   switch (action.type) {
@@ -102,13 +79,6 @@ export default function messagesReducer(state = initialState, action: Action): M
         return state;
       }
       return setMetadata(state, action);
-
-    case getType(metadataActions.mergeMetadataAction):
-      if (action.payload.subject !== 'conversation') {
-        return state;
-      }
-      return mergeMetadata(state, action);
-
     default:
       return state;
   }

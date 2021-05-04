@@ -151,16 +151,13 @@ func (h *Helm) runHelm(args []string) error {
 	for event := range ch {
 		switch event.Type {
 		case watch.Error:
-			h.cleanupJob()
 			return fmt.Errorf("helm run failed with error %v", event.Object)
 		case watch.Added:
 		case watch.Modified:
 			job, _ := event.Object.(*batchv1.Job)
 			if job.Status.Succeeded == 1 {
-				h.cleanupJob()
 				return nil
 			} else if job.Status.Failed == 1 {
-				h.cleanupJob()
 				return fmt.Errorf("helm run failed with error %v", event.Object)
 			}
 		}

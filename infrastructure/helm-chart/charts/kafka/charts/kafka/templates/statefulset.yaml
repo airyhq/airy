@@ -5,21 +5,21 @@ apiVersion: apps/v1beta1
 {{- end }}
 kind: StatefulSet
 metadata:
-  name: {{ template "cp-kafka.fullname" . }}
+  name: {{ template "kafka.fullname" . }}
   namespace: {{ .Values.global.namespace }}
   labels:
-    app: {{ template "cp-kafka.name" . }}
-    chart: {{ template "cp-kafka.chart" . }}
+    app: {{ template "kafka.name" . }}
+    chart: {{ template "kafka.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   {{- if .Capabilities.APIVersions.Has "apps/v1" }}
   selector:
     matchLabels:
-      app: {{ template "cp-kafka.name" . }}
+      app: {{ template "kafka.name" . }}
       release: {{ .Release.Name }}
   {{- end }}
-  serviceName: {{ template "cp-kafka.fullname" . }}-headless
+  serviceName: {{ template "kafka.fullname" . }}-headless
   podManagementPolicy: {{ .Values.podManagementPolicy }}
   replicas: {{ default 3 .Values.brokers }}
   updateStrategy:
@@ -27,7 +27,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "cp-kafka.name" . }}
+        app: {{ template "kafka.name" . }}
         release: {{ .Release.Name }}
     spec:
       affinity:
@@ -40,18 +40,18 @@ spec:
                   - key: "app"
                     operator: In
                     values:
-                    - {{ template "cp-kafka.name" . }}
+                    - {{ template "kafka.name" . }}
                   - key: "release"
                     operator: In
                     values:
                     - {{ .Release.Name }}
               topologyKey: "kubernetes.io/hostname"
       containers:
-      - name: {{ template "cp-kafka.name" . }}-broker
+      - name: {{ template "kafka.name" . }}-broker
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         ports:
-        - containerPort: 9092
+        - containerPort: {{ .Values.port }}
           name: kafka
         {{- if .Values.nodeport.enabled }}
           {{- $brokers := .Values.brokers | int }}
@@ -83,13 +83,13 @@ spec:
         - name: AIRY_LISTENERS
           value: PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:AIRY_BROKER_PORT
         - name: AIRY_ADVERTISED_LISTENERS
-          value: PLAINTEXT://AIRY_POD_NAME.{{ template "cp-kafka.fullname" . }}-headless.AIRY_NAMESPACE:9092,EXTERNAL://AIRY_HOST_IP:AIRY_BROKER_PORT
+          value: PLAINTEXT://AIRY_POD_NAME.{{ template "kafka.fullname" . }}-headless.AIRY_NAMESPACE:9092,EXTERNAL://AIRY_HOST_IP:AIRY_BROKER_PORT
         - name: AIRY_FIRST_LISTENER_PORT
           value: "{{ .Values.firstListenerPort }}"
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
         - name: KAFKA_ZOOKEEPER_CONNECT
-          value: {{ include "cp-kafka.cp-zookeeper.service-name" . | quote }}
+          value: {{ include "kafka.zookeeper.service-name" . | quote }}
         {{- range $key, $value := .Values.configurationOverrides }}
         - name: {{ printf "KAFKA_%s" $key | replace "." "_" | upper | quote }}
           value: {{ $value | quote }}

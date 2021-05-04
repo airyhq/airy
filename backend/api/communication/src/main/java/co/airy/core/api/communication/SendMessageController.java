@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import static co.airy.spring.auth.PrincipalAccess.getUserId;
+
 @RestController
 public class SendMessageController {
     private final Stores stores;
@@ -43,7 +45,7 @@ public class SendMessageController {
     }
 
     @PostMapping("/messages.send")
-    public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload) throws ExecutionException, InterruptedException, JsonProcessingException {
+    public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload, Authentication auth) throws ExecutionException, InterruptedException, JsonProcessingException {
         final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
         final Conversation conversation = conversationsStore.get(payload.getConversationId().toString());
 
@@ -56,6 +58,8 @@ public class SendMessageController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
+        final String userId = getUserId(auth);
+
         final Message message = Message.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setChannelId(channel.getId())
@@ -64,8 +68,7 @@ public class SendMessageController {
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
                 .setSource(channel.getSource())
-                // TODO add the oidc id here in https://github.com/airyhq/airy/issues/1518
-                .setSenderId("airy-core-anonymous")
+                .setSenderId(userId)
                 .setSentAt(Instant.now().toEpochMilli())
                 .setIsFromContact(false)
                 .build();

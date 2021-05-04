@@ -1,6 +1,6 @@
 import {StompWrapper} from './stompWrapper';
-import {Message, Channel, MetadataEvent} from 'model';
-import {EventPayloadUnion} from './payload';
+import {Message, Channel, MetadataEvent, Tag} from 'model';
+import {EventPayload} from './payload';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
@@ -8,6 +8,7 @@ type CallbackMap = {
   onMessage?: (conversationId: string, channelId: string, message: Message) => void;
   onMetadata?: (metadataEvent: MetadataEvent) => void;
   onChannel?: (channel: Channel) => void;
+  onTag?: (tag: Tag) => void;
   onError?: () => void;
 };
 
@@ -41,7 +42,7 @@ export class WebSocketClient {
   };
 
   onEvent = (body: string) => {
-    const json: EventPayloadUnion = JSON.parse(body) as any;
+    const json = JSON.parse(body) as EventPayload;
     switch (json.type) {
       case 'channel':
         this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true, stopPaths: ['metadata.user_data']}));
@@ -54,6 +55,9 @@ export class WebSocketClient {
         break;
       case 'metadata':
         this.callbackMap.onMetadata?.(json.payload);
+        break;
+      case 'tag':
+        this.callbackMap.onTag?.(json.payload);
         break;
       default:
         console.error('Unknown /events payload', json);

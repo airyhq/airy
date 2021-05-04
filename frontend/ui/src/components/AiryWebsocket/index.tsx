@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {WebSocketClient} from 'websocketclient';
-import {Message, Channel, MetadataEvent} from 'model';
+import {Message, Channel, MetadataEvent, Tag} from 'model';
 import camelcaseKeys from 'camelcase-keys';
 
 import {env} from '../../env';
@@ -11,12 +11,11 @@ import {getConversationInfo} from '../../actions/conversations';
 import {setChannelAction} from '../../actions/channel';
 import {setMetadataAction} from '../../actions/metadata';
 import {allConversations} from '../../selectors/conversations';
+import {upsertTagAction} from '../../actions';
 
 type AiryWebSocketProps = {} & ConnectedProps<typeof connector>;
 
-export const AiryWebSocketContext = React.createContext({
-  refreshSocket: null,
-});
+export const AiryWebSocketContext = React.createContext({refreshSocket: null});
 
 const mapStateToProps = (state: StateModel) => ({
   conversations: allConversations(state),
@@ -33,12 +32,15 @@ const mapDispatchToProps = dispatch => ({
         stopPaths: ['payload.metadata.user_data', 'payload.metadata.tags'],
       })
     ),
+  onTag: (tag: Tag) => {
+    dispatch(upsertTagAction(tag));
+  },
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
-  const {children, conversations, getConversationInfo, addMessages, onChannel, onMetadata} = props;
+  const {children, conversations, getConversationInfo, addMessages, onChannel, onMetadata, onTag} = props;
   const [webSocketClient, setWebSocketClient] = useState(null);
 
   const onMessage = (conversationId: string, message: Message) => {
@@ -62,6 +64,7 @@ const AiryWebSocket: React.FC<AiryWebSocketProps> = props => {
         },
         onChannel,
         onMetadata,
+        onTag,
       })
     );
   };

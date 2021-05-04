@@ -13,8 +13,7 @@ app_deps = [
     "//lib/java/date",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
-    "@maven//:io_lettuce_lettuce_core",
-    "@maven//:org_springframework_data_spring_data_redis",
+    "@maven//:com_dinstone_beanstalkc",
 ]
 
 springboot(

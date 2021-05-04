@@ -8,7 +8,6 @@ import * as metadataActions from '../../../actions/metadata';
 import * as actions from '../../../actions/conversations';
 import * as filterActions from '../../../actions/conversationsFilter';
 import * as messageActions from '../../../actions/messages';
-import {MetadataEvent, ConversationMetadata} from 'model';
 
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 type FilterAction = ActionType<typeof filterActions>;
@@ -58,7 +57,7 @@ export type ConversationsState = {
 };
 
 function mergeConversations(
-  oldConversation: {[conversation_id: string]: MergedConversation},
+  oldConversation: {[conversationId: string]: MergedConversation},
   newConversations: MergedConversation[]
 ): ConversationMap {
   newConversations.forEach((conversation: MergedConversation) => {
@@ -90,7 +89,7 @@ function mergeConversations(
 }
 
 function mergeFilteredConversations(
-  oldConversation: {[conversation_id: string]: MergedConversation},
+  oldConversation: {[conversationId: string]: MergedConversation},
   newConversations: MergedConversation[]
 ): ConversationMap {
   newConversations.forEach((conversation: MergedConversation) => {
@@ -160,7 +159,7 @@ const removeTagFromConversation = (state: AllConversationsState, conversationId,
         ...conversation,
         metadata: {
           ...conversation.metadata,
-          tags: pickBy(conversation.metadata?.tags, (value, key) => key !== tagId),
+          tags: pickBy(conversation.metadata?.tags, (_, key) => key !== tagId),
         },
       },
     },
@@ -210,31 +209,6 @@ function allReducer(
       };
 
     case getType(metadataActions.setMetadataAction):
-      if (action.payload.subject !== 'conversation') {
-        return state;
-      }
-
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [action.payload.identifier]: {
-            id: action.payload.identifier,
-            ...state.items[action.payload.identifier],
-            metadata: {
-              // Ensure that there is always a display name present
-              ...(action.payload as MetadataEvent<ConversationMetadata>).metadata,
-              state: action.payload.metadata.state || state.items[action.payload.identifier]?.metadata.state || 'OPEN',
-              contact: {
-                ...state.items[action.payload.identifier]?.metadata.contact,
-                ...(action.payload as MetadataEvent<ConversationMetadata>).metadata.contact,
-              },
-            },
-          },
-        },
-      };
-
-    case getType(metadataActions.mergeMetadataAction):
       if (action.payload.subject !== 'conversation') {
         return state;
       }

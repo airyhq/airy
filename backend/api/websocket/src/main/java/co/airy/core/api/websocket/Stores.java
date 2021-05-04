@@ -3,9 +3,11 @@ package co.airy.core.api.websocket;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
+import co.airy.avro.communication.Tag;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.metadata.dto.MetadataMap;
 import org.apache.kafka.streams.KeyValue;
@@ -22,13 +24,11 @@ import static co.airy.model.metadata.MetadataRepository.getSubject;
 
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
-    private static final String appId = "api.WebsocketStores";
+    private static final String appId = "api.WebSocketStores";
     private final KafkaStreamsWrapper streams;
     private final WebSocketController webSocketController;
 
-    Stores(KafkaStreamsWrapper streams,
-           WebSocketController webSocketController
-    ) {
+    Stores(KafkaStreamsWrapper streams, WebSocketController webSocketController) {
         this.streams = streams;
         this.webSocketController = webSocketController;
     }
@@ -42,6 +42,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
                 .peek((channelId, channel) -> webSocketController.onChannel(channel));
+
+        builder.<String, Tag>stream(new ApplicationCommunicationTags().name())
+                .filter((id, tag) -> tag != null)
+                .peek((id, tag) -> webSocketController.onTag(tag));
 
         builder.<String, Metadata>table(new ApplicationCommunicationMetadata().name())
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))

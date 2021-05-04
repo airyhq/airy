@@ -21,6 +21,10 @@ prometheus:
     paths: ['/prometheus']
   prometheusSpec:
     routePrefix: /prometheus
+    additionalScrapeConfigs:
+      - job_name: beanstalkd_exporter
+        static_configs:
+        - targets: ['beanstalk:8080']
   additionalServiceMonitors:
   - name: "spring-apps"
     selector:
@@ -32,3 +36,12 @@ prometheus:
       - port: web 
         interval: 30s
         path: actuator/prometheus
+  - name: "kafka"
+    selector:
+      matchLabels:
+        core.airy.co/prometheus: kafka
+    namespaceSelector:
+      matchNames: ["default"]
+    endpoints:
+      - port: prometheus 
+        interval: 30s

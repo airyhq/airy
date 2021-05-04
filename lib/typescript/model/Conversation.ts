@@ -19,11 +19,3 @@ export interface Conversation {
   createdAt: Date;
   lastMessage: Message;
 }
-
-export function getTags(conversation: Conversation) {
-  return Object.keys(conversation.metadata.tags || {});
-}
-
-export function getSource(conversation: Conversation) {
-  return conversation?.channel?.source;
-}

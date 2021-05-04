@@ -33,14 +33,6 @@ java_library(
 )
 
 java_library(
-    name = "tag",
-    exports = [
-        "//backend/avro:tag",
-        "//lib/java/kafka/schema:application-communication-tags",
-    ],
-)
-
-java_library(
     name = "webhook",
     exports = [
         "//backend/avro:webhook",

@@ -5,7 +5,7 @@ import {debounce, isEmpty} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
 import {cyMessageList} from 'handles';
 
-import {Message, Suggestions, getSource} from 'model';
+import {Message, Suggestions} from 'model';
 import {SourceMessage} from 'render';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
 
@@ -179,7 +179,7 @@ const MessageList = (props: MessageListProps) => {
                 lastInGroup={lastInGroup}
                 isChatPlugin={false}
                 decoration={messageDecoration}>
-                <SourceMessage source={getSource(conversation)} content={message} contentType="message" />
+                <SourceMessage source={conversation.channel?.source} content={message} contentType="message" />
               </MessageInfoWrapper>
             </div>
           );

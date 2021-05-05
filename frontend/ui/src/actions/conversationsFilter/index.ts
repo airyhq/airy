@@ -99,7 +99,7 @@ const filterToLuceneSyntax = (filter: ConversationFilter): string | null => {
     filterQuery.push('unread_count:0');
   }
   if (filter.displayName) {
-    filterQuery.push('display_name:*' + filter.displayName + '*');
+    filterQuery.push('display_name=*' + filter.displayName + '*');
   }
   if (filter.byTags && filter.byTags.length > 0) {
     filterQuery.push('tag_ids:(' + filter.byTags.join(' AND ') + ')');

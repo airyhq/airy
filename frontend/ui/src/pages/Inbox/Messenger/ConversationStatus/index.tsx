@@ -2,12 +2,12 @@ import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 import styles from './index.module.scss';
-import {getCurrentConversation} from '../../../../selectors/conversations';
+import {getConversation} from '../../../../selectors/conversations';
 import {conversationState} from '../../../../actions/conversations';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    conversation: getCurrentConversation(state, ownProps),
+    conversation: getConversation(state, ownProps),
   };
 };
 

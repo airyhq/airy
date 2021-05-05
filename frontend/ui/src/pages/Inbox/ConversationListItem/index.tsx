@@ -91,9 +91,9 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   const lastMessageIcon = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
     if (!lastMessageContent.attachment) {
-      if (lastMessageContent.message?.attachments[0]?.type === 'image') {
+      if (lastMessageContent.message?.attachments?.[0].type === 'image') {
         return <AttachmentImage />;
-      } else if (lastMessageContent.message?.attachments[0]?.type === 'video') {
+      } else if (lastMessageContent.message?.attachments?.[0].type === 'video') {
         return <AttachmentVideo style={{height: '24px', width: '24px', margin: '0px'}} />;
       } else if (lastMessageContent.suggestionResponse) {
         return <>{conversation.lastMessage.content.suggestionResponse.text}</>;

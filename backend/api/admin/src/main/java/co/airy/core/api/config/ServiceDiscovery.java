@@ -28,7 +28,7 @@ public class ServiceDiscovery {
         return components;
     }
 
-    // @Scheduled(fixedRate = 1_000)
+    @Scheduled(fixedRate = 1_000)
     private void updateComponentsStatus() {
         final ResponseEntity<ComponentsResponsePayload> response = restTemplate.getForEntity("http://airy-controller.default/components", ComponentsResponsePayload.class);
         Map<String, Map<String, Object>> newComponents = new ConcurrentHashMap<>();

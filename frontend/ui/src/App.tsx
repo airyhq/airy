@@ -15,7 +15,7 @@ import {StateModel} from './reducers';
 import {INBOX_ROUTE, CHANNELS_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 
 import styles from './App.module.scss';
-import {getClientConfig} from "./actions/config";
+import {getClientConfig} from './actions/config';
 
 const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
   return {
@@ -26,7 +26,7 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
 
 const mapDispatchToProps = {
   fakeSettingsAPICall,
-  getClientConfig
+  getClientConfig,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

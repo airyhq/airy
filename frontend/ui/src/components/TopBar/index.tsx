@@ -1,24 +1,24 @@
 import React, {useState, useCallback} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
+import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
 import {ListenOutsideClick} from 'components';
 import {StateModel} from '../../reducers';
 import {ReactComponent as ShortcutIcon} from 'assets/images/icons/shortcut.svg';
+import {ReactComponent as LogoutIcon} from 'assets/images/icons/sign-out.svg';
 import {ReactComponent as AiryLogo} from 'assets/images/logo/airy_primary_rgb.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
 import styles from './index.module.scss';
+import {env} from "../../env";
 
 interface TopBarProps {
   isAdmin: boolean;
 }
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    user: state.data.user,
-    firstName: state.data.user.firstName,
-    lastName: state.data.user.lastName,
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  user: state.data.user,
+});
+
+const logoutUrl = `${env.API_HOST}/logout`;
 
 const connector = connect(mapStateToProps);
 
@@ -55,7 +55,7 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
 
           {isFaqDropdownOn && (
             <ListenOutsideClick onOuterClick={hideFaqDropdown}>
-              <div className={styles.dropdown}>
+              <div className={styles.dropdownContainer}>
                 <a href="mailto:support@airy.co" className={styles.dropdownLine}>
                   <span className={styles.dropdownIcon}>
                     <ShortcutIcon />
@@ -68,35 +68,6 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
                   </span>
                   <span>FAQ</span>
                 </a>
-              </div>
-            </ListenOutsideClick>
-          )}
-        </div>
-
-        <div className={styles.menuItem}>
-          <div className={styles.dropDown} onClick={accountClickHandler}>
-            <div className={styles.accountDetails}>
-              <div className={styles.accountName}>{props.firstName + ' ' + props.lastName}</div>
-            </div>
-            <div className={`${styles.dropHint} ${isAccountDropdownOn ? styles.dropHintOpen : ''}`}>
-              <span className={styles.chevronDown}>
-                <ChevronDownIcon />
-              </span>
-            </div>
-          </div>
-
-          {isAccountDropdownOn && (
-            <ListenOutsideClick onOuterClick={hideAccountDropdown}>
-              <div className={styles.dropdown}>
-                {/*
-                TODO add this back in https://github.com/airyhq/airy/issues/1519
-                <Link to={LOGOUT_ROUTE} className={styles.dropdownLine}>
-                  <span className={styles.dropdownIcon}>
-                    <LogoutIcon />
-                  </span>
-                  <span>Logout</span>
-                </Link>
-                */}
                 <div className={styles.dropdownLastLine}>
                   <a className={styles.dropdownLastLink} href="https://airy.co/terms-of-service">
                     T&Cs
@@ -109,6 +80,34 @@ const TopBar = (props: TopBarProps & ConnectedProps<typeof connector> & RouteCom
             </ListenOutsideClick>
           )}
         </div>
+
+        {props.user.name && (
+          <div className={styles.menuItem}>
+            <div className={styles.dropDown} onClick={accountClickHandler}>
+              <div className={styles.accountDetails}>
+                <div className={styles.accountName}>{props.user.name}</div>
+              </div>
+              <div className={`${styles.dropHint} ${isAccountDropdownOn ? styles.dropHintOpen : ''}`}>
+                <span className={styles.chevronDown}>
+                  <ChevronDownIcon />
+                </span>
+              </div>
+            </div>
+
+            {isAccountDropdownOn && (
+              <ListenOutsideClick onOuterClick={hideAccountDropdown}>
+                <div className={styles.dropdownContainer}>
+                  <a href={logoutUrl} className={styles.dropdownLine}>
+                    <span className={styles.dropdownIcon}>
+                      <LogoutIcon />
+                    </span>
+                    <span>Logout</span>
+                  </a>
+                </div>
+              </ListenOutsideClick>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

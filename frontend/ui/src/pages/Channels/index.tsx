@@ -3,7 +3,6 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {Route, RouteComponentProps, Switch} from 'react-router-dom';
 
 import {listChannels} from '../../actions/channel';
-import {getClientConfig} from '../../actions/config';
 import {StateModel} from '../../reducers/index';
 import {allChannelsConnected} from '../../selectors/channels';
 import {setPageTitle} from '../../services/pageTitle';
@@ -27,7 +26,6 @@ import {
 
 const mapDispatchToProps = {
   listChannels,
-  getClientConfig,
 };
 
 const mapStateToProps = (state: StateModel) => ({
@@ -44,7 +42,6 @@ const Channels = (props: ChannelsConnectProps) => {
     if (props.channels.length == 0) {
       props.listChannels();
     }
-    props.getClientConfig();
     setPageTitle('Channels');
   }, []);
 

@@ -190,7 +190,7 @@ const Chat = (props: Props) => {
         ) : (
           <NewConversation
             reAuthenticate={reAuthenticate}
-            startConversationText={config.startConversationText || null}
+            startNewConversationText={config.startNewConversationText || null}
           />
         );
 

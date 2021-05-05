@@ -12,7 +12,7 @@ interface CustomiseSectionProps {
 
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [headerText, setHeaderText] = useState('');
-  const [startConversationText, setStartConversationText] = useState('');
+  const [startNewConversationText, setStartNewConversationText] = useState('');
   const [bubbleIconUrl, setBubbleIconUrl] = useState('');
   const [sendMessageIconUrl, setSendMessageIconUrl] = useState('');
   const [headerTextColor, setHeaderTextColor] = useState('');
@@ -45,7 +45,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const getTemplateConfig = () => {
     if (
       headerText === '' &&
-      startConversationText === '' &&
+      startNewConversationText === '' &&
       bubbleIconUrl === '' &&
       sendMessageIconUrl === '' &&
       headerTextColor === '' &&
@@ -57,7 +57,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     }
     let config = '';
     if (headerText !== '') config += `\n              headerText: '${headerText}',`;
-    if (startConversationText !== '') config += `\n    startConversationText: '${startConversationText}',`;
+    if (startNewConversationText !== '') config += `\n    startNewConversationText: '${startNewConversationText}',`;
     if (bubbleIconUrl !== '') config += `\n              bubbleIcon: '${bubbleIconUrl}',`;
     if (sendMessageIconUrl !== '') config += `\n              sendMessageIcon: '${sendMessageIconUrl}',`;
     if (headerTextColor !== '') config += `\n              headerTextColor: '${headerTextColor}',`;
@@ -76,7 +76,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     config: {
       showMode: true,
       ...(headerText && {headerText}),
-      ...(startConversationText && {startConversationText}),
+      ...(startNewConversationText && {startNewConversationText}),
       ...(headerTextColor && {headerTextColor}),
       ...(primaryColor && {primaryColor}),
       ...(accentColor && {accentColor}),
@@ -132,12 +132,12 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         />
         <Input
           type="text"
-          name="startConversationText"
-          value={startConversationText}
+          name="startNewConversationText"
+          value={startNewConversationText}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setStartConversationText(e.target.value);
+            setStartNewConversationText(e.target.value);
           }}
-          label="Start Conversation Text"
+          label="Start new Conversation Text"
           placeholder="(optionally) add a text"
           height={32}
           fontClass="font-base"

@@ -4,7 +4,7 @@ import {cyChatPluginStartNewConversation} from 'chat-plugin-handles';
 
 type newConversationProps = {
   reAuthenticate: () => void;
-  startConversationText: string;
+  startNewConversationText: string;
 };
 
 const NewConversation = (props: newConversationProps) => {
@@ -21,7 +21,7 @@ const NewConversation = (props: newConversationProps) => {
             onClick={props.reAuthenticate}
             data-cy={cyChatPluginStartNewConversation}
             className={style.newConversationLink}>
-            {props.startConversationText || 'Start a new Conversation'}
+            {props.startNewConversationText || 'Start a new Conversation'}
           </a>
         </button>
       </div>

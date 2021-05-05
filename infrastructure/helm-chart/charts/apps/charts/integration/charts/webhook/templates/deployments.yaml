@@ -79,12 +79,12 @@ spec:
         - name: SERVICE_NAME
           valueFrom:
             configMapKeyRef:
-              name: beanstalkd-config
+              name: beanstalk-config
               key: BEANSTALK_HOSTNAME
         - name: SERVICE_PORT
           valueFrom:
             configMapKeyRef:
-              name: beanstalkd-config
+              name: beanstalk-config
               key: BEANSTALK_PORT
         volumeMounts:
         - name: provisioning-scripts

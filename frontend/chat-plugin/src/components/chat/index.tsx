@@ -188,7 +188,10 @@ const Chat = (props: Props) => {
             setNewConversation={setNewConversation}
           />
         ) : (
-          <NewConversation reAuthenticate={reAuthenticate} />
+          <NewConversation
+            reAuthenticate={reAuthenticate}
+            startConversationText={config.startConversationText || null}
+          />
         );
 
   const bubble = props.bubbleProp

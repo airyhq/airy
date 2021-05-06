@@ -8,7 +8,7 @@ const userReducer: any = (state = {}, action: Action): User | {} => {
   switch (action.type) {
     case getType(actions.saveClientConfig):
       return {
-        ...action.payload.user_profile,
+        ...action.payload.userProfile,
       };
     default:
       return state;

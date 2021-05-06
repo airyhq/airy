@@ -3,6 +3,7 @@ package co.airy.spring.auth.session;
 import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -93,6 +94,10 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
 
         @Override
         protected void saveContext(SecurityContext securityContext) {
+            if (request.getMethod().equals("OPTIONS")) {
+                return;
+            }
+
             HttpServletResponse response = (HttpServletResponse) getResponse();
             Authentication authentication = securityContext.getAuthentication();
 

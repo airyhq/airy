@@ -1,1 +1,3 @@
+component: sources-chat-plugin
+mandatory: true
 image: sources/chat-plugin

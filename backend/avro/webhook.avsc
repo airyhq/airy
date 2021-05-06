@@ -1,0 +1,27 @@
+{
+  "namespace": "co.airy.avro.communication",
+  "name": "Webhook",
+  "type": "record",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "endpoint",
+      "type": "string"
+    },
+    {
+      "name": "headers",
+      "type": [
+        "null",
+        {
+          "type": "map",
+          "values": "string"
+        }
+      ],
+      "default": null
+    },
+    {"name": "status", "type": {"name": "Status", "type": "enum", "symbols": ["Subscribed", "Unsubscribed"]}}
+  ]
+}

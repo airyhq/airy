@@ -1,6 +1,6 @@
 import React from 'react';
-import {isFromContact, RenderedContent} from '../../../httpclient/model';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
+import {Message} from 'model';
+import {RenderPropsUnion} from '../../props';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {Video} from '../../components/Video';
@@ -9,36 +9,36 @@ import {AttachmentUnion, SimpleAttachment, ContentUnion, ButtonAttachment, Gener
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 
-export const FacebookRender = (props: MessageRenderProps) => {
-  const message = props.message;
-  const content = isFromContact(message) ? facebookInbound(message) : facebookOutbound(message);
+export const FacebookRender = (props: RenderPropsUnion) => {
+  const message: Message = props.content;
+  const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };
 
-function render(content: ContentUnion, props: MessageRenderProps) {
+function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return <Text {...getDefaultMessageRenderingProps(props)} text={content.text} />;
+      return <Text fromContact={props.content.fromContact || false} text={content.text} />;
 
     case 'postback':
-      return <Text {...getDefaultMessageRenderingProps(props)} text={content.title} />;
+      return <Text fromContact={props.content.fromContact || false} text={content.title} />;
 
     case 'image':
-      return <Image {...getDefaultMessageRenderingProps(props)} imageUrl={content.imageUrl} />;
+      return <Image imageUrl={content.imageUrl} />;
 
     case 'video':
-      return <Video {...getDefaultMessageRenderingProps(props)} videoUrl={content.videoUrl} />;
+      return <Video videoUrl={content.videoUrl} />;
 
     case 'buttonTemplate':
-      return <ButtonTemplate {...getDefaultMessageRenderingProps(props)} template={content} />;
+      return <ButtonTemplate template={content} />;
 
     case 'genericTemplate':
-      return <GenericTemplate {...getDefaultMessageRenderingProps(props)} template={content} />;
+      return <GenericTemplate template={content} />;
 
     case 'quickReplies':
       return (
         <QuickReplies
-          {...getDefaultMessageRenderingProps(props)}
+          fromContact={props.content.fromContact || false}
           text={content.text}
           attachment={content.attachment}
           quickReplies={content.quickReplies}
@@ -83,7 +83,7 @@ const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | Gener
   };
 };
 
-function facebookInbound(message: RenderedContent): ContentUnion {
+function facebookInbound(message: Message): ContentUnion {
   const messageJson = message.content;
 
   if (messageJson.message?.attachments?.length) {
@@ -116,7 +116,7 @@ function facebookInbound(message: RenderedContent): ContentUnion {
   };
 }
 
-function facebookOutbound(message: RenderedContent): ContentUnion {
+function facebookOutbound(message: Message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
   if (messageJson.quick_replies) {

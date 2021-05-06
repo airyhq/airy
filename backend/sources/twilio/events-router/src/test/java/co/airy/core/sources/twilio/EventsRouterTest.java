@@ -100,5 +100,6 @@ class EventsRouterTest {
         assertEquals(1, messages.size(), "Expected 1 new message");
         final Message message = messages.get(0);
         assertEquals("twilio.whatsapp", message.getSource());
+        assertEquals(message.getIsFromContact(), true);
     }
 }

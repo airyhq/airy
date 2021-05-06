@@ -26,7 +26,7 @@ out for help. Our community and Core developers are often logged in and ready to
 answer questions.
 
 <ButtonBox
-icon={() => <SlackSVG />}
+icon={<SlackSVG />}
 title='Join our community'
 description='Ask questions and get answers from the community and our developers'
 link='https://airy.co/community'
@@ -38,7 +38,7 @@ Looking for help & tips running a full scale messaging platform? Airy’s Suppor
 engineers can help.
 
 <ButtonBox
-icon={() => <DraftingSVG />}
+icon={<DraftingSVG />}
 title='Contact Airy Support'
 description='Fill out our contact form to get quick support'
 link='https://airy.co/get-a-demo'

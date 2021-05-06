@@ -62,7 +62,6 @@ class ConversationsTagTest {
 
     @Test
     void canTagAndUntagConversations() throws Exception {
-        final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId(UUID.randomUUID().toString())
@@ -75,19 +74,19 @@ class ConversationsTagTest {
         kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
 
         retryOnException(() -> webTestHelper.post("/conversations.info",
-                "{\"conversation_id\":\"" + conversationId + "\"}", userId)
+                "{\"conversation_id\":\"" + conversationId + "\"}")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(conversationId))), "Conversation was not created");
 
         final String tagId = UUID.randomUUID().toString();
 
         webTestHelper.post("/conversations.tag",
-                "{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}", userId)
-                .andExpect(status().isAccepted());
+                "{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}")
+                .andExpect(status().isNoContent());
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}", userId)
+                        "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk())
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
@@ -95,12 +94,12 @@ class ConversationsTagTest {
                 "Conversation was not tagged");
 
         webTestHelper.post("/conversations.untag",
-                "{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}", userId)
-                .andExpect(status().isAccepted());
+                "{\"conversation_id\":\"" + conversationId + "\",\"tag_id\":\"" + tagId + "\"}")
+                .andExpect(status().isNoContent());
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}", userId)
+                        "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
                         .andExpect(jsonPath("$.metadata.tags").doesNotExist()),
@@ -109,7 +108,7 @@ class ConversationsTagTest {
 
     @Test
     public void canHandleAnEmptyPayload() throws Exception {
-        webTestHelper.post("/conversations.tag", "{}", "user-id")
+        webTestHelper.post("/conversations.tag", "{}")
                 .andExpect(status().isBadRequest());
     }
 }

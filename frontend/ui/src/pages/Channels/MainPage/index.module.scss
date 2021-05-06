@@ -1,0 +1,29 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.channelsHeadline {
+  @include font-xl;
+  font-weight: 900;
+  letter-spacing: 0;
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-text-contrast);
+  margin-bottom: 14px;
+}
+
+.channelsHeadlineText {
+  @include font-xl;
+  font-weight: 900;
+}
+
+.channelsChoice {
+  list-style: none;
+  color: var(--color-text-gray);
+  padding-bottom: 20px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+}

@@ -1,0 +1,46 @@
+`POST /messages.suggestReplies`
+
+Suggest a set of replies for a given message id. UI clients can then show these replies to agents to help them responding user inquiries.
+
+**Sample request**
+
+```json5
+{
+  "message_id": "uuid",
+  "suggestions": {
+    "suggestion-id-1": {
+      "content": {"text": "Great that it worked. Is there anything else you need?"},
+    },
+    "suggestion-id-2": {
+      "content": {"text": "Have a nice day!"},
+    },
+  },
+}
+```
+
+**Sample response**
+
+The updated message including the suggested replies.
+
+```json5
+{
+  "id": "{UUID}",
+  "content": {"text": "Hello World"},
+  "state": "{String}",
+  "from_contact": true,
+  "sent_at": "{string}",
+  "source": "{String}",
+  "metadata": {
+    "suggestions": {
+      "suggestion-id-1": {
+        "content": {"text": "Great that it worked. Is there anything else you need?"},
+        // source specific content field (same as message content)
+      },
+      "suggestion-id-2": {
+        "content": {"text": "Have a nice day!"},
+      },
+    },
+  },
+  // metadata object of the message including the reply suggestions
+}
+```

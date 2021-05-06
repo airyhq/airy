@@ -5,7 +5,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #4bb3fd;
+  background: var(--color-airy-blue);
   text-align: center;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
@@ -25,10 +25,11 @@
   bottom: 9px;
   right: 51px;
   transform: rotateZ(42deg);
-  border-top: 14px solid #4bb3fd;
+  border-top: 14px solid var(--color-airy-blue);
   border-left: 8px solid transparent;
   border-right: 14px solid transparent;
   cursor: pointer;
+  z-index: -1;
 }
 
 .hideBubbleCross {

@@ -1,23 +1,13 @@
 import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
 import {start, getResumeToken, sendMessage} from '../api';
-import {SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
-import {Message} from 'httpclient';
+import {QuickReplyCommand, SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
+import {Message} from 'model';
 import {getResumeTokenFromStorage, resetStorage} from '../storage';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
-declare global {
-  interface Window {
-    airy: {
-      host: string;
-      channelId: string;
-    };
-  }
-}
-
-const API_HOST = window.airy ? window.airy.host : 'airy.core';
 // https: -> wss: and http: -> ws:
 const protocol = location.protocol.replace('http', 'ws');
 
@@ -28,6 +18,7 @@ export enum ConnectionState {
 
 class WebSocket {
   client: Client;
+  apiHost: string;
   channelId: string;
   token: string;
   setInitialMessages: (messages: Array<Message>) => void;
@@ -37,11 +28,13 @@ class WebSocket {
   updateConnectionState: (state: ConnectionState) => void;
 
   constructor(
+    apiHost: string,
     channelId: string,
     onReceive: messageCallbackType,
     setInitialMessages: (messages: Array<Message>) => void,
     updateConnectionState: (state: ConnectionState) => void
   ) {
+    this.apiHost = new URL(apiHost).host;
     this.channelId = channelId;
     this.onReceive = onReceive;
     this.setInitialMessages = setInitialMessages;
@@ -53,12 +46,9 @@ class WebSocket {
     this.token = token;
 
     this.client = new Client({
-      brokerURL: `${protocol}//${API_HOST}/ws.chatplugin`,
+      brokerURL: `${protocol}//${this.apiHost}/ws.chatplugin`,
       connectHeaders: {
         Authorization: `Bearer ${token}`,
-      },
-      debug: function (str) {
-        console.info(str);
       },
       reconnectDelay: 0,
       heartbeatIncoming: 4000,
@@ -76,7 +66,7 @@ class WebSocket {
     this.client.activate();
   };
 
-  onSend = (message: TextContent | SuggestionResponse) => sendMessage(message, this.token);
+  onSend = (message: TextContent | SuggestionResponse | QuickReplyCommand) => sendMessage(message, this.token);
 
   start = async () => {
     const resumeToken = getResumeTokenFromStorage(this.channelId);
@@ -110,7 +100,6 @@ class WebSocket {
 
   reconnect = () => {
     if (!this.isConnected) {
-      this.reconnectTimeout = window.setTimeout(this.reconnect, 5000);
       this.start();
     }
   };

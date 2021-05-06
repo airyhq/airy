@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {sortBy} from 'lodash-es';
-import {ReactComponent as AiryLogoIcon} from 'assets/images/icons/airy_avatar.svg';
-import {SearchField, LinkButton, Button} from '@airyhq/components';
-import {Tag as TagModel, Channel, ConversationFilter} from 'httpclient';
+import {SearchField, LinkButton, Button} from 'components';
+import {Tag as TagModel, Channel, ConversationFilter} from 'model';
 import {listTags} from '../../../actions/tags';
 import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
 import {StateModel} from '../../../reducers';
-import {IconChannelFilter} from '../../../components/IconChannelFilter';
 import DialogCustomizable from '../../../components/DialogCustomizable';
 import Tag from '../../../components/Tag';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
+import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark-circle.svg';
 import styles from './Popup.module.scss';
 import {allChannels} from '../../../selectors/channels';
+import ChannelAvatar from '../../../components/ChannelAvatar';
 
 function mapStateToProps(state: StateModel) {
   return {
@@ -71,6 +71,13 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     setFilter(newFilter);
   };
 
+  const toggleState = (event: React.MouseEvent<HTMLElement, MouseEvent>, isOpen: boolean) => {
+    event.stopPropagation();
+    const newFilter: ConversationFilter = {...filter};
+    newFilter.isStateOpen === isOpen ? (newFilter.isStateOpen = !isOpen) : (newFilter.isStateOpen = isOpen);
+    setFilter(newFilter);
+  };
+
   const isChannelSelected = (channelsList: Array<string>, channel: Channel) => {
     return (channelsList || []).includes(channel.id);
   };
@@ -98,6 +105,10 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     });
   };
 
+  const OpenIcon = () => {
+    return <div className={styles.openIconButton} />;
+  };
+
   return (
     <DialogCustomizable
       close={() => applyPressed()}
@@ -105,19 +116,48 @@ const PopUpFilter = (props: PopUpFilterProps) => {
       coverStyle={{backgroundColor: 'rgba(247,247,247,0.7)'}}>
       <div className={styles.content}>
         <div className={styles.filterColumn}>
-          <div className={styles.filterItem}>
-            <h3>Read/Unread</h3>
-            <div className={styles.filterRow}>
-              <button
-                className={filter.readOnly ? styles.filterButtonSelected : styles.filterButton}
-                onClick={e => toggleReadOnly(e)}>
-                Read Only
-              </button>
-              <button
-                className={filter.unreadOnly ? styles.filterButtonSelected : styles.filterButton}
-                onClick={e => toggleUnreadOnly(e)}>
-                Unread Only
-              </button>
+          <div className={styles.filterStateContainer}>
+            <div className={styles.filterItem}>
+              <h3>Read/Unread</h3>
+              <div className={styles.filterRow}>
+                <button
+                  className={filter.readOnly ? styles.filterButtonSelected : styles.filterButton}
+                  onClick={e => toggleReadOnly(e)}>
+                  Read Only
+                </button>
+                <button
+                  className={filter.unreadOnly ? styles.filterButtonSelected : styles.filterButton}
+                  onClick={e => toggleUnreadOnly(e)}>
+                  Unread Only
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className={styles.filterColumn}>
+            <div className={styles.filterItem}>
+              <h3>State</h3>
+              <div className={styles.filterRow}>
+                <button
+                  className={
+                    !filter.isStateOpen || filter.isStateOpen === undefined
+                      ? styles.filterButton
+                      : styles.filterButtonSelected
+                  }
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleState(event, true)}>
+                  <OpenIcon />
+                  Open
+                </button>
+                <button
+                  className={
+                    filter.isStateOpen || filter.isStateOpen === undefined
+                      ? styles.filterButton
+                      : styles.filterButtonSelected
+                  }
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleState(event, false)}>
+                  <CheckmarkCircleIcon />
+                  Closed
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -169,18 +209,9 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                         <CheckmarkIcon aria-hidden />
                       </div>
                     ) : (
-                      <div className={styles.channelLogoWrapper}>
-                        {channel.metadata?.imageUrl ? (
-                          <img className={styles.metadataImage} src={channel.metadata?.imageUrl} />
-                        ) : channel.source ? (
-                          <IconChannelFilter channel={channel} />
-                        ) : (
-                          <AiryLogoIcon />
-                        )}
-                      </div>
+                      <ChannelAvatar channel={channel} style={{height: '24px', width: '24px', marginRight: '4px'}} />
                     )}
-
-                    <div className={styles.pageName}>{channel.sourceChannelId}</div>
+                    <div className={styles.pageName}>{channel.metadata?.name || channel.sourceChannelId}</div>
                   </div>
                 ))}
             </div>

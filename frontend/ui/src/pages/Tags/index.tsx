@@ -1,21 +1,24 @@
 import React, {Component} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 
-import {SettingsModal, LinkButton, Button, SearchField, Input} from '@airyhq/components';
+import {SettingsModal, LinkButton, Button, SearchField, Input} from 'components';
 import {cyTagsSearchField, cyTagsTable} from 'handles';
+
 import {ReactComponent as Plus} from 'assets/images/icons/plus.svg';
 
-import {listTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
-import {filteredTags} from '../../selectors/tags';
-import {Tag} from 'httpclient';
+import {listTags, deleteTag, errorTag} from '../../actions/tags';
+
 import {ModalType} from '../../types';
 
-import styles from './index.module.scss';
 import {TableRow} from './TableRow';
 import SimpleTagForm from './SimpleTagForm';
 import EmptyStateTags from './EmptyStateTags';
 import {StateModel} from '../../reducers';
 import {setPageTitle} from '../../services/pageTitle';
+
+import styles from './index.module.scss';
+
+import {cyTagsTableRowDisplayDeleteModalInput, cyTagsTableRowDisplayDeleteModalButton} from 'handles';
 
 const initialState = {
   modal: {
@@ -25,8 +28,10 @@ const initialState = {
     delete: '',
     error: '',
   },
-  tagQuery: '',
+  query: '',
+  filteredTags: [],
   createDrawer: false,
+  emptyState: true,
 };
 
 class Tags extends Component<ConnectedProps<typeof connector>, typeof initialState> {
@@ -35,14 +40,10 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   componentDidMount() {
     setPageTitle('Tags');
     this.props.listTags();
-    this.props.filterTags('');
   }
 
-  handleSearch = (value: string) => {
-    this.setState({
-      tagQuery: value,
-    });
-    this.props.filterTags(value);
+  handleSearch = (query: string) => {
+    this.setState({query, filteredTags: this.props.tags.filter(t => t.name.match(query))});
   };
 
   handleDelete = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +52,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
       return {
         modal: {
           ...state.modal,
-          delete: e.target && e.target.value,
+          delete: e.target?.value,
         },
       };
     });
@@ -62,6 +63,11 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
       createDrawer: !this.state.createDrawer,
     });
     this.props.errorTag('');
+  };
+
+  removeEmptyStateAndCreateTag = () => {
+    this.setState({emptyState: false});
+    this.handleTagDrawer();
   };
 
   keyPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -141,11 +147,15 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
               onChange={this.handleDelete}
               onKeyDown={this.keyPressed}
               autoFocus={true}
+              dataCy={cyTagsTableRowDisplayDeleteModalInput}
             />
             <p className={styles.errorMessage}>{this.state.modal.error}</p>
             <div className={styles.confirmDeleteActions}>
               <LinkButton onClick={this.closeModal}>Cancel</LinkButton>
-              <Button styleVariant="warning" onClick={this.confirmDelete}>
+              <Button
+                styleVariant="warning"
+                onClick={this.confirmDelete}
+                dataCy={cyTagsTableRowDisplayDeleteModalButton}>
                 Delete
               </Button>
             </div>
@@ -156,18 +166,18 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   };
 
   renderTagList() {
-    const {tags} = this.props;
+    const tags = this.state.query !== '' ? this.state.filteredTags : this.props.tags;
     return (
       <div className={styles.cardRaised}>
-        <header>
+        <div>
           <h1 className={styles.organizationSectionHeadline}>Tags</h1>
-        </header>
+        </div>
         <div className={styles.organizationContainer} key="1">
           <div className={styles.tagsHeader}>
             <div className={styles.searchContainer}>
               <SearchField
                 placeholder="Search for tags"
-                value={this.state.tagQuery}
+                value={this.state.query}
                 setValue={this.handleSearch}
                 dataCy={cyTagsSearchField}
               />
@@ -185,10 +195,9 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
                   <th className={styles.tagsTableHeader}>Color</th>
                   <th />
                 </tr>
-                {tags &&
-                  tags.map((tag: Tag, idx: number) => {
-                    return <TableRow key={idx} tag={tag} showModal={this.showModal} />;
-                  })}
+                {tags.map(tag => (
+                  <TableRow key={tag.id} tag={tag} showModal={this.showModal} />
+                ))}
               </tbody>
             </table>
           ) : (
@@ -205,23 +214,28 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
 
   render() {
     const {allTagsCount} = this.props;
-    return <div className={styles.tagsWrapper}>{allTagsCount == 0 ? <EmptyStateTags /> : this.renderTagList()}</div>;
+    return (
+      <div className={styles.tagsWrapper}>
+        {allTagsCount == 0 && this.state.emptyState ? (
+          <EmptyStateTags removeEmptyState={this.removeEmptyStateAndCreateTag} />
+        ) : (
+          this.renderTagList()
+        )}
+      </div>
+    );
   }
 }
 
 const mapStateToProps = (state: StateModel) => ({
-  tags: filteredTags(state),
-  allTagsCount: state.data.tags.all.length,
-  tagQuery: state.data.tags.query,
+  tags: Object.values(state.data.tags.all),
+  allTagsCount: Object.keys(state.data.tags.all).length,
   errorMessage: state.data.tags.error,
-  userData: state.data.user,
 });
 
 const mapDispatchToProps = {
   listTags,
   deleteTag,
   errorTag,
-  filterTags,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

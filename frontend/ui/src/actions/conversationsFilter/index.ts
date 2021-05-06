@@ -1,6 +1,7 @@
 import {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
-import {Conversation, ConversationFilter, PaginatedResponse, Pagination} from 'httpclient';
+import {Conversation, ConversationFilter, Pagination} from 'model';
+import {PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 
 import {StateModel} from '../../reducers';
@@ -98,7 +99,7 @@ const filterToLuceneSyntax = (filter: ConversationFilter): string | null => {
     filterQuery.push('unread_count:0');
   }
   if (filter.displayName) {
-    filterQuery.push('display_name:*' + filter.displayName + '*');
+    filterQuery.push('display_name=*' + filter.displayName + '*');
   }
   if (filter.byTags && filter.byTags.length > 0) {
     filterQuery.push('tag_ids:(' + filter.byTags.join(' AND ') + ')');
@@ -108,6 +109,11 @@ const filterToLuceneSyntax = (filter: ConversationFilter): string | null => {
   }
   if (filter.bySources && filter.bySources.length > 0) {
     filterQuery.push('source:(' + filter.bySources.join(' OR ') + ')');
+  }
+  if (filter.isStateOpen === true) {
+    filterQuery.push('id:* AND NOT metadata.state:CLOSED');
+  } else if (filter.isStateOpen !== undefined) {
+    filterQuery.push('metadata.state:CLOSED');
   }
   return !filterQuery.length ? null : filterQuery.join(' AND ');
 };

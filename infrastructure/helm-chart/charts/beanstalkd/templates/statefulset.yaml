@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: beanstalkd
+  namespace: {{ .Values.global.namespace}}
+spec:
+  serviceName: beanstalkd
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beanstalkd
+  template:
+    metadata:
+      labels:
+        app: beanstalkd
+    spec:
+      containers:
+      - name: beanstalk
+        image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        ports:
+        - containerPort: {{ .Values.port }}
+          name: client
+      - name: beanstalk-exporter
+        image: "{{ .Values.prometheusExporterImage }}:{{ .Values.prometheusExporterImageTag }}"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: {{ .Values.prometheusExporterPort }}
+          name: exporter
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

@@ -1,26 +1,64 @@
-@import '../../../assets/scss/colors.scss';
-@import '../../../assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
 
 .container {
   display: flex;
-  flex-grow: 1;
-  align-items: center;
-}
-
-.flexWrap {
-  display: flex;
-  flex-grow: 1;
+  flex-direction: column;
   margin-bottom: 14px;
   margin-top: 24px;
 }
 
+.inputForm {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.suggestionsRow {
+  position: relative;
+  margin-left: 14px;
+}
+
+.suggestionButton {
+  display: flex;
+  align-items: center;
+
+  .chevronDown {
+    path {
+      fill: var(--color-airy-blue);
+    }
+  }
+
+  &:hover {
+    .chevronDown {
+      path {
+        fill: white;
+      }
+    }
+  }
+}
+
+.chevronDown {
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  transform: scaleY(-1);
+}
+
+.chevronUp {
+  @extend .chevronDown;
+  transform: scaleY(1);
+}
+
 .messageWrap {
+  flex-grow: 1;
   border: 1px solid var(--color-light-gray);
   border-color: var(--color-airy-blue);
   border-radius: 8px;
   display: flex;
   align-items: normal;
-  margin-left: 14px;
+  margin-left: 16px;
 }
 
 .inputWrap {
@@ -44,14 +82,14 @@
 }
 
 .sendDiv {
+  position: relative;
   display: flex;
-  margin: 0px 24px 0px 0px;
+  margin-right: 16px;
 }
 
 .sendButton {
   position: relative;
   width: 40px;
-  height: 70px;
   margin-left: 8px;
   transition: 0.2s ease-in-out all;
   top: 1px;
@@ -94,7 +132,7 @@
 }
 
 .messageActionsContainer svg {
-  height: 20px;
+  height: 22px;
   cursor: pointer;
 }
 
@@ -113,10 +151,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   position: relative;
-  margin-left: 4px;
-  width: 30px;
   height: 30px;
 
   svg {
@@ -138,6 +173,14 @@
     bottom: 33px;
     z-index: 2;
   }
+}
+
+.disabledIconButton {
+  cursor: not-allowed;
+}
+
+.activeIconButton {
+  cursor: pointer;
 }
 
 .iconButton:hover {
@@ -167,11 +210,20 @@
   position: absolute;
   right: 72px;
   bottom: 75px;
+  z-index: 2;
 }
 
 .templateSelector {
-  width: 164px;
-  max-height: 184px;
+  max-height: 164px;
+  height: auto;
+  overflow: hidden;
+  position: relative;
+  margin: 0 8px 8px 8px;
+  max-width: 300px;
+}
+
+.suggestionRepliesSelector {
+  max-width: 580px;
   height: auto;
   overflow: hidden;
   position: relative;
@@ -179,7 +231,7 @@
   border-radius: 16px;
 }
 
-.removeTemplateButton {
+.removeButton {
   position: absolute;
   top: 3px;
   right: 1px;
@@ -194,16 +246,15 @@
   border: 1px solid white;
   cursor: pointer;
   z-index: 1;
+
+  svg {
+    transform: scale(-0.8);
+    margin-left: -1px;
+    margin-top: -1px;
+  }
 }
 
-.removeTemplateButton svg {
-  width: 8px;
-  height: 8px;
-  margin-left: -1px;
-  margin-top: -1px;
-}
-
-.removeTemplateButton:after {
+.removeButton:after {
   content: '';
   position: absolute;
   top: 0;
@@ -212,7 +263,24 @@
   left: 0;
 }
 
-.removeTemplateButton object {
+.removeButton object {
   width: 12px;
   height: 12px;
+}
+
+.disconnectedChannelToolTip {
+  width: 184px;
+  height: auto;
+  position: absolute;
+  bottom: 50px;
+  right: -8px;
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 1;
+  background-color: var(--color-light-gray);
+
+  p {
+    @include font-s;
+    color: var(--color-text-contrast);
+  }
 }

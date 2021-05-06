@@ -1,17 +1,13 @@
-import {SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
+import {QuickReplyCommand, SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
 import {setResumeTokenInStorage} from '../storage';
 
-declare const window: {
-  airy: {
-    host: string;
-    channelId: string;
-  };
+let host;
+export const setApiHost = apiHost => {
+  host = apiHost;
 };
 
-const API_HOST = window.airy ? window.airy.host : 'airy.core';
-
-export const sendMessage = (message: TextContent | SuggestionResponse, token: string) => {
-  return fetch(`//${API_HOST}/chatplugin.send`, {
+export const sendMessage = (message: TextContent | SuggestionResponse | QuickReplyCommand, token: string) => {
+  return fetch(`${host}/chatplugin.send`, {
     method: 'POST',
     body: JSON.stringify(convertToBody(message)),
     headers: {
@@ -21,8 +17,8 @@ export const sendMessage = (message: TextContent | SuggestionResponse, token: st
   });
 };
 
-const convertToBody = (message: TextContent | SuggestionResponse) => {
-  if (message.type == 'suggestionResponse') {
+const convertToBody = (message: TextContent | SuggestionResponse | QuickReplyCommand) => {
+  if (message.type == ('suggestionResponse' || 'quickReplies')) {
     return {
       message: {
         text: message.text,
@@ -39,7 +35,7 @@ const convertToBody = (message: TextContent | SuggestionResponse) => {
 };
 
 export const getResumeToken = async (channelId: string, authToken: string) => {
-  const resumeChat = await fetch(`//${API_HOST}/chatplugin.resumeToken`, {
+  const resumeChat = await fetch(`${host}/chatplugin.resumeToken`, {
     method: 'POST',
     body: JSON.stringify({}),
     headers: {
@@ -53,7 +49,7 @@ export const getResumeToken = async (channelId: string, authToken: string) => {
 
 export const start = async (channelId: string, resumeToken: string) => {
   try {
-    const response = await fetch(`//${API_HOST}/chatplugin.authenticate`, {
+    const response = await fetch(`${host}/chatplugin.authenticate`, {
       method: 'POST',
       body: JSON.stringify({
         channel_id: channelId,

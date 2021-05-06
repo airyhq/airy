@@ -1,10 +1,10 @@
 package co.airy.core.api.config;
 
+import co.airy.spring.auth.PrincipalAccess;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 public class ClientConfigController {
@@ -15,10 +15,10 @@ public class ClientConfigController {
     }
 
     @PostMapping("/client.config")
-    public ResponseEntity<ClientConfigResponsePayload> getConfig() {
+    public ResponseEntity<ClientConfigResponsePayload> getConfig(Authentication auth) {
         return ResponseEntity.ok(ClientConfigResponsePayload.builder()
                 .components(serviceDiscovery.getComponents())
-                .features(Map.of())
+                .userProfile(PrincipalAccess.getUserProfile(auth))
                 .build());
     }
 }

@@ -73,15 +73,13 @@ class ConversationsListTest {
     private static final String tagId = UUID.randomUUID().toString();
     private static final String anotherTagId = UUID.randomUUID().toString();
 
-    private static final String userId = "user-id";
-
     private static final List<TestConversation> conversations = List.of(
             TestConversation.from(UUID.randomUUID().toString(), channelToFind, Map.of(MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME, firstNameToFind), 1),
             TestConversation.from(UUID.randomUUID().toString(), channelToFind,
                     Map.of(MetadataKeys.ConversationKeys.TAGS + "." + tagId, "", MetadataKeys.ConversationKeys.TAGS + "." + anotherTagId, ""),
                     1),
             TestConversation.from(conversationIdToFind, defaultChannel, Map.of(MetadataKeys.ConversationKeys.TAGS + "." + tagId, ""), 1),
-            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 2),
+            TestConversation.from(UUID.randomUUID().toString(), defaultChannel, Map.of("user_data.erp.id", "abc"), 2),
             TestConversation.from(UUID.randomUUID().toString(), defaultChannel, 5)
     );
 
@@ -110,7 +108,7 @@ class ConversationsListTest {
     @Test
     void canFetchAllConversations() throws Exception {
         retryOnException(
-                () -> webTestHelper.post("/conversations.list", "{} ", userId)
+                () -> webTestHelper.post("/conversations.list", "{} ")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
                         .andExpect(jsonPath("pagination_data.total", is(conversations.size())))
@@ -135,6 +133,12 @@ class ConversationsListTest {
     @Test
     void canFilterByDisplayName() throws Exception {
         String payload = "{\"filters\": \"display_name:" + firstNameToFind + "\"}";
+        checkConversationsFound(payload, 1);
+    }
+
+    @Test
+    void canFilterByDisplayNameIgnoringCasing() throws Exception {
+        String payload = "{\"filters\": \"display_name:" + firstNameToFind.toLowerCase() + "\"}";
         checkConversationsFound(payload, 1);
     }
 
@@ -171,9 +175,14 @@ class ConversationsListTest {
         checkConversationsFound("{\"filters\": \"display_name:Ada\"}", 0);
     }
 
+    @Test
+    void canFilterByMetadata() throws Exception {
+        checkConversationsFound("{\"filters\": \"metadata.user_data.erp.id:abc\"}", 1);
+    }
+
     private void checkConversationsFound(String payload, int count) throws InterruptedException {
         retryOnException(
-                () -> webTestHelper.post("/conversations.list", payload, userId)
+                () -> webTestHelper.post("/conversations.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(count)))
                         .andExpect(jsonPath("pagination_data.filtered_total", is(count)))

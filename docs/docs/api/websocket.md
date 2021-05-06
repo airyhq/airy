@@ -16,14 +16,11 @@ The WebSocket server uses the
 [STOMP](https://en.wikipedia.org/wiki/Streaming_Text_Oriented_Messaging_Protocol)
 protocol endpoint at `/ws.communication`.
 
-To execute the handshake with `/ws.communication` you must set an
-`Authorization` header where the value is the authorization token obtained [from
-the API](/api/introduction#authentication).
-
 ## Event Payloads
 
-All event updates are sent to the `/events` queue as JSON encoded payloads. The `type`
-field informs the client of the kind of update that is encoded in the payload.
+All event updates are sent to the `/events` queue as JSON encoded payloads. The
+`type` field informs the client of the kind of update that is encoded in the
+payload.
 
 ### Message
 
@@ -39,8 +36,7 @@ field informs the client of the kind of update that is encoded in the payload.
       // source message payload
       "delivery_state": "pending|failed|delivered",
       // delivery state of message, one of pending, failed, delivered
-      "sender_type": "{string/enum}",
-      // See glossary
+      "from_contact": true,
       "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
       "source": "{String}"
@@ -83,6 +79,20 @@ field informs the client of the kind of update that is encoded in the payload.
     "source": "facebook",
     "source_channel_id": "fb-page-id-1",
     "connected": true // or false
+  }
+}
+```
+
+### Tag
+
+```json5
+{
+  "type": "tag",
+
+  "payload": {
+    "id": "{UUID}",
+    "name": "flag",
+    "color": "tag-red"
   }
 }
 ```

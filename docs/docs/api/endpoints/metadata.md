@@ -3,12 +3,14 @@ title: Metadata
 sidebar_label: Metadata
 ---
 
-Refer to our [metadata](getting-started/glossary.md#metadata) definition for
-more information.
+Refer to our [metadata design](concepts/metadata.md) document for more
+information.
 
 ## Upsert
 
-This endpoint takes a `data` object and upserts the metadata for the `id`.
+This endpoint takes a `data` object and upserts the metadata for the `id`. The
+data may only contain values of type string or object values (i.e. no lists or
+numbers).
 
 `POST /metadata.upsert`
 
@@ -16,8 +18,8 @@ This endpoint takes a `data` object and upserts the metadata for the `id`.
 
 ```json5
 {
-  "id": "{String}", //id of the subject
-  "subject": "conversation|message|channel",
+  "id": "{String}", // subject namespace identifier
+  "subject": "conversation|message|channel", // subject namespace
   "data": {
     "sentFrom": "iPhone"
   }

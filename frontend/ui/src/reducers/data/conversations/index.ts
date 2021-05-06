@@ -1,14 +1,13 @@
 import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
-import {cloneDeep, sortBy, merge, pickBy, pick} from 'lodash-es';
+import {cloneDeep, sortBy, merge, pickBy} from 'lodash-es';
 
-import {Conversation, ConversationFilter, Message} from 'httpclient';
+import {Conversation, ConversationFilter, Message} from 'model';
 
 import * as metadataActions from '../../../actions/metadata';
 import * as actions from '../../../actions/conversations';
 import * as filterActions from '../../../actions/conversationsFilter';
 import * as messageActions from '../../../actions/messages';
-import {MetadataEvent, ConversationMetadata} from 'httpclient';
 
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 type FilterAction = ActionType<typeof filterActions>;
@@ -58,7 +57,7 @@ export type ConversationsState = {
 };
 
 function mergeConversations(
-  oldConversation: {[conversation_id: string]: MergedConversation},
+  oldConversation: {[conversationId: string]: MergedConversation},
   newConversations: MergedConversation[]
 ): ConversationMap {
   newConversations.forEach((conversation: MergedConversation) => {
@@ -90,7 +89,7 @@ function mergeConversations(
 }
 
 function mergeFilteredConversations(
-  oldConversation: {[conversation_id: string]: MergedConversation},
+  oldConversation: {[conversationId: string]: MergedConversation},
   newConversations: MergedConversation[]
 ): ConversationMap {
   newConversations.forEach((conversation: MergedConversation) => {
@@ -160,7 +159,7 @@ const removeTagFromConversation = (state: AllConversationsState, conversationId,
         ...conversation,
         metadata: {
           ...conversation.metadata,
-          tags: pickBy(conversation.metadata?.tags, (value, key) => key !== tagId),
+          tags: pickBy(conversation.metadata?.tags, (_, key) => key !== tagId),
         },
       },
     },
@@ -173,6 +172,7 @@ const lastMessageOf = (messages: Message[]): Message => {
 
 const mergeMessages = (state: AllConversationsState, conversationId: string, messages: Message[]) => {
   const conversation: Conversation = state.items[conversationId];
+
   if (conversation) {
     return {
       ...state,
@@ -193,29 +193,24 @@ function allReducer(
   action: Action | MessageAction
 ): AllConversationsState {
   switch (action.type) {
-    case getType(metadataActions.setMetadataAction):
-      if (action.payload.subject !== 'conversation') {
-        return state;
-      }
-
+    case getType(actions.setStateConversationAction):
       return {
         ...state,
         items: {
           ...state.items,
-          [action.payload.identifier]: {
-            id: action.payload.identifier,
-            ...state.items[action.payload.identifier],
+          [action.payload.conversationId]: {
+            id: action.payload.conversationId,
+            ...state.items[action.payload.conversationId],
             metadata: {
-              // Ensure that there is always a display name present
-              ...pick(state.items[action.payload.identifier]?.metadata, 'contact.displayName'),
-              ...(<MetadataEvent<ConversationMetadata>>action.payload).metadata,
+              ...state.items[action.payload.conversationId].metadata,
+              state: action.payload.state,
             },
           },
         },
       };
 
-    case getType(metadataActions.mergeMetadataAction):
-      if (action.payload.subject !== 'conversation') {
+    case getType(metadataActions.setMetadataAction):
+      if (action.payload.subject !== 'conversation' || !state.items[action.payload.identifier]) {
         return state;
       }
 

@@ -55,16 +55,20 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
       - name: Upload airy binary to S3
-        if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.ref, 'refs/heads/main')
+        if: ${{ github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release') || github.ref == 'refs/heads/main' }}
         run: |
           ./scripts/upload-cli-binaries.sh
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Upload airy binary to S3 [develop]
-        if: startsWith(github.ref, 'refs/heads/develop')
+          GITHUB_BRANCH: ${{ github.ref }}
+      - name: Publish http-client library to npm
+        if: ${{ startsWith(github.ref, 'refs/tags/npm-v') }}
         run: |
-          aws s3 cp bazel-bin/infrastructure/cli/airy_linux_bin s3://airy-core-binaries/develop/linux/amd64/airy
+          sudo apt-get install -y expect
+          bazel run //lib/typescript/httpclient:publish-npm release
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
+          DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}
+          DEPLOY_NPM_EMAIL: ${{ secrets.DEPLOY_NPM_EMAIL }}
+          GITHUB_BRANCH: ${{ github.ref }}

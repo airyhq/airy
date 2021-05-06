@@ -10,30 +10,32 @@
       (function(w, d, s, n) {
         w[n] = w[n] || {};
         w[n].channelId = search.get('channel_id');
-        w[n].host = '{{API_HOST}}';
-        w[n].welcomeMessage = {
-          fallback: 'Hello!\n\nWelcome to Airy!',
-          richCard: {
-            standaloneCard: {
-              cardContent: {
-                title: 'Hey there!',
-                description: 'Welcome to Airy!',
-                media: {
-                  height: 'MEDIUM',
-                  contentInfo: {
-                    altText: 'Airy logo',
-                    fileUrl: 'https://picsum.photos/200',
-                    forceRefresh: 'false',
-                  },
-                },
-                suggestions: [
-                  {
-                    reply: {
-                      text: "Let's start",
-                      postbackData: '/start',
+        w[n].host = '{*API_HOST*}';
+        w[n].config = {
+          welcomeMessage: {
+            fallback: 'Hello!\n\nWelcome to Airy!',
+            richCard: {
+              standaloneCard: {
+                cardContent: {
+                  title: 'Hey there!',
+                  description: 'Welcome to Airy!',
+                  media: {
+                    height: 'MEDIUM',
+                    contentInfo: {
+                      altText: 'Airy logo',
+                      fileUrl: 'https://picsum.photos/200',
+                      forceRefresh: 'false',
                     },
                   },
-                ],
+                  suggestions: [
+                    {
+                      reply: {
+                        text: "Let's start",
+                        postbackData: '/start',
+                      },
+                    },
+                  ],
+                },
               },
             },
           },
@@ -41,7 +43,7 @@
         var f = d.getElementsByTagName(s)[0],
           j = d.createElement(s);
         j.async = true;
-        j.src = '//' + w[n].host + '/chatplugin/ui/s.js';
+        j.src = w[n].host + '/chatplugin/ui/s.js';
         f.parentNode.insertBefore(j, f);
       })(window, document, 'script', 'airy');
     </script>

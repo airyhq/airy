@@ -69,6 +69,9 @@ public class ChatControllerTest {
     @Value("${local.server.port}")
     private int port;
 
+    @Value("${systemToken}")
+    private String systemToken;
+
     private static KafkaTestHelper kafkaTestHelper;
     private static final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
@@ -156,8 +159,7 @@ public class ChatControllerTest {
                 .andExpect(jsonPath("$.content.text", containsString(messageText)));
 
         response = mvc.perform(post("/chatplugin.resumeToken")
-                .headers(buildHeaders(authToken))
-                .content("{}"))
+                .headers(buildHeaders(authToken)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resume_token", is(not(nullValue()))))
                 .andReturn().getResponse().getContentAsString();
@@ -177,10 +179,35 @@ public class ChatControllerTest {
         }, "Did not resume conversation");
     }
 
-    private HttpHeaders buildHeaders(String jwtToken) {
+
+    @Test
+    void canGetResumeTokenAsUser() throws Exception {
+        final String requestPayload = String.format("{\"conversation_id\":\"c-id\",\"channel_id\":\"%s\"}", channel.getId());
+
+        String response = mvc.perform(post("/chatplugin.resumeToken")
+                .headers(buildHeaders(systemToken))
+                .content(requestPayload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resume_token", is(not(nullValue()))))
+                .andReturn().getResponse().getContentAsString();
+        JsonNode jsonNode = new ObjectMapper().readTree(response);
+        final String resumeToken = jsonNode.get("resume_token").textValue();
+
+        retryOnException(() -> {
+            final String resumePayload = "{\"resume_token\":\"" + resumeToken + "\"}";
+            mvc.perform(post("/chatplugin.authenticate")
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .content(resumePayload))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.token", is(not(nullValue()))))
+                    .andExpect(jsonPath("$.messages", hasSize(0)));
+        }, "Did not resume conversation");
+    }
+
+    private HttpHeaders buildHeaders(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
-        headers.setBearerAuth(jwtToken);
+        headers.setBearerAuth(token);
         return headers;
     }
 
@@ -197,7 +224,8 @@ public class ChatControllerTest {
 
         WebSocketHttpHeaders httpHeaders = new WebSocketHttpHeaders();
 
-        return stompClient.connect("ws://localhost:" + port + "/ws.chatplugin", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {}).get();
+        return stompClient.connect("ws://localhost:" + port + "/ws.chatplugin", httpHeaders, connectHeaders, new StompSessionHandlerAdapter() {
+        }).get();
     }
 
     public <T> CompletableFuture<T> subscribe(String jwtToken, int port, Class<T> payloadType, String topic) throws ExecutionException, InterruptedException {

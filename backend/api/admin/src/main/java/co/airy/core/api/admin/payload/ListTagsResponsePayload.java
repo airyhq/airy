@@ -12,5 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ListTagsResponsePayload {
-    private List<TagResponsePayload> data;
+    private List<TagPayload> data;
 }

@@ -84,8 +84,7 @@ class ConversationsInfoTest {
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}",
-                        "user-id")
+                        "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", is(conversationId)))
                         .andExpect(jsonPath("$.channel.metadata.name", is(channelName))),

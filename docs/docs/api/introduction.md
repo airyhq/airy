@@ -27,19 +27,22 @@ interacting with data:
 
 <ButtonBoxList>
 <ButtonBox
-    icon={() => <HighVoltageSVG />}
+    icon={<HighVoltageSVG />}
+    iconInvertible={true}
     title='HTTP API'
     description='Access your conversational data with blazing fast HTTP endpoints'
     link='api/endpoints/introduction'
 />
 <ButtonBox
-    icon={() => <ElectricPlugSVG />}
+    icon={<ElectricPlugSVG />}
+    iconInvertible={true}
     title='WebSocket Server'
     description='Power real-time applications with STOMP style WebSocket'
     link='api/websocket'
 />
 <ButtonBox
-    icon={() => <FishingPoleSVG />}
+    icon={<FishingPoleSVG />}
+    iconInvertible={true}
     title='Webhook'
     description='Participate programmatically in conversations by listening to events'
     link='api/webhook'

@@ -1,20 +1,25 @@
 import React from 'react';
-import {getDefaultMessageRenderingProps, MessageRenderProps} from '../../shared';
-import {RichText} from '../../components/RichText';
-import {RichCard} from '../../components/RichCard';
-import {RichCardCarousel} from '../../components/RichCardCarousel';
-import {Text} from '../../components/Text';
-import {ContentUnion} from './chatPluginModel';
-import {RenderedContent} from 'httpclient';
 
-export const ChatPluginRender = (props: MessageRenderProps) => {
-  return render(mapContent(props.message), props);
+import {RenderPropsUnion} from '../../props';
+import {AttachmentUnion, ContentUnion, SimpleAttachment} from './chatPluginModel';
+import {Message} from 'model';
+import {Text} from '../../components/Text';
+import {RichText} from './components/RichText';
+import {RichCard} from './components/RichCard';
+import {RichCardCarousel} from './components/RichCardCarousel';
+import {QuickReplies} from './components/QuickReplies/index';
+
+export const ChatPluginRender = (props: RenderPropsUnion) => {
+  return render(mapContent(props.content), props);
 };
 
-function render(content: ContentUnion, props: MessageRenderProps) {
-  const defaultProps = getDefaultMessageRenderingProps(props);
+function render(content: ContentUnion, props: RenderPropsUnion) {
+  const defaultProps = {
+    fromContact: props.content.fromContact || false,
+    commandCallback: 'commandCallback' in props ? props.commandCallback : null,
+  };
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
-  const propsToUse = props.invertSides ? invertedProps : defaultProps;
+  const propsToUse = 'invertSides' in props ? invertedProps : defaultProps;
 
   switch (content.type) {
     case 'text':
@@ -25,7 +30,7 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       return (
         <RichText
           {...propsToUse}
-          message={props.message}
+          message={props.content}
           text={content.text}
           fallback={content.fallback}
           containsRichText={content.containsRichtText}
@@ -43,11 +48,40 @@ function render(content: ContentUnion, props: MessageRenderProps) {
       );
     case 'richCardCarousel':
       return <RichCardCarousel {...propsToUse} cardWidth={content.cardWidth} cardContents={content.cardContents} />;
+    case 'quickReplies':
+      return (
+        <QuickReplies
+          {...propsToUse}
+          text={content.text}
+          attachment={content.attachment}
+          quickReplies={content.quickReplies}
+        />
+      );
   }
 }
 
-function mapContent(message: RenderedContent): ContentUnion {
+function mapContent(message: Message): ContentUnion {
   const messageContent = message.content.message ?? message.content;
+
+  if (messageContent.quick_replies) {
+    if (messageContent.quick_replies.length > 13) {
+      messageContent.quick_replies = messageContent.quick_replies.slice(0, 13);
+    }
+
+    if (messageContent.attachment || messageContent.attachments) {
+      return {
+        type: 'quickReplies',
+        attachment: parseAttachment(messageContent.attachment || messageContent.attachments),
+        quickReplies: messageContent.quick_replies,
+      };
+    }
+
+    return {
+      type: 'quickReplies',
+      text: messageContent.text,
+      quickReplies: messageContent.quick_replies,
+    };
+  }
 
   if (messageContent.richCard?.standaloneCard) {
     const {
@@ -102,5 +136,26 @@ function mapContent(message: RenderedContent): ContentUnion {
     text: 'Unknown message type',
   };
 }
+
+const parseAttachment = (attachment: SimpleAttachment): AttachmentUnion => {
+  if (attachment.type === 'image') {
+    return {
+      type: 'image',
+      imageUrl: attachment.payload.url,
+    };
+  }
+
+  if (attachment.type === 'video') {
+    return {
+      type: 'video',
+      videoUrl: attachment.payload.url,
+    };
+  }
+
+  return {
+    type: 'text',
+    text: 'Unknown message type',
+  };
+};
 
 const parseBoolean = value => (typeof value == 'boolean' ? value : /^true$/i.test(value));

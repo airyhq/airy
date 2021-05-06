@@ -22,7 +22,7 @@ sidebar_label: %s
 
 `
 
-const basename = "reference"
+const basename = "usage"
 
 func main() {
 
@@ -39,29 +39,29 @@ func main() {
 	title := strings.Title(basename)
 	w.WriteString(fmt.Sprintf(fmTemplate, "Command "+title, title))
 
-	err = genMarkdownTreeCustom(cmd.RootCmd, w)
+	err = genMarkdownTreeCustom(cmd.RootCmd, w, "#")
 	if err != nil {
 		fmt.Println(err)
 	}
 
 }
 
-func genMarkdownTreeCustom(cmd *cobra.Command, w *bufio.Writer) error {
-
+func genMarkdownTreeCustom(cmd *cobra.Command, w *bufio.Writer, level string) error {
 	subcommands := cmd.Commands()
 	sort.Sort(byName(subcommands))
 
 	if len(subcommands) == 0 {
-		if err := genMarkdownCustom(cmd, w); err != nil {
-			return err
-		}
+		return genMarkdownCustom(cmd, w, level)
 	}
 
+	if err := genCommandNamespaceDoc(cmd, w, level); err != nil {
+		return err
+	}
 	for _, c := range subcommands {
 		if !c.IsAvailableCommand() || c.IsAdditionalHelpTopicCommand() {
 			continue
 		}
-		if err := genMarkdownTreeCustom(c, w); err != nil {
+		if err := genMarkdownTreeCustom(c, w, level+"#"); err != nil {
 			return err
 		}
 	}
@@ -69,14 +69,32 @@ func genMarkdownTreeCustom(cmd *cobra.Command, w *bufio.Writer) error {
 	return nil
 }
 
-func genMarkdownCustom(cmd *cobra.Command, w *bufio.Writer) error {
+func genCommandNamespaceDoc(cmd *cobra.Command, w *bufio.Writer, level string) error {
 	cmd.InitDefaultHelpCmd()
 	cmd.InitDefaultHelpFlag()
 
 	name := cmd.CommandPath()
-	header := strings.Title(strings.Replace(name, "airy", "", -1))
+	if name == "airy" {
+		return nil
+	}
 
-	w.WriteString("## " + strings.Trim(header, " ") + "\n\n")
+	header := strings.Title(strings.Replace(name, "airy", "", -1))
+	w.WriteString(level + " " + strings.Trim(header, " ") + "\n\n")
+	w.WriteString(cmd.Short + "\n\n")
+	w.Flush()
+	return nil
+}
+
+func genMarkdownCustom(cmd *cobra.Command, w *bufio.Writer, level string) error {
+	cmd.InitDefaultHelpCmd()
+	cmd.InitDefaultHelpFlag()
+	name := cmd.CommandPath()
+
+	header := strings.Title(strings.Replace(name, "airy", "", -1))
+	headerParts := strings.Split(header, " ")
+	header = headerParts[len(headerParts)-1]
+
+	w.WriteString(level + " " + strings.Trim(header, " ") + "\n\n")
 	w.WriteString(cmd.Short + "\n\n")
 	if len(cmd.Long) > 0 {
 		w.WriteString("#### Synopsis\n\n")

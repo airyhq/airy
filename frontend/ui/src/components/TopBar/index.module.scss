@@ -1,5 +1,5 @@
-@import '../../assets/scss/colors.scss';
-@import '../../assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
 
 .topBar {
   display: flex;
@@ -47,7 +47,6 @@
 
 .dropHint {
   width: 16px;
-  margin-bottom: 6px;
   svg {
     path {
       fill: var(--color-text-gray);
@@ -80,7 +79,7 @@
   align-items: center;
 }
 
-.dropdown {
+.dropdownContainer {
   position: absolute;
   background-color: white;
   border: 1px solid var(--color-light-gray);

@@ -1,5 +1,5 @@
-import _, {combineReducers, Reducer} from 'redux-starter-kit';
-import {User} from 'httpclient';
+import _, {combineReducers, Reducer} from 'redux';
+import {User} from 'model';
 import {Tags} from './tags';
 import {Settings} from './settings';
 import {Templates} from './templates';
@@ -19,7 +19,7 @@ export * from './settings';
 export * from './config';
 export * from './tags';
 export * from './templates';
-export {initialState} from './user';
+export * from './user';
 
 export type DataState = {
   user: User;

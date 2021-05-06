@@ -1,6 +1,6 @@
 import {ActionType, getType} from 'typesafe-actions';
 import * as actions from '../../../actions/templates';
-import {Template} from 'httpclient';
+import {Template} from 'model';
 import {DataState} from '../../data';
 
 type Action = ActionType<typeof actions>;
@@ -11,6 +11,7 @@ export type TemplateState = {
 
 export type Templates = {
   all: Template[];
+  source: string;
 };
 
 const defaultState = {
@@ -22,7 +23,8 @@ export default function templatesReducer(state = defaultState, action: Action): 
     case getType(actions.listTemplatesAction):
       return {
         ...state,
-        all: action.payload,
+        all: action.payload.templates,
+        source: action.payload.source,
       };
 
     default:

@@ -1,4 +1,4 @@
-@import '../../assets/scss/colors.scss';
+@import 'assets/scss/colors.scss';
 
 .tableRow {
   cursor: pointer;
@@ -20,6 +20,7 @@
   border-radius: 50%;
   line-height: 44px;
   margin-top: 6px;
+  margin-left: 12px;
 }
 
 .editInput {
@@ -57,8 +58,8 @@
 }
 
 .actionSVG {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 18px;
   path {
     fill: var(--color-dark-elements-gray);
   }
@@ -69,7 +70,13 @@
   }
 }
 
+.actionSVGEdit {
+  @extend .actionSVG;
+  height: 24px;
+}
+
 .actionButton {
+  outline: none;
   cursor: pointer;
   border: none;
   background: none;

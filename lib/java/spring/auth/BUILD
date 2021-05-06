@@ -10,8 +10,11 @@ lib_deps = [
     "//:springboot_security",
     "//lib/java/log",
     "//lib/java/spring/core:spring-core",
-    "//lib/java/spring/jwt:airy-jwt",
     "@maven//:javax_servlet_javax_servlet_api",
+    "@maven//:org_springframework_security_spring_security_core",
+    "@maven//:org_springframework_boot_spring_boot",
+    "@maven//:org_springframework_security_spring_security_oauth2_client",
+    "@maven//:org_springframework_boot_spring_boot_autoconfigure",
     "@maven//:javax_xml_bind_jaxb_api",
 ]
 
@@ -20,15 +23,15 @@ custom_java_library(
     srcs = glob(["src/main/java/co/airy/spring/auth/**/*.java"]),
     visibility = ["//visibility:public"],
     exports = [
-        "//lib/java/spring/jwt:airy-jwt",
         "@maven//:org_springframework_security_spring_security_core",
+        "@maven//:org_springframework_security_spring_security_oauth2_core",
     ],
     deps = lib_deps,
 )
 
 custom_java_library(
     name = "test-app",
-    srcs = ["src/test/java/co/airy/spring/auth/TestApp.java"],
+    srcs = glob(["src/test/java/co/airy/spring/auth/test_app/*.java"]),
     deps = lib_deps,
 )
 

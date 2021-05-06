@@ -3,15 +3,15 @@ title: Messages
 sidebar_label: Messages
 ---
 
-Refer to our [messages](getting-started/glossary.md#message) definition
-for more information.
+Refer to our [message](getting-started/glossary.md#message) definition for more
+information.
 
 ## List
 
 `POST /messages.list`
 
-This is a [paginated](#pagination) endpoint. Messages are sorted from oldest to
-latest.
+This is a [paginated](api/endpoints/introduction.md#pagination) endpoint. Messages
+are sorted from oldest to latest.
 
 **Sample request**
 
@@ -34,8 +34,7 @@ latest.
       // source message payload
       "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
-      "sender_type": "{string/enum}",
-      // See glossary
+      "from_contact": true,
       "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
       "source": "{String}",
@@ -69,50 +68,6 @@ import GoogleMessagesSend from './google-messages-send.mdx'
 
 ## Suggest replies
 
-`POST /messages.suggestReplies`
+import SuggestReplies from './suggest-replies.mdx'
 
-Suggest a set of replies for a given message id. UI clients can show these to agents to make responding to user inquiries
-faster and more efficiently.
-
-**Sample request**
-
-```json5
-{
-  "message_id": "uuid",
-  "suggestions": {
-    "suggestion-id-1": {
-      "content": {"text": "Great that it worked. Is there anything else you need?"}
-    },
-    "suggestion-id-2": {
-      "content": {"text": "Have a nice day!"}
-    }
-  }
-}
-```
-
-**Sample response**
-
-The updated message including the suggested replies.
-
-```json5
-{
-  "id": "{UUID}",
-  "content": {"text": "Hello World"},
-  "state": "{String}",
-  "sender_type": "{string/enum}",
-  "sent_at": "{string}",
-  "source": "{String}",
-  "metadata": {
-    "suggestions": {
-      "suggestion-id-1": {
-        "content": {"text": "Great that it worked. Is there anything else you need?"}
-        // source specific content field (same as message content)
-      },
-      "suggestion-id-2": {
-        "content": {"text": "Have a nice day!"}
-      }
-    }
-  }
-  // metadata object of the message including the reply suggestions
-}
-```
+<SuggestReplies />

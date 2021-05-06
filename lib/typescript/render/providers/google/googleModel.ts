@@ -1,5 +1,10 @@
+export enum MediaHeight {
+  short = 'SHORT',
+  medium = 'MEDIUM',
+  tall = 'TALL',
+}
 export interface Content {
-  type: 'text' | 'image' | 'suggestions';
+  type: 'text' | 'image' | 'suggestions' | 'richCard' | 'richCardCarousel';
 }
 
 export interface TextContent extends Content {
@@ -11,6 +16,43 @@ export interface ImageContent extends Content {
   type: 'image';
   imageUrl: string;
   altText?: string;
+}
+export interface RichCardContent extends Content {
+  type: 'richCard';
+  title?: string;
+  description?: string;
+  media: {
+    height: MediaHeight;
+    contentInfo: {
+      altText?: string;
+      fileUrl: string;
+      forceRefresh: boolean;
+    };
+  };
+  suggestions: RichCardSuggestion[];
+}
+
+export type RichCardSuggestion = {
+  reply?: {
+    text: string;
+    postbackData: string;
+  };
+  action?: {
+    text: string;
+    postbackData: string;
+    openUrlAction?: {
+      url: string;
+    };
+    dialAction?: {
+      phoneNumber: string;
+    };
+  };
+};
+
+export interface RichCardCarouselContent extends Content {
+  type: 'richCardCarousel';
+  cardWidth: string;
+  cardContents: [RichCardContent];
 }
 
 interface SuggestedReplies {
@@ -64,4 +106,4 @@ export interface SuggestionsContent extends Content {
   suggestions: SuggestionsUnion[];
 }
 
-export type ContentUnion = TextContent | ImageContent | SuggestionsContent;
+export type ContentUnion = TextContent | ImageContent | SuggestionsContent | RichCardContent | RichCardCarouselContent;

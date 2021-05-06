@@ -9,33 +9,37 @@ load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 check_pkg(name = "buildifier")
 
 module_deps = [
-    "//frontend/assets",
+    "//lib/typescript/assets",
+    "//lib/typescript/components",
     "//lib/typescript/types",
+    "//lib/typescript/model",
     "//lib/typescript/httpclient",
     "//lib/typescript/render",
     "//lib/typescript/dates",
     "//lib/typescript/websocketclient",
     "//frontend/ui/handles",
+    "//frontend/chat-plugin/handles:chat-plugin-handles",
+    "//frontend/chat-plugin",
 ]
 
 ts_web_library(
     name = "app",
     deps = module_deps + [
-        "@npm//@airyhq/components",
         "@npm//@types/node",
         "@npm//@types/react",
         "@npm//@types/react-dom",
         "@npm//@types/react-redux",
         "@npm//lodash-es",
         "@npm//react",
-        "@npm//react-facebook-login",
         "@npm//react-router-dom",
         "@npm//react-window",
         "@npm//react-window-infinite-loader",
         "@npm//redux",
-        "@npm//redux-starter-kit",
+        "@npm//@reduxjs/toolkit",
         "@npm//reselect",
         "@npm//typesafe-actions",
+        "@npm//camelcase-keys",
+        "@npm//react-color",
     ],
 )
 
@@ -43,7 +47,7 @@ web_app(
     name = "bundle",
     app_lib = ":app",
     dev_index = "development.html",
-    entry = "frontend/ui/src/index.js",
+    entry = "frontend/ui/src/index",
     index = ":index.html",
     module_deps = module_deps,
     output = {

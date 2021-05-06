@@ -1,0 +1,19 @@
+{
+  "namespace": "co.airy.avro.ops",
+  "name": "HttpLog",
+  "type": "record",
+  "fields": [
+    {"name": "uri", "type": "string"},
+    {"name": "body", "type": ["null", "string"], "default": null},
+    {"name": "userId", "type": ["null", "string"], "default": null},
+    {"name": "userName", "type": ["null", "string"], "default": null},
+    {"name": "userAvatar", "type": ["null", "string"], "default": null},
+    {
+      "name": "headers",
+      "type": {
+          "type": "map",
+          "values": "string"
+        }
+    }
+  ]
+}

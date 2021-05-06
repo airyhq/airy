@@ -1,0 +1,55 @@
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import SuccessBox from '@site/src/components/SuccessBox';
+
+### Step 1: Find the authToken and accountSid
+
+Once you have a Twilio account, log in, and find your [Twilio auth
+token account SID](https://support.twilio.com/hc/en-us/articles/223136027-Auth-Tokens-and-How-to-Change-Them)
+on your Twilio dashboard (underlined in red in the screenshot below).
+
+```
+https://www.twilio.com/console
+```
+
+<img alt="Twilio token" src={useBaseUrl('img/sources/twilio/twilio_token.png')} />
+
+Copy and paste your `Auth token` and `Account Sid` as strings next to `authToken:` and `accountSid:`, below `components/sources/twilio` in your `airy.yaml` file.
+
+Make sure the `Auth token` and `Account Sid` are contained within a pair of either single quotation marks '' or double quotation marks "";
+paste the tokens as they are and do not add or remove additional spaces.
+
+import ApplyVariablesNote from './applyVariables-note.mdx';
+
+<ApplyVariablesNote />
+
+### Step 2: Configure the webhook integration
+
+After editing the `airy.yaml` file, create an [Airy Core instance](/getting-started/installation/Minikube).
+
+You are now ready to configure the Webhook.
+
+On the Twilio dashboard, open the left menu sidebar and go to the Phone numbers section.
+
+Select the phone number that you want to use and copy and paste your Twilio Webhook URL as the Webhook URL of your phone number (in 'Messaging', below 'A MESSAGE
+COMES IN' - 'Webhook' should be selected from the dropdown).
+
+```
+https://www.twilio.com/console/phone-numbers
+```
+
+<img alt="Twilio webhook" src={useBaseUrl('img/sources/twilio/twilio_webhook.png')} />
+
+<br />
+<br />
+
+:::note
+
+Your Twilio Webhook URL should have the following format:
+
+```
+https://RANDOM_STRING.tunnel.airy.co/twilio
+```
+
+Refer to [the section on public webhooks](/getting-started/installation/minikube#public-webhooks) for information about Webhook URLs.
+
+:::

@@ -1,10 +1,12 @@
 import React from 'react';
-import styles from './index.module.scss';
-import {DefaultMessageRenderingProps} from '../../../../components/index';
-import {GenericTemplate as GenericTemplateModel} from '../../facebookModel';
-import {Carousel} from 'render/components/Carousel';
 
-type GenericTemplateRendererProps = DefaultMessageRenderingProps & {
+import {Carousel} from 'components';
+import {GenericTemplate as GenericTemplateModel} from '../../facebookModel';
+import {ImageWithFallback} from 'render/components/ImageWithFallback';
+
+import styles from './index.module.scss';
+
+type GenericTemplateRendererProps = {
   template: GenericTemplateModel;
 };
 
@@ -13,7 +15,7 @@ export const GenericTemplate = ({template}: GenericTemplateRendererProps) => {
     <Carousel>
       {template.elements.map((element, idx) => (
         <div key={`template-${idx}`} className={styles.template}>
-          {element.image_url?.length && <img className={styles.templateImage} src={element.image_url} />}
+          {element.image_url?.length && <ImageWithFallback className={styles.templateImage} src={element.image_url} />}
           <div className={styles.innerTemplate}>
             <div className={styles.templateTitle}>{element.title}</div>
             <div className={styles.templateSubtitle}>{element.subtitle}</div>

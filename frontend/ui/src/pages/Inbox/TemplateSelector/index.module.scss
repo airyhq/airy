@@ -1,5 +1,5 @@
-@import '../../../assets/scss/colors.scss';
-@import '../../../assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
 
 .component {
   display: flex;
@@ -12,6 +12,7 @@
   right: 72px;
   left: 14px;
   background-color: var(--color-template-highlight);
+  z-index: 2;
 }
 
 .topLine {
@@ -90,6 +91,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  max-height: 350px;
 }
 
 .notFoundImage {
@@ -97,6 +99,7 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  height: 200px;
 }
 
 .notFoundText {

@@ -2,15 +2,14 @@ package co.airy.core.webhook.publisher;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
-import co.airy.core.webhook.publisher.payload.QueueMessage;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.event.payload.Event;
 import co.airy.spring.core.AirySpringBootApplication;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -21,7 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -73,7 +71,7 @@ public class PublisherTest {
     Publisher publisher;
 
     @MockBean
-    private RedisQueue redisQueue;
+    private BeanstalkPublisher beanstalkPublisher;
 
     @BeforeEach
     void beforeEach() throws InterruptedException {
@@ -86,7 +84,6 @@ public class PublisherTest {
         kafkaTestHelper.produceRecord(
                 new ProducerRecord<>(applicationCommunicationWebhooks.name(), "339ab777-92aa-43a5-b452-82e73c50fc59",
                         Webhook.newBuilder()
-                                .setApiSecret("such secret")
                                 .setEndpoint("http://somesalesforce.com/form")
                                 .setHeaders(Map.of())
                                 .setId("339ab777-92aa-43a5-b452-82e73c50fc59")
@@ -96,8 +93,8 @@ public class PublisherTest {
 
         TimeUnit.SECONDS.sleep(2);
 
-        ArgumentCaptor<QueueMessage> batchCaptor = ArgumentCaptor.forClass(QueueMessage.class);
-        doNothing().when(redisQueue).publishMessage(Mockito.anyString(), batchCaptor.capture());
+        ArgumentCaptor<Event> batchCaptor = ArgumentCaptor.forClass(Event.class);
+        doNothing().when(beanstalkPublisher).publishMessage(batchCaptor.capture());
 
         List<ProducerRecord<String, Message>> messages = new ArrayList<>();
 
@@ -113,7 +110,7 @@ public class PublisherTest {
                             .setSentAt(now)
                             .setUpdatedAt(null)
                             .setSenderId("sourceConversationId")
-                            .setSenderType(SenderType.APP_USER)
+                            .setIsFromContact(false)
                             .setDeliveryState(DeliveryState.DELIVERED)
                             .setConversationId("conversationId")
                             .setChannelId("channelId")
@@ -128,7 +125,7 @@ public class PublisherTest {
                             .setSentAt(now)
                             .setUpdatedAt(now) // field presence identifies message as update
                             .setSenderId("sourceConversationId")
-                            .setSenderType(SenderType.APP_USER)
+                            .setIsFromContact(false)
                             .setDeliveryState(DeliveryState.DELIVERED)
                             .setConversationId("conversationId")
                             .setChannelId("channelId")

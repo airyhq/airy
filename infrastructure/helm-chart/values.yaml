@@ -1,7 +1,8 @@
 global:
-  appImageTag: latest
+  # required override: appImageTag
   containerRegistry: ghcr.io/airyhq
   namespace: default
   ngrokEnabled: false
-  ingress:
-    host: "airy.core"
+  host: http://airy.core
+  loadbalancer:
+    annotations: {}

@@ -12,7 +12,7 @@ import ConversationListHeader from '../ConversationListHeader';
 import ConversationsFilter from '../ConversationsFilter';
 import ConversationListItem from '../ConversationListItem';
 import NoConversations from '../NoConversations';
-import {SimpleLoader} from '@airyhq/components';
+import {SimpleLoader} from 'components';
 
 import {MergedConversation, StateModel} from '../../../reducers';
 
@@ -45,7 +45,7 @@ const ConversationList = (props: ConversationListProps) => {
     const {currentConversationId} = props;
     if (conversation == null) {
       return (
-        <div className="conversationListLoading" style={style}>
+        <div className="conversationListLoading" style={{...style, textAlignLast: 'center', marginTop: '24px'}}>
           <SimpleLoader />
         </div>
       );
@@ -117,8 +117,8 @@ const ConversationList = (props: ConversationListProps) => {
     <section className={styles.conversationListContainerContacts}>
       <div className={styles.conversationListContainer}>
         <section className={styles.conversationListContainerFilterBox}>
-          <ConversationListHeader />
-          <ConversationsFilter onFilterVisibilityChanged={() => resizeList()} />
+          <ConversationListHeader onFilterVisibilityChanged={() => resizeList()} />
+          <ConversationsFilter />
         </section>
       </div>
       <section className={styles.conversationListContactList}>{renderConversationList()}</section>

@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Live Chat overview
 sidebar_label: Overview
 ---
 
@@ -7,6 +7,7 @@ import TLDR from "@site/src/components/TLDR";
 import ButtonBox from "@site/src/components/ButtonBox";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import HammerAndWrenchSVG from "@site/static/icons/hammer-and-wrench.svg";
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <TLDR>
 
@@ -33,7 +34,7 @@ Out of the box Airy’s Live Chat Plugin supports:
 ## How it's build
 
 The Airy Live Chat Plugin is JavaScript library built with
-[preact](https://preactjs.com/)and
+[preact](https://preactjs.com/) and
 [TypeScript](https://www.typescriptlang.org/).
 
 The library makes heavy use of [render
@@ -48,7 +49,7 @@ Completely customize your Live Chat and make it match your brand:
 
 <ButtonBoxList>
 <ButtonBox
-    icon={() => <HammerAndWrenchSVG />}
+    icon={<HammerAndWrenchSVG />}
     title='Learn more about the customization of your Chat Plugin'
     description='From colors to shapes and sizes: everything is editable'
     link='/sources/chatplugin/customization'
@@ -57,4 +58,16 @@ Completely customize your Live Chat and make it match your brand:
 
 ## Supported message types
 
-TODO
+Airy’s Live Chat Plugin supports the following messages types:
+
+- Text messages
+- Emoji's
+- Rich Cards
+- Rich Card Carousels
+- Suggested Replies
+
+**Samples**
+
+| RichCard                                                                                 | RichCardCarousel                                                                                          | Emojis                                                                  |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| <img alt="Rich Card Example" src={useBaseUrl('img/ui/richCardChatpluginExample.gif')} /> | <img alt="Rich Card Carousel Example" src={useBaseUrl('img/ui/richCardCarouselChatpluginExample.gif')} /> | <img alt="Emoji Example" src={useBaseUrl('img/ui/emojiExample.png')} /> |

@@ -5,15 +5,15 @@ module.exports = {
         'getting-started/introduction',
         'getting-started/components',
         {
-          Installation: [
+          'Setup & Deployment': [
             'getting-started/installation/introduction',
-            'getting-started/installation/vagrant',
-            'getting-started/installation/production',
+            'getting-started/installation/minikube',
+            'getting-started/installation/aws',
             'getting-started/installation/configuration',
           ],
         },
         {
-          'Command Line Interface': ['cli/installation', 'cli/reference'],
+          'Command Line Interface': ['cli/introduction', 'cli/usage'],
         },
         'getting-started/quickstart',
         'getting-started/troubleshooting',
@@ -36,6 +36,7 @@ module.exports = {
         'sources/google',
         'sources/sms-twilio',
         'sources/whatsapp-twilio',
+        'ui/channels',
       ],
     },
     {
@@ -52,7 +53,6 @@ module.exports = {
             'api/endpoints/metadata',
             'api/endpoints/tags',
             'api/endpoints/templates',
-            'api/endpoints/users',
           ],
         },
         'api/websocket',
@@ -60,12 +60,12 @@ module.exports = {
       ],
     },
     {
-      '💎 UI': ['apps/ui/introduction', 'apps/ui/quickstart', 'apps/ui/inbox', 'apps/ui/tags', 'apps/ui/components'],
+      '💎 UI': ['ui/introduction', 'ui/inbox', 'ui/channels', 'ui/tags', 'ui/suggestedReplies'],
     },
     {
       '🛠️ Integrations': [
         {
-          'Conversational AI /NLP': ['integrations/rasa'],
+          'Conversational AI /NLP': ['integrations/rasa-assistant', 'integrations/rasa-suggested-replies'],
         },
       ],
     },
@@ -75,6 +75,7 @@ module.exports = {
         'concepts/design-principles',
         'concepts/release-process',
         'concepts/kafka',
+        'concepts/metadata',
       ],
     },
     {

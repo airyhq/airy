@@ -6,14 +6,13 @@ import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.api.ApiException;
 import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
 import co.airy.core.sources.facebook.payload.ConnectRequestPayload;
+import co.airy.core.sources.facebook.payload.DisconnectChannelRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreResponsePayload;
 import co.airy.core.sources.facebook.payload.PageInfoResponsePayload;
-import co.airy.core.sources.facebook.payload.DisconnectChannelRequestPayload;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
-import co.airy.spring.web.payload.EmptyResponsePayload;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import co.airy.uuid.UUIDv5;
 import org.apache.kafka.streams.state.KeyValueIterator;
@@ -127,7 +126,7 @@ public class ChannelsController {
         }
 
         if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-            return ResponseEntity.accepted().body(new EmptyResponsePayload());
+            return ResponseEntity.noContent().build();
         }
 
         channel.setConnectionState(ChannelConnectionState.DISCONNECTED);
@@ -139,7 +138,7 @@ public class ChannelsController {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
 
-        return ResponseEntity.ok(new EmptyResponsePayload());
+        return ResponseEntity.noContent().build();
     }
 
 }

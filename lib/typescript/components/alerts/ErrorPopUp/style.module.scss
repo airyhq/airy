@@ -1,0 +1,62 @@
+@import 'assets/scss/colors';
+@import 'assets/scss/fonts';
+
+.main {
+  position: absolute;
+  height: 40px;
+  bottom: 48px;
+  text-align: -webkit-center;
+  right: 0;
+  left: 0;
+  animation: pop 0.8s;
+  transition-timing-function: ease-in-out;
+}
+
+.errorContainer {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding: 8px 12px 8px 12px;
+  border-radius: 10px;
+  background-color: var(--color-error-background);
+  border: 1px solid var(--color-error-border);
+  svg {
+    fill: var(--color-error-border);
+    height: 24px;
+    width: 24px;
+    margin: 0 0 -4px 0;
+  }
+  button {
+    margin: -1px 0 0 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    svg {
+      fill: var(--color-dark-elements-gray);
+      height: 12px;
+      width: 12px;
+    }
+  }
+  p {
+    margin: 0 8px 0 8px;
+  }
+}
+
+@keyframes pop {
+  0% {
+    bottom: -50px;
+  }
+  60% {
+    bottom: 50px;
+  }
+  75% {
+    bottom: 46px;
+  }
+  90% {
+    bottom: 50px;
+  }
+  100% {
+    bottom: 48px;
+  }
+}

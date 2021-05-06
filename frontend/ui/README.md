@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="850" src="../assets/airy_demo_login.png" alt="Airy Login" />
+    <img width="850" src="assets/airy_demo_login.png" alt="Airy Login" />
     </a>
 </p>
 
@@ -23,31 +23,24 @@ The Airy UI is a fully featured user interactive frontend project that showcases
 
 ### Building Airy Demo UI
 
-You can run the Airy Demo UI locally by running the following commands:
+You can run the backend required for development of the Airy Demo UI locally by installing Airy Core using the
+[minikube provider](/docs/docs/getting-started/installation/minikube.md):
+
+To ensure that you develop against the latest state of the `create` command you can build and run the executable
+from the repository:
 
 ```
-$ git clone https://github.com/airyhq/airy
-$ cd airy
-$ ./scripts/bootstrap.sh (Takes a few minutes)
+$ bazel run //cli -- create --provider=minikube
 ```
 
-When the bootstrap process finishes, open another terminal and run `$ ibazel run //frontend/demo:bundle_server`
+When the bootstrap process finishes, open another terminal and run `$ ./scripts/web-dev.sh //frontend/ui:bundle_server`
 Then open `http://localhost:8080/` in a web browser to access the Airy Demo UI
-
-### Installation
-
-The bootstrap installation requires [Vagrant](https://www.vagrantup.com/downloads) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads). If they are not
-found, the script `$ ./scripts/bootstrap.sh` will attempt to install them for you. Check out our [test deployment guide](/docs/docs/getting-started/deployment/test-environment.md) for detailed information.
 
 ### Authentication
 
 In order to communicate with our API endpoints, you need a valid [JWT](https://jwt.io/) token. To get a valid token you first need to signup using the signup [endpoint](#endpoints) and then login using the login [endpoint](#endpoints).
 
 ### Endpoints
-
-To communicate with our signup endpoint and register your email, open another terminal and type in the terminal `curl -X POST -H 'Content-Type: application/json' -d '{"first_name": "your_name","last_name": "your_last_name","password": "your_password","email": "your_email@airy.co"}' http://airy.core/users.signup`
-
-To sign in, type in the terminal `token=$(echo $(curl -H 'Content-Type: application/json' -d \"{ \\"email\":\"your_email@airy.co\",\\"password\":\"your_last_name\" \}" airy.core/users.login) | jq -r '.token')`
 
 Aside from Curl, [PostMan](https://www.postman.com/downloads/) and other API testing tools could also be used to access the endpoints.
 
@@ -56,8 +49,15 @@ Aside from Curl, [PostMan](https://www.postman.com/downloads/) and other API tes
 To start the app in development mode, run these commands:
 
 ```
-yarn
-yarn ibazel run //frontend/ui:bundle_server
+$ yarn
+$ ./scripts/web-dev.sh //frontend/ui:bundle_server
 ```
 
 After it started, open a web browser to [`localhost:8080`](http://localhost:8080). Login with the user you created above.
+
+The web server does not perform Typescript type checking. To do so you can either run type checks after you are done
+or start another process:
+
+```
+$ ibazel build //frontend/ui:app
+```

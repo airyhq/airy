@@ -3,21 +3,406 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 0.13.0
+## 0.20.0
 
 #### Changes
 
+- Bump @types/react from 16.9.34 to 17.0.4 [[#1658](https://github.com/airyhq/airy/pull/1658)]
+
+#### 🚀 Features
+
+- [[#1518](https://github.com/airyhq/airy/issues/1518)] Add OIDC authentication backend [[#1623](https://github.com/airyhq/airy/pull/1623)]
+- [[#1505](https://github.com/airyhq/airy/issues/1505)] Rewrite Webhook queue with Beanstalkd [[#1536](https://github.com/airyhq/airy/pull/1536)]
+- [[#1687](https://github.com/airyhq/airy/issues/1687)] Kafka Prometheus exporter error on… [[#1688](https://github.com/airyhq/airy/pull/1688)]
+- [[#1615](https://github.com/airyhq/airy/issues/1615)] Expose tag events via websocket [[#1624](https://github.com/airyhq/airy/pull/1624)]
+- [[#1495](https://github.com/airyhq/airy/issues/1495)] Add kafka Prometheus exporter [[#1668](https://github.com/airyhq/airy/pull/1668)]
+- [[#1525](https://github.com/airyhq/airy/issues/1525)] Update quick filter [[#1660](https://github.com/airyhq/airy/pull/1660)]
+
+#### 🐛 Bug Fixes
+
+- [[#1698](https://github.com/airyhq/airy/issues/1698)] Webhook config error [[#1699](https://github.com/airyhq/airy/pull/1699)]
+- [[#1689](https://github.com/airyhq/airy/issues/1689)] Bug: Conversation Counter: Optimize Filter Use [[#1697](https://github.com/airyhq/airy/pull/1697)]
+- [[#1665](https://github.com/airyhq/airy/issues/1665)] Fix chatplugin reconnection problem [[#1682](https://github.com/airyhq/airy/pull/1682)]
+- [[#1646](https://github.com/airyhq/airy/issues/1646)] fix avatar images styling [[#1680](https://github.com/airyhq/airy/pull/1680)]
+- [[#1652](https://github.com/airyhq/airy/issues/1652)] Fix rendering messages with render library [[#1675](https://github.com/airyhq/airy/pull/1675)]
+- [[#1674](https://github.com/airyhq/airy/issues/1674)] Chatplugin customize problems [[#1678](https://github.com/airyhq/airy/pull/1678)]
+- [[#1666](https://github.com/airyhq/airy/issues/1666)] Fix chatplugin cors config [[#1667](https://github.com/airyhq/airy/pull/1667)]
+
+#### 📚 Documentation
+
+- [[#1676](https://github.com/airyhq/airy/issues/1676)] fix sending messages to google source [[#1677](https://github.com/airyhq/airy/pull/1677)]
+- [[#1661](https://github.com/airyhq/airy/issues/1661)] Fix token name in docs [[#1664](https://github.com/airyhq/airy/pull/1664)]
+
+#### 🧰 Maintenance
+
+- Bump @babel/preset-env from 7.14.0 to 7.14.1 [[#1705](https://github.com/airyhq/airy/pull/1705)]
+- Bump webpack from 5.36.1 to 5.36.2 [[#1692](https://github.com/airyhq/airy/pull/1692)]
+- Bump @babel/core from 7.13.16 to 7.14.0 [[#1685](https://github.com/airyhq/airy/pull/1685)]
+- Bump @babel/preset-env from 7.13.15 to 7.14.0 [[#1684](https://github.com/airyhq/airy/pull/1684)]
+- Bump webpack from 5.36.0 to 5.36.1 [[#1670](https://github.com/airyhq/airy/pull/1670)]
+- Bump @bazel/typescript from 3.4.1 to 3.4.2 [[#1671](https://github.com/airyhq/airy/pull/1671)]
+- Bump core-js from 3.11.0 to 3.11.1 [[#1672](https://github.com/airyhq/airy/pull/1672)]
+- Bump sass from 1.32.11 to 1.32.12 [[#1673](https://github.com/airyhq/airy/pull/1673)]
+- Bump webpack from 5.35.1 to 5.36.0 [[#1663](https://github.com/airyhq/airy/pull/1663)]
+- Bump @types/node from 15.0.0 to 15.0.1 [[#1662](https://github.com/airyhq/airy/pull/1662)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.19.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.19.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.19.1/windows/amd64/airy.exe)
+
+## 0.19.0
+
+#### Changes
+
+#### 🚀 Features
+
+- [[#1520](https://github.com/airyhq/airy/issues/1520)] Log user activity [[#1588](https://github.com/airyhq/airy/pull/1588)]
+- [[#1606](https://github.com/airyhq/airy/issues/1606)] Conversation count on the title of the page [[#1626](https://github.com/airyhq/airy/pull/1626)]
+- [[#1580](https://github.com/airyhq/airy/issues/1580)] Create in existing VPC on AWS [[#1595](https://github.com/airyhq/airy/pull/1595)]
+- [[#1517](https://github.com/airyhq/airy/issues/1517)] Don't create a default system token [[#1613](https://github.com/airyhq/airy/pull/1613)]
+- [[#1517](https://github.com/airyhq/airy/issues/1517)] Remove email auth [[#1569](https://github.com/airyhq/airy/pull/1569)]
+
+#### 🐛 Bug Fixes
+
+- [[#1639](https://github.com/airyhq/airy/issues/1639)] Fix conversation count [[#1648](https://github.com/airyhq/airy/pull/1648)]
+- [[#1637](https://github.com/airyhq/airy/issues/1637)] Fix carousels [[#1649](https://github.com/airyhq/airy/pull/1649)]
+- [[#1628](https://github.com/airyhq/airy/issues/1628)] Fix send button for selected templates  [[#1645](https://github.com/airyhq/airy/pull/1645)]
+- [[#1629](https://github.com/airyhq/airy/issues/1629)] Remove hardcoded availability zones [[#1636](https://github.com/airyhq/airy/pull/1636)]
+- [[#1620](https://github.com/airyhq/airy/issues/1620)] Fix the config apply flag in the docs [[#1625](https://github.com/airyhq/airy/pull/1625)]
+- [[#1618](https://github.com/airyhq/airy/issues/1618)] Remove intermediate call to action from new chat plugin [[#1627](https://github.com/airyhq/airy/pull/1627)]
+- [[#1605](https://github.com/airyhq/airy/issues/1605)] Fix Tags Flow [[#1619](https://github.com/airyhq/airy/pull/1619)]
+- [[#1603](https://github.com/airyhq/airy/issues/1603)] Redirect when trying to add GBM channel [[#1617](https://github.com/airyhq/airy/pull/1617)]
+- [[#1609](https://github.com/airyhq/airy/issues/1609)] Fix svg sizing  [[#1610](https://github.com/airyhq/airy/pull/1610)]
+- [[#1602](https://github.com/airyhq/airy/issues/1602)] Checkmark svg broken [[#1607](https://github.com/airyhq/airy/pull/1607)]
+
+#### 📚 Documentation
+
+- [[#1558](https://github.com/airyhq/airy/issues/1558)] Docs for configuring https on AWS [[#1653](https://github.com/airyhq/airy/pull/1653)]
+- [[#1641](https://github.com/airyhq/airy/issues/1641)] Specify the required minikube version [[#1644](https://github.com/airyhq/airy/pull/1644)]
+- [[#1635](https://github.com/airyhq/airy/issues/1635)] Update docs on configuring sources [[#1643](https://github.com/airyhq/airy/pull/1643)]
+
+#### 🧰 Maintenance
+
+- Bump react-markdown from 6.0.0 to 6.0.1 [[#1656](https://github.com/airyhq/airy/pull/1656)]
+- Bump cypress from 7.1.0 to 7.2.0 [[#1655](https://github.com/airyhq/airy/pull/1655)]
+- Bump @types/node from 14.14.41 to 15.0.0 [[#1657](https://github.com/airyhq/airy/pull/1657)]
+- Bump webpack from 5.35.0 to 5.35.1 [[#1647](https://github.com/airyhq/airy/pull/1647)]
+- Bump @bazel/bazelisk from 1.7.5 to 1.8.0 [[#1633](https://github.com/airyhq/airy/pull/1633)]
+- Bump eslint from 7.24.0 to 7.25.0 [[#1632](https://github.com/airyhq/airy/pull/1632)]
+- Bump react-redux from 7.2.3 to 7.2.4 [[#1631](https://github.com/airyhq/airy/pull/1631)]
+- Bump redux from 4.0.5 to 4.1.0 [[#1630](https://github.com/airyhq/airy/pull/1630)]
+- Bump core-js from 3.10.2 to 3.11.0 [[#1621](https://github.com/airyhq/airy/pull/1621)]
+- Bump @bazel/typescript from 3.4.0 to 3.4.1 [[#1622](https://github.com/airyhq/airy/pull/1622)]
+- [[#1486](https://github.com/airyhq/airy/issues/1486)] Update spring [[#1612](https://github.com/airyhq/airy/pull/1612)]
+- Bump webpack from 5.34.0 to 5.35.0 [[#1608](https://github.com/airyhq/airy/pull/1608)]
+- Bump @babel/core from 7.13.15 to 7.13.16 [[#1592](https://github.com/airyhq/airy/pull/1592)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.19.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.19.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.19.0/windows/amd64/airy.exe)
+
+## 0.18.0
+
+#### 🚀 Features
+- [[#1524](https://github.com/airyhq/airy/issues/1524)] Added conversationState to conversationList [[#1560](https://github.com/airyhq/airy/pull/1560)]
+- [[#1515](https://github.com/airyhq/airy/issues/1515)] Create airy chat plugin library + use it in UI [[#1550](https://github.com/airyhq/airy/pull/1550)]
+- [[#1577](https://github.com/airyhq/airy/issues/1577)] Conversations.setState Returns 404 [[#1578](https://github.com/airyhq/airy/pull/1578)]
+- [[#1526](https://github.com/airyhq/airy/issues/1526)] Added conversation count in inbox [[#1572](https://github.com/airyhq/airy/pull/1572)]
+- [[#1566](https://github.com/airyhq/airy/issues/1566)] Add state endpoints [[#1568](https://github.com/airyhq/airy/pull/1568)]
+- [[#1537](https://github.com/airyhq/airy/issues/1537)] AWS Uninstall Docs - Remove reference to… [[#1564](https://github.com/airyhq/airy/pull/1564)]
+- [[#1502](https://github.com/airyhq/airy/issues/1502)] Improve model lib [[#1547](https://github.com/airyhq/airy/pull/1547)]
+- [[#740](https://github.com/airyhq/airy/issues/740)] Uses components endpoint on service discovery [[#1549](https://github.com/airyhq/airy/pull/1549)]
+- [[#1503](https://github.com/airyhq/airy/issues/1503)] Cypress test to end a conversation in chatplugin [[#1543](https://github.com/airyhq/airy/pull/1543)]
+- [[#740](https://github.com/airyhq/airy/issues/740)] Adding k8s endpoint to airy controller [[#1546](https://github.com/airyhq/airy/pull/1546)]
+- [[#740](https://github.com/airyhq/airy/issues/740)] Label and introspect components [[#1510](https://github.com/airyhq/airy/pull/1510)]
+- [[#740](https://github.com/airyhq/airy/issues/740)] Refactor config apply [[#1544](https://github.com/airyhq/airy/pull/1544)]
+#### 🐛 Bug Fixes
+- [[#1590](https://github.com/airyhq/airy/issues/1590)] Fix api host variable injection in chatplugin [[#1591](https://github.com/airyhq/airy/pull/1591)]
+- [[#740](https://github.com/airyhq/airy/issues/740)] Fix env variables [[#1583](https://github.com/airyhq/airy/pull/1583)]
+- [[#1581](https://github.com/airyhq/airy/issues/1581)] Prevent page from crashing when adding a channel [[#1582](https://github.com/airyhq/airy/pull/1582)]
+- [[#1570](https://github.com/airyhq/airy/issues/1570)] Fixed confikey chat plugin [[#1571](https://github.com/airyhq/airy/pull/1571)]
+- [[#1565](https://github.com/airyhq/airy/issues/1565)] Fixed github variable [[#1565](https://github.com/airyhq/airy/pull/1565)]
+- [[#635](https://github.com/airyhq/airy/issues/635)] Fix deployment of the library to npm [[#1411](https://github.com/airyhq/airy/pull/1411)]
+- [[#1555](https://github.com/airyhq/airy/issues/1555)] Fixed template button [[#1556](https://github.com/airyhq/airy/pull/1556)]
+- [[#1540](https://github.com/airyhq/airy/issues/1540)] Added return to messageBubble [[#1542](https://github.com/airyhq/airy/pull/1542)]
+- [[#1535](https://github.com/airyhq/airy/issues/1535)] Release version uses correct app image tag [[#1538](https://github.com/airyhq/airy/pull/1538)]
+#### 📚 Documentation
+- [[#1399](https://github.com/airyhq/airy/issues/1399)] Add Rasa suggested reply guide [[#1548](https://github.com/airyhq/airy/pull/1548)]
+- [[#1532](https://github.com/airyhq/airy/issues/1532)] Remove step 4 of airy cli installation docs [[#1534](https://github.com/airyhq/airy/pull/1534)]
+#### 🧰 Maintenance
+- Bump css-loader from 5.2.2 to 5.2.4 [[#1587](https://github.com/airyhq/airy/pull/1587)]
+- Bump webpack from 5.33.2 to 5.34.0 [[#1586](https://github.com/airyhq/airy/pull/1586)]
+- Bump sass from 1.32.10 to 1.32.11 [[#1585](https://github.com/airyhq/airy/pull/1585)]
+- Bump core-js from 3.10.1 to 3.10.2 [[#1584](https://github.com/airyhq/airy/pull/1584)]
+- Bump @bazel/typescript from 3.3.0 to 3.4.0 [[#1552](https://github.com/airyhq/airy/pull/1552)]
+- Bump css-loader from 5.2.1 to 5.2.2 [[#1574](https://github.com/airyhq/airy/pull/1574)]
+- Bump sass from 1.32.8 to 1.32.10 [[#1573](https://github.com/airyhq/airy/pull/1573)]
+- Bump @types/node from 14.14.40 to 14.14.41 [[#1561](https://github.com/airyhq/airy/pull/1561)]
+- Bump @types/node from 14.14.39 to 14.14.40 [[#1559](https://github.com/airyhq/airy/pull/1559)]
+- Bump react-markdown from 5.0.3 to 6.0.0 [[#1554](https://github.com/airyhq/airy/pull/1554)]
+- Bump @types/node from 14.14.37 to 14.14.39 [[#1553](https://github.com/airyhq/airy/pull/1553)]
+- Bump webpack from 5.32.0 to 5.33.2 [[#1551](https://github.com/airyhq/airy/pull/1551)]
+- Bump react-modal from 3.12.1 to 3.13.1 [[#1545](https://github.com/airyhq/airy/pull/1545)]
+- Bump @typescript-eslint/parser from 4.21.0 to 4.22.0 [[#1528](https://github.com/airyhq/airy/pull/1528)]
+- Bump cypress from 7.0.1 to 7.1.0 [[#1529](https://github.com/airyhq/airy/pull/1529)]
+- Bump @typescript-eslint/eslint-plugin from 4.21.0 to 4.22.0 [[#1530](https://github.com/airyhq/airy/pull/1530)]
+- Bump webpack from 5.31.2 to 5.32.0 [[#1527](https://github.com/airyhq/airy/pull/1527)]
+#### Airy CLI
+You can download the Airy CLI for your operating system from the following links:
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.18.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.18.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.18.0/windows/amd64/airy.exe)
+## 0.17.0
+
+#### 🚀 Features
+
+- [[#929](https://github.com/airyhq/airy/issues/929)] Implement the option to end chat [[#1508](https://github.com/airyhq/airy/pull/1508)]
+- [[#1110](https://github.com/airyhq/airy/issues/1110)] Add basic and advance customization to chatplugin docs [[#1494](https://github.com/airyhq/airy/pull/1494)]
+- [[#1290](https://github.com/airyhq/airy/issues/1290)] Prometheus Metrics about Spring apps [[#1479](https://github.com/airyhq/airy/pull/1479)]
+- [[#1473](https://github.com/airyhq/airy/issues/1473)] Make release process more quiet [[#1501](https://github.com/airyhq/airy/pull/1501)]
+- [[#1004](https://github.com/airyhq/airy/issues/1004)] Enable quickreplies for chatplugin [[#1478](https://github.com/airyhq/airy/pull/1478)]
+- [[#572](https://github.com/airyhq/airy/issues/572)] Cleanup senderType code [[#1490](https://github.com/airyhq/airy/pull/1490)]
+- [[#1474](https://github.com/airyhq/airy/issues/1474)] Added showmode flag that blocks functionality in chat plugin [[#1475](https://github.com/airyhq/airy/pull/1475)]
+- [[#572](https://github.com/airyhq/airy/issues/572)] Simplify senderType [[#1458](https://github.com/airyhq/airy/pull/1458)]
+
+#### 🐛 Bug Fixes
+
+- [[#1521](https://github.com/airyhq/airy/issues/1521)] Import ChatPlugin header component assets from library [[#1522](https://github.com/airyhq/airy/pull/1522)]
+- [[#1438](https://github.com/airyhq/airy/issues/1438)] Fix logout when a user sends a message to a conversation from a disconnected channel [[#1457](https://github.com/airyhq/airy/pull/1457)]
+
+#### 📚 Documentation
+
+- [[#1408](https://github.com/airyhq/airy/issues/1408)] Add missing tag gifs [[#1496](https://github.com/airyhq/airy/pull/1496)]
+- [[#1422](https://github.com/airyhq/airy/issues/1422)] AWS Docs Revamp [[#1487](https://github.com/airyhq/airy/pull/1487)]
+
+#### 🧰 Maintenance
+
+- Remove empty payloads [[#1509](https://github.com/airyhq/airy/pull/1509)]
+- Bump css-loader from 5.2.0 to 5.2.1 [[#1514](https://github.com/airyhq/airy/pull/1514)]
+- Bump webpack from 5.31.0 to 5.31.2 [[#1513](https://github.com/airyhq/airy/pull/1513)]
+- Bump eslint from 7.23.0 to 7.24.0 [[#1512](https://github.com/airyhq/airy/pull/1512)]
+- Move back components to the mono repo [[#1506](https://github.com/airyhq/airy/pull/1506)]
+- Bump @babel/preset-env from 7.13.12 to 7.13.15 [[#1498](https://github.com/airyhq/airy/pull/1498)]
+- Bump @babel/core from 7.13.14 to 7.13.15 [[#1499](https://github.com/airyhq/airy/pull/1499)]
+- Bump eslint-plugin-react from 7.23.1 to 7.23.2 [[#1500](https://github.com/airyhq/airy/pull/1500)]
+- [[#1466](https://github.com/airyhq/airy/issues/1466)] Follow up on extract model [[#1493](https://github.com/airyhq/airy/pull/1493)]
+- Bump cypress from 7.0.0 to 7.0.1 [[#1481](https://github.com/airyhq/airy/pull/1481)]
+- [[#1466](https://github.com/airyhq/airy/issues/1466)] Extract model lib from httpclient [[#1488](https://github.com/airyhq/airy/pull/1488)]
+- [[#1476](https://github.com/airyhq/airy/issues/1476)] Remove components [[#1485](https://github.com/airyhq/airy/pull/1485)]
+- Bump core-js from 3.10.0 to 3.10.1 [[#1484](https://github.com/airyhq/airy/pull/1484)]
+- Bump webpack from 5.30.0 to 5.31.0 [[#1483](https://github.com/airyhq/airy/pull/1483)]
+- Bump @bazel/typescript from 3.2.3 to 3.3.0 [[#1482](https://github.com/airyhq/airy/pull/1482)]
+- Bump copy-webpack-plugin from 8.1.0 to 8.1.1 [[#1469](https://github.com/airyhq/airy/pull/1469)]
+- Bump emoji-mart from 3.0.0 to 3.0.1 [[#1507](https://github.com/airyhq/airy/pull/1507)]
+- Fix hot module replacement  [[#1480](https://github.com/airyhq/airy/pull/1480)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.17.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.17.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.17.0/windows/amd64/airy.exe)
+
+## 0.16.0
+
+#### 🚀 Features
+
+- [[#1111](https://github.com/airyhq/airy/issues/1111)] Customize Chat Plugin [[#1456](https://github.com/airyhq/airy/pull/1456)]
+- [[#1384](https://github.com/airyhq/airy/issues/1384)] Add more types suggested replies [[#1420](https://github.com/airyhq/airy/pull/1420)]
+- [[#1293](https://github.com/airyhq/airy/issues/1293)] Add Prometheus doc [[#1448](https://github.com/airyhq/airy/pull/1448)]
+- [[#1244](https://github.com/airyhq/airy/issues/1244)] Display lightbulb icon for previous… [[#1424](https://github.com/airyhq/airy/pull/1424)]
+
+#### 🐛 Bug Fixes
+
+- [[#1310](https://github.com/airyhq/airy/issues/1310)] Airy CLI sha changes after the release [[#1443](https://github.com/airyhq/airy/pull/1443)]
+- [[#1452](https://github.com/airyhq/airy/issues/1452)] Show tags in contact info column [[#1454](https://github.com/airyhq/airy/pull/1454)]
+- [[#1455](https://github.com/airyhq/airy/issues/1455)] Configure lucene so queries are case insensitive [[#1463](https://github.com/airyhq/airy/pull/1463)]
+- [[#1304](https://github.com/airyhq/airy/issues/1304)] Wait for core components during create [[#1442](https://github.com/airyhq/airy/pull/1442)]
+- [[#925](https://github.com/airyhq/airy/issues/925)] Fix examples [[#1441](https://github.com/airyhq/airy/pull/1441)]
+- [[#1413](https://github.com/airyhq/airy/issues/1413)] expand chat plugin by default [[#1436](https://github.com/airyhq/airy/pull/1436)]
+- [[#1450](https://github.com/airyhq/airy/issues/1450)] Fix conversation counter [[#1451](https://github.com/airyhq/airy/pull/1451)]
+
+#### 📚 Documentation
+
+- [[#1422](https://github.com/airyhq/airy/issues/1422)] Add section for kubectl [[#1445](https://github.com/airyhq/airy/pull/1445)]
+- [[#1406](https://github.com/airyhq/airy/issues/1406)] live chat docs quickstart [[#1440](https://github.com/airyhq/airy/pull/1440)]
+- [[#1404](https://github.com/airyhq/airy/issues/1404)] added intro to sources [[#1444](https://github.com/airyhq/airy/pull/1444)]
+- [[#1439](https://github.com/airyhq/airy/issues/1439)] Update release process with hotfix doc [[#1449](https://github.com/airyhq/airy/pull/1449)]
+- [[#1403](https://github.com/airyhq/airy/issues/1403)] CLI Docs Revamp  [[#1426](https://github.com/airyhq/airy/pull/1426)]
+
+#### 🧰 Maintenance
+
+- [[#1164](https://github.com/airyhq/airy/issues/1164)] Document and improve message upsert endpoint [[#1468](https://github.com/airyhq/airy/pull/1468)]
+- Readme - now with nice graph-ical improvements [[#1377](https://github.com/airyhq/airy/pull/1377)]
+- [[#1466](https://github.com/airyhq/airy/issues/1466)] Prepare the codebase for lib extraction [[#1467](https://github.com/airyhq/airy/pull/1467)]
+- Bump cypress from 6.8.0 to 7.0.0 [[#1461](https://github.com/airyhq/airy/pull/1461)]
+- Bump @typescript-eslint/parser from 4.20.0 to 4.21.0 [[#1460](https://github.com/airyhq/airy/pull/1460)]
+- Bump @bazel/ibazel from 0.15.6 to 0.15.8 [[#1464](https://github.com/airyhq/airy/pull/1464)]
+- Bump webpack from 5.28.0 to 5.30.0 [[#1459](https://github.com/airyhq/airy/pull/1459)]
+- Bump @typescript-eslint/eslint-plugin from 4.20.0 to 4.21.0 [[#1462](https://github.com/airyhq/airy/pull/1462)]
+- Bump @typescript-eslint/eslint-plugin from 4.19.0 to 4.20.0 [[#1446](https://github.com/airyhq/airy/pull/1446)]
+- Bump eslint from 7.22.0 to 7.23.0 [[#1447](https://github.com/airyhq/airy/pull/1447)]
+- Remove Airy init and restructure cli [[#1414](https://github.com/airyhq/airy/pull/1414)]
+- Bump @typescript-eslint/parser from 4.19.0 to 4.20.0 [[#1434](https://github.com/airyhq/airy/pull/1434)]
+- Bump core-js from 3.9.1 to 3.10.0 [[#1435](https://github.com/airyhq/airy/pull/1435)]
+- Bump @bazel/ibazel from 0.14.0 to 0.15.6 [[#1433](https://github.com/airyhq/airy/pull/1433)]
+- Bump @babel/core from 7.13.10 to 7.13.14 [[#1432](https://github.com/airyhq/airy/pull/1432)]
+- Bump webpack-cli from 4.5.0 to 4.6.0 [[#1431](https://github.com/airyhq/airy/pull/1431)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.16.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.16.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.16.0/windows/amd64/airy.exe)
+
+## 0.15.1 Hotfix
+
+- [[#1427](https://github.com/airyhq/airy/issues/1427)] Fix broken UI pod config for AWS deployment
+
+## 0.15.0
+
+#### 🚀 Features
+
+- [[#1299](https://github.com/airyhq/airy/issues/1299)] Video Fallback for the render library [[#1412](https://github.com/airyhq/airy/pull/1412)]
+- [[#1357](https://github.com/airyhq/airy/issues/1357)] Rename the draft release with release.sh [[#1394](https://github.com/airyhq/airy/pull/1394)]
+- [[#1018](https://github.com/airyhq/airy/issues/1018)] Introduce aws provider for airy create [[#1240](https://github.com/airyhq/airy/pull/1240)]
+- [[#1182](https://github.com/airyhq/airy/issues/1182)] Added gifs and image to supported message types chat plugin [[#1365](https://github.com/airyhq/airy/pull/1365)]
+- [[#1326](https://github.com/airyhq/airy/issues/1326)] Move Carousel to components lib [[#1364](https://github.com/airyhq/airy/pull/1364)]
+- [[#1097](https://github.com/airyhq/airy/issues/1097)] Allow users to fetch a chat plugin resume token [[#1350](https://github.com/airyhq/airy/pull/1350)]
+- [[#1325](https://github.com/airyhq/airy/issues/1325)] Move ListenOutsideClick to component lib [[#1345](https://github.com/airyhq/airy/pull/1345)]
+
+#### 🐛 Bug Fixes
+
+- [[#1392](https://github.com/airyhq/airy/issues/1392)] Cypress testing for filtering is false positive [[#1402](https://github.com/airyhq/airy/pull/1402)]
+- [[#1097](https://github.com/airyhq/airy/issues/1097)] Fix CORS issue introduced by PR #1350 [[#1371](https://github.com/airyhq/airy/pull/1371)]
+- [[#1369](https://github.com/airyhq/airy/issues/1369)] Improved filtering for channels [[#1375](https://github.com/airyhq/airy/pull/1375)]
+
+#### 📚 Documentation
+
+- [[#1363](https://github.com/airyhq/airy/issues/1363)] Added suggested replies doc [[#1381](https://github.com/airyhq/airy/pull/1381)]
+- [[#1355](https://github.com/airyhq/airy/issues/1355)] Add debugging advices to all sources [[#1368](https://github.com/airyhq/airy/pull/1368)]
+- [[#1318](https://github.com/airyhq/airy/issues/1318)] Improve components page [[#1360](https://github.com/airyhq/airy/pull/1360)]
+
+#### 🧰 Maintenance
+
+- [[#1045](https://github.com/airyhq/airy/issues/1045)] Automated testing of the web socket [[#1382](https://github.com/airyhq/airy/pull/1382)]
+- Move CLI to root [[#1401](https://github.com/airyhq/airy/pull/1401)]
+- Bump @babel/core from 7.8.4 to 7.13.10 [[#1186](https://github.com/airyhq/airy/pull/1186)]
+- Bump webpack from 4.46.0 to 5.27.2 [[#1352](https://github.com/airyhq/airy/pull/1352)]
+- Minor tweaks to titles and paragraphs [[#1379](https://github.com/airyhq/airy/pull/1379)]
+- Bump @typescript-eslint/eslint-plugin from 4.18.0 to 4.19.0 [[#1376](https://github.com/airyhq/airy/pull/1376)]
+- Bump css-loader from 5.1.3 to 5.2.0 [[#1378](https://github.com/airyhq/airy/pull/1378)]
+- Bump html-webpack-plugin from 4.5.2 to 5.3.1 [[#1372](https://github.com/airyhq/airy/pull/1372)]
+- Bump @bazel/typescript from 3.2.2 to 3.2.3 [[#1374](https://github.com/airyhq/airy/pull/1374)]
+- Bump sass-loader from 10.1.1 to 11.0.1 [[#1373](https://github.com/airyhq/airy/pull/1373)]
+- Bump copy-webpack-plugin from 6.4.1 to 8.1.0 [[#1366](https://github.com/airyhq/airy/pull/1366)]
+- Bump eslint-plugin-react from 7.22.0 to 7.23.0 [[#1339](https://github.com/airyhq/airy/pull/1339)]
+- Bump webpack from 5.27.2 to 5.28.0 [[#1361](https://github.com/airyhq/airy/pull/1361)]
+- Update the release process [[#1358](https://github.com/airyhq/airy/pull/1358)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.15.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.15.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.15.0/windows/amd64/airy.exe)
+
+## 0.14.0
+
+#### Changes
+
+- Docs/1301 add docs for twilio sources [[#1332](https://github.com/airyhq/airy/pull/1332)]
+- Bump webpack-cli from 3.3.12 to 4.5.0 [[#1287](https://github.com/airyhq/airy/pull/1287)]
+- Bump css-loader from 3.6.0 to 5.1.3 [[#1320](https://github.com/airyhq/airy/pull/1320)]
+- Bump react-window from 1.8.5 to 1.8.6 [[#1309](https://github.com/airyhq/airy/pull/1309)]
+- Bump react-window-infinite-loader from 1.0.5 to 1.0.7 [[#1286](https://github.com/airyhq/airy/pull/1286)]
+- [[#1235](https://github.com/airyhq/airy/issues/1235)] Add test to connect a chatplugin channel [[#1269](https://github.com/airyhq/airy/pull/1269)]
+
+#### 🚀 Features
+
+- [[#1312](https://github.com/airyhq/airy/issues/1312)] Add users.list [[#1333](https://github.com/airyhq/airy/pull/1333)]
+- [[#1049](https://github.com/airyhq/airy/issues/1049)] Script that executes all integration tests [[#1344](https://github.com/airyhq/airy/pull/1344)]
+- [[#970](https://github.com/airyhq/airy/issues/970)] Improved ui components docs [[#1341](https://github.com/airyhq/airy/pull/1341)]
+- [[#1272](https://github.com/airyhq/airy/issues/1272)] Make cypress tests independent from each other [[#1317](https://github.com/airyhq/airy/pull/1317)]
+- [[#1328](https://github.com/airyhq/airy/issues/1328)] Develop version of airy CLI is not… [[#1330](https://github.com/airyhq/airy/pull/1330)]
+- [[#1267](https://github.com/airyhq/airy/issues/1267)] Created generic logo component [[#1329](https://github.com/airyhq/airy/pull/1329)]
+- [[#677](https://github.com/airyhq/airy/issues/677)] Render Suggested Replies [[#1324](https://github.com/airyhq/airy/pull/1324)]
+- [[#1036](https://github.com/airyhq/airy/issues/1036)] API key authentication [[#1316](https://github.com/airyhq/airy/pull/1316)]
+- [[#968](https://github.com/airyhq/airy/issues/968)] Improve UI/Inbox docs [[#1280](https://github.com/airyhq/airy/pull/1280)]
+- [[#1041](https://github.com/airyhq/airy/issues/1041)] Minikube provider [[#1179](https://github.com/airyhq/airy/pull/1179)]
+- [[#1278](https://github.com/airyhq/airy/issues/1278)] GIFs in docs are too large [[#1295](https://github.com/airyhq/airy/pull/1295)]
+- [[#1281](https://github.com/airyhq/airy/issues/1281)] Added RichCard and RichCardCarousel to google [[#1288](https://github.com/airyhq/airy/pull/1288)]
+- [[#1222](https://github.com/airyhq/airy/issues/1222)] Improved structure in channels pages [[#1271](https://github.com/airyhq/airy/pull/1271)]
+- [[#1270](https://github.com/airyhq/airy/issues/1270)] Installation: Toggle broken \& Update for… [[#1273](https://github.com/airyhq/airy/pull/1273)]
+- [[#1050](https://github.com/airyhq/airy/issues/1050)] Add test for filtering and creating a tag [[#1252](https://github.com/airyhq/airy/pull/1252)]
+
+#### 🐛 Bug Fixes
+
+- [[#1239](https://github.com/airyhq/airy/issues/1239)] Fix message wrapper for render library [[#1297](https://github.com/airyhq/airy/pull/1297)]
+- [[#1306](https://github.com/airyhq/airy/issues/1306)] Fix contact metadata problem [[#1349](https://github.com/airyhq/airy/pull/1349)]
+- [[#1343](https://github.com/airyhq/airy/issues/1343)] Save button doesn't work for adding a… [[#1347](https://github.com/airyhq/airy/pull/1347)]
+- [[#1298](https://github.com/airyhq/airy/issues/1298)] MessageTextArea in inbox doesn't shrink… [[#1340](https://github.com/airyhq/airy/pull/1340)]
+- [[#1303](https://github.com/airyhq/airy/issues/1303)] Long messages from contacts shrink the… [[#1334](https://github.com/airyhq/airy/pull/1334)]
+- [[#1267](https://github.com/airyhq/airy/issues/1267)] Updated sourceLogo component [[#1331](https://github.com/airyhq/airy/pull/1331)]
+- [[#1041](https://github.com/airyhq/airy/issues/1041)] follow up fix: missing quotes in web dev script [[#1311](https://github.com/airyhq/airy/pull/1311)]
+- [[#1090](https://github.com/airyhq/airy/issues/1090)] Add fallback image to channels [[#1254](https://github.com/airyhq/airy/pull/1254)]
+
+#### 📚 Documentation
+
+- [[#1323](https://github.com/airyhq/airy/issues/1323)] Fix minikube command [[#1327](https://github.com/airyhq/airy/pull/1327)]
+- [[#1314](https://github.com/airyhq/airy/issues/1314)] Have one TLDR [[#1315](https://github.com/airyhq/airy/pull/1315)]
+- [[#1264](https://github.com/airyhq/airy/issues/1264)] Prepare config page for the new milestone [[#1308](https://github.com/airyhq/airy/pull/1308)]
+- [[#1265](https://github.com/airyhq/airy/issues/1265)] Merge cheatsheet from introduction into reference [[#1277](https://github.com/airyhq/airy/pull/1277)]
+- [[#969](https://github.com/airyhq/airy/issues/969)] Cleanup tag docs [[#1275](https://github.com/airyhq/airy/pull/1275)]
+- [[#1263](https://github.com/airyhq/airy/issues/1263)] Airy Core Components: Move to own page [[#1276](https://github.com/airyhq/airy/pull/1276)]
+
+#### 🧰 Maintenance
+
+- Fix build [[#1346](https://github.com/airyhq/airy/pull/1346)]
+- Bump react-redux from 7.2.2 to 7.2.3 [[#1335](https://github.com/airyhq/airy/pull/1335)]
+- Bump @babel/preset-env from 7.13.10 to 7.13.12 [[#1336](https://github.com/airyhq/airy/pull/1336)]
+- Bump @typescript-eslint/parser from 4.18.0 to 4.19.0 [[#1337](https://github.com/airyhq/airy/pull/1337)]
+- Remove ejs compiled loader [[#1322](https://github.com/airyhq/airy/pull/1322)]
+- Invert icons on darkTheme [[#1319](https://github.com/airyhq/airy/pull/1319)]
+- Bump style-loader from 1.3.0 to 2.0.0 [[#1313](https://github.com/airyhq/airy/pull/1313)]
+- Bump redux-starter-kit from 0.8.1 to 2.0.0 [[#1296](https://github.com/airyhq/airy/pull/1296)]
+- Bump node-sass from 4.14.0 to 5.0.0 [[#1226](https://github.com/airyhq/airy/pull/1226)]
+- Bump @svgr/webpack from 5.4.0 to 5.5.0 [[#1257](https://github.com/airyhq/airy/pull/1257)]
+- Bump @types/node from 12.11.1 to 14.14.35 [[#1258](https://github.com/airyhq/airy/pull/1258)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.14.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.14.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.14.0/windows/amd64/airy.exe)
+
+## 0.13.0
+
+#### Changes
 - Bump typesafe-actions from 4.4.2 to 5.1.0 [[#1210](https://github.com/airyhq/airy/pull/1210)]
 - [[#783](https://github.com/airyhq/airy/issues/783)] Introduce changelog [[#1221](https://github.com/airyhq/airy/pull/1221)]
 - Bump yargs-parser from 5.0.0 to 5.0.1 [[#1213](https://github.com/airyhq/airy/pull/1213)]
 - Bump react-dom from 16.12.0 to 16.14.0 [[#1188](https://github.com/airyhq/airy/pull/1188)]
-- [[#659](https://github.com/airyhq/airy/issues/659)] Enable to connect via facebook [[#1130](https://github.com/airyhq/airy/pull/1130)]
 - [[#773](https://github.com/airyhq/airy/issues/773)] change searchbar to the left [[#1192](https://github.com/airyhq/airy/pull/1192)]
 
 #### 🚀 Features
-
 - [[#1247](https://github.com/airyhq/airy/issues/1247)] Optional variables for templates creation [[#1248](https://github.com/airyhq/airy/pull/1248)]
 - [[#656](https://github.com/airyhq/airy/issues/656)] Enable users to connect via Twilio Sms and Whatsapp [[#1223](https://github.com/airyhq/airy/pull/1223)]
+- [[#659](https://github.com/airyhq/airy/issues/659)] Enable to connect via facebook [[#1130](https://github.com/airyhq/airy/pull/1130)]
 - [[#871](https://github.com/airyhq/airy/issues/871)] Httpclient methods need return value [[#1199](https://github.com/airyhq/airy/pull/1199)]
 - [[#868](https://github.com/airyhq/airy/issues/868)] Templates manager [[#1123](https://github.com/airyhq/airy/pull/1123)]
 - [[#1228](https://github.com/airyhq/airy/issues/1228)] Scope templates list by source type [[#1230](https://github.com/airyhq/airy/pull/1230)]

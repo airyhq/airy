@@ -55,16 +55,6 @@ java_library(
 )
 
 java_library(
-    name = "jdbi",
-    exports = [
-        "@maven//:org_jdbi_jdbi3_core",
-        "@maven//:org_jdbi_jdbi3_postgres",
-        "@maven//:org_jdbi_jdbi3_spring4",
-        "@maven//:org_jdbi_jdbi3_sqlobject",
-    ],
-)
-
-java_library(
     name = "lombok",
     exported_plugins = [
         ":lombok_plugin",
@@ -146,9 +136,12 @@ java_library(
 java_library(
     name = "springboot_security",
     exports = [
+        "@maven//:org_springframework_boot_spring_boot_starter_oauth2_client",
         "@maven//:org_springframework_boot_spring_boot_starter_security",
+        "@maven//:org_springframework_security_oauth_spring_security_oauth2",
         "@maven//:org_springframework_security_spring_security_config",
         "@maven//:org_springframework_security_spring_security_core",
+        "@maven//:org_springframework_security_spring_security_oauth2_core",
         "@maven//:org_springframework_security_spring_security_web",
     ],
 )
@@ -180,6 +173,7 @@ exports_files(
         ".prettierrc.json",
         ".prettierignore",
         "yarn.lock",
+        "VERSION",
     ],
 )
 

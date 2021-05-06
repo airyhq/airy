@@ -1,9 +1,10 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
+import {ListenOutsideClick} from 'components';
 import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
-import {SearchField, ErrorNotice} from '@airyhq/components';
-import {Template} from 'httpclient';
+import {SearchField, ErrorNotice} from 'components';
+import {Template, Source} from 'model';
 import {StateModel} from '../../../reducers';
 import emptyState from 'assets/images/empty-state/templates-empty-state.png';
 import notFoundState from 'assets/images/not-found/templates-not-found.png';
@@ -16,6 +17,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: StateModel) => {
   return {
     templates: state.data.templates.all,
+    templatesSource: state.data.templates.source,
   };
 };
 
@@ -24,45 +26,15 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = {
   onClose: () => void;
   selectTemplate: (t: Template) => void;
-  channelSource: string;
+  source: Source;
 } & ConnectedProps<typeof connector>;
 
-const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, channelSource}: Props) => {
+const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, source, templatesSource}: Props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [templatesList, setTemplatesList] = useState(templates);
-  const [loading, setLoading] = useState(true);
   const [listTemplatesError, setListTemplatesError] = useState(false);
+
   const componentRef = useRef(null);
-
-  const keyDown = useCallback(
-    e => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    },
-    [onClose]
-  );
-
-  const clickedOutside = useCallback(
-    e => {
-      if (componentRef.current === null || componentRef.current.contains(e.target)) {
-        return;
-      }
-
-      onClose();
-    },
-    [onClose]
-  );
-
-  useEffect(() => {
-    document.addEventListener('keydown', keyDown);
-    document.addEventListener('click', clickedOutside);
-
-    return () => {
-      document.removeEventListener('keydown', keyDown);
-      document.removeEventListener('click', clickedOutside);
-    };
-  }, [keyDown, clickedOutside]);
 
   useEffect(() => {
     templates = templates.filter((template: Template) =>
@@ -73,14 +45,12 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, ch
   }, [searchQuery, templates]);
 
   useEffect(() => {
-    const listAllTemplatesFromSourcePayload = {source: channelSource};
-    let abort = false;
+    const listAllTemplatesFromSourcePayload = {source: source};
+    let abort;
 
-    if (templates.length === 0 && loading) {
+    if (source !== templatesSource) {
       listTemplates(listAllTemplatesFromSourcePayload)
-        .then(() => {
-          if (templates.length === 0 && !abort) setLoading(false);
-        })
+        .then()
         .catch(() => {
           if (!abort) setListTemplatesError(true);
         });
@@ -89,7 +59,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, ch
     return () => {
       abort = true;
     };
-  }, [templates, loading]);
+  }, [source, templatesSource]);
 
   const renderEmpty = () => {
     return (
@@ -122,47 +92,49 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, ch
   };
 
   return (
-    <div className={styles.component} ref={componentRef}>
-      {listTemplatesError && !searchQuery ? (
-        renderError()
-      ) : !loading && templates.length === 0 && !searchQuery ? (
-        renderEmpty()
-      ) : (
-        <>
-          <div className={styles.topLine}>
-            <div className={styles.searchField}>
-              <SearchField
-                value={searchQuery}
-                setValue={(value: string) => setSearchQuery(value)}
-                autoFocus={true}
-                placeholder="Search for templates"
-              />
+    <ListenOutsideClick onOuterClick={onClose}>
+      <div className={styles.component} ref={componentRef}>
+        {listTemplatesError ? (
+          renderError()
+        ) : templates.length === 0 && source === templatesSource ? (
+          renderEmpty()
+        ) : (
+          <>
+            <div className={styles.topLine}>
+              <div className={styles.searchField}>
+                <SearchField
+                  value={searchQuery}
+                  setValue={(value: string) => setSearchQuery(value)}
+                  autoFocus={true}
+                  placeholder="Search for templates"
+                />
+              </div>
             </div>
-          </div>
-          {templatesList.length === 0 && searchQuery.length > 0 ? (
-            renderNotFound()
-          ) : (
-            <div className={styles.templateList}>
-              {templatesList &&
-                templatesList.map((template, id) => {
-                  const templateContent = JSON.parse(template.content) as any;
-                  return (
-                    <div
-                      className={styles.templatePreviewWrapper}
-                      key={id}
-                      onClick={() => {
-                        selectTemplate(template);
-                      }}>
-                      <div className={styles.tempatePreviewName}>{template.name}</div>
-                      <SourceMessage message={{id: template.id, content: templateContent}} source={template.source} />
-                    </div>
-                  );
-                })}
-            </div>
-          )}
-        </>
-      )}
-    </div>
+            {templatesList.length === 0 && searchQuery.length > 0 ? (
+              renderNotFound()
+            ) : (
+              <div className={styles.templateList}>
+                {templatesList &&
+                  templatesList.length &&
+                  templatesList.map((template, id) => {
+                    return (
+                      <div
+                        className={styles.templatePreviewWrapper}
+                        key={id}
+                        onClick={() => {
+                          selectTemplate(template);
+                        }}>
+                        <div className={styles.tempatePreviewName}>{template.name}</div>
+                        <SourceMessage content={template} source={template.source} contentType="template" />
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </ListenOutsideClick>
   );
 };
 

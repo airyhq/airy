@@ -15,7 +15,16 @@ const adjust = (color, amount) => {
   );
 };
 
-const ButtonBox = ({children, icon, title, description, link, customizedBackgroundColor, customizedHoverColor}) => {
+const ButtonBox = ({
+  children,
+  icon,
+  iconInvertible,
+  title,
+  description,
+  link,
+  customizedBackgroundColor,
+  customizedHoverColor,
+}) => {
   const {isDarkTheme} = useThemeContext();
 
   if (customizedBackgroundColor) {
@@ -31,7 +40,7 @@ const ButtonBox = ({children, icon, title, description, link, customizedBackgrou
       to={useBaseUrl(link)}
       className={isDarkTheme ? styles.containerDark : styles.containerLight}
       style={{backgroundColor: customizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${customizedHoverColor}`}}>
-      {icon && icon()}
+      <span className={isDarkTheme && iconInvertible ? styles.invertedIcon : ''}>{icon}</span>
       <div>
         <h4 className={isDarkTheme ? styles.containerDarkTitle : styles.containerLightTitle}>{title}</h4>
         <p className={isDarkTheme ? styles.containerDarkDescription : styles.containerLightDescription}>

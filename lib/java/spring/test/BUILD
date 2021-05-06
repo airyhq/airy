@@ -11,7 +11,6 @@ custom_java_library(
         "//:spring",
         "//:springboot_test",
         "//lib/java/log",
-        "//lib/java/spring/jwt:airy-jwt",
         "//lib/java/test",
     ],
 )

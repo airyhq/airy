@@ -44,11 +44,19 @@ public class MetadataControllerTest {
     @Autowired
     private WebTestHelper webTestHelper;
 
+    private static final Channel channel = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId(UUID.randomUUID().toString())
+            .setSource("facebook")
+            .setSourceChannelId("ps-id")
+            .build();
+
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
 
         kafkaTestHelper.beforeAll();
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId().toString(), channel));
     }
 
     @AfterAll
@@ -63,14 +71,7 @@ public class MetadataControllerTest {
 
     @Test
     void canUpsertMetadata() throws Exception {
-        final Channel channel = Channel.newBuilder()
-                .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId(UUID.randomUUID().toString())
-                .setSource("facebook")
-                .setSourceChannelId("ps-id")
-                .build();
         final String conversationId = UUID.randomUUID().toString();
-
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
         final List<ProducerRecord<String, SpecificRecordBase>> producerRecords = generateRecords(conversationId, channel, 1);
         kafkaTestHelper.produceRecords(producerRecords);
@@ -78,19 +79,24 @@ public class MetadataControllerTest {
 
         retryOnException(
                 () -> webTestHelper.post("/metadata.upsert",
-                        "{\"subject\": \"message\", \"id\": \"" + messageId + "\", \"data\": {\"sentFrom\": \"iPhone\"}}",
-                        "user-id")
-                        .andExpect(status().isOk()),
+                        "{\"subject\": \"message\", \"id\": \"" + messageId + "\", \"data\": {\"sentFrom\": \"iPhone\"}}")
+                        .andExpect(status().isNoContent()),
                 "Error upserting metadata"
         );
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info",
-                        "{\"conversation_id\":\"" + conversationId + "\"}",
-                        "user-id")
+                        "{\"conversation_id\":\"" + conversationId + "\"}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.last_message.metadata.user_data.sentFrom", is("iPhone"))),
                 "Conversations list metadata is not present"
         );
+    }
+
+    @Test
+    void failsOnNonStringFieldValues() throws Exception {
+        webTestHelper.post("/metadata.upsert",
+                "{\"subject\": \"channel\", \"id\": \"" + channel.getId() + "\", \"data\": {\"sentFrom\": 123}}")
+                .andExpect(status().isBadRequest());
     }
 }

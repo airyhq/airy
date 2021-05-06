@@ -2,7 +2,6 @@ package co.airy.mapping;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.mapping.model.Audio;
 import co.airy.mapping.model.Content;
 import co.airy.mapping.model.Text;
@@ -20,9 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.startsWith;
 
 @SpringBootTest(classes = AirySpringBootApplication.class)
 public class ContentMapperTest {
@@ -43,7 +40,7 @@ public class ContentMapperTest {
                 .setSource("facebook")
                 .setSentAt(Instant.now().toEpochMilli())
                 .setSenderId("sourceConversationId")
-                .setSenderType(SenderType.APP_USER)
+                .setIsFromContact(false)
                 .setDeliveryState(DeliveryState.DELIVERED)
                 .setConversationId("conversationId")
                 .setChannelId("channelId")
@@ -78,7 +75,7 @@ public class ContentMapperTest {
                 .setSource("fakesource")
                 .setSentAt(Instant.now().toEpochMilli())
                 .setSenderId("sourceConversationId")
-                .setSenderType(SenderType.SOURCE_CONTACT)
+                .setIsFromContact(true)
                 .setDeliveryState(DeliveryState.DELIVERED)
                 .setConversationId("conversationId")
                 .setChannelId("channelId")

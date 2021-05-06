@@ -1,0 +1,8 @@
+enabled: true
+image: schickling/beanstalkd
+imageTag: latest
+resources: {}
+port: 11300
+prometheusExporterImage: messagebird/beanstalkd_exporter
+prometheusExporterImageTag: latest
+prometheusExporterPort: 8080

@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -66,7 +65,6 @@ class UnreadCountTest {
 
     @Test
     void canResetUnreadCount() throws Exception {
-        final String userId = "user-id";
         final Channel channel = Channel.newBuilder()
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setId(UUID.randomUUID().toString())
@@ -89,24 +87,24 @@ class UnreadCountTest {
                         .setSenderId("source-conversation-id")
                         .setDeliveryState(DeliveryState.DELIVERED)
                         .setSource("facebook")
-                        .setSenderType(SenderType.APP_USER)
                         .setConversationId(conversationId)
                         .setChannelId(channel.getId())
                         .setContent("from airy")
+                        .setIsFromContact(false)
                         .build())
         ));
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
 
-        retryOnException(() -> webTestHelper.post("/conversations.info", payload, userId)
+        retryOnException(() -> webTestHelper.post("/conversations.info", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.metadata.unread_count", equalTo(unreadMessages))),
                 "Conversation not showing unread count");
 
-        webTestHelper.post("/conversations.read", payload, userId).andExpect(status().isAccepted());
+        webTestHelper.post("/conversations.read", payload).andExpect(status().isNoContent());
 
         retryOnException(
-                () -> webTestHelper.post("/conversations.info", payload, userId)
+                () -> webTestHelper.post("/conversations.info", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.metadata.unread_count", equalTo(0))),
                 "Conversation unread count did not reset");

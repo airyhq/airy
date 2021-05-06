@@ -1,1 +1,3 @@
+component: frontend-chat-plugin
+mandatory: true
 image: frontend/chat-plugin

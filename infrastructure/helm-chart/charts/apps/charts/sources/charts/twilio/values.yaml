@@ -1,0 +1,4 @@
+component: sources-twilio
+mandatory: false
+imageConnector: sources/twilio-connector
+imageEventsRouter: sources/twilio-events-router

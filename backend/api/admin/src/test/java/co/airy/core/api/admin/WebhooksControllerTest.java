@@ -23,15 +23,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties", properties = {
-        "ALLOWED_ORIGINS=origin1,origin2",
+        "allowedOrigins=origin1,origin2",
 })
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
@@ -74,34 +71,29 @@ public class WebhooksControllerTest {
 
     @Test
     public void canManageWebhook() throws Exception {
-        webTestHelper.post("/webhooks.info", "{}", "user-id").andExpect(status().isNotFound());
+        webTestHelper.post("/webhooks.info", "{}").andExpect(status().isNotFound());
 
         final String url = "http://example.org/webhook";
         final String xAuthHeader = "auth token";
 
         final String payload = "{\"url\":\"" + url + "\",\"headers\":{\"X-Auth\":\"" + xAuthHeader + "\"}}";
 
-        webTestHelper.post("/webhooks.subscribe", payload, "user-id")
+        webTestHelper.post("/webhooks.subscribe", payload)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", equalTo(url)))
-                .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
-                .andExpect(jsonPath("$.api_secret", is(not(nullValue()))));
+                .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)));
 
-        retryOnException(() -> webTestHelper.post("/webhooks.info", "{}", "user-id")
+        retryOnException(() -> webTestHelper.post("/webhooks.info", "{}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.url", equalTo(url)))
-                        .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
-                        .andExpect(jsonPath("$.api_secret", is(not(nullValue())))),
+                        .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader))),
                 "Webhook was not stored"
         );
 
-        webTestHelper.post("/webhooks.unsubscribe", payload, "user-id")
+        webTestHelper.post("/webhooks.unsubscribe", payload)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", equalTo(url)))
-                .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)))
-                .andExpect(jsonPath("$.api_secret", is(not(nullValue()))));
-
-        //TODO add assertion?
+                .andExpect(jsonPath("$.headers['X-Auth']", equalTo(xAuthHeader)));
     }
 
 }

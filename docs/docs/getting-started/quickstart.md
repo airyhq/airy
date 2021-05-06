@@ -25,7 +25,7 @@ directly in Apache Kafka.
 - [Step 4: Consume directly from Apache Kafka](#step-4-consume-directly-from-apache-kafka)
 
 <ButtonBox
-icon={() => <RocketSVG />}
+icon={<RocketSVG />}
 title='Did you already install the Airy CLI?'
 description='To get going with the Quickstart, you must install Airy first. Once the CLI is up and running you are good to go.'
 link='/getting-started/installation/introduction'
@@ -36,20 +36,11 @@ link='/getting-started/installation/introduction'
 The [Airy Live Chat Plugin](/sources/chatplugin/overview.md) source is well suited for a
 first integration because it does not require any configuration.
 
-Once you [signed up](/api/endpoints/users.md#signup), you must [log
-in](/api/authentication.md#login) so you can obtain a valid JWT token for the
-upcoming API calls:
-
-```sh
-token=$(echo $(curl -H 'Content-Type: application/json' -d \
-"{ \
-\"email\":\"grace@example.com\", \
-\"password\":\"the_answer_is_42\" \
-}" airy.core/users.login) | jq -r '.token')
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d \
+```shell script
+curl -H "Content-Type: application/json" -d \
 "{
     \"name\": \"chat plugin source\"
-}" airy.core/channels.chatplugin.connect
+}" http://airy.core/channels.chatplugin.connect
 ```
 
 <img alt="channels_connect" src={useBaseUrl('img/getting-started/quickstart/connect_chatplugin_channel.gif')} />
@@ -77,23 +68,21 @@ To see how messages are flowing through the system, [list
 conversations](/api/endpoints/conversations.md#list) for the channel you have just
 created. it should return the message you have just sent.
 
-<img alt="conversations.list" src={useBaseUrl('img/getting-started/quickstart/conversation_list.gif')} />
-
-```bash
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $token" -d "{}" \
-airy.core/conversations.list | jq .
+```shell script
+curl -XPOST http://airy.core/conversations.list | jq .
 ```
+
+<img alt="conversations.list" src={useBaseUrl('img/getting-started/quickstart/conversation_list.gif')} />
 
 ## Step 4: Consume directly from Apache Kafka
 
 You can also consume the messages directly from the Kafka
 `application.communication.messages` topic:
 
-```
-cd infrastructure && vagrant ssh
+```shell script
 kubectl exec -it kafka-0 -- /bin/bash
-kafka-console-consumer \
---bootstrap-server airy-cp-kafka:9092 \
+kafka-console-consumer.sh \
+--bootstrap-server kafka:9092 \
 --topic application.communication.messages \
 --from-beginning
 ```

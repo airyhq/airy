@@ -1,6 +1,6 @@
 import {StompWrapper} from './stompWrapper';
-import {Message, Channel, MetadataEvent} from 'httpclient';
-import {EventPayloadUnion} from './payload';
+import {Message, Channel, MetadataEvent, Tag} from 'model';
+import {EventPayload} from './payload';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
@@ -8,6 +8,7 @@ type CallbackMap = {
   onMessage?: (conversationId: string, channelId: string, message: Message) => void;
   onMetadata?: (metadataEvent: MetadataEvent) => void;
   onChannel?: (channel: Channel) => void;
+  onTag?: (tag: Tag) => void;
   onError?: () => void;
 };
 
@@ -15,16 +16,14 @@ type CallbackMap = {
 const protocol = location.protocol.replace('http', 'ws');
 
 export class WebSocketClient {
-  public readonly token?: string;
   public readonly apiUrlConfig?: string;
 
   stompWrapper: StompWrapper;
   callbackMap: CallbackMap;
 
-  constructor(token: string, callbackMap: CallbackMap = {}, baseUrl: string) {
-    this.token = token;
+  constructor(apiUrl: string, callbackMap: CallbackMap = {}) {
     this.callbackMap = callbackMap;
-    this.apiUrlConfig = `${protocol}//${baseUrl}/ws.communication`;
+    this.apiUrlConfig = `${protocol}//${new URL(apiUrl).host}/ws.communication`;
 
     this.stompWrapper = new StompWrapper(
       this.apiUrlConfig,
@@ -33,7 +32,6 @@ export class WebSocketClient {
           this.onEvent(item.body);
         },
       },
-      this.token,
       this.onError
     );
     this.stompWrapper.initConnection();
@@ -44,10 +42,10 @@ export class WebSocketClient {
   };
 
   onEvent = (body: string) => {
-    const json: EventPayloadUnion = JSON.parse(body) as any;
+    const json = JSON.parse(body) as EventPayload;
     switch (json.type) {
       case 'channel':
-        this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true, stopPaths: ['metadata.userData']}));
+        this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true, stopPaths: ['metadata.user_data']}));
         break;
       case 'message':
         this.callbackMap.onMessage?.(json.payload.conversation_id, json.payload.channel_id, {
@@ -57,6 +55,9 @@ export class WebSocketClient {
         break;
       case 'metadata':
         this.callbackMap.onMetadata?.(json.payload);
+        break;
+      case 'tag':
+        this.callbackMap.onTag?.(json.payload);
         break;
       default:
         console.error('Unknown /events payload', json);

@@ -1,26 +1,27 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Tag as TagModel, TagColor, getTags} from 'httpclient';
+import {Tag as TagModel, TagColor} from 'model';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
-import AvatarImage from '../../../../components/AvatarImage';
+import {Avatar} from 'render';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
 import {StateModel} from '../../../../reducers';
 
 import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
-import {Button, Input, LinkButton} from '@airyhq/components';
-import {getCurrentConversation} from '../../../../selectors/conversations';
+import {Button, Input, LinkButton} from 'components';
+import {getConversation} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 
 import {cyShowTagsDialog, cyTagsDialogInput, cyTagsDialogButton} from 'handles';
+import difference from 'lodash/difference';
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
-    conversation: getCurrentConversation(state, ownProps),
+    conversation: getConversation(state, ownProps),
     tags: state.data.tags.all,
   };
 };
@@ -41,9 +42,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [tagName, setTagName] = useState('');
 
   useEffect(() => {
-    if (tags.length == 0) {
-      listTags();
-    }
+    listTags();
   }, []);
 
   const showAddTags = () => {
@@ -60,31 +59,21 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     removeTagFromConversation(conversation.id, tag.id);
   };
 
-  const filterForUnusedTags = (tags: TagModel[]): TagModel[] => {
-    return tags.filter(tag => !(tag.id in (conversation.metadata.tags || {})));
-  };
+  const tagSorter = (a: TagModel, b: TagModel) => a.name.localeCompare(b.name);
 
-  const filterForUsedTags = (tags: TagModel[]): TagModel[] => {
-    return tags.filter(tag => tag.id in (conversation.metadata.tags || {}));
-  };
+  const conversationTags = () =>
+    Object.keys(conversation.metadata.tags || {})
+      .map(tagId => tags[tagId])
+      .filter(tag => tag !== undefined)
+      .sort(tagSorter);
 
-  const tagSorter = (tagA: TagModel, tagB: TagModel) => {
-    if (tagA.name < tagB.name) {
-      return -1;
-    }
-    if (tagA.name > tagB.name) {
-      return 1;
-    }
-
-    return 0;
-  };
-
-  const checkIfExists = (value: string) => {
-    const usedTags = filterForUsedTags(tags);
-    if (value.length == 0) {
+  const checkIfExists = (tagName: string) => {
+    const usedTags = conversationTags();
+    if (tagName.length === 0) {
       return true;
     }
-    if (usedTags.find(tag => tag.name === value)) {
+
+    if (usedTags.find(tag => tag.name === tagName)) {
       return 'Tag already added';
     }
 
@@ -92,15 +81,17 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const getFilteredTags = (): TagModel[] =>
-    filterForUnusedTags(tags)
+    difference(Object.keys(tags), Object.keys(conversation.metadata.tags || {}))
+      .map(id => tags[id])
+      .filter(tag => tag !== undefined)
       .sort(tagSorter)
-      .filter(tag => tag.name.startsWith(tagName));
+      .filter((tag: TagModel) => tag.name.startsWith(tagName));
 
   const submitForm = (event: FormEvent) => {
     event.preventDefault();
     const filteredTags = getFilteredTags();
 
-    if (filteredTags.length == 1) {
+    if (filteredTags.length === 1) {
       addTag(filteredTags[0]);
     } else if (filteredTags.length == 0 && tagName.trim().length > 0) {
       createTag({name: tagName.trim(), color}).then((tag: TagModel) => {
@@ -117,9 +108,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     return (
       <Dialog close={() => setShowTagsDialog(false)}>
         <form className={styles.addTags} onSubmit={submitForm}>
-          <div className={styles.addTagHeadline}>Add a tag</div>
           <Input
             type="text"
+            label="Add a tag"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setTagName(e.target.value);
             }}
@@ -129,7 +120,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             placeholder="Please enter a tag name"
             autoComplete="off"
             autoFocus
-            fontClass="font-s"
+            fontClass="font-base"
             minLength={1}
             maxLength={50}
             validation={checkIfExists}
@@ -149,9 +140,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             })
           ) : (
             <div>
-              <div>
-                <Tag tag={{id: '', color: color, name: tagName}} />
-              </div>
+              {tagName.length > 0 && <Tag tag={{id: '', color: color, name: tagName}} />}
               <p className={styles.addTagsDescription}>Pick a color</p>
               <ColorSelector
                 handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value as TagColor)}
@@ -170,10 +159,6 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     );
   };
 
-  const findTag = (tagId: string): TagModel => {
-    return tags.find(tag => tag.id === tagId);
-  };
-
   const contact = conversation.metadata.contact;
   return (
     <div className={styles.content}>
@@ -181,10 +166,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
         <div className={styles.metaPanel}>
           <div className={styles.contact}>
             <div className={styles.avatarImage}>
-              <AvatarImage contact={contact} />
+              <Avatar contact={contact} />
             </div>
-
-            <div className={styles.displayName}>{contact.displayName}</div>
+            <div className={styles.displayName}>{contact?.displayName}</div>
           </div>
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>
@@ -197,11 +181,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             {showTagsDialog && renderTagsDialog()}
 
             <div className={styles.tagList}>
-              {tags &&
-                getTags(conversation)
-                  .map(tagId => findTag(tagId))
-                  .sort(tagSorter)
-                  .map(tag => tag && <Tag key={tag.id} tag={tag} removeTag={() => removeTag(tag)} />)}
+              {conversationTags().map(tag => (
+                <Tag key={tag.id} tag={tag} removeTag={() => removeTag(tag)} />
+              ))}
             </div>
           </div>
         </div>

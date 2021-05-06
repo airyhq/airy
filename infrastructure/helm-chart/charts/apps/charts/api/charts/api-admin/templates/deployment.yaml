@@ -6,6 +6,9 @@ metadata:
   labels:
     app: api-admin
     type: api
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.component }}"
 spec:
   replicas: 1
   selector:
@@ -25,6 +28,9 @@ spec:
       - name: app
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: security
         env:
         - name: KUBERNETES_NAMESPACE
           valueFrom:
@@ -47,16 +53,16 @@ spec:
               key: KAFKA_COMMIT_INTERVAL_MS
         - name: SERVICE_NAME
           value: api-admin
-        - name: JWT_SECRET
+        - name: BEANSTALK_HOSTNAME
           valueFrom:
             configMapKeyRef:
-              name: api-config
-              key: JWT_SECRET
-        - name: ALLOWED_ORIGINS
+              name: beanstalk-config
+              key: BEANSTALK_HOSTNAME
+        - name: BEANSTALK_PORT
           valueFrom:
             configMapKeyRef:
-              name: api-config
-              key: ALLOWED_ORIGINS
+              name: beanstalk-config
+              key: BEANSTALK_PORT
         livenessProbe:
           httpGet:
             path: /actuator/health

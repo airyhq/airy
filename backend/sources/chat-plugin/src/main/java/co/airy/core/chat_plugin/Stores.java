@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static co.airy.model.message.MessageRepository.isFromContact;
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
 
 @Component
@@ -66,11 +65,11 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 }), Materialized.as(messagesStore));
 
         // Client Echoes
-        messageStream.filter((messageId, message) -> isFromContact(message))
+        messageStream.filter((messageId, message) -> message.getIsFromContact())
                 .peek((messageId, message) -> webSocketController.onNewMessage(message));
 
         // Runtime Outbound
-        messageStream.filter((messageId, message) -> !isFromContact(message)
+        messageStream.filter((messageId, message) -> !message.getIsFromContact()
                 && message.getDeliveryState().equals(DeliveryState.PENDING)
         )
                 .mapValues((messageId, message) -> {
@@ -112,7 +111,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     public List<Message> getMessages(String conversationId) {
         final ReadOnlyKeyValueStore<String, MessagesTreeSet> messagesStore = getMessagesStore();
-
         final MessagesTreeSet messagesTreeSet = messagesStore.get(conversationId);
 
         return messagesTreeSet == null ? List.of() : new ArrayList<>(messagesTreeSet);

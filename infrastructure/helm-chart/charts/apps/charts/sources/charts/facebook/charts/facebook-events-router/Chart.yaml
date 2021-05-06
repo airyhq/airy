@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: "1.0"
-description: A Helm chart for the Sources Facebook Events Router app
-name: sources-facebook-events-router
-version: 1.0

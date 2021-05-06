@@ -1,5 +1,2 @@
-export * from './endpoints';
+export * from './src';
 export * from './client';
-export * from './model';
-export * from './payload';
-export * from './messagesForChannels';

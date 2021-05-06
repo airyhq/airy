@@ -1,6 +1,6 @@
 ---
-title: Introduction
-sidebar_label: Introduction
+title: Overview
+sidebar_label: Overview
 ---
 
 The grouping of HTTP endpoints reflects the high-level entities of the [Airy
@@ -11,9 +11,6 @@ Core Data Model](getting-started/glossary.md).
 All HTTP endpoints adhere to the following conventions:
 
 - Endpoints only accept `POST` JSON requests.
-- Communication always requires a valid [JWT
-  token](/api/authentication.md), except for `/users.login` and
-  `/users.signup` endpoints.
 - We use dots for namespacing URLs (eg `/things.add`).
 
 ## Pagination

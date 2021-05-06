@@ -9,6 +9,7 @@ start() {
     create_issue
     create_release_branch
     update_release_version
+    rename_draft_release
     commit_version_and_changelog
 }
 
@@ -40,10 +41,9 @@ finish() {
 }
 
 update_release_version() {
-    issue_number=$(curl -s\
-                       -H "Accept: application/vnd.github.v3+json" \
-                       "https://api.github.com/repos/airyhq/airy/issues?labels=release" | jq '.[0].number')
-    command echo "${release_number}"> VERSION
+    issue_number=$(command curl -s -H "Accept: application/vnd.github.v3+json" \
+        "https://api.github.com/repos/airyhq/airy/issues?labels=release" | jq '.[0].number')
+    command echo "${release_number}" >VERSION
     echo -e "Updated VERSION file\n"
 }
 
@@ -63,8 +63,8 @@ create_alpha_version() {
         minor="${BASH_REMATCH[2]}"
         patch="${BASH_REMATCH[3]}"
     fi
-    alpha_version=$(printf "%s.%s.%s-alpha\n" "$major" $((minor+1)) "$patch")
-    command echo "${alpha_version}"> VERSION
+    alpha_version=$(printf "%s.%s.%s-alpha\n" "$major" $((minor + 1)) "$patch")
+    command echo "${alpha_version}" >VERSION
     command git add VERSION
     command git commit -m "Bump version to ${alpha_version}"
     command git push origin develop
@@ -89,6 +89,16 @@ merge_develop() {
     echo -e "Successfully merged into develop branch\n"
 }
 
+rename_draft_release() {
+    release_id=$(
+        command curl -s -H "Authorization: token ${GITHUB_TOKEN}" -X GET \
+            https://api.github.com/repos/airyhq/airy/releases | jq '.[0].id'
+    )
+    command curl -s -H "Authorization: token ${GITHUB_TOKEN}" -X PATCH \
+        https://api.github.com/repos/airyhq/airy/releases/"$release_id" \
+        -d "{\"name\":\"${release_number}\", \"tag_name\":\"${release_number}\"}" > /dev/null
+}
+
 if [[ -z ${1+x} || -z ${2+x} ]]; then
     echo -ne "Error executing script\n"
     echo -ne "Expected syntax: release.sh <start | finish> <version_number>\n"
@@ -96,9 +106,10 @@ if [[ -z ${1+x} || -z ${2+x} ]]; then
 fi
 
 case $1 in
-    "start")
-        start "$2"
-        ;;
-    "finish")
-        finish "$2"
+"start")
+    start "$2"
+    ;;
+"finish")
+    finish "$2"
+    ;;
 esac

@@ -3,7 +3,7 @@ title: Chat Plugin
 sidebar_label: Chat Plugin
 ---
 
-Refer to our [Chat Plugin introduction](sources/chatplugin/overview.md) for
+Refer to our [Chat Plugin overview](sources/chatplugin/overview.md) document for
 more information.
 
 The HTTP api adheres to standards laid out in the [core
@@ -16,8 +16,9 @@ API](/api/introduction#authentication).
 The request returns an authentication token that needs to be included in the
 WebSocket connection handshake.
 
-You can either pass the `channel_id` for a new conversation or a `resume_token` that was obtained in a
-previous conversation using the [resume endpoint](#get-a-resume-token).
+You can either pass the `channel_id` for a new conversation or a `resume_token`
+that was obtained in a previous conversation using the [resume
+endpoint](#get-a-resume-token).
 
 **Sample request**
 
@@ -48,8 +49,7 @@ previous conversation using the [resume endpoint](#get-a-resume-token).
       // source message payload
       "state": "{String}",
       // delivery state of message, one of PENDING, FAILED, DELIVERED
-      "sender_type": "{string/enum}",
-      // See glossary
+      "from_contact": true,
       "sent_at": "{string}",
       //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
       "metadata": {
@@ -68,12 +68,6 @@ previous conversation using the [resume endpoint](#get-a-resume-token).
 You must set the `token` obtained on the [authorization
 endpoint](#authenticating-web-users) as an `Authorization` header.
 
-**Sample request**
-
-```json5
-{}
-```
-
 **Sample response**
 
 ```json5
@@ -82,10 +76,23 @@ endpoint](#authenticating-web-users) as an `Authorization` header.
 }
 ```
 
+You can also obtain a resume token on behalf of the user. To do so you need to
+call this endpoint with the system API token set on the `Authorization` header
+and with the channel and conversation id.
+
+**Sample request**
+
+```json5
+{
+  "channel_id": "channel-id",
+  "conversation_id": "channel-id"
+}
+```
+
 #### Send message
 
-You must set the `token` obtained on the [authorization endpoint](#authenticating-web-users) as an `Authorization`
-header.
+You must set the `token` obtained on the [authorization
+endpoint](#authenticating-web-users) as an `Authorization` header.
 
 `POST /chatplugin.send`
 
@@ -108,8 +115,7 @@ header.
   // source message payload
   "state": "{String}",
   // delivery state of message, one of PENDING, FAILED, DELIVERED
-  "sender_type": "{string/enum}",
-  // See glossary
+  "from_contact": true,
   "sent_at": "{string}",
   //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
   "metadata": {
@@ -141,8 +147,7 @@ The WebSocket connection endpoint is at `/ws.chatplugin`.
     // source message payload
     "state": "{String}",
     // delivery state of message, one of PENDING, FAILED, DELIVERED
-    "sender_type": "{string/enum}",
-    // See glossary
+    "from_contact": true,
     "sent_at": "{string}",
     //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
     "metadata": {

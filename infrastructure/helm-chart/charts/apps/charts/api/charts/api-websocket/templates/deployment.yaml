@@ -6,6 +6,9 @@ metadata:
   labels:
     app: api-websocket
     type: api
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.component }}"
 spec:
   replicas: 1
   selector:
@@ -25,6 +28,9 @@ spec:
       - name: app
         image: "{{ .Values.global.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.appImageTag }}"
         imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: security
         env:
         - name: KAFKA_BROKERS
           valueFrom:
@@ -43,16 +49,6 @@ spec:
               key: KAFKA_COMMIT_INTERVAL_MS
         - name: SERVICE_NAME
           value: api-websocket
-        - name: JWT_SECRET
-          valueFrom:
-            configMapKeyRef:
-              name: api-config
-              key: JWT_SECRET
-        - name: ALLOWED_ORIGINS
-          valueFrom:
-            configMapKeyRef:
-              name: api-config
-              key: ALLOWED_ORIGINS
         livenessProbe:
           httpGet:
             path: /actuator/health

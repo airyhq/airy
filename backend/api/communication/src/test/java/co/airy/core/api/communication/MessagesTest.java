@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
-import co.airy.avro.communication.SenderType;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.date.format.DateFormat;
 import co.airy.kafka.test.KafkaTestHelper;
@@ -92,7 +91,7 @@ public class MessagesTest {
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
         retryOnException(
-                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                () -> webTestHelper.post("/messages.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(messageCount)))
                         .andExpect(jsonPath("$.data[*].sent_at").value(contains(
@@ -116,11 +115,11 @@ public class MessagesTest {
                         .setSenderId("source-conversation-id")
                         .setDeliveryState(DeliveryState.DELIVERED)
                         .setSource("facebook")
-                        .setSenderType(SenderType.SOURCE_CONTACT)
                         .setConversationId(conversationId)
                         .setHeaders(Map.of())
                         .setChannelId(channel.getId())
                         .setContent("{\"text\":\"" + text + "\"}")
+                        .setIsFromContact(true)
                         .build()),
                 new ProducerRecord<>(applicationCommunicationMetadata.name(), "metadata-id",
                         newMessageMetadata(messageId, "metadata_key", "message metadata value"))
@@ -128,7 +127,7 @@ public class MessagesTest {
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
         retryOnException(
-                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                () -> webTestHelper.post("/messages.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))
                         .andExpect(jsonPath("$.data[0].metadata.metadata_key", containsString("message metadata value"))),
@@ -150,11 +149,11 @@ public class MessagesTest {
                         .setSenderId("source-conversation-id")
                         .setDeliveryState(DeliveryState.DELIVERED)
                         .setSource("facebook")
-                        .setSenderType(SenderType.SOURCE_CONTACT)
                         .setConversationId(conversationId)
                         .setHeaders(Map.of())
                         .setChannelId(channel.getId())
                         .setContent(String.format("{\"url\":\"%s\"}", sourceUrl))
+                        .setIsFromContact(true)
                         .build()),
                 new ProducerRecord<>(applicationCommunicationMetadata.name(), "metadata-id",
                         newMessageMetadata(messageId, "data_" + sourceUrl, persistentUrl))
@@ -162,7 +161,7 @@ public class MessagesTest {
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
         retryOnException(
-                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                () -> webTestHelper.post("/messages.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))
                         .andExpect(jsonPath("$.data[0].content.url", containsString(persistentUrl))),
@@ -199,17 +198,17 @@ public class MessagesTest {
                                 .setSource("twilio.sms")
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setSenderId(sourceConversationId)
-                                .setSenderType(SenderType.SOURCE_CONTACT)
                                 .setDeliveryState(DeliveryState.DELIVERED)
                                 .setConversationId(conversationId)
                                 .setChannelId(channelId)
                                 .setContent(content)
+                                .setIsFromContact(true)
                                 .build())
         ));
 
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
         retryOnException(
-                () -> webTestHelper.post("/messages.list", payload, "user-id")
+                () -> webTestHelper.post("/messages.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(1)))
                         .andExpect(jsonPath("$.data[0].content", is(content))),
@@ -226,11 +225,11 @@ public class MessagesTest {
                                 .setSource("twilio.sms")
                                 .setSentAt(Instant.now().toEpochMilli())
                                 .setSenderId("sourceConversationId")
-                                .setSenderType(SenderType.SOURCE_CONTACT)
                                 .setDeliveryState(DeliveryState.DELIVERED)
                                 .setConversationId(UUID.randomUUID().toString())
                                 .setChannelId(channelId)
                                 .setContent("content")
+                                .setIsFromContact(true)
                                 .build())
         ));
 
@@ -240,7 +239,7 @@ public class MessagesTest {
                 messageId, suggestionId, suggestionContent);
 
         retryOnException(
-                () -> webTestHelper.post("/messages.suggestReplies", payload, "user-id")
+                () -> webTestHelper.post("/messages.suggestReplies", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id", equalTo(messageId)))
                         .andExpect(jsonPath(String.format("$.metadata.suggestions['%s'].content.text", suggestionId), equalTo("Hello world"))),

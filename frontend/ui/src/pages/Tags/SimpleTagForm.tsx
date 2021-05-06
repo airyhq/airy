@@ -1,15 +1,14 @@
 import React, {useState, Fragment} from 'react';
 import {connect} from 'react-redux';
 
-import {createTag, listTags, errorTag, filterTags} from '../../actions/tags';
-import {filteredTags} from '../../selectors/tags';
+import {createTag, listTags, errorTag} from '../../actions/tags';
 
-import {Button, Input} from '@airyhq/components';
+import {Button, Input} from 'components';
 import DialogCustomizable from '../../components/DialogCustomizable';
 import ColorSelector from '../../components/ColorSelector';
 
 import Tag from '../../components/Tag';
-import {Tag as TagModel, TagColor} from 'httpclient';
+import {Tag as TagModel, TagColor} from 'model';
 
 import styles from './SimpleTagForm.module.scss';
 import {StateModel} from '../../reducers';
@@ -26,6 +25,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
   const [name, setName] = useState('');
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [showError, setShowError] = useState(true);
+
   const handleCreate = () => {
     if (name.trim().length) {
       createTag({name: name.trim(), color}).then((success: boolean) => {
@@ -51,10 +51,10 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
   };
 
   return (
-    <DialogCustomizable close={onClose} style={tags.length ? {right: 0, top: '32px'} : {top: '200px'}}>
+    <DialogCustomizable close={onClose} style={tags.length ? {right: 0, top: '32px'} : {top: '50px', right: '0px'}}>
       <div className={styles.tagCreate}>
-        <h4 className={styles.headline}>Add a tag</h4>
         <Input
+          label="Add a tag"
           type="text"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setName(e.target.value);
@@ -67,7 +67,8 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
           placeholder="Please enter a tag name"
           autoComplete="off"
           autoFocus={true}
-          fontClass="font-m"
+          fontClass="font-base"
+          minLength={1}
           maxLength={50}
         />
         <p className={styles.errorMessage}>{(!name.length || showError) && errorMessage}</p>
@@ -96,7 +97,7 @@ const SimpleTagForm = ({errorMessage, createTag, errorTag, onClose, tags}: Simpl
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    tags: filteredTags(state),
+    tags: Object.values(state.data.tags.all),
     errorMessage: state.data.tags.error,
   };
 };
@@ -105,7 +106,6 @@ const mapDispatchToProps = {
   createTag,
   errorTag,
   listTags,
-  filterTags,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

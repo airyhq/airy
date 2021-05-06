@@ -1,5 +1,5 @@
-import React from 'react';
-import {Contact} from 'httpclient';
+import React, {SyntheticEvent} from 'react';
+import {Contact} from 'model';
 import styles from './index.module.scss';
 
 type AvatarProps = {
@@ -8,12 +8,16 @@ type AvatarProps = {
 
 const fallbackAvatar = 'https://s3.amazonaws.com/assets.airy.co/unknown.png';
 
+const fallbackAvatarImage = (event: SyntheticEvent<HTMLImageElement, Event>) => {
+  event.currentTarget.src = fallbackAvatar;
+  event.currentTarget.alt = 'fallback avatar';
+};
+
 export const Avatar = ({contact}: AvatarProps) => (
-  <div className={styles.avatar}>
-    <img
-      alt={contact?.displayName || 'Unknown contact'}
-      className={styles.avatarImage}
-      src={contact?.avatarUrl || fallbackAvatar}
-    />
-  </div>
+  <img
+    alt={contact?.displayName || 'Unknown contact'}
+    className={styles.avatarImage}
+    src={contact?.avatarUrl || fallbackAvatar}
+    onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => fallbackAvatarImage(event)}
+  />
 );

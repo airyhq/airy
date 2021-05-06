@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import React from 'react';
-import {Channel} from 'httpclient';
+import {Channel} from 'model';
 
 import {ReactComponent as FacebookIcon} from 'assets/images/icons/facebook_rounded.svg';
 import {ReactComponent as GoogleIcon} from 'assets/images/icons/google-messages.svg';
@@ -74,12 +74,17 @@ const IconChannel: React.FC<IconChannelProps> = ({
 
   const channelInfo = SOURCE_INFO[channel.source];
   const fbFallback = SOURCE_INFO['facebook'];
+  const isFromTwilioSource = channel.source === 'twilio.sms' || channel.source === 'twilio.whatsapp';
+
+  const ChannelName = () => {
+    return <p>{channel.metadata?.name || (isFromTwilioSource ? channel.sourceChannelId : channel.source)}</p>;
+  };
 
   if (icon && showName) {
     return (
       <div className={styles.iconName}>
         {channelInfo.icon()}
-        <p>{channel.metadata?.name}</p>
+        <ChannelName />
       </div>
     );
   }
@@ -88,7 +93,7 @@ const IconChannel: React.FC<IconChannelProps> = ({
     return (
       <div className={styles.avatarName}>
         {channelInfo.avatar()}
-        <p>{channel.metadata?.name}</p>
+        <ChannelName />
       </div>
     );
   }

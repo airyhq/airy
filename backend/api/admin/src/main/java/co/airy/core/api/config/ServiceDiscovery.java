@@ -1,29 +1,23 @@
 package co.airy.core.api.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 @Component
 public class ServiceDiscovery {
     private final String namespace;
     private final RestTemplate restTemplate;
 
-    private final Map<String, Map<String, Object>> components = new ConcurrentHashMap<>();
-
-    private static final List<String> services = List.of(
-            "sources-chatplugin",
-            "sources-facebook-connector",
-            "sources-twilio-connector",
-            "sources-google-connector"
-    );
+    private Map<String, Map<String, Object>> components = new ConcurrentHashMap<>();
 
     public ServiceDiscovery(@Value("${kubernetes.namespace}") String namespace, RestTemplate restTemplate) {
         this.namespace = namespace;
@@ -36,13 +30,12 @@ public class ServiceDiscovery {
 
     @Scheduled(fixedRate = 1_000)
     private void updateComponentsStatus() {
-        for (String service : services) {
-            try {
-                ResponseEntity<Object> response = restTemplate.exchange(String.format("http://%s.%s/actuator/health", service, namespace), HttpMethod.GET, null, Object.class);
-                components.put(service.replace("-connector", ""), Map.of("enabled", response.getStatusCode().is2xxSuccessful()));
-            } catch (Exception e) {
-                components.put(service.replace("-connector", ""), Map.of("enabled",false));
-            }
+        final ResponseEntity<ComponentsResponsePayload> response = restTemplate.getForEntity("http://airy-controller.default/components", ComponentsResponsePayload.class);
+        Map<String, Map<String, Object>> newComponents = new ConcurrentHashMap<>();
+        for (String component: response.getBody().getComponents()) {
+            newComponents.put(component, Map.of("enabled", true));
         }
+        components.clear();
+        components.putAll(newComponents);
     }
 }

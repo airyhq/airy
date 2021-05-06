@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 
-import {User} from 'httpclient';
+import {User} from 'model';
 import {listConversations} from '../../actions/conversations';
 import {listChannels} from '../../actions/channel';
 import {StateModel} from '../../reducers';
@@ -19,6 +19,7 @@ interface InboxProps {
 const mapStateToProps = (state: StateModel) => {
   return {
     user: state.data.user,
+    totalConversations: state.data.conversations.all.paginationData.total || 0,
   };
 };
 
@@ -30,11 +31,16 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationContainer = (props: InboxProps & ConnectedProps<typeof connector>) => {
+  const {totalConversations, listChannels, listConversations} = props;
+
   useEffect(() => {
-    props.listConversations();
-    props.listChannels();
-    setPageTitle('Inbox');
+    listConversations();
+    listChannels();
   }, []);
+
+  useEffect(() => {
+    setPageTitle(`Inbox (${totalConversations})`);
+  }, [totalConversations]);
 
   return <Messenger />;
 };

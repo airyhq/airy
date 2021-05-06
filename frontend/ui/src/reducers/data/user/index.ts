@@ -1,33 +1,15 @@
 import {ActionType, getType} from 'typesafe-actions';
-import * as actions from '../../../actions/user';
-import {User} from 'httpclient';
-import {getUserFromStore, storeUserData} from '../../../cookies';
+import {User} from 'model';
+import * as actions from '../../../actions/config';
 
 type Action = ActionType<typeof actions>;
 
-export const initialState = {
-  id: '',
-  email: '',
-  firstName: '',
-  lastName: '',
-  error: '',
-};
-
-const userReducer: any = (state = {...initialState, ...getUserFromStore()}, action: Action): User | {} => {
+const userReducer: any = (state = {}, action: Action): User | {} => {
   switch (action.type) {
-    case getType(actions.setCurrentUserAction):
-      storeUserData(action.payload);
+    case getType(actions.saveClientConfig):
       return {
-        ...state,
-        ...action.payload,
+        ...action.payload.userProfile,
       };
-
-    case getType(actions.userAuthErrorAction):
-      return {
-        ...state,
-        error: action.payload.toString(),
-      };
-
     default:
       return state;
   }

@@ -36,8 +36,9 @@ The Facebook source requires the following configuration:
   - [Step 2: Configure the webhook integration](#step-2-configure-the-webhook-integration)
   - [Step 3: Obtain the page token](#step-3-obtain-the-page-token)
 - [Connect a Facebook page to your instance](#connect-a-facebook-page-to-your-instance)
+- [Connect a Facebook source via API request](#connect-a-facebook-source-via-api-request)
+- [Connect a Facebook source via the UI](#connect-a-facebook-source-via-the-ui)
 - [Send messages from a Facebook source](#send-messages-from-a-facebook-source)
-- [Send and receive messages with the Inbox UI](#send-and-receive-messages-with-the-inbox-ui)
 
 Let's proceed step by step.
 
@@ -66,24 +67,15 @@ You will find your `App Secret` on this page:
 
 <img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/secret.png')} />
 
-Copy and paste your App ID and App Secret as strings next to `appId` and `appSecret` below `sources/facebook` in `infrastructure/airy.yaml`.
+Copy and paste your App ID and App Secret as strings next to `appId:` and `appSecret:`, below `components/sources/facebook` in your `airy.yaml` file.
 
-:::note
+import ApplyVariablesNote from './applyVariables-note.mdx'
 
-Refer to the [Configuration
-Docs](/getting-started/installation/configuration.md#components) on how to input
-these values.
-
-Refer to the [test](getting-started/installation/vagrant.md#connect-sources)
-guide or the
-[production](getting-started/installation/production.md#connect-sources) one to
-set these variables in your Airy Core instance.
-
-:::
+<ApplyVariablesNote />
 
 ### Step 2: Configure the webhook integration
 
-Facebook must first verify your integration with a challenge to start sending events to your running instance. To verify your Facebook webhook integration, set the environment variable `webhookSecret` in `infrastructure/airy.yaml` to a value of your choice.
+Facebook must first verify your integration with a challenge to start sending events to your running instance. To verify your Facebook webhook integration, set the value next to `webhookSecret:`, below `components/sources/facebook` in your `airy.yaml` file, to a value of your choice.
 
 You are now ready to configure the webhook integration. Click on the + icon next to "Products" on the left sidebar of your app's dashboard: scroll down, a list of products will appear.
 
@@ -105,7 +97,7 @@ https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/webhooks/
 
 Select "Page" from the dropdown (the default is "User") and click on the button "Subscribe to this object".
 
-This will open a modal box: add your Callback URL (your instance's Facebook Webhook URL) and Verify Token (the webhookSecret you added in `infrastructure/airy.yaml` in the previous step).
+This will open a modal box: add your Callback URL (your instance's Facebook Webhook URL) and Verify Token (the webhookSecret you added in your `airy.yaml` file in the previous step).
 
 <img alt="Facebook webhook" src={useBaseUrl('img/sources/facebook/webhook_2.png')} />
 
@@ -116,27 +108,18 @@ This will open a modal box: add your Callback URL (your instance's Facebook Webh
 Your Facebook Webhook URL should have the following format:
 
 ```
-`https://fb-RANDOM_STRING.tunnel.airy.co/facebook`
+`https://RANDOM_STRING.tunnel.airy.co/facebook`
 ```
 
-Refer to [our section on the Vagrant box
-status](/getting-started/installation/vagrant#status) for information about how
-to find your Facebook Webhook URL.
+Refer to [the section on public webhooks](/getting-started/installation/minikube#public-webhooks) for information about how to find your Facebook Webhook URL.
 
 :::
 
 If you encounter errors, please make sure that the Verify Token matches the
-`webhookSecret` in `infrastructure/airy.yaml` and that your variables have been
+`webhookSecret` in your `airy.yaml` file and that your variables have been
 successfully set to your Airy Core instance.
 
-:::note
-
-Refer to the [test](/getting-started/installation/vagrant.md#connect-sources)
-guide or the
-[production](/getting-started/installation/production.md#connect-sources) one to
-set these variables in your Airy Core instance.
-
-:::
+<ApplyVariablesNote />
 
 Once the verification process has been completed, Facebook will immediately
 start sending events to your Airy Core instance.
@@ -188,10 +171,19 @@ Success! You are now ready to connect a Facebook page to your Airy Core instance
 
 ## Connect a Facebook page to your instance
 
+There are 2 options to connect a Facebook source to your instance:
+
+- you can connect the source via an API request (using curl or platforms such as Postman)
+- you can connect the source via the UI
+
+We cover both options in this document.
+
+## Connect a Facebook source via API request
+
 The next step is to send a request to the [Channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
 
 <ButtonBox
-icon={() => <BoltSVG />}
+icon={<BoltSVG />}
 title='Channels endpoint'
 description='Connect a Facebook source to your Airy Core instance through the Channels endpoint'
 link='api/endpoints/channels#facebook'
@@ -203,30 +195,36 @@ import ConnectFacebook from '../api/endpoints/connect-facebook.mdx'
 
 <ConnectFacebook />
 
+:::note
+
+If you encounter errors, please follow these debugging advices:
+
+- make sure that the tokens you have added to the airy.yaml file (refer back to step 1) have been applied to your Airy Core instance. An Airy Core instance should be created after editing the airy.yaml file.
+
+- verify your webhook integration (refer back to step 2). Make sure that your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the Page subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
+
+:::
+
+## Connect a Facebook source via the UI
+
+You can connect a Facebook source via your Airy Core instance UI.
+
+On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu and select the Facebook channel. Add your Facebook Page ID and Page Access Token in the respective fields. You can optionally add a name and an image.
+
+<img alt="Facebook connect" src={useBaseUrl('img/sources/facebook/facebook_ui.png')} />
+
+<br />
+
+Your can find your Facebook Page ID and Page Access Token on your app's dashboard on [Facebook For Developers](https://developers.facebook.com/): the Facebook Page ID is the ID of the page you want to connect and the Page Access Token is generated on the Messenger product section (refer back to the previous steps).
+
+Make sure the variables have been successfully applied to your instance, otherwise you won't be able to connect the Facebook channel through the UI.
+
+<ApplyVariablesNote />
+
 ## Send messages from a Facebook source
 
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
 
-<ButtonBox
-icon={() => <BoltSVG />}
-title='Messages endpoint'
-description='Send messages to your Airy Core instance from a Facebook source through the Messages endpoint'
-link='api/endpoints/messages#send'
-/>
+import InboxMessages from './inbox-messages.mdx'
 
-<br />
-
-import MessagesSend from '../api/endpoints/messages-send.mdx'
-
-<MessagesSend />
-
-## Send and receive messages with the Inbox UI
-
-Now that you connected Facebook Messenger to your instance and started a conversation, you can see the conversations, messages, and templates in the [Airy Inbox](/apps/ui/inbox), and use it to respond to the messages.
-
-<ButtonBox
-icon={() => <InboxSVG />}
-title='Inbox'
-description='Receive messages from a Facebook source and send messages using the Inbox UI'
-link='apps/ui/inbox'
-/>
+<InboxMessages />

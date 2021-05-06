@@ -31,7 +31,6 @@ import java.util.UUID;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationMessages;
 import static co.airy.core.api.communication.util.Topics.getTopics;
-import static co.airy.model.message.MessageRepository.isFromAiry;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -87,7 +86,7 @@ public class SendMessageControllerTest {
                         "\"message\":%s}",
                 conversationId, messagePayload);
 
-        final String response = webTestHelper.post("/messages.send", requestPayload, "user-id")
+        final String response = webTestHelper.post("/messages.send", requestPayload)
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
@@ -99,7 +98,7 @@ public class SendMessageControllerTest {
 
         final Optional<Message> maybeMessage = records.stream()
                 .map(ConsumerRecord::value)
-                .filter(message -> isFromAiry(message) && message.getId().equals(messageId))
+                .filter(message -> !message.getIsFromContact() && message.getId().equals(messageId))
                 .findFirst();
 
         if (maybeMessage.isEmpty()) {

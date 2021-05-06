@@ -1,8 +1,6 @@
 package co.airy.mapping;
 
 import co.airy.mapping.model.Content;
-import co.airy.mapping.model.Text;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 

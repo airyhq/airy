@@ -8,10 +8,13 @@ load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/build:container_release.bzl", "container_release")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
+package(default_visibility = ["//visibility:public"])
+
 module_deps = [
-    "//frontend/assets",
+    "//lib/typescript/assets",
+    "//lib/typescript/components",
     "//lib/typescript/types",
-    "//lib/typescript/httpclient",
+    "//lib/typescript/model",
     "//lib/typescript/render",
     "//lib/typescript/dates",
     "//frontend/chat-plugin/handles:chat-plugin-handles",
@@ -23,8 +26,8 @@ web_app(
         "react": "preact/compat",
         "react-dom": "preact/compat",
     },
-    app_lib = ":app",
-    entry = "frontend/chat-plugin/src/iframe.js",
+    app_lib = ":chat-plugin",
+    entry = "frontend/chat-plugin/src/iframe",
     index = ":development.html",
     module_deps = module_deps,
     output = {
@@ -38,7 +41,7 @@ web_library(
         "react": "preact/compat",
         "react-dom": "preact/compat",
     },
-    app_lib = ":app",
+    app_lib = ":chat-plugin",
     entry = "frontend/chat-plugin/src/defaultScript.js",
     module_deps = module_deps,
     output = {
@@ -49,7 +52,7 @@ web_library(
 )
 
 ts_web_library(
-    name = "app",
+    name = "chat-plugin",
     tsconfig = ":widget_tsconfig",
     deps = module_deps + [
         "@npm//@stomp/stompjs",

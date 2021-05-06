@@ -27,23 +27,15 @@ java_library(
 java_library(
     name = "read-receipt",
     exports = [
-        "//backend/avro/communication:read-receipt",
+        "//backend/avro:read-receipt",
         "//lib/java/kafka/schema:application-communication-read-receipts",
-    ],
-)
-
-java_library(
-    name = "tag",
-    exports = [
-        "//backend/avro/communication:tag",
-        "//lib/java/kafka/schema:application-communication-tags",
     ],
 )
 
 java_library(
     name = "webhook",
     exports = [
-        "//backend/avro/communication:webhook",
+        "//backend/avro:webhook",
         "//lib/java/kafka/schema:application-communication-webhooks",
     ],
 )

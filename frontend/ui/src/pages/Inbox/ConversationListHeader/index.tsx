@@ -41,6 +41,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   const [isShowingSearchInput, setIsShowingSearchInput] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  let amountFiltersSet = 0;
 
   useEffect(() => {
     resetFilteredConversationAction();
@@ -84,12 +85,36 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   const activeFilter = () => {
     const currentFilterLength = Object.keys(currentFilter).length;
 
-    if (currentFilter.isStateOpen === undefined && currentFilter.displayName === (null || undefined)) {
-      return currentFilterLength - 2;
+    if (currentFilterLength > 0) {
+      if (currentFilter?.byChannels?.length > 0) {
+        amountFiltersSet += 1;
+      }
+      if (currentFilter?.bySources?.length > 0) {
+        amountFiltersSet += 1;
+      }
+      if (currentFilter?.byTags?.length > 0) {
+        amountFiltersSet += 1;
+      }
+      if (currentFilter?.displayName?.length > 0 && currentFilter.displayName === undefined) {
+        amountFiltersSet += 1;
+      }
+      if (currentFilter.isStateOpen === true || currentFilter.isStateOpen === false) {
+        amountFiltersSet += 1;
+      }
+      if (currentFilter.readOnly === true || currentFilter.readOnly === false) {
+        amountFiltersSet += 1;
+      }
+      if (currentFilter.unreadOnly === true || currentFilter.unreadOnly === false) {
+        amountFiltersSet += 1;
+      }
+      if (
+        (currentFilter.readOnly === true && currentFilter.unreadOnly === false) ||
+        (currentFilter.readOnly === false && currentFilter.unreadOnly === true)
+      ) {
+        amountFiltersSet -= 1;
+      }
     }
-    if (currentFilter.isStateOpen === undefined || currentFilter.displayName === (null || undefined)) {
-      return currentFilterLength - 1;
-    }
+    return amountFiltersSet;
   };
 
   const renderSearchInput = isShowingSearchInput ? (

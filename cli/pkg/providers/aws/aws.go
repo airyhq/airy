@@ -44,7 +44,6 @@ func New(w io.Writer) *provider {
 }
 
 func (p *provider) GetOverrides() tmpl.Variables {
-	//return []string{"--set", "global.ngrokEnabled=false", "--set", "global.loadbalancerAnnotations={service.beta.kubernetes.io/aws-load-balancer-type: nlb}"}
 	return tmpl.Variables{
 		LoadBalancerAnnotations: "{service.beta.kubernetes.io/aws-load-balancer-type: nlb}",
 	}

@@ -41,7 +41,6 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   const [isShowingSearchInput, setIsShowingSearchInput] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  let amountFiltersSet = 0;
 
   useEffect(() => {
     resetFilteredConversationAction();
@@ -82,35 +81,33 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
     onFilterVisibilityChanged();
   };
 
-  const activeFilter = () => {
+  const activeFilterCount = ():number => {
     const currentFilterLength = Object.keys(currentFilter).length;
+    let amountFiltersSet = 0;
 
     if (currentFilterLength > 0) {
-      if (currentFilter?.byChannels?.length > 0) {
+      if (currentFilter.byChannels !== undefined) {
         amountFiltersSet += 1;
       }
-      if (currentFilter?.bySources?.length > 0) {
+      if (currentFilter.bySources !== undefined) {
         amountFiltersSet += 1;
       }
-      if (currentFilter?.byTags?.length > 0) {
+      if (currentFilter.byTags !== undefined) {
         amountFiltersSet += 1;
       }
-      if (currentFilter?.displayName?.length > 0 && currentFilter.displayName === undefined) {
+      if (currentFilter.displayName !== undefined && currentFilter.displayName !== null) {
         amountFiltersSet += 1;
       }
-      if (currentFilter.isStateOpen === true || currentFilter.isStateOpen === false) {
+      if (currentFilter.isStateOpen !== undefined) {
         amountFiltersSet += 1;
       }
-      if (currentFilter.readOnly === true || currentFilter.readOnly === false) {
+      if (currentFilter.readOnly !== undefined) {
         amountFiltersSet += 1;
       }
-      if (currentFilter.unreadOnly === true || currentFilter.unreadOnly === false) {
+      if (currentFilter.unreadOnly !== undefined) {
         amountFiltersSet += 1;
       }
-      if (
-        (currentFilter.readOnly === true && currentFilter.unreadOnly === false) ||
-        (currentFilter.readOnly === false && currentFilter.unreadOnly === true)
-      ) {
+      if (currentFilter.readOnly !== undefined && currentFilter.unreadOnly !== undefined) {
         amountFiltersSet -= 1;
       }
     }
@@ -143,7 +140,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
         <button
           title="Filter"
           id="filterButton"
-          className={`${activeFilter() > 0 ? styles.activeFilters : styles.filterButton}`}
+          className={`${activeFilterCount() > 0 ? styles.activeFilters : styles.filterButton}`}
           onClick={() => toggleFilter()}>
           <FilterIcon />
         </button>

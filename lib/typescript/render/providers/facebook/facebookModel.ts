@@ -93,6 +93,13 @@ export interface GenericTemplate extends Content {
   elements: Element[];
 }
 
+export interface Fallback extends Content {
+  type: 'fallback';
+  title: string;
+  url: string;
+
+}
+
 // Add a new facebook content model here:
 export type ContentUnion =
   | TextContent
@@ -101,5 +108,6 @@ export type ContentUnion =
   | VideoContent
   | ButtonTemplate
   | GenericTemplate
-  | QuickRepliesContent;
-export type AttachmentUnion = TextContent | ImageContent | VideoContent | ButtonTemplate | GenericTemplate;
+  | QuickRepliesContent
+  | Fallback;
+export type AttachmentUnion = TextContent | ImageContent | VideoContent | ButtonTemplate | GenericTemplate | Fallback;

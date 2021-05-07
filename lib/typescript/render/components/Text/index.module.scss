@@ -12,12 +12,30 @@
   font-family: 'Lato', sans-serif;
 }
 
-.contactContent {
+.contactContent,
+.contactContent:hover,
+.contactContent:active,
+.contactContent:visited,
+.contactContent:focus {
   background: var(--color-background-blue);
   color: var(--color-text-contrast);
 }
 
-.memberContent {
+.memberContent, 
+.memberContent:hover,
+.memberContent:active,
+.memberContent:visited,
+.memberContent:focus {
   background: var(--color-airy-blue);
   color: white;
+}
+
+
+.messageLink, 
+.messageLink:hover,
+.messageLink:active,
+.messageLink:visited,
+.messageLink:focus {
+  text-decoration: underline;
+  font-weight:normal;
 }

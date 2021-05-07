@@ -19,7 +19,21 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
       return <Text fromContact={props.content.fromContact || false} text={content.text} />;
-
+    
+    case 'fallback':
+      return (
+        <>
+        {content.title && (
+            <Text fromContact={props.content.fromContact || false} text={content.title} />
+        )}
+       
+       {content.url && (
+            <Text fromContact={props.content.fromContact || false} text={content.url} />
+       )}
+       
+        </>
+      )
+        
     case 'postback':
       return <Text fromContact={props.content.fromContact || false} text={content.title} />;
 
@@ -74,6 +88,15 @@ const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | Gener
     return {
       type: 'video',
       videoUrl: attachment.payload.url,
+    };
+  }
+
+
+  if (attachment.type === 'fallback') {
+    return {
+      type: 'fallback',
+      title: attachment.payload.title,
+      url: attachment.payload.url,
     };
   }
 
@@ -136,6 +159,13 @@ function facebookOutbound(message: Message): ContentUnion {
       type: 'quickReplies',
       text: messageJson.text,
       quickReplies: messageJson.quick_replies,
+    };
+  }
+
+  if ((messageJson.attachment || messageJson.attachments) && messageJson.text) {
+    return {
+      type: 'text',
+      text: messageJson.text,
     };
   }
 

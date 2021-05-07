@@ -76,7 +76,7 @@ class SendMessageTest {
 
     @BeforeEach
     void beforeEach() throws InterruptedException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 

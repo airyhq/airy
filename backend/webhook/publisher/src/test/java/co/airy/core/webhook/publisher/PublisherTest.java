@@ -75,7 +75,7 @@ public class PublisherTest {
 
     @BeforeEach
     void beforeEach() throws InterruptedException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         retryOnException(() -> assertEquals(publisher.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 

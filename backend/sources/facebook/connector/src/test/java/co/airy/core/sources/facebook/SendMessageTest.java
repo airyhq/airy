@@ -83,7 +83,7 @@ class SendMessageTest {
 
     @BeforeEach
     void beforeEach() throws InterruptedException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }
 
@@ -141,7 +141,7 @@ class SendMessageTest {
                         .setIsFromContact(false)
                         .build())
         );
-
+        
         retryOnException(() -> {
             final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
             assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));

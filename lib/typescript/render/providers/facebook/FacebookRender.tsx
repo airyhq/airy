@@ -19,35 +19,50 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
       return <Text fromContact={props.content.fromContact || false} text={content.text} />;
-    
+
     case 'fallback':
       return (
         <>
-        {content.title && (
-            <Text fromContact={props.content.fromContact || false} text={content.title} />
-        )}
-       
-       {content.url && (
-            <Text fromContact={props.content.fromContact || false} text={content.url} />
-       )}
-       
+          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
+
+          {content.title && <Text fromContact={props.content.fromContact || false} text={content.title} />}
+
+          {content.url && <Text fromContact={props.content.fromContact || false} text={content.url} />}
         </>
-      )
-        
+      );
+
     case 'postback':
       return <Text fromContact={props.content.fromContact || false} text={content.title} />;
 
     case 'image':
-      return <Image imageUrl={content.imageUrl} />;
+      return (
+        <>
+          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
+
+          <Image imageUrl={content.imageUrl} />
+        </>
+      );
 
     case 'video':
-      return <Video videoUrl={content.videoUrl} />;
+      return (
+        <>
+          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
+
+          <Video videoUrl={content.videoUrl} />
+        </>
+      );
 
     case 'buttonTemplate':
       return <ButtonTemplate template={content} />;
 
     case 'genericTemplate':
-      return <GenericTemplate template={content} />;
+      return (
+        <>
+          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
+
+          <GenericTemplate template={content} />
+        </>
+      );
 
     case 'quickReplies':
       return (
@@ -90,7 +105,6 @@ const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | Gener
       videoUrl: attachment.payload.url,
     };
   }
-
 
   if (attachment.type === 'fallback') {
     return {
@@ -162,14 +176,14 @@ function facebookOutbound(message: Message): ContentUnion {
     };
   }
 
-  if ((messageJson.attachment || messageJson.attachments) && messageJson.text) {
-    return {
-      type: 'text',
-      text: messageJson.text,
-    };
-  }
-
   if (messageJson.attachment || messageJson.attachments) {
+    if ('text' in messageJson) {
+      return {
+        ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
+        text: messageJson.text,
+      };
+    }
+
     return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
 

@@ -21,7 +21,7 @@
   color: var(--color-text-contrast);
 }
 
-.memberContent, 
+.memberContent,
 .memberContent:hover,
 .memberContent:active,
 .memberContent:visited,
@@ -30,12 +30,11 @@
   color: white;
 }
 
-
-.messageLink, 
+.messageLink,
 .messageLink:hover,
 .messageLink:active,
 .messageLink:visited,
 .messageLink:focus {
   text-decoration: underline;
-  font-weight:normal;
+  font-weight: normal;
 }

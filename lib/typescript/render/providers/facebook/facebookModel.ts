@@ -54,11 +54,13 @@ export interface Postback extends Content {
 
 export interface ImageContent extends Content {
   type: 'image';
+  text?: string;
   imageUrl: string;
 }
 
 export interface VideoContent extends Content {
   type: 'video';
+  text?: string;
   videoUrl: string;
 }
 
@@ -90,14 +92,15 @@ export interface ButtonTemplate extends Content {
 
 export interface GenericTemplate extends Content {
   type: 'genericTemplate';
+  text?: string;
   elements: Element[];
 }
 
 export interface Fallback extends Content {
   type: 'fallback';
+  text?: string;
   title: string;
   url: string;
-
 }
 
 // Add a new facebook content model here:

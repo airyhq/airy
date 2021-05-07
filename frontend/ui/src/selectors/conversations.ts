@@ -8,6 +8,19 @@ import {ConversationRouteProps} from '../pages/Inbox';
 export const getCurrentConversation = (state: StateModel, props: ConversationRouteProps) =>
   state.data.conversations.all.items[props.match.params.conversationId];
 
+export const getCurrentFilteredConversation = (state: StateModel, props: ConversationRouteProps) =>
+  state.data.conversations.filtered.items[props.match.params.conversationId];
+
+export const getConversation = createSelector(
+  getCurrentConversation,
+  getCurrentFilteredConversation,
+  (conversation, filteredConversation) => {
+    if (!conversation && !filteredConversation) return undefined;
+    const mergedConversation = {...conversation, ...filteredConversation};
+    return mergedConversation;
+  }
+);
+
 export const getCurrentMessages = (state: StateModel, props: ConversationRouteProps) =>
   state.data.messages.all[props.match.params.conversationId];
 

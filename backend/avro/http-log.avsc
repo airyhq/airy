@@ -5,6 +5,9 @@
   "fields": [
     {"name": "uri", "type": "string"},
     {"name": "body", "type": ["null", "string"], "default": null},
+    {"name": "userId", "type": ["null", "string"], "default": null},
+    {"name": "userName", "type": ["null", "string"], "default": null},
+    {"name": "userAvatar", "type": ["null", "string"], "default": null},
     {
       "name": "headers",
       "type": {

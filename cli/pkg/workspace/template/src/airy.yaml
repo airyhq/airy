@@ -4,5 +4,9 @@ kubernetes:
   namespace: {{ .Namespace }}
   ngrokEnabled: {{ default "false" .NgrokEnabled }}
   host: {{ default "http://airy.core" .Host }}
+{{- if .LoadBalancerAnnotations }}
+  loadBalancerAnnotations: {{ .LoadBalancerAnnotations }}
+{{- end }}
 security:
   allowedOrigins: "*"
+  jwtSecret: {{ randAlphaNum 128 }}

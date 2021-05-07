@@ -6,11 +6,11 @@ import co.airy.avro.communication.Message;
 import co.airy.core.chat_plugin.config.Jwt;
 import co.airy.core.chat_plugin.payload.AuthenticationRequestPayload;
 import co.airy.core.chat_plugin.payload.AuthenticationResponsePayload;
+import co.airy.core.chat_plugin.payload.RequestErrorResponsePayload;
 import co.airy.core.chat_plugin.payload.ResumeTokenRequestPayload;
 import co.airy.core.chat_plugin.payload.ResumeTokenResponsePayload;
 import co.airy.core.chat_plugin.payload.SendMessageRequestPayload;
 import co.airy.model.message.dto.MessageResponsePayload;
-import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static co.airy.spring.web.Headers.getAuthToken;
+import static co.airy.core.chat_plugin.Headers.getAuthToken;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController

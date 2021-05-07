@@ -1,14 +1,18 @@
+import {ActionType, getType} from 'typesafe-actions';
 import {User} from 'model';
+import * as actions from '../../../actions/config';
 
-export const initialState = {
-  id: '123',
-  firstName: 'Grace',
-  lastName: 'Hopper',
-};
+type Action = ActionType<typeof actions>;
 
-const userReducer: any = (state = initialState): User | {} => {
-  // TODO add back in https://github.com/airyhq/airy/issues/1519
-  return state;
+const userReducer: any = (state = {}, action: Action): User | {} => {
+  switch (action.type) {
+    case getType(actions.saveClientConfig):
+      return {
+        ...action.payload.userProfile,
+      };
+    default:
+      return state;
+  }
 };
 
 export default userReducer;

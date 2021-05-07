@@ -10,10 +10,11 @@ import (
 )
 
 type Variables struct {
-	NgrokEnabled bool
-	Version      string
-	Namespace    string
-	Host         string
+	NgrokEnabled            bool
+	Version                 string
+	Namespace               string
+	Host                    string
+	LoadBalancerAnnotations string
 }
 
 //go:embed src

@@ -13,7 +13,6 @@ const mapStateToProps = (state: StateModel) => {
   return {
     conversationsFilter: state.data.conversations.filtered.currentFilter,
     isFilterActive: isFilterActive(state),
-    filteredPaginationData: state.data.conversations.filtered.paginationData,
     conversations: allConversations(state),
   };
 };
@@ -33,7 +32,6 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   const closedButton = useRef(null);
 
   useEffect(() => {
-    itemsCount();
     currentStateFilter();
   }),
     [props.conversations];
@@ -58,26 +56,8 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
     setFilter(newFilter);
   };
 
-  const itemsCount = () => {
-    const {filteredPaginationData} = props;
-
-    if (
-      filteredPaginationData.filteredTotal !== undefined &&
-      filteredPaginationData.filteredTotal !== filteredPaginationData.total
-    ) {
-      return (
-        <div className={styles.filterCount}>
-          {`Filtered: ${filteredPaginationData.filteredTotal} Total: ${props.conversations.length}`}
-        </div>
-      );
-    }
-
-    return <div className={styles.filterCount}>&nbsp;</div>;
-  };
-
   return (
     <div>
-      {itemsCount()}
       <div className={styles.quickFilterContainer}>
         <div className={styles.quickFilterButtons}>
           <div className={styles.quickFilterButtonsBackground}>

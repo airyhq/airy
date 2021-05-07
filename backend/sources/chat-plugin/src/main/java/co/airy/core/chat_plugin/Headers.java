@@ -1,4 +1,4 @@
-package co.airy.spring.web;
+package co.airy.core.chat_plugin;
 
 import org.springframework.http.HttpHeaders;
 

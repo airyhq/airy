@@ -19,7 +19,7 @@ export * from './settings';
 export * from './config';
 export * from './tags';
 export * from './templates';
-export {initialState} from './user';
+export * from './user';
 
 export type DataState = {
   user: User;

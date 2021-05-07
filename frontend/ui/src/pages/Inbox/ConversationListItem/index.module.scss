@@ -16,12 +16,6 @@
   border: 1px solid rgba(0, 0, 0, 0);
 }
 
-.containerListItem:hover {
-  path {
-    fill: var(--color-dark-elements-gray);
-  }
-}
-
 .containerListItem.unread {
   &:before {
     content: '•';
@@ -42,12 +36,6 @@
   .contactDetails {
     border-bottom: none;
     padding-bottom: 0;
-  }
-}
-
-.containerListItemActive:hover {
-  path {
-    fill: var(--color-dark-elements-gray);
   }
 }
 
@@ -149,6 +137,15 @@
   text-overflow: ellipsis;
   margin-top: 4px;
   margin-bottom: 8px;
+  max-height: 24px;
+  svg {
+    margin: 4px 0;
+    height: 16px;
+    width: 16px;
+    path {
+      fill: var(--color-text-gray);
+    }
+  }
 }
 
 .contactLastMessage.unread {
@@ -224,4 +221,14 @@
   border: none;
   background-color: rgba(0, 0, 0, 0);
   cursor: pointer;
+}
+
+.attachmentIcons {
+  svg {
+    height: 18px;
+    width: 18px;
+    path {
+      fill: var(--color-text-gray);
+    }
+  }
 }

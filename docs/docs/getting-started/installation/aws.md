@@ -176,13 +176,19 @@ Locate and set your KUBECONFIG file:
 export KUBECONFIG="PATH/TO/DIR/kube.conf"
 ```
 
-Modify the existing ingress service to reconfigure the AWS LoadBalancer.
+Modify the existing ingress service to reconfigure the AWS LoadBalancer:
 
 ```sh
-kubectl --kubeconfig ${KUBECONFIG} -n kube-system annotate service traefik "service.beta.kubernetes.io/aws-load-balancer-backend-protocol=http"
-ARN="Your-unique-ACM-ARN" kubectl --kubeconfig ${KUBECONFIG} -n kube-system annotate service traefik "service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ARN}"
-kubectl --kubeconfig ${KUBECONFIG} -n kube-system annotate service traefik "service.beta.kubernetes.io/aws-load-balancer-ssl-ports=https"
-kubectl --kubeconfig ${KUBECONFIG} -n kube-system patch service traefik --patch '{"spec": { "type": "LoadBalancer", "ports": [ { "name": "https", "port": 443, "protocol": "TCP", "targetPort": 80 } ] } }'
+export ARN="Your-unique-ACM-ARN"
+kubectl -n kube-system annotate service traefik "service.beta.kubernetes.io/aws-load-balancer-ssl-ports=443" "service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ARN}"
+kubectl -n kube-system patch service traefik --patch '{"spec": { "ports": [ { "name": "https", "port": 443, "protocol": "TCP", "targetPort": 80 } ] } }'
+```
+
+Update the `hostnames` configMap with the new https endpoint:
+
+```sh
+export ELB=$(kubectl -n kube-system get service traefik -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+kubectl patch configmap hostnames --patch "{\"data\": { \"HOST\": \"https://${ELB}\"} }"
 ```
 
 ### Print HTTPS endpoint

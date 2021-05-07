@@ -7,7 +7,7 @@ import {Avatar} from 'render';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
-import {Message} from 'model';
+import {Conversation, Message} from 'model';
 import {MergedConversation, StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations, conversationState} from '../../../actions/conversations';
@@ -15,6 +15,10 @@ import {readConversations, conversationState} from '../../../actions/conversatio
 import styles from './index.module.scss';
 import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
 import {newestFilteredConversationFirst} from '../../../selectors/conversations';
+import {ReactComponent as AttachmentTemplate} from 'assets/images/icons/attachmentTemplate.svg';
+import {ReactComponent as AttachmentImage} from 'assets/images/icons/attachmentImage.svg';
+import {ReactComponent as AttachmentVideo} from 'assets/images/icons/attachmentVideo.svg';
+import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
 
 interface FormattedMessageProps {
   message: Message;
@@ -84,6 +88,24 @@ const ConversationListItem = (props: ConversationListItemProps) => {
     }
   }, [active, conversation, currentConversationState]);
 
+  const lastMessageIcon = (conversation: Conversation) => {
+    const lastMessageContent = conversation.lastMessage.content;
+    if (!lastMessageContent.attachment) {
+      if (lastMessageContent.message?.attachments?.[0].type === 'image') {
+        return <AttachmentImage />;
+      } else if (lastMessageContent.message?.attachments?.[0].type === 'video') {
+        return <AttachmentVideo style={{height: '24px', width: '24px', margin: '0px'}} />;
+      } else if (lastMessageContent.suggestionResponse) {
+        return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
+      } else if (lastMessageContent.image) {
+        return <AttachmentImage />;
+      } else if (lastMessageContent.richCard) {
+        return <RichCardIcon style={{height: '24px', width: '24px', margin: '0px'}} />;
+      }
+    }
+    return <AttachmentTemplate />;
+  };
+
   return (
     <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
@@ -102,7 +124,11 @@ const ConversationListItem = (props: ConversationListItemProps) => {
               {currentConversationState === 'OPEN' ? <OpenStateButton /> : <ClosedStateButton />}
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
-              <FormattedMessage message={conversation.lastMessage} />
+              {conversation.lastMessage.content.text || conversation.lastMessage.content.message?.text ? (
+                <FormattedMessage message={conversation.lastMessage} />
+              ) : (
+                lastMessageIcon(conversation)
+              )}
             </div>
             <div className={styles.bottomRow}>
               <div className={styles.source}>

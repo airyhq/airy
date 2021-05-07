@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: tchiotludo/akhq:0.16.0 
+          image: tchiotludo/akhq:0.16.0
           imagePullPolicy: Always
           volumeMounts:
           - name: akhq-config

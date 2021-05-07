@@ -15,7 +15,7 @@ import {listMessages, listPreviousMessages} from '../../../../actions/messages';
 
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
-import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/conversations';
+import {getConversation, getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime, isSameDay} from 'dates';
@@ -27,7 +27,7 @@ type MessageListProps = ConnectedProps<typeof connector> & {
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
     messages: getCurrentMessages(state, ownProps),
-    conversation: getCurrentConversation(state, ownProps),
+    conversation: getConversation(state, ownProps),
   };
 };
 

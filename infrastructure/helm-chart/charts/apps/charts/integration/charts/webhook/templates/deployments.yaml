@@ -41,11 +41,26 @@ spec:
             configMapKeyRef:
               name: beanstalk-config
               key: BEANSTALK_PORT
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_SCHEMA_REGISTRY_URL
         - name: WEBHOOK_NAME
           valueFrom:
             configMapKeyRef:
               name: "{{ .Values.component }}"
               key: name
+        - name: MAX_BACKOFF_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              name: integration-webhook
+              key: maxBackoff
         livenessProbe:
             httpGet:
               path: /health
@@ -64,18 +79,13 @@ spec:
         - name: SERVICE_NAME
           valueFrom:
             configMapKeyRef:
-              name: beanstalkd-config
+              name: beanstalk-config
               key: BEANSTALK_HOSTNAME
         - name: SERVICE_PORT
           valueFrom:
             configMapKeyRef:
-              name: beanstalkd-config
+              name: beanstalk-config
               key: BEANSTALK_PORT
-        - name: MAX_BACKOFF_SECONDS
-          valueFrom:
-            configMapKeyRef:
-              name: webhook-config
-              key: MAX_BACKOFF_SECONDS
         volumeMounts:
         - name: provisioning-scripts
           mountPath: /opt/provisioning

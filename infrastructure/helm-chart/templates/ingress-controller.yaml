@@ -85,6 +85,10 @@ apiVersion: v1
 metadata:
   name: traefik
   namespace: kube-system
+  annotations:
+  {{- range .Values.global.kubernetes.loadbalancerAnnotations }}
+    {{ . }}
+  {{- end }}
 spec:
   selector:
     k8s-app: traefik-ingress-lb

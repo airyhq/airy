@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
 import static co.airy.model.metadata.MetadataKeys.ConversationKeys;
@@ -72,7 +73,7 @@ public class Connector {
     }
 
     public List<KeyValue<String, Metadata>> fetchMetadata(String conversationId, Conversation conversation) {
-        final UserProfile profile = getProfile(conversation);
+        final UserProfile profile = Optional.ofNullable(getProfile(conversation)).orElse(new UserProfile());
 
         final List<KeyValue<String, Metadata>> recordList = new ArrayList<>();
 

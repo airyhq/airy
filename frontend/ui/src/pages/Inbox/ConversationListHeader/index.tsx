@@ -22,7 +22,6 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  user: state.data.user,
   currentFilter: state.data.conversations.filtered.currentFilter || {},
   totalConversations: state.data.conversations.all.paginationData.total,
   filteredPaginationData: state.data.conversations.filtered.paginationData,
@@ -81,38 +80,9 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
     onFilterVisibilityChanged();
   };
 
-  const activeFilterCount = (): number => {
-    const currentFilterLength = Object.keys(currentFilter).length;
-    let amountFiltersSet = 0;
+  const isFilterActive = (): boolean => Object.values(currentFilter).length > 0;
 
-    if (currentFilterLength > 0) {
-      if (currentFilter.byChannels !== undefined) {
-        amountFiltersSet += 1;
-      }
-      if (currentFilter.bySources !== undefined) {
-        amountFiltersSet += 1;
-      }
-      if (currentFilter.byTags !== undefined) {
-        amountFiltersSet += 1;
-      }
-      if (currentFilter.displayName !== undefined && currentFilter.displayName !== null) {
-        amountFiltersSet += 1;
-      }
-      if (currentFilter.isStateOpen !== undefined) {
-        amountFiltersSet += 1;
-      }
-      if (currentFilter.readOnly !== undefined) {
-        amountFiltersSet += 1;
-      }
-      if (currentFilter.unreadOnly !== undefined) {
-        amountFiltersSet += 1;
-      }
-      if (currentFilter.readOnly !== undefined && currentFilter.unreadOnly !== undefined) {
-        amountFiltersSet -= 1;
-      }
-    }
-    return amountFiltersSet;
-  };
+  console.log(currentFilter);
 
   const renderSearchInput = isShowingSearchInput ? (
     <div className={styles.containerSearchField}>
@@ -140,8 +110,8 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
         <button
           title="Filter"
           id="filterButton"
-          className={`${activeFilterCount() > 0 ? styles.activeFilters : styles.filterButton}`}
-          onClick={() => toggleFilter()}>
+          className={`${isFilterActive() ? styles.activeFilters : styles.filterButton}`}
+          onClick={toggleFilter}>
           <FilterIcon />
         </button>
         {isFilterOpen && (

@@ -1,19 +1,17 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {ConversationFilter} from 'model';
 
 import {StateModel} from '../../../reducers';
 
 import {setFilter} from '../../../actions/conversationsFilter';
-import {allConversations, isFilterActive} from '../../../selectors/conversations';
 
 import styles from './index.module.scss';
+import {omit} from 'lodash';
 
 const mapStateToProps = (state: StateModel) => {
   return {
-    conversationsFilter: state.data.conversations.filtered.currentFilter,
-    isFilterActive: isFilterActive(state),
-    conversations: allConversations(state),
+    currentFilter: state.data.conversations.filtered.currentFilter,
   };
 };
 
@@ -21,39 +19,36 @@ const mapDispatchToProps = {
   setFilter,
 };
 
+type filterStates = 'all' | 'open' | 'closed';
+
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ConversationsFilterProps = {} & ConnectedProps<typeof connector>;
 
 const ConversationsFilter = (props: ConversationsFilterProps) => {
-  const {conversationsFilter, setFilter} = props;
-  const allButton = useRef(null);
-  const openButton = useRef(null);
-  const closedButton = useRef(null);
+  const {setFilter, currentFilter} = props;
+  const [filterState, setFilterState] = useState('all');
 
   useEffect(() => {
-    currentStateFilter();
-  }),
-    [props.conversations];
-
-  const currentStateFilter = () => {
-    allButton.current.className = styles.quickFilterButton;
-    openButton.current.className = styles.quickFilterButton;
-    closedButton.current.className = styles.quickFilterButton;
-
-    if (conversationsFilter.isStateOpen === undefined) {
-      allButton.current.className = styles.quickFilterButtonActive;
-    } else if (conversationsFilter.isStateOpen === true) {
-      openButton.current.className = styles.quickFilterButtonActive;
-    } else if (conversationsFilter.isStateOpen === false) {
-      closedButton.current.className = styles.quickFilterButtonActive;
+    const {isStateOpen} = currentFilter;
+    if (isStateOpen === undefined) {
+      setFilterState('all');
+    } else {
+      setFilterState(isStateOpen ? 'open' : 'closed');
     }
-  };
+  }, [currentFilter]);
 
-  const setStateOpen = (setOpen: boolean) => {
-    const newFilter: ConversationFilter = {...conversationsFilter};
-    newFilter.isStateOpen = setOpen;
+  const setCurrentState = (newState: filterStates) => {
+    let newFilter: ConversationFilter = {...omit(currentFilter, 'isStateOpen')};
+    if (newState !== 'all') {
+      newFilter = {
+        ...newFilter,
+        isStateOpen: newState === 'open',
+      };
+    }
+
     setFilter(newFilter);
+    setFilterState(newState);
   };
 
   return (
@@ -61,13 +56,19 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
       <div className={styles.quickFilterContainer}>
         <div className={styles.quickFilterButtons}>
           <div className={styles.quickFilterButtonsBackground}>
-            <button ref={allButton} className={styles.quickFilterButton} onClick={() => setStateOpen(undefined)}>
+            <button
+              className={filterState === 'all' ? styles.quickFilterButtonActive : styles.quickFilterButton}
+              onClick={() => setCurrentState('all')}>
               All
             </button>
-            <button ref={openButton} className={styles.quickFilterButton} onClick={() => setStateOpen(true)}>
+            <button
+              className={filterState === 'open' ? styles.quickFilterButtonActive : styles.quickFilterButton}
+              onClick={() => setCurrentState('open')}>
               Open
             </button>
-            <button ref={closedButton} className={styles.quickFilterButton} onClick={() => setStateOpen(false)}>
+            <button
+              className={filterState === 'closed' ? styles.quickFilterButtonActive : styles.quickFilterButton}
+              onClick={() => setCurrentState('closed')}>
               Closed
             </button>
           </div>

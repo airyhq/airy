@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {sortBy} from 'lodash-es';
+import {omit, sortBy} from 'lodash-es';
 import {SearchField, LinkButton, Button} from 'components';
 import {Tag as TagModel, Channel, ConversationFilter} from 'model';
 import {listTags} from '../../../actions/tags';
-import {setFilter, resetFilter} from '../../../actions/conversationsFilter';
+import {setFilter} from '../../../actions/conversationsFilter';
 import {StateModel} from '../../../reducers';
 import DialogCustomizable from '../../../components/DialogCustomizable';
 import Tag from '../../../components/Tag';
@@ -25,7 +25,6 @@ function mapStateToProps(state: StateModel) {
 
 const mapDispatchToProps = {
   setFilter,
-  resetFilter,
   listTags,
 };
 
@@ -36,7 +35,7 @@ type PopUpFilterProps = {
 } & ConnectedProps<typeof connector>;
 
 const PopUpFilter = (props: PopUpFilterProps) => {
-  const {filter, channels, tags, listTags, closeCallback, setFilter, resetFilter} = props;
+  const {filter, channels, tags, listTags, closeCallback, setFilter} = props;
 
   const [pageSearch, setPageSearch] = useState('');
   const [tagSearch, setTagSearch] = useState('');
@@ -45,17 +44,13 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     listTags();
   }, [listTags]);
 
-  const applyPressed = () => {
-    closeCallback();
-  };
-
-  const resetPressed = e => {
+  const resetPressed = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
-    resetFilter();
+    setFilter({});
     closeCallback();
   };
 
-  const toggleReadOnly = e => {
+  const toggleReadOnly = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
     const newFilter: ConversationFilter = {...filter};
     newFilter.readOnly = !filter.readOnly;
@@ -63,7 +58,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     setFilter(newFilter);
   };
 
-  const toggleUnreadOnly = e => {
+  const toggleUnreadOnly = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
     const newFilter: ConversationFilter = {...filter};
     newFilter.unreadOnly = !filter.unreadOnly;
@@ -71,8 +66,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     setFilter(newFilter);
   };
 
-  const toggleState = (event: React.MouseEvent<HTMLElement, MouseEvent>, isOpen: boolean) => {
-    event.stopPropagation();
+  const toggleState = (e: React.MouseEvent<HTMLElement, MouseEvent>, isOpen: boolean) => {
+    e.stopPropagation();
     const newFilter: ConversationFilter = {...filter};
     newFilter.isStateOpen === isOpen ? (newFilter.isStateOpen = !isOpen) : (newFilter.isStateOpen = isOpen);
     setFilter(newFilter);
@@ -82,27 +77,36 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     return (channelsList || []).includes(channel.id);
   };
 
-  const toggleChannel = (e, channel: Channel) => {
+  const toggleChannel = (e: React.MouseEvent<HTMLElement, MouseEvent>, channel: Channel) => {
     e.stopPropagation();
     const channels = filter.byChannels ? [...filter.byChannels] : [];
     isChannelSelected(channels, channel) ? channels.splice(channels.indexOf(channel.id), 1) : channels.push(channel.id);
-    setFilter({
-      ...filter,
-      byChannels: channels,
-    });
+
+    if (channels.length > 0) {
+      setFilter({
+        ...filter,
+        byChannels: channels,
+      });
+    } else {
+      setFilter(omit(filter, 'byChannels'));
+    }
   };
 
-  const isTagSelected = (tagList: Array<string>, tag: TagModel) => {
+  const isTagSelected = (tagList: string[], tag: TagModel) => {
     return (tagList || []).includes(tag.id);
   };
 
   const toggleTag = (tag: TagModel) => {
     const tags = filter.byTags ? [...filter.byTags] : [];
     isTagSelected(tags, tag) ? tags.splice(tags.indexOf(tag.id), 1) : tags.push(tag.id);
-    setFilter({
-      ...filter,
-      byTags: tags,
-    });
+    if (tags.length > 0) {
+      setFilter({
+        ...filter,
+        byTags: tags,
+      });
+    } else {
+      setFilter(omit(filter, 'byTags'));
+    }
   };
 
   const OpenIcon = () => {
@@ -111,7 +115,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
 
   return (
     <DialogCustomizable
-      close={() => applyPressed()}
+      close={closeCallback}
       style={{marginTop: '10px'}}
       coverStyle={{backgroundColor: 'rgba(247,247,247,0.7)'}}>
       <div className={styles.content}>
@@ -122,12 +126,12 @@ const PopUpFilter = (props: PopUpFilterProps) => {
               <div className={styles.filterRow}>
                 <button
                   className={filter.readOnly ? styles.filterButtonSelected : styles.filterButton}
-                  onClick={e => toggleReadOnly(e)}>
+                  onClick={toggleReadOnly}>
                   Read Only
                 </button>
                 <button
                   className={filter.unreadOnly ? styles.filterButtonSelected : styles.filterButton}
-                  onClick={e => toggleUnreadOnly(e)}>
+                  onClick={toggleUnreadOnly}>
                   Unread Only
                 </button>
               </div>
@@ -220,8 +224,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
       </div>
 
       <div className={styles.buttonRow}>
-        <LinkButton onClick={e => resetPressed(e)}>Clear All</LinkButton>
-        <Button styleVariant="outline-big" onClick={() => applyPressed()}>
+        <LinkButton onClick={resetPressed}>Clear All</LinkButton>
+        <Button styleVariant="outline-big" onClick={closeCallback}>
           Apply
         </Button>
       </div>

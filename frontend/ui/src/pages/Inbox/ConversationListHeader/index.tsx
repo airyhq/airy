@@ -81,7 +81,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
     onFilterVisibilityChanged();
   };
 
-  const activeFilterCount = ():number => {
+  const activeFilterCount = (): number => {
     const currentFilterLength = Object.keys(currentFilter).length;
     let amountFiltersSet = 0;
 

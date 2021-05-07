@@ -14,7 +14,7 @@ import {ReactComponent as FilterIcon} from 'assets/images/icons/filter-alt.svg';
 import styles from './index.module.scss';
 
 import {cySearchButton, cySearchField, cySearchFieldBackButton} from 'handles';
-import Popup from '../ConversationsFilter/Popup';
+import Popup from '../QuickFilter/Popup';
 
 const mapDispatchToProps = {
   setSearch,
@@ -81,8 +81,6 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   };
 
   const isFilterActive = (): boolean => Object.values(currentFilter).length > 0;
-
-  console.log(currentFilter);
 
   const renderSearchInput = isShowingSearchInput ? (
     <div className={styles.containerSearchField}>

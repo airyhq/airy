@@ -9,7 +9,7 @@ import {newestConversationFirst, newestFilteredConversationFirst} from '../../..
 import {listNextConversations} from '../../../actions/conversations';
 
 import ConversationListHeader from '../ConversationListHeader';
-import ConversationsFilter from '../ConversationsFilter';
+import QuickFilter from '../QuickFilter';
 import ConversationListItem from '../ConversationListItem';
 import NoConversations from '../NoConversations';
 import {SimpleLoader} from 'components';
@@ -118,7 +118,7 @@ const ConversationList = (props: ConversationListProps) => {
       <div className={styles.conversationListContainer}>
         <section className={styles.conversationListContainerFilterBox}>
           <ConversationListHeader onFilterVisibilityChanged={() => resizeList()} />
-          <ConversationsFilter />
+          <QuickFilter />
         </section>
       </div>
       <section className={styles.conversationListContactList}>{renderConversationList()}</section>

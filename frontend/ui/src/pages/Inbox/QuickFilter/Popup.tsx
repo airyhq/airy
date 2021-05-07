@@ -66,7 +66,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     setFilter(newFilter);
   };
 
-  const toggleState = (e: React.MouseEvent<HTMLElement, MouseEvent>, isOpen: boolean) => {
+  const setState = (e: React.MouseEvent<HTMLElement, MouseEvent>, isOpen: boolean) => {
     e.stopPropagation();
     const newFilter: ConversationFilter = {...filter};
     newFilter.isStateOpen === isOpen ? (newFilter.isStateOpen = !isOpen) : (newFilter.isStateOpen = isOpen);
@@ -147,7 +147,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       ? styles.filterButton
                       : styles.filterButtonSelected
                   }
-                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleState(event, true)}>
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setState(event, true)}>
                   <OpenIcon />
                   Open
                 </button>
@@ -157,7 +157,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       ? styles.filterButton
                       : styles.filterButtonSelected
                   }
-                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => toggleState(event, false)}>
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setState(event, false)}>
                   <CheckmarkCircleIcon />
                   Closed
                 </button>

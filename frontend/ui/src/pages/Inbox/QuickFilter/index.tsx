@@ -25,7 +25,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type ConversationsFilterProps = {} & ConnectedProps<typeof connector>;
 
-const ConversationsFilter = (props: ConversationsFilterProps) => {
+const QuickFilter = (props: ConversationsFilterProps) => {
   const {setFilter, currentFilter} = props;
   const [filterState, setFilterState] = useState('all');
 
@@ -78,4 +78,4 @@ const ConversationsFilter = (props: ConversationsFilterProps) => {
   );
 };
 
-export default connector(ConversationsFilter);
+export default connector(QuickFilter);

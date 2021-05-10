@@ -131,7 +131,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             filteredTags.map(tag => {
               return (
                 <div key={tag.id} className={styles.addTagsRow}>
-                  <Tag tag={tag} />
+                  <div className={styles.tag}>
+                    <Tag tag={tag} />
+                  </div>
                   <LinkButton type="button" onClick={() => addTag(tag)}>
                     Add
                   </LinkButton>

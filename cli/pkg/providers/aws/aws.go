@@ -49,7 +49,12 @@ func (p *provider) GetOverrides() tmpl.Variables {
 	}
 }
 
-func (p *provider) PostInstallation(namespace string) error {
+func (p *provider) PostInstallation(dir workspace.ConfigDir) error {
+	conf, err := dir.LoadAiryYaml()
+	if err != nil {
+		return err
+	}
+
 	clientset, err := p.context.GetClientSet()
 	if err != nil {
 		return err
@@ -62,18 +67,21 @@ func (p *provider) PostInstallation(namespace string) error {
 
 	loadBalancerUrl := ingressService.Status.LoadBalancer.Ingress[0].Hostname
 
-	if err = p.updateIngress("airy-core", loadBalancerUrl, namespace); err != nil {
+	if err = p.updateIngress("airy-core", loadBalancerUrl, conf.Kubernetes.Namespace); err != nil {
 		return err
 	}
-	if err = p.updateIngress("airy-core-ui", loadBalancerUrl, namespace); err != nil {
-		return err
-	}
-
-	if err = p.updateHostsConfigMap(loadBalancerUrl, namespace); err != nil {
+	if err = p.updateIngress("airy-core-ui", loadBalancerUrl, conf.Kubernetes.Namespace); err != nil {
 		return err
 	}
 
-	return nil
+	if err = p.updateHostsConfigMap(loadBalancerUrl, conf.Kubernetes.Namespace); err != nil {
+		return err
+	}
+
+	return dir.UpdateAiryYaml(func (conf workspace.AiryConf) workspace.AiryConf {
+		conf.Kubernetes.Host = loadBalancerUrl
+		return conf
+	})
 }
 
 type KubeConfig struct {

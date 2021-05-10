@@ -13,8 +13,8 @@ Available Commands:
   version     Prints version information
 
 Flags:
-      --apihost string      Airy Core HTTP API endpoint
-      --config-dir string   config directory of an airy core instance (default is the cwd)
-  -h, --help                help for airy
+      --apihost string     Airy Core HTTP API endpoint
+  -h, --help               help for airy
+      --workspace string   workspace directory of an Airy core instance (default is the cwd)
 
 Use "airy [command] --help" for more information about a command.

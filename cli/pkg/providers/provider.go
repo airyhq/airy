@@ -20,7 +20,7 @@ const (
 type Provider interface {
 	Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error)
 	GetOverrides() template.Variables
-	PostInstallation(namespace string) error
+	PostInstallation(dir workspace.ConfigDir) error
 }
 
 func MustGet(providerName ProviderName, w io.Writer) Provider {

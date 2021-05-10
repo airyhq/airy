@@ -1,2 +1,3 @@
 global:
   loadbalancerAnnotations: {}
+  host: "http://airy.core"

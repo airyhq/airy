@@ -14,7 +14,7 @@ func TestCli(t *testing.T) {
 	}()
 
 	cwdPath, err := filepath.Abs(".")
-	dir, err := ioutil.TempDir(cwdPath, "config-dir")
+	dir, err := ioutil.TempDir(cwdPath, "workspace")
 	if err != nil {
 		t.Fatal(err)
 	}

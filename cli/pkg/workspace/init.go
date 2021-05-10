@@ -16,7 +16,7 @@ func Init(path string) ConfigDir {
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			fmt.Println(err)
-			fmt.Println("the current directory is not an airy config directory")
+			fmt.Println("the current directory is not an airy workspace directory")
 		} else {
 			fmt.Println("invalid configuration: ", err)
 		}
@@ -27,7 +27,7 @@ func Init(path string) ConfigDir {
 	dir := ConfigDir{Path: path}
 
 	if _, err := os.Stat(dir.GetAiryYaml()); os.IsNotExist(err) {
-		fmt.Println("the current directory is not an airy config directory")
+		fmt.Println("the current directory is not an airy workspace directory")
 		os.Exit(1)
 	}
 	return dir

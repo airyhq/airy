@@ -20,9 +20,9 @@ var (
 	version        string
 	initOnly       bool
 	CreateCmd      = &cobra.Command{
-		Use:   "create [config directory]",
+		Use:   "create [workspace directory]",
 		Short: "Creates an instance of Airy Core",
-		Long:  `Creates a config directory (default .) with default configuration and starts an Airy Core instance using the given provider`,
+		Long:  `Creates a workspace directory (default .) with default configuration and starts an Airy Core instance using the given provider`,
 		Args:  cobra.MaximumNArgs(1),
 		Run:   create,
 	}
@@ -32,7 +32,7 @@ func init() {
 	CreateCmd.Flags().StringVar(&providerName, "provider", "minikube", "One of the supported providers (aws|minikube).")
 	CreateCmd.Flags().StringToStringVar(&providerConfig, "provider-config", nil, "Additional configuration for the providers.")
 	CreateCmd.Flags().StringVar(&namespace, "namespace", "default", "(optional) Kubernetes namespace that Airy should be installed to.")
-	CreateCmd.Flags().BoolVar(&initOnly, "init-only", false, "Only create the airy config directory and exit")
+	CreateCmd.Flags().BoolVar(&initOnly, "init-only", false, "Only create the airy workspace directory and exit")
 	CreateCmd.MarkFlagRequired("provider")
 }
 
@@ -51,9 +51,9 @@ func create(cmd *cobra.Command, args []string) {
 	overrides.Namespace = namespace
 	dir, err := workspace.Create(cfgDir, overrides)
 	if err != nil {
-		console.Exit("could not initialize Airy config directory", err)
+		console.Exit("could not initialize Airy workspace directory", err)
 	}
-	fmt.Println("📁 Initialized Airy config directory at", dir.GetPath("."))
+	fmt.Println("📁 Initialized Airy workspace directory at", dir.GetPath("."))
 	if initOnly == true {
 		os.Exit(0)
 	}
@@ -90,7 +90,7 @@ func create(cmd *cobra.Command, args []string) {
 		console.Exit("installing Helm charts failed with err: ", err)
 	}
 
-	if err = provider.PostInstallation(namespace); err != nil {
+	if err = provider.PostInstallation(dir); err != nil {
 		console.Exit("failed to run post installation hook: ", err)
 	}
 

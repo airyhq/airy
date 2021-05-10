@@ -15,7 +15,7 @@ The configuration workflow is as simple as:
 
 ```sh
 $EDITOR /path/to/config/directory/airy.yaml # edit your airy.yaml file
-airy config apply --config-dir /path/to/config/directory/ # apply your config
+airy config apply --workspace /path/to/config/directory/ # apply your config
 ```
 
 Your Airy Core instance will start and stop components accordingly to your
@@ -101,5 +101,5 @@ use the [airy config apply](/cli/usage.md#config-apply) by running the
 following [Airy CLI](/cli/introduction.md) command.
 
 ```bash
-airy config apply --config-dir /path/to/config/directory/
+airy config apply --workspace /path/to/config/directory/
 ```

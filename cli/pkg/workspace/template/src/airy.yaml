@@ -3,7 +3,9 @@ kubernetes:
   containerRegistry: ghcr.io/airyhq
   namespace: {{ .Namespace }}
   ngrokEnabled: {{ default "false" .NgrokEnabled }}
+{{- if .Host }}
   host: {{ default "http://airy.core" .Host }}
+{{- end }}
 {{- if .LoadBalancerAnnotations }}
   loadBalancerAnnotations: {{ .LoadBalancerAnnotations }}
 {{- end }}

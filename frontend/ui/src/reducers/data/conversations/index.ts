@@ -254,7 +254,7 @@ function allReducer(
         ...state,
         paginationData: {
           ...state.paginationData,
-          loading: true,
+          loading: action.payload,
         },
       };
 

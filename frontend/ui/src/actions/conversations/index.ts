@@ -81,14 +81,19 @@ function sleep(time) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
 
+interface ConversationInfoError {
+  status: number;
+  body: any;
+}
+
 export const getConversationInfo = (conversationId: string, retries?: number) => async (dispatch: Dispatch<any>) =>
   HttpClientInstance.getConversationInfo(conversationId)
     .then(response => {
       dispatch(mergeConversationsAction([response]));
       return Promise.resolve(true);
     })
-    .catch(async (error: Error) => {
-      if (retries > 5) {
+    .catch(async (error: ConversationInfoError) => {
+      if (retries > 5 || error.status === 404) {
         return Promise.reject(error);
       } else {
         await sleep(1000);

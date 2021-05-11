@@ -81,9 +81,6 @@ const ConversationList = (props: ConversationListProps) => {
       return Promise.resolve(true);
     };
 
-    console.log(loading);
-    console.log(items.length);
-
     return (
       <InfiniteLoader isItemLoaded={isItemLoaded} itemCount={itemCount} loadMoreItems={loadMoreItems}>
         {({onItemsRendered, ref}) => (

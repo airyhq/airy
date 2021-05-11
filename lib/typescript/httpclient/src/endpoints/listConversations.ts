@@ -6,7 +6,7 @@ import {mapMessage} from 'model';
 export const listConversationsDef = {
   endpoint: () => 'conversations.list',
   mapRequest: (conversationListRequest: ListConversationsRequestPayload) => {
-    conversationListRequest.page_size = conversationListRequest.page_size ?? 10;
+    conversationListRequest.page_size = conversationListRequest.page_size ?? 50;
     conversationListRequest.cursor = conversationListRequest.cursor ?? null;
     return conversationListRequest;
   },

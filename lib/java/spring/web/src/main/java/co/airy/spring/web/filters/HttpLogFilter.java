@@ -1,7 +1,10 @@
 package co.airy.spring.web.filters;
 
-import co.airy.spring.events.custom.HttpEventPublisher;
+import co.airy.spring.auth.session.UserProfile;
+import co.airy.spring.web.events.HttpEventPublisher;
 import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -13,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static co.airy.spring.auth.PrincipalAccess.getUserProfile;
 
 @Component
 public class HttpLogFilter extends OncePerRequestFilter {
@@ -49,7 +54,12 @@ public class HttpLogFilter extends OncePerRequestFilter {
         if ("POST".equalsIgnoreCase(request.getMethod())) {
             requestBody = getRequestBody((ContentCachingRequestWrapper) request);
         }
-        httpEventPublisher.publishCustomEvent(requestBody, requestHeaders, requestUri);
+        httpEventPublisher.publishCustomEvent(requestBody, requestHeaders, requestUri, getUser());
+    }
+
+    private UserProfile getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return getUserProfile(authentication);
     }
 
     private Map<String, String> getRequestHeaders(ContentCachingRequestWrapper request) {

@@ -18,12 +18,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -82,9 +86,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                         .and().logout().permitAll().deleteCookies(AuthCookie.NAME)
                         .and()
                         .oauth2Login(oauth2 -> oauth2
-                                .userInfoEndpoint(userInfo -> userInfo
-                                        .userService(this.userService)
-                                ))
+                                .defaultSuccessUrl("/ui/"))
                         .addFilterAfter(new EmailFilter(configProvider), OAuth2LoginAuthenticationFilter.class);
             }
         }
@@ -95,7 +97,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         final String allowed = environment.getProperty("allowedOrigins", "");
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOriginPattern(allowed);
+        config.setAllowedOriginPatterns(Arrays.asList(allowed.split(",")));
         config.addAllowedHeader("*");
         config.setAllowedMethods(List.of("GET", "POST"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

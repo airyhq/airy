@@ -45,7 +45,7 @@ const ConversationList = (props: ConversationListProps) => {
     const {currentConversationId} = props;
     if (conversation == null) {
       return (
-        <div className="conversationListLoading" style={style}>
+        <div className="conversationListLoading" style={{...style, textAlignLast: 'center', marginTop: '24px'}}>
           <SimpleLoader />
         </div>
       );

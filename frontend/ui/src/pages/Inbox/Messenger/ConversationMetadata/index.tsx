@@ -13,7 +13,7 @@ import {StateModel} from '../../../../reducers';
 import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
 import {Button, Input, LinkButton} from 'components';
-import {getCurrentConversation} from '../../../../selectors/conversations';
+import {getConversation} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 
 import {cyShowTagsDialog, cyTagsDialogInput, cyTagsDialogButton} from 'handles';
@@ -21,7 +21,7 @@ import difference from 'lodash/difference';
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
-    conversation: getCurrentConversation(state, ownProps),
+    conversation: getConversation(state, ownProps),
     tags: state.data.tags.all,
   };
 };
@@ -131,7 +131,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             filteredTags.map(tag => {
               return (
                 <div key={tag.id} className={styles.addTagsRow}>
-                  <Tag tag={tag} />
+                  <div className={styles.tag}>
+                    <Tag tag={tag} />
+                  </div>
                   <LinkButton type="button" onClick={() => addTag(tag)}>
                     Add
                   </LinkButton>

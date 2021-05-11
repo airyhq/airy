@@ -4,3 +4,5 @@ global:
   namespace: default
   ngrokEnabled: false
   host: http://airy.core
+  loadbalancer:
+    annotations: {}

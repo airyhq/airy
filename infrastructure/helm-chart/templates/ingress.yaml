@@ -99,6 +99,13 @@ spec:
                 name: api-admin
                 port:
                   number: 80
+          - path: /logout
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
           - path: /oauth
             pathType: Prefix
             backend:

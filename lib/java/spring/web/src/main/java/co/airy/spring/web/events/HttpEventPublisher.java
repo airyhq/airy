@@ -1,5 +1,6 @@
-package co.airy.spring.events.custom;
+package co.airy.spring.web.events;
 
+import co.airy.spring.auth.session.UserProfile;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -15,8 +16,8 @@ public class HttpEventPublisher {
     }
 
     @Async
-    public void publishCustomEvent(final String body, final Map<String, String> headers, final String url) {
-        HttpEvent httpEvent = new HttpEvent(this, body, headers, url);
+    public void publishCustomEvent(final String body, final Map<String, String> headers, final String url, UserProfile userProfile) {
+        HttpEvent httpEvent = new HttpEvent(this, body, headers, url, userProfile);
         applicationEventPublisher.publishEvent(httpEvent);
     }
 }

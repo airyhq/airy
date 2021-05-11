@@ -22,7 +22,7 @@ import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-dow
 import {ConversationRouteProps} from '../index';
 import {StateModel} from '../../../reducers';
 import {listTemplates} from '../../../actions/templates';
-import {getCurrentConversation} from '../../../selectors/conversations';
+import {getConversation} from '../../../selectors/conversations';
 import {getCurrentMessages} from '../../../selectors/conversations';
 import {isTextMessage} from '../../../services/types/messageTypes';
 
@@ -33,7 +33,7 @@ const mapDispatchToProps = {sendMessages};
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
-    conversation: getCurrentConversation(state, ownProps),
+    conversation: getConversation(state, ownProps),
     messages: getCurrentMessages(state, ownProps),
     listTemplates,
   };

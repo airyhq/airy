@@ -43,7 +43,7 @@ func New(w io.Writer) *provider {
 }
 
 func (p *provider) GetHelmOverrides() []string {
-	return []string{"--set", "global.ngrokEnabled=false"}
+	return []string{"--set", "global.ngrokEnabled=false", "--set", "global.loadbalancer.annotations={service.beta.kubernetes.io/aws-load-balancer-type: nlb}"}
 }
 
 func (p *provider) PostInstallation(namespace string) error {

@@ -7,6 +7,7 @@ export type RenderProp = (ctrl?: RenderCtrl) => JSX.Element;
 export type Config = {
   welcomeMessage?: {};
   headerText?: string;
+  startNewConversationText?: string;
   headerTextColor?: string;
   backgroundColor?: string;
   primaryColor?: string;

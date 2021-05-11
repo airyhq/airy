@@ -9,9 +9,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Airy Bazel tools
 git_repository(
     name = "com_github_airyhq_bazel_tools",
-    commit = "d18b5a4418a8b69c0a7177f2831f8aa62da038c1",
+    commit = "bbfbc0844c30b52e146690412030cfe9c6b475e3",
     remote = "https://github.com/airyhq/bazel-tools.git",
-    shallow_since = "1618558833 +0200",
+    shallow_since = "1620236403 +0200",
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies", "airy_jvm_deps")
@@ -35,10 +35,10 @@ maven_install(
         "com.jayway.jsonpath:json-path:2.4.0",
         "com.dinstone:beanstalkc:2.3.0",
         "com.twilio.sdk:twilio:7.51.0",
-        "io.confluent:kafka-avro-serializer:5.5.1",
-        "io.confluent:kafka-schema-registry-client:5.5.1",
-        "io.confluent:kafka-schema-registry:5.5.1",
-        "io.confluent:kafka-streams-avro-serde:5.5.1",
+        "io.confluent:kafka-avro-serializer:6.1.1",
+        "io.confluent:kafka-schema-registry-client:6.1.1",
+        "io.confluent:kafka-schema-registry:6.1.1",
+        "io.confluent:kafka-streams-avro-serde:6.1.1",
         "io.jsonwebtoken:jjwt-api:0.10.5",
         "io.jsonwebtoken:jjwt-impl:0.10.5",
         "io.jsonwebtoken:jjwt-jackson:0.10.5",
@@ -52,12 +52,12 @@ maven_install(
         "org.apache.avro:avro-tools:1.10.0",
         "org.apache.avro:avro:1.10.0",
         "org.apache.curator:curator-test:4.2.0",
-        "org.apache.kafka:connect-api:2.5.1",
-        "org.apache.kafka:connect-transforms:2.5.1",
-        "org.apache.kafka:kafka-clients:2.5.1",
-        "org.apache.kafka:kafka-clients:jar:test:2.5.1",
-        "org.apache.kafka:kafka-streams:2.5.1",
-        "org.apache.kafka:kafka_2.12:2.5.1",
+        "org.apache.kafka:connect-api:2.7.0",
+        "org.apache.kafka:connect-transforms:2.7.0",
+        "org.apache.kafka:kafka-clients:2.7.0",
+        "org.apache.kafka:kafka-clients:jar:test:2.7.0",
+        "org.apache.kafka:kafka-streams:2.7.0",
+        "org.apache.kafka:kafka_2.13:2.7.0",
         "org.apache.lucene:lucene-queryparser:8.7.0",
         "org.apache.lucene:lucene-analyzers-common:8.7.0",
         "org.apache.lucene:lucene-core:8.7.0",
@@ -149,9 +149,9 @@ protobuf_deps()
 
 http_archive(
     name = "io_bazel_rules_docker",
-    sha256 = "4521794f0fba2e20f3bf15846ab5e01d5332e587e9ce81629c7f96c793bb7036",
-    strip_prefix = "rules_docker-0.14.4",
-    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.14.4/rules_docker-v0.14.4.tar.gz"],
+    sha256 = "59d5b42ac315e7eadffa944e86e90c2990110a1c8075f1cd145f487e999d22b3",
+    strip_prefix = "rules_docker-0.17.0",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.17.0/rules_docker-v0.17.0.tar.gz"],
 )
 
 load(
@@ -164,10 +164,6 @@ container_repositories()
 load("@io_bazel_rules_docker//repositories:deps.bzl", container_deps = "deps")
 
 container_deps()
-
-load("@io_bazel_rules_docker//repositories:pip_repositories.bzl", "pip_deps")
-
-pip_deps()
 
 load(
     "@io_bazel_rules_docker//container:container.bzl",
@@ -237,8 +233,11 @@ go_repositories()
 
 http_archive(
     name = "rules_pkg",
-    sha256 = "352c090cc3d3f9a6b4e676cf42a6047c16824959b438895a76c2989c6d7c246a",
-    url = "https://github.com/bazelbuild/rules_pkg/releases/download/0.2.5/rules_pkg-0.2.5.tar.gz",
+    sha256 = "038f1caa773a7e35b3663865ffb003169c6a71dc995e39bf4815792f385d837d",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.4.0/rules_pkg-0.4.0.tar.gz",
+        "https://github.com/bazelbuild/rules_pkg/releases/download/0.4.0/rules_pkg-0.4.0.tar.gz",
+    ],
 )
 
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")

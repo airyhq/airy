@@ -10,6 +10,8 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static co.airy.spring.auth.oidc.CommonProviders.DEFAULT_REDIRECT_URL;
+
 @Component
 public class ConfigProvider {
     @Getter
@@ -29,7 +31,7 @@ public class ConfigProvider {
             // not a common oauth provider
         }
 
-        builder.clientId(props.getClientId()).clientSecret(props.getClientSecret());
+        builder.clientId(props.getClientId()).clientSecret(props.getClientSecret()).redirectUri(DEFAULT_REDIRECT_URL);
 
         if (props.getClientAuthenticationMethod() != null) {
             builder.clientAuthenticationMethod(props.getClientAuthenticationMethod());

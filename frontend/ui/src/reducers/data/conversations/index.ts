@@ -172,6 +172,7 @@ const lastMessageOf = (messages: Message[]): Message => {
 
 const mergeMessages = (state: AllConversationsState, conversationId: string, messages: Message[]) => {
   const conversation: Conversation = state.items[conversationId];
+
   if (conversation) {
     return {
       ...state,
@@ -209,7 +210,7 @@ function allReducer(
       };
 
     case getType(metadataActions.setMetadataAction):
-      if (action.payload.subject !== 'conversation') {
+      if (action.payload.subject !== 'conversation' || !state.items[action.payload.identifier]) {
         return state;
       }
 

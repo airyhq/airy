@@ -174,8 +174,11 @@ public class KafkaStreamsWrapper {
 
     public <T> ReadOnlyKeyValueStore<String, T> acquireLocalStore(String storeName) {
         int retries = 0;
-        do
+        do {
             try {
+                if (!streams.state().equals(KafkaStreams.State.RUNNING)) {
+                    throw new InvalidStateStoreException("Streams thread is not running");
+                }
                 return streams.store(StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore()));
             } catch (InvalidStateStoreException e) {
                 try {
@@ -183,7 +186,7 @@ public class KafkaStreamsWrapper {
                 } catch (InterruptedException expected) {
                 }
             }
-        while (retries++ < 10);
+        } while (retries++ < 10);
 
         throw new StoreNotReadyException(storeName);
     }

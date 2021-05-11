@@ -6,7 +6,7 @@ import {HttpClientInstance} from '../../InitializeAiryApi';
 
 import {StateModel} from '../../reducers';
 import {loadingConversationsAction} from '../conversations';
-import {delay, isEqual} from 'lodash-es';
+import {delay, isEqual, omit} from 'lodash-es';
 
 export const RESET_FILTERED_CONVERSATIONS = '@@conversations/RESET_FILTEREDS';
 export const SET_FILTERED_CONVERSATIONS = '@@conversations/SET_FILTERED';
@@ -38,24 +38,13 @@ export const updateFilteredConversationsAction = createAction(
 )<{filter: ConversationFilter}>();
 
 export const setSearch = (currentFilter: ConversationFilter, displayName: string) => {
-  return setFilter({
-    ...currentFilter,
-    displayName,
-  });
+  const newFilter = omit({...currentFilter}, 'displayName');
+  return displayName && displayName.length > 0 ? setFilter({...newFilter, displayName}) : setFilter(newFilter);
 };
 
 export const setFilter = (filter: ConversationFilter) => {
   return (dispatch: Dispatch<any>, state: () => StateModel) => {
     executeFilter(filter, dispatch, state);
-  };
-};
-
-export const resetFilter = () => {
-  return function (dispatch: Dispatch<any>, state: () => StateModel) {
-    dispatch(resetFilteredConversationAction());
-    const currentFilter = state().data.conversations.filtered.currentFilter;
-    const newFilter: ConversationFilter = {displayName: currentFilter.displayName};
-    executeFilter(newFilter, dispatch, state);
   };
 };
 

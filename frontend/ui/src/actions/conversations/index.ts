@@ -5,6 +5,7 @@ import {PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
 import {setMetadataAction} from '../metadata';
+import {ConversationInfoError} from '../../types';
 
 const CONVERSATION_LOADING = '@@conversation/LOADING';
 const CONVERSATIONS_LOADING = '@@conversations/LOADING';
@@ -79,11 +80,6 @@ export const listNextConversations = () => async (dispatch: Dispatch<any>, state
 
 function sleep(time) {
   return new Promise(resolve => setTimeout(resolve, time));
-}
-
-interface ConversationInfoError {
-  status: number;
-  body: any;
 }
 
 export const getConversationInfo = (conversationId: string, retries?: number) => async (dispatch: Dispatch<any>) =>

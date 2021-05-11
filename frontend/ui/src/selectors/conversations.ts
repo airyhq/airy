@@ -119,7 +119,7 @@ export const newestFilteredConversationFirst = createSelector(
         const displayName = conversation.metadata.contact.displayName.toLowerCase();
 
         isFulfilled = displayName.includes(searchValue);
-      }      
+      }
 
       return isFulfilled;
     });

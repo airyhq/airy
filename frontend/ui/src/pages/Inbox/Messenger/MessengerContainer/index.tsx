@@ -36,7 +36,7 @@ const MessengerContainer = ({
 
   useEffect(() => {
     if (!currentConversation && match.params.conversationId) {
-      getConversationInfo(match.params.conversationId, 3);
+      getConversationInfo(match.params.conversationId);
     }
   }, [currentConversation, match.params.conversationId]);
 

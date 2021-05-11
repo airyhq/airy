@@ -43,7 +43,10 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   }
 
   handleSearch = (query: string) => {
-    this.setState({query, filteredTags: this.props.tags.filter(t => t.name.match(query))});
+    this.setState({
+      query,
+      filteredTags: this.props.tags.filter(t => t.name.toLowerCase().match(query.toLocaleLowerCase())),
+    });
   };
 
   handleDelete = (e: React.ChangeEvent<HTMLInputElement>) => {

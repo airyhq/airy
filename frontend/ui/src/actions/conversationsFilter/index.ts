@@ -65,13 +65,13 @@ const executeFilter = (filter: ConversationFilter, dispatch: Dispatch<any>, stat
 };
 
 const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, cursor?: string) => {
-  dispatch(loadingConversationsAction());
+  dispatch(loadingConversationsAction(true));
   const filter = state().data.conversations.filtered.currentFilter;
   if (Object.keys(filter).length > 0) {
     delay(() => {
       if (isEqual(filter, state().data.conversations.filtered.currentFilter)) {
         return HttpClientInstance.listConversations({
-          page_size: 10,
+          page_size: 50,
           cursor,
           filters: filterToLuceneSyntax(filter),
         }).then((response: PaginatedResponse<Conversation>) => {
@@ -85,9 +85,11 @@ const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, 
           }
         });
       }
+      dispatch(loadingConversationsAction(false));
     }, 100);
   } else {
     dispatch(resetFilteredConversationAction());
+    dispatch(loadingConversationsAction(false));
   }
 };
 

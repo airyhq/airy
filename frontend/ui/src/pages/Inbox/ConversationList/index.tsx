@@ -12,7 +12,6 @@ import ConversationListHeader from '../ConversationListHeader';
 import ConversationsFilter from '../ConversationsFilter';
 import ConversationListItem from '../ConversationListItem';
 import NoConversations from '../NoConversations';
-import {SimpleLoader} from 'components';
 
 import {MergedConversation, StateModel} from '../../../reducers';
 
@@ -44,11 +43,7 @@ const ConversationList = (props: ConversationListProps) => {
   const renderConversationItem = (conversation: MergedConversation, style: React.CSSProperties) => {
     const {currentConversationId} = props;
     if (conversation == null) {
-      return (
-        <div className="conversationListLoading" style={{...style, textAlignLast: 'center', marginTop: '24px'}}>
-          <SimpleLoader />
-        </div>
-      );
+      return <div />;
     }
     return (
       <ConversationListItem

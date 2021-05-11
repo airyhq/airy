@@ -6,7 +6,7 @@ const camelcaseKeys = require('camelcase-keys');
 export const listMessagesDef = {
   endpoint: 'messages.list',
   mapRequest: conversationListRequest => {
-    conversationListRequest.pageSize = conversationListRequest.pageSize ?? 10;
+    conversationListRequest.pageSize = conversationListRequest.pageSize ?? 50;
     conversationListRequest.cursor = conversationListRequest.cursor ?? null;
     return {
       conversation_id: conversationListRequest.conversationId,

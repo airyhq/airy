@@ -3,6 +3,54 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.21.0
+
+#### 🚀 Features
+
+- [[#1519](https://github.com/airyhq/airy/issues/1519)] Implement auth UI behavior [[#1737](https://github.com/airyhq/airy/pull/1737)]
+- [[#1721](https://github.com/airyhq/airy/issues/1721)] Webhook consumer start consuming from beginning[[#1722](https://github.com/airyhq/airy/pull/1722)]
+- [[#1713](https://github.com/airyhq/airy/issues/1713)] Fix crash conversation from search [[#1720](https://github.com/airyhq/airy/pull/1720)]
+- [[#1707](https://github.com/airyhq/airy/issues/1707)] Attach user profile to application logs [[#1718](https://github.com/airyhq/airy/pull/1718)]
+- [[#1714](https://github.com/airyhq/airy/issues/1714)] Webhook config updates only once [[#1715](https://github.com/airyhq/airy/pull/1715)]
+
+#### 🐛 Bug Fixes
+
+- [[#1763](https://github.com/airyhq/airy/issues/1763)] Fixed tag string length in contactInfo [[#1766](https://github.com/airyhq/airy/pull/1766)]
+- [[#1736](https://github.com/airyhq/airy/issues/1736)] improve render library for facebook [[#1756](https://github.com/airyhq/airy/pull/1756)]
+- [[#1748](https://github.com/airyhq/airy/issues/1748)] Add missing default redirect uri [[#1749](https://github.com/airyhq/airy/pull/1749)]
+- [[#1729](https://github.com/airyhq/airy/issues/1729)] Fix lastMessageIcon [[#1735](https://github.com/airyhq/airy/pull/1735)]
+- [[#1726](https://github.com/airyhq/airy/issues/1726)] Customize Start a New Conversation button [[#1731](https://github.com/airyhq/airy/pull/1731)]
+- [[#1696](https://github.com/airyhq/airy/issues/1696)] Fix backgroundColor accountName [[#1728](https://github.com/airyhq/airy/pull/1728)]
+- [[#1694](https://github.com/airyhq/airy/issues/1694)] Adding icons for lastMessage [[#1704](https://github.com/airyhq/airy/pull/1704)]
+- [[#1706](https://github.com/airyhq/airy/issues/1706)] Fixed gap between conversationList and conversationListHeader [[#1717](https://github.com/airyhq/airy/pull/1717)]
+- [[#1558](https://github.com/airyhq/airy/issues/1558)] Enable loadbalancer annotations [[#1683](https://github.com/airyhq/airy/pull/1683)]
+- [[#1695](https://github.com/airyhq/airy/issues/1695)] Twilio SMS does not display the channelSourceId correctly [[#1703](https://github.com/airyhq/airy/pull/1703)]
+
+#### 📚 Documentation
+
+- [[#1745](https://github.com/airyhq/airy/issues/1745)] Update chat plugin customization docs  [[#1754](https://github.com/airyhq/airy/pull/1754)]
+
+#### 🧰 Maintenance
+
+- [[#1486](https://github.com/airyhq/airy/issues/1486)] upgrade react [[#1757](https://github.com/airyhq/airy/pull/1757)]
+- [[#1486](https://github.com/airyhq/airy/issues/1486)] Upgrade rules\_pkg and rules\_docker [[#1755](https://github.com/airyhq/airy/pull/1755)]
+- Bump react-markdown from 6.0.1 to 6.0.2 [[#1742](https://github.com/airyhq/airy/pull/1742)]
+- Bump typescript from 3.7.4 to 4.2.3 [[#1189](https://github.com/airyhq/airy/pull/1189)]
+- [[#1486](https://github.com/airyhq/airy/issues/1486)] Upgrade kafka images [[#1691](https://github.com/airyhq/airy/pull/1691)]
+- Bump core-js from 3.11.1 to 3.12.0 [[#1739](https://github.com/airyhq/airy/pull/1739)]
+- Bump @bazel/bazelisk from 1.8.0 to 1.8.1 [[#1740](https://github.com/airyhq/airy/pull/1740)]
+- Bump webpack-cli from 4.6.0 to 4.7.0 [[#1741](https://github.com/airyhq/airy/pull/1741)]
+- Bump @types/node from 15.0.1 to 15.0.2 [[#1723](https://github.com/airyhq/airy/pull/1723)]
+- Bump @typescript-eslint/parser from 4.22.0 to 4.22.1 [[#1724](https://github.com/airyhq/airy/pull/1724)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.21.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.21.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.21.0/windows/amd64/airy.exe)
+
 ## 0.20.0
 
 #### Changes
@@ -11,15 +59,17 @@ sidebar_label: 📝 Changelog
 
 #### 🚀 Features
 
+- [[#1642](https://github.com/airyhq/airy/issues/1642)] Add dev cli script [[#1690](https://github.com/airyhq/airy/pull/1690)]
 - [[#1518](https://github.com/airyhq/airy/issues/1518)] Add OIDC authentication backend [[#1623](https://github.com/airyhq/airy/pull/1623)]
 - [[#1505](https://github.com/airyhq/airy/issues/1505)] Rewrite Webhook queue with Beanstalkd [[#1536](https://github.com/airyhq/airy/pull/1536)]
-- [[#1687](https://github.com/airyhq/airy/issues/1687)] Kafka Prometheus exporter error on… [[#1688](https://github.com/airyhq/airy/pull/1688)]
+- [[#1687](https://github.com/airyhq/airy/issues/1687)] Kafka Prometheus exporter error [[#1688](https://github.com/airyhq/airy/pull/1688)]
 - [[#1615](https://github.com/airyhq/airy/issues/1615)] Expose tag events via websocket [[#1624](https://github.com/airyhq/airy/pull/1624)]
 - [[#1495](https://github.com/airyhq/airy/issues/1495)] Add kafka Prometheus exporter [[#1668](https://github.com/airyhq/airy/pull/1668)]
 - [[#1525](https://github.com/airyhq/airy/issues/1525)] Update quick filter [[#1660](https://github.com/airyhq/airy/pull/1660)]
 
 #### 🐛 Bug Fixes
 
+- [[#1642](https://github.com/airyhq/airy/issues/1642)] Fix flag [[#1712](https://github.com/airyhq/airy/pull/1712)]
 - [[#1698](https://github.com/airyhq/airy/issues/1698)] Webhook config error [[#1699](https://github.com/airyhq/airy/pull/1699)]
 - [[#1689](https://github.com/airyhq/airy/issues/1689)] Bug: Conversation Counter: Optimize Filter Use [[#1697](https://github.com/airyhq/airy/pull/1697)]
 - [[#1665](https://github.com/airyhq/airy/issues/1665)] Fix chatplugin reconnection problem [[#1682](https://github.com/airyhq/airy/pull/1682)]
@@ -50,9 +100,9 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.19.1/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.19.1/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.19.1/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.20.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.20.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.20.0/windows/amd64/airy.exe)
 
 ## 0.19.0
 

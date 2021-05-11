@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 import styles from './index.module.scss';
 import {conversationState} from '../../../../actions/conversations';
-import {StateModel} from 'frontend/ui/src/reducers';
+import {StateModel} from '../../../../reducers';
 
 const mapStateToProps = (state: StateModel, ownProps) => {
   return {

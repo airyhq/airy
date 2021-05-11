@@ -3,7 +3,6 @@ package co.airy.core.sources.twilio;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
@@ -11,7 +10,6 @@ import co.airy.uuid.UUIDv5;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
@@ -29,14 +28,10 @@ import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 
 @RestController
 public class ChannelsController {
-    private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
-
     private final Stores stores;
-    private final KafkaProducer<String, Channel> producer;
 
-    public ChannelsController(Stores stores, KafkaProducer<String, Channel> producer) {
+    public ChannelsController(Stores stores) {
         this.stores = stores;
-        this.producer = producer;
     }
 
     @PostMapping("/channels.twilio.sms.connect")
@@ -131,6 +126,13 @@ public class ChannelsController {
 class ConnectChannelRequestPayload {
     @NotNull
     private String phoneNumber;
+
+    public String getPhoneNumber() {
+        return Optional.ofNullable(phoneNumber)
+                .map((phoneNumber) -> phoneNumber.replaceAll("\\s+","").trim())
+                .orElse(null);
+    }
+
     @NotNull
     private String name;
     private String imageUrl;

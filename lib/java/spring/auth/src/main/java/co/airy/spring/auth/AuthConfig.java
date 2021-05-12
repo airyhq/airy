@@ -21,7 +21,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -43,12 +42,14 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final String[] ignoreAuthPatterns;
     private final String systemToken;
     private final String jwtSecret;
+    private final UserService userService;
     private final ConfigProvider configProvider;
 
     public AuthConfig(@Value("${systemToken:#{null}}") String systemToken,
                       @Value("${jwtSecret:#{null}}") String jwtSecret,
                       List<IgnoreAuthPattern> ignorePatternBeans,
-                      ConfigProvider configProvider
+                      ConfigProvider configProvider,
+                      UserService userService
     ) {
         this.systemToken = systemToken;
         this.jwtSecret = jwtSecret;
@@ -56,6 +57,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
                 .toArray(String[]::new);
         this.configProvider = configProvider;
+        this.userService = userService;
     }
 
     @Override
@@ -70,7 +72,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/actuator/**").permitAll()
                     .antMatchers(ignoreAuthPatterns).permitAll()
                     .anyRequest().authenticated()
-            ).exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
+            );
 
             if (systemToken != null) {
                 log.info("System token auth enabled");
@@ -84,8 +86,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                         .and().logout().permitAll().deleteCookies(AuthCookie.NAME)
                         .and()
                         .oauth2Login(oauth2 -> oauth2
-                                .defaultSuccessUrl("/ui/")
-                        )
+                                .defaultSuccessUrl("/ui/"))
                         .addFilterAfter(new EmailFilter(configProvider), OAuth2LoginAuthenticationFilter.class);
             }
         }

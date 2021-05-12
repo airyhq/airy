@@ -5,7 +5,6 @@ import {PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
 import {setMetadataAction} from '../metadata';
-import {ConversationInfoError} from '../../types';
 
 const CONVERSATION_LOADING = '@@conversation/LOADING';
 const CONVERSATIONS_LOADING = '@@conversations/LOADING';
@@ -88,8 +87,8 @@ export const getConversationInfo = (conversationId: string, retries?: number) =>
       dispatch(mergeConversationsAction([response]));
       return Promise.resolve(true);
     })
-    .catch(async (error: ConversationInfoError) => {
-      if (retries > 5 || error.status === 404) {
+    .catch(async (error: Error) => {
+      if (retries > 5) {
         return Promise.reject(error);
       } else {
         await sleep(1000);

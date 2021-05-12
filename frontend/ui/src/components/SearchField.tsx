@@ -1,8 +1,8 @@
 import React, {createRef, useCallback} from 'react';
 
-import closeIcon from 'assets/images/icons/close.svg';
 import searchIcon from 'assets/images/icons/search.svg';
 import styles from './index.module.scss';
+import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 type SearchFieldProps = {
   id?: string;
@@ -47,7 +47,7 @@ export const SearchField: React.FC<SearchFieldProps> = ({
       />
       {value !== '' && (
         <button className={styles.resetButton} onClick={resetButton} title="Reset Search">
-          <img className={styles.closeIcon} src={closeIcon} />
+          <CloseIcon />
         </button>
       )}
     </div>

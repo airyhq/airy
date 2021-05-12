@@ -32,6 +32,8 @@
 }
 
 .backIcon {
+  height: 13px;
+  width: 17px;
   path {
     fill: var(--color-airy-blue);
   }
@@ -159,4 +161,9 @@
   font-weight: bold;
   color: var(--color-text-contrast);
   margin-bottom: 4px;
+}
+
+.closeIcon {
+  height: 10px;
+  width: 10px;
 }

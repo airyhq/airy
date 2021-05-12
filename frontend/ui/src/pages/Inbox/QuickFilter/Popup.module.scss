@@ -184,6 +184,8 @@
 }
 
 .checkmarkIcon {
+  display: flex;
+  justify-content: center;
   flex: none;
   border-radius: 50%;
   width: 24px;
@@ -196,12 +198,9 @@
   }
 
   svg {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 2px;
-    border-radius: 50%;
-    padding-top: 2px;
-    padding-left: 2px;
+    width: 12px;
+    height: auto;
+    align-self: center;
   }
 }
 
@@ -210,4 +209,15 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.checkmarkCircleIcon {
+  height: 24px;
+  width: 24px;
+  margin-right: 4px;
+  margin-bottom: 1px;
+  svg {
+    height: 100%;
+    width: 100%;
+  }
 }

@@ -49,15 +49,16 @@
   background-color: rgba(0, 0, 0, 0);
   border: none;
   cursor: pointer;
-  padding: 0px 4px;
+  display: flex;
+  align-self: center;
+  padding: 0px;
+  margin-right: 4px;
 }
 
 .closeIcon {
+  height: 10px;
+  width: 10px;
   svg {
-    margin: 0;
-    width: 10px;
-    height: 10px;
-
     path {
       fill: var(--color-text-gray);
     }

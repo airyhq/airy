@@ -99,7 +99,7 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
             )}
           </div>
           <div className={styles.buttons}>
-            <button onClick={showSearchFieldToggle}>{showingSearchField ? <CloseIcon /> : <SearchIcon />}</button>
+            <button onClick={showSearchFieldToggle}>{showingSearchField ? <CloseIcon className={styles.closeIcon}/> : <SearchIcon />}</button>
             <button onClick={() => props.history.push(path)}>
               <PLusIcon />
             </button>

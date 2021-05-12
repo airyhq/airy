@@ -32,10 +32,9 @@ public class OidcTest {
     private MockMvc mvc;
 
     @Test
-    void redirectsToAuth() throws Exception {
+    void rejectsMissingAuth() throws Exception {
         mvc.perform(post("/principal.get"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(header().exists("Location"))
+                .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$").doesNotExist());
     }
 

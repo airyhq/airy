@@ -72,6 +72,7 @@ export class HttpClient {
   private async doFetchFromBackend(url: string, body?: any): Promise<any> {
     const headers = {
       Accept: 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
     };
 
     if (!(body instanceof FormData)) {
@@ -93,6 +94,12 @@ export class HttpClient {
   }
 
   private async parseBody(response: Response): Promise<any> {
+    if (this.isAuthRedirect(response)) {
+      const err = new Error('Unauthorized');
+      this.onAuthError(err);
+      return Promise.reject(err);
+    }
+
     if (response.ok) {
       try {
         return await response.json();
@@ -102,17 +109,30 @@ export class HttpClient {
     }
 
     const body: string = await response.text();
-    let errorResult = body;
+    let errorResult: any;
 
     if (body.length > 0) {
       errorResult = JSON.parse(body) as any;
     }
 
-    if (response.status === 403 && this.unauthorizedErrorCallback) {
-      this.unauthorizedErrorCallback(errorResult, this.loginUrl);
+    if (response.status === 403) {
+      this.onAuthError(errorResult);
     }
 
-    throw new Error(`Request failed with status code ${response.status} and error ${errorResult}`);
+    throw {
+      status: response.status,
+      body: errorResult,
+    };
+  }
+
+  private isAuthRedirect(response: Response): boolean {
+    return response.redirected === true && response.url === this.loginUrl;
+  }
+
+  private onAuthError(err) {
+    if (this.unauthorizedErrorCallback) {
+      this.unauthorizedErrorCallback(err, this.loginUrl);
+    }
   }
 
   public listChannels = this.getRequest<void, Channel[]>(listChannelsDef);

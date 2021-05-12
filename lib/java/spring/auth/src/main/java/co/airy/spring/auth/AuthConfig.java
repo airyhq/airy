@@ -67,7 +67,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
         if (systemToken != null || configProvider.isPresent()) {
             http.authorizeRequests(authorize -> authorize
-                    .antMatchers("/actuator/**").permitAll()
+                    .antMatchers("/actuator/**", "/login/**", "/logout/**", "/oauth/**").permitAll()
                     .antMatchers(ignoreAuthPatterns).permitAll()
                     .anyRequest().authenticated()
             ).exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());

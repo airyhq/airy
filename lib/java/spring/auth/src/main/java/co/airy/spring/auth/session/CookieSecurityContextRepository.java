@@ -74,7 +74,7 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
                 });
     }
 
-    public static Optional<Cookie> getCookie(HttpServletRequest request) {
+    private Optional<Cookie> getCookie(HttpServletRequest request) {
         if (request.getCookies() == null) {
             return Optional.empty();
         }
@@ -113,9 +113,8 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }
-
-            // Remove the cookie if it's present but the user is not authorized
-            } else if ((authentication == null || !authentication.isAuthenticated()) && getCookie(request).isPresent()) {
+            } else if (authentication == null || !authentication.isAuthenticated()) {
+                // Remove the cookie if there is no auth present
                 response.addCookie(new AuthCookie(""));
             }
         }

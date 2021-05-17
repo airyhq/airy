@@ -35,10 +35,10 @@ const MessengerContainer = ({
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
 
   useEffect(() => {
-    if (!currentConversation) {
+    if (!currentConversation && match.params.conversationId) {
       getConversationInfo(match.params.conversationId);
     }
-  }, [conversations]);
+  }, [currentConversation, match.params.conversationId]);
 
   const hideSuggestedReplies = () => {
     showSuggestedReplies(null);

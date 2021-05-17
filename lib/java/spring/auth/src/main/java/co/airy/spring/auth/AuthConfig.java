@@ -56,12 +56,14 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final String[] ignoreAuthPatterns;
     private final String systemToken;
     private final String jwtSecret;
+    private final UserService userService;
     private final ConfigProvider configProvider;
 
     public AuthConfig(@Value("${systemToken:#{null}}") String systemToken,
                       @Value("${jwtSecret:#{null}}") String jwtSecret,
                       List<IgnoreAuthPattern> ignorePatternBeans,
-                      ConfigProvider configProvider
+                      ConfigProvider configProvider,
+                      UserService userService
     ) {
         this.systemToken = systemToken;
         this.jwtSecret = jwtSecret;
@@ -69,6 +71,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
                 .toArray(String[]::new);
         this.configProvider = configProvider;
+        this.userService = userService;
     }
 
     @Override

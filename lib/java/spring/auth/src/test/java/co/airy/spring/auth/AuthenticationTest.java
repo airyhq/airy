@@ -29,7 +29,7 @@ public class AuthenticationTest {
     private MockMvc mvc;
 
     @Test
-    void rejectsMissingToken() throws Exception {
+    void rejectsMissingJwt() throws Exception {
         mvc.perform(post("/principal.get"))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$").doesNotExist());

@@ -11,8 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,9 +35,14 @@ public class OidcTest {
     @Test
     void redirectsToAuth() throws Exception {
         mvc.perform(post("/principal.get"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(header().exists("Location"))
+                .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$").doesNotExist());
+    }
+
+    @Test
+    void servesLoginPage() throws Exception {
+        mvc.perform(get("/login"))
+                .andExpect(status().isOk());
     }
 
     @Test

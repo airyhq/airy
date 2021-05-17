@@ -8,6 +8,7 @@ import {StateModel} from '../../../../../reducers';
 import {Button, Input, LinkButton} from 'components';
 import {ConnectChannelFacebookRequestPayload} from 'httpclient';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
+import {ReactComponent as InfoCircle} from 'assets/images/icons/info-circle.svg';
 
 import styles from './FacebookConnect.module.scss';
 
@@ -73,10 +74,23 @@ const FacebookConnect = (props: FacebookProps) => {
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>Facebook Messenger</h1>
-      <LinkButton onClick={props.history.goBack} type="button">
-        <ArrowLeftIcon className={styles.backIcon} />
-        Back
-      </LinkButton>
+      <div className={styles.buttonContainer}>
+        <button className={styles.infoButton}>
+          <InfoCircle className={styles.infoCircleIcon} />
+          <a
+            href="https://airy.co/docs/core/sources/facebook"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.infoLink}>
+            {' '}
+            More information about this source
+          </a>
+        </button>
+        <LinkButton onClick={props.history.goBack} type="button">
+          <ArrowLeftIcon className={styles.backIcon} />
+          Back
+        </LinkButton>
+      </div>
       <div className={styles.inputContainer}>
         <Input
           id="id"

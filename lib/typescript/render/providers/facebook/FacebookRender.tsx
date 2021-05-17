@@ -5,7 +5,7 @@ import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {Video} from '../../components/Video';
 import {QuickReplies} from './components/QuickReplies';
-import {AttachmentUnion, SimpleAttachment, ContentUnion, ButtonAttachment, GenericAttachment} from './facebookModel';
+import {AttachmentUnion, SimpleAttachment, ContentUnion, ButtonAttachment, GenericAttachment,  MediaAttachment} from './facebookModel';
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 
@@ -76,7 +76,9 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   }
 }
 
-const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | GenericAttachment): AttachmentUnion => {
+const parseAttachment = (
+  attachment: SimpleAttachment | ButtonAttachment | GenericAttachment | MediaAttachment
+): AttachmentUnion => {
   if (attachment.type === 'image') {
     return {
       type: 'image',
@@ -122,6 +124,7 @@ const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | Gener
 
 function facebookInbound(message: Message): ContentUnion {
   const messageJson = message.content;
+  console.log('INBOUND', messageJson);
 
   if (messageJson.message?.attachments?.length) {
     return parseAttachment(messageJson.message.attachments[0]);
@@ -155,6 +158,7 @@ function facebookInbound(message: Message): ContentUnion {
 
 function facebookOutbound(message: Message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
+  console.log('OUTOUND', messageJson);
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {

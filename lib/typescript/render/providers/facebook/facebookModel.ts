@@ -26,6 +26,21 @@ export interface GenericAttachment extends Attachment {
   };
 }
 
+export interface MediaAttachment extends Attachment {
+  type: 'template';
+  payload: {
+    text: string;
+    template_type: 'media';
+    elements: MediaAttachmentElement[];
+  };
+}
+
+export interface MediaAttachmentElement {
+  media_type: 'video' | 'image';
+  url: string;
+  buttons: Button[];
+}
+
 export interface Element {
   title: string;
   subtitle?: string;
@@ -96,6 +111,8 @@ export interface GenericTemplate extends Content {
   elements: Element[];
 }
 
+//
+
 export interface Fallback extends Content {
   type: 'fallback';
   text?: string;
@@ -113,4 +130,11 @@ export type ContentUnion =
   | GenericTemplate
   | QuickRepliesContent
   | Fallback;
-export type AttachmentUnion = TextContent | ImageContent | VideoContent | ButtonTemplate | GenericTemplate | Fallback;
+export type AttachmentUnion =
+  | TextContent
+  | ImageContent
+  | VideoContent
+  | ButtonTemplate
+  | GenericTemplate
+  | Fallback
+  | MediaAttachment;

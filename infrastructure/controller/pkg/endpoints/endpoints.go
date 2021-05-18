@@ -18,7 +18,8 @@ type ServicesResponse struct {
 }
 
 type Service struct {
-	Enabled bool `json:"enabled"`
+	Enabled   bool   `json:"enabled"`
+	Component string `json:"component"`
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +32,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	for _, deployment := range deployments.Items {
 		app := deployment.ObjectMeta.Name
 		componentsMap[app] = Service{
-			Enabled: *deployment.Spec.Replicas > 0,
+			Enabled:   *deployment.Spec.Replicas > 0,
+			Component: deployment.ObjectMeta.Labels["core.airy.co/component"],
 		}
 	}
 

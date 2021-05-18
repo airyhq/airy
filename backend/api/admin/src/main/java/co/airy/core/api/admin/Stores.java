@@ -186,10 +186,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     @Override
     public Health health() {
-        /*getConnectedChannelsStore();
+        getConnectedChannelsStore();
         getWebhookStore();
         getTagsStore();
-*/
+
         return Health.up().build();
     }
 }

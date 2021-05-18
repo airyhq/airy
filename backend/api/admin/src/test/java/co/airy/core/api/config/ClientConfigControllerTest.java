@@ -86,24 +86,32 @@ public class ClientConfigControllerTest {
     @BeforeEach
     void beforeEach() throws Exception {
         webTestHelper.waitUntilHealthy();
-
         mockServer = MockRestServiceServer.createServer(restTemplate);
     }
 
     @Test
     public void canReturnConfig() throws Exception {
-        mockServer.expect(once(), requestTo(new URI("http://airy-controller.default/components")))
+        mockServer.expect(once(), requestTo(new URI("http://airy-controller.default/services")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(
-                        withSuccess("{\"components\": [\"api-communication\"]}", MediaType.APPLICATION_JSON)
+                        withSuccess("{\"services\": {\"api-communication\":{\"enabled\":true,\"component\":\"api-communication\"}}}", MediaType.APPLICATION_JSON)
+                );
+
+        mockServer.expect(once(), requestTo(new URI("http://api-communication.default/actuator/health")))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(
+                        withSuccess("{\"status\": \"DOWN\"}", MediaType.APPLICATION_JSON)
                 );
 
         retryOnException(() -> webTestHelper.post("/client.config", "{}")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.components.*", hasSize(1)))
                         .andExpect(jsonPath("$.components", hasKey("api-communication")))
-                        .andExpect(jsonPath("$.components.*.enabled", everyItem(is(true)))),
+                        .andExpect(jsonPath("$.components.*.enabled", everyItem(is(true))))
+                        .andExpect(jsonPath("$.components.*.healthy", everyItem(is(false)))),
                 "client.config call failed");
+
+        mockServer.verify();
     }
 
 }

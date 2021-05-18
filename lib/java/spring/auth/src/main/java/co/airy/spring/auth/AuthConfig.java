@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,14 +21,27 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.security.web.authentication.DelegatingAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Configuration
@@ -69,7 +83,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
         if (systemToken != null || configProvider.isPresent()) {
             http.authorizeRequests(authorize -> authorize
-                    .antMatchers("/actuator/**").permitAll()
+                    .antMatchers("/actuator/**", "/login/**", "/logout/**", "/oauth/**").permitAll()
                     .antMatchers(ignoreAuthPatterns).permitAll()
                     .anyRequest().authenticated()
             );
@@ -81,13 +95,19 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
             if (configProvider.isPresent()) {
                 log.info("Oidc auth enabled with provider: {}", configProvider.getRegistration().getRegistrationId());
+
                 http
                         .securityContext().securityContextRepository(new CookieSecurityContextRepository(new Jwt(jwtSecret)))
                         .and().logout().permitAll().deleteCookies(AuthCookie.NAME)
                         .and()
-                        .oauth2Login(oauth2 -> oauth2
-                                .defaultSuccessUrl("/ui/"))
+                        .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/ui/"))
                         .addFilterAfter(new EmailFilter(configProvider), OAuth2LoginAuthenticationFilter.class);
+
+                // By default oauth2Login creates an authentication entrypoint that redirects clients to the
+                // login form. For API clients we instead want to return a 403.
+                http.exceptionHandling().defaultAuthenticationEntryPointFor(new Http403ForbiddenEntryPoint(),
+                        new NegatedRequestMatcher(new OrRequestMatcher(new AntPathRequestMatcher("/login/**"),
+                                new AntPathRequestMatcher("/logout/**"), new AntPathRequestMatcher("/oauth/**"))));
             }
         }
     }

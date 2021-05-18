@@ -11,6 +11,10 @@
   fill: var(--color-airy-blue);
 }
 
+.greyIcon {
+  fill: var(--color-text-gray);
+}
+
 .button {
   display: flex;
   align-items: center;
@@ -21,25 +25,28 @@
   cursor: pointer;
 }
 
-.blackButton {
-  border: 1px solid var(--color-text-contrast);
+.greyButton {
+  border: 1px solid var(--color-text-gray);
 }
 
 .blueButton {
   border: 1px solid var(--color-airy-blue);
 }
 
-.infoLink,
-.infoLink:hover,
-.infoLink:active,
-.infoLink:visited {
+.link,
+.link:hover,
+.link:active,
+.link:visited {
   text-decoration: none;
-  font-weight: normal;
+  font-weight: 400;
   @include font-s;
 }
 
-.blackLink {
-  color: var(--color-text-contrast);
+.greyLink,
+.greyLink:hover,
+.greyLink:active,
+.greyLink:visited {
+  color: var(--color-text-gray);
 }
 
 .blueLink {

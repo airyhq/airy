@@ -42,7 +42,15 @@ const TwilioSmsConnect = (props: TwilioSmsProps) => {
     }
   }, [channels, channelId]);
 
-  return <TwilioConnect channel={channel} source={Source.twilioSMS} pageTitle="SMS" buttonText={buttonTitle} />;
+  return (
+    <TwilioConnect
+      channel={channel}
+      source={Source.twilioSMS}
+      pageTitle="SMS"
+      buttonText={buttonTitle}
+      infoLink="https://airy.co/docs/core/sources/sms-twilio"
+    />
+  );
 };
 
 export default connector(withRouter(TwilioSmsConnect));

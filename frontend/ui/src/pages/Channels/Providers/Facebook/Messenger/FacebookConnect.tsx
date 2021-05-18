@@ -73,11 +73,11 @@ const FacebookConnect = (props: FacebookProps) => {
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>Facebook Messenger</h1>
-      <div className={styles.buttonContainer}>
+      <div>
         <InfoButton
           link="https://airy.co/docs/core/sources/facebook"
           text="more information about this source"
-          color="black"></InfoButton>
+          color="grey"></InfoButton>
 
         <LinkButton onClick={props.history.goBack} type="button">
           <ArrowLeftIcon className={styles.backIcon} />

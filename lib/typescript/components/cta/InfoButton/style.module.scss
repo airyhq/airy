@@ -1,0 +1,47 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.circleIcon {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+}
+
+.blueIcon {
+  fill: var(--color-airy-blue);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding: 8px 8px;
+  margin-bottom: 8px;
+  background-color: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.blackButton {
+  border: 1px solid var(--color-text-contrast);
+}
+
+.blueButton {
+  border: 1px solid var(--color-airy-blue);
+}
+
+.infoLink,
+.infoLink:hover,
+.infoLink:active,
+.infoLink:visited {
+  text-decoration: none;
+  font-weight: normal;
+  @include font-s;
+}
+
+.blackLink {
+  color: var(--color-text-contrast);
+}
+
+.blueLink {
+  color: var(--color-airy-blue);
+}

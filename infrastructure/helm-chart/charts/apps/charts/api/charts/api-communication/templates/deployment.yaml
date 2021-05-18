@@ -32,14 +32,6 @@ spec:
           - configMapRef:
               name: security
         env:
-        - name: COMPONENT_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['core.airy.co/component']
-        - name: SERVICE_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
         - name: KAFKA_BROKERS
           valueFrom:
             configMapKeyRef:

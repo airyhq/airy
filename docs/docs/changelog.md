@@ -3,18 +3,66 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 0.21.0
+## 0.22.0
 
 #### 🚀 Features
 
+- [[#1743](https://github.com/airyhq/airy/issues/1743)] Return proper status code for unauthorized access [[#1785](https://github.com/airyhq/airy/pull/1785)]
+
+#### 🐛 Bug Fixes
+
+- [[#1743](https://github.com/airyhq/airy/issues/1743)] Permit public auth pages [[#1786](https://github.com/airyhq/airy/pull/1786)]
+- [[#1768](https://github.com/airyhq/airy/issues/1768)] Bad calls to conversations info when opening inbox [[#1775](https://github.com/airyhq/airy/pull/1775)]
+- [[#1764](https://github.com/airyhq/airy/issues/1764)] Filter fixed + state header bar toggle fix [[#1774](https://github.com/airyhq/airy/pull/1774)]
+
+#### 🧰 Maintenance
+
+- Bump prettier from 2.2.1 to 2.3.0 [[#1759](https://github.com/airyhq/airy/pull/1759)]
+- Bump webpack-bundle-analyzer from 4.4.1 to 4.4.2 [[#1800](https://github.com/airyhq/airy/pull/1800)]
+- Bump @typescript-eslint/parser from 4.23.0 to 4.24.0 [[#1801](https://github.com/airyhq/airy/pull/1801)]
+- Bump @babel/core from 7.14.2 to 7.14.3 [[#1802](https://github.com/airyhq/airy/pull/1802)]
+- Bump @typescript-eslint/eslint-plugin from 4.23.0 to 4.24.0 [[#1803](https://github.com/airyhq/airy/pull/1803)]
+- Bump sass from 1.32.12 to 1.32.13 [[#1793](https://github.com/airyhq/airy/pull/1793)]
+- Bump @bazel/typescript from 3.4.2 to 3.5.0 [[#1776](https://github.com/airyhq/airy/pull/1776)]
+- Bump @types/node from 15.0.2 to 15.3.0 [[#1796](https://github.com/airyhq/airy/pull/1796)]
+- Bump terser-webpack-plugin from 5.1.1 to 5.1.2 [[#1795](https://github.com/airyhq/airy/pull/1795)]
+- Bump @typescript-eslint/parser from 4.22.1 to 4.23.0 [[#1779](https://github.com/airyhq/airy/pull/1779)]
+- Bump @babel/core from 7.14.0 to 7.14.2 [[#1794](https://github.com/airyhq/airy/pull/1794)]
+- Bump cypress from 7.2.0 to 7.3.0 [[#1780](https://github.com/airyhq/airy/pull/1780)]
+- Bump sass-loader from 11.0.1 to 11.1.1 [[#1790](https://github.com/airyhq/airy/pull/1790)]
+- Bump @babel/preset-env from 7.14.1 to 7.14.2 [[#1792](https://github.com/airyhq/airy/pull/1792)]
+- Bump @types/react-dom from 16.9.2 to 17.0.5 [[#1789](https://github.com/airyhq/airy/pull/1789)]
+- Bump core-js from 3.12.0 to 3.12.1 [[#1758](https://github.com/airyhq/airy/pull/1758)]
+- Bump eslint from 7.25.0 to 7.26.0 [[#1760](https://github.com/airyhq/airy/pull/1760)]
+- Bump @typescript-eslint/eslint-plugin from 4.22.1 to 4.23.0 [[#1769](https://github.com/airyhq/airy/pull/1769)]
+- Bump webpack from 5.36.2 to 5.37.0 [[#1770](https://github.com/airyhq/airy/pull/1770)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.22.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.22.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.22.0/windows/amd64/airy.exe)
+
+## 0.21.0
+
+#### Changes
+
+- [[#1750](https://github.com/airyhq/airy/issues/1750)] Fix tags filter [[#1765](https://github.com/airyhq/airy/pull/1765)]
+
+#### 🚀 Features
+
+- [[#1681](https://github.com/airyhq/airy/issues/1681)] Clean phone number input [[#1772](https://github.com/airyhq/airy/pull/1772)]
 - [[#1519](https://github.com/airyhq/airy/issues/1519)] Implement auth UI behavior [[#1737](https://github.com/airyhq/airy/pull/1737)]
-- [[#1721](https://github.com/airyhq/airy/issues/1721)] Webhook consumer start consuming from beginning[[#1722](https://github.com/airyhq/airy/pull/1722)]
+- [[#1721](https://github.com/airyhq/airy/issues/1721)] Webhook consumer should start consuming… [[#1722](https://github.com/airyhq/airy/pull/1722)]
 - [[#1713](https://github.com/airyhq/airy/issues/1713)] Fix crash conversation from search [[#1720](https://github.com/airyhq/airy/pull/1720)]
 - [[#1707](https://github.com/airyhq/airy/issues/1707)] Attach user profile to application logs [[#1718](https://github.com/airyhq/airy/pull/1718)]
 - [[#1714](https://github.com/airyhq/airy/issues/1714)] Webhook config updates only once [[#1715](https://github.com/airyhq/airy/pull/1715)]
 
 #### 🐛 Bug Fixes
 
+- [[#1749](https://github.com/airyhq/airy/issues/1749)] Fixed activeFilterCount [[#1747](https://github.com/airyhq/airy/pull/1747)]
 - [[#1763](https://github.com/airyhq/airy/issues/1763)] Fixed tag string length in contactInfo [[#1766](https://github.com/airyhq/airy/pull/1766)]
 - [[#1736](https://github.com/airyhq/airy/issues/1736)] improve render library for facebook [[#1756](https://github.com/airyhq/airy/pull/1756)]
 - [[#1748](https://github.com/airyhq/airy/issues/1748)] Add missing default redirect uri [[#1749](https://github.com/airyhq/airy/pull/1749)]
@@ -42,6 +90,9 @@ sidebar_label: 📝 Changelog
 - Bump webpack-cli from 4.6.0 to 4.7.0 [[#1741](https://github.com/airyhq/airy/pull/1741)]
 - Bump @types/node from 15.0.1 to 15.0.2 [[#1723](https://github.com/airyhq/airy/pull/1723)]
 - Bump @typescript-eslint/parser from 4.22.0 to 4.22.1 [[#1724](https://github.com/airyhq/airy/pull/1724)]
+- Bump typescript from 4.2.3 to 4.2.4 [[#1753](https://github.com/airyhq/airy/pull/1753)]
+- Bump @types/react from 17.0.4 to 17.0.5 [[#1727](https://github.com/airyhq/airy/pull/1727)]
+- Bump @typescript-eslint/eslint-plugin from 4.22.0 to 4.22.1 [[#1725](https://github.com/airyhq/airy/pull/1725)]
 
 #### Airy CLI
 

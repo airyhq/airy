@@ -86,8 +86,8 @@ metadata:
   name: traefik
   namespace: kube-system
   annotations:
-  {{- range .Values.global.kubernetes.loadbalancerAnnotations }}
-    {{ . }}
+  {{- range $k, $v := .Values.global.kubernetes.loadbalancerAnnotations }}
+    {{ $k }}: {{ $v }}
   {{- end }}
 spec:
   selector:

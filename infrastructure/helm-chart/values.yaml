@@ -1,3 +1,4 @@
 global:
-  loadbalancerAnnotations: {}
-  host: "http://airy.core"
+  kubernetes:
+    host: "http://airy.core"
+    loadbalancerAnnotations: {}

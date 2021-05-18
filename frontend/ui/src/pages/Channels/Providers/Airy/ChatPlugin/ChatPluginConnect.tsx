@@ -7,7 +7,7 @@ import {StateModel} from '../../../../../reducers';
 import {allChannels} from '../../../../../selectors/channels';
 import {connectChatPlugin, updateChannel, disconnectChannel} from '../../../../../actions/channel';
 
-import {Button, LinkButton} from 'components';
+import {Button, LinkButton, InfoButton} from 'components';
 import {Channel} from 'model';
 
 import {ConnectNewChatPlugin} from './sections/ConnectNewChatPlugin';
@@ -128,10 +128,16 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
           </div>
         )}
       </div>
-      <LinkButton onClick={props.history.goBack} type="button">
-        <ArrowLeftIcon className={styles.backIcon} />
-        Back
-      </LinkButton>
+      <div>
+        <InfoButton
+          link="https://airy.co/docs/core/sources/chatplugin/overview"
+          text="more information about this source"
+          color="grey"></InfoButton>
+        <LinkButton onClick={props.history.goBack} type="button">
+          <ArrowLeftIcon className={styles.backIcon} />
+          Back
+        </LinkButton>
+      </div>
       <PageContent />
     </div>
   );

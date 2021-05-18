@@ -1,0 +1,54 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.circleIcon {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+}
+
+.blueIcon {
+  fill: var(--color-airy-blue);
+}
+
+.greyIcon {
+  fill: var(--color-text-gray);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding: 8px 8px;
+  margin-bottom: 8px;
+  background-color: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.greyButton {
+  border: 1px solid var(--color-text-gray);
+}
+
+.blueButton {
+  border: 1px solid var(--color-airy-blue);
+}
+
+.link,
+.link:hover,
+.link:active,
+.link:visited {
+  text-decoration: none;
+  font-weight: 400;
+  @include font-s;
+}
+
+.greyLink,
+.greyLink:hover,
+.greyLink:active,
+.greyLink:visited {
+  color: var(--color-text-gray);
+}
+
+.blueLink {
+  color: var(--color-airy-blue);
+}

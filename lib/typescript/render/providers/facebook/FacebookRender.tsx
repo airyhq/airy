@@ -5,17 +5,20 @@ import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {Video} from '../../components/Video';
 import {QuickReplies} from './components/QuickReplies';
-import {AttachmentUnion, SimpleAttachment, ContentUnion, ButtonAttachment, GenericAttachment,  MediaAttachment} from './facebookModel';
+import {AttachmentUnion, SimpleAttachment, ContentUnion, ButtonAttachment, GenericAttachment,  MediaAttachment, FallbackAttachment } from './facebookModel';
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
+import {MediaTemplate} from './components/MediaTemplate';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message: Message = props.content;
+  console.log('message', message)
   const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };
 
 function render(content: ContentUnion, props: RenderPropsUnion) {
+  console.log('render', content)
   switch (content.type) {
     case 'text':
       return <Text fromContact={props.content.fromContact || false} text={content.text} />;
@@ -64,6 +67,16 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
         </>
       );
 
+    case 'mediaTemplate':
+      return (
+        <>
+          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
+
+          <MediaTemplate template={content} />
+        </>
+      );
+
+
     case 'quickReplies':
       return (
         <QuickReplies
@@ -73,11 +86,14 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           quickReplies={content.quickReplies}
         />
       );
+
+      default:
+      return null;
   }
 }
 
 const parseAttachment = (
-  attachment: SimpleAttachment | ButtonAttachment | GenericAttachment | MediaAttachment
+  attachment: SimpleAttachment | FallbackAttachment | ButtonAttachment | GenericAttachment | MediaAttachment
 ): AttachmentUnion => {
   if (attachment.type === 'image') {
     return {
@@ -101,6 +117,13 @@ const parseAttachment = (
     };
   }
 
+  if (attachment.type === 'template' && attachment.payload.template_type == 'media') {
+    return {
+      type: 'mediaTemplate',
+      elements: attachment.payload.elements,
+    };
+  }
+
   if (attachment.type === 'video') {
     return {
       type: 'video',
@@ -111,8 +134,8 @@ const parseAttachment = (
   if (attachment.type === 'fallback') {
     return {
       type: 'fallback',
-      title: attachment.payload.title,
-      url: attachment.payload.url,
+      title: attachment.payload?.title ?? attachment.title,
+      url: attachment.payload?.url ?? attachment.url
     };
   }
 
@@ -126,13 +149,15 @@ function facebookInbound(message: Message): ContentUnion {
   const messageJson = message.content;
   console.log('INBOUND', messageJson);
 
-  if (messageJson.message?.attachments?.length) {
-    return parseAttachment(messageJson.message.attachments[0]);
-  } else if (messageJson.message?.text) {
-    return {
-      type: 'text',
-      text: messageJson.message?.text,
-    };
+  if (messageJson.attachment || messageJson.attachments) {
+    if ('text' in messageJson) {
+      return {
+        ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
+        text: messageJson.text,
+      };
+    }
+
+    return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
 
   if (messageJson.postback?.title) {

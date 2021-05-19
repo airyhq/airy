@@ -3,10 +3,36 @@ export interface Attachment {
 }
 export interface SimpleAttachment {
   type: 'image' | 'video' | 'audio' | 'file' | 'fallback';
-  payload: {
-    title?: string;
-    url?: string;
-  };
+  title?: string;
+  url?: string;
+  payload?: { title?: string; url?: string};
+}
+
+export interface URLButton extends Content {
+  type: 'web_url';
+  url: string;
+  title: string;
+}
+
+export interface PostbackButton extends Content {
+  type: 'postback';
+  title: string;
+  payload: string;
+}
+
+export interface CallButton extends Content {
+  type: 'phone_number';
+  title: string;
+  payload: string;
+  }
+
+export interface LoginButton extends Content {
+  type: "account_link";
+  url: string;
+}
+
+export interface LogoutButton extends Content{
+  type: "account_unlink";
 }
 
 export interface ButtonAttachment extends Attachment {
@@ -14,7 +40,7 @@ export interface ButtonAttachment extends Attachment {
   payload: {
     text: string;
     template_type: 'button';
-    buttons: Button[];
+    buttons: (URLButton | PostbackButton | CallButton | LoginButton | LogoutButton)[];
   };
 }
 export interface GenericAttachment extends Attachment {
@@ -26,18 +52,23 @@ export interface GenericAttachment extends Attachment {
   };
 }
 
+
+export interface FallbackAttachment extends SimpleAttachment {
+  type: 'fallback';
+}
+
+export interface MediaTemplate {
+  media_type: 'video' | 'image';
+  url: string;
+  buttons?: (URLButton | PostbackButton | CallButton | LoginButton | LogoutButton)[];
+}
+
 export interface MediaAttachment extends Attachment {
   type: 'template';
   payload: {
     template_type: 'media';
-    elements: MediaAttachmentElement[];
+    elements: MediaTemplate[];
   };
-}
-
-export interface MediaAttachmentElement {
-  media_type: 'video' | 'image';
-  url: string;
-  buttons?: (Button | Postback)[];
 }
 
 export interface Element {
@@ -48,7 +79,7 @@ export interface Element {
     type: string;
     url?: string;
   };
-  buttons: Button[];
+  buttons: (URLButton | PostbackButton | CallButton | LoginButton | LogoutButton)[];
 }
 
 export interface Content {
@@ -58,12 +89,6 @@ export interface Content {
 export interface TextContent extends Content {
   type: 'text';
   text: string;
-}
-
-export interface Postback extends Content {
-  type: 'postback';
-  title: string;
-  payload: string;
 }
 
 export interface ImageContent extends Content {
@@ -92,16 +117,11 @@ export interface QuickRepliesContent extends Content {
   quickReplies: QuickReply[];
 }
 
-export interface Button {
-  type: 'web_url';
-  url: string;
-  title: string;
-}
 
 export interface ButtonTemplate extends Content {
   type: 'buttonTemplate';
   text: string;
-  buttons: Button[];
+  buttons: (URLButton | PostbackButton | CallButton | LoginButton | LogoutButton)[];
 }
 
 export interface GenericTemplate extends Content {
@@ -110,23 +130,17 @@ export interface GenericTemplate extends Content {
   elements: Element[];
 }
 
-export interface Fallback extends Content {
-  type: 'fallback';
-  text?: string;
-  title: string;
-  url: string;
-}
+
 
 // Add a new facebook content model here:
 export type ContentUnion =
   | TextContent
-  | Postback
+  | PostbackButton
   | ImageContent
   | VideoContent
   | ButtonTemplate
   | GenericTemplate
   | QuickRepliesContent
-  | Fallback
   | MediaAttachment
 export type AttachmentUnion =
   | TextContent
@@ -134,5 +148,4 @@ export type AttachmentUnion =
   | VideoContent
   | ButtonTemplate
   | GenericTemplate
-  | Fallback
   | MediaAttachment;

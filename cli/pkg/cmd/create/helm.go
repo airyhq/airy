@@ -104,7 +104,7 @@ func (h *Helm) runHelm(args []string) error {
 					Containers: []corev1.Container{
 						{
 							Name:            "helm-runner",
-							Image:           "ghcr.io/airyhq/infrastructure/helm:christophproschel", // + h.version,
+							Image:           "ghcr.io/airyhq/infrastructure/helm:" + h.version,
 							Args:            args,
 							ImagePullPolicy: corev1.PullAlways,
 							VolumeMounts: []corev1.VolumeMount{

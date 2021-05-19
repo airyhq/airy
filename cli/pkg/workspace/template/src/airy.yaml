@@ -6,9 +6,9 @@ kubernetes:
 {{- if .Host }}
   host: {{ default "http://airy.core" .Host }}
 {{- end }}
-{{- if .LoadBalancerAnnotations }}
+{{- if .LoadbalancerAnnotations }}
   loadbalancerAnnotations:
-  {{- range $k, $v := .LoadBalancerAnnotations }}
+  {{- range $k, $v := .LoadbalancerAnnotations }}
     {{ $k }}: {{ $v }}
   {{- end }}
 {{- end }}

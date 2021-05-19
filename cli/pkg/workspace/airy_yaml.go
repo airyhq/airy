@@ -6,7 +6,7 @@ type KubernetesConf struct {
 	Namespace               string            `yaml:"namespace"`
 	NgrokEnabled            string            `yaml:"ngrokEnabled"`
 	Host                    string            `yaml:"host"`
-	LoadBalancerAnnotations map[string]string `yaml:"loadbalancerAnnotations,omitempty"`
+	LoadbalancerAnnotations map[string]string `yaml:"loadbalancerAnnotations,omitempty"`
 }
 
 type componentsConf map[string]map[string]string

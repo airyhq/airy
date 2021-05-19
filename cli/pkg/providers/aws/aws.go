@@ -45,7 +45,7 @@ func New(w io.Writer) *provider {
 
 func (p *provider) GetOverrides() tmpl.Variables {
 	return tmpl.Variables{
-		LoadBalancerAnnotations: map[string]string{"service.beta.kubernetes.io/aws-load-balancer-type": "nlb"},
+		LoadbalancerAnnotations: map[string]string{"service.beta.kubernetes.io/aws-load-balancer-type": "nlb"},
 	}
 }
 

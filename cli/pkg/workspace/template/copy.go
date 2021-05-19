@@ -14,7 +14,7 @@ type Variables struct {
 	Version                 string
 	Namespace               string
 	Host                    string
-	LoadBalancerAnnotations map[string]string
+	LoadbalancerAnnotations map[string]string
 }
 
 //go:embed src
@@ -65,7 +65,6 @@ func recCopy(writePath string, templatePath string, entry fs.DirEntry, data Vari
 	if err := os.MkdirAll(dstPath, 0700); err != nil {
 		return err
 	}
-
 	entries, err := templateDir.ReadDir(templatePath)
 	if err != nil {
 		return err

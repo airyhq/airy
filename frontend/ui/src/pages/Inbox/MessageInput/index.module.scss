@@ -81,6 +81,20 @@
   @include font-base;
 }
 
+.smileyIcon {
+  height: 20px;
+  width: 20px;
+}
+
+.templateAltIcon {
+  height: 28px;
+  width: 20px;
+  svg {
+    background-color: red;
+    margin-top: 5px;
+  }
+}
+
 .sendDiv {
   position: relative;
   display: flex;
@@ -127,12 +141,15 @@
 .messageActionsContainer {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  padding: 0 6px 5px 5px;
+  align-items: center;
+  padding-right: 6px;
+}
+
+.templateActionContainer {
+  margin-top: 8px;
 }
 
 .messageActionsContainer svg {
-  height: 22px;
   cursor: pointer;
 }
 
@@ -248,9 +265,8 @@
   z-index: 1;
 
   svg {
-    transform: scale(-0.8);
-    margin-left: -1px;
-    margin-top: -1px;
+    height: 8px;
+    width: 8px;
   }
 }
 

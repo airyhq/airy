@@ -11,7 +11,7 @@ import ChannelListItem from './ChannelListItem';
 import {SearchField} from 'components';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
 import {ReactComponent as SearchIcon} from 'assets/images/icons/search.svg';
-import {ReactComponent as PLusIcon} from 'assets/images/icons/plus.svg';
+import {ReactComponent as PlusIcon} from 'assets/images/icons/plus.svg';
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
@@ -99,9 +99,15 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
             )}
           </div>
           <div className={styles.buttons}>
-            <button onClick={showSearchFieldToggle}>{showingSearchField ? <CloseIcon className={styles.closeIcon}/> : <SearchIcon />}</button>
+            <button onClick={showSearchFieldToggle}>
+              {showingSearchField ? (
+                <CloseIcon className={styles.closeIcon} />
+              ) : (
+                <SearchIcon className={styles.searchIcon} />
+              )}
+            </button>
             <button onClick={() => props.history.push(path)}>
-              <PLusIcon />
+              <PlusIcon className={styles.plusIcon} />
             </button>
           </div>
         </div>

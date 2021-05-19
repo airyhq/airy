@@ -60,6 +60,8 @@
 .searchBox {
   color: black;
   background: white;
+  display: flex;
+  align-items: center;
 }
 
 .searchButton {
@@ -67,6 +69,8 @@
   background-color: white;
   cursor: pointer;
   outline: none;
+  height: 24px;
+  width: 24px;
   &:hover {
     svg {
       path {
@@ -83,10 +87,9 @@
 }
 
 .searchIcon {
-  width: 22px;
-  height: 22px;
-  padding-top: 1px;
-  margin-right: 4px;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
   position: relative;
 
   path {
@@ -100,6 +103,9 @@
   border: none;
   outline: none;
   padding: 0px;
+  height: 24px;
+  width: 24px;
+  margin-left: 12px;
   &:hover {
     svg {
       path {

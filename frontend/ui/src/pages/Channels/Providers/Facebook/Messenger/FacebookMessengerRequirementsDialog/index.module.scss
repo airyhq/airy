@@ -60,4 +60,9 @@
   background: transparent;
   cursor: pointer;
   outline: none;
+  padding: 0px;
+  svg {
+    height: 10px;
+    width: 10px;
+  }
 }

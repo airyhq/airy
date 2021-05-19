@@ -86,6 +86,14 @@
   align-items: center;
 }
 
+.closeIcon {
+  @extend .icon;
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
 .inputTitleRow {
   display: flex;
   flex-direction: row;
@@ -182,4 +190,9 @@
   position: relative;
   display: flex;
   align-items: center;
+}
+
+.smileyIcon {
+  height: 20px;
+  width: 20px;
 }

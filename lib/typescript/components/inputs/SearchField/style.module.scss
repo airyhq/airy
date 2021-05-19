@@ -6,6 +6,7 @@
   border: 1px solid var(--color-light-gray);
   border-radius: 8px;
   padding: 4px 8px;
+  height: 38px;
 
   input {
     @include font-base;
@@ -31,13 +32,13 @@
 }
 
 .searchIcon {
+  display: flex;
+  align-self: center;
+  margin-right: 6px;
   svg {
-    width: 22px;
-    height: 22px;
-    padding-top: 2px;
-    margin-right: 4px;
-    position: relative;
-    top: 2px;
+    width: 18px;
+    height: 18px;
+    margin: 0px;
 
     path {
       fill: var(--color-text-gray);

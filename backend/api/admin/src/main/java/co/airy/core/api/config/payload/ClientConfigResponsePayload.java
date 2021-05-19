@@ -14,6 +14,6 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClientConfigResponsePayload {
-    private Map<String, ServiceInfo> components;
+    private Map<String, ServiceInfo> services;
     private UserProfile userProfile;
 }

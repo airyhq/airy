@@ -18,7 +18,7 @@ public class ClientConfigController {
     @PostMapping("/client.config")
     public ResponseEntity<ClientConfigResponsePayload> getConfig(Authentication auth) {
         return ResponseEntity.ok(ClientConfigResponsePayload.builder()
-                .components(serviceDiscovery.getServices())
+                .services(serviceDiscovery.getServices())
                 .userProfile(PrincipalAccess.getUserProfile(auth))
                 .build());
     }

@@ -14,7 +14,7 @@ type Variables struct {
 	Version                 string
 	Namespace               string
 	Host                    string
-	LoadBalancerAnnotations string
+	LoadBalancerAnnotations map[string]string
 }
 
 //go:embed src

@@ -7,7 +7,10 @@ kubernetes:
   host: {{ default "http://airy.core" .Host }}
 {{- end }}
 {{- if .LoadBalancerAnnotations }}
-  loadBalancerAnnotations: {{ .LoadBalancerAnnotations }}
+  loadbalancerAnnotations:
+  {{- range $k, $v := .LoadBalancerAnnotations }}
+    {{ $k }}: {{ $v }}
+  {{- end }}
 {{- end }}
 security:
   allowedOrigins: "*"

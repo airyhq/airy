@@ -183,7 +183,7 @@ class InputComponent extends Component<InputProps, IState> {
     }
 
     return (
-      <div className={styles.icon}>
+      <div className={styles.closeIcon}>
         <CloseIcon aria-hidden="true" />
       </div>
     );
@@ -370,7 +370,7 @@ class InputComponent extends Component<InputProps, IState> {
                   onClick={this.handleEmojiDrawer}
                   disabled={this.props.maxLength - value.length <= 0}
                   className={`${styles.emojiIcon} ${this.state.isShowingEmojiDrawer && styles.emojiIconActive}`}>
-                  <SmileyIcon title="Emoji" />
+                  <SmileyIcon title="Emoji" className={styles.smileyIcon} />
                 </button>
               </div>
             ) : null}

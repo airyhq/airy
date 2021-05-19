@@ -40,6 +40,11 @@
   background: transparent;
   cursor: pointer;
   outline: none;
+  padding: 0px;
+  svg {
+    width: 10px;
+    height: 10px;
+  }
 }
 .inviteWrapper {
   width: 500px;

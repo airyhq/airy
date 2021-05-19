@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {SettingsModal} from 'components';
-import close from 'assets/images/icons/close.svg';
+import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
 
@@ -14,7 +14,7 @@ export const TwilioRequirementsDialog = (props: TwilioRequirementsDialogProps) =
     <SettingsModal style={{maxWidth: '582px'}} title="Connect Messenger" close={props.onClose}>
       <div className={styles.container}>
         <button className={styles.closeButton} onClick={props.onClose}>
-          <img src={close} />
+          <CloseIcon />
         </button>
         <div className={styles.inviteWrapper}>
           <h1 className={styles.headline}>Connect with Twilio First</h1>

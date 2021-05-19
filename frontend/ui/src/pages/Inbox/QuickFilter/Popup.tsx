@@ -158,7 +158,9 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       : styles.filterButtonSelected
                   }
                   onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setState(event, false)}>
-                  <CheckmarkCircleIcon />
+                  <div className={styles.checkmarkCircleIcon}>
+                    <CheckmarkCircleIcon />
+                  </div>
                   Closed
                 </button>
               </div>

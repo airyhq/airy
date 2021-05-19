@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {SettingsModal} from 'components';
-import close from 'assets/images/icons/close.svg';
+import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 
 import styles from './index.module.scss';
 
@@ -15,7 +15,7 @@ export const FacebookMessengerRequirementsDialog = (props: FacebookMessengerRequ
       <div className={styles.backgroundContainer}>
         <div className={styles.container}>
           <button className={styles.closeButton} onClick={() => props.onClose()}>
-            <img src={close} />
+            <CloseIcon />
           </button>
           <div className={styles.title}>
             <p>Connect Messenger</p>

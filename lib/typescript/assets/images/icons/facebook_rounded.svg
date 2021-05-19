@@ -1,1 +1,9 @@
-<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path id="a" d="M.001 0H20v19.88H.001z"/></defs><g fill="none" fill-rule="evenodd"><mask id="b" fill="#fff"><use xlink:href="#a"/></mask><path d="M12.215 3.906c-2.213 0-3.683 1.3-3.773 3.66l-.005.23V10H5.899v2.89h2.54v6.989C3.657 19.129 0 14.99 0 10 0 4.477 4.477 0 10 0s10 4.477 10 10c0 4.897-3.52 8.972-8.168 9.832l-.27.047V12.89h2.33l.445-2.89h-2.774V8.124c0-.79.388-1.562 1.63-1.562h1.261v-2.46l-.449-.066c-.433-.057-1.12-.13-1.79-.13z" fill="#212428" mask="url(#b)"/></g></svg>
+<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path id="a" d="M.001 0H20v19.88H.001z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+    <mask id="b" fill="#fff">
+        <use xlink:href="#a"/>
+    </mask>
+<path d="M12.215 3.906c-2.213 0-3.683 1.3-3.773 3.66l-.005.23V10H5.899v2.89h2.54v6.989C3.657 19.129 0 14.99 0 10 0 4.477 4.477 0 10 0s10 4.477 10 10c0 4.897-3.52 8.972-8.168 9.832l-.27.047V12.89h2.33l.445-2.89h-2.774V8.124c0-.79.388-1.562 1.63-1.562h1.261v-2.46l-.449-.066c-.433-.057-1.12-.13-1.79-.13z" fill="#212428" mask="url(#b)"/></g></svg>

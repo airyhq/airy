@@ -4,7 +4,7 @@ import * as actions from '../../../actions/config';
 type Action = ActionType<typeof actions>;
 
 export type Config = {
-  components: {[key: string]: {enabled: boolean, healthy: boolean}};
+  components: {[key: string]: {enabled: boolean; healthy: boolean}};
 };
 
 const defaultState = {
@@ -25,10 +25,10 @@ export default function configReducer(state = defaultState, action: Action): Con
             [component]: {
               enabled,
               // A component is only healthy if all its services are healthy
-              healthy: agg[component] ? agg[component].healthy && healthy : healthy
-            }
-          }
-        }, {})
+              healthy: agg[component] ? agg[component].healthy && healthy : healthy,
+            },
+          };
+        }, {}),
       };
     default:
       return state;

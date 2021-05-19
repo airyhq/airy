@@ -105,10 +105,10 @@ public class ClientConfigControllerTest {
 
         retryOnException(() -> webTestHelper.post("/client.config", "{}")
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.components.*", hasSize(1)))
-                        .andExpect(jsonPath("$.components", hasKey("api-communication")))
-                        .andExpect(jsonPath("$.components.*.enabled", everyItem(is(true))))
-                        .andExpect(jsonPath("$.components.*.healthy", everyItem(is(false)))),
+                        .andExpect(jsonPath("$.services.*", hasSize(1)))
+                        .andExpect(jsonPath("$.services", hasKey("api-communication")))
+                        .andExpect(jsonPath("$.services.*.enabled", everyItem(is(true))))
+                        .andExpect(jsonPath("$.services.*.healthy", everyItem(is(false)))),
                 "client.config call failed");
 
         mockServer.verify();

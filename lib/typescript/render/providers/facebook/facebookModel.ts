@@ -8,13 +8,6 @@ export interface SimpleAttachment {
   payload?: {title?: string; url?: string} | null;
 }
 
-export interface Fallback extends Content {
-  type: 'fallback';
-  text?: string;
-  title: string;
-  url: string;
-}
-
 export interface URLButton extends Content {
   type: 'web_url';
   url: string;
@@ -139,6 +132,13 @@ export interface GenericTemplate extends Content {
   type: 'genericTemplate';
   text?: string;
   elements: Element[];
+}
+
+export interface Fallback extends Content {
+  type: 'fallback';
+  text?: string;
+  title: string;
+  url: string;
 }
 
 // Add a new facebook content model here:

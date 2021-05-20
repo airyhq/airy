@@ -98,7 +98,7 @@ const parseAttachment = (
     };
   }
 
-  if (attachment.type === 'template' && attachment.payload.template_type == 'button') {
+  if (attachment.type === 'template' && attachment.payload.template_type === 'button') {
     return {
       type: 'buttonTemplate',
       text: attachment.payload.text,
@@ -106,14 +106,14 @@ const parseAttachment = (
     };
   }
 
-  if (attachment.type === 'template' && attachment.payload.template_type == 'generic') {
+  if (attachment.type === 'template' && attachment.payload.template_type === 'generic') {
     return {
       type: 'genericTemplate',
       elements: attachment.payload.elements,
     };
   }
 
-  if (attachment.type === 'template' && attachment.payload.template_type == 'media') {
+  if (attachment.type === 'template' && attachment.payload.template_type === 'media') {
     return {
       type: 'mediaTemplate',
       media_type: attachment.payload.elements[0].media_type,
@@ -122,14 +122,14 @@ const parseAttachment = (
     };
   }
 
-  if (attachment.type == 'video') {
+  if (attachment.type === 'video') {
     return {
       type: 'video',
       videoUrl: attachment.payload.url,
     };
   }
 
-  if (attachment.type == 'fallback') {
+  if (attachment.type === 'fallback') {
     return {
       type: 'fallback',
       title: attachment.payload?.title ?? attachment.title,

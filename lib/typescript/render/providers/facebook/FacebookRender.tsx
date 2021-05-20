@@ -5,20 +5,25 @@ import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {Video} from '../../components/Video';
 import {QuickReplies} from './components/QuickReplies';
-import {AttachmentUnion, SimpleAttachment, ContentUnion, ButtonAttachment, GenericAttachment,  MediaAttachment, FallbackAttachment } from './facebookModel';
+import {
+  AttachmentUnion,
+  SimpleAttachment,
+  ContentUnion,
+  ButtonAttachment,
+  GenericAttachment,
+  MediaAttachment,
+} from './facebookModel';
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 import {MediaTemplate} from './components/MediaTemplate';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message: Message = props.content;
-  console.log('message', message)
   const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };
 
 function render(content: ContentUnion, props: RenderPropsUnion) {
-  console.log('render', content)
   switch (content.type) {
     case 'text':
       return <Text fromContact={props.content.fromContact || false} text={content.text} />;
@@ -40,8 +45,6 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'image':
       return (
         <>
-          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
-
           <Image imageUrl={content.imageUrl} />
         </>
       );
@@ -49,8 +52,6 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'video':
       return (
         <>
-          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
-
           <Video videoUrl={content.videoUrl} />
         </>
       );
@@ -61,8 +62,6 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'genericTemplate':
       return (
         <>
-          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
-
           <GenericTemplate template={content} />
         </>
       );
@@ -70,12 +69,9 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'mediaTemplate':
       return (
         <>
-          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
-
           <MediaTemplate template={content} />
         </>
       );
-
 
     case 'quickReplies':
       return (
@@ -87,13 +83,13 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
         />
       );
 
-      default:
+    default:
       return null;
   }
 }
 
 const parseAttachment = (
-  attachment: SimpleAttachment | FallbackAttachment | ButtonAttachment | GenericAttachment | MediaAttachment
+  attachment: SimpleAttachment | ButtonAttachment | GenericAttachment | MediaAttachment
 ): AttachmentUnion => {
   if (attachment.type === 'image') {
     return {
@@ -120,22 +116,24 @@ const parseAttachment = (
   if (attachment.type === 'template' && attachment.payload.template_type == 'media') {
     return {
       type: 'mediaTemplate',
-      elements: attachment.payload.elements,
+      media_type: attachment.payload.elements[0].media_type,
+      url: attachment.payload.elements[0].url,
+      buttons: attachment.payload.elements[0].buttons,
     };
   }
 
-  if (attachment.type === 'video') {
+  if (attachment.type == 'video') {
     return {
       type: 'video',
       videoUrl: attachment.payload.url,
     };
   }
 
-  if (attachment.type === 'fallback') {
+  if (attachment.type == 'fallback') {
     return {
       type: 'fallback',
       title: attachment.payload?.title ?? attachment.title,
-      url: attachment.payload?.url ?? attachment.url
+      url: attachment.payload?.url ?? attachment.url,
     };
   }
 
@@ -147,16 +145,15 @@ const parseAttachment = (
 
 function facebookInbound(message: Message): ContentUnion {
   const messageJson = message.content;
-  console.log('INBOUND', messageJson);
+
+  if (messageJson.attachment.type === 'fallback' || messageJson.attachments.type === 'fallback') {
+    return {
+      ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
+      text: messageJson.text ?? null,
+    };
+  }
 
   if (messageJson.attachment || messageJson.attachments) {
-    if ('text' in messageJson) {
-      return {
-        ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
-        text: messageJson.text,
-      };
-    }
-
     return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
 
@@ -183,7 +180,6 @@ function facebookInbound(message: Message): ContentUnion {
 
 function facebookOutbound(message: Message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
-  console.log('OUTOUND', messageJson);
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {
@@ -205,14 +201,14 @@ function facebookOutbound(message: Message): ContentUnion {
     };
   }
 
-  if (messageJson.attachment || messageJson.attachments) {
-    if ('text' in messageJson) {
-      return {
-        ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
-        text: messageJson.text,
-      };
-    }
+  if (messageJson.attachment?.type === 'fallback' || messageJson.attachments?.[0].type === 'fallback') {
+    return {
+      text: messageJson.text ?? null,
+      ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
+    };
+  }
 
+  if (messageJson.attachment || messageJson.attachments) {
     return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
 

@@ -1,4 +1,5 @@
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
 
 .textMessage {
   display: inline-block;
@@ -17,6 +18,7 @@
 .contactContent:active,
 .contactContent:visited,
 .contactContent:focus {
+  @extend .textMessage;
   background: var(--color-background-blue);
   color: var(--color-text-contrast);
 }
@@ -26,6 +28,7 @@
 .memberContent:active,
 .memberContent:visited,
 .memberContent:focus {
+  @extend .textMessage;
   background: var(--color-airy-blue);
   color: white;
 }
@@ -33,4 +36,15 @@
 .messageLink {
   text-decoration: underline;
   font-weight: normal;
+}
+
+.conversationListItemText {
+  @include font-base;
+  color: var(--color-text-gray);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  max-height: 24px;
 }

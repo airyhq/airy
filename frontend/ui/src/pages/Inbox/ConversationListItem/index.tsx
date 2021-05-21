@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
-import {Avatar} from 'render';
+import {Avatar, SourceMessage} from 'render';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
@@ -93,21 +93,23 @@ const ConversationListItem = (props: ConversationListItemProps) => {
 
     if (typeof lastMessageContent === 'string') {
       if (lastMessageContent.includes('&Body=' && '&FromCountry=')) {
-        const startText = lastMessageContent.search('&Body=');
-        const endText = lastMessageContent.search('&FromCountry=');
-        const textLength = endText - startText;
-        const enCodedText = lastMessageContent.substring(startText + 6, startText + textLength);
-        const replaced = enCodedText.split('+').join(' ');
-        const text = decodeURIComponent(replaced);
-        return text;
+        return (
+          <SourceMessage
+            source={conversation.channel.source}
+            contentType="message"
+            content={conversation.lastMessage}
+            isTwilioConversationListItem={true}
+          />
+        );
       } else if (lastMessageContent.includes('&Body=' && '&To=whatsapp')) {
-        const startText = lastMessageContent.search('&Body=');
-        const endText = lastMessageContent.search('&To=whatsapp');
-        const textLength = endText - startText;
-        const enCodedText = lastMessageContent.substring(startText + 6, startText + textLength);
-        const replaced = enCodedText.split('+').join(' ');
-        const text = decodeURIComponent(replaced);
-        return text;
+        return (
+          <SourceMessage
+            source={conversation.channel.source}
+            contentType="message"
+            content={conversation.lastMessage}
+            isTwilioConversationListItem={true}
+          />
+        );
       }
     }
     if (lastMessageContent.text || lastMessageContent.message?.text) {

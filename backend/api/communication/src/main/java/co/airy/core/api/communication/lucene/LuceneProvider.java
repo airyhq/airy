@@ -55,22 +55,16 @@ public class LuceneProvider implements LuceneStore {
     }
 
     @Override
-    public LuceneQueryResult query(Query query, String cursor, int pageSize) {
+    public LuceneQueryResult query(Query query, int cursor, int pageSize) {
         try {
             refreshReader();
             final IndexSearcher searcher = new IndexSearcher(reader);
             SortField lastMessageSort = new SortedNumericSortField("last_message_at", SortField.Type.LONG, true);
             Sort sort = new Sort(lastMessageSort);
-            final TopFieldCollector collector = TopFieldCollector.create(sort, 2000, 1);
-            int startIndex = 0;
-            if (cursor != null) {
-                startIndex = Integer.parseInt(cursor) * pageSize;
-            }
+            final TopFieldCollector collector = TopFieldCollector.create(sort, 2000, Integer.MAX_VALUE);
 
-            log.info("Start index: {}", startIndex);
             searcher.search(query, collector);
-            TopDocs hits = collector.topDocs(startIndex, pageSize);
-            log.info("Hits: {}", hits.scoreDocs.length);
+            final TopDocs hits = collector.topDocs(cursor, pageSize);
 
             List<ConversationIndex> conversations = new ArrayList<>(hits.scoreDocs.length);
             for (ScoreDoc scoreDoc : hits.scoreDocs) {
@@ -80,11 +74,12 @@ public class LuceneProvider implements LuceneStore {
 
             return LuceneQueryResult.builder()
                     .conversations(conversations)
+                    .filteredTotal(hits.totalHits.value)
                     .total(reader.maxDoc()).build();
         } catch (Exception e) {
             log.error("Failed to query Lucene store with query {}", query, e);
             return LuceneQueryResult.builder().conversations(List.of())
-                    .total(reader.maxDoc()).build();
+                    .total(reader.maxDoc()).filteredTotal(0).build();
         }
     }
 

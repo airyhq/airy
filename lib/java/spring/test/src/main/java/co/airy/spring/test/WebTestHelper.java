@@ -33,6 +33,10 @@ public class WebTestHelper {
                 .content(body));
     }
 
+    public ResultActions post(String url) throws Exception {
+        return this.mvc.perform(MockMvcRequestBuilders.post(url));
+    }
+
     public ResultActions get(String url) throws Exception {
         return this.mvc.perform(MockMvcRequestBuilders.get(url));
     }

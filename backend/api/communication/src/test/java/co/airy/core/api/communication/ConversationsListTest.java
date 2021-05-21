@@ -37,6 +37,7 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -107,9 +108,9 @@ class ConversationsListTest {
     }
 
     @Test
-    void canFetchAllConversationsInOrder() throws Exception {
+    void canFetchAllConversations() throws Exception {
         retryOnException(
-                () -> webTestHelper.post("/conversations.list", "{}")
+                () -> webTestHelper.post("/conversations.list")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
                         .andExpect(jsonPath("pagination_data.total", is(conversations.size())))
@@ -136,7 +137,8 @@ class ConversationsListTest {
                         .andExpect(jsonPath("$.data", hasSize(2)))
                         .andExpect(jsonPath("$.pagination_data.filtered_total", is(conversations.size())))
                         .andExpect(jsonPath("$.pagination_data.total", is(conversations.size())))
-                        .andExpect(jsonPath("$.pagination_data.previous_cursor", is(nullValue()))),
+                        .andExpect(jsonPath("$.pagination_data.previous_cursor", is(not(nullValue()))))
+                        .andExpect(jsonPath("$.pagination_data.next_cursor", is(not(nullValue())))),
                 "Expected 2 conversations starting from page 0");
 
         retryOnException(

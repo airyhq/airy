@@ -31,7 +31,7 @@ public class DocumentMapper {
         document.add(new IntPoint("unread_count", conversation.getUnreadMessageCount()));
         document.add(new StoredField("unread_count", conversation.getUnreadMessageCount()));
 
-        //sort enabled field
+        // sort enabled field
         document.add(new NumericDocValuesField("last_message_at", conversation.getLastMessageAt()));
         for (String tagId : conversation.getTagIds()) {
             document.add(new TextField("tag_ids", tagId, Field.Store.YES));

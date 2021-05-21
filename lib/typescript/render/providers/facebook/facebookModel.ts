@@ -65,7 +65,8 @@ export interface GenericAttachment extends Attachment {
 export interface MediaTemplate extends Content {
   type: 'mediaTemplate';
   media_type: 'video' | 'image';
-  url: string;
+  url?: string;
+  attachment_id?: string;
   buttons: (URLButton | PostbackButton | CallButton | LoginButton | LogoutButton | GamePlayButton)[];
 }
 
@@ -95,7 +96,6 @@ export interface Content {
 
 export interface TextContent extends Content {
   type: 'text';
-  text: string;
 }
 
 export interface ImageContent extends Content {

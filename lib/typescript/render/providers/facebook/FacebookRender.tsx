@@ -117,7 +117,8 @@ const parseAttachment = (
     return {
       type: 'mediaTemplate',
       media_type: attachment.payload.elements[0].media_type,
-      url: attachment.payload.elements[0].url,
+      url: attachment.payload.elements[0].url ?? null,
+      attachment_id: attachment.payload.elements[0].attachment_id ?? null,
       buttons: attachment.payload.elements[0].buttons,
     };
   }
@@ -146,15 +147,13 @@ const parseAttachment = (
 function facebookInbound(message: Message): ContentUnion {
   const messageJson = message.content;
 
-  if (messageJson.attachment.type === 'fallback' || messageJson.attachments.type === 'fallback') {
+  if (messageJson.message?.attachments?.length) {
+    return parseAttachment(messageJson.message.attachments[0]);
+  } else if (messageJson.message?.text) {
     return {
-      ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
-      text: messageJson.text ?? null,
+      type: 'text',
+      text: messageJson.message?.text,
     };
-  }
-
-  if (messageJson.attachment || messageJson.attachments) {
-    return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
 
   if (messageJson.postback?.title) {

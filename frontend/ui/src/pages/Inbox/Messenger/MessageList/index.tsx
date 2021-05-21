@@ -5,7 +5,7 @@ import {debounce, isEmpty} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
 import {cyMessageList} from 'handles';
 
-import {Message, Suggestions, getSource} from 'model';
+import {Message, Suggestions} from 'model';
 import {SourceMessage} from 'render';
 import {ReactComponent as LightBulbIcon} from 'assets/images/icons/lightbulb.svg';
 
@@ -15,7 +15,7 @@ import {listMessages, listPreviousMessages} from '../../../../actions/messages';
 
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
-import {getCurrentConversation, getCurrentMessages} from '../../../../selectors/conversations';
+import {getConversation, getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime, isSameDay} from 'dates';
@@ -27,7 +27,7 @@ type MessageListProps = ConnectedProps<typeof connector> & {
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
     messages: getCurrentMessages(state, ownProps),
-    conversation: getCurrentConversation(state, ownProps),
+    conversation: getConversation(state, ownProps),
   };
 };
 
@@ -179,7 +179,7 @@ const MessageList = (props: MessageListProps) => {
                 lastInGroup={lastInGroup}
                 isChatPlugin={false}
                 decoration={messageDecoration}>
-                <SourceMessage source={getSource(conversation)} content={message} contentType="message" />
+                <SourceMessage source={conversation.channel?.source} content={message} contentType="message" />
               </MessageInfoWrapper>
             </div>
           );

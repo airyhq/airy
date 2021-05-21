@@ -15,7 +15,7 @@ The configuration workflow is as simple as:
 
 ```sh
 $EDITOR /path/to/config/directory/airy.yaml # edit your airy.yaml file
-airy config apply --config-dir /path/to/config/directory/ # apply your config
+airy config apply --workspace /path/to/config/directory/ # apply your config
 ```
 
 Your Airy Core instance will start and stop components accordingly to your
@@ -59,6 +59,8 @@ cluster and Redis.
 
 - `systemToken` set to a long secure secret to use for machine [API authentication](api/authentication.md)
 - `allowedOrigins` your site's origin to prevent CORS-based attacks (default: `"*"`)
+- `oidc` a map of values that when set enable and define [OIDC authentication](api/authentication.md#configuring-oidc)
+- `jwtSecret` used to create jwt http sessions derived from oidc authentication (default: randomized on installation)
 
 ### Components
 
@@ -74,6 +76,8 @@ cluster and Redis.
 - `integration`
   - `webhook`
     - `name` set this to the name of your webhook integration
+    - `maxBackoff` set this to the maximum number of seconds the webhook should
+      wait between retries with exponential backoff
 - `media`
   - `resolver`
     - `s3Key` set this to your AWS S3 access key id
@@ -97,5 +101,5 @@ use the [airy config apply](/cli/usage.md#config-apply) by running the
 following [Airy CLI](/cli/introduction.md) command.
 
 ```bash
-airy config apply --config-dir /path/to/config/directory/
+airy config apply --workspace /path/to/config/directory/
 ```

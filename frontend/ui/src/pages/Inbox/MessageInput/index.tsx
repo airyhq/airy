@@ -22,7 +22,7 @@ import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-dow
 import {ConversationRouteProps} from '../index';
 import {StateModel} from '../../../reducers';
 import {listTemplates} from '../../../actions/templates';
-import {getCurrentConversation} from '../../../selectors/conversations';
+import {getConversation} from '../../../selectors/conversations';
 import {getCurrentMessages} from '../../../selectors/conversations';
 import {isTextMessage} from '../../../services/types/messageTypes';
 
@@ -33,7 +33,7 @@ const mapDispatchToProps = {sendMessages};
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
   return {
-    conversation: getCurrentConversation(state, ownProps),
+    conversation: getConversation(state, ownProps),
     messages: getCurrentMessages(state, ownProps),
     listTemplates,
   };
@@ -205,7 +205,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             disabled={disconnectedChannelToolTip ? true : false}
             onClick={() => handleEmojiDrawer()}>
             <div className={styles.actionToolTip}>Emojis</div>
-            <Smiley aria-hidden />
+            <Smiley aria-hidden className={styles.smileyIcon} />
           </button>
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''} ${
@@ -215,7 +215,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             disabled={disconnectedChannelToolTip ? true : false}
             onClick={() => toggleTemplateModal()}>
             <div className={styles.actionToolTip}>Templates</div>
-            <TemplateAlt aria-hidden />
+            <div className={styles.templateActionContainer}>
+              <TemplateAlt aria-hidden className={styles.templateAltIcon} />
+            </div>
           </button>
         </>
       </div>

@@ -59,15 +59,47 @@ interface EndpointDefinition<T, K = void> {
 }
 
 export class HttpClient {
-  public readonly apiUrlConfig?: string;
-  private readonly unauthorizedErrorCallback?: (body: any) => void;
+  public readonly apiUrl?: string;
+  public readonly loginUrl?: string;
+  private readonly unauthorizedErrorCallback?: (body: any, loginUrl: string) => void;
 
-  constructor(apiUrlConfig: string, unauthorizedErrorCallback?: (body: any) => void) {
-    this.apiUrlConfig = apiUrlConfig;
+  constructor(apiUrl: string, unauthorizedErrorCallback?: (body: any, loginUrl: string) => void) {
+    this.apiUrl = apiUrl;
+    this.loginUrl = `${apiUrl}/login`;
     this.unauthorizedErrorCallback = unauthorizedErrorCallback;
   }
 
+  private async doFetchFromBackend(url: string, body?: any): Promise<any> {
+    const headers = {
+      Accept: 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+    };
+
+    if (!(body instanceof FormData)) {
+      if (!isString(body)) {
+        body = JSON.stringify(body);
+      }
+      headers['Content-Type'] = 'application/json';
+    }
+
+    const response: Response = await fetch(`${this.apiUrl}/${url}`, {
+      method: 'POST',
+      headers: headers,
+      mode: 'cors',
+      credentials: 'include',
+      body: body as BodyInit,
+    });
+
+    return this.parseBody(response);
+  }
+
   private async parseBody(response: Response): Promise<any> {
+    if (this.isAuthRedirect(response)) {
+      const err = new Error('Unauthorized');
+      this.onAuthError(err);
+      return Promise.reject(err);
+    }
+
     if (response.ok) {
       try {
         return await response.json();
@@ -83,8 +115,8 @@ export class HttpClient {
       errorResult = JSON.parse(body) as any;
     }
 
-    if (response.status == 403 && this.unauthorizedErrorCallback) {
-      this.unauthorizedErrorCallback(errorResult);
+    if (response.status === 403) {
+      this.onAuthError(errorResult);
     }
 
     throw {
@@ -93,38 +125,25 @@ export class HttpClient {
     };
   }
 
-  private async doFetchFromBackend(url: string, body?: any): Promise<any> {
-    const headers = {
-      Accept: 'application/json',
-    };
+  private isAuthRedirect(response: Response): boolean {
+    return response.redirected === true && response.url === this.loginUrl;
+  }
 
-    if (!(body instanceof FormData)) {
-      if (!isString(body)) {
-        body = JSON.stringify(body);
-      }
-      headers['Content-Type'] = 'application/json';
+  private onAuthError(err) {
+    if (this.unauthorizedErrorCallback) {
+      this.unauthorizedErrorCallback(err, this.loginUrl);
     }
-
-    const response: Response = await fetch(`${this.apiUrlConfig}/${url}`, {
-      method: 'POST',
-      headers: headers,
-      body: body as BodyInit,
-    });
-
-    return this.parseBody(response);
   }
 
   public listChannels = this.getRequest<void, Channel[]>(listChannelsDef);
 
   public exploreFacebookChannels = this.getRequest<ExploreChannelRequestPayload, Channel[]>(exploreFacebookChannelsDef);
 
-  public connectFacebookChannel = this.getRequest<ConnectChannelFacebookRequestPayload, Channel>(
-    connectFacebookChannelDef
-  );
+  public connectFacebookChannel =
+    this.getRequest<ConnectChannelFacebookRequestPayload, Channel>(connectFacebookChannelDef);
 
-  public connectChatPluginChannel = this.getRequest<ConnectChatPluginRequestPayload, Channel>(
-    connectChatPluginChannelDef
-  );
+  public connectChatPluginChannel =
+    this.getRequest<ConnectChatPluginRequestPayload, Channel>(connectChatPluginChannelDef);
 
   public connectTwilioSmsChannel = this.getRequest<ConnectTwilioSmsRequestPayload, Channel>(connectTwilioSmsChannelDef);
 
@@ -136,10 +155,8 @@ export class HttpClient {
 
   public disconnectChannel = this.getRequest<DisconnectChannelRequestPayload>(disconnectChannelDef);
 
-  public listConversations: ApiRequest<
-    ListConversationsRequestPayload,
-    PaginatedResponse<Conversation>
-  > = this.getRequest(listConversationsDef);
+  public listConversations: ApiRequest<ListConversationsRequestPayload, PaginatedResponse<Conversation>> =
+    this.getRequest(listConversationsDef);
 
   public getConversationInfo = this.getRequest<string, Conversation>(getConversationInfoDef);
 

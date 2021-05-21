@@ -15,7 +15,7 @@ We support two ways of customizing your Airy Chat Plugin. For most use cases the
 
 After setting up your [first source](/sources/chatplugin/quickstart#step-1-set-up-your-first-source) you can customize your Airy Chat Plugin to your needs.
 
-On your instance's [Airy Core UI](http://airy.core/ui/channels), click on the button displaying a cross icon next to the Airy Live Chat channel.
+On your instance's [Airy Core UI](http://airy.core/ui/channels), click on the button displaying a + icon next to the Airy Live Chat channel.
 
 <img alt="Basic Customization Example" src={useBaseUrl('img/sources/chatplugin/channelListChatplugin.png')} />
 <br/>
@@ -27,21 +27,22 @@ Then click on the **edit** of your source:
 <br/>
 <br/>
 
-Switch to the **Install & Customize** register and start customizing your Airy Chat Plugin to your needs.
+Switch to the **Install & Customize** tab and start customizing your Airy Chat Plugin to your needs.
 <img alt="Basic Customization Example" src={useBaseUrl('img/sources/chatplugin/basicCustomizationChatpluginExample.png')} />
 
 <br/>
 
 If you are happy with your customization, copy it and add this code inside the tag `<head>`.
 
-| Option name      | Option description                                                                           |
-| ---------------- | -------------------------------------------------------------------------------------------- |
-| Header text      | Set the header text of your Airy Chat Plugin                                                 |
-| Chat Plugin Icon | Set your company icon which appears on the button that opens and closes the Airy Chat Plugin |
-| Input Icon       | Set your icon as `sendButton` and replace the default paperplane                             |
-| Primary Color    | Set your primary color as the topbar, border of `textArea` or text color of `buttons`        |
-| Accent Color     | Set your accent color as the `sendButton`                                                    |
-| Background Color | Set the background color of the entire Airy Chat Plugin                                      |
+| Option name                 | Option description                                                                                                                          |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Header text                 | Set the header text of your Airy Chat Plugin                                                                                                |
+| Start new Conversation text | Set the Start new Conversation text button of your Airy Chat Plugin                                                                         |
+| Chat Plugin Icon            | Set your company icon which appears on the button that opens and closes the Airy Chat Plugin                                                |
+| Input Icon                  | Set your icon as `sendButton` and replace the default paperplane                                                                            |
+| Primary Color               | Set your primary color as the topbar, border of `textArea`, Start new Conversation button text and border color, or text color of `buttons` |
+| Accent Color                | Set your accent color as the `sendButton`                                                                                                   |
+| Background Color            | Set the background color of the entire Airy Chat Plugin                                                                                     |
 
 **Sample**
 
@@ -51,7 +52,7 @@ If you are happy with your customization, copy it and add this code inside the t
 
 ### Advanced customization
 
-Installing the Airy Chat Plugin as a library allows you to customize the interface as much as you want using **["Render Props"](https://reactjs.org/docs/render-props.html)**.
+Installing the Airy Chat Plugin as a library allows you to customize the interface as much as you want using **[Render Props](https://reactjs.org/docs/render-props.html)**.
 The Airy Chat Plugin provides you with four Render Props. All Render Props parameters are optional. If you omit all of them, the Airy Chat Plugin will render the default styling and behavior.
 
 Each Render Prop accepts a set of parameters that allows you to customize the interface or the behavior of the Airy Chat Plugin.

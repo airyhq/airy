@@ -2,10 +2,10 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: 'airy-core'
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Values.global.kubernetes.namespace }}
 spec:
   rules:
-    - host: {{ get (urlParse .Values.global.host) "host" }}
+    - host: {{ get (urlParse .Values.global.kubernetes.host) "host" }}
       http:
         paths:
           - path: /ws.communication
@@ -92,7 +92,35 @@ spec:
                 name: api-communication
                 port:
                   number: 80
+          - path: /login
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /logout
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /oauth
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
           - path: /client.config
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /users.getProfile
             pathType: Prefix
             backend:
               service:

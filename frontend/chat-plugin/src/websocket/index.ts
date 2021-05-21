@@ -100,7 +100,6 @@ class WebSocket {
 
   reconnect = () => {
     if (!this.isConnected) {
-      this.reconnectTimeout = window.setTimeout(this.reconnect, 5000);
       this.start();
     }
   };

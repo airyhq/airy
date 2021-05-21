@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {withRouter} from 'react-router-dom';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 import {StateModel} from '../../../../reducers';
 import MessageList from '../MessageList';
@@ -9,20 +9,36 @@ import styles from './index.module.scss';
 import ConversationMetadata from '../ConversationMetadata';
 import ConversationHeader from '../ConversationHeader';
 import MessageInput from '../../MessageInput';
-import {allConversations, getCurrentConversation} from '../../../../selectors/conversations';
+import {allConversations, getConversation} from '../../../../selectors/conversations';
 import {Source, Suggestions} from 'model';
+import {getConversationInfo} from '../../../../actions';
 
 const mapStateToProps = (state: StateModel, ownProps) => ({
   conversations: allConversations(state),
-  currentConversation: getCurrentConversation(state, ownProps),
+  currentConversation: getConversation(state, ownProps),
 });
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = {
+  getConversationInfo,
+};
 
-type MessengerContainerProps = ConnectedProps<typeof connector>;
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const MessengerContainer = ({conversations, currentConversation}: MessengerContainerProps) => {
+type MessengerContainerProps = ConnectedProps<typeof connector> & RouteComponentProps<{conversationId: string}>;
+
+const MessengerContainer = ({
+  conversations,
+  currentConversation,
+  getConversationInfo,
+  match,
+}: MessengerContainerProps) => {
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
+
+  useEffect(() => {
+    if (!currentConversation && match.params.conversationId) {
+      getConversationInfo(match.params.conversationId);
+    }
+  }, [currentConversation, match.params.conversationId]);
 
   const hideSuggestedReplies = () => {
     showSuggestedReplies(null);
@@ -39,15 +55,17 @@ const MessengerContainer = ({conversations, currentConversation}: MessengerConta
           </div>
         ) : (
           <div className={styles.messageDisplay}>
-            {currentConversation && <ConversationHeader />}
-            <MessageList showSuggestedReplies={showSuggestedReplies} />
             {currentConversation && (
-              <MessageInput
-                suggestions={suggestions}
-                showSuggestedReplies={showSuggestedReplies}
-                hideSuggestedReplies={hideSuggestedReplies}
-                source={currentConversation.channel.source as Source}
-              />
+              <>
+                <ConversationHeader />
+                <MessageList showSuggestedReplies={showSuggestedReplies} />
+                <MessageInput
+                  suggestions={suggestions}
+                  showSuggestedReplies={showSuggestedReplies}
+                  hideSuggestedReplies={hideSuggestedReplies}
+                  source={currentConversation.channel.source as Source}
+                />
+              </>
             )}
           </div>
         )}

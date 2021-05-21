@@ -77,7 +77,7 @@ Airy’s Inbox supports all [Google’s Rich Cards variants from Rich Cards to C
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "fallback": 'Hello, world!\n\nReply with "A" or "B"',
+    "fallback": "Hello, world!\n\nReply with \"A\" or \"B\"",
     "richCard": {
       "standaloneCard": {
         "cardContent": {
@@ -135,7 +135,7 @@ link='sources/chatplugin/overview'
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "fallback": 'Card #1\n #1\n\nCard #2\n\n\nReply with "Card #1" or "Card #2"',
+    "fallback": "Card #1\n #1\n\nCard #2\n\n\nReply with \"Card #1\" or \"Card #2\"",
     "richCard": {
       "carouselCard": {
         "cardWidth": "MEDIUM",

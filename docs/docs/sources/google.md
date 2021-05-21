@@ -92,6 +92,6 @@ import ConnectGoogle from '../api/endpoints/connect-google.mdx'
 
 After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
 
-import InboxMessages from './inbox-messages.mdx'
+import GoogleMessagesSend from '../api/endpoints/google-messages-send.mdx'
 
-<InboxMessages />
+<GoogleMessagesSend />

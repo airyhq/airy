@@ -86,7 +86,7 @@ public class MetadataTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         mediaUpload = new MediaUpload(amazonS3, bucket, path);
         retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
     }

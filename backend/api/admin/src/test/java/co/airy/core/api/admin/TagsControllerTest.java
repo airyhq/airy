@@ -23,8 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.concurrent.TimeUnit;
-
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,7 +73,7 @@ public class TagsControllerTest {
 
     @Test
     void canManageTags() throws Exception {
-        final String name = "awesome-tag";
+        final String name = "flag";
         final String color = "tag-red";
         final String payload = "{\"name\":\"" + name + "\",\"color\": \"" + color + "\"}";
 
@@ -87,34 +86,33 @@ public class TagsControllerTest {
         final JsonNode jsonNode = objectMapper.readTree(createTagResponse);
         final String tagId = jsonNode.get("id").textValue();
 
-        //TODO wait for tag to be there
-        TimeUnit.SECONDS.sleep(5);
 
-        webTestHelper.post("/tags.list", "{}")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()", is(1)))
-                .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
-                .andExpect(jsonPath("$.data[0].name").value(is(name)))
-                .andExpect(jsonPath("$.data[0].color").value(is("RED")));
+        retryOnException(() ->
+                        webTestHelper.post("/tags.list", "{}")
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.data.length()", is(1)))
+                                .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
+                                .andExpect(jsonPath("$.data[0].name").value(is(name)))
+                                .andExpect(jsonPath("$.data[0].color").value(is("tag-red"))),
+                "could not create tag");
 
         webTestHelper.post("/tags.update",
-                "{\"id\": \"" + tagId + "\", \"name\": \"new-name\", \"color\": \"" + color + "\"}")
+                "{\"id\": \"" + tagId + "\", \"name\": \"new-flag\", \"color\": \"" + color + "\"}")
                 .andExpect(status().isNoContent());
 
-        webTestHelper.post("/tags.list", "{}")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()", is(1)))
-                .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
-                .andExpect(jsonPath("$.data[0].name").value(is("new-name")))
-                .andExpect(jsonPath("$.data[0].color").value(is("RED")));
+        retryOnException(() -> webTestHelper.post("/tags.list", "{}")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data.length()", is(1)))
+                        .andExpect(jsonPath("$.data[0].id").value(is(tagId)))
+                        .andExpect(jsonPath("$.data[0].name").value(is("new-flag")))
+                        .andExpect(jsonPath("$.data[0].color").value(is("tag-red"))),
+                "could not update tag");
 
         webTestHelper.post("/tags.delete", "{\"id\": \"" + tagId + "\"}").andExpect(status().isNoContent());
 
-        //TODO wait for tag deletion
-        TimeUnit.SECONDS.sleep(5);
-
-        webTestHelper.post("/tags.list", "{}")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()", is(0)));
+        retryOnException(() -> webTestHelper.post("/tags.list", "{}")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data.length()", is(0))),
+                "could not delete tag");
     }
 }

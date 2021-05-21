@@ -14,7 +14,7 @@ import {ReactComponent as FilterIcon} from 'assets/images/icons/filter-alt.svg';
 import styles from './index.module.scss';
 
 import {cySearchButton, cySearchField, cySearchFieldBackButton} from 'handles';
-import Popup from '../ConversationsFilter/Popup';
+import Popup from '../QuickFilter/Popup';
 
 const mapDispatchToProps = {
   setSearch,
@@ -22,9 +22,9 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: StateModel) => ({
-  user: state.data.user,
   currentFilter: state.data.conversations.filtered.currentFilter || {},
   totalConversations: state.data.conversations.all.paginationData.total,
+  filteredPaginationData: state.data.conversations.filtered.paginationData,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -68,9 +68,11 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   };
 
   const InboxConversationCount = () => {
-    const {totalConversations} = props;
+    const {totalConversations, filteredPaginationData} = props;
 
-    return <div className={styles.headline}>{`Inbox (${totalConversations})`}</div>;
+    return (
+      <div className={styles.headline}>{`Inbox (${filteredPaginationData.filteredTotal ?? totalConversations})`}</div>
+    );
   };
 
   const toggleFilter = () => {
@@ -78,16 +80,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
     onFilterVisibilityChanged();
   };
 
-  const activeFilter = () => {
-    const currentFilterLength = Object.keys(currentFilter).length;
-
-    if (currentFilter.isStateOpen === undefined && currentFilter.displayName === (null || undefined)) {
-      return currentFilterLength - 2;
-    }
-    if (currentFilter.isStateOpen === undefined || currentFilter.displayName === (null || undefined)) {
-      return currentFilterLength - 1;
-    }
-  };
+  const isFilterActive = (): boolean => Object.values(currentFilter).length > 0;
 
   const renderSearchInput = isShowingSearchInput ? (
     <div className={styles.containerSearchField}>
@@ -115,8 +108,8 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
         <button
           title="Filter"
           id="filterButton"
-          className={`${activeFilter() > 0 ? styles.activeFilters : styles.filterButton}`}
-          onClick={() => toggleFilter()}>
+          className={`${isFilterActive() ? styles.activeFilters : styles.filterButton}`}
+          onClick={toggleFilter}>
           <FilterIcon />
         </button>
         {isFilterOpen && (

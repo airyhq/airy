@@ -21,13 +21,13 @@ var ConfigCmd = &cobra.Command{
 }
 
 func applyConfig(cmd *cobra.Command, args []string) {
-	cfgDir, err := cmd.Flags().GetString("config-dir")
+	cfgDir, err := cmd.Flags().GetString("workspace")
 	if err != nil {
 		console.Exit(err)
 	}
 	dir := workspace.Init(cfgDir)
 
-	conf, err := parseConf(dir.GetAiryYaml())
+	conf, err := dir.LoadAiryYaml()
 	if err != nil {
 		console.Exit("error parsing configuration file: ", err)
 	}
@@ -37,9 +37,11 @@ func applyConfig(cmd *cobra.Command, args []string) {
 		console.Exit("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
 	}
 
-	if len(conf.Security) != 0 {
-		applyErr := kube.ApplyConfigMap("security", conf.Kubernetes.Namespace, conf.Security, map[string]string{}, clientset)
+	secData := getSecurityData(conf.Security)
+	if len(secData) != 0 {
+		applyErr := kube.ApplyConfigMap("security", conf.Kubernetes.Namespace, secData, map[string]string{}, clientset)
 		if applyErr != nil {
+			// TODO should we error here?
 			fmt.Printf("unable to apply configuration for \"security\"\n Error:\n %v\n", applyErr)
 		} else {
 			fmt.Printf("applied configuration for \"security\"\n")
@@ -74,6 +76,29 @@ func applyConfig(cmd *cobra.Command, args []string) {
 			}
 		}
 	}
+}
+
+
+func getSecurityData(s workspace.SecurityConf) map[string]string {
+	m := make(map[string]string, len(s.Oidc))
+
+	if s.SystemToken != "" {
+		m["systemToken"] = s.SystemToken
+	}
+	if s.AllowedOrigins != "" {
+		m["allowedOrigins"] = s.AllowedOrigins
+	}
+	if s.JwtSecret != "" {
+		m["jwtSecret"] = s.JwtSecret
+	}
+
+	for key, value := range s.Oidc {
+		if value != "" {
+			m["oidc." + key] = value
+		}
+	}
+
+	return m
 }
 
 var applyConfigCmd = &cobra.Command{

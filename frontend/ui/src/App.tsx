@@ -15,6 +15,7 @@ import {StateModel} from './reducers';
 import {INBOX_ROUTE, CHANNELS_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
 
 import styles from './App.module.scss';
+import {getClientConfig} from './actions/config';
 
 const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
   return {
@@ -25,6 +26,7 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
 
 const mapDispatchToProps = {
   fakeSettingsAPICall,
+  getClientConfig,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -36,14 +38,10 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
 
   componentDidMount() {
     this.props.fakeSettingsAPICall();
+    this.props.getClientConfig();
   }
 
   render() {
-    /* TODO Add this logic back in: https://github.com/airyhq/airy/issues/1519
-    if (!this.props.user.id) {
-        return <Route path="*" component={AiryLoader} />;
-    }*/
-
     return (
       <AiryWebSocket>
         <div className={styles.Container}>

@@ -11,6 +11,7 @@ custom_java_library(
         "//backend/model/channel",
         "//backend/model/message",
         "//backend/model/metadata",
+        "//backend/model/tag",
     ],
 )
 

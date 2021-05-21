@@ -58,7 +58,7 @@
 }
 
 .actionSVG {
-  width: 20px;
+  width: 16px;
   height: 18px;
   path {
     fill: var(--color-dark-elements-gray);
@@ -71,8 +71,16 @@
 }
 
 .actionSVGEdit {
-  @extend .actionSVG;
+  width: 20px;
   height: 24px;
+  path {
+    fill: var(--color-dark-elements-gray);
+  }
+  &:hover {
+    path {
+      fill: var(--color-airy-blue);
+    }
+  }
 }
 
 .actionButton {

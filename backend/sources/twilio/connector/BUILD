@@ -36,6 +36,7 @@ springboot(
             "//backend:base_test",
             "@maven//:javax_xml_bind_jaxb_api",
             "//lib/java/kafka/test:kafka-test",
+            "//lib/java/spring/test:spring-test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

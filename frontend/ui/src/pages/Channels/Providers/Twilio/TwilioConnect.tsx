@@ -4,7 +4,7 @@ import {connect, ConnectedProps} from 'react-redux';
 
 import {connectTwilioSms, connectTwilioWhatsapp} from '../../../../actions/channel';
 
-import {Button, Input, LinkButton, UrlInputField} from 'components';
+import {Button, Input, LinkButton, UrlInputField, InfoButton} from 'components';
 import {Channel, Source} from 'model';
 import {ReactComponent as ArrowLeft} from 'assets/images/icons/arrow-left-2.svg';
 
@@ -17,6 +17,7 @@ type TwilioConnectProps = {
   source: string;
   pageTitle: string;
   buttonText: string;
+  infoLink: string;
 } & ConnectedProps<typeof connector> &
   RouteComponentProps;
 
@@ -25,7 +26,7 @@ const mapDispatchToProps = {connectTwilioWhatsapp, connectTwilioSms};
 const connector = connect(null, mapDispatchToProps);
 
 const TwilioConnect = (props: TwilioConnectProps) => {
-  const {channel, source, pageTitle, buttonText, history, connectTwilioWhatsapp, connectTwilioSms} = props;
+  const {channel, source, pageTitle, buttonText, infoLink, history, connectTwilioWhatsapp, connectTwilioSms} = props;
 
   const [numberInput, setNumberInput] = useState(channel?.sourceChannelId || '');
   const [nameInput, setNameInput] = useState(channel?.metadata?.name || '');
@@ -52,7 +53,7 @@ const TwilioConnect = (props: TwilioConnectProps) => {
       imageUrl: imageUrlInput,
     };
 
-    if (source === Source.twilioWhatsapp) {
+    if (source === Source.twilioWhatsApp) {
       connectTwilioWhatsapp(connectPayload).then(() => {
         history.replace({
           pathname: CHANNELS_CONNECTED_ROUTE + `/twilio.whatsapp/#`,
@@ -70,10 +71,13 @@ const TwilioConnect = (props: TwilioConnectProps) => {
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.headline}>{pageTitle}</h1>
-      <LinkButton onClick={history.goBack} type="button">
-        <ArrowLeft className={styles.backIcon} />
-        Back
-      </LinkButton>
+      <div>
+        <InfoButton link={infoLink} text="more information about this source" color="grey"></InfoButton>
+        <LinkButton onClick={history.goBack} type="button">
+          <ArrowLeft className={styles.backIcon} />
+          Back
+        </LinkButton>
+      </div>
       <form className={styles.formContainer}>
         <div className={styles.formContent}>
           <div className={styles.formContentNumber}>

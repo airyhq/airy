@@ -6,10 +6,8 @@ import {cyTagsSearchField, cyTagsTable} from 'handles';
 
 import {ReactComponent as Plus} from 'assets/images/icons/plus.svg';
 
-import {listTags, deleteTag, filterTags, errorTag} from '../../actions/tags';
-import {filteredTags} from '../../selectors/tags';
+import {listTags, deleteTag, errorTag} from '../../actions/tags';
 
-import {Tag} from 'model';
 import {ModalType} from '../../types';
 
 import {TableRow} from './TableRow';
@@ -30,7 +28,8 @@ const initialState = {
     delete: '',
     error: '',
   },
-  tagQuery: '',
+  query: '',
+  filteredTags: [],
   createDrawer: false,
   emptyState: true,
 };
@@ -41,14 +40,13 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   componentDidMount() {
     setPageTitle('Tags');
     this.props.listTags();
-    this.props.filterTags('');
   }
 
-  handleSearch = (value: string) => {
+  handleSearch = (query: string) => {
     this.setState({
-      tagQuery: value,
+      query,
+      filteredTags: this.props.tags.filter(t => t.name.toLowerCase().match(query.toLocaleLowerCase())),
     });
-    this.props.filterTags(value);
   };
 
   handleDelete = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +55,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
       return {
         modal: {
           ...state.modal,
-          delete: e.target && e.target.value,
+          delete: e.target?.value,
         },
       };
     });
@@ -71,9 +69,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   };
 
   removeEmptyStateAndCreateTag = () => {
-    this.setState({
-      emptyState: false,
-    });
+    this.setState({emptyState: false});
     this.handleTagDrawer();
   };
 
@@ -173,7 +169,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
   };
 
   renderTagList() {
-    const {tags} = this.props;
+    const tags = this.state.query !== '' ? this.state.filteredTags : this.props.tags;
     return (
       <div className={styles.cardRaised}>
         <div>
@@ -184,7 +180,7 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
             <div className={styles.searchContainer}>
               <SearchField
                 placeholder="Search for tags"
-                value={this.state.tagQuery}
+                value={this.state.query}
                 setValue={this.handleSearch}
                 dataCy={cyTagsSearchField}
               />
@@ -202,10 +198,9 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
                   <th className={styles.tagsTableHeader}>Color</th>
                   <th />
                 </tr>
-                {tags &&
-                  tags.map((tag: Tag, idx: number) => {
-                    return <TableRow key={idx} tag={tag} showModal={this.showModal} />;
-                  })}
+                {tags.map(tag => (
+                  <TableRow key={tag.id} tag={tag} showModal={this.showModal} />
+                ))}
               </tbody>
             </table>
           ) : (
@@ -235,18 +230,15 @@ class Tags extends Component<ConnectedProps<typeof connector>, typeof initialSta
 }
 
 const mapStateToProps = (state: StateModel) => ({
-  tags: filteredTags(state),
-  allTagsCount: state.data.tags.all.length,
-  tagQuery: state.data.tags.query,
+  tags: Object.values(state.data.tags.all),
+  allTagsCount: Object.keys(state.data.tags.all).length,
   errorMessage: state.data.tags.error,
-  userData: state.data.user,
 });
 
 const mapDispatchToProps = {
   listTags,
   deleteTag,
   errorTag,
-  filterTags,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

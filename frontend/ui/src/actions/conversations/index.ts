@@ -4,7 +4,7 @@ import {Conversation, Pagination} from 'model';
 import {PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 import {StateModel} from '../../reducers';
-import {mergeMetadataAction, setMetadataAction} from '../metadata';
+import {setMetadataAction} from '../metadata';
 
 const CONVERSATION_LOADING = '@@conversation/LOADING';
 const CONVERSATIONS_LOADING = '@@conversations/LOADING';
@@ -20,7 +20,10 @@ export const loadingConversationAction = createAction(
   (conversationId: string) => conversationId
 )<string>();
 
-export const loadingConversationsAction = createAction(CONVERSATIONS_LOADING)();
+export const loadingConversationsAction = createAction(
+  CONVERSATIONS_LOADING,
+  (isLoading: boolean) => isLoading
+)<boolean>();
 
 export const mergeConversationsAction = createAction(
   CONVERSATIONS_MERGE,
@@ -55,9 +58,10 @@ export const setStateConversationAction = createAction(
 )<{conversationId: string; state: string}>();
 
 export const listConversations = () => async (dispatch: Dispatch<any>) => {
-  dispatch(loadingConversationsAction());
-  return HttpClientInstance.listConversations({page_size: 10}).then((response: PaginatedResponse<Conversation>) => {
+  dispatch(loadingConversationsAction(true));
+  return HttpClientInstance.listConversations({page_size: 50}).then((response: PaginatedResponse<Conversation>) => {
     dispatch(mergeConversationsAction(response.data, response.paginationData));
+    dispatch(loadingConversationsAction(false));
     return Promise.resolve(true);
   });
 };
@@ -65,9 +69,10 @@ export const listConversations = () => async (dispatch: Dispatch<any>) => {
 export const listNextConversations = () => async (dispatch: Dispatch<any>, state: () => StateModel) => {
   const cursor = state().data.conversations.all.paginationData.nextCursor;
 
-  dispatch(loadingConversationsAction());
+  dispatch(loadingConversationsAction(true));
   return HttpClientInstance.listConversations({cursor: cursor}).then((response: PaginatedResponse<Conversation>) => {
     dispatch(mergeConversationsAction(response.data, response.paginationData));
+    dispatch(loadingConversationsAction(false));
     return Promise.resolve(true);
   });
 };
@@ -114,7 +119,7 @@ export const conversationState = (conversationId: string, state: string) => (dis
 export const addTagToConversation = (conversationId: string, tagId: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.tagConversation({conversationId, tagId}).then(() =>
     dispatch(
-      mergeMetadataAction({
+      setMetadataAction({
         subject: 'conversation',
         identifier: conversationId,
         metadata: {

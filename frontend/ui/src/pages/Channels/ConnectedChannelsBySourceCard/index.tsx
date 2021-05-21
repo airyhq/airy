@@ -12,7 +12,6 @@ import styles from './index.module.scss';
 type ConnectedChannelsBySourceCardProps = {
   sourceInfo: SourceInfo;
   channels: Channel[];
-  connected: string;
 };
 
 const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps & RouteComponentProps) => {
@@ -26,9 +25,7 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
         <>
           <div className={styles.connectedContainer}>
             <div className={styles.connectedSum}>
-              <p>
-                {channels.length} {props.connected}
-              </p>
+              <p>{channels.length} Connected</p>
             </div>
             <div
               className={styles.connectedChannelBox}
@@ -39,7 +36,12 @@ const ConnectedChannelsBySourceCard = (props: ConnectedChannelsBySourceCardProps
                     <li key={channel.sourceChannelId} className={styles.channelListEntry}>
                       <button className={styles.connectedChannelData}>
                         <ChannelAvatar channel={channel} style={{width: '20px', height: '20px', marginRight: '4px'}} />
-                        <div className={styles.connectedChannelName}>{channel.metadata?.name}</div>
+                        <div className={styles.connectedChannelName}>
+                          {channel.metadata?.name ||
+                            (channel.source !== 'twilio.sms' && channel.source !== 'twilio.whatsapp'
+                              ? channel.source
+                              : '')}
+                        </div>
                         {sourceInfo.channelsToShow === 2 && (
                           <div className={styles.extraPhoneInfo}>{channel.sourceChannelId}</div>
                         )}

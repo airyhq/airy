@@ -18,8 +18,9 @@ protocol endpoint at `/ws.communication`.
 
 ## Event Payloads
 
-All event updates are sent to the `/events` queue as JSON encoded payloads. The `type`
-field informs the client of the kind of update that is encoded in the payload.
+All event updates are sent to the `/events` queue as JSON encoded payloads. The
+`type` field informs the client of the kind of update that is encoded in the
+payload.
 
 ### Message
 
@@ -78,6 +79,20 @@ field informs the client of the kind of update that is encoded in the payload.
     "source": "facebook",
     "source_channel_id": "fb-page-id-1",
     "connected": true // or false
+  }
+}
+```
+
+### Tag
+
+```json5
+{
+  "type": "tag",
+
+  "payload": {
+    "id": "{UUID}",
+    "name": "flag",
+    "color": "tag-red"
   }
 }
 ```

@@ -55,7 +55,7 @@ func init() {
 	viper.BindPFlag("apihost", RootCmd.PersistentFlags().Lookup("apihost"))
 	viper.SetDefault("apihost", "http://airy.core")
 
-	RootCmd.PersistentFlags().StringVar(&cliConfigDir, "config-dir", "", "config directory of an airy core instance (default is the cwd)")
+	RootCmd.PersistentFlags().StringVar(&cliConfigDir, "workspace", "", "workspace directory of an Airy core instance (default is the cwd)")
 	RootCmd.AddCommand(api.APICmd)
 	RootCmd.AddCommand(config.ConfigCmd)
 	RootCmd.AddCommand(status.StatusCmd)

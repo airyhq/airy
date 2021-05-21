@@ -6,7 +6,7 @@ import {HttpClientInstance} from '../../InitializeAiryApi';
 
 import {StateModel} from '../../reducers';
 import {loadingConversationsAction} from '../conversations';
-import {delay, isEqual} from 'lodash-es';
+import {delay, isEqual, omit} from 'lodash-es';
 
 export const RESET_FILTERED_CONVERSATIONS = '@@conversations/RESET_FILTEREDS';
 export const SET_FILTERED_CONVERSATIONS = '@@conversations/SET_FILTERED';
@@ -38,24 +38,13 @@ export const updateFilteredConversationsAction = createAction(
 )<{filter: ConversationFilter}>();
 
 export const setSearch = (currentFilter: ConversationFilter, displayName: string) => {
-  return setFilter({
-    ...currentFilter,
-    displayName,
-  });
+  const newFilter = omit({...currentFilter}, 'displayName');
+  return displayName && displayName.length > 0 ? setFilter({...newFilter, displayName}) : setFilter(newFilter);
 };
 
 export const setFilter = (filter: ConversationFilter) => {
   return (dispatch: Dispatch<any>, state: () => StateModel) => {
     executeFilter(filter, dispatch, state);
-  };
-};
-
-export const resetFilter = () => {
-  return function (dispatch: Dispatch<any>, state: () => StateModel) {
-    dispatch(resetFilteredConversationAction());
-    const currentFilter = state().data.conversations.filtered.currentFilter;
-    const newFilter: ConversationFilter = {displayName: currentFilter.displayName};
-    executeFilter(newFilter, dispatch, state);
   };
 };
 
@@ -65,13 +54,13 @@ const executeFilter = (filter: ConversationFilter, dispatch: Dispatch<any>, stat
 };
 
 const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, cursor?: string) => {
-  dispatch(loadingConversationsAction());
+  dispatch(loadingConversationsAction(true));
   const filter = state().data.conversations.filtered.currentFilter;
   if (Object.keys(filter).length > 0) {
     delay(() => {
       if (isEqual(filter, state().data.conversations.filtered.currentFilter)) {
         return HttpClientInstance.listConversations({
-          page_size: 10,
+          page_size: 50,
           cursor,
           filters: filterToLuceneSyntax(filter),
         }).then((response: PaginatedResponse<Conversation>) => {
@@ -85,9 +74,11 @@ const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, 
           }
         });
       }
+      dispatch(loadingConversationsAction(false));
     }, 100);
   } else {
     dispatch(resetFilteredConversationAction());
+    dispatch(loadingConversationsAction(false));
   }
 };
 
@@ -99,7 +90,7 @@ const filterToLuceneSyntax = (filter: ConversationFilter): string | null => {
     filterQuery.push('unread_count:0');
   }
   if (filter.displayName) {
-    filterQuery.push('display_name:*' + filter.displayName + '*');
+    filterQuery.push('display_name=*' + filter.displayName + '*');
   }
   if (filter.byTags && filter.byTags.length > 0) {
     filterQuery.push('tag_ids:(' + filter.byTags.join(' AND ') + ')');

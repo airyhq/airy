@@ -9,10 +9,9 @@ import {newestConversationFirst, newestFilteredConversationFirst} from '../../..
 import {listNextConversations} from '../../../actions/conversations';
 
 import ConversationListHeader from '../ConversationListHeader';
-import ConversationsFilter from '../ConversationsFilter';
+import QuickFilter from '../QuickFilter';
 import ConversationListItem from '../ConversationListItem';
 import NoConversations from '../NoConversations';
-import {SimpleLoader} from 'components';
 
 import {MergedConversation, StateModel} from '../../../reducers';
 
@@ -44,11 +43,7 @@ const ConversationList = (props: ConversationListProps) => {
   const renderConversationItem = (conversation: MergedConversation, style: React.CSSProperties) => {
     const {currentConversationId} = props;
     if (conversation == null) {
-      return (
-        <div className="conversationListLoading" style={style}>
-          <SimpleLoader />
-        </div>
-      );
+      return <div />;
     }
     return (
       <ConversationListItem
@@ -118,7 +113,7 @@ const ConversationList = (props: ConversationListProps) => {
       <div className={styles.conversationListContainer}>
         <section className={styles.conversationListContainerFilterBox}>
           <ConversationListHeader onFilterVisibilityChanged={() => resizeList()} />
-          <ConversationsFilter />
+          <QuickFilter />
         </section>
       </div>
       <section className={styles.conversationListContactList}>{renderConversationList()}</section>

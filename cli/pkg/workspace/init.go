@@ -1,10 +1,9 @@
 package workspace
 
 import (
+	"cli/pkg/workspace/template"
 	"fmt"
 	"github.com/spf13/viper"
-	"io/fs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -17,7 +16,7 @@ func Init(path string) ConfigDir {
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			fmt.Println(err)
-			fmt.Println("the current directory is not an airy config directory")
+			fmt.Println("the current directory is not an airy workspace directory")
 		} else {
 			fmt.Println("invalid configuration: ", err)
 		}
@@ -28,7 +27,7 @@ func Init(path string) ConfigDir {
 	dir := ConfigDir{Path: path}
 
 	if _, err := os.Stat(dir.GetAiryYaml()); os.IsNotExist(err) {
-		fmt.Println("the current directory is not an airy config directory")
+		fmt.Println("the current directory is not an airy workspace directory")
 		os.Exit(1)
 	}
 	return dir
@@ -49,7 +48,7 @@ func getConfigPath(path string) string {
 	return path
 }
 
-func Create(path string) (ConfigDir, error) {
+func Create(path string, data template.Variables) (ConfigDir, error) {
 	path = getConfigPath(path)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		err = os.MkdirAll(path, 0755)
@@ -58,15 +57,9 @@ func Create(path string) (ConfigDir, error) {
 		}
 	}
 
-	entries, err := templateDir.ReadDir("template")
-	if err != nil {
-		return ConfigDir{}, err
-	}
 
-	for _, entry := range entries {
-		if err := recCopy(path, "template", entry); err != nil {
-			return ConfigDir{}, err
-		}
+	if err := template.CopyToDir(path, data); err != nil {
+		return ConfigDir{}, err
 	}
 
 	viper.AddConfigPath(getConfigPath(path))
@@ -74,37 +67,6 @@ func Create(path string) (ConfigDir, error) {
 	viper.SetConfigName(cliConfigFileName)
 
 	// Init viper config
-	err = viper.WriteConfigAs(filepath.Join(path, cliConfigFileName))
+	err := viper.WriteConfigAs(filepath.Join(path, cliConfigFileName))
 	return ConfigDir{Path: path}, err
-}
-
-func recCopy(writePath string, templatePath string, entry fs.DirEntry) error {
-	dstPath := filepath.Join(writePath, entry.Name())
-	templatePath = filepath.Join(templatePath, entry.Name())
-
-	if !entry.IsDir() {
-		content, err := templateDir.ReadFile(templatePath)
-		if err != nil {
-			return err
-		}
-
-		return ioutil.WriteFile(dstPath, content, 0700)
-	}
-
-	if err := os.MkdirAll(dstPath, 0700); err != nil {
-		return err
-	}
-
-	entries, err := templateDir.ReadDir(templatePath)
-	if err != nil {
-		return err
-	}
-
-	for _, entry := range entries {
-		if err := recCopy(dstPath, templatePath, entry); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }

@@ -6,12 +6,12 @@ import {Avatar} from 'render';
 import ConversationStatus from '../ConversationStatus';
 
 import styles from './index.module.scss';
-import {getCurrentConversation} from '../../../../selectors/conversations';
+import {getConversation} from '../../../../selectors/conversations';
 import IconChannel from '../../../../components/IconChannel';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    conversation: getCurrentConversation(state, ownProps),
+    conversation: getConversation(state, ownProps),
   };
 };
 

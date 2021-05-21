@@ -11,6 +11,9 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +25,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
@@ -36,9 +40,11 @@ import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
+@AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 class SendMessageTest {
 
@@ -55,6 +61,9 @@ class SendMessageTest {
     @Autowired
     @InjectMocks
     private Connector worker;
+
+    @Autowired
+    private WebTestHelper webTestHelper;
 
     @Autowired
     private Stores stores;
@@ -76,8 +85,8 @@ class SendMessageTest {
 
     @BeforeEach
     void beforeEach() throws InterruptedException {
-        MockitoAnnotations.initMocks(this);
-        retryOnException(() -> assertEquals(stores.getStreamState(), RUNNING), "Failed to reach RUNNING state.");
+        MockitoAnnotations.openMocks(this);
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test
@@ -86,8 +95,6 @@ class SendMessageTest {
         final String messageId = UUID.randomUUID().toString();
         final String sourceConversationId = "+491234567";
         final String sourceChannelId = "+497654321";
-        final String channelId = UUID.randomUUID().toString();
-        final String token = "token";
         final String text = "Hello World";
 
         ArgumentCaptor<String> payloadCaptor = ArgumentCaptor.forClass(String.class);
@@ -95,15 +102,15 @@ class SendMessageTest {
         ArgumentCaptor<String> toCaptor = ArgumentCaptor.forClass(String.class);
         doNothing().when(api).sendMessage(fromCaptor.capture(), toCaptor.capture(), payloadCaptor.capture());
 
+        // Test that phone number input gets cleaned up
+        final String payload = "{\"phone_number\":\"+49 765 4321 \",\"name\":\"Blips and Chitz\"}";
+        final String response = webTestHelper.post("/channels.twilio.sms.connect", payload)
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        final JsonNode jsonNode = new ObjectMapper().readTree(response);
+        final String channelId = jsonNode.get("id").textValue();
+
         kafkaTestHelper.produceRecords(List.of(
-                new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
-                        .setToken(token)
-                        .setSourceChannelId(sourceChannelId)
-                        .setSource("twilio.sms")
-                        .setId(channelId)
-                        .setConnectionState(ChannelConnectionState.CONNECTED)
-                        .build()
-                ),
                 new ProducerRecord<>(applicationCommunicationMessages.name(), "other-message-id",
                         Message.newBuilder()
                                 .setId("other-message-id")

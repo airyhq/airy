@@ -145,7 +145,7 @@ const parseAttachment = (
 };
 
 function facebookInbound(message: Message): ContentUnion {
-  const messageJson = message.content ?? message.content.message;
+  const messageJson = message.content.message ?? message.content;
 
   if (messageJson.attachments?.length && messageJson.attachments?.type === 'fallback') {
     return {

@@ -51,8 +51,6 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_COMMIT_INTERVAL_MS
-        - name: SERVICE_NAME
-          value: api-admin
         - name: BEANSTALK_HOSTNAME
           valueFrom:
             configMapKeyRef:

@@ -1,5 +1,6 @@
-package co.airy.core.api.config;
+package co.airy.core.api.config.payload;
 
+import co.airy.core.api.config.dto.ServiceInfo;
 import co.airy.spring.auth.session.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,6 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClientConfigResponsePayload {
-    private Map<String, Map<String, Object>> components;
+    private Map<String, ServiceInfo> services;
     private UserProfile userProfile;
 }

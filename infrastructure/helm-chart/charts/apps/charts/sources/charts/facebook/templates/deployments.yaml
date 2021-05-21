@@ -47,8 +47,6 @@ spec:
               configMapKeyRef:
                 name: kafka-config
                 key: KAFKA_COMMIT_INTERVAL_MS
-          - name: SERVICE_NAME
-            value: facebook-connector
           - name: FACEBOOK_WEBHOOK_SECRET
             valueFrom:
               configMapKeyRef:

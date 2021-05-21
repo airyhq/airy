@@ -47,8 +47,6 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_COMMIT_INTERVAL_MS
-        - name: SERVICE_NAME
-          value: api-websocket
         livenessProbe:
           httpGet:
             path: /actuator/health

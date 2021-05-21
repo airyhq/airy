@@ -29,8 +29,6 @@ spec:
         image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.imageConsumer }}:{{ .Values.global.kubernetes.appImageTag }}"
         imagePullPolicy: Always
         env:
-        - name: SERVICE_NAME
-          value: webhook-consumer
         - name: BEANSTALK_HOSTNAME
           valueFrom:
             configMapKeyRef:

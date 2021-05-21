@@ -18,7 +18,6 @@ const mapStateToProps = (state, ownProps) => {
 const ConversationHeader = ({conversation}) => {
   const participant = conversation.metadata.contact;
   const channel = conversation.channel;
-  const connectorName = channel && channel.metadata.name;
 
   if (!conversation) {
     return null;
@@ -28,9 +27,7 @@ const ConversationHeader = ({conversation}) => {
     <div className={styles.participantInfo}>
       <Avatar contact={participant} />
       <span className={styles.participantName}>{participant && participant.displayName}</span>
-      {connectorName && (
-        <div className={styles.separator}>{channel && <IconChannel channel={channel} showAvatar showName />}</div>
-      )}
+      <div className={styles.separator}>{channel && <IconChannel channel={channel} showAvatar showName />}</div>
     </div>
   ) : null;
 

@@ -88,8 +88,38 @@ const ConversationListItem = (props: ConversationListItemProps) => {
     }
   }, [active, conversation, currentConversationState]);
 
-  const lastMessageIcon = (conversation: Conversation) => {
+  const lastMessageIsText = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
+
+    if (typeof lastMessageContent === 'string') {
+      if (lastMessageContent.includes('&Body=' && '&FromCountry=')) {
+        const startText = lastMessageContent.search('&Body=');
+        const endText = lastMessageContent.search('&FromCountry=');
+        const textLength = endText - startText;
+        const enCodedText = lastMessageContent.substring(startText + 6, startText + textLength);
+        const replaced = enCodedText.split('+').join(' ');
+        const text = decodeURIComponent(replaced);
+        return text;
+      } else if (lastMessageContent.includes('&Body=' && '&To=whatsapp')) {
+        const startText = lastMessageContent.search('&Body=');
+        const endText = lastMessageContent.search('&To=whatsapp');
+        const textLength = endText - startText;
+        const enCodedText = lastMessageContent.substring(startText + 6, startText + textLength);
+        const replaced = enCodedText.split('+').join(' ');
+        const text = decodeURIComponent(replaced);
+        return text;
+      }
+    }
+    if (lastMessageContent.text || lastMessageContent.message?.text) {
+      return <FormattedMessage message={conversation.lastMessage} />;
+    } else if (lastMessageContent.suggestionResponse) {
+      return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
+    }
+  };
+
+  const lastMessageIsIcon = (conversation: Conversation) => {
+    const lastMessageContent = conversation.lastMessage.content;
+
     if (!lastMessageContent.attachment) {
       if (lastMessageContent.message?.attachments?.[0].type === 'image') {
         return <AttachmentImage />;
@@ -124,11 +154,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
               {currentConversationState === 'OPEN' ? <OpenStateButton /> : <ClosedStateButton />}
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
-              {conversation.lastMessage.content.text || conversation.lastMessage.content.message?.text ? (
-                <FormattedMessage message={conversation.lastMessage} />
-              ) : (
-                lastMessageIcon(conversation)
-              )}
+              {lastMessageIsText(conversation) || lastMessageIsIcon(conversation)}
             </div>
             <div className={styles.bottomRow}>
               <div className={styles.source}>

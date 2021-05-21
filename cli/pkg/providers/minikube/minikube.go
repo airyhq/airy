@@ -3,6 +3,7 @@ package minikube
 import (
 	"cli/pkg/kube"
 	"cli/pkg/workspace"
+	"cli/pkg/workspace/template"
 	"context"
 	"fmt"
 	"io"
@@ -31,8 +32,11 @@ func New(w io.Writer) *provider {
 	}
 }
 
-func (p *provider) GetHelmOverrides() []string {
-	return []string{"--set", "global.ngrokEnabled=true", "--set", "global.nodePort=80"}
+func (p *provider) GetOverrides() template.Variables {
+	return template.Variables{
+		NgrokEnabled: true,
+		Host:         "http://airy.core",
+	}
 }
 
 func (p *provider) Provision(providerConfig map[string]string, dir workspace.ConfigDir) (kube.KubeCtx, error) {
@@ -87,13 +91,18 @@ func getCmd(args ...string) *exec.Cmd {
 	return exec.Command(minikube, append(defaultArgs, args...)...)
 }
 
-func (p *provider) PostInstallation(namespace string) error {
+func (p *provider) PostInstallation(dir workspace.ConfigDir) error {
+	conf, err := dir.LoadAiryYaml()
+	if err != nil {
+		return err
+	}
+
 	clientset, err := p.context.GetClientSet()
 	if err != nil {
 		return err
 	}
 
-	configMaps := clientset.CoreV1().ConfigMaps(namespace)
+	configMaps := clientset.CoreV1().ConfigMaps(conf.Kubernetes.Namespace)
 	configMap, err := configMaps.Get(context.TODO(), "hostnames", metav1.GetOptions{})
 	if err != nil {
 		return err

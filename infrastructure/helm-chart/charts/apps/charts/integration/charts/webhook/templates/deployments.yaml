@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webhook-consumer
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: webhook-consumer
     type: webhook
@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.imageConsumer }}:{{ .Values.global.appImageTag }}"
+        image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.imageConsumer }}:{{ .Values.global.kubernetes.appImageTag }}"
         imagePullPolicy: Always
         env:
         - name: SERVICE_NAME
@@ -98,7 +98,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webhook-publisher
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: webhook-publisher
     type: webhook
@@ -122,7 +122,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.imagePublisher }}:{{ .Values.global.appImageTag }}"
+        image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.imagePublisher }}:{{ .Values.global.kubernetes.appImageTag }}"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

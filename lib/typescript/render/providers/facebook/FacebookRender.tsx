@@ -145,15 +145,17 @@ const parseAttachment = (
 };
 
 function facebookInbound(message: Message): ContentUnion {
-  const messageJson = message.content;
+  const messageJson = message.content ?? message.content.message;
 
-  if (messageJson.message?.attachments?.length) {
-    return parseAttachment(messageJson.message.attachments[0]);
-  } else if (messageJson.message?.text) {
+  if (messageJson.attachments?.length && messageJson.attachments?.type === 'fallback') {
     return {
-      type: 'text',
-      text: messageJson.message?.text,
+      text: messageJson.text ?? null,
+      ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
     };
+  }
+
+  if (messageJson.attachments?.length) {
+    return parseAttachment(messageJson.message.attachments[0]);
   }
 
   if (messageJson.postback?.title) {
@@ -164,10 +166,10 @@ function facebookInbound(message: Message): ContentUnion {
     };
   }
 
-  if (messageJson.message?.text) {
+  if (messageJson.text) {
     return {
       type: 'text',
-      text: messageJson.message.text,
+      text: messageJson.text,
     };
   }
 

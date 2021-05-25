@@ -5,6 +5,8 @@ metadata:
   name: traefik-node-port
   namespace: kube-system
 spec:
+  selector:
+    k8s-app: traefik-ingress-lb
   ports:
     - protocol: TCP
       port: 80

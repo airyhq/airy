@@ -155,7 +155,7 @@ function facebookInbound(message: Message): ContentUnion {
   }
 
   if (messageJson.attachments?.length) {
-    return parseAttachment(messageJson.message.attachments[0]);
+    return parseAttachment(messageJson.attachments[0]);
   }
 
   if (messageJson.postback?.title) {

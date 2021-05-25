@@ -78,7 +78,7 @@ func (p *provider) PostInstallation(dir workspace.ConfigDir) error {
 		return err
 	}
 
-	return dir.UpdateAiryYaml(func (conf workspace.AiryConf) workspace.AiryConf {
+	return dir.UpdateAiryYaml(func(conf workspace.AiryConf) workspace.AiryConf {
 		conf.Kubernetes.Host = loadBalancerUrl
 		return conf
 	})
@@ -96,7 +96,6 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 		console.Exit(err)
 	}
 
-	specifiedVpcId, _ := providerConfig["vpcId"]
 	id := RandString(8)
 	name := "Airy-" + id
 	fmt.Fprintf(p.w, "Creating Airy Core instance with id: %s. This might take a while.\n", name)
@@ -116,29 +115,33 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 
 	p.ec2Client = ec2.NewFromConfig(cfg)
 
-	var VpcId *string
 	var subnetIds []string
+	instanceType := providerConfig["instanceType"]
+	if instanceType == "" {
+		instanceType = "c5.xlarge"
+	}
 
-	if specifiedVpcId == "" {
+	vpcId := providerConfig["vpcId"]
+	if vpcId == "" {
 		vpc, err := p.createVpc("192.168.0.0/16", name)
 		if err != nil {
 			console.Exit("Error creating vpc: ", err)
 		}
-		VpcId = vpc.VpcId
-		fmt.Fprintf(p.w, "VPC created with id: %s.\n", *VpcId)
+		vpcId = *vpc.VpcId
+		fmt.Fprintf(p.w, "VPC created with id: %s.\n", vpcId)
 		fmt.Fprintf(p.w, "Enabling DNS on VPC...\n")
-		if err = p.enableDNSOnVpc(VpcId); err != nil {
+		if err = p.enableDNSOnVpc(&vpcId); err != nil {
 			console.Exit("Error enabling DNS on VPC.", err)
 		}
 
 		fmt.Fprintf(p.w, "Creating Internet Gateway...\n")
-		internetGateway, err := p.createInternetGateway(VpcId)
+		internetGateway, err := p.createInternetGateway(&vpcId)
 		if err != nil {
 			console.Exit("Could not create internet gateway: ", err)
 		}
 
 		fmt.Fprintf(p.w, "Creating route table...\n")
-		routeTable, err := p.createRoute(VpcId, name, internetGateway)
+		routeTable, err := p.createRoute(&vpcId, name, internetGateway)
 		if err != nil {
 			console.Exit("Error creating route table: ", err)
 		}
@@ -148,13 +151,13 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 			console.Exit("Unable to get availability zones. Make sure you have set the ENV variable AWS_REGION")
 		}
 		fmt.Fprintf(p.w, "Creating first subnet...\n")
-		firstSubnet, err := p.createSubnet(VpcId, name, "192.168.64.0/18", *availabilityZones.AvailabilityZones[0].ZoneName)
+		firstSubnet, err := p.createSubnet(&vpcId, name, "192.168.64.0/18", *availabilityZones.AvailabilityZones[0].ZoneName)
 		if err != nil {
 			console.Exit("Error creating subnet: ", err)
 		}
 
 		fmt.Fprintf(p.w, "Creating second subnet\n")
-		secondSubnet, err := p.createSubnet(VpcId, name, "192.168.128.0/18", *availabilityZones.AvailabilityZones[1].ZoneName)
+		secondSubnet, err := p.createSubnet(&vpcId, name, "192.168.128.0/18", *availabilityZones.AvailabilityZones[1].ZoneName)
 		if err != nil {
 			console.Exit("Error creating subnet: ", err)
 		}
@@ -182,9 +185,8 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 		subnetIds = append(subnetIds, *firstSubnet.SubnetId)
 		subnetIds = append(subnetIds, *secondSubnet.SubnetId)
 	} else {
-		VpcId = &specifiedVpcId
-		fmt.Fprintf(p.w, "Using existing VPC: %s.\n", *VpcId)
-		subnets, subnetErr := p.getSubnets(*VpcId)
+		fmt.Fprintf(p.w, "Using existing VPC: %s.\n", vpcId)
+		subnets, subnetErr := p.getSubnets(vpcId)
 		if subnetErr != nil {
 			console.Exit("Unable to get subnets from VPC", subnetErr)
 		}
@@ -215,7 +217,7 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 		return describeClusterResult.Cluster.Status == "ACTIVE"
 	})
 
-	nodeGroup, err := p.createNodeGroup(name, role.Arn, subnetIds)
+	nodeGroup, err := p.createNodeGroup(name, role.Arn, subnetIds, instanceType)
 	if err != nil {
 		console.Exit("Error creating node group: ", err)
 	}
@@ -455,12 +457,12 @@ func (p *provider) createCluster(name string, roleArn *string, subnetIds []strin
 
 }
 
-func (p *provider) createNodeGroup(name string, roleArn *string, subnetIds []string) (*eksTypes.Nodegroup, error) {
+func (p *provider) createNodeGroup(name string, roleArn *string, subnetIds []string, instanceType string) (*eksTypes.Nodegroup, error) {
 	tagKey := "kubernetes.io/cluster/" + name
 	createdNodeGroup, err := p.eksClient.CreateNodegroup(context.TODO(), &eks.CreateNodegroupInput{
 		AmiType:       "AL2_x86_64",
 		ClusterName:   aws.String(name),
-		InstanceTypes: []string{"c5.xlarge"},
+		InstanceTypes: []string{instanceType},
 		NodeRole:      roleArn,
 		NodegroupName: aws.String(name),
 		Subnets:       subnetIds,

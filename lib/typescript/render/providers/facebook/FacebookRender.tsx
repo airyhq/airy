@@ -5,9 +5,17 @@ import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
 import {Video} from '../../components/Video';
 import {QuickReplies} from './components/QuickReplies';
-import {AttachmentUnion, SimpleAttachment, ContentUnion, ButtonAttachment, GenericAttachment} from './facebookModel';
+import {
+  AttachmentUnion,
+  SimpleAttachment,
+  ContentUnion,
+  ButtonAttachment,
+  GenericAttachment,
+  MediaAttachment,
+} from './facebookModel';
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
+import {MediaTemplate} from './components/MediaTemplate';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message: Message = props.content;
@@ -37,8 +45,6 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'image':
       return (
         <>
-          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
-
           <Image imageUrl={content.imageUrl} />
         </>
       );
@@ -46,8 +52,6 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'video':
       return (
         <>
-          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
-
           <Video videoUrl={content.videoUrl} />
         </>
       );
@@ -58,9 +62,14 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'genericTemplate':
       return (
         <>
-          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
-
           <GenericTemplate template={content} />
+        </>
+      );
+
+    case 'mediaTemplate':
+      return (
+        <>
+          <MediaTemplate template={content} />
         </>
       );
 
@@ -73,10 +82,15 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           quickReplies={content.quickReplies}
         />
       );
+
+    default:
+      return null;
   }
 }
 
-const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | GenericAttachment): AttachmentUnion => {
+const parseAttachment = (
+  attachment: SimpleAttachment | ButtonAttachment | GenericAttachment | MediaAttachment
+): AttachmentUnion => {
   if (attachment.type === 'image') {
     return {
       type: 'image',
@@ -84,7 +98,7 @@ const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | Gener
     };
   }
 
-  if (attachment.type === 'template' && attachment.payload.template_type == 'button') {
+  if (attachment.type === 'template' && attachment.payload.template_type === 'button') {
     return {
       type: 'buttonTemplate',
       text: attachment.payload.text,
@@ -92,10 +106,20 @@ const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | Gener
     };
   }
 
-  if (attachment.type === 'template' && attachment.payload.template_type == 'generic') {
+  if (attachment.type === 'template' && attachment.payload.template_type === 'generic') {
     return {
       type: 'genericTemplate',
       elements: attachment.payload.elements,
+    };
+  }
+
+  if (attachment.type === 'template' && attachment.payload.template_type === 'media') {
+    return {
+      type: 'mediaTemplate',
+      media_type: attachment.payload.elements[0].media_type,
+      url: attachment.payload.elements[0].url ?? null,
+      attachment_id: attachment.payload.elements[0].attachment_id ?? null,
+      buttons: attachment.payload.elements[0].buttons,
     };
   }
 
@@ -109,8 +133,8 @@ const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | Gener
   if (attachment.type === 'fallback') {
     return {
       type: 'fallback',
-      title: attachment.payload.title,
-      url: attachment.payload.url,
+      title: attachment.payload?.title ?? attachment.title,
+      url: attachment.payload?.url ?? attachment.url,
     };
   }
 
@@ -121,15 +145,17 @@ const parseAttachment = (attachment: SimpleAttachment | ButtonAttachment | Gener
 };
 
 function facebookInbound(message: Message): ContentUnion {
-  const messageJson = message.content;
+  const messageJson = message.content.message ?? message.content;
 
-  if (messageJson.message?.attachments?.length) {
-    return parseAttachment(messageJson.message.attachments[0]);
-  } else if (messageJson.message?.text) {
+  if (messageJson.attachments?.length && messageJson.attachments?.type === 'fallback') {
     return {
-      type: 'text',
-      text: messageJson.message?.text,
+      text: messageJson.text ?? null,
+      ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
     };
+  }
+
+  if (messageJson.attachments?.length) {
+    return parseAttachment(messageJson.message.attachments[0]);
   }
 
   if (messageJson.postback?.title) {
@@ -140,10 +166,10 @@ function facebookInbound(message: Message): ContentUnion {
     };
   }
 
-  if (messageJson.message?.text) {
+  if (messageJson.text) {
     return {
       type: 'text',
-      text: messageJson.message.text,
+      text: messageJson.text,
     };
   }
 
@@ -176,14 +202,14 @@ function facebookOutbound(message: Message): ContentUnion {
     };
   }
 
-  if (messageJson.attachment || messageJson.attachments) {
-    if ('text' in messageJson) {
-      return {
-        ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
-        text: messageJson.text,
-      };
-    }
+  if (messageJson.attachment?.type === 'fallback' || messageJson.attachments?.[0].type === 'fallback') {
+    return {
+      text: messageJson.text ?? null,
+      ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
+    };
+  }
 
+  if (messageJson.attachment || messageJson.attachments) {
     return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
 

@@ -1,0 +1,21 @@
+.button {
+  font-weight: 700;
+  background-color: var(--color-template-highlight);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.buttonMargin {
+  margin-top: 16px;
+}
+
+.buttonText {
+  color: var(--color-contrast);
+  text-decoration: none;
+  padding: 8px;
+  display: block;
+  &:hover {
+    color: var(--color-contrast);
+    text-decoration: none;
+  }
+}

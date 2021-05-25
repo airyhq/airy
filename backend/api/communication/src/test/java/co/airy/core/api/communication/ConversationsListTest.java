@@ -35,8 +35,11 @@ import static co.airy.test.Timing.retryOnException;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -108,7 +111,7 @@ class ConversationsListTest {
     @Test
     void canFetchAllConversations() throws Exception {
         retryOnException(
-                () -> webTestHelper.post("/conversations.list", "{} ")
+                () -> webTestHelper.post("/conversations.list")
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(conversations.size())))
                         .andExpect(jsonPath("pagination_data.total", is(conversations.size())))
@@ -118,6 +121,54 @@ class ConversationsListTest {
                                         .map(DateFormat::isoFromMillis)
                                         .sorted(reverseOrder()).toArray()))),
                 String.format("Expected %s conversations in order", conversations.size()));
+    }
+
+    @Test
+    void canFetchPaginated() throws Exception {
+        final int cursor = conversations.size() + 1;
+        retryOnException(
+                () -> webTestHelper.post("/conversations.list", "{\"cursor\": \"" + cursor + "\"}")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data", hasSize(0)))
+                        .andExpect(jsonPath("$.pagination_data.total", is(conversations.size()))),
+                "Expected 0 conversations");
+
+        webTestHelper.post("/conversations.list", "{\"page_size\": 2, \"cursor\": 0}")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(2)))
+                .andExpect(jsonPath("$.pagination_data.filtered_total", is(conversations.size())))
+                .andExpect(jsonPath("$.pagination_data.total", is(conversations.size())))
+                .andExpect(jsonPath("$.pagination_data.previous_cursor", is(not(nullValue()))))
+                .andExpect(jsonPath("$.pagination_data.next_cursor", equalTo("2")));
+
+        webTestHelper.post("/conversations.list", "{\"page_size\": 2, \"cursor\": 1}")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pagination_data.filtered_total", is(conversations.size())))
+                .andExpect(jsonPath("$.pagination_data.total", is(5)))
+                .andExpect(jsonPath("$.data", hasSize(2)));
+
+        webTestHelper.post("/conversations.list", "{\"page_size\": 2, \"cursor\": 3}")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(2)))
+                .andExpect(jsonPath("$.pagination_data.next_cursor", is(nullValue())));
+
+        webTestHelper.post("/conversations.list", "{\"page_size\": 1, \"cursor\": 0}")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pagination_data.filtered_total", is(conversations.size())))
+                .andExpect(jsonPath("$.pagination_data.total", is(conversations.size())))
+                .andExpect(jsonPath("$.data", hasSize(1)));
+
+        webTestHelper.post("/conversations.list", "{\"page_size\": 1, \"cursor\": 0, \"filters\": \"display_name:" + firstNameToFind.toLowerCase() + "\"}")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pagination_data.filtered_total", is(1)))
+                .andExpect(jsonPath("$.pagination_data.total", is(conversations.size())))
+                .andExpect(jsonPath("$.data", hasSize(1)));
+
+        webTestHelper.post("/conversations.list", "{\"page_size\": 10000, \"cursor\": 0, \"filters\": \"display_name:" + firstNameToFind.toLowerCase() + "\"}")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pagination_data.filtered_total", is(1)))
+                .andExpect(jsonPath("$.pagination_data.total", is(conversations.size())))
+                .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
     @Test

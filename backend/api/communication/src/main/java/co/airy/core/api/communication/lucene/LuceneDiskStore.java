@@ -107,8 +107,8 @@ public class LuceneDiskStore implements StateStore, LuceneStore {
     }
 
     @Override
-    public LuceneQueryResult query(Query query) {
-        return lucene.query(query);
+    public LuceneQueryResult query(Query query, int cursor, int pageSize) {
+        return lucene.query(query, cursor, pageSize);
     }
 
     public static class Builder implements StoreBuilder<LuceneDiskStore> {

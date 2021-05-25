@@ -9,5 +9,6 @@ import java.util.List;
 @Builder
 public class LuceneQueryResult {
     private List<ConversationIndex> conversations;
+    private long filteredTotal;
     private int total;
 }

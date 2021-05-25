@@ -24,9 +24,16 @@ jobs:
 
       - name: Enable CI settings
         run: |
-          echo "$GCS_SA_KEY" > key.json
           cat <<EOF >>.bazelrc
             common --config=ci
+          EOF
+
+      - name: Add bazel cache secret
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        run: |
+          echo "$GCS_SA_KEY" > key.json
+          cat <<EOF >>.bazelrc
+            build:ci --remote_cache=https://storage.googleapis.com/airy-ci-cache
             build:ci --google_credentials=key.json
           EOF
         env:

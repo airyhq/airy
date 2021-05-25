@@ -40,7 +40,7 @@
     "@babel/preset-env": "^7.14.2",
     "@babel/preset-react": "^7.13.13",
     "@babel/preset-typescript": "^7.13.0",
-    "@bazel/bazelisk": "^1.8.1",
+    "@bazel/bazelisk": "^1.9.0",
     "@bazel/typescript": "^3.5.0",
     "@svgr/webpack": "^5.5.0",
     "@types/lodash-es": "^4.17.4",

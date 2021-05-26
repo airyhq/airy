@@ -1,0 +1,39 @@
+.customiseContainer {
+  margin-top: 28px;
+}
+
+.colorPickerWrapper {
+  position: absolute;
+  padding: 46px 24px 46px 0px;
+}
+
+.colorPicker {
+  display: flex;
+  place-items: flex-end;
+}
+
+.colorPickerSample {
+  background-color: var(--color-airy-blue);
+  box-shadow: lightgray 0px 0px 3px 0px;
+  height: 34px;
+  width: 40px;
+  border-radius: 20%;
+  margin-right: 4px;
+  margin-bottom: 8px;
+}
+
+.codeAreaContainer {
+  margin-right: 16px;
+}
+
+.codeArea {
+  width: 40em;
+  height: 19.2em;
+  background-color: var(--color-background-gray);
+  color: var(--color-text-contrast);
+  border-radius: 8px;
+  border: 1px solid var(--color-dark-elements-gray);
+  resize: none;
+  padding: 8px;
+  margin-bottom: 16px;
+}

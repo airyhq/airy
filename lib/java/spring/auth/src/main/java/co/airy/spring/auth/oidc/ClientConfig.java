@@ -40,16 +40,4 @@ public class ClientConfig {
     public UserService userService(GithubApi githubApi) {
         return new UserService(githubApi);
     }
-
-    @Bean
-    @ConditionalOnBean(ClientRegistrationRepository.class)
-    public LogoutSuccessHandler oidcLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository) {
-        OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
-                new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-
-        // Sets the location that the End-User's User Agent will be redirected to
-        // after the logout has been performed at the Provider
-        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}");
-        return oidcLogoutSuccessHandler;
-    }
 }

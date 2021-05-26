@@ -60,14 +60,14 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final String[] ignoreAuthPatterns;
     private final String systemToken;
     private final String jwtSecret;
-    private final Optional<LogoutSuccessHandler> logoutSuccessHandler;
     private final ConfigProvider configProvider;
+    private final String logoutSuccessUrl;
 
     public AuthConfig(@Value("${systemToken:#{null}}") String systemToken,
                       @Value("${jwtSecret:#{null}}") String jwtSecret,
                       List<IgnoreAuthPattern> ignorePatternBeans,
                       ConfigProvider configProvider,
-                      Optional<LogoutSuccessHandler> logoutSuccessHandler
+                      @Value("${oidc.logoutSuccessUrl:/ui/}") String logoutSuccessUrl
     ) {
         this.systemToken = systemToken;
         this.jwtSecret = jwtSecret;
@@ -75,7 +75,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
                 .toArray(String[]::new);
         this.configProvider = configProvider;
-        this.logoutSuccessHandler = logoutSuccessHandler;
+        this.logoutSuccessUrl = logoutSuccessUrl;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 http
                         .securityContext().securityContextRepository(new CookieSecurityContextRepository(new Jwt(jwtSecret)))
                         .and().logout().permitAll().deleteCookies(AuthCookie.NAME)
-                        .logoutSuccessHandler(this.logoutSuccessHandler.get())
+                        .logoutSuccessUrl(logoutSuccessUrl)
                         .and()
                         .oauth2Login(oauth2 -> oauth2
                                 // Replace the default login page with co.airy.spring.auth.oidc.LoginRedirect

@@ -6,7 +6,8 @@ import InfiniteLoader from 'react-window-infinite-loader';
 import ResizableWindowList from '../../../components/ResizableWindowList';
 
 import {newestConversationFirst, newestFilteredConversationFirst} from '../../../selectors/conversations';
-import {listNextConversations} from '../../../actions/conversations';
+import {fetchNextConversationPage} from '../../../actions/conversations';
+import {fetchNextFilteredPage} from '../../../actions/conversationsFilter';
 
 import ConversationListHeader from '../ConversationListHeader';
 import QuickFilter from '../QuickFilter';
@@ -21,7 +22,8 @@ import {ConversationRouteProps} from '../index';
 type ConversationListProps = ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
-  listNextConversations,
+  fetchNext: fetchNextConversationPage,
+  fetchNextFiltered: fetchNextFilteredPage,
 };
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
@@ -31,7 +33,6 @@ const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) =>
   conversationsPaginationData: state.data.conversations.all.paginationData,
   filteredPaginationData: state.data.conversations.filtered.paginationData,
   currentFilter: state.data.conversations.filtered.currentFilter,
-  loading: state.data.conversations.all.paginationData.loading,
   user: state.data.user,
 });
 
@@ -62,8 +63,8 @@ const ConversationList = (props: ConversationListProps) => {
       conversationsPaginationData,
       filteredPaginationData,
       currentFilter,
-      loading,
-      listNextConversations,
+      fetchNext,
+      fetchNextFiltered,
     } = props;
 
     const hasFilter = Object.keys(currentFilter || {}).length > 0;
@@ -71,12 +72,13 @@ const ConversationList = (props: ConversationListProps) => {
     const paginationData = hasFilter ? filteredPaginationData : conversationsPaginationData;
 
     const hasMoreData = paginationData.nextCursor && paginationData.nextCursor.length > 0;
+    const loading = paginationData.loading;
 
     const isItemLoaded = (index: number) => index < items.length;
     const itemCount = hasMoreData ? items.length + 1 : items.length;
     const loadMoreItems = () => {
-      if (!paginationData.loading) {
-        hasFilter ? listNextConversations() : listNextConversations();
+      if (!loading) {
+        hasFilter ? fetchNextFiltered() : fetchNext();
       }
       return Promise.resolve(true);
     };
@@ -104,15 +106,11 @@ const ConversationList = (props: ConversationListProps) => {
     );
   };
 
-  const resizeList = () => {
-    //TODO
-  };
-
   return (
     <section className={styles.conversationListContainerContacts}>
       <div className={styles.conversationListContainer}>
         <section className={styles.conversationListContainerFilterBox}>
-          <ConversationListHeader onFilterVisibilityChanged={() => resizeList()} />
+          <ConversationListHeader />
           <QuickFilter />
         </section>
       </div>

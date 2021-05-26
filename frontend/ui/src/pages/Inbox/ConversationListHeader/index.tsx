@@ -29,13 +29,10 @@ const mapStateToProps = (state: StateModel) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type ConversationListHeaderProps = {
-  onFilterVisibilityChanged: () => void;
-} & ConnectedProps<typeof connector> &
-  RouteComponentProps;
+type ConversationListHeaderProps = ConnectedProps<typeof connector> & RouteComponentProps;
 
 const ConversationListHeader = (props: ConversationListHeaderProps) => {
-  const {setSearch, resetFilteredConversationAction, currentFilter, onFilterVisibilityChanged} = props;
+  const {setSearch, resetFilteredConversationAction, currentFilter} = props;
 
   const [isShowingSearchInput, setIsShowingSearchInput] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -77,7 +74,6 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
-    onFilterVisibilityChanged();
   };
 
   const isFilterActive = (): boolean => Object.values(currentFilter).length > 0;

@@ -19,7 +19,7 @@ import AiryBubbleSVG from "@site/static/icons/airy-bubble.svg";
 
 <TLDR>
 
-Airy Core is an **open source**, **fully-featured**, **production-ready**
+Airy Core is an **open-source**, **fully-featured**, **production-ready**
 conversational platform.
 
 </TLDR>

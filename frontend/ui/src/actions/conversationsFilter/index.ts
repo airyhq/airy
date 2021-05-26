@@ -50,10 +50,15 @@ export const setFilter = (filter: ConversationFilter) => {
 
 const executeFilter = (filter: ConversationFilter, dispatch: Dispatch<any>, state: () => StateModel) => {
   dispatch(updateFilteredConversationsAction(filter));
-  refetchConversations(dispatch, state);
+  fetchFilteredConversations(dispatch, state);
 };
 
-const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, cursor?: string) => {
+export const fetchNextFilteredPage = () => (dispatch: Dispatch<any>, state: () => StateModel) => {
+  const cursor = state().data.conversations.filtered.paginationData.nextCursor;
+  return fetchFilteredConversations(dispatch, state, cursor);
+}
+
+const fetchFilteredConversations = (dispatch: Dispatch<any>, state: () => StateModel, cursor?: string) => {
   dispatch(loadingConversationsAction(true));
   const filter = state().data.conversations.filtered.currentFilter;
   if (Object.keys(filter).length > 0) {

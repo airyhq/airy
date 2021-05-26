@@ -57,7 +57,7 @@ export const setStateConversationAction = createAction(
   (conversationId: string, state: string) => ({conversationId, state})
 )<{conversationId: string; state: string}>();
 
-export const listConversations = () => async (dispatch: Dispatch<any>) => {
+export const fetchConversations = () => async (dispatch: Dispatch<any>) => {
   dispatch(loadingConversationsAction(true));
   return HttpClientInstance.listConversations({page_size: 50}).then((response: PaginatedResponse<Conversation>) => {
     dispatch(mergeConversationsAction(response.data, response.paginationData));
@@ -66,7 +66,7 @@ export const listConversations = () => async (dispatch: Dispatch<any>) => {
   });
 };
 
-export const listNextConversations = () => async (dispatch: Dispatch<any>, state: () => StateModel) => {
+export const fetchNextConversationPage = () => async (dispatch: Dispatch<any>, state: () => StateModel) => {
   const cursor = state().data.conversations.all.paginationData.nextCursor;
 
   dispatch(loadingConversationsAction(true));

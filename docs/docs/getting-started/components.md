@@ -16,7 +16,7 @@ import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
 
-Airy Core comes with all the components you need for a fully-featured conversational platform
+Airy Core comes with all the components you need for a fully-featured conversational platform.
 
 </TLDR>
 

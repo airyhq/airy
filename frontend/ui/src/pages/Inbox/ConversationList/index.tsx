@@ -23,7 +23,7 @@ type ConversationListProps = ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
   fetchNext: fetchNextConversationPage,
-  fetchNextFiltered: fetchNextFilteredPage
+  fetchNextFiltered: fetchNextFilteredPage,
 };
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({

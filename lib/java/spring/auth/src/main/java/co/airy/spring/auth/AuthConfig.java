@@ -19,7 +19,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -27,6 +29,7 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 import org.springframework.security.web.authentication.DelegatingAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
@@ -43,6 +46,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 @EnableWebSecurity
@@ -56,14 +60,14 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final String[] ignoreAuthPatterns;
     private final String systemToken;
     private final String jwtSecret;
-    private final UserService userService;
     private final ConfigProvider configProvider;
+    private final String logoutSuccessUrl;
 
     public AuthConfig(@Value("${systemToken:#{null}}") String systemToken,
                       @Value("${jwtSecret:#{null}}") String jwtSecret,
                       List<IgnoreAuthPattern> ignorePatternBeans,
                       ConfigProvider configProvider,
-                      UserService userService
+                      @Value("${oidc.logoutSuccessUrl:/ui/}") String logoutSuccessUrl
     ) {
         this.systemToken = systemToken;
         this.jwtSecret = jwtSecret;
@@ -71,7 +75,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .flatMap((ignoreAuthPatternBean -> ignoreAuthPatternBean.getIgnorePattern().stream()))
                 .toArray(String[]::new);
         this.configProvider = configProvider;
-        this.userService = userService;
+        this.logoutSuccessUrl = logoutSuccessUrl;
     }
 
     @Override
@@ -94,20 +98,26 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
             }
 
             if (configProvider.isPresent()) {
-                log.info("Oidc auth enabled with provider: {}", configProvider.getRegistration().getRegistrationId());
+                final String registrationId = configProvider.getRegistration().getRegistrationId();
+                log.info("Oidc auth enabled with provider: {}", registrationId);
+
+                // By default oauth2Login creates an authentication entrypoint that redirects clients to the
+                // login form. For API clients we instead want to return a 403.
+                http.exceptionHandling()
+                        .defaultAuthenticationEntryPointFor(new Http403ForbiddenEntryPoint(),
+                                new NegatedRequestMatcher(new OrRequestMatcher(new AntPathRequestMatcher("/login/**"),
+                                        new AntPathRequestMatcher("/logout/**"), new AntPathRequestMatcher("/oauth/**"))));
 
                 http
                         .securityContext().securityContextRepository(new CookieSecurityContextRepository(new Jwt(jwtSecret)))
                         .and().logout().permitAll().deleteCookies(AuthCookie.NAME)
+                        .logoutSuccessUrl(logoutSuccessUrl)
                         .and()
-                        .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/ui/"))
+                        .oauth2Login(oauth2 -> oauth2
+                                // Replace the default login page with co.airy.spring.auth.oidc.LoginRedirect
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/ui/"))
                         .addFilterAfter(new EmailFilter(configProvider), OAuth2LoginAuthenticationFilter.class);
-
-                // By default oauth2Login creates an authentication entrypoint that redirects clients to the
-                // login form. For API clients we instead want to return a 403.
-                http.exceptionHandling().defaultAuthenticationEntryPointFor(new Http403ForbiddenEntryPoint(),
-                        new NegatedRequestMatcher(new OrRequestMatcher(new AntPathRequestMatcher("/login/**"),
-                                new AntPathRequestMatcher("/logout/**"), new AntPathRequestMatcher("/oauth/**"))));
             }
         }
     }

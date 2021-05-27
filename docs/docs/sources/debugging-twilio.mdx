@@ -1,16 +1,16 @@
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-If the channel has been successfully connected, but the message you sent does not appear in a conversation and a conversation is not created, please see below for debugging advices.
+If the channel has been successfully connected, but the message you sent does not appear in a conversation and a conversation is not created, please see below for debugging advice.
 
 :::note
 
-If you encounter errors, please follow these debugging advices:
+If you encounter errors, please follow this debugging advice:
 
 - make sure that the authToken and accountSid tokens you have added to the airy.yaml file (refer back to step 1) have been applied to your Airy Core instance.
   An Airy Core instance should be created after editing the airy.yaml file.
 
 - verify your webhook integration (refer back to step 2). Make sure that your Twilio Webhook URL has been correctly added to your phone number in your Twilio dashboard (check for typos).
-  The Webhook URL should be added in the 'Messaging', 'incoming message' section.
+  The Webhook URL should be added in the 'Messaging', 'Incoming Message' section.
 
 - check the messaging logs in your Twilio dashboard (see screenshot below): select your phone number from the phone numbers list,
   click on the Messaging Logs tab, and select Incoming from the dropdown. The [error codes](https://www.twilio.com/docs/api/errors) from the logs

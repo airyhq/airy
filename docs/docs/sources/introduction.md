@@ -21,7 +21,7 @@ Plugin, Facebook Messenger, WhatsApp, or your own custom sources.
 </TLDR>
 
 One of the crucial features Airy Core provides is the ability to process
-conversational data from a variety of sources such as Facebook Messenger,Google
+conversational data from a variety of sources such as Facebook Messenger, Google
 Business Messages, Twilio.WhatsApp or Twilio.SMS.
 
 You can connect sources through API requests or using our [Channels UI](/ui/channels). Our Sources guides cover both options, step-by-step.
@@ -30,7 +30,7 @@ It's important to understand the difference between a [source](/getting-started/
 
 Connecting a [channel](/getting-started/glossary/#channel) allows the possibility of starting a [conversation](/getting-started/glossary/#conversation) between a [source](/getting-started/glossary/#source) and your Airy Core instance. Once a [channel](/getting-started/glossary/#channel) has been connected, your Airy Core instance will start ingesting [messages](/getting-started/glossary/#message) and create new [conversations](/getting-started/glossary/#conversation) accordingly.
 
-You can connect as many [channels](/getting-started/glossary/#channel) as you want for each [source](/getting-started/glossary/#source).The [Inbox UI](/ui/inbox) displays all of your [conversations](/getting-started/glossary/#conversation) from across all of your [sources](/getting-started/glossary/#source).
+You can connect as many [channels](/getting-started/glossary/#channel) as you want for each [source](/getting-started/glossary/#source). The [Inbox UI](/ui/inbox) displays all of your [conversations](/getting-started/glossary/#conversation) from all of your [sources](/getting-started/glossary/#source).
 
 <ButtonBox
 icon={<ChannelsUI />}
@@ -94,13 +94,13 @@ integrations yourself.
 While sources are all different, their architecture follows a few key
 principles:
 
-- The webhook integration ingests payload data as raw as you get it in a source
+- The webhook integration ingests payload data as raw because you get it in a source
   specific topic.
 
-- We only extracts metadata from the source data as we translate events into
-  conversations and messages, the content is not parsed at ingestion time, we let
+- We only extract metadata from the source data as we translate events into
+  conversations and messages. The content is not parsed at ingestion time, we let
   it travel untouched through the system.
 
 These principles allow you to reprocess data from a conversation platform at any
-given point time. If the data pipeline has a bug, say the messages are counted
-incorrectly, you can reprocess the data and fix a bug for past data as well.
+given point in time. If the data pipeline has a bug (ex: the messages are counted
+incorrectly), you can reprocess the data and fix a bug for past data as well.

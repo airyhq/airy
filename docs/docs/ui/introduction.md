@@ -11,11 +11,11 @@ import LabelSVG from "@site/static/icons/label.svg";
 import CommentBubbleSVG from "@site/static/icons/comment-bubble.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your teams to use.
+Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your team to use.
 
-While the [Chat Plugin](sources/chatplugin/overview.md) is the open-source chat UI for your website and app visitors, Airy UI has different all the UI interfaces you need internally for a messaging platform.
+While the [Chat Plugin](sources/chatplugin/overview.md) is the open-source chat UI for your website and app visitors, Airy UI offers all of the UI interfaces you need internally for a messaging platform.
 
-Airy UI comes with an open-source, customizable [inbox](inbox), filled with the conversations of all your [sources](sources/introduction.md). Organize your conversations with features such as [Filters, Search](inbox), [Tags](tags) and add [suggested replies](suggestedReplies) to messages to improve response time.
+Airy UI comes with an open-source, customizable [inbox](inbox), filled with the conversations from all of your [sources](sources/introduction.md). You can organize your conversations with features such as [Filters, Search](inbox) and [Tags](tags), in addition to adding [suggested replies](suggestedReplies) to messages to improve response time.
 
 <ButtonBoxList>
     <ButtonBox

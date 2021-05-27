@@ -22,8 +22,8 @@ Having a Live Chat plugin on your website has become essential. Connect with
 your website visitors, communicate with them in real time, or use a bot to
 automate FAQs.
 
-Airy’s Live Chat Plugin comes out of the box fully working, and thanks to its
-open-source nature and React Render Props you can customize everything about it.
+Airy’s Live Chat Plugin comes out of the box fully functioning, and thanks to its
+open-source nature and React Render Props, you can customize everything about it.
 
 Out of the box Airy’s Live Chat Plugin supports:
 
@@ -34,13 +34,13 @@ Out of the box Airy’s Live Chat Plugin supports:
 ## How it's built
 
 The Airy Live Chat Plugin is a JavaScript library built with
-[Rreact](https://preactjs.com/) and
+[Preact](https://preactjs.com/) and
 [TypeScript](https://www.typescriptlang.org/).
 
 The library makes heavy use of [render
 props](https://reactjs.org/docs/render-props.html) so that you can customize its
-behavior in every aspect. The library handles all the
-[communication](/api/endpoints/chatplugin.md) with Airy Core transparently for
+behavior in every aspect. The library makes all of the
+[communication](/api/endpoints/chatplugin.md) with Airy Core transparent for
 you.
 
 ## Customization
@@ -58,10 +58,10 @@ Completely customize your Live Chat and make it match your brand:
 
 ## Supported message types
 
-Airy’s Live Chat Plugin supports the following messages types:
+Airy’s Live Chat Plugin supports the following message types:
 
-- Text messages
-- Emoji's
+- Text Messages
+- Emojis
 - Rich Cards
 - Rich Card Carousels
 - Suggested Replies

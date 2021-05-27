@@ -12,7 +12,7 @@ import ChannelsUI from "@site/static/icons/channelsUi-icon.svg";
 
 <TLDR>
 
-Use the Channels UI to connect your sources simply and directly with a UI
+Use the Channels UI to connect your sources simply and directly with a UI.
 
 </TLDR>
 

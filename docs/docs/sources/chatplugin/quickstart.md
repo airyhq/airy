@@ -50,7 +50,7 @@ the next steps, so note it down.
 
 Alternatively, you can connect an Airy's Live Chat Plugin channel via the [UI](/ui/introduction).
 
-On your instance's Airy Core UI, click on the 'Channels' icon on the left sidebar menu. Then, click on the button displaying a plus icon next to the Airy Live Chat channel.
+On your instance's Airy Core UI, click on the 'Channels' icon on the left sidebar menu. Then, click on the button displaying a + icon next to the Airy Live Chat channel.
 
 <img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel.png')} />
 

@@ -14,7 +14,7 @@ import SuccessBox from "@site/src/components/SuccessBox";
 
 </TLDR>
 
-This document provides a step by step guide to integrate a Twilio SMS source with your Airy
+This document provides a step-by-step guide to integrate a Twilio SMS source with your Airy
 Core Platform instance.
 
 The Twilio SMS source provides a channel for sending and receiving SMS using the

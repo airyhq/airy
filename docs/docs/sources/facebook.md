@@ -201,7 +201,7 @@ If you encounter errors, please follow this debugging advice:
 
 - make sure that the tokens you have added to the airy.yaml file (refer back to step 1) have been applied to your Airy Core instance. An Airy Core instance should be created after editing the airy.yaml file.
 
-- verify your webhook integration (refer back to step 2). Make sure that your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the Page subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
+- verify your webhook integration (refer back to step 2). Make sure that your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the 'Page' subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
 
 :::
 

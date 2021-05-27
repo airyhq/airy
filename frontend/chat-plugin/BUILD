@@ -37,7 +37,7 @@ web_app(
 )
 
 web_library(
-    name = "dist",
+    name = "library",
     aliases = {
         "react": "preact/compat",
         "react-dom": "preact/compat",
@@ -113,12 +113,12 @@ genrule(
     srcs = [
         "package.json",
         "README.md",
-        ":dist",
+        ":library",
         ":chat-plugin",
     ],
     outs = ["chat-plugin_lib"],
     cmd = """
-    mkdir -p $(OUTS)/{dist} && cp -R $(location :dist) $(OUTS) \
+    mkdir -p $(OUTS)/{dist} && cp -R $(location :library) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \
     && mv $(RULEDIR)/src $(OUTS)
 """,

@@ -43,7 +43,7 @@ web_library(
         "react-dom": "preact/compat",
     },
     app_lib = ":chat-plugin",
-    entry = "frontend/chat-plugin/index.js",
+    entry = "frontend/chat-plugin/src/defaultScript.js",
     module_deps = module_deps,
     output = {
         "libraryExport": "AiryWidget",

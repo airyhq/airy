@@ -114,9 +114,9 @@ genrule(
         "package.json",
         "README.md",
         ":dist",
-        ":airy-chatplugin",
+        ":chat-plugin",
     ],
-    outs = ["airy-chatplugin_lib"],
+    outs = ["chat-plugin_lib"],
     cmd = """
     mkdir -p $(OUTS)/{dist} && cp -R $(location :dist) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \

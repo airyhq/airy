@@ -75,6 +75,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   useEffect(() => {
+    setInput('');
+    textAreaRef && textAreaRef.current.focus();
+  }, [conversation.id]);
+
+  useEffect(() => {
     textAreaRef.current.style.height = '0px';
     let scrollHeight = Math.min(300, textAreaRef.current.scrollHeight);
     if (scrollHeight < 40) scrollHeight = 40;
@@ -113,7 +118,8 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.metaKey && event.key === 'Enter') {
+    if (event.key === 'Enter') {
+      event.preventDefault();
       sendMessage();
     }
   };

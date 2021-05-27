@@ -7,6 +7,7 @@ load("@com_github_airyhq_bazel_tools//web:web_library.bzl", "web_library")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/build:container_release.bzl", "container_release")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
+load("//tools/build/npm:rules.bzl", "assemble_npm", "deploy_npm")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -105,6 +106,35 @@ container_image(
 container_release(
     registry = "ghcr.io/airyhq/frontend",
     repository = "chat-plugin",
+)
+
+genrule(
+    name = "npm_library",
+    srcs = [
+        "package.json",
+        "README.md",
+        ":library",
+        ":chat-plugin",
+    ],
+    outs = ["chat-plugin_lib"],
+    cmd = """
+    mkdir -p $(OUTS)/{dist} && cp -R $(location :library) $(OUTS) \
+    && cp $(location :package.json) $(location :README.md) $(OUTS) \
+    && mv $(RULEDIR)/src $(OUTS)
+""",
+)
+
+assemble_npm(
+    name = "assemble-npm",
+    target = ":npm_library",
+    version_file = "//:VERSION",
+)
+
+deploy_npm(
+    name = "publish-npm",
+    release = "https://registry.npmjs.org/",
+    snapshot = "https://registry.npmjs.org/",
+    target = ":assemble-npm",
 )
 
 check_pkg(name = "buildifier")

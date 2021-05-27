@@ -78,4 +78,13 @@ jobs:
           DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
           DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}
           DEPLOY_NPM_EMAIL: ${{ secrets.DEPLOY_NPM_EMAIL }}
+      - name: Publish chat-plugin library to npm
+        if: ${{ startsWith(github.ref, 'refs/tags/npm-v') }}
+        run: |
+          sudo apt-get install -y expect
+          bazel run //frontend/chat-plugin:publish-npm release
+        env:
+          DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
+          DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}
+          DEPLOY_NPM_EMAIL: ${{ secrets.DEPLOY_NPM_EMAIL }}
           GITHUB_BRANCH: ${{ github.ref }}

@@ -12,7 +12,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 <TLDR>
 
 Airy's Live Chat Plugin is an open-source chat widget that is fully customizable
-and included in Airy Core
+and included in Airy Core.
 
  </TLDR>
 
@@ -22,19 +22,19 @@ Having a Live Chat plugin on your website has become essential. Connect with
 your website visitors, communicate with them in real time, or use a bot to
 automate FAQs.
 
-Airy’s Live Chat Plugin comes out of the box fully working, but thanks to its
+Airy’s Live Chat Plugin comes out of the box fully working, and thanks to its
 open-source nature and React Render Props you can customize everything about it.
 
 Out of the box Airy’s Live Chat Plugin supports:
 
 - Full customization of look, feel and features
 - All message types, including emojis
-- Rich Messaging: Templates, cards & carousels
+- Rich Messaging with templates, cards and carousels
 
-## How it's build
+## How it's built
 
-The Airy Live Chat Plugin is JavaScript library built with
-[preact](https://preactjs.com/) and
+The Airy Live Chat Plugin is a JavaScript library built with
+[Rreact](https://preactjs.com/) and
 [TypeScript](https://www.typescriptlang.org/).
 
 The library makes heavy use of [render

@@ -50,7 +50,7 @@ the next steps, so note it down.
 
 Alternatively, you can connect an Airy's Live Chat Plugin channel via the [UI](/ui/introduction).
 
-On your instance's Airy Core UI, click on the 'Channels' icon on the left sidebar menu. Then, click on the button displaying a cross icon next to the Airy Live Chat channel.
+On your instance's Airy Core UI, click on the 'Channels' icon on the left sidebar menu. Then, click on the button displaying a plus icon next to the Airy Live Chat channel.
 
 <img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-channel.png')} />
 
@@ -72,7 +72,7 @@ This will bring you to a page where you can edit or disconnect each channel. Cli
 
 <img alt="chat plugin channels UI" src={useBaseUrl('img/sources/chatplugin/chatplugin-id.png')} />
 
-Click on the 'Install app' tab. Here you will find the `channel_id`, which is located in the sample code (underlined in the screenshot below). It is required for the next steps, so note it down.
+Click on the 'Install app' tab. Here you will find the `channel_id`, which is located in the sample code (highlighted in the screenshot above). It is required for the next steps, so note it down.
 
 ## Step 2: Send messages via the Chat Plugin
 

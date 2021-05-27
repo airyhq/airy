@@ -37,13 +37,13 @@ web_app(
 )
 
 web_library(
-    name = "library",
+    name = "dist",
+    app_lib = ":chat-plugin",
+    entry = "frontend/chat-plugin/index.js",
     aliases = {
         "react": "preact/compat",
         "react-dom": "preact/compat",
     },
-    app_lib = ":chat-plugin",
-    entry = "frontend/chat-plugin/src/defaultScript.js",
     module_deps = module_deps,
     output = {
         "libraryExport": "AiryWidget",

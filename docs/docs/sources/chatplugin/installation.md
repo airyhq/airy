@@ -33,5 +33,5 @@ of your Chat Plugin server. When using the local minikube environment
 :::
 
 To test the setup, replace the `CHANNEL_ID` in the URL
-`http://airy.core/chatplugin/example?channel_id=CHANNEL_ID` and open it in your
+`http://airy.core/chatplugin/ui/example?channel_id=CHANNEL_ID` and open it in your
 browser.

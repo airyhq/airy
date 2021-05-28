@@ -10,9 +10,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Introduction
 
-Airy’s Inbox gives you an UI for all your conversations.
+Airy’s Inbox gives you a UI for all of your conversations.
 
-See all conversations from the sources you connected, no matter if they come via the [Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source.
+See all conversations from the sources you connected, regardless of whether they come via the [Live Chat Plugin](sources/chatplugin/overview.md), [Facebook Messenger](sources/facebook.md), [Google’s Business Messages](sources/google.md), [SMS](sources/sms-twilio.md), [WhatsApp](sources/whatsapp-twilio.md) or a custom source.
 
 The inbox supports not only text messages but a variety of different message types.
 
@@ -115,7 +115,7 @@ Airy’s Inbox supports all [Google’s Rich Cards variants from Rich Cards to C
 **Render Templates for Chat Plugin**
 
 Airy’s Live Chat Plugin supports templates too. The template payload is the same as for Google Rich Cards.
-This enables you and your teams to interact with your website visitors in a richer way, and also enables chat bots in the templates.
+This enables you and your team to interact with your website visitors in a richer way, and also enables chat bots in the templates.
 
 <ButtonBox
 icon={<AiryBubbleSVG />}

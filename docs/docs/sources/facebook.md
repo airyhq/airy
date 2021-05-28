@@ -12,8 +12,8 @@ import SuccessBox from "@site/src/components/SuccessBox";
 
 <TLDR>
 
-**Connect your Facebook Pages**, send and receive messages from Facebook’s 1,3
-Billion users.
+**Connect your Facebook Pages**, send and receive messages from Facebook’s 1.3
+billion users.
 
 </TLDR>
 
@@ -47,11 +47,11 @@ Let's proceed step by step.
 To connect a page, you must have an approved Facebook app. If you don't have
 one, you must register and create a Business app on [Facebook for Developers](https://developers.facebook.com/).
 
-All your registered apps are listed on [developers.facebook.com/apps](https://developers.facebook.com/apps/).
+All of your registered apps are listed on [developers.facebook.com/apps](https://developers.facebook.com/apps/).
 
 <img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/apps.jpg')} />
 
-The dashboard of each registered apps can be found on:
+The dashboard of each registered app can be found on:
 
 ```
 https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/dashboard/
@@ -83,7 +83,7 @@ You are now ready to configure the webhook integration. Click on the + icon next
 https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/dashboard/#addProduct
 ```
 
-Click on the button "Set Up" on the Webhooks product card.
+Click on the button 'Set Up' on the Webhooks product card.
 
 <img alt="Facebook webhook add product" src={useBaseUrl('img/sources/facebook/webhookProduct.png')} />
 
@@ -95,7 +95,7 @@ https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/webhooks/
 
 <img alt="Facebook webhook" src={useBaseUrl('img/sources/facebook/webhook_1.png')} />
 
-Select "Page" from the dropdown (the default is "User") and click on the button "Subscribe to this object".
+Select 'Page' from the dropdown (the default is 'User') and click on the button 'Subscribe to this object'.
 
 This will open a modal box: add your Callback URL (your instance's Facebook Webhook URL) and Verify Token (the webhookSecret you added in your `airy.yaml` file in the previous step).
 
@@ -128,7 +128,7 @@ start sending events to your Airy Core instance.
 
 Go to the Products page (click on the + icon next to Products on the left sidebar).
 
-Click on the button "Set Up" on the Messenger product card.
+Click the 'Set Up' button on the Messenger product card.
 
 ```
 https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/dashboard/#addProduct
@@ -142,17 +142,17 @@ Notice that at the bottom of the page, the Webhooks product has been added with 
 
 <img alt="Facebook messenger product" src={useBaseUrl('img/sources/facebook/messenger.png')} />
 
-Click on the blue button "Add or Remove Pages" and select your page.
+Click on the blue button 'Add or Remove Pages' and select your page.
 
-Once your page has been added, scroll down and click on the button "Add Subscriptions".
+Once your page has been added, scroll down and click on the button 'Add Subscriptions'.
 
 <img alt="Facebook page subscriptions" src={useBaseUrl('img/sources/facebook/add_subscriptions.png')} />
 
-This opens a modal box: tick "messages" and "messaging_postbacks" from the Subscription Fields list.
+This opens a modal box: tick 'messages' and 'messaging_postbacks' from the Subscription Fields list.
 
 <img alt="Facebook page subscriptions" src={useBaseUrl('img/sources/facebook/edit_page_subs.png')} />
 
-Next, scroll up, and click on the button "Generate Token".
+Next, scroll up, and click on the button 'Generate Token'.
 
 <img alt="Facebook page token" src={useBaseUrl('img/sources/facebook/token_messenger.png')} />
 
@@ -197,11 +197,11 @@ import ConnectFacebook from '../api/endpoints/connect-facebook.mdx'
 
 :::note
 
-If you encounter errors, please follow these debugging advices:
+If you encounter errors, please follow this debugging advice:
 
 - make sure that the tokens you have added to the airy.yaml file (refer back to step 1) have been applied to your Airy Core instance. An Airy Core instance should be created after editing the airy.yaml file.
 
-- verify your webhook integration (refer back to step 2). Make sure that your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the Page subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
+- verify your webhook integration (refer back to step 2). Make sure that your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the 'Page' subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
 
 :::
 

@@ -3,11 +3,10 @@ import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
-import {Avatar, SourceMessage} from 'render';
+import {Avatar, SourceMessagePreview} from 'render';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
-import {Conversation, Message} from 'model';
 import {MergedConversation, StateModel} from '../../../reducers';
 import {INBOX_CONVERSATIONS_ROUTE} from '../../../routes/routes';
 import {readConversations, conversationState} from '../../../actions/conversations';
@@ -15,14 +14,6 @@ import {readConversations, conversationState} from '../../../actions/conversatio
 import styles from './index.module.scss';
 import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
 import {newestFilteredConversationFirst} from '../../../selectors/conversations';
-import {ReactComponent as AttachmentTemplate} from 'assets/images/icons/attachmentTemplate.svg';
-import {ReactComponent as AttachmentImage} from 'assets/images/icons/attachmentImage.svg';
-import {ReactComponent as AttachmentVideo} from 'assets/images/icons/attachmentVideo.svg';
-import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
-
-interface FormattedMessageProps {
-  message: Message;
-}
 
 type ConversationListItemProps = {
   conversation: MergedConversation;
@@ -42,13 +33,6 @@ const mapStateToProps = (state: StateModel) => {
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-
-const FormattedMessage = ({message}: FormattedMessageProps) => {
-  if (message?.content) {
-    return <>{message.content.message?.text || message.content.text}</>;
-  }
-  return <div />;
-};
 
 const ConversationListItem = (props: ConversationListItemProps) => {
   const {conversation, active, style, readConversations, conversationState} = props;
@@ -88,56 +72,6 @@ const ConversationListItem = (props: ConversationListItemProps) => {
     }
   }, [active, conversation, currentConversationState]);
 
-  const lastMessageIsText = (conversation: Conversation) => {
-    const lastMessageContent = conversation.lastMessage.content;
-
-    if (typeof lastMessageContent === 'string') {
-      if (lastMessageContent.includes('&Body=' && '&FromCountry=')) {
-        return (
-          <SourceMessage
-            source={conversation.channel.source}
-            contentType="message"
-            content={conversation.lastMessage}
-            isTwilioConversationListItem={true}
-          />
-        );
-      } else if (lastMessageContent.includes('&Body=' && '&To=whatsapp')) {
-        return (
-          <SourceMessage
-            source={conversation.channel.source}
-            contentType="message"
-            content={conversation.lastMessage}
-            isTwilioConversationListItem={true}
-          />
-        );
-      }
-    }
-    if (lastMessageContent.text || lastMessageContent.message?.text) {
-      return <FormattedMessage message={conversation.lastMessage} />;
-    } else if (lastMessageContent.suggestionResponse) {
-      return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
-    }
-  };
-
-  const lastMessageIsIcon = (conversation: Conversation) => {
-    const lastMessageContent = conversation.lastMessage.content;
-
-    if (!lastMessageContent.attachment) {
-      if (lastMessageContent.message?.attachments?.[0].type === 'image') {
-        return <AttachmentImage />;
-      } else if (lastMessageContent.message?.attachments?.[0].type === 'video') {
-        return <AttachmentVideo style={{height: '24px', width: '24px', margin: '0px'}} />;
-      } else if (lastMessageContent.suggestionResponse) {
-        return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
-      } else if (lastMessageContent.image) {
-        return <AttachmentImage />;
-      } else if (lastMessageContent.richCard) {
-        return <RichCardIcon style={{height: '24px', width: '24px', margin: '0px'}} />;
-      }
-    }
-    return <AttachmentTemplate />;
-  };
-
   return (
     <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
@@ -156,7 +90,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
               {currentConversationState === 'OPEN' ? <OpenStateButton /> : <ClosedStateButton />}
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
-              {lastMessageIsText(conversation) || lastMessageIsIcon(conversation)}
+              <SourceMessagePreview conversation={conversation} />
             </div>
             <div className={styles.bottomRow}>
               <div className={styles.source}>

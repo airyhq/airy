@@ -25,7 +25,6 @@ interface RenderProps {
   contentType: 'message' | 'template' | 'suggestedReplies' | 'quickReplies';
   content: Content;
   source: string;
-  isTwilioConversationListItem?: boolean;
 }
 
 export interface MessageRenderProps extends RenderProps {

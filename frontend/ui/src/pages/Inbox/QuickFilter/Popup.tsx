@@ -17,13 +17,16 @@ import {prettifySource} from '../../../../../../lib/typescript/model';
 import {SourceIcon} from '../../../components/SourceIcon';
 
 function mapStateToProps(state: StateModel) {
-  const channels = Object.values(allChannels(state));
+  const channels: Channel[] = Object.values(allChannels(state));
   return {
     user: state.data.user,
     filter: state.data.conversations.filtered.currentFilter,
     tags: state.data.tags.all,
     channels,
-    sources: channels.reduce((acc, it) => acc.add(it.source), new Set<string>()),
+    sources: channels.reduce<Set<string>>((acc, {source}) => {
+      acc.add(source);
+      return acc;
+    }, new Set<string>()),
   };
 }
 

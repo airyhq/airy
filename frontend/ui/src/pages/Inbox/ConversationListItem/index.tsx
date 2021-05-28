@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
-import {Avatar} from 'render';
+import {Avatar, SourceMessage} from 'render';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
@@ -88,8 +88,40 @@ const ConversationListItem = (props: ConversationListItemProps) => {
     }
   }, [active, conversation, currentConversationState]);
 
-  const lastMessageIcon = (conversation: Conversation) => {
+  const lastMessageIsText = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
+
+    if (typeof lastMessageContent === 'string') {
+      if (lastMessageContent.includes('&Body=' && '&FromCountry=')) {
+        return (
+          <SourceMessage
+            source={conversation.channel.source}
+            contentType="message"
+            content={conversation.lastMessage}
+            isTwilioConversationListItem={true}
+          />
+        );
+      } else if (lastMessageContent.includes('&Body=' && '&To=whatsapp')) {
+        return (
+          <SourceMessage
+            source={conversation.channel.source}
+            contentType="message"
+            content={conversation.lastMessage}
+            isTwilioConversationListItem={true}
+          />
+        );
+      }
+    }
+    if (lastMessageContent.text || lastMessageContent.message?.text) {
+      return <FormattedMessage message={conversation.lastMessage} />;
+    } else if (lastMessageContent.suggestionResponse) {
+      return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
+    }
+  };
+
+  const lastMessageIsIcon = (conversation: Conversation) => {
+    const lastMessageContent = conversation.lastMessage.content;
+
     if (!lastMessageContent.attachment) {
       if (lastMessageContent.message?.attachments?.[0].type === 'image') {
         return <AttachmentImage />;
@@ -124,11 +156,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
               {currentConversationState === 'OPEN' ? <OpenStateButton /> : <ClosedStateButton />}
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
-              {conversation.lastMessage.content.text || conversation.lastMessage.content.message?.text ? (
-                <FormattedMessage message={conversation.lastMessage} />
-              ) : (
-                lastMessageIcon(conversation)
-              )}
+              {lastMessageIsText(conversation) || lastMessageIsIcon(conversation)}
             </div>
             <div className={styles.bottomRow}>
               <div className={styles.source}>

@@ -2,7 +2,7 @@ import {ActionType, getType} from 'typesafe-actions';
 import {combineReducers} from 'redux';
 import {cloneDeep, sortBy, merge, pickBy} from 'lodash-es';
 
-import {Conversation, ConversationFilter, Message} from 'model';
+import {Conversation, Message} from 'model';
 
 import * as metadataActions from '../../../actions/metadata';
 import * as actions from '../../../actions/conversations';
@@ -12,6 +12,18 @@ import * as messageActions from '../../../actions/messages';
 type Action = ActionType<typeof actions> | ActionType<typeof metadataActions>;
 type FilterAction = ActionType<typeof filterActions>;
 type MessageAction = ActionType<typeof messageActions>;
+
+export interface ConversationFilter {
+  readOnly?: boolean;
+  unreadOnly?: boolean;
+  displayName?: string;
+  createdAt?: string;
+  byTags?: string[];
+  byChannels?: string[];
+  bySources?: string[];
+  isStateOpen?: boolean;
+}
+
 
 export type MergedConversation = Conversation & {
   paginationData?: {

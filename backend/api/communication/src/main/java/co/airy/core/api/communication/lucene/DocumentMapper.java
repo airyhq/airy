@@ -25,6 +25,7 @@ public class DocumentMapper {
         if (conversation.getDisplayName() != null) {
             document.add(new TextField("display_name", conversation.getDisplayName(), Field.Store.YES));
         }
+        document.add(new StringField("source", conversation.getSource(), Field.Store.YES));
 
         document.add(new LongPoint("created_at", conversation.getCreatedAt()));
         document.add(new StoredField("created_at", conversation.getCreatedAt()));

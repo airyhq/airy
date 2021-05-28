@@ -1,7 +1,7 @@
 import _, {createSelector} from 'reselect';
 import {filter, pickBy, reverse, sortBy, values} from 'lodash-es';
-import {Conversation, ConversationFilter} from 'model';
-import {MergedConversation, StateModel} from '../reducers';
+import {Conversation} from 'model';
+import {ConversationFilter, MergedConversation, StateModel} from '../reducers';
 import {ConversationMap} from '../reducers/data/conversations';
 import {ConversationRouteProps} from '../pages/Inbox';
 
@@ -16,8 +16,7 @@ export const getConversation = createSelector(
   getCurrentFilteredConversation,
   (conversation, filteredConversation) => {
     if (!conversation && !filteredConversation) return undefined;
-    const mergedConversation = {...conversation, ...filteredConversation};
-    return mergedConversation;
+    return {...conversation, ...filteredConversation};
   }
 );
 

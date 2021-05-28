@@ -3,7 +3,6 @@ export * from './Config';
 export * from './Contact';
 export * from './Content';
 export * from './Conversation';
-export * from './ConversationFilter';
 export * from './Message';
 export * from './Metadata';
 export * from './Pagination';

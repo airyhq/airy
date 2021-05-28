@@ -3,13 +3,10 @@ import {ReactComponent as AttachmentTemplate} from 'assets/images/icons/attachme
 import {ReactComponent as AttachmentImage} from 'assets/images/icons/attachmentImage.svg';
 import {ReactComponent as AttachmentVideo} from 'assets/images/icons/attachmentVideo.svg';
 import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
-import {Message} from 'model';
-import {MergedConversation} from 'frontend/ui/src/reducers';
-
+import {Conversation, Message} from 'model';
 interface SourceMessagePreviewProps {
-  conversation: MergedConversation;
+  conversation: Conversation;
 }
-
 interface FormattedMessageProps {
   message: Message;
 }
@@ -24,7 +21,7 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
 export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
   const {conversation} = props;
 
-  const lastMessageIsText = (conversation: MergedConversation) => {
+  const lastMessageIsText = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
 
     if (typeof lastMessageContent === 'string') {
@@ -53,7 +50,7 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
     }
   };
 
-  const lastMessageIsIcon = (conversation: MergedConversation) => {
+  const lastMessageIsIcon = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
 
     if (!lastMessageContent.attachment) {

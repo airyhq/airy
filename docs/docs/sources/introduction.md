@@ -102,5 +102,5 @@ principles:
   it travel untouched through the system.
 
 These principles allow you to reprocess data from a conversation platform at any
-given point in time. If the data pipeline has a bug (ex: the messages are counted
+given point in time. If the data pipeline has a bug (example: the messages are counted
 incorrectly), you can reprocess the data and fix a bug for past data as well.

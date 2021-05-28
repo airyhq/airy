@@ -24,7 +24,6 @@ export interface ConversationFilter {
   isStateOpen?: boolean;
 }
 
-
 export type MergedConversation = Conversation & {
   paginationData?: {
     previousCursor: string;

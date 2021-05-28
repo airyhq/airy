@@ -7,6 +7,7 @@ export enum Source {
 }
 
 export const prettifySource = (source: string) =>
-    source.split(".")
-        .map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
-        .join(" ")
+  source
+    .split('.')
+    .map(word => `${word[0].toUpperCase()}${word.slice(1)}`)
+    .join(' ');

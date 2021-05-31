@@ -75,11 +75,11 @@ public class LuceneProvider implements LuceneStore {
             return LuceneQueryResult.builder()
                     .conversations(conversations)
                     .filteredTotal(hits.totalHits.value)
-                    .total(reader.maxDoc()).build();
+                    .total(reader.numDocs()).build();
         } catch (Exception e) {
             log.error("Failed to query Lucene store with query {}", query, e);
             return LuceneQueryResult.builder().conversations(List.of())
-                    .total(reader.maxDoc()).filteredTotal(0).build();
+                    .total(reader.numDocs()).filteredTotal(0).build();
         }
     }
 

@@ -4,8 +4,6 @@ import {renderProviders} from './renderProviders';
 import {Text} from './components/Text';
 import {RenderPropsUnion} from './props';
 
-export * from './props';
-
 type SourceMessageState = {
   hasError: boolean;
 };
@@ -42,5 +40,3 @@ export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessa
     }
   }
 }
-
-export * from './components/Avatar';

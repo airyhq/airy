@@ -13,13 +13,7 @@ export const TwilioSMSRender = (props: RenderPropsUnion) => {
 function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return (
-        <Text
-          fromContact={props.content.fromContact || false}
-          text={content.text}
-          isTwilioConversationListItem={props.isTwilioConversationListItem}
-        />
-      );
+      return <Text fromContact={props.content.fromContact || false} text={content.text} />;
   }
 }
 

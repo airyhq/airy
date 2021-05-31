@@ -9,7 +9,6 @@ import {Channel} from 'model';
 
 import {ReactComponent as CheckMarkIcon} from 'assets/images/icons/checkmark.svg';
 import ChannelAvatar from '../../../../components/ChannelAvatar';
-import {cyChatPluginEditButton} from '../../../../../handles';
 
 import styles from './index.module.scss';
 
@@ -43,8 +42,6 @@ const ChannelListItem = (props: ChannelListItemProps) => {
     });
     togglePopupVisibility();
   };
-
-  const dataCyChatPluginEditButton = cyChatPluginEditButton;
 
   return (
     <>

@@ -3,13 +3,12 @@ import {
   cySearchField,
   cyConversationList,
   cyChannelsChatPluginAddButton,
-  cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
   cyChannelsFormBackButton,
 } from 'handles';
 
-import {cyBubble, cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
+import {cyInputbarButton, cyInputbarTextarea} from 'chat-plugin-handles';
 
 describe('Filter conversation', () => {
   it('Filter conversation', () => {
@@ -17,14 +16,12 @@ describe('Filter conversation', () => {
     cy.wait(500);
 
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
-    cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
 
     cy.get(`[data-cy=${cyChannelsFormBackButton}]`).click();
 
     cy.visit('/chatplugin/ui/example?channel_id=' + Cypress.env('channelId'));
-    cy.get(`[data-cy=${cyBubble}]`).click();
     cy.get(`[data-cy=${cyInputbarTextarea}]`).type(Cypress.env('messageChatplugin'));
     cy.get(`[data-cy=${cyInputbarButton}]`).click();
 

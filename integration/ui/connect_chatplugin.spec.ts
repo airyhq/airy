@@ -1,10 +1,9 @@
 import {
   cyChannelsChatPluginAddButton,
-  cyChannelsChatPluginConnectButton,
   cyChannelsChatPluginFormNameInput,
   cyChannelsChatPluginFormSubmitButton,
-  cyChannelsChatPluginList,
   cyChannelsFormBackButton,
+  cyChannelsChatPluginList,
 } from 'handles';
 
 describe('Connect chatplugin channel', () => {
@@ -13,7 +12,6 @@ describe('Connect chatplugin channel', () => {
     cy.wait(500);
     cy.url().should('include', '/ui/channels');
     cy.get(`[data-cy=${cyChannelsChatPluginAddButton}]`).click();
-    cy.get(`[data-cy=${cyChannelsChatPluginConnectButton}]`).click();
     cy.get(`[data-cy=${cyChannelsChatPluginFormNameInput}]`).type(Cypress.env('chatPluginName'));
     cy.get(`[data-cy=${cyChannelsChatPluginFormSubmitButton}]`).click();
     cy.url().should('include', '/ui/channels/connected');

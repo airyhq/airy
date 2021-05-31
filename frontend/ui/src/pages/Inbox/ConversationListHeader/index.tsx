@@ -97,8 +97,8 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   ) : (
     <div className={styles.containerSearchHeadline}>
       <InboxConversationCount />
-      <div className={styles.searchBox} data-cy={cySearchButton}>
-        <button type="button" className={styles.searchButton} onClick={onClickSearch}>
+      <div className={styles.searchBox}>
+        <button type="button" className={styles.searchButton} onClick={onClickSearch} data-cy={cySearchButton}>
           <IconSearch className={styles.searchIcon} title="Search" />
         </button>
         <button

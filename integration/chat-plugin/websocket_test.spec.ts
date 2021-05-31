@@ -1,4 +1,4 @@
-import {cyBubble, cyInputbarTextarea, cyInputbarButton, cyChatPluginMessageList} from 'chat-plugin-handles';
+import {cyInputbarTextarea, cyInputbarButton, cyChatPluginMessageList} from 'chat-plugin-handles';
 
 import {
   cyChannelsChatPluginAddButton,

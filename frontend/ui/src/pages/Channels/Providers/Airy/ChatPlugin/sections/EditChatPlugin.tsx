@@ -4,6 +4,7 @@ import {Button, Input} from 'components';
 import {Channel} from 'model';
 
 import {CustomiseSection} from './CustomiseSection';
+import {cyCustomizeChatPlugin} from '../../../../../../../handles';
 
 import styles from './EditChatPlugin.module.scss';
 
@@ -104,7 +105,7 @@ export const EditChatPlugin = ({channel, host, updateConnection}: EditChatPlugin
           </a>
         </li>
         <li className={currentPage == 'install-customization' ? styles.tabEntrySelected : styles.tabEntry}>
-          <a href="#" onClick={showCustomization}>
+          <a href="#" onClick={showCustomization} data-cy={cyCustomizeChatPlugin}>
             Install & Customize
           </a>
         </li>

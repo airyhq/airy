@@ -6,13 +6,13 @@
        "username": "grace@example.com",
        "password": "the_answer_is_42",
        "chatPluginName": "Cypress Chatplugin",
-       "tagName": "tag",
+       "tagName": "Cypress Tag",
        "searchQuery": "Cypress Filter",
        "messageInbox": "Hello from Cypress Inbox!",
        "messageChatplugin": "Hello from Cypress ChatPlugin!",
        "newMessageChatplugin": "Hello once again from Cypress ChatPlugin!",
        "websocketMessage": "Websocket Test Message",
-       "channelId": "0a46e146-d6ef-4722-8316-3c4b45287c0e"
+       "channelId": "3502a0a7-933d-5410-b5fc-51f041146d89"
     },
     "viewportHeight": 800,
     "viewportWidth": 1280,

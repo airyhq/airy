@@ -35,7 +35,7 @@ public class LuceneProvider implements LuceneStore {
 
     public LuceneProvider() throws IOException {
         boolean testMode = System.getenv("TEST_TARGET") != null;
-        FSDirectory dir = FSDirectory.open(Paths.get(testMode ? System.getenv("TEST_TMPDIR") : "/var/lib/lucene"));
+        FSDirectory dir = FSDirectory.open(Paths.get(testMode ? System.getenv("TEST_TMPDIR") : "/tmp/lucene"));
         IndexWriterConfig config = new IndexWriterConfig(AiryAnalyzer.build());
 
         writer = new IndexWriter(dir, config);

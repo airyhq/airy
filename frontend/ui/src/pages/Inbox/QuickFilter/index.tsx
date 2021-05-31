@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
-import {ConversationFilter} from 'model';
 
-import {StateModel} from '../../../reducers';
+import {ConversationFilter, StateModel} from '../../../reducers';
 
 import {setFilter} from '../../../actions/conversationsFilter';
 

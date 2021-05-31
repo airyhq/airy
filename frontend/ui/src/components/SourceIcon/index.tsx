@@ -1,7 +1,5 @@
 import React from 'react';
 
-import {Channel} from 'model';
-
 import {ReactComponent as GoogleIcon} from 'assets/images/icons/google_avatar.svg';
 import {ReactComponent as WhatsappIcon} from 'assets/images/icons/whatsapp_avatar.svg';
 import {ReactComponent as SmsIcon} from 'assets/images/icons/sms_avatar.svg';
@@ -16,7 +14,7 @@ const sourceIconsMap = {
   chatplugin: AiryAvatar,
 };
 
-export const IconChannelFilter = ({channel}: {channel: Channel}) => {
-  const SourceIcon = sourceIconsMap[channel.source];
-  return <SourceIcon />;
+export const SourceIcon = ({source, ...props}) => {
+  const SourceIcon = sourceIconsMap[source];
+  return <SourceIcon {...props} />;
 };

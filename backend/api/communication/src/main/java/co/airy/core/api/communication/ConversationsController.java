@@ -102,7 +102,7 @@ public class ConversationsController {
 
         int totalSize = queryResult.getTotal();
         String nextCursor = null;
-        if (cursor + pageSize < totalSize) {
+        if (cursor + pageSize < queryResult.getFilteredTotal()) {
             nextCursor = String.valueOf(cursor + pageSize);
         }
 

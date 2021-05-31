@@ -61,7 +61,7 @@ class ConversationsListTest {
     private static final Channel defaultChannel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(UUID.randomUUID().toString())
-            .setSource("facebook")
+            .setSource("airy")
             .setSourceChannelId("ps-id")
             .build();
 
@@ -208,6 +208,11 @@ class ConversationsListTest {
     @Test
     void canFilterByUnreadMessageCount() throws Exception {
         checkConversationsFound("{\"filters\": \"unread_count:2\"}", 1);
+    }
+
+    @Test
+    void canFindBySource() throws Exception {
+        checkConversationsFound("{\"filters\": \"source:" + channelToFind.getSource() + "\"}", 2);
     }
 
     @Test

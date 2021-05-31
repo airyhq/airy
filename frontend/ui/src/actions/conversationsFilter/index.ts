@@ -1,10 +1,10 @@
 import {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
-import {Conversation, ConversationFilter, Pagination} from 'model';
+import {Conversation, Pagination} from 'model';
 import {PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 
-import {StateModel} from '../../reducers';
+import {ConversationFilter, StateModel} from '../../reducers';
 import {loadingConversationsAction} from '../conversations';
 import {delay, isEqual, omit} from 'lodash-es';
 

@@ -2,10 +2,10 @@ import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {omit, sortBy} from 'lodash-es';
 import {SearchField, LinkButton, Button} from 'components';
-import {Tag as TagModel, Channel, ConversationFilter} from 'model';
+import {Tag as TagModel, Channel} from 'model';
 import {listTags} from '../../../actions/tags';
 import {setFilter} from '../../../actions/conversationsFilter';
-import {StateModel} from '../../../reducers';
+import {ConversationFilter, StateModel} from '../../../reducers';
 import DialogCustomizable from '../../../components/DialogCustomizable';
 import Tag from '../../../components/Tag';
 import {ReactComponent as CheckmarkIcon} from 'assets/images/icons/checkmark.svg';
@@ -13,13 +13,20 @@ import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkma
 import styles from './Popup.module.scss';
 import {allChannels} from '../../../selectors/channels';
 import ChannelAvatar from '../../../components/ChannelAvatar';
+import {prettifySource} from '../../../../../../lib/typescript/model';
+import {SourceIcon} from '../../../components/SourceIcon';
 
 function mapStateToProps(state: StateModel) {
+  const channels: Channel[] = Object.values(allChannels(state));
   return {
     user: state.data.user,
     filter: state.data.conversations.filtered.currentFilter,
     tags: state.data.tags.all,
-    channels: Object.values(allChannels(state)),
+    channels,
+    sources: channels.reduce<Set<string>>((acc, {source}) => {
+      acc.add(source);
+      return acc;
+    }, new Set<string>()),
   };
 }
 
@@ -35,16 +42,15 @@ type PopUpFilterProps = {
 } & ConnectedProps<typeof connector>;
 
 const PopUpFilter = (props: PopUpFilterProps) => {
-  const {filter, channels, tags, listTags, closeCallback, setFilter} = props;
-
-  const [pageSearch, setPageSearch] = useState('');
+  const {filter, channels, tags, listTags, closeCallback, setFilter, sources} = props;
+  const [channelSearch, setChannelSearch] = useState('');
   const [tagSearch, setTagSearch] = useState('');
 
   useEffect(() => {
     listTags();
   }, [listTags]);
 
-  const resetPressed = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const onReset = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
     setFilter({});
     closeCallback();
@@ -52,17 +58,21 @@ const PopUpFilter = (props: PopUpFilterProps) => {
 
   const toggleReadOnly = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
-    const newFilter: ConversationFilter = {...filter};
-    newFilter.readOnly = !filter.readOnly;
-    newFilter.unreadOnly = filter.readOnly;
+    const newFilter: ConversationFilter = {
+      ...filter,
+      readOnly: !filter.readOnly,
+      unreadOnly: filter.readOnly,
+    };
     setFilter(newFilter);
   };
 
   const toggleUnreadOnly = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
-    const newFilter: ConversationFilter = {...filter};
-    newFilter.unreadOnly = !filter.unreadOnly;
-    newFilter.readOnly = filter.unreadOnly;
+    const newFilter: ConversationFilter = {
+      ...filter,
+      unreadOnly: !filter.unreadOnly,
+      readOnly: filter.unreadOnly,
+    };
     setFilter(newFilter);
   };
 
@@ -77,24 +87,24 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     return (channelsList || []).includes(channel.id);
   };
 
-  const toggleChannel = (e: React.MouseEvent<HTMLElement, MouseEvent>, channel: Channel) => {
-    e.stopPropagation();
-    const channels = filter.byChannels ? [...filter.byChannels] : [];
-    isChannelSelected(channels, channel) ? channels.splice(channels.indexOf(channel.id), 1) : channels.push(channel.id);
+  const isSourceSelected = (sourcesList: Array<string>, source: string) => {
+    return (sourcesList || []).includes(source);
+  };
 
-    if (channels.length > 0) {
+  const toggleSelection = filterKey => (id: string) => {
+    let items = filter[filterKey] || [];
+    items = items.includes(id) ? items.filter(item => item !== id) : items.concat([id]);
+    if (items.length > 0) {
       setFilter({
         ...filter,
-        byChannels: channels,
+        [filterKey]: items,
       });
     } else {
-      setFilter(omit(filter, 'byChannels'));
+      setFilter(omit(filter, filterKey));
     }
   };
 
-  const isTagSelected = (tagList: string[], tag: TagModel) => {
-    return (tagList || []).includes(tag.id);
-  };
+  const isTagSelected = (tagList: string[], tag: TagModel) => (tagList || []).includes(tag.id);
 
   const toggleTag = (tag: TagModel) => {
     const tags = filter.byTags ? [...filter.byTags] : [];
@@ -109,9 +119,8 @@ const PopUpFilter = (props: PopUpFilterProps) => {
     }
   };
 
-  const OpenIcon = () => {
-    return <div className={styles.openIconButton} />;
-  };
+  const toggleChannel = toggleSelection('byChannels');
+  const toggleSource = toggleSelection('bySources');
 
   return (
     <DialogCustomizable
@@ -148,7 +157,7 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                       : styles.filterButtonSelected
                   }
                   onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => setState(event, true)}>
-                  <OpenIcon />
+                  <div className={styles.openIconButton} />
                   Open
                 </button>
                 <button
@@ -167,49 +176,53 @@ const PopUpFilter = (props: PopUpFilterProps) => {
             </div>
           </div>
         </div>
-        <div className={styles.filterColumn}>
-          <h3>By Tags</h3>
-          <div className={styles.searchField}>
-            <SearchField
-              placeholder="Search for Tags"
-              value={tagSearch}
-              setValue={(value: string) => setTagSearch(value)}
-            />
+        {Object.keys(tags).length > 0 && (
+          <div className={styles.filterColumn}>
+            <h3>By Tags</h3>
+            <div className={styles.searchField}>
+              <SearchField
+                placeholder="Search for Tags"
+                value={tagSearch}
+                setValue={(value: string) => setTagSearch(value)}
+              />
+            </div>
+            <div className={styles.tagList}>
+              {sortBy(tags, tag => tag.name)
+                .filter((tag: TagModel) => tag.name.toLowerCase().includes(tagSearch.toLowerCase()))
+                .map((tag: TagModel) => (
+                  <Tag
+                    key={tag.id}
+                    tag={tag}
+                    variant={isTagSelected(filter.byTags, tag) ? 'default' : 'light'}
+                    onClick={() => toggleTag(tag)}
+                  />
+                ))}
+            </div>
           </div>
-          <div className={styles.tagList}>
-            {sortBy(tags, tag => tag.name)
-              .filter((tag: TagModel) => tag.name.toLowerCase().includes(tagSearch.toLowerCase()))
-              .map((tag: TagModel) => (
-                <Tag
-                  key={tag.id}
-                  tag={tag}
-                  variant={isTagSelected(filter.byTags, tag) ? 'default' : 'light'}
-                  onClick={() => toggleTag(tag)}
-                />
-              ))}
-          </div>
-        </div>
+        )}
 
-        {channels.length > 1 ? (
+        {channels.length > 1 && (
           <div className={styles.filterColumn}>
             <h3>By Channel</h3>
             <div className={styles.searchField}>
               <SearchField
                 placeholder="Search for Channel"
-                value={pageSearch}
-                setValue={(value: string) => setPageSearch(value)}
+                value={channelSearch}
+                setValue={(value: string) => setChannelSearch(value)}
               />
             </div>
             <div className={styles.sourcesList}>
               {sortBy(channels, channel => channel.metadata?.name)
-                .filter((channel: Channel) => channel.metadata?.name.toLowerCase().includes(pageSearch.toLowerCase()))
+                .filter((channel: Channel) =>
+                  channel.metadata?.name.toLowerCase().includes(channelSearch.toLowerCase())
+                )
                 .map((channel, key) => (
                   <div
                     key={key}
                     className={`${styles.sourceEntry} ${
                       isChannelSelected(filter.byChannels, channel) ? styles.sourceSelected : ''
                     }`}
-                    onClick={event => toggleChannel(event, channel)}>
+                    onClick={() => toggleChannel(channel.id)}>
                     {isChannelSelected(filter.byChannels, channel) ? (
                       <div className={styles.checkmarkIcon}>
                         <CheckmarkIcon aria-hidden />
@@ -217,16 +230,43 @@ const PopUpFilter = (props: PopUpFilterProps) => {
                     ) : (
                       <ChannelAvatar channel={channel} style={{height: '24px', width: '24px', marginRight: '4px'}} />
                     )}
-                    <div className={styles.pageName}>{channel.metadata?.name || channel.sourceChannelId}</div>
+                    <div className={styles.itemName}>{channel.metadata?.name || channel.sourceChannelId}</div>
                   </div>
                 ))}
             </div>
           </div>
-        ) : null}
+        )}
+
+        {sources.size > 1 && (
+          <div className={styles.filterColumn}>
+            <h3>By Source</h3>
+            <div className={styles.sourcesList}>
+              {Array.from<string>(sources)
+                .sort()
+                .map(source => (
+                  <div
+                    key={source}
+                    className={`${styles.sourceEntry} ${
+                      isSourceSelected(filter.bySources, source) ? styles.sourceSelected : ''
+                    }`}
+                    onClick={() => toggleSource(source)}>
+                    {isSourceSelected(filter.bySources, source) ? (
+                      <div className={styles.checkmarkIcon}>
+                        <CheckmarkIcon aria-hidden />
+                      </div>
+                    ) : (
+                      <SourceIcon style={{height: '24px', width: '24px', marginRight: '4px'}} source={source} />
+                    )}
+                    <div className={styles.itemName}>{prettifySource(source)}</div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className={styles.buttonRow}>
-        <LinkButton onClick={resetPressed}>Clear All</LinkButton>
+        <LinkButton onClick={onReset}>Clear All</LinkButton>
         <Button styleVariant="outline-big" onClick={closeCallback}>
           Apply
         </Button>

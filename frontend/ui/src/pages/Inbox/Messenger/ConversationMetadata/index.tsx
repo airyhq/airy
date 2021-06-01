@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from 'react';
+import React, {FormEvent, useEffect, useState, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {Tag as TagModel, TagColor} from 'model';
@@ -51,7 +51,9 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
 
   useEffect(() => {
     listTags();
-  }, []);
+    setShowEditDisplayName(false);
+    setDisplayName(conversation.metadata.contact.displayName);
+  }, [conversation]);
 
   const showAddTags = () => {
     setTagName('');
@@ -108,6 +110,20 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
         }
       });
     }
+  };
+
+  const saveEditDisplayName = () => {
+    updateContact(conversation.id, displayName);
+    setShowEditDisplayName(!saveEditDisplayName);
+  };
+
+  const cancelEditDisplayName = () => {
+    setShowEditDisplayName(!showEditDisplayName);
+    setDisplayName(conversation.metadata.contact.displayName);
+  };
+
+  const editDisplayName = () => {
+    setShowEditDisplayName(!showEditDisplayName);
   };
 
   const renderTagsDialog = () => {
@@ -179,30 +195,33 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
               <Avatar contact={contact} />
             </div>
             <div className={styles.displayName}>
-              {contact?.displayName}
-              <EditPencilIcon title="Edit Display Name" onClick={() => setShowEditDisplayName(!showEditDisplayName)} />
-            </div>
-            {showEditDisplayName && (
-              <div className={styles.editDisplayNameContainer}>
-                <Input
-                  autoFocus={true}
-                  id="newDisplayName"
-                  placeholder="New Contact Name"
-                  value={displayName}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)}
-                  height={32}
-                  fontClass="font-base"
-                />
-                <div className={styles.displayNameButtons}>
-                  <button className={styles.cancelEdit} onClick={() => setShowEditDisplayName(!showEditDisplayName)}>
-                    <CloseIcon />
-                  </button>
-                  <button className={styles.saveEdit} onClick={() => updateContact(conversation.id, displayName)}>
-                    <CheckmarkCircleIcon />
-                  </button>
+              {showEditDisplayName ? (
+                <div className={styles.editDisplayNameContainer}>
+                  <Input
+                    autoFocus={true}
+                    placeholder={conversation.metadata.contact.displayName}
+                    value={displayName}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)}
+                    height={32}
+                    fontClass="font-base"
+                  />
+                  <div className={styles.displayNameButtons}>
+                    <button className={styles.cancelEdit} onClick={cancelEditDisplayName}>
+                      <CloseIcon />
+                    </button>
+                    <button className={styles.saveEdit} onClick={saveEditDisplayName}>
+                      <CheckmarkCircleIcon />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              ) : (
+                <>
+                  {' '}
+                  {contact?.displayName}
+                  <EditPencilIcon title="Edit Display Name" onClick={editDisplayName} />
+                </>
+              )}
+            </div>
           </div>
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>

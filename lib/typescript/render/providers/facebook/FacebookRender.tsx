@@ -164,8 +164,8 @@ function facebookInbound(message: Message): ContentUnion {
   if (messageJson.attachments?.[0].type === 'image' && messageJson.attachments?.length > 1) {
     return {
       type: 'images',
-      images: messageJson.attachments.map(attach => {
-        return parseAttachment(attach);
+      images: messageJson.attachments.map(image => {
+        return parseAttachment(image);
       }),
     };
   }

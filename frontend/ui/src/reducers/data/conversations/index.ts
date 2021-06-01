@@ -166,6 +166,30 @@ const removeTagFromConversation = (state: AllConversationsState, conversationId,
   };
 };
 
+const updateContact = (state: AllConversationsState, conversationId, displayName) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          contact: {
+            ...conversation.metadata.contact,
+            displayName: displayName,
+          },
+        },
+      },
+    },
+  };
+};
+
 const lastMessageOf = (messages: Message[]): Message => {
   return sortBy(messages, message => message.sentAt).pop();
 };
@@ -225,6 +249,10 @@ function allReducer(
           },
         },
       };
+    case getType(metadataActions.updateContactAction): {
+      return updateContact(state, action.payload.conversationId, action.payload.displayName);
+    }
+
     case getType(actions.mergeConversationsAction):
       if (action.payload.paginationData) {
         return {

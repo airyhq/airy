@@ -14,13 +14,10 @@ export const setMetadataAction = createAction(
 export const updateContactAction = createAction(UPDATE_CONTACT, (conversationId: string, displayName: string) => ({
   conversationId,
   displayName,
-}))<{
-  conversationId: string;
-  displayName: string;
-}>();
+}))<{conversationId: string; displayName: string}>();
 
 export const updateContact = (conversationId: string, displayName: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.updateContact({conversationId, displayName}).then(() =>
-    dispatch(updateContactAction(displayName))
+    dispatch(updateContactAction(conversationId, displayName))
   );
 };

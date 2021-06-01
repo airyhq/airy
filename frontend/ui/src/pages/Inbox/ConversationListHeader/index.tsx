@@ -24,7 +24,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: StateModel) => ({
   currentFilter: state.data.conversations.filtered.currentFilter || {},
   totalConversations: state.data.conversations.all.paginationData.total,
-  filteredPaginationData: state.data.conversations.filtered.paginationData,
+  filteredPaginationData: state.data.conversations.filtered.paginationData.filteredTotal,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -67,9 +67,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   const InboxConversationCount = () => {
     const {totalConversations, filteredPaginationData} = props;
 
-    return (
-      <div className={styles.headline}>{`Inbox (${filteredPaginationData.filteredTotal ?? totalConversations})`}</div>
-    );
+    return <div className={styles.headline}>{`Inbox (${filteredPaginationData ?? totalConversations})`}</div>;
   };
 
   const toggleFilter = () => {

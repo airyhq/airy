@@ -17,6 +17,7 @@ import {
   PaginatedResponse,
   MetadataUpsertRequestPayload,
   SetStateConversationRequestPayload,
+  UpdateContactRequestPayload,
 } from './src/payload';
 import {
   listChannelsDef,
@@ -42,6 +43,7 @@ import {
   listTemplatesDef,
   metadataUpsertDef,
   setStateConversationDef,
+  updateContactDef,
 } from './src/endpoints';
 
 function isString(object: any) {
@@ -185,6 +187,8 @@ export class HttpClient {
   public metadataUpsert = this.getRequest<MetadataUpsertRequestPayload>(metadataUpsertDef);
 
   public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
+
+  public updateContact = this.getRequest<UpdateContactRequestPayload>(updateContactDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

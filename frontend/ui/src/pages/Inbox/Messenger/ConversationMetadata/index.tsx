@@ -5,6 +5,7 @@ import {Tag as TagModel, TagColor} from 'model';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
+import {updateContact} from '../../../../actions/metadata';
 import {Avatar} from 'render';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
@@ -15,6 +16,9 @@ import Tag from '../../../../components/Tag';
 import {Button, Input, LinkButton} from 'components';
 import {getConversation} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
+import {ReactComponent as EditPencilIcon} from 'assets/images/icons/edit-pencil.svg';
+import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
+import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
 
 import {cyShowTagsDialog, cyTagsDialogInput, cyTagsDialogButton} from 'handles';
 import difference from 'lodash/difference';
@@ -31,15 +35,19 @@ const mapDispatchToProps = {
   listTags,
   addTagToConversation,
   removeTagFromConversation,
+  updateContact,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
-  const {tags, createTag, conversation, listTags, addTagToConversation, removeTagFromConversation} = props;
+  const {tags, createTag, conversation, listTags, addTagToConversation, removeTagFromConversation, updateContact} =
+    props;
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [tagName, setTagName] = useState('');
+  const [showEditDisplayName, setShowEditDisplayName] = useState(false);
+  const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName);
 
   useEffect(() => {
     listTags();
@@ -170,7 +178,31 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             <div className={styles.avatarImage}>
               <Avatar contact={contact} />
             </div>
-            <div className={styles.displayName}>{contact?.displayName}</div>
+            <div className={styles.displayName}>
+              {contact?.displayName}
+              <EditPencilIcon title="Edit Display Name" onClick={() => setShowEditDisplayName(!showEditDisplayName)} />
+            </div>
+            {showEditDisplayName && (
+              <div className={styles.editDisplayNameContainer}>
+                <Input
+                  autoFocus={true}
+                  id="newDisplayName"
+                  placeholder="New Contact Name"
+                  value={displayName}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)}
+                  height={32}
+                  fontClass="font-base"
+                />
+                <div className={styles.displayNameButtons}>
+                  <button className={styles.cancelEdit} onClick={() => setShowEditDisplayName(!showEditDisplayName)}>
+                    <CloseIcon />
+                  </button>
+                  <button className={styles.saveEdit} onClick={() => updateContact(conversation.id, displayName)}>
+                    <CheckmarkCircleIcon />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>

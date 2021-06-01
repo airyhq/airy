@@ -43,13 +43,13 @@ class ConversationsUpdateTest {
     @Autowired
     private WebTestHelper webTestHelper;
 
-    private final static Channel channel = Channel.newBuilder()
+    private static final Channel channel = Channel.newBuilder()
             .setConnectionState(ChannelConnectionState.CONNECTED)
             .setId(UUID.randomUUID().toString())
             .setSource("facebook")
             .setSourceChannelId("ps-id")
             .build();
-    final static String conversationId = UUID.randomUUID().toString();
+    private static final String conversationId = UUID.randomUUID().toString();
 
     @BeforeAll
     static void beforeAll() throws Exception {

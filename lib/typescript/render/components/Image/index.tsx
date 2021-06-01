@@ -1,14 +1,24 @@
 import React from 'react';
 import {ImageWithFallback} from '../ImageWithFallback';
+import {ImageContent} from '../../providers/facebook/facebookModel';
 import styles from './index.module.scss';
 
 type ImageRenderProps = {
-  imageUrl: string;
+  imageUrl?: string;
+  images?: ImageContent[];
   altText?: string;
 };
 
-export const Image = ({imageUrl, altText}: ImageRenderProps) => (
+export const Image = ({imageUrl, altText, images}: ImageRenderProps) => (
   <div className={styles.wrapper}>
-    <ImageWithFallback className={styles.messageListItemImageBlock} src={imageUrl} alt={altText} />
+    {images ? (
+      <div className={styles.imagesContainer}>
+        {images.map(image => (
+          <ImageWithFallback className={`${styles.messageListItemImageBlock} ${styles.images}`} src={image.imageUrl} />
+        ))}
+      </div>
+    ) : (
+      <ImageWithFallback className={styles.messageListItemImageBlock} src={imageUrl} alt={altText} />
+    )}
   </div>
 );

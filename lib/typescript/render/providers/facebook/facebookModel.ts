@@ -103,6 +103,11 @@ export interface ImageContent extends Content {
   imageUrl: string;
 }
 
+export interface ImagesContent extends Content {
+  type: 'images';
+  images: ImageContent[];
+}
+
 export interface VideoContent extends Content {
   type: 'video';
   videoUrl: string;
@@ -146,6 +151,7 @@ export type ContentUnion =
   | TextContent
   | PostbackButton
   | ImageContent
+  | ImagesContent
   | VideoContent
   | ButtonTemplate
   | GenericTemplate

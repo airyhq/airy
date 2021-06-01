@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-google-connector
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: sources-google-connector
     type: sources
@@ -26,37 +26,37 @@ spec:
     spec:
       containers:
         - name: app
-          image: '{{ .Values.global.containerRegistry}}/{{ .Values.imageConnector }}:{{ .Values.global.appImageTag }}'
+          image: '{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.imageConnector }}:{{ .Values.global.kubernetes.appImageTag }}'
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: security
           env:
-            - name: KAFKA_BROKERS
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_BROKERS
-            - name: KAFKA_SCHEMA_REGISTRY_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_SCHEMA_REGISTRY_URL
-            - name: KAFKA_COMMIT_INTERVAL_MS
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_COMMIT_INTERVAL_MS
-            - name: GOOGLE_SA_FILE
-              valueFrom:
-                configMapKeyRef:
-                  name: "{{ .Values.component }}"
-                  key: saFile
-            - name: GOOGLE_PARTNER_KEY
-              valueFrom:
-                configMapKeyRef:
-                  name: "{{ .Values.component }}"
-                  key: partnerKey
+          - name: KAFKA_BROKERS
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_BROKERS
+          - name: KAFKA_SCHEMA_REGISTRY_URL
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_SCHEMA_REGISTRY_URL
+          - name: KAFKA_COMMIT_INTERVAL_MS
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_COMMIT_INTERVAL_MS
+          - name: GOOGLE_SA_FILE
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Values.component }}"
+                key: saFile
+          - name: GOOGLE_PARTNER_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Values.component }}"
+                key: partnerKey
           livenessProbe:
             httpGet:
               path: /actuator/health
@@ -92,7 +92,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sources-google-events-router
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: sources-google-events-router
     type: sources
@@ -116,7 +116,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: "{{ .Values.global.containerRegistry}}/{{ .Values.imageEventsRouter }}:{{ .Values.global.appImageTag }}"
+        image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.imageEventsRouter }}:{{ .Values.global.kubernetes.appImageTag }}"
         imagePullPolicy: Always
         env:
         - name: KAFKA_BROKERS

@@ -54,6 +54,7 @@ security:
     provider: "my-provider"
     clientId: "client-id"
     clientSecret: "client-secret"
+    logoutSuccessUrl: "http://example.org/login" # Optional url to redirect to when logged out
     scope: "openid,email" # comma separated list of scopes. Must include "openid"
     clientAuthenticationMethod: "basic" # One of [basic,post,none]
     authorizationGrantType: "authorization_code" # One of [authorization_code,implicit,refresh_token,client_credentials,password]

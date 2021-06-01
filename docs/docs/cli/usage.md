@@ -24,8 +24,8 @@ airy api endpoint [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API endpoint
-      --config-dir string   config directory of an airy core instance (default is the cwd)
+      --apihost string     Airy Core HTTP API endpoint
+      --workspace string   workspace directory of an Airy core instance (default is the cwd)
 ```
 
 
@@ -52,8 +52,8 @@ airy config apply [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API endpoint
-      --config-dir string   config directory of an airy core instance (default is the cwd)
+      --apihost string     Airy Core HTTP API endpoint
+      --workspace string   workspace directory of an Airy core instance (default is the cwd)
 ```
 
 
@@ -65,17 +65,17 @@ Creates an instance of Airy Core
 
 #### Synopsis
 
-Creates a config directory (default .) with default configuration and starts an Airy Core instance using the given provider
+Creates a workspace directory (default .) with default configuration and starts an Airy Core instance using the given provider
 
 ```
-airy create [config directory] [flags]
+airy create [workspace directory] [flags]
 ```
 
 #### Options
 
 ```
   -h, --help                             help for create
-      --init-only                        Only create the airy config directory and exit
+      --init-only                        Only create the airy workspace directory and exit
       --namespace string                 (optional) Kubernetes namespace that Airy should be installed to. (default "default")
       --provider string                  One of the supported providers (aws|minikube). (default "minikube")
       --provider-config stringToString   Additional configuration for the providers. (default [])
@@ -84,8 +84,8 @@ airy create [config directory] [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API endpoint
-      --config-dir string   config directory of an airy core instance (default is the cwd)
+      --apihost string     Airy Core HTTP API endpoint
+      --workspace string   workspace directory of an Airy core instance (default is the cwd)
 ```
 
 
@@ -108,8 +108,8 @@ airy status [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API endpoint
-      --config-dir string   config directory of an airy core instance (default is the cwd)
+      --apihost string     Airy Core HTTP API endpoint
+      --workspace string   workspace directory of an Airy core instance (default is the cwd)
 ```
 
 
@@ -132,8 +132,8 @@ airy ui [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API endpoint
-      --config-dir string   config directory of an airy core instance (default is the cwd)
+      --apihost string     Airy Core HTTP API endpoint
+      --workspace string   workspace directory of an Airy core instance (default is the cwd)
 ```
 
 
@@ -156,8 +156,8 @@ airy version [flags]
 #### Options inherited from parent commands
 
 ```
-      --apihost string      Airy Core HTTP API endpoint
-      --config-dir string   config directory of an airy core instance (default is the cwd)
+      --apihost string     Airy Core HTTP API endpoint
+      --workspace string   workspace directory of an Airy core instance (default is the cwd)
 ```
 
 

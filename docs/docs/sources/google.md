@@ -42,7 +42,7 @@ Let's proceed step by step.
 ### Step 1: Registration
 
 You first need to be registered with Google's Business Messages before
-configuring this source. Refer to [Google's Business Messages'
+configuring this source. Refer to [Google's Business Messages
 guides](https://developers.google.com/business-communications/business-messages/guides)
 to find more information about this source and the registration process.
 
@@ -53,7 +53,7 @@ Once you are registered, head over to your Google Service Account and create a k
 <img alt="Facebook token page" src={useBaseUrl('img/sources/google/key.png')} />
 
 Copy the Google Service Account key file provided by Google to
-your `airy.yaml` file as a one line string next to `saFile:` below `components/sources/google`:
+your `airy.yaml` file as a one line string next to `saFile:` (below `components/sources/google`).
 
 ### Step 3: Verification by Google
 
@@ -73,7 +73,7 @@ Once the verification process has been completed, Google's Business Messages wil
 
 ## Connecting Google's Business Messages to your Airy Core instance
 
-After the configuration, you can connect Google's Business Messages source to your instance by sending a request to the [Channels endpoint](/api/endpoints/channels#google).
+After the configuration, you can connect a Google's Business Messages source to your instance by sending a request to the [Channels endpoint](/api/endpoints/channels#google).
 
 <ButtonBox
 icon={<BoltSVG />}

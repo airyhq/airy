@@ -6,6 +6,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.LongPoint;
+import org.apache.lucene.document.NumericDocValuesField;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
@@ -24,12 +25,15 @@ public class DocumentMapper {
         if (conversation.getDisplayName() != null) {
             document.add(new TextField("display_name", conversation.getDisplayName(), Field.Store.YES));
         }
+        document.add(new StringField("source", conversation.getSource(), Field.Store.YES));
 
         document.add(new LongPoint("created_at", conversation.getCreatedAt()));
         document.add(new StoredField("created_at", conversation.getCreatedAt()));
         document.add(new IntPoint("unread_count", conversation.getUnreadMessageCount()));
         document.add(new StoredField("unread_count", conversation.getUnreadMessageCount()));
 
+        // sort enabled field
+        document.add(new NumericDocValuesField("last_message_at", conversation.getLastMessageAt()));
         for (String tagId : conversation.getTagIds()) {
             document.add(new TextField("tag_ids", tagId, Field.Store.YES));
         }

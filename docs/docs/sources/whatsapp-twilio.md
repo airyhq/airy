@@ -9,7 +9,7 @@ import ButtonBox from "@site/src/components/ButtonBox";
 
 <TLDR>
 
-Connect with **2 Billion WhatsApp users** via messages and templates.
+Connect with **2 billion WhatsApp users** via messages and templates.
 
 </TLDR>
 
@@ -29,7 +29,7 @@ import TwilioConfig from './twilio-config.mdx'
 
 <TwilioConfig />
 
-Then, you need to request access to enable your Twilio number for WhatsApp: complete the request form on [Twilio's webiste](https://www.twilio.com/whatsapp/request-access). To request access, you
+Then, you need to request access to enable your Twilio number for WhatsApp by completing the request form on [Twilio's website](https://www.twilio.com/whatsapp/request-access). To request access, you
 need to have a Facebook Business Manager ID: read [Twilio's documentation](https://www.twilio.com/docs/whatsapp/api) for more information on the request process.
 
 import TwilioSources from './twilio-sources.mdx'

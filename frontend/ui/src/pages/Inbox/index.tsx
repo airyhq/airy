@@ -3,7 +3,7 @@ import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
 
 import {User} from 'model';
-import {listConversations} from '../../actions/conversations';
+import {fetchConversations} from '../../actions/conversations';
 import {listChannels} from '../../actions/channel';
 import {StateModel} from '../../reducers';
 
@@ -24,7 +24,7 @@ const mapStateToProps = (state: StateModel) => {
 };
 
 const mapDispatchToProps = {
-  listConversations,
+  listConversations: fetchConversations,
   listChannels,
 };
 

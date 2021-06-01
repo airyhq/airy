@@ -197,11 +197,13 @@ tag](/api/endpoints/tags.md#create). Returns status code `200` if successful.
 ```json5
 {
   "conversation_id": "CONVERSATION_ID",
-  "state": "open"
+  "state": "OPEN"
 }
 ```
 
 **Empty response (204)**
+
+Supported states of a conversation are `OPEN` and `CLOSED`.
 
 ## Remove the state of a conversation
 

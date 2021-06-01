@@ -85,11 +85,18 @@ You can also use an existing VPC, without creating additional VPC resources:
 airy create --provider aws --provider-config vpcId=myExistingVpcId
 ```
 
+By default the command creates an AWS NodeGroup with two `c5.xlarge` instances.
+For customizing the instance type run:
+
+```bash
+airy create --provider aws --provider-config instanceType=c5.large
+```
+
 This will execute the following actions:
 
 1. Create the `my-airy` directory and populate it with the configuration that
    the CLI will need. All subsequent commands need to either be run from this
-   directory or use the `--config-dir` flag.
+   directory or use the `--workspace` flag.
 2. Start an Airy Core cluster in your AWS account.
 3. Print URLs for accessing the UIs and APIs (see recording).
 

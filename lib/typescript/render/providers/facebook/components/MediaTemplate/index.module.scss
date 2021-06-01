@@ -1,0 +1,20 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.mediaTemplate {
+  max-width: 500px;
+  border-radius: 8px;
+  border: 1px solid var(--color-light-gray);
+}
+
+.media {
+  padding: 20px 10px;
+}
+
+.mediaBorder {
+  border-bottom: 1px solid var(--color-light-gray);
+}
+
+.mediaInfo {
+  color: var(--color-airy-blue);
+}

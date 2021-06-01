@@ -4,5 +4,5 @@ import co.airy.core.api.communication.dto.LuceneQueryResult;
 import org.apache.lucene.search.Query;
 
 public interface ReadOnlyLuceneStore {
-    LuceneQueryResult query(Query query);
+    LuceneQueryResult query(Query query, int cursor, int pageSize);
 }

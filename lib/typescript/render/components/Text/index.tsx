@@ -10,7 +10,7 @@ type TextRenderProps = {
 export const Text = ({text, fromContact}: TextRenderProps) => (
   <Linkify
     tagName="div"
-    className={`${styles.textMessage} ${fromContact ? styles.contactContent : styles.memberContent}`}
+    className={`${fromContact ? styles.contactContent : styles.memberContent}`}
     options={{
       defaultProtocol: 'https',
       className: `${styles.messageLink} ${fromContact ? styles.contactContent : styles.memberContent}`,

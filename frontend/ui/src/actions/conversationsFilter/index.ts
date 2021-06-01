@@ -1,10 +1,10 @@
 import {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
-import {Conversation, ConversationFilter, Pagination} from 'model';
+import {Conversation, Pagination} from 'model';
 import {PaginatedResponse} from 'httpclient';
 import {HttpClientInstance} from '../../InitializeAiryApi';
 
-import {StateModel} from '../../reducers';
+import {ConversationFilter, StateModel} from '../../reducers';
 import {loadingConversationsAction} from '../conversations';
 import {delay, isEqual, omit} from 'lodash-es';
 
@@ -50,10 +50,15 @@ export const setFilter = (filter: ConversationFilter) => {
 
 const executeFilter = (filter: ConversationFilter, dispatch: Dispatch<any>, state: () => StateModel) => {
   dispatch(updateFilteredConversationsAction(filter));
-  refetchConversations(dispatch, state);
+  fetchFilteredConversations(dispatch, state);
 };
 
-const refetchConversations = (dispatch: Dispatch<any>, state: () => StateModel, cursor?: string) => {
+export const fetchNextFilteredPage = () => (dispatch: Dispatch<any>, state: () => StateModel) => {
+  const cursor = state().data.conversations.filtered.paginationData.nextCursor;
+  return fetchFilteredConversations(dispatch, state, cursor);
+};
+
+const fetchFilteredConversations = (dispatch: Dispatch<any>, state: () => StateModel, cursor?: string) => {
   dispatch(loadingConversationsAction(true));
   const filter = state().data.conversations.filtered.currentFilter;
   if (Object.keys(filter).length > 0) {
@@ -90,7 +95,7 @@ const filterToLuceneSyntax = (filter: ConversationFilter): string | null => {
     filterQuery.push('unread_count:0');
   }
   if (filter.displayName) {
-    filterQuery.push('display_name=*' + filter.displayName + '*');
+    filterQuery.push('display_name:*' + filter.displayName + '*');
   }
   if (filter.byTags && filter.byTags.length > 0) {
     filterQuery.push('tag_ids:(' + filter.byTags.join(' AND ') + ')');

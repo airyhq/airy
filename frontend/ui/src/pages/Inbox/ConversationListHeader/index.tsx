@@ -29,13 +29,10 @@ const mapStateToProps = (state: StateModel) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type ConversationListHeaderProps = {
-  onFilterVisibilityChanged: () => void;
-} & ConnectedProps<typeof connector> &
-  RouteComponentProps;
+type ConversationListHeaderProps = ConnectedProps<typeof connector> & RouteComponentProps;
 
 const ConversationListHeader = (props: ConversationListHeaderProps) => {
-  const {setSearch, resetFilteredConversationAction, currentFilter, onFilterVisibilityChanged} = props;
+  const {setSearch, resetFilteredConversationAction, currentFilter} = props;
 
   const [isShowingSearchInput, setIsShowingSearchInput] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -77,7 +74,6 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
-    onFilterVisibilityChanged();
   };
 
   const isFilterActive = (): boolean => Object.values(currentFilter).length > 0;
@@ -101,8 +97,8 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   ) : (
     <div className={styles.containerSearchHeadline}>
       <InboxConversationCount />
-      <div className={styles.searchBox} data-cy={cySearchButton}>
-        <button type="button" className={styles.searchButton} onClick={onClickSearch}>
+      <div className={styles.searchBox}>
+        <button type="button" className={styles.searchButton} onClick={onClickSearch} data-cy={cySearchButton}>
           <IconSearch className={styles.searchIcon} title="Search" />
         </button>
         <button

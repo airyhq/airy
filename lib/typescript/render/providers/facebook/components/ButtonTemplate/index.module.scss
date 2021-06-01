@@ -16,25 +16,6 @@
   padding: 16px;
 }
 
-.button {
-  font-weight: 700;
-  background-color: var(--color-template-highlight);
-  border-radius: 8px;
-  margin-top: 16px;
-  text-align: center;
-}
-
-.buttonText {
-  color: var(--color-contrast);
-  text-decoration: none;
-  padding: 8px;
-  display: block;
-  &:hover {
-    color: var(--color-contrast);
-    text-decoration: none;
-  }
-}
-
 .messageTime {
   @include font-s;
   color: var(--color-text-gray);

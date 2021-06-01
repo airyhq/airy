@@ -33,13 +33,17 @@
 
 .closeButton {
   outline: none;
-  padding: 2px 0 0 2px;
   border: none;
   height: 32px;
   width: 32px;
   background: transparent;
   border-radius: 100%;
   cursor: pointer;
+
+  svg {
+    width: 10px;
+    height: 10px;
+  }
 
   path {
     fill: #fff;
@@ -57,6 +61,11 @@
   background: transparent;
   border-radius: 100%;
   cursor: pointer;
+
+  svg {
+    height: 24px;
+    width: 24px;
+  }
 
   path {
     fill: #fff;

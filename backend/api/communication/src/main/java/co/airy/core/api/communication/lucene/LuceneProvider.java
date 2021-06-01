@@ -11,7 +11,11 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.SortedNumericSortField;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.TopFieldCollector;
 import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -51,25 +55,31 @@ public class LuceneProvider implements LuceneStore {
     }
 
     @Override
-    public LuceneQueryResult query(Query query) {
+    public LuceneQueryResult query(Query query, int cursor, int pageSize) {
         try {
             refreshReader();
-            final IndexSearcher indexSearcher = new IndexSearcher(reader);
-            final TopDocs topDocs = indexSearcher.search(query, Integer.MAX_VALUE);
+            final IndexSearcher searcher = new IndexSearcher(reader);
+            SortField lastMessageSort = new SortedNumericSortField("last_message_at", SortField.Type.LONG, true);
+            Sort sort = new Sort(lastMessageSort);
+            final TopFieldCollector collector = TopFieldCollector.create(sort, 2000, Integer.MAX_VALUE);
 
-            List<ConversationIndex> conversations = new ArrayList<>(topDocs.scoreDocs.length);
-            for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
-                final Document doc = indexSearcher.doc(scoreDoc.doc);
+            searcher.search(query, collector);
+            final TopDocs hits = collector.topDocs(cursor, pageSize);
+
+            List<ConversationIndex> conversations = new ArrayList<>(hits.scoreDocs.length);
+            for (ScoreDoc scoreDoc : hits.scoreDocs) {
+                final Document doc = searcher.doc(scoreDoc.doc);
                 conversations.add(documentMapper.fromDocument(doc));
             }
 
             return LuceneQueryResult.builder()
                     .conversations(conversations)
-                    .total(reader.maxDoc()).build();
+                    .filteredTotal(hits.totalHits.value)
+                    .total(reader.numDocs()).build();
         } catch (Exception e) {
             log.error("Failed to query Lucene store with query {}", query, e);
             return LuceneQueryResult.builder().conversations(List.of())
-                    .total(reader.maxDoc()).build();
+                    .total(reader.numDocs()).filteredTotal(0).build();
         }
     }
 

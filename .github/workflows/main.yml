@@ -24,9 +24,16 @@ jobs:
 
       - name: Enable CI settings
         run: |
-          echo "$GCS_SA_KEY" > key.json
           cat <<EOF >>.bazelrc
             common --config=ci
+          EOF
+
+      - name: Add bazel cache secret
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        run: |
+          echo "$GCS_SA_KEY" > key.json
+          cat <<EOF >>.bazelrc
+            build:ci --remote_cache=https://storage.googleapis.com/airy-ci-cache
             build:ci --google_credentials=key.json
           EOF
         env:
@@ -63,10 +70,19 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           GITHUB_BRANCH: ${{ github.ref }}
       - name: Publish http-client library to npm
-        if: ${{ startsWith(github.ref, 'refs/tags/npm-v') }}
+        if: ${{ startsWith(github.ref, 'refs/heads/main') }}
         run: |
           sudo apt-get install -y expect
           bazel run //lib/typescript/httpclient:publish-npm release
+        env:
+          DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
+          DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}
+          DEPLOY_NPM_EMAIL: ${{ secrets.DEPLOY_NPM_EMAIL }}
+      - name: Publish chat-plugin library to npm
+        if: ${{ startsWith(github.ref, 'refs/heads/main') }}
+        run: |
+          sudo apt-get install -y expect
+          bazel run //frontend/chat-plugin:publish-npm release
         env:
           DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
           DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}

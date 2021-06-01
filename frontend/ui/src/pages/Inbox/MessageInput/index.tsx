@@ -75,6 +75,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   useEffect(() => {
+    setInput('');
+    textAreaRef && textAreaRef.current.focus();
+  }, [conversation.id]);
+
+  useEffect(() => {
     textAreaRef.current.style.height = '0px';
     let scrollHeight = Math.min(300, textAreaRef.current.scrollHeight);
     if (scrollHeight < 40) scrollHeight = 40;
@@ -113,7 +118,8 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.metaKey && event.key === 'Enter') {
+    if (event.key === 'Enter') {
+      event.preventDefault();
       sendMessage();
     }
   };
@@ -205,7 +211,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             disabled={disconnectedChannelToolTip ? true : false}
             onClick={() => handleEmojiDrawer()}>
             <div className={styles.actionToolTip}>Emojis</div>
-            <Smiley aria-hidden />
+            <Smiley aria-hidden className={styles.smileyIcon} />
           </button>
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''} ${
@@ -215,7 +221,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             disabled={disconnectedChannelToolTip ? true : false}
             onClick={() => toggleTemplateModal()}>
             <div className={styles.actionToolTip}>Templates</div>
-            <TemplateAlt aria-hidden />
+            <div className={styles.templateActionContainer}>
+              <TemplateAlt aria-hidden className={styles.templateAltIcon} />
+            </div>
           </button>
         </>
       </div>

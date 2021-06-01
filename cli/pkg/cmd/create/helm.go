@@ -1,9 +1,11 @@
 package create
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"io/ioutil"
+	"strings"
 
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -75,13 +77,11 @@ func (h *Helm) Setup() error {
 	return nil
 }
 
-func (h *Helm) InstallCharts(overrides []string) error {
+func (h *Helm) InstallCharts() error {
 	return h.runHelm(append([]string{"install",
 		"--values", "/apps/config/airy-config-map.yaml",
-		"--set", "global.appImageTag=" + h.version,
-		"--set", "global.namespace=" + h.namespace,
 		"--timeout", "10m0s",
-		"core", "/apps/helm-chart/"}, overrides...))
+		"core", "/apps/helm-chart/"}))
 }
 
 func (h *Helm) runHelm(args []string) error {
@@ -176,7 +176,7 @@ func (h *Helm) upsertAiryConfigMap() error {
 	}
 
 	cmData := map[string]string{
-		"airy-config-map.yaml": string(file),
+		"airy-config-map.yaml": airyYamlToHelmValues(string(file)),
 	}
 
 	if cm.GetName() != "" {
@@ -194,6 +194,18 @@ func (h *Helm) upsertAiryConfigMap() error {
 			Data: cmData,
 		}, v1.CreateOptions{})
 	return err
+}
+
+// Transform Airy yaml to make it usable as values
+// by moving all data to a "global:" root node
+func airyYamlToHelmValues(content string) string {
+	scanner := bufio.NewScanner(strings.NewReader(content))
+	var builder strings.Builder
+	builder.WriteString("global:\n")
+	for scanner.Scan() {
+		builder.WriteString("  " + scanner.Text() + "\n")
+	}
+	return builder.String()
 }
 
 func (h *Helm) cleanupJob() error {

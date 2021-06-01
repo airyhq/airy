@@ -13,6 +13,7 @@ import co.airy.core.api.communication.payload.ConversationListResponsePayload;
 import co.airy.core.api.communication.payload.ConversationResponsePayload;
 import co.airy.core.api.communication.payload.ConversationSetStateRequestPayload;
 import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
+import co.airy.core.api.communication.payload.ConversationUpdateContactRequestPayload;
 import co.airy.core.api.communication.payload.PaginationData;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.Subject;
@@ -254,4 +255,27 @@ public class ConversationsController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/conversations.updateContact")
+    ResponseEntity<?> conversationUpdateContact(@RequestBody @Valid ConversationUpdateContactRequestPayload requestPayload) {
+        final String conversationId = requestPayload.getConversationId().toString();
+        final String displayName = requestPayload.getDisplayName();
+        final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
+        final Conversation conversation = store.get(conversationId);
+
+        if (conversation == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME, displayName);
+
+        try {
+            stores.storeMetadata(metadata);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

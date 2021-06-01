@@ -25,6 +25,7 @@ import java.util.UUID;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.core.api.communication.util.Topics.getTopics;
 import static co.airy.test.Timing.retryOnException;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-class ConversationsStateTest {
+class ConversationsUpdateTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
@@ -42,10 +43,20 @@ class ConversationsStateTest {
     @Autowired
     private WebTestHelper webTestHelper;
 
+    private static final Channel channel = Channel.newBuilder()
+            .setConnectionState(ChannelConnectionState.CONNECTED)
+            .setId(UUID.randomUUID().toString())
+            .setSource("facebook")
+            .setSourceChannelId("ps-id")
+            .build();
+    private static final String conversationId = UUID.randomUUID().toString();
+
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, getTopics());
         kafkaTestHelper.beforeAll();
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
+        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
     }
 
     @AfterAll
@@ -59,18 +70,7 @@ class ConversationsStateTest {
     }
 
     @Test
-    void canSetandRemoveStateFromConversations() throws Exception {
-        final Channel channel = Channel.newBuilder()
-                .setConnectionState(ChannelConnectionState.CONNECTED)
-                .setId(UUID.randomUUID().toString())
-                .setSource("facebook")
-                .setSourceChannelId("ps-id")
-                .build();
-
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
-        final String conversationId = UUID.randomUUID().toString();
-        kafkaTestHelper.produceRecords(TestConversation.generateRecords(conversationId, channel, 1));
-
+    void canSetAndRemoveStateFromConversations() throws Exception {
         retryOnException(() -> webTestHelper.post("/conversations.info",
                 "{\"conversation_id\":\"" + conversationId + "\"}")
                 .andExpect(status().isOk())
@@ -104,4 +104,24 @@ class ConversationsStateTest {
                 "conversation state was not removed");
     }
 
+    @Test
+    void canUpdateDisplayName() throws Exception {
+        final String desiredDisplayName = "Grace Hopper";
+        retryOnException(() -> webTestHelper.post("/conversations.info",
+                "{\"conversation_id\":\"" + conversationId + "\"}")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id", is(conversationId)))
+                        .andExpect(jsonPath("$.metadata.contact.display_name", is(not(desiredDisplayName)))),
+                "conversation was not created");
+
+        webTestHelper.post("/conversations.updateContact",
+                "{\"conversation_id\":\"" + conversationId + "\",\"display_name\":\"" + desiredDisplayName + "\"}")
+                .andExpect(status().isNoContent());
+
+        retryOnException(() -> webTestHelper.post("/conversations.info",
+                "{\"conversation_id\":\"" + conversationId + "\"}")
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.metadata.contact.display_name", is(desiredDisplayName))),
+                "conversation was not updated");
+    }
 }

@@ -218,3 +218,18 @@ Supported states of a conversation are `OPEN` and `CLOSED`.
 ```
 
 **Empty response (204)**
+
+## Update contact information
+
+`POST /conversations.updateContact`
+
+**Sample request**
+
+```json5
+{
+  "conversation_id": "CONVERSATION_ID",
+  "display_name": "Grace"
+}
+```
+
+**Empty response (204)**

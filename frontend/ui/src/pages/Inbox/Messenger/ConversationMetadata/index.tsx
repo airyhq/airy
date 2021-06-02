@@ -5,6 +5,7 @@ import {Tag as TagModel, TagColor} from 'model';
 
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
+import {updateContact} from '../../../../actions/metadata';
 import {Avatar} from 'render';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
@@ -15,6 +16,9 @@ import Tag from '../../../../components/Tag';
 import {Button, Input, LinkButton} from 'components';
 import {getConversation} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
+import {ReactComponent as EditPencilIcon} from 'assets/images/icons/edit-pencil.svg';
+import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
+import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
 
 import {cyShowTagsDialog, cyTagsDialogInput, cyTagsDialogButton} from 'handles';
 import difference from 'lodash/difference';
@@ -31,19 +35,25 @@ const mapDispatchToProps = {
   listTags,
   addTagToConversation,
   removeTagFromConversation,
+  updateContact,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
-  const {tags, createTag, conversation, listTags, addTagToConversation, removeTagFromConversation} = props;
+  const {tags, createTag, conversation, listTags, addTagToConversation, removeTagFromConversation, updateContact} =
+    props;
   const [showTagsDialog, setShowTagsDialog] = useState(false);
   const [color, setColor] = useState<TagColor>('tag-blue');
   const [tagName, setTagName] = useState('');
+  const [showEditDisplayName, setShowEditDisplayName] = useState(false);
+  const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName);
 
   useEffect(() => {
     listTags();
-  }, []);
+    setShowEditDisplayName(false);
+    setDisplayName(conversation.metadata.contact.displayName);
+  }, [conversation]);
 
   const showAddTags = () => {
     setTagName('');
@@ -100,6 +110,20 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
         }
       });
     }
+  };
+
+  const saveEditDisplayName = () => {
+    updateContact(conversation.id, displayName);
+    setShowEditDisplayName(!saveEditDisplayName);
+  };
+
+  const cancelEditDisplayName = () => {
+    setShowEditDisplayName(!showEditDisplayName);
+    setDisplayName(conversation.metadata.contact.displayName);
+  };
+
+  const editDisplayName = () => {
+    setShowEditDisplayName(!showEditDisplayName);
   };
 
   const renderTagsDialog = () => {
@@ -170,7 +194,43 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             <div className={styles.avatarImage}>
               <Avatar contact={contact} />
             </div>
-            <div className={styles.displayName}>{contact?.displayName}</div>
+            <div className={styles.displayNameContainer}>
+              {showEditDisplayName ? (
+                <div className={styles.editDisplayNameContainer}>
+                  <Input
+                    autoFocus={true}
+                    placeholder={conversation.metadata.contact.displayName}
+                    value={displayName}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)}
+                    height={32}
+                    fontClass="font-base"
+                    minLength={1}
+                    maxLength={50}
+                    label="Set Name"
+                  />
+                  <div className={styles.displayNameButtons}>
+                    <button className={styles.cancelEdit} onClick={cancelEditDisplayName}>
+                      <CloseIcon />
+                    </button>
+                    <button
+                      className={`${displayName.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
+                      onClick={saveEditDisplayName}
+                      disabled={displayName.length === 0}>
+                      <CheckmarkCircleIcon />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className={styles.displayName}>{contact?.displayName}</div>
+                  <EditPencilIcon
+                    className={styles.editPencilIcon}
+                    title="Edit Display Name"
+                    onClick={editDisplayName}
+                  />
+                </>
+              )}
+            </div>
           </div>
           <div className={styles.tags}>
             <div className={styles.tagsHeader}>

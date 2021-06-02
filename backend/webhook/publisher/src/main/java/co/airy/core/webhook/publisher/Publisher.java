@@ -16,6 +16,8 @@ import co.airy.model.metadata.dto.MetadataMap;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.slf4j.Logger;
@@ -50,7 +52,7 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
                 .groupBy((webhookId, webhook) -> allWebhooksKey)
                 .reduce((oldValue, newValue) -> newValue, Materialized.as(webhooksStore));
 
-        builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+        builder.<String, Message>stream(new ApplicationCommunicationMessages().name(), Consumed.with(Topology.AutoOffsetReset.LATEST))
                 .filter((messageId, message) -> message.getUpdatedAt() == null)
                 .foreach((messageId, message) -> publishRecord(message));
 

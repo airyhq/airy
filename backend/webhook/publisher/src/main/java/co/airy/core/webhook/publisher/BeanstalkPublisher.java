@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class BeanstalkPublisher {
     private static final Logger log = AiryLoggerFactory.getLogger(BeanstalkPublisher.class);
 
-    private ObjectMapper objectMapper = new ObjectMapper()
+    private final ObjectMapper objectMapper = new ObjectMapper()
             .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
             .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 

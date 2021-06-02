@@ -282,7 +282,7 @@ function allReducer(
         },
       };
 
-    case getType(metadataActions.updateContactAction): {
+    case getType(actions.updateContactAction): {
       return updateContact(state, action.payload.conversationId, action.payload.displayName);
     }
     case getType(actions.mergeConversationsAction):
@@ -432,7 +432,7 @@ function filteredReducer(
 
     case getType(actions.removeTagFromConversationAction):
       return removeTagFromFilteredConversation(state, action.payload.conversationId, action.payload.tagId);
-    case getType(metadataActions.updateContactAction): {
+    case getType(actions.updateContactAction): {
       return updateContactFiltered(state, action.payload.conversationId, action.payload.displayName);
     }
     default:

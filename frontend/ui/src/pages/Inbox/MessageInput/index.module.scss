@@ -64,6 +64,7 @@
 .inputWrap {
   display: flex;
   width: 100%;
+  height: 204px;
 }
 
 .messageTextArea {
@@ -231,12 +232,10 @@
 }
 
 .templateSelector {
-  max-height: 164px;
-  height: auto;
-  overflow: hidden;
-  position: relative;
-  margin: 0 8px 8px 8px;
-  max-width: 300px;
+  margin: 4px;
+  transform: scale(0.5);
+  height: 0;
+  transform-origin: left;
 }
 
 .suggestionRepliesSelector {

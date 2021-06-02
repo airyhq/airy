@@ -23,8 +23,8 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: StateModel) => ({
   currentFilter: state.data.conversations.filtered.currentFilter || {},
-  totalConversations: state.data.conversations.all.paginationData.filteredTotal,
-  filteredPaginationData: state.data.conversations.filtered.paginationData.filteredTotal,
+  totalConversations: state.data.conversations.all.paginationData.total,
+  filteredPaginationData: state.data.conversations.filtered.paginationData.total,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

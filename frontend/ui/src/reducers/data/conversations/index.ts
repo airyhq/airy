@@ -329,6 +329,30 @@ function allReducer(
   }
 }
 
+const updateContactFiltered = (state: FilteredState, conversationId, displayName) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          contact: {
+            ...conversation.metadata.contact,
+            displayName: displayName,
+          },
+        },
+      },
+    },
+  };
+};
+
 function filteredReducer(
   state: FilteredState = {
     items: {},
@@ -357,6 +381,9 @@ function filteredReducer(
         ...state,
         currentFilter: action.payload.filter,
       };
+    case getType(metadataActions.updateContactAction): {
+      return updateContactFiltered(state, action.payload.conversationId, action.payload.displayName);
+    }
     default:
       return state;
   }

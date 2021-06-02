@@ -177,6 +177,27 @@ const removeTagFromConversation = (state: AllConversationsState, conversationId,
   };
 };
 
+const removeTagFromFilteredConversation = (state: FilteredState, conversationId, tagId) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          tags: pickBy(conversation.metadata?.tags, (_, key) => key !== tagId),
+        },
+      },
+    },
+  };
+};
+
 const lastMessageOf = (messages: Message[]): Message => {
   return sortBy(messages, message => message.sentAt).pop();
 };
@@ -340,6 +361,25 @@ function filteredReducer(
         ...state,
         currentFilter: action.payload.filter,
       };
+    case getType(metadataActions.setMetadataAction):
+      if (action.payload.subject !== 'conversation' || !state.items[action.payload.identifier]) {
+        return state;
+      }
+
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [action.payload.identifier]: {
+            id: action.payload.identifier,
+            ...state.items[action.payload.identifier],
+            metadata: merge({}, state.items[action.payload.identifier]?.metadata, action.payload.metadata),
+          },
+        },
+      };
+
+    case getType(actions.removeTagFromConversationAction):
+      return removeTagFromFilteredConversation(state, action.payload.conversationId, action.payload.tagId);
     default:
       return state;
   }

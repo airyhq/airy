@@ -14,7 +14,7 @@ const CONVERSATION_REMOVE_ERROR = '@@conversations/REMOVE_ERROR_FROM_CONVERSATIO
 const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
 const CONVERSATION_UPDATE_PAGINATION_DATA = '@@conversation/UPDATE_PAGINATION_DATA';
 const CONVERSATION_SET_STATE = '@@conversations/CONVERSATION_SET_STATE';
-const CONVERASTION_UPDATE_CONTACT = '@@conversations/CONVERSATION_UPDATE_CONTACT';
+const CONVERSATION_UPDATE_CONTACT = '@@conversations/CONVERSATION_UPDATE_CONTACT';
 
 export const loadingConversationAction = createAction(
   CONVERSATION_LOADING,
@@ -59,7 +59,7 @@ export const setStateConversationAction = createAction(
 )<{conversationId: string; state: string}>();
 
 export const updateContactAction = createAction(
-  CONVERASTION_UPDATE_CONTACT,
+  CONVERSATION_UPDATE_CONTACT,
   (conversationId: string, displayName: string) => ({
     conversationId,
     displayName,

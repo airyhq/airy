@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState, useRef} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {Tag as TagModel, TagColor} from 'model';
@@ -194,7 +194,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             <div className={styles.avatarImage}>
               <Avatar contact={contact} />
             </div>
-            <div className={styles.displayName}>
+            <div className={styles.displayNameContainer}>
               {showEditDisplayName ? (
                 <div className={styles.editDisplayNameContainer}>
                   <Input
@@ -204,21 +204,30 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)}
                     height={32}
                     fontClass="font-base"
+                    minLength={1}
+                    maxLength={50}
+                    label="Set Name"
                   />
                   <div className={styles.displayNameButtons}>
                     <button className={styles.cancelEdit} onClick={cancelEditDisplayName}>
                       <CloseIcon />
                     </button>
-                    <button className={styles.saveEdit} onClick={saveEditDisplayName}>
+                    <button
+                      className={`${displayName.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
+                      onClick={saveEditDisplayName}
+                      disabled={displayName.length === 0}>
                       <CheckmarkCircleIcon />
                     </button>
                   </div>
                 </div>
               ) : (
                 <>
-                  {' '}
-                  {contact?.displayName}
-                  <EditPencilIcon title="Edit Display Name" onClick={editDisplayName} />
+                  <div className={styles.displayName}>{contact?.displayName}</div>
+                  <EditPencilIcon
+                    className={styles.editPencilIcon}
+                    title="Edit Display Name"
+                    onClick={editDisplayName}
+                  />
                 </>
               )}
             </div>

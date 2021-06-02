@@ -14,7 +14,11 @@ export const Image = ({imageUrl, altText, images}: ImageRenderProps) => (
     {images ? (
       <div className={styles.imagesContainer}>
         {images.map(image => (
-          <ImageWithFallback className={`${styles.messageListItemImageBlock} ${styles.images}`} src={image.imageUrl} />
+          <ImageWithFallback
+            className={`${styles.messageListItemImageBlock} ${styles.images}`}
+            src={image.imageUrl}
+            key={image.imageUrl}
+          />
         ))}
       </div>
     ) : (

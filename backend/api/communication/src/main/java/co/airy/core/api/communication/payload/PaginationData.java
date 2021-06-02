@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class PaginationData {
     private String previousCursor;
     private String nextCursor;
-    private long filteredTotal;
-    private long total; //total conversation count
+    private long total;
 }

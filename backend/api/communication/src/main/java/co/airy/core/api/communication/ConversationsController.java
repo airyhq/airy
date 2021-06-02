@@ -101,7 +101,6 @@ public class ConversationsController {
 
         final List<Conversation> enrichedConversations = stores.addChannelMetadata(conversations);
 
-        int totalSize = queryResult.getTotal();
         String nextCursor = null;
         if (cursor + pageSize < queryResult.getFilteredTotal()) {
             nextCursor = String.valueOf(cursor + pageSize);
@@ -112,10 +111,9 @@ public class ConversationsController {
                         .data(enrichedConversations.stream().map(ConversationResponsePayload::fromConversation).collect(Collectors.toList()))
                         .paginationData(
                                 PaginationData.builder()
-                                        .filteredTotal(queryResult.getFilteredTotal())
                                         .nextCursor(nextCursor)
                                         .previousCursor(String.valueOf(cursor))
-                                        .total(totalSize)
+                                        .total(queryResult.getFilteredTotal())
                                         .build()
                         ).build());
     }

@@ -136,15 +136,13 @@ class ConversationsListTest {
         webTestHelper.post("/conversations.list", "{\"page_size\": 2, \"cursor\": 0}")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(2)))
-                .andExpect(jsonPath("$.pagination_data.filtered_total", is(conversations.size())))
                 .andExpect(jsonPath("$.pagination_data.total", is(conversations.size())))
                 .andExpect(jsonPath("$.pagination_data.previous_cursor", is(not(nullValue()))))
                 .andExpect(jsonPath("$.pagination_data.next_cursor", equalTo("2")));
 
         webTestHelper.post("/conversations.list", "{\"page_size\": 2, \"cursor\": 1}")
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pagination_data.filtered_total", is(conversations.size())))
-                .andExpect(jsonPath("$.pagination_data.total", is(5)))
+                .andExpect(jsonPath("$.pagination_data.total", is(conversations.size())))
                 .andExpect(jsonPath("$.data", hasSize(2)));
 
         webTestHelper.post("/conversations.list", "{\"page_size\": 2, \"cursor\": 3}")
@@ -154,20 +152,17 @@ class ConversationsListTest {
 
         webTestHelper.post("/conversations.list", "{\"page_size\": 1, \"cursor\": 0}")
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pagination_data.filtered_total", is(conversations.size())))
                 .andExpect(jsonPath("$.pagination_data.total", is(conversations.size())))
                 .andExpect(jsonPath("$.data", hasSize(1)));
 
         webTestHelper.post("/conversations.list", "{\"page_size\": 1, \"cursor\": 0, \"filters\": \"display_name:" + firstNameToFind.toLowerCase() + "\"}")
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pagination_data.filtered_total", is(1)))
-                .andExpect(jsonPath("$.pagination_data.total", is(conversations.size())))
+                .andExpect(jsonPath("$.pagination_data.total", is(1)))
                 .andExpect(jsonPath("$.data", hasSize(1)));
 
         webTestHelper.post("/conversations.list", "{\"page_size\": 10000, \"cursor\": 0, \"filters\": \"display_name:" + firstNameToFind.toLowerCase() + "\"}")
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pagination_data.filtered_total", is(1)))
-                .andExpect(jsonPath("$.pagination_data.total", is(conversations.size())))
+                .andExpect(jsonPath("$.pagination_data.total", is(1)))
                 .andExpect(jsonPath("$.data", hasSize(1)));
     }
 
@@ -241,8 +236,7 @@ class ConversationsListTest {
                 () -> webTestHelper.post("/conversations.list", payload)
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.data", hasSize(count)))
-                        .andExpect(jsonPath("pagination_data.filtered_total", is(count)))
-                        .andExpect(jsonPath("pagination_data.total", is(conversations.size()))),
+                        .andExpect(jsonPath("pagination_data.total", is(count))),
                 String.format("Expected %d conversation returned", count));
     }
 }

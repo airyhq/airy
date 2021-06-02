@@ -67,9 +67,7 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
   const InboxConversationCount = () => {
     const {totalConversations, filteredPaginationData} = props;
 
-    return (
-      <div className={styles.headline}>{`Inbox (${filteredPaginationData.filteredTotal ?? totalConversations})`}</div>
-    );
+    return <div className={styles.headline}>{`Inbox (${filteredPaginationData.total ?? totalConversations})`}</div>;
   };
 
   const toggleFilter = () => {

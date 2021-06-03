@@ -110,7 +110,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
       const scaleRatio = Math.min(resizedTemplateHeight / templateSelectorDivHeight);
 
-      if (scaleRatio <= 0.8) {
+      if (scaleRatio <= 0.7) {
         if (scaleRatio > 0.3) {
           iconSize = '18px';
           buttonSize = '36px';
@@ -363,8 +363,8 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
                   <button className={styles.removeButton} onClick={removeTemplateFromInput} ref={removeButtonTemplate}>
                     <Close
                       style={{
-                        width: closeIconWidth ? closeIconWidth : '',
-                        height: closeIconHeight ? closeIconHeight : '',
+                        width: closeIconWidth ?? '',
+                        height: closeIconHeight ?? '',
                       }}
                     />
                   </button>

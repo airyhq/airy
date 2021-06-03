@@ -16,7 +16,7 @@ import {
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 import {MediaTemplate} from './components/MediaTemplate';
-import {FallbackAttachment} from './components/Fallback';
+import {FallbackAttachment} from './components/FallbackAttachment';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message: Message = props.content;

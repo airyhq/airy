@@ -16,9 +16,11 @@ import {
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 import {MediaTemplate} from './components/MediaTemplate';
+import {FallbackAttachment} from './components/Fallback';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message: Message = props.content;
+  console.log('message', message)
   const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };
@@ -31,11 +33,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'fallback':
       return (
         <>
-          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
-
-          {content.title && <Text fromContact={props.content.fromContact || false} text={content.title} />}
-
-          {content.url && <Text fromContact={props.content.fromContact || false} text={content.url} />}
+        <FallbackAttachment fromContact={props.content.fromContact || false} content={content}/>
         </>
       );
 

@@ -65,10 +65,14 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [disconnectedChannelToolTip, setDisconnectedChannelToolTip] = useState(false);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
+  const [closeIconWidth, setCloseIconWidth] = useState('');
+  const [closeIconHeight, setCloseIconHeight] = useState('');
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
   const emojiDiv = useRef<HTMLDivElement>(null);
+  const templateSelectorDiv = useRef<HTMLDivElement>(null);
+  const removeButtonTemplate = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setInput(e.target.value);
@@ -96,6 +100,33 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
     setDisconnectedChannelToolTip(!conversation.channel.connected);
   }, [conversation.channel.connected]);
+
+  useEffect(() => {
+    if (selectedTemplate && templateSelectorDiv) {
+      console.log('templateSelectorDiv.current.offsetHeight', templateSelectorDiv.current.offsetHeight);
+
+      if (templateSelectorDiv.current.offsetHeight > 200) {
+        const scale = Math.min(200 / templateSelectorDiv.current.offsetHeight);
+
+        console.log('scale', scale);
+
+        templateSelectorDiv.current.style.transform = `scale(${scale})`;
+        templateSelectorDiv.current.style.transformOrigin = 'left';
+
+      } else {
+        setCloseIconHeight('10px');
+        setCloseIconWidth('10px');
+
+        console.log(removeButtonTemplate);
+        console.log('removeButtonTemplate.current', removeButtonTemplate.current);
+
+        if (removeButtonTemplate && removeButtonTemplate.current) {
+          removeButtonTemplate.current.style.width = '20px';
+          removeButtonTemplate.current.style.height = '20px';
+        }
+      }
+    }
+  }, [selectedTemplate]);
 
   const sendMessage = () => {
     if (!conversation.channel.connected) {
@@ -260,6 +291,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     sendButtonRef.current.focus();
   };
 
+  const removeTemplateFromInput = () => {
+    setSelectedTemplate(null);
+    setCloseIconWidth('');
+    setCloseIconHeight('');
+  };
+
   return (
     <div className={styles.container}>
       {getLastMessageWithSuggestedReplies() && (
@@ -316,16 +353,23 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             )}
 
             {selectedTemplate && (
-              <div className={styles.templateSelector}>
-                <button className={styles.removeButton} onClick={() => setSelectedTemplate(null)}>
-                  <Close />
-                </button>
-                <SourceMessage
-                  content={selectedTemplate.message}
-                  source={selectedTemplate.source}
-                  contentType="template"
-                />
-              </div>
+              <>
+                <div className={styles.templateSelector} ref={templateSelectorDiv}>
+                  <button className={styles.removeButton} onClick={removeTemplateFromInput} ref={removeButtonTemplate}>
+                    <Close
+                      style={{
+                        width: closeIconWidth ? closeIconWidth : '',
+                        height: closeIconHeight ? closeIconHeight : '',
+                      }}
+                    />
+                  </button>
+                  <SourceMessage
+                    content={selectedTemplate.message}
+                    source={selectedTemplate.source}
+                    contentType="template"
+                  />
+                </div>
+              </>
             )}
           </div>
         </div>

@@ -198,6 +198,30 @@ const removeTagFromFilteredConversation = (state: FilteredState, conversationId,
   };
 };
 
+const updateContact = (state: AllConversationsState, conversationId, displayName) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          contact: {
+            ...conversation.metadata.contact,
+            displayName: displayName,
+          },
+        },
+      },
+    },
+  };
+};
+
 const lastMessageOf = (messages: Message[]): Message => {
   return sortBy(messages, message => message.sentAt).pop();
 };
@@ -257,6 +281,10 @@ function allReducer(
           },
         },
       };
+
+    case getType(actions.updateContactAction): {
+      return updateContact(state, action.payload.conversationId, action.payload.displayName);
+    }
     case getType(actions.mergeConversationsAction):
       if (action.payload.paginationData) {
         return {
@@ -333,6 +361,30 @@ function allReducer(
   }
 }
 
+const updateContactFiltered = (state: FilteredState, conversationId, displayName) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          contact: {
+            ...conversation.metadata.contact,
+            displayName: displayName,
+          },
+        },
+      },
+    },
+  };
+};
+
 function filteredReducer(
   state: FilteredState = {
     items: {},
@@ -380,6 +432,9 @@ function filteredReducer(
 
     case getType(actions.removeTagFromConversationAction):
       return removeTagFromFilteredConversation(state, action.payload.conversationId, action.payload.tagId);
+    case getType(actions.updateContactAction): {
+      return updateContactFiltered(state, action.payload.conversationId, action.payload.displayName);
+    }
     default:
       return state;
   }

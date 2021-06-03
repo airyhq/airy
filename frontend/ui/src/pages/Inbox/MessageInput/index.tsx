@@ -102,29 +102,34 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   }, [conversation.channel.connected]);
 
   useEffect(() => {
-    if (selectedTemplate && templateSelectorDiv) {
-      console.log('templateSelectorDiv.current.offsetHeight', templateSelectorDiv.current.offsetHeight);
+    if (selectedTemplate && templateSelectorDiv && templateSelectorDiv.current.offsetHeight > 200) {
+      const resizedTemplateHeight = 200;
+      const templateSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
+      let iconSize;
+      let buttonSize;
 
-      if (templateSelectorDiv.current.offsetHeight > 200) {
-        const scale = Math.min(200 / templateSelectorDiv.current.offsetHeight);
+      const scaleRatio = Math.min(resizedTemplateHeight / templateSelectorDivHeight);
 
-        console.log('scale', scale);
+      if (scaleRatio <= 0.8) {
+        if (scaleRatio > 0.3) {
+          iconSize = '18px';
+          buttonSize = '36px';
+        } else {
+          iconSize = '30px';
+          buttonSize = '60px';
+        }
 
-        templateSelectorDiv.current.style.transform = `scale(${scale})`;
-        templateSelectorDiv.current.style.transformOrigin = 'left';
-
-      } else {
-        setCloseIconHeight('10px');
-        setCloseIconWidth('10px');
-
-        console.log(removeButtonTemplate);
-        console.log('removeButtonTemplate.current', removeButtonTemplate.current);
+        setCloseIconHeight(iconSize);
+        setCloseIconWidth(iconSize);
 
         if (removeButtonTemplate && removeButtonTemplate.current) {
-          removeButtonTemplate.current.style.width = '20px';
-          removeButtonTemplate.current.style.height = '20px';
+          removeButtonTemplate.current.style.width = buttonSize;
+          removeButtonTemplate.current.style.height = buttonSize;
         }
       }
+
+      templateSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
+      templateSelectorDiv.current.style.transformOrigin = 'left';
     }
   }, [selectedTemplate]);
 

@@ -20,7 +20,6 @@ import {FallbackAttachment} from './components/Fallback';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message: Message = props.content;
-  console.log('message', message)
   const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };
@@ -33,7 +32,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'fallback':
       return (
         <>
-        <FallbackAttachment fromContact={props.content.fromContact || false} content={content}/>
+          <FallbackAttachment fromContact={props.content.fromContact || false} content={content} />
         </>
       );
 

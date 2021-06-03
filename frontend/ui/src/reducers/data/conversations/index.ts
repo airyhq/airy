@@ -27,7 +27,6 @@ export type AllConversationPaginationData = {
   total: number;
   loading?: boolean;
   loaded?: boolean;
-  filteredTotal?: number;
 };
 
 export type ConversationMap = {

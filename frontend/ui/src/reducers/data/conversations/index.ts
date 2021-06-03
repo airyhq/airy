@@ -39,7 +39,6 @@ export type AllConversationPaginationData = {
   total: number;
   loading?: boolean;
   loaded?: boolean;
-  filteredTotal?: number;
 };
 
 export type ConversationMap = {
@@ -152,7 +151,6 @@ const initialState: AllConversationsState = {
     previousCursor: null,
     nextCursor: null,
     total: 0,
-    filteredTotal: 0,
   },
 };
 

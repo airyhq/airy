@@ -55,6 +55,51 @@ function mergeFilteredConversations(
   return conversations;
 }
 
+const updateContact = (state: ConversationFilteredState, conversationId, displayName) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          contact: {
+            ...conversation.metadata.contact,
+            displayName: displayName,
+          },
+        },
+      },
+    },
+  };
+};
+
+const removeTagFromConversation = (state: ConversationFilteredState, conversationId, tagId) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          tags: pickBy(conversation.metadata?.tags, (_, key) => key !== tagId),
+        },
+      },
+    },
+  };
+};
+
 export default function conversationFilteredReducer(
   state: ConversationFilteredState = {
     items: {},
@@ -70,19 +115,23 @@ export default function conversationFilteredReducer(
         items: mergeConversations({}, action.payload.conversations),
         paginationData: action.payload.paginationData,
       };
+
     case getType(filterActions.mergeFilteredConversationsAction):
       return {
         currentFilter: action.payload.filter,
         items: mergeFilteredConversations(state.items, action.payload.conversations),
         paginationData: action.payload.paginationData,
       };
+
     case getType(filterActions.resetFilteredConversationAction):
       return {items: {}, paginationData: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: {}};
+
     case getType(filterActions.updateFilteredConversationsAction):
       return {
         ...state,
         currentFilter: action.payload.filter,
       };
+
     case getType(metadataActions.setMetadataAction):
       if (action.payload.subject !== 'conversation' || !state.items[action.payload.identifier]) {
         return state;
@@ -100,45 +149,10 @@ export default function conversationFilteredReducer(
       };
 
     case getType(actions.removeTagFromConversationAction):
-      const conversation: Conversation = state.items[action.payload.conversationId];
-      if (!conversation) {
-        return state;
-      }
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [conversation.id]: {
-            ...conversation,
-            metadata: {
-              ...conversation.metadata,
-              tags: pickBy(conversation.metadata?.tags, (_, key) => key !== action.payload.tagId),
-            },
-          },
-        },
-      };
-    case getType(actions.updateContactAction): {
-      const conversation: Conversation = state.items[action.payload.conversationId];
-      if (!conversation) {
-        return state;
-      }
+      return removeTagFromConversation(state, action.payload.conversationId, action.payload.tagId);
 
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [conversation.id]: {
-            ...conversation,
-            metadata: {
-              ...conversation.metadata,
-              contact: {
-                ...conversation.metadata.contact,
-                displayName: action.payload.displayName,
-              },
-            },
-          },
-        },
-      };
+    case getType(actions.updateContactAction): {
+      return updateContact(state, action.payload.conversationId, action.payload.displayName);
     }
     default:
       return state;

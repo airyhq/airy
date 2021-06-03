@@ -120,6 +120,51 @@ const lastMessageOf = (messages: Message[]): Message => {
   return sortBy(messages, message => message.sentAt).pop();
 };
 
+const updateContact = (state: AllConversationsState, conversationId, displayName) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          contact: {
+            ...conversation.metadata.contact,
+            displayName: displayName,
+          },
+        },
+      },
+    },
+  };
+};
+
+const removeTagFromConversation = (state: AllConversationsState, conversationId, tagId) => {
+  const conversation: Conversation = state.items[conversationId];
+  if (!conversation) {
+    return state;
+  }
+
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        metadata: {
+          ...conversation.metadata,
+          tags: pickBy(conversation.metadata?.tags, (_, key) => key !== tagId),
+        },
+      },
+    },
+  };
+};
+
 const mergeMessages = (state: AllConversationsState, conversationId: string, messages: Message[]) => {
   const conversation: Conversation = state.items[conversationId];
 
@@ -177,27 +222,7 @@ function allReducer(
       };
 
     case getType(actions.updateContactAction): {
-      const conversation: Conversation = state.items[action.payload.conversationId];
-      if (!conversation) {
-        return state;
-      }
-
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [conversation.id]: {
-            ...conversation,
-            metadata: {
-              ...conversation.metadata,
-              contact: {
-                ...conversation.metadata.contact,
-                displayName: action.payload.displayName,
-              },
-            },
-          },
-        },
-      };
+      return updateContact(state, action.payload.conversationId, action.payload.displayName);
     }
     case getType(actions.mergeConversationsAction):
       if (action.payload.paginationData) {
@@ -243,24 +268,7 @@ function allReducer(
       };
 
     case getType(actions.removeTagFromConversationAction):
-      const conversation: Conversation = state.items[action.payload.conversationId];
-      if (!conversation) {
-        return state;
-      }
-
-      return {
-        ...state,
-        items: {
-          ...state.items,
-          [conversation.id]: {
-            ...conversation,
-            metadata: {
-              ...conversation.metadata,
-              tags: pickBy(conversation.metadata?.tags, (_, key) => key !== action.payload.tagId),
-            },
-          },
-        },
-      };
+      return removeTagFromConversation(state, action.payload.conversationId, action.payload.tagId);
 
     case getType(actions.updateMessagesPaginationDataAction):
       if (state.items[action.payload.conversationId]) {

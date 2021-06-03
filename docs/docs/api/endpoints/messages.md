@@ -48,7 +48,6 @@ are sorted from oldest to latest.
   "pagination_data": {
     "previous_cursor": "",
     "next_cursor": "",
-    "filtered_total": 1,
     "total": 1
   }
 }

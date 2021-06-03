@@ -81,11 +81,9 @@ Find users whose name ends with "Lovelace":
     }
   ],
   "pagination_data": {
-    "previous_cursor": "",
-    "next_cursor": "",
-    "filtered_total": 1,
-    "total": 1,
-    "badge_unread_count": 1
+    "previous_cursor": null,
+    "next_cursor": "20",
+    "total": 1
   }
 }
 ```

@@ -15,6 +15,7 @@ import templates from './templates';
 
 export * from './channels';
 export * from './conversations';
+export * from './conversationsFilter';
 export * from './settings';
 export * from './config';
 export * from './tags';

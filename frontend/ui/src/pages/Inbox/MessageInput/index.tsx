@@ -72,7 +72,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const sendButtonRef = useRef(null);
   const emojiDiv = useRef<HTMLDivElement>(null);
   const templateSelectorDiv = useRef<HTMLDivElement>(null);
-  const removeButtonTemplate = useRef(null);
+  const removeTemplateButton = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setInput(e.target.value);
@@ -103,12 +103,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
   useEffect(() => {
     if (selectedTemplate && templateSelectorDiv && templateSelectorDiv.current.offsetHeight > 200) {
-      const resizedTemplateHeight = 200;
+      const templateResizedHeight = 200;
       const templateSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
       let iconSize;
       let buttonSize;
 
-      const scaleRatio = Math.min(resizedTemplateHeight / templateSelectorDivHeight);
+      const scaleRatio = Math.min(templateResizedHeight / templateSelectorDivHeight);
 
       if (scaleRatio <= 0.7) {
         if (scaleRatio > 0.3) {
@@ -122,9 +122,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
         setCloseIconHeight(iconSize);
         setCloseIconWidth(iconSize);
 
-        if (removeButtonTemplate && removeButtonTemplate.current) {
-          removeButtonTemplate.current.style.width = buttonSize;
-          removeButtonTemplate.current.style.height = buttonSize;
+        if (removeTemplateButton && removeTemplateButton.current) {
+          removeTemplateButton.current.style.width = buttonSize;
+          removeTemplateButton.current.style.height = buttonSize;
         }
       }
 
@@ -360,7 +360,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             {selectedTemplate && (
               <>
                 <div className={styles.templateSelector} ref={templateSelectorDiv}>
-                  <button className={styles.removeButton} onClick={removeTemplateFromInput} ref={removeButtonTemplate}>
+                  <button className={styles.removeButton} onClick={removeTemplateFromInput} ref={removeTemplateButton}>
                     <Close
                       style={{
                         width: closeIconWidth ?? '',

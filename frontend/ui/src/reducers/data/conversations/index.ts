@@ -27,6 +27,7 @@ export type AllConversationPaginationData = {
   total: number;
   loading?: boolean;
   loaded?: boolean;
+  filteredTotal?: number;
 };
 
 export type ConversationMap = {
@@ -56,7 +57,6 @@ const initialState: AllConversationsState = {
     previousCursor: null,
     nextCursor: null,
     total: 0,
-    filteredTotal: 0,
   },
 };
 
@@ -117,16 +117,6 @@ function setLoadingOfConversation(items: ConversationMap, conversationId: string
 
 const lastMessageOf = (messages: Message[]): Message => {
   return sortBy(messages, message => message.sentAt).pop();
-
-const initialState: AllConversationsState = {
-  items: {},
-  paginationData: {
-    loading: false,
-    loaded: false,
-    previousCursor: null,
-    nextCursor: null,
-    total: 0,
-  },
 };
 
 const updateContact = (state: AllConversationsState, conversationId, displayName) => {

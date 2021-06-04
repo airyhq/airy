@@ -47,10 +47,17 @@ public class MessageParser {
 
         final Map<String, String> headers = new HashMap<>();
 
-        if(appId != null && !this.facebookAppId.equals(appId)) {
-            senderId = appId;
-        } else {
+        if (!isEcho) {
             senderId = getSourceConversationId(webhookMessaging);
+        } else if (appId != null && !appId.equals(this.facebookAppId)) {
+            // Third party app
+            senderId = appId;
+        } else if (appId == null) {
+            // Sent by Facebook moderator via Facebook inbox
+            senderId = getSourceConversationId(webhookMessaging);
+        } else {
+            // Filter out echoes coming from this app
+            throw new NotAMessageException();
         }
 
         if (postbackNode != null) {
@@ -70,7 +77,6 @@ public class MessageParser {
                 .setSenderId(senderId)
                 .setIsFromContact(!isEcho)
                 .setHeaders(headers)
-                .setSenderId(senderId)
                 .setSentAt(webhookMessaging.get("timestamp").asLong());
     }
 }

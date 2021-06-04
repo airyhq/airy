@@ -80,7 +80,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
   useEffect(() => {
     setInput('');
-    textAreaRef && textAreaRef.current.focus();
+    removeTemplateFromInput();
+
+    textAreaRef?.current?.focus();
   }, [conversation.id]);
 
   useEffect(() => {
@@ -146,7 +148,10 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
           }
         : getTextMessagePayload(source, conversation.id, input)
-    ).then(() => setInput(''));
+    ).then(() => {
+      setInput('');
+      removeTemplateFromInput();
+    });
   };
 
   const handleClick = () => {

@@ -12,10 +12,6 @@ else
   BRANCH=$(git branch --show-current)
 fi
 
-if [[ $BRANCH == "develop" ]]; then
-  echo STABLE_VERSION "develop"
-else
-  echo STABLE_VERSION $(cat ./VERSION)
-fi
+echo STABLE_VERSION $(cat ./VERSION)
 
 echo PROJECT_DIR $(pwd)

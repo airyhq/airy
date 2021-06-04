@@ -78,10 +78,11 @@ func (h *Helm) Setup() error {
 }
 
 func (h *Helm) InstallCharts() error {
+	chartURL := "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-" + h.version + ".tgz"
 	return h.runHelm(append([]string{"install",
 		"--values", "/apps/config/airy-config-map.yaml",
 		"--timeout", "10m0s",
-		"core", "/apps/helm-chart/"}))
+		"airy", chartURL}))
 }
 
 func (h *Helm) runHelm(args []string) error {
@@ -104,7 +105,7 @@ func (h *Helm) runHelm(args []string) error {
 					Containers: []corev1.Container{
 						{
 							Name:            "helm-runner",
-							Image:           "ghcr.io/airyhq/infrastructure/helm:" + h.version,
+							Image:           "alpine/helm:3.6.3",
 							Args:            args,
 							ImagePullPolicy: corev1.PullAlways,
 							VolumeMounts: []corev1.VolumeMount{

@@ -3,6 +3,3 @@ kafka:
   zookeeper: "zookeeper:2181"
   schemaRegistryUrl: "http://schema-registry:8081"
   commitInterval: 1000
-beanstalk:
-  hostname: "beanstalk"
-  port: 11300

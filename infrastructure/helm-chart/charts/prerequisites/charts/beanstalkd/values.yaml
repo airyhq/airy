@@ -6,3 +6,6 @@ port: 11300
 prometheusExporterImage: messagebird/beanstalkd_exporter
 prometheusExporterImageTag: latest
 prometheusExporterPort: 8080
+beanstalk:
+  hostname: "beanstalk"
+  port: 11300

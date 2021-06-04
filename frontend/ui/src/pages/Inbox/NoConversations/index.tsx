@@ -2,11 +2,12 @@ import React from 'react';
 import styles from './index.module.scss';
 
 interface NoConversationsProps {
-  filterSet?: boolean;
+  filterSet: boolean;
+  conversations: number;
 }
 
 const NoConversations = (props: NoConversationsProps) => {
-  return Object.keys({}).length && props.filterSet === false ? (
+  return props.conversations === 0 && props.filterSet === false ? (
     <div className={styles.component}>
       <strong>Your new messages will appear here</strong>
       <p>

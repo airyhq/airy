@@ -63,7 +63,9 @@
 
 .inputWrap {
   display: flex;
+  align-items: center;
   width: 100%;
+  max-height: 210px;
 }
 
 .messageTextArea {
@@ -231,12 +233,9 @@
 }
 
 .templateSelector {
-  max-height: 164px;
-  height: auto;
-  overflow: hidden;
+  margin: 0px 5px 8px 8px;
+  max-width: 550px;
   position: relative;
-  margin: 0 8px 8px 8px;
-  max-width: 300px;
 }
 
 .suggestionRepliesSelector {
@@ -250,23 +249,22 @@
 
 .removeButton {
   position: absolute;
-  top: 3px;
-  right: 1px;
+  right: 5px;
   border: none;
   outline: none;
-  width: 16px;
-  height: 16px;
+  width: 22px;
+  height: 22px;
   padding: 0;
   margin: 0;
   line-height: 0;
   border-radius: 50%;
-  border: 1px solid white;
+  border: 1px solid var(--color-template-highlight);
   cursor: pointer;
   z-index: 1;
 
   svg {
-    height: 8px;
-    width: 8px;
+    height: 11px;
+    width: 11px;
   }
 }
 

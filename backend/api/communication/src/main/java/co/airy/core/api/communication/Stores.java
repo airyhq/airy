@@ -90,7 +90,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
 
-        final KTable<String, Channel> channelTable = builder.<String, Channel>table(new ApplicationCommunicationChannels().name());
+        final KTable<String, Channel> channelTable = builder.table(new ApplicationCommunicationChannels().name());
 
         // conversation/message/channel metadata keyed by conversation/message/channel id
         final KTable<String, MetadataMap> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)

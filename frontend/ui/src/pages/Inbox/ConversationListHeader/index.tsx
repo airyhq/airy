@@ -68,7 +68,9 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
     const {totalConversations, filteredPaginationData} = props;
 
     return (
-      <div className={styles.headline}>{`Inbox (${filteredPaginationData.filteredTotal ?? totalConversations})`}</div>
+      <div className={styles.headline}>{`Inbox (${
+        filteredPaginationData.total === null ? totalConversations : filteredPaginationData.total
+      })`}</div>
     );
   };
 

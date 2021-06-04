@@ -65,10 +65,14 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [disconnectedChannelToolTip, setDisconnectedChannelToolTip] = useState(false);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
+  const [closeIconWidth, setCloseIconWidth] = useState('');
+  const [closeIconHeight, setCloseIconHeight] = useState('');
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
   const emojiDiv = useRef<HTMLDivElement>(null);
+  const templateSelectorDiv = useRef<HTMLDivElement>(null);
+  const removeTemplateButton = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setInput(e.target.value);
@@ -76,7 +80,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
   useEffect(() => {
     setInput('');
-    textAreaRef && textAreaRef.current.focus();
+    removeTemplateFromInput();
+
+    textAreaRef?.current?.focus();
   }, [conversation.id]);
 
   useEffect(() => {
@@ -97,6 +103,38 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     setDisconnectedChannelToolTip(!conversation.channel.connected);
   }, [conversation.channel.connected]);
 
+  useEffect(() => {
+    if (selectedTemplate && templateSelectorDiv && templateSelectorDiv.current.offsetHeight > 200) {
+      const templateResizedHeight = 200;
+      const templateSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
+      let iconSize;
+      let buttonSize;
+
+      const scaleRatio = Math.min(templateResizedHeight / templateSelectorDivHeight);
+
+      if (scaleRatio <= 0.7) {
+        if (scaleRatio > 0.3) {
+          iconSize = '18px';
+          buttonSize = '36px';
+        } else {
+          iconSize = '30px';
+          buttonSize = '60px';
+        }
+
+        setCloseIconHeight(iconSize);
+        setCloseIconWidth(iconSize);
+
+        if (removeTemplateButton && removeTemplateButton.current) {
+          removeTemplateButton.current.style.width = buttonSize;
+          removeTemplateButton.current.style.height = buttonSize;
+        }
+      }
+
+      templateSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
+      templateSelectorDiv.current.style.transformOrigin = 'left';
+    }
+  }, [selectedTemplate]);
+
   const sendMessage = () => {
     if (!conversation.channel.connected) {
       return;
@@ -110,7 +148,10 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
           }
         : getTextMessagePayload(source, conversation.id, input)
-    ).then(() => setInput(''));
+    ).then(() => {
+      setInput('');
+      removeTemplateFromInput();
+    });
   };
 
   const handleClick = () => {
@@ -260,6 +301,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     sendButtonRef.current.focus();
   };
 
+  const removeTemplateFromInput = () => {
+    setSelectedTemplate(null);
+    setCloseIconWidth('');
+    setCloseIconHeight('');
+  };
+
   return (
     <div className={styles.container}>
       {getLastMessageWithSuggestedReplies() && (
@@ -316,16 +363,23 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             )}
 
             {selectedTemplate && (
-              <div className={styles.templateSelector}>
-                <button className={styles.removeButton} onClick={() => setSelectedTemplate(null)}>
-                  <Close />
-                </button>
-                <SourceMessage
-                  content={selectedTemplate.message}
-                  source={selectedTemplate.source}
-                  contentType="template"
-                />
-              </div>
+              <>
+                <div className={styles.templateSelector} ref={templateSelectorDiv}>
+                  <button className={styles.removeButton} onClick={removeTemplateFromInput} ref={removeTemplateButton}>
+                    <Close
+                      style={{
+                        width: closeIconWidth ?? '',
+                        height: closeIconHeight ?? '',
+                      }}
+                    />
+                  </button>
+                  <SourceMessage
+                    content={selectedTemplate.message}
+                    source={selectedTemplate.source}
+                    contentType="template"
+                  />
+                </div>
+              </>
             )}
           </div>
         </div>

@@ -16,6 +16,7 @@ import {
 import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 import {MediaTemplate} from './components/MediaTemplate';
+import {FallbackAttachment} from './components/FallbackAttachment';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message: Message = props.content;
@@ -31,21 +32,24 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'fallback':
       return (
         <>
-          {content.text && <Text fromContact={props.content.fromContact || false} text={content.text} />}
-
-          {content.title && <Text fromContact={props.content.fromContact || false} text={content.title} />}
-
-          {content.url && <Text fromContact={props.content.fromContact || false} text={content.url} />}
+          <FallbackAttachment fromContact={props.content.fromContact || false} content={content} />
         </>
       );
 
     case 'postback':
-      return <Text fromContact={props.content.fromContact || false} text={content.title} />;
+      return <Text fromContact={props.content.fromContact || false} text={content.title ?? content.payload} />;
 
     case 'image':
       return (
         <>
           <Image imageUrl={content.imageUrl} />
+        </>
+      );
+
+    case 'images':
+      return (
+        <>
+          <Image images={content.images} />
         </>
       );
 
@@ -147,15 +151,24 @@ const parseAttachment = (
 function facebookInbound(message: Message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
-  if (messageJson.attachments?.length && messageJson.attachments?.type === 'fallback') {
+  if (messageJson.attachment?.type === 'fallback' || messageJson.attachments?.[0].type === 'fallback') {
     return {
       text: messageJson.text ?? null,
       ...parseAttachment(messageJson.attachment || messageJson.attachments[0]),
     };
   }
 
-  if (messageJson.attachments?.length) {
-    return parseAttachment(messageJson.attachments[0]);
+  if (messageJson.attachments?.[0].type === 'image') {
+    return {
+      type: 'images',
+      images: messageJson.attachments.map(image => {
+        return parseAttachment(image);
+      }),
+    };
+  }
+
+  if (messageJson.attachment || messageJson.attachments) {
+    return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
 
   if (messageJson.postback?.title) {

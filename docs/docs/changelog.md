@@ -3,6 +3,49 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## Hotfix 0.23.1
+
+- [[#1921](https://github.com/airyhq/airy/issues/1921)] Fix Facebook echoes not being filtered out leading to message duplication
+## 
+
+#### Changes
+
+#### 🚀 Features
+
+- [[#1899](https://github.com/airyhq/airy/issues/1899)] Remove filtered total [[#1903](https://github.com/airyhq/airy/pull/1903)]
+- [[#1716](https://github.com/airyhq/airy/issues/1716)] Enabled edit displayName [[#1902](https://github.com/airyhq/airy/pull/1902)]
+- Follow up: Add missing path [[#1888](https://github.com/airyhq/airy/pull/1888)]
+- [[#1716](https://github.com/airyhq/airy/issues/1716)] Edit contact information [[#1879](https://github.com/airyhq/airy/pull/1879)]
+
+#### 🐛 Bug Fixes
+
+- [[#1919](https://github.com/airyhq/airy/issues/1919)] Fixed min-height [[#1920](https://github.com/airyhq/airy/pull/1920)]
+- [[#1913](https://github.com/airyhq/airy/issues/1913)] Last message icon for image sent in Google conversation displays text [[#1918](https://github.com/airyhq/airy/pull/1918)]
+- [[#1907](https://github.com/airyhq/airy/issues/1907)] Fixed customize screen for 13' displays [[#1915](https://github.com/airyhq/airy/pull/1915)]
+- [[#1762](https://github.com/airyhq/airy/issues/1762)] attachments don't get displayed properly in the message input [[#1909](https://github.com/airyhq/airy/pull/1909)]
+- [[#1904](https://github.com/airyhq/airy/issues/1904)] Refactored conversations reducer [[#1908](https://github.com/airyhq/airy/pull/1908)]
+- [[#1898](https://github.com/airyhq/airy/issues/1898)] Webhook should start from latest message [[#1900](https://github.com/airyhq/airy/pull/1900)]
+- [[#1868](https://github.com/airyhq/airy/issues/1868)] tagging filtered conversations doesn't work properly [[#1897](https://github.com/airyhq/airy/pull/1897)]
+- [[#1887](https://github.com/airyhq/airy/issues/1887)] facebook render library improvement: postback and images [[#1890](https://github.com/airyhq/airy/pull/1890)]
+
+#### 🧰 Maintenance
+
+- Bump ws from 6.2.1 to 6.2.2 [[#1895](https://github.com/airyhq/airy/pull/1895)]
+- Bump ws from 6.2.1 to 6.2.2 in /docs [[#1896](https://github.com/airyhq/airy/pull/1896)]
+- Bump @types/react-dom from 17.0.5 to 17.0.6 [[#1891](https://github.com/airyhq/airy/pull/1891)]
+- Bump @types/react from 17.0.8 to 17.0.9 [[#1892](https://github.com/airyhq/airy/pull/1892)]
+- Bump sass-loader from 11.1.1 to 12.0.0 [[#1893](https://github.com/airyhq/airy/pull/1893)]
+- Bump react-modal from 3.13.1 to 3.14.2 [[#1894](https://github.com/airyhq/airy/pull/1894)]
+- Bump terser-webpack-plugin from 5.1.2 to 5.1.3 [[#1880](https://github.com/airyhq/airy/pull/1880)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.23.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.23.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.23.1/windows/amd64/airy.exe)
+
 ## 0.23.0
 
 #### 🚀 Features

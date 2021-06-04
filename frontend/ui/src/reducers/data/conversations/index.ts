@@ -118,7 +118,7 @@ const lastMessageOf = (messages: Message[]): Message => {
   return sortBy(messages, message => message.sentAt).pop();
 };
 
-const updateContact = (state: AllConversationsState, conversationId, displayName) => {
+const updateContact = (state: AllConversationsState, conversationId: string, displayName: string) => {
   const conversation: Conversation = state.items[conversationId];
   if (!conversation) {
     return state;
@@ -142,7 +142,7 @@ const updateContact = (state: AllConversationsState, conversationId, displayName
   };
 };
 
-const removeTagFromConversation = (state: AllConversationsState, conversationId, tagId) => {
+const removeTagFromConversation = (state: AllConversationsState, conversationId: string, tagId: string) => {
   const conversation: Conversation = state.items[conversationId];
   if (!conversation) {
     return state;

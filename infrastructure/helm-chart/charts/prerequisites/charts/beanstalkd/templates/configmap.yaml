@@ -4,5 +4,5 @@ metadata:
   name: beanstalk-config
   namespace: {{ .Values.global.kubernetes.namespace }}
 data:
-  BEANSTALK_HOSTNAME: {{ .Values.beanstalk.hostname }}
-  BEANSTALK_PORT: "{{ .Values.beanstalk.port }}"
+  BEANSTALK_HOSTNAME: "beanstalk"
+  BEANSTALK_PORT: "{{ .Values.port }}"

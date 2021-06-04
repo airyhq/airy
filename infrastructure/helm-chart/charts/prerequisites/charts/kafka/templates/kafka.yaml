@@ -4,8 +4,8 @@ metadata:
   name: kafka-config
   namespace: {{ .Values.global.kubernetes.namespace }}
 data:
-  KAFKA_BROKERS: {{ .Values.kafka.brokers }}
+  KAFKA_BROKERS: "kafka-headless:9092"
   KAFKA_MINIMUM_REPLICAS: "1"
-  ZOOKEEPER: {{ .Values.kafka.zookeeper }}
-  KAFKA_SCHEMA_REGISTRY_URL: {{ .Values.kafka.schemaRegistryUrl }}
-  KAFKA_COMMIT_INTERVAL_MS: "{{ .Values.kafka.commitInterval }}"
+  ZOOKEEPER: "zookeeper:2181"
+  KAFKA_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+  KAFKA_COMMIT_INTERVAL_MS: "{{ .Values.commitInterval }}"

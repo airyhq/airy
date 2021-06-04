@@ -87,7 +87,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
   useEffect(() => {
     textAreaRef.current.style.height = '0px';
-    let scrollHeight = Math.min(300, textAreaRef.current.scrollHeight);
+    let scrollHeight = Math.min(200, textAreaRef.current.scrollHeight);
     if (scrollHeight < 40) scrollHeight = 40;
     textAreaRef.current.style.height = scrollHeight + 'px';
   }, [input]);

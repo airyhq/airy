@@ -55,7 +55,7 @@ function mergeFilteredConversations(
   return conversations;
 }
 
-const updateContact = (state: ConversationFilteredState, conversationId, displayName) => {
+const updateContact = (state: ConversationFilteredState, conversationId: string, displayName: string) => {
   const conversation: Conversation = state.items[conversationId];
   if (!conversation) {
     return state;
@@ -79,7 +79,7 @@ const updateContact = (state: ConversationFilteredState, conversationId, display
   };
 };
 
-const removeTagFromConversation = (state: ConversationFilteredState, conversationId, tagId) => {
+const removeTagFromConversation = (state: ConversationFilteredState, conversationId: string, tagId: string) => {
   const conversation: Conversation = state.items[conversationId];
   if (!conversation) {
     return state;
@@ -103,7 +103,7 @@ const removeTagFromConversation = (state: ConversationFilteredState, conversatio
 export default function conversationFilteredReducer(
   state: ConversationFilteredState = {
     items: {},
-    paginationData: {previousCursor: null, nextCursor: null, total: 0},
+    paginationData: {previousCursor: null, nextCursor: null, total: null},
     currentFilter: {},
   },
   action: FilterAction | Action
@@ -124,7 +124,7 @@ export default function conversationFilteredReducer(
       };
 
     case getType(filterActions.resetFilteredConversationAction):
-      return {items: {}, paginationData: {previousCursor: null, nextCursor: null, total: 0}, currentFilter: {}};
+      return {items: {}, paginationData: {previousCursor: null, nextCursor: null, total: null}, currentFilter: {}};
 
     case getType(filterActions.updateFilteredConversationsAction):
       return {

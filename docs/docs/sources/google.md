@@ -26,6 +26,14 @@ Business Location and your running instance of Airy Core.
 
 :::
 
+:::note
+
+The Google's Business Messages source is not enabled by default.
+
+You need to add configuration in your airy.yaml file and apply it to activate it.
+
+:::
+
 ## Configuration
 
 Google's Business Messages requires the following configuration:

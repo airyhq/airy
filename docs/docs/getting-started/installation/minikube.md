@@ -4,6 +4,8 @@ sidebar_label: Minikube
 ---
 
 import TLDR from "@site/src/components/TLDR";
+import ButtonBox from "@site/src/components/ButtonBox";
+import DiamondSVG from "@site/static/icons/diamond.svg";
 
 <TLDR>
 Run Airy on minikube with one command.
@@ -78,8 +80,15 @@ change the setting for `server_addr` in the ConfigMap.
 ## Next steps
 
 Now that you have a running local installation of minikube you can connect it to
-messaging sources. Check out the [source
-documentation](/sources/introduction.md) to learn more.
+messaging sources. Check out our Quickstart guide to learn more:
+
+<ButtonBox
+icon={<DiamondSVG />}
+iconInvertible={true}
+title='To the Quick Start'
+description='Learn the Airy Basics with our Quick Start'
+link='getting-started/quickstart'
+/>
 
 ## Third party tools
 

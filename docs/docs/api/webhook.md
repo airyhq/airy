@@ -11,6 +11,14 @@ Use Webhooks to receive events to notify you when a variety of interactions or e
 
 </TLDR>
 
+:::note
+
+The webhook integration is not enabled by default.
+
+For more details on how to enable it, refer to our [Configuration Section](getting-started/installation/configuration.md#components).
+
+:::
+
 The webhook integration enables you to programmatically participate in
 conversations by sending messages or reacting to them. Here's a common
 integration pattern:

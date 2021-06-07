@@ -135,39 +135,32 @@ Error creating vpc:  operation error EC2: CreateVpc, https response error Status
 When encountering this, you can delete some of the resources just as described
 on [here](/getting-started/installation/aws#uninstall-airy-core)
 
-## Enable HTTPS
+## Secure your Airy core
+
+:::warning
+Authentication and HTTPS are disabled by default in Airy Core.
+
+As this is intended **only for testing purposes**, `it is mandatory that you to secure your Airy Core installation` as explained in this section.
+
+:::
+
+### Authentication
+
+To enable authenticaiton to the API and in the UI, refer to our [Authentication configuration section](/getting-started/installation/security)
+
+### Enable HTTPS
 
 This section guides you through the necessary steps to configure HTTPS on your `Airy Core` instance.
 
-### Create a self-signed certificate
+#### Upload certificates to AWS ACM
 
-You can skip this step if you already have an existing HTTPS certificate.
-In the example below, the certificates will be created in your `~/.airy/certs` directory, using the OpenSSL utility.
+You should use a valid HTTPS certificate to secure your `Airy Core` instance. Usually these certificates come as a bundle of:
 
-```sh
-mkdir -p ~/.airy/certs/
-cd ~/.airy/certs/
-openssl genrsa 2048 > private.key
-openssl req -new -x509 -nodes -sha1 -days 3650 -extensions v3_ca -key private.key > public.crt
------
-Country Name (2 letter code) [DE]:DE
-State or Province Name (full name) [Berlin]:Berlin
-Locality Name (eg, city) []:Berlin
-Organization Name (eg, company) [Internet Widgits Pty Ltd]:Airy GmbH
-Organizational Unit Name (eg, section) []:Development
-Common Name (e.g. server FQDN or YOUR name) []:*.elb.amazonaws.com
-Email Address []:sre@airy.co
-```
+- private key (private.key)
+- public certificate (public.crt)
+- public certificate authority bundle file (ca-bundle.crt)
 
-Note that when generating the public certificate `public.crt` you must specify a common name of FQDN, otherwise the certificate will not be used by the AWS LoadBalancer.
-
-### Upload certificates to AWS ACM
-
-```sh
-aws acm import-certificate --certificate fileb://public.crt --private-key fileb://private.key --region us-east-1
-```
-
-In case you have your own certificates, the same command for uploading the certificates applies. In case you have an additional file containing the certificate chain, for example `ca-bundle.crt`, you can use the following command instead:
+Use the following command to upload your HTTPS certificate files to AWS ACM, so that they can be used by the AWS LoadBalancer.
 
 ```sh
 aws acm import-certificate --certificate fileb://public.crt --certificate fileb://ca-bundle.crt --private-key fileb://private.key --region us-east-1
@@ -175,7 +168,15 @@ aws acm import-certificate --certificate fileb://public.crt --certificate fileb:
 
 After the certificate has been uploaded to AWS ACM, you will need the unique ARN of the certificate,for the next step.
 
-### Configure the ingress service
+:::note
+
+If you don't have your own HTTPS certificate you can request one from AWS ACM.
+
+If you want to use Let's Encrypt, have a look at the [Following Traefik ingress guide](https://doc.traefik.io/traefik/v2.0/user-guides/crd-acme/) on how to integrate the HTTPS certificates with the installed ingress controller.
+
+:::
+
+#### Configure the ingress service
 
 Locate and set your KUBECONFIG file:
 
@@ -198,7 +199,7 @@ export ELB=$(kubectl -n kube-system get service traefik -o jsonpath='{.status.lo
 kubectl patch configmap hostnames --patch "{\"data\": { \"HOST\": \"https://${ELB}\"} }"
 ```
 
-### Print HTTPS endpoint
+#### Print HTTPS endpoint
 
 At this point, the frontend and the API services of `Airy Core` should be accessible through https on the URL of the loadbalancer:
 
@@ -221,7 +222,7 @@ kubectl --kubeconfig ${KUBECONFIG} get --namespace kube-system service traefik -
 ## Next steps
 
 Now that you have a running installation of `Airy Core` on AWS you can connect it
-to messaging sources. Check out our quickstart guide:
+to messaging sources. Check out our Quickstart guide to learn more:
 
 <ButtonBox
 icon={<DiamondSVG />}

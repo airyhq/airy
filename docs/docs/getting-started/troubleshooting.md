@@ -17,7 +17,7 @@ Support** by the founding engineers.
 </TLDR>
 
 Airy Core is free and open-source for users who wish to self-host the platform.
-That doesn't mean that you are alone with your problems.
+That doesn't mean that you are alone with your questions.
 
 ## Community Support
 

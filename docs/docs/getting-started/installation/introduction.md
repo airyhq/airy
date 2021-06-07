@@ -12,12 +12,12 @@ import RocketSVG from "@site/static/icons/rocket.svg";
 
 <TLDR>
 
-You can deploy Airy Core in many different ways: **locally** or
-**production-ready in your cloud**.
+You can deploy Airy Core locally
+to test and develop, or production-ready in your cloud.
 
  </TLDR>
 
-We recommend to [install](/cli/introduction.md) the Airy CLI first which will
+We recommend [installing](/cli/introduction.md) the Airy CLI first which will
 aid you in the process of installing and managing your Airy Core instance. It is
 easy to install and works on macOS, Windows, and Linux.
 

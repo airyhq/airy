@@ -11,7 +11,7 @@ import LabelSVG from "@site/static/icons/label.svg";
 import CommentBubbleSVG from "@site/static/icons/comment-bubble.svg";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-Not every message can be handled by code, this is why Airy comes with different UIs ready for you and your team to use.
+Not every message can be handled by code, which is why Airy comes with different UIs ready for you and your team to use.
 
 While the [Chat Plugin](sources/chatplugin/overview.md) is the open-source chat UI for your website and app visitors, Airy UI offers all of the UI interfaces you need internally for a messaging platform.
 

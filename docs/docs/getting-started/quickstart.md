@@ -10,7 +10,7 @@ import RocketSVG from "@site/static/icons/rocket.svg";
 
 <TLDR>
 
-In this Quickstart we **set up our first source, listen to
+In this Quickstart we will **set up our first source, listen to
 conversations, and consume directly from Kafka.**
 
 </TLDR>

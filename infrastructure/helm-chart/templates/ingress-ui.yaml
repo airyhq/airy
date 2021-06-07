@@ -18,8 +18,15 @@ spec:
                 name: frontend-ui
                 port:
                   number: 80
-          - path: "/"
+          - path: /ui/login
             pathType: Prefix
+            backend:
+              service:
+                name: frontend-ui
+                port:
+                  number: 80
+          - path: "/"
+            pathType: Exact
             backend:
               service:
                 name: frontend-ui

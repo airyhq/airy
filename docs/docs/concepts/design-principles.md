@@ -3,7 +3,7 @@ title: Design Principles
 sidebar_label: Design Principles
 ---
 
-The design of Airy Core heavily relies on a few core ideas. The
+The design of Airy Core relies heavily on a few core ideas. The
 goal of this document is to provide context about these ideas and how they
 affected the way the platform is built.
 
@@ -26,20 +26,20 @@ And here's the second principle:
 > Every service in the system builds their version of reality.
 
 What we mean is that we do not allow services to talk to each other and share
-state via internal HTTP calls. Let's use an example to clarify: imagine we have
+states via internal HTTP calls. Let's use an example to clarify: imagine we have
 a service dealing with `conversations` data that needs `channels` data (see our
 [glossary](getting-started/glossary.md) for more information) to build a JSON response. Many
 systems would work like this:
 
 - A client asks for `conversations`
-- the service in charge makes an HTTP internal call to the `channels` service
+- The service in charge makes an HTTP internal call to the `channels` service
 - Once it obtains a response, it merges the data with the `conversations`
 - It returns the data to the client
 
 In Airy Core, it works like this:
 
 - A client asks for `conversations`
-- the service in charge has both `conversations` and `channels` data
+- The service in charge has both `conversations` and `channels` data
 - It returns the data to the client
 
 As each service has their own version of reality (aka it maintains their own
@@ -49,7 +49,7 @@ we avoid any dependencies between services.
 
 ## Test the real thing
 
-Our _default_ choice for testing is high-level integration tests. As
+Our default choice for testing are high-level integration tests. As
 "integration tests" may mean different things to different people, we explain in
 the following what it means for us.
 
@@ -63,12 +63,12 @@ queries. These endpoints depend on:
 
 To us, "testing the real thing" in this context means:
 
-- spinning up a test Kafka cluster (and a zookeeper one)
-- spinning up a test schema registry server
+- Spinning up a test Kafka cluster (and a zookeeper one)
+- Spinning up a test schema registry server
 - Run the tests against these test servers
 
-The idea is that we test code in conditions that resemble as closely as possible
-the production environments. In a way, this approach is also made possible by
+The idea is that we test code in conditions that resemble
+the production environments as closely as possible. In a way, this approach is also made possible by
 the principle "Every service in the system builds their version of reality" as
 most of our endpoints effectively only depend on the storage system and have no
 other dependencies.

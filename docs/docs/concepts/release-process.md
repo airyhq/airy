@@ -23,12 +23,12 @@ Once a release day comes, we execute the following steps:
 - We run `./scripts/release.sh start x.y.z`
 - We test the release using `airy create --provider=minikube`. Note that:
   - Any additional hot-fix is committed directly to the release branch
-  - You must wait for all the images to be pushed via CI.
+  - You must wait for all the images to be pushed via CI
 - Once we're satisfied with the release, we publish the release:
   - We run `./scripts/release.sh finish x.y.z`
   - We update the version string to `x.y.z` and the sha to `https://airy-core-binaries.s3.amazonaws.com/x.y.z/darwin/amd64/airy_darwin_sha256sum.txt` in the [Homebrew
     Formula](https://github.com/airyhq/homebrew-airy/blob/main/Formula/cli.rb)
-    for the CLI.
+    for the CLI
   - We archive cards in the done column of the [work in progress](https://github.com/airyhq/airy/projects/1) board
   - We publish the release and announce it!
 

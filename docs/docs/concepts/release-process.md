@@ -11,7 +11,7 @@ manner.
 :::note
 
 The release scripts needs a `GITHUB_TOKEN` environment variable with write
-permission to the airy org to function correctly
+permission to the Airy organiasation to function correctly
 
 :::
 
@@ -47,7 +47,7 @@ moment, the process is completely manual and goes as follows:
 - Update version file
 - Update the changelog
 - Test the hotfix
-- Merge to `main` _and_ `develop` (you do not want to alter the VERSION file in `develop`)
+- Merge to `main` _and_ `develop` (do not alter the VERSION file in `develop`)
 - Write a custom release draft
 - Publish the draft
 - Merge the branch to develop while not altering the VERSION file since the

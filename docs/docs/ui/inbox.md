@@ -125,7 +125,7 @@ link='sources/chatplugin/overview'
 />
 <br/>
 
-**Sample RichCard Carousel Message**
+**Sample Rich Card Carousel Message**
 
 <img alt="Rich Card Carousel Example" src={useBaseUrl('img/ui/RichCardCarousel.gif')} />
 

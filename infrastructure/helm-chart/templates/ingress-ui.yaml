@@ -18,6 +18,13 @@ spec:
                 name: frontend-ui
                 port:
                   number: 80
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-ui
+                port:
+                  number: 80
           - path: /chatplugin/ui
             pathType: Prefix
             backend:

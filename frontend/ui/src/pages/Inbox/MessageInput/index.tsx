@@ -88,10 +88,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   }, [conversation.id]);
 
   useEffect(() => {
-    textAreaRef.current.style.height = '0px';
-    let scrollHeight = Math.min(200, textAreaRef.current.scrollHeight);
-    if (scrollHeight < 40) scrollHeight = 40;
-    textAreaRef.current.style.height = scrollHeight + 'px';
+    if (textAreaRef && textAreaRef.current) {
+      let scrollHeight = Math.min(200, textAreaRef.current.scrollHeight);
+      if (scrollHeight < 40) scrollHeight = 40;
+      textAreaRef.current.style.height = scrollHeight + 'px';
+    }
   }, [input]);
 
   useEffect(() => {
@@ -252,6 +253,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     const selectTemplate = (template: Template) => {
       const jsonTemplate = template.content;
 
+      if (selectedTemplate) setSelectedTemplate(null);
+
+      if (input) setInput('');
+
+      if (selectedSuggestedReply) setSelectedSuggestedReply(null);
+
       if (isTextMessage(template)) {
         setInput(jsonTemplate.text);
       } else {
@@ -331,6 +338,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   const selectSuggestedReply = (reply: SuggestedReply) => {
+    if (selectedSuggestedReply) setSelectedSuggestedReply(null);
+
+    if (input) setInput('');
+
+    if (selectedTemplate) setSelectedTemplate(null);
+
     hideSuggestedReplies();
     if (isTextMessage(reply)) {
       setInput(reply.content.text);

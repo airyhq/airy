@@ -18,7 +18,7 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
   return <div />;
 };
 
-const isImageFromGoogleSource = (messageText: string) => {
+const isImageFromGoogleSource = (messageText: string | undefined) => {
   if (!messageText) return false;
 
   return (

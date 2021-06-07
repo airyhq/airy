@@ -41,7 +41,7 @@ information. The first two are required. These are your [AWS access key ID and
 AWS secret access
 key](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html),
 which serve as your account credentials. You can generate new credentials within
-AWS Identity and Access Management (IAM) if you do not already have them. The
+AWS Identity and Access Management (IAM), if you do not already have them. The
 other information you will need is region and output format, which you can leave
 as default for the time being.
 

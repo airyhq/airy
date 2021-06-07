@@ -79,7 +79,7 @@ for more information.
 
 `POST /channels.update`
 
-Update a channel's name or image url.
+Update a channel's name or image URL.
 
 **Sample request**
 
@@ -110,13 +110,13 @@ Update a channel's name or image url.
 
 ### Airy Live Chat Plugin
 
-Connects a Chat Plugin source to Airy Core.\_\_
+Connects a Chat Plugin source to Airy Core.
 
 ```
 POST /channels.chatplugin.connect
 ```
 
-- `name` is a unique identifier of your choice
+- `name` is a unique identifier of your choice.
 
 ```json5
 {
@@ -178,7 +178,7 @@ POST /channels.chatplugin.disconnect
 
 ### Facebook
 
-Disconnects a Facebook page from Airy Core
+Disconnects a Facebook page from Airy Core.
 
 ```
 POST /channels.facebook.disconnect

@@ -6,7 +6,7 @@ sidebar_label: Chat Plugin
 Refer to our [Chat Plugin overview](sources/chatplugin/overview.md) document for
 more information.
 
-The HTTP api adheres to standards laid out in the [core
+The HTTP API adheres to standards laid out in the [core
 API](/api/introduction#authentication).
 
 ### Authenticating web users
@@ -78,7 +78,7 @@ endpoint](#authenticating-web-users) as an `Authorization` header.
 
 You can also obtain a resume token on behalf of the user. To do so you need to
 call this endpoint with the system API token set on the `Authorization` header
-and with the channel and conversation id.
+and with the channel and conversation ID.
 
 **Sample request**
 

@@ -1,5 +1,5 @@
 ---
-title: Configuration your Airy Core instance
+title: Configure your Airy Core instance
 sidebar_label: Configuration
 ---
 
@@ -18,9 +18,9 @@ $EDITOR /path/to/config/directory/airy.yaml # edit your airy.yaml file
 airy config apply --workspace /path/to/config/directory/ # apply your config
 ```
 
-Your Airy Core instance will start and stop components accordingly to your
+Your Airy Core instance will start and stop components according to your
 configuration. For example, if you do not wish to start Facebook components, it
-is enough not to provide any facebook specific configuration.
+is enough not to provide any Facebook specific configuration.
 
 Now let's have a look at the different sections so you can make the changes you
 are looking for.
@@ -31,11 +31,11 @@ are looking for.
 
   If you want to launch an older version refer to our
   [Releases](https://github.com/airyhq/airy/releases) for the correct version
-  number or if you are feeling adventurous try `develop` at your own risk.
+  number, or if you are feeling adventurous, try `develop` at your own risk.
 
 - `containerRegistry` the URL of the container registry
 
-- `namespace` the Kubernetes namespace the **Airy Core** will use
+- `namespace` the Kubernetes namespace that the **Airy Core** will use
 
 - `ingress` the subdomains for the **Airy Components** that need to be accessed from outside the Kubernetes cluster
 
@@ -88,11 +88,11 @@ cluster and Redis.
 
 ### Tools
 
-These settings are used to enable or disable some external tools, used to
+These settings are used to enable or disable some external tools used to
 monitor or debug the **Airy Core**.
 
 - `akhq` Kafka GUI for Apache Kafka (For more information visit [akhq.io](https://akhq.io/))
-  - `enabled` set to either `true` to start AKHQ or `false` (default) to disable it.
+  - `enabled` set to either `true` to start AKHQ or `false` (default) to disable it
 
 ## Applying the configuration
 

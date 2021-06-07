@@ -72,7 +72,9 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const sendButtonRef = useRef(null);
   const emojiDiv = useRef<HTMLDivElement>(null);
   const templateSelectorDiv = useRef<HTMLDivElement>(null);
+  const selectedSuggestedReplyDiv = useRef<HTMLDivElement>(null);
   const removeTemplateButton = useRef(null);
+  const removeSuggestedRepliesButton = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setInput(e.target.value);
@@ -104,13 +106,50 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   }, [conversation.channel.connected]);
 
   useEffect(() => {
-    if (selectedTemplate && templateSelectorDiv && templateSelectorDiv.current.offsetHeight > 200) {
-      const templateResizedHeight = 200;
-      const templateSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
+    if (
+      selectedSuggestedReply &&
+      selectedSuggestedReplyDiv &&
+      selectedSuggestedReplyDiv.current &&
+      selectedSuggestedReplyDiv.current.offsetHeight > 200
+    ) {
+      const contentResizedHeight = 200;
+      const contentSelectorDivHeight = selectedSuggestedReplyDiv.current.offsetHeight;
       let iconSize;
       let buttonSize;
 
-      const scaleRatio = Math.min(templateResizedHeight / templateSelectorDivHeight);
+      const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
+
+      if (scaleRatio <= 0.7) {
+        if (scaleRatio > 0.3) {
+          iconSize = '18px';
+          buttonSize = '36px';
+        } else {
+          iconSize = '30px';
+          buttonSize = '60px';
+        }
+
+        setCloseIconHeight(iconSize);
+        setCloseIconWidth(iconSize);
+
+        if (removeSuggestedRepliesButton && removeSuggestedRepliesButton.current) {
+          removeSuggestedRepliesButton.current.style.width = buttonSize;
+          removeSuggestedRepliesButton.current.style.height = buttonSize;
+        }
+      }
+
+      selectedSuggestedReplyDiv.current.style.transform = `scale(${scaleRatio})`;
+      selectedSuggestedReplyDiv.current.style.transformOrigin = 'left';
+    }
+  }, [selectedSuggestedReply]);
+
+  useEffect(() => {
+    if (selectedTemplate && templateSelectorDiv && templateSelectorDiv.current.offsetHeight > 200) {
+      const contentResizedHeight = 200;
+      const contentSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
+      let iconSize;
+      let buttonSize;
+
+      const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
 
       if (scaleRatio <= 0.7) {
         if (scaleRatio > 0.3) {
@@ -307,6 +346,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     setCloseIconHeight('');
   };
 
+  const removeSelectedSuggestedReply = () => {
+    setSelectedSuggestedReply(null);
+    setCloseIconWidth('');
+    setCloseIconHeight('');
+  };
+
   return (
     <div className={styles.container}>
       {getLastMessageWithSuggestedReplies() && (
@@ -350,9 +395,17 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
               </>
             )}
             {selectedSuggestedReply && (
-              <div className={styles.suggestionRepliesSelector}>
-                <button className={styles.removeButton} onClick={() => setSelectedSuggestedReply(null)}>
-                  <Close />
+              <div className={styles.suggestionRepliesSelector} ref={selectedSuggestedReplyDiv}>
+                <button
+                  className={styles.removeButton}
+                  onClick={removeSelectedSuggestedReply}
+                  ref={removeSuggestedRepliesButton}>
+                  <Close
+                    style={{
+                      width: closeIconWidth ?? '',
+                      height: closeIconHeight ?? '',
+                    }}
+                  />
                 </button>
                 <SourceMessage
                   content={selectedSuggestedReply.message}

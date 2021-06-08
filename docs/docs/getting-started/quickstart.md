@@ -31,6 +31,14 @@ description='To get going with the Quickstart, you must install Airy first. Once
 link='/getting-started/installation/introduction'
 />
 
+:::note
+
+The Quickstart guide explains setting up and using the Chatplugin source which is enabled by default.
+
+To enable and use other sources, please refer to our [Sources documentation](/sources/introduction).
+
+:::
+
 ## Step 1: How to setup your first source
 
 The [Airy Live Chat Plugin](/sources/chatplugin/overview.md) source is well suited for a

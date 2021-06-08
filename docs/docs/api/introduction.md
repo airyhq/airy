@@ -17,8 +17,16 @@ Interact with your Airy Core via **HTTP Endpoints**, **WebSockets** or
 
 </TLDR>
 
-This documents offers a high-level overview of the different parts that compose
+This document offers a high-level overview of the different parts that compose
 the Airy Core API.
+
+:::warning
+
+Authentication is disabled by default in `Airy Core`.
+
+As this is suitable **only for testing purposes**, we advise you to refer to our [documentation on how to secure the API](/getting-started/installation/security).
+
+:::
 
 Once you connect Airy Core to a [source](/getting-started/glossary.md#source),
 the platform will immediately start consuming conversational data and store it

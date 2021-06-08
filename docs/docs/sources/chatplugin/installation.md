@@ -15,7 +15,7 @@ the `<head>` section:
     var f = d.getElementsByTagName(s)[0],
       j = d.createElement(s);
     j.async = true;
-    j.src = w[n].host + "/s.js";
+    j.src = w[n].host + "/chatplugin/ui/s.js";
     f.parentNode.insertBefore(j, f);
   })(window, document, "script", "airy");
 </script>

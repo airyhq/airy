@@ -27,6 +27,14 @@ The Twilio SMS source provides a channel for sending and receiving SMS using the
 
 :::
 
+:::note
+
+The SMS via Twilio source is not enabled by default.
+
+You need to add configuration in your airy.yaml file and apply it to activate it.
+
+:::
+
 ## Configuration
 
 import TwilioConfig from './twilio-config.mdx'

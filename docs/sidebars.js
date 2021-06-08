@@ -10,6 +10,7 @@ module.exports = {
             'getting-started/installation/minikube',
             'getting-started/installation/aws',
             'getting-started/installation/configuration',
+            'getting-started/installation/security',
           ],
         },
         {
@@ -42,7 +43,6 @@ module.exports = {
     {
       '🔌 API': [
         'api/introduction',
-        'api/authentication',
         {
           'HTTP Endpoints': [
             'api/endpoints/introduction',

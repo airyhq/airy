@@ -27,6 +27,14 @@ Core Platform instance.
 
 :::
 
+:::note
+
+The Facebook Messenger source is not enabled by default.
+
+You need to add configuration in your airy.yaml file and apply it to activate it.
+
+:::
+
 ## Configuration
 
 The Facebook source requires the following configuration:

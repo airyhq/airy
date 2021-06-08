@@ -21,7 +21,7 @@ We recommend [installing](/cli/introduction.md) the Airy CLI first which will
 aid you in the process of installing and managing your Airy Core instance. It is
 easy to install and works on macOS, Windows, and Linux.
 
-## Installation Guides
+## Install the Airy CLI
 
 <ButtonBoxList>
 <ButtonBox
@@ -31,6 +31,13 @@ title='CLI'
 description='Install the Airy Core CLI application'
 link='/cli/introduction'
 />
+</ButtonBoxList>
+
+## Install Airy Core
+
+After you have installed your Airy CLI you can choose one of the following supported platforms and use the CLI to deploy `Airy Core`.
+
+<ButtonBoxList>
 <ButtonBox
 icon={<Minikube />}
 title='Local test environment with Minikube'

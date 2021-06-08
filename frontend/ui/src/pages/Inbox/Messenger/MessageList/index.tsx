@@ -59,6 +59,9 @@ const MessageList = (props: MessageListProps) => {
       conversation && listMessages(conversation.id);
       scrollBottom();
     }
+    if (messages?.length > 0) {
+      scrollBottom();
+    }
   }, [conversation && conversation.id, messages]);
 
   useEffect(() => {

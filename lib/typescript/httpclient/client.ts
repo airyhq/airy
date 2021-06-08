@@ -141,11 +141,13 @@ export class HttpClient {
 
   public exploreFacebookChannels = this.getRequest<ExploreChannelRequestPayload, Channel[]>(exploreFacebookChannelsDef);
 
-  public connectFacebookChannel =
-    this.getRequest<ConnectChannelFacebookRequestPayload, Channel>(connectFacebookChannelDef);
+  public connectFacebookChannel = this.getRequest<ConnectChannelFacebookRequestPayload, Channel>(
+    connectFacebookChannelDef
+  );
 
-  public connectChatPluginChannel =
-    this.getRequest<ConnectChatPluginRequestPayload, Channel>(connectChatPluginChannelDef);
+  public connectChatPluginChannel = this.getRequest<ConnectChatPluginRequestPayload, Channel>(
+    connectChatPluginChannelDef
+  );
 
   public connectTwilioSmsChannel = this.getRequest<ConnectTwilioSmsRequestPayload, Channel>(connectTwilioSmsChannelDef);
 

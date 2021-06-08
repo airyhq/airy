@@ -33,7 +33,7 @@ This way agents can handle the vast majority of use cases with the click of a bu
 
 ### Step 1: Add a custom response type
 
-The easiest way to instruct Rasa to suggest replies for a given user messages is by adding them as a [custom response type](https://rasa.com/docs/rasa/responses/#custom-output-payloads). To do this we add the following block to the `responses` section in our `domain.yaml`:
+The easiest way to instruct Rasa to suggest replies for user messages is by adding them as a [custom response type](https://rasa.com/docs/rasa/responses/#custom-output-payloads). To do this we add the following block to the `responses` section in our `domain.yaml`:
 
 ```yaml
 responses:
@@ -96,5 +96,5 @@ Now we need to stop the server and retrain the model:
 rasa train
 ```
 
-Finally, we start the Rasa server, open the Airy Inbox at (`http://airy.core` for local deployments), where we should
+Finally, we start the Rasa server, open the Airy Inbox (at `http://airy.core` for local deployments), where we should
 see the suggested replies whenever a contact greets us (see gif above).

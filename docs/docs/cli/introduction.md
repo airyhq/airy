@@ -143,7 +143,7 @@ Airy Core](/getting-started/installation/introduction#install-airy-core)
 
 ## Building from source
 
-1. Build the cli target with Bazel:
+1. Build the CLI target with Bazel:
 
 ```bash
 bazel build //cli:airy

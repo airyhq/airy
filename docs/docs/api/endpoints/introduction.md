@@ -43,7 +43,6 @@ Paginated endpoints _always_ respond with the following JSON format:
 The response comes in two parts:
 
 - `data`
-
   An array of objects. Object specification depends on the endpoint.
 
 - `pagination_data`

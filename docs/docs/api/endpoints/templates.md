@@ -114,7 +114,7 @@ Find templates whose name contains "Ada":
 
 **Sample Response**
 
-This endpoint returns _200_ if successful.
+This endpoint returns 200 if successful.
 
 ## Delete
 
@@ -128,4 +128,4 @@ This endpoint returns _200_ if successful.
 
 **Sample Response**
 
-This endpoint returns _200_ if successful.
+This endpoint returns 200 if successful.

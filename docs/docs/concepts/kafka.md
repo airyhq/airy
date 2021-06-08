@@ -19,10 +19,10 @@ our naming conventions follow these rules:
 Each part defines a more granular scope:
 
 - `kind` is the type of data the topic contains at the highest level possible.
-  Valid examples are: `etl`, `logging`, `tracking`.
+  Valid examples are: `etl`, `logging`, `tracking`
 - `domain` is what you would call a database name in a traditional
-  RDMS.
-- `dataset` is what you would call a database table in a traditional RDMS.
+  RDMS
+- `dataset` is what you would call a database table in a traditional RDMS
 
 Given these rules, here are a few examples:
 

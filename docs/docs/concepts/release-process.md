@@ -11,7 +11,7 @@ manner.
 :::note
 
 The release scripts needs a `GITHUB_TOKEN` environment variable with write
-permission to the airy org to function correctly
+permission to the Airy organiasation to function correctly
 
 :::
 
@@ -23,12 +23,12 @@ Once a release day comes, we execute the following steps:
 - We run `./scripts/release.sh start x.y.z`
 - We test the release using `airy create --provider=minikube`. Note that:
   - Any additional hot-fix is committed directly to the release branch
-  - You must wait for all the images to be pushed via CI.
+  - You must wait for all the images to be pushed via CI
 - Once we're satisfied with the release, we publish the release:
   - We run `./scripts/release.sh finish x.y.z`
   - We update the version string to `x.y.z` and the sha to `https://airy-core-binaries.s3.amazonaws.com/x.y.z/darwin/amd64/airy_darwin_sha256sum.txt` in the [Homebrew
     Formula](https://github.com/airyhq/homebrew-airy/blob/main/Formula/cli.rb)
-    for the CLI.
+    for the CLI
   - We archive cards in the done column of the [work in progress](https://github.com/airyhq/airy/projects/1) board
   - We publish the release and announce it!
 
@@ -47,7 +47,7 @@ moment, the process is completely manual and goes as follows:
 - Update version file
 - Update the changelog
 - Test the hotfix
-- Merge to `main` _and_ `develop` (you do not want to alter the VERSION file in `develop`)
+- Merge to `main` _and_ `develop` (do not alter the VERSION file in `develop`)
 - Write a custom release draft
 - Publish the draft
 - Merge the branch to develop while not altering the VERSION file since the

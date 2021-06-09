@@ -226,7 +226,7 @@ airy api endpoint
 
 ## Integrate public webhooks
 
-The public webhooks will be accessible on the public hostname, at a path specific for every source individually.
+The public webhooks will be accessible on the public hostname, at a path specific for each source individually.
 Refer to the [sources documentation](/sources/introduction) for more information.
 
 To get the public URL of your AWS Airy Core installation run:

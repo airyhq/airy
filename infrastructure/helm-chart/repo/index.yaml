@@ -1,0 +1,23 @@
+apiVersion: v1
+entries:
+  beanstalkd:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-06-09T14:42:46.572539017+02:00"
+    description: A Helm chart for Beanstalkd
+    digest: 549ec15abe6a45cec808114d7db86a92749b6cc08f619f96160c3151f67c60c5
+    name: beanstalkd
+    urls:
+    - beanstalkd-1.tgz
+    version: "1"
+  kafka:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-06-09T14:42:46.575706827+02:00"
+    description: A kafka helm chart for Airy Platform
+    digest: bb2af453197a938a91ae3d58d04eea2912f8d0d03fb57dbba4f2a9fca5760a32
+    name: kafka
+    urls:
+    - kafka-2.7.0.tgz
+    version: 2.7.0
+generated: "2021-06-09T14:42:46.570976616+02:00"

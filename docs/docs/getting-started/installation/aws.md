@@ -154,7 +154,9 @@ This section guides you through the necessary steps to configure HTTPS on your `
 
 #### Upload certificates to AWS ACM
 
-You should use a valid HTTPS certificate to secure your `Airy Core` instance. Usually these certificates come as a bundle of:
+You should use a valid HTTPS certificate to secure your `Airy Core` instance. This certificate is created for and can only be used with a specific hostname. This hostname will be the FQDN on which `Airy Core` will be reachable.
+
+Usually these HTTPS certificates come as a bundle of:
 
 - private key (private.key)
 - public certificate (public.crt)
@@ -163,7 +165,7 @@ You should use a valid HTTPS certificate to secure your `Airy Core` instance. Us
 Use the following command to upload your HTTPS certificate files to AWS ACM, so that they can be used by the AWS LoadBalancer.
 
 ```sh
-aws acm import-certificate --certificate fileb://public.crt --certificate fileb://ca-bundle.crt --private-key fileb://private.key --region us-east-1
+aws acm import-certificate --certificate fileb://public.crt --certificate-chain fileb://ca-bundle.crt --private-key fileb://private.key --region us-east-1
 ```
 
 After the certificate has been uploaded to AWS ACM, you will need the unique ARN of the certificate,for the next step.
@@ -178,16 +180,17 @@ If you want to use Let's Encrypt, have a look at the [Following Traefik ingress 
 
 #### Configure the ingress service
 
-Locate and set your KUBECONFIG file:
+Locate and set your KUBECONFIG file and set the other environment variables:
 
 ```sh
 export KUBECONFIG="PATH/TO/DIR/kube.conf"
+export ARN="Your-unique-ACM-ARN"
+export HOSTNAME="public-FQDN"
 ```
 
 Modify the existing ingress service to reconfigure the AWS LoadBalancer:
 
 ```sh
-export ARN="Your-unique-ACM-ARN"
 kubectl -n kube-system annotate service traefik "service.beta.kubernetes.io/aws-load-balancer-ssl-ports=443" "service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ARN}"
 kubectl -n kube-system patch service traefik --patch '{"spec": { "ports": [ { "name": "https", "port": 443, "protocol": "TCP", "targetPort": 80 } ] } }'
 ```
@@ -195,28 +198,41 @@ kubectl -n kube-system patch service traefik --patch '{"spec": { "ports": [ { "n
 Update the `hostnames` configMap with the new https endpoint:
 
 ```sh
-export ELB=$(kubectl -n kube-system get service traefik -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-kubectl patch configmap hostnames --patch "{\"data\": { \"HOST\": \"https://${ELB}\"} }"
+kubectl patch configmap hostnames --patch "{\"data\": { \"HOST\": \"https://${HOSTNAME}\"} }"
+```
+
+Update the existing ingress resources with the new hostname (for this you will additionally require the [jq](https://stedolan.github.io/jq/download/) utility):
+
+```sh
+kubectl get ingress airy-core -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl apply -f -
+kubectl get ingress airy-core-ui -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl -f -
+```
+
+#### Setup your DNS
+
+You should create a CNAME DNS record for the specified public FQDN to point to the hostname of the LoadBalancer, created by AWS for the ingress service:
+
+```sh
+kubectl get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
 ```
 
 #### Print HTTPS endpoint
 
-At this point, the frontend and the API services of `Airy Core` should be accessible through https on the URL of the loadbalancer:
+At this point, the frontend and the API services of `Airy Core` should be accessible through HTTPS on the specific hostname:
 
 ```sh
-kubectl --kubeconfig ${KUBECONFIG} -n kube-system get service traefik --output jsonpath='https://{.status.loadBalancer.ingress[0].hostname}{"\n"}'
+airy api endpoint
 ```
 
 ## Integrate public webhooks
 
-The public webhooks will be accessible on the public LoadBalancer which is
-created by the Ingress loadBalancer Kubernetes service.
+The public webhooks will be accessible on the public hostname, at a path specific for each source individually.
+Refer to the [sources documentation](/sources/introduction) for more information.
 
 To get the public URL of your AWS Airy Core installation run:
 
 ```sh
-export KUBECONFIG="PATH/TO/DIR/kube.conf"
-kubectl --kubeconfig ${KUBECONFIG} get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
+airy api endpoint
 ```
 
 ## Next steps

@@ -73,6 +73,22 @@ import ApplyVariablesNote from './applyVariables-note.mdx'
 
 <ApplyVariablesNote />
 
+:::note
+
+Your Google Webhook URL should have the following format:
+
+```
+https://your-public-fqdn/google
+```
+
+or if you are using Ngrok:
+
+```
+https://RANDOM_STRING.tunnel.airy.co/google
+```
+
+:::
+
 <SuccessBox>
 
 Once the verification process has been completed, Google's Business Messages will immediately start sending events to your Airy Core instance 🎉

@@ -39,8 +39,4 @@ spec:
           ports:
             - containerPort: {{ .Values.prometheus.exporterPort }}
               name: prometheus
-      volumes:
-        - name: provisioning-scripts
-          configMap:
-            name: provisioning-scripts
 {{ end }}

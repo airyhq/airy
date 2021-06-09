@@ -118,7 +118,7 @@ spec:
               name: kafka-config
               key: ZOOKEEPER
         volumeMounts:
-        - name: provisioning-scripts
+        - name: kafka-helper-scripts
           mountPath: /opt/provisioning
       - name: fix-permissions
         image: busybox
@@ -139,9 +139,9 @@ spec:
       - name: datadir-0
         emptyDir: {}
       {{- end }}
-      - name: provisioning-scripts
+      - name: kafka-helper-scripts
         configMap:
-          name: provisioning-scripts
+          name: kafka-helper-scripts
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}

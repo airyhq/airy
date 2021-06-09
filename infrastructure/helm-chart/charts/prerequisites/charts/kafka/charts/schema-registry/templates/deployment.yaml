@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: schema-registry-server
-          image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.image }}:{{ .Values.imageTag }}"
+          image: "{{ .Values.containerRegistry}}/{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
             - name: schema-registry
@@ -55,9 +55,9 @@ spec:
               name: kafka-config
               key: KAFKA_MINIMUM_REPLICAS
         volumeMounts:
-        - name: provisioning-scripts
+        - name: kafka-helper-scripts
           mountPath: /opt/provisioning
       volumes:
-        - name: provisioning-scripts
+        - name: kafka-helper-scripts
           configMap:
-            name: provisioning-scripts
+            name: kafka-helper-scripts

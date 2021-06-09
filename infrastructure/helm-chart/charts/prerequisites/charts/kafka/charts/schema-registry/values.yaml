@@ -1,4 +1,5 @@
 replicaCount: 1
+containerRegistry: ghcr.io/airyhq
 image: infrastructure/schema-registry
 imageTag: 2.0.1
 imagePullPolicy: Always

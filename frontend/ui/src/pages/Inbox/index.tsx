@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
+import {isEqual} from 'lodash-es';
 
 import {User} from 'model';
 import {fetchConversations} from '../../actions/conversations';
@@ -45,4 +46,9 @@ const ConversationContainer = (props: InboxProps & ConnectedProps<typeof connect
   return <Messenger />;
 };
 
-export default connector(ConversationContainer);
+const propsAreEqual = (prevProps, nextProps) => {
+  //console.log('isEqual conversationContainer', isEqual(prevProps, nextProps))
+  return isEqual(prevProps, nextProps);
+};
+
+export default connector(React.memo(ConversationContainer, propsAreEqual));

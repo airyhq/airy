@@ -10,7 +10,7 @@ type ResizableWindowProps = {
   width: string;
   children: ComponentType<ListChildComponentProps>;
   onItemsRendered: (event: ListOnItemsRenderedProps) => void;
-  infiniteLoaderRef: (ref: React.RefObject<List>) => void;
+  infiniteLoaderRef: React.Ref<any>;
 };
 
 type ResizableWindowState = {
@@ -45,7 +45,7 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
   }
 
   resizeToFit = () => {
-    if (this.state.mounted) {
+    if (this.state.mounted && this.state.height !== Math.floor(this.resizeRef.current.getBoundingClientRect().height)) {
       this.setState({
         height: Math.floor(this.resizeRef.current.getBoundingClientRect().height),
       });
@@ -63,13 +63,14 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
 
   render() {
     const {itemCount, itemSize, width, children, onItemsRendered} = this.props;
+
     return (
       <div ref={this.resizeRef} className={styles.resizableWindowList} data-cy={cyConversationList}>
         <List
+          onItemsRendered={onItemsRendered}
           ref={this.setRef}
           height={this.state.height}
           itemCount={itemCount}
-          onItemsRendered={onItemsRendered}
           itemSize={item => (typeof itemSize === 'function' ? itemSize(item) : itemSize)}
           width={width}>
           {children}

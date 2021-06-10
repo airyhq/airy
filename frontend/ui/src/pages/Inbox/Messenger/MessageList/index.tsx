@@ -1,4 +1,5 @@
 import React, {useEffect, createRef, useRef} from 'react';
+import {isEqual} from 'lodash-es';
 import _, {connect, ConnectedProps} from 'react-redux';
 import _redux from 'redux';
 import {debounce, isEmpty} from 'lodash-es';
@@ -25,6 +26,7 @@ type MessageListProps = ConnectedProps<typeof connector> & {
 };
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
+  //console.log('ownProps - router', ownProps)
   return {
     messages: getCurrentMessages(state, ownProps),
     conversation: getConversation(state, ownProps),
@@ -188,4 +190,32 @@ const MessageList = (props: MessageListProps) => {
   );
 };
 
-export default withRouter(connector(MessageList));
+//import { isEqual } from 'lodash-es';
+const propsAreEqual = (prevProps, nextProps) => {
+  // console.log('messageList', isEqual(prevProps, nextProps))
+  // console.log('messageList, prevProps', prevProps)
+  // console.log('messagelist, nextProps', nextProps)
+
+  // console.log('prevProps.location.key', prevProps.location.key)
+  // console.log('nextProps.location.key', nextProps.location.key)
+
+  if (
+    prevProps.history.location.pathname === nextProps.history.location.pathname &&
+    prevProps.conversation.id === nextProps.conversation.id &&
+    prevProps.history.location.key === nextProps.history.location.key &&
+    prevProps.location.key !== nextProps.location.key
+  ) {
+    return true;
+  }
+
+  return isEqual(prevProps, nextProps);
+  // if(prevProps.history.location.pathname === nextProps.history.location.pathname){
+  //   console.log('true - messageList')
+  //   return true;
+  // } else {
+  //   console.log('isEqual messageList', isEqual(prevProps, nextProps))
+  //   return isEqual(prevProps, nextProps)
+  // }
+};
+
+export default withRouter(connector(React.memo(MessageList, propsAreEqual)));

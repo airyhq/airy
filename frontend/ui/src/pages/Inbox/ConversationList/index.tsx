@@ -1,6 +1,7 @@
 import React, {createRef} from 'react';
-import {withRouter} from 'react-router-dom';
+import {withRouter, matchPath} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
+import {isEqual} from 'lodash-es';
 
 import InfiniteLoader from 'react-window-infinite-loader';
 import ResizableWindowList from '../../../components/ResizableWindowList';
@@ -26,23 +27,37 @@ const mapDispatchToProps = {
   fetchNextFiltered: fetchNextFilteredPage,
 };
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
-  currentConversationId: ownProps.match.params.conversationId,
-  conversations: newestConversationFirst(state),
-  filteredConversations: newestFilteredConversationFirst(state),
-  conversationsPaginationData: state.data.conversations.all.paginationData,
-  filteredPaginationData: state.data.conversations.filtered.paginationData,
-  currentFilter: state.data.conversations.filtered.currentFilter,
-  user: state.data.user,
-});
+// ownProps.match.params.conversationId,
+
+const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
+  const match: any = matchPath(ownProps.location.pathname, {
+    path: '/inbox/conversations/:id',
+  });
+
+  //console.log('match', match && match.params.id)
+
+  return {
+    currentConversationId: ownProps.match.params.conversationId,
+    conversations: newestConversationFirst(state),
+    filteredConversations: newestFilteredConversationFirst(state),
+    conversationsPaginationData: state.data.conversations.all.paginationData,
+    filteredPaginationData: state.data.conversations.filtered.paginationData,
+    currentFilter: state.data.conversations.filtered.currentFilter,
+    user: state.data.user,
+  };
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationList = (props: ConversationListProps) => {
   const listRef: any = createRef();
+  const {currentConversationId} = props;
 
   const renderConversationItem = (conversation: MergedConversation, style: React.CSSProperties) => {
-    const {currentConversationId} = props;
+    console.log('convItem - active', conversation.id === currentConversationId);
+    console.log('convItem conversation.id', conversation.id);
+    console.log('currentConversationId', currentConversationId);
+
     if (conversation == null) {
       return <div />;
     }
@@ -66,6 +81,8 @@ const ConversationList = (props: ConversationListProps) => {
       fetchNext,
       fetchNextFiltered,
     } = props;
+
+    //console.log('props', props)
 
     const hasFilter = Object.keys(currentFilter || {}).length > 0;
     const items = hasFilter ? filteredConversations : conversations;
@@ -119,4 +136,51 @@ const ConversationList = (props: ConversationListProps) => {
   );
 };
 
-export default withRouter(connector(ConversationList));
+// currentConversationId: match && match.id,
+// conversations: newestConversationFirst(state),
+// filteredConversations: newestFilteredConversationFirst(state),
+// conversationsPaginationData: state.data.conversations.all.paginationData,
+// filteredPaginationData: state.data.conversations.filtered.paginationData,
+// currentFilter: state.data.conversations.filtered.currentFilter,
+// user: state.data.user,
+
+const propsAreEqual = (prevProps, nextProps) => {
+  console.log('prevProps - ConvList', prevProps);
+  console.log('nextProps - ConvList', nextProps);
+  // console.log('prevProps.location.key !== nextProps.location.key', prevProps.location.key !== nextProps.location.key)
+  // console.log('isEqual conv', isEqual(prevProps.conversations, nextProps.conversations))
+  // isEqual(prevProps.currentConversationId, nextProps.currentConversationId) &&
+  // isEqual(prevProps.currentConversationId, nextProps.currentConversationId) &&
+  // isEqual(prevProps.currentConversationId, nextProps.currentConversationId) &&
+  if (
+    prevProps.history.location.pathname === nextProps.history.location.pathname &&
+    isEqual(prevProps.conversations, nextProps.conversations) &&
+    isEqual(prevProps.filteredConversations, nextProps.filteredConversations) &&
+    isEqual(prevProps.conversationsPaginationData, nextProps.conversationsPaginationData) &&
+    isEqual(prevProps.currentFilter, nextProps.currentFilter) &&
+    isEqual(prevProps.user, nextProps.user) &&
+    prevProps.history.location.key === nextProps.history.location.key &&
+    prevProps.location.key !== nextProps.location.key
+  ) {
+    console.log('convList - true');
+    return true;
+  }
+
+  console.log('isEqual convList', isEqual(prevProps, nextProps));
+
+  return isEqual(prevProps, nextProps);
+};
+
+export default withRouter(connector(React.memo(ConversationList, propsAreEqual)));
+
+{
+  /* <ResizableWindowList
+                ref={listRef}
+                infiniteLoaderRef={ref}
+                itemCount={itemCount}
+                itemSize={115}
+                width={'100%'}
+                onItemsRendered={onItemsRendered}>
+                {({index, style}) => renderConversationItem(items[index], style)}
+              </ResizableWindowList> */
+}

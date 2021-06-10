@@ -1,6 +1,7 @@
 import React from 'react';
 import {Route, withRouter, Redirect, RouteComponentProps} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
+import {isEqual} from 'lodash-es';
 
 import ConversationList from '../ConversationList';
 
@@ -53,5 +54,10 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
     </section>
   );
 };
+//import { isEqual } from 'lodash-es';
+const propsAreEqual = (prevProps, nextProps) => {
+  //console.log('isEqual messenger', isEqual(prevProps, nextProps))
+  return isEqual(prevProps, nextProps);
+};
 
-export default withRouter(connector(Messenger));
+export default withRouter(connector(React.memo(Messenger, propsAreEqual)));

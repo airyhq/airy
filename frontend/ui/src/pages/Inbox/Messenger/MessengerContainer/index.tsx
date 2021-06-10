@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {isEqual} from 'lodash-es';
 
 import {StateModel} from '../../../../reducers';
 import MessageList from '../MessageList';
@@ -76,4 +77,10 @@ const MessengerContainer = ({
   );
 };
 
-export default withRouter(connector(MessengerContainer));
+//import { isEqual } from 'lodash-es';
+
+const propsAreEqual = (prevProps, nextProps) => {
+  return isEqual(prevProps, nextProps);
+};
+
+export default withRouter(connector(React.memo(MessengerContainer, propsAreEqual)));

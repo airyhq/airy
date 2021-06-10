@@ -1,4 +1,5 @@
 import React, {CSSProperties, useEffect} from 'react';
+import {isEqual} from 'lodash-es';
 import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
@@ -105,4 +106,13 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   );
 };
 
-export default connector(ConversationListItem);
+//import { isEqual } from 'lodash-es';
+const propsAreEqual = (prevProps, nextProps) => {
+  // console.log('convListItem - prevProps', prevProps)
+  // console.log('convListItem - nextProps', nextProps)
+
+  console.log('isEqual convListItem', isEqual(prevProps, nextProps));
+  return isEqual(prevProps, nextProps);
+};
+
+export default connector(React.memo(ConversationListItem, propsAreEqual));

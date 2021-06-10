@@ -50,17 +50,14 @@ cluster and Redis.
   - `schema-registry` url to the Schema Registry
   - `commitInterval` the [Kafka Commit Interval](https://kafka.apache.org/documentation/#consumerconfigs_auto.commit.interval.ms) if you are using the included Helm chart
 
-- `redis`
-
-  - `hostname`
-  - `port`
-
 ### Security
 
 - `systemToken` set to a long secure secret to use for machine [API authentication](security#api-security)
 - `allowedOrigins` your site's origin to prevent CORS-based attacks (default: `"*"`)
 - `oidc` a map of values that when set enable and define [OIDC authentication](security#configuring-oidc)
 - `jwtSecret` used to create jwt http sessions derived from oidc authentication (default: randomized on installation)
+- `s3_access_key_id` AWS access key id used for S3 authorization
+- `s3_secret_access_key` AWS secret access key used for S3 authorization
 
 ### Components
 

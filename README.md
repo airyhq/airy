@@ -55,7 +55,7 @@ conversational data to wherever you need it.
   [Read The Docs](https://airy.co/docs/core/)
 
 - **I'm ready to install Airy ✨**
-  [Installation](https://airy.co/docs/core/getting-started/installation)
+  [Installation](https://airy.co/docs/core/getting-started/installation/introduction)
 
 - **I'm ready for the Airy Quickstart 🚀**
   [Quickstart](https://airy.co/docs/core/getting-started/quickstart)

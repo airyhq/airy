@@ -1,4 +1,3 @@
-{{- if and .Values.connect.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -19,4 +18,3 @@ spec:
   selector:
     app: {{ template "kafka-connect.name" . }}
     release: {{ .Release.Name }}
-{{- end }}

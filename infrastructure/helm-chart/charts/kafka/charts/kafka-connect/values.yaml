@@ -1,6 +1,5 @@
 connect:
   enabled: false
-replicaCount: 1
 podAnnotations: {}
 nameOverride: "connect"
 fullnameOverride: "kafka-connect"

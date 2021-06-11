@@ -104,9 +104,9 @@ spec:
               value: "{{ .Values.jmx.port }}"
             {{- end }}
             - name: AWS_ACCESS_KEY_ID
-              value: "{{ .Values.security.s3_access_key_id }}"
+              value: "{{ .Values.components.integration.connect.s3Key }}"
             - name: AWS_SECRET_ACCESS_KEY
-              value: "{{ .Values.security.s3_secret_access_key }}"
+              value: "{{ .Values.components.integration.connect.s3Secret }}"
           {{- if .Values.livenessProbe }}
           livenessProbe:
 {{ toYaml .Values.livenessProbe | trim | indent 12 }}

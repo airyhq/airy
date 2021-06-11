@@ -82,6 +82,12 @@ cluster and Redis.
     - `name` set this to the name of your webhook integration
     - `maxBackoff` set this to the maximum number of seconds the webhook should
       wait between retries with exponential backoff
+  - `connect`
+    - `s3Key` set this to your AWS S3 access key id
+    - `s3Secret` set this to your AWS S3 secret access key
+    - `s3Bucket` set this to your AWS S3 bucket
+    - `s3Region` set this to your AWS region
+    - `s3Path` set this to your AWS S3 path
 - `media`
   - `resolver`
     - `s3Key` set this to your AWS S3 access key id

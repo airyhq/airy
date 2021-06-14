@@ -106,13 +106,8 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   );
 };
 
-//import { isEqual } from 'lodash-es';
-const propsAreEqual = (prevProps, nextProps) => {
-  // console.log('convListItem - prevProps', prevProps)
-  // console.log('convListItem - nextProps', nextProps)
-
-  console.log('isEqual convListItem', isEqual(prevProps, nextProps));
+const arePropsEqual = (prevProps, nextProps) => {
   return isEqual(prevProps, nextProps);
 };
 
-export default connector(React.memo(ConversationListItem, propsAreEqual));
+export default connector(React.memo(ConversationListItem, arePropsEqual));

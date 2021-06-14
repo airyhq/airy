@@ -46,9 +46,8 @@ const ConversationContainer = (props: InboxProps & ConnectedProps<typeof connect
   return <Messenger />;
 };
 
-const propsAreEqual = (prevProps, nextProps) => {
-  //console.log('isEqual conversationContainer', isEqual(prevProps, nextProps))
+const arePropsEqual = (prevProps, nextProps) => {
   return isEqual(prevProps, nextProps);
 };
 
-export default connector(React.memo(ConversationContainer, propsAreEqual));
+export default connector(React.memo(ConversationContainer, arePropsEqual));

@@ -13,7 +13,6 @@ import {fakeSettingsAPICall} from './actions/settings';
 import {StateModel} from './reducers';
 
 import {INBOX_ROUTE, CHANNELS_ROUTE, ROOT_ROUTE, TAGS_ROUTE} from './routes/routes';
-import {isEqual} from 'lodash-es';
 
 import styles from './App.module.scss';
 import {getClientConfig} from './actions/config';
@@ -31,28 +30,6 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-function AppComponent() {
-  return (
-    <div className={styles.Container}>
-      <div className={styles.ContainerApp}>
-        <>
-          <TopBar isAdmin={true} />
-          <Sidebar />
-        </>
-        <Switch>
-          <Route exact path={ROOT_ROUTE}>
-            <Redirect to={INBOX_ROUTE} />
-          </Route>
-          <Route exact path={TAGS_ROUTE} component={Tags} />
-          <Route path={INBOX_ROUTE} component={Inbox} />
-          <Route path={CHANNELS_ROUTE} component={Channels} />
-          <Route component={NotFound} />
-        </Switch>
-      </div>
-    </div>
-  );
-}
-
 class App extends Component<ConnectedProps<typeof connector> & RouteComponentProps> {
   constructor(props: ConnectedProps<typeof connector> & RouteComponentProps) {
     super(props);
@@ -63,19 +40,29 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
     this.props.getClientConfig();
   }
 
-  //const appComponent = React.useMemo(() => <AppComponent />)
-
   render() {
     return (
       <AiryWebSocket>
-        <AppComponent />
+        <div className={styles.Container}>
+          <div className={styles.ContainerApp}>
+            <>
+              <TopBar isAdmin={true} />
+              <Sidebar />
+            </>
+            <Switch>
+              <Route exact path={ROOT_ROUTE}>
+                <Redirect to={INBOX_ROUTE} />
+              </Route>
+              <Route exact path={TAGS_ROUTE} component={Tags} />
+              <Route path={INBOX_ROUTE} component={Inbox} />
+              <Route path={CHANNELS_ROUTE} component={Channels} />
+              <Route component={NotFound} />
+            </Switch>
+          </div>
+        </div>
       </AiryWebSocket>
     );
   }
 }
 
-const propsAreEqual = (prevProps, nextProps) => {
-  return isEqual(prevProps, nextProps);
-};
-
-export default withRouter(connector(React.memo(App, propsAreEqual)));
+export default withRouter(connector(App));

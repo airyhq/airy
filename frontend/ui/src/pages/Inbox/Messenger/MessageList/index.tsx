@@ -26,7 +26,6 @@ type MessageListProps = ConnectedProps<typeof connector> & {
 };
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
-  //console.log('ownProps - router', ownProps)
   return {
     messages: getCurrentMessages(state, ownProps),
     conversation: getConversation(state, ownProps),
@@ -190,15 +189,7 @@ const MessageList = (props: MessageListProps) => {
   );
 };
 
-//import { isEqual } from 'lodash-es';
-const propsAreEqual = (prevProps, nextProps) => {
-  // console.log('messageList', isEqual(prevProps, nextProps))
-  // console.log('messageList, prevProps', prevProps)
-  // console.log('messagelist, nextProps', nextProps)
-
-  // console.log('prevProps.location.key', prevProps.location.key)
-  // console.log('nextProps.location.key', nextProps.location.key)
-
+const arePropsEqual = (prevProps, nextProps) => {
   if (
     prevProps.history.location.pathname === nextProps.history.location.pathname &&
     prevProps.conversation.id === nextProps.conversation.id &&
@@ -209,13 +200,6 @@ const propsAreEqual = (prevProps, nextProps) => {
   }
 
   return isEqual(prevProps, nextProps);
-  // if(prevProps.history.location.pathname === nextProps.history.location.pathname){
-  //   console.log('true - messageList')
-  //   return true;
-  // } else {
-  //   console.log('isEqual messageList', isEqual(prevProps, nextProps))
-  //   return isEqual(prevProps, nextProps)
-  // }
 };
 
-export default withRouter(connector(React.memo(MessageList, propsAreEqual)));
+export default withRouter(connector(React.memo(MessageList, arePropsEqual)));

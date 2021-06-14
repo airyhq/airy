@@ -77,10 +77,8 @@ const MessengerContainer = ({
   );
 };
 
-//import { isEqual } from 'lodash-es';
-
-const propsAreEqual = (prevProps, nextProps) => {
+const arePropsEqual = (prevProps, nextProps) => {
   return isEqual(prevProps, nextProps);
 };
 
-export default withRouter(connector(React.memo(MessengerContainer, propsAreEqual)));
+export default withRouter(connector(React.memo(MessengerContainer, arePropsEqual)));

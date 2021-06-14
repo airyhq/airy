@@ -54,10 +54,9 @@ const Messenger = (props: ConnectedProps<typeof connector> & RouteComponentProps
     </section>
   );
 };
-//import { isEqual } from 'lodash-es';
-const propsAreEqual = (prevProps, nextProps) => {
-  //console.log('isEqual messenger', isEqual(prevProps, nextProps))
+
+const arePropsEqual = (prevProps, nextProps) => {
   return isEqual(prevProps, nextProps);
 };
 
-export default withRouter(connector(React.memo(Messenger, propsAreEqual)));
+export default withRouter(connector(React.memo(Messenger, arePropsEqual)));

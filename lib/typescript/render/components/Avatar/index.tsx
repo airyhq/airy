@@ -23,12 +23,7 @@ export const AvatarImage = ({contact}: AvatarProps) => (
   />
 );
 
-//import { isEqual } from 'lodash-es';
 const propsAreEqual = (prevProps, nextProps) => {
-  // console.log('convListItem - prevProps', prevProps)
-  // console.log('convListItem - nextProps', nextProps)
-
-  //console.log('isEqual Avatar', isEqual(prevProps, nextProps))
   return isEqual(prevProps, nextProps);
 };
 

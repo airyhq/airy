@@ -88,11 +88,8 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   }, [conversation.id]);
 
   useEffect(() => {
-    if (textAreaRef && textAreaRef.current) {
-      let scrollHeight = Math.min(200, textAreaRef.current.scrollHeight);
-      if (scrollHeight < 40) scrollHeight = 40;
-      textAreaRef.current.style.height = scrollHeight + 'px';
-    }
+    textAreaRef.current.style.height = 'inherit';
+    textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, 200)}px`;
   }, [input]);
 
   useEffect(() => {
@@ -199,9 +196,15 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter') {
+    if (
+      (event.metaKey && event.key === 'Enter') ||
+      (!event.shiftKey && event.key === 'Enter') ||
+      (event.ctrlKey && event.key === 'Enter')
+    ) {
       event.preventDefault();
-      sendMessage();
+      if (textAreaRef.current.value.length > 0) {
+        sendMessage();
+      }
     }
   };
 
@@ -475,6 +478,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           </button>
         </div>
       </form>
+      <div
+        className={styles.linebreakHint}
+        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
+        {'Shift + Enter to add line'}
+      </div>
     </div>
   );
 };

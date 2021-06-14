@@ -23,6 +23,7 @@ const mapStateToProps = (state: StateModel, ownProps: RouteComponentProps) => {
     pathname: ownProps.location.pathname,
   };
 };
+
 const mapDispatchToProps = {
   fakeSettingsAPICall,
   getClientConfig,

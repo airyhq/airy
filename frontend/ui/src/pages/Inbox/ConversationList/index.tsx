@@ -41,9 +41,10 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationList = (props: ConversationListProps) => {
   const listRef: any = createRef();
-  const {currentConversationId} = props;
 
   const renderConversationItem = (conversation: MergedConversation, style: React.CSSProperties) => {
+    const {currentConversationId} = props;
+
     if (conversation == null) {
       return <div />;
     }

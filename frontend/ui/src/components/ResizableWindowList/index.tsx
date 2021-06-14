@@ -45,7 +45,7 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
   }
 
   resizeToFit = () => {
-    if (this.state.mounted && this.state.height !== Math.floor(this.resizeRef.current.getBoundingClientRect().height)) {
+    if (this.state.mounted) {
       this.setState({
         height: Math.floor(this.resizeRef.current.getBoundingClientRect().height),
       });
@@ -67,9 +67,9 @@ class ResizableWindowList extends Component<ResizableWindowProps, ResizableWindo
     return (
       <div ref={this.resizeRef} className={styles.resizableWindowList} data-cy={cyConversationList}>
         <List
-          onItemsRendered={onItemsRendered}
           ref={this.setRef}
           height={this.state.height}
+          onItemsRendered={onItemsRendered}
           itemCount={itemCount}
           itemSize={item => (typeof itemSize === 'function' ? itemSize(item) : itemSize)}
           width={width}>

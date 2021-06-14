@@ -3,7 +3,10 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "config",
-    srcs = ["config.go"],
+    srcs = [
+        "config.go",
+        "config_maps.go",
+    ],
     importpath = "cli/pkg/cmd/config",
     visibility = ["//visibility:public"],
     deps = [
@@ -12,6 +15,7 @@ go_library(
         "//cli/pkg/workspace",
         "@com_github_spf13_cobra//:cobra",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
+        "@io_k8s_client_go//kubernetes:go_default_library",
     ],
 )
 

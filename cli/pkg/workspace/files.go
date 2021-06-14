@@ -4,6 +4,8 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"path/filepath"
+	"fmt"
+	"encoding/json"
 )
 
 const cliConfigFileName = "cli.yaml"
@@ -38,6 +40,33 @@ func (f ConfigDir) UpdateAiryYaml(apply func(AiryConf) AiryConf) error {
 	}
 
 	return ioutil.WriteFile(f.GetAiryYaml(), out, 0644)
+}
+
+func (f ConfigDir) GetConnectorConfigs(connectorDir string) ([]Connector, error) {
+	connectors := []Connector{}
+	connectorsPath := f.GetPath(connectorDir)
+
+		fileInfos, err := ioutil.ReadDir(connectorsPath)
+
+		if err != nil {
+			fmt.Print(err)
+		}
+
+		for _, file := range fileInfos {
+			dat, err := ioutil.ReadFile(filepath.Join(connectorsPath, file.Name()))
+			if err != nil {
+				fmt.Println(err)
+
+			}
+			var connector Connector
+			err = json.Unmarshal(dat, &connector)
+			if err != nil {
+				return nil, err
+			}
+			connectors = append(connectors, connector)
+		}
+
+	return connectors, nil
 }
 
 func (f ConfigDir) GetPath(fileName string) string {

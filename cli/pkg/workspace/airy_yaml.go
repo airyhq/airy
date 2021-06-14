@@ -12,7 +12,7 @@ type KubernetesConf struct {
 type componentsConf map[string]map[string]string
 
 type AiryConf struct {
-	Kubernetes KubernetesConf			 `yaml:"kubernetes"`
+	Kubernetes KubernetesConf            `yaml:"kubernetes"`
 	Security   SecurityConf              `yaml:"security"`
 	Components map[string]componentsConf `yaml:"components,omitempty"`
 }
@@ -22,4 +22,9 @@ type SecurityConf struct {
 	AllowedOrigins string            `yaml:"allowedOrigins"`
 	JwtSecret      string            `yaml:"jwtSecret"`
 	Oidc           map[string]string `yaml:"oidc,omitempty"`
+}
+
+type Connector struct {
+	Name   string            `json:"name"`
+	Config map[string]string `json:"config"`
 }

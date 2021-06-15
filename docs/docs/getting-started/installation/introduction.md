@@ -19,7 +19,7 @@ to test and develop, or production-ready in your cloud.
 
 We recommend [installing](/cli/introduction.md) the Airy CLI first which will
 aid you in the process of installing and managing your Airy Core instance. It is
-easy to install and works on macOS, Windows, and Linux.
+easy to install and works on macOS and Linux.
 
 ## Install the Airy CLI
 

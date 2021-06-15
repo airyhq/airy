@@ -30,7 +30,7 @@ steps for a quick setup:
 ### Step 1: Check the requirements
 
 Airy is built to run in the cloud, but you can also run it locally. The CLI runs
-on macOS, Linux and Windows and we provide pre-built executable binaries for
+on macOS and Linux and we provide pre-built executable binaries for
 **x86-64**.
 
 If you are running on a different platform you can also [build it

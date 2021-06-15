@@ -3,48 +3,66 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## Hotfix 0.23.1
+## 0.24.0
 
 - [[#1921](https://github.com/airyhq/airy/issues/1921)] Fix Facebook echoes not being filtered out leading to message duplication
 ## 
 
 #### Changes
 
-#### 🚀 Features
-
-- [[#1899](https://github.com/airyhq/airy/issues/1899)] Remove filtered total [[#1903](https://github.com/airyhq/airy/pull/1903)]
-- [[#1716](https://github.com/airyhq/airy/issues/1716)] Enabled edit displayName [[#1902](https://github.com/airyhq/airy/pull/1902)]
-- Follow up: Add missing path [[#1888](https://github.com/airyhq/airy/pull/1888)]
-- [[#1716](https://github.com/airyhq/airy/issues/1716)] Edit contact information [[#1879](https://github.com/airyhq/airy/pull/1879)]
+- Revert "[[#1939](https://github.com/airyhq/airy/issues/1939)] Redirect root request to /ui" [[#1969](https://github.com/airyhq/airy/pull/1969)]
+- #1956 - Fix link to installation page [[#1957](https://github.com/airyhq/airy/pull/1957)]
 
 #### 🐛 Bug Fixes
 
-- [[#1919](https://github.com/airyhq/airy/issues/1919)] Fixed min-height [[#1920](https://github.com/airyhq/airy/pull/1920)]
-- [[#1913](https://github.com/airyhq/airy/issues/1913)] Last message icon for image sent in Google conversation displays text [[#1918](https://github.com/airyhq/airy/pull/1918)]
-- [[#1907](https://github.com/airyhq/airy/issues/1907)] Fixed customize screen for 13' displays [[#1915](https://github.com/airyhq/airy/pull/1915)]
-- [[#1762](https://github.com/airyhq/airy/issues/1762)] attachments don't get displayed properly in the message input [[#1909](https://github.com/airyhq/airy/pull/1909)]
-- [[#1904](https://github.com/airyhq/airy/issues/1904)] Refactored conversations reducer [[#1908](https://github.com/airyhq/airy/pull/1908)]
-- [[#1898](https://github.com/airyhq/airy/issues/1898)] Webhook should start from latest message [[#1900](https://github.com/airyhq/airy/pull/1900)]
-- [[#1868](https://github.com/airyhq/airy/issues/1868)] tagging filtered conversations doesn't work properly [[#1897](https://github.com/airyhq/airy/pull/1897)]
-- [[#1887](https://github.com/airyhq/airy/issues/1887)] facebook render library improvement: postback and images [[#1890](https://github.com/airyhq/airy/pull/1890)]
+- [[#1952](https://github.com/airyhq/airy/issues/1952)] Fix embedded path for Airy create on Windows [[#1992](https://github.com/airyhq/airy/pull/1992)]
+- [[#1967](https://github.com/airyhq/airy/issues/1967)] Fixed messageInput [[#1983](https://github.com/airyhq/airy/pull/1983)]
+- [[#1939](https://github.com/airyhq/airy/issues/1939)] Redirect root request to /ui [[#1940](https://github.com/airyhq/airy/pull/1940)]
+- [[#1932](https://github.com/airyhq/airy/issues/1932)] Added scrollToBotton in messageList [[#1934](https://github.com/airyhq/airy/pull/1934)]
+- [[#1933](https://github.com/airyhq/airy/issues/1933)] Suggested Replies does not fit in messageInput [[#1935](https://github.com/airyhq/airy/pull/1935)]
+- [[#1924](https://github.com/airyhq/airy/issues/1924)] Fixed long message in messageInput [[#1925](https://github.com/airyhq/airy/pull/1925)]
+- [[#1921](https://github.com/airyhq/airy/issues/1921)] Hotfix: Facebook echo ingestion [[#1922](https://github.com/airyhq/airy/pull/1922)]
+
+#### 📚 Documentation
+
+- [[#1926](https://github.com/airyhq/airy/issues/1926)] Docs for using a custom public hostname [[#1945](https://github.com/airyhq/airy/pull/1945)]
+- [[#1936](https://github.com/airyhq/airy/issues/1936)] Minor grammar edits- all remaining sections [[#1941](https://github.com/airyhq/airy/pull/1941)]
+- [[#1926](https://github.com/airyhq/airy/issues/1926)] Polishing the docs [[#1937](https://github.com/airyhq/airy/pull/1937)]
+- [[#1936](https://github.com/airyhq/airy/issues/1936)] Minor grammar edits- Getting Started [[#1938](https://github.com/airyhq/airy/pull/1938)]
 
 #### 🧰 Maintenance
 
-- Bump ws from 6.2.1 to 6.2.2 [[#1895](https://github.com/airyhq/airy/pull/1895)]
-- Bump ws from 6.2.1 to 6.2.2 in /docs [[#1896](https://github.com/airyhq/airy/pull/1896)]
-- Bump @types/react-dom from 17.0.5 to 17.0.6 [[#1891](https://github.com/airyhq/airy/pull/1891)]
-- Bump @types/react from 17.0.8 to 17.0.9 [[#1892](https://github.com/airyhq/airy/pull/1892)]
-- Bump sass-loader from 11.1.1 to 12.0.0 [[#1893](https://github.com/airyhq/airy/pull/1893)]
-- Bump react-modal from 3.13.1 to 3.14.2 [[#1894](https://github.com/airyhq/airy/pull/1894)]
-- Bump terser-webpack-plugin from 5.1.2 to 5.1.3 [[#1880](https://github.com/airyhq/airy/pull/1880)]
+- Bump @babel/preset-typescript from 7.13.0 to 7.14.5 [[#1966](https://github.com/airyhq/airy/pull/1966)]
+- Bump webpack from 5.38.1 to 5.39.0 [[#1990](https://github.com/airyhq/airy/pull/1990)]
+- Bump @babel/core from 7.14.5 to 7.14.6 [[#1988](https://github.com/airyhq/airy/pull/1988)]
+- Bump @babel/plugin-transform-spread from 7.13.0 to 7.14.6 [[#1986](https://github.com/airyhq/airy/pull/1986)]
+- Bump @typescript-eslint/parser from 4.26.0 to 4.27.0 [[#1987](https://github.com/airyhq/airy/pull/1987)]
+- Bump @babel/plugin-proposal-class-properties from 7.13.0 to 7.14.5 [[#1979](https://github.com/airyhq/airy/pull/1979)]
+- Bump @babel/core from 7.14.3 to 7.14.5 [[#1977](https://github.com/airyhq/airy/pull/1977)]
+- Bump sass-loader from 12.0.0 to 12.1.0 [[#1978](https://github.com/airyhq/airy/pull/1978)]
+- Bump @babel/preset-react from 7.13.13 to 7.14.5 [[#1976](https://github.com/airyhq/airy/pull/1976)]
+- Bump @typescript-eslint/eslint-plugin from 4.26.0 to 4.26.1 [[#1947](https://github.com/airyhq/airy/pull/1947)]
+- Bump @reduxjs/toolkit from 1.5.1 to 1.6.0 [[#1949](https://github.com/airyhq/airy/pull/1949)]
+- Bump @babel/plugin-proposal-object-rest-spread from 7.14.4 to 7.14.5 [[#1965](https://github.com/airyhq/airy/pull/1965)]
+- Bump ssri from 6.0.1 to 6.0.2 in /docs [[#1964](https://github.com/airyhq/airy/pull/1964)]
+- Bump @types/react-dom from 17.0.6 to 17.0.7 [[#1950](https://github.com/airyhq/airy/pull/1950)]
+- Bump @types/react from 17.0.9 to 17.0.11 [[#1958](https://github.com/airyhq/airy/pull/1958)]
+- Bump prettier from 2.3.0 to 2.3.1 [[#1928](https://github.com/airyhq/airy/pull/1928)]
+- Bump sass from 1.34.0 to 1.34.1 [[#1905](https://github.com/airyhq/airy/pull/1905)]
+- Bump eslint from 7.27.0 to 7.28.0 [[#1930](https://github.com/airyhq/airy/pull/1930)]
+- Bump cypress from 7.4.0 to 7.5.0 [[#1944](https://github.com/airyhq/airy/pull/1944)]
+- Bump @types/node from 15.12.0 to 15.12.2 [[#1943](https://github.com/airyhq/airy/pull/1943)]
+- Bump webpack-cli from 4.7.0 to 4.7.2 [[#1942](https://github.com/airyhq/airy/pull/1942)]
+- Bump core-js from 3.13.1 to 3.14.0 [[#1929](https://github.com/airyhq/airy/pull/1929)]
+- Bump @types/node from 15.6.1 to 15.12.0 [[#1912](https://github.com/airyhq/airy/pull/1912)]
 
 #### Airy CLI
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.23.1/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.23.1/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.23.1/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.23.2/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.23.2/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.23.2/windows/amd64/airy.exe)
 
 ## 0.23.0
 

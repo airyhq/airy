@@ -2,11 +2,12 @@ package template
 
 import (
 	"embed"
-	"github.com/Masterminds/sprig"
 	"html/template"
 	"io/fs"
 	"os"
 	"path/filepath"
+
+	"github.com/Masterminds/sprig"
 )
 
 type Variables struct {
@@ -40,7 +41,7 @@ func recCopy(writePath string, templatePath string, entry fs.DirEntry, data Vari
 	templatePath = filepath.Join(templatePath, entry.Name())
 
 	if !entry.IsDir() {
-		content, err := templateDir.ReadFile(templatePath)
+		content, err := templateDir.ReadFile(filepath.ToSlash(templatePath))
 		if err != nil {
 			return err
 		}

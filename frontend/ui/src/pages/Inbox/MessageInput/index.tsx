@@ -202,7 +202,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       (event.ctrlKey && event.key === 'Enter')
     ) {
       event.preventDefault();
-      if (textAreaRef.current.value.length > 0) {
+      if (input.trim().length > 0) {
         sendMessage();
       }
     }
@@ -463,7 +463,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             type="button"
             ref={sendButtonRef}
             className={`${styles.sendButton} ${
-              (input || selectedTemplate || selectedSuggestedReply) &&
+              (input.trim().length != 0 || selectedTemplate || selectedSuggestedReply) &&
               !disconnectedChannelToolTip &&
               styles.sendButtonActive
             }`}

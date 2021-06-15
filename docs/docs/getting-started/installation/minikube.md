@@ -4,6 +4,8 @@ sidebar_label: Minikube
 ---
 
 import TLDR from "@site/src/components/TLDR";
+import ButtonBox from "@site/src/components/ButtonBox";
+import DiamondSVG from "@site/static/icons/diamond.svg";
 
 <TLDR>
 Run Airy on minikube with one command.
@@ -26,7 +28,7 @@ airy create --provider=minikube my-airy
 This will execute the following actions:
 
 1. Create the `my-airy` directory and populate it with the configuration that the CLI will need. All subsequent commands need to either be run from this directory or use the `--workspace` flag.
-2. Start a Minikube cluster on your system and install Airy Core on it.
+2. Start a minikube cluster on your system and install Airy Core on it.
 3. Print URLs for accessing the UIs and APIs (see recording).
 
 import Script from "@site/src/components/Script";
@@ -77,9 +79,16 @@ change the setting for `server_addr` in the ConfigMap.
 
 ## Next steps
 
-Now that you have a running local installation of Minikube you can connect it to
-messaging sources. Check out the [source
-documentation](/sources/introduction.md) to learn more.
+Now that you have a running local installation of minikube you can connect it to
+messaging sources. Check out our Quickstart guide to learn more:
+
+<ButtonBox
+icon={<DiamondSVG />}
+iconInvertible={true}
+title='To the Quick Start'
+description='Learn the Airy Basics with our Quick Start'
+link='getting-started/quickstart'
+/>
 
 ## Third party tools
 

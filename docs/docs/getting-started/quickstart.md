@@ -10,8 +10,8 @@ import RocketSVG from "@site/static/icons/rocket.svg";
 
 <TLDR>
 
-In this Quickstart we are **setting up our first source, listen to
-conversations, and consume directly from Kafka**
+In this Quickstart we will **set up our first source, listen to
+conversations, and consume directly from Kafka.**
 
 </TLDR>
 
@@ -30,6 +30,14 @@ title='Did you already install the Airy CLI?'
 description='To get going with the Quickstart, you must install Airy first. Once the CLI is up and running you are good to go.'
 link='/getting-started/installation/introduction'
 />
+
+:::note
+
+The Quickstart guide explains setting up and using the Chatplugin source which is enabled by default.
+
+To enable and use other sources, please refer to our [Sources documentation](/sources/introduction).
+
+:::
 
 ## Step 1: How to setup your first source
 
@@ -66,7 +74,7 @@ You can now type a message in the text box and send it 🎉
 
 To see how messages are flowing through the system, [list
 conversations](/api/endpoints/conversations.md#list) for the channel you have just
-created. it should return the message you have just sent.
+created. It should return the message you have just sent.
 
 ```shell script
 curl -XPOST http://airy.core/conversations.list | jq .

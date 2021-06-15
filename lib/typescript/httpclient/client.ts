@@ -17,6 +17,7 @@ import {
   PaginatedResponse,
   MetadataUpsertRequestPayload,
   SetStateConversationRequestPayload,
+  UpdateContactRequestPayload,
 } from './src/payload';
 import {
   listChannelsDef,
@@ -42,6 +43,7 @@ import {
   listTemplatesDef,
   metadataUpsertDef,
   setStateConversationDef,
+  updateContactDef,
 } from './src/endpoints';
 
 function isString(object: any) {
@@ -139,11 +141,13 @@ export class HttpClient {
 
   public exploreFacebookChannels = this.getRequest<ExploreChannelRequestPayload, Channel[]>(exploreFacebookChannelsDef);
 
-  public connectFacebookChannel =
-    this.getRequest<ConnectChannelFacebookRequestPayload, Channel>(connectFacebookChannelDef);
+  public connectFacebookChannel = this.getRequest<ConnectChannelFacebookRequestPayload, Channel>(
+    connectFacebookChannelDef
+  );
 
-  public connectChatPluginChannel =
-    this.getRequest<ConnectChatPluginRequestPayload, Channel>(connectChatPluginChannelDef);
+  public connectChatPluginChannel = this.getRequest<ConnectChatPluginRequestPayload, Channel>(
+    connectChatPluginChannelDef
+  );
 
   public connectTwilioSmsChannel = this.getRequest<ConnectTwilioSmsRequestPayload, Channel>(connectTwilioSmsChannelDef);
 
@@ -185,6 +189,8 @@ export class HttpClient {
   public metadataUpsert = this.getRequest<MetadataUpsertRequestPayload>(metadataUpsertDef);
 
   public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
+
+  public updateContact = this.getRequest<UpdateContactRequestPayload>(updateContactDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

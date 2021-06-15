@@ -16,8 +16,8 @@ Airy Core ingests source data and transforms them into
 
 </TLDR>
 
-This document aims to provide an high-level overview of the Airy Core
-technical vocabulary. It provides definition of the most important terms used
+This document aims to provide a high-level overview of the Airy Core
+technical vocabulary. It provides definitions of the most important terms used
 both in the code and in the rest of the documentation.
 
 Our [Avro schemas](https://github.com/airyhq/airy/tree/main/backend/avro)
@@ -48,7 +48,7 @@ from exactly one [contact](#contact).
 
 A message wraps the data that is being transferred from and to the
 [source](#source) with metadata. By definition, the data is [source](#source)
-dependent and it can be plain text, rich media like videos or sound, images, or
+dependent. It can be plain text, or rich media like videos or sound, images, or
 templates.
 
 - `id` uuid
@@ -91,8 +91,7 @@ Indicates whether the message was sent by a contact or not.
 ### Headers
 
 Header data contains information that is important for downstream processing. It
-also includes the message preview and tags that are useful for certain apps like
-automations.
+also includes the message preview and tags that are useful for use cases like routing and automations.
 
 ## Metadata
 

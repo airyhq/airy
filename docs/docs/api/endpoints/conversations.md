@@ -81,11 +81,9 @@ Find users whose name ends with "Lovelace":
     }
   ],
   "pagination_data": {
-    "previous_cursor": "",
-    "next_cursor": "",
-    "filtered_total": 1,
-    "total": 1,
-    "badge_unread_count": 1
+    "previous_cursor": null,
+    "next_cursor": "20",
+    "total": 1
   }
 }
 ```
@@ -214,6 +212,21 @@ Supported states of a conversation are `OPEN` and `CLOSED`.
 ```json5
 {
   "conversation_id": "CONVERSATION_ID"
+}
+```
+
+**Empty response (204)**
+
+## Update contact information
+
+`POST /conversations.updateContact`
+
+**Sample request**
+
+```json5
+{
+  "conversation_id": "CONVERSATION_ID",
+  "display_name": "Grace"
 }
 ```
 

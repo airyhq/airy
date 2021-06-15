@@ -1,14 +1,32 @@
 ---
-title: Authentication
-sidebar_label: Authentication
+title: Security
+sidebar_label: Security
 ---
+
+## API Security
 
 By default, authentication is disabled. There are two ways of protecting resources from unauthorized access.
 You can set `security.systemToken` in the [cluster configuration](getting-started/installation/configuration.md) to a secure secret value in your `airy.yaml` and apply it. Once that is done you authenticate by setting the token as a value on the [Bearer Authorization header](https://tools.ietf.org/html/rfc6750#section-2.1) when making requests.
 
-This is fine for API only access, but it means that UI clients will no longer work since api keys are not meant for web authentication. Therefore Airy Core also supports [Open Id Connect (OIDC)](https://openid.net/connect/) to allow your agents to authenticate via an external provider. If you configure this in addition to the system token then both types of authentication will work when requesting APIs. If you only configure OIDC authentication then regular
+Apart from the `systemToken` you would also need to set your `system.allowedOrigins` value, for protecting the hostname from which API calls can be made:
+
+```yaml
+security:
+  allowedOrigins: "my.airy.hostname.com"
+  systemToken: "my-token-for-the-api"
+  jwtSecret: "generated-secret-during-installation"
+```
+
+After you apply this configuration, you can query the API with the appropriate systemToken:
+
+```sh
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer my-token-for-the-api" http://airy.core/conversations.list
+
+```
 
 ## Configuring OIDC
+
+Setting up the `systemToken` will secure the API, but it means that UI clients will no longer work since API keys are not meant for web authentication. This is why Airy Core also supports [Open Id Connect (OIDC)](https://openid.net/connect/) to allow your agents to authenticate via an external provider. If you configure this in addition to the system token then both types of authentication will work when requesting APIs.
 
 OIDC is an authentication layer on top of the popular OAuth 2.0 authorization framework. With the added information of
 "who" made a request (authentication) Airy Core is able to offer audit and workflow features.
@@ -68,3 +86,9 @@ security:
 ```
 
 The redirect Uri to configure with your provider will always be of the form `{airy core host}/login/oauth2/code/{provider name}`.
+
+## HTTPS
+
+By default the deployed ingress resources don't have HTTPS enabled, so this needs to be configured depending on the provider where you are running `Airy Core`.
+
+We advise you to refer to the documentation of your cloud provider on how to enable HTTPS on the LoadBalancer which routes to the Traefik ingress controller.

@@ -25,7 +25,7 @@ which run as part of Airy Core:
 
 - sources-`SOURCE_NAME`-webhook - Ingest events from the `SOURCE_NAME` source
 - sources-`SOURCE_NAME`-events-router - Process messages from a `SOURCE_NAME` source
-- sources-`SOURCE_NAME`-connector - Send and receives events (mostly messages) to and from a `SOURCE_NAME` source and extracts metadata
+- sources-`SOURCE_NAME`-connector - Send and receive events (mostly messages) to and from a `SOURCE_NAME` source and extract metadata
 
 ## API
 
@@ -35,7 +35,7 @@ which run as part of Airy Core:
 ## Webhook
 
 - webhook-publisher - Processes conversational data and write in Redis the events
-  to be exposed to external parties.
+  to be exposed to external parties
 - webhook-consumer - Reads from Redis and send events to external webhooks
 
 ## Frontend

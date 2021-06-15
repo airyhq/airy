@@ -88,7 +88,7 @@ const ConversationList = (props: ConversationListProps) => {
         {({onItemsRendered, ref}) => (
           <div className={styles.conversationListPaginationWrapper}>
             {!items.length && !loading ? (
-              <NoConversations filterSet={!!Object.keys(currentFilter).length} />
+              <NoConversations conversations={conversations.length} filterSet={!!Object.keys(currentFilter).length} />
             ) : (
               <ResizableWindowList
                 ref={listRef}

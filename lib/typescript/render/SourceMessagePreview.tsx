@@ -18,6 +18,16 @@ const FormattedMessage = ({message}: FormattedMessageProps) => {
   return <div />;
 };
 
+const isImageFromGoogleSource = (messageText: string | undefined) => {
+  if (!messageText) return false;
+
+  return (
+    messageText.includes('https://storage.googleapis.com') &&
+    messageText.toLowerCase().includes('x-goog-algorithm') &&
+    messageText.toLowerCase().includes('x-goog-credential')
+  );
+};
+
 export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
   const {conversation} = props;
 
@@ -43,7 +53,11 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
         return text;
       }
     }
-    if (lastMessageContent.text || lastMessageContent.message?.text) {
+
+    if (
+      (lastMessageContent.text || lastMessageContent.message?.text) &&
+      !isImageFromGoogleSource(lastMessageContent.message?.text)
+    ) {
       return <FormattedMessage message={conversation.lastMessage} />;
     } else if (lastMessageContent.suggestionResponse) {
       return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
@@ -54,7 +68,10 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
     const lastMessageContent = conversation.lastMessage.content;
 
     if (!lastMessageContent.attachment) {
-      if (lastMessageContent.message?.attachments?.[0].type === 'image') {
+      if (
+        lastMessageContent.message?.attachments?.[0].type === 'image' ||
+        isImageFromGoogleSource(lastMessageContent.message?.text)
+      ) {
         return <AttachmentImage />;
       } else if (lastMessageContent.message?.attachments?.[0].type === 'video') {
         return <AttachmentVideo style={{height: '24px', width: '24px', margin: '0px'}} />;

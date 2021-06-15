@@ -4,6 +4,15 @@
   margin-top: 5px;
 }
 
+.imagesContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.images {
+  margin-top: 5px;
+}
+
 .messageListItemImageBlock {
   max-width: 500px;
   border-radius: 8px;

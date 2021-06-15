@@ -51,11 +51,11 @@ You can lint the entire code base by executing the `./scripts/lint.sh` script.
 We use language specific linters:
 
 - [buildifier](https://github.com/bazelbuild/buildtools/tree/master/buildifier)
-  to lint Bazel starlark files
+  to lint Bazel Starlark files
 - [prettier](https://prettier.io/) for TypeScript, JavaScript and SCSS
 - [CheckStyle](https://checkstyle.sourceforge.io/) for Java
 
-Java, Buildifier and prettier are ran as test targets for each package, so you can run:
+Java, buildifier and prettier are ran as test targets for each package, so you can run:
 
 ```shell script
 bazel test //my/package:checkstyle
@@ -122,12 +122,12 @@ Branches must abide to the following format:
 
 `<branch-type>/<issue-number>-<description>`
 
-`branch-type` is defined as follow:
+`branch-type` is defined as follows:
 
 - `feature` or `feat` are used for feature branches
 - `bug`, `fix`, `hotfix` are used for bug fixes
-- `doc` or `docs` for documentation changes
-- `chore` for maintenance tasks on the repo
+- `doc` or `docs` are used for documentation changes
+- `chore` is used for maintenance tasks on the repo
 
 The `description field` must use kebab case.
 
@@ -146,7 +146,7 @@ one commit when merged. The commit message of the squashed commit is very
 important, since it will be used to keep track of the features in a release.
 
 The conventional format is: `[#issue] - description`. For the example, if your
-pull requests refers to the issue "Introduce meaning of life" with number 42,
+pull request refers to the issue "Introduce meaning of life" with number 42,
 the squashed commit message must be:
 
 ```

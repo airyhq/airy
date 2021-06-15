@@ -10,7 +10,7 @@ import TLDR from "@site/src/components/TLDR";
 
 Tags provide you with an unlimited amount of flexibility to manage and customize your conversational workflow.
 
-Here are the ways you can create and use tags:
+Here are the ways you can create tags:
 
 - Use the Tag API to create them programmatically
 - Your users can create them manually directly in conversations

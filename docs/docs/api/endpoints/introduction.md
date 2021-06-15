@@ -35,7 +35,6 @@ Paginated endpoints _always_ respond with the following JSON format:
   "pagination_data": {
     "previous_cursor": "",
     "next_cursor": "",
-    "filtered_total": 1,
     "total": 1
   }
 }
@@ -44,7 +43,6 @@ Paginated endpoints _always_ respond with the following JSON format:
 The response comes in two parts:
 
 - `data`
-
   An array of objects. Object specification depends on the endpoint.
 
 - `pagination_data`
@@ -60,12 +58,7 @@ The response comes in two parts:
     The ID of first elements in the next page of data. Empty if the returned
     page is the last one.
 
-  - `filtered_total`
-
-    The total number of elements across pages in the context of the current
-    filter selection. Only applicable to paginated endpoints that can filter
-    data.
-
   - `total`
 
-    The total number of elements across all pages.
+    The total number of elements across pages in the context of the current
+    filter selection if it exists.

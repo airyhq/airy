@@ -27,6 +27,14 @@ Core Platform instance.
 
 :::
 
+:::note
+
+The Facebook Messenger source is not enabled by default.
+
+You need to add configuration in your airy.yaml file and apply it to activate it.
+
+:::
+
 ## Configuration
 
 The Facebook source requires the following configuration:
@@ -108,10 +116,14 @@ This will open a modal box: add your Callback URL (your instance's Facebook Webh
 Your Facebook Webhook URL should have the following format:
 
 ```
-`https://RANDOM_STRING.tunnel.airy.co/facebook`
+https://your-public-fqdn/facebook
 ```
 
-Refer to [the section on public webhooks](/getting-started/installation/minikube#public-webhooks) for information about how to find your Facebook Webhook URL.
+or if you are using Ngrok:
+
+```
+https://RANDOM_STRING.tunnel.airy.co/facebook
+```
 
 :::
 

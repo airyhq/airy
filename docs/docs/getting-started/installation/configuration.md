@@ -1,5 +1,5 @@
 ---
-title: Configuration your Airy Core instance
+title: Configure your Airy Core instance
 sidebar_label: Configuration
 ---
 
@@ -18,9 +18,9 @@ $EDITOR /path/to/config/directory/airy.yaml # edit your airy.yaml file
 airy config apply --workspace /path/to/config/directory/ # apply your config
 ```
 
-Your Airy Core instance will start and stop components accordingly to your
+Your Airy Core instance will start and stop components according to your
 configuration. For example, if you do not wish to start Facebook components, it
-is enough not to provide any facebook specific configuration.
+is enough not to provide any Facebook specific configuration.
 
 Now let's have a look at the different sections so you can make the changes you
 are looking for.
@@ -31,11 +31,11 @@ are looking for.
 
   If you want to launch an older version refer to our
   [Releases](https://github.com/airyhq/airy/releases) for the correct version
-  number or if you are feeling adventurous try `develop` at your own risk.
+  number, or if you are feeling adventurous, try `develop` at your own risk.
 
 - `containerRegistry` the URL of the container registry
 
-- `namespace` the Kubernetes namespace the **Airy Core** will use
+- `namespace` the Kubernetes namespace that the **Airy Core** will use
 
 - `ingress` the subdomains for the **Airy Components** that need to be accessed from outside the Kubernetes cluster
 
@@ -57,9 +57,9 @@ cluster and Redis.
 
 ### Security
 
-- `systemToken` set to a long secure secret to use for machine [API authentication](api/authentication.md)
+- `systemToken` set to a long secure secret to use for machine [API authentication](security#api-security)
 - `allowedOrigins` your site's origin to prevent CORS-based attacks (default: `"*"`)
-- `oidc` a map of values that when set enable and define [OIDC authentication](api/authentication.md#configuring-oidc)
+- `oidc` a map of values that when set enable and define [OIDC authentication](security#configuring-oidc)
 - `jwtSecret` used to create jwt http sessions derived from oidc authentication (default: randomized on installation)
 
 ### Components
@@ -67,8 +67,15 @@ cluster and Redis.
 - `sources`
 
   - `facebook`
+    - `appId` set this to your Facebook App ID
+    - `appSecret` set this to your Facebook App Secret
+    - `webhookSecret` set this to a webhook secret of your choice (optional)
   - `google`
+    - `saFile` copy here the content of your Google service account key file (one line json string)
+    - `partnerKey` set this to your Google parttner key
   - `twilio`
+    - `authToken` set this to your Twilio authentication token
+    - `accountSid` set this to your Twilio account SID
 
   The **Airy Controller** only starts configured sources. To keep system load to
   a minimum, only add the sources you are using.
@@ -88,11 +95,39 @@ cluster and Redis.
 
 ### Tools
 
-These settings are used to enable or disable some external tools, used to
+These settings are used to enable or disable some external tools used to
 monitor or debug the **Airy Core**.
 
 - `akhq` Kafka GUI for Apache Kafka (For more information visit [akhq.io](https://akhq.io/))
-  - `enabled` set to either `true` to start AKHQ or `false` (default) to disable it.
+  - `enabled` set to either `true` to start AKHQ or `false` (default) to disable it
+
+### Example airy.yaml file
+
+For example, if you want to enable Facebook, Google and Twilio sources, as well as the webhook integration and the AKHQ tool, your `airy.yaml` file should look like this:
+
+```
+kubernetes:
+  containerRegistry: ghcr.io/airyhq
+  namespace: default
+  ngrokEnabled: false
+security:
+  allowedOrigins: "*"
+  systemToken: "my-token-for-the-api"
+  jwtSecret: "generated-secret-during-installation"
+components:
+  sources:
+    facebook:
+      appId: "fb-app-id"
+      appSecret: "fb-app-secret"
+      webhookSecret: "my-webhook-secret"
+    google:
+      saFile: '{"type": "service_account","project_id": "my-project","private_key_id": "my-private-key-id","private_key": "-----BEGIN PRIVATE KEY-----\nKEY-DATA-\n-----END PRIVATE KEY-----\n","client_email": "some-e-mail","client_id": "client-id",....}'
+      partnerKey: "gl-private-key"
+  integration:
+    webhook:
+      name: webhook
+      maxBackoff: 10
+```
 
 ## Applying the configuration
 

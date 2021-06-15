@@ -26,6 +26,14 @@ Business Location and your running instance of Airy Core.
 
 :::
 
+:::note
+
+The Google's Business Messages source is not enabled by default.
+
+You need to add configuration in your airy.yaml file and apply it to activate it.
+
+:::
+
 ## Configuration
 
 Google's Business Messages requires the following configuration:
@@ -64,6 +72,22 @@ in your `airy.yaml` file, below `components/sources/google`.
 import ApplyVariablesNote from './applyVariables-note.mdx'
 
 <ApplyVariablesNote />
+
+:::note
+
+Your Google Webhook URL should have the following format:
+
+```
+https://your-public-fqdn/google
+```
+
+or if you are using Ngrok:
+
+```
+https://RANDOM_STRING.tunnel.airy.co/google
+```
+
+:::
 
 <SuccessBox>
 

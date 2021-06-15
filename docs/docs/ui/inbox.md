@@ -16,6 +16,14 @@ See all conversations from the sources you connected, regardless of whether they
 
 The inbox supports not only text messages but a variety of different message types.
 
+:::warning
+
+Authentication is disabled by default in the Inbox UI component of `Airy Core`.
+
+As this is suitable **only for testing purposes**, we advise you to refer to our [Authentication configuration section](/getting-started/installation/security).
+
+:::
+
 ## Message Types
 
 **Send & Receive Messages**
@@ -125,7 +133,7 @@ link='sources/chatplugin/overview'
 />
 <br/>
 
-**Sample RichCard Carousel Message**
+**Sample Rich Card Carousel Message**
 
 <img alt="Rich Card Carousel Example" src={useBaseUrl('img/ui/RichCardCarousel.gif')} />
 

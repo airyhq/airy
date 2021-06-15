@@ -41,7 +41,7 @@ information. The first two are required. These are your [AWS access key ID and
 AWS secret access
 key](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html),
 which serve as your account credentials. You can generate new credentials within
-AWS Identity and Access Management (IAM) if you do not already have them. The
+AWS Identity and Access Management (IAM), if you do not already have them. The
 other information you will need is region and output format, which you can leave
 as default for the time being.
 
@@ -135,58 +135,62 @@ Error creating vpc:  operation error EC2: CreateVpc, https response error Status
 When encountering this, you can delete some of the resources just as described
 on [here](/getting-started/installation/aws#uninstall-airy-core)
 
-## Enable HTTPS
+## Secure your Airy core
+
+:::warning
+Authentication and HTTPS are disabled by default in Airy Core.
+
+As this is intended **only for testing purposes**, `it is mandatory that you to secure your Airy Core installation` as explained in this section.
+
+:::
+
+### Authentication
+
+To enable authenticaiton to the API and in the UI, refer to our [Authentication configuration section](/getting-started/installation/security)
+
+### Enable HTTPS
 
 This section guides you through the necessary steps to configure HTTPS on your `Airy Core` instance.
 
-### Create a self-signed certificate
+#### Upload certificates to AWS ACM
 
-You can skip this step if you already have an existing HTTPS certificate.
-In the example below, the certificates will be created in your `~/.airy/certs` directory, using the OpenSSL utility.
+You should use a valid HTTPS certificate to secure your `Airy Core` instance. This certificate is created for and can only be used with a specific hostname. This hostname will be the FQDN on which `Airy Core` will be reachable.
 
-```sh
-mkdir -p ~/.airy/certs/
-cd ~/.airy/certs/
-openssl genrsa 2048 > private.key
-openssl req -new -x509 -nodes -sha1 -days 3650 -extensions v3_ca -key private.key > public.crt
------
-Country Name (2 letter code) [DE]:DE
-State or Province Name (full name) [Berlin]:Berlin
-Locality Name (eg, city) []:Berlin
-Organization Name (eg, company) [Internet Widgits Pty Ltd]:Airy GmbH
-Organizational Unit Name (eg, section) []:Development
-Common Name (e.g. server FQDN or YOUR name) []:*.elb.amazonaws.com
-Email Address []:sre@airy.co
-```
+Usually these HTTPS certificates come as a bundle of:
 
-Note that when generating the public certificate `public.crt` you must specify a common name of FQDN, otherwise the certificate will not be used by the AWS LoadBalancer.
+- private key (private.key)
+- public certificate (public.crt)
+- public certificate authority bundle file (ca-bundle.crt)
 
-### Upload certificates to AWS ACM
+Use the following command to upload your HTTPS certificate files to AWS ACM, so that they can be used by the AWS LoadBalancer.
 
 ```sh
-aws acm import-certificate --certificate fileb://public.crt --private-key fileb://private.key --region us-east-1
-```
-
-In case you have your own certificates, the same command for uploading the certificates applies. In case you have an additional file containing the certificate chain, for example `ca-bundle.crt`, you can use the following command instead:
-
-```sh
-aws acm import-certificate --certificate fileb://public.crt --certificate fileb://ca-bundle.crt --private-key fileb://private.key --region us-east-1
+aws acm import-certificate --certificate fileb://public.crt --certificate-chain fileb://ca-bundle.crt --private-key fileb://private.key --region us-east-1
 ```
 
 After the certificate has been uploaded to AWS ACM, you will need the unique ARN of the certificate,for the next step.
 
-### Configure the ingress service
+:::note
 
-Locate and set your KUBECONFIG file:
+If you don't have your own HTTPS certificate you can request one from AWS ACM.
+
+If you want to use Let's Encrypt, have a look at the [Following Traefik ingress guide](https://doc.traefik.io/traefik/v2.0/user-guides/crd-acme/) on how to integrate the HTTPS certificates with the installed ingress controller.
+
+:::
+
+#### Configure the ingress service
+
+Locate and set your KUBECONFIG file and set the other environment variables:
 
 ```sh
 export KUBECONFIG="PATH/TO/DIR/kube.conf"
+export ARN="Your-unique-ACM-ARN"
+export HOSTNAME="public-FQDN"
 ```
 
 Modify the existing ingress service to reconfigure the AWS LoadBalancer:
 
 ```sh
-export ARN="Your-unique-ACM-ARN"
 kubectl -n kube-system annotate service traefik "service.beta.kubernetes.io/aws-load-balancer-ssl-ports=443" "service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ARN}"
 kubectl -n kube-system patch service traefik --patch '{"spec": { "ports": [ { "name": "https", "port": 443, "protocol": "TCP", "targetPort": 80 } ] } }'
 ```
@@ -194,34 +198,47 @@ kubectl -n kube-system patch service traefik --patch '{"spec": { "ports": [ { "n
 Update the `hostnames` configMap with the new https endpoint:
 
 ```sh
-export ELB=$(kubectl -n kube-system get service traefik -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-kubectl patch configmap hostnames --patch "{\"data\": { \"HOST\": \"https://${ELB}\"} }"
+kubectl patch configmap hostnames --patch "{\"data\": { \"HOST\": \"https://${HOSTNAME}\"} }"
 ```
 
-### Print HTTPS endpoint
-
-At this point, the frontend and the API services of `Airy Core` should be accessible through https on the URL of the loadbalancer:
+Update the existing ingress resources with the new hostname (for this you will additionally require the [jq](https://stedolan.github.io/jq/download/) utility):
 
 ```sh
-kubectl --kubeconfig ${KUBECONFIG} -n kube-system get service traefik --output jsonpath='https://{.status.loadBalancer.ingress[0].hostname}{"\n"}'
+kubectl get ingress airy-core -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl apply -f -
+kubectl get ingress airy-core-ui -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl -f -
+```
+
+#### Setup your DNS
+
+You should create a CNAME DNS record for the specified public FQDN to point to the hostname of the LoadBalancer, created by AWS for the ingress service:
+
+```sh
+kubectl get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
+```
+
+#### Print HTTPS endpoint
+
+At this point, the frontend and the API services of `Airy Core` should be accessible through HTTPS on the specific hostname:
+
+```sh
+airy api endpoint
 ```
 
 ## Integrate public webhooks
 
-The public webhooks will be accessible on the public LoadBalancer which is
-created by the Ingress loadBalancer Kubernetes service.
+The public webhooks will be accessible on the public hostname, at a path specific for each source individually.
+Refer to the [sources documentation](/sources/introduction) for more information.
 
 To get the public URL of your AWS Airy Core installation run:
 
 ```sh
-export KUBECONFIG="PATH/TO/DIR/kube.conf"
-kubectl --kubeconfig ${KUBECONFIG} get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
+airy api endpoint
 ```
 
 ## Next steps
 
 Now that you have a running installation of `Airy Core` on AWS you can connect it
-to messaging sources. Check out our quickstart guide:
+to messaging sources. Check out our Quickstart guide to learn more:
 
 <ButtonBox
 icon={<DiamondSVG />}

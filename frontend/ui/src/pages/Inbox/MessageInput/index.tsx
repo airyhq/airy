@@ -65,10 +65,16 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [disconnectedChannelToolTip, setDisconnectedChannelToolTip] = useState(false);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
+  const [closeIconWidth, setCloseIconWidth] = useState('');
+  const [closeIconHeight, setCloseIconHeight] = useState('');
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
   const emojiDiv = useRef<HTMLDivElement>(null);
+  const templateSelectorDiv = useRef<HTMLDivElement>(null);
+  const selectedSuggestedReplyDiv = useRef<HTMLDivElement>(null);
+  const removeTemplateButton = useRef(null);
+  const removeSuggestedRepliesButton = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setInput(e.target.value);
@@ -76,14 +82,14 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
   useEffect(() => {
     setInput('');
-    textAreaRef && textAreaRef.current.focus();
+    removeTemplateFromInput();
+
+    textAreaRef?.current?.focus();
   }, [conversation.id]);
 
   useEffect(() => {
-    textAreaRef.current.style.height = '0px';
-    let scrollHeight = Math.min(300, textAreaRef.current.scrollHeight);
-    if (scrollHeight < 40) scrollHeight = 40;
-    textAreaRef.current.style.height = scrollHeight + 'px';
+    textAreaRef.current.style.height = 'inherit';
+    textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, 200)}px`;
   }, [input]);
 
   useEffect(() => {
@@ -96,6 +102,75 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
     setDisconnectedChannelToolTip(!conversation.channel.connected);
   }, [conversation.channel.connected]);
+
+  useEffect(() => {
+    if (
+      selectedSuggestedReply &&
+      selectedSuggestedReplyDiv &&
+      selectedSuggestedReplyDiv.current &&
+      selectedSuggestedReplyDiv.current.offsetHeight > 200
+    ) {
+      const contentResizedHeight = 200;
+      const contentSelectorDivHeight = selectedSuggestedReplyDiv.current.offsetHeight;
+      let iconSize;
+      let buttonSize;
+
+      const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
+
+      if (scaleRatio <= 0.7) {
+        if (scaleRatio > 0.3) {
+          iconSize = '18px';
+          buttonSize = '36px';
+        } else {
+          iconSize = '30px';
+          buttonSize = '60px';
+        }
+
+        setCloseIconHeight(iconSize);
+        setCloseIconWidth(iconSize);
+
+        if (removeSuggestedRepliesButton && removeSuggestedRepliesButton.current) {
+          removeSuggestedRepliesButton.current.style.width = buttonSize;
+          removeSuggestedRepliesButton.current.style.height = buttonSize;
+        }
+      }
+
+      selectedSuggestedReplyDiv.current.style.transform = `scale(${scaleRatio})`;
+      selectedSuggestedReplyDiv.current.style.transformOrigin = 'left';
+    }
+  }, [selectedSuggestedReply]);
+
+  useEffect(() => {
+    if (selectedTemplate && templateSelectorDiv && templateSelectorDiv.current.offsetHeight > 200) {
+      const contentResizedHeight = 200;
+      const contentSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
+      let iconSize;
+      let buttonSize;
+
+      const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
+
+      if (scaleRatio <= 0.7) {
+        if (scaleRatio > 0.3) {
+          iconSize = '18px';
+          buttonSize = '36px';
+        } else {
+          iconSize = '30px';
+          buttonSize = '60px';
+        }
+
+        setCloseIconHeight(iconSize);
+        setCloseIconWidth(iconSize);
+
+        if (removeTemplateButton && removeTemplateButton.current) {
+          removeTemplateButton.current.style.width = buttonSize;
+          removeTemplateButton.current.style.height = buttonSize;
+        }
+      }
+
+      templateSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
+      templateSelectorDiv.current.style.transformOrigin = 'left';
+    }
+  }, [selectedTemplate]);
 
   const sendMessage = () => {
     if (!conversation.channel.connected) {
@@ -110,7 +185,10 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
           }
         : getTextMessagePayload(source, conversation.id, input)
-    ).then(() => setInput(''));
+    ).then(() => {
+      setInput('');
+      removeTemplateFromInput();
+    });
   };
 
   const handleClick = () => {
@@ -118,9 +196,15 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter') {
+    if (
+      (event.metaKey && event.key === 'Enter') ||
+      (!event.shiftKey && event.key === 'Enter') ||
+      (event.ctrlKey && event.key === 'Enter')
+    ) {
       event.preventDefault();
-      sendMessage();
+      if (input.trim().length > 0) {
+        sendMessage();
+      }
     }
   };
 
@@ -171,6 +255,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
 
     const selectTemplate = (template: Template) => {
       const jsonTemplate = template.content;
+
+      if (selectedTemplate) setSelectedTemplate(null);
+
+      if (input) setInput('');
+
+      if (selectedSuggestedReply) setSelectedSuggestedReply(null);
 
       if (isTextMessage(template)) {
         setInput(jsonTemplate.text);
@@ -251,6 +341,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   };
 
   const selectSuggestedReply = (reply: SuggestedReply) => {
+    if (selectedSuggestedReply) setSelectedSuggestedReply(null);
+
+    if (input) setInput('');
+
+    if (selectedTemplate) setSelectedTemplate(null);
+
     hideSuggestedReplies();
     if (isTextMessage(reply)) {
       setInput(reply.content.text);
@@ -258,6 +354,18 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
       setSelectedSuggestedReply({message: reply});
     }
     sendButtonRef.current.focus();
+  };
+
+  const removeTemplateFromInput = () => {
+    setSelectedTemplate(null);
+    setCloseIconWidth('');
+    setCloseIconHeight('');
+  };
+
+  const removeSelectedSuggestedReply = () => {
+    setSelectedSuggestedReply(null);
+    setCloseIconWidth('');
+    setCloseIconHeight('');
   };
 
   return (
@@ -303,9 +411,17 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
               </>
             )}
             {selectedSuggestedReply && (
-              <div className={styles.suggestionRepliesSelector}>
-                <button className={styles.removeButton} onClick={() => setSelectedSuggestedReply(null)}>
-                  <Close />
+              <div className={styles.suggestionRepliesSelector} ref={selectedSuggestedReplyDiv}>
+                <button
+                  className={styles.removeButton}
+                  onClick={removeSelectedSuggestedReply}
+                  ref={removeSuggestedRepliesButton}>
+                  <Close
+                    style={{
+                      width: closeIconWidth ?? '',
+                      height: closeIconHeight ?? '',
+                    }}
+                  />
                 </button>
                 <SourceMessage
                   content={selectedSuggestedReply.message}
@@ -316,16 +432,23 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             )}
 
             {selectedTemplate && (
-              <div className={styles.templateSelector}>
-                <button className={styles.removeButton} onClick={() => setSelectedTemplate(null)}>
-                  <Close />
-                </button>
-                <SourceMessage
-                  content={selectedTemplate.message}
-                  source={selectedTemplate.source}
-                  contentType="template"
-                />
-              </div>
+              <>
+                <div className={styles.templateSelector} ref={templateSelectorDiv}>
+                  <button className={styles.removeButton} onClick={removeTemplateFromInput} ref={removeTemplateButton}>
+                    <Close
+                      style={{
+                        width: closeIconWidth ?? '',
+                        height: closeIconHeight ?? '',
+                      }}
+                    />
+                  </button>
+                  <SourceMessage
+                    content={selectedTemplate.message}
+                    source={selectedTemplate.source}
+                    contentType="template"
+                  />
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -340,7 +463,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             type="button"
             ref={sendButtonRef}
             className={`${styles.sendButton} ${
-              (input || selectedTemplate || selectedSuggestedReply) &&
+              (input.trim().length != 0 || selectedTemplate || selectedSuggestedReply) &&
               !disconnectedChannelToolTip &&
               styles.sendButtonActive
             }`}
@@ -355,6 +478,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           </button>
         </div>
       </form>
+      <div
+        className={styles.linebreakHint}
+        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
+        {'Shift + Enter to add line'}
+      </div>
     </div>
   );
 };

@@ -14,6 +14,7 @@ const CONVERSATION_REMOVE_ERROR = '@@conversations/REMOVE_ERROR_FROM_CONVERSATIO
 const CONVERSATION_REMOVE_TAG = '@@conversations/CONVERSATION_REMOVE_TAG';
 const CONVERSATION_UPDATE_PAGINATION_DATA = '@@conversation/UPDATE_PAGINATION_DATA';
 const CONVERSATION_SET_STATE = '@@conversations/CONVERSATION_SET_STATE';
+const CONVERSATION_UPDATE_CONTACT = '@@conversations/CONVERSATION_UPDATE_CONTACT';
 
 export const loadingConversationAction = createAction(
   CONVERSATION_LOADING,
@@ -56,6 +57,14 @@ export const setStateConversationAction = createAction(
   CONVERSATION_SET_STATE,
   (conversationId: string, state: string) => ({conversationId, state})
 )<{conversationId: string; state: string}>();
+
+export const updateContactAction = createAction(
+  CONVERSATION_UPDATE_CONTACT,
+  (conversationId: string, displayName: string) => ({
+    conversationId,
+    displayName,
+  })
+)<{conversationId: string; displayName: string}>();
 
 export const fetchConversations = () => async (dispatch: Dispatch<any>) => {
   dispatch(loadingConversationsAction(true));
@@ -135,5 +144,11 @@ export const addTagToConversation = (conversationId: string, tagId: string) => (
 export const removeTagFromConversation = (conversationId: string, tagId: string) => (dispatch: Dispatch<any>) => {
   HttpClientInstance.untagConversation({conversationId, tagId}).then(() =>
     dispatch(removeTagFromConversationAction(conversationId, tagId))
+  );
+};
+
+export const updateContact = (conversationId: string, displayName: string) => (dispatch: Dispatch<any>) => {
+  HttpClientInstance.updateContact({conversationId, displayName}).then(() =>
+    dispatch(updateContactAction(conversationId, displayName))
   );
 };

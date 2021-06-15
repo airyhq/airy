@@ -39,6 +39,9 @@
 }
 
 .codeArea {
+  @media screen and (max-width: 1600px) {
+    max-width: 32em;
+  }
   @include font-base;
   width: 40em;
   height: 19.2em;

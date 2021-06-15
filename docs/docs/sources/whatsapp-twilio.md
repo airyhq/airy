@@ -23,6 +23,14 @@ messages using the [Twilio API](https://www.twilio.com/).
 
 :::
 
+:::note
+
+The WhatsApp via Twilio source is not enabled by default.
+
+You need to add configuration in your airy.yaml file and apply it to activate it.
+
+:::
+
 ## Configuration
 
 import TwilioConfig from './twilio-config.mdx'

@@ -2,16 +2,14 @@
 @import 'assets/scss/fonts.scss';
 
 .container {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   margin-top: 24px;
 }
 
 .inputForm {
   display: flex;
   flex-grow: 1;
-  align-items: center;
+  align-items: flex-end;
   margin-top: 8px;
 }
 
@@ -63,7 +61,9 @@
 
 .inputWrap {
   display: flex;
+  align-items: center;
   width: 100%;
+  max-height: 210px;
 }
 
 .messageTextArea {
@@ -99,6 +99,7 @@
   position: relative;
   display: flex;
   margin-right: 16px;
+  margin-bottom: 3px;
 }
 
 .sendButton {
@@ -141,7 +142,9 @@
 .messageActionsContainer {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  height: 100%;
+  margin-bottom: 10px;
   padding-right: 6px;
 }
 
@@ -231,42 +234,35 @@
 }
 
 .templateSelector {
-  max-height: 164px;
-  height: auto;
-  overflow: hidden;
+  margin: 0px 5px 8px 8px;
+  max-width: 550px;
   position: relative;
-  margin: 0 8px 8px 8px;
-  max-width: 300px;
 }
 
 .suggestionRepliesSelector {
-  max-width: 580px;
-  height: auto;
-  overflow: hidden;
+  margin: 0px 5px 8px 8px;
+  max-width: 550px;
   position: relative;
-  margin: 0 8px 8px 8px;
-  border-radius: 16px;
 }
 
 .removeButton {
   position: absolute;
-  top: 3px;
-  right: 1px;
+  right: 5px;
   border: none;
   outline: none;
-  width: 16px;
-  height: 16px;
+  width: 22px;
+  height: 22px;
   padding: 0;
   margin: 0;
   line-height: 0;
   border-radius: 50%;
-  border: 1px solid white;
+  border: 1px solid var(--color-template-highlight);
   cursor: pointer;
   z-index: 1;
 
   svg {
-    height: 8px;
-    width: 8px;
+    height: 11px;
+    width: 11px;
   }
 }
 
@@ -299,4 +295,13 @@
     @include font-s;
     color: var(--color-text-contrast);
   }
+}
+
+.linebreakHint {
+  @include font-s;
+  display: flex;
+  justify-content: flex-end;
+  color: var(--color-text-gray);
+  margin-top: 4px;
+  margin-right: 66px;
 }

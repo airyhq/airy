@@ -32,7 +32,6 @@ ts_web_library(
         "@npm//lodash-es",
         "@npm//react",
         "@npm//react-router-dom",
-        "@npm//react-window",
         "@npm//redux",
         "@npm//@reduxjs/toolkit",
         "@npm//reselect",

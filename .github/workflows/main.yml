@@ -69,6 +69,13 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           GITHUB_BRANCH: ${{ github.ref }}
+      - name: Publish helm charts to S3
+        run: |
+          ./scripts/upload-helm-images.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          GITHUB_BRANCH: ${{ github.ref }}
       - name: Publish http-client library to npm
         if: ${{ startsWith(github.ref, 'refs/heads/main') }}
         run: |

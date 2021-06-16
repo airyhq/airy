@@ -5,13 +5,15 @@ IFS=$'\n\t'
 bucket_name="airy-core-helm-charts"
 version=$(cat ./VERSION)
 
+sudo snap install helm --classic
+
 mkdir helm-repo
 cd helm-repo
-helm package ../infrastructure/charts/prerequisites/charts/kafka/
-helm package ../infrastructure/charts/prerequisites/charts/beanstalkd/
-helm package ../infrastructure/charts/core/
-helm package ../infrastructure/charts/tools/akhq/
-
+helm package ../infrastructure/helm-chart/charts/prerequisites/charts/kafka
+helm package ../infrastructure/helm-chart/charts/prerequisites/charts/beanstalkd/
+helm package ../infrastructure/helm-chart/charts/core/
+helm package ../infrastructure/helm-chart/charts/tools/charts/akhq/
+helm repo index .
 
 # case ${GITHUB_BRANCH} in
 # refs/heads/develop)
@@ -25,10 +27,12 @@ helm package ../infrastructure/charts/tools/akhq/
 #     ;;
 # esac
 
-s3_basepath=s3://$bucket_name/ljupco
+s3_basepath=s3://$bucket_name/${version}
 
-sha256sum $airy_bin_path >$airy_bin_sha_path
-aws s3 cp $airy_bin_path "$s3_basepath/$filename"
-aws s3 cp $airy_bin_sha_path "$s3_basepath/"
+for i in $(ls -1); do sha256sum ${i} > ${i}.sha256sum.txt; done
+for i in $(ls -1); do aws s3 cp ${i} "${s3_basepath}/"; done
 
-aws s3 cp VERSION s3://$bucket_name/stable.txt
+if [[ "${GITHUB_BRANCH}" == "refs/heads/main" ]]
+then
+    aws s3 cp ../VERSION s3://$bucket_name/stable.txt
+fi

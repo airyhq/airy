@@ -73,6 +73,9 @@ func (p *provider) PostInstallation(dir workspace.ConfigDir) error {
 	if err = p.updateIngress("airy-core-ui", loadBalancerUrl, conf.Kubernetes.Namespace); err != nil {
 		return err
 	}
+	if err = p.updateIngress("airy-core-redirect", loadBalancerUrl, conf.Kubernetes.Namespace); err != nil {
+		return err
+	}
 
 	if err = p.updateHostsConfigMap(loadBalancerUrl, conf.Kubernetes.Namespace); err != nil {
 		return err

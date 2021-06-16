@@ -29,7 +29,7 @@ helm repo index .
 
 s3_basepath=s3://$bucket_name/${version}
 
-find . -type f -name "*.tgz" -exec aws s3 cp "${}" "${s3_basepath}/" \;
+find . -type f -name "*.tgz" -exec aws s3 cp "{}" "${s3_basepath}/" \;
 
 if [[ "${GITHUB_BRANCH}" == "refs/heads/main" ]]
 then

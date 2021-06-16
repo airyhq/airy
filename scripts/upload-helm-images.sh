@@ -29,8 +29,7 @@ helm repo index .
 
 s3_basepath=s3://$bucket_name/${version}
 
-for i in $(ls -1); do sha256sum ${i} > ${i}.sha256sum.txt; done
-for i in $(ls -1); do aws s3 cp ${i} "${s3_basepath}/"; done
+find . -type f -name "*.tgz" -exec aws s3 cp "${}" "${s3_basepath}/" \;
 
 if [[ "${GITHUB_BRANCH}" == "refs/heads/main" ]]
 then

@@ -1,9 +1,7 @@
-import React, {createRef} from 'react';
+import React, {createRef, useRef} from 'react';
 import {withRouter} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
-
-import InfiniteLoader from 'react-window-infinite-loader';
-import ResizableWindowList from '../../../components/ResizableWindowList';
+import {debounce, isEmpty} from 'lodash-es';
 
 import {newestConversationFirst, newestFilteredConversationFirst} from '../../../selectors/conversations';
 import {fetchNextConversationPage} from '../../../actions/conversations';
@@ -39,10 +37,12 @@ const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) =>
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationList = (props: ConversationListProps) => {
+  const {currentConversationId} = props;
   const listRef: any = createRef();
+  const conversationListRef = createRef<HTMLDivElement>();
 
   const renderConversationItem = (conversation: MergedConversation, style: React.CSSProperties) => {
-    const {currentConversationId} = props;
+   
     if (conversation == null) {
       return <div />;
     }
@@ -56,55 +56,74 @@ const ConversationList = (props: ConversationListProps) => {
     );
   };
 
-  const renderConversationList = () => {
-    const {
-      conversations,
-      filteredConversations,
-      conversationsPaginationData,
-      filteredPaginationData,
-      currentFilter,
-      fetchNext,
-      fetchNextFiltered,
-    } = props;
+ 
+  const {
+    conversations,
+    filteredConversations,
+    conversationsPaginationData,
+    filteredPaginationData,
+    currentFilter,
+    fetchNext,
+    fetchNextFiltered,
+  } = props;
 
-    const hasFilter = Object.keys(currentFilter || {}).length > 0;
-    const items = hasFilter ? filteredConversations : conversations;
-    const paginationData = hasFilter ? filteredPaginationData : conversationsPaginationData;
+  console.log('conversations', conversations)
+  console.log('filteredConversations', filteredConversations)
 
-    const hasMoreData = paginationData.nextCursor && paginationData.nextCursor.length > 0;
-    const loading = paginationData.loading;
+  const hasFilter = Object.keys(currentFilter || {}).length > 0;
+  const items = hasFilter ? filteredConversations : conversations;
+  const paginationData = hasFilter ? filteredPaginationData : conversationsPaginationData;
 
-    const isItemLoaded = (index: number) => index < items.length;
-    const itemCount = hasMoreData ? items.length + 1 : items.length;
-    const loadMoreItems = () => {
-      if (!loading) {
-        hasFilter ? fetchNextFiltered() : fetchNext();
-      }
-      return Promise.resolve(true);
-    };
+  const loading = paginationData.loading;
 
-    return (
-      <InfiniteLoader isItemLoaded={isItemLoaded} itemCount={itemCount} loadMoreItems={loadMoreItems}>
-        {({onItemsRendered, ref}) => (
-          <div className={styles.conversationListPaginationWrapper}>
-            {!items.length && !loading ? (
-              <NoConversations conversations={conversations.length} filterSet={!!Object.keys(currentFilter).length} />
-            ) : (
-              <ResizableWindowList
-                ref={listRef}
-                infiniteLoaderRef={ref}
-                itemCount={itemCount}
-                itemSize={115}
-                width={'100%'}
-                onItemsRendered={onItemsRendered}>
-                {({index, style}) => renderConversationItem(items[index], style)}
-              </ResizableWindowList>
-            )}
-          </div>
-        )}
-      </InfiniteLoader>
-    );
+  // const isLoadingConversation = () => {
+  //   return conversation && conversation.paginationData && conversation.paginationData.loading;
+  // };
+
+  const hasPreviousMessages = () => {
+    return !!(conversationsPaginationData && conversationsPaginationData && conversationsPaginationData.nextCursor);
   };
+
+  const debouncedListPreviousConversations = debounce(() => {
+    console.log('hasFilter', hasFilter)
+
+    if(!hasFilter){
+      fetchNext();
+
+    } else {
+      fetchNextFilteredPage()
+    }
+  }, 200);
+
+  //
+
+  const handleScroll = debounce(
+    () => {
+
+      console.log('conversationListRef', conversationListRef)
+      console.log('hasPreviousMessages()', hasPreviousMessages())
+      console.log('scrollTop', conversationListRef && conversationListRef.current && conversationListRef.current.scrollTop)
+      console.log('scrollHeight', conversationListRef && conversationListRef.current && conversationListRef.current.scrollHeight)
+      console.log('clientHeight', conversationListRef && conversationListRef.current && conversationListRef.current.clientHeight)
+
+      
+
+      if (!conversationListRef) {
+        return;
+      }
+
+      if (
+        hasPreviousMessages() &&
+        conversationListRef &&
+        conversationListRef.current &&
+        (conversationListRef.current.scrollHeight - conversationListRef.current.scrollTop) === conversationListRef.current.clientHeight
+      ) {
+        debouncedListPreviousConversations()
+      }
+    },
+    100,
+    {leading: true}
+  );
 
   return (
     <section className={styles.conversationListContainerContacts}>
@@ -114,7 +133,23 @@ const ConversationList = (props: ConversationListProps) => {
           <QuickFilter />
         </section>
       </div>
-      <section className={styles.conversationListContactList}>{renderConversationList()}</section>
+      <section className={styles.conversationListContactList} onScroll={handleScroll} ref={conversationListRef}>
+      {!items.length && !loading ? (
+              <NoConversations conversations={conversations.length} filterSet={!!Object.keys(currentFilter).length} />
+            ) : (
+              <>
+              {filteredConversations && filteredConversations.map(conversation => (
+                   <ConversationListItem
+                   style={styles}
+                   key={conversation.id}
+                   conversation={conversation}
+                   active={conversation.id === currentConversationId}
+                 />
+              ))}
+              </>
+            )}
+
+      </section>
     </section>
   );
 };

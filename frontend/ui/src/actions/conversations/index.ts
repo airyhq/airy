@@ -80,7 +80,7 @@ export const fetchNextConversationPage = () => async (dispatch: Dispatch<any>, s
 
   dispatch(loadingConversationsAction(true));
   return HttpClientInstance.listConversations({cursor: cursor}).then((response: PaginatedResponse<Conversation>) => {
-    console.log('fetchNext - response', response)
+    console.log('fetchNext - response', response);
     dispatch(mergeConversationsAction(response.data, response.paginationData));
     dispatch(loadingConversationsAction(false));
     return Promise.resolve(true);

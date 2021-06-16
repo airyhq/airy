@@ -55,7 +55,7 @@ const executeFilter = (filter: ConversationFilter, dispatch: Dispatch<any>, stat
 
 export const fetchNextFilteredPage = () => (dispatch: Dispatch<any>, state: () => StateModel) => {
   const cursor = state().data.conversations.filtered.paginationData.nextCursor;
-  console.log('fetch Filtered')
+  console.log('fetch Filtered');
   return fetchFilteredConversations(dispatch, state, cursor);
 };
 

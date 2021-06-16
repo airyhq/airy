@@ -1,5 +1,6 @@
 import React, {useEffect, createRef, useRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
+import {isEqual} from 'lodash-es';
 import _redux from 'redux';
 import {debounce, isEmpty} from 'lodash-es';
 import {withRouter} from 'react-router-dom';
@@ -191,4 +192,17 @@ const MessageList = (props: MessageListProps) => {
   );
 };
 
-export default withRouter(connector(MessageList));
+const arePropsEqual = (prevProps, nextProps) => {
+  if (
+    prevProps.history.location.pathname === nextProps.history.location.pathname &&
+    prevProps.conversation.id === nextProps.conversation.id &&
+    prevProps.history.location.key === nextProps.history.location.key &&
+    prevProps.location.key !== nextProps.location.key
+  ) {
+    return true;
+  }
+
+  return isEqual(prevProps, nextProps);
+};
+
+export default withRouter(connector(React.memo(MessageList, arePropsEqual)));

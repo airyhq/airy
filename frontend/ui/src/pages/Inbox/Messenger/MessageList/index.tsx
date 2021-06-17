@@ -16,7 +16,7 @@ import {listMessages, listPreviousMessages} from '../../../../actions/messages';
 
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
-import {getConversation, getCurrentMessages} from '../../../../selectors/conversations';
+import {getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime, isSameDay} from 'dates';
@@ -26,9 +26,14 @@ type MessageListProps = ConnectedProps<typeof connector> & {
 };
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
+  console.log('ownProps', ownProps.match.params.conversationId);
   return {
     messages: getCurrentMessages(state, ownProps),
-    conversation: getConversation(state, ownProps),
+    conversationId: ownProps.match.params.conversationId,
+    conversationChannelSource: state.data.conversations.all.items[ownProps.match.params.conversationId].channel.source,
+    conversationMetadataContact:
+      state.data.conversations.all.items[ownProps.match.params.conversationId].metadata.contact,
+    conversationPaginationData: state.data.conversations.all.items[ownProps.match.params.conversationId].paginationData,
   };
 };
 
@@ -48,36 +53,46 @@ function usePrevious(value: Message[] | string) {
 }
 
 const MessageList = (props: MessageListProps) => {
-  const {listMessages, listPreviousMessages, showSuggestedReplies, messages, conversation} = props;
+  console.log('props', props);
+
+  const {
+    listMessages,
+    listPreviousMessages,
+    showSuggestedReplies,
+    messages,
+    conversationChannelSource,
+    conversationId,
+    conversationMetadataContact,
+    conversationPaginationData,
+  } = props;
 
   const prevMessages = usePrevious(messages);
-  const prevCurrentConversationId = usePrevious(conversation && conversation.id);
+  const prevCurrentConversationId = usePrevious(conversationId);
 
   const messageListRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
     if (!messages || messages.length === 0) {
-      conversation && listMessages(conversation.id);
+      conversationId && listMessages(conversationId);
       scrollBottom();
     }
     if (messages?.length > 0) {
       scrollBottom();
     }
-  }, [conversation && conversation.id, messages]);
+  }, [conversationId, messages]);
 
   useEffect(() => {
     if (hasPreviousMessages() && !scrollbarVisible() && !isLoadingConversation()) {
-      debouncedListPreviousMessages(conversation.id);
+      debouncedListPreviousMessages(conversationId);
     }
-  }, [conversation]);
+  }, [conversationId]);
 
   useEffect(() => {
     if (prevMessages && messages && prevMessages.length < messages.length) {
       if (
-        conversation &&
-        conversation.id &&
+        conversationId &&
         prevCurrentConversationId &&
-        prevCurrentConversationId === conversation.id &&
+        prevCurrentConversationId === conversationId &&
         messages &&
         prevMessages &&
         prevMessages[0] &&
@@ -88,7 +103,7 @@ const MessageList = (props: MessageListProps) => {
         scrollBottom();
       }
     }
-  }, [messages, conversation && conversation.id]);
+  }, [messages, conversationId]);
 
   const scrollBottom = () => {
     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
@@ -103,11 +118,11 @@ const MessageList = (props: MessageListProps) => {
   };
 
   const isLoadingConversation = () => {
-    return conversation && conversation.paginationData && conversation.paginationData.loading;
+    return conversationPaginationData && conversationPaginationData.loading;
   };
 
   const hasPreviousMessages = () => {
-    return !!(conversation && conversation.paginationData && conversation.paginationData.nextCursor);
+    return !!(conversationPaginationData && conversationPaginationData.nextCursor);
   };
 
   const scrollbarVisible = () => {
@@ -139,7 +154,7 @@ const MessageList = (props: MessageListProps) => {
         messageListRef.current.scrollTop === 0 &&
         !isLoadingConversation()
       ) {
-        debouncedListPreviousMessages(conversation.id);
+        debouncedListPreviousMessages(conversationId);
       }
     },
     100,
@@ -178,12 +193,12 @@ const MessageList = (props: MessageListProps) => {
               )}
               <MessageInfoWrapper
                 fromContact={message.fromContact}
-                contact={conversation.metadata.contact}
+                contact={conversationMetadataContact}
                 sentAt={sentAt}
                 lastInGroup={lastInGroup}
                 isChatPlugin={false}
                 decoration={messageDecoration}>
-                <SourceMessage source={conversation.channel?.source} content={message} contentType="message" />
+                <SourceMessage source={conversationChannelSource} content={message} contentType="message" />
               </MessageInfoWrapper>
             </div>
           );
@@ -195,7 +210,7 @@ const MessageList = (props: MessageListProps) => {
 const arePropsEqual = (prevProps, nextProps) => {
   if (
     prevProps.history.location.pathname === nextProps.history.location.pathname &&
-    prevProps.conversation.id === nextProps.conversation.id &&
+    prevProps.conversationId === nextProps.conversationId &&
     prevProps.history.location.key === nextProps.history.location.key &&
     prevProps.location.key !== nextProps.location.key
   ) {

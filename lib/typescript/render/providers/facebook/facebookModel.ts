@@ -1,5 +1,7 @@
 export interface Attachment {
   type: string;
+  title?: string;
+  url?: string | null;
 }
 export interface SimpleAttachment {
   type: 'image' | 'video' | 'audio' | 'file' | 'fallback';

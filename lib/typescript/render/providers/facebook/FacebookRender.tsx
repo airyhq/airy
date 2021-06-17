@@ -105,7 +105,7 @@ const parseAttachment = (
   if (attachment.type === 'template' && attachment.payload.template_type === 'button') {
     return {
       type: 'buttonTemplate',
-      text: attachment.payload.text,
+      text: attachment.payload.text ?? attachment.title,
       buttons: attachment.payload.buttons,
     };
   }

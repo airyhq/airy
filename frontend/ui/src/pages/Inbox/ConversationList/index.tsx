@@ -59,11 +59,7 @@ const ConversationList = (props: ConversationListProps) => {
   };
 
   const debouncedListPreviousConversations = debounce(() => {
-    if (!hasFilter) {
-      fetchNext();
-    } else {
-      fetchNextFiltered();
-    }
+    !hasFilter ? fetchNext() : fetchNextFiltered();
   }, 200);
 
   const handleScroll = debounce(

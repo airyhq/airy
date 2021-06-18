@@ -66,14 +66,18 @@ const ConversationListItem = (props: ConversationListItemProps) => {
     );
   };
 
-  useEffect(() => {
+  const markAsRead = () => {
     if (active && unread) {
-      return readConversations(conversation.id);
+      readConversations(conversation.id);
     }
+  };
+
+  useEffect(() => {
+    markAsRead();
   }, [active, conversation, currentConversationState]);
 
   return (
-    <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>
+    <div className={styles.clickableListItem} style={style} onClick={markAsRead}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${

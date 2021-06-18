@@ -26,7 +26,6 @@ type MessageListProps = ConnectedProps<typeof connector> & {
 };
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
-  console.log('ownProps', ownProps.match.params.conversationId);
   return {
     messages: getCurrentMessages(state, ownProps),
     conversationId: ownProps.match.params.conversationId,
@@ -53,8 +52,6 @@ function usePrevious(value: Message[] | string) {
 }
 
 const MessageList = (props: MessageListProps) => {
-  console.log('props', props);
-
   const {
     listMessages,
     listPreviousMessages,
@@ -214,11 +211,8 @@ const arePropsEqual = (prevProps, nextProps) => {
     prevProps.history.location.key === nextProps.history.location.key &&
     prevProps.location.key !== nextProps.location.key
   ) {
-    console.log('messageList - true');
     return true;
   }
-
-  console.log('messageList - isEqual', isEqual(prevProps, nextProps));
 
   return isEqual(prevProps, nextProps);
 };

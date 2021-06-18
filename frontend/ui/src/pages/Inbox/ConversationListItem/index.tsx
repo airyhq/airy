@@ -18,7 +18,6 @@ import {newestFilteredConversationFirst} from '../../../selectors/conversations'
 type ConversationListItemProps = {
   conversation: MergedConversation;
   active: boolean;
-  style: CSSProperties;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -35,7 +34,7 @@ const mapStateToProps = (state: StateModel) => {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, style, readConversations, conversationState} = props;
+  const {conversation, active, readConversations, conversationState} = props;
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
@@ -73,7 +72,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   }, [active, conversation, currentConversationState]);
 
   return (
-    <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>
+    <div className={styles.clickableListItem} onClick={() => readConversations(conversation.id)}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${

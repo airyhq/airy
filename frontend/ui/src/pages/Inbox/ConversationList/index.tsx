@@ -96,21 +96,22 @@ const ConversationList = (props: ConversationListProps) => {
         </section>
       </div>
       <section className={styles.conversationListContactList} onScroll={handleScroll} ref={conversationListRef}>
-        {!items.length && !isLoadingConversation ? (
-          <NoConversations conversations={conversations.length} filterSet={!!Object.keys(currentFilter).length} />
-        ) : (
-          <>
-            {filteredConversations &&
-              filteredConversations.map(conversation => (
-                <ConversationListItem
-                  style={styles}
-                  key={conversation.id}
-                  conversation={conversation}
-                  active={conversation.id === currentConversationId}
-                />
-              ))}
-          </>
-        )}
+        <div className={styles.conversationListPaginationWrapper}>
+          {!items.length && !isLoadingConversation ? (
+            <NoConversations conversations={conversations.length} filterSet={!!Object.keys(currentFilter).length} />
+          ) : (
+            <>
+              {filteredConversations &&
+                filteredConversations.map(conversation => (
+                  <ConversationListItem
+                    key={conversation.id}
+                    conversation={conversation}
+                    active={conversation.id === currentConversationId}
+                  />
+                ))}
+            </>
+          )}
+        </div>
       </section>
     </section>
   );

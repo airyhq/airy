@@ -31,7 +31,8 @@ const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) =>
     messages: getCurrentMessages(state, ownProps),
     conversationId: ownProps.match.params.conversationId,
     conversationChannelSource: state.data.conversations.all.items[ownProps.match.params.conversationId].channel.source,
-    conversationMetadataContact: state.data.conversations.all.items[ownProps.match.params.conversationId].metadata.contact,
+    conversationMetadataContact:
+      state.data.conversations.all.items[ownProps.match.params.conversationId].metadata.contact,
     conversationPaginationData: state.data.conversations.all.items[ownProps.match.params.conversationId].paginationData,
   };
 };
@@ -213,12 +214,11 @@ const arePropsEqual = (prevProps, nextProps) => {
     prevProps.history.location.key === nextProps.history.location.key &&
     prevProps.location.key !== nextProps.location.key
   ) {
-
-    console.log('messageList - true')
+    console.log('messageList - true');
     return true;
   }
 
-  console.log('messageList - isEqual', isEqual(prevProps, nextProps))
+  console.log('messageList - isEqual', isEqual(prevProps, nextProps));
 
   return isEqual(prevProps, nextProps);
 };

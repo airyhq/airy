@@ -1,4 +1,4 @@
-import React, {CSSProperties, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 

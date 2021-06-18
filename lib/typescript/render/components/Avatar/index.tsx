@@ -6,10 +6,7 @@ type AvatarProps = {
   contact?: Contact;
 };
 
-//const fallbackAvatar = 'https://s3.amazonaws.com/assets.airy.co/unknown.png';
-
-const fallbackAvatar =
-  'https://platform-lookaside.fbsbx.com/platform/profilepic/?psid=3983724961718554&width=1024&ext=1625298180&hash=AeSjVMT5JenEmVE3WE0';
+const fallbackAvatar = 'https://s3.amazonaws.com/assets.airy.co/unknown.png';
 
 const fallbackAvatarImage = (event: SyntheticEvent<HTMLImageElement, Event>) => {
   event.currentTarget.src = fallbackAvatar;

@@ -1,0 +1,67 @@
+connect:
+  enabled: false
+podAnnotations: {}
+nameOverride: "connect"
+fullnameOverride: "kafka-connect"
+
+image: ghcr.io/airyhq/infrastructure/kafka-connect
+imageTag: 2.7.0
+imagePullPolicy: Always
+
+servicePort: 8083
+
+configurationOverrides:
+  'plugin.path': '/usr/share/java,/usr/share/confluent-hub-components'
+  'key.converter': 'io.confluent.connect.avro.AvroConverter'
+  'value.converter': 'io.confluent.connect.avro.AvroConverter'
+  'key.converter.schemas.enable': 'false'
+  'value.converter.schemas.enable': 'false'
+  'internal.key.converter': 'org.apache.kafka.connect.json.JsonConverter'
+  'internal.value.converter': 'org.apache.kafka.connect.json.JsonConverter'
+  'config.storage.replication.factor': '1'
+  'offset.storage.replication.factor': '1'
+  'status.storage.replication.factor': '1'
+
+heapOptions: '-Xms512M -Xmx512M'
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 1024Mi
+  requests:
+    cpu: 200m
+    memory: 512Mi
+
+jmx:
+  port: 5555
+
+overrideGroupId: kafka-connect
+
+prometheus:
+  jmx:
+    enabled: false
+    image: solsson/kafka-prometheus-jmx-exporter@sha256
+    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+    imagePullPolicy: IfNotPresent
+    port: 5556
+    resources: {}
+
+customEnv: {}
+schemaRegistry: {}
+
+kafka:
+  bootstrapServers: 'PLAINTEXT://kafka-headless:9092'
+
+components:
+  integration:
+    connect:
+      s3Key: ""
+      s3Secret: ""
+livenessProbe:
+
+volumeMounts:
+volumes:
+imagePullSecrets:
+nodeSelector: {}
+tolerations: []
+affinity: {}

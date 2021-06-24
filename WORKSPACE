@@ -21,7 +21,7 @@ airy_bazel_tools_dependencies()
 ### Java tooling
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
-load("//:repositories.bzl", jvm_deps = "airy_jvm_deps", "excluded_artifacts")
+load("//:repositories.bzl", "excluded_artifacts", jvm_deps = "airy_jvm_deps")
 
 maven_install(
     artifacts = airy_jvm_deps + jvm_deps,

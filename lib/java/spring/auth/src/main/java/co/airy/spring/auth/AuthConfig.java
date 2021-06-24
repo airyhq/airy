@@ -109,7 +109,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                                         new AntPathRequestMatcher("/logout/**"), new AntPathRequestMatcher("/oauth/**"))));
 
                 http
-                        .securityContext().securityContextRepository(new CookieSecurityContextRepository(new Jwt(jwtSecret)))
+                        .securityContext().securityContextRepository(new CookieSecurityContextRepository(new Jwt(jwtSecret), new PrincipalAccess()))
                         .and().logout().permitAll().deleteCookies(AuthCookie.NAME)
                         .logoutSuccessUrl(logoutSuccessUrl)
                         .and()

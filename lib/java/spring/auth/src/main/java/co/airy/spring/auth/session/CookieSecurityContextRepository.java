@@ -1,9 +1,9 @@
 package co.airy.spring.auth.session;
 
 import co.airy.log.AiryLoggerFactory;
+import co.airy.spring.auth.PrincipalAccess;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static co.airy.spring.auth.PrincipalAccess.getUserProfile;
-
 /**
  * Spring's default session store attaches a session id and stores the security context in memory.
  * <p>
@@ -30,9 +28,11 @@ import static co.airy.spring.auth.PrincipalAccess.getUserProfile;
 public class CookieSecurityContextRepository implements SecurityContextRepository {
     private static final Logger log = AiryLoggerFactory.getLogger(CookieSecurityContextRepository.class);
     private final Jwt jwt;
+    private final PrincipalAccess principalAccess;
 
-    public CookieSecurityContextRepository(Jwt jwt) {
+    public CookieSecurityContextRepository(Jwt jwt, PrincipalAccess principalAccess) {
         this.jwt = jwt;
+        this.principalAccess = principalAccess;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
             if (authentication instanceof OAuth2AuthenticationToken) {
                 try {
                     // Exchange the oauth2 session for an Airy JWT cookie session
-                    final UserProfile profile = getUserProfile(authentication);
+                    final UserProfile profile = principalAccess.getUserProfile(authentication);
                     final AiryAuth airyAuth = new AiryAuth(profile);
 
                     AuthCookie cookie = new AuthCookie(jwt.getAuthToken(airyAuth));

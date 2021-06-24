@@ -10,6 +10,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
 import co.airy.model.metadata.dto.MetadataMap;
+import co.airy.spring.auth.PrincipalAccess;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -28,19 +29,19 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import static co.airy.spring.auth.PrincipalAccess.getUserId;
-
 @RestController
 public class SendMessageController {
     private final Stores stores;
     private final ObjectMapper objectMapper;
+    private final PrincipalAccess principalAccess;
     private final KafkaProducer<String, Message> producer;
 
     private final ApplicationCommunicationMessages applicationCommunicationMessages = new ApplicationCommunicationMessages();
 
-    SendMessageController(Stores stores, ObjectMapper objectMapper, KafkaProducer<String, Message> producer) {
+    SendMessageController(Stores stores, ObjectMapper objectMapper, PrincipalAccess principalAccess, KafkaProducer<String, Message> producer) {
         this.stores = stores;
         this.objectMapper = objectMapper;
+        this.principalAccess = principalAccess;
         this.producer = producer;
     }
 
@@ -58,7 +59,7 @@ public class SendMessageController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        final String userId = getUserId(auth);
+        final String userId = principalAccess.getUserId(auth);
 
         final Message message = Message.newBuilder()
                 .setId(UUID.randomUUID().toString())

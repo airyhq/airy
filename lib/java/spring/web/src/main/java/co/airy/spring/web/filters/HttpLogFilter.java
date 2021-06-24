@@ -1,5 +1,6 @@
 package co.airy.spring.web.filters;
 
+import co.airy.spring.auth.PrincipalAccess;
 import co.airy.spring.auth.session.UserProfile;
 import co.airy.spring.web.events.HttpEventPublisher;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -17,18 +18,18 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static co.airy.spring.auth.PrincipalAccess.getUserProfile;
-
 @Component
 public class HttpLogFilter extends OncePerRequestFilter {
 
     private final HttpEventPublisher httpEventPublisher;
+    private final PrincipalAccess principalAccess;
 
     private static final int MAX_JSON_LENGTH = 2048;
 
-    public HttpLogFilter(HttpEventPublisher httpEventPublisher) {
+    public HttpLogFilter(HttpEventPublisher httpEventPublisher, PrincipalAccess principalAccess) {
         super();
         this.httpEventPublisher = httpEventPublisher;
+        this.principalAccess = principalAccess;
     }
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -59,7 +60,7 @@ public class HttpLogFilter extends OncePerRequestFilter {
 
     private UserProfile getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return getUserProfile(authentication);
+        return principalAccess.getUserProfile(authentication);
     }
 
     private Map<String, String> getRequestHeaders(ContentCachingRequestWrapper request) {

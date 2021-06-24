@@ -6,5 +6,5 @@ lib/go/ @airyhq/codeowners-infrastructure
 lib/java/ @airyhq/codeowners-backend
 lib/typescript/ @airyhq/codeowners-frontend
 scripts/ @airyhq/codeowners-infrastructure
-*.bzl @lucapette @chrismatix
-BUILD @lucapette @chrismatix
+*.bzl @chrismatix
+BUILD @chrismatix

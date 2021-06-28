@@ -74,6 +74,7 @@
   cursor: pointer;
   outline: none;
   max-height: 29px;
+  white-space: nowrap;
 
   svg {
     display: inline-block;
@@ -93,7 +94,7 @@
   background: none;
   border: 2px solid #bf1a2f;
   border-radius: 50%;
-  margin-right: 2px;
+  margin-right: 4px;
 }
 
 .filterButtonSelected {

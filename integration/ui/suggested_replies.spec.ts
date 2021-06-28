@@ -24,7 +24,7 @@ describe('adds two suggested replies to a message and sends one of the suggested
       cy.visit('/ui/');
       cy.url().should('include', '/inbox');
 
-      cy.get(`[data-cy=${cySuggestionsButton}]`).contains('Suggestions').click();
+      cy.get(`[data-cy=${cySuggestionsButton}]`).click();
 
       cy.get(`[data-cy=${cySuggestionsList}]`).contains('Welcome!').click({force: true});
 

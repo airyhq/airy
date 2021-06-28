@@ -45,7 +45,7 @@ const SuggestedReplySelector = ({onClose, suggestions, selectSuggestedReply, sou
                   onClick={() => {
                     selectSuggestedReply(suggestion);
                   }}>
-                  <div className={styles.fadeOutWrapper}>
+                  <div className={styles.fadeOutWrapper} id="suggestionList">
                     <SourceMessage
                       content={{id: id, content: suggestion.content}}
                       source={source}

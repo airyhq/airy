@@ -3,8 +3,6 @@
     "integrationFolder": "integration",
     "testFiles": "**/*.spec.?s",
     "env": {
-       "username": "grace@example.com",
-       "password": "the_answer_is_42",
        "chatPluginName": "Cypress Chatplugin",
        "tagName": "Cypress Tag",
        "searchQuery": "Cypress Filter",
@@ -12,7 +10,8 @@
        "messageChatplugin": "Hello from Cypress ChatPlugin!",
        "newMessageChatplugin": "Hello once again from Cypress ChatPlugin!",
        "websocketMessage": "Websocket Test Message",
-       "channelId": "3502a0a7-933d-5410-b5fc-51f041146d89"
+       "channelId": "2bb0c526-8762-48c5-a843-46d2b658cd0b",
+       "messageId": "e862331d-82a1-41b8-a3b5-be249c3a483c"
     },
     "viewportHeight": 800,
     "viewportWidth": 1280,

@@ -382,7 +382,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
           )}
 
           <Button type="button" styleVariant="outline-big" onClick={toggleSuggestedReplies}>
-            <div className={styles.suggestionButton}>
+            <div className={styles.suggestionButton} id="suggestionButton">
               Suggestions
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
             </div>

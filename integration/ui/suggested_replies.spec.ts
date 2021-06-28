@@ -1,4 +1,4 @@
-import {cySuggestionsButton, cyMessageSendButton, cyMessageList} from 'handles';
+import {cyMessageSendButton, cyMessageList} from 'handles';
 
 describe('adds two suggested replies to a message and sends one of the suggested replies to a chatplugin conversation', () => {
   it('adds two suggested replies to a message and sends one suggested reply', () => {

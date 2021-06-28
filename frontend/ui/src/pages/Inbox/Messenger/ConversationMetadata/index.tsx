@@ -50,10 +50,13 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName);
 
   useEffect(() => {
-    listTags();
     setShowEditDisplayName(false);
     setDisplayName(conversation.metadata.contact.displayName);
   }, [conversation]);
+
+  useEffect(() => {
+    listTags();
+  }, []);
 
   const showAddTags = () => {
     setTagName('');

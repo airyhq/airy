@@ -125,9 +125,9 @@ const PopUpFilter = (props: PopUpFilterProps) => {
   return (
     <DialogCustomizable
       close={closeCallback}
-      style={{marginTop: '10px'}}
+      style={{marginTop: '20px', left: '0px', marginLeft: '215px'}}
       coverStyle={{backgroundColor: 'rgba(247,247,247,0.7)'}}>
-      <div className={styles.content}>
+      <div id="dialogContent" className={styles.content}>
         <div className={styles.filterColumn}>
           <div className={styles.filterStateContainer}>
             <div className={styles.filterItem}>

@@ -1,9 +1,7 @@
-import React, {createRef} from 'react';
+import React, {useRef} from 'react';
 import {withRouter} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
-
-import InfiniteLoader from 'react-window-infinite-loader';
-import ResizableWindowList from '../../../components/ResizableWindowList';
+import {debounce} from 'lodash-es';
 
 import {newestConversationFirst, newestFilteredConversationFirst} from '../../../selectors/conversations';
 import {fetchNextConversationPage} from '../../../actions/conversations';
@@ -14,7 +12,7 @@ import QuickFilter from '../QuickFilter';
 import ConversationListItem from '../ConversationListItem';
 import NoConversations from '../NoConversations';
 
-import {MergedConversation, StateModel} from '../../../reducers';
+import {StateModel} from '../../../reducers';
 
 import styles from './index.module.scss';
 import {ConversationRouteProps} from '../index';
@@ -39,72 +37,51 @@ const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) =>
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationList = (props: ConversationListProps) => {
-  const listRef: any = createRef();
+  const {
+    currentConversationId,
+    conversations,
+    filteredConversations,
+    conversationsPaginationData,
+    filteredPaginationData,
+    currentFilter,
+    fetchNext,
+    fetchNextFiltered,
+  } = props;
+  const conversationListRef = useRef(null);
 
-  const renderConversationItem = (conversation: MergedConversation, style: React.CSSProperties) => {
-    const {currentConversationId} = props;
-    if (conversation == null) {
-      return <div />;
-    }
-    return (
-      <ConversationListItem
-        style={style}
-        key={conversation.id}
-        conversation={conversation}
-        active={conversation.id === currentConversationId}
-      />
-    );
+  const hasFilter = Object.keys(currentFilter || {}).length > 0;
+  const items = hasFilter ? filteredConversations : conversations;
+  const paginationData = hasFilter ? filteredPaginationData : conversationsPaginationData;
+  const isLoadingConversation = paginationData.loading;
+
+  const hasPreviousMessages = () => {
+    return !!(conversationsPaginationData && conversationsPaginationData && conversationsPaginationData.nextCursor);
   };
 
-  const renderConversationList = () => {
-    const {
-      conversations,
-      filteredConversations,
-      conversationsPaginationData,
-      filteredPaginationData,
-      currentFilter,
-      fetchNext,
-      fetchNextFiltered,
-    } = props;
+  const debouncedListPreviousConversations = debounce(() => {
+    !hasFilter ? fetchNext() : fetchNextFiltered();
+  }, 200);
 
-    const hasFilter = Object.keys(currentFilter || {}).length > 0;
-    const items = hasFilter ? filteredConversations : conversations;
-    const paginationData = hasFilter ? filteredPaginationData : conversationsPaginationData;
-
-    const hasMoreData = paginationData.nextCursor && paginationData.nextCursor.length > 0;
-    const loading = paginationData.loading;
-
-    const isItemLoaded = (index: number) => index < items.length;
-    const itemCount = hasMoreData ? items.length + 1 : items.length;
-    const loadMoreItems = () => {
-      if (!loading) {
-        hasFilter ? fetchNextFiltered() : fetchNext();
+  const handleScroll = debounce(
+    () => {
+      if (!conversationListRef) {
+        return;
       }
-      return Promise.resolve(true);
-    };
 
-    return (
-      <InfiniteLoader isItemLoaded={isItemLoaded} itemCount={itemCount} loadMoreItems={loadMoreItems}>
-        {({onItemsRendered, ref}) => (
-          <div className={styles.conversationListPaginationWrapper}>
-            {!items.length && !loading ? (
-              <NoConversations conversations={conversations.length} filterSet={!!Object.keys(currentFilter).length} />
-            ) : (
-              <ResizableWindowList
-                ref={listRef}
-                infiniteLoaderRef={ref}
-                itemCount={itemCount}
-                itemSize={115}
-                width={'100%'}
-                onItemsRendered={onItemsRendered}>
-                {({index, style}) => renderConversationItem(items[index], style)}
-              </ResizableWindowList>
-            )}
-          </div>
-        )}
-      </InfiniteLoader>
-    );
-  };
+      if (
+        hasPreviousMessages() &&
+        !isLoadingConversation &&
+        conversationListRef &&
+        conversationListRef.current &&
+        conversationListRef.current.scrollHeight - conversationListRef.current.scrollTop ===
+          conversationListRef.current.clientHeight
+      ) {
+        debouncedListPreviousConversations();
+      }
+    },
+    100,
+    {leading: true}
+  );
 
   return (
     <section className={styles.conversationListContainerContacts}>
@@ -114,7 +91,24 @@ const ConversationList = (props: ConversationListProps) => {
           <QuickFilter />
         </section>
       </div>
-      <section className={styles.conversationListContactList}>{renderConversationList()}</section>
+      <section className={styles.conversationListContactList} onScroll={handleScroll} ref={conversationListRef}>
+        <div className={styles.conversationListPaginationWrapper}>
+          {!items.length && !isLoadingConversation ? (
+            <NoConversations conversations={conversations.length} filterSet={!!Object.keys(currentFilter).length} />
+          ) : (
+            <>
+              {filteredConversations &&
+                filteredConversations.map(conversation => (
+                  <ConversationListItem
+                    key={conversation.id}
+                    conversation={conversation}
+                    active={conversation.id === currentConversationId}
+                  />
+                ))}
+            </>
+          )}
+        </div>
+      </section>
     </section>
   );
 };

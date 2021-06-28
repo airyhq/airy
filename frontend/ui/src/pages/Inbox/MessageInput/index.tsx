@@ -6,7 +6,7 @@ import TemplateSelector from '../TemplateSelector';
 import 'emoji-mart/css/emoji-mart.css';
 import {withRouter} from 'react-router-dom';
 import {Button} from 'components';
-import {cyMessageSendButton, cyMessageTextArea} from 'handles';
+import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
 import {Picker} from 'emoji-mart';
 import {SourceMessage} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
@@ -381,8 +381,12 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             />
           )}
 
-          <Button type="button" styleVariant="outline-big" onClick={toggleSuggestedReplies}>
-            <div className={styles.suggestionButton} id="suggestionButton">
+          <Button
+            type="button"
+            styleVariant="outline-big"
+            onClick={toggleSuggestedReplies}
+            data-cy={cySuggestionsButton}>
+            <div className={styles.suggestionButton}>
               Suggestions
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
             </div>

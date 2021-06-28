@@ -1,4 +1,4 @@
-import {cyMessageSendButton, cyMessageList} from 'handles';
+import {cySuggestionsButton, cySuggestionsList, cyMessageSendButton, cyMessageList} from 'handles';
 
 describe('adds two suggested replies to a message and sends one of the suggested replies to a chatplugin conversation', () => {
   it('adds two suggested replies to a message and sends one suggested reply', () => {
@@ -24,9 +24,9 @@ describe('adds two suggested replies to a message and sends one of the suggested
       cy.visit('/ui/');
       cy.url().should('include', '/inbox');
 
-      cy.get('div#suggestionButton').contains('Suggestions').click();
+      cy.get(`[data-cy=${cySuggestionsButton}]`).contains('Suggestions').click();
 
-      cy.get('div#suggestionList').contains('Welcome!').click({force: true});
+      cy.get(`[data-cy=${cySuggestionsList}]`).contains('Welcome!').click({force: true});
 
       cy.get(`[data-cy=${cyMessageSendButton}]`).click();
 

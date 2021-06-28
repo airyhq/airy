@@ -6,6 +6,7 @@ import styles from './index.module.scss';
 import {listTemplates} from '../../../actions/templates';
 import {SuggestedReply} from 'model';
 import {StateModel} from '../../../reducers';
+import {cySuggestionsList} from 'handles';
 
 const mapDispatchToProps = {
   listTemplates,
@@ -34,7 +35,7 @@ const SuggestedReplySelector = ({onClose, suggestions, selectSuggestedReply, sou
   return (
     <ListenOutsideClick onOuterClick={onClose}>
       <div className={styles.component} ref={componentRef}>
-        <div className={styles.suggestionList}>
+        <div className={styles.suggestionList} data-cy={cySuggestionsList}>
           <Carousel>
             {Object.keys(suggestions).map(id => {
               const suggestion = suggestions[id];
@@ -45,7 +46,7 @@ const SuggestedReplySelector = ({onClose, suggestions, selectSuggestedReply, sou
                   onClick={() => {
                     selectSuggestedReply(suggestion);
                   }}>
-                  <div className={styles.fadeOutWrapper} id="suggestionList">
+                  <div className={styles.fadeOutWrapper}>
                     <SourceMessage
                       content={{id: id, content: suggestion.content}}
                       source={source}

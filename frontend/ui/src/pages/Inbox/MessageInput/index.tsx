@@ -385,7 +385,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             type="button"
             styleVariant="outline-big"
             onClick={toggleSuggestedReplies}
-            data-cy={cySuggestionsButton}>
+            dataCy={cySuggestionsButton}>
             <div className={styles.suggestionButton}>
               Suggestions
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />

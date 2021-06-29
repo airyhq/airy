@@ -3,7 +3,7 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 
+## 0.25.0
 
 #### Changes
 
@@ -13,12 +13,17 @@ sidebar_label: 📝 Changelog
 
 #### 🐛 Bug Fixes
 
+- [[#2009](https://github.com/airyhq/airy/issues/2009)] Fixed unnecessary recalls and rerenders [[#2054](https://github.com/airyhq/airy/pull/2054)]
+- [[#2018](https://github.com/airyhq/airy/issues/2018)] Unknown Message Type from Facebook chat plugin  [[#2055](https://github.com/airyhq/airy/pull/2055)]
+- [[#2038](https://github.com/airyhq/airy/issues/2038)] Fix broken download links on release page [[#2039](https://github.com/airyhq/airy/pull/2039)]
 - [[#1991](https://github.com/airyhq/airy/issues/1991)] re-organizing infinite scroll for conversationlist and messagelist [[#2006](https://github.com/airyhq/airy/pull/2006)]
 - [[#1985](https://github.com/airyhq/airy/issues/1985)] Bug: Template Title not Rendering [[#1995](https://github.com/airyhq/airy/pull/1995)]
 - [[#1939](https://github.com/airyhq/airy/issues/1939)] Redirect / to /ui [[#2001](https://github.com/airyhq/airy/pull/2001)]
 
 #### 🧰 Maintenance
 
+- Bump prismjs from 1.23.0 to 1.24.0 in /docs [[#2058](https://github.com/airyhq/airy/pull/2058)]
+- Bump @bazel/typescript from 3.5.1 to 3.6.0 [[#1975](https://github.com/airyhq/airy/pull/1975)]
 - Bump webpack from 5.39.1 to 5.40.0 [[#2022](https://github.com/airyhq/airy/pull/2022)]
 - Bump @typescript-eslint/eslint-plugin from 4.27.0 to 4.28.0 [[#2026](https://github.com/airyhq/airy/pull/2026)]
 - Bump html-webpack-plugin from 5.3.1 to 5.3.2 [[#2032](https://github.com/airyhq/airy/pull/2032)]
@@ -40,9 +45,9 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.24.1/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.24.1/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.24.1/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.25.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.25.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.25.0/windows/amd64/airy.exe)
 
 ## Hotfix 0.23.1
 

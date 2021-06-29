@@ -3,25 +3,69 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 0.24.0
-
-- [[#1921](https://github.com/airyhq/airy/issues/1921)] Fix Facebook echoes not being filtered out leading to message duplication
-## 
+## 0.25.0
 
 #### Changes
 
-- Revert "[[#1939](https://github.com/airyhq/airy/issues/1939)] Redirect root request to /ui" [[#1969](https://github.com/airyhq/airy/pull/1969)]
-- #1956 - Fix link to installation page [[#1957](https://github.com/airyhq/airy/pull/1957)]
+#### 🚀 Features
+
+- [[#1752](https://github.com/airyhq/airy/issues/1752)] Add connect cluster chart [[#1961](https://github.com/airyhq/airy/pull/1961)]
+
+#### 🐛 Bug Fixes
+
+- [[#2009](https://github.com/airyhq/airy/issues/2009)] Fixed unnecessary recalls and rerenders [[#2054](https://github.com/airyhq/airy/pull/2054)]
+- [[#2018](https://github.com/airyhq/airy/issues/2018)] Unknown Message Type from Facebook chat plugin  [[#2055](https://github.com/airyhq/airy/pull/2055)]
+- [[#2038](https://github.com/airyhq/airy/issues/2038)] Fix broken download links on release page [[#2039](https://github.com/airyhq/airy/pull/2039)]
+- [[#1991](https://github.com/airyhq/airy/issues/1991)] re-organizing infinite scroll for conversationlist and messagelist [[#2006](https://github.com/airyhq/airy/pull/2006)]
+- [[#1985](https://github.com/airyhq/airy/issues/1985)] Bug: Template Title not Rendering [[#1995](https://github.com/airyhq/airy/pull/1995)]
+- [[#1939](https://github.com/airyhq/airy/issues/1939)] Redirect / to /ui [[#2001](https://github.com/airyhq/airy/pull/2001)]
+
+#### 🧰 Maintenance
+
+- Bump prismjs from 1.23.0 to 1.24.0 in /docs [[#2058](https://github.com/airyhq/airy/pull/2058)]
+- Bump @bazel/typescript from 3.5.1 to 3.6.0 [[#1975](https://github.com/airyhq/airy/pull/1975)]
+- Bump webpack from 5.39.1 to 5.40.0 [[#2022](https://github.com/airyhq/airy/pull/2022)]
+- Bump @typescript-eslint/eslint-plugin from 4.27.0 to 4.28.0 [[#2026](https://github.com/airyhq/airy/pull/2026)]
+- Bump html-webpack-plugin from 5.3.1 to 5.3.2 [[#2032](https://github.com/airyhq/airy/pull/2032)]
+- Bump cypress from 7.5.0 to 7.6.0 [[#2031](https://github.com/airyhq/airy/pull/2031)]
+- [[#2030](https://github.com/airyhq/airy/issues/2030)] Expose all jvm dependencies [[#2033](https://github.com/airyhq/airy/pull/2033)]
+- Bump @babel/preset-env from 7.14.5 to 7.14.7 [[#2024](https://github.com/airyhq/airy/pull/2024)]
+- Bump @typescript-eslint/parser from 4.27.0 to 4.28.0 [[#2025](https://github.com/airyhq/airy/pull/2025)]
+- Bump eslint from 7.28.0 to 7.29.0 [[#2016](https://github.com/airyhq/airy/pull/2016)]
+- Bump webpack from 5.39.0 to 5.39.1 [[#2012](https://github.com/airyhq/airy/pull/2012)]
+- Bump @types/react-dom from 17.0.7 to 17.0.8 [[#2011](https://github.com/airyhq/airy/pull/2011)]
+- Bump core-js from 3.14.0 to 3.15.0 [[#2015](https://github.com/airyhq/airy/pull/2015)]
+- [[#1974](https://github.com/airyhq/airy/issues/1974)] Upgrade to Facebook API graph version 11 [[#2007](https://github.com/airyhq/airy/pull/2007)]
+- Bump @babel/preset-env from 7.14.4 to 7.14.5 [[#1982](https://github.com/airyhq/airy/pull/1982)]
+- Bump @typescript-eslint/eslint-plugin from 4.26.1 to 4.27.0 [[#1993](https://github.com/airyhq/airy/pull/1993)]
+- Bump sass from 1.34.1 to 1.35.1 [[#1999](https://github.com/airyhq/airy/pull/1999)]
+- Bump react-modal from 3.14.2 to 3.14.3 [[#2000](https://github.com/airyhq/airy/pull/2000)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.25.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.25.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.25.0/windows/amd64/airy.exe)
+
+## Hotfix 0.23.1
+
+[[#1921](https://github.com/airyhq/airy/issues/1921)] Hotfix: Facebook echo ingestion [[#1922](https://github.com/airyhq/airy/issues/1922)]
+
+## 0.24.0
+
+#### Changes
+
+- [[#1956](https://github.com/airyhq/airy/issues/1956)] Fix link to installation page [[#1957](https://github.com/airyhq/airy/pull/1957)]
 
 #### 🐛 Bug Fixes
 
 - [[#1952](https://github.com/airyhq/airy/issues/1952)] Fix embedded path for Airy create on Windows [[#1992](https://github.com/airyhq/airy/pull/1992)]
 - [[#1967](https://github.com/airyhq/airy/issues/1967)] Fixed messageInput [[#1983](https://github.com/airyhq/airy/pull/1983)]
-- [[#1939](https://github.com/airyhq/airy/issues/1939)] Redirect root request to /ui [[#1940](https://github.com/airyhq/airy/pull/1940)]
 - [[#1932](https://github.com/airyhq/airy/issues/1932)] Added scrollToBotton in messageList [[#1934](https://github.com/airyhq/airy/pull/1934)]
 - [[#1933](https://github.com/airyhq/airy/issues/1933)] Suggested Replies does not fit in messageInput [[#1935](https://github.com/airyhq/airy/pull/1935)]
 - [[#1924](https://github.com/airyhq/airy/issues/1924)] Fixed long message in messageInput [[#1925](https://github.com/airyhq/airy/pull/1925)]
-- [[#1921](https://github.com/airyhq/airy/issues/1921)] Hotfix: Facebook echo ingestion [[#1922](https://github.com/airyhq/airy/pull/1922)]
 
 #### 📚 Documentation
 
@@ -60,9 +104,9 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.23.2/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.23.2/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.23.2/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.24.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.24.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.24.0/windows/amd64/airy.exe)
 
 ## 0.23.0
 

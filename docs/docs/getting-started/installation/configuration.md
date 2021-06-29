@@ -50,11 +50,6 @@ cluster and Redis.
   - `schema-registry` url to the Schema Registry
   - `commitInterval` the [Kafka Commit Interval](https://kafka.apache.org/documentation/#consumerconfigs_auto.commit.interval.ms) if you are using the included Helm chart
 
-- `redis`
-
-  - `hostname`
-  - `port`
-
 ### Security
 
 - `systemToken` set to a long secure secret to use for machine [API authentication](security#api-security)

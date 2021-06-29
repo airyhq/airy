@@ -105,7 +105,7 @@ const parseAttachment = (
   if (attachment.type === 'template' && attachment.payload.template_type === 'button') {
     return {
       type: 'buttonTemplate',
-      text: attachment.payload.text,
+      text: attachment.payload.text ?? attachment.title,
       buttons: attachment.payload.buttons,
     };
   }
@@ -171,10 +171,10 @@ function facebookInbound(message: Message): ContentUnion {
     return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
 
-  if (messageJson.postback?.title) {
+  if (messageJson.postback) {
     return {
       type: 'postback',
-      title: messageJson.postback.title,
+      title: messageJson.postback.title == false ? null : messageJson.postback.title,
       payload: messageJson.postback.payload,
     };
   }
@@ -224,6 +224,14 @@ function facebookOutbound(message: Message): ContentUnion {
 
   if (messageJson.attachment || messageJson.attachments) {
     return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
+  }
+
+  if (messageJson.postback) {
+    return {
+      type: 'postback',
+      title: messageJson.postback.title == false ? null : messageJson.postback.title,
+      payload: messageJson.postback.payload,
+    };
   }
 
   if (messageJson.text) {

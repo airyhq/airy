@@ -1,4 +1,4 @@
-import React, {CSSProperties, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
@@ -18,7 +18,6 @@ import {newestFilteredConversationFirst} from '../../../selectors/conversations'
 type ConversationListItemProps = {
   conversation: MergedConversation;
   active: boolean;
-  style: CSSProperties;
 } & ConnectedProps<typeof connector>;
 
 const mapDispatchToProps = {
@@ -35,7 +34,7 @@ const mapStateToProps = (state: StateModel) => {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const ConversationListItem = (props: ConversationListItemProps) => {
-  const {conversation, active, style, readConversations, conversationState} = props;
+  const {conversation, active, readConversations, conversationState} = props;
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
@@ -66,14 +65,18 @@ const ConversationListItem = (props: ConversationListItemProps) => {
     );
   };
 
-  useEffect(() => {
+  const markAsRead = () => {
     if (active && unread) {
-      return readConversations(conversation.id);
+      readConversations(conversation.id);
     }
+  };
+
+  useEffect(() => {
+    markAsRead();
   }, [active, conversation, currentConversationState]);
 
   return (
-    <div className={styles.clickableListItem} style={style} onClick={() => readConversations(conversation.id)}>
+    <div className={styles.clickableListItem} onClick={markAsRead}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${

@@ -10,6 +10,7 @@ import {Avatar} from 'render';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
 import {StateModel} from '../../../../reducers';
+import {useAnimation} from '../../../../assets/animations';
 
 import styles from './index.module.scss';
 import Tag from '../../../../components/Tag';
@@ -48,6 +49,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   const [tagName, setTagName] = useState('');
   const [showEditDisplayName, setShowEditDisplayName] = useState(false);
   const [displayName, setDisplayName] = useState(conversation.metadata.contact.displayName);
+  const [fade, setFade] = useState(true);
 
   useEffect(() => {
     listTags();
@@ -118,8 +120,8 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
   };
 
   const cancelEditDisplayName = () => {
-    setShowEditDisplayName(!showEditDisplayName);
     setDisplayName(conversation.metadata.contact.displayName);
+    useAnimation(setShowEditDisplayName, showEditDisplayName, setFade, 400);
   };
 
   const editDisplayName = () => {
@@ -130,58 +132,60 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
     const filteredTags = getFilteredTags();
 
     return (
-      <Dialog close={() => setShowTagsDialog(false)}>
-        <form className={styles.addTags} onSubmit={submitForm}>
-          <Input
-            type="text"
-            label="Add a tag"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setTagName(e.target.value);
-            }}
-            height={32}
-            value={tagName}
-            name="tag_name"
-            placeholder="Please enter a tag name"
-            autoComplete="off"
-            autoFocus
-            fontClass="font-base"
-            minLength={1}
-            maxLength={50}
-            validation={checkIfExists}
-            showErrors
-            dataCy={cyTagsDialogInput}
-          />
-          {filteredTags.length > 0 ? (
-            filteredTags.map(tag => {
-              return (
-                <div key={tag.id} className={styles.addTagsRow}>
-                  <div className={styles.tag}>
-                    <Tag tag={tag} />
+      <div className={fade ? styles.fadeInAnimation : styles.fadeOutAnimation}>
+        <Dialog close={() => useAnimation(setShowTagsDialog, showTagsDialog, setFade, 400)}>
+          <form className={styles.addTags} onSubmit={submitForm}>
+            <Input
+              type="text"
+              label="Add a tag"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setTagName(e.target.value);
+              }}
+              height={32}
+              value={tagName}
+              name="tag_name"
+              placeholder="Please enter a tag name"
+              autoComplete="off"
+              autoFocus
+              fontClass="font-base"
+              minLength={1}
+              maxLength={50}
+              validation={checkIfExists}
+              showErrors
+              dataCy={cyTagsDialogInput}
+            />
+            {filteredTags.length > 0 ? (
+              filteredTags.map(tag => {
+                return (
+                  <div key={tag.id} className={styles.addTagsRow}>
+                    <div className={styles.tag}>
+                      <Tag tag={tag} />
+                    </div>
+                    <LinkButton type="button" onClick={() => addTag(tag)}>
+                      Add
+                    </LinkButton>
                   </div>
-                  <LinkButton type="button" onClick={() => addTag(tag)}>
-                    Add
-                  </LinkButton>
+                );
+              })
+            ) : (
+              <div>
+                {tagName.length > 0 && <Tag tag={{id: '', color: color, name: tagName}} />}
+                <p className={styles.addTagsDescription}>Pick a color</p>
+                <ColorSelector
+                  handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value as TagColor)}
+                  color={color}
+                  editing
+                />
+                <div className={styles.addTagsButtonRow}>
+                  <Button type="submit" styleVariant="small" dataCy={cyTagsDialogButton}>
+                    Create Tag
+                  </Button>
                 </div>
-              );
-            })
-          ) : (
-            <div>
-              {tagName.length > 0 && <Tag tag={{id: '', color: color, name: tagName}} />}
-              <p className={styles.addTagsDescription}>Pick a color</p>
-              <ColorSelector
-                handleUpdate={(e: React.ChangeEvent<HTMLInputElement>) => setColor(e.target.value as TagColor)}
-                color={color}
-                editing
-              />
-              <div className={styles.addTagsButtonRow}>
-                <Button type="submit" styleVariant="small" dataCy={cyTagsDialogButton}>
-                  Create Tag
-                </Button>
               </div>
-            </div>
-          )}
-        </form>
-      </Dialog>
+            )}
+          </form>
+        </Dialog>
+      </div>
     );
   };
 
@@ -196,28 +200,30 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
             </div>
             <div className={styles.displayNameContainer}>
               {showEditDisplayName ? (
-                <div className={styles.editDisplayNameContainer}>
-                  <Input
-                    autoFocus={true}
-                    placeholder={conversation.metadata.contact.displayName}
-                    value={displayName}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)}
-                    height={32}
-                    fontClass="font-base"
-                    minLength={1}
-                    maxLength={50}
-                    label="Set Name"
-                  />
-                  <div className={styles.displayNameButtons}>
-                    <button className={styles.cancelEdit} onClick={cancelEditDisplayName}>
-                      <CloseIcon />
-                    </button>
-                    <button
-                      className={`${displayName.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
-                      onClick={saveEditDisplayName}
-                      disabled={displayName.length === 0}>
-                      <CheckmarkCircleIcon />
-                    </button>
+                <div className={fade ? styles.fadeInAnimation : styles.fadeOutAnimation}>
+                  <div className={styles.editDisplayNameContainer}>
+                    <Input
+                      autoFocus={true}
+                      placeholder={conversation.metadata.contact.displayName}
+                      value={displayName}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)}
+                      height={32}
+                      fontClass="font-base"
+                      minLength={1}
+                      maxLength={50}
+                      label="Set Name"
+                    />
+                    <div className={styles.displayNameButtons}>
+                      <button className={styles.cancelEdit} onClick={cancelEditDisplayName}>
+                        <CloseIcon />
+                      </button>
+                      <button
+                        className={`${displayName.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
+                        onClick={saveEditDisplayName}
+                        disabled={displayName.length === 0}>
+                        <CheckmarkCircleIcon />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ) : (

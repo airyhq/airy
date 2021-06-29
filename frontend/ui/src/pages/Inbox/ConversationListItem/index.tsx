@@ -14,6 +14,7 @@ import {readConversations, conversationState} from '../../../actions/conversatio
 import styles from './index.module.scss';
 import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
 import {newestFilteredConversationFirst} from '../../../selectors/conversations';
+import {cyOpenStateButton, cyClosedStateButton, cyConversationListItemInfo} from 'handles';
 
 type ConversationListItemProps = {
   conversation: MergedConversation;
@@ -50,7 +51,10 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   const OpenStateButton = () => {
     return (
       <div className={styles.openStateButton} title="Set to closed">
-        <button onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)} />
+        <button
+          onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)}
+          data-cy={cyOpenStateButton}
+        />
       </div>
     );
   };
@@ -58,7 +62,9 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   const ClosedStateButton = () => {
     return (
       <div className={styles.closedStateButton} title="Set to open">
-        <button onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)}>
+        <button
+          onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)}
+          data-cy={cyClosedStateButton}>
           <Checkmark />
         </button>
       </div>
@@ -81,7 +87,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
           <div className={styles.profileImage}>
             <Avatar contact={participant} />
           </div>
-          <div className={styles.contactDetails}>
+          <div className={styles.contactDetails} data-cy={cyConversationListItemInfo}>
             <div className={styles.topRow}>
               <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>
                 {participant && participant.displayName}

@@ -13,7 +13,9 @@
   padding: 16px 8px 0 16px;
   display: flex;
   flex-direction: row;
-  border: 1px solid rgba(0, 0, 0, 0);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: background 400ms, border 400ms;
 }
 
 .containerListItem.unread {
@@ -27,6 +29,7 @@
 }
 
 .containerListItemActive {
+  @extend .containerListItem;
   padding: 16px 8px 16px 16px;
   display: flex;
   flex-direction: row;
@@ -34,7 +37,6 @@
   border-radius: 8px;
   background-color: var(--color-background-blue);
   .contactDetails {
-    border-bottom: none;
     padding-bottom: 0;
   }
 }

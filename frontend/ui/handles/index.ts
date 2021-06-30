@@ -38,3 +38,5 @@ export const cyOpenStateButton = 'openStateButton';
 export const cyClosedStateButton = 'closedStateButton';
 export const cyConversationListItemInfo = 'conversationListItemInfo';
 export const cyConversationStatus = 'conversationStatus';
+export const cySuggestionsButton = 'suggestionsButton';
+export const cySuggestionsList = 'suggestionsList';

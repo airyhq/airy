@@ -48,7 +48,7 @@ web_library(
     output = {
         "libraryExport": "AiryWidget",
         "publicPath": "/chatplugin/ui",
-        "filename": "s.js",
+        "filename": "index.js",
     },
 )
 
@@ -113,12 +113,12 @@ genrule(
     srcs = [
         "package.json",
         "README.md",
-        ":dist",
+        ":library",
         ":chat-plugin",
     ],
     outs = ["chat-plugin_lib"],
     cmd = """
-    mkdir -p $(OUTS)/{src,dist} && cp -R $(location :dist) $(OUTS) \
+    mkdir -p $(OUTS)/{src,library} && cp -R $(location :library) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \
     && mv $(RULEDIR)/src $(OUTS)
 """,

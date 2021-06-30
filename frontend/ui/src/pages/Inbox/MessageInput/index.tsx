@@ -254,7 +254,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     };
 
     const selectTemplate = (template: Template) => {
-      const jsonTemplate = template.content;
+      const jsonTemplate = template.content.message;
 
       if (selectedTemplate) setSelectedTemplate(null);
 

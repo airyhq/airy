@@ -267,6 +267,20 @@ spec:
                 name: sources-facebook-connector
                 port:
                   number: 80
+          - path: /channels.instagram.connect
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-facebook-connector
+                port:
+                  number: 80
+          - path: /channels.instagram.disconnect
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-facebook-connector
+                port:
+                  number: 80
           - path: /channels.facebook.explore
             pathType: Prefix
             backend:

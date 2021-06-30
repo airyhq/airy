@@ -3,6 +3,7 @@ import React from 'react';
 import {Channel} from 'model';
 
 import {ReactComponent as FacebookIcon} from 'assets/images/icons/facebook_rounded.svg';
+import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagram.svg';
 import {ReactComponent as GoogleIcon} from 'assets/images/icons/google-messages.svg';
 import {ReactComponent as SmsIcon} from 'assets/images/icons/sms-icon.svg';
 import {ReactComponent as WhatsappIcon} from 'assets/images/icons/whatsapp-icon.svg';
@@ -37,6 +38,11 @@ const SOURCE_INFO = {
   facebook: {
     text: 'Facebook page',
     icon: () => <FacebookIcon />,
+    avatar: () => <MessengerAvatar />,
+  },
+  instagram: {
+    text: 'Instagram Account',
+    icon: () => <InstagramIcon />,
     avatar: () => <MessengerAvatar />,
   },
   google: {

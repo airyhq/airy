@@ -30,6 +30,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -63,14 +64,16 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         channelStream.toTable(Materialized.as(channelsStore));
 
+        final List<String> sources = List.of("facebook", "instagram");
+
         // Channels table
         KTable<String, Channel> channelsTable = channelStream
-                .filter((sourceChannelId, channel) -> "facebook".equalsIgnoreCase(channel.getSource())
+                .filter((sourceChannelId, channel) -> sources.contains(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable();
 
         // Facebook messaging stream by conversation-id
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId, message) -> "facebook".equalsIgnoreCase(message.getSource()))
+                .filter((messageId, message) -> sources.contains(message.getSource()))
                 .selectKey((messageId, message) -> message.getConversationId());
 
         // Metadata table

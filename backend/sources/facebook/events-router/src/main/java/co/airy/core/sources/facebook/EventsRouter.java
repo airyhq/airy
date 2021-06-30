@@ -50,11 +50,13 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
     public void startStream() {
         final StreamsBuilder builder = new StreamsBuilder();
 
+        final List<String> sources = List.of("facebook", "instagram");
+
         // Channels table
         KTable<String, Channel> channelsTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
                 .groupBy((k, v) -> v.getSourceChannelId())
                 .reduce((aggValue, newValue) -> newValue)
-                .filter((sourceChannelId, channel) -> "facebook".equalsIgnoreCase(channel.getSource())
+                .filter((sourceChannelId, channel) -> sources.contains(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
         builder.<String, String>stream(new SourceFacebookEvents().name())

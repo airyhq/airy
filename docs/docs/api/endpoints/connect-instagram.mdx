@@ -1,0 +1,38 @@
+Connects an Instagram account to Airy Core.
+
+```
+POST /channels.instagram.connect
+```
+
+- `page_id` is ID of the Facebook page connected to the Instagram account
+- `page_token` is the Access Token of the Facebook page
+- `account_id` is the ID of the Instagram account
+- `name` is the custom name for the connected page
+- `image_url` (optional) is the custom image URL
+
+**Sample request**
+
+```json5
+{
+  "page_id": "fb-page-id-1",
+  "account_id": "ig-account-id",
+  "page_token": "authentication token",
+  "name": "My custom name for this account",
+  "image_url": "https://example.org/custom-image.jpg" // optional
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "id": "channel-uuid-1",
+  "source": "instagram",
+  "source_channel_id": "ig-account-id",
+  "metadata": {
+    "name": "My custom name for this account",
+    // optional
+    "image_url": "https://example.org/custom-image.jpg"
+  }
+}
+```

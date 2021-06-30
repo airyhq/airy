@@ -2,10 +2,12 @@ package co.airy.core.sources.facebook;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
+import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.api.ApiException;
 import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
-import co.airy.core.sources.facebook.payload.ConnectRequestPayload;
+import co.airy.core.sources.facebook.payload.ConnectInstagramRequestPayload;
+import co.airy.core.sources.facebook.payload.ConnectPageRequestPayload;
 import co.airy.core.sources.facebook.payload.DisconnectChannelRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreRequestPayload;
 import co.airy.core.sources.facebook.payload.ExploreResponsePayload;
@@ -78,7 +80,7 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.facebook.connect")
-    ResponseEntity<?> connect(@RequestBody @Valid ConnectRequestPayload requestPayload) {
+    ResponseEntity<?> connectFacebook(@RequestBody @Valid ConnectPageRequestPayload requestPayload) {
         final String token = requestPayload.getPageToken();
         final String pageId = requestPayload.getPageId();
 
@@ -115,7 +117,53 @@ public class ChannelsController {
         }
     }
 
-    @PostMapping("/channels.facebook.disconnect")
+    @PostMapping("/channels.instagram.connect")
+    ResponseEntity<?> connectInstagram(@RequestBody @Valid ConnectInstagramRequestPayload requestPayload) {
+        final String token = requestPayload.getPageToken();
+        final String pageId = requestPayload.getPageId();
+        final String accountId = requestPayload.getAccountId();
+
+        final String channelId = UUIDv5.fromNamespaceAndName("instagram", accountId).toString();
+
+        try {
+            final String longLivingUserToken = api.exchangeToLongLivingUserAccessToken(token);
+            final PageWithConnectInfo fbPageWithConnectInfo = api.getPageForUser(pageId, longLivingUserToken);
+
+            api.connectPageToApp(fbPageWithConnectInfo.getAccessToken());
+
+            final MetadataMap metadataMap = MetadataMap.from(List.of(
+                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(requestPayload.getName()).orElse(String.format("%s Instagram account", fbPageWithConnectInfo.getNameWithLocationDescriptor())))
+            ));
+
+            Optional.ofNullable(requestPayload.getImageUrl())
+                    .ifPresent((imageUrl) -> {
+                        final Metadata metadata = newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, imageUrl);
+                        metadataMap.put(metadata.getKey(), metadata);
+                    });
+
+            final ChannelContainer container = ChannelContainer.builder()
+                    .channel(
+                            Channel.newBuilder()
+                                    .setId(channelId)
+                                    .setConnectionState(ChannelConnectionState.CONNECTED)
+                                    .setSource("instagram")
+                                    .setSourceChannelId(accountId)
+                                    .setToken(longLivingUserToken)
+                                    .build()
+                    )
+                    .metadataMap(metadataMap).build();
+
+            stores.storeChannelContainer(container);
+
+            return ResponseEntity.ok(fromChannelContainer(container));
+        } catch (ApiException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
+    }
+
+    @PostMapping(path = {"/channels.facebook.disconnect", "/channels.instagram.disconnect"})
     ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
         final String channelId = requestPayload.getChannelId().toString();
 

@@ -48,6 +48,28 @@ web_library(
     output = {
         "libraryExport": "AiryWidget",
         "publicPath": "/chatplugin/ui",
+        "filename": "s.js",
+    },
+)
+
+web_library(
+    name = "dist",
+    app_lib = ":chat-plugin",
+    entry = "frontend/chat-plugin/index.js",
+    externals = {
+        "@stomp/stompjs": "@stomp/stompjs",
+        "@types/node": "@types/node",
+        "@types/react": "@types/react",
+        "@types/react-dom": "@types/react-dom",
+        "linkifyjs": "linkifyjs",
+        "react": "react",
+        "react-dom": "react-dom",
+        "camelcase-keys": "camelcase-keys",
+    },
+    module_deps = module_deps,
+    output = {
+        "library": "@airyhq/chat-plugin",
+        "libraryTarget": "umd",
         "filename": "index.js",
     },
 )
@@ -113,12 +135,12 @@ genrule(
     srcs = [
         "package.json",
         "README.md",
-        ":library",
+        ":dist",
         ":chat-plugin",
     ],
     outs = ["chat-plugin_lib"],
     cmd = """
-    mkdir -p $(OUTS)/{src,library} && cp -R $(location :library) $(OUTS) \
+    mkdir -p $(OUTS)/{src,dist} && cp -R $(location :dist) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \
     && mv $(RULEDIR)/src $(OUTS)
 """,

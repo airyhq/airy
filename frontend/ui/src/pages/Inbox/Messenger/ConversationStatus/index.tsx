@@ -4,6 +4,7 @@ import {withRouter, RouteComponentProps} from 'react-router-dom';
 import styles from './index.module.scss';
 import {conversationState} from '../../../../actions/conversations';
 import {StateModel} from '../../../../reducers';
+import {cyConversationStatus} from 'handles';
 
 const mapStateToProps = (state: StateModel, ownProps) => {
   return {
@@ -25,7 +26,8 @@ function ConversationStatus(props: Props) {
 
   return (
     <div
-      className={`${styles.conversationStatus} ${currentConversationState === 'CLOSED' ? styles.closed : styles.open}`}>
+      className={`${styles.conversationStatus} ${currentConversationState === 'CLOSED' ? styles.closed : styles.open}`}
+      data-cy={cyConversationStatus}>
       <div className={styles.closedButtonWrapper}>
         <div
           className={styles.closedButton}

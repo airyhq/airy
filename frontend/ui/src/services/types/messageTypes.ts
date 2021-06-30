@@ -1,13 +1,15 @@
 import {Content} from 'model';
 
 export const isTextMessage = (content: Content) => {
+  const message = content.content.message ?? content.content;
   if (
-    content.content.text &&
-    !content.content.suggestions &&
-    !content.content.quick_replies &&
-    !content.content.containsRichText &&
-    !content.content.attachments &&
-    !content.content.attachment
+    message.text &&
+    !message.containsRichText &&
+    !message.suggestions &&
+    !message.quick_replies &&
+    !message.containsRichText &&
+    !message.attachments &&
+    !message.attachment
   ) {
     return true;
   }

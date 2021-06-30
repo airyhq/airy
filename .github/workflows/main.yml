@@ -57,10 +57,12 @@ jobs:
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u airydevci --password-stdin
           ./scripts/push-images.sh
+
       - name: Install aws cli
         uses: chrislennon/action-aws-cli@v1.1
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
       - name: Upload airy binary to S3
         if: ${{ github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release') || github.ref == 'refs/heads/main' }}
         run: |
@@ -69,6 +71,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           GITHUB_BRANCH: ${{ github.ref }}
+
       - name: Publish http-client library to npm
         if: ${{ startsWith(github.ref, 'refs/heads/main') }}
         run: |
@@ -78,6 +81,7 @@ jobs:
           DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
           DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}
           DEPLOY_NPM_EMAIL: ${{ secrets.DEPLOY_NPM_EMAIL }}
+
       - name: Publish chat-plugin library to npm
         if: ${{ startsWith(github.ref, 'refs/heads/main') }}
         run: |
@@ -87,4 +91,3 @@ jobs:
           DEPLOY_NPM_USERNAME: ${{ secrets.DEPLOY_NPM_USERNAME }}
           DEPLOY_NPM_PASSWORD: ${{ secrets.DEPLOY_NPM_PASSWORD }}
           DEPLOY_NPM_EMAIL: ${{ secrets.DEPLOY_NPM_EMAIL }}
-          GITHUB_BRANCH: ${{ github.ref }}

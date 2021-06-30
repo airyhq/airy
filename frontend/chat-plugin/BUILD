@@ -113,12 +113,12 @@ genrule(
     srcs = [
         "package.json",
         "README.md",
-        ":library",
+        ":dist",
         ":chat-plugin",
     ],
     outs = ["chat-plugin_lib"],
     cmd = """
-    mkdir -p $(OUTS)/{dist} && cp -R $(location :library) $(OUTS) \
+    mkdir -p $(OUTS)/{src,dist} && cp -R $(location :dist) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \
     && mv $(RULEDIR)/src $(OUTS)
 """,

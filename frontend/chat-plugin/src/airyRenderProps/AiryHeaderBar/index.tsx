@@ -24,12 +24,24 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
     }),
   };
 
+  const customStyleSubtitle = {
+    ...(config?.accentColor && {
+      color: config?.accentColor,
+    }),
+    ...(config?.subtitleTextColor && {
+      color: config?.subtitleTextColor,
+    }),
+  };
+
   return (
     <div className={style.header}>
       <div className={style.headerInfo}>
         <h1 className={style.headerTitle} style={customStyle}>
           {config.headerText || 'Customer Chat'}
         </h1>
+        <p className={style.subtitle} style={customStyleSubtitle}>
+          {config.subtitleText || 'Customer Subtitle'}
+        </p>
       </div>
 
       <button className={style.minimizeButton} onClick={props.toggleHideChat} title="Minimize chat">

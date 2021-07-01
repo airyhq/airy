@@ -1,6 +1,5 @@
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background-color: var(--color-airy-blue);
   border-top-left-radius: 8px;
@@ -10,9 +9,9 @@
 }
 
 .headerInfo {
-  display: flex;
-  align-items: center;
+  display: inline-block;
   margin-left: 8px;
+  max-width: 325px;
   img {
     height: 32px;
     width: 32px;
@@ -27,11 +26,31 @@
   line-height: 24px;
   font-weight: bold;
   padding: 0;
-  margin: 0 0 0 8px;
+  margin: 0 8px 0 8px;
   cursor: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtitle {
+  color: white;
+  font-family: 'Lato', sans-serif;
+  font-size: 12px;
+  margin-left: 8px;
+  font-weight: normal;
+  line-height: 16px;
+  margin: 0 8px 0 9px;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .closeButton {
+  position: absolute;
+  right: 7%;
+  top: 7%;
   outline: none;
   border: none;
   height: 32px;
@@ -54,6 +73,7 @@
   outline: none;
   position: absolute;
   right: 12%;
+  top: 7%;
   padding: 2px 0 0 2px;
   border: none;
   height: 32px;

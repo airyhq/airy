@@ -185,6 +185,8 @@ function allReducer(
   state: AllConversationsState = initialState,
   action: Action | MessageAction
 ): AllConversationsState {
+  let updatedConversationCount = state.paginationData.total;
+
   switch (action.type) {
     case getType(actions.setStateConversationAction):
       return {
@@ -223,6 +225,10 @@ function allReducer(
       return updateContact(state, action.payload.conversationId, action.payload.displayName);
     }
     case getType(actions.mergeConversationsAction):
+      action.payload.conversations.forEach(conversation => {
+        if (!state.items[conversation.id]) updatedConversationCount++;
+      });
+
       if (action.payload.paginationData) {
         return {
           ...state,
@@ -230,6 +236,8 @@ function allReducer(
           paginationData: {
             ...state.paginationData,
             ...action.payload.paginationData,
+            ...(state.paginationData.total < updatedConversationCount &&
+              action.payload.paginationData.total < updatedConversationCount && {total: updatedConversationCount}),
             loading: false,
             loaded: true,
           },
@@ -240,6 +248,7 @@ function allReducer(
           items: mergeConversations(state.items, action.payload.conversations as MergedConversation[]),
           paginationData: {
             ...state.paginationData,
+            ...(state.paginationData.total < updatedConversationCount && {total: updatedConversationCount}),
             loading: false,
             loaded: true,
           },

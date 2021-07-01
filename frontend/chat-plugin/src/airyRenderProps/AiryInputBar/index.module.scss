@@ -25,6 +25,20 @@
   }
 }
 
+.poweredByContainer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
+  a {
+    color: var(--color-text-gray);
+    cursor: pointer;
+    text-decoration: none;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+  }
+}
+
 .textAreaMedium {
   @extend .textArea;
   height: 64px;

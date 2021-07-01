@@ -12,6 +12,7 @@ import {
   ConnectChatPluginRequestPayload,
   ConnectTwilioSmsRequestPayload,
   ConnectTwilioWhatsappRequestPayload,
+  ConnectChannelGoogleRequestPayload,
   UpdateChannelRequestPayload,
   ListTemplatesRequestPayload,
   PaginatedResponse,
@@ -27,6 +28,7 @@ import {
   connectChatPluginChannelDef,
   connectTwilioSmsChannelDef,
   connectTwilioWhatsappChannelDef,
+  connectGoogleChannelDef,
   updateChannelDef,
   disconnectChannelDef,
   getConversationInfoDef,
@@ -154,6 +156,8 @@ export class HttpClient {
   public connectTwilioWhatsappChannel = this.getRequest<ConnectTwilioWhatsappRequestPayload, Channel>(
     connectTwilioWhatsappChannelDef
   );
+
+  public connectGoogleChannel = this.getRequest<ConnectChannelGoogleRequestPayload, Channel>(connectGoogleChannelDef);
 
   public updateChannel = this.getRequest<UpdateChannelRequestPayload, Channel>(updateChannelDef);
 

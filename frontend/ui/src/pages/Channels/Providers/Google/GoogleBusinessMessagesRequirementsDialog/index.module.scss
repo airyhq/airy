@@ -5,11 +5,8 @@
   display: flex;
   flex-direction: column;
   width: 582px;
-  height: 430px;
   background: white;
   border-radius: 8px;
-  position: relative;
-  background: white;
   z-index: 1;
   position: fixed;
   top: 35%;
@@ -43,6 +40,7 @@
 
   p {
     padding-top: 15px;
+    padding-bottom: 60px;
   }
 
   a {

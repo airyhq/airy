@@ -5,6 +5,7 @@ export const CHANNELS_FACEBOOK_ROUTE = '/channels/facebook';
 export const CHANNELS_CHAT_PLUGIN_ROUTE = '/channels/chatplugin';
 export const CHANNELS_TWILIO_SMS_ROUTE = '/channels/twilio.sms';
 export const CHANNELS_TWILIO_WHATSAPP_ROUTE = '/channels/twilio.whatsapp';
+export const CHANNELS_GOOGLE_ROUTE = '/channels/google';
 export const INBOX_ROUTE = '/inbox';
 export const INBOX_CONVERSATIONS_ROUTE = '/inbox/conversations';
 export const TAGS_ROUTE = '/tags';

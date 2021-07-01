@@ -2,6 +2,7 @@ export * from './ConnectChannelRequestPayload';
 export * from './ConnectChatPluginRequestPayload';
 export * from './ConnectTwilioSmsRequestPayload';
 export * from './ConnectTwilioWhatsappRequestPayload';
+export * from './ConnectChannelGoogleRequestPayload';
 export * from './CreateTagRequestPayload';
 export * from './DisconnectChannelRequestPayload';
 export * from './ExploreChannelRequestPayload';

@@ -1,6 +1,6 @@
 # Airy Chat Plugin
 
-[Airy Chat Plugin](https://airy.co/docs/core/sources/chatplugin/overview) is an open-source chat widget that is fully customizable and included in [Airy Core](https://airy.co/docs/core/). This package enables you to import the widget and use it in your React application.
+[Airy Chat Plugin](https://airy.co/docs/core/sources/chatplugin/overview) is an open-source chat widget that is fully customizable and included in [Airy Core](https://airy.co/docs/core/).
 
 ## Install
 
@@ -16,7 +16,7 @@ yarn add @airyhq/chat-plugin
 
 ## Usage
 
-Install the package and import the Airy Chat Plugin to your React component. Pass the configuration variables to the AiryChatPlugin wrapper to customize it.
+First, [set up the Airy Chat Plugin as a source](https://airy.co/docs/core/sources/chatplugin/quickstart) to Airy Core to get the channelId. Then, install the package and import the Airy Chat Plugin to a React component. Pass the configuration variables to the AiryChatPlugin wrapper to customize it.
 
 ```tsx
 import React from "react";
@@ -24,8 +24,8 @@ import {AiryChatPlugin, AiryChatPluginConfiguration} from "@airyhq/chat-plugin";
 
 const Component = () => {
   const demoConfig: AiryChatPluginConfiguration = {
-    apiHost: <em>yourApiHost</em>,
-    channelId: <em>yourChannelId</em>,
+    apiHost: ApiHostURL,
+    channelId: yourChannelId,
     config: {
       showMode: true,
       headerText: "i am a header text",

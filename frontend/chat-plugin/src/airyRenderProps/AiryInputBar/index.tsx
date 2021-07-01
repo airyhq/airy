@@ -61,7 +61,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
   };
 
   return (
-    <>     
+    <>
       <form className={style.inputBar} onSubmit={onSubmit}>
         <textarea
           ref={textInputRef}

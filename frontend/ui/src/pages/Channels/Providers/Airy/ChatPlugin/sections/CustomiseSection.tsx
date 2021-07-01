@@ -142,6 +142,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           placeholder="(optionally) add a text"
           height={32}
           fontClass="font-base"
+          maxLength={30}
         />
         <Input
           type="text"
@@ -154,6 +155,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           placeholder="(optionally) add a text"
           height={32}
           fontClass="font-base"
+          maxLength={50}
         />
         <Input
           type="text"

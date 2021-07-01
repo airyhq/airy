@@ -1,4 +1,5 @@
 import React, {ChangeEvent, FormEvent, KeyboardEvent, createRef, useEffect} from 'react';
+import {ReactComponent as AiryIcon} from 'assets/images/icons/airy-icon.svg';
 import style from './index.module.scss';
 import {cyInputbarTextarea, cyInputbarButton} from 'chat-plugin-handles';
 import {Config} from '../../config';
@@ -60,15 +61,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
   };
 
   return (
-    <>
-      <div className={style.poweredByContainer}>
-        <a
-          href="https://airy.co/?utm_source=airy&utm_medium=chat&utm_campaign=chat-plugin-demo"
-          target="_blank"
-          rel="noreferrer">
-          Powered by Airy
-        </a>
-      </div>
+    <>     
       <form className={style.inputBar} onSubmit={onSubmit}>
         <textarea
           ref={textInputRef}
@@ -92,6 +85,14 @@ const AiryInputBar = (props: AiryInputBarProps) => {
           )}
         </button>
       </form>
+      <div className={style.poweredByContainer}>
+        <a
+          href="https://airy.co/?utm_source=airy&utm_medium=chat&utm_campaign=chat-plugin-demo"
+          target="_blank"
+          rel="noreferrer">
+          Powered by Airy <AiryIcon />
+        </a>
+      </div>
     </>
   );
 };

@@ -88,8 +88,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                     return aggregate;
                 });
 
-        // Conversation table
-        final KTable<String, Conversation> conversationTable = messageStream
+        // Context table
+        final KTable<String, Conversation> contextTable = messageStream
                 .groupByKey()
                 .aggregate(Conversation::new,
                         (conversationId, message, conversation) -> {
@@ -109,12 +109,15 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         // Send outbound messages
         messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
-                .join(conversationTable, (message, conversation) -> new SendMessageRequest(conversation, message))
-                .mapValues(connector::sendMessage)
+                .join(contextTable, (message, conversation) -> new SendMessageRequest(conversation, message))
+                .map((conversationId, sendMessageRequest) -> {
+                    final Message message = connector.sendMessage(sendMessageRequest);
+                    return KeyValue.pair(message.getId(), message);
+                })
                 .to(new ApplicationCommunicationMessages().name());
 
         // Fetch missing metadata
-        conversationTable
+        contextTable
                 .toStream()
                 .leftJoin(metadataTable, (conversation, metadataMap) -> conversation
                         .toBuilder()

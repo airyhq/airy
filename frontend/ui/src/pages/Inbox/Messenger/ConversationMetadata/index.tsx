@@ -21,7 +21,15 @@ import {ReactComponent as EditPencilIcon} from 'assets/images/icons/edit-pencil.
 import {ReactComponent as CloseIcon} from 'assets/images/icons/close.svg';
 import {ReactComponent as CheckmarkCircleIcon} from 'assets/images/icons/checkmark.svg';
 
-import {cyShowTagsDialog, cyTagsDialogInput, cyTagsDialogButton} from 'handles';
+import {
+  cyShowTagsDialog,
+  cyTagsDialogInput,
+  cyTagsDialogButton,
+  cyEditDisplayNameIcon,
+  cyDisplayName,
+  cyDisplayNameInput,
+  cyEditDisplayNameCheckmark,
+} from 'handles';
 import difference from 'lodash/difference';
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
@@ -215,6 +223,7 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                       minLength={1}
                       maxLength={50}
                       label="Set Name"
+                      dataCy={cyDisplayNameInput}
                     />
                     <div className={styles.displayNameButtons}>
                       <button className={styles.cancelEdit} onClick={cancelEditDisplayName}>
@@ -223,7 +232,8 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                       <button
                         className={`${displayName.length === 0 ? styles.disabledSaveEdit : styles.saveEdit}`}
                         onClick={saveEditDisplayName}
-                        disabled={displayName.length === 0}>
+                        disabled={displayName.length === 0}
+                        data-cy={cyEditDisplayNameCheckmark}>
                         <CheckmarkCircleIcon />
                       </button>
                     </div>
@@ -231,11 +241,14 @@ const ConversationMetadata = (props: ConnectedProps<typeof connector>) => {
                 </div>
               ) : (
                 <>
-                  <div className={styles.displayName}>{contact?.displayName}</div>
+                  <div className={styles.displayName} data-cy={cyDisplayName}>
+                    {contact?.displayName}
+                  </div>
                   <EditPencilIcon
                     className={styles.editPencilIcon}
                     title="Edit Display Name"
                     onClick={editDisplayName}
+                    data-cy={cyEditDisplayNameIcon}
                   />
                 </>
               )}

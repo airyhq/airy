@@ -1,7 +1,7 @@
 import {cyOpenStateButton, cyClosedStateButton, cyConversationListItemInfo, cyConversationStatus} from 'handles';
 
 function closeConversation() {
-  cy.get(`[data-cy=${cyOpenStateButton}]`).click();
+  cy.get(`[data-cy=${cyOpenStateButton}]`).first().click();
   cy.get(`[data-cy=${cyClosedStateButton}]`);
   cy.get(`[data-cy=${cyConversationStatus}]`).invoke('attr', 'class').should('contain', 'closed');
 }

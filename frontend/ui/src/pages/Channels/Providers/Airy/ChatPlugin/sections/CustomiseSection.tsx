@@ -12,11 +12,14 @@ interface CustomiseSectionProps {
 
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [headerText, setHeaderText] = useState('');
+  const [subtitleText, setSubtitleText] = useState('');
   const [startNewConversationText, setStartNewConversationText] = useState('');
   const [bubbleIconUrl, setBubbleIconUrl] = useState('');
   const [sendMessageIconUrl, setSendMessageIconUrl] = useState('');
   const [headerTextColor, setHeaderTextColor] = useState('');
+  const [subtitleTextColor, setSubtitleTextColor] = useState('');
   const [showHeaderTextColorPicker, setShowHeaderTextColorPicker] = useState(false);
+  const [showSubtitleTextColorPicker, setShowSubtitleTextColorPicker] = useState(false);
   const [primaryColor, setPrimaryColor] = useState('');
   const [showPrimaryColorPicker, setShowPrimaryColorPicker] = useState(false);
   const [accentColor, setAccentColor] = useState('');
@@ -28,6 +31,10 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
 
   const toggleShowHeaderTextColorPicker = () => {
     setShowHeaderTextColorPicker(!showHeaderTextColorPicker);
+  };
+
+  const toggleShowSubtitleTextColorPicker = () => {
+    setShowSubtitleTextColorPicker(!showSubtitleTextColorPicker);
   };
 
   const toggleShowPrimaryColorPicker = () => {
@@ -45,10 +52,12 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const getTemplateConfig = () => {
     if (
       headerText === '' &&
+      subtitleText === '' &&
       startNewConversationText === '' &&
       bubbleIconUrl === '' &&
       sendMessageIconUrl === '' &&
       headerTextColor === '' &&
+      subtitleTextColor === '' &&
       primaryColor === '' &&
       accentColor === '' &&
       backgroundColor === ''
@@ -57,10 +66,12 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     }
     let config = '';
     if (headerText !== '') config += `\n              headerText: '${headerText}',`;
+    if (subtitleText !== '') config += `\n              subtitleText: '${subtitleText}',`;
     if (startNewConversationText !== '') config += `\n    startNewConversationText: '${startNewConversationText}',`;
     if (bubbleIconUrl !== '') config += `\n              bubbleIcon: '${bubbleIconUrl}',`;
     if (sendMessageIconUrl !== '') config += `\n              sendMessageIcon: '${sendMessageIconUrl}',`;
     if (headerTextColor !== '') config += `\n              headerTextColor: '${headerTextColor}',`;
+    if (subtitleTextColor !== '') config += `\n              subtitleTextColor: '${subtitleTextColor}',`;
     if (primaryColor !== '') config += `\n              primaryColor: '${primaryColor}',`;
     if (accentColor !== '') config += `\n              accentColor: '${accentColor}',`;
     if (backgroundColor !== '') config += `\n              backgroundColor: '${backgroundColor}',`;
@@ -76,8 +87,10 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     config: {
       showMode: true,
       ...(headerText && {headerText}),
+      ...(subtitleText && {subtitleText}),
       ...(startNewConversationText && {startNewConversationText}),
       ...(headerTextColor && {headerTextColor}),
+      ...(subtitleTextColor && {subtitleTextColor}),
       ...(primaryColor && {primaryColor}),
       ...(accentColor && {accentColor}),
       ...(backgroundColor && {backgroundColor}),
@@ -126,6 +139,18 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             setHeaderText(e.target.value);
           }}
           label="Header Text"
+          placeholder="(optionally) add a text"
+          height={32}
+          fontClass="font-base"
+        />
+        <Input
+          type="text"
+          name="subtitle"
+          value={subtitleText}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setSubtitleText(e.target.value);
+          }}
+          label="Subtitle Text"
           placeholder="(optionally) add a text"
           height={32}
           fontClass="font-base"
@@ -199,6 +224,44 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
                 setHeaderTextColor(newHeaderTextColor.toUpperCase());
               } else {
                 setHeaderTextColor('');
+              }
+            }}
+            placeholder="#FFFFFF"
+            height={32}
+            fontClass="font-base"
+          />
+        </div>
+        <p>Subtitle Text Color</p>
+        <div className={styles.colorPicker}>
+          {showSubtitleTextColorPicker && (
+            <ListenOutsideClick className={styles.colorPickerWrapper} onOuterClick={toggleShowSubtitleTextColorPicker}>
+              <SketchPicker
+                color={subtitleTextColor}
+                onChangeComplete={(color: {hex: string}) => {
+                  setSubtitleTextColor(color.hex.toUpperCase());
+                }}
+              />
+            </ListenOutsideClick>
+          )}
+          <div
+            className={styles.colorPickerSample}
+            style={{backgroundColor: subtitleTextColor}}
+            onClick={toggleShowSubtitleTextColorPicker}
+          />
+          <Input
+            type="text"
+            name="Subtitle Text Color"
+            value={subtitleTextColor}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setSubtitleTextColor(e.target.value);
+            }}
+            onBlur={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              if (value !== '') {
+                const newSubtitleTextColor = value.startsWith('#') ? value : '#' + value;
+                setSubtitleTextColor(newSubtitleTextColor.toUpperCase());
+              } else {
+                setSubtitleTextColor('');
               }
             }}
             placeholder="#FFFFFF"

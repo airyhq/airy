@@ -40,7 +40,7 @@ export const cyConversationListItemInfo = 'conversationListItemInfo';
 export const cyConversationStatus = 'conversationStatus';
 export const cySuggestionsButton = 'suggestionsButton';
 export const cySuggestionsList = 'suggestionsList';
-export const cyEditDisplayNameIcon = 
-export const cyDisplayName =
-export const cyDisplayNameInput
-export const , cyEditDisplayNameCheckmark
+export const cyEditDisplayNameIcon = 'editDisplayNameIcon';
+export const cyDisplayName = 'displayName';
+export const cyDisplayNameInput = 'displayNameInput';
+export const cyEditDisplayNameCheckmark = 'editDisplayNameCheckmark';

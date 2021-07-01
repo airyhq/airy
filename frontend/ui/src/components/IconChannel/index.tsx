@@ -43,7 +43,7 @@ const SOURCE_INFO = {
   instagram: {
     text: 'Instagram Account',
     icon: () => <InstagramIcon />,
-    avatar: () => <MessengerAvatar />,
+    avatar: () => <InstagramIcon />,
   },
   google: {
     text: 'Google page',

@@ -108,7 +108,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                     final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
 
                     try {
-                        final Message.Builder messageBuilder = messageParser.parse(payload);
+                        final Message.Builder messageBuilder = messageParser.parse(payload, channel.getSource());
 
                         return KeyValue.pair(
                                 messageId,

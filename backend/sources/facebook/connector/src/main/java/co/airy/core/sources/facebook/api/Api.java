@@ -1,5 +1,6 @@
 package co.airy.core.sources.facebook.api;
 
+import co.airy.core.sources.facebook.api.model.InstagramProfile;
 import co.airy.core.sources.facebook.api.model.LongLivingUserAccessToken;
 import co.airy.core.sources.facebook.api.model.PageWithConnectInfo;
 import co.airy.core.sources.facebook.api.model.Pages;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationListener;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /*
   @see https://developers.facebook.com/docs/messenger-platform/reference/send-api/
@@ -93,6 +96,20 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
     private <T> T apiResponse(String url, HttpMethod method, Class<T> clazz) throws Exception {
         ResponseEntity<String> responseEntity = restTemplate.exchange(url, method, null, String.class);
         return objectMapper.readValue(responseEntity.getBody(), clazz);
+    }
+
+
+
+    // https://developers.facebook.com/docs/messenger-platform/instagram/features/user-profile
+    public UserProfile getInstagramProfile(String sourceConversationId, String token) {
+        ResponseEntity<InstagramProfile> responseEntity = restTemplate.getForEntity(baseUrl + "/{ig-id}?fields=name,profile_pic&access_token={access_token}",
+                InstagramProfile.class, sourceConversationId, token);
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new ApiException("Call unsuccessful, received HTTP status " + responseEntity.getStatusCodeValue());
+        }
+        return Optional.ofNullable(responseEntity.getBody())
+                .map((body) -> UserProfile.builder().firstName(body.getName()).profilePic(body.getProfilePic()).build())
+                .orElseThrow();
     }
 
 

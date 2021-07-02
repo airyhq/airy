@@ -81,7 +81,7 @@ to make use of the Airy Core API.
 
 The first step is to create a new directory `channels/` in our Rasa project and
 copy this [connector
-file](https://github.com/airyhq/rasa-demo/blob/master/channels/airy.py) into it.
+file](https://github.com/airyhq/rasa-demo/blob/main/channels/airy.py) into it.
 The connector requires the following configuration values:
 
 - `system_token` is the Airy Core system token used for authenticating with the API.

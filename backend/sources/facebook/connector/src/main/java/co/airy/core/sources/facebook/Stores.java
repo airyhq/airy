@@ -41,7 +41,7 @@ import static co.airy.model.metadata.MetadataRepository.isConversationMetadata;
 
 @Service
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean, HealthIndicator {
-    private static final String appId = "sources.facebook.ConnectorStores_test_3";
+    private static final String appId = "sources.facebook.ConnectorStores";
 
     private final KafkaStreamsWrapper streams;
     private final String channelsStore = "channels-store";

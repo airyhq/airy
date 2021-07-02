@@ -16,62 +16,49 @@ Start interacting with 1 billion monthly active users on Instagram!
 
 </TLDR>
 
-This document provides a step by step guide to integrate Facebook with your Airy
+This document provides a step by step guide to connect an Instagram account with your Airy
 Core Platform instance.
 
 :::tip What you will learn
 
-- The required steps to configure the Facebook source
-- How to connect a Facebook page to Airy Core
+- The required steps to configure the Instagram source
+- How to connect an Instagram account to Airy Core
 
 :::
 
-:::note
+:::note Before you start
 
-Because the Facebook part of the configuration is the same as for Facebook Messenger this guide assumes
-that you have already completed the [Messenger guide](/sources/facebook.md) up until step number three.
+Make sure you have:
+- An instagram account fulfilling Facebook's [rollout criteria](https://developers.facebook.com/docs/messenger-platform/instagram/rollout)
+- A Facebook Page connected to that account
+- A registered [Facebook app](https://developers.facebook.com/docs/apps#register)
 
 :::
 
 ## Configuration
 
-Connecting an Instagram account requires the following configuration:
+To connect an instagram account we have to do the following things:
 
 - [Configuration](#configuration)
-  - [Step 1: Connect your account](#step-1-connect-your-account)
+  - [Step 1: Find the App ID and Secret](#step-1-find-the-app-id-and-secret)
   - [Step 2: Update the webhook integration](#step-2-configure-the-webhook-integration)
-  - [Step 3: Obtain your account id](#step-3-obtain-the-page-token)
-- [Connect a Facebook page to your instance](#connect-a-facebook-page-to-your-instance)
-- [Connect a Facebook source via API request](#connect-a-facebook-source-via-api-request)
-- [Connect a Facebook source via the UI](#connect-a-facebook-source-via-the-ui)
-- [Send messages from a Facebook source](#send-messages-from-a-facebook-source)
+  - [Step 3: Enable the Instagram graph API](#step-3-enable-the-instagram-graph-api)
+  - [Step 4: Obtain the page token](#step-4-obtain-the-page-token)
+  - [Step 5: Get the Instagram account id](#step-5-get-the-instagram-account-id)
+- [Connect an Instagram channel via API request](#connect-an-instagram-channel-via-api-request)
+- [Send messages from a Facebook source](#send-messages-from-instagram)
 
 Let's proceed step by step.
 
-### Step 1: Connect your account
+### Step 1: Find the App ID and Secret
 
-To connect a page, you must have an approved Facebook app. If you don't have
-one, you must register and create a Business app on [Facebook for Developers](https://developers.facebook.com/).
-
-All of your registered apps are listed on [developers.facebook.com/apps](https://developers.facebook.com/apps/).
+Assuming that you already have a registered app, you can find it listed under [developers.facebook.com/apps](https://developers.facebook.com/apps/).
 
 <img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/apps.jpg')} />
 
-The dashboard of each registered app can be found on:
+On your application's dashboard, note down the `App ID` of your application and then head to the`Settings > Basic` page, where you will find your `App Secret`:
 
-```
-https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/dashboard/
-```
-
-On your application's dashboard, note down the `App ID` of your application and then head to the Basic Settings page.
-
-```
-https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/settings/basic/
-```
-
-You will find your `App Secret` on this page:
-
-<img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/secret.png')} />
+<img alt="Facebook basic settings page" src={useBaseUrl('img/sources/facebook/secret.png')} />
 
 Copy and paste your App ID and App Secret as strings next to `appId:` and `appSecret:`, below `components/sources/facebook` in your `airy.yaml` file.
 
@@ -85,25 +72,17 @@ Facebook must first verify your integration with a challenge to start sending ev
 
 You are now ready to configure the webhook integration. Click on the + icon next to "Products" on the left sidebar of your app's dashboard: scroll down, a list of products will appear.
 
-```
-https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/dashboard/#addProduct
-```
-
-Click on the button 'Set Up' on the Webhooks product card.
+Click on the button `Set Up` on the Webhooks product card.
 
 <img alt="Facebook webhook add product" src={useBaseUrl('img/sources/facebook/webhookProduct.png')} />
 
 This will add the Webhooks as one of your app's products and will lead you to the Webhooks product page.
 
-```
-https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/webhooks/
-```
+<img alt="Instagram webhook" src={useBaseUrl('img/sources/instagram/webhookInstagram.png')} />
 
-<img alt="Facebook webhook" src={useBaseUrl('img/sources/facebook/webhook_1.png')} />
+Select `Instagram` from the dropdown (the default is `User`) and click on the button `Subscribe to this object`.
 
-Select 'Page' from the dropdown (the default is 'User') and click on the button 'Subscribe to this object'.
-
-This will open a modal box: add your Callback URL (your instance's Facebook Webhook URL) and Verify Token (the webhookSecret you added in your `airy.yaml` file in the previous step).
+This will open a modal box: Add your Callback URL (your instance's Facebook Webhook URL) and verify token (the `webhookSecret` you added in your `airy.yaml` file in the previous step). After this is done you will see a list of events, where you need to subscribe to `messages`.
 
 <img alt="Facebook webhook" src={useBaseUrl('img/sources/facebook/webhook_2.png')} />
 
@@ -125,24 +104,24 @@ https://RANDOM_STRING.tunnel.airy.co/facebook
 
 :::
 
-If you encounter errors, please make sure that the Verify Token matches the
+If you encounter errors, please make sure the verify token matches the
 `webhookSecret` in your `airy.yaml` file and that your variables have been
-successfully set to your Airy Core instance.
+configured successfully in your Airy Core instance.
 
 <ApplyVariablesNote />
 
-Once the verification process has been completed, Facebook will immediately
+Once the verification process is complete, Facebook will immediately
 start sending events to your Airy Core instance.
 
-### Step 3: Obtain the page token
+### Step 3: Enable the Instagram graph API
+
+To allow Airy to access names and profile pictures you need to enable the Instagram API. To do so go to the Products page and click the `Set Up` button on the Instagram Graph API product card.
+
+### Step 4: Obtain the page token
 
 Go to the Products page (click on the + icon next to Products on the left sidebar).
 
-Click the 'Set Up' button on the Messenger product card.
-
-```
-https://developers.facebook.com/apps/INSERT_YOUR_APP_ID_HERE/dashboard/#addProduct
-```
+Next click the `Set Up` button on the Messenger product card.
 
 <img alt="Facebook messenger product" src={useBaseUrl('img/sources/facebook/messenger_product.png')} />
 
@@ -152,26 +131,21 @@ Notice that at the bottom of the page, the Webhooks product has been added with 
 
 <img alt="Facebook messenger product" src={useBaseUrl('img/sources/facebook/messenger.png')} />
 
-Click on the blue button 'Add or Remove Pages' and select your page.
-
-Once your page has been added, scroll down and click on the button 'Add Subscriptions'.
-
-<img alt="Facebook page subscriptions" src={useBaseUrl('img/sources/facebook/add_subscriptions.png')} />
-
-This opens a modal box: tick 'messages' and 'messaging_postbacks' from the Subscription Fields list.
-
-<img alt="Facebook page subscriptions" src={useBaseUrl('img/sources/facebook/edit_page_subs.png')} />
-
-Next, scroll up, and click on the button 'Generate Token'.
+Click on the blue button `Add or Remove Pages` and select your page. Next, scroll up, and click on the button `Generate Token`.
 
 <img alt="Facebook page token" src={useBaseUrl('img/sources/facebook/token_messenger.png')} />
 
-This will open a pop-up revealing your page Access Token. Copy it, you will need it to connect the Facebook page to your instance.
+This will open a pop-up revealing your page Access Token. Copy it! You will need it to connect the Facebook page to your instance.
 
 <img alt="Facebook page token" src={useBaseUrl('img/sources/facebook/tokenMessenger_popUp.png')} />
 
-<br />
-<br />
+### Step 5: Get the Instagram account id
+
+To connect your account you will also need the id (not the username) of your Instagram Business account. To get
+it you can click on [this link](https://developers.facebook.com/tools/explorer/?method=GET&path=me%3Ffields%3Dinstagram_business_account&version=v11.0) to run a prepared query against the Facebook Graph API. Make sure
+to either select your page and App ID or to use the page token you acquired in step 4.
+
+<img alt="Use the Facebook graph explorer to get your instagram account id" src={useBaseUrl('img/sources/instagram/webhookInstagram.png')} />
 
 <SuccessBox>
 
@@ -179,61 +153,39 @@ Success! You are now ready to connect a Facebook page to your Airy Core instance
 
 </SuccessBox>
 
-## Connect a Facebook page to your instance
+<br />
+<br />
 
-There are 2 options to connect a Facebook source to your instance:
+## Connect an Instagram channel via API request
 
-- you can connect the source via an API request (using curl or platforms such as Postman)
-- you can connect the source via the UI
-
-We cover both options in this document.
-
-## Connect a Facebook source via API request
-
-The next step is to send a request to the [Channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
+The next step is to send a request to the [channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
 
 <ButtonBox
 icon={<BoltSVG />}
 title='Channels endpoint'
-description='Connect a Facebook source to your Airy Core instance through the Channels endpoint'
-link='api/endpoints/channels#facebook'
+description='Connect an instagram account to your Airy Core instance via the channels endpoint'
+link='api/endpoints/channels#instagram'
 />
 
 <br />
 
-import ConnectFacebook from '../api/endpoints/connect-facebook.mdx'
+import ConnectInstagram from '../api/endpoints/connect-instagram.mdx'
 
-<ConnectFacebook />
+<ConnectInstagram />
 
 :::note
 
-If you encounter errors, please follow this debugging advice:
+Troubleshooting:
 
-- make sure that the tokens you have added to the airy.yaml file (refer back to step 1) have been applied to your Airy Core instance. An Airy Core instance should be created after editing the airy.yaml file.
+- Make sure the credentials you have added to the airy.yaml file (refer back to step 1) have been applied to your Airy Core instance.
 
-- verify your webhook integration (refer back to step 2). Make sure that your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the 'Page' subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
+- Verify your webhook integration (refer back to step 2). Make sure your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the 'Page' subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
 
 :::
 
-## Connect a Facebook source via the UI
+## Send messages from Instagram
 
-You can connect a Facebook source via your Airy Core instance UI.
-
-On your instance's Airy Core UI, click on 'Channels' on the left sidebar menu and select the Facebook channel. Add your Facebook Page ID and Page Access Token in the respective fields. You can optionally add a name and an image.
-
-<img alt="Facebook connect" src={useBaseUrl('img/sources/facebook/facebook_ui.png')} />
-
-<br />
-
-Your can find your Facebook Page ID and Page Access Token on your app's dashboard on [Facebook For Developers](https://developers.facebook.com/): the Facebook Page ID is the ID of the page you want to connect and the Page Access Token is generated on the Messenger product section (refer back to the previous steps).
-
-Make sure the variables have been successfully applied to your instance, otherwise you won't be able to connect the Facebook channel through the UI.
-
-<ApplyVariablesNote />
-
-## Send messages from a Facebook source
-
-After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
+To test this you can now send a message to your Instagram account using the Instagram app or web interface.
 
 import InboxMessages from './inbox-messages.mdx'
 

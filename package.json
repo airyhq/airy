@@ -16,7 +16,7 @@
     "emoji-mart": "3.0.1",
     "linkifyjs": "^2.1.9",
     "lodash-es": "^4.17.21",
-    "preact": "^10.5.12",
+    "preact": "^10.5.14",
     "react": "^17.0.2",
     "react-autosize-textarea": "^7.1.0",
     "react-color": "^2.19.3",

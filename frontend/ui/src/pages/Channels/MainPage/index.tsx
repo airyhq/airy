@@ -33,6 +33,7 @@ import {
   CHANNELS_TWILIO_WHATSAPP_ROUTE,
   CHANNELS_CONNECTED_ROUTE,
   CHANNELS_CHAT_PLUGIN_ROUTE,
+  CHANNELS_GOOGLE_ROUTE,
 } from '../../../routes/routes';
 
 type MainPageProps = {
@@ -112,8 +113,8 @@ const SourcesInfo: SourceInfo[] = [
     title: 'Google Business Messages',
     description: 'Be there when people search',
     image: <GoogleAvatarIcon />,
-    newChannelRoute: '/',
-    channelsListRoute: '/',
+    newChannelRoute: CHANNELS_GOOGLE_ROUTE + '/new_account',
+    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/google',
     configKey: 'sources-google',
     channelsToShow: 4,
     itemInfoString: 'channels',

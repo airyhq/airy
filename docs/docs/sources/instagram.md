@@ -42,30 +42,25 @@ Make sure you have:
 
 :::
 
-## Configuration
+To connect an instagram account we have to complete the following steps:
 
-To connect an instagram account we have to do the following things:
-
-- [Configuration](#configuration)
-  - [Step 1: Find the App ID and Secret](#step-1-find-the-app-id-and-secret)
-  - [Step 2: Update the webhook integration](#step-2-configure-the-webhook-integration)
-  - [Step 3: Enable the Instagram graph API](#step-3-enable-the-instagram-graph-api)
-  - [Step 4: Obtain the page token](#step-4-obtain-the-page-token)
-  - [Step 5: Get the Instagram account id](#step-5-get-the-instagram-account-id)
-- [Connect an Instagram channel via API request](#connect-an-instagram-channel-via-api-request)
-- [Send messages from a Facebook source](#send-messages-from-instagram)
-
-Let's proceed step by step.
+- [Step 1: Find the App ID and Secret](#step-1-find-the-app-id-and-secret)
+- [Step 2: Update the webhook integration](#step-2-configure-the-webhook-integration)
+- [Step 3: Enable the Instagram Graph API](#step-3-enable-the-instagram-graph-api)
+- [Step 4: Obtain the Page token](#step-4-obtain-the-page-token)
+- [Step 5: Get the Instagram account ID](#step-5-get-the-instagram-account-id)
+- [Step 6: Connect an Instagram channel via API request](#step-6-connect-an-instagram-channel-via-api-request)
+- [Step 7: Send a message to Instagram](#step-7-send-a-message-to-instagram)
 
 ### Step 1: Find the App ID and Secret
 
 Assuming that you already have a registered app, you can find it listed under [developers.facebook.com/apps](https://developers.facebook.com/apps/).
 
-<img alt="Facebook apps page" src={useBaseUrl('img/sources/facebook/apps.jpg')} />
+<img alt="Facebook apps Page" src={useBaseUrl('img/sources/facebook/apps.jpg')} />
 
 On your application's dashboard, note down the `App ID` of your application and then head to the`Settings > Basic` page, where you will find your `App Secret`:
 
-<img alt="Facebook basic settings page" src={useBaseUrl('img/sources/facebook/secret.png')} />
+<img alt="Facebook basic settings Page" src={useBaseUrl('img/sources/facebook/secret.png')} />
 
 Copy and paste your App ID and App Secret as strings next to `appId:` and `appSecret:`, below `components/sources/facebook` in your `airy.yaml` file.
 
@@ -120,11 +115,11 @@ configured successfully in your Airy Core instance.
 Once the verification process is complete, Facebook will immediately
 start sending events to your Airy Core instance.
 
-### Step 3: Enable the Instagram graph API
+### Step 3: Enable the Instagram Graph API
 
 To allow Airy to access names and profile pictures you need to enable the Instagram API. To do so go to the Products page and click the `Set Up` button on the Instagram Graph API product card.
 
-### Step 4: Obtain the page token
+### Step 4: Obtain the Page token
 
 Go to the Products page (click on the + icon next to Products on the left sidebar).
 
@@ -140,32 +135,32 @@ Notice that at the bottom of the page, the Webhooks product has been added with 
 
 Click on the blue button `Add or Remove Pages` and select your page. Next, scroll up, and click on the button `Generate Token`.
 
-<img alt="Facebook page token" src={useBaseUrl('img/sources/facebook/token_messenger.png')} />
+<img alt="Facebook Page token" src={useBaseUrl('img/sources/facebook/token_messenger.png')} />
 
-This will open a pop-up revealing your page Access Token. Copy it! You will need it to connect the Facebook page to your instance.
+This will open a pop-up revealing your Page access token. Copy it! You will need it to connect the instagram account to your instance.
 
-<img alt="Facebook page token" src={useBaseUrl('img/sources/facebook/tokenMessenger_popUp.png')} />
+<img alt="Facebook Page token" src={useBaseUrl('img/sources/facebook/tokenMessenger_popUp.png')} />
 
-### Step 5: Get the Instagram account id
+### Step 5: Get the Instagram account ID
 
-To connect your account you will also need the id (not the username) of your Instagram Business account. To get
+To connect your account you will also need the ID (not the username) of your Instagram Business account. To get
 it you can click on [this link](https://developers.facebook.com/tools/explorer/?method=GET&path=me%3Ffields%3Dinstagram_business_account&version=v11.0) to run a prepared query against the Facebook Graph API. Make sure
-to either select your page and App ID or to use the page token you acquired in step 4.
+to either select your Page and App or to use the Page token you acquired in step 4.
 
-<img alt="Use the Facebook graph explorer to get your instagram account id" src={useBaseUrl('img/sources/instagram/webhookInstagram.png')} />
+<img alt="Use the Facebook Graph explorer to get your instagram account id" src={useBaseUrl('img/sources/instagram/instagramAccountId.jpg')} />
 
 <SuccessBox>
 
-Success! You are now ready to connect a Facebook page to your Airy Core instance 🎉
+Success! You are now ready to connect an Instagram Account to your Airy Core instance 🎉
 
 </SuccessBox>
 
 <br />
 <br />
 
-## Connect an Instagram channel via API request
+## Step 6: Connect an Instagram channel via API request
 
-The next step is to send a request to the [channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
+The next step is to send a request to the [channels endpoint](/api/endpoints/channels#instagram) to connect an instagram account to your instance.
 
 <ButtonBox
 icon={<BoltSVG />}
@@ -186,11 +181,11 @@ Troubleshooting:
 
 - Make sure the credentials you have added to the airy.yaml file (refer back to step 1) have been applied to your Airy Core instance.
 
-- Verify your webhook integration (refer back to step 2). Make sure your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the 'Page' subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
+- Verify your webhook integration (refer back to step 2). Make sure your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the 'Instagram' subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Instagram' subscription and not 'User' (which is the default).
 
 :::
 
-## Send messages from Instagram
+## Step 7: Send a message to Instagram
 
 To test this you can now send a message to your Instagram account using the Instagram app or web interface.
 

@@ -16,6 +16,12 @@ Start interacting with 1 billion monthly active users on Instagram!
 
 </TLDR>
 
+<video controls autoPlay loop style={{width: "100%"}} muted>
+
+<source src="https://s3.amazonaws.com/assets.airy.co/docs/instagram.mp4" type="video/mp4"/>  
+ <source src="https://s3.amazonaws.com/assets.airy.co/docs/instagram.webm" type="video/webm"/>
+</video>
+
 This document provides a step by step guide to connect an Instagram account with your Airy
 Core Platform instance.
 
@@ -29,6 +35,7 @@ Core Platform instance.
 :::note Before you start
 
 Make sure you have:
+
 - An instagram account fulfilling Facebook's [rollout criteria](https://developers.facebook.com/docs/messenger-platform/instagram/rollout)
 - A Facebook Page connected to that account
 - A registered [Facebook app](https://developers.facebook.com/docs/apps#register)
@@ -186,6 +193,12 @@ Troubleshooting:
 ## Send messages from Instagram
 
 To test this you can now send a message to your Instagram account using the Instagram app or web interface.
+
+<video controls autoPlay loop style={{width: "100%"}} muted>
+
+<source src="https://s3.amazonaws.com/assets.airy.co/docs/instagram.mp4" type="video/mp4"/>  
+ <source src="https://s3.amazonaws.com/assets.airy.co/docs/instagram.webm" type="video/webm"/>
+</video>
 
 import InboxMessages from './inbox-messages.mdx'
 

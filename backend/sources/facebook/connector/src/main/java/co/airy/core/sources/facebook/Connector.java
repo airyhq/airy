@@ -73,7 +73,7 @@ public class Connector {
     }
 
     public List<KeyValue<String, Metadata>> fetchMetadata(String conversationId, Conversation conversation) {
-        final UserProfile profile = Optional.ofNullable(getProfile(conversation)).orElse(new UserProfile());
+        final UserProfile profile = Optional.ofNullable(getUserProfile(conversation)).orElse(new UserProfile());
 
         final List<KeyValue<String, Metadata>> recordList = new ArrayList<>();
 
@@ -101,7 +101,26 @@ public class Connector {
         return recordList;
     }
 
-    public UserProfile getProfile(Conversation conversation) {
+    public UserProfile getUserProfile(Conversation conversation) {
+        if (conversation.getChannel().getSource().equals("instagram")) {
+            return getInstagramProfile(conversation);
+        }
+
+        return getMessengerProfile(conversation);
+    }
+
+    private UserProfile getInstagramProfile(Conversation conversation) {
+        final String sourceConversationId = conversation.getSourceConversationId();
+        final String token = conversation.getChannel().getToken();
+        try {
+            return api.getInstagramProfile(sourceConversationId, token);
+        } catch (Exception profileApiException) {
+            log.error("Instagram profile api failed", profileApiException);
+            return new UserProfile();
+        }
+    }
+
+    private UserProfile getMessengerProfile(Conversation conversation) {
         final String sourceConversationId = conversation.getSourceConversationId();
         final String token = conversation.getChannel().getToken();
         try {

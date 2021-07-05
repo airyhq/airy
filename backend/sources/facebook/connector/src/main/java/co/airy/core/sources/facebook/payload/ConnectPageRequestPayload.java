@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConnectRequestPayload {
+public class ConnectPageRequestPayload {
     @NotNull
     private String pageId;
     @NotNull

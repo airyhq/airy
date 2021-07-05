@@ -146,6 +146,12 @@ import ConnectFacebook from './connect-facebook.mdx'
 
 <ConnectFacebook />
 
+### Instagram
+
+import ConnectInstagram from './connect-instagram.mdx'
+
+<ConnectInstagram />
+
 ### Google
 
 import ConnectGoogle from './connect-google.mdx'
@@ -182,6 +188,16 @@ Disconnects a Facebook page from Airy Core.
 
 ```
 POST /channels.facebook.disconnect
+```
+
+<ChannelDisconnect />
+
+### Instagram
+
+Disconnects an instagram account from Airy Core.
+
+```
+POST /channels.instagram.disconnect
 ```
 
 <ChannelDisconnect />

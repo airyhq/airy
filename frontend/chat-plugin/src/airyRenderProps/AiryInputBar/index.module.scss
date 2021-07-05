@@ -1,3 +1,6 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
 .inputBar {
   display: flex;
   justify-content: space-between;
@@ -105,4 +108,48 @@
     width: 28px;
     height: 24px;
   }
+}
+
+.messageActionsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  margin-bottom: 10px;
+  padding-right: 6px;
+} 
+
+.iconButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 30px;
+
+  svg {
+    width: 22px;
+    pointer-events: none;
+    path {
+      fill: #a0abb2;
+    }
+  }
+
+  .actionToolTip {
+    @include font-s;
+    position: absolute;
+    background-color: var(--color-text-contrast);
+    color: white;
+    border-radius: 4px;
+    padding: 2px 8px;
+    display: none;
+    bottom: 33px;
+    z-index: 2;
+  }
+}
+
+.emojiDrawer {
+  position: absolute;
+  right: 72px;
+  bottom: 75px;
+  z-index: 2;
 }

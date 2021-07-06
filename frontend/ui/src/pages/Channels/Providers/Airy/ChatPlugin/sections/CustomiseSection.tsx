@@ -2,7 +2,7 @@ import React, {createRef, useState} from 'react';
 import {Button, Input, ListenOutsideClick} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
-import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
+import {AiryChatPlugin, AiryChatPluginConfiguration} from '@airyhq/chat-plugin';
 import {env} from '../../../../../../env';
 
 interface CustomiseSectionProps {
@@ -387,7 +387,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
         </div>
       </div>
-      <div className="demoChatPlugin">
+      <div className={styles.pluginWrapper}>
         <AiryChatPlugin config={demoConfig} />
       </div>
     </>

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@airyhq/chat-plugin": "file:assemble-npm.tar.gz",
     "@crello/react-lottie": "^0.0.11",
     "@reduxjs/toolkit": "^1.6.0",
     "@stomp/stompjs": "^6.1.0",

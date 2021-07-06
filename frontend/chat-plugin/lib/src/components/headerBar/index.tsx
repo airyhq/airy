@@ -6,7 +6,7 @@ type Props = {
 };
 
 const HeaderBarProp = (props: Props) => {
-  return <div>{props.render()}</div>;
+  return props.render();
 };
 
 export default HeaderBarProp;

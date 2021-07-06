@@ -5,7 +5,7 @@ interface EmojiPickerWrapperProps {
 }
 
 export const EmojiPickerWrapper = ({addEmoji}: EmojiPickerWrapperProps) => {
-  const EmojiPickerAsyncLoad = (importComponent: () => Promise<any>) => {
+  const importEmojiPicker = (importComponent: () => Promise<any>) => {
     return class EmojiPickerComponent extends Component<EmojiPickerWrapperProps> {
       state = {
         emojiPicker: null,
@@ -25,7 +25,7 @@ export const EmojiPickerWrapper = ({addEmoji}: EmojiPickerWrapperProps) => {
     };
   };
 
-  const EmojiPickerImport = EmojiPickerAsyncLoad(() => {
+  const EmojiPickerImport = importEmojiPicker(() => {
     return import('./EmojiPicker');
   });
 

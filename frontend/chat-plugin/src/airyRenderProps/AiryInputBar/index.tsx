@@ -2,7 +2,7 @@ import React, {ChangeEvent, FormEvent, KeyboardEvent, createRef, useEffect, useS
 import {ReactComponent as AiryIcon} from 'assets/images/icons/airy-icon.svg';
 import style from './index.module.scss';
 import {cyInputbarTextarea, cyInputbarButton} from 'chat-plugin-handles';
-import {EmojiPickerAsyncLoad} from '../../components/emojiPicker/EmojiPickerAsyncLoad';
+import {EmojiPickerWrapper} from '../../components/emojiPicker/EmojiPickerWrapper';
 import {Config} from '../../config';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 
@@ -114,7 +114,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         <>
           {isShowingEmojiDrawer && (
             <div ref={emojiDiv} className={style.emojiDrawer}>
-              <EmojiPickerAsyncLoad addEmoji={addEmoji} />
+              <EmojiPickerWrapper addEmoji={addEmoji} />
             </div>
           )}
           <button

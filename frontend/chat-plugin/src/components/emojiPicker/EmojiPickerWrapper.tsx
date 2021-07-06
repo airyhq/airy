@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 
-interface EmojiPickerAsyncLoadProps {
-  addEmoji: () => void;
+interface EmojiPickerWrapperProps {
+  addEmoji: (emoji) => void;
 }
 
-export const EmojiPickerAsyncLoad = ({addEmoji}: EmojiPickerAsyncLoadProps) => {
-  const loadEmojiPicker = (importComponent: () => Promise<any>) => {
-    return class EmojiPickerComponent extends Component<EmojiPickerAsyncLoadProps> {
+export const EmojiPickerWrapper = ({addEmoji}: EmojiPickerWrapperProps) => {
+  const EmojiPickerAsyncLoad = (importComponent: () => Promise<any>) => {
+    return class EmojiPickerComponent extends Component<EmojiPickerWrapperProps> {
       state = {
         emojiPicker: null,
       };
@@ -25,9 +25,9 @@ export const EmojiPickerAsyncLoad = ({addEmoji}: EmojiPickerAsyncLoadProps) => {
     };
   };
 
-  const EmojiPickerLoading = loadEmojiPicker(() => {
+  const EmojiPickerImport = EmojiPickerAsyncLoad(() => {
     return import('./EmojiPicker');
   });
 
-  return <EmojiPickerLoading addEmoji={addEmoji} />;
+  return <EmojiPickerImport addEmoji={addEmoji} />;
 };

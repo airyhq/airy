@@ -2,7 +2,7 @@ import React, {ChangeEvent, FormEvent, KeyboardEvent, createRef, useEffect, useS
 import {ReactComponent as AiryIcon} from 'assets/images/icons/airy-icon.svg';
 import style from './index.module.scss';
 import {cyInputbarTextarea, cyInputbarButton} from 'chat-plugin-handles';
-import {EmojiPickerContainer} from '../../components/emojiPicker/EmojiPicker';
+import {EmojiPickerAsyncLoad} from '../../components/emojiPicker/EmojiPickerAsyncLoad';
 import {Config} from '../../config';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 
@@ -16,7 +16,7 @@ type AiryInputBarProps = {
 
 const AiryInputBar = (props: AiryInputBarProps) => {
   const {config} = props;
-  const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false)
+  const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const emojiDiv = useRef(null);
 
   const textInputRef = createRef<HTMLTextAreaElement>();
@@ -66,61 +66,55 @@ const AiryInputBar = (props: AiryInputBarProps) => {
 
   const InputOptions = () => {
     const handleEmojiDrawer = () => {
-   
       if (isShowingEmojiDrawer) {
         textInputRef.current && textInputRef.current.focus();
       }
-  
+
       setIsShowingEmojiDrawer(!isShowingEmojiDrawer);
     };
-  
+
     const handleEmojiKeyEvent = e => {
       if (e.key === 'Escape') {
         handleEmojiDrawer();
       }
     };
-  
+
     const handleEmojiClickedOutside = e => {
       if (emojiDiv.current === null || emojiDiv.current.contains(e.target)) {
         return;
       }
-  
+
       handleEmojiDrawer();
     };
-  
+
     useEffect(() => {
       if (isShowingEmojiDrawer) {
         document.addEventListener('keydown', handleEmojiKeyEvent);
         document.addEventListener('click', handleEmojiClickedOutside);
-  
+
         return () => {
           document.removeEventListener('keydown', handleEmojiKeyEvent);
           document.removeEventListener('click', handleEmojiClickedOutside);
         };
       }
     }, [isShowingEmojiDrawer]);
-  
-  
+
     const addEmoji = emoji => {
       const emojiMessage = emoji.native;
-  
+
       const message = props.messageString + ' ' + emojiMessage;
-  
+
       props.setMessageString(message);
-  
+
       handleEmojiDrawer();
     };
 
-  //   <div ref={emojiDiv} className={styles.emojiDrawer}>
-  //   <Picker showPreview={false} onSelect={addEmoji} title="Emoji" />
-  // </div>
-  
     return (
       <div className={style.messageActionsContainer}>
         <>
           {isShowingEmojiDrawer && (
             <div ref={emojiDiv} className={style.emojiDrawer}>
-            <EmojiPickerContainer/>
+              <EmojiPickerAsyncLoad addEmoji={addEmoji} />
             </div>
           )}
           <button
@@ -133,7 +127,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         </>
       </div>
     );
-  };  
+  };
 
   return (
     <>

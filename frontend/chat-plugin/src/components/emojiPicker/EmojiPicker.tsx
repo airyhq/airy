@@ -1,18 +1,7 @@
 import React from 'react';
-import asyncComponent from './asyncComponent';
+import {Picker} from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 
-
-const EmojiPicker = asyncComponent((addEmoji) => {
-    return import('./EmojiPickerComponent').then((c) => {
-        c.EmojiPickerComponent(addEmoji); // send props or params here
-   })
-});
-
-
-export const EmojiPickerContainer = ({addEmoji}) => {
-    return (
-      
-            <EmojiPicker addEmoji={addEmoji} />
-   
-    );
+export const EmojiPicker = ({addEmoji}) => {
+  return <Picker showPreview={false} title="Emoji" onSelect={addEmoji} />;
 };

@@ -22,6 +22,9 @@ web_library(
     name = "dist",
     app_lib = ":chat-plugin",
     entry = "frontend/chat-plugin/lib/index.js",
+    # Externals will not be included in the output bundle
+    # Therefore they must be declared as dependencies in the package.json so that
+    # npm can install them and make them available at user build time
     externals = {
         "@stomp/stompjs": "@stomp/stompjs",
         "@types/node": "@types/node",
@@ -31,6 +34,7 @@ web_library(
         "react": "react",
         "react-dom": "react-dom",
         "camelcase-keys": "camelcase-keys",
+        "emoji-mart": "emoji-mart",
     },
     module_deps = module_deps,
     output = {
@@ -49,7 +53,7 @@ genrule(
         ":dist",
         ":chat-plugin",
     ],
-    outs = ["chat-plugin_lib"],
+    outs = ["chat-plugin_npm_lib"],
     cmd = """
     mkdir -p $(OUTS)/{src,dist} && cp -R $(location :dist) $(OUTS) \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \

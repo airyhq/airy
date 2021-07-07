@@ -18,4 +18,5 @@ npm_deps = [
     "@npm//react",
     "@npm//react-dom",
     "@npm//camelcase-keys",
+    "@npm//emoji-mart",
 ]

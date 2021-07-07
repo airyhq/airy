@@ -1,3 +1,6 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
 .inputBar {
   display: flex;
   justify-content: space-between;
@@ -81,6 +84,11 @@
   color: #999999;
 }
 
+.buttonContainer {
+  display: flex;
+  align-items: center;
+}
+
 .sendButton {
   outline: none;
   padding: 2px 0 0 2px;
@@ -102,7 +110,77 @@
   }
 
   svg {
-    width: 28px;
-    height: 24px;
+    width: 18px;
+    height: auto;
+  }
+}
+
+.messageActionsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  margin-bottom: 10px;
+}
+
+.emojiDrawer {
+  position: absolute;
+  bottom: 15%;
+  z-index: 2;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.iconButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    width: 22px;
+    pointer-events: none;
+    path {
+      fill: #a0abb2;
+    }
+  }
+
+  .active {
+    cursor: pointer;
+  }
+
+  .actionToolTip {
+    @include font-s;
+    position: absolute;
+    background-color: var(--color-text-contrast);
+    color: white;
+    border-radius: 4px;
+    padding: 2px 8px;
+    display: none;
+    bottom: 33px;
+    z-index: 2;
+  }
+}
+
+.smileyIcon {
+  height: 20px;
+  width: 20px;
+}
+
+.iconButton:hover {
+  background-color: var(--color-background-blue);
+  border-radius: 50%;
+  svg {
+    path {
+      fill: #4bb3fd;
+    }
+  }
+
+  .actionToolTip {
+    display: block;
   }
 }

@@ -1,4 +1,10 @@
-import {cyOpenStateButton, cyClosedStateButton, cyConversationListItemInfo, cyConversationStatus} from 'handles';
+import {
+  cyOpenStateButton,
+  cyClosedStateButton,
+  cyConversationListItemInfo,
+  cyConversationStatus,
+  cyClickableListItem,
+} from 'handles';
 
 function closeConversation() {
   cy.get(`[data-cy=${cyOpenStateButton}]`).first().click();
@@ -18,6 +24,8 @@ describe('toggles the state of a conversation, accurately changing the Open and 
     cy.url().should('include', '/inbox');
 
     cy.get(`[data-cy=${cyConversationListItemInfo}]`).then(conversationListItemInfo => {
+      cy.get(`[data-cy=${cyClickableListItem}]`).first().click();
+
       if (conversationListItemInfo.find(`[data-cy=${cyOpenStateButton}]`).length > 0) {
         closeConversation();
         openConversation();

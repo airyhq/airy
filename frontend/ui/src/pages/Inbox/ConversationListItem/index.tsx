@@ -14,7 +14,7 @@ import {readConversations, conversationState} from '../../../actions/conversatio
 import styles from './index.module.scss';
 import {ReactComponent as Checkmark} from 'assets/images/icons/checkmark-circle.svg';
 import {newestFilteredConversationFirst} from '../../../selectors/conversations';
-import {cyOpenStateButton, cyClosedStateButton, cyConversationListItemInfo} from 'handles';
+import {cyOpenStateButton, cyClosedStateButton, cyConversationListItemInfo, cyClickableListItem} from 'handles';
 
 type ConversationListItemProps = {
   conversation: MergedConversation;
@@ -82,7 +82,7 @@ const ConversationListItem = (props: ConversationListItemProps) => {
   }, [active, conversation, currentConversationState]);
 
   return (
-    <div className={styles.clickableListItem} onClick={markAsRead}>
+    <div className={styles.clickableListItem} onClick={markAsRead} data-cy={cyClickableListItem}>
       <Link to={`${INBOX_CONVERSATIONS_ROUTE}/${conversation.id}`}>
         <div
           className={`${active ? styles.containerListItemActive : styles.containerListItem} ${

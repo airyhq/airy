@@ -26,23 +26,28 @@ color: #444;
 body.appendChild(anchor);
 
 declare const window: {
-    airy: {
-        host: string;
-        channelId: string;
-        resumeToken?: string;
-        config?: Config;
-    };
+  airy: {
+    host: string;
+    channelId: string;
+    resumeToken?: string;
+    config?: Config;
+  };
 };
 
 if (!window.airy.channelId) {
-    console.error(
-        'The Airy Chat Plugin is missing the channel id parameter. Please check the docs at http://docs.airy.co to find out more.'
-    );
+  console.error(
+    'The Airy Chat Plugin is missing the channel id parameter. Please check the docs at http://docs.airy.co to find out more.'
+  );
 } else {
-    render(<AiryChatPlugin config={{
+  render(
+    <AiryChatPlugin
+      config={{
         apiHost: window.airy.host,
         channelId: window.airy.channelId,
         resumeToken: window.airy.resumeToken,
         config: window.airy.config,
-    }}/>, anchor);
+      }}
+    />,
+    anchor
+  );
 }

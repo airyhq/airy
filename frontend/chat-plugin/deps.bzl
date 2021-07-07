@@ -1,4 +1,3 @@
-
 module_deps = [
     "//lib/typescript/assets",
     "//lib/typescript/components",

@@ -47,7 +47,6 @@ const Component = () => {
 };
 ```
 
-
 ## License
 
 Apache 2.0 © [Airy, Inc.](https://airy.co)

@@ -1,13 +1,10 @@
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
-load("@npm//@bazel/typescript:index.bzl", "ts_config")
 load("@com_github_airyhq_bazel_tools//web:typescript.bzl", "ts_web_library")
-load("@com_github_airyhq_bazel_tools//web:web_app.bzl", "web_app")
 load("@com_github_airyhq_bazel_tools//web:web_library.bzl", "web_library")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("//tools/lint:web.bzl", "web_lint")
 load("//tools/build:container_release.bzl", "container_release")
-load("//tools/build/npm:rules.bzl", "assemble_npm", "deploy_npm")
 load("//frontend/chat-plugin:deps.bzl", "module_deps", "npm_deps")
 
 package(default_visibility = ["//visibility:public"])

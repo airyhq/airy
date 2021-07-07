@@ -86,6 +86,7 @@ ts_web_library(
         "@npm//react",
         "@npm//react-dom",
         "@npm//camelcase-keys",
+        "@npm//emoji-mart",
     ],
 )
 

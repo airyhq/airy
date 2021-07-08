@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
 spec:
   rules:
-    - host: {{ get (urlParse .Values.global.kubernetes.host) "host" }}
+    - host: {{ .Values.global.kubernetes.host }}
       http:
         paths:
           - path: /tools/akhq

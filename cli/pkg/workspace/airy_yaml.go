@@ -6,13 +6,15 @@ type KubernetesConf struct {
 	Namespace               string            `yaml:"namespace"`
 	NgrokEnabled            string            `yaml:"ngrokEnabled"`
 	Host                    string            `yaml:"host"`
+	Https                   string            `yaml:"https,omitempty`
 	LoadbalancerAnnotations map[string]string `yaml:"loadbalancerAnnotations,omitempty"`
+	LetsencryptEmail        string            `yaml:"letsencryptEmail,omitempty`
 }
 
 type componentsConf map[string]map[string]string
 
 type AiryConf struct {
-	Kubernetes KubernetesConf			 `yaml:"kubernetes"`
+	Kubernetes KubernetesConf            `yaml:"kubernetes"`
 	Security   SecurityConf              `yaml:"security"`
 	Components map[string]componentsConf `yaml:"components,omitempty"`
 }

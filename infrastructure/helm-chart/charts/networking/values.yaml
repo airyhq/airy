@@ -1,0 +1,6 @@
+ingress:
+  #https can be "letsencrypt" or "custom"
+  https: true
+  loadbalancerAnnotations: { "service.beta.kubernetes.io/aws-load-balancer-type": "nlb" }
+  letsencrypt:
+    email: "sre@airy.co"

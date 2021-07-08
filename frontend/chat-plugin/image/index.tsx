@@ -1,5 +1,6 @@
-import AiryWidget from './AiryWidget';
-import {Config} from './config';
+import React from 'react';
+import {render} from 'react-dom';
+import {AiryChatPlugin, Config} from 'chat-plugin';
 
 const body = document.getElementsByTagName('body')[0];
 
@@ -33,15 +34,20 @@ declare const window: {
   };
 };
 
-if (window.airy.channelId) {
-  new AiryWidget({
-    apiHost: window.airy.host,
-    channelId: window.airy.channelId,
-    resumeToken: window.airy.resumeToken,
-    config: window.airy.config,
-  }).render(anchor);
-} else {
-  console.log(
+if (!window.airy.channelId) {
+  console.error(
     'The Airy Chat Plugin is missing the channel id parameter. Please check the docs at http://docs.airy.co to find out more.'
+  );
+} else {
+  render(
+    <AiryChatPlugin
+      config={{
+        apiHost: window.airy.host,
+        channelId: window.airy.channelId,
+        resumeToken: window.airy.resumeToken,
+        config: window.airy.config,
+      }}
+    />,
+    anchor
   );
 }

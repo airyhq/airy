@@ -1,6 +1,7 @@
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: var(--color-airy-blue);
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
@@ -47,10 +48,10 @@
   text-overflow: ellipsis;
 }
 
+.buttonMenu {
+  display: flex;
+}
 .closeButton {
-  position: absolute;
-  right: 7%;
-  top: 7%;
   outline: none;
   border: none;
   height: 32px;
@@ -71,9 +72,6 @@
 
 .minimizeButton {
   outline: none;
-  position: absolute;
-  right: 12%;
-  top: 7%;
   padding: 2px 0 0 2px;
   border: none;
   height: 32px;

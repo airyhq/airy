@@ -1,6 +1,6 @@
 {
   "extends": "./bazel.tsconfig.json",
   "include": [
-    "./src/**/*",
-  ],
+    "./lib/**/*"
+  ]
 }

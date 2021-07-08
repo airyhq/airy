@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Airy Live Chatplugin library",
   "main": "dist/index.js",
-  "typings": "src/App.d.ts",
+  "typings": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/airyhq/airy.git"
@@ -16,12 +16,13 @@
   "homepage": "https://github.com/airyhq/airy#readme",
   "dependencies": {
     "@stomp/stompjs": "^6.1.0",
-    "@types/node": "15.6.1",
-    "@types/react": "17.0.8",
-    "@types/react-dom": "17.0.5",
+    "@types/node": "16.0.0",
+    "@types/react": "17.0.13",
+    "@types/react-dom": "17.0.8",
     "linkifyjs": "^2.1.9",
     "react": "^17.0.2",
     "react-dom": "16.14.0",
-    "camelcase-keys": "^6.2.2"
+    "camelcase-keys": "^7.0.0",
+    "emoji-mart": "3.0.1"
   }
 }

@@ -387,7 +387,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           />
         </div>
       </div>
-      <div className="demoChatPlugin">
+      <div className={styles.pluginWrapper}>
         <AiryChatPlugin config={demoConfig} />
       </div>
     </>

@@ -44,17 +44,19 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
         </p>
       </div>
 
-      <button className={style.minimizeButton} onClick={props.toggleHideChat} title="Minimize chat">
-        <MinimizeButton />
-      </button>
+      <div className={style.buttonMenu}>
+        <button className={style.minimizeButton} onClick={props.toggleHideChat} title="Minimize chat">
+          <MinimizeButton />
+        </button>
 
-      <button
-        className={style.closeButton}
-        onClick={showModalOnClick}
-        title="End chat"
-        data-cy={cyChatPluginHeaderBarCloseButton}>
-        <CloseButton />
-      </button>
+        <button
+          className={style.closeButton}
+          onClick={showModalOnClick}
+          title="End chat"
+          data-cy={cyChatPluginHeaderBarCloseButton}>
+          <CloseButton />
+        </button>
+      </div>
     </div>
   );
 };

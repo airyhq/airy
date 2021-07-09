@@ -73,7 +73,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         // Facebook messaging stream by conversation-id
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId, message) -> sources.contains(message.getSource()))
+                .filter((messageId, message) -> message != null && sources.contains(message.getSource()))
                 .selectKey((messageId, message) -> message.getConversationId());
 
         // Metadata table

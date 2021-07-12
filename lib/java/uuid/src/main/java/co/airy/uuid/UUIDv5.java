@@ -1,5 +1,7 @@
 package co.airy.uuid;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -18,7 +20,11 @@ public class UUIDv5 {
         return fromBytes(bytes);
     }
 
-    private static UUID fromBytes(byte[] name) {
+    public static UUID fromFile(InputStream is) throws IOException {
+        return fromBytes(is.readAllBytes());
+    }
+
+    protected static UUID fromBytes(byte[] name) {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("SHA-1");

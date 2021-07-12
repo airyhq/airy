@@ -28,47 +28,27 @@ spec:
         - name: app
           image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.image }}:{{ .Values.global.kubernetes.appImageTag }}"
           imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: security
+            - configMapRef:
+                name: "media-storage"
           env:
           - name: KAFKA_BROKERS
             valueFrom:
               configMapKeyRef:
                 name: kafka-config
                 key: KAFKA_BROKERS
-          - name: KAFKA_SCHEMA_REGISTRY_URL
-            valueFrom:
-              configMapKeyRef:
-                name: kafka-config
-                key: KAFKA_SCHEMA_REGISTRY_URL
-          - name: KAFKA_COMMIT_INTERVAL_MS
-            valueFrom:
-              configMapKeyRef:
-                name: kafka-config
-                key: KAFKA_COMMIT_INTERVAL_MS
-          - name: STORAGE_S3_KEY
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Values.component }}"
-                key: s3Key
-          - name: STORAGE_S3_SECRET
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Values.component }}"
-                key: s3Secret
-          - name: STORAGE_S3_BUCKET
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Values.component }}"
-                key: s3Bucket
-          - name: STORAGE_S3_REGION
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Values.component }}"
-                key: s3Region
-          - name: STORAGE_S3_PATH
-            valueFrom:
-              configMapKeyRef:
-                name: "{{ .Values.component }}"
-                key: s3Path
+            - name: KAFKA_SCHEMA_REGISTRY_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: kafka-config
+                  key: KAFKA_SCHEMA_REGISTRY_URL
+            - name: KAFKA_COMMIT_INTERVAL_MS
+              valueFrom:
+                configMapKeyRef:
+                  name: kafka-config
+                  key: KAFKA_COMMIT_INTERVAL_MS
           livenessProbe:
             httpGet:
               path: /actuator/health

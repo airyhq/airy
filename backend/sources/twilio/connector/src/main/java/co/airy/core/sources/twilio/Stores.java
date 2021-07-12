@@ -64,7 +64,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         channelStream.toTable(Materialized.as(channelsStore));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId, message) -> message.getSource().startsWith("twilio"))
+                .filter((messageId, message) -> message != null && message.getSource().startsWith("twilio"))
                 .selectKey((messageId, message) -> message.getConversationId());
 
         final KTable<String, SendMessageRequest> contextTable = messageStream

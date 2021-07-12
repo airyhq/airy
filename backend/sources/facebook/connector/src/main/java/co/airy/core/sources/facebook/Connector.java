@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,7 @@ import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 public class Connector {
     private static final Logger log = AiryLoggerFactory.getLogger(Connector.class);
 
+    private final long messageStaleAfterSec = 300L; // 5 minutes
     private final Api api;
     private final Mapper mapper;
 
@@ -46,6 +49,11 @@ public class Connector {
     public Message sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();
         final Conversation conversation = sendMessageRequest.getConversation();
+
+        if (isMessageStale(message)) {
+            updateDeliveryState(message, DeliveryState.FAILED);
+            return message;
+        }
 
         try {
             final String pageToken = conversation.getChannel().getToken();
@@ -63,6 +71,10 @@ public class Connector {
 
         updateDeliveryState(message, DeliveryState.FAILED);
         return message;
+    }
+
+    private boolean isMessageStale(Message message) {
+        return ChronoUnit.SECONDS.between(Instant.ofEpochMilli(message.getSentAt()), Instant.now()) > messageStaleAfterSec;
     }
 
     public boolean needsMetadataFetched(Conversation conversation) {

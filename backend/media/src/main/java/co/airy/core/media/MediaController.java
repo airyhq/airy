@@ -43,7 +43,7 @@ public class MediaController {
             final String originalFileExtension = originalFileName.contains(".") ? originalFileName.substring(originalFileName.lastIndexOf(".")) : "";
             fileName = fileName.concat(originalFileExtension);
 
-            return ResponseEntity.ok(mediaUpload.uploadMedia(is, fileName));
+            return ResponseEntity.ok(new MediaUploadResponsePayload(mediaUpload.uploadMedia(is, fileName)));
         } catch (Exception e) {
             log.error("Media upload failed:", e);
             return ResponseEntity.badRequest().body(new RequestErrorResponsePayload(String.format("Media Upload failed with error: %s", e.getMessage())));

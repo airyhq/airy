@@ -39,16 +39,16 @@ spec:
               configMapKeyRef:
                 name: kafka-config
                 key: KAFKA_BROKERS
-            - name: KAFKA_SCHEMA_REGISTRY_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_SCHEMA_REGISTRY_URL
-            - name: KAFKA_COMMIT_INTERVAL_MS
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: KAFKA_COMMIT_INTERVAL_MS
+          - name: KAFKA_SCHEMA_REGISTRY_URL
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_SCHEMA_REGISTRY_URL
+          - name: KAFKA_COMMIT_INTERVAL_MS
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_COMMIT_INTERVAL_MS
           livenessProbe:
             httpGet:
               path: /actuator/health

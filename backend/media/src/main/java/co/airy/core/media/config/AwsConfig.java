@@ -13,9 +13,9 @@ import org.springframework.context.annotation.Configuration;
 public class AwsConfig {
 
     @Bean
-    public AmazonS3 amazonS3Client(@Value("${storage.s3.key}") final String mediaS3Key,
-                                   @Value("${storage.s3.secret}") final String mediaS3Secret,
-                                   @Value("${storage.s3.region}") final String region) {
+    public AmazonS3 amazonS3Client(@Value("${s3.key}") final String mediaS3Key,
+                                   @Value("${s3.secret}") final String mediaS3Secret,
+                                   @Value("${s3.region}") final String region) {
         AWSCredentials credentials = new BasicAWSCredentials(
                 mediaS3Key,
                 mediaS3Secret

@@ -3,9 +3,77 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 0.25.0
+## 0.26.0
 
 #### Changes
+
+- Change endpoint for webhook to /twilio [[#2123](https://github.com/airyhq/airy/pull/2123)]
+- Fixes #2100 - link to up-to-date Rasa connector [[#2101](https://github.com/airyhq/airy/pull/2101)]
+- [[#1702](https://github.com/airyhq/airy/issues/1702)] Update conversations counter in real time [[#2091](https://github.com/airyhq/airy/pull/2091)]
+
+#### 🚀 Features
+
+- [[#2078](https://github.com/airyhq/airy/issues/2078)] Add endpoint for uploading media [[#2147](https://github.com/airyhq/airy/pull/2147)]
+- [[#2132](https://github.com/airyhq/airy/issues/2132)] Allow deleting messages [[#2136](https://github.com/airyhq/airy/pull/2136)]
+- [[#2051](https://github.com/airyhq/airy/issues/2051)] Support instagram as a source [[#2082](https://github.com/airyhq/airy/pull/2082)]
+- [[#2071](https://github.com/airyhq/airy/issues/2071)] Redesigned inputbar Chatplugin [[#2095](https://github.com/airyhq/airy/pull/2095)]
+- [[#661](https://github.com/airyhq/airy/issues/661)] Added possibility to connect Google via UI [[#2092](https://github.com/airyhq/airy/pull/2092)]
+- [[#2073](https://github.com/airyhq/airy/issues/2073)] Added powered by airy to Chatplugin [[#2089](https://github.com/airyhq/airy/pull/2089)]
+- [[#2074](https://github.com/airyhq/airy/issues/2074)] Added subtitle to Chatplugin [[#2087](https://github.com/airyhq/airy/pull/2087)]
+- [[#1916](https://github.com/airyhq/airy/issues/1916)] Cypress test for display name edit [[#2088](https://github.com/airyhq/airy/pull/2088)]
+- [[#1914](https://github.com/airyhq/airy/issues/1914)] Cypress test for conversation state  [[#2061](https://github.com/airyhq/airy/pull/2061)]
+- [[#1391](https://github.com/airyhq/airy/issues/1391)] Cypress test for suggested replies  [[#2057](https://github.com/airyhq/airy/pull/2057)]
+- [[#2056](https://github.com/airyhq/airy/issues/2056)] Added first transition and animations [[#2066](https://github.com/airyhq/airy/pull/2066)]
+- [[#1819](https://github.com/airyhq/airy/issues/1819)] Add Airy favicon [[#2067](https://github.com/airyhq/airy/pull/2067)]
+
+#### 🐛 Bug Fixes
+
+- [[#2149](https://github.com/airyhq/airy/issues/2149)] UI crashes when filtering with unknown source involved  [[#2152](https://github.com/airyhq/airy/pull/2152)]
+- [[#2072](https://github.com/airyhq/airy/issues/2072)] Chat Plugin: Emoji Selector [[#2121](https://github.com/airyhq/airy/pull/2121)]
+- [[#2093](https://github.com/airyhq/airy/issues/2093)] Fixed moving avatar in ConversationListItem [[#2094](https://github.com/airyhq/airy/pull/2094)]
+- [[#2069](https://github.com/airyhq/airy/issues/2069)] fix http client and chat plugin packages [[#2070](https://github.com/airyhq/airy/pull/2070)]
+- [[#2060](https://github.com/airyhq/airy/issues/2060)] edit text templates  [[#2068](https://github.com/airyhq/airy/pull/2068)]
+
+#### 🧰 Maintenance
+
+- Bump @types/react-redux from 7.1.16 to 7.1.18 [[#2138](https://github.com/airyhq/airy/pull/2138)]
+- Bump cypress from 7.6.0 to 7.7.0 [[#2145](https://github.com/airyhq/airy/pull/2145)]
+- Bump @types/react-dom from 17.0.8 to 17.0.9 [[#2146](https://github.com/airyhq/airy/pull/2146)]
+- Bump sass from 1.35.1 to 1.35.2 [[#2141](https://github.com/airyhq/airy/pull/2141)]
+- Bump @typescript-eslint/parser from 4.28.1 to 4.28.2 [[#2113](https://github.com/airyhq/airy/pull/2113)]
+- Bump @types/react-router-dom from 5.1.7 to 5.1.8 [[#2137](https://github.com/airyhq/airy/pull/2137)]
+- Bump @types/resize-observer-browser from 0.1.5 to 0.1.6 [[#2135](https://github.com/airyhq/airy/pull/2135)]
+- Bump @typescript-eslint/eslint-plugin from 4.28.1 to 4.28.2 [[#2112](https://github.com/airyhq/airy/pull/2112)]
+- Bump @types/react-window-infinite-loader from 1.0.3 to 1.0.4 [[#2130](https://github.com/airyhq/airy/pull/2130)]
+- [[#1590](https://github.com/airyhq/airy/issues/1590)] Refactor: Split chatplugin into library and app targets [[#2120](https://github.com/airyhq/airy/pull/2120)]
+- [[#2014](https://github.com/airyhq/airy/issues/2014)] Fix stable version file [[#2107](https://github.com/airyhq/airy/pull/2107)]
+- [[#1970](https://github.com/airyhq/airy/issues/1970)] Add issue templates [[#2106](https://github.com/airyhq/airy/pull/2106)]
+- Bump eslint from 7.29.0 to 7.30.0 [[#2102](https://github.com/airyhq/airy/pull/2102)]
+- Bump @types/node from 15.14.0 to 16.0.0 [[#2103](https://github.com/airyhq/airy/pull/2103)]
+- Bump @types/node from 15.12.5 to 15.14.0 [[#2096](https://github.com/airyhq/airy/pull/2096)]
+- Bump @types/react from 17.0.11 to 17.0.13 [[#2097](https://github.com/airyhq/airy/pull/2097)]
+- Bump camelcase-keys from 6.2.2 to 7.0.0 [[#2083](https://github.com/airyhq/airy/pull/2083)]
+- Bump preact from 10.5.13 to 10.5.14 [[#2099](https://github.com/airyhq/airy/pull/2099)]
+- Bump webpack from 5.41.1 to 5.42.0 [[#2098](https://github.com/airyhq/airy/pull/2098)]
+- Bump @typescript-eslint/eslint-plugin from 4.28.0 to 4.28.1 [[#2084](https://github.com/airyhq/airy/pull/2084)]
+- Bump webpack from 5.40.0 to 5.41.1 [[#2085](https://github.com/airyhq/airy/pull/2085)]
+- Bump @typescript-eslint/parser from 4.28.0 to 4.28.1 [[#2081](https://github.com/airyhq/airy/pull/2081)]
+- Bump style-loader from 2.0.0 to 3.0.0 [[#2040](https://github.com/airyhq/airy/pull/2040)]
+- Bump @types/node from 15.12.2 to 15.12.5 [[#2052](https://github.com/airyhq/airy/pull/2052)]
+- Bump core-js from 3.15.0 to 3.15.2 [[#2064](https://github.com/airyhq/airy/pull/2064)]
+- Bump prettier from 2.3.1 to 2.3.2 [[#2053](https://github.com/airyhq/airy/pull/2053)]
+- Bump terser-webpack-plugin from 5.1.3 to 5.1.4 [[#2065](https://github.com/airyhq/airy/pull/2065)]
+- Bump copy-webpack-plugin from 9.0.0 to 9.0.1 [[#2059](https://github.com/airyhq/airy/pull/2059)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.25.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.25.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.25.1/windows/amd64/airy.exe)
+
+## 0.25.0
 
 #### 🚀 Features
 
@@ -45,11 +113,11 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.25.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.25.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.25.0/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.24.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.24.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.24.1/windows/amd64/airy.exe)
 
-## Hotfix 0.23.1
+## 0.23.1 Hotfix
 
 [[#1921](https://github.com/airyhq/airy/issues/1921)] Hotfix: Facebook echo ingestion [[#1922](https://github.com/airyhq/airy/issues/1922)]
 

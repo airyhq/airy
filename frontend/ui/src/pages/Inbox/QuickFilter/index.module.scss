@@ -28,6 +28,7 @@
   width: 80px;
   border: 1px solid transparent;
   cursor: pointer;
+  transition: background 400ms, border 400ms;
 }
 
 .quickFilterButtonActive {

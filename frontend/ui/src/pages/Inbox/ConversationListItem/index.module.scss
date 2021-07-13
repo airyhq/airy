@@ -13,7 +13,9 @@
   padding: 16px 8px 0 16px;
   display: flex;
   flex-direction: row;
-  border: 1px solid rgba(0, 0, 0, 0);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: background 400ms, border 400ms;
 }
 
 .containerListItem.unread {
@@ -22,11 +24,12 @@
     color: var(--color-airy-blue);
     padding-top: 3px;
     margin-left: -20px;
-    margin-right: 10px;
+    margin-right: 11px;
   }
 }
 
 .containerListItemActive {
+  @extend .containerListItem;
   padding: 16px 8px 16px 16px;
   display: flex;
   flex-direction: row;

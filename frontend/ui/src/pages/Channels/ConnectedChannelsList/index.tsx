@@ -22,6 +22,7 @@ import {
   CHANNELS_ROUTE,
   CHANNELS_TWILIO_SMS_ROUTE,
   CHANNELS_TWILIO_WHATSAPP_ROUTE,
+  CHANNELS_GOOGLE_ROUTE,
 } from '../../../routes/routes';
 
 type ConnectedChannelsListProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<{source: string}>;
@@ -59,8 +60,8 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
         setPath(CHANNELS_FACEBOOK_ROUTE);
         break;
       case Source.google:
-        setName('Google');
-        setPath('');
+        setName('Google Business Messages');
+        setPath(CHANNELS_GOOGLE_ROUTE + '/new_account');
         break;
       case Source.twilioSMS:
         setName('Twilio SMS');

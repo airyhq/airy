@@ -1,11 +1,27 @@
-# Airy Demo Inbox
+# Airy Chat Plugin
 
-This app demos a minimal frontend that allows contacts to communicate with the [Airy Chat Plugin source](https://docs.airy.co/sources/chat-plugin)
+This project hosts the frontend of the [Airy Live Chat Plugin](https://airy.co/docs/core/sources/chatplugin/overview) source.
 
-## Develop
+- `lib/`
 
-Requires [Bazelisk](https://github.com/bazelbuild/bazelisk) and a running [minikube provider](/docs/docs/getting-started/installation/minikube.md) Core instance.
+Chat Plugin source code and npm library deployment.
 
-```bash
-./scripts/web-dev.sh //frontend/chat-plugin:bundle_server
+- `image/`
+
+Builds an image with a bundle that will bootstrap the Chat Plugin using the user's script tag installation.
+
+- `dev/`
+
+Contains entrypoint for local development. Run:
+
+```shell script
+./scripts/web-dev.sh //frontend/chat-plugin/dev:bundle_server
 ```
+
+- `handles`
+
+Cypress css tags.
+
+## License
+
+Apache 2.0 © [Airy, Inc.](https://airy.co)

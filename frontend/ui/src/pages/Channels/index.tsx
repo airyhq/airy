@@ -13,6 +13,7 @@ import ChatPluginConnect from './Providers/Airy/ChatPlugin/ChatPluginConnect';
 import ConnectedChannelsList from './ConnectedChannelsList';
 import TwilioSmsConnect from './Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from './Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
+import GoogleConnect from './Providers/Google/GoogleConnect';
 
 import styles from './index.module.scss';
 
@@ -22,6 +23,7 @@ import {
   CHANNELS_CONNECTED_ROUTE,
   CHANNELS_CHAT_PLUGIN_ROUTE,
   CHANNELS_TWILIO_WHATSAPP_ROUTE,
+  CHANNELS_GOOGLE_ROUTE,
 } from '../../routes/routes';
 
 const mapDispatchToProps = {
@@ -58,6 +60,7 @@ const Channels = (props: ChannelsConnectProps) => {
       <Route path={[`${CHANNELS_CONNECTED_ROUTE}/:source?`]} component={ConnectedChannelsList} />
       <Route path={[`${CHANNELS_TWILIO_SMS_ROUTE}/:channelId?`]} component={TwilioSmsConnect} />
       <Route path={[`${CHANNELS_TWILIO_WHATSAPP_ROUTE}/:channelId?`]} component={TwilioWhatsappConnect} />
+      <Route path={[`${CHANNELS_GOOGLE_ROUTE}/:channelId?`]} component={GoogleConnect} />
       <Route path="/" render={renderChannels} />
     </Switch>
   );

@@ -1,5 +1,6 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
+@import '../../../../assets/animations/animations.scss';
 
 .content {
   display: flex;
@@ -156,4 +157,12 @@
 
 .addTagsButtonRow {
   margin: 8px 0;
+}
+
+.fadeInAnimation {
+  animation: fadeInTranslateXLeft 500ms ease;
+}
+
+.fadeOutAnimation {
+  animation: fadeOutTranslateXLeft 500ms ease;
 }

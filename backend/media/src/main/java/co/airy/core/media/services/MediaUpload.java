@@ -20,23 +20,21 @@ import java.net.URLConnection;
 public class MediaUpload {
     private final AmazonS3 amazonS3Client;
     private final String bucket;
+    private final String path;
     private final URL host;
 
     public MediaUpload(AmazonS3 amazonS3Client,
-                       @Value("${storage.s3.bucket}") String bucket,
-                       @Value("${storage.s3.path}") String path) throws MalformedURLException {
+                       @Value("${s3.bucket}") String bucket,
+                       @Value("${s3.path}") String path) throws MalformedURLException {
         this.amazonS3Client = amazonS3Client;
         this.bucket = bucket;
-        URL bucketHost = new URL(String.format("https://%s.s3.amazonaws.com/", bucket));
-        this.host = new URL(bucketHost, path);
-    }
-
-    public boolean isUserStorageUrl(URL dataUrl) {
-        return dataUrl.getHost().equals(host.getHost());
+        this.path = appendSlash(path);
+        this.host = new URL(String.format("https://%s.s3.amazonaws.com/", bucket));
     }
 
     @Retryable
-    public String uploadMedia(final InputStream is, final String fileName) throws Exception {
+    public String uploadMedia(final InputStream is, String fileName) throws Exception {
+        fileName = path + fileName;
         final String contentType = resolveContentType(fileName, is);
 
         final ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -56,5 +54,9 @@ public class MediaUpload {
     private String resolveContentType(final String fileName, final InputStream is) throws IOException {
         final String contentType = URLConnection.guessContentTypeFromStream(is);
         return contentType == null ? URLConnection.guessContentTypeFromName(fileName) : contentType;
+    }
+
+    private String appendSlash(String path) {
+        return !path.endsWith("/") ? path + "/" : path;
     }
 }

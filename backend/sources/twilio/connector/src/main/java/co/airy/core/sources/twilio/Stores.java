@@ -15,6 +15,7 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
@@ -63,7 +64,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         channelStream.toTable(Materialized.as(channelsStore));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId, message) -> message.getSource().startsWith("twilio"))
+                .filter((messageId, message) -> message != null && message.getSource().startsWith("twilio"))
                 .selectKey((messageId, message) -> message.getConversationId());
 
         final KTable<String, SendMessageRequest> contextTable = messageStream
@@ -84,7 +85,10 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
 
         messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, sendMessageRequest) -> sendMessageRequest.toBuilder().message(message).build())
-                .mapValues(connector::sendMessage)
+                .map((conversationId, sendMessageRequest) -> {
+                    final Message message = connector.sendMessage(sendMessageRequest);
+                    return KeyValue.pair(message.getId(), message);
+                })
                 .to(new ApplicationCommunicationMessages().name());
 
         streams.start(builder.build(), appId);

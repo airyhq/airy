@@ -30,6 +30,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -63,14 +64,16 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         channelStream.toTable(Materialized.as(channelsStore));
 
+        final List<String> sources = List.of("facebook", "instagram");
+
         // Channels table
         KTable<String, Channel> channelsTable = channelStream
-                .filter((sourceChannelId, channel) -> "facebook".equalsIgnoreCase(channel.getSource())
+                .filter((sourceChannelId, channel) -> sources.contains(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable();
 
         // Facebook messaging stream by conversation-id
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId, message) -> "facebook".equalsIgnoreCase(message.getSource()))
+                .filter((messageId, message) -> message != null && sources.contains(message.getSource()))
                 .selectKey((messageId, message) -> message.getConversationId());
 
         // Metadata table
@@ -85,8 +88,8 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                     return aggregate;
                 });
 
-        // Conversation table
-        final KTable<String, Conversation> conversationTable = messageStream
+        // Context table
+        final KTable<String, Conversation> contextTable = messageStream
                 .groupByKey()
                 .aggregate(Conversation::new,
                         (conversationId, message, conversation) -> {
@@ -106,12 +109,15 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         // Send outbound messages
         messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
-                .join(conversationTable, (message, conversation) -> new SendMessageRequest(conversation, message))
-                .mapValues(connector::sendMessage)
+                .join(contextTable, (message, conversation) -> new SendMessageRequest(conversation, message))
+                .map((conversationId, sendMessageRequest) -> {
+                    final Message message = connector.sendMessage(sendMessageRequest);
+                    return KeyValue.pair(message.getId(), message);
+                })
                 .to(new ApplicationCommunicationMessages().name());
 
         // Fetch missing metadata
-        conversationTable
+        contextTable
                 .toStream()
                 .leftJoin(metadataTable, (conversation, metadataMap) -> conversation
                         .toBuilder()

@@ -75,10 +75,10 @@
         "./frontend/chat-plugin/handles"
       ],
       "chat-plugin": [
-        "./frontend/chat-plugin"
+        "./frontend/chat-plugin/lib"
       ],
       "chat-plugin/*": [
-        "./frontend/chat-plugin/*"
+        "./frontend/chat-plugin/lib/*"
       ]
     }
   }

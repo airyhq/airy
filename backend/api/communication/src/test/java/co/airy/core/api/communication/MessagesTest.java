@@ -10,6 +10,8 @@ import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -103,6 +105,33 @@ public class MessagesTest {
     }
 
     @Test
+    void canDeleteMessages() throws Exception {
+        final String conversationId = UUID.randomUUID().toString();
+
+        int messageCount = 2;
+        final List<ProducerRecord<String, SpecificRecordBase>> records = TestConversation.generateRecords(conversationId, channel, 2);
+        kafkaTestHelper.produceRecords(records);
+
+        final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
+        retryOnException(
+                () -> {
+                    final String content = webTestHelper.post("/messages.list", payload)
+                            .andExpect(status().isOk())
+                            .andExpect(jsonPath("$.data", hasSize(messageCount)))
+                            .andReturn().getResponse().getContentAsString();
+
+                    final JsonNode jsonNode = new ObjectMapper().readTree(content);
+                    final String messageId = jsonNode.get("data").get(0).get("id").textValue();
+
+                    kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, null));
+
+                    webTestHelper.post("/messages.list", payload)
+                            .andExpect(status().isOk())
+                            .andExpect(jsonPath("$.data", hasSize(messageCount - 1)));
+                }, "message was not deleted");
+    }
+
+    @Test
     void canReturnMetadata() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
         final String messageId = UUID.randomUUID().toString();
@@ -173,7 +202,6 @@ public class MessagesTest {
         final String conversationId = UUID.randomUUID().toString();
         final String messageId = UUID.randomUUID().toString();
         final String sourceConversationId = "+491234567";
-        final String text = "Hello World";
         final String sourceChannelId = "+497654321";
         final String token = "token";
 

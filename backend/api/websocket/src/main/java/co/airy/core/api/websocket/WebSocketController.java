@@ -23,7 +23,9 @@ public class WebSocketController {
     }
 
     public void onMessage(Message message) {
-        messagingTemplate.convertAndSend(QUEUE_EVENTS, MessageEvent.fromMessage(message));
+        if (message != null) {
+            messagingTemplate.convertAndSend(QUEUE_EVENTS, MessageEvent.fromMessage(message));
+        }
     }
 
     public void onChannel(Channel channel) {

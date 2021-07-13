@@ -190,7 +190,7 @@ There are 2 options to connect a Facebook source to your instance:
 
 We cover both options in this document.
 
-## Connect a Facebook source via API request
+### Connect a Facebook source via API request
 
 The next step is to send a request to the [Channels endpoint](/api/endpoints/channels#facebook) to connect a Facebook page to your instance.
 
@@ -211,13 +211,13 @@ import ConnectFacebook from '../api/endpoints/connect-facebook.mdx'
 
 If you encounter errors, please follow this debugging advice:
 
-- make sure that the tokens you have added to the airy.yaml file (refer back to step 1) have been applied to your Airy Core instance. An Airy Core instance should be created after editing the airy.yaml file.
+- Make sure the credentials you have added to the airy.yaml file (refer back to step 1) have been applied to your Airy Core instance.
 
-- verify your webhook integration (refer back to step 2). Make sure that your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the 'Page' subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
+- Verify your webhook integration (refer back to step 2). Make sure your Facebook Webhook URL has been correctly added on your app's dashboard. You should edit the 'Page' subscriptions for the Webhooks and Messenger product each time you create a new instance. Make sure that you have selected 'Page' subscription and not 'User' (which is the default).
 
 :::
 
-## Connect a Facebook source via the UI
+### Connect a Facebook source via the UI
 
 You can connect a Facebook source via your Airy Core instance UI.
 
@@ -235,7 +235,7 @@ Make sure the variables have been successfully applied to your instance, otherwi
 
 ## Send messages from a Facebook source
 
-After connecting the source to your instance, you will be able to send messages through the [Messages endpoint](/api/endpoints/messages#send).
+To test this you can now send a message to Facebook page.
 
 import InboxMessages from './inbox-messages.mdx'
 

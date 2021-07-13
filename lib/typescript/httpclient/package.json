@@ -3,10 +3,6 @@
   "version": "0.1.0",
   "description": "Airy http client library",
   "main": "dist/index.js",
-  "browser": {
-    "./dist/index.js": "./dist/index.browser.js",
-    "./dist/index.esm.js": "./dist/index.browser.esm.js"
-  },
   "typings": "index.d.ts",
   "repository": {
     "type": "git",

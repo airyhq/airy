@@ -34,6 +34,7 @@ module.exports = {
           ],
         },
         'sources/facebook',
+        'sources/instagram',
         'sources/google',
         'sources/sms-twilio',
         'sources/whatsapp-twilio',

@@ -1,0 +1,157 @@
+@import 'assets/scss/fonts.scss';
+
+.main {
+  height: 100%;
+  padding: 0;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+@keyframes chatAnimationOpen {
+  0% {
+    opacity: 0;
+    max-height: 0vh;
+  }
+  100% {
+    max-height: 100vh;
+    opacity: 1;
+  }
+}
+
+@keyframes chatAnimationClose {
+  0% {
+    opacity: 1;
+    max-height: 100vh;
+  }
+  100% {
+    opacity: 0;
+    max-height: 0vh;
+  }
+}
+
+.wrapper {
+  margin: 8px;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 6px #98a4ab;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.containerAnimationOpen {
+  animation-name: chatAnimationOpen;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+.containerAnimationClose {
+  animation-name: chatAnimationClose;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
+}
+
+.chat {
+  width: 100%;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  height: 352px;
+  justify-content: space-between;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.messages {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding: 0 8px 0 8px;
+}
+
+.messages::-webkit-scrollbar {
+  display: none;
+}
+
+.connectedContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.modalOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(1, 1, 1, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.modalCloseChat {
+  @include font-m;
+  width: 100%;
+  margin: 16px;
+  padding: 32px 0 38px 0;
+  background: white;
+  border-radius: 8px;
+  p {
+    text-align: center;
+    font-size: 18px;
+    margin: 0 0 8px 0;
+    color: gray;
+  }
+}
+
+.buttonWrapper {
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  button {
+    margin: 0 8px;
+    font-family: 'Lato', sans-serif;
+  }
+}
+
+.cancelButton {
+  font-weight: 600;
+  line-height: 16px;
+  font-size: 20px;
+  height: 40px;
+  background-color: white;
+  color: var(--color-airy-blue);
+  border-radius: 8px;
+  border: 1px solid var(--color-airy-blue);
+  cursor: pointer;
+  padding: 8px 10px;
+  &:hover {
+    background-color: rgba(128, 128, 128, 0.173);
+  }
+}
+
+.endChatButton {
+  font-weight: 600;
+  line-height: 16px;
+  font-size: 20px;
+  height: 40px;
+  background-color: var(--color-airy-blue);
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  padding: 8px 10px;
+  &:hover {
+    background-color: var(--color-airy-blue-hover);
+  }
+}

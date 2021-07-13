@@ -30,7 +30,7 @@ public class MessageParser {
                 : webhookMessaging.get("sender").get("id").asText();
     }
 
-    public Message.Builder parse(final String payload) throws Exception {
+    public Message.Builder parse(final String payload, final String source) throws Exception {
         final JsonNode webhookMessaging = objectMapper.readTree(payload);
 
         final JsonNode message = webhookMessaging.get("message");
@@ -52,7 +52,7 @@ public class MessageParser {
         } else if (appId != null && !appId.equals(this.facebookAppId)) {
             // Third party app
             senderId = appId;
-        } else if (appId == null) {
+        } else if (appId == null && !source.equals("instagram")) {
             // Sent by Facebook moderator via Facebook inbox
             senderId = getSourceConversationId(webhookMessaging);
         } else {

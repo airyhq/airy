@@ -61,10 +61,10 @@ public class MediaControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @Value("${storage.s3.bucket}")
+    @Value("${s3.bucket}")
     private String bucket;
 
-    @Value("${storage.s3.path}")
+    @Value("${s3.path}")
     private String path;
 
     @BeforeEach

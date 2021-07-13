@@ -1,3 +1,4 @@
+import {hasExpectedRequestMetadata} from '@reduxjs/toolkit/dist/matchers';
 import {
   cyOpenStateButton,
   cyClosedStateButton,
@@ -10,12 +11,14 @@ function closeConversation() {
   cy.get(`[data-cy=${cyOpenStateButton}]`).first().click();
   cy.get(`[data-cy=${cyClosedStateButton}]`);
   cy.get(`[data-cy=${cyConversationStatus}]`).invoke('attr', 'class').should('contain', 'closed');
+  cy.expect(`[data-cy=${cyConversationStatus}]`).invoke('attr', 'class').to('contain', 'closed');
 }
 
 function openConversation() {
   cy.get(`[data-cy=${cyClosedStateButton}]`).first().click();
   cy.get(`[data-cy=${cyOpenStateButton}]`);
   cy.get(`[data-cy=${cyConversationStatus}]`).invoke('attr', 'class').should('contain', 'open');
+  cy.expect(`[data-cy=${cyConversationStatus}]`).invoke('attr', 'class').to('contain', 'open');
 }
 
 describe('toggles the state of a conversation, accurately changing the Open and Closed state buttons in the ConversationList and Messenger', () => {

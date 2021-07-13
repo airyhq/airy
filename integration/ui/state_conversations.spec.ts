@@ -14,7 +14,7 @@ function closeConversation() {
     .get(`[data-cy=${cyConversationStatus}]`)
     .invoke('attr', 'class')
     .should('contain', 'closed');
-  cy.expect(conversationStatusClosed).to.exist;
+  expect(conversationStatusClosed).to.exist;
 }
 
 function openConversation() {
@@ -25,7 +25,7 @@ function openConversation() {
     .get(`[data-cy=${cyConversationStatus}]`)
     .invoke('attr', 'class')
     .should('contain', 'open');
-  cy.expect(conversationStatusOpen).to.exist;
+  expect(conversationStatusOpen).to.exist;
 }
 
 describe('toggles the state of a conversation, accurately changing the Open and Closed state buttons in the ConversationList and Messenger', () => {

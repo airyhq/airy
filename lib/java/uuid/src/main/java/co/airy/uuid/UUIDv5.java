@@ -1,10 +1,15 @@
 package co.airy.uuid;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.UUID;
+
+import static co.airy.uuid.UUIDv5Builder.fromBytes;
 
 /**
  * Unfortunately the Java standard library does not provide a UUID v5 implementation
@@ -12,37 +17,41 @@ import java.util.UUID;
  * Reference: https://www.baeldung.com/java-uuid
  */
 public class UUIDv5 {
+
     public static UUID fromNamespaceAndName(String namespace, String name) {
-        String source = namespace + name;
-        byte[] bytes = source.getBytes(StandardCharsets.UTF_8);
+        return fromName(namespace + name);
+    }
+
+    public static UUID fromName(String name) {
+        byte[] data = name.getBytes(StandardCharsets.UTF_8);
+
+        final MessageDigest md = getDigest();
+        byte[] bytes = Arrays.copyOfRange(md.digest(data), 0, 16);
         return fromBytes(bytes);
     }
 
-    private static UUID fromBytes(byte[] name) {
-        MessageDigest md;
+    public static UUID fromFile(InputStream inputStream) throws IOException {
+        if (inputStream.markSupported()) {
+            inputStream.mark(Integer.MAX_VALUE);
+        }
+
+        MessageDigest md = getDigest();
+        try (DigestInputStream dis = new DigestInputStream(inputStream, md)) {
+            while (dis.read() != -1) ; //empty loop to clear the data
+            md = dis.getMessageDigest();
+        }
+
+        if (inputStream.markSupported()) {
+            inputStream.reset();
+        }
+        return fromBytes(md.digest());
+    }
+
+    private static MessageDigest getDigest() {
         try {
-            md = MessageDigest.getInstance("SHA-1");
+            return MessageDigest.getInstance("SHA-1");
         } catch (NoSuchAlgorithmException nsae) {
             throw new InternalError("SHA-1 not supported", nsae);
         }
-        byte[] bytes = Arrays.copyOfRange(md.digest(name), 0, 16);
-        bytes[6] &= 0x0f; /* clear version        */
-        bytes[6] |= 0x50; /* set to version 5     */
-        bytes[8] &= 0x3f; /* clear variant        */
-        bytes[8] |= 0x80; /* set to IETF variant  */
-        return construct(bytes);
-    }
-
-    private static UUID construct(byte[] data) {
-        long msb = 0;
-        long lsb = 0;
-        assert data.length == 16 : "data must be 16 bytes in length";
-
-        for (int i = 0; i < 8; i++)
-            msb = (msb << 8) | (data[i] & 0xff);
-
-        for (int i = 8; i < 16; i++)
-            lsb = (lsb << 8) | (data[i] & 0xff);
-        return new UUID(msb, lsb);
     }
 }

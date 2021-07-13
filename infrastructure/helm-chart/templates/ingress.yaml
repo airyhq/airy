@@ -99,6 +99,13 @@ spec:
                 name: api-communication
                 port:
                   number: 80
+          - path: /media.uploadFile
+            pathType: Prefix
+            backend:
+              service:
+                name: media-resolver
+                port:
+                  number: 80
           - path: /login
             pathType: Prefix
             backend:

@@ -13,6 +13,7 @@ app_deps = [
     "//lib/java/date",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
+    "//lib/java/spring/web:spring-web",
     "@maven//:com_dinstone_beanstalkc",
 ]
 

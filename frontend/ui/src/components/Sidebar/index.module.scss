@@ -2,14 +2,13 @@
 @import 'assets/scss/fonts.scss';
 
 .sidebar {
-  position: fixed;
   display: flex;
   flex-direction: column;
   border-top-right-radius: 8px;
   overflow-y: hidden;
   margin-top: 88px;
   width: 80px;
-  height: inherit;
+  height: auto;
   background-color: white;
 }
 

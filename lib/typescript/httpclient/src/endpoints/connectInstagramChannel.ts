@@ -6,9 +6,9 @@ export const connectInstagramChannelDef = {
   mapRequest: ({pageId, pageToken, accountId, name, imageUrl}) => ({
     page_id: pageId,
     page_token: pageToken,
-    accountId: accountId,
+    account_id: accountId,
     name: name,
     image_url: imageUrl,
   }),
-  mapResponse: response => camelcaseKeys(response, {deep: true, stopPaths: ['metadata.user_data']}),
+  mapResponse: response => camelcaseKeys(response, {deep: true}),
 };

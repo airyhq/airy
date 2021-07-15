@@ -15,6 +15,7 @@ app_deps = [
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/spring/web:spring-web",
     "@maven//:com_dinstone_beanstalkc",
+    "//:springboot_actuator",
 ]
 
 springboot(

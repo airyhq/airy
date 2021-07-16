@@ -53,7 +53,6 @@ export const connectFacebookChannel =
 export const connectInstagramChannel =
   (requestPayload: ConnectChannelInstagramRequestPayload) => async (dispatch: Dispatch<any>) =>
     HttpClientInstance.connectInstagramChannel(requestPayload).then((response: Channel) => {
-      console.log('RESPONSE', response);
       dispatch(addChannelsAction([response]));
       return Promise.resolve(response);
     });

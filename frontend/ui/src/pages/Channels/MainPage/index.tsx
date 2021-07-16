@@ -144,7 +144,6 @@ const SourcesInfo: SourceInfo[] = [
 const MainPage = (props: MainPageProps & RouteComponentProps) => {
   const {channels, config} = props;
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
-  console.log('config', config);
 
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {
     switch (source) {
@@ -184,7 +183,6 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
               sourceInfo={infoItem}
               displayButton={!channelsBySource(infoItem.type).length}
               addChannelAction={() => {
-                console.log('infoItem', infoItem);
                 if (config.components[infoItem.configKey] && config.components[infoItem.configKey].enabled) {
                   props.history.push(infoItem.newChannelRoute);
                 } else {

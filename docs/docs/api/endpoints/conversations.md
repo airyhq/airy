@@ -139,7 +139,7 @@ Find users whose name ends with "Lovelace":
 
 #### Mark conversation as read
 
-`POST /conversations.read`
+`POST /conversations.markRead`
 
 Resets the unread count of a conversation.
 

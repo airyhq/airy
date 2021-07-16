@@ -14,7 +14,7 @@ import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/messeng
 import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/sms_avatar.svg';
 import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsapp_avatar.svg';
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/google_avatar.svg';
-import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagramSource.svg';
+import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagram_avatar.svg';
 
 import styles from './index.module.scss';
 import {

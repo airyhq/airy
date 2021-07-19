@@ -1,6 +1,6 @@
 ---
 name: "\U0001F680 Feature request"
-about: Suggest an idea for Airy. If this doesn’t look right, [choose a different type](https://github.com/airyhq/airy/issues/new/choose).
+about: Suggest an idea for Airy.
 title: ""
 labels: feature, needs discussion
 assignees: ""

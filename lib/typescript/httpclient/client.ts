@@ -19,12 +19,14 @@ import {
   MetadataUpsertRequestPayload,
   SetStateConversationRequestPayload,
   UpdateContactRequestPayload,
+  ConnectChannelInstagramRequestPayload,
 } from './src/payload';
 import {
   listChannelsDef,
   listConversationsDef,
   exploreFacebookChannelsDef,
   connectFacebookChannelDef,
+  connectInstagramChannelDef,
   connectChatPluginChannelDef,
   connectTwilioSmsChannelDef,
   connectTwilioWhatsappChannelDef,
@@ -158,6 +160,10 @@ export class HttpClient {
   );
 
   public connectGoogleChannel = this.getRequest<ConnectChannelGoogleRequestPayload, Channel>(connectGoogleChannelDef);
+
+  public connectInstagramChannel = this.getRequest<ConnectChannelInstagramRequestPayload, Channel>(
+    connectInstagramChannelDef
+  );
 
   public updateChannel = this.getRequest<UpdateChannelRequestPayload, Channel>(updateChannelDef);
 

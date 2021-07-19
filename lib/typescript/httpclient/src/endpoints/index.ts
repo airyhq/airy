@@ -5,6 +5,7 @@ export * from './connectChatPluginChannel';
 export * from './connectTwilioSmsChannel';
 export * from './connectTwilioWhatsappChannel';
 export * from './connectGoogleChannel';
+export * from './connectInstagramChannel';
 export * from './disconnectChannel';
 export * from './listConversations';
 export * from './getConversationInfo';

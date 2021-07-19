@@ -25,7 +25,7 @@ const camelcaseKeys = require('camelcase-keys');
 import {cyBubble, cyChatPluginMessageList, cyChatPluginEndChatModalButton} from 'chat-plugin-handles';
 import {getResumeTokenFromStorage, resetStorage} from '../../storage';
 import NewConversation from '../../components/newConversation';
-import {setApiHost, start} from '../../api';
+import {setApiHost, authenticate} from '../../api';
 
 import style from './index.module.scss';
 
@@ -157,7 +157,7 @@ const Chat = (props: Props) => {
   };
 
   const reAuthenticate = () => {
-    start(props.channelId, getResumeTokenFromStorage(props.channelId));
+    authenticate(props.channelId, getResumeTokenFromStorage(props.channelId));
   };
 
   const headerBar = props.headerBarProp

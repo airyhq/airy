@@ -97,8 +97,9 @@
   width: 28px;
   background: var(--color-airy-accent);
   border-radius: 100%;
-  align-self: center;
+  align-self: flex-end;
   cursor: pointer;
+  margin-bottom: 6px;
 
   img {
     display: block;

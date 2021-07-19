@@ -114,6 +114,7 @@ public class MessagesTest {
         int messageCount = 2;
         final List<ProducerRecord<String, SpecificRecordBase>> records = TestConversation.generateRecords(conversationId, channel, 2);
         kafkaTestHelper.produceRecords(records);
+
         final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
         retryOnException(
                 () -> webTestHelper.post("/messages.list", payload)
@@ -207,6 +208,7 @@ public class MessagesTest {
         final String firstMessageId = UUID.randomUUID().toString();
         final String secondMessageId = UUID.randomUUID().toString();
         final long sentAt = Instant.now().toEpochMilli();
+
         kafkaTestHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                         .setSourceChannelId("sourceChannelId")

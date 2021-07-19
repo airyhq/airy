@@ -16,7 +16,7 @@ export type Config = {
   accentColor?: string;
   bubbleIcon?: string;
   sendMessageIcon?: string;
-  showMode: boolean;
+  showMode?: boolean;
 };
 
 export type AuthConfiguration = {

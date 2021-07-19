@@ -41,10 +41,10 @@ const defaultWelcomeMessage: Message = {
 
 type Props = AiryChatPluginConfiguration;
 
-const Chat = (props: Props) => {
-  const {config} = props;
+const Chat = ({config, ...props}: Props) => {
+  config = config || {};
 
-  if (config && config.welcomeMessage) {
+  if (config.welcomeMessage) {
     defaultWelcomeMessage.content = config.welcomeMessage;
   }
 

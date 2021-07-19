@@ -1,7 +1,6 @@
 ---
 name: "\U0001F41E Bug report"
 about: Report a bug in Airy.
->>>>>>> @{-1}
 title: ""
 labels: bug
 assignees: ""

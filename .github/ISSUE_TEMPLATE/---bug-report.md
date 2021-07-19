@@ -1,6 +1,6 @@
 ---
 name: "\U0001F41E Bug report"
-about: Report a bug in Airy. If this doesn’t look right, [choose a different type](https://github.com/airyhq/airy/issues/new/choose).
+about: Report a bug in Airy.
 title: ""
 labels: bug
 assignees: ""

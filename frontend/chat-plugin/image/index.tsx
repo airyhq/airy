@@ -13,7 +13,6 @@ width: -moz-available;
 right: 0;
 bottom: 0;
 z-index: 9999;
-height: 100vh;
 max-height: 700px;
 max-width: 380px;
 padding: 0;

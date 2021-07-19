@@ -132,7 +132,8 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
         <InfoButton
           link="https://airy.co/docs/core/sources/chatplugin/overview"
           text="more information about this source"
-          color="grey"></InfoButton>
+          color="grey"
+        />
         <LinkButton onClick={props.history.goBack} type="button">
           <ArrowLeftIcon className={styles.backIcon} />
           Back

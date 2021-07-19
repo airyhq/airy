@@ -14,11 +14,15 @@ type SourceDescriptionCardProps = {
 const SourceDescriptionCard = (props: SourceDescriptionCardProps) => {
   const {sourceInfo, displayButton, addChannelAction} = props;
 
+  console.log('sourceInfo', sourceInfo);
+
   return (
     <>
       <div className={styles.requirementsDialogBackground}></div>
       <div className={styles.channelCard}>
-        <div className={styles.channelLogo}>{sourceInfo.image}</div>
+        <div className={`${sourceInfo.type === 'instagram' ? styles.channelLogoInstagram : styles.channelLogo}`}>
+          {sourceInfo.image}
+        </div>
         <div className={styles.channelTitleAndText}>
           <p className={styles.channelTitle}>{sourceInfo.title}</p>
           <p className={styles.channelText}>{sourceInfo.description}</p>

@@ -23,6 +23,16 @@
   }
 }
 
+.channelLogoInstagram {
+  height: 30px;
+  width: 30px;
+  margin: 16px 8px 42px 16px;
+  svg {
+    width: 25px;
+    height: 25px;
+  }
+}
+
 .channelTitle {
   display: inline-flex;
   height: 24px;

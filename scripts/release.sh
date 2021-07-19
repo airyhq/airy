@@ -3,6 +3,11 @@
 set -eo pipefail
 IFS=$'\n\t'
 
+if [ -z ${GITHUB_TOKEN+x} ]; then
+  echo "GITHUB_TOKEN is not set. Exiting."
+  exit 1
+fi
+
 start() {
     release_number=$1
     echo -e "Starting release ${release_number}\n"

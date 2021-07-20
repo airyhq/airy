@@ -26,7 +26,9 @@ web_library(
     module_deps = ["//frontend/chat-plugin/lib:chat-plugin"] + module_deps,
     output = {
         "libraryExport": "AiryWidget",
-        "publicPath": "/chatplugin/ui",
+        # Automatically detects script host and uses it for further loading
+        # https://webpack.js.org/guides/public-path/#automatic-publicpath
+        "publicPath": "auto",
         "filename": "s.js",
     },
 )

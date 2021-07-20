@@ -13,6 +13,7 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   const customStyle = {
     background: 'transparent',
+    height: '100%',
     ...(config.config?.primaryColor && {
       '--color-airy-blue': config.config?.primaryColor,
     }),

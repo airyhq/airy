@@ -91,15 +91,15 @@ Your twilio.whatsApp channel will appear as connected in the UI.
 ## Send and receive messages with the Inbox UI
 
 After connecting the source to your instance, it's time to create a conversation between your
-Airy Core instance and the Twilio.WhatsApp source.
+Airy Core instance, and a Twilio.SMS source.
 
-Send a text message (via WhatsApp) from a mobile phone to the Twilio phone number you have used.
-This will create a conversation: a Twilio.WhatsApp conversation will appear in the UI with the text message you have sent.
+Send a text message (SMS) from a mobile phone to the Twilio phone number you have used.
+This will create a conversation: a Twilio.SMS conversation will appear in the UI with the text message you have sent.
 
 import DebuggingTwilio from './debugging-twilio.mdx'
 
 <DebuggingTwilio />
 
-import InboxMessages from './inbox-messages.mdx'
+import TwilioSendMessage from './twilio-send-message.mdx'
 
-<InboxMessages />
+<TwilioSendMessage />

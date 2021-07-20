@@ -10,7 +10,6 @@ import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handl
 import {Picker} from 'emoji-mart';
 import {SourceMessage} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
-import {getTextMessagePayload} from 'httpclient';
 import 'emoji-mart/css/emoji-mart.css';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
@@ -28,6 +27,7 @@ import {isTextMessage} from '../../../services/types/messageTypes';
 
 import SuggestedReplySelector from '../SuggestedReplySelector';
 import {isEmpty} from 'lodash-es';
+import {getOutboundPayload} from '../../../../../../lib/typescript/render/outbound';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -184,7 +184,10 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             conversationId: conversation.id,
             message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
           }
-        : getTextMessagePayload(source, conversation.id, input)
+        : {
+            conversationId: conversation.id,
+            message: getOutboundPayload(source, {text: input, type: 'text'}),
+          }
     ).then(() => {
       setInput('');
       removeTemplateFromInput();

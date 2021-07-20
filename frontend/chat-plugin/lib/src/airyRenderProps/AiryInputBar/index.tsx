@@ -134,7 +134,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
           ref={textInputRef}
           className={style.textArea}
           placeholder={'Start typing...'}
-          autoFocus={!config.showMode ? true : false}
+          autoFocus={!config.showMode}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           value={props.messageString}
@@ -143,7 +143,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         <div className={style.buttonContainer}>
           <InputOptions />
           <button className={style.sendButton} type="submit" data-cy={dataCyButtonId}>
-            {config?.sendMessageIcon ? <img src={config.sendMessageIcon} /> : <Paperplane />}
+            {config?.sendMessageIcon ? <img src={config.sendMessageIcon} alt={'send message'} /> : <Paperplane />}
           </button>
         </div>
       </form>

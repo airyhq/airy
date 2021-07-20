@@ -10,6 +10,7 @@ anchor.style.cssText = `
 position: fixed;
 width: -webkit-fill-available;
 width: -moz-available;
+height: 100%;
 right: 0;
 bottom: 0;
 z-index: 9999;

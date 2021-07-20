@@ -25,7 +25,6 @@ public class Connector {
     private static final Logger log = AiryLoggerFactory.getLogger(Connector.class);
 
     private final Api api;
-    private final ObjectMapper mapper = new ObjectMapper();
     private final long messageStaleAfterSec = 300L; // 5 minutes
 
     Connector(Api api) {
@@ -43,9 +42,7 @@ public class Connector {
         }
 
         try {
-            final JsonNode messageNode = mapper.readTree(message.getContent());
-            api.sendMessage(from, to, messageNode.get("text").textValue());
-
+            api.sendMessage(from, to, message.getContent());
             updateDeliveryState(message, DeliveryState.DELIVERED);
             return message;
         } catch (ApiException e) {

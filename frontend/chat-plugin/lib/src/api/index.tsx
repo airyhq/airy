@@ -47,23 +47,27 @@ export const getResumeToken = async (channelId: string, authToken: string) => {
   setResumeTokenInStorage(channelId, jsonResumeToken.resume_token);
 };
 
-export const start = async (channelId: string, resumeToken: string) => {
-  try {
-    const response = await fetch(`${host}/chatplugin.authenticate`, {
-      method: 'POST',
-      body: JSON.stringify({
-        channel_id: channelId,
-        ...(resumeToken && {
-          resume_token: resumeToken,
-        }),
+export const authenticate = async (channelId: string, resumeToken: string) =>
+  fetch(`${host}/chatplugin.authenticate`, {
+    method: 'POST',
+    body: JSON.stringify({
+      channel_id: channelId,
+      ...(resumeToken && {
+        resume_token: resumeToken,
       }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => {
+      if (!response.ok) {
+        return Promise.reject(new Error(`/chatplugin.authenticate returned ${response.statusText}`));
+      }
+      return response.json();
+    })
+    .catch(error => {
+      return Promise.reject(
+        new Error(`Airy Chat Plugin authentication failed. Please check your installation. ${error}`)
+      );
     });
-
-    return await response.json();
-  } catch (e) {
-    return Promise.reject(new Error('Widget authorization failed. Please check your installation.'));
-  }
-};

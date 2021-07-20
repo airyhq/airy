@@ -51,6 +51,7 @@ module.exports = {
             'api/endpoints/chatplugin',
             'api/endpoints/conversations',
             'api/endpoints/messages',
+            'api/endpoints/attachments',
             'api/endpoints/metadata',
             'api/endpoints/tags',
             'api/endpoints/templates',

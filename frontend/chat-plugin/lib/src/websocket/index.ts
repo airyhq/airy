@@ -1,6 +1,6 @@
 import {Client, messageCallbackType, IFrame} from '@stomp/stompjs';
 import 'regenerator-runtime/runtime';
-import {start, getResumeToken, sendMessage} from '../api';
+import {authenticate, getResumeToken, sendMessage} from '../api';
 import {QuickReplyCommand, SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
 import {Message} from 'model';
 import {getResumeTokenFromStorage, resetStorage} from '../storage';
@@ -23,27 +23,31 @@ class WebSocket {
   token: string;
   setInitialMessages: (messages: Array<Message>) => void;
   onReceive: messageCallbackType;
-  reconnectTimeout: number;
+  reconnectIntervalHandle: number;
   isConnected: boolean;
-  updateConnectionState: (state: ConnectionState) => void;
+  onConnectionChange: (state: ConnectionState) => void;
 
   constructor(
     apiHost: string,
     channelId: string,
     onReceive: messageCallbackType,
     setInitialMessages: (messages: Array<Message>) => void,
-    updateConnectionState: (state: ConnectionState) => void
+    onConnectionChange: (state: ConnectionState) => void
   ) {
     this.apiHost = new URL(apiHost).host;
     this.channelId = channelId;
     this.onReceive = onReceive;
     this.setInitialMessages = setInitialMessages;
     this.isConnected = false;
-    this.updateConnectionState = updateConnectionState;
+    this.onConnectionChange = onConnectionChange;
   }
 
   connect = (token: string) => {
     this.token = token;
+
+    if (this.client) {
+      this.client.deactivate();
+    }
 
     this.client = new Client({
       brokerURL: `${protocol}//${this.apiHost}/ws.chatplugin`,
@@ -70,7 +74,8 @@ class WebSocket {
 
   start = async () => {
     const resumeToken = getResumeTokenFromStorage(this.channelId);
-    const response = await start(this.channelId, resumeToken);
+    const response = await authenticate(this.channelId, resumeToken);
+
     if (response.token && response.messages) {
       this.connect(response.token);
       this.setInitialMessages(
@@ -90,23 +95,23 @@ class WebSocket {
   onConnect = () => {
     this.client.subscribe('/user/queue/message', this.onReceive);
     this.isConnected = true;
-    clearTimeout(this.reconnectTimeout);
-    this.updateConnectionState(ConnectionState.Connected);
+    clearTimeout(this.reconnectIntervalHandle);
+    this.onConnectionChange(ConnectionState.Connected);
   };
 
   tryReconnect = () => {
-    this.reconnectTimeout = window.setTimeout(this.reconnect, 5000);
+    this.reconnectIntervalHandle = window.setTimeout(this.reconnect, 5000);
   };
 
   reconnect = () => {
     if (!this.isConnected) {
-      this.start();
+      this.connect(this.token);
     }
   };
 
   onWebSocketClose = () => {
     this.isConnected = false;
-    this.updateConnectionState(ConnectionState.Disconnected);
+    this.onConnectionChange(ConnectionState.Disconnected);
     this.tryReconnect();
   };
 }

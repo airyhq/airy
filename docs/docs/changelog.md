@@ -3,6 +3,10 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## Hotfix 0.26.1
+
+[[#2181](https://github.com/airyhq/airy/issues/2181)] Fixes chat plugin integration crashing with empty config
+
 ## 0.26.0
 
 #### Changes

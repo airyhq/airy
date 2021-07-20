@@ -6,7 +6,7 @@ import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.CountAction;
-import co.airy.core.api.communication.dto.MessagesTreeSet;
+import co.airy.core.api.communication.dto.Messages;
 import co.airy.core.api.communication.dto.UnreadCountState;
 import co.airy.core.api.communication.lucene.IndexingProcessor;
 import co.airy.core.api.communication.lucene.LuceneDiskStore;
@@ -27,7 +27,6 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.kstream.KGroupedStream;
 import org.apache.kafka.streams.kstream.KGroupedTable;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
@@ -137,7 +136,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
 
         // messages store
-        messageGroupedTable.aggregate(MessagesTreeSet::new,
+        messageGroupedTable.aggregate(Messages::new,
                 (key, value, aggregate) -> {
                     aggregate.update(value);
                     return aggregate;
@@ -194,7 +193,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return streams.acquireLocalStore(conversationsStore);
     }
 
-    public ReadOnlyKeyValueStore<String, MessagesTreeSet> getMessagesStore() {
+    public ReadOnlyKeyValueStore<String, Messages> getMessagesStore() {
         return streams.acquireLocalStore(messagesStore);
     }
 
@@ -254,8 +253,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     public List<MessageContainer> getMessages(String conversationId) {
-        final ReadOnlyKeyValueStore<String, MessagesTreeSet> store = getMessagesStore();
-        final MessagesTreeSet messagesTreeSet = store.get(conversationId);
+        final ReadOnlyKeyValueStore<String, Messages> store = getMessagesStore();
+        final Messages messagesTreeSet = store.get(conversationId);
 
         return messagesTreeSet == null ? null : new ArrayList<>(messagesTreeSet);
     }

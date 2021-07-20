@@ -237,6 +237,31 @@ Make sure the variables have been successfully applied to your instance, otherwi
 
 To test this you can now send a message to Facebook page.
 
+Once a conversation has been successfully created, you will be able to send messages through
+the [Messages endpoint](/api/endpoints/messages#send).
+
+<ButtonBox
+icon={() => <BoltSVG />}
+title="Messages endpoint"
+description="Send messages to your Airy Core instance from different sources through the Messages endpoint"
+link="api/endpoints/messages#send"
+/>
+
+<br />
+
+**Sending a text message**
+
+```json5
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "message": {
+    "text": "Hello World"
+  }
+}
+```
+
+<br />
+
 import InboxMessages from './inbox-messages.mdx'
 
 <InboxMessages />

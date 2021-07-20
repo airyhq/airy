@@ -1,18 +1,10 @@
 `POST /messages.send`
 
 Sends a message to a conversation and returns a payload. Whatever is put on the
-`message` field will be forwarded "as-is" to the source's message endpoint.
+`message` field will be forwarded "as-is" to the source's message endpoint. Therefore,
+the payload will look differently for each source. Refer to each [source's documentation](sources/introduction)
+to see learn how to send text, media, and many more message types.
 
-**Sending a text message**
-
-```json5
-{
-  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
-  "message": {
-    "text": "Hello World"
-  }
-}
-```
 
 **Sample response**
 

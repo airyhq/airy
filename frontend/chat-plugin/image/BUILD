@@ -26,7 +26,7 @@ web_library(
     module_deps = ["//frontend/chat-plugin/lib:chat-plugin"] + module_deps,
     output = {
         "libraryExport": "AiryWidget",
-        "publicPath": "/chatplugin/ui",
+        "publicPath": "auto",
         "filename": "s.js",
     },
 )

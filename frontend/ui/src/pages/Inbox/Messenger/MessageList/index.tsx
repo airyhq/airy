@@ -16,7 +16,7 @@ import {listMessages, listPreviousMessages} from '../../../../actions/messages';
 
 import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
-import {getCurrentMessages} from '../../../../selectors/conversations';
+import {getConversation, getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
 import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
 import {formatTime, isSameDay} from 'dates';
@@ -25,16 +25,10 @@ type MessageListProps = ConnectedProps<typeof connector> & {
   showSuggestedReplies: (suggestions: Suggestions) => void;
 };
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
-  return {
-    messages: getCurrentMessages(state, ownProps),
-    conversationId: ownProps.match.params.conversationId,
-    conversationChannelSource: state.data.conversations.all.items[ownProps.match.params.conversationId].channel.source,
-    conversationMetadataContact:
-      state.data.conversations.all.items[ownProps.match.params.conversationId].metadata.contact,
-    conversationPaginationData: state.data.conversations.all.items[ownProps.match.params.conversationId].paginationData,
-  };
-};
+const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
+  messages: getCurrentMessages(state, ownProps),
+  conversation: getConversation(state, ownProps),
+});
 
 const mapDispatchToProps = {
   listMessages,
@@ -52,16 +46,18 @@ function usePrevious(value: Message[] | string) {
 }
 
 const MessageList = (props: MessageListProps) => {
+  const {listMessages, listPreviousMessages, showSuggestedReplies, messages, conversation} = props;
+
+  if (!conversation) {
+    return null;
+  }
+
   const {
-    listMessages,
-    listPreviousMessages,
-    showSuggestedReplies,
-    messages,
-    conversationChannelSource,
-    conversationId,
-    conversationMetadataContact,
-    conversationPaginationData,
-  } = props;
+    id: conversationId,
+    metadata: {contact},
+    channel: {source},
+    paginationData,
+  } = conversation;
 
   const prevMessages = usePrevious(messages);
   const prevCurrentConversationId = usePrevious(conversationId);
@@ -71,11 +67,8 @@ const MessageList = (props: MessageListProps) => {
   useEffect(() => {
     if (!messages || messages.length === 0) {
       conversationId && listMessages(conversationId);
-      scrollBottom();
     }
-    if (messages?.length > 0) {
-      scrollBottom();
-    }
+    scrollBottom();
   }, [conversationId, messages]);
 
   useEffect(() => {
@@ -114,17 +107,11 @@ const MessageList = (props: MessageListProps) => {
     return !isSameDay(prevMessage.sentAt, message.sentAt);
   };
 
-  const isLoadingConversation = () => {
-    return conversationPaginationData && conversationPaginationData.loading;
-  };
+  const isLoadingConversation = () => paginationData && paginationData.loading;
 
-  const hasPreviousMessages = () => {
-    return !!(conversationPaginationData && conversationPaginationData.nextCursor);
-  };
+  const hasPreviousMessages = () => !!(paginationData && paginationData.nextCursor);
 
-  const scrollbarVisible = () => {
-    return messageListRef.current.scrollHeight > messageListRef.current.clientHeight;
-  };
+  const scrollbarVisible = () => messageListRef.current.scrollHeight > messageListRef.current.clientHeight;
 
   const scrollToMessage = id => {
     const element = document.querySelector<HTMLElement>(`#message-item-${id}`);
@@ -190,12 +177,12 @@ const MessageList = (props: MessageListProps) => {
               )}
               <MessageInfoWrapper
                 fromContact={message.fromContact}
-                contact={conversationMetadataContact}
+                contact={contact}
                 sentAt={sentAt}
                 lastInGroup={lastInGroup}
                 isChatPlugin={false}
                 decoration={messageDecoration}>
-                <SourceMessage source={conversationChannelSource} content={message} contentType="message" />
+                <SourceMessage source={source} content={message} contentType="message" />
               </MessageInfoWrapper>
             </div>
           );
@@ -207,7 +194,7 @@ const MessageList = (props: MessageListProps) => {
 const arePropsEqual = (prevProps, nextProps) => {
   if (
     prevProps.history.location.pathname === nextProps.history.location.pathname &&
-    prevProps.conversationId === nextProps.conversationId &&
+    prevProps.conversation?.id === nextProps.conversation?.id &&
     prevProps.history.location.key === nextProps.history.location.key &&
     prevProps.location.key !== nextProps.location.key
   ) {

@@ -7,6 +7,7 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
@@ -15,21 +16,29 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Component
-public class HttpLogFilter extends OncePerRequestFilter {
+public class HttpPostLogFilter extends OncePerRequestFilter {
 
     private final HttpEventPublisher httpEventPublisher;
     private final PrincipalAccess principalAccess;
+    private final List<String> loggingIgnorePatterns;
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     private static final int MAX_JSON_LENGTH = 2048;
 
-    public HttpLogFilter(HttpEventPublisher httpEventPublisher, PrincipalAccess principalAccess) {
+    public HttpPostLogFilter(HttpEventPublisher httpEventPublisher, PrincipalAccess principalAccess, List<RequestLoggingIgnorePatterns> requestLoggingIgnorePatterns) {
         super();
         this.httpEventPublisher = httpEventPublisher;
         this.principalAccess = principalAccess;
+        pathMatcher.setCachePatterns(true);
+        this.loggingIgnorePatterns = requestLoggingIgnorePatterns.stream().flatMap((pattern) ->
+                pattern.getPatterns().stream()).collect(toList());
     }
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,7 +49,9 @@ public class HttpLogFilter extends OncePerRequestFilter {
         }
 
         try {
-            publishEvent(requestToUse);
+            if (shouldLog(request)) {
+                publishEvent(requestToUse);
+            }
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -50,11 +61,7 @@ public class HttpLogFilter extends OncePerRequestFilter {
     private void publishEvent(HttpServletRequest request) {
         final Map<String, String> requestHeaders = getRequestHeaders((ContentCachingRequestWrapper) request);
         final String requestUri = request.getRequestURL().toString();
-        String requestBody = null;
-
-        if ("POST".equalsIgnoreCase(request.getMethod())) {
-            requestBody = getRequestBody((ContentCachingRequestWrapper) request);
-        }
+        String requestBody = getRequestBody((ContentCachingRequestWrapper) request);
         httpEventPublisher.publishCustomEvent(requestBody, requestHeaders, requestUri, getUser());
     }
 
@@ -87,5 +94,14 @@ public class HttpLogFilter extends OncePerRequestFilter {
         }
 
         return payload;
+    }
+
+    private boolean shouldLog(HttpServletRequest request) {
+        return !"POST".equalsIgnoreCase(request.getMethod())
+                && !isPathIgnored(request);
+    }
+
+    private boolean isPathIgnored(HttpServletRequest request) {
+        return loggingIgnorePatterns.stream().anyMatch((pattern) -> pathMatcher.match(pattern, request.getRequestURI()));
     }
 }

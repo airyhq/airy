@@ -13,6 +13,7 @@ go_library(
         "version": "{STABLE_VERSION}",
     },
     deps = [
+        "//cli/pkg/cmd/config",
         "//cli/pkg/console",
         "//cli/pkg/kube",
         "//cli/pkg/providers",

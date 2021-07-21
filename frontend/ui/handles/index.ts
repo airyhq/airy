@@ -44,3 +44,4 @@ export const cyEditDisplayNameIcon = 'editDisplayNameIcon';
 export const cyDisplayName = 'displayName';
 export const cyDisplayNameInput = 'displayNameInput';
 export const cyEditDisplayNameCheckmark = 'editDisplayNameCheckmark';
+export const cyClickableListItem = 'clickableListItem';

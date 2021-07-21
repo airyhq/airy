@@ -64,7 +64,13 @@ func checkInstallation() error {
 }
 
 func (p *provider) startCluster() error {
-	return p.runPrintOutput("start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535")
+	args := []string{"start", "--driver=virtualbox", "--cpus=4", "--memory=7168", "--extra-config=apiserver.service-node-port-range=1-65535", "--driver=virtualbox"}
+	// Prevent minikube download progress bar from polluting the output
+	_, err := runGetOutput(append(args, "--download-only")...)
+	if err != nil {
+		return fmt.Errorf("downloading minikube files err: %v", err)
+	}
+	return p.runPrintOutput(args...)
 }
 
 func (p *provider) runPrintOutput(args ...string) error {

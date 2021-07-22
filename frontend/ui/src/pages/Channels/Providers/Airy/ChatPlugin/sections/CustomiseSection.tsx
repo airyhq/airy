@@ -54,7 +54,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       return '\n           ' + attribute;
     }
     return ',\n           ' + attribute;
-  }
+  };
 
   const getTemplateConfig = () => {
     if (
@@ -74,14 +74,19 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     let config = '';
     if (headerText !== '') config += formatConfigAttributeWithConfig(`headerText: '${headerText}'`, config);
     if (subtitleText !== '') config += formatConfigAttributeWithConfig(`subtitleText: '${subtitleText}'`, config);
-    if (startNewConversationText !== '') config += formatConfigAttributeWithConfig(`startNewConversationText: '${startNewConversationText}'`, config);
+    if (startNewConversationText !== '')
+      config += formatConfigAttributeWithConfig(`startNewConversationText: '${startNewConversationText}'`, config);
     if (bubbleIconUrl !== '') config += formatConfigAttributeWithConfig(`bubbleIcon: '${bubbleIconUrl}'`, config);
-    if (sendMessageIconUrl !== '') config += formatConfigAttributeWithConfig(`sendMessageIcon: '${sendMessageIconUrl}'`, config);
-    if (headerTextColor !== '') config += formatConfigAttributeWithConfig(`headerTextColor: '${headerTextColor}'`, config);
-    if (subtitleTextColor !== '') config += formatConfigAttributeWithConfig(`subtitleTextColor: '${subtitleTextColor}'`, config);
+    if (sendMessageIconUrl !== '')
+      config += formatConfigAttributeWithConfig(`sendMessageIcon: '${sendMessageIconUrl}'`, config);
+    if (headerTextColor !== '')
+      config += formatConfigAttributeWithConfig(`headerTextColor: '${headerTextColor}'`, config);
+    if (subtitleTextColor !== '')
+      config += formatConfigAttributeWithConfig(`subtitleTextColor: '${subtitleTextColor}'`, config);
     if (primaryColor !== '') config += formatConfigAttributeWithConfig(`primaryColor: '${primaryColor}'`, config);
     if (accentColor !== '') config += formatConfigAttributeWithConfig(`accentColor: '${accentColor}'`, config);
-    if (backgroundColor !== '') config += formatConfigAttributeWithConfig(`backgroundColor: '${backgroundColor}'`, config);
+    if (backgroundColor !== '')
+      config += formatConfigAttributeWithConfig(`backgroundColor: '${backgroundColor}'`, config);
 
     return `w[n].config = {${config}
         };`;

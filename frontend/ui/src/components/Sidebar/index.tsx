@@ -15,7 +15,7 @@ const Sidebar = (props: RouteProps) => {
   };
 
   return (
-    <nav className={styles.sidebar}>
+    <nav className={styles.wrapper}>
       <div className={styles.linkSection}>
         <div className={styles.align}>
           <Link to={INBOX_ROUTE} className={`${styles.link} ${isActive(INBOX_ROUTE) ? styles.active : ''}`}>

@@ -1,5 +1,6 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/z-index.scss';
 
 .channelCard {
   display: flex;
@@ -92,7 +93,7 @@
 }
 
 .requirementsDialog {
-  z-index: 1;
+  z-index: $popup;
   position: fixed;
   top: 50%;
   left: 50%;

@@ -46,7 +46,7 @@ const MessengerContainer = ({
 
   return (
     <>
-      <div className={styles.messengerContainer}>
+      <div className={styles.wrapper}>
         {!conversations ? (
           <div className={styles.emptyState}>
             <h1>Your conversations will appear here as soon as a contact messages you.</h1>

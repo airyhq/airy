@@ -81,20 +81,6 @@
   @include font-base;
 }
 
-.smileyIcon {
-  height: 20px;
-  width: 20px;
-}
-
-.templateAltIcon {
-  height: 28px;
-  width: 20px;
-  svg {
-    background-color: red;
-    margin-top: 5px;
-  }
-}
-
 .sendDiv {
   position: relative;
   display: flex;
@@ -140,102 +126,9 @@
   position: relative;
 }
 
-.messageActionsContainer {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  height: 100%;
-  margin-bottom: 10px;
-  padding-right: 6px;
-}
-
-.templateActionContainer {
-  margin-top: 8px;
-}
-
-.messageActionsContainer svg {
-  cursor: pointer;
-}
-
-.messageActionsContainer g,
-.sendButton g {
-  fill: inherit;
-}
-
-.messageActionsContainer .emoji {
-  height: 24px;
-  top: 2px;
-  position: relative;
-}
-
-.iconButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  height: 30px;
-
-  svg {
-    width: 22px;
-    pointer-events: none;
-    path {
-      fill: #a0abb2;
-    }
-  }
-
-  .actionToolTip {
-    @include font-s;
-    position: absolute;
-    background-color: var(--color-text-contrast);
-    color: white;
-    border-radius: 4px;
-    padding: 2px 8px;
-    display: none;
-    bottom: 33px;
-    z-index: 2;
-  }
-}
-
-.disabledIconButton {
-  cursor: not-allowed;
-}
-
-.activeIconButton {
-  cursor: pointer;
-}
-
-.iconButton:hover {
-  background-color: var(--color-background-blue);
-  border-radius: 50%;
-  svg {
-    path {
-      fill: #4bb3fd;
-    }
-  }
-
-  .actionToolTip {
-    display: block;
-  }
-}
-
-.iconButton:focus {
-  outline: none;
-}
-
-.templateButton {
-  background: transparent;
-  border: none;
-}
-
-.emojiDrawer {
-  position: absolute;
-  right: 72px;
-  bottom: 75px;
-  z-index: 2;
-}
 
 .templateSelector {
-  margin: 0px 5px 8px 8px;
+  margin: 0 5px 8px 8px;
   max-width: 550px;
   position: relative;
 }
@@ -249,7 +142,6 @@
 .removeButton {
   position: absolute;
   right: 5px;
-  border: none;
   outline: none;
   width: 22px;
   height: 22px;

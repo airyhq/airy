@@ -8,9 +8,6 @@ import {SourceMessage, getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
 
-import 'emoji-mart/css/emoji-mart.css';
-import styles from './index.module.scss';
-
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
@@ -24,6 +21,8 @@ import {isTextMessage} from '../../../services/types/messageTypes';
 
 import SuggestedReplySelector from '../SuggestedReplySelector';
 import {InputOptions} from './InputOptions';
+
+import styles from './index.module.scss';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -81,7 +80,7 @@ const MessageInput = (props: Props) => {
 
   useEffect(() => {
     textAreaRef.current.style.height = 'inherit';
-    textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, 200)}px`;
+    textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, contentResizedHeight)}px`;
   }, [input]);
 
   useEffect(() => {
@@ -94,7 +93,7 @@ const MessageInput = (props: Props) => {
   }, [channelConnected]);
 
   useEffect(() => {
-    if (selectedSuggestedReply && selectedSuggestedReplyDiv?.current?.offsetHeight > 200) {
+    if (selectedSuggestedReply && selectedSuggestedReplyDiv?.current?.offsetHeight > contentResizedHeight) {
       const contentSelectorDivHeight = selectedSuggestedReplyDiv.current.offsetHeight;
       const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
 
@@ -117,7 +116,7 @@ const MessageInput = (props: Props) => {
   }, [selectedSuggestedReply]);
 
   useEffect(() => {
-    if (selectedTemplate && templateSelectorDiv?.current?.offsetHeight > 200) {
+    if (selectedTemplate && templateSelectorDiv?.current?.offsetHeight > contentResizedHeight) {
       const contentSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
       const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
 

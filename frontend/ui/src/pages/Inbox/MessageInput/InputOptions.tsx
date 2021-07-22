@@ -3,6 +3,8 @@ import {Picker} from 'emoji-mart';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
 
+import 'emoji-mart/css/emoji-mart.css';
+
 import TemplateSelector from '../TemplateSelector';
 import styles from './InputOptions.module.scss';
 

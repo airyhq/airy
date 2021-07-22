@@ -12,7 +12,6 @@ export const getOutboundMapper = (source: string) => {
     case 'chatplugin':
       return new ChatpluginMapper();
     case 'twilio.sms':
-      return new TwilioMapper();
     case 'twilio.whatsapp':
       return new TwilioMapper();
     default: {

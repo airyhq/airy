@@ -100,7 +100,7 @@ monitor or debug the **Airy Core**.
 
 For example, if you want to enable Facebook, Google and Twilio sources, as well as the webhook integration and the AKHQ tool, your `airy.yaml` file should look like this:
 
-```
+```yaml
 kubernetes:
   containerRegistry: ghcr.io/airyhq
   namespace: default

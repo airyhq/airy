@@ -28,7 +28,7 @@ public class Api {
     }
 
     public void sendMessage(String from, String to, String body) throws Exception {
-        //Twilio.init(accountSid, authToken);
+        Twilio.init(accountSid, authToken);
 
         final JsonNode jsonNode = objectMapper.readTree(body);
         MessageCreator creator;

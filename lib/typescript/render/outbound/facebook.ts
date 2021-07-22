@@ -1,13 +1,13 @@
-import {OutboundMapper} from "./mapper";
+import {OutboundMapper} from './mapper';
 
 export class FacebookMapper extends OutboundMapper {
-    getTextPayload(text: string): any {
-        return {
-            text,
-        };
-    }
+  getTextPayload(text: string): any {
+    return {
+      text,
+    };
+  }
 
-    isTextSupported(): boolean {
-        return true;
-    }
+  isTextSupported(): boolean {
+    return true;
+  }
 }

@@ -23,366 +23,349 @@ import {getCurrentMessages} from '../../../selectors/conversations';
 import {isTextMessage} from '../../../services/types/messageTypes';
 
 import SuggestedReplySelector from '../SuggestedReplySelector';
-import {InputOptions} from "./InputOptions";
+import {InputOptions} from './InputOptions';
 
 const mapDispatchToProps = {sendMessages};
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
-    conversation: getConversation(state, ownProps),
-    messages: getCurrentMessages(state, ownProps),
-    listTemplates,
+  conversation: getConversation(state, ownProps),
+  messages: getCurrentMessages(state, ownProps),
+  listTemplates,
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = {
-    source: Source;
-    suggestions: Suggestions;
-    showSuggestedReplies: (suggestions: Suggestions) => void;
-    hideSuggestedReplies: () => void;
+  source: Source;
+  suggestions: Suggestions;
+  showSuggestedReplies: (suggestions: Suggestions) => void;
+  hideSuggestedReplies: () => void;
 } & ConnectedProps<typeof connector>;
 
 interface SelectedTemplate {
-    message: Template;
-    source: Source;
+  message: Template;
+  source: Source;
 }
 
 interface SelectedSuggestedReply {
-    message: SuggestedReply;
+  message: SuggestedReply;
 }
 
 const contentResizedHeight = 200;
 
 const MessageInput = (props: Props) => {
-    const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies, sendMessages} = props;
+  const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies, sendMessages} = props;
 
-    const outboundMapper = getOutboundMapper(source);
-    const channelConnected = conversation.channel.connected;
+  const outboundMapper = getOutboundMapper(source);
+  const channelConnected = conversation.channel.connected;
 
-    const [input, setInput] = useState('');
-    const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
-    const [disconnectedChannelToolTip, setDisconnectedChannelToolTip] = useState(false);
-    const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
-    const [closeIconWidth, setCloseIconWidth] = useState('');
-    const [closeIconHeight, setCloseIconHeight] = useState('');
+  const [input, setInput] = useState('');
+  const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
+  const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
+  const [closeIconWidth, setCloseIconWidth] = useState('');
+  const [closeIconHeight, setCloseIconHeight] = useState('');
 
-    const textAreaRef = useRef(null);
-    const sendButtonRef = useRef(null);
-    const templateSelectorDiv = useRef<HTMLDivElement>(null);
-    const selectedSuggestedReplyDiv = useRef<HTMLDivElement>(null);
-    const removeTemplateButton = useRef(null);
-    const removeSuggestedRepliesButton = useRef(null);
+  const textAreaRef = useRef(null);
+  const sendButtonRef = useRef(null);
+  const templateSelectorDiv = useRef<HTMLDivElement>(null);
+  const selectedSuggestedReplyDiv = useRef<HTMLDivElement>(null);
+  const removeTemplateButton = useRef(null);
+  const removeSuggestedRepliesButton = useRef(null);
 
-    const focusInput = () => textAreaRef?.current?.focus();
+  const focusInput = () => textAreaRef?.current?.focus();
 
-    useEffect(() => {
-        setInput('');
-        removeTemplateFromInput();
-        focusInput();
-    }, [conversation.id]);
+  useEffect(() => {
+    setInput('');
+    removeTemplateFromInput();
+    focusInput();
+  }, [conversation.id]);
 
-    useEffect(() => {
-        textAreaRef.current.style.height = 'inherit';
-        textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, 200)}px`;
-    }, [input]);
+  useEffect(() => {
+    textAreaRef.current.style.height = 'inherit';
+    textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, 200)}px`;
+  }, [input]);
 
-    useEffect(() => {
-        if (!conversation.channel.connected) {
-            setInput('');
-            textAreaRef.current.style.cursor = 'not-allowed';
-        } else {
-            textAreaRef.current.style.cursor = 'auto';
+  useEffect(() => {
+    if (!conversation.channel.connected) {
+      setInput('');
+      textAreaRef.current.style.cursor = 'not-allowed';
+    } else {
+      textAreaRef.current.style.cursor = 'auto';
+    }
+  }, [channelConnected]);
+
+  useEffect(() => {
+    if (selectedSuggestedReply && selectedSuggestedReplyDiv?.current?.offsetHeight > 200) {
+      const contentSelectorDivHeight = selectedSuggestedReplyDiv.current.offsetHeight;
+      const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
+
+      if (scaleRatio <= 0.7) {
+        const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
+        const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
+
+        setCloseIconHeight(iconSize);
+        setCloseIconWidth(iconSize);
+
+        if (removeSuggestedRepliesButton && removeSuggestedRepliesButton.current) {
+          removeSuggestedRepliesButton.current.style.width = buttonSize;
+          removeSuggestedRepliesButton.current.style.height = buttonSize;
         }
+      }
 
-        setDisconnectedChannelToolTip(!conversation.channel.connected);
-    }, [conversation.channel.connected]);
+      selectedSuggestedReplyDiv.current.style.transform = `scale(${scaleRatio})`;
+      selectedSuggestedReplyDiv.current.style.transformOrigin = 'left';
+    }
+  }, [selectedSuggestedReply]);
 
-    useEffect(() => {
-        if (
-            selectedSuggestedReply &&
-            selectedSuggestedReplyDiv?.current?.offsetHeight > 200
-        ) {
-            const contentSelectorDivHeight = selectedSuggestedReplyDiv.current.offsetHeight;
-            const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
+  useEffect(() => {
+    if (selectedTemplate && templateSelectorDiv?.current?.offsetHeight > 200) {
+      const contentSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
+      const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
 
-            if (scaleRatio <= 0.7) {
-                const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
-                const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
+      if (scaleRatio <= 0.7) {
+        const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
+        const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
 
-                setCloseIconHeight(iconSize);
-                setCloseIconWidth(iconSize);
+        setCloseIconHeight(iconSize);
+        setCloseIconWidth(iconSize);
 
-                if (removeSuggestedRepliesButton && removeSuggestedRepliesButton.current) {
-                    removeSuggestedRepliesButton.current.style.width = buttonSize;
-                    removeSuggestedRepliesButton.current.style.height = buttonSize;
-                }
-            }
-
-            selectedSuggestedReplyDiv.current.style.transform = `scale(${scaleRatio})`;
-            selectedSuggestedReplyDiv.current.style.transformOrigin = 'left';
+        if (removeTemplateButton && removeTemplateButton.current) {
+          removeTemplateButton.current.style.width = buttonSize;
+          removeTemplateButton.current.style.height = buttonSize;
         }
-    }, [selectedSuggestedReply]);
+      }
 
-    useEffect(() => {
-        if (selectedTemplate && templateSelectorDiv?.current?.offsetHeight > 200) {
-            const contentSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
-            let iconSize;
-            let buttonSize;
+      templateSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
+      templateSelectorDiv.current.style.transformOrigin = 'left';
+    }
+  }, [selectedTemplate]);
 
-            const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
+  const sendMessage = () => {
+    if (!channelConnected) {
+      return;
+    }
+    setSelectedSuggestedReply(null);
+    setSelectedTemplate(null);
+    sendMessages(
+      selectedTemplate || selectedSuggestedReply
+        ? {
+            conversationId: conversation.id,
+            message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+          }
+        : {
+            conversationId: conversation.id,
+            message: outboundMapper.getTextPayload(input),
+          }
+    ).then(() => {
+      setInput('');
+      removeTemplateFromInput();
+    });
+  };
 
-            if (scaleRatio <= 0.7) {
-                if (scaleRatio > 0.3) {
-                    iconSize = '18px';
-                    buttonSize = '36px';
-                } else {
-                    iconSize = '30px';
-                    buttonSize = '60px';
-                }
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (
+      (event.metaKey && event.key === 'Enter') ||
+      (!event.shiftKey && event.key === 'Enter') ||
+      (event.ctrlKey && event.key === 'Enter')
+    ) {
+      event.preventDefault();
+      if (input.trim().length > 0) {
+        sendMessage();
+      }
+    }
+  };
 
-                setCloseIconHeight(iconSize);
-                setCloseIconWidth(iconSize);
-
-                if (removeTemplateButton && removeTemplateButton.current) {
-                    removeTemplateButton.current.style.width = buttonSize;
-                    removeTemplateButton.current.style.height = buttonSize;
-                }
-            }
-
-            templateSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
-            templateSelectorDiv.current.style.transformOrigin = 'left';
-        }
-    }, [selectedTemplate]);
-
-    const sendMessage = () => {
-        if (!conversation.channel.connected) {
-            return;
-        }
-        setSelectedSuggestedReply(null);
-        setSelectedTemplate(null);
-        sendMessages(
-            selectedTemplate || selectedSuggestedReply
-                ? {
-                    conversationId: conversation.id,
-                    message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
-                }
-                : {
-                    conversationId: conversation.id,
-                    message: outboundMapper.getTextPayload(input),
-                }
-        ).then(() => {
-            setInput('');
-            removeTemplateFromInput();
-        });
-    };
-
-    const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-        if (
-            (event.metaKey && event.key === 'Enter') ||
-            (!event.shiftKey && event.key === 'Enter') ||
-            (event.ctrlKey && event.key === 'Enter')
-        ) {
-            event.preventDefault();
-            if (input.trim().length > 0) {
-                sendMessage();
-            }
-        }
-    };
-
-
-    const getLastMessageWithSuggestedReplies = useCallback(() => {
-        const lastMessages = props.messages
-            ?.filter((message: Message) => message.fromContact)
-            .slice(props.messages.length - 5)
-            .reverse();
-        return lastMessages?.find(
-            (message: Message) => message.metadata?.suggestions && Object.keys(message.metadata.suggestions).length > 0
-        );
-    }, [props.messages]);
-
-    const hasSuggestions = () => !isEmpty(suggestions);
-
-    const toggleSuggestedReplies = () => {
-        if (hasSuggestions()) {
-            hideSuggestedReplies();
-        } else {
-            showSuggestedReplies(getLastMessageWithSuggestedReplies().metadata.suggestions);
-        }
-    };
-
-    const selectTemplate = (template: Template) => {
-        const jsonTemplate = template.content.message;
-
-        if (selectedTemplate) setSelectedTemplate(null);
-
-        if (input) setInput('');
-
-        if (selectedSuggestedReply) setSelectedSuggestedReply(null);
-
-        if (isTextMessage(template)) {
-            setInput(jsonTemplate.text);
-        } else {
-            setSelectedTemplate({message: template, source: template.source});
-        }
-
-        sendButtonRef.current.focus();
-    };
-
-    const selectSuggestedReply = (reply: SuggestedReply) => {
-        if (selectedSuggestedReply) setSelectedSuggestedReply(null);
-
-        if (input) setInput('');
-
-        if (selectedTemplate) setSelectedTemplate(null);
-
-        hideSuggestedReplies();
-        if (isTextMessage(reply)) {
-            setInput(reply.content.text);
-        } else {
-            setSelectedSuggestedReply({message: reply});
-        }
-        sendButtonRef.current.focus();
-    };
-
-    const removeTemplateFromInput = () => {
-        setSelectedTemplate(null);
-        setCloseIconWidth('');
-        setCloseIconHeight('');
-    };
-
-    const removeSelectedSuggestedReply = () => {
-        setSelectedSuggestedReply(null);
-        setCloseIconWidth('');
-        setCloseIconHeight('');
-    };
-
-    return (
-        <div className={styles.container}>
-            {getLastMessageWithSuggestedReplies() && (
-                <div className={styles.suggestionsRow}>
-                    {hasSuggestions() && (
-                        <SuggestedReplySelector
-                            onClose={toggleSuggestedReplies}
-                            suggestions={suggestions}
-                            selectSuggestedReply={selectSuggestedReply}
-                            source={source}
-                        />
-                    )}
-
-                    <Button
-                        type="button"
-                        styleVariant="outline-big"
-                        onClick={toggleSuggestedReplies}
-                        dataCy={cySuggestionsButton}>
-                        <div className={styles.suggestionButton}>
-                            Suggestions
-                            <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown}/>
-                        </div>
-                    </Button>
-                </div>
-            )}
-            <form className={styles.inputForm}>
-                <div className={styles.messageWrap}>
-                    <div className={styles.inputWrap}>
-                        {!selectedTemplate && !selectedSuggestedReply && (
-                            <>
-                <textarea
-                    className={styles.messageTextArea}
-                    ref={textAreaRef}
-                    rows={1}
-                    name="inputBar"
-                    placeholder={channelConnected ? 'Enter a message...' : ''}
-                    autoFocus={channelConnected}
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    data-cy={cyMessageTextArea}
-                    disabled={!channelConnected}
-                />
-                                <InputOptions
-                                    source={source}
-                                    inputDisabled={!channelConnected}
-                                    input={input}
-                                    setInput={setInput}
-                                    selectTemplate={selectTemplate}
-                                    focus={focusInput}
-                                />
-                            </>
-                        )}
-                        {selectedSuggestedReply && (
-                            <div className={styles.suggestionRepliesSelector} ref={selectedSuggestedReplyDiv}>
-                                <button
-                                    className={styles.removeButton}
-                                    onClick={removeSelectedSuggestedReply}
-                                    ref={removeSuggestedRepliesButton}>
-                                    <Close
-                                        style={{
-                                            width: closeIconWidth ?? '',
-                                            height: closeIconHeight ?? '',
-                                        }}
-                                    />
-                                </button>
-                                <SourceMessage
-                                    content={selectedSuggestedReply.message}
-                                    source={source}
-                                    contentType="suggestedReplies"
-                                />
-                            </div>
-                        )}
-
-                        {selectedTemplate && (
-                            <>
-                                <div className={styles.templateSelector} ref={templateSelectorDiv}>
-                                    <button className={styles.removeButton} onClick={removeTemplateFromInput}
-                                            ref={removeTemplateButton}>
-                                        <Close
-                                            style={{
-                                                width: closeIconWidth ?? '',
-                                                height: closeIconHeight ?? '',
-                                            }}
-                                        />
-                                    </button>
-                                    <SourceMessage
-                                        content={selectedTemplate.message}
-                                        source={selectedTemplate.source}
-                                        contentType="template"
-                                    />
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
-
-                <div className={styles.sendDiv}>
-                    {!channelConnected && (
-                        <div className={styles.disconnectedChannelToolTip}>
-                            <p>Sending messages is disabled because this channel was disconnected.</p>
-                        </div>
-                    )}
-                    <button
-                        type="button"
-                        ref={sendButtonRef}
-                        className={`${styles.sendButton} ${
-                            (input.trim().length != 0 || selectedTemplate || selectedSuggestedReply) &&
-                            channelConnected && styles.sendButtonActive
-                        }`}
-                        onClick={sendMessage}
-                        disabled={
-                            (input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply) && !channelConnected
-                        }
-                        data-cy={cyMessageSendButton}>
-                        <div className={styles.sendButtonText}>
-                            <Paperplane/>
-                        </div>
-                    </button>
-                </div>
-            </form>
-            <div
-                className={styles.linebreakHint}
-                style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
-                {'Shift + Enter to add line'}
-            </div>
-        </div>
+  const getLastMessageWithSuggestedReplies = useCallback(() => {
+    const lastMessages = props.messages
+      ?.filter((message: Message) => message.fromContact)
+      .slice(props.messages.length - 5)
+      .reverse();
+    return lastMessages?.find(
+      (message: Message) => message.metadata?.suggestions && Object.keys(message.metadata.suggestions).length > 0
     );
+  }, [props.messages]);
+
+  const hasSuggestions = () => !isEmpty(suggestions);
+
+  const toggleSuggestedReplies = () => {
+    if (hasSuggestions()) {
+      hideSuggestedReplies();
+    } else {
+      showSuggestedReplies(getLastMessageWithSuggestedReplies().metadata.suggestions);
+    }
+  };
+
+  const selectTemplate = (template: Template) => {
+    const jsonTemplate = template.content.message;
+
+    if (selectedTemplate) setSelectedTemplate(null);
+
+    if (input) setInput('');
+
+    if (selectedSuggestedReply) setSelectedSuggestedReply(null);
+
+    if (isTextMessage(template)) {
+      setInput(jsonTemplate.text);
+    } else {
+      setSelectedTemplate({message: template, source: template.source});
+    }
+
+    sendButtonRef.current.focus();
+  };
+
+  const selectSuggestedReply = (reply: SuggestedReply) => {
+    if (selectedSuggestedReply) setSelectedSuggestedReply(null);
+
+    if (input) setInput('');
+
+    if (selectedTemplate) setSelectedTemplate(null);
+
+    hideSuggestedReplies();
+    if (isTextMessage(reply)) {
+      setInput(reply.content.text);
+    } else {
+      setSelectedSuggestedReply({message: reply});
+    }
+    sendButtonRef.current.focus();
+  };
+
+  const removeTemplateFromInput = () => {
+    setSelectedTemplate(null);
+    setCloseIconWidth('');
+    setCloseIconHeight('');
+  };
+
+  const removeSelectedSuggestedReply = () => {
+    setSelectedSuggestedReply(null);
+    setCloseIconWidth('');
+    setCloseIconHeight('');
+  };
+
+  return (
+    <div className={styles.container}>
+      {getLastMessageWithSuggestedReplies() && (
+        <div className={styles.suggestionsRow}>
+          {hasSuggestions() && (
+            <SuggestedReplySelector
+              onClose={toggleSuggestedReplies}
+              suggestions={suggestions}
+              selectSuggestedReply={selectSuggestedReply}
+              source={source}
+            />
+          )}
+
+          <Button
+            type="button"
+            styleVariant="outline-big"
+            onClick={toggleSuggestedReplies}
+            dataCy={cySuggestionsButton}>
+            <div className={styles.suggestionButton}>
+              Suggestions
+              <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
+            </div>
+          </Button>
+        </div>
+      )}
+      <form className={styles.inputForm}>
+        <div className={styles.messageWrap}>
+          <div className={styles.inputWrap}>
+            {!selectedTemplate && !selectedSuggestedReply && (
+              <>
+                <textarea
+                  className={styles.messageTextArea}
+                  ref={textAreaRef}
+                  rows={1}
+                  name="inputBar"
+                  placeholder={channelConnected ? 'Enter a message...' : ''}
+                  autoFocus={channelConnected}
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  data-cy={cyMessageTextArea}
+                  disabled={!channelConnected}
+                />
+                <InputOptions
+                  source={source}
+                  inputDisabled={!channelConnected}
+                  input={input}
+                  setInput={setInput}
+                  selectTemplate={selectTemplate}
+                  focus={focusInput}
+                />
+              </>
+            )}
+            {selectedSuggestedReply && (
+              <div className={styles.suggestionRepliesSelector} ref={selectedSuggestedReplyDiv}>
+                <button
+                  className={styles.removeButton}
+                  onClick={removeSelectedSuggestedReply}
+                  ref={removeSuggestedRepliesButton}>
+                  <Close
+                    style={{
+                      width: closeIconWidth ?? '',
+                      height: closeIconHeight ?? '',
+                    }}
+                  />
+                </button>
+                <SourceMessage
+                  content={selectedSuggestedReply.message}
+                  source={source}
+                  contentType="suggestedReplies"
+                />
+              </div>
+            )}
+
+            {selectedTemplate && (
+              <>
+                <div className={styles.templateSelector} ref={templateSelectorDiv}>
+                  <button className={styles.removeButton} onClick={removeTemplateFromInput} ref={removeTemplateButton}>
+                    <Close
+                      style={{
+                        width: closeIconWidth ?? '',
+                        height: closeIconHeight ?? '',
+                      }}
+                    />
+                  </button>
+                  <SourceMessage
+                    content={selectedTemplate.message}
+                    source={selectedTemplate.source}
+                    contentType="template"
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className={styles.sendDiv}>
+          {!channelConnected && (
+            <div className={styles.disconnectedChannelToolTip}>
+              <p>Sending messages is disabled because this channel was disconnected.</p>
+            </div>
+          )}
+          <button
+            type="button"
+            ref={sendButtonRef}
+            className={`${styles.sendButton} ${
+              (input.trim().length != 0 || selectedTemplate || selectedSuggestedReply) &&
+              channelConnected &&
+              styles.sendButtonActive
+            }`}
+            onClick={sendMessage}
+            disabled={input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply && !channelConnected}
+            data-cy={cyMessageSendButton}>
+            <div className={styles.sendButtonText}>
+              <Paperplane />
+            </div>
+          </button>
+        </div>
+      </form>
+      <div
+        className={styles.linebreakHint}
+        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
+        {'Shift + Enter to add line'}
+      </div>
+    </div>
+  );
 };
 
 export default withRouter(connector(MessageInput));

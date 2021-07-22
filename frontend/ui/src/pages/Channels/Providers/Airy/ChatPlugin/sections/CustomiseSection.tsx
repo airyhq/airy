@@ -49,6 +49,13 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     setShowBackgroundColorPicker(!showBackgroundColorPicker);
   };
 
+  const formatConfigAttributeWithConfig = (attribute: string, config: string): string => {
+    if (config === '') {
+      return '\n           ' + attribute;
+    }
+    return ',\n           ' + attribute;
+  }
+
   const getTemplateConfig = () => {
     if (
       headerText === '' &&
@@ -62,24 +69,21 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       accentColor === '' &&
       backgroundColor === ''
     ) {
-      return `
-      w[n].config={};
-      `;
+      return `w[n].config={};`;
     }
     let config = '';
-    if (headerText !== '') config += `\n              headerText: '${headerText}',`;
-    if (subtitleText !== '') config += `\n              subtitleText: '${subtitleText}',`;
-    if (startNewConversationText !== '') config += `\n    startNewConversationText: '${startNewConversationText}',`;
-    if (bubbleIconUrl !== '') config += `\n              bubbleIcon: '${bubbleIconUrl}',`;
-    if (sendMessageIconUrl !== '') config += `\n              sendMessageIcon: '${sendMessageIconUrl}',`;
-    if (headerTextColor !== '') config += `\n              headerTextColor: '${headerTextColor}',`;
-    if (subtitleTextColor !== '') config += `\n              subtitleTextColor: '${subtitleTextColor}',`;
-    if (primaryColor !== '') config += `\n              primaryColor: '${primaryColor}',`;
-    if (accentColor !== '') config += `\n              accentColor: '${accentColor}',`;
-    if (backgroundColor !== '') config += `\n              backgroundColor: '${backgroundColor}',`;
+    if (headerText !== '') config += formatConfigAttributeWithConfig(`headerText: '${headerText}'`, config);
+    if (subtitleText !== '') config += formatConfigAttributeWithConfig(`subtitleText: '${subtitleText}'`, config);
+    if (startNewConversationText !== '') config += formatConfigAttributeWithConfig(`startNewConversationText: '${startNewConversationText}'`, config);
+    if (bubbleIconUrl !== '') config += formatConfigAttributeWithConfig(`bubbleIcon: '${bubbleIconUrl}'`, config);
+    if (sendMessageIconUrl !== '') config += formatConfigAttributeWithConfig(`sendMessageIcon: '${sendMessageIconUrl}'`, config);
+    if (headerTextColor !== '') config += formatConfigAttributeWithConfig(`headerTextColor: '${headerTextColor}'`, config);
+    if (subtitleTextColor !== '') config += formatConfigAttributeWithConfig(`subtitleTextColor: '${subtitleTextColor}'`, config);
+    if (primaryColor !== '') config += formatConfigAttributeWithConfig(`primaryColor: '${primaryColor}'`, config);
+    if (accentColor !== '') config += formatConfigAttributeWithConfig(`accentColor: '${accentColor}'`, config);
+    if (backgroundColor !== '') config += formatConfigAttributeWithConfig(`backgroundColor: '${backgroundColor}'`, config);
 
-    return `
-        w[n].config = {${config}          
+    return `w[n].config = {${config}
         };`;
   };
 
@@ -110,14 +114,15 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     return `<script>
       (function(w, d, s, n) {
         w[n] = w[n] || {};
-        w[n].channelId = "${channelId}";
-        w[n].host = "${host}";${getTemplateConfig()}
+        w[n].channelId = '${channelId}';
+        w[n].host = '${host}';
+        ${getTemplateConfig()}
         var f = d.getElementsByTagName(s)[0],
         j = d.createElement(s);
         j.async = true;
         j.src = w[n].host + '/chatplugin/ui/s.js';
         f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "airy");
+      })(window, document, 'script', 'airy');
     </script>`;
   };
 

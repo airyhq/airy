@@ -7,7 +7,7 @@ import {Text} from '../../components/Text';
 import {RichText} from './components/RichText';
 import {RichCard} from './components/RichCard';
 import {RichCardCarousel} from './components/RichCardCarousel';
-import {QuickReplies} from './components/QuickReplies/index';
+import {QuickReplies} from './components/QuickReplies';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
   return render(mapContent(props.content), props);

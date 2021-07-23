@@ -1,9 +1,11 @@
+@import 'assets/scss/z-index.scss';
+
 .dialog {
   position: absolute;
   background-color: white;
   border: 1px solid var(--color-light-gray);
   border-radius: 4px;
-  z-index: 4;
+  z-index: $popup;
 }
 
 .nonOverlayDialog {
@@ -18,5 +20,5 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2;
+  z-index: $popup - 1;
 }

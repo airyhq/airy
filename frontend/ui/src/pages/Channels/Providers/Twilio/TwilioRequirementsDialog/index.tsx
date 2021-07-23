@@ -29,10 +29,10 @@ export const TwilioRequirementsDialog = (props: TwilioRequirementsDialogProps) =
             to the{' '}
             <a
               className={styles.configMessage}
-              href="https://github.com/airyhq/airy/blob/develop/docs/docs/api/endpoints/channels.md"
+              href="https://airy.co/docs/core/getting-started/installation/configuration"
               target="_blank"
               rel="noreferrer">
-              infrastructure/airy.conf
+              airy.yaml
             </a>{' '}
             file.
           </p>

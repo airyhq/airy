@@ -44,8 +44,8 @@ class App extends Component<ConnectedProps<typeof connector> & RouteComponentPro
   render() {
     return (
       <AiryWebSocket>
-        <div className={styles.Container}>
-          <div className={styles.ContainerApp}>
+        <div className={styles.container}>
+          <div className={styles.wrapper}>
             <>
               <TopBar isAdmin={true} />
               <Sidebar />

@@ -1,5 +1,6 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
+@import 'assets/scss/z-index.scss';
 
 .quickFilterContainer {
   display: flex;
@@ -122,6 +123,6 @@
   font-weight: 500;
   color: var(--color-text-gray);
   margin: 8px 0 24px 0;
-  z-index: 3;
+  z-index: $popup;
   position: relative;
 }

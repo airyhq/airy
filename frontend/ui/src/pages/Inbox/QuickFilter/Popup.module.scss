@@ -1,5 +1,6 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
+@import 'assets/scss/z-index.scss';
 
 .background {
   position: absolute;
@@ -8,7 +9,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(247, 247, 247, 0.7);
-  z-index: 2;
+  z-index: $popup;
 }
 
 .content {

@@ -13,21 +13,13 @@
   font-family: 'Lato', sans-serif;
 }
 
-.contactContent,
-.contactContent:hover,
-.contactContent:active,
-.contactContent:visited,
-.contactContent:focus {
+.contactContent {
   @extend .textMessage;
   background: var(--color-background-blue);
   color: var(--color-text-contrast);
 }
 
-.memberContent,
-.memberContent:hover,
-.memberContent:active,
-.memberContent:visited,
-.memberContent:focus {
+.memberContent {
   @extend .textMessage;
   background: var(--color-airy-blue);
   color: white;

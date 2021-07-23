@@ -1,5 +1,6 @@
 package co.airy.core.api.config;
 
+import co.airy.core.api.config.dto.ComponentInfo;
 import co.airy.core.api.config.dto.ServiceInfo;
 import co.airy.core.api.config.payload.ServicesResponsePayload;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +37,21 @@ public class ServiceDiscovery {
 
     public Map<String, ServiceInfo> getServices() {
         return services;
+    }
+
+    public ComponentInfo getComponent(String componentName) {
+        return getServices().values().stream()
+                .filter((serviceInfo) -> serviceInfo.getComponent().equals(componentName))
+                .reduce(null, (componentInfo, serviceInfo) -> {
+                    componentInfo = Optional.ofNullable(componentInfo).orElse(new ComponentInfo(false, true));
+                    componentInfo.setEnabled(serviceInfo.isEnabled());
+                    // One unhealthy service means that the component is unhealthy
+                    componentInfo.setEnabled(componentInfo.isHealthy() && serviceInfo.isHealthy());
+                    return componentInfo;
+                }, (v1, v2) -> {
+                    v1.setHealthy(v1.isHealthy() && v2.isHealthy());
+                    return v1;
+                });
     }
 
     @Scheduled(fixedRate = 1_000)

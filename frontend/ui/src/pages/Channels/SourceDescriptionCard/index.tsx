@@ -14,8 +14,6 @@ type SourceDescriptionCardProps = {
 const SourceDescriptionCard = (props: SourceDescriptionCardProps) => {
   const {sourceInfo, displayButton, addChannelAction} = props;
 
-  console.log('sourceInfo', sourceInfo);
-
   return (
     <>
       <div className={styles.requirementsDialogBackground}></div>

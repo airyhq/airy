@@ -10,6 +10,7 @@ import {setPageTitle} from '../../services/pageTitle';
 import MainPage from './MainPage';
 import FacebookConnect from './Providers/Facebook/Messenger/FacebookConnect';
 import ChatPluginConnect from './Providers/Airy/ChatPlugin/ChatPluginConnect';
+import InstagramConnect from './Providers/Instagram/InstagramConnect';
 import ConnectedChannelsList from './ConnectedChannelsList';
 import TwilioSmsConnect from './Providers/Twilio/SMS/TwilioSmsConnect';
 import TwilioWhatsappConnect from './Providers/Twilio/WhatsApp/TwilioWhatsappConnect';
@@ -24,6 +25,7 @@ import {
   CHANNELS_CHAT_PLUGIN_ROUTE,
   CHANNELS_TWILIO_WHATSAPP_ROUTE,
   CHANNELS_GOOGLE_ROUTE,
+  CHANNELS_INSTAGRAM_ROUTE,
 } from '../../routes/routes';
 
 const mapDispatchToProps = {
@@ -61,6 +63,7 @@ const Channels = (props: ChannelsConnectProps) => {
       <Route path={[`${CHANNELS_TWILIO_SMS_ROUTE}/:channelId?`]} component={TwilioSmsConnect} />
       <Route path={[`${CHANNELS_TWILIO_WHATSAPP_ROUTE}/:channelId?`]} component={TwilioWhatsappConnect} />
       <Route path={[`${CHANNELS_GOOGLE_ROUTE}/:channelId?`]} component={GoogleConnect} />
+      <Route path={[`${CHANNELS_INSTAGRAM_ROUTE}/:channelId?`]} component={InstagramConnect} />
       <Route path="/" render={renderChannels} />
     </Switch>
   );

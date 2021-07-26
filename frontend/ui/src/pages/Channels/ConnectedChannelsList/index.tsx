@@ -23,6 +23,7 @@ import {
   CHANNELS_TWILIO_SMS_ROUTE,
   CHANNELS_TWILIO_WHATSAPP_ROUTE,
   CHANNELS_GOOGLE_ROUTE,
+  CHANNELS_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 
 type ConnectedChannelsListProps = {} & ConnectedProps<typeof connector> & RouteComponentProps<{source: string}>;
@@ -74,6 +75,10 @@ const ConnectedChannelsList = (props: ConnectedChannelsListProps) => {
       case Source.chatPlugin:
         setName('Chat Plugin');
         setPath(CHANNELS_CHAT_PLUGIN_ROUTE + '/new');
+        break;
+      case Source.instagram:
+        setName('Instagram');
+        setPath(CHANNELS_INSTAGRAM_ROUTE + '/new');
         break;
     }
   };

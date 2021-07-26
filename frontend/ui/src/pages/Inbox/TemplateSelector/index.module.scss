@@ -1,7 +1,8 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
+@import 'assets/scss/z-index.scss';
 
-.component {
+.container {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-dark-elements-gray);
@@ -12,7 +13,7 @@
   right: 72px;
   left: 14px;
   background-color: var(--color-template-highlight);
-  z-index: 2;
+  z-index: $popup;
 }
 
 .topLine {
@@ -44,7 +45,7 @@
   cursor: pointer;
 }
 
-.tempatePreviewName {
+.templatePreviewName {
   @include font-s;
   white-space: nowrap;
   overflow: hidden;

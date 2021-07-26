@@ -1,5 +1,6 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/z-index.scss';
 
 .container {
   display: flex;
@@ -8,9 +9,7 @@
   height: 430px;
   background: white;
   border-radius: 8px;
-  position: relative;
-  background: white;
-  z-index: 1;
+  z-index: $popup;
   position: fixed;
   top: 35%;
   left: 50%;
@@ -60,7 +59,7 @@
   background: transparent;
   cursor: pointer;
   outline: none;
-  padding: 0px;
+  padding: 0;
   svg {
     height: 10px;
     width: 10px;

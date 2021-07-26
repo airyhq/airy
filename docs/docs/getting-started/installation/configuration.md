@@ -81,7 +81,7 @@ cluster and Redis.
     - `maxBackoff` set this to the maximum number of seconds the webhook should
       wait between retries with exponential backoff
 - `media`
-  - `resolver`
+  - `storage`
     - `s3Key` set this to your AWS S3 access key id
     - `s3Secret` set this to your AWS S3 secret access key
     - `s3Bucket` set this to your AWS S3 bucket
@@ -100,7 +100,7 @@ monitor or debug the **Airy Core**.
 
 For example, if you want to enable Facebook, Google and Twilio sources, as well as the webhook integration and the AKHQ tool, your `airy.yaml` file should look like this:
 
-```
+```yaml
 kubernetes:
   containerRegistry: ghcr.io/airyhq
   namespace: default

@@ -4,12 +4,16 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.core.api.communication.dto.Messages;
 import co.airy.core.api.communication.util.TestConversation;
 import co.airy.date.format.DateFormat;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.message.dto.MessageContainer;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
@@ -25,6 +29,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -103,6 +108,35 @@ public class MessagesTest {
     }
 
     @Test
+    void canDeleteMessages() throws Exception {
+        final String conversationId = UUID.randomUUID().toString();
+
+        int messageCount = 2;
+        final List<ProducerRecord<String, SpecificRecordBase>> records = TestConversation.generateRecords(conversationId, channel, 2);
+        kafkaTestHelper.produceRecords(records);
+
+        final String payload = "{\"conversation_id\":\"" + conversationId + "\"}";
+        retryOnException(
+                () -> webTestHelper.post("/messages.list", payload)
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data", hasSize(messageCount))), "/message.list did not return all records");
+
+        final String content = webTestHelper.post("/messages.list", payload)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data", hasSize(messageCount)))
+                .andReturn().getResponse().getContentAsString();
+
+        final JsonNode jsonNode = new ObjectMapper().readTree(content);
+        final String messageId = jsonNode.get("data").get(0).get("id").textValue();
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId, null));
+        retryOnException(
+                () -> webTestHelper.post("/messages.list", payload)
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.data", hasSize(messageCount - 1))), "message was not deleted");
+    }
+
+    @Test
     void canReturnMetadata() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
         final String messageId = UUID.randomUUID().toString();
@@ -169,39 +203,42 @@ public class MessagesTest {
     }
 
     @Test
-    void canReturnTwilioMessagesUnparsed() throws Exception {
+    void sameMessageTimesWork() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
-        final String messageId = UUID.randomUUID().toString();
-        final String sourceConversationId = "+491234567";
-        final String text = "Hello World";
-        final String sourceChannelId = "+497654321";
-        final String token = "token";
-
-        final String content = "ApiVersion=2010-04-01&SmsSid=SMbc31b6419de618d65076200c54676476&SmsStatus=received&SmsMessageSid=SMbc31b6419de618d65076200c54676476&NumSegments=1&To=whatsapp%3A%2B" +
-                sourceChannelId +
-                "&From=whatsapp%3A%2B" +
-                sourceConversationId +
-                "&MessageSid=SMbc31b6419de618d65076200c54676476&Body=Hi&AccountSid=AC64c9ab479b849275b7b50bd19540c602&NumMedia=0";
+        final String firstMessageId = UUID.randomUUID().toString();
+        final String secondMessageId = UUID.randomUUID().toString();
+        final long sentAt = Instant.now().toEpochMilli();
 
         kafkaTestHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
-                        .setToken(token)
-                        .setSourceChannelId(sourceChannelId)
+                        .setSourceChannelId("sourceChannelId")
                         .setSource("twilio.sms")
                         .setId(channelId)
                         .setConnectionState(ChannelConnectionState.CONNECTED)
                         .build()
                 ),
-                new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
+                new ProducerRecord<>(applicationCommunicationMessages.name(), firstMessageId,
                         Message.newBuilder()
-                                .setId(messageId)
-                                .setSource("twilio.sms")
-                                .setSentAt(Instant.now().toEpochMilli())
-                                .setSenderId(sourceConversationId)
+                                .setId(firstMessageId)
+                                .setSource("source")
+                                .setSentAt(sentAt)
+                                .setSenderId("sourceConversationId")
                                 .setDeliveryState(DeliveryState.DELIVERED)
                                 .setConversationId(conversationId)
                                 .setChannelId(channelId)
-                                .setContent(content)
+                                .setContent("content")
+                                .setIsFromContact(true)
+                                .build()),
+                new ProducerRecord<>(applicationCommunicationMessages.name(), secondMessageId,
+                        Message.newBuilder()
+                                .setId(secondMessageId)
+                                .setSource("source")
+                                .setSentAt(sentAt)
+                                .setSenderId("sourceConversationId")
+                                .setDeliveryState(DeliveryState.DELIVERED)
+                                .setConversationId(conversationId)
+                                .setChannelId(channelId)
+                                .setContent("content")
                                 .setIsFromContact(true)
                                 .build())
         ));
@@ -210,9 +247,8 @@ public class MessagesTest {
         retryOnException(
                 () -> webTestHelper.post("/messages.list", payload)
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data", hasSize(1)))
-                        .andExpect(jsonPath("$.data[0].content", is(content))),
-                "/messages.list content url was not replaced by metadata");
+                        .andExpect(jsonPath("$.data", hasSize(2))),
+                "/messages.list did not return all messages");
     }
 
     @Test

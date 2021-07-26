@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
@@ -23,7 +25,7 @@ public class Connector {
     private static final Logger log = AiryLoggerFactory.getLogger(Connector.class);
 
     private final Api api;
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final long messageStaleAfterSec = 300L; // 5 minutes
 
     Connector(Api api) {
         this.api = api;
@@ -33,10 +35,14 @@ public class Connector {
         final Message message = sendMessageRequest.getMessage();
         final String from = sendMessageRequest.getChannel().getSourceChannelId();
         final String to = sendMessageRequest.getSourceConversationId();
-        try {
-            final JsonNode messageNode = mapper.readTree(message.getContent());
-            api.sendMessage(from, to, messageNode.get("text").textValue());
 
+        if (isMessageStale(message)) {
+            updateDeliveryState(message, DeliveryState.FAILED);
+            return message;
+        }
+
+        try {
+            api.sendMessage(from, to, message.getContent());
             updateDeliveryState(message, DeliveryState.DELIVERED);
             return message;
         } catch (ApiException e) {
@@ -47,6 +53,10 @@ public class Connector {
 
         updateDeliveryState(message, DeliveryState.FAILED);
         return message;
+    }
+
+    private boolean isMessageStale(Message message) {
+        return ChronoUnit.SECONDS.between(Instant.ofEpochMilli(message.getSentAt()), Instant.now()) > messageStaleAfterSec;
     }
 
     @Bean

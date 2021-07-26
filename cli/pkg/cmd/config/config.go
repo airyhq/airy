@@ -21,11 +21,15 @@ var ConfigCmd = &cobra.Command{
 }
 
 func applyConfig(cmd *cobra.Command, args []string) {
-	cfgDir, err := cmd.Flags().GetString("workspace")
+	workspacePath, err := cmd.Flags().GetString("workspace")
 	if err != nil {
 		console.Exit(err)
 	}
-	dir := workspace.Init(cfgDir)
+	ApplyConfig(workspacePath)
+}
+
+func ApplyConfig(workspacePath string) {
+	dir := workspace.Init(workspacePath)
 
 	conf, err := dir.LoadAiryYaml()
 	if err != nil {

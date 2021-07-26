@@ -78,7 +78,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
   const renderNotFound = () => {
     return (
       <div className={styles.notFoundMessage}>
-        <div className={styles.notFoundImage} style={{backgroundImage: `url(${notFoundState})`}}></div>
+        <div className={styles.notFoundImage} style={{backgroundImage: `url(${notFoundState})`}} />
         <div className={styles.notFoundText}>
           <h2>No result found.</h2>
           <p>Did you write everything correctly?</p>
@@ -87,15 +87,11 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
     );
   };
 
-  const renderError = () => {
-    return <ErrorNotice theme="error">Oops! Your templates could not be loaded. Please try again later.</ErrorNotice>;
-  };
-
   return (
     <ListenOutsideClick onOuterClick={onClose}>
-      <div className={styles.component} ref={componentRef}>
+      <div className={styles.container} ref={componentRef}>
         {listTemplatesError ? (
-          renderError()
+          <ErrorNotice theme="error">Oops! Your templates could not be loaded. Please try again later.</ErrorNotice>
         ) : templates.length === 0 && source === templatesSource ? (
           renderEmpty()
         ) : (
@@ -124,7 +120,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
                         onClick={() => {
                           selectTemplate(template);
                         }}>
-                        <div className={styles.tempatePreviewName}>{template.name}</div>
+                        <div className={styles.templatePreviewName}>{template.name}</div>
                         <SourceMessage content={template} source={template.source} contentType="template" />
                       </div>
                     );

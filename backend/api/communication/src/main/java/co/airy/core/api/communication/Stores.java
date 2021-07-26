@@ -6,7 +6,7 @@ import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
 import co.airy.core.api.communication.dto.Conversation;
 import co.airy.core.api.communication.dto.CountAction;
-import co.airy.core.api.communication.dto.MessagesTreeSet;
+import co.airy.core.api.communication.dto.Messages;
 import co.airy.core.api.communication.dto.UnreadCountState;
 import co.airy.core.api.communication.lucene.IndexingProcessor;
 import co.airy.core.api.communication.lucene.LuceneDiskStore;
@@ -27,7 +27,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.kstream.KGroupedStream;
+import org.apache.kafka.streams.kstream.KGroupedTable;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
@@ -103,8 +103,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .mapValues(readReceipt -> CountAction.reset(readReceipt.getReadDate()));
 
         // produce unread count metadata
-        messageStream.selectKey((messageId, message) -> message.getConversationId())
-                .filter((conversationId, message) -> message.getIsFromContact())
+        messageStream.filter((conversationId, message) -> message != null && message.getIsFromContact())
+                .selectKey((messageId, message) -> message.getConversationId())
                 .mapValues(message -> CountAction.increment(message.getSentAt()))
                 .merge(resetStream)
                 .groupByKey()
@@ -127,25 +127,26 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 })
                 .to(applicationCommunicationMetadata);
 
-        final KGroupedStream<String, MessageContainer> messageGroupedStream = messageStream.toTable()
+        final KGroupedTable<String, MessageContainer> messageGroupedTable = messageStream.toTable()
                 .leftJoin(metadataTable, (message, metadataMap) -> MessageContainer.builder()
                         .message(message)
                         .metadataMap(Optional.ofNullable(metadataMap).orElse(new MetadataMap()))
                         .build(), Materialized.as(messagesByIdStore))
-                .toStream()
-                .filter((messageId, messageContainer) -> messageContainer != null)
-                .groupBy((messageId, messageContainer) -> messageContainer.getMessage().getConversationId());
+                .groupBy((messageId, messageContainer) -> KeyValue.pair(messageContainer.getMessage().getConversationId(), messageContainer));
 
 
         // messages store
-        messageGroupedStream.aggregate(MessagesTreeSet::new,
-                ((key, value, aggregate) -> {
+        messageGroupedTable.aggregate(Messages::new,
+                (key, value, aggregate) -> {
                     aggregate.update(value);
                     return aggregate;
-                }), Materialized.as(messagesStore));
+                }, (key, value, aggregate) -> {
+                    aggregate.remove(value);
+                    return aggregate;
+                }, Materialized.as(messagesStore));
 
         // Conversation stores
-        messageGroupedStream
+        messageGroupedTable
                 .aggregate(Conversation::new,
                         (conversationId, container, aggregate) -> {
                             if (aggregate.getLastMessageContainer() == null) {
@@ -164,6 +165,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                                 aggregate.setSourceConversationId(container.getMessage().getSenderId());
                             }
 
+                            return aggregate;
+                        }, (conversationId, container, aggregate) -> {
+                            // If the deleted message was the last message we have no way of replacing it
+                            // so we have no choice but to keep it
                             return aggregate;
                         })
                 .join(channelTable, Conversation::getChannelId,
@@ -188,7 +193,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return streams.acquireLocalStore(conversationsStore);
     }
 
-    public ReadOnlyKeyValueStore<String, MessagesTreeSet> getMessagesStore() {
+    public ReadOnlyKeyValueStore<String, Messages> getMessagesStore() {
         return streams.acquireLocalStore(messagesStore);
     }
 
@@ -248,8 +253,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     public List<MessageContainer> getMessages(String conversationId) {
-        final ReadOnlyKeyValueStore<String, MessagesTreeSet> store = getMessagesStore();
-        final MessagesTreeSet messagesTreeSet = store.get(conversationId);
+        final ReadOnlyKeyValueStore<String, Messages> store = getMessagesStore();
+        final Messages messagesTreeSet = store.get(conversationId);
 
         return messagesTreeSet == null ? null : new ArrayList<>(messagesTreeSet);
     }

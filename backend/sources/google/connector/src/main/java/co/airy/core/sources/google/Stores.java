@@ -54,7 +54,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         builder.<String, Channel>table(applicationCommunicationChannels, Materialized.as(channelsStore));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
-                .filter((messageId, message) -> "google".equalsIgnoreCase(message.getSource()))
+                .filter((messageId, message) -> message != null && "google".equalsIgnoreCase(message.getSource()))
                 .selectKey((messageId, message) -> message.getConversationId());
 
         final KTable<String, SendMessageRequest> contextTable = messageStream

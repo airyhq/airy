@@ -1,0 +1,192 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.inputBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  margin: 0 8px;
+  border-top: 1px solid var(--color-template-gray);
+}
+
+.textArea {
+  border-radius: 8px;
+  resize: none;
+  overflow: auto;
+  height: 32px;
+  min-height: 32px;
+  width: 100%;
+  padding: 4px 4px 0 8px;
+  margin: 0 8px 0 0;
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.poweredByContainer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin: 0 0 8px 0px;
+
+  a {
+    display: flex;
+    color: var(--color-text-gray);
+    cursor: pointer;
+    text-decoration: none;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    align-items: center;
+
+    svg {
+      height: 20px;
+      width: 20px;
+      transform: scale(0.7);
+      margin-top: 1px;
+
+      path {
+        fill: var(--color-text-gray);
+      }
+    }
+  }
+}
+
+.textAreaMedium {
+  @extend .textArea;
+  height: 64px;
+}
+
+.textAreaBig {
+  @extend .textArea;
+  height: 96px;
+}
+
+.textArea::-webkit-input-placeholder {
+  color: #999999;
+}
+
+.textArea:-moz-placeholder {
+  /* Firefox 18- */
+  color: #999999;
+}
+
+.textArea::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #999999;
+}
+
+.textArea:-ms-input-placeholder {
+  color: #999999;
+}
+
+.textArea::placeholder {
+  color: #999999;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+}
+
+.sendButton {
+  outline: none;
+  padding: 2px 0 0 2px;
+  border: none;
+  height: 28px;
+  width: 28px;
+  background: var(--color-airy-accent);
+  border-radius: 100%;
+  align-self: flex-end;
+  cursor: pointer;
+  margin-bottom: 1px;
+
+  img {
+    display: block;
+    max-width: 28px;
+    max-height: 28px;
+    width: auto;
+    height: auto;
+    padding: 0 1px 1px 0;
+  }
+
+  svg {
+    width: 18px;
+    height: auto;
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.emojiDrawer {
+  position: absolute;
+  bottom: 15%;
+  z-index: 2;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.iconButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    width: 22px;
+    pointer-events: none;
+
+    path {
+      fill: #a0abb2;
+    }
+  }
+
+  .active {
+    cursor: pointer;
+  }
+
+  .actionToolTip {
+    @include font-s;
+    position: absolute;
+    background-color: var(--color-text-contrast);
+    color: white;
+    border-radius: 4px;
+    padding: 2px 8px;
+    display: none;
+    bottom: 33px;
+    z-index: 2;
+  }
+}
+
+.smileyIcon {
+  height: 20px;
+  width: 20px;
+}
+
+.iconButton:hover {
+  background-color: var(--color-background-blue);
+  border-radius: 50%;
+
+  svg {
+    path {
+      fill: #4bb3fd;
+    }
+  }
+
+  .actionToolTip {
+    display: block;
+  }
+}

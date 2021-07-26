@@ -3,9 +3,90 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 0.25.0
+## Hotfix 0.26.3
+
+[[#2192](https://github.com/airyhq/airy/issues/2192)] Inbox crashing when selecting conversations in filtered view [[#2193](https://github.com/airyhq/airy/pull/2193)]
+
+## Hotfix 0.26.2
+
+[[#2187](https://github.com/airyhq/airy/issues/2187)] Hotfix chat plugin async bundle loading failed on installed websites
+
+## Hotfix 0.26.1
+
+[[#2181](https://github.com/airyhq/airy/issues/2181)] Fixes chat plugin integration crashing with empty config
+
+
+## 0.26.0
 
 #### Changes
+
+- Change endpoint for webhook to /twilio [[#2123](https://github.com/airyhq/airy/pull/2123)]
+- Fixes #2100 - link to up-to-date Rasa connector [[#2101](https://github.com/airyhq/airy/pull/2101)]
+- [[#1702](https://github.com/airyhq/airy/issues/1702)] Update conversations counter in real time [[#2091](https://github.com/airyhq/airy/pull/2091)]
+
+#### 🚀 Features
+
+- [[#2078](https://github.com/airyhq/airy/issues/2078)] Add endpoint for uploading media [[#2147](https://github.com/airyhq/airy/pull/2147)]
+- [[#2132](https://github.com/airyhq/airy/issues/2132)] Allow deleting messages [[#2136](https://github.com/airyhq/airy/pull/2136)]
+- [[#2051](https://github.com/airyhq/airy/issues/2051)] Support instagram as a source [[#2082](https://github.com/airyhq/airy/pull/2082)]
+- [[#2071](https://github.com/airyhq/airy/issues/2071)] Redesigned inputbar Chatplugin [[#2095](https://github.com/airyhq/airy/pull/2095)]
+- [[#661](https://github.com/airyhq/airy/issues/661)] Added possibility to connect Google via UI [[#2092](https://github.com/airyhq/airy/pull/2092)]
+- [[#2073](https://github.com/airyhq/airy/issues/2073)] Added powered by airy to Chatplugin [[#2089](https://github.com/airyhq/airy/pull/2089)]
+- [[#2074](https://github.com/airyhq/airy/issues/2074)] Added subtitle to Chatplugin [[#2087](https://github.com/airyhq/airy/pull/2087)]
+- [[#1916](https://github.com/airyhq/airy/issues/1916)] Cypress test for display name edit [[#2088](https://github.com/airyhq/airy/pull/2088)]
+- [[#1914](https://github.com/airyhq/airy/issues/1914)] Cypress test for conversation state  [[#2061](https://github.com/airyhq/airy/pull/2061)]
+- [[#1391](https://github.com/airyhq/airy/issues/1391)] Cypress test for suggested replies  [[#2057](https://github.com/airyhq/airy/pull/2057)]
+- [[#2056](https://github.com/airyhq/airy/issues/2056)] Added first transition and animations [[#2066](https://github.com/airyhq/airy/pull/2066)]
+- [[#1819](https://github.com/airyhq/airy/issues/1819)] Add Airy favicon [[#2067](https://github.com/airyhq/airy/pull/2067)]
+
+#### 🐛 Bug Fixes
+
+- [[#2149](https://github.com/airyhq/airy/issues/2149)] UI crashes when filtering with unknown source involved  [[#2152](https://github.com/airyhq/airy/pull/2152)]
+- [[#2072](https://github.com/airyhq/airy/issues/2072)] Chat Plugin: Emoji Selector [[#2121](https://github.com/airyhq/airy/pull/2121)]
+- [[#2093](https://github.com/airyhq/airy/issues/2093)] Fixed moving avatar in ConversationListItem [[#2094](https://github.com/airyhq/airy/pull/2094)]
+- [[#2069](https://github.com/airyhq/airy/issues/2069)] fix http client and chat plugin packages [[#2070](https://github.com/airyhq/airy/pull/2070)]
+- [[#2060](https://github.com/airyhq/airy/issues/2060)] edit text templates  [[#2068](https://github.com/airyhq/airy/pull/2068)]
+
+#### 🧰 Maintenance
+
+- Bump @types/react-redux from 7.1.16 to 7.1.18 [[#2138](https://github.com/airyhq/airy/pull/2138)]
+- Bump cypress from 7.6.0 to 7.7.0 [[#2145](https://github.com/airyhq/airy/pull/2145)]
+- Bump @types/react-dom from 17.0.8 to 17.0.9 [[#2146](https://github.com/airyhq/airy/pull/2146)]
+- Bump sass from 1.35.1 to 1.35.2 [[#2141](https://github.com/airyhq/airy/pull/2141)]
+- Bump @typescript-eslint/parser from 4.28.1 to 4.28.2 [[#2113](https://github.com/airyhq/airy/pull/2113)]
+- Bump @types/react-router-dom from 5.1.7 to 5.1.8 [[#2137](https://github.com/airyhq/airy/pull/2137)]
+- Bump @types/resize-observer-browser from 0.1.5 to 0.1.6 [[#2135](https://github.com/airyhq/airy/pull/2135)]
+- Bump @typescript-eslint/eslint-plugin from 4.28.1 to 4.28.2 [[#2112](https://github.com/airyhq/airy/pull/2112)]
+- Bump @types/react-window-infinite-loader from 1.0.3 to 1.0.4 [[#2130](https://github.com/airyhq/airy/pull/2130)]
+- [[#1590](https://github.com/airyhq/airy/issues/1590)] Refactor: Split chatplugin into library and app targets [[#2120](https://github.com/airyhq/airy/pull/2120)]
+- [[#2014](https://github.com/airyhq/airy/issues/2014)] Fix stable version file [[#2107](https://github.com/airyhq/airy/pull/2107)]
+- [[#1970](https://github.com/airyhq/airy/issues/1970)] Add issue templates [[#2106](https://github.com/airyhq/airy/pull/2106)]
+- Bump eslint from 7.29.0 to 7.30.0 [[#2102](https://github.com/airyhq/airy/pull/2102)]
+- Bump @types/node from 15.14.0 to 16.0.0 [[#2103](https://github.com/airyhq/airy/pull/2103)]
+- Bump @types/node from 15.12.5 to 15.14.0 [[#2096](https://github.com/airyhq/airy/pull/2096)]
+- Bump @types/react from 17.0.11 to 17.0.13 [[#2097](https://github.com/airyhq/airy/pull/2097)]
+- Bump camelcase-keys from 6.2.2 to 7.0.0 [[#2083](https://github.com/airyhq/airy/pull/2083)]
+- Bump preact from 10.5.13 to 10.5.14 [[#2099](https://github.com/airyhq/airy/pull/2099)]
+- Bump webpack from 5.41.1 to 5.42.0 [[#2098](https://github.com/airyhq/airy/pull/2098)]
+- Bump @typescript-eslint/eslint-plugin from 4.28.0 to 4.28.1 [[#2084](https://github.com/airyhq/airy/pull/2084)]
+- Bump webpack from 5.40.0 to 5.41.1 [[#2085](https://github.com/airyhq/airy/pull/2085)]
+- Bump @typescript-eslint/parser from 4.28.0 to 4.28.1 [[#2081](https://github.com/airyhq/airy/pull/2081)]
+- Bump style-loader from 2.0.0 to 3.0.0 [[#2040](https://github.com/airyhq/airy/pull/2040)]
+- Bump @types/node from 15.12.2 to 15.12.5 [[#2052](https://github.com/airyhq/airy/pull/2052)]
+- Bump core-js from 3.15.0 to 3.15.2 [[#2064](https://github.com/airyhq/airy/pull/2064)]
+- Bump prettier from 2.3.1 to 2.3.2 [[#2053](https://github.com/airyhq/airy/pull/2053)]
+- Bump terser-webpack-plugin from 5.1.3 to 5.1.4 [[#2065](https://github.com/airyhq/airy/pull/2065)]
+- Bump copy-webpack-plugin from 9.0.0 to 9.0.1 [[#2059](https://github.com/airyhq/airy/pull/2059)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.25.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.25.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.25.1/windows/amd64/airy.exe)
+
+## 0.25.0
 
 #### 🚀 Features
 
@@ -45,11 +126,11 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.25.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.25.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.25.0/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.24.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.24.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.24.1/windows/amd64/airy.exe)
 
-## Hotfix 0.23.1
+## 0.23.1 Hotfix
 
 [[#1921](https://github.com/airyhq/airy/issues/1921)] Hotfix: Facebook echo ingestion [[#1922](https://github.com/airyhq/airy/issues/1922)]
 
@@ -1230,303 +1311,4 @@ You can download the Airy CLI for your operating system from the following links
 - [[#515](https://github.com/airyhq/airy/issues/515)] introduce eslint [[#554](https://github.com/airyhq/airy/pull/554)]
 - [[#548](https://github.com/airyhq/airy/issues/548)] Extract payload to web library and introduce date lib [[#556](https://github.com/airyhq/airy/pull/556)]
 - [[#551](https://github.com/airyhq/airy/issues/551)] Use test.properties everywhere [[#553](https://github.com/airyhq/airy/pull/553)]
-
-## 0.3.0
-
-#### Changes
-
-- [[#472](https://github.com/airyhq/airy/issues/472)] Fix guide link [[#488](https://github.com/airyhq/airy/pull/488)]
-
-#### 🚀 Features
-
-- [[#473](https://github.com/airyhq/airy/issues/473)] Rely on allowed origins setup from the env [[#505](https://github.com/airyhq/airy/pull/505)]
-- [[#257](https://github.com/airyhq/airy/issues/257)] Add tags to core [[#431](https://github.com/airyhq/airy/pull/431)]
-- [[#310](https://github.com/airyhq/airy/issues/310)] Airy CLI [[#468](https://github.com/airyhq/airy/pull/468)]
-- [[#393](https://github.com/airyhq/airy/issues/393)] AllowedOrigin in airy.conf [[#469](https://github.com/airyhq/airy/pull/469)]
-- [[#310](https://github.com/airyhq/airy/issues/310)] Add go api client lib [[#460](https://github.com/airyhq/airy/pull/460)]
-- [[#452](https://github.com/airyhq/airy/issues/452)] Split auth dependency [[#456](https://github.com/airyhq/airy/pull/456)]
-- [[#457](https://github.com/airyhq/airy/issues/457)] Improve conversations query (indexes, restoration, api) [[#459](https://github.com/airyhq/airy/pull/459)]
-- [[#451](https://github.com/airyhq/airy/issues/451)] Bash test messages generator [[#454](https://github.com/airyhq/airy/pull/454)]
-- [[#437](https://github.com/airyhq/airy/issues/437)] Replace alignment in favor of sender type [[#441](https://github.com/airyhq/airy/pull/441)]
-- [[#434](https://github.com/airyhq/airy/issues/434)] Move libs to the root of the monorepo [[#438](https://github.com/airyhq/airy/pull/438)]
-- [[#370](https://github.com/airyhq/airy/issues/370)] Add conversation metadata filter docs [[#439](https://github.com/airyhq/airy/pull/439)]
-- [[#342](https://github.com/airyhq/airy/issues/342)] Add guide on how to connect Rasa and fix webhook API [[#423](https://github.com/airyhq/airy/pull/423)]
-- [[#413](https://github.com/airyhq/airy/issues/413)] Add /metadata.remove endpoint [[#430](https://github.com/airyhq/airy/pull/430)]
-- [[#425](https://github.com/airyhq/airy/issues/425)] Migrate Code formating to Bazel tools [[#426](https://github.com/airyhq/airy/pull/426)]
-- [[#290](https://github.com/airyhq/airy/issues/290)] Channels page [[#420](https://github.com/airyhq/airy/pull/420)]
-- [[#427](https://github.com/airyhq/airy/issues/427)] Return default contact information [[#429](https://github.com/airyhq/airy/pull/429)]
-- [[#413](https://github.com/airyhq/airy/issues/413)] Add /metadata.set endpoint [[#414](https://github.com/airyhq/airy/pull/414)]
-- [[#370](https://github.com/airyhq/airy/issues/370)] Filter conversations on metadata [[#407](https://github.com/airyhq/airy/pull/407)]
-
-#### 🐛 Bug Fixes
-
-- [[#498](https://github.com/airyhq/airy/issues/498)] Fix image tags on conf [[#511](https://github.com/airyhq/airy/pull/511)]
-- Fix codeowners syntax [[#512](https://github.com/airyhq/airy/pull/512)]
-- [[#506](https://github.com/airyhq/airy/issues/506)] Remove unused labels [[#510](https://github.com/airyhq/airy/pull/510)]
-- Fix sources configmap [[#500](https://github.com/airyhq/airy/pull/500)]
-- [[#386](https://github.com/airyhq/airy/issues/386)] Add quote function [[#476](https://github.com/airyhq/airy/pull/476)]
-- Hotfix for CI [[#465](https://github.com/airyhq/airy/pull/465)]
-- [442] Fix glossary TOC [[#443](https://github.com/airyhq/airy/pull/443)]
-
-#### 📚 Documentation
-
-- [[#490](https://github.com/airyhq/airy/issues/490)] Reorganize sidebar [[#492](https://github.com/airyhq/airy/pull/492)]
-- [[#484](https://github.com/airyhq/airy/issues/484)] Remove reset password docs [[#487](https://github.com/airyhq/airy/pull/487)]
-- Several initial updates [[#477](https://github.com/airyhq/airy/pull/477)]
-- Several improvements [[#478](https://github.com/airyhq/airy/pull/478)]
-- Small improvements [[#479](https://github.com/airyhq/airy/pull/479)]
-- [[#470](https://github.com/airyhq/airy/issues/470)] Specify --no-ff option in merge commands [[#471](https://github.com/airyhq/airy/pull/471)]
-- [[#341](https://github.com/airyhq/airy/issues/341)] Introduce "how to connect a facebook page"… [[#436](https://github.com/airyhq/airy/pull/436)]
-- [[#453](https://github.com/airyhq/airy/issues/453)] Update release docs [[#458](https://github.com/airyhq/airy/pull/458)]
-- [[#444](https://github.com/airyhq/airy/issues/444)] Use prettier for markdown files as well [[#448](https://github.com/airyhq/airy/pull/448)]
-- [[#442](https://github.com/airyhq/airy/issues/442)] Fix glossary TOC [[#443](https://github.com/airyhq/airy/pull/443)]
-
-#### 🧰 Maintenance
-
-- [[#462](https://github.com/airyhq/airy/issues/462)] Assign the label chore to dependabot pull requests [[#504](https://github.com/airyhq/airy/pull/504)]
-- Add codeowners configuration [[#502](https://github.com/airyhq/airy/pull/502)]
-- Bump ini from 1.3.5 to 1.3.7 in /docs [[#475](https://github.com/airyhq/airy/pull/475)]
-- Bump ini from 1.3.5 to 1.3.7 [[#474](https://github.com/airyhq/airy/pull/474)]
-- Bump elliptic from 6.5.2 to 6.5.3 [[#461](https://github.com/airyhq/airy/pull/461)]
-- [[#432](https://github.com/airyhq/airy/issues/432)] Use Bazel tools web rules [[#435](https://github.com/airyhq/airy/pull/435)]
-
-## 0.2.0
-
-#### Changes
-
-- [[#338](https://github.com/airyhq/airy/issues/338)] Add docs for running in production [[#359](https://github.com/airyhq/airy/pull/359)]
-- [[#394](https://github.com/airyhq/airy/issues/394)] Fix broken link in documentation [[#395](https://github.com/airyhq/airy/pull/395)]
-- [[#376](https://github.com/airyhq/airy/issues/376)] Fix chatplugin message sending and style loading [[#379](https://github.com/airyhq/airy/pull/379)]
-- [324] Reflect in the docs our understanding of the release process [[#375](https://github.com/airyhq/airy/pull/375)]
-- [[#351](https://github.com/airyhq/airy/issues/351)] Add Twilio deployment descriptors [[#374](https://github.com/airyhq/airy/pull/374)]
-- [[#350](https://github.com/airyhq/airy/issues/350)] Twilio content mapper [[#373](https://github.com/airyhq/airy/pull/373)]
-- [[#352](https://github.com/airyhq/airy/issues/352)] Add Twilio channel connection [[#371](https://github.com/airyhq/airy/pull/371)]
-- [[#369](https://github.com/airyhq/airy/issues/369)] Show release process docs in the sidebar [[#372](https://github.com/airyhq/airy/pull/372)]
-- [[#367](https://github.com/airyhq/airy/issues/367)] cleanup linting [[#368](https://github.com/airyhq/airy/pull/368)]
-- [[#354](https://github.com/airyhq/airy/issues/354)] Add Twilio Events router, fix ingestion time bug in google source [[#365](https://github.com/airyhq/airy/pull/365)]
-- [[#355](https://github.com/airyhq/airy/issues/355)] Add Twilio sender [[#366](https://github.com/airyhq/airy/pull/366)]
-- [[#353](https://github.com/airyhq/airy/issues/353)] Add Twilio webhook [[#362](https://github.com/airyhq/airy/pull/362)]
-- [[#337](https://github.com/airyhq/airy/issues/337)] Prettier linting uses tests [[#357](https://github.com/airyhq/airy/pull/357)]
-- [[#334](https://github.com/airyhq/airy/issues/334)] Reflect components move in the docs [[#361](https://github.com/airyhq/airy/pull/361)]
-- Change hostname in smoketest for chatplugin routes [[#363](https://github.com/airyhq/airy/pull/363)]
-- Add chatplugin api docs [[#348](https://github.com/airyhq/airy/pull/348)]
-- [[#322](https://github.com/airyhq/airy/issues/322)] Conversations.tag endpoint returns 500 on empty payload [[#360](https://github.com/airyhq/airy/pull/360)]
-- [[#328](https://github.com/airyhq/airy/issues/328)] Update Subscribed Fields for Facebook Webhooks [[#329](https://github.com/airyhq/airy/pull/329)]
-- [[#279](https://github.com/airyhq/airy/issues/279)] Add update delivery state message accessor [[#339](https://github.com/airyhq/airy/pull/339)]
-- [[#349](https://github.com/airyhq/airy/issues/349)] Add Twilio source documentation [[#356](https://github.com/airyhq/airy/pull/356)]
-- [[#346](https://github.com/airyhq/airy/issues/346)] Fix ingress configuration [[#347](https://github.com/airyhq/airy/pull/347)]
-- [[#326](https://github.com/airyhq/airy/issues/326)] Update release process docs [[#332](https://github.com/airyhq/airy/pull/332)]
-- [[#303](https://github.com/airyhq/airy/issues/303)] deploy chat plugin widget [[#333](https://github.com/airyhq/airy/pull/333)]
-- [[#236](https://github.com/airyhq/airy/issues/236)] - Removing the current kafka-client pod [[#289](https://github.com/airyhq/airy/pull/289)]
-- [[#231](https://github.com/airyhq/airy/issues/231)] Smoke test improvements [[#330](https://github.com/airyhq/airy/pull/330)]
-- Fix the ci bazel config [[#320](https://github.com/airyhq/airy/pull/320)]
-- [[#318](https://github.com/airyhq/airy/issues/318)] Docs should use the right branch [[#319](https://github.com/airyhq/airy/pull/319)]
-- [[#302](https://github.com/airyhq/airy/issues/302)] Add chat plugin UI widget [[#311](https://github.com/airyhq/airy/pull/311)]
-- Release npm components library v0.4.5 [[#317](https://github.com/airyhq/airy/pull/317)]
-- Fix aws cli env variables in ci [[#316](https://github.com/airyhq/airy/pull/316)]
-- [215] Infra/publish images [[#294](https://github.com/airyhq/airy/pull/294)]
-- [[#268](https://github.com/airyhq/airy/issues/268)] Google/Facebook source documentation [[#301](https://github.com/airyhq/airy/pull/301)]
-- [[#287](https://github.com/airyhq/airy/issues/287)] Add Java linting [[#295](https://github.com/airyhq/airy/pull/295)]
-- [[#292](https://github.com/airyhq/airy/issues/292)] Configure algolia for docs.airy.co [[#293](https://github.com/airyhq/airy/pull/293)]
-- Log web requests [[#291](https://github.com/airyhq/airy/pull/291)]
-- Structure + Login for demo [[#263](https://github.com/airyhq/airy/pull/263)]
-- Add google deployment descriptors [[#286](https://github.com/airyhq/airy/pull/286)]
-- Add google admin api channel connection [[#284](https://github.com/airyhq/airy/pull/284)]
-- [[#270](https://github.com/airyhq/airy/issues/270)] Google content mapper [[#285](https://github.com/airyhq/airy/pull/285)]
-- [[#221](https://github.com/airyhq/airy/issues/221)] Further improvements to the script [[#283](https://github.com/airyhq/airy/pull/283)]
-- Add authentication to communication websocket [[#282](https://github.com/airyhq/airy/pull/282)]
-- Fix chat plugin messaging behavior [[#277](https://github.com/airyhq/airy/pull/277)]
-- [[#264](https://github.com/airyhq/airy/issues/264)] Google event router [[#278](https://github.com/airyhq/airy/pull/278)]
-- Fix reverse conversation list order [[#280](https://github.com/airyhq/airy/pull/280)]
-- Add Google message sender app [[#275](https://github.com/airyhq/airy/pull/275)]
-- Infra/smoke test improvement [[#262](https://github.com/airyhq/airy/pull/262)]
-- [[#265](https://github.com/airyhq/airy/issues/265)] Google webhook ingestion [[#272](https://github.com/airyhq/airy/pull/272)]
-- Prepare the codebase for release processes [[#260](https://github.com/airyhq/airy/pull/260)]
-- Use airy specific dns entries for the dev box [[#261](https://github.com/airyhq/airy/pull/261)]
-- Do not use javatuples [[#258](https://github.com/airyhq/airy/pull/258)]
-- Expands contribution document [[#237](https://github.com/airyhq/airy/pull/237)]
-- Generate typescript definitions from content model [[#241](https://github.com/airyhq/airy/pull/241)]
-- Bug/245 send message duplicates webhook [[#249](https://github.com/airyhq/airy/pull/249)]
-- [[#251](https://github.com/airyhq/airy/issues/251)] Do not remove the viewBox in SVGs [[#252](https://github.com/airyhq/airy/pull/252)]
-- Fix request NPEs [[#248](https://github.com/airyhq/airy/pull/248)]
-- [[#180](https://github.com/airyhq/airy/issues/180)] Extract testing helper to a java library [[#247](https://github.com/airyhq/airy/pull/247)]
-- Fix name of provisioner [[#246](https://github.com/airyhq/airy/pull/246)]
-- Temporary remove demo from the status output [[#242](https://github.com/airyhq/airy/pull/242)]
-- Running core on alpine image with k3s [[#230](https://github.com/airyhq/airy/pull/230)]
-- Map outbound content model in communication app [[#231](https://github.com/airyhq/airy/pull/231)]
-- attempt to improve ci [[#234](https://github.com/airyhq/airy/pull/234)]
-- Smoke test draft [[#232](https://github.com/airyhq/airy/pull/232)]
-- Fixes #226  [[#233](https://github.com/airyhq/airy/pull/233)]
-- Add alpine nginx image for demo app [[#229](https://github.com/airyhq/airy/pull/229)]
-- Use the local components library version in the showcase app [[#228](https://github.com/airyhq/airy/pull/228)]
-- Introduce sources top level menu [[#214](https://github.com/airyhq/airy/pull/214)]
-- Update README.md [[#224](https://github.com/airyhq/airy/pull/224)]
-- Do not autowire in production code [[#225](https://github.com/airyhq/airy/pull/225)]
-- Refer to the main branch for the edit button in docs [[#220](https://github.com/airyhq/airy/pull/220)]
-- Fix Facebook channel connection docs [[#222](https://github.com/airyhq/airy/pull/222)]
-- Add deployment files for webhooks [[#206](https://github.com/airyhq/airy/pull/206)]
-- Checks bootstrap script run path [[#192](https://github.com/airyhq/airy/pull/192)]
-- Add demo app and globalize typescript type definitions [[#211](https://github.com/airyhq/airy/pull/211)]
-- Add docusaurus and move docs [[#212](https://github.com/airyhq/airy/pull/212)]
-- Small fixes before release [[#208](https://github.com/airyhq/airy/pull/208)]
-- Fix consumer healthcheck endpoint in deployments [[#209](https://github.com/airyhq/airy/pull/209)]
-- Minimal release script [[#203](https://github.com/airyhq/airy/pull/203)]
-- fixed link to components website [[#205](https://github.com/airyhq/airy/pull/205)]
-- Prepare the codebase for renaming [[#204](https://github.com/airyhq/airy/pull/204)]
-- Orchestrate vagrant up and down [[#194](https://github.com/airyhq/airy/pull/194)]
-- Fix sender app id [[#202](https://github.com/airyhq/airy/pull/202)]
-- Filter out unknown webhooks [[#201](https://github.com/airyhq/airy/pull/201)]
-- Require url and default to empty map for headers in webhook creation [[#198](https://github.com/airyhq/airy/pull/198)]
-- Fix unauthorized response [[#200](https://github.com/airyhq/airy/pull/200)]
-- Fix Searchfield [[#195](https://github.com/airyhq/airy/pull/195)]
-- Disable test output in CI [[#193](https://github.com/airyhq/airy/pull/193)]
-- Infra/schema reg protocol [[#199](https://github.com/airyhq/airy/pull/199)]
-- Require color on tag creation [[#197](https://github.com/airyhq/airy/pull/197)]
-- Introduce web test helper [[#191](https://github.com/airyhq/airy/pull/191)]
-- One broker [[#190](https://github.com/airyhq/airy/pull/190)]
-- Auth refactor [[#183](https://github.com/airyhq/airy/pull/183)]
-- Change default bootstrap [[#184](https://github.com/airyhq/airy/pull/184)]
-- Add line to apply the yaml [[#185](https://github.com/airyhq/airy/pull/185)]
-- Fix bootstrap [[#181](https://github.com/airyhq/airy/pull/181)]
-- Normalize health endpoints [[#179](https://github.com/airyhq/airy/pull/179)]
-- Fix response code for duplicate email signups [[#178](https://github.com/airyhq/airy/pull/178)]
-- Add auth middleware to admin [[#176](https://github.com/airyhq/airy/pull/176)]
-- Add chat plugin [[#142](https://github.com/airyhq/airy/pull/142)]
-- Add jwt to backend apps [[#175](https://github.com/airyhq/airy/pull/175)]
-- Add bracket [[#174](https://github.com/airyhq/airy/pull/174)]
-- Randomize jwt token and pg password [[#171](https://github.com/airyhq/airy/pull/171)]
-- new version [[#172](https://github.com/airyhq/airy/pull/172)]
-- Add subscribed\_fields to page connect API [[#173](https://github.com/airyhq/airy/pull/173)]
-- Add channels connect endpoint [[#166](https://github.com/airyhq/airy/pull/166)]
-- Change default port and mail [[#164](https://github.com/airyhq/airy/pull/164)]
-- Allows /actuator/health routes to be accessible [[#165](https://github.com/airyhq/airy/pull/165)]
-- Add mail vars to user inoput [[#163](https://github.com/airyhq/airy/pull/163)]
-- Adds webhook api docs [[#161](https://github.com/airyhq/airy/pull/161)]
-- Install virtualbox [[#158](https://github.com/airyhq/airy/pull/158)]
-- Feature/remove translations [[#157](https://github.com/airyhq/airy/pull/157)]
-- Check if there is a config file or not [[#159](https://github.com/airyhq/airy/pull/159)]
-- Pull images while building the packer image [[#156](https://github.com/airyhq/airy/pull/156)]
-- Rename endpoints so that naming is more consistent [[#153](https://github.com/airyhq/airy/pull/153)]
-- Kafka topics config [[#155](https://github.com/airyhq/airy/pull/155)]
-- Add local copies of the changed yamls [[#154](https://github.com/airyhq/airy/pull/154)]
-- Add spring auth and spring security lib [[#127](https://github.com/airyhq/airy/pull/127)]
-- Fix issue #134 [[#152](https://github.com/airyhq/airy/pull/152)]
-- Clean up some scripts [[#151](https://github.com/airyhq/airy/pull/151)]
-- Add box\_url instead of box [[#149](https://github.com/airyhq/airy/pull/149)]
-- Disable audio for virtualbox [[#148](https://github.com/airyhq/airy/pull/148)]
-- Fix curl example [[#147](https://github.com/airyhq/airy/pull/147)]
-- Only print vagrant installation information if needed [[#146](https://github.com/airyhq/airy/pull/146)]
-- Fix airy-core s3 image [[#143](https://github.com/airyhq/airy/pull/143)]
-- Local Helm charts [[#139](https://github.com/airyhq/airy/pull/139)]
-- Remove topbar and dependency on react-redux [[#144](https://github.com/airyhq/airy/pull/144)]
-- Fix health check [[#137](https://github.com/airyhq/airy/pull/137)]
-- Add chat plugin channel source [[#140](https://github.com/airyhq/airy/pull/140)]
-- Introduce a user guide [[#138](https://github.com/airyhq/airy/pull/138)]
-- Add chat plugin docs [[#136](https://github.com/airyhq/airy/pull/136)]
-- Update user-input script for airy-core [[#130](https://github.com/airyhq/airy/pull/130)]
-- Updates to the frontend readme [[#128](https://github.com/airyhq/airy/pull/128)]
-- Remove date range, make showcase use npm library [[#125](https://github.com/airyhq/airy/pull/125)]
-- Add ngrok sidecar to facebook webhook [[#126](https://github.com/airyhq/airy/pull/126)]
-- Fix the left join topology call by reference issue [[#129](https://github.com/airyhq/airy/pull/129)]
-- Add user input from config file [[#123](https://github.com/airyhq/airy/pull/123)]
-- add readme [[#124](https://github.com/airyhq/airy/pull/124)]
-- Move packer images to a separate folder [[#121](https://github.com/airyhq/airy/pull/121)]
-- Fix library export [[#120](https://github.com/airyhq/airy/pull/120)]
-- Add more components to showcase [[#118](https://github.com/airyhq/airy/pull/118)]
-- Add conversation tag/untag [[#107](https://github.com/airyhq/airy/pull/107)]
-- Bootstrap finishing [[#119](https://github.com/airyhq/airy/pull/119)]
-- Bootstrap finishing [[#117](https://github.com/airyhq/airy/pull/117)]
-- Implements /tags.update endpoint [[#114](https://github.com/airyhq/airy/pull/114)]
-- Update topics configs [[#116](https://github.com/airyhq/airy/pull/116)]
-- Download Vagrant at bootstrap time [[#112](https://github.com/airyhq/airy/pull/112)]
-- Some gardening [[#115](https://github.com/airyhq/airy/pull/115)]
-- Topics finder [[#113](https://github.com/airyhq/airy/pull/113)]
-- User input  [[#110](https://github.com/airyhq/airy/pull/110)]
-- General cleanup of the docs [[#111](https://github.com/airyhq/airy/pull/111)]
-- Delete tags endpoint [[#109](https://github.com/airyhq/airy/pull/109)]
-- Infra/istio [[#99](https://github.com/airyhq/airy/pull/99)]
-- Fix npm publishing [[#108](https://github.com/airyhq/airy/pull/108)]
-- Creates /tags.list endpoint [[#105](https://github.com/airyhq/airy/pull/105)]
-- Fix target name [[#106](https://github.com/airyhq/airy/pull/106)]
-- Publish library on NPM [[#75](https://github.com/airyhq/airy/pull/75)]
-- Rm App health checks from streaming apps [[#103](https://github.com/airyhq/airy/pull/103)]
-- Creates the /tags.create endpoint [[#102](https://github.com/airyhq/airy/pull/102)]
-- Add content mapper library, use content mapper on webhook publisher [[#96](https://github.com/airyhq/airy/pull/96)]
-- Adds tags api documentation [[#98](https://github.com/airyhq/airy/pull/98)]
-- Add wait-loop instead of sleep [[#97](https://github.com/airyhq/airy/pull/97)]
-- Introduce a glossary [[#83](https://github.com/airyhq/airy/pull/83)]
-- Images [[#86](https://github.com/airyhq/airy/pull/86)]
-- New /users.password-reset endpoint [[#89](https://github.com/airyhq/airy/pull/89)]
-- Add webhook consumer [[#88](https://github.com/airyhq/airy/pull/88)]
-- Add webhook publisher [[#87](https://github.com/airyhq/airy/pull/87)]
-- Enabe authorization [[#85](https://github.com/airyhq/airy/pull/85)]
-- Add webhook api [[#84](https://github.com/airyhq/airy/pull/84)]
-- Core auth email configuration [[#82](https://github.com/airyhq/airy/pull/82)]
-- Fix components deploy [[#81](https://github.com/airyhq/airy/pull/81)]
-- Adding Readme to infrastructure [[#80](https://github.com/airyhq/airy/pull/80)]
-- Add password reset route [[#79](https://github.com/airyhq/airy/pull/79)]
-- Prepare readme for launch [[#77](https://github.com/airyhq/airy/pull/77)]
-- Add showcase app deployment [[#73](https://github.com/airyhq/airy/pull/73)]
-- Core auth /users.accept-invitation endpoint [[#71](https://github.com/airyhq/airy/pull/71)]
-- Some little gardening while reading the code [[#74](https://github.com/airyhq/airy/pull/74)]
-- Create Components Library [[#57](https://github.com/airyhq/airy/pull/57)]
-- Add login endpoint [[#70](https://github.com/airyhq/airy/pull/70)]
-- Core auth create invitations endpoint [[#59](https://github.com/airyhq/airy/pull/59)]
-- Add bootstrapping script [[#61](https://github.com/airyhq/airy/pull/61)]
-- Add apache license [[#63](https://github.com/airyhq/airy/pull/63)]
-- Add signup route with password hashing and jwt creation [[#62](https://github.com/airyhq/airy/pull/62)]
-- Websocket docs [[#60](https://github.com/airyhq/airy/pull/60)]
-- More design principles content [[#58](https://github.com/airyhq/airy/pull/58)]
-- Add core auth app [[#56](https://github.com/airyhq/airy/pull/56)]
-- Quick formatting updates to the docs [[#55](https://github.com/airyhq/airy/pull/55)]
-- feature/core auth docs [[#53](https://github.com/airyhq/airy/pull/53)]
-- Websocket add remaining implementations [[#52](https://github.com/airyhq/airy/pull/52)]
-- Feature/streams to websocket [[#41](https://github.com/airyhq/airy/pull/41)]
-- Unread count [[#42](https://github.com/airyhq/airy/pull/42)]
-- Quick cleanup before next steps [[#40](https://github.com/airyhq/airy/pull/40)]
-- Use group by key [[#38](https://github.com/airyhq/airy/pull/38)]
-- Add facebook message sender [[#37](https://github.com/airyhq/airy/pull/37)]
-- Feature/send message [[#32](https://github.com/airyhq/airy/pull/32)]
-- Add delivery states to message [[#35](https://github.com/airyhq/airy/pull/35)]
-- Send message requests in the events router [[#33](https://github.com/airyhq/airy/pull/33)]
-- Fix the channels test [[#31](https://github.com/airyhq/airy/pull/31)]
-- Channels API [[#28](https://github.com/airyhq/airy/pull/28)]
-- Reorganize the docs so they can scale better [[#27](https://github.com/airyhq/airy/pull/27)]
-- Remove deprecation [[#26](https://github.com/airyhq/airy/pull/26)]
-- Upgrade to bazel 3.5.0 [[#25](https://github.com/airyhq/airy/pull/25)]
-- More cleanup for test infrastructure [[#24](https://github.com/airyhq/airy/pull/24)]
-- Speed up the tests [[#23](https://github.com/airyhq/airy/pull/23)]
-- Kafka upgrade [[#22](https://github.com/airyhq/airy/pull/22)]
-- Communication API [[#18](https://github.com/airyhq/airy/pull/18)]
-- Small cleanups [[#21](https://github.com/airyhq/airy/pull/21)]
-- Cleaning up while reading code [[#19](https://github.com/airyhq/airy/pull/19)]
-- Ingestion platform draft [[#16](https://github.com/airyhq/airy/pull/16)]
-- More docs infrastructure [[#9](https://github.com/airyhq/airy/pull/9)]
-- Spell check the README [[#8](https://github.com/airyhq/airy/pull/8)]
-- Core README v0 [[#4](https://github.com/airyhq/airy/pull/4)]
-- Remove airy docs website from this repository [[#7](https://github.com/airyhq/airy/pull/7)]
-- Fix edit url and root title [[#6](https://github.com/airyhq/airy/pull/6)]
-- Hugo docs site [[#5](https://github.com/airyhq/airy/pull/5)]
-- Setup Bazel dependencies, code formatters and github workflows [[#3](https://github.com/airyhq/airy/pull/3)]
-- Basic docs ported from platform [[#2](https://github.com/airyhq/airy/pull/2)]
-- Basic structure [[#1](https://github.com/airyhq/airy/pull/1)]
-
-#### 🐛 Bug Fixes
-
-- [417] Fix chatplugin chart [[#418](https://github.com/airyhq/airy/pull/418)]
-- [[#408](https://github.com/airyhq/airy/issues/408)] Prioritize first apps [[#410](https://github.com/airyhq/airy/pull/410)]
-- Generate random strings with helm [[#404](https://github.com/airyhq/airy/pull/404)]
-- [[#405](https://github.com/airyhq/airy/issues/405)] Populate delivery state correctly [[#406](https://github.com/airyhq/airy/pull/406)]
-- [[#388](https://github.com/airyhq/airy/issues/388)] Chat plugin text render bug fixed [[#392](https://github.com/airyhq/airy/pull/392)]
-- [[#386](https://github.com/airyhq/airy/issues/386)] Add missing cors configuration [[#390](https://github.com/airyhq/airy/pull/390)]
-- [[#378](https://github.com/airyhq/airy/issues/378)] Fix the code also and not only the docs for channel connection token [[#389](https://github.com/airyhq/airy/pull/389)]
-- [[#378](https://github.com/airyhq/airy/issues/378)] Do not require token as most sources do not require it [[#380](https://github.com/airyhq/airy/pull/380)]
-- [[#381](https://github.com/airyhq/airy/issues/381)] Classify pull requests as our conventions specify [[#382](https://github.com/airyhq/airy/pull/382)]
-
-#### 📚 Documentation
-
-- [415] Add gifs to connecting chatplugin channel documentation [[#419](https://github.com/airyhq/airy/pull/419)]
-- Add Vbox known issue [[#409](https://github.com/airyhq/airy/pull/409)]
-- [[#344](https://github.com/airyhq/airy/issues/344)] Enable copy\&paste of code snippets [[#391](https://github.com/airyhq/airy/pull/391)]
-- Docs/chat plugin [[#383](https://github.com/airyhq/airy/pull/383)]
 

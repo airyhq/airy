@@ -19,7 +19,7 @@ module_deps = [
     "//lib/typescript/websocketclient",
     "//frontend/ui/handles",
     "//frontend/chat-plugin/handles:chat-plugin-handles",
-    "//frontend/chat-plugin",
+    "//frontend/chat-plugin/lib:chat-plugin",
 ]
 
 ts_web_library(

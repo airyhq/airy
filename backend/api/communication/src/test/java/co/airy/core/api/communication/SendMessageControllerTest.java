@@ -31,10 +31,13 @@ import java.util.UUID;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationChannels;
 import static co.airy.core.api.communication.util.Topics.applicationCommunicationMessages;
 import static co.airy.core.api.communication.util.Topics.getTopics;
+import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
@@ -85,6 +88,13 @@ public class SendMessageControllerTest {
         final String requestPayload = String.format("{\"conversation_id\":\"%s\"," +
                         "\"message\":%s}",
                 conversationId, messagePayload);
+
+        retryOnException(
+                () -> webTestHelper.post("/conversations.info",
+                        "{\"conversation_id\":\"" + conversationId + "\"}")
+                        .andExpect(status().isOk()),
+                "Could not find conversation"
+        );
 
         final String response = webTestHelper.post("/messages.send", requestPayload)
                 .andExpect(status().isOk())

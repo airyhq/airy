@@ -1,5 +1,6 @@
 @import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/z-index.scss';
 
 .container {
   display: flex;
@@ -7,7 +8,7 @@
   width: 582px;
   background: white;
   border-radius: 8px;
-  z-index: 1;
+  z-index: $popup;
   position: fixed;
   top: 35%;
   left: 50%;

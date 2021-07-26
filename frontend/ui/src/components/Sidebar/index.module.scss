@@ -1,15 +1,16 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
+@import 'assets/scss/z-index.scss';
 
-.sidebar {
-  position: fixed;
+.wrapper {
   display: flex;
   flex-direction: column;
   border-top-right-radius: 8px;
   overflow-y: hidden;
   margin-top: 88px;
+  z-index: $navigation;
   width: 80px;
-  height: inherit;
+  height: auto;
   background-color: white;
 }
 

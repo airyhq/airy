@@ -1,21 +1,14 @@
 import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import styles from './index.module.scss';
 import {sendMessages} from '../../../actions/messages';
-import TemplateSelector from '../TemplateSelector';
-import 'emoji-mart/css/emoji-mart.css';
 import {withRouter} from 'react-router-dom';
 import {Button} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
-import {Picker} from 'emoji-mart';
-import {SourceMessage} from 'render';
+import {SourceMessage, getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
-import {getTextMessagePayload} from 'httpclient';
-import 'emoji-mart/css/emoji-mart.css';
+import {isEmpty} from 'lodash-es';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
-import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
-import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
 
@@ -27,25 +20,25 @@ import {getCurrentMessages} from '../../../selectors/conversations';
 import {isTextMessage} from '../../../services/types/messageTypes';
 
 import SuggestedReplySelector from '../SuggestedReplySelector';
-import {isEmpty} from 'lodash-es';
+import {InputOptions} from './InputOptions';
+
+import styles from './index.module.scss';
 
 const mapDispatchToProps = {sendMessages};
 
-const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => {
-  return {
-    conversation: getConversation(state, ownProps),
-    messages: getCurrentMessages(state, ownProps),
-    listTemplates,
-  };
-};
+const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
+  conversation: getConversation(state, ownProps),
+  messages: getCurrentMessages(state, ownProps),
+  listTemplates,
+});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-type MessageInputProps = {
+type Props = {
   source: Source;
   suggestions: Suggestions;
   showSuggestedReplies: (suggestions: Suggestions) => void;
   hideSuggestedReplies: () => void;
-};
+} & ConnectedProps<typeof connector>;
 
 interface SelectedTemplate {
   message: Template;
@@ -56,40 +49,38 @@ interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
 
-const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector>) => {
+const contentResizedHeight = 200;
+
+const MessageInput = (props: Props) => {
   const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies, sendMessages} = props;
 
+  const outboundMapper = getOutboundMapper(source);
+  const channelConnected = conversation.channel.connected;
+
   const [input, setInput] = useState('');
-  const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
-  const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
-  const [disconnectedChannelToolTip, setDisconnectedChannelToolTip] = useState(false);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
   const [closeIconWidth, setCloseIconWidth] = useState('');
   const [closeIconHeight, setCloseIconHeight] = useState('');
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
-  const emojiDiv = useRef<HTMLDivElement>(null);
   const templateSelectorDiv = useRef<HTMLDivElement>(null);
   const selectedSuggestedReplyDiv = useRef<HTMLDivElement>(null);
   const removeTemplateButton = useRef(null);
   const removeSuggestedRepliesButton = useRef(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
-    setInput(e.target.value);
-  };
+  const focusInput = () => textAreaRef?.current?.focus();
 
   useEffect(() => {
     setInput('');
     removeTemplateFromInput();
-
-    textAreaRef?.current?.focus();
+    focusInput();
   }, [conversation.id]);
 
   useEffect(() => {
     textAreaRef.current.style.height = 'inherit';
-    textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, 200)}px`;
+    textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, contentResizedHeight)}px`;
   }, [input]);
 
   useEffect(() => {
@@ -99,32 +90,16 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     } else {
       textAreaRef.current.style.cursor = 'auto';
     }
-
-    setDisconnectedChannelToolTip(!conversation.channel.connected);
-  }, [conversation.channel.connected]);
+  }, [channelConnected]);
 
   useEffect(() => {
-    if (
-      selectedSuggestedReply &&
-      selectedSuggestedReplyDiv &&
-      selectedSuggestedReplyDiv.current &&
-      selectedSuggestedReplyDiv.current.offsetHeight > 200
-    ) {
-      const contentResizedHeight = 200;
+    if (selectedSuggestedReply && selectedSuggestedReplyDiv?.current?.offsetHeight > contentResizedHeight) {
       const contentSelectorDivHeight = selectedSuggestedReplyDiv.current.offsetHeight;
-      let iconSize;
-      let buttonSize;
-
       const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
 
       if (scaleRatio <= 0.7) {
-        if (scaleRatio > 0.3) {
-          iconSize = '18px';
-          buttonSize = '36px';
-        } else {
-          iconSize = '30px';
-          buttonSize = '60px';
-        }
+        const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
+        const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
 
         setCloseIconHeight(iconSize);
         setCloseIconWidth(iconSize);
@@ -141,22 +116,13 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   }, [selectedSuggestedReply]);
 
   useEffect(() => {
-    if (selectedTemplate && templateSelectorDiv && templateSelectorDiv.current.offsetHeight > 200) {
-      const contentResizedHeight = 200;
+    if (selectedTemplate && templateSelectorDiv?.current?.offsetHeight > contentResizedHeight) {
       const contentSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
-      let iconSize;
-      let buttonSize;
-
       const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
 
       if (scaleRatio <= 0.7) {
-        if (scaleRatio > 0.3) {
-          iconSize = '18px';
-          buttonSize = '36px';
-        } else {
-          iconSize = '30px';
-          buttonSize = '60px';
-        }
+        const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
+        const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
 
         setCloseIconHeight(iconSize);
         setCloseIconWidth(iconSize);
@@ -173,7 +139,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
   }, [selectedTemplate]);
 
   const sendMessage = () => {
-    if (!conversation.channel.connected) {
+    if (!channelConnected) {
       return;
     }
     setSelectedSuggestedReply(null);
@@ -184,15 +150,14 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             conversationId: conversation.id,
             message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
           }
-        : getTextMessagePayload(source, conversation.id, input)
+        : {
+            conversationId: conversation.id,
+            message: outboundMapper.getTextPayload(input),
+          }
     ).then(() => {
       setInput('');
       removeTemplateFromInput();
     });
-  };
-
-  const handleClick = () => {
-    sendMessage();
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -206,118 +171,6 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
         sendMessage();
       }
     }
-  };
-
-  const InputOptions = () => {
-    const handleEmojiDrawer = () => {
-      if (isShowingTemplateModal) {
-        setIsShowingTemplateModal(false);
-      }
-      if (isShowingEmojiDrawer) {
-        textAreaRef.current && textAreaRef.current.focus();
-      }
-
-      setIsShowingEmojiDrawer(!isShowingEmojiDrawer);
-    };
-
-    const handleEmojiKeyEvent = e => {
-      if (e.key === 'Escape') {
-        handleEmojiDrawer();
-      }
-    };
-
-    const handleEmojiClickedOutside = e => {
-      if (emojiDiv.current === null || emojiDiv.current.contains(e.target)) {
-        return;
-      }
-
-      handleEmojiDrawer();
-    };
-
-    useEffect(() => {
-      if (isShowingEmojiDrawer) {
-        document.addEventListener('keydown', handleEmojiKeyEvent);
-        document.addEventListener('click', handleEmojiClickedOutside);
-
-        return () => {
-          document.removeEventListener('keydown', handleEmojiKeyEvent);
-          document.removeEventListener('click', handleEmojiClickedOutside);
-        };
-      }
-    }, [isShowingEmojiDrawer]);
-
-    const toggleTemplateModal = () => {
-      if (isShowingEmojiDrawer) {
-        setIsShowingEmojiDrawer(false);
-      }
-      setIsShowingTemplateModal(!isShowingTemplateModal);
-    };
-
-    const selectTemplate = (template: Template) => {
-      const jsonTemplate = template.content.message;
-
-      if (selectedTemplate) setSelectedTemplate(null);
-
-      if (input) setInput('');
-
-      if (selectedSuggestedReply) setSelectedSuggestedReply(null);
-
-      if (isTextMessage(template)) {
-        setInput(jsonTemplate.text);
-      } else {
-        setSelectedTemplate({message: template, source: template.source});
-      }
-
-      setIsShowingTemplateModal(false);
-      sendButtonRef.current.focus();
-    };
-
-    const addEmoji = emoji => {
-      const emojiMessage = emoji.native;
-
-      const message = input + ' ' + emojiMessage;
-
-      setInput(message);
-
-      handleEmojiDrawer();
-    };
-
-    return (
-      <div className={styles.messageActionsContainer}>
-        <>
-          {isShowingTemplateModal && (
-            <TemplateSelector onClose={toggleTemplateModal} selectTemplate={selectTemplate} source={source} />
-          )}
-          {isShowingEmojiDrawer && (
-            <div ref={emojiDiv} className={styles.emojiDrawer}>
-              <Picker showPreview={false} onSelect={addEmoji} title="Emoji" />
-            </div>
-          )}
-          <button
-            className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''} ${
-              disconnectedChannelToolTip ? styles.disabledIconButton : styles.activeIconButton
-            }`}
-            type="button"
-            disabled={disconnectedChannelToolTip ? true : false}
-            onClick={() => handleEmojiDrawer()}>
-            <div className={styles.actionToolTip}>Emojis</div>
-            <Smiley aria-hidden className={styles.smileyIcon} />
-          </button>
-          <button
-            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''} ${
-              disconnectedChannelToolTip ? styles.disabledIconButton : styles.activeIconButton
-            }`}
-            type="button"
-            disabled={disconnectedChannelToolTip ? true : false}
-            onClick={() => toggleTemplateModal()}>
-            <div className={styles.actionToolTip}>Templates</div>
-            <div className={styles.templateActionContainer}>
-              <TemplateAlt aria-hidden className={styles.templateAltIcon} />
-            </div>
-          </button>
-        </>
-      </div>
-    );
   };
 
   const getLastMessageWithSuggestedReplies = useCallback(() => {
@@ -338,6 +191,24 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
     } else {
       showSuggestedReplies(getLastMessageWithSuggestedReplies().metadata.suggestions);
     }
+  };
+
+  const selectTemplate = (template: Template) => {
+    const jsonTemplate = template.content.message;
+
+    if (selectedTemplate) setSelectedTemplate(null);
+
+    if (input) setInput('');
+
+    if (selectedSuggestedReply) setSelectedSuggestedReply(null);
+
+    if (isTextMessage(template)) {
+      setInput(jsonTemplate.text);
+    } else {
+      setSelectedTemplate({message: template, source: template.source});
+    }
+
+    sendButtonRef.current.focus();
   };
 
   const selectSuggestedReply = (reply: SuggestedReply) => {
@@ -403,15 +274,22 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
                   ref={textAreaRef}
                   rows={1}
                   name="inputBar"
-                  placeholder={disconnectedChannelToolTip ? '' : 'Enter a message...'}
-                  autoFocus={disconnectedChannelToolTip ? false : true}
+                  placeholder={channelConnected ? 'Enter a message...' : ''}
+                  autoFocus={channelConnected}
                   value={input}
-                  onChange={handleChange}
+                  onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   data-cy={cyMessageTextArea}
-                  disabled={disconnectedChannelToolTip ? true : false}
+                  disabled={!channelConnected}
                 />
-                <InputOptions />
+                <InputOptions
+                  source={source}
+                  inputDisabled={!channelConnected}
+                  input={input}
+                  setInput={setInput}
+                  selectTemplate={selectTemplate}
+                  focus={focusInput}
+                />
               </>
             )}
             {selectedSuggestedReply && (
@@ -458,7 +336,7 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
         </div>
 
         <div className={styles.sendDiv}>
-          {disconnectedChannelToolTip && (
+          {!channelConnected && (
             <div className={styles.disconnectedChannelToolTip}>
               <p>Sending messages is disabled because this channel was disconnected.</p>
             </div>
@@ -468,13 +346,11 @@ const MessageInput = (props: MessageInputProps & ConnectedProps<typeof connector
             ref={sendButtonRef}
             className={`${styles.sendButton} ${
               (input.trim().length != 0 || selectedTemplate || selectedSuggestedReply) &&
-              !disconnectedChannelToolTip &&
+              channelConnected &&
               styles.sendButtonActive
             }`}
-            onClick={handleClick}
-            disabled={
-              (input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply) || disconnectedChannelToolTip
-            }
+            onClick={sendMessage}
+            disabled={input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply && !channelConnected}
             data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <Paperplane />

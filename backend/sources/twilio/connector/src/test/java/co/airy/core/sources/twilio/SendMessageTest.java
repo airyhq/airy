@@ -90,21 +90,22 @@ class SendMessageTest {
     }
 
     @Test
-    void canSendMessageViaTheTwilioApi() throws Exception {
+    void canSendMessages() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
         final String messageId = UUID.randomUUID().toString();
         final String sourceConversationId = "+491234567";
         final String sourceChannelId = "+497654321";
-        final String text = "Hello World";
+        final String payload = "{\"Body\":\"Hello World\"}";
 
         ArgumentCaptor<String> payloadCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> fromCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> toCaptor = ArgumentCaptor.forClass(String.class);
+
         doNothing().when(api).sendMessage(fromCaptor.capture(), toCaptor.capture(), payloadCaptor.capture());
 
         // Test that phone number input gets cleaned up
-        final String payload = "{\"phone_number\":\"+49 765 4321 \",\"name\":\"Blips and Chitz\"}";
-        final String response = webTestHelper.post("/channels.twilio.sms.connect", payload)
+        final String channelPayload = "{\"phone_number\":\"+49 765 4321 \",\"name\":\"Blips and Chitz\"}";
+        final String response = webTestHelper.post("/channels.twilio.sms.connect", channelPayload)
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
         final JsonNode jsonNode = new ObjectMapper().readTree(response);
@@ -121,7 +122,7 @@ class SendMessageTest {
                                 .setDeliveryState(DeliveryState.DELIVERED)
                                 .setConversationId(conversationId)
                                 .setChannelId(channelId)
-                                .setContent("{\"text\":\"" + text + "\"}")
+                                .setContent(payload)
                                 .build())
         ));
 
@@ -137,12 +138,12 @@ class SendMessageTest {
                         .setConversationId(conversationId)
                         .setChannelId(channelId)
                         .setSource("twilio.sms")
-                        .setContent("{\"text\":\"" + text + "\"}")
+                        .setContent(payload)
                         .build())
         );
 
         retryOnException(() -> {
-            assertEquals(text, payloadCaptor.getValue());
+            assertEquals(payload, payloadCaptor.getValue());
             assertEquals(sourceConversationId, toCaptor.getValue());
             assertEquals(sourceChannelId, fromCaptor.getValue());
         }, "Twilio API was not called");

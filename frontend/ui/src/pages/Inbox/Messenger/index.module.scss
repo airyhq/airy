@@ -1,17 +1,16 @@
 @import 'assets/scss/colors.scss';
 
-.messengerContainer {
+.wrapper {
   display: flex;
   flex-direction: row;
   width: 100%;
   height: calc(100vh - 88px);
   border-radius: 10px;
   align-items: stretch;
-  overflow: hidden;
-  margin: 88px 1.5em 0 100px;
+  margin: 88px 1.5em 0 16px;
 }
 
-.messengerContainerMiddlePanel {
+.leftPanel {
   background: var(--color-background-gray);
   display: flex;
   flex-direction: column;

@@ -4,7 +4,7 @@ import {ReactComponent as WhatsappAvatar} from 'assets/images/icons/whatsapp_ava
 import {ReactComponent as SmsAvatar} from 'assets/images/icons/sms_avatar.svg';
 import {ReactComponent as FacebookAvatar} from 'assets/images/icons/messenger_avatar.svg';
 import {ReactComponent as AiryAvatar} from 'assets/images/icons/airy_avatar.svg';
-import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagram_avatar.svg';
+import {ReactComponent as InstagramAvatar} from 'assets/images/icons/instagram_avatar.svg';
 import {Channel, Source} from 'model';
 import styles from './index.module.scss';
 
@@ -43,7 +43,7 @@ const ChannelAvatar = (props: ChannelAvatarProps) => {
       case Source.twilioWhatsApp:
         return <WhatsappAvatar />;
       case Source.instagram:
-        return <InstagramIcon />;
+        return <InstagramAvatar />;
       default:
         return <AiryAvatar />;
     }

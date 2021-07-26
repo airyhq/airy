@@ -29,14 +29,3 @@
   text-decoration: underline;
   font-weight: normal;
 }
-
-.conversationListItemText {
-  @include font-base;
-  color: var(--color-text-gray);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 4px;
-  margin-bottom: 8px;
-  max-height: 24px;
-}

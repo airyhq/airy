@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Data
@@ -38,8 +39,15 @@ public class WebhookEvent {
 
     @JsonIgnore
     public boolean hasMessage() {
-        // since suggestion responses can be rendered, we consider them messages
-        return this.message != null || this.suggestionResponse != null;
+        // since suggestion responses and live agent requests can be rendered, we consider them messages
+        return this.message != null || this.suggestionResponse != null || getLiveAgentRequest().isPresent();
+    }
+
+    @JsonIgnore
+    public Optional<Boolean> getLiveAgentRequest() {
+        return Optional.ofNullable(userStatus)
+                .map((userStatus) -> userStatus.get("requestedLiveAgent"))
+                .map(JsonNode::booleanValue);
     }
 
     @JsonIgnore

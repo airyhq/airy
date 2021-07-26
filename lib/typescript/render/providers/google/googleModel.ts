@@ -4,20 +4,25 @@ export enum MediaHeight {
   tall = 'TALL',
 }
 export interface Content {
-  type: 'text' | 'image' | 'suggestions' | 'richCard' | 'richCardCarousel';
+  type: 'text' | 'image' | 'suggestions' | 'richCard' | 'richCardCarousel' | 'requestedLiveAgent';
 }
 
-export interface TextContent extends Content {
+export interface RequestedLiveAgent extends Content {
+  type: 'requestedLiveAgent';
+}
+
+export interface Text extends Content {
   type: 'text';
   text: string;
 }
 
-export interface ImageContent extends Content {
+export interface Image extends Content {
   type: 'image';
   imageUrl: string;
   altText?: string;
 }
-export interface RichCardContent extends Content {
+
+export interface RichCard extends Content {
   type: 'richCard';
   title?: string;
   description?: string;
@@ -49,10 +54,10 @@ export type RichCardSuggestion = {
   };
 };
 
-export interface RichCardCarouselContent extends Content {
+export interface RichCardCarousel extends Content {
   type: 'richCardCarousel';
   cardWidth: string;
-  cardContents: [RichCardContent];
+  cardContents: [RichCard];
 }
 
 interface SuggestedReplies {
@@ -95,7 +100,7 @@ export type SuggestionsUnion =
   | AuthenticationRequestSuggestion
   | LiveAgentRequestSuggestion;
 
-export interface SuggestionsContent extends Content {
+export interface Suggestions extends Content {
   type: 'suggestions';
   text?: string;
   fallback?: string;
@@ -106,4 +111,4 @@ export interface SuggestionsContent extends Content {
   suggestions: SuggestionsUnion[];
 }
 
-export type ContentUnion = TextContent | ImageContent | SuggestionsContent | RichCardContent | RichCardCarouselContent;
+export type ContentUnion = Text | Image | Suggestions | RichCard | RichCardCarousel | RequestedLiveAgent;

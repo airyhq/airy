@@ -1,5 +1,8 @@
 package co.airy.core.api.admin;
 
+import co.airy.core.api.config.ServiceDiscovery;
+import co.airy.core.api.config.dto.ComponentInfo;
+import co.airy.core.api.config.dto.ServiceInfo;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
@@ -15,14 +18,23 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Map;
+
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +50,13 @@ public class WebhooksControllerTest {
 
     @Autowired
     private WebTestHelper webTestHelper;
+
+    @Autowired
+    @InjectMocks
+    private WebhooksController webhooksController;
+
+    @MockBean
+    private ServiceDiscovery serviceDiscovery;
 
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final ApplicationCommunicationWebhooks applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks();
@@ -64,6 +83,7 @@ public class WebhooksControllerTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
+        MockitoAnnotations.openMocks(this);
         webTestHelper.waitUntilHealthy();
     }
 
@@ -75,6 +95,22 @@ public class WebhooksControllerTest {
         final String xAuthHeader = "auth token";
 
         final String payload = "{\"url\":\"" + url + "\",\"headers\":{\"X-Auth\":\"" + xAuthHeader + "\"}}";
+
+        when(serviceDiscovery.getComponent(Mockito.anyString())).thenCallRealMethod();
+        // One service of the component is failing
+        doReturn(Map.of(
+                "webhook-consumer", new ServiceInfo(true, false, "integration-webhook"),
+                "webhook-publisher", new ServiceInfo(true, true, "integration-webhook")
+        )).when(serviceDiscovery).getServices();
+
+        webTestHelper.post("/webhooks.subscribe", payload)
+                .andExpect(status().isConflict());
+
+        // Component is healthy
+        doReturn(Map.of(
+                "webhook-consumer", new ServiceInfo(true, true, "integration-webhook"),
+                "webhook-publisher", new ServiceInfo(true, true, "integration-webhook")
+        )).when(serviceDiscovery).getServices();
 
         webTestHelper.post("/webhooks.subscribe", payload)
                 .andExpect(status().isOk())

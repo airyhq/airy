@@ -123,10 +123,10 @@ function googleInbound(message: Message): ContentUnion {
     };
   }
 
-  if(messageJson?.userStatus.hasOwnProperty("requestedLiveAgent")) {
+  if (messageJson?.userStatus?.requestedLiveAgent === undefined) {
     return {
-      type: 'requestedLiveAgent'
-    }
+      type: 'requestedLiveAgent',
+    };
   }
 
   return {

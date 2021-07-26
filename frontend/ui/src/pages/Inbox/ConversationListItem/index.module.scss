@@ -80,11 +80,28 @@
   font-weight: 700;
 }
 
+@keyframes flipAnimation {
+  0% {
+    opacity: 1;
+    transform: rotateX(90deg);
+  }
+  50% {
+    opacity: 0.5;
+    transform: rotateX(0deg);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .closedStateButton {
   width: 24px;
   height: 24px;
   background: none;
   padding: 0px;
+  animation-name: flipAnimation;
+  animation-duration: 1500ms;
+  animation-fill-mode: forwards;
 
   svg {
     margin-top: 1px;
@@ -120,6 +137,9 @@
   border: 1px solid var(--color-red-alert);
   margin: 2px 2px 0 0;
   border-radius: 50%;
+  animation-name: flipAnimation;
+  animation-duration: 1500ms;
+  animation-fill-mode: forwards;
 
   button {
     cursor: pointer;

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
@@ -21,6 +21,10 @@ type ConversationListItemProps = {
   active: boolean;
 } & ConnectedProps<typeof connector>;
 
+type StateButtonsProps = {
+  eventHandler(event: React.MouseEvent<HTMLElement, MouseEvent>): void;
+};
+
 const mapDispatchToProps = {
   readConversations,
   conversationState,
@@ -34,41 +38,49 @@ const mapStateToProps = (state: StateModel) => {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
+const OpenStateButton = ({eventHandler}: StateButtonsProps) => {
+  return (
+    <div className={styles.openStateButton} title="Set to closed">
+      <button
+        onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)}
+        data-cy={cyOpenStateButton}
+      />
+    </div>
+  );
+};
+
+const ClosedStateButton = ({eventHandler}: StateButtonsProps) => {
+  return (
+    <div className={styles.closedStateButton} title="Set to open">
+      <button
+        onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)}
+        data-cy={cyClosedStateButton}>
+        <Checkmark />
+      </button>
+    </div>
+  );
+};
+
 const ConversationListItem = (props: ConversationListItemProps) => {
   const {conversation, active, readConversations, conversationState} = props;
+
+  const [buttonStateEnabled, setButtonStateEnabled] = useState(true);
 
   const participant = conversation.metadata.contact;
   const unread = conversation.metadata.unreadCount > 0;
   const currentConversationState = conversation.metadata.state || 'OPEN';
 
   const eventHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    const newState = currentConversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
-    conversationState(conversation.id, newState);
-    event.preventDefault();
-    event.stopPropagation();
-  };
-
-  const OpenStateButton = () => {
-    return (
-      <div className={styles.openStateButton} title="Set to closed">
-        <button
-          onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)}
-          data-cy={cyOpenStateButton}
-        />
-      </div>
-    );
-  };
-
-  const ClosedStateButton = () => {
-    return (
-      <div className={styles.closedStateButton} title="Set to open">
-        <button
-          onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => eventHandler(event)}
-          data-cy={cyClosedStateButton}>
-          <Checkmark />
-        </button>
-      </div>
-    );
+    if (buttonStateEnabled) {
+      setButtonStateEnabled(false);
+      const newState = currentConversationState === 'OPEN' ? 'CLOSED' : 'OPEN';
+      conversationState(conversation.id, newState);
+      event.preventDefault();
+      event.stopPropagation();
+      setTimeout(() => {
+        setButtonStateEnabled(true);
+      }, 2000);
+    }
   };
 
   const markAsRead = () => {
@@ -96,7 +108,11 @@ const ConversationListItem = (props: ConversationListItemProps) => {
               <div className={`${styles.profileName} ${unread ? styles.unread : ''}`}>
                 {participant && participant.displayName}
               </div>
-              {currentConversationState === 'OPEN' ? <OpenStateButton /> : <ClosedStateButton />}
+              {currentConversationState === 'OPEN' ? (
+                <OpenStateButton eventHandler={eventHandler} />
+              ) : (
+                <ClosedStateButton eventHandler={eventHandler} />
+              )}
             </div>
             <div className={`${styles.contactLastMessage} ${unread ? styles.unread : ''}`}>
               <SourceMessagePreview conversation={conversation} />

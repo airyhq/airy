@@ -216,10 +216,7 @@ function allReducer(
           [action.payload.identifier]: {
             id: action.payload.identifier,
             ...state.items[action.payload.identifier],
-            metadata: {
-              ...merge({}, state.items[action.payload.identifier]?.metadata, action.payload.metadata),
-              state: state.items[action.payload.identifier].metadata.state,
-            },
+            metadata: merge({}, state.items[action.payload.identifier]?.metadata, action.payload.metadata),
           },
         },
       };

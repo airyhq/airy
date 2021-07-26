@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 import styles from './index.module.scss';
@@ -24,19 +24,29 @@ type Props = ConnectedProps<typeof connector> & RouteComponentProps<{conversatio
 function ConversationStatus(props: Props) {
   const {currentConversationState, conversationState} = props;
 
+  const [buttonStateEnabled, setButtonStateEnabled] = useState(true);
+
+  const toggleState = (id: string, state: string) => {
+    if (buttonStateEnabled) {
+      setButtonStateEnabled(false);
+      conversationState(id, state);
+      setTimeout(() => {
+        setButtonStateEnabled(true);
+      }, 2000);
+    }
+  };
+
   return (
     <div
       className={`${styles.conversationStatus} ${currentConversationState === 'CLOSED' ? styles.closed : styles.open}`}
       data-cy={cyConversationStatus}>
       <div className={styles.closedButtonWrapper}>
-        <div
-          className={styles.closedButton}
-          onClick={() => conversationState(props.match.params.conversationId, 'CLOSED')}>
+        <div className={styles.closedButton} onClick={() => toggleState(props.match.params.conversationId, 'CLOSED')}>
           Closed
         </div>
       </div>
       <div className={styles.openButtonWrapper}>
-        <div className={styles.openButton} onClick={() => conversationState(props.match.params.conversationId, 'OPEN')}>
+        <div className={styles.openButton} onClick={() => toggleState(props.match.params.conversationId, 'OPEN')}>
           Open
         </div>
       </div>

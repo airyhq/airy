@@ -144,7 +144,7 @@ public class ConversationsController {
         return conversations;
     }
 
-    @PostMapping("/conversations.read")
+    @PostMapping("/conversations.markRead")
     ResponseEntity<?> conversationMarkRead(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final String conversationId = requestPayload.getConversationId().toString();

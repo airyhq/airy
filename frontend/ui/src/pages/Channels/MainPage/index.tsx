@@ -3,6 +3,7 @@ import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import {Source, Channel, Config} from 'model';
 import {FacebookMessengerRequirementsDialog} from '../Providers/Facebook/Messenger/FacebookMessengerRequirementsDialog';
+import {InstagramRequirementsDialog} from '../Providers/Instagram/InstagramRequirementsDialog';
 import {GoogleBusinessMessagesRequirementsDialog} from '../Providers/Google/GoogleBusinessMessagesRequirementsDialog';
 import {TwilioRequirementsDialog} from '../Providers/Twilio/TwilioRequirementsDialog';
 import SourceDescriptionCard from '../SourceDescriptionCard';
@@ -13,6 +14,7 @@ import {ReactComponent as MessengerAvatarIcon} from 'assets/images/icons/messeng
 import {ReactComponent as SMSAvatarIcon} from 'assets/images/icons/sms_avatar.svg';
 import {ReactComponent as WhatsAppAvatarIcon} from 'assets/images/icons/whatsapp_avatar.svg';
 import {ReactComponent as GoogleAvatarIcon} from 'assets/images/icons/google_avatar.svg';
+import {ReactComponent as InstagramIcon} from 'assets/images/icons/instagram_avatar.svg';
 
 import styles from './index.module.scss';
 import {
@@ -26,6 +28,8 @@ import {
   cyChannelsTwilioSmsList,
   cyChannelsTwilioWhatsappAddButton,
   cyChannelsTwilioWhatsappList,
+  cyChannelsInstagramAddButton,
+  cyChannelsInstagramList,
 } from 'handles';
 import {
   CHANNELS_FACEBOOK_ROUTE,
@@ -34,6 +38,7 @@ import {
   CHANNELS_CONNECTED_ROUTE,
   CHANNELS_CHAT_PLUGIN_ROUTE,
   CHANNELS_GOOGLE_ROUTE,
+  CHANNELS_INSTAGRAM_ROUTE,
 } from '../../../routes/routes';
 
 type MainPageProps = {
@@ -121,6 +126,19 @@ const SourcesInfo: SourceInfo[] = [
     dataCyAddChannelButton: cyChannelsGoogleAddButton,
     dataCyChannelList: cyChannelsGoogleList,
   },
+  {
+    type: Source.instagram,
+    title: 'Instagram',
+    description: 'Connect multiple Instagram pages',
+    image: <InstagramIcon />,
+    newChannelRoute: CHANNELS_INSTAGRAM_ROUTE,
+    channelsListRoute: CHANNELS_CONNECTED_ROUTE + '/instagram',
+    configKey: 'sources-facebook',
+    channelsToShow: 4,
+    itemInfoString: 'channels',
+    dataCyAddChannelButton: cyChannelsInstagramAddButton,
+    dataCyChannelList: cyChannelsInstagramList,
+  },
 ];
 
 const MainPage = (props: MainPageProps & RouteComponentProps) => {
@@ -136,6 +154,8 @@ const MainPage = (props: MainPageProps & RouteComponentProps) => {
       case Source.twilioSMS:
       case Source.twilioWhatsApp:
         return <TwilioRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
+      case Source.instagram:
+        return <InstagramRequirementsDialog onClose={() => setDisplayDialogFromSource('')} />;
     }
 
     return null;

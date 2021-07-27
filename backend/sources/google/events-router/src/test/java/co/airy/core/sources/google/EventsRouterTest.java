@@ -74,7 +74,7 @@ public class EventsRouterTest {
     }
 
     @Test
-    void canRouteGoogleMessages() throws Exception {
+    void canRouteMessages() throws Exception {
         String channelId = UUID.randomUUID().toString();
         String agentId = UUID.randomUUID().toString();
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
@@ -100,7 +100,7 @@ public class EventsRouterTest {
     }
 
     @Test
-    void canRouteGoogleMetadata() throws Exception {
+    void canRouteMetadata() throws Exception {
         String channelId = UUID.randomUUID().toString();
         String agentId = UUID.randomUUID().toString();
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
@@ -116,26 +116,35 @@ public class EventsRouterTest {
         final String displayName = "Grace Brewster Murray Hopper";
 
         // Two different event types that both carry context
-        final String messagePayload = "{\"agent\":\"brands/somebrand/agents/%s\",\"conversationId\":\"CONVERSATION_ID\"," +
+        final String textMessage = "{\"agent\":\"brands/somebrand/agents/%s\",\"conversationId\":\"CONVERSATION_ID\"," +
                 "\"customAgentId\":\"CUSTOM_AGENT_ID\",\"message\":{\"messageId\":\"MESSAGE_ID\",\"name\":\"conversations/CONVERSATION_ID/messages/MESSAGE_ID\",\"text\":\"MESSAGE_TEXT\",\"createTime\":\"MESSAGE_CREATE_TIME\"}," +
                 "\"context\":{\"userInfo\":{\"displayName\":\"%s\"}},\"sendTime\":\"2014-10-02T15:01:23.045123456Z\"}";
-        final String userStatusPayload = "{\"agent\":\"brands/somebrand/agents/%s\",\"conversationId\":\"CONVERSATION_ID\"," +
+        final String typingIndicator = "{\"agent\":\"brands/somebrand/agents/%s\",\"conversationId\":\"CONVERSATION_ID\"," +
                 "\"customAgentId\":\"CUSTOM_AGENT_ID\",\"userStatus\":{\"isTyping\":true}," +
+                "\"sendTime\":\"2014-10-02T15:01:23.045123456Z\"}";
+        final String liveAgentRequested = "{\"agent\":\"brands/somebrand/agents/%s\",\"conversationId\":\"CONVERSATION_ID\"," +
+                "\"customAgentId\":\"CUSTOM_AGENT_ID\",\"userStatus\":{\"requestedLiveAgent\":true}," +
                 "\"sendTime\":\"2014-10-02T15:01:23.045123456Z\"}";
 
         List<ProducerRecord<String, String>> events = List.of(
-                new ProducerRecord<>(sourceGoogleEvents.name(), UUID.randomUUID().toString(), String.format(messagePayload, agentId, displayName)),
-                new ProducerRecord<>(sourceGoogleEvents.name(), UUID.randomUUID().toString(), String.format(userStatusPayload, agentId))
+                new ProducerRecord<>(sourceGoogleEvents.name(), UUID.randomUUID().toString(), String.format(textMessage, agentId, displayName)),
+                new ProducerRecord<>(sourceGoogleEvents.name(), UUID.randomUUID().toString(), String.format(typingIndicator, agentId)),
+                new ProducerRecord<>(sourceGoogleEvents.name(), UUID.randomUUID().toString(), String.format(liveAgentRequested, agentId))
         );
 
         kafkaTestHelper.produceRecords(events);
 
-        List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, applicationCommunicationMetadata.name());
-        assertThat(metadataList, hasSize(1));
+        List<Metadata> metadataList = kafkaTestHelper.consumeValues(2, applicationCommunicationMetadata.name());
+        assertThat(metadataList, hasSize(2));
 
         assertTrue(metadataList.stream().anyMatch((metadata ->
                 metadata.getKey().equals(MetadataKeys.ConversationKeys.Contact.DISPLAY_NAME) &&
                         metadata.getValue().equals(displayName)
+        )));
+
+        assertTrue(metadataList.stream().anyMatch((metadata ->
+                metadata.getKey().equals(MetadataKeys.ConversationKeys.STATE) &&
+                        metadata.getValue().equals("OPEN")
         )));
     }
 }

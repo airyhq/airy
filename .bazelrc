@@ -13,8 +13,8 @@ build --stamp --workspace_status_command=tools/build/bazel_status.sh
 
 # Output test errors by default
 test --test_output=errors
-# Do not build production artifacts to speed up tests
-# Build outputs should be validated by running build
+# Do not build production artifacts like docker images to speed up tests
+# Production outputs should be validated by running build
 test --build_tests_only
 
 

@@ -1,6 +1,7 @@
 package create
 
 import (
+	"cli/pkg/cmd/config"
 	"cli/pkg/console"
 	"cli/pkg/kube"
 	"cli/pkg/providers"
@@ -19,6 +20,7 @@ var (
 	namespace      string
 	version        string
 	initOnly       bool
+	noApply        bool
 	CreateCmd      = &cobra.Command{
 		Use:   "create [workspace directory]",
 		Short: "Creates an instance of Airy Core",
@@ -32,14 +34,15 @@ func init() {
 	CreateCmd.Flags().StringVar(&providerName, "provider", "minikube", "One of the supported providers (aws|minikube).")
 	CreateCmd.Flags().StringToStringVar(&providerConfig, "provider-config", nil, "Additional configuration for the providers.")
 	CreateCmd.Flags().StringVar(&namespace, "namespace", "default", "(optional) Kubernetes namespace that Airy should be installed to.")
-	CreateCmd.Flags().BoolVar(&initOnly, "init-only", false, "Only create the airy workspace directory and exit")
+	CreateCmd.Flags().BoolVar(&initOnly, "init-only", false, "Only create the airy workspace directory and exit.")
+	CreateCmd.Flags().BoolVar(&noApply, "no-apply", false, "Don't apply any component configuration found in an existing airy.yaml file after creation.")
 	CreateCmd.MarkFlagRequired("provider")
 }
 
 func create(cmd *cobra.Command, args []string) {
-	cfgDir := ""
+	workspacePath := ""
 	if len(args) > 0 {
-		cfgDir = args[0]
+		workspacePath = args[0]
 	}
 
 	w := console.GetMiddleware(func(input string) string {
@@ -49,7 +52,7 @@ func create(cmd *cobra.Command, args []string) {
 	overrides := provider.GetOverrides()
 	overrides.Version = version
 	overrides.Namespace = namespace
-	dir, err := workspace.Create(cfgDir, overrides)
+	dir, err := workspace.Create(workspacePath, overrides)
 	if err != nil {
 		console.Exit("could not initialize Airy workspace directory", err)
 	}
@@ -112,6 +115,11 @@ func create(cmd *cobra.Command, args []string) {
 	viper.Set("provider", provider)
 	viper.Set("namespace", namespace)
 	viper.WriteConfig()
+
+	if noApply != true {
+		fmt.Println("⚙️  Applying config from airy.yaml")
+		config.ApplyConfig(workspacePath)
+	}
 
 	fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
 	fmt.Println()

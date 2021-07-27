@@ -44,3 +44,6 @@ export const cyEditDisplayNameIcon = 'editDisplayNameIcon';
 export const cyDisplayName = 'displayName';
 export const cyDisplayNameInput = 'displayNameInput';
 export const cyEditDisplayNameCheckmark = 'editDisplayNameCheckmark';
+export const cyClickableListItem = 'clickableListItem';
+export const cyChannelsInstagramAddButton = 'cyChannelsInstagramAddButton';
+export const cyChannelsInstagramList = 'cyChannelsInstagramList';

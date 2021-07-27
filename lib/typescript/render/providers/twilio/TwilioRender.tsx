@@ -1,10 +1,10 @@
 import React from 'react';
 import {Message} from 'model';
-import {Text} from '../../../components/Text';
-import {RenderPropsUnion} from '../../../props';
-import {ContentUnion} from './twilioSMSModel';
+import {Text} from '../../components/Text';
+import {RenderPropsUnion} from '../../props';
+import {ContentUnion} from './twilioModel';
 
-export const TwilioSMSRender = (props: RenderPropsUnion) => {
+export const TwilioRender = (props: RenderPropsUnion) => {
   const message: Message = props.content;
   const content = message.fromContact ? inboundContent(message) : outboundContent(message);
   return render(content, props);
@@ -36,6 +36,6 @@ const outboundContent = (message: Message): ContentUnion => {
   const messageContent = message.content.message ?? message.content;
   return {
     type: 'text',
-    text: messageContent.text,
+    text: messageContent.Body,
   };
 };

@@ -9,6 +9,7 @@ import {Image} from '../../components/Image';
 import {Suggestions} from './components/Suggestions';
 import {RichCard} from './components/RichCard';
 import {RichCardCarousel} from './components/RichCardCarousel';
+import {RequestedLiveAgent} from './components/RequestedLiveAgent';
 
 export const GoogleRender = (props: RenderPropsUnion) => {
   const message: Message = props.content;
@@ -20,6 +21,9 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
       return <Text fromContact={props.content.fromContact || false} text={content.text} />;
+
+    case 'requestedLiveAgent':
+      return <RequestedLiveAgent />;
 
     case 'image':
       return <Image imageUrl={content.imageUrl} altText="image sent via GBM" />;
@@ -116,6 +120,12 @@ function googleInbound(message: Message): ContentUnion {
     return {
       type: 'text',
       text: messageJson.text,
+    };
+  }
+
+  if (messageJson?.userStatus?.requestedLiveAgent === undefined) {
+    return {
+      type: 'requestedLiveAgent',
     };
   }
 

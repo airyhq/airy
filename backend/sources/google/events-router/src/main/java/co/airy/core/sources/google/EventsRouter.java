@@ -11,6 +11,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.source.SourceGoogleEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.uuid.UUIDv5;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.specific.SpecificRecordBase;
@@ -31,6 +32,7 @@ import java.util.List;
 
 import static co.airy.core.sources.google.InfoExtractor.getMetadataFromContext;
 import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 
 @Component
 public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
@@ -127,6 +129,14 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                                         .setUpdatedAt(null)
                                         .build()
                         ));
+
+                        webhookEvent.getLiveAgentRequest()
+                                .ifPresent((liveAgentRequest) -> {
+                                    if (liveAgentRequest) {
+                                        final Metadata metadata = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.STATE, "OPEN");
+                                        records.add(KeyValue.pair(getId(metadata).toString(), metadata));
+                                    }
+                                });
                     }
 
                     if (webhookEvent.hasContext()) {

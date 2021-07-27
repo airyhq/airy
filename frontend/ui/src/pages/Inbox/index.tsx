@@ -16,12 +16,10 @@ interface InboxProps {
   user: User;
 }
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    user: state.data.user,
-    totalConversations: state.data.conversations.all.paginationData.total || 0,
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  user: state.data.user,
+  totalConversations: state.data.conversations.all.paginationData.total || 0,
+});
 
 const mapDispatchToProps = {
   listConversations: fetchConversations,

@@ -6,6 +6,7 @@ import {TwilioMapper} from './twilio';
 export const getOutboundMapper = (source: string) => {
   switch (source) {
     case 'facebook':
+    case 'instagram':
       return new FacebookMapper();
     case 'google':
       return new GoogleMapper();

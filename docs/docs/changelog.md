@@ -3,18 +3,59 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## Hotfix 0.26.3
+## 0.27.0
 
 [[#2192](https://github.com/airyhq/airy/issues/2192)] Inbox crashing when selecting conversations in filtered view [[#2193](https://github.com/airyhq/airy/pull/2193)]
-
 ## Hotfix 0.26.2
 
 [[#2187](https://github.com/airyhq/airy/issues/2187)] Hotfix chat plugin async bundle loading failed on installed websites
-
 ## Hotfix 0.26.1
 
 [[#2181](https://github.com/airyhq/airy/issues/2181)] Fixes chat plugin integration crashing with empty config
+## 0.27.0
 
+#### Changes
+
+#### 🚀 Features
+
+- [[#2148](https://github.com/airyhq/airy/issues/2148)] Enable users to connect via instagram [[#2169](https://github.com/airyhq/airy/pull/2169)]
+- [[#2140](https://github.com/airyhq/airy/issues/2140)] Call to /webhooks.subscribe fails when the component is not enabled or crashing [[#2198](https://github.com/airyhq/airy/pull/2198)]
+- [[#2117](https://github.com/airyhq/airy/issues/2117)] Ingest and render Google Business Messages requests for live agents [[#2199](https://github.com/airyhq/airy/pull/2199)]
+- [[#2168](https://github.com/airyhq/airy/issues/2168)] Support Twilio media url messages [[#2191](https://github.com/airyhq/airy/pull/2191)]
+
+#### 🐛 Bug Fixes
+
+- [[#2215](https://github.com/airyhq/airy/issues/2215)] Fix instagram mapper [[#2216](https://github.com/airyhq/airy/pull/2216)]
+- [[#2115](https://github.com/airyhq/airy/issues/2115)] Conversation Status Changes occasionally not reflected in Inbox UI [[#2129](https://github.com/airyhq/airy/pull/2129)]
+- [[#2002](https://github.com/airyhq/airy/issues/2002)] Fix chatplugin code generator [[#2196](https://github.com/airyhq/airy/pull/2196)]
+- [[#2192](https://github.com/airyhq/airy/issues/2192)] Hotfix: Inbox message list crash [[#2194](https://github.com/airyhq/airy/pull/2194)]
+
+#### 📚 Documentation
+
+- [[#2186](https://github.com/airyhq/airy/issues/2186)] Small docs fixes [[#2214](https://github.com/airyhq/airy/pull/2214)]
+
+#### 🧰 Maintenance
+
+- Bump css-loader from 6.1.0 to 6.2.0 [[#2212](https://github.com/airyhq/airy/pull/2212)]
+- Bump style-loader from 3.1.0 to 3.2.1 [[#2209](https://github.com/airyhq/airy/pull/2209)]
+- Bump @types/react from 17.0.14 to 17.0.15 [[#2211](https://github.com/airyhq/airy/pull/2211)]
+- Bump @babel/core from 7.14.6 to 7.14.8 [[#2206](https://github.com/airyhq/airy/pull/2206)]
+- Bump regenerator-runtime from 0.13.7 to 0.13.9 [[#2207](https://github.com/airyhq/airy/pull/2207)]
+- Bump sass from 1.35.2 to 1.36.0 [[#2208](https://github.com/airyhq/airy/pull/2208)]
+- Bump @types/node from 16.3.3 to 16.4.3 [[#2200](https://github.com/airyhq/airy/pull/2200)]
+- Bump webpack from 5.45.1 to 5.46.0 [[#2201](https://github.com/airyhq/airy/pull/2201)]
+- Bump @typescript-eslint/parser from 4.28.3 to 4.28.4 [[#2202](https://github.com/airyhq/airy/pull/2202)]
+- Bump @babel/preset-env from 7.14.7 to 7.14.8 [[#2205](https://github.com/airyhq/airy/pull/2205)]
+- Bump @typescript-eslint/eslint-plugin from 4.28.3 to 4.28.4 [[#2203](https://github.com/airyhq/airy/pull/2203)]
+- Bump webpack from 5.40.0 to 5.45.1 [[#2177](https://github.com/airyhq/airy/pull/2177)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.27.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.27.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.27.0/windows/amd64/airy.exe)
 
 ## 0.26.0
 

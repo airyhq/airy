@@ -11,7 +11,7 @@ manner.
 :::note
 
 The release scripts needs a `GITHUB_TOKEN` environment variable with write
-permission to the Airy organiasation to function correctly
+permission to the Airy organization to function correctly
 
 :::
 

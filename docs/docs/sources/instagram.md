@@ -80,7 +80,7 @@ Click on the button `Set Up` on the Webhooks product card.
 
 This will add the Webhooks as one of your app's products and will lead you to the Webhooks product page.
 
-<img alt="Instagram webhook" src={useBaseUrl('img/sources/instagram/webhookInstagram.png')} />
+<img alt="Instagram webhook" src={useBaseUrl('img/sources/instagram/webhookInstagram.jpg')} />
 
 Select `Instagram` from the dropdown (the default is `User`) and click on the button `Subscribe to this object`.
 

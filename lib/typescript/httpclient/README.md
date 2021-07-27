@@ -21,7 +21,7 @@ yarn add @airyhq/http-client
 ## Usage
 
 ```typescript
-import {HttpClient} from "@airyhq/httpclient";
+import {HttpClient} from "@airyhq/http-client";
 
 const client = new HttpClient("http://airy.core");
 client.listChannels().then(channels => console.debug("channels", channels));

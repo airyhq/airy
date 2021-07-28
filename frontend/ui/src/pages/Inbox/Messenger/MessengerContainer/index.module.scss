@@ -1,13 +1,14 @@
 .wrapper {
   display: flex;
   flex: 1;
-  height: auto;
+  height: auto;  
   flex-direction: column;
   background-color: #fff;
   margin: 0 8px 0 8px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   position: relative;
+  overflow-x: hidden;
 }
 
 .emptyState {

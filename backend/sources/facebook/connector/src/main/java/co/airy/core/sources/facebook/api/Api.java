@@ -48,7 +48,7 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
 
     private RestTemplate restTemplate;
 
-    private static final String subscribedFields = "messages,messaging_postbacks,messaging_optins,message_deliveries,message_reads,messaging_payments,messaging_pre_checkouts,messaging_checkout_updates,messaging_account_linking,messaging_referrals,message_echoes,messaging_game_plays,standby,messaging_handovers,messaging_policy_enforcement,message_reactions,inbox_labels";
+    private static final String subscribedFields = "messages,messaging_postbacks,messaging_optins,message_deliveries,message_reads,messaging_payments,messaging_pre_checkouts,messaging_checkout_updates,messaging_account_linking,messaging_referrals,message_echoes,messaging_game_plays,standby,messaging_handovers,messaging_policy_enforcement,message_reactions,inbox_labels,message_reactions";
     private static final String baseUrl = "https://graph.facebook.com/v11.0";
     private static final String requestTemplate = baseUrl + "/me/messages?access_token=%s";
     private final String pageFields = "fields=id,name_with_location_descriptor,access_token,picture,is_webhooks_subscribed";

@@ -4,16 +4,19 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.facebook.dto.Event;
 import co.airy.core.sources.facebook.model.WebhookEvent;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.uuid.UUIDv5;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -59,6 +62,9 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                 .filter((sourceChannelId, channel) -> sources.contains(channel.getSource())
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED));
 
+        final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
+        final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
+
         builder.<String, String>stream(new SourceFacebookEvents().name())
                 .flatMap((key, event) -> {
                     WebhookEvent webhookEvent;
@@ -99,37 +105,24 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                             .collect(toList());
                 })
                 .join(channelsTable, (event, channel) -> event.toBuilder().channel(channel).build())
-                .map((facebookPageId, event) -> {
-                    final String sourceConversationId = event.getSourceConversationId();
-                    final String payload = event.getPayload();
-                    final Channel channel = event.getChannel();
-
-                    final String conversationId = UUIDv5.fromNamespaceAndName(channel.getId(), sourceConversationId).toString();
-                    final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
-
+                .flatMap((facebookPageId, event) -> {
                     try {
-                        final Message.Builder messageBuilder = messageParser.parse(payload, channel.getSource());
-
-                        return KeyValue.pair(
-                                messageId,
-                                messageBuilder
-                                        .setSource(channel.getSource())
-                                        .setDeliveryState(DeliveryState.DELIVERED)
-                                        .setId(messageId)
-                                        .setChannelId(channel.getId())
-                                        .setConversationId(conversationId)
-                                        .build()
-                        );
-                    } catch (NotAMessageException e) {
-                        // This way we filter out conversation events and echoes
-                        return KeyValue.pair("skip", null);
+                        return messageParser.getRecords(event);
                     } catch (Exception e) {
                         log.warn("skip facebook record for error: " + event.toString(), e);
-                        return KeyValue.pair("skip", null);
+                        return List.of();
                     }
                 })
-                .filter((conversationId, message) -> message != null)
-                .to(new ApplicationCommunicationMessages().name());
+                .to((recordId, record, context) -> {
+                    if (record instanceof Metadata) {
+                        return applicationCommunicationMetadata;
+                    }
+                    if (record instanceof Message) {
+                        return applicationCommunicationMessages;
+                    }
+
+                    throw new IllegalStateException("Unknown type for record " + record);
+                });
 
         streams.start(builder.build(), appId);
     }

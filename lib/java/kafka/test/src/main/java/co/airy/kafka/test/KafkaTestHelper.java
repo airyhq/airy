@@ -17,6 +17,7 @@ import org.springframework.util.SocketUtils;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -30,6 +31,7 @@ public class KafkaTestHelper {
     private final List<Topic> topics;
 
     private final String consumerId = UUID.randomUUID().toString();
+    private final List<ConsumerRecord> buffer = new ArrayList<>();
 
     private KafkaConsumer consumer;
     private KafkaProducer producer;
@@ -77,13 +79,35 @@ public class KafkaTestHelper {
 
         final List<String> topicNames = List.of(topics);
 
-        //try
+        // It's faster to have one consumer that reads from all topics simultaneously.
+        // Therefore when test code only requests some of the topics we store records from all other topics in a buffer
+        // so that something like this can work:
+        // aRecords = testHelper.consumeRecords(1, topicA)
+        // bRecords = testHelper.consumeRecords(1, topicB)
+        // If there was no buffer, the first call would discard all the records expected in the second call
+        if (buffer.size() > 0) {
+            final Iterator<ConsumerRecord> iterator = buffer.iterator();
+            while (recordsInTopic.size() < expected && iterator.hasNext()) {
+                ConsumerRecord consumerRecord = iterator.next();
+                if (topicNames.contains(consumerRecord.topic()) && (key == null || key.equals(consumerRecord.key()))) {
+                    recordsInTopic.add(consumerRecord);
+                }
+            }
+            buffer.removeAll(recordsInTopic);
+
+            if (recordsInTopic.size() == expected) {
+                return recordsInTopic;
+            }
+        }
+
         int retries = 0;
         do {
             ConsumerRecords<K, V> records = consumer.poll(Duration.ofSeconds(1));
             records.iterator().forEachRemaining(record -> {
                 if (topicNames.contains(record.topic()) && (key == null || key.equals(record.key())) && recordsInTopic.size() < expected) {
                     recordsInTopic.add(record);
+                } else {
+                    buffer.add(record);
                 }
             });
             consumer.commitAsync();

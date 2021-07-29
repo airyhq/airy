@@ -141,7 +141,7 @@ class SendMessageTest {
                         .setIsFromContact(false)
                         .build())
         );
-        
+
         retryOnException(() -> {
             final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
             assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));

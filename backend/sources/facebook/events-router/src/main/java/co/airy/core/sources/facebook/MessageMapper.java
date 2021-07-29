@@ -5,12 +5,17 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.facebook.dto.Event;
+import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.log.AiryLoggerFactory;
 import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.Subject;
 import co.airy.uuid.UUIDv5;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.specific.SpecificRecordBase;
-import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,19 +24,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static co.airy.model.metadata.MetadataRepository.getId;
-import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
+import static co.airy.model.metadata.MetadataRepository.newMessageMetadata;
 
 @Component
-public class MessageParser {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+public class MessageMapper {
+    private static final Logger log = AiryLoggerFactory.getLogger(MessageMapper.class);
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final String facebookAppId;
 
-    MessageParser(@Value("${facebook.app-id}") String facebookAppId) {
+    private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
+    private final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
+
+    MessageMapper(@Value("${facebook.app-id}") String facebookAppId) {
         this.facebookAppId = facebookAppId;
     }
 
@@ -45,7 +53,7 @@ public class MessageParser {
                 : webhookMessaging.get("sender").get("id").asText();
     }
 
-    public List<KeyValue<String, SpecificRecordBase>> getRecords(Event event) throws Exception {
+    public List<ProducerRecord<String, SpecificRecordBase>> getRecords(Event event, Function<String, Optional<String>> getMessageId) throws Exception {
         final String payload = event.getPayload();
         final JsonNode rootNode = objectMapper.readTree(payload);
 
@@ -74,7 +82,11 @@ public class MessageParser {
         }
 
         if (rootNode.has("reaction")) {
-            return getReaction(event.getConversationId(), rootNode);
+            // In case that this is an existing message, try retrieving its id
+            final String facebookMessageId = rootNode.get("reaction").get("mid").textValue();
+            final String messageId = getMessageId.apply(facebookMessageId)
+                    .orElseGet(() -> UUIDv5.fromNamespaceAndName(channel.getId(), facebookMessageId).toString());
+            return getReaction(messageId, rootNode);
         }
 
         if (message == null && postbackNode == null) {
@@ -104,7 +116,7 @@ public class MessageParser {
 
         final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), contentId).toString();
 
-        return List.of(KeyValue.pair(messageId, Message.newBuilder()
+        return List.of(new ProducerRecord<>(applicationCommunicationMessages, messageId, Message.newBuilder()
                 .setSource(channel.getSource())
                 .setDeliveryState(DeliveryState.DELIVERED)
                 .setId(messageId)
@@ -118,24 +130,32 @@ public class MessageParser {
                 .build()));
     }
 
-    private List<KeyValue<String, SpecificRecordBase>> getReaction(String conversationId, JsonNode rootNode) throws Exception {
+    private List<ProducerRecord<String, SpecificRecordBase>> getReaction(String messageId, JsonNode rootNode) throws Exception {
         final JsonNode reaction = rootNode.get("reaction");
+
+        if (!reaction.get("action").textValue().equals("react")) {
+            // unreact
+            return List.of(
+                    new ProducerRecord<>(applicationCommunicationMetadata, getId(new Subject("message", messageId), MetadataKeys.ConversationKeys.Reaction.EMOJI).toString(), null),
+                    new ProducerRecord<>(applicationCommunicationMetadata, getId(new Subject("message", messageId), MetadataKeys.ConversationKeys.Reaction.SENT_AT).toString(), null)
+            );
+        }
+
         final String emojiString = emojiFromCodePoint(reaction.get("emoji").textValue());
         if (emojiString.equals("")) {
             throw new Exception(String.format("Could not convert reaction emoji \"%s\" to string.", emojiString));
         }
 
-        final Metadata emoji = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Reaction.EMOJI, emojiString);
-        final Metadata sentAt = newConversationMetadata(conversationId, MetadataKeys.ConversationKeys.Reaction.EMOJI,
+        Metadata emoji = newMessageMetadata(messageId, MetadataKeys.ConversationKeys.Reaction.EMOJI, emojiString);
+
+        final Metadata sentAt = newMessageMetadata(messageId, MetadataKeys.ConversationKeys.Reaction.SENT_AT,
                 String.valueOf(rootNode.get("timestamp").longValue()));
 
         return List.of(
-                KeyValue.pair(getId(emoji).toString(), emoji),
-                KeyValue.pair(getId(sentAt).toString(), sentAt)
+                new ProducerRecord<>(applicationCommunicationMetadata, getId(emoji).toString(), emoji),
+                new ProducerRecord<>(applicationCommunicationMetadata, getId(sentAt).toString(), sentAt)
         );
     }
-
-    private final Pattern unicodePattern = Pattern.compile("^\\\\u\\{([0-9]*?)\\}");
 
     // E.g. "\\u{2764}\\u{FE0F}" -> ❤️
     private String emojiFromCodePoint(String facebookEmoji) {

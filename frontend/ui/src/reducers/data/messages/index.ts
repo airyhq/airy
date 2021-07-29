@@ -27,19 +27,18 @@ function mergeMessages(oldMessages: Message[], newMessages: Message[]): Message[
 }
 
 const findConversationId = (state: Messages, messageId: string) => {
-  const conversationId = Object.keys(state.all).find((conversationId: string) => {
+  return Object.keys(state.all).find((conversationId: string) => {
     if (state.all[conversationId].find((message: Message) => message.id === messageId)) {
       return true;
     }
     return false;
   });
-  return conversationId;
 };
 
 const setMetadata = (state: Messages, action: ActionType<typeof metadataActions>) => {
   const conversationId = findConversationId(state, action.payload.identifier);
 
-  if (conversationId == undefined) {
+  if (!conversationId) {
     return state;
   }
 

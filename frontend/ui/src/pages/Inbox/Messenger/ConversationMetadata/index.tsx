@@ -6,7 +6,7 @@ import {Tag as TagModel, TagColor} from 'model';
 import {createTag, listTags} from '../../../../actions/tags';
 import {addTagToConversation, removeTagFromConversation} from '../../../../actions/conversations';
 import {updateContact} from '../../../../actions/conversations';
-import {Avatar} from 'render';
+import {Avatar} from 'components';
 import ColorSelector from '../../../../components/ColorSelector';
 import Dialog from '../../../../components/Dialog';
 import {StateModel} from '../../../../reducers';

@@ -47,6 +47,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     private final String channelsStore = "channels-store";
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
+    private final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
     private final KafkaProducer<String, SpecificRecordBase> producer;
     private final Connector connector;
 
@@ -72,7 +73,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                         && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable();
 
         // Facebook messaging stream by conversation-id
-        final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+        final KStream<String, Message> messageStream = builder.<String, Message>stream(applicationCommunicationMessages)
                 .filter((messageId, message) -> message != null && sources.contains(message.getSource()))
                 .selectKey((messageId, message) -> message.getConversationId());
 
@@ -110,11 +111,17 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         // Send outbound messages
         messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, conversation) -> new SendMessageRequest(conversation, message))
-                .map((conversationId, sendMessageRequest) -> {
-                    final Message message = connector.sendMessage(sendMessageRequest);
-                    return KeyValue.pair(message.getId(), message);
-                })
-                .to(new ApplicationCommunicationMessages().name());
+                .flatMap((conversationId, sendMessageRequest) -> connector.sendMessage(sendMessageRequest))
+                .to((recordId, record, context) -> {
+                    if (record instanceof Metadata) {
+                        return applicationCommunicationMetadata;
+                    }
+                    if (record instanceof Message) {
+                        return applicationCommunicationMessages;
+                    }
+
+                    throw new IllegalStateException("Unknown type for record " + record);
+                });
 
         // Fetch missing metadata
         contextTable

@@ -7,12 +7,15 @@ import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.api.ApiException;
 import co.airy.core.sources.facebook.api.Mapper;
 import co.airy.core.sources.facebook.api.model.SendMessagePayload;
+import co.airy.core.sources.facebook.api.model.SendMessageResponse;
 import co.airy.core.sources.facebook.api.model.UserProfile;
 import co.airy.core.sources.facebook.dto.Conversation;
 import co.airy.core.sources.facebook.dto.SendMessageRequest;
 import co.airy.log.AiryLoggerFactory;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +35,7 @@ import static co.airy.model.metadata.MetadataKeys.ConversationKeys.ContactFetchS
 import static co.airy.model.metadata.MetadataKeys.ConversationKeys.ContactFetchState.ok;
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
+import static co.airy.model.metadata.MetadataRepository.newMessageMetadata;
 
 @Component
 public class Connector {
@@ -46,23 +50,24 @@ public class Connector {
         this.mapper = mapper;
     }
 
-    public Message sendMessage(SendMessageRequest sendMessageRequest) {
+    public List<KeyValue<String, SpecificRecordBase>> sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();
         final Conversation conversation = sendMessageRequest.getConversation();
 
         if (isMessageStale(message)) {
             updateDeliveryState(message, DeliveryState.FAILED);
-            return message;
+            return List.of(KeyValue.pair(message.getId(), message));
         }
 
         try {
             final String pageToken = conversation.getChannel().getToken();
             final SendMessagePayload fbSendMessagePayload = mapper.fromSendMessageRequest(sendMessageRequest);
 
-            api.sendMessage(pageToken, fbSendMessagePayload);
-
+            final SendMessageResponse response = api.sendMessage(pageToken, fbSendMessagePayload);
+            final Metadata metadata = newMessageMetadata(message.getId(), MetadataKeys.MessageKeys.SOURCE_ID, response.getMessageId());
             updateDeliveryState(message, DeliveryState.DELIVERED);
-            return message;
+
+            return List.of(KeyValue.pair(message.getId(), message), KeyValue.pair(getId(metadata).toString(), metadata));
         } catch (ApiException e) {
             log.error(String.format("Failed to send a message to Facebook \n SendMessageRequest: %s \n Error Message: %s \n", sendMessageRequest, e.getMessage()), e);
         } catch (Exception e) {
@@ -70,7 +75,7 @@ public class Connector {
         }
 
         updateDeliveryState(message, DeliveryState.FAILED);
-        return message;
+        return List.of(KeyValue.pair(message.getId(), message));
     }
 
     private boolean isMessageStale(Message message) {

@@ -2,7 +2,7 @@ import React from 'react';
 import {Message} from 'model';
 
 import styles from './index.module.scss';
-import {Emoji} from 'components';
+import {Emoji} from '../../general/Emoji';
 
 type Props = {
   message: Message;

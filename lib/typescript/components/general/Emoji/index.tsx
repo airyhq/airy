@@ -1,13 +1,13 @@
 import React from 'react';
 
 export type Props = {
-    label?: string;
-    className?: string;
-    symbol: string;
-}
+  label?: string;
+  className?: string;
+  symbol: string;
+};
 
 export const Emoji = ({label, symbol, className}) => (
-    <span className={className || ''} role="img" aria-label={label ? label : ''} aria-hidden={label ? 'false' : 'true'}>
+  <span className={className || ''} role="img" aria-label={label ? label : ''} aria-hidden={label ? 'false' : 'true'}>
     {symbol}
   </span>
 );

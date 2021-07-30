@@ -31,7 +31,7 @@ export interface MessageMetadata {
   reaction?: {
     emoji: string;
     sentAt: string;
-  }
+  };
 }
 
 export const mapMessage = (payload): Message => {

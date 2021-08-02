@@ -3,12 +3,15 @@ package co.airy.core.sources.facebook;
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.uuid.UUIDv5;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -35,10 +38,12 @@ import java.util.concurrent.TimeUnit;
 
 import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
@@ -52,6 +57,7 @@ class EventsRouterTest {
     private static final Topic sourceFacebookEvents = new SourceFacebookEvents();
     private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
+    private static final Topic applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
 
     @Autowired
     private EventsRouter worker;
@@ -61,7 +67,8 @@ class EventsRouterTest {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
                 sourceFacebookEvents,
                 applicationCommunicationChannels,
-                applicationCommunicationMessages
+                applicationCommunicationMessages,
+                applicationCommunicationMetadata
         );
 
         kafkaTestHelper.beforeAll();
@@ -83,7 +90,7 @@ class EventsRouterTest {
 
     // This tests simulates multiple users sending messages via multiple facebook pages
     // It ensures that we create the correct number of conversations and messages
-    @Test
+    //@Test
     void joinsAndCountsMessagesCorrectly() throws Exception {
         Random rand = new Random();
         List<String> pageIds = Arrays.asList("p1", "p2", "p3", "p4", "p5");
@@ -138,13 +145,9 @@ class EventsRouterTest {
     }
 
     @Test
-    void parsesPageMessagesCorrectly() throws Exception {
+    void parsesEventsCorrectly() throws Exception {
         final String channelId = "channel-id";
         final String pageId = "page-id";
-
-        final String payload = "{\"object\":\"page\",\"entry\":[{\"id\":\"%s\",\"time\":1609250136582," +
-                "\"messaging\":[{\"sender\":{\"id\":\"%s\"},\"recipient\":{\"id\":\"1912214878880084\"},\"timestamp\":1609250136503,\"message\":" +
-                "{\"mid\":\"<message_id>\",\"is_echo\":true,\"text\":\"text of the message\"}}]}]}";
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
                 .setId(channelId)
@@ -153,15 +156,29 @@ class EventsRouterTest {
                 .setSource("facebook")
                 .build()));
 
-        final String webhookPayload = String.format(payload, pageId, pageId);
-        kafkaTestHelper.produceRecord(new ProducerRecord<>(sourceFacebookEvents.name(), UUID.randomUUID().toString(), webhookPayload));
-
         TimeUnit.SECONDS.sleep(5);
+
+        final String messagePayload = "{\"object\":\"page\",\"entry\":[{\"id\":\"%s\",\"time\":1609250136582," +
+                "\"messaging\":[{\"sender\":{\"id\":\"%s\"},\"recipient\":{\"id\":\"1912214878880084\"},\"timestamp\":1609250136503,\"message\":" +
+                "{\"mid\":\"<message_id>\",\"is_echo\":true,\"text\":\"text of the message\"}}]}]}";
+        final String reactionPayload = "{\"object\":\"page\",\"entry\":[{\"time\":1627396558404,\"id\":\"%s\",\"messaging\":[{\"sender\":{\"id\":\"4383398935030571\"}," +
+                "\"recipient\":{\"id\":\"%s\"},\"timestamp\":1627396557502,\"reaction\":{\"mid\":\"mid\",\"action\":\"react\",\"reaction\":\"love\",\"emoji\":\"\\\\u{2764}\\\\u{FE0F}\"}}]}]}";
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(sourceFacebookEvents.name(), UUID.randomUUID().toString(), String.format(messagePayload, pageId, pageId)));
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(sourceFacebookEvents.name(), UUID.randomUUID().toString(), String.format(reactionPayload, pageId, pageId)));
+
         List<Message> messages = kafkaTestHelper.consumeValues(1, applicationCommunicationMessages.name());
         assertThat(messages, hasSize(1));
 
         Message message = messages.get(0);
-        assertThat(message.getIsFromContact(), is(false));
-        assertThat(message.getSenderId(), is("1912214878880084"));
+        assertThat(message.getIsFromContact(), equalTo(false));
+        assertThat(message.getSenderId(), equalTo("1912214878880084"));
+
+        List<Metadata> metadataList = kafkaTestHelper.consumeValues(2, applicationCommunicationMetadata.name());
+        assertThat(metadataList, hasSize(2));
+        assertTrue(metadataList.stream().anyMatch((metadata ->
+                metadata.getKey().equals(MetadataKeys.ConversationKeys.Reaction.EMOJI) &&
+                        metadata.getValue().equals("❤️")
+        )));
     }
 }

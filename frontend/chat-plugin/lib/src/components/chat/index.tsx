@@ -18,7 +18,7 @@ import BubbleProp from '../bubble';
 import AiryBubble from '../../airyRenderProps/AiryBubble';
 
 import {SourceMessage, CommandUnion} from 'render';
-import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
+import {MessageInfoWrapper} from 'components';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');

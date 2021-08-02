@@ -6,6 +6,7 @@ import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core.sources.facebook.api.Api;
 import co.airy.core.sources.facebook.api.model.SendMessagePayload;
+import co.airy.core.sources.facebook.api.model.SendMessageResponse;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
@@ -41,6 +42,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
@@ -98,7 +100,7 @@ class SendMessageTest {
 
         ArgumentCaptor<SendMessagePayload> payloadCaptor = ArgumentCaptor.forClass(SendMessagePayload.class);
         ArgumentCaptor<String> tokenCaptor = ArgumentCaptor.forClass(String.class);
-        doNothing().when(api).sendMessage(tokenCaptor.capture(), payloadCaptor.capture());
+        when(api.sendMessage(tokenCaptor.capture(), payloadCaptor.capture())).thenReturn(new SendMessageResponse("recipient id", "message id"));
 
         kafkaTestHelper.produceRecords(List.of(
                 new ProducerRecord<>(applicationCommunicationChannels.name(), channelId, Channel.newBuilder()
@@ -141,7 +143,7 @@ class SendMessageTest {
                         .setIsFromContact(false)
                         .build())
         );
-        
+
         retryOnException(() -> {
             final SendMessagePayload sendMessagePayload = payloadCaptor.getValue();
             assertThat(sendMessagePayload.getRecipient().getId(), equalTo(sourceConversationId));

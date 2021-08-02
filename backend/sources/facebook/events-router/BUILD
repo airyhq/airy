@@ -7,6 +7,7 @@ app_deps = [
     "//backend:base_app",
     "//backend/model/channel",
     "//backend/model/message",
+    "//backend/model/metadata",
     "//lib/java/uuid",
     "//lib/java/log",
     "//lib/java/kafka/schema:source-facebook-events",

@@ -28,6 +28,10 @@ export interface Message {
 
 export interface MessageMetadata {
   suggestions?: Suggestions;
+  reaction?: {
+    emoji: string;
+    sentAt: string;
+  };
 }
 
 export const mapMessage = (payload): Message => {

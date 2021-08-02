@@ -3,3 +3,4 @@ export * from './cta';
 export * from './general';
 export * from './inputs';
 export * from './loaders';
+export * from './message';

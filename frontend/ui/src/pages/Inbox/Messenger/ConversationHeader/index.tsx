@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {Avatar} from 'render';
+import {Avatar} from 'components';
 
 import ConversationStatus from '../ConversationStatus';
 

@@ -2,22 +2,28 @@ package co.airy.core.sources.facebook;
 
 import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.avro.communication.DeliveryState;
-import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.facebook.dto.Event;
 import co.airy.core.sources.facebook.model.WebhookEvent;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.source.SourceFacebookEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.uuid.UUIDv5;
+import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.MetadataRepository;
+import co.airy.model.metadata.Subject;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KTable;
+import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -27,6 +33,8 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -35,14 +43,17 @@ import static java.util.stream.Collectors.toList;
 public class EventsRouter implements DisposableBean, ApplicationListener<ApplicationReadyEvent> {
     private static final Logger log = AiryLoggerFactory.getLogger(EventsRouter.class);
 
+    private final String metadataStore = "metadata-store";
     private final KafkaStreamsWrapper streams;
     private final ObjectMapper objectMapper;
-    private final MessageParser messageParser;
+    private final MessageMapper messageMapper;
+    private final KafkaProducer<String, SpecificRecordBase> kafkaProducer;
 
-    EventsRouter(KafkaStreamsWrapper streams, ObjectMapper objectMapper, MessageParser messageParser) {
+    EventsRouter(KafkaStreamsWrapper streams, ObjectMapper objectMapper, MessageMapper messageMapper, KafkaProducer<String, SpecificRecordBase> kafkaProducer) {
         this.streams = streams;
         this.objectMapper = objectMapper;
-        this.messageParser = messageParser;
+        this.messageMapper = messageMapper;
+        this.kafkaProducer = kafkaProducer;
     }
 
     private static final String appId = "sources.facebook.EventsRouter";
@@ -51,6 +62,12 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
         final StreamsBuilder builder = new StreamsBuilder();
 
         final List<String> sources = List.of("facebook", "instagram");
+
+        // Facebook to Airy message id lookup table
+        builder.<String, Metadata>table(new ApplicationCommunicationMetadata().name())
+                .filter((metadataId, metadata) -> metadata.getKey().equals(MetadataKeys.MessageKeys.SOURCE_ID))
+                .groupBy((metadataId, metadata) -> KeyValue.pair(metadata.getValue(), metadata))
+                .reduce((oldValue, newValue) -> newValue, (oldValue, reduceValue) -> reduceValue, Materialized.as(metadataStore));
 
         // Channels table
         KTable<String, Channel> channelsTable = builder.<String, Channel>stream(new ApplicationCommunicationChannels().name())
@@ -86,7 +103,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                                     try {
                                         return KeyValue.pair(entry.getId(),
                                                 Event.builder()
-                                                        .sourceConversationId(messageParser.getSourceConversationId(messaging))
+                                                        .sourceConversationId(messageMapper.getSourceConversationId(messaging))
                                                         .payload(messaging.toString()).build()
                                         );
                                     } catch (Exception e) {
@@ -99,39 +116,29 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
                             .collect(toList());
                 })
                 .join(channelsTable, (event, channel) -> event.toBuilder().channel(channel).build())
-                .map((facebookPageId, event) -> {
-                    final String sourceConversationId = event.getSourceConversationId();
-                    final String payload = event.getPayload();
-                    final Channel channel = event.getChannel();
-
-                    final String conversationId = UUIDv5.fromNamespaceAndName(channel.getId(), sourceConversationId).toString();
-                    final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString();
-
+                .foreach((facebookPageId, event) -> {
                     try {
-                        final Message.Builder messageBuilder = messageParser.parse(payload, channel.getSource());
-
-                        return KeyValue.pair(
-                                messageId,
-                                messageBuilder
-                                        .setSource(channel.getSource())
-                                        .setDeliveryState(DeliveryState.DELIVERED)
-                                        .setId(messageId)
-                                        .setChannelId(channel.getId())
-                                        .setConversationId(conversationId)
-                                        .build()
-                        );
-                    } catch (NotAMessageException e) {
-                        // This way we filter out conversation events and echoes
-                        return KeyValue.pair("skip", null);
+                        final List<ProducerRecord<String, SpecificRecordBase>> records = messageMapper.getRecords(event, this::getMessageId);
+                        for (ProducerRecord<String, SpecificRecordBase> record : records) {
+                            kafkaProducer.send(record).get();
+                        }
+                    } catch (InterruptedException | ExecutionException e) {
+                        log.error("Unable to send records. Terminating thread. " + e);
+                        throw new RuntimeException(e);
                     } catch (Exception e) {
                         log.warn("skip facebook record for error: " + event.toString(), e);
-                        return KeyValue.pair("skip", null);
                     }
-                })
-                .filter((conversationId, message) -> message != null)
-                .to(new ApplicationCommunicationMessages().name());
+                });
 
         streams.start(builder.build(), appId);
+    }
+
+    public Optional<String> getMessageId(String facebookMessageId) {
+        final ReadOnlyKeyValueStore<String, Metadata> store = streams.acquireLocalStore(metadataStore);
+
+        return Optional.ofNullable(store.get(facebookMessageId))
+                .map(MetadataRepository::getSubject)
+                .map(Subject::getIdentifier);
     }
 
     @Override

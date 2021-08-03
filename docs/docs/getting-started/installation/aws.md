@@ -271,7 +271,7 @@ kubectl get --namespace kube-system service traefik --output jsonpath='{.status.
 
 #### Start the ingress controller
 
-If the ingress controller is started before the DNS record is added, the Let's Encrypt servers will block an throttle the registration attempts. That is why we recommend starting the ingress controller after the DNS record is added.
+If the ingress controller is started before the DNS record is added, the Let's Encrypt servers will block and throttle the registration attempts. That is why we recommend starting the ingress controller after the DNS record is added.
 
 ```sh
 kubectl -n kube-system scale statefulset -l k8s-app=traefik-ingress-lb --replicas=1

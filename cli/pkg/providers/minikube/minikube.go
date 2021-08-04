@@ -35,7 +35,7 @@ func New(w io.Writer) *provider {
 func (p *provider) GetOverrides() template.Variables {
 	return template.Variables{
 		NgrokEnabled: true,
-		Host:         "http://airy.core",
+		Host:         "airy.core",
 	}
 }
 
@@ -97,7 +97,7 @@ func getCmd(args ...string) *exec.Cmd {
 	return exec.Command(minikube, append(defaultArgs, args...)...)
 }
 
-func (p *provider) PostInstallation(dir workspace.ConfigDir) error {
+func (p *provider) PostInstallation(providerConfig map[string]string, dir workspace.ConfigDir) error {
 	conf, err := dir.LoadAiryYaml()
 	if err != nil {
 		return err

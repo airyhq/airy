@@ -37,7 +37,7 @@ are looking for.
 
 - `namespace` the Kubernetes namespace that the **Airy Core** will use
 
-- `ingress` the subdomains for the **Airy Components** that need to be accessed from outside the Kubernetes cluster
+- `host` the hostname which will be used to access your `Airy Core` instance, outside of the Kubernetes cluster (default: airy.core)
 
 ### Prerequisites
 
@@ -49,6 +49,14 @@ cluster and Redis.
   - `brokers` comma separated list of the broker endpoints
   - `schema-registry` url to the Schema Registry
   - `commitInterval` the [Kafka Commit Interval](https://kafka.apache.org/documentation/#consumerconfigs_auto.commit.interval.ms) if you are using the included Helm chart
+
+### Ingress
+
+- `ingress`
+
+  - `https` set to `true` to enable HTTPS
+  - `loadbalancerAnnotations` list of annotations used to configure the LoadBalancer pointing to the ingress controller, in cloud environment (for AWS the following annotation is added by default: `service.beta.kubernetes.io/aws-load-balancer-type: nlb` )
+  - `letsencryptEmail` the e-mail address used for Let's Encrypt registration, when using HTTPS.
 
 ### Security
 

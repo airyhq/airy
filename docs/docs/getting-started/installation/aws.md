@@ -73,9 +73,9 @@ Download and install the [Airy CLI](cli/introduction.md).
 Export your AWS_PROFILE and AWS_REGION as described in the [AWS
 documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
 
-:::note
+:::warning
 
-If you want to use Airy Core with Let's Encrypt, refer to the [Let's Encrypt section](https://docs.airy.co/getting-started/installation/aws#https-using-lets-encrypt) for customizing your `airy.yaml` file before proceeding.
+If you want to use Airy Core with auto-generated HTTPS certificates, refer to the [Let's Encrypt section](/getting-started/installation/aws#https-using-lets-encrypt) for customizing your `airy.yaml` file before proceeding.
 
 :::
 

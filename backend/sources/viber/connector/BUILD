@@ -1,6 +1,7 @@
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("//tools/build:springboot.bzl", "springboot")
 load("//tools/build:junit5.bzl", "junit5")
+load("//tools/build:java_library.bzl", "custom_java_library")
 load("//tools/build:container_release.bzl", "container_release")
 
 app_deps = [
@@ -26,6 +27,15 @@ springboot(
     deps = app_deps,
 )
 
+custom_java_library(
+    name = "test-lib",
+    srcs = glob(["src/test/java/co/airy/core/sources/viber/lib/*.java"]),
+    deps = [
+        ":app",
+        "//backend:base_test",
+    ] + app_deps,
+)
+
 [
     junit5(
         size = "medium",
@@ -33,6 +43,7 @@ springboot(
         resources = glob(["src/test/resources/**/*"]),
         deps = [
             ":app",
+            ":test-lib",
             "//backend:base_test",
             "@maven//:javax_xml_bind_jaxb_api",
             "//lib/java/kafka/test:kafka-test",

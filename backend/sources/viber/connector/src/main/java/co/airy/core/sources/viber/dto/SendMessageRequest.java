@@ -1,6 +1,5 @@
 package co.airy.core.sources.viber.dto;
 
-import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,5 +16,4 @@ public class SendMessageRequest implements Serializable {
     private String sourceConversationId;
     private String channelId;
     private Message message;
-    private Channel channel;
 }

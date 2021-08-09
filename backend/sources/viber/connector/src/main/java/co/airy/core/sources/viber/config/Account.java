@@ -1,25 +1,29 @@
-package co.airy.core.sources.viber;
+package co.airy.core.sources.viber.config;
 
 import co.airy.core.sources.viber.dto.AccountInfo;
 import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.viber.bot.ViberSignatureValidator;
 import com.viber.bot.api.ViberBot;
 import com.viber.bot.message.Message;
 import com.viber.bot.profile.BotProfile;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 @Configuration
-public class BotConfiguration {
-    private final Logger log = AiryLoggerFactory.getLogger(BotConfiguration.class);
+public class Account {
+    private final Logger log = AiryLoggerFactory.getLogger(Account.class);
 
     @Value("${authToken}")
     private String authToken;
@@ -65,5 +69,14 @@ public class BotConfiguration {
     }
 
     public static class WelcomeMessage extends HashMap<String, Object> {
+    }
+
+    @Bean
+    @Qualifier("viberObjectMapper")
+    public ObjectMapper viberObjectMapper() {
+        return new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY, false)
+                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
 }

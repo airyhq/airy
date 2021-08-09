@@ -38,6 +38,7 @@ module.exports = {
         'sources/google',
         'sources/sms-twilio',
         'sources/whatsapp-twilio',
+        'sources/viber',
         'ui/channels',
       ],
     },

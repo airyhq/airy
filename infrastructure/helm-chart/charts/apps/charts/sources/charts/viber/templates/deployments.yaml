@@ -1,0 +1,171 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-viber-connector
+  namespace: {{ .Values.global.kubernetes.namespace }}
+  labels:
+    app: sources-viber-connector
+    type: sources
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.component }}"
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: sources-viber-connector
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-viber-connector
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.imageConnector }}:{{ .Values.global.kubernetes.appImageTag }}"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: security
+          env:
+          - name: KAFKA_BROKERS
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_BROKERS
+          - name: KAFKA_SCHEMA_REGISTRY_URL
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_SCHEMA_REGISTRY_URL
+          - name: KAFKA_COMMIT_INTERVAL_MS
+            valueFrom:
+              configMapKeyRef:
+                name: kafka-config
+                key: KAFKA_COMMIT_INTERVAL_MS
+          - name: authToken
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Values.component }}"
+                key: authToken
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              httpHeaders:
+              - name: Health-Check
+                value: health-check
+            initialDelaySeconds: 60
+      initContainers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: REPLICAS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_MINIMUM_REPLICAS
+        volumeMounts:
+          - name: provisioning-scripts
+            mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sources-viber-events-router
+  namespace: {{ .Values.global.kubernetes.namespace }}
+  labels:
+    app: sources-viber-events-router
+    type: sources
+    core.airy.co/managed: "true"
+    core.airy.co/mandatory: "{{ .Values.mandatory }}"
+    core.airy.co/component: "{{ .Values.component }}"
+  annotations:
+    core.airy.co/config-items-mandatory: "VIBER_AUTH_TOKEN VIBER_ACCOUNT_SID"
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: sources-viber-events-router
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sources-viber-events-router
+    spec:
+      containers:
+      - name: app
+        image: "{{ .Values.global.kubernetes.containerRegistry}}/{{ .Values.imageEventsRouter }}:{{ .Values.global.kubernetes.appImageTag }}"
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: KAFKA_SCHEMA_REGISTRY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_SCHEMA_REGISTRY_URL
+        - name: KAFKA_COMMIT_INTERVAL_MS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_COMMIT_INTERVAL_MS
+        - name: VIBER_AUTH_TOKEN
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Values.component }}"
+              key: authToken
+        - name: VIBER_ACCOUNT_SID
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Values.component }}"
+              key: accountSid
+        livenessProbe:
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3
+      initContainers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: REPLICAS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_MINIMUM_REPLICAS
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts

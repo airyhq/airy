@@ -58,12 +58,9 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        KStream<String, Channel> channelStream = builder.stream(applicationCommunicationChannels);
-
         // Channels table
-        KTable<String, Channel> channelsTable = channelStream
-                .filter((sourceChannelId, channel) -> channel.getSource().startsWith("viber")
-                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable(Materialized.as(channelsStore));
+        builder.<String, Channel>table(applicationCommunicationChannels)
+                .filter((sourceChannelId, channel) -> channel.getSource().startsWith("viber"), Materialized.as(channelsStore));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .filter((messageId, message) -> message != null && message.getSource().startsWith("viber"))
@@ -81,20 +78,24 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                             sendMessageRequestBuilder.channelId(message.getChannelId());
 
                             return sendMessageRequestBuilder.build();
-                        })
-                .join(channelsTable, SendMessageRequest::getChannelId,
-                        (aggregate, channel) -> aggregate.toBuilder().channel(channel).build());
+                        });
 
-        // TODO
-        messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
+        messageStream.filter((conversationId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, sendMessageRequest) -> sendMessageRequest.toBuilder().message(message).build())
-                .map((conversationId, sendMessageRequest) -> {
-                    final Message message = connector.sendMessage(sendMessageRequest);
-                    return KeyValue.pair(message.getId(), message);
-                })
-                .to(applicationCommunicationMessages);
+                .flatMap((conversationId, sendMessageRequest) -> connector.sendMessage(sendMessageRequest))
+                .to((recordId, record, context) -> {
+                    if (record instanceof Metadata) {
+                        return applicationCommunicationMetadata;
+                    }
+                    if (record instanceof Message) {
+                        return applicationCommunicationMessages;
+                    }
 
-        builder.<String,String>stream(new SourceViberEvents().name())
+                    throw new IllegalStateException("Unknown type for record " + record);
+                });
+
+
+        builder.<String, String>stream(new SourceViberEvents().name())
                 .flatMap(eventsRouter::onEvent)
                 .to((recordId, record, context) -> {
                     if (record instanceof Metadata) {

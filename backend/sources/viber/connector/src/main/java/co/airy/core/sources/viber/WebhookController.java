@@ -1,6 +1,6 @@
 package co.airy.core.sources.viber;
 
-import co.airy.core.sources.viber.BotConfiguration.WelcomeMessage;
+import co.airy.core.sources.viber.config.Account.WelcomeMessage;
 import co.airy.core.sources.viber.dto.AccountInfo;
 import co.airy.kafka.schema.source.SourceViberEvents;
 import com.viber.bot.Request;

@@ -2,11 +2,17 @@ package co.airy.core.sources.viber;
 
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.viber.dto.SendMessageRequest;
+import co.airy.core.sources.viber.dto.SendMessageResponse;
+import co.airy.core.sources.viber.services.Api;
 import co.airy.log.AiryLoggerFactory;
+import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
 import com.viber.bot.api.ViberBot;
+import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -16,6 +22,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
+import static co.airy.model.metadata.MetadataRepository.getId;
+import static co.airy.model.metadata.MetadataRepository.newMessageMetadata;
 
 @Component
 public class Connector {
@@ -23,31 +31,35 @@ public class Connector {
 
     private final long messageStaleAfterSec = 300L; // 5 minutes
     private final ViberBot viberBot;
+    private final Api api;
 
-    public Connector(ViberBot viberBot) {
+    public Connector(ViberBot viberBot, Api api) {
         this.viberBot = viberBot;
+        this.api = api;
     }
 
-    public Message sendMessage(SendMessageRequest sendMessageRequest) {
+    public List<KeyValue<String, SpecificRecordBase>> sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();
-        final String from = sendMessageRequest.getChannel().getSourceChannelId();
         final String to = sendMessageRequest.getSourceConversationId();
 
         if (isMessageStale(message)) {
             updateDeliveryState(message, DeliveryState.FAILED);
-            return message;
+            return List.of(KeyValue.pair(message.getId(), message));
         }
 
         try {
-            //api.sendMessage(from, to, message.getContent());
+            final SendMessageResponse response = api.sendMessage(to, viberBot.getBotProfile(), message.getContent());
+
+            final Metadata metadata = newMessageMetadata(message.getId(), MetadataKeys.MessageKeys.Source.ID, response.getMessageToken().toString());
             updateDeliveryState(message, DeliveryState.DELIVERED);
-            return message;
+
+            return List.of(KeyValue.pair(message.getId(), message), KeyValue.pair(getId(metadata).toString(), metadata));
         } catch (Exception e) {
             log.error(String.format("Failed to send a message to viber \n SendMessageRequest: %s", sendMessageRequest), e);
         }
 
         updateDeliveryState(message, DeliveryState.FAILED);
-        return message;
+        return List.of(KeyValue.pair(message.getId(), message));
     }
 
     private boolean isMessageStale(Message message) {

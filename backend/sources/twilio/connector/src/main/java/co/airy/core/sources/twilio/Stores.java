@@ -83,7 +83,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                 .join(channelsTable, SendMessageRequest::getChannelId,
                         (aggregate, channel) -> aggregate.toBuilder().channel(channel).build());
 
-        messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
+        messageStream.filter((conversationId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, sendMessageRequest) -> sendMessageRequest.toBuilder().message(message).build())
                 .map((conversationId, sendMessageRequest) -> {
                     final Message message = connector.sendMessage(sendMessageRequest);

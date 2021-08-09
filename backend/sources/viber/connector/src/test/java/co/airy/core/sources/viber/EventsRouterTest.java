@@ -56,13 +56,7 @@ class EventsRouterTest {
     private static KafkaTestHelper testHelper;
 
     @Autowired
-    private MockMvc mvc;
-
-    @Autowired
     private AccountInfo accountInfo;
-
-    @Value("${authToken}")
-    private String authToken;
 
     @BeforeAll
     static void beforeAll() throws Exception {

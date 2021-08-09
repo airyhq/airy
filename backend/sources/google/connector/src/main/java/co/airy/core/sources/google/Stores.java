@@ -68,7 +68,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                             return requestBuilder.build();
                         });
 
-        messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
+        messageStream.filter((conversationId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, sendMessageRequest) -> sendMessageRequest.toBuilder().message(message).build())
                 .map((conversationId, sendMessageRequest) -> {
                     final Message message = connector.sendMessage(sendMessageRequest);

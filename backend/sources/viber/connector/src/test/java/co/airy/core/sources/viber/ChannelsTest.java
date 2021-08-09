@@ -5,6 +5,7 @@ import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.viber.dto.AccountInfo;
 import co.airy.core.sources.viber.lib.MockAccountInfo;
+import co.airy.core.sources.viber.lib.Topics;
 import co.airy.core.sources.viber.services.Api;
 import co.airy.kafka.schema.Topic;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
@@ -54,10 +55,6 @@ class ChannelsTest {
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static KafkaTestHelper kafkaTestHelper;
 
-    private static final Topic applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final Topic getApplicationCommunicationMetadata = new ApplicationCommunicationMetadata();
-    private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
-
     @MockBean
     private Api api;
 
@@ -79,11 +76,7 @@ class ChannelsTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationChannels,
-                getApplicationCommunicationMetadata,
-                applicationCommunicationMessages
-        );
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, Topics.getTopics());
 
         kafkaTestHelper.beforeAll();
     }
@@ -112,13 +105,13 @@ class ChannelsTest {
         final String expectedWebhook = ngrokHost + "/viber";
         assertEquals(expectedWebhook, webhookCaptor.getValue());
 
-        List<Channel> channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
+        List<Channel> channels = kafkaTestHelper.consumeValues(1, Topics.applicationCommunicationChannels.name());
         final Channel channel = channels.get(0);
 
         assertThat(accountInfo.getId(), equalTo(channel.getSourceChannelId()));
         assertThat(ChannelConnectionState.CONNECTED, equalTo(channel.getConnectionState()));
 
-        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, getApplicationCommunicationMetadata.name());
+        final List<Metadata> metadataList = kafkaTestHelper.consumeValues(1, Topics.applicationCommunicationMetadata.name());
         final Metadata metadata = metadataList.get(0);
         assertThat(MetadataKeys.ChannelKeys.NAME, equalTo(metadata.getKey()));
         assertThat(accountInfo.getName(), equalTo(metadata.getValue()));
@@ -126,7 +119,7 @@ class ChannelsTest {
         webTestHelper.post("/channels.viber.disconnect", "{\"channel_id\":\"" + jsonNode.get("id").textValue() + "\"}")
                 .andExpect(status().isNoContent());
 
-        channels = kafkaTestHelper.consumeValues(1, applicationCommunicationChannels.name());
+        channels = kafkaTestHelper.consumeValues(1, Topics.applicationCommunicationChannels.name());
         assertThat(ChannelConnectionState.DISCONNECTED, equalTo(channels.get(0).getConnectionState()));
     }
 }

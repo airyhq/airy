@@ -6,6 +6,7 @@ import co.airy.core.sources.viber.dto.SendMessageRequest;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
+import com.viber.bot.api.ViberBot;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,11 @@ public class Connector {
     private static final Logger log = AiryLoggerFactory.getLogger(Connector.class);
 
     private final long messageStaleAfterSec = 300L; // 5 minutes
+    private final ViberBot viberBot;
+
+    public Connector(ViberBot viberBot) {
+        this.viberBot = viberBot;
+    }
 
     public Message sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();

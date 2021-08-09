@@ -64,7 +64,7 @@ public class Connector {
             final SendMessagePayload fbSendMessagePayload = mapper.fromSendMessageRequest(sendMessageRequest);
 
             final SendMessageResponse response = api.sendMessage(pageToken, fbSendMessagePayload);
-            final Metadata metadata = newMessageMetadata(message.getId(), MetadataKeys.MessageKeys.SOURCE_ID, response.getMessageId());
+            final Metadata metadata = newMessageMetadata(message.getId(), MetadataKeys.MessageKeys.Source.ID, response.getMessageId());
             updateDeliveryState(message, DeliveryState.DELIVERED);
 
             return List.of(KeyValue.pair(message.getId(), message), KeyValue.pair(getId(metadata).toString(), metadata));

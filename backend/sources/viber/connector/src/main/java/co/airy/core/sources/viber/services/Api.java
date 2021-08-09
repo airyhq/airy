@@ -2,11 +2,7 @@ package co.airy.core.sources.viber.services;
 
 import co.airy.core.sources.viber.dto.AccountInfo;
 import co.airy.log.AiryLoggerFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.viber.bot.api.ApiResponse;
-import com.viber.bot.api.ViberBot;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

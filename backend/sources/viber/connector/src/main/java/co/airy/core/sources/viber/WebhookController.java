@@ -1,6 +1,7 @@
 package co.airy.core.sources.viber;
 
 import co.airy.core.sources.viber.BotConfiguration.WelcomeMessage;
+import co.airy.core.sources.viber.dto.AccountInfo;
 import co.airy.kafka.schema.source.SourceViberEvents;
 import com.viber.bot.Request;
 import com.viber.bot.ViberSignatureValidator;
@@ -22,18 +23,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.UUID;
 
 @RestController
 public class WebhookController implements DisposableBean {
     private final String sourceViberEvents = new SourceViberEvents().name();
     private final ViberSignatureValidator signatureValidator;
+    private final AccountInfo accountInfo;
     private final Optional<WelcomeMessage> welcomeMessage;
 
     private final Producer<String, String> producer;
 
-    public WebhookController(@Value("${kafka.brokers}") String brokers, ViberSignatureValidator signatureValidator, Optional<WelcomeMessage> welcomeMessage) {
+    public WebhookController(@Value("${kafka.brokers}") String brokers, ViberSignatureValidator signatureValidator, AccountInfo accountInfo, Optional<WelcomeMessage> welcomeMessage) {
         this.signatureValidator = signatureValidator;
+        this.accountInfo = accountInfo;
         this.welcomeMessage = welcomeMessage;
 
         final Properties props = new Properties();
@@ -56,7 +58,7 @@ public class WebhookController implements DisposableBean {
         final Request request = Request.fromJsonString(json);
 
         try {
-            ProducerRecord<String, String> record = new ProducerRecord<>(sourceViberEvents, UUID.randomUUID().toString(), json);
+            ProducerRecord<String, String> record = new ProducerRecord<>(sourceViberEvents, accountInfo.getId(), json);
             producer.send(record).get();
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);

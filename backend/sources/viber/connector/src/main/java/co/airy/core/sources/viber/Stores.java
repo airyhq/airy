@@ -9,6 +9,7 @@ import co.airy.core.sources.viber.dto.SendMessageRequest;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
 import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.source.SourceViberEvents;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.channel.dto.ChannelContainer;
 import org.apache.avro.specific.SpecificRecordBase;
@@ -36,6 +37,7 @@ import static co.airy.model.metadata.MetadataRepository.getId;
 public class Stores implements ApplicationListener<ApplicationReadyEvent>, DisposableBean, HealthIndicator {
 
     private static final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
+    private static final String applicationCommunicationMessages = new ApplicationCommunicationMessages().name();
     private static final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
     private static final String appId = "sources.viber.ConnectorStores";
     private final String channelsStore = "channels-store";
@@ -43,11 +45,13 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
     private final KafkaStreamsWrapper streams;
     private final KafkaProducer<String, SpecificRecordBase> producer;
     private final Connector connector;
+    private final EventsRouter eventsRouter;
 
-    Stores(KafkaStreamsWrapper streams, Connector connector, KafkaProducer<String, SpecificRecordBase> producer) {
+    Stores(KafkaStreamsWrapper streams, Connector connector, KafkaProducer<String, SpecificRecordBase> producer, EventsRouter eventsRouter) {
         this.streams = streams;
         this.connector = connector;
         this.producer = producer;
+        this.eventsRouter = eventsRouter;
     }
 
     @Override
@@ -59,9 +63,7 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
         // Channels table
         KTable<String, Channel> channelsTable = channelStream
                 .filter((sourceChannelId, channel) -> channel.getSource().startsWith("viber")
-                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable();
-
-        channelStream.toTable(Materialized.as(channelsStore));
+                        && channel.getConnectionState().equals(ChannelConnectionState.CONNECTED)).toTable(Materialized.as(channelsStore));
 
         final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
                 .filter((messageId, message) -> message != null && message.getSource().startsWith("viber"))
@@ -83,13 +85,28 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                 .join(channelsTable, SendMessageRequest::getChannelId,
                         (aggregate, channel) -> aggregate.toBuilder().channel(channel).build());
 
+        // TODO
         messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, sendMessageRequest) -> sendMessageRequest.toBuilder().message(message).build())
                 .map((conversationId, sendMessageRequest) -> {
                     final Message message = connector.sendMessage(sendMessageRequest);
                     return KeyValue.pair(message.getId(), message);
                 })
-                .to(new ApplicationCommunicationMessages().name());
+                .to(applicationCommunicationMessages);
+
+        builder.<String,String>stream(new SourceViberEvents().name())
+                .flatMap(eventsRouter::onEvent)
+                .to((recordId, record, context) -> {
+                    if (record instanceof Metadata) {
+                        return applicationCommunicationMetadata;
+                    }
+                    if (record instanceof Message) {
+                        return applicationCommunicationMessages;
+                    }
+
+                    throw new IllegalStateException("Unknown type for record " + record);
+                });
+
 
         streams.start(builder.build(), appId);
     }

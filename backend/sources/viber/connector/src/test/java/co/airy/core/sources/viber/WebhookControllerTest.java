@@ -2,6 +2,7 @@ package co.airy.core.sources.viber;
 
 import co.airy.core.sources.viber.dto.AccountInfo;
 import co.airy.core.sources.viber.lib.MockAccountInfo;
+import co.airy.core.sources.viber.lib.Topics;
 import co.airy.kafka.schema.source.SourceViberEvents;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
@@ -41,7 +42,6 @@ class WebhookControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static KafkaTestHelper testHelper;
-    private static final SourceViberEvents sourceViberEvents = new SourceViberEvents();
 
     @Autowired
     private MockMvc mvc;
@@ -54,7 +54,7 @@ class WebhookControllerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        testHelper = new KafkaTestHelper(sharedKafkaTestResource, sourceViberEvents);
+        testHelper = new KafkaTestHelper(sharedKafkaTestResource, Topics.getTopics());
         testHelper.beforeAll();
     }
 
@@ -87,7 +87,7 @@ class WebhookControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.text", is("Welcome message text")));
 
-        List<String> records = testHelper.consumeValues(1, sourceViberEvents.name());
+        List<String> records = testHelper.consumeValues(1, Topics.sourceViberEvents.name());
         assertThat(records, hasSize(1));
     }
 

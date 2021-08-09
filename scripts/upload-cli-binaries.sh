@@ -13,7 +13,7 @@ for os in "linux" "darwin" "windows"; do
 
     case ${GITHUB_BRANCH} in
     refs/heads/develop)
-        s3_basepath=s3://$bucket_name/develop/$os/$arch
+        s3_basepath=s3://$bucket_name/$version/$os/$arch
         ;;
     refs/heads/release*)
         s3_basepath=s3://$bucket_name/$version-rc/$os/$arch

@@ -21,6 +21,10 @@ public class Application {
                 "\n" +
                 "  name: kafka-create-topics" +
                 "\n" +
+                "  annotations:" +
+                "\n" +
+                "    \"helm.sh/hook\": \"pre-install\"" +
+                "\n" +
                 "data:" +
                 "\n" +
                 "  create-topics.sh: |" +

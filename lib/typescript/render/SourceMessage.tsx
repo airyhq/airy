@@ -23,7 +23,7 @@ export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessa
   }
 
   errorFallback() {
-    return <Text fromContact={this.props.content.fromContact || false} text="Could not render this content" />;
+    return <Text fromContact={this.props.message.fromContact || false} text="Could not render this content" />;
   }
 
   render() {

@@ -1,0 +1,47 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: 'airy-core-ui'
+  namespace: {{ .Values.global.kubernetes.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+    - host: {{ .Values.global.kubernetes.host }}
+      http:
+        paths:
+          - path: /ui
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-ui
+                port:
+                  number: 80
+          - path: /chatplugin/ui
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-chat-plugin
+                port:
+                  number: 80
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: 'airy-core-redirect'
+  namespace: {{ .Values.global.kubernetes.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+    - host: {{ .Values.global.kubernetes.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Exact
+            backend:
+              service:
+                name: frontend-ui
+                port:
+                  number: 80

@@ -40,7 +40,7 @@ public class EventsRouter {
                 return new ArrayList<>() {
                     {
                         add(KeyValue.pair(messageId, Message.newBuilder()
-                                .setChannelId(key)
+                                .setChannelId(channelId)
                                 .setContent(payload)
                                 .setConversationId(conversationId)
                                 .setDeliveryState(DeliveryState.DELIVERED)
@@ -64,7 +64,7 @@ public class EventsRouter {
                 return new ArrayList<>() {
                     {
                         add(KeyValue.pair(messageId, Message.newBuilder()
-                                .setChannelId(key)
+                                .setChannelId(channelId)
                                 .setContent(payload)
                                 .setConversationId(conversationId)
                                 .setDeliveryState(DeliveryState.DELIVERED)

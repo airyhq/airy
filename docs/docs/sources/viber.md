@@ -22,10 +22,9 @@ to and from users
 :::tip What you will learn
 
 - The required steps to configure the Viber messages source
-- How to connect your Viber account to Airy 
+- How to connect your Viber account to Airy
 
 :::
-
 
 ## Configuration
 
@@ -74,17 +73,16 @@ import ConnectViber from '../api/endpoints/connect-viber.mdx'
 
 <ConnectViber />
 
-
 ## Step 4: Send and receive a test message
 
 Find your bot on Viber and send it a message. The message should show up in your Airy Inbox.
 Now the conversation is created and you are ready to reply using the ui or the [Messages endpoint](/api/endpoints/messages#send).
 
 <ButtonBox
-    icon={() => <BoltSVG />}
-    title="Messages endpoint"
-    description="Send messages to your Airy Core instance from different sources through the Messages endpoint"
-    link="api/endpoints/messages#send"
+icon={() => <BoltSVG />}
+title="Messages endpoint"
+description="Send messages to your Airy Core instance from different sources through the Messages endpoint"
+link="api/endpoints/messages#send"
 />
 
 <br />
@@ -103,7 +101,6 @@ Now the conversation is created and you are ready to reply using the ui or the [
 }
 ```
 
-
 **Sending a picture**
 
 [Learn more](https://developers.viber.com/docs/api/rest-bot-api/#picture-message)
@@ -112,10 +109,10 @@ Now the conversation is created and you are ready to reply using the ui or the [
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "type":"picture",
-    "text":"Photo description",
-    "media":"http://www.images.com/img.jpg",
-    "thumbnail":"http://www.images.com/thumb.jpg"
+    "type": "picture",
+    "text": "Photo description",
+    "media": "http://www.images.com/img.jpg",
+    "thumbnail": "http://www.images.com/thumb.jpg"
   }
 }
 ```
@@ -128,14 +125,15 @@ Now the conversation is created and you are ready to reply using the ui or the [
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "type":"video",
-    "media":"http://www.images.com/video.mp4",
-    "thumbnail":"http://www.images.com/thumb.jpg",
-    "size":10000,
-    "duration":10
+    "type": "video",
+    "media": "http://www.images.com/video.mp4",
+    "thumbnail": "http://www.images.com/thumb.jpg",
+    "size": 10000,
+    "duration": 10
   }
 }
 ```
+
 **Sending a file**
 
 [Learn more](https://developers.viber.com/docs/api/rest-bot-api/#file-message)
@@ -144,10 +142,10 @@ Now the conversation is created and you are ready to reply using the ui or the [
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-   "type":"file",
-   "media":"http://www.images.com/file.doc",
-   "size":10000,
-   "file_name":"name_of_file.doc"
+    "type": "file",
+    "media": "http://www.images.com/file.doc",
+    "size": 10000,
+    "file_name": "name_of_file.doc"
   }
 }
 ```
@@ -160,10 +158,10 @@ Now the conversation is created and you are ready to reply using the ui or the [
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "type":"contact",
-    "contact":{
-      "name":"Itamar",
-      "phone_number":"+972511123123"
+    "type": "contact",
+    "contact": {
+      "name": "Itamar",
+      "phone_number": "+972511123123"
     }
   }
 }
@@ -177,10 +175,10 @@ Now the conversation is created and you are ready to reply using the ui or the [
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "type":"location",
-    "location":{
-      "lat":"37.7898",
-      "lon":"-122.3942"
+    "type": "location",
+    "location": {
+      "lat": "37.7898",
+      "lon": "-122.3942"
     }
   }
 }
@@ -194,8 +192,8 @@ Now the conversation is created and you are ready to reply using the ui or the [
 {
   "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
   "message": {
-    "type":"url",
-    "media":"http://www.website.com/go_here"  
+    "type": "url",
+    "media": "http://www.website.com/go_here"
   }
 }
 ```

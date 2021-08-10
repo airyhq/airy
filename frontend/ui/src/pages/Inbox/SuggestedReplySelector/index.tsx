@@ -48,7 +48,7 @@ const SuggestedReplySelector = ({onClose, suggestions, selectSuggestedReply, sou
                   }}>
                   <div className={styles.fadeOutWrapper}>
                     <SourceMessage
-                      content={{id: id, content: suggestion.content}}
+                      message={{content: suggestion.content}}
                       source={source}
                       contentType="suggestedReplies"
                     />

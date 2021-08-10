@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const Reaction = ({message}: Props) => {
-  const emoji = message.metadata.reaction?.emoji;
+  const emoji = message.metadata?.reaction?.emoji;
   if (!emoji) {
     return null;
   }

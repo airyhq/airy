@@ -233,7 +233,7 @@ const Chat = ({config, ...props}: Props) => {
                                 lastInGroup={lastInGroup}>
                                 <SourceMessage
                                   contentType="message"
-                                  content={message}
+                                  message={message}
                                   source="chatplugin"
                                   invertSides={true}
                                   commandCallback={commandCallback}

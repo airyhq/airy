@@ -9,7 +9,7 @@ public class SourceViberEvents extends AbstractTopic {
     }
     @Override
     public String domain() {
-        return "google";
+        return "viber";
     }
     @Override
     public String dataset() {

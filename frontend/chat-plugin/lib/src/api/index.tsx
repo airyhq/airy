@@ -1,5 +1,5 @@
 import {QuickReplyCommand, SuggestionResponse, TextContent} from 'render/providers/chatplugin/chatPluginModel';
-import {setResumeTokenInStorage} from '../storage';
+import {resetStorage, setResumeTokenInStorage} from '../storage';
 
 let host;
 export const setApiHost = apiHost => {
@@ -47,7 +47,7 @@ export const getResumeToken = async (channelId: string, authToken: string) => {
   setResumeTokenInStorage(channelId, jsonResumeToken.resume_token);
 };
 
-export const authenticate = async (channelId: string, resumeToken: string) =>
+export const authenticate = async (channelId: string, resumeToken?: string) =>
   fetch(`${host}/chatplugin.authenticate`, {
     method: 'POST',
     body: JSON.stringify({
@@ -67,6 +67,10 @@ export const authenticate = async (channelId: string, resumeToken: string) =>
       return response.json();
     })
     .catch(error => {
+      if (resumeToken) {
+        resetStorage(channelId);
+        return authenticate(channelId);
+      }
       return Promise.reject(
         new Error(`Airy Chat Plugin authentication failed. Please check your installation. ${error}`)
       );

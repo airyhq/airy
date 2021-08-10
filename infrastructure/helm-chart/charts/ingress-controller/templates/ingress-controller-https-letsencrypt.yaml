@@ -1,0 +1,162 @@
+{{ if .Values.global.ingress }}
+{{ if .Values.global.ingress.https }}
+{{ if .Values.global.ingress.letsencryptEmail }}
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: traefik-ingress-controller
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - endpoints
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses/status
+    verbs:
+      - update
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: traefik-ingress-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: traefik-ingress-controller
+subjects:
+  - kind: ServiceAccount
+    name: traefik-ingress-controller
+    namespace: kube-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik-ingress-controller
+  namespace: kube-system
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: traefik-ingress-controller
+  namespace: kube-system
+  labels:
+    k8s-app: traefik-ingress-lb
+spec:
+  serviceName: traefik-ingress-lb
+  replicas: 0
+  selector:
+    matchLabels:
+      app: traefik-ingress-lb
+      k8s-app: traefik-ingress-lb
+  template:
+    metadata:
+      labels:
+        app: traefik-ingress-lb
+        name: traefik-ingress-lb
+        k8s-app: traefik-ingress-lb
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      terminationGracePeriodSeconds: 60
+      containers:
+        - image: traefik:v1.7
+          name: traefik-ingress-lb
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: "/config"
+              name: "config"
+            - mountPath: "/acme"
+              name: "acme"
+          ports:
+            - containerPort: 80
+              name: http
+            - containerPort: 443
+              name: https
+            - containerPort: 8080
+              name: admin
+          args:
+            - --api
+            - --kubernetes
+            - --logLevel=INFO
+            - --configfile=/config/traefik.toml
+      volumes:
+        - name: config
+          configMap:
+            name: traefik-conf
+        - name: acme
+          emptyDir: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: acme
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traefik-conf
+  namespace: kube-system
+data:
+  traefik.toml: |
+    # traefik.toml
+    defaultEntryPoints = ["http","https"]
+    [entryPoints]
+      [entryPoints.http]
+      address = ":80"
+      [entryPoints.http.redirect]
+      entryPoint = "https"
+      [entryPoints.https]
+      address = ":443"
+      [entryPoints.https.tls]
+    [acme]
+      email = "{{ .Values.global.ingress.letsencryptEmail }}"
+      storage = "/acme/acme.json"
+      entryPoint = "https"
+      onHostRule = true
+      acmeLogging = true
+      [acme.httpChallenge]
+        entryPoint = "http"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: traefik
+  namespace: kube-system
+  annotations:
+  {{- range $k, $v := .Values.global.ingress.loadbalancerAnnotations }}
+    {{ $k }}: {{ $v }}
+  {{- end }}
+spec:
+  selector:
+    k8s-app: traefik-ingress-lb
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http
+    - protocol: TCP
+      port: 443
+      targetPort: 443
+      name: https
+  type: LoadBalancer
+{{ end }}
+{{ end }}
+{{ end }}

@@ -306,7 +306,7 @@ const MessageInput = (props: Props) => {
                   />
                 </button>
                 <SourceMessage
-                  content={selectedSuggestedReply.message}
+                  message={selectedSuggestedReply.message}
                   source={source}
                   contentType="suggestedReplies"
                 />
@@ -325,7 +325,7 @@ const MessageInput = (props: Props) => {
                     />
                   </button>
                   <SourceMessage
-                    content={selectedTemplate.message}
+                    message={selectedTemplate.message}
                     source={selectedTemplate.source}
                     contentType="template"
                   />

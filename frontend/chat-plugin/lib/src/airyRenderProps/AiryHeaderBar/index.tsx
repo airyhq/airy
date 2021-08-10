@@ -40,7 +40,7 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
           {config.headerText || 'Customer Chat'}
         </h1>
         <p className={style.subtitle} style={customStyleSubtitle}>
-          {config.subtitleText || 'Customer Subtitle'}
+          {config.subtitleText || config.showMode === true && 'Customer Subtitle'}
         </p>
       </div>
 

@@ -9,6 +9,7 @@
   text-align: center;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
+  pointer-events: all;
 }
 
 .hideBubble:hover {

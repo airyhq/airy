@@ -1,4 +1,4 @@
-import {Content, DeliveryState} from 'model';
+import {Content} from 'model';
 export interface Command {
   type: string;
 }

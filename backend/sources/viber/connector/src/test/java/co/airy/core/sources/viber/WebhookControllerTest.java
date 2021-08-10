@@ -3,7 +3,6 @@ package co.airy.core.sources.viber;
 import co.airy.core.sources.viber.dto.AccountInfo;
 import co.airy.core.sources.viber.lib.MockAccountInfo;
 import co.airy.core.sources.viber.lib.Topics;
-import co.airy.kafka.schema.source.SourceViberEvents;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;

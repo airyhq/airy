@@ -92,9 +92,9 @@ public class EventsRouter {
                 final Metadata metadata = newMessageMetadata(messageId, MetadataKeys.MessageKeys.Source.DELIVERY_STATE, "seen");
                 return List.of(KeyValue.pair(getId(metadata).toString(), metadata));
             }
-        }
 
-        return List.of();
+            default: return List.of();
+        }
     }
 
     private String getMessageId(Long messageToken) {

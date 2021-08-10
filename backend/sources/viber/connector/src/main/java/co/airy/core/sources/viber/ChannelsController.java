@@ -36,7 +36,7 @@ import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 
 @RestController
 public class ChannelsController {
-    private final static Logger log = AiryLoggerFactory.getLogger(ChannelsController.class);
+    private static final Logger log = AiryLoggerFactory.getLogger(ChannelsController.class);
     private final Stores stores;
     private final URL webhookUrl;
     private final Api api;

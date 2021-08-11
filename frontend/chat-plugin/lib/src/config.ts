@@ -17,6 +17,8 @@ export type Config = {
   bubbleIcon?: string;
   sendMessageIcon?: string;
   showMode?: boolean;
+  height?: number;
+  width?: number;
 };
 
 export type AuthConfiguration = {

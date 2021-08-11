@@ -29,4 +29,6 @@ export const config: Config = {
     },
   },
   showMode: false,
+  height: 500,
+  width: 300
 };

@@ -50,8 +50,16 @@ const Chat = ({config, ...props}: Props) => {
 
   const chatHiddenInitialState = (): boolean => {
     if (config.showMode === true) return false;
+    if (config.bubbleState) {
+      if (config.bubbleState === 'expanded') {
+        return false;
+      }
+      if (config.bubbleState === 'minimized') {
+        return true;
+      }
+    }
     if (getResumeTokenFromStorage(props.channelId)) return true;
-    return false;
+    return false;    
   };
 
   const [installError, setInstallError] = useState('');

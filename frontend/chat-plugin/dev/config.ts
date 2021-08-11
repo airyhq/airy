@@ -28,8 +28,5 @@ export const config: Config = {
       },
     },
   },
-  showMode: false,
-  height: 700,
-  width: 380,
-  disableMobile: true,
+  showMode: false
 };

@@ -20,6 +20,7 @@ export type Config = {
   height?: number;
   width?: number;
   disableMobile?: boolean;
+  bubbleState?: string;
 };
 
 export type AuthConfiguration = {

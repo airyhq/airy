@@ -59,7 +59,7 @@ const Chat = ({config, ...props}: Props) => {
       }
     }
     if (getResumeTokenFromStorage(props.channelId)) return true;
-    return false;    
+    return false;
   };
 
   const [installError, setInstallError] = useState('');

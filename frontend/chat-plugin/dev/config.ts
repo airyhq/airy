@@ -28,5 +28,5 @@ export const config: Config = {
       },
     },
   },
-  showMode: false
+  showMode: false,
 };

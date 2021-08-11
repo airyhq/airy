@@ -13,16 +13,20 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   const customStyle = {
     background: 'transparent',
-    ...(config.config?.height ? {
-      'height': config.config?.height,
-    } : {
-      'height': 700
-    }),
-    ...(config.config?.width ? {
-      'width': config.config?.width,
-    } : {
-      'width': 380
-    }),
+    ...(config.config?.height
+      ? {
+          height: config.config?.height,
+        }
+      : {
+          height: 700,
+        }),
+    ...(config.config?.width
+      ? {
+          width: config.config?.width,
+        }
+      : {
+          width: 380,
+        }),
     ...(config.config?.accentColor && {
       '--color-airy-accent': config.config?.accentColor,
       '--color-airy-blue-hover': config.config?.accentColor,

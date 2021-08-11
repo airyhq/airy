@@ -1,12 +1,12 @@
 @import 'assets/scss/fonts.scss';
 
 .main {
-  @media only screen and (max-device-width : 640px) {    
+  @media only screen and (max-device-width: 640px) {
     display: none;
-  };
-  @media only screen and (max-device-height : 840px) {
-    display: none;    
-  };
+  }
+  @media only screen and (max-device-height: 840px) {
+    display: none;
+  }
   height: 100%;
   padding: 0;
   background-color: transparent;

@@ -153,8 +153,7 @@ const MessageList = (props: MessageListProps) => {
 
   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
-      {messages &&
-        messages.map((message: Message, index: number) => {
+      {messages?.map((message: Message, index: number) => {
           const prevMessage = messages[index - 1];
           const nextMessage = messages[index + 1];
 

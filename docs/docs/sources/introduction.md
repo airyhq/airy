@@ -10,6 +10,7 @@ import AiryBubbleSVG from "@site/static/icons/airy-bubble.svg";
 import FacebookMessengerSVG from "@site/static/icons/facebook-messenger.svg";
 import GoogleSVG from "@site/static/icons/google.svg";
 import WhatsAppSVG from "@site/static/icons/whatsapp.svg";
+import ViberSVG from "@site/static/icons/viber.svg";
 import SmsSVG from "@site/static/icons/sms.svg";
 import ChannelsUI from "@site/static/icons/channelsUi-icon.svg";
 
@@ -76,6 +77,13 @@ icon={<SmsSVG />}
 title='SMS'
 description='Connect Text Messaging to Airy & send and receive SMS'
 link='sources/sms-twilio'
+/>
+
+<ButtonBox
+icon={<ViberSVG />}
+title='Viber'
+description='Connect the messaging app Viber to Airy'
+link='sources/viber'
 />
 
 </ButtonBoxList>

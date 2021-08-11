@@ -19,6 +19,7 @@ export type Config = {
   showMode?: boolean;
   height?: number;
   width?: number;
+  disableMobile?: boolean;
 };
 
 export type AuthConfiguration = {

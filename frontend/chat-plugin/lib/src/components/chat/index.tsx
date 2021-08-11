@@ -207,7 +207,7 @@ const Chat = ({config, ...props}: Props) => {
   };
 
   return (
-    <div className={style.main}>
+    <div className={style.main} style={config.disableMobile === false && {display: 'flex'}}>
       {!isChatHidden && (
         <div
           className={`${style.wrapper} ${styleFor(animation)}`}

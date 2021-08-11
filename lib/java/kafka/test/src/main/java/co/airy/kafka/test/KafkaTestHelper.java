@@ -131,5 +131,4 @@ public class KafkaTestHelper {
             produceRecord(record);
         }
     }
-
 }

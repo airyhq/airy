@@ -1,0 +1,26 @@
+Connects your viber account to Airy.
+
+```
+POST /channels.viber.connect
+```
+
+- `name` (optional) overwrite the Viber account name
+- `image_url` (optional) overwrite the Viber account image
+
+```json5
+{
+  "name": "My custom name for this location", // optional
+  "image_url": "https://example.com/custom-image.jpg" // optional
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "id": "channel-uuid-1",
+  "metadata": {"name": "My custom name for this location", "image_url": "https://example.com/custom-image.jpg"},
+  "source": "viber",
+  "source_channel_id": "Viber account id"
+}
+```

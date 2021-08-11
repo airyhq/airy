@@ -13,6 +13,7 @@ import {ReactComponent as SmsAvatar} from 'assets/images/icons/sms_avatar.svg';
 import {ReactComponent as WhatsappAvatar} from 'assets/images/icons/whatsapp_avatar.svg';
 import {ReactComponent as AiryAvatar} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as AiryIcon} from 'assets/images/icons/airy-icon.svg';
+import {ReactComponent as ViberIcon} from 'assets/images/icons/viber.svg';
 
 import styles from './index.module.scss';
 
@@ -64,6 +65,11 @@ const SOURCE_INFO = {
     text: 'Airy Live Chat plugin',
     icon: () => <AiryIcon />,
     avatar: () => <AiryAvatar />,
+  },
+  viber: {
+    text: 'Viber',
+    icon: () => <ViberIcon />,
+    avatar: () => <ViberIcon />,
   },
 };
 

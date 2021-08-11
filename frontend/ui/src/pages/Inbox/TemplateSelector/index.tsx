@@ -121,7 +121,7 @@ const TemplateSelector = ({listTemplates, onClose, templates, selectTemplate, so
                           selectTemplate(template);
                         }}>
                         <div className={styles.templatePreviewName}>{template.name}</div>
-                        <SourceMessage content={template} source={template.source} contentType="template" />
+                        <SourceMessage message={template} source={template.source} contentType="template" />
                       </div>
                     );
                   })}

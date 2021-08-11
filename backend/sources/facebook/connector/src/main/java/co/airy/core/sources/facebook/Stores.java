@@ -109,7 +109,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                         .build());
 
         // Send outbound messages
-        messageStream.filter((messageId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
+        messageStream.filter((conversationId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
                 .join(contextTable, (message, conversation) -> new SendMessageRequest(conversation, message))
                 .flatMap((conversationId, sendMessageRequest) -> connector.sendMessage(sendMessageRequest))
                 .to((recordId, record, context) -> {

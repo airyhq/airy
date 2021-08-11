@@ -51,3 +51,5 @@ data:
 
     kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.twilio.events" 
 
+    kafka-topics.sh --create --if-not-exists --zookeeper "${ZOOKEEPER}" --replication-factor "${REPLICAS}" --partitions "${PARTITIONS}" --topic "${AIRY_CORE_NAMESPACE}source.viber.events" 
+

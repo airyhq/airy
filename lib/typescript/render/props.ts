@@ -23,7 +23,10 @@ export type CommandUnion = SuggestedReplyCommand | QuickReplyCommand;
 
 interface RenderProps {
   contentType: 'message' | 'template' | 'suggestedReplies' | 'quickReplies';
-  content: Content;
+  message: {
+    content: Content;
+    fromContact?: boolean;
+  };
   source: string;
 }
 

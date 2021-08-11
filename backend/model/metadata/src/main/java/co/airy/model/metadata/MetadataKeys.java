@@ -15,6 +15,9 @@ public class MetadataKeys {
         public static class Contact {
             public static final String DISPLAY_NAME = "contact.display_name";
             public static final String AVATAR_URL = "contact.avatar_url";
+            public static final String LANGUAGE = "contact.lang";
+            public static final String COUNTRY = "contact.country";
+
             public static final String FETCH_STATE = "contact.fetch_state";
         }
 
@@ -47,7 +50,11 @@ public class MetadataKeys {
 
     public static class MessageKeys {
         public static final String SUGGESTIONS = "suggestions";
-        public static final String SOURCE_ID = "source_id";
+
+        public static class Source {
+            public static final String ID = "source.id";
+            public static final String DELIVERY_STATE = "source.delivery_state";
+        }
     }
 }
 

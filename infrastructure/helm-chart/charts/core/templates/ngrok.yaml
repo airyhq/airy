@@ -46,6 +46,13 @@ spec:
                 name: sources-twilio-connector
                 port:
                   number: 80
+          - path: /viber
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-viber-connector
+                port:
+                  number: 80
 ---
 apiVersion: apps/v1
 kind: Deployment

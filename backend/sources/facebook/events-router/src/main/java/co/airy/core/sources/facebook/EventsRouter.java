@@ -65,7 +65,7 @@ public class EventsRouter implements DisposableBean, ApplicationListener<Applica
 
         // Facebook to Airy message id lookup table
         builder.<String, Metadata>table(new ApplicationCommunicationMetadata().name())
-                .filter((metadataId, metadata) -> metadata.getKey().equals(MetadataKeys.MessageKeys.SOURCE_ID))
+                .filter((metadataId, metadata) -> metadata.getKey().equals(MetadataKeys.MessageKeys.Source.DELIVERY_STATE))
                 .groupBy((metadataId, metadata) -> KeyValue.pair(metadata.getValue(), metadata))
                 .reduce((oldValue, newValue) -> newValue, (oldValue, reduceValue) -> reduceValue, Materialized.as(metadataStore));
 

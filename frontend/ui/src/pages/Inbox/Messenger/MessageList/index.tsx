@@ -154,39 +154,39 @@ const MessageList = (props: MessageListProps) => {
   return (
     <div className={styles.messageList} ref={messageListRef} onScroll={handleScroll} data-cy={cyMessageList}>
       {messages?.map((message: Message, index: number) => {
-          const prevMessage = messages[index - 1];
-          const nextMessage = messages[index + 1];
+        const prevMessage = messages[index - 1];
+        const nextMessage = messages[index + 1];
 
-          const lastInGroup = nextMessage ? message.fromContact !== nextMessage.fromContact : true;
+        const lastInGroup = nextMessage ? message.fromContact !== nextMessage.fromContact : true;
 
-          const sentAt = lastInGroup ? formatTime(message.sentAt) : null;
+        const sentAt = lastInGroup ? formatTime(message.sentAt) : null;
 
-          const messageDecoration = hasSuggestions(message) ? (
-            <button type="button" className={styles.suggestionWrapper} onClick={() => showSuggestions(message)}>
-              <LightBulbIcon className={styles.suggestionIcon} title="Show suggestions" />
-            </button>
-          ) : null;
+        const messageDecoration = hasSuggestions(message) ? (
+          <button type="button" className={styles.suggestionWrapper} onClick={() => showSuggestions(message)}>
+            <LightBulbIcon className={styles.suggestionIcon} title="Show suggestions" />
+          </button>
+        ) : null;
 
-          return (
-            <div key={message.id} id={`message-item-${message.id}`}>
-              {hasDateChanged(prevMessage, message) && (
-                <div key={`date-${message.id}`} className={styles.dateHeader}>
-                  {formatDateOfMessage(message)}
-                </div>
-              )}
-              <MessageInfoWrapper
-                fromContact={message.fromContact}
-                contact={contact}
-                sentAt={sentAt}
-                lastInGroup={lastInGroup}
-                isChatPlugin={false}
-                decoration={messageDecoration}>
-                <SourceMessage source={source} message={message} contentType="message" />
-                <Reaction message={message} />
-              </MessageInfoWrapper>
-            </div>
-          );
-        })}
+        return (
+          <div key={message.id} id={`message-item-${message.id}`}>
+            {hasDateChanged(prevMessage, message) && (
+              <div key={`date-${message.id}`} className={styles.dateHeader}>
+                {formatDateOfMessage(message)}
+              </div>
+            )}
+            <MessageInfoWrapper
+              fromContact={message.fromContact}
+              contact={contact}
+              sentAt={sentAt}
+              lastInGroup={lastInGroup}
+              isChatPlugin={false}
+              decoration={messageDecoration}>
+              <SourceMessage source={source} message={message} contentType="message" />
+              <Reaction message={message} />
+            </MessageInfoWrapper>
+          </div>
+        );
+      })}
     </div>
   );
 };

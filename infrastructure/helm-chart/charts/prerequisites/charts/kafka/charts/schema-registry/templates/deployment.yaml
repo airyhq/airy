@@ -1,0 +1,63 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
+apiVersion: apps/v1beta2
+{{- end }}
+kind: Deployment
+metadata:
+  name: schema-registry
+  namespace: {{ .Values.global.kubernetes.namespace }}
+  labels:
+    app: schema-registry
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: schema-registry
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: schema-registry
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: schema-registry-server
+          image: "{{ .Values.containerRegistry}}/{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+          ports:
+            - name: schema-registry
+              containerPort: {{ .Values.servicePort }}
+              protocol: TCP
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          env:
+          - name: KARAPACE_ADVERTISED_HOSTNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: KARAPACE_BOOTSTRAP_URI
+            value: {{ .Values.kafka.bootstrapServers }}
+      initContainers:
+      - name: wait
+        image: busybox
+        command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: REPLICAS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_MINIMUM_REPLICAS
+        volumeMounts:
+        - name: kafka-helper-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: kafka-helper-scripts
+          configMap:
+            name: kafka-helper-scripts

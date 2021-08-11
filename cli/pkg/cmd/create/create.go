@@ -93,7 +93,7 @@ func create(cmd *cobra.Command, args []string) {
 		console.Exit("installing Helm charts failed with err: ", err)
 	}
 
-	if err = provider.PostInstallation(dir); err != nil {
+	if err = provider.PostInstallation(providerConfig, dir); err != nil {
 		console.Exit("failed to run post installation hook: ", err)
 	}
 

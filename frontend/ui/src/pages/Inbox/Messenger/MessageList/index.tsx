@@ -18,7 +18,7 @@ import styles from './index.module.scss';
 import {formatDateOfMessage} from '../../../../services/format/date';
 import {getConversation, getCurrentMessages} from '../../../../selectors/conversations';
 import {ConversationRouteProps} from '../../index';
-import {MessageInfoWrapper} from 'render/components/MessageInfoWrapper';
+import {MessageInfoWrapper, Reaction} from 'components';
 import {formatTime, isSameDay} from 'dates';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
@@ -183,6 +183,7 @@ const MessageList = (props: MessageListProps) => {
                 isChatPlugin={false}
                 decoration={messageDecoration}>
                 <SourceMessage source={source} content={message} contentType="message" />
+                <Reaction message={message} />
               </MessageInfoWrapper>
             </div>
           );

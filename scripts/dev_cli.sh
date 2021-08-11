@@ -4,8 +4,9 @@ IFS=$'\n\t'
 
 brew install -q coreutils wget
 
+VERSION=$(cat ./VERSION)
 AIRY_BIN=/usr/local/bin/airy_dev
-BUCKET=https://airy-core-binaries.s3.amazonaws.com/develop/darwin/amd64
+BUCKET=https://airy-core-binaries.s3.amazonaws.com/${VERSION}/darwin/amd64
 
 OLD_SHA=$(sha256sum $AIRY_BIN | cut -f1 -d ' ') || echo "Downloading airy_dev"
 NEW_SHA=$(wget -qO - "${BUCKET}/airy_darwin_sha256sum.txt" | cut -f1 -d ' ')

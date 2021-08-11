@@ -7,6 +7,7 @@ package(default_visibility = ["//visibility:public"])
 ts_web_library(
     name = "components",
     deps = [
+        "//lib/typescript/model",
         "//lib/typescript/types",
         "@npm//@crello/react-lottie",
         "@npm//@types/node",

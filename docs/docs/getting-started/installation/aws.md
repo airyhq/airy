@@ -73,6 +73,12 @@ Download and install the [Airy CLI](cli/introduction.md).
 Export your AWS_PROFILE and AWS_REGION as described in the [AWS
 documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
 
+:::warning
+
+If you want to use Airy Core with auto-generated HTTPS certificates, refer to the [Let's Encrypt section](/getting-started/installation/aws#https-using-lets-encrypt) for customizing your `airy.yaml` file before proceeding.
+
+:::
+
 Now you can run this command, which will create `Airy Core` in your AWS account:
 
 ```bash
@@ -148,7 +154,7 @@ As this is intended **only for testing purposes**, `it is mandatory that you to 
 
 To enable authenticaiton to the API and in the UI, refer to our [Authentication configuration section](/getting-started/installation/security)
 
-### Enable HTTPS
+### HTTPS with existing certificates
 
 This section guides you through the necessary steps to configure HTTPS on your `Airy Core` instance.
 
@@ -173,8 +179,6 @@ After the certificate has been uploaded to AWS ACM, you will need the unique ARN
 :::note
 
 If you don't have your own HTTPS certificate you can request one from AWS ACM.
-
-If you want to use Let's Encrypt, have a look at the [Following Traefik ingress guide](https://doc.traefik.io/traefik/v2.0/user-guides/crd-acme/) on how to integrate the HTTPS certificates with the installed ingress controller.
 
 :::
 
@@ -224,6 +228,56 @@ At this point, the frontend and the API services of `Airy Core` should be access
 ```sh
 airy api endpoint
 ```
+
+### HTTPS using Let's Encrypt
+
+You can customize your installation of `Airy Core` to install a custom Traefik ingress controller which has an enabled `Let's Encrypt` capability. The ingress controller will register and renew the certificates for you automatically.
+
+#### Customize your Airy Core installation
+
+To customize your Airy Core installation, you need to create an initial config file using the following command
+
+```sh
+airy create --provider aws --init-only
+```
+
+Then edit your `airy.yaml` file and add the following configuration
+
+```sh
+kubernetes:
+  host: myairy.myhostname.com
+ingress:
+  https: true
+  letsencryptEmail: "mymail@myhostname.com"
+
+```
+
+The `kubernets.host` value should be set to your desired hostname. Configure the e-mail address you want to use for your Let's Encrypt registration under `ingress.letsencryptEmail`.
+
+After setting these parameters, create your `Airy Core` instance with the following option:
+
+```sh
+airy create --provider aws --provider-config hostUpdate=false
+```
+
+#### Setup your DNS
+
+You should create a CNAME DNS record for the hostname that you set under `kubernetes.host` in the previous step to point to the hostname of the LoadBalancer, created by AWS for the ingress service:
+
+```sh
+export KUBECONFIG="PATH/TO/DIR/kube.conf"
+kubectl get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
+```
+
+#### Start the ingress controller
+
+If the ingress controller is started before the DNS record is added, the Let's Encrypt servers will block and throttle the registration attempts. That is why we recommend starting the ingress controller after the DNS record is added.
+
+```sh
+kubectl -n kube-system scale statefulset -l k8s-app=traefik-ingress-lb --replicas=1
+```
+
+After this, your `Airy Core` will be reachable under HTTPS and on your desired hostname (for example https://myairy.myhostname.com).
 
 ## Integrate public webhooks
 

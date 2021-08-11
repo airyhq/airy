@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hostnames
+  namespace: {{ .Values.global.kubernetes.namespace }}
+data:
+  {{ if .Values.global.ingress }}
+   {{ if .Values.global.ingress.https }}
+  HOST: https://{{ .Values.global.kubernetes.host }}
+   {{ else }}
+  HOST: http://{{ .Values.global.kubernetes.host }}
+   {{ end }}
+  {{ else }}
+  HOST: http://{{ .Values.global.kubernetes.host }}
+  {{ end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: security
+  namespace: {{ .Values.global.kubernetes.namespace }}
+data:
+  {{- if .Values.global.security.systemToken }}
+  systemToken: {{ .Values.global.security.systemToken | quote }}
+  {{- end }}
+  jwtSecret: {{ .Values.global.security.jwtSecret | quote }}
+  allowedOrigins: {{ .Values.global.security.allowedOrigins | quote }}

@@ -1,0 +1,19 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  margin-top: -5px;
+}
+
+.emojiWrapper {
+  border-radius: 100%;
+  background-color: var(--color-light-gray);
+  width: 24px;
+  height: 24px;
+  text-align: center;
+}

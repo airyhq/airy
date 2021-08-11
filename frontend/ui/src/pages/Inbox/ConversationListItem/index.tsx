@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom';
 import _, {connect, ConnectedProps} from 'react-redux';
 
 import IconChannel from '../../../components/IconChannel';
-import {Avatar, SourceMessagePreview} from 'render';
+import {SourceMessagePreview} from 'render';
+import {Avatar} from 'components';
 
 import {formatTimeOfMessage} from '../../../services/format/date';
 
@@ -30,11 +31,9 @@ const mapDispatchToProps = {
   conversationState,
 };
 
-const mapStateToProps = (state: StateModel) => {
-  return {
-    filteredConversations: newestFilteredConversationFirst(state),
-  };
-};
+const mapStateToProps = (state: StateModel) => ({
+  filteredConversations: newestFilteredConversationFirst(state),
+});
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

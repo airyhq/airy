@@ -3,7 +3,50 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 0.27.0
+## 0.28.0
+
+#### 🚀 Features
+
+- [[#1911](https://github.com/airyhq/airy/issues/1911)] Reorganize the helm charts [[#2241](https://github.com/airyhq/airy/pull/2241)]
+- [[#1212](https://github.com/airyhq/airy/issues/1212)] HTTPS inside Kubernetes [[#2133](https://github.com/airyhq/airy/pull/2133)]
+- [[#2197](https://github.com/airyhq/airy/issues/2197)] Add Facebook emoji reaction metadata [[#2221](https://github.com/airyhq/airy/pull/2221)]
+
+#### 🐛 Bug Fixes
+
+- [[#2260](https://github.com/airyhq/airy/issues/2260)] Fixed z-index of modal [[#2261](https://github.com/airyhq/airy/pull/2261)]
+- [[#2262](https://github.com/airyhq/airy/issues/2262)] Chatplugin Interferes with Web [[#2263](https://github.com/airyhq/airy/pull/2263)]
+- [[#2246](https://github.com/airyhq/airy/issues/2246)] Fix default ingress controller [[#2247](https://github.com/airyhq/airy/pull/2247)]
+
+#### 🧰 Maintenance
+
+- Bump @typescript-eslint/eslint-plugin from 4.28.5 to 4.29.1 [[#2258](https://github.com/airyhq/airy/pull/2258)]
+- Bump @babel/preset-env from 7.14.9 to 7.15.0 [[#2249](https://github.com/airyhq/airy/pull/2249)]
+- Bump webpack from 5.46.0 to 5.49.0 [[#2252](https://github.com/airyhq/airy/pull/2252)]
+- Bump redux from 4.1.0 to 4.1.1 [[#2250](https://github.com/airyhq/airy/pull/2250)]
+- Bump @typescript-eslint/parser from 4.28.5 to 4.29.0 [[#2251](https://github.com/airyhq/airy/pull/2251)]
+- Bump tar from 6.1.0 to 6.1.4 in /docs [[#2240](https://github.com/airyhq/airy/pull/2240)]
+- Bump cypress from 7.7.0 to 8.1.0 [[#2230](https://github.com/airyhq/airy/pull/2230)]
+- Bump react-markdown from 6.0.2 to 6.0.3 [[#2234](https://github.com/airyhq/airy/pull/2234)]
+- Bump @typescript-eslint/parser from 4.28.4 to 4.28.5 [[#2237](https://github.com/airyhq/airy/pull/2237)]
+- Bump core-js from 3.15.2 to 3.16.0 [[#2238](https://github.com/airyhq/airy/pull/2238)]
+- Bump eslint from 7.31.0 to 7.32.0 [[#2235](https://github.com/airyhq/airy/pull/2235)]
+- Bump sass from 1.36.0 to 1.37.0 [[#2236](https://github.com/airyhq/airy/pull/2236)]
+- Bump @types/node from 16.4.3 to 16.4.10 [[#2231](https://github.com/airyhq/airy/pull/2231)]
+- Bump @babel/preset-env from 7.14.8 to 7.14.9 [[#2232](https://github.com/airyhq/airy/pull/2232)]
+- Bump @typescript-eslint/eslint-plugin from 4.28.4 to 4.28.5 [[#2233](https://github.com/airyhq/airy/pull/2233)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.28.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.28.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.28.0/windows/amd64/airy.exe)
+
+## Hotfix 0.27.1
+
+[[#2219](https://github.com/airyhq/airy/issues/2219)] fixed inbox ui overflow bug [[#2220](https://github.com/airyhq/airy/pull/2220)]
+## Hotfix 0.26.3
 
 [[#2192](https://github.com/airyhq/airy/issues/2192)] Inbox crashing when selecting conversations in filtered view [[#2193](https://github.com/airyhq/airy/pull/2193)]
 ## Hotfix 0.26.2
@@ -1273,83 +1316,3 @@ You can download the Airy CLI for your operating system from the following links
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.6.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.6.0/windows/amd64/airy.exe)
 [Alpine](https://airy-core-binaries.s3.amazonaws.com/0.6.0/alpine/amd64/airy)
-## 
-
-#### Changes
-
-#### 🚀 Features
-
-- [[#400](https://github.com/airyhq/airy/issues/400)] Load messages of conversations [[#567](https://github.com/airyhq/airy/pull/567)]
-- [[#335](https://github.com/airyhq/airy/issues/335)] Provisioning optimization [[#610](https://github.com/airyhq/airy/pull/610)]
-- [[#526](https://github.com/airyhq/airy/issues/526)] Introduce namespace var [[#595](https://github.com/airyhq/airy/pull/595)]
-- [[#169](https://github.com/airyhq/airy/issues/169)] Use karapace.io schema registry [[#596](https://github.com/airyhq/airy/pull/596)]
-- [[#497](https://github.com/airyhq/airy/issues/497)] Dynamically map source data urls in content mapper [[#594](https://github.com/airyhq/airy/pull/594)]
-- [[#169](https://github.com/airyhq/airy/issues/169)] Optimize kafka images [[#583](https://github.com/airyhq/airy/pull/583)]
-- [[#327](https://github.com/airyhq/airy/issues/327)] Introduce a release script that automates the process [[#586](https://github.com/airyhq/airy/pull/586)]
-- [[#526](https://github.com/airyhq/airy/issues/526)] Rename pg values [[#590](https://github.com/airyhq/airy/pull/590)]
-- [[#446](https://github.com/airyhq/airy/issues/446)] Introduce go linter [[#576](https://github.com/airyhq/airy/pull/576)]
-- [[#496](https://github.com/airyhq/airy/issues/496)] Add file content model [[#579](https://github.com/airyhq/airy/pull/579)]
-- [[#496](https://github.com/airyhq/airy/issues/496)] Add video content model [[#577](https://github.com/airyhq/airy/pull/577)]
-- [[#522](https://github.com/airyhq/airy/issues/522)] introduce httpclient lib [[#571](https://github.com/airyhq/airy/pull/571)]
-- [[#450](https://github.com/airyhq/airy/issues/450)] Introduce Airy k8s controller [[#534](https://github.com/airyhq/airy/pull/534)]
-- [[#496](https://github.com/airyhq/airy/issues/496)] Add audio content model [[#574](https://github.com/airyhq/airy/pull/574)]
-- [[#572](https://github.com/airyhq/airy/issues/572)] Messages from facebook page should have… [[#573](https://github.com/airyhq/airy/pull/573)]
-
-#### 🐛 Bug Fixes
-
-- [[#412](https://github.com/airyhq/airy/issues/412)] Always deploy images [[#609](https://github.com/airyhq/airy/pull/609)]
-- [[#412](https://github.com/airyhq/airy/issues/412)] Use the correct ENV var [[#608](https://github.com/airyhq/airy/pull/608)]
-- [[#412](https://github.com/airyhq/airy/issues/412)] Actually pass the branch ref [[#604](https://github.com/airyhq/airy/pull/604)]
-- [[#587](https://github.com/airyhq/airy/issues/587)] fix chat plugin development env [[#589](https://github.com/airyhq/airy/pull/589)]
-- Lower case the webhook subdomains [[#588](https://github.com/airyhq/airy/pull/588)]
-- [[#569](https://github.com/airyhq/airy/issues/569)] Facebook Messages from page are not parsed… [[#570](https://github.com/airyhq/airy/pull/570)]
-
-#### 📚 Documentation
-
-- [[#424](https://github.com/airyhq/airy/issues/424)] chatplugin gifs with asciinema [[#592](https://github.com/airyhq/airy/pull/592)]
-
-#### 🧰 Maintenance
-
-- [[#412](https://github.com/airyhq/airy/issues/412)] Push only changed images for beta [[#601](https://github.com/airyhq/airy/pull/601)]
-- [[#331](https://github.com/airyhq/airy/issues/331)] Introduce local container push target [[#580](https://github.com/airyhq/airy/pull/580)]
-
-## 0.4.0
-
-#### 🚀 Features
-
-- [[#526](https://github.com/airyhq/airy/issues/526)] Introduce namespacing for topics [[#566](https://github.com/airyhq/airy/pull/566)]
-- [[#503](https://github.com/airyhq/airy/issues/503)] Customize commit interval so the test environment can have a d… [[#555](https://github.com/airyhq/airy/pull/555)]
-- [[#549](https://github.com/airyhq/airy/issues/549)] Stop logging Facebook webhook requests [[#557](https://github.com/airyhq/airy/pull/557)]
-- [[#547](https://github.com/airyhq/airy/issues/547)] Introduce model lib for metadata and messages [[#552](https://github.com/airyhq/airy/pull/552)]
-- [[#223](https://github.com/airyhq/airy/issues/223)] Future of `/channels.explore` [[#541](https://github.com/airyhq/airy/pull/541)]
-- [[#169](https://github.com/airyhq/airy/issues/169)] Use distroless for java images [[#540](https://github.com/airyhq/airy/pull/540)]
-- [[#527](https://github.com/airyhq/airy/issues/527)] Enable resuming of chatplugin conversations [[#533](https://github.com/airyhq/airy/pull/533)]
-- [[#494](https://github.com/airyhq/airy/issues/494)] Fetch Facebook metadata [[#528](https://github.com/airyhq/airy/pull/528)]
-- [[#496](https://github.com/airyhq/airy/issues/496)] Added Image content model for Facebook [[#539](https://github.com/airyhq/airy/pull/539)]
-- [[#399](https://github.com/airyhq/airy/issues/399)] Conversations List [[#507](https://github.com/airyhq/airy/pull/507)]
-- [[#496](https://github.com/airyhq/airy/issues/496)] Added Image content model for Twilio [[#532](https://github.com/airyhq/airy/pull/532)]
-- [[#496](https://github.com/airyhq/airy/issues/496)] Added Image content model for Google [[#531](https://github.com/airyhq/airy/pull/531)]
-- [[#493](https://github.com/airyhq/airy/issues/493)] Route Google metadata to get displayname [[#521](https://github.com/airyhq/airy/pull/521)]
-- [[#523](https://github.com/airyhq/airy/issues/523)] Return source type in the channel payload [[#529](https://github.com/airyhq/airy/pull/529)]
-- [[#496](https://github.com/airyhq/airy/issues/496)] Changing content render api [[#520](https://github.com/airyhq/airy/pull/520)]
-- [[#464](https://github.com/airyhq/airy/issues/464)] Feature/add logout core [[#519](https://github.com/airyhq/airy/pull/519)]
-- [[#499](https://github.com/airyhq/airy/issues/499)] Future-proof metadata model [[#514](https://github.com/airyhq/airy/pull/514)]
-
-#### 🐛 Bug Fixes
-
-- [[#564](https://github.com/airyhq/airy/issues/564)] Fix kafka configmap in helm [[#565](https://github.com/airyhq/airy/pull/565)]
-- [[#466](https://github.com/airyhq/airy/issues/466)] Change public name of go modules [[#561](https://github.com/airyhq/airy/pull/561)]
-- [[#562](https://github.com/airyhq/airy/issues/562)] Fix chatplugin generator [[#563](https://github.com/airyhq/airy/pull/563)]
-
-#### 📚 Documentation
-
-- [[#485](https://github.com/airyhq/airy/issues/485)] [[#486](https://github.com/airyhq/airy/issues/486)] Enrich HTTP docs [[#560](https://github.com/airyhq/airy/pull/560)]
-- [[#524](https://github.com/airyhq/airy/issues/524)] remove hyperlinks [[#530](https://github.com/airyhq/airy/pull/530)]
-- [[#489](https://github.com/airyhq/airy/issues/489)] how to run the frontend [[#518](https://github.com/airyhq/airy/pull/518)]
-
-#### 🧰 Maintenance
-
-- [[#515](https://github.com/airyhq/airy/issues/515)] introduce eslint [[#554](https://github.com/airyhq/airy/pull/554)]
-- [[#548](https://github.com/airyhq/airy/issues/548)] Extract payload to web library and introduce date lib [[#556](https://github.com/airyhq/airy/pull/556)]
-- [[#551](https://github.com/airyhq/airy/issues/551)] Use test.properties everywhere [[#553](https://github.com/airyhq/airy/pull/553)]
-

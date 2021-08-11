@@ -3,11 +3,60 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.28.0
+
+#### 🚀 Features
+
+- [[#1911](https://github.com/airyhq/airy/issues/1911)] Reorganize the helm charts [[#2241](https://github.com/airyhq/airy/pull/2241)]
+- [[#1212](https://github.com/airyhq/airy/issues/1212)] HTTPS inside Kubernetes [[#2133](https://github.com/airyhq/airy/pull/2133)]
+- [[#2197](https://github.com/airyhq/airy/issues/2197)] Add Facebook emoji reaction metadata [[#2221](https://github.com/airyhq/airy/pull/2221)]
+
+#### 🐛 Bug Fixes
+
+- [[#2260](https://github.com/airyhq/airy/issues/2260)] Fixed z-index of modal [[#2261](https://github.com/airyhq/airy/pull/2261)]
+- [[#2262](https://github.com/airyhq/airy/issues/2262)] Chatplugin Interferes with Web [[#2263](https://github.com/airyhq/airy/pull/2263)]
+- [[#2246](https://github.com/airyhq/airy/issues/2246)] Fix default ingress controller [[#2247](https://github.com/airyhq/airy/pull/2247)]
+
+#### 🧰 Maintenance
+
+- Bump @typescript-eslint/eslint-plugin from 4.28.5 to 4.29.1 [[#2258](https://github.com/airyhq/airy/pull/2258)]
+- Bump @babel/preset-env from 7.14.9 to 7.15.0 [[#2249](https://github.com/airyhq/airy/pull/2249)]
+- Bump webpack from 5.46.0 to 5.49.0 [[#2252](https://github.com/airyhq/airy/pull/2252)]
+- Bump redux from 4.1.0 to 4.1.1 [[#2250](https://github.com/airyhq/airy/pull/2250)]
+- Bump @typescript-eslint/parser from 4.28.5 to 4.29.0 [[#2251](https://github.com/airyhq/airy/pull/2251)]
+- Bump tar from 6.1.0 to 6.1.4 in /docs [[#2240](https://github.com/airyhq/airy/pull/2240)]
+- Bump cypress from 7.7.0 to 8.1.0 [[#2230](https://github.com/airyhq/airy/pull/2230)]
+- Bump react-markdown from 6.0.2 to 6.0.3 [[#2234](https://github.com/airyhq/airy/pull/2234)]
+- Bump @typescript-eslint/parser from 4.28.4 to 4.28.5 [[#2237](https://github.com/airyhq/airy/pull/2237)]
+- Bump core-js from 3.15.2 to 3.16.0 [[#2238](https://github.com/airyhq/airy/pull/2238)]
+- Bump eslint from 7.31.0 to 7.32.0 [[#2235](https://github.com/airyhq/airy/pull/2235)]
+- Bump sass from 1.36.0 to 1.37.0 [[#2236](https://github.com/airyhq/airy/pull/2236)]
+- Bump @types/node from 16.4.3 to 16.4.10 [[#2231](https://github.com/airyhq/airy/pull/2231)]
+- Bump @babel/preset-env from 7.14.8 to 7.14.9 [[#2232](https://github.com/airyhq/airy/pull/2232)]
+- Bump @typescript-eslint/eslint-plugin from 4.28.4 to 4.28.5 [[#2233](https://github.com/airyhq/airy/pull/2233)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.28.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.28.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.28.0/windows/amd64/airy.exe)
+
 ## Hotfix 0.27.1
 
 [[#2219](https://github.com/airyhq/airy/issues/2219)] fixed inbox ui overflow bug [[#2220](https://github.com/airyhq/airy/pull/2220)]
+## Hotfix 0.26.3
 
+[[#2192](https://github.com/airyhq/airy/issues/2192)] Inbox crashing when selecting conversations in filtered view [[#2193](https://github.com/airyhq/airy/pull/2193)]
+## Hotfix 0.26.2
+
+[[#2187](https://github.com/airyhq/airy/issues/2187)] Hotfix chat plugin async bundle loading failed on installed websites
+## Hotfix 0.26.1
+
+[[#2181](https://github.com/airyhq/airy/issues/2181)] Fixes chat plugin integration crashing with empty config
 ## 0.27.0
+
 #### Changes
 
 #### 🚀 Features
@@ -51,15 +100,6 @@ You can download the Airy CLI for your operating system from the following links
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.27.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.27.0/windows/amd64/airy.exe)
 
-## Hotfix 0.26.3
-
-[[#2192](https://github.com/airyhq/airy/issues/2192)] Inbox crashing when selecting conversations in filtered view [[#2193](https://github.com/airyhq/airy/pull/2193)]
-## Hotfix 0.26.2
-
-[[#2187](https://github.com/airyhq/airy/issues/2187)] Hotfix chat plugin async bundle loading failed on installed websites
-## Hotfix 0.26.1
-
-[[#2181](https://github.com/airyhq/airy/issues/2181)] Fixes chat plugin integration crashing with empty config
 ## 0.26.0
 
 #### Changes
@@ -174,6 +214,10 @@ You can download the Airy CLI for your operating system from the following links
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.24.1/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.24.1/windows/amd64/airy.exe)
 
+## 0.23.1 Hotfix
+
+[[#1921](https://github.com/airyhq/airy/issues/1921)] Hotfix: Facebook echo ingestion [[#1922](https://github.com/airyhq/airy/issues/1922)]
+
 ## 0.24.0
 
 #### Changes
@@ -228,10 +272,6 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.24.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.24.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.24.0/windows/amd64/airy.exe)
-
-## 0.23.1 Hotfix
-
-[[#1921](https://github.com/airyhq/airy/issues/1921)] Hotfix: Facebook echo ingestion [[#1922](https://github.com/airyhq/airy/issues/1922)]
 
 ## 0.23.0
 
@@ -1276,43 +1316,3 @@ You can download the Airy CLI for your operating system from the following links
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.6.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.6.0/windows/amd64/airy.exe)
 [Alpine](https://airy-core-binaries.s3.amazonaws.com/0.6.0/alpine/amd64/airy)
-## 
-
-#### Changes
-
-#### 🚀 Features
-
-- [[#400](https://github.com/airyhq/airy/issues/400)] Load messages of conversations [[#567](https://github.com/airyhq/airy/pull/567)]
-- [[#335](https://github.com/airyhq/airy/issues/335)] Provisioning optimization [[#610](https://github.com/airyhq/airy/pull/610)]
-- [[#526](https://github.com/airyhq/airy/issues/526)] Introduce namespace var [[#595](https://github.com/airyhq/airy/pull/595)]
-- [[#169](https://github.com/airyhq/airy/issues/169)] Use karapace.io schema registry [[#596](https://github.com/airyhq/airy/pull/596)]
-- [[#497](https://github.com/airyhq/airy/issues/497)] Dynamically map source data urls in content mapper [[#594](https://github.com/airyhq/airy/pull/594)]
-- [[#169](https://github.com/airyhq/airy/issues/169)] Optimize kafka images [[#583](https://github.com/airyhq/airy/pull/583)]
-- [[#327](https://github.com/airyhq/airy/issues/327)] Introduce a release script that automates the process [[#586](https://github.com/airyhq/airy/pull/586)]
-- [[#526](https://github.com/airyhq/airy/issues/526)] Rename pg values [[#590](https://github.com/airyhq/airy/pull/590)]
-- [[#446](https://github.com/airyhq/airy/issues/446)] Introduce go linter [[#576](https://github.com/airyhq/airy/pull/576)]
-- [[#496](https://github.com/airyhq/airy/issues/496)] Add file content model [[#579](https://github.com/airyhq/airy/pull/579)]
-- [[#496](https://github.com/airyhq/airy/issues/496)] Add video content model [[#577](https://github.com/airyhq/airy/pull/577)]
-- [[#522](https://github.com/airyhq/airy/issues/522)] introduce httpclient lib [[#571](https://github.com/airyhq/airy/pull/571)]
-- [[#450](https://github.com/airyhq/airy/issues/450)] Introduce Airy k8s controller [[#534](https://github.com/airyhq/airy/pull/534)]
-- [[#496](https://github.com/airyhq/airy/issues/496)] Add audio content model [[#574](https://github.com/airyhq/airy/pull/574)]
-- [[#572](https://github.com/airyhq/airy/issues/572)] Messages from facebook page should have… [[#573](https://github.com/airyhq/airy/pull/573)]
-
-#### 🐛 Bug Fixes
-
-- [[#412](https://github.com/airyhq/airy/issues/412)] Always deploy images [[#609](https://github.com/airyhq/airy/pull/609)]
-- [[#412](https://github.com/airyhq/airy/issues/412)] Use the correct ENV var [[#608](https://github.com/airyhq/airy/pull/608)]
-- [[#412](https://github.com/airyhq/airy/issues/412)] Actually pass the branch ref [[#604](https://github.com/airyhq/airy/pull/604)]
-- [[#587](https://github.com/airyhq/airy/issues/587)] fix chat plugin development env [[#589](https://github.com/airyhq/airy/pull/589)]
-- Lower case the webhook subdomains [[#588](https://github.com/airyhq/airy/pull/588)]
-- [[#569](https://github.com/airyhq/airy/issues/569)] Facebook Messages from page are not parsed… [[#570](https://github.com/airyhq/airy/pull/570)]
-
-#### 📚 Documentation
-
-- [[#424](https://github.com/airyhq/airy/issues/424)] chatplugin gifs with asciinema [[#592](https://github.com/airyhq/airy/pull/592)]
-
-#### 🧰 Maintenance
-
-- [[#412](https://github.com/airyhq/airy/issues/412)] Push only changed images for beta [[#601](https://github.com/airyhq/airy/pull/601)]
-- [[#331](https://github.com/airyhq/airy/issues/331)] Introduce local container push target [[#580](https://github.com/airyhq/airy/pull/580)]
-

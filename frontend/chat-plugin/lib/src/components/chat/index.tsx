@@ -50,6 +50,14 @@ const Chat = ({config, ...props}: Props) => {
 
   const chatHiddenInitialState = (): boolean => {
     if (config.showMode === true) return false;
+    if (config.bubbleState) {
+      if (config.bubbleState === 'expanded') {
+        return false;
+      }
+      if (config.bubbleState === 'minimized') {
+        return true;
+      }
+    }
     if (getResumeTokenFromStorage(props.channelId)) return true;
     return false;
   };
@@ -207,7 +215,7 @@ const Chat = ({config, ...props}: Props) => {
   };
 
   return (
-    <div className={style.main}>
+    <div className={style.main} style={config.disableMobile === false && {display: 'flex'}}>
       {!isChatHidden && (
         <div
           className={`${style.wrapper} ${styleFor(animation)}`}

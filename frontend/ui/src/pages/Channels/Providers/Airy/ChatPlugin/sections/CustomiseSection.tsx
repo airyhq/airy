@@ -69,7 +69,9 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       accentColor === '' &&
       backgroundColor === ''
     ) {
-      return `w[n].config={};`;
+      return `
+      w[n].config={};
+      `;
     }
     let config = '';
     if (headerText !== '') config += formatConfigAttributeWithConfig(`headerText: '${headerText}'`, config);

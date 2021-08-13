@@ -46,7 +46,7 @@ public class ServiceDiscovery {
                     componentInfo = Optional.ofNullable(componentInfo).orElse(new ComponentInfo(false, true));
                     componentInfo.setEnabled(serviceInfo.isEnabled());
                     // One unhealthy service means that the component is unhealthy
-                    componentInfo.setEnabled(componentInfo.isHealthy() && serviceInfo.isHealthy());
+                    componentInfo.setHealthy(componentInfo.isHealthy() && serviceInfo.isHealthy());
                     return componentInfo;
                 }, (v1, v2) -> {
                     v1.setHealthy(v1.isHealthy() && v2.isHealthy());

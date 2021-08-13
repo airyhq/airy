@@ -12,13 +12,16 @@ import java.io.Serializable;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ChannelEvent extends Event implements Serializable {
+public class ChannelUpdated extends Event implements Serializable {
     private ChannelPayload payload;
 
-    public static ChannelEvent fromChannel(Channel channel) {
+    public static ChannelUpdated fromChannel(Channel channel) {
         return builder().payload(ChannelPayload.fromChannel(channel)).build();
+    }
+
+    @Override
+    public EventType getType() {
+        return EventType.CHANNEL_UPDATED;
     }
 }

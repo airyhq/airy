@@ -10,8 +10,8 @@ import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.model.event.payload.Event;
-import co.airy.model.event.payload.MessageEvent;
-import co.airy.model.event.payload.MetadataEvent;
+import co.airy.model.event.payload.MessageUpdated;
+import co.airy.model.event.payload.MetadataUpdated;
 import co.airy.model.metadata.dto.MetadataMap;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
@@ -80,9 +80,9 @@ public class Publisher implements ApplicationListener<ApplicationStartedEvent>, 
 
     private Event fromRecord(Serializable record) throws Exception {
         if (record instanceof Message) {
-            return MessageEvent.fromMessage((Message) record);
+            return MessageUpdated.fromMessage((Message) record);
         } else if (record instanceof MetadataMap) {
-            return MetadataEvent.fromMetadataMap((MetadataMap) record);
+            return MetadataUpdated.fromMetadataMap((MetadataMap) record);
         }
 
         throw new Exception("unknown type for record " + record);

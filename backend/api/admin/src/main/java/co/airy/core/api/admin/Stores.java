@@ -50,10 +50,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String webhooksStore = "webhook-store";
     private final String templatesStore = "templates-store";
 
-    // Using a UUID as the default key for the webhook will make it easier
-    // to add multiple webhooks if that ever becomes a requirement
-    private final String allWebhooksKey = "339ab777-92aa-43a5-b452-82e73c50fc59";
-
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();
     private final String applicationCommunicationWebhooks = new ApplicationCommunicationWebhooks().name();
     private final String applicationCommunicationTags = new ApplicationCommunicationTags().name();
@@ -79,9 +75,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .filter((k, v) -> v.getConnectionState().equals(ChannelConnectionState.CONNECTED))
                 .leftJoin(metadataTable, ChannelContainer::new, Materialized.as(connectedChannelsStore));
 
-        builder.<String, Webhook>stream(applicationCommunicationWebhooks)
-                .groupBy((webhookId, webhook) -> allWebhooksKey)
-                .reduce((oldValue, newValue) -> newValue, Materialized.as(webhooksStore));
+        builder.<String, Webhook>table(applicationCommunicationWebhooks, Materialized.as(webhooksStore));
 
         builder.<String, Tag>table(applicationCommunicationTags, Materialized.as(tagsStore));
 
@@ -99,8 +93,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     }
 
     public void storeWebhook(Webhook webhook) throws ExecutionException, InterruptedException {
-        webhook.setId(allWebhooksKey);
-        producer.send(new ProducerRecord<>(applicationCommunicationWebhooks, allWebhooksKey, webhook)).get();
+        producer.send(new ProducerRecord<>(applicationCommunicationWebhooks, webhook.getId(), webhook)).get();
     }
 
     public void storeChannelContainer(ChannelContainer container) throws ExecutionException, InterruptedException {
@@ -172,9 +165,16 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return templates;
     }
 
-    public Webhook getWebhook() {
+    public Webhook getWebhook(String webhookId) {
         final ReadOnlyKeyValueStore<String, Webhook> webhookStore = getWebhookStore();
-        return webhookStore.get(allWebhooksKey);
+        return webhookStore.get(webhookId);
+    }
+
+    public List<Webhook> getWebhooks() {
+        final KeyValueIterator<String, Webhook> iterator = getWebhookStore().all();
+        List<Webhook> webhooks = new ArrayList<>();
+        iterator.forEachRemaining(kv -> webhooks.add(kv.value));
+        return webhooks;
     }
 
     @Override

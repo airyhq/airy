@@ -21,4 +21,9 @@ public class TagEvent extends Event implements Serializable {
     public static TagEvent fromTag(Tag tag) {
         return builder().payload(TagPayload.fromTag(tag)).build();
     }
+
+    @Override
+    public EventType getType() {
+        return EventType.TAG_UPDATED;
+    }
 }

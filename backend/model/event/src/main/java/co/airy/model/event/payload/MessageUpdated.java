@@ -1,6 +1,7 @@
 package co.airy.model.event.payload;
 
 import co.airy.avro.communication.Message;
+import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,26 +16,31 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class MessageEvent extends Event implements Serializable {
-    private MessageEventPayload payload;
+public class MessageUpdated extends Event implements Serializable {
+    private Payload payload;
+
+    @Override
+    public EventType getType() {
+        return EventType.MESSAGE_UPDATED;
+    }
 
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class MessageEventPayload {
+    public static class Payload {
         private String conversationId;
         private String channelId;
         private MessageResponsePayload message;
     }
 
-    public static MessageEvent fromMessage(Message message) {
-        return MessageEvent.builder()
+    public static MessageUpdated fromMessageContainer(MessageContainer container) {
+        return MessageUpdated.builder()
                 .payload(
-                        MessageEventPayload.builder()
-                                .channelId(message.getChannelId())
-                                .conversationId(message.getConversationId())
-                                .message(MessageResponsePayload.fromMessage(message))
+                        Payload.builder()
+                                .channelId(container.getMessage().getChannelId())
+                                .conversationId(container.getMessage().getConversationId())
+                                .message(MessageResponsePayload.fromMessageContainer(container))
                                 .build()
                 )
                 .build();

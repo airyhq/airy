@@ -20,8 +20,13 @@ import static co.airy.model.metadata.MetadataRepository.getSubject;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class MetadataEvent extends Event implements Serializable {
+public class MetadataUpdated extends Event implements Serializable {
     private MetadataEventPayload payload;
+
+    @Override
+    public EventType getType() {
+        return EventType.METADATA_UPDATED;
+    }
 
     @Data
     @Builder
@@ -33,10 +38,10 @@ public class MetadataEvent extends Event implements Serializable {
         private JsonNode metadata;
     }
 
-    public static MetadataEvent fromMetadataMap(MetadataMap metadataMap) {
+    public static MetadataUpdated fromMetadataMap(MetadataMap metadataMap) {
         final Metadata someMetadata = metadataMap.values().iterator().next();
         final Subject subject = getSubject(someMetadata);
-        return new MetadataEvent(
+        return new MetadataUpdated(
                 MetadataEventPayload.builder()
                         .subject(subject.getNamespace())
                         .identifier(subject.getIdentifier())

@@ -1,5 +1,6 @@
 package co.airy.core.api.communication.dto;
 
+import co.airy.model.conversation.Conversation;
 import co.airy.model.metadata.dto.MetadataNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

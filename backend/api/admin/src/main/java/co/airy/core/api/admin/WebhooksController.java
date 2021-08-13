@@ -2,11 +2,15 @@ package co.airy.core.api.admin;
 
 import co.airy.avro.communication.Status;
 import co.airy.avro.communication.Webhook;
-import co.airy.core.api.admin.payload.GetWebhookResponse;
-import co.airy.core.api.admin.payload.WebhookSubscriptionPayload;
+import co.airy.core.api.admin.payload.WebhookListResponsePayload;
+import co.airy.core.api.admin.payload.WebhookResponsePayload;
+import co.airy.core.api.admin.payload.WebhookInfoRequestPayload;
+import co.airy.core.api.admin.payload.WebhookSubscribePayload;
+import co.airy.core.api.admin.payload.WebhookUnsubscribePayload;
 import co.airy.core.api.config.ServiceDiscovery;
 import co.airy.core.api.config.dto.ComponentInfo;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @RestController
 public class WebhooksController {
@@ -28,7 +35,7 @@ public class WebhooksController {
     }
 
     @PostMapping("/webhooks.subscribe")
-    public ResponseEntity<?> subscribe(@RequestBody @Valid WebhookSubscriptionPayload payload) {
+    public ResponseEntity<?> subscribe(@RequestBody @Valid WebhookSubscribePayload payload) {
         final ComponentInfo component = serviceDiscovery.getComponent("integration-webhook");
         if (component == null || !component.isEnabled()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -39,11 +46,16 @@ public class WebhooksController {
                     .body(new RequestErrorResponsePayload("The webhook component is enabled, but not healthy. Check the Kubernetes cluster state."));
         }
 
+        final UUID id = Optional.ofNullable(payload.getId()).orElse(UUID.randomUUID());
+
         final Webhook webhook = Webhook.newBuilder()
-                .setId(UUID.randomUUID().toString())
+                .setId(id.toString())
+                .setEvents(payload.getEvents())
                 .setEndpoint(payload.getUrl())
                 .setStatus(Status.Subscribed)
                 .setHeaders(payload.getHeaders())
+                .setSignKey(payload.getSignatureKey())
+                .setName(payload.getName())
                 .build();
 
         try {
@@ -56,11 +68,13 @@ public class WebhooksController {
     }
 
     @PostMapping("/webhooks.unsubscribe")
-    public ResponseEntity<?> unsubscribe() {
-        Webhook webhook = stores.getWebhook();
-
+    public ResponseEntity<?> unsubscribe(@RequestBody @Valid WebhookUnsubscribePayload payload) {
+        Webhook webhook = stores.getWebhook(payload.getId().toString());
         if (webhook == null) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.notFound().build();
+        }
+        if (webhook.getStatus().equals(Status.Unsubscribed)) {
+            return ResponseEntity.status(HttpStatus.OK).body(fromWebhook(webhook));
         }
 
         webhook.setStatus(Status.Unsubscribed);
@@ -75,9 +89,8 @@ public class WebhooksController {
     }
 
     @PostMapping("/webhooks.info")
-    public ResponseEntity<GetWebhookResponse> webhookInfo() {
-        final Webhook webhook = stores.getWebhook();
-
+    public ResponseEntity<WebhookResponsePayload> webhookInfo(@RequestBody @Valid WebhookInfoRequestPayload payload) {
+        final Webhook webhook = stores.getWebhook(payload.getId().toString());
         if (webhook == null) {
             return ResponseEntity.notFound().build();
         }
@@ -85,8 +98,17 @@ public class WebhooksController {
         return ResponseEntity.status(HttpStatus.OK).body(fromWebhook(webhook));
     }
 
-    private GetWebhookResponse fromWebhook(Webhook webhook) {
-        return GetWebhookResponse.builder()
+    @PostMapping("/webhooks.list")
+    public ResponseEntity<WebhookListResponsePayload> webhookList() {
+        final List<WebhookResponsePayload> webhooks = stores.getWebhooks().stream().map(this::fromWebhook).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(new WebhookListResponsePayload(webhooks));
+    }
+
+    private WebhookResponsePayload fromWebhook(Webhook webhook) {
+        return WebhookResponsePayload.builder()
+                .id(webhook.getId())
+                .name(webhook.getName())
+                .events(webhook.getEvents())
                 .headers(webhook.getHeaders())
                 .status(webhook.getStatus().toString())
                 .url(webhook.getEndpoint())

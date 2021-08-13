@@ -28,6 +28,10 @@ func (worker *Worker) StartServer(ctx context.Context, wg *sync.WaitGroup) {
 		w.WriteHeader(200)
 	})
 
+	http.HandleFunc("/actuator/health", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("{\"status\":\"UP\"}"))
+	})
+
 	go func() {
 		log.Println("serving on 8080")
 		err := http.ListenAndServe(":8080", nil)

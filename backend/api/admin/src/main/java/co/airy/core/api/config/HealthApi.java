@@ -29,7 +29,6 @@ public class HealthApi {
     public Future<Boolean> isHealthy(String service) {
         try {
             final ResponseEntity<String> response = restTemplate.getForEntity(String.format("http://%s.%s/actuator/health", service, namespace), String.class);
-            log.info("response body {}", response.getBody());
             final JsonNode jsonNode = objectMapper.readTree(response.getBody());
             return new AsyncResult<>("UP".equalsIgnoreCase(jsonNode.get("status").textValue()));
         } catch (Exception e) {

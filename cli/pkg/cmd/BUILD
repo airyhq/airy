@@ -16,6 +16,7 @@ go_library(
         "//cli/pkg/cmd/create",
         "//cli/pkg/cmd/status",
         "//cli/pkg/cmd/ui",
+        "//cli/pkg/cmd/upgrade",
         "//cli/pkg/workspace",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",

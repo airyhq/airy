@@ -7,6 +7,7 @@ require (
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/TwinProduction/go-color v1.0.0
+	github.com/airyhq/airy/infrastructure/lib/go/k8s/util v0.0.0-20210813123122-f26352d78a88
 	github.com/airyhq/airy/lib/go/httpclient v0.0.0
 	github.com/aws/aws-sdk-go v1.37.29
 	github.com/aws/aws-sdk-go-v2/config v1.1.1

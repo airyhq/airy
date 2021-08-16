@@ -103,3 +103,20 @@ func ToObjectMeta(kubernetesObject interface{}) ObjectMeta {
 		ObjectMeta: field,
 	}
 }
+
+func ConfirmToProceed() bool {
+	var input string
+	fmt.Println("Are you sure that you want to proceed? [Y/y]")
+	_, err := fmt.Scanln(&input)
+	fmt.Println()
+	if err != nil {
+		return false
+	}
+	proceed := []string{"y", "Y"}
+	for _, v := range proceed {
+		if input == v {
+			return true
+		}
+	}
+	return false
+}

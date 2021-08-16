@@ -260,6 +260,16 @@ After setting these parameters, create your `Airy Core` instance with the follow
 airy create --provider aws --provider-config hostUpdate=false
 ```
 
+:::note
+In case you have created your Airy Core instance without Let's Encrypt and want to add it later, you must use the `airy upgrade` command.
+
+Even if you don't upgrade to a new version, just modify your `airy.yaml` file as explained in this section and run
+
+`airy upgrade`
+
+After the upgrade is done, continue with setting up your DNS and starting the ingress controller.
+:::
+
 #### Setup your DNS
 
 You should create a CNAME DNS record for the hostname that you set under `kubernetes.host` in the previous step to point to the hostname of the LoadBalancer, created by AWS for the ingress service:

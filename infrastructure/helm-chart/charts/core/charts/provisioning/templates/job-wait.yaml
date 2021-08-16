@@ -3,7 +3,7 @@ kind: Job
 metadata:
   name: wait-for-api-communication
   annotations:
-    "helm.sh/hook": "post-install"
+    "helm.sh/hook": "post-install,post-upgrade"
 spec:
   template:
     spec:
@@ -29,7 +29,7 @@ kind: Job
 metadata:
   name: wait-for-frontend-ui
   annotations:
-    "helm.sh/hook": "post-install"
+    "helm.sh/hook": "post-install,post-upgrade"
 spec:
   template:
     spec:
@@ -55,7 +55,7 @@ kind: Job
 metadata:
   name: wait-for-frontend-chat-plugin
   annotations:
-    "helm.sh/hook": "post-install"
+    "helm.sh/hook": "post-install,post-upgrade"
 spec:
   template:
     spec:

@@ -2,12 +2,12 @@ kubernetes:
   appImageTag: {{ .Version }}
   containerRegistry: ghcr.io/airyhq
   namespace: {{ .Namespace }}
-  ngrokEnabled: {{ default "false" .NgrokEnabled }}
+  ngrokEnabled: {{ default false .NgrokEnabled }}
 {{- if .Host }}
   host: {{ default "airy.core" .Host }}
 {{- end }}
 ingress:
-  https: {{ default "false" .Https}}
+  https: {{ default false .Https}}
   letsencryptEmail: {{ .LetsencryptEmail}}
   {{- if .LoadbalancerAnnotations }}
   loadbalancerAnnotations:
@@ -16,7 +16,7 @@ ingress:
   {{- end }}
   {{- end }}
 security:
-  allowedOrigins: "*"
+  allowedOrigins: '*'
   jwtSecret: {{ randAlphaNum 128 }}
 components:
   sources:

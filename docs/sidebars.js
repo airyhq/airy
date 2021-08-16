@@ -17,6 +17,7 @@ module.exports = {
           'Command Line Interface': ['cli/introduction', 'cli/usage'],
         },
         'getting-started/quickstart',
+        'getting-started/upgrade',
         'getting-started/troubleshooting',
         'getting-started/glossary',
       ],

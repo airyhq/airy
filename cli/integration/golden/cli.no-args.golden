@@ -10,6 +10,7 @@ Available Commands:
   help        Help about any command
   status      Reports the status of an Airy Core instance
   ui          Opens the Airy Core UI in your local browser
+  upgrade     Upgrades an instance of Airy Core
   version     Prints version information
 
 Flags:

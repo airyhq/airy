@@ -20,7 +20,8 @@ export type Config = {
   height?: number;
   width?: number;
   disableMobile?: boolean;
-  bubbleState?: string;
+  bubbleState?: 'expanded' | 'minimized';
+  closeMode?: 'basic' | 'medium' | 'full';
 };
 
 export type AuthConfiguration = {

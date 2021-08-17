@@ -162,6 +162,7 @@ const Chat = ({config, ...props}: Props) => {
     setNewConversation(false);
     resetStorage(props.channelId);
     closeModalOnClick();
+    ctrl.toggleHideChat();
   };
 
   const reAuthenticate = () => {

@@ -12,7 +12,7 @@
     "@types/react-redux": "7.1.18",
     "@types/react-router-dom": "^5.1.8",
     "camelcase-keys": "^7.0.0",
-    "core-js": "3.16.0",
+    "core-js": "3.16.1",
     "emoji-mart": "3.0.1",
     "linkifyjs": "^2.1.9",
     "lodash-es": "^4.17.21",

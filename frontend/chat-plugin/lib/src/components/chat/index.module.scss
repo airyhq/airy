@@ -1,6 +1,6 @@
 @import 'assets/scss/fonts.scss';
 
-.main {  
+.main {
   height: 100%;
   padding: 0;
   background-color: transparent;
@@ -9,7 +9,7 @@
   justify-content: flex-end;
 }
 
-.mainFlex {  
+.mainFlex {
   @extend .main;
   @media only screen and (max-device-width: 640px) {
     display: none;

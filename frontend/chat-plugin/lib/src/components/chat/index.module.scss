@@ -1,18 +1,22 @@
 @import 'assets/scss/fonts.scss';
 
-.main {
-  @media only screen and (max-device-width: 640px) {
-    display: none;
-  }
-  @media only screen and (max-device-height: 840px) {
-    display: none;
-  }
+.main {  
   height: 100%;
   padding: 0;
   background-color: transparent;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+}
+
+.mainFlex {  
+  @extend .main;
+  @media only screen and (max-device-width: 640px) {
+    display: none;
+  }
+  @media only screen and (max-device-height: 840px) {
+    display: none;
+  }
 }
 
 @keyframes chatAnimationOpen {

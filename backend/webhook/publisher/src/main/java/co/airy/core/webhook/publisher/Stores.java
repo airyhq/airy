@@ -30,6 +30,8 @@ import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -43,7 +45,7 @@ import static co.airy.model.message.MessageRepository.isNewMessage;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
 
 @Component
-public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
+public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean, HealthIndicator {
     private final Logger log = AiryLoggerFactory.getLogger(Stores.class);
 
     private static final String appId = "webhook.Publisher";
@@ -85,7 +87,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         messageTable.toStream()
                 .foreach((messageId, messageContainer) -> onRecord(MessageUpdated.fromMessageContainer(messageContainer)));
 
-        // conversation.updted
+        // conversation.updated
         messageTable.groupBy((messageId, messageContainer) -> KeyValue.pair(messageContainer.getMessage().getConversationId(), messageContainer))
                 .aggregate(Conversation::new,
                         (conversationId, container, aggregate) -> {
@@ -125,8 +127,12 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
         streams.start(builder.build(), appId);
     }
 
+    private ReadOnlyKeyValueStore<String, Webhook> getWebhookStore() {
+        return streams.acquireLocalStore(webhooksStore);
+    }
+
     public Collection<Webhook> getAllWebhooks() {
-        final ReadOnlyKeyValueStore<String, Webhook> store = streams.acquireLocalStore(webhooksStore);
+        final ReadOnlyKeyValueStore<String, Webhook> store = getWebhookStore();
 
         final ArrayList<Webhook> webhooks = new ArrayList<>();
         store.all().forEachRemaining((it) -> webhooks.add(it.value));
@@ -135,6 +141,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
     private void onRecord(Event event) {
         try {
+            log.info("on event {}", event);
             final Collection<Webhook> webhooks = getAllWebhooks();
 
             for (Webhook webhook : webhooks) {
@@ -162,5 +169,11 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     // visible for testing
     KafkaStreams.State getStreamState() {
         return streams.state();
+    }
+
+    @Override
+    public Health health() {
+        getWebhookStore();
+        return Health.up().build();
     }
 }

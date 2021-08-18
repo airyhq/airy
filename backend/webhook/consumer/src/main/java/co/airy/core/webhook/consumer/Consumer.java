@@ -9,19 +9,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 
 @Service
-public class Consumer implements DisposableBean, HealthIndicator {
+public class Consumer implements DisposableBean {
     private static final Logger log = AiryLoggerFactory.getLogger(Consumer.class);
 
     private final ObjectMapper objectMapper = new ObjectMapper()
@@ -58,6 +54,7 @@ public class Consumer implements DisposableBean, HealthIndicator {
             sender.sendRecord(event);
         } catch (RestClientException e) {
             log.error("Sending message to webhook {} failed. ", event.getWebhookId());
+            return;
         }
 
         consumer.deleteJob(job.getId());
@@ -66,10 +63,5 @@ public class Consumer implements DisposableBean, HealthIndicator {
     @Override
     public void destroy() {
         consumer.close();
-    }
-
-    @Override
-    public Health health() {
-        return null;
     }
 }

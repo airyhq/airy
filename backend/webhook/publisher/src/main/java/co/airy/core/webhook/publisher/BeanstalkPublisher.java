@@ -2,7 +2,6 @@ package co.airy.core.webhook.publisher;
 
 import co.airy.core.webhook.WebhookEvent;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.model.event.payload.Event;
 import com.dinstone.beanstalkc.JobProducer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;

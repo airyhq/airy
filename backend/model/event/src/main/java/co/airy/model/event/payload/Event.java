@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = MessageCreated.class, name = "message.created"),
         @JsonSubTypes.Type(value = MessageUpdated.class, name = "message.updated"),
-        @JsonSubTypes.Type(value = ConversationUpdated.class, name = "conversation.created"),
+        @JsonSubTypes.Type(value = ConversationUpdated.class, name = "conversation.updated"),
         @JsonSubTypes.Type(value = MetadataUpdated.class, name = "metadata.updated"),
         @JsonSubTypes.Type(value = ChannelUpdated.class, name = "channel.updated"),
         @JsonSubTypes.Type(value = TagEvent.class, name = "tag.updated")

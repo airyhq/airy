@@ -1,20 +1,43 @@
-# gazelle:prefix consumer
-
 load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
-load("@io_bazel_rules_docker//go:image.bzl", "go_image")
+load("//tools/build:springboot.bzl", "springboot")
+load("//tools/build:junit5.bzl", "junit5")
 load("//tools/build:container_release.bzl", "container_release")
 
-go_binary(
-    name = "consumer_binary",
-    embed = [":consumer_lib"],
-    visibility = ["//visibility:public"],
+app_deps = [
+    "//backend:base_app",
+    "//backend/webhook/lib",
+    "//backend/model/message",
+    "//backend/model/metadata",
+    "//backend:webhook",
+    "//lib/java/uuid",
+    "//lib/java/date",
+    "//lib/java/spring/kafka/core:spring-kafka-core",
+    "//lib/java/spring/kafka/streams:spring-kafka-streams",
+    "//lib/java/spring/web:spring-web",
+    "@maven//:com_dinstone_beanstalkc",
+    "//:springboot_actuator",
+]
+
+springboot(
+    name = "webhook-consumer",
+    srcs = glob(["src/main/java/**/*.java"]),
+    main_class = "co.airy.spring.core.AirySpringBootApplication",
+    deps = app_deps,
 )
 
-go_image(
-    name = "image",
-    embed = [":consumer_lib"],
-)
+[
+    junit5(
+        size = "medium",
+        file = file,
+        resources = glob(["src/test/resources/**/*"]),
+        deps = [
+            ":app",
+            "//backend:base_test",
+            "//lib/java/kafka/test:kafka-test",
+        ] + app_deps,
+    )
+    for file in glob(["src/test/java/**/*Test.java"])
+]
 
 container_release(
     registry = "ghcr.io/airyhq/webhook",
@@ -22,11 +45,3 @@ container_release(
 )
 
 check_pkg(name = "buildifier")
-
-go_library(
-    name = "consumer_lib",
-    srcs = ["main.go"],
-    importpath = "consumer",
-    visibility = ["//visibility:private"],
-    deps = ["//backend/webhook/consumer/pkg/worker"],
-)

@@ -49,7 +49,7 @@ public class Conversation implements Serializable {
 
         // Default to a display name that looks like: "Facebook 4ecb3"
         if (displayName == null) {
-            return String.format("%s %s", prettifySource(channelContainer.getChannel().getSource()), getId().substring(31));
+            return String.format("%s %s", prettifySource(getLastMessageContainer().getMessage().getSource()), getId().substring(31));
         }
 
         return displayName;

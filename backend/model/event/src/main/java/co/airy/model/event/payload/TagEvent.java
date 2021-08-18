@@ -23,7 +23,7 @@ public class TagEvent extends Event implements Serializable {
     }
 
     @Override
-    public EventType getType() {
+    public EventType getTypeId() {
         return EventType.TAG_UPDATED;
     }
 }

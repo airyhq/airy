@@ -9,6 +9,7 @@ import co.airy.core.api.admin.payload.WebhookSubscribePayload;
 import co.airy.core.api.admin.payload.WebhookUnsubscribePayload;
 import co.airy.core.api.config.ServiceDiscovery;
 import co.airy.core.api.config.dto.ComponentInfo;
+import co.airy.model.event.payload.EventType;
 import co.airy.spring.web.payload.RequestErrorResponsePayload;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -50,8 +51,8 @@ public class WebhooksController {
 
         final Webhook webhook = Webhook.newBuilder()
                 .setId(id.toString())
-                .setEvents(payload.getEvents())
-                .setEndpoint(payload.getUrl())
+                .setEvents(payload.getEvents().stream().map(EventType::getEventType).collect(Collectors.toList()))
+                .setEndpoint(payload.getUrl().toString())
                 .setStatus(Status.Subscribed)
                 .setHeaders(payload.getHeaders())
                 .setSignKey(payload.getSignatureKey())

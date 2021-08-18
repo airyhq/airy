@@ -24,7 +24,7 @@ public class MetadataUpdated extends Event implements Serializable {
     private MetadataEventPayload payload;
 
     @Override
-    public EventType getType() {
+    public EventType getTypeId() {
         return EventType.METADATA_UPDATED;
     }
 

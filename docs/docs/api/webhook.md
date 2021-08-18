@@ -28,7 +28,7 @@ integration pattern:
 - React to those events by calling the [send message](/api/endpoints/messages.md#send) endpoint
 
 You must de-duplicate messages on arrival as the webhook _does not_ guarantee
-events uniqueness.
+events uniqueness. Your webhook also has to respond to every message with a status code of `200`.
 
 ## Subscribing
 
@@ -48,8 +48,7 @@ Subscribes the webhook for the first time or update its parameters.
     "message.created",
     "message.updated",
     "conversation.updated",
-    "channel.updated",
-    "metadata.item"
+    "channel.updated"
   ],
   "headers": {
     // optional
@@ -78,8 +77,7 @@ Subscribes the webhook for the first time or update its parameters.
     "message.created",
     "message.updated",
     "conversation.updated",
-    "channel.update",
-    "metadata.item"
+    "channel.update"
   ],
   "headers": {
     // optional
@@ -254,23 +252,6 @@ Sent whenever a channel is (un-) subscribed or its metadata changes.
       "image_url": "http://example.org/avatar.jpeg" // optional
     },
     "connected": true
-  }
-}
-```
-
-### `metadata.updated`
-
-Metadata is backed by a stream of Key-Value updates. This event occurs whenever one of those updates occurs and thus doesn't reflect the full metadata associated with a namespace-identifier pair.
-
-```json5
-{
-  "type": "metadata.updated",
-  "payload": {
-    "namespace": "conversation|channel|message",
-    "id": "conversation/channel/message uuid",
-    "metadata": {
-      "name": "some value" // contains only one updated value
-    }
   }
 }
 ```

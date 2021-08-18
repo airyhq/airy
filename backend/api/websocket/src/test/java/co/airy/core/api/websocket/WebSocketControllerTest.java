@@ -14,7 +14,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.model.event.payload.ChannelUpdated;
-import co.airy.model.event.payload.MessageUpdated;
+import co.airy.model.event.payload.MessageCreated;
 import co.airy.model.event.payload.MetadataUpdated;
 import co.airy.model.event.payload.TagEvent;
 import co.airy.spring.core.AirySpringBootApplication;
@@ -99,7 +99,7 @@ public class WebSocketControllerTest {
 
     @Test
     void canSendMessageEvents() throws Exception {
-        final CompletableFuture<MessageUpdated> future = subscribe(port, MessageUpdated.class, QUEUE_EVENTS);
+        final CompletableFuture<MessageCreated> future = subscribe(port, MessageCreated.class, QUEUE_EVENTS);
         final Message message = Message.newBuilder()
                 .setId("messageId")
                 .setSource("facebook")
@@ -115,7 +115,7 @@ public class WebSocketControllerTest {
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message));
 
-        MessageUpdated recMessage = future.get(30, TimeUnit.SECONDS);
+        MessageCreated recMessage = future.get(30, TimeUnit.SECONDS);
         assertNotNull(recMessage);
         assertThat(recMessage.getPayload().getChannelId(), equalTo(message.getChannelId()));
         assertThat(recMessage.getPayload().getMessage().getId(), equalTo(message.getId()));

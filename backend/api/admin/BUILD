@@ -11,11 +11,13 @@ app_deps = [
     "//backend:webhook",
     "//backend/model/metadata",
     "//backend/model/template",
+    "//backend/model/event",
     "//lib/java/uuid",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
+    "@maven//:org_springframework_spring_webmvc_5_3_6",
 ]
 
 springboot(

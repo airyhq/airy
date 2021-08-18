@@ -12,6 +12,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationTemplates;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
+import co.airy.model.event.payload.EventType;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -103,9 +104,10 @@ public class WebhooksControllerTest {
 
         final String url = "http://example.org/webhook";
         final String xAuthHeader = "auth token";
+        final EventType subscribeEvent = EventType.MESSAGE_CREATED;
 
-        final String subscribePayload = String.format("{\"id\":\"%s\",\"url\":\"%s\",\"headers\":{\"X-Auth\":\"%s\"}}",
-                webhookId, url, xAuthHeader);
+        final String subscribePayload = String.format("{\"id\":\"%s\",\"url\":\"%s\",\"headers\":{\"X-Auth\":\"%s\"},\"events\":[\"%s\"]}",
+                webhookId, url, xAuthHeader, subscribeEvent.getEventType());
 
         when(serviceDiscovery.getComponent(Mockito.anyString())).thenCallRealMethod();
 

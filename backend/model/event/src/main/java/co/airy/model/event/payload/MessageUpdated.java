@@ -20,7 +20,7 @@ public class MessageUpdated extends Event implements Serializable {
     private Payload payload;
 
     @Override
-    public EventType getType() {
+    public EventType getTypeId() {
         return EventType.MESSAGE_UPDATED;
     }
 

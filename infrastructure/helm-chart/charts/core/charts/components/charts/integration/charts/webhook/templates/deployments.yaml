@@ -54,21 +54,12 @@ spec:
             configMapKeyRef:
               name: "{{ .Values.component }}"
               key: name
-        - name: MAX_BACKOFF_SECONDS
-          valueFrom:
-            configMapKeyRef:
-              name: integration-webhook
-              key: maxBackoff
         livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-              httpHeaders:
-                - name: Health-Check
-                  value: health-check
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3
       initContainers:
       - name: wait
         image: busybox

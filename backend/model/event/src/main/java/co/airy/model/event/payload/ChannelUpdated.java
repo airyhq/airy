@@ -12,6 +12,8 @@ import java.io.Serializable;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class ChannelUpdated extends Event implements Serializable {
     private ChannelPayload payload;
@@ -21,7 +23,7 @@ public class ChannelUpdated extends Event implements Serializable {
     }
 
     @Override
-    public EventType getType() {
+    public EventType getTypeId() {
         return EventType.CHANNEL_UPDATED;
     }
 }

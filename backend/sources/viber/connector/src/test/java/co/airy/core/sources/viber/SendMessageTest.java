@@ -46,7 +46,6 @@ class SendMessageTest {
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
     private static KafkaTestHelper testHelper;
 
-    @Autowired
     @MockBean
     private Api api;
 

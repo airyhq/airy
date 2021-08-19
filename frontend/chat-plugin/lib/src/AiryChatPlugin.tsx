@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {AiryChatPluginConfiguration} from './config';
 
 import Chat from './components/chat';
@@ -16,17 +16,17 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   const handleResize = () => {
     setWindowHeight(window.innerHeight);
-    setWindowWidth(window.innerWidth);    
-  }
+    setWindowWidth(window.innerWidth);
+  };
 
-  window.addEventListener("resize", handleResize);
+  window.addEventListener('resize', handleResize);
 
   const widgetHeight = (): number => {
     if (config.config?.height) {
       return config.config.height > windowHeight ? windowHeight : config.config.height;
     }
     return 700 > windowHeight ? windowHeight : 700;
-  }; 
+  };
 
   const widgetWidth = (): number => {
     if (config.config?.width) {
@@ -37,7 +37,7 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   const customStyle = {
     background: 'transparent',
-    height: widgetHeight(),    
+    height: widgetHeight(),
     width: widgetWidth(),
     ...(config.config?.accentColor && {
       '--color-airy-accent': config.config?.accentColor,

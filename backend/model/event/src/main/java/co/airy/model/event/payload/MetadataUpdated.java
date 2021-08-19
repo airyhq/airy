@@ -22,6 +22,7 @@ import static co.airy.model.metadata.MetadataRepository.getSubject;
 @EqualsAndHashCode(callSuper = false)
 public class MetadataUpdated extends Event implements Serializable {
     private MetadataEventPayload payload;
+    private Long timestamp;
 
     @Override
     public EventType getTypeId() {
@@ -46,7 +47,8 @@ public class MetadataUpdated extends Event implements Serializable {
                         .subject(subject.getNamespace())
                         .identifier(subject.getIdentifier())
                         .metadata(getMetadataPayload(metadataMap))
-                        .build()
+                        .build(),
+                metadataMap.getUpdatedAt()
         );
     }
 }

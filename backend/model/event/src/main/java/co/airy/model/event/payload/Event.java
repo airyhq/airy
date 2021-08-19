@@ -22,4 +22,7 @@ public abstract class Event {
     public String getType() {
         return getTypeId().getEventType();
     }
+
+    @JsonIgnore
+    public abstract Long getTimestamp();
 }

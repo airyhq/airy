@@ -2,24 +2,44 @@ package co.airy.model.metadata.dto;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.log.AiryLoggerFactory;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.slf4j.Logger;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Optional;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class MetadataMap extends HashMap<String, Metadata> implements Serializable {
+    private Long updatedAt;
     private static final Logger log = AiryLoggerFactory.getLogger(MetadataMap.class);
 
     // Convenience methods for aggregating on Metadata in Kafka Streams
     public static MetadataMap adder(String key, Metadata metadata, MetadataMap aggregate) {
         aggregate.put(metadata.getKey(), metadata);
+        aggregate.setUpdatedAt(metadata.getTimestamp());
         return aggregate;
     }
 
     public static MetadataMap subtractor(String key, Metadata metadata, MetadataMap aggregate) {
         aggregate.remove(metadata.getKey());
+        aggregate.setUpdatedAt(Instant.now().toEpochMilli());
         return aggregate;
+    }
+
+    public long getUpdatedAt() {
+        return Optional.ofNullable(updatedAt)
+                // Backwards compatible for maps that have not recorded this value yet
+                .orElseGet(() -> values()
+                        .stream()
+                        .map(Metadata::getTimestamp)
+                        .max(Comparator.naturalOrder()).orElse(0L));
     }
 
     public Integer getMetadataNumericValue(String key, Integer parseExceptionDefault) {

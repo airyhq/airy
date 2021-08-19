@@ -8,14 +8,6 @@
       "type": "string"
     },
     {
-      "name": "name",
-      "type": [
-        "null",
-        "string"
-      ],
-      "default": null
-    },
-    {
       "name": "events",
       "type": {
         "type": "array",
@@ -56,6 +48,11 @@
           "Unsubscribed"
         ]
       }
+    },
+    {
+      "name": "subscribedAt",
+      "type": "long",
+      "logicalType": "timestamp-millis"
     }
   ]
 }

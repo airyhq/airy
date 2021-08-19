@@ -22,6 +22,10 @@ public class WebhookEvent {
         if (webhook == null || webhook.getStatus().equals(Status.Unsubscribed)) {
             return false;
         }
+        // Reject events sent before the webhookwas subscribed
+        if(payload.getTimestamp() < webhook.getSubscribedAt()) {
+            return false;
+        }
 
         final List<String> events = webhook.getEvents();
         if (events.isEmpty()) {

@@ -98,6 +98,7 @@ public class PublisherTest {
                 .setEndpoint("http://endpoint.com/accept")
                 .setId(UUID.randomUUID().toString())
                 .setStatus(Status.Subscribed)
+                .setSubscribedAt(Instant.now().toEpochMilli())
                 .build();
 
         final Webhook selective = Webhook.newBuilder()
@@ -108,6 +109,7 @@ public class PublisherTest {
                 ))
                 .setId(UUID.randomUUID().toString())
                 .setStatus(Status.Subscribed)
+                .setSubscribedAt(Instant.now().toEpochMilli())
                 .build();
 
         kafkaTestHelper.produceRecords(List.of(

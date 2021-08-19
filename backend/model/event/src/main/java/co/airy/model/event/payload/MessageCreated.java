@@ -17,6 +17,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 public class MessageCreated extends Event implements Serializable {
     private Payload payload;
+    private Long timestamp;
 
     @Override
     public EventType getTypeId() {
@@ -35,6 +36,7 @@ public class MessageCreated extends Event implements Serializable {
 
     public static MessageCreated fromMessage(Message message) {
         return MessageCreated.builder()
+                .timestamp(message.getSentAt())
                 .payload(
                         Payload.builder()
                                 .channelId(message.getChannelId())

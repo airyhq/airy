@@ -108,6 +108,7 @@ public class ConsumerTest {
                 .setId(UUID.randomUUID().toString())
                 .setStatus(Status.Subscribed)
                 .setSignKey(signKey)
+                .setSubscribedAt(Instant.now().toEpochMilli())
                 .build();
 
         final WebhookEvent event = getTestEvent(webhook.getId());

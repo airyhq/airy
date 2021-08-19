@@ -39,6 +39,11 @@ public class Conversation implements Serializable {
         return Optional.ofNullable(channelContainer).map(ChannelContainer::getChannel).orElse(null);
     }
 
+    @JsonIgnore
+    public Long getUpdatedAt() {
+        return Math.max(getLastMessageContainer().getUpdatedAt(), metadataMap.getUpdatedAt());
+    }
+
     public Integer getUnreadMessageCount() {
         return metadataMap.getMetadataNumericValue(MetadataKeys.ConversationKeys.UNREAD_COUNT, 0);
     }

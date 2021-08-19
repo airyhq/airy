@@ -17,6 +17,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 public class ConversationUpdated extends Event implements Serializable {
     private ConversationPayload payload;
+    private Long timestamp;
 
     @Override
     public EventType getTypeId() {
@@ -25,6 +26,7 @@ public class ConversationUpdated extends Event implements Serializable {
 
     public static ConversationUpdated fromConversation(Conversation conversation) {
         return ConversationUpdated.builder()
+                .timestamp(conversation.getUpdatedAt())
                 .payload(ConversationPayload.fromConversation(conversation))
                 .build();
     }

@@ -41,7 +41,6 @@ Subscribes the webhook for the first time or update its parameters.
 ```json5
 {
   "id": "3e639566-29fa-450d-a59f-ae3c25d7260f", // optional
-  "name": "Customer relationship tool",
   "url": "https://endpoint.com/webhook",
   "events": [
     // optional
@@ -59,7 +58,6 @@ Subscribes the webhook for the first time or update its parameters.
 ```
 
 - `id` (optional) provide for updates
-- `name` (optional) human readable name for the webhook
 - `url` endpoint to be called by webhook
 - `headers` (optional) HTTP headers to set on each request (useful for authentication)
 - `signature_key` (optional) when set, the webhook will also sent a header `X-Airy-Content-Signature` that contains the SHA256 HMAC of the specified key and the content.
@@ -77,7 +75,7 @@ Subscribes the webhook for the first time or update its parameters.
     "message.created",
     "message.updated",
     "conversation.updated",
-    "channel.update"
+    "channel.updated"
   ],
   "headers": {
     // optional

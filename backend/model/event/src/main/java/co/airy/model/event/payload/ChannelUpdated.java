@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -17,9 +18,11 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 public class ChannelUpdated extends Event implements Serializable {
     private ChannelPayload payload;
+    private Long timestamp;
 
     public static ChannelUpdated fromChannel(Channel channel) {
-        return builder().payload(ChannelPayload.fromChannel(channel)).build();
+        return builder().timestamp(Instant.now().toEpochMilli()) // TODO record channel update date
+                .payload(ChannelPayload.fromChannel(channel)).build();
     }
 
     @Override

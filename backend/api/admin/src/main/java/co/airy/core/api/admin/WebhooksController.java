@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -56,7 +57,7 @@ public class WebhooksController {
                 .setStatus(Status.Subscribed)
                 .setHeaders(payload.getHeaders())
                 .setSignKey(payload.getSignatureKey())
-                .setName(payload.getName())
+                .setSubscribedAt(Instant.now().toEpochMilli())
                 .build();
 
         try {
@@ -108,7 +109,6 @@ public class WebhooksController {
     private WebhookResponsePayload fromWebhook(Webhook webhook) {
         return WebhookResponsePayload.builder()
                 .id(webhook.getId())
-                .name(webhook.getName())
                 .events(webhook.getEvents())
                 .headers(webhook.getHeaders())
                 .status(webhook.getStatus().toString())

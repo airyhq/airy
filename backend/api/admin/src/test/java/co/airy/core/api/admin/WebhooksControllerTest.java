@@ -33,6 +33,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -154,6 +155,7 @@ public class WebhooksControllerTest {
                                 .setEndpoint("http://endpoint.com/webhook")
                                 .setId(UUID.randomUUID().toString())
                                 .setStatus(Status.Subscribed)
+                                .setSubscribedAt(Instant.now().toEpochMilli())
                                 .build()
                 ),
                 new ProducerRecord<>(applicationCommunicationWebhooks.name(), UUID.randomUUID().toString(),
@@ -161,6 +163,7 @@ public class WebhooksControllerTest {
                                 .setEndpoint("http://endpoint.com/webhook-2")
                                 .setId(UUID.randomUUID().toString())
                                 .setStatus(Status.Subscribed)
+                                .setSubscribedAt(Instant.now().toEpochMilli())
                                 .build()
                 )
         ));

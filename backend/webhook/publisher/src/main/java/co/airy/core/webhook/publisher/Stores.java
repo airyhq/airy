@@ -71,7 +71,7 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor);
 
-        final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name(), Consumed.with(Topology.AutoOffsetReset.LATEST));
+        final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
 
         // message.created
         messageStream.filter((messageId, message) -> message != null && isNewMessage(message))
@@ -101,10 +101,6 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
                             // equals because messages can be updated
                             if (container.getMessage().getSentAt() >= aggregate.getLastMessageContainer().getMessage().getSentAt()) {
                                 aggregate.setLastMessageContainer(container);
-                            }
-
-                            if (container.getMessage().getIsFromContact()) {
-                                aggregate.setSourceConversationId(container.getMessage().getSenderId());
                             }
 
                             return aggregate;

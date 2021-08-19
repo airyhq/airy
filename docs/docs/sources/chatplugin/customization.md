@@ -36,15 +36,19 @@ If you are happy with your customization, copy it and add this code inside the t
 
 | Config Key               | Config Value              | Config Description                                                                                                                          |
 | ------------------------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| welcomeMessage           | JSON                      | Set the welcome message of your Airy Chat Plugin. It can be a text, a template, an image and more                                           |
 | headerText               | string                    | Set the header text of your Airy Chat Plugin                                                                                                |
-| startNewConversationText | string                    | Set the Start new Conversation text button of your Airy Chat Plugin                                                                         |
-| bubbleIcon               | URL                       | Set your company icon which appears on the button that opens and closes the Airy Chat Plugin                                                |
-| sendMessageIcon          | URL                       | Set your icon as `sendButton` and replace the default paperplane                                                                            |
+| headerTextColor          | string                    | Set the header text color of your Airy Chat Plugin                                                                                          |
+| subtitleText             | string                    | Set the subtitle text of your Airy Chat Plugin                                                                                              |
+| subtitleTextColor        | string                    | Set the subtitle text color of your Airy Chat Plugin                                                                                        |
 | primaryColor             | string                    | Set your primary color as the topbar, border of `textArea`, Start new Conversation button text and border color, or text color of `buttons` |
 | accentColor              | string                    | Set your accent color as the `sendButton`                                                                                                   |
 | backgroundColor          | string                    | Set the background color of the entire Airy Chat Plugin                                                                                     |
 | height                   | number                    | Set the height of the entire Airy Chat Plugin                                                                                               |
 | width                    | number                    | Set the width of the entire Airy Chat Plugin                                                                                                |
+| bubbleIcon               | URL                       | Set your company icon which appears on the button that opens and closes the Airy Chat Plugin                                                |
+| sendMessageIcon          | URL                       | Set your icon as `sendButton` and replace the default paperplane                                                                            |
+| startNewConversationText | string                    | Set the Start new Conversation text button of your Airy Chat Plugin                                                                         |
 | disableMobile            | boolean                   | Disable the entire Airy Chat Plugin for mobile devices                                                                                      |
 | bubbleState              | 'expanded', 'minimized'   | Set the behaviour of the chatplugin to be always expanded or always minimized                                                               |
 | closeMode                | 'basic', 'medium', 'full' | Choose one of the different option to close the chatplugin and start a new conversation                                                     |

@@ -36,7 +36,7 @@ If you are happy with your customization, copy it and add this code inside the t
 
 | Config Key               | Config Value              | Config Description                                                                                                                          |
 | ------------------------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| welcomeMessage           | JSON                      | Set the welcome message of your Airy Chat Plugin. It can be a text, a template, an image, and more                                          |
+| welcomeMessage           | JSON                      | Set the welcome message of your Airy Chat Plugin. It can be a text, a template, an image and more                                          |
 | headerText               | string                    | Set the header text of your Airy Chat Plugin                                                                                                |
 | headerTextColor          | string                    | Set the header text color of your Airy Chat Plugin                                                                                          |
 | subtitleText             | string                    | Set the subtitle text of your Airy Chat Plugin                                                                                              |

@@ -23,7 +23,7 @@ public class WebhookEvent {
             return false;
         }
         // Reject events sent before the webhookwas subscribed
-        if(payload.getTimestamp() < webhook.getSubscribedAt()) {
+        if (payload.getTimestamp() < webhook.getSubscribedAt()) {
             return false;
         }
 

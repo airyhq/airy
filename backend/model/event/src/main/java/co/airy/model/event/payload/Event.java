@@ -23,6 +23,6 @@ public abstract class Event {
         return getTypeId().getEventType();
     }
 
-    @JsonIgnore
+    @JsonProperty
     public abstract Long getTimestamp();
 }

@@ -22,7 +22,7 @@ public class WebhookEvent {
         if (webhook == null || webhook.getStatus().equals(Status.Unsubscribed)) {
             return false;
         }
-        // Reject events sent before the webhookwas subscribed
+        // Reject events sent before the webhook was subscribed
         if (payload.getTimestamp() < webhook.getSubscribedAt()) {
             return false;
         }

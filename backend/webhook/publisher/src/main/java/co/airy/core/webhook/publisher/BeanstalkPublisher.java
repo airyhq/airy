@@ -29,6 +29,7 @@ public class BeanstalkPublisher {
             beanstalkdJobProducer.putJob(1, 1, 10000, objectMapper.writeValueAsBytes(event));
         } catch (JsonProcessingException e) {
             log.error("Failed to publish event to Beanstalkd", e);
+            throw new RuntimeException(e);
         }
     }
 }

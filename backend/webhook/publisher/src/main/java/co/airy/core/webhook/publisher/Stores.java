@@ -136,17 +136,10 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
     }
 
     private void onRecord(Event event) {
-        try {
-            log.info("on event {}", event);
-            final Collection<Webhook> webhooks = getAllWebhooks();
-
-            for (Webhook webhook : webhooks) {
-                if (shouldSendFor(event, webhook)) {
-                    beanstalkdPublisher.publishMessage(new WebhookEvent(webhook.getId(), event));
-                }
+        for (Webhook webhook : getAllWebhooks()) {
+            if (shouldSendFor(event, webhook)) {
+                beanstalkdPublisher.publishMessage(new WebhookEvent(webhook.getId(), event));
             }
-        } catch (Exception e) {
-            log.error("failed to publish record", e);
         }
     }
 

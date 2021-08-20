@@ -17,7 +17,6 @@ app_deps = [
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
-    "@maven//:org_springframework_spring_webmvc_5_3_6",
 ]
 
 springboot(

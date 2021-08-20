@@ -36,7 +36,6 @@ public class Sender {
     }
 
     public void sendRecord(WebhookEvent event) {
-        // TODO
         final Webhook webhook = stores.getWebhook(event.getWebhookId());
         if (!shouldSendFor(event.getPayload(), webhook)) {
             return;
@@ -55,7 +54,10 @@ public class Sender {
             final HttpEntity<String> entity = new HttpEntity<>(content, headers);
             restTemplate.postForEntity(new URI(webhook.getEndpoint()), entity, String.class);
         } catch (InvalidKeyException e) {
-            // TODO Send error as metadata to webhook and render in UI
+            // TODO:
+            // - Unsubscribe webhook
+            // - Send error as metadata
+            // - Display error in UI
             log.error("User provided webhook key has an invalid signature. Skipping. Webhook id: {}", webhook.getId(), e);
         } catch (JsonProcessingException e) {
             log.error("Failed to serialize webhook event payload. Exiting. {}", event, e);

@@ -40,28 +40,21 @@ Subscribes the webhook for the first time or update its parameters.
 
 ```json5
 {
-  "id": "3e639566-29fa-450d-a59f-ae3c25d7260f", // optional
-  "url": "https://endpoint.com/webhook",
-  "events": [
-    // optional
-    "message.created",
-    "message.updated",
-    "conversation.updated",
-    "channel.updated"
-  ],
+  "url": "https://endpoint.com/webhook", // required
+  "id": "3e639566-29fa-450d-a59f-ae3c25d7260f",
+  "events": ["message.created", "message.updated", "conversation.updated", "channel.updated"],
   "headers": {
-    // optional
     "X-Custom-Header": "e.g. authentication token"
   },
   "signature_key": "secret-key-for-hmac-header"
 }
 ```
 
+- `url` Endpoint to be called when sending events.
 - `id` (optional) provide for updates
-- `url` endpoint to be called by webhook
 - `headers` (optional) HTTP headers to set on each request (useful for authentication)
 - `signature_key` (optional) when set, the webhook will also sent a header `X-Airy-Content-Signature` that contains the SHA256 HMAC of the specified key and the content.
-- `events` (optional) List of event types to receive. [See below](#events) for a detailed list. Omit to receive all event types
+- `events` (optional) List of event types to receive. [See below](#events) for a detailed list. Omit to receive all event types.
 
 **Sample response**
 

@@ -146,7 +146,7 @@ public class PublisherTest {
                             .setId(messageId)
                             .setSource("facebook")
                             .setSentAt(now)
-                            .setUpdatedAt(now) // field presence identifies message as update
+                            .setUpdatedAt(now) // field presence identifies record as an update
                             .setSenderId("sourceConversationId")
                             .setIsFromContact(false)
                             .setDeliveryState(DeliveryState.DELIVERED)
@@ -157,6 +157,7 @@ public class PublisherTest {
             );
         }
 
+        // channel.updated
         records.add(new ProducerRecord<>(applicationCommunicationChannels.name(), UUID.randomUUID().toString(),
                 Channel.newBuilder()
                         .setId(UUID.randomUUID().toString())
@@ -165,12 +166,8 @@ public class PublisherTest {
                         .setConnectionState(ChannelConnectionState.CONNECTED).build()
         ));
 
-        retryOnException(() -> {
-            assertThat(stores.getAllWebhooks(), hasSize(2));
-        }, "Webhooks store did not get ready");
-
+        retryOnException(() -> assertThat(stores.getAllWebhooks(), hasSize(2)), "Webhooks store did not get ready");
         kafkaTestHelper.produceRecords(records);
-
 
         retryOnException(() -> {
             final List<WebhookEvent> allEvents = batchCaptor.getAllValues().stream().filter((webhookEvent) -> webhookEvent.getWebhookId().equals(acceptAll.getId())).collect(Collectors.toList());
@@ -182,8 +179,6 @@ public class PublisherTest {
             assertTrue(selectiveEvents.stream().allMatch((webhookEvent) -> selective.getEvents().contains(webhookEvent.getPayload().getType())));
             assertTrue(selectiveEvents.stream().anyMatch((webhookEvent) -> webhookEvent.getPayload().getTypeId().equals(EventType.MESSAGE_CREATED)));
             assertTrue(selectiveEvents.stream().anyMatch((webhookEvent) -> webhookEvent.getPayload().getTypeId().equals(EventType.CONVERSATION_UPDATED)));
-
-            //assertEquals(4, batchCaptor.getAllValues().size());
         }, "Number of delivered message is incorrect");
     }
 }

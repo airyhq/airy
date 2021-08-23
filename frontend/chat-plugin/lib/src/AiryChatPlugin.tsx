@@ -39,6 +39,9 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
     background: 'transparent',
     height: widgetHeight(),
     width: widgetWidth(),
+    ...(config.config?.primaryColor && {
+      '--color-airy-blue': config.config?.primaryColor,
+    }),
     ...(config.config?.accentColor && {
       '--color-airy-accent': config.config?.accentColor,
       '--color-airy-blue-hover': config.config?.accentColor,

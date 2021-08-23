@@ -47,7 +47,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
     private final String connectedChannelsStore = "connected-channels-store";
     private final String tagsStore = "tags-store";
-    private final String webhooksStore = "webhook-store";
+    private final String webhooksStore = "webhooks-store";
     private final String templatesStore = "templates-store";
 
     private final String applicationCommunicationChannels = new ApplicationCommunicationChannels().name();

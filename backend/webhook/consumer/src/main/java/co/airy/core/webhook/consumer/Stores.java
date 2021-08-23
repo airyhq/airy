@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "webhook.Consumer";
-    private final String webhooksStore = "webhook-store";
+    private final String webhooksStore = "webhooks-store";
     private final KafkaStreamsWrapper streams;
 
     public Stores(KafkaStreamsWrapper streams) {

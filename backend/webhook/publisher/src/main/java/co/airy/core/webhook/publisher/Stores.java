@@ -46,10 +46,8 @@ import static co.airy.model.metadata.MetadataRepository.getSubject;
 
 @Component
 public class Stores implements ApplicationListener<ApplicationStartedEvent>, DisposableBean, HealthIndicator {
-    private final Logger log = AiryLoggerFactory.getLogger(Stores.class);
-
     private static final String appId = "webhook.Publisher";
-    private final String webhooksStore = "webhook-store";
+    private final String webhooksStore = "webhooks-store";
     private final KafkaStreamsWrapper streams;
     private final BeanstalkPublisher beanstalkdPublisher;
 

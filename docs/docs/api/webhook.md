@@ -7,7 +7,7 @@ import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
 
-Use Webhooks to receive get notified when events happen.
+Use Webhooks to get notified when events happen.
 
 </TLDR>
 

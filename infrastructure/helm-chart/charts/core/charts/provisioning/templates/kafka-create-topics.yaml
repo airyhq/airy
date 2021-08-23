@@ -3,7 +3,8 @@ kind: ConfigMap
 metadata:
   name: kafka-create-topics
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "pre-install, pre-upgrade"
+    "helm.sh/hook-weight": "2"
 data:
   create-topics.sh: |
     #!/bin/bash

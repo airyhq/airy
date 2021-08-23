@@ -8,6 +8,22 @@
       "type": "string"
     },
     {
+      "name": "events",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "default": []
+    },
+    {
+      "name": "signKey",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
       "name": "endpoint",
       "type": "string"
     },
@@ -22,6 +38,21 @@
       ],
       "default": null
     },
-    {"name": "status", "type": {"name": "Status", "type": "enum", "symbols": ["Subscribed", "Unsubscribed"]}}
+    {
+      "name": "status",
+      "type": {
+        "name": "Status",
+        "type": "enum",
+        "symbols": [
+          "Subscribed",
+          "Unsubscribed"
+        ]
+      }
+    },
+    {
+      "name": "subscribedAt",
+      "type": "long",
+      "logicalType": "timestamp-millis"
+    }
   ]
 }

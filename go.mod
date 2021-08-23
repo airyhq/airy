@@ -8,35 +8,31 @@ go 1.16
 require (
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
-	github.com/Masterminds/sprig v2.22.0+incompatible // indirect
-	github.com/Shopify/sarama v1.28.0
+	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/TwinProduction/go-color v1.0.0
 	github.com/aws/aws-sdk-go v1.37.29
 	github.com/aws/aws-sdk-go-v2/config v1.1.1
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.1.1
 	github.com/aws/aws-sdk-go-v2/service/eks v1.1.1
 	github.com/aws/aws-sdk-go-v2/service/iam v1.1.1
-	github.com/beanstalkd/go-beanstalk v0.1.0
 	github.com/huandu/xstrings v1.3.2 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
-	github.com/jpillora/backoff v1.0.0
 	github.com/kr/pretty v0.2.1
 	github.com/mitchellh/copystructure v1.1.2 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/riferrei/srclient v0.2.1
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.7.1
-	github.com/stretchr/testify v1.7.0
 	github.com/thanhpk/randstr v1.0.4
 	github.com/txn2/txeh v1.3.0
 	goji.io v2.0.2+incompatible
-	golang.org/x/mod v0.4.1
-	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/api v0.19.0
 	k8s.io/apimachinery v0.19.0
 	k8s.io/client-go v0.19.0
 	k8s.io/klog v1.0.0
+	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
 	k8s.io/utils v0.0.0-20201110183641-67b214c5f920 // indirect
+	github.com/stretchr/testify v1.6.1
+	golang.org/x/mod v0.4.1
 )

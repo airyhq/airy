@@ -122,4 +122,4 @@ A user represents one authorized agent in Airy Core.
 
 ## Template
 
-Pre defined messages that can be enhanced with user defined data.
+Pre-defined messages that can be enhanced with user defined data.

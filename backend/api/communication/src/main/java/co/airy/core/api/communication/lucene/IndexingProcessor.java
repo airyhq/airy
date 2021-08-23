@@ -1,6 +1,6 @@
 package co.airy.core.api.communication.lucene;
 
-import co.airy.core.api.communication.dto.Conversation;
+import co.airy.model.conversation.Conversation;
 import co.airy.core.api.communication.dto.ConversationIndex;
 import org.apache.kafka.streams.processor.Processor;
 import org.apache.kafka.streams.processor.ProcessorContext;

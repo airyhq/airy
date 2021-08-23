@@ -11,6 +11,7 @@ app_deps = [
     "//backend:webhook",
     "//backend/model/metadata",
     "//backend/model/template",
+    "//backend/model/event",
     "//lib/java/uuid",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -17,4 +18,9 @@ public class MessageContainer implements Serializable {
     private Message message;
     @Builder.Default
     private MetadataMap metadataMap = new MetadataMap();
+
+    public long getUpdatedAt() {
+        return Math.max(Optional.ofNullable(message.getUpdatedAt()).orElse(message.getSentAt()),
+                Optional.ofNullable(metadataMap).map(MetadataMap::getUpdatedAt).orElse(0L));
+    }
 }

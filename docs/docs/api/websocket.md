@@ -22,11 +22,11 @@ All event updates are sent to the `/events` queue as JSON encoded payloads. The
 `type` field informs the client of the kind of update that is encoded in the
 payload.
 
-### Message
+### `message.updated`
 
 ```json5
 {
-  "type": "message",
+  "type": "message.updated",
   "payload": {
     "conversation_id": "{UUID}",
     "channel_id": "{UUID}",
@@ -46,13 +46,15 @@ payload.
 }
 ```
 
-### Metadata
+### `metadata.updated`
+
+Includes the full and current state of a metadata object given a namespace-identifier pair
 
 **Sample payload**
 
 ```json5
 {
-  "type": "metadata",
+  "type": "metadata.updated",
 
   "payload": {
     "subject": "conversation|channel|message",
@@ -72,7 +74,7 @@ payload.
 
 ```json5
 {
-  "type": "channel",
+  "type": "channel.updated",
 
   "payload": {
     "id": "{UUID}",
@@ -87,7 +89,7 @@ payload.
 
 ```json5
 {
-  "type": "tag",
+  "type": "tag.updated",
 
   "payload": {
     "id": "{UUID}",

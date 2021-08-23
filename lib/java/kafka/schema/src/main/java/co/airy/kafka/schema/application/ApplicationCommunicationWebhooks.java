@@ -5,6 +5,6 @@ import co.airy.kafka.schema.ApplicationCommunication;
 public class ApplicationCommunicationWebhooks extends ApplicationCommunication {
     @Override
     public String dataset() {
-        return "webhooks";
+        return "webhooks-v0.29.0";
     }
 }

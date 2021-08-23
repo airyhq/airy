@@ -5,10 +5,6 @@ custom_java_library(
     name = "date",
     srcs = glob(["src/main/java/co/airy/date/**/*.java"]),
     visibility = ["//visibility:public"],
-    deps = [
-        "//:jackson",
-        "//:lombok",
-    ],
 )
 
 check_pkg(name = "buildifier")

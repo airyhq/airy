@@ -1,4 +1,4 @@
-package create
+package helm
 
 import (
 	"bufio"
@@ -85,8 +85,28 @@ func (h *Helm) InstallCharts() error {
 		"airy", chartURL}))
 }
 
+func (h *Helm) UpgradeCharts() error {
+	chartURL := "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-" + h.version + ".tgz"
+	overrideVersion := "global.kubernetes.appImageTag=" + h.version
+	return h.runHelm(append([]string{"upgrade",
+		"--values", "/apps/config/airy-config-map.yaml",
+		"--set", overrideVersion,
+		"--timeout", "10m0s",
+		"airy", chartURL}))
+}
+
+func (h *Helm) RollBackUpgrade(version string) error {
+	chartURL := "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-" + version + ".tgz"
+	overrideVersion := "global.kubernetes.appImageTag=" + version
+	return h.runHelm(append([]string{"upgrade",
+		"--values", "/apps/config/airy-config-map.yaml",
+		"--set", overrideVersion,
+		"--timeout", "10m0s",
+		"airy", chartURL}))
+}
+
 func (h *Helm) runHelm(args []string) error {
-	if err := h.upsertAiryConfigMap(); err != nil {
+	if err := h.UpsertAiryConfigMap(); err != nil {
 		return err
 	}
 
@@ -168,7 +188,7 @@ func (h *Helm) runHelm(args []string) error {
 }
 
 // Create/update airy config map
-func (h *Helm) upsertAiryConfigMap() error {
+func (h *Helm) UpsertAiryConfigMap() error {
 	cm, _ := h.clientset.CoreV1().ConfigMaps(h.namespace).Get(context.TODO(), airyConfigMap, v1.GetOptions{})
 
 	file, err := ioutil.ReadFile(h.configPath)

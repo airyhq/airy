@@ -2,14 +2,12 @@ load("@com_github_airyhq_bazel_tools//lint:buildifier.bzl", "check_pkg")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "create",
-    srcs = [
-        "create.go",
-    ],
-    importpath = "cli/pkg/cmd/create",
+    name = "upgrade",
+    srcs = ["upgrade.go"],
+    importpath = "cli/pkg/cmd/upgrade",
     visibility = ["//visibility:public"],
     x_defs = {
-        "version": "{STABLE_VERSION}",
+        "Version": "{STABLE_VERSION}",
     },
     deps = [
         "//cli/pkg/cmd/config",
@@ -18,6 +16,7 @@ go_library(
         "//cli/pkg/kube",
         "//cli/pkg/providers",
         "//cli/pkg/workspace",
+        "//infrastructure/lib/go/k8s/util",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",
         "@com_github_twinproduction_go_color//:go-color",

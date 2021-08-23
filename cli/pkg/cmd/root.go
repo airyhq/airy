@@ -6,6 +6,7 @@ import (
 	"cli/pkg/cmd/create"
 	"cli/pkg/cmd/status"
 	"cli/pkg/cmd/ui"
+	"cli/pkg/cmd/upgrade"
 	"cli/pkg/workspace"
 	"fmt"
 	"os"
@@ -62,4 +63,5 @@ func init() {
 	RootCmd.AddCommand(ui.UICmd)
 	RootCmd.AddCommand(versionCmd)
 	RootCmd.AddCommand(create.CreateCmd)
+	RootCmd.AddCommand(upgrade.UpgradeCmd)
 }

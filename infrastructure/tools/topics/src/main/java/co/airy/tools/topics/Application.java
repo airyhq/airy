@@ -23,7 +23,9 @@ public class Application {
                 "\n" +
                 "  annotations:" +
                 "\n" +
-                "    \"helm.sh/hook\": \"pre-install\"" +
+                "    \"helm.sh/hook\": \"pre-install, pre-upgrade\"" +
+                "\n" +
+                "    \"helm.sh/hook-weight\": \"2\"" +
                 "\n" +
                 "data:" +
                 "\n" +

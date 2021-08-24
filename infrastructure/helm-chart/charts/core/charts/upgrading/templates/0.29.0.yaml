@@ -105,12 +105,9 @@ spec:
       - name: check-webhook
         image: bitnami/kubectl
         command:  ['/bin/sh', '/opt/provisioning/check-existing-wehook.sh']
-        env:
-        - name: SYSTEM_TOKEN
-          valueFrom:
-            configMapKeyRef:
-              name: security
-              key: systemToken
+        envFrom:
+        - configMapRef:
+            name: security
         volumeMounts:
         - name: upgrade
           mountPath: /opt/provisioning
@@ -252,12 +249,9 @@ spec:
       - name: subscribe-webhook
         image: bitnami/kubectl
         command:  ['/bin/sh', '/opt/provisioning/subscribe-wehoook.sh']
-        env:
-        - name: SYSTEM_TOKEN
-          valueFrom:
-            configMapKeyRef:
-              name: security
-              key: systemToken
+        envFrom:
+        - configMapRef:
+            name: security
         volumeMounts:
         - name: upgrade
           mountPath: /opt/provisioning

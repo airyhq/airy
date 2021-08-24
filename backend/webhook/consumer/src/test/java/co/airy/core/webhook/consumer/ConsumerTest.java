@@ -36,7 +36,8 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
-import static co.airy.core.webhook.consumer.Sender.CONTENT_SIGNATURE_HEADER;
+import static co.airy.crypto.Signature.CONTENT_SIGNATURE_HEADER;
+import static co.airy.crypto.Signature.getSignature;
 import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.CoreMatchers.is;
@@ -74,9 +75,6 @@ public class ConsumerTest {
 
     @Autowired
     Stores stores;
-
-    @Autowired
-    Signature signature;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -117,7 +115,7 @@ public class ConsumerTest {
         mockServer.expect(once(), requestTo(new URI(endpoint)))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(header("user-defined", equalTo("header")))
-                .andExpect(header(CONTENT_SIGNATURE_HEADER, equalTo(signature.getSignature(signKey, content))))
+                .andExpect(header(CONTENT_SIGNATURE_HEADER, equalTo(getSignature(signKey, content))))
                 .andRespond(withSuccess());
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationWebhooks.name(), webhook.getId(), webhook));

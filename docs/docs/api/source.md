@@ -7,13 +7,13 @@ import TLDR from "@site/src/components/TLDR";
 
 <TLDR>
 
-Use the Source HTTP API to build your own Airy source in no time.
+With the Source HTTP API you can build your own Airy messaging source in no time.
 
 </TLDR>
 
 :::note
 
-The is disabled by default. For details on how to enable it, refer to our [Configuration Section](getting-started/installation/configuration.md#components).
+This feature is disabled by default. For details on how to enable it, refer to our [Configuration Section](getting-started/installation/configuration.md#components).
 
 :::
 
@@ -23,7 +23,7 @@ that is not yet officially supported. This is a typical usage pattern:
 1. Get a source access token
 2. Create a channel
 3. Forward incoming events to Airy
-4. Handle outgoing messages or changes in metadata by [registering a webhook](api/webhook.md)
+4. Handle outgoing messages or changes in metadata by [registering an action endpoint](#action-endpoint)
 
 **Note** For Airy there exists a 1 to 1 mapping between a source's channel/conversation/message id to the one stored in Airy. Therefore, the ids referenced in this payload must be identifiers used by the source.
 
@@ -33,14 +33,14 @@ Take for instance the Facebook Messenger source. You should map these fields lik
 
 - `source_channel_id` → For Messenger this is the Facebook page id. If your source only supports one channel per account, you can also use a constant value for this field. Before
 
-- `source_conversation_id` → Contacts for each Facebook page in Messenger are identified by a [page scoped ID](https://developers.facebook.com/docs/messenger-platform/identity/user-profile). Since in Messenger page conversations cannot have multiple participants, this uniquely identifies a conversation.
+- `source_conversation_id` → Contacts for each Facebook page in Messenger are identified by a [Page-scoped ID](https://developers.facebook.com/docs/messenger-platform/identity/user-profile). Since in Messenger page conversations cannot have multiple participants, this uniquely identifies a conversation.
 
-## Register a source
+## Create a source
 
 `POST /sources.create`
 
-To ensure that apps using the source API can write their data in isolation of each other, every app receives an
-JWT which encodes the source id. This JWT has to be passed on the Authorization header of each request to authenticate
+To ensure that apps using the source API can write their data in isolation of each other, every app receives a
+JWT which encodes the source id. This JWT has to be set on the Authorization header of each request to authenticate
 the source and write the correct identifier to the messaging data.
 
 **Sample request**
@@ -48,19 +48,19 @@ the source and write the correct identifier to the messaging data.
 ```json5
 {
   "source_id": "my-crm-connector",
-  "actionEndpoint": "http://my-app.com/action" // optional
+  "action_endpoint": "http://my-app.com/action" // Optional
 }
 ```
 
 - `source_id` An unique identifier of your source that will be stored alongside all messaging data.
-- `actionEndpoint` (optional) If your source app should handle events such as outbound messages, you need to specify the [action http endpoint](#action-endpoint) here.
+- `action_endpoint` (optional) If your source app should handle events such as outbound messages, you need to specify the [action http endpoint](#action-endpoint) here.
 
 **Sample response**
 
 ```json5
 {
   "source_id": "my-crm-connector",
-  "actionEndpoint": "http://my-app.com/action", // optional
+  "action_endpoint": "http://my-app.com/action", // Optional
   "token": "<jwt token>"
 }
 ```
@@ -73,15 +73,13 @@ the source and write the correct identifier to the messaging data.
 
 ```json5
 {
-  "id": "Source identifier of the channel in use",
+  "source_channel_id": "Source identifier of the channel in use",
   "name": "My source channel",
   "image_url": "https://example.com/custom-image.jpg" // optional
 }
 ```
 
-- `id` source identifier of the channel. Messages sent to [`/sources.ingest`](#ingest-messaging-data) must have a connected channel.
-
-**Sample response**
+- `source_channel_id` source identifier of the channel. Messages sent to [`/sources.ingest`](#ingest-messaging-data) must have a connected channel.
 
 **Sample response**
 
@@ -113,7 +111,7 @@ Before starting to ingest messages you have to create a channel. On the other ha
       "source_message_id": "source message identifier",
       "source_conversation_id": "source conversation identifier",
       "source_channel_id": "source channel identifier",
-      "content": {"text": "Hello world"}, // source specific content node (can be a plain string)
+      "content": {"text": "Hello world"}, // Source specific content node (can be a plain string)
       "from_contact": true,
       "sent_at_millis": 1603661094560, // Unix timestamp of event
       "metadata": {
@@ -125,8 +123,8 @@ Before starting to ingest messages you have to create a channel. On the other ha
   ],
   "metadata": [
     {
-      "namespace": "conversation", // one of: conversation, message
-      "source_id": "conversation id", // source message or conversation id
+      "namespace": "conversation", // One of: conversation, message
+      "source_id": "conversation id", // Source message or conversation id
       "metadata": {
         "contact": {
           "display_name": "Margaret Hamilton"
@@ -139,17 +137,21 @@ Before starting to ingest messages you have to create a channel. On the other ha
 
 ## Action endpoint
 
-When you [create](#register-a-source) a source you can register an action endpoint. This way Airy will be able to map messaging features to your source. The endpoint will be called with a `POST` request containing a JSON payload that will indicate, which action to perform. Each action requires a different response. See below for possible action payloads, and their expected responses.
+When you [create](#create-a-source) a source you can register an action endpoint. This way Airy will be able to map common messaging features to your source. The endpoint will be called with a `POST` request containing a JSON payload that will indicate, which action to perform. Each action requires a different response. See below for possible action payloads, and their expected responses.
 
 Each request includes an `X-Airy-Content-Signature` header that should be used to validate the authenticity of the request. To do so, compare the signature against the SHA256 HMAC of the source token you obtained during creation with the request content. Pseudocode:
 
 ```
-bool isSignatureValid = hmac_sha256(key = source_token, message = request.body) == request.headers['X-Airy-Content-Signature']
+isSignatureValid = hmac_sha256(key = source_token, message = request.body).to_lower_case() == request.headers['X-Airy-Content-Signature']
 ```
+
+<!-- TODO add more code examples -->
+
+[Our Java implementation](https://github.com/airyhq/airy/blob/develop/lib/java/crypto/src/main/java/co/airy/crypto/Signature.java#L21)
 
 ### Send message
 
-Requst payload
+When Airy users call the [`/messages.send`](api/endpoints/messages.md#send) endpoint to send a message to a conversation linked to your source, Airy will call your action endpoint with the following payload. Depending on the outcome you must respond with either a success or a failure payload.
 
 ```json5
 {

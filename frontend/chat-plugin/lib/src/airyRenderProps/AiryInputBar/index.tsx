@@ -23,6 +23,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
   const textInputRef = createRef<HTMLTextAreaElement>();
   const dataCyButtonId = cyInputbarButton;
   const dataCyTextareaId = cyInputbarTextarea;
+  const isMobileDevice = typeof window.orientation !== 'undefined'
 
   useEffect(() => {
     textInputRef.current.selectionStart = props.messageString.length;
@@ -134,7 +135,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
           ref={textInputRef}
           className={style.textArea}
           placeholder={'Start typing...'}
-          autoFocus={!config.showMode}
+          autoFocus={isMobileDevice ? false : !config.showMode}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           value={props.messageString}

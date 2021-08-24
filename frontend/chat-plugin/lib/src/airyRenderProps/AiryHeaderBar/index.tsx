@@ -67,7 +67,7 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
   const ClosingOption = () => {
     if (config.closeMode) {
       if (config.closeMode === 'basic') {
-        return;
+        return <div />;
       } else if (config.closeMode === 'medium') {
         return <ClosingOptionMedium />;
       }

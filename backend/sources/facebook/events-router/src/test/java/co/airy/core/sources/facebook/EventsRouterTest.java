@@ -177,7 +177,7 @@ class EventsRouterTest {
         List<Metadata> metadataList = kafkaTestHelper.consumeValues(2, applicationCommunicationMetadata.name());
         assertThat(metadataList, hasSize(2));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.ConversationKeys.Reaction.EMOJI) &&
+                metadata.getKey().equals(MetadataKeys.MessageKeys.Reaction.EMOJI) &&
                         metadata.getValue().equals("❤️")
         )));
     }

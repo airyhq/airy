@@ -136,8 +136,8 @@ public class MessageMapper {
         if (!reaction.get("action").textValue().equals("react")) {
             // unreact
             return List.of(
-                    new ProducerRecord<>(applicationCommunicationMetadata, getId(new Subject("message", messageId), MetadataKeys.ConversationKeys.Reaction.EMOJI).toString(), null),
-                    new ProducerRecord<>(applicationCommunicationMetadata, getId(new Subject("message", messageId), MetadataKeys.ConversationKeys.Reaction.SENT_AT).toString(), null)
+                    new ProducerRecord<>(applicationCommunicationMetadata, getId(new Subject("message", messageId), MetadataKeys.MessageKeys.Reaction.EMOJI).toString(), null),
+                    new ProducerRecord<>(applicationCommunicationMetadata, getId(new Subject("message", messageId), MetadataKeys.MessageKeys.Reaction.SENT_AT).toString(), null)
             );
         }
 
@@ -146,9 +146,9 @@ public class MessageMapper {
             throw new Exception(String.format("Could not convert reaction emoji \"%s\" to string.", emojiString));
         }
 
-        Metadata emoji = newMessageMetadata(messageId, MetadataKeys.ConversationKeys.Reaction.EMOJI, emojiString);
+        Metadata emoji = newMessageMetadata(messageId, MetadataKeys.MessageKeys.Reaction.EMOJI, emojiString);
 
-        final Metadata sentAt = newMessageMetadata(messageId, MetadataKeys.ConversationKeys.Reaction.SENT_AT,
+        final Metadata sentAt = newMessageMetadata(messageId, MetadataKeys.MessageKeys.Reaction.SENT_AT,
                 String.valueOf(rootNode.get("timestamp").longValue()));
 
         return List.of(

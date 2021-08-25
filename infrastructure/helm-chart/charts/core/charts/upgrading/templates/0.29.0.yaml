@@ -75,6 +75,73 @@ spec:
       restartPolicy: Never
   backoffLimit: 3
 ---
+# Migrate api-communication
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.global.kubernetes.appImageTag }}-upgrade-api-communication
+  namespace: {{ .Values.global.kubernetes.namespace }}
+  annotations:
+    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook-weight": "9"
+  labels:
+    core.airy.co/upgrade: "true"
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      initContainers:
+      - name: scale-down
+        image: bitnami/kubectl
+        command:  ['/bin/sh', '/opt/provisioning/scale-down-deployment.sh']
+        env:
+        - name: DEPLOYMENT_NAME
+          value: api-communication
+        volumeMounts:
+        - name: upgrading-scripts
+          mountPath: /opt/provisioning
+      - name: wait-consumer-group
+        image: "{{ .Values.kafkaImage }}:{{ .Values.kafkaImageTag }}"
+        command:  ['/bin/sh', '/opt/provisioning/wait-for-empty-consumer-group.sh']
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: CONSUMER_GROUP
+          value: api.CommunicationStores
+        volumeMounts:
+        - name: upgrading-scripts
+          mountPath: /opt/provisioning
+      containers:
+      - name: reset-app
+        image: "{{ .Values.kafkaImage }}:{{ .Values.kafkaImageTag }}"
+        command: ['/bin/sh', '/opt/provisioning/reset-streaming-app.sh']
+        env:
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_BROKERS
+        - name: INPUT_TOPICS
+          value: 'application.communication.channels,application.communication.messages,application.communication.metadata,application.communication.read-receipt'
+        - name: CONSUMER_GROUP
+          value: api.CommunicationStores
+        volumeMounts:
+        - name: upgrading-scripts
+          mountPath: /opt/provisioning
+      serviceAccountName: airy-upgrade
+      volumes:
+        - name: upgrading-scripts
+          configMap:
+            name: upgrading-scripts
+        - name: kafka-config
+          configMap:
+            name: kafka-config
+      restartPolicy: Never
+  backoffLimit: 3
+---
 # Migrate webhooks
 apiVersion: batch/v1
 kind: Job

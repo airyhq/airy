@@ -72,12 +72,7 @@ func upgrade(cmd *cobra.Command, args []string) {
 		console.Exit("Unable to copy config file into Airy Core :", cmErr)
 	}
 	if upgradeErr := helm.UpgradeCharts(); upgradeErr != nil {
-		fmt.Println("Upgrading the Helm Charts failed with err: ", upgradeErr)
-		fmt.Println("Attempting to roll back the upgrade...")
-		if rollBackErr := helm.RollBackUpgrade(oldVersion); rollBackErr != nil {
-			console.Exit("Roll Back of the upgrade failed with err: ", rollBackErr)
-		}
-		console.Exit("The roll back of the upgrade was successful.")
+		console.Exit("Upgrading the Helm Charts failed with err: ", upgradeErr)
 	}
 
 	fmt.Println("Applying config from the configuration file.")

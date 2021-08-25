@@ -66,8 +66,27 @@ Copying the configuration file in the Airy Core K8s cluster.
 ✅ Aity Core upgraded
 ```
 
-## Troubleshooting
+## Cleanup the upgrade
 
-The upgrade process will not delete any of the persistent data that is kept inside the Kafka cluster. If for any reason an upgrade fails, a rollback to your previous Airy Core version will be initiated.
+The upgrade will create few additional resources (Kubernetes jobs and configMaps) which are not deleted automatically, so that there is a better insight of what happened during the upgrade.
+To cleanup those resources, run:
+
+```sh
+kubectl delete configmap -l core.airy.co/upgrade="true"
+kubectl delete job -l core.airy.co/upgrade="true"
+kubectl delete job -l core.airy.co/upgrade="post-upgrade"
+```
+
+## Rollback
+
+The upgrade process will not delete any of the persistent data that is kept inside the Kafka cluster. In case the upgrade fails, you can rollback to your previous Airy Core version. Clean-up the upgrade resources as instructed in the previous section and run:
+
+```sh
+helm rollback airy
+airy config apply
+kubectl delete pod -l app=airy-controller
+```
+
+## Troubleshooting
 
 If you need further help, refer to our [Troubleshooting section](/getting-started/troubleshooting).

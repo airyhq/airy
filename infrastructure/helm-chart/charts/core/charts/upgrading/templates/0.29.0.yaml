@@ -1,4 +1,4 @@
-{{ if eq .Values.global.kubernetes.appImageTag "0.29.0-alpha"}}
+{{ if eq .Values.global.kubernetes.appImageTag "0.29.0"}}
 # Helper scripts
 apiVersion: v1
 kind: ConfigMap
@@ -38,7 +38,7 @@ data:
   subscribe-wehoook.sh: |
     #!/bin/sh
     system_token=${SYSTEM_TOKEN}
-    webhookUsed=$(kubectl get configmap upgrade-0.29.0-alpha -o jsonpath='{.data.webhookUsed}')
+    webhookUsed=$(kubectl get configmap upgrade-{{ .Values.global.kubernetes.appImageTag }} -o jsonpath='{.data.webhookUsed}')
     echo "Webhook used: ${webhookUsed}"
     if [ "${webhookUsed}" = "true" ]; then
       request=$(kubectl get configmap existing-webhooks -o jsonpath='{.data.webhooks\.yaml}')

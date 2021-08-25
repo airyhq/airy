@@ -23,7 +23,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
   const textInputRef = createRef<HTMLTextAreaElement>();
   const dataCyButtonId = cyInputbarButton;
   const dataCyTextareaId = cyInputbarTextarea;
-  const isMobileDevice = typeof window.orientation !== 'undefined';
+  const isMobileDevice = window.innerHeight < 900 || window.innerWidth < 700;
 
   useEffect(() => {
     textInputRef.current.selectionStart = props.messageString.length;

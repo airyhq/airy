@@ -7,17 +7,11 @@ const body = document.getElementsByTagName('body')[0];
 const anchor = document.createElement('div');
 
 anchor.style.cssText = `
-height: 100%;
 background: transparent;
 position: fixed;
-width: -webkit-fill-available;
-width: -moz-available;
 right: 0;
 bottom: 0;
 z-index: 9999;
-max-height: 750px;
-max-width: 380px;
-height: 100vh;
 padding: 0;
 margin: 0;
 color: #444;

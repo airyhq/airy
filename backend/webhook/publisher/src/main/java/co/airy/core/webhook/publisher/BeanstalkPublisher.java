@@ -1,7 +1,7 @@
 package co.airy.core.webhook.publisher;
 
+import co.airy.core.webhook.WebhookEvent;
 import co.airy.log.AiryLoggerFactory;
-import co.airy.model.event.payload.Event;
 import com.dinstone.beanstalkc.JobProducer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,12 +24,12 @@ public class BeanstalkPublisher {
         this.beanstalkdJobProducer = beanstalkdJobProducer;
     }
 
-
-    void publishMessage(Event event) {
+    void publishMessage(WebhookEvent event) {
         try {
-            beanstalkdJobProducer.putJob(1, 1, 5000, objectMapper.writeValueAsBytes(event));
+            beanstalkdJobProducer.putJob(1, 0, 15, objectMapper.writeValueAsBytes(event));
         } catch (JsonProcessingException e) {
             log.error("Failed to publish event to Beanstalkd", e);
+            throw new RuntimeException(e);
         }
     }
 }

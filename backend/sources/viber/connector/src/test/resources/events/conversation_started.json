@@ -1,0 +1,16 @@
+{
+  "event":"conversation_started",
+  "timestamp":1457764197627,
+  "message_token":12345,
+  "type":"open",
+  "context":"context information",
+  "user":{
+    "id":"01234567890A=",
+    "name":"John McClane",
+    "avatar":"http://avatar.example.com",
+    "country":"UK",
+    "language":"en",
+    "api_version":1
+  },
+  "subscribed":false
+}

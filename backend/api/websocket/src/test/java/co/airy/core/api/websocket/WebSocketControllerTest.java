@@ -13,9 +13,9 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationTags;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
-import co.airy.model.event.payload.ChannelEvent;
-import co.airy.model.event.payload.MessageEvent;
-import co.airy.model.event.payload.MetadataEvent;
+import co.airy.model.event.payload.ChannelUpdated;
+import co.airy.model.event.payload.MessageCreated;
+import co.airy.model.event.payload.MetadataUpdated;
 import co.airy.model.event.payload.TagEvent;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
@@ -99,7 +99,7 @@ public class WebSocketControllerTest {
 
     @Test
     void canSendMessageEvents() throws Exception {
-        final CompletableFuture<MessageEvent> future = subscribe(port, MessageEvent.class, QUEUE_EVENTS);
+        final CompletableFuture<MessageCreated> future = subscribe(port, MessageCreated.class, QUEUE_EVENTS);
         final Message message = Message.newBuilder()
                 .setId("messageId")
                 .setSource("facebook")
@@ -115,7 +115,7 @@ public class WebSocketControllerTest {
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), message.getId(), message));
 
-        MessageEvent recMessage = future.get(30, TimeUnit.SECONDS);
+        MessageCreated recMessage = future.get(30, TimeUnit.SECONDS);
         assertNotNull(recMessage);
         assertThat(recMessage.getPayload().getChannelId(), equalTo(message.getChannelId()));
         assertThat(recMessage.getPayload().getMessage().getId(), equalTo(message.getId()));
@@ -125,7 +125,7 @@ public class WebSocketControllerTest {
 
     @Test
     void canSendChannelEvents() throws Exception {
-        final CompletableFuture<ChannelEvent> future = subscribe(port, ChannelEvent.class, QUEUE_EVENTS);
+        final CompletableFuture<ChannelUpdated> future = subscribe(port, ChannelUpdated.class, QUEUE_EVENTS);
 
         final Channel channel = Channel.newBuilder()
                 .setId(UUID.randomUUID().toString())
@@ -136,14 +136,14 @@ public class WebSocketControllerTest {
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationChannels.name(), channel.getId(), channel));
 
-        ChannelEvent recChannel = future.get(30, TimeUnit.SECONDS);
+        ChannelUpdated recChannel = future.get(30, TimeUnit.SECONDS);
         assertNotNull(recChannel);
         assertThat(recChannel.getPayload().getId(), equalTo(channel.getId()));
     }
 
     @Test
     void canSendMetadataEvents() throws Exception {
-        final CompletableFuture<MetadataEvent> future = subscribe(port, MetadataEvent.class, QUEUE_EVENTS);
+        final CompletableFuture<MetadataUpdated> future = subscribe(port, MetadataUpdated.class, QUEUE_EVENTS);
 
         final Metadata metadata = Metadata.newBuilder()
                 .setKey("contact.displayName")
@@ -154,7 +154,7 @@ public class WebSocketControllerTest {
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMetadata.name(), "metadataId", metadata));
 
-        MetadataEvent recMetadata = future.get(30, TimeUnit.SECONDS);
+        MetadataUpdated recMetadata = future.get(30, TimeUnit.SECONDS);
         assertNotNull(recMetadata);
         assertThat(recMetadata.getPayload().getSubject(), equalTo("conversation"));
         assertThat(recMetadata.getPayload().getIdentifier(), equalTo("123"));

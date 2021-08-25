@@ -17,6 +17,11 @@ export type Config = {
   bubbleIcon?: string;
   sendMessageIcon?: string;
   showMode?: boolean;
+  height?: number;
+  width?: number;
+  disableMobile?: boolean;
+  bubbleState?: 'expanded' | 'minimized';
+  closeMode?: 'basic' | 'medium' | 'full';
 };
 
 export type AuthConfiguration = {

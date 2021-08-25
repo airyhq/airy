@@ -49,26 +49,24 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_SCHEMA_REGISTRY_URL
+        - name: KAFKA_COMMIT_INTERVAL_MS
+          valueFrom:
+            configMapKeyRef:
+              name: kafka-config
+              key: KAFKA_COMMIT_INTERVAL_MS
         - name: WEBHOOK_NAME
           valueFrom:
             configMapKeyRef:
               name: "{{ .Values.component }}"
               key: name
-        - name: MAX_BACKOFF_SECONDS
-          valueFrom:
-            configMapKeyRef:
-              name: integration-webhook
-              key: maxBackoff
         livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-              httpHeaders:
-                - name: Health-Check
-                  value: health-check
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 3
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+              - name: Health-Check
+                value: health-check
+          initialDelaySeconds: 60
       initContainers:
       - name: wait
         image: busybox
@@ -156,11 +154,13 @@ spec:
               name: "{{ .Values.component }}"
               key: name
         livenessProbe:
-          tcpSocket:
-            port: 6000
+          httpGet:
+            path: /actuator/health
+            port: 8080
+            httpHeaders:
+              - name: Health-Check
+                value: health-check
           initialDelaySeconds: 60
-          periodSeconds: 10
-          failureThreshold: 3
       initContainers:
       - name: wait
         image: busybox

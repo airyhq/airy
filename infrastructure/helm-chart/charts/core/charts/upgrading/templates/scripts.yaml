@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: upgrading-scripts
+  namespace: {{ .Values.global.kubernetes.namespace }}
+  annotations:
+    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook-weight": "-5"
+data:
+  scale-down-deployment.sh: |
+    #!/bin/sh
+    deployment=${DEPLOYMENT_NAME}
+
+    kubectl scale deployment ${deployment} --replicas=0
+
+  scale-down-statefulset.sh: |
+    #!/bin/sh
+    statefulset=${STATEFULSET_NAME}
+
+    kubectl scale statefulset ${statefulset} --replicas=0
+
+  delete-pvc.sh: |
+    #!/bin/sh
+    app_label=${APP_LABEL}
+    kubectl delete pvc -l app=${app_label}
+
+  wait-for-empty-consumer-group.sh: |
+    #!/bin/sh
+    kafka_brokers=${KAFKA_BROKERS:-kafka:9092}
+    consumer_group=${CONSUMER_GROUP}
+    delay=${DELAY:-5}
+
+    if kafka-consumer-groups.sh --bootstrap-server ${kafka_brokers} --list | grep -q ${consumer_group}
+    then
+      while ! kafka-consumer-groups.sh --bootstrap-server ${kafka_brokers} --group ${consumer_group} --describe 2>&1 | grep -q "has no active members"
+      do
+        echo "Waiting for the consumer group to be empty..."
+        sleep ${delay}
+      done
+    fi
+
+  reset-streaming-app.sh: |
+    #!/bin/sh
+    kafka_brokers=${KAFKA_BROKERS:-kafka:9092}
+    consumer_group=${CONSUMER_GROUP}
+    input_topics=${INPUT_TOPICS}
+    offset=${OFFSET:-to-earliest}
+
+    kafka-streams-application-reset.sh --bootstrap-servers ${kafka_brokers} --${offset} --application-id ${consumer_group} --input-topics ${input_topics}
+
+  wait-for-lag.sh: |
+    #!/bin/sh
+    kafka_brokers=${KAFKA_BROKERS:-kafka:9092}
+    consumer_group=${CONSUMER_GROUP}
+    max_consumer_lag=${MAX_CONSUMER_LAG:-5}
+    delay=${DELAY:-10}
+
+    consumer_lag=$(kafka-consumer-groups.sh --bootstrap-server ${kafka_brokers} --group ${consumer_group} --describe | awk '{ print $6; }' | grep -v "-" | awk '{s+=$1} END {print s}')
+    while [ ${consumer_lag} -gt ${max_consumer_lag} ] ; do 
+      echo "Current consumer lag for group ${consumer_group} is ${consumer_lag}. Waiting to reach ${max_consumer_lag}..."
+      sleep ${delay}
+      consumer_lag=$(kafka-consumer-groups.sh --bootstrap-server ${kafka_brokers} --group ${consumer_group} --describe | awk '{ print $6; }' | grep -v "-" | awk '{s+=$1} END {print s}')
+    done
+
+  upgrade-cleanup.sh: |
+    #!/bin/sh
+    kubectl delete configmap -l core.airy.co/upgrade="true"
+    kubectl delete job -l core.airy.co/upgrade="true"
+    kubectl delete job -l core.airy.co/upgrade="post-upgrade"
+    kubectl delete job -l job-name

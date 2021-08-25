@@ -11,6 +11,7 @@ app_deps = [
     "//backend/model/message",
     "//backend/model/channel",
     "//backend/model/metadata",
+    "//backend/model/conversation",
     "//backend:read-receipt",
     "//lib/java/date",
     "//lib/java/pagination",

@@ -21,7 +21,6 @@ const renderMethod = async () => {
   const AiryChatPlugin = (await import('chat-plugin')).AiryChatPlugin;
   render(
     <AiryChatPlugin
-      className="customClass"
       config={{
         channelId,
         apiHost,

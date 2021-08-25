@@ -2,7 +2,6 @@ import React from 'react';
 
 import {RenderPropsUnion} from '../../props';
 import {AttachmentUnion, ContentUnion, SimpleAttachment} from './chatPluginModel';
-import {Message} from 'model';
 import {Text} from '../../components/Text';
 import {RichText} from './components/RichText';
 import {RichCard} from './components/RichCard';
@@ -10,12 +9,12 @@ import {RichCardCarousel} from './components/RichCardCarousel';
 import {QuickReplies} from './components/QuickReplies';
 
 export const ChatPluginRender = (props: RenderPropsUnion) => {
-  return render(mapContent(props.content), props);
+  return render(mapContent(props.message), props);
 };
 
 function render(content: ContentUnion, props: RenderPropsUnion) {
   const defaultProps = {
-    fromContact: props.content.fromContact || false,
+    fromContact: props.message.fromContact || false,
     commandCallback: 'commandCallback' in props ? props.commandCallback : null,
   };
   const invertedProps = {...defaultProps, fromContact: !defaultProps.fromContact};
@@ -30,7 +29,6 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return (
         <RichText
           {...propsToUse}
-          message={props.content}
           text={content.text}
           fallback={content.fallback}
           containsRichText={content.containsRichtText}
@@ -60,7 +58,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   }
 }
 
-function mapContent(message: Message): ContentUnion {
+function mapContent(message): ContentUnion {
   const messageContent = message.content.message ?? message.content;
 
   if (messageContent.quick_replies) {

@@ -3,6 +3,7 @@ package create
 import (
 	"cli/pkg/cmd/config"
 	"cli/pkg/console"
+	"cli/pkg/helm"
 	"cli/pkg/kube"
 	"cli/pkg/providers"
 	"cli/pkg/workspace"
@@ -82,7 +83,7 @@ func create(cmd *cobra.Command, args []string) {
 		console.Exit("could not store the kube context: ", err)
 	}
 
-	helm := New(clientset, version, namespace, dir.GetAiryYaml())
+	helm := helm.New(clientset, version, namespace, dir.GetAiryYaml())
 	if err := helm.Setup(); err != nil {
 		console.Exit("setting up Helm failed with err: ", err)
 	}

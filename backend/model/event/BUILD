@@ -9,6 +9,7 @@ custom_java_library(
         "//:jackson",
         "//:lombok",
         "//backend/model/channel",
+        "//backend/model/conversation",
         "//backend/model/message",
         "//backend/model/metadata",
         "//backend/model/tag",

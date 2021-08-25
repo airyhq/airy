@@ -1,10 +1,20 @@
 import React, {createRef, useState} from 'react';
-import {Button, Input, ListenOutsideClick} from 'components';
+import {Button, Dropdown, Input, ListenOutsideClick, Toggle} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
 import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
 import {env} from '../../../../../../env';
 
+enum CloseOption {
+  basic = 'basic',
+  medium = 'medium',
+  full = 'full',
+}
+
+enum BubbleState {
+  minimized = 'minimized',
+  expanded = 'expanded',
+}
 interface CustomiseSectionProps {
   channelId: string;
   host: string;
@@ -26,6 +36,11 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [showAccentColorPicker, setShowAccentColorPicker] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState('');
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useState(false);
+  const [height, setHeight] = useState('700');
+  const [width, setWidth] = useState('350');
+  const [disableMobile, setDisableMobile] = useState(false);
+  const [closingOption, setClosingOption] = useState<CloseOption>(CloseOption.full);
+  const [bubbleState, setBubbleState] = useState<BubbleState>(BubbleState.expanded);
 
   const codeAreaRef = createRef<HTMLTextAreaElement>();
 
@@ -73,6 +88,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       w[n].config={};
       `;
     }
+
     let config = '';
     if (headerText !== '') config += formatConfigAttributeWithConfig(`headerText: '${headerText}'`, config);
     if (subtitleText !== '') config += formatConfigAttributeWithConfig(`subtitleText: '${subtitleText}'`, config);
@@ -89,6 +105,11 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     if (accentColor !== '') config += formatConfigAttributeWithConfig(`accentColor: '${accentColor}'`, config);
     if (backgroundColor !== '')
       config += formatConfigAttributeWithConfig(`backgroundColor: '${backgroundColor}'`, config);
+    if (height !== '') config += formatConfigAttributeWithConfig(`height: '${height}'`, config);
+    if (width !== '') config += formatConfigAttributeWithConfig(`width: '${width}'`, config);
+    config += formatConfigAttributeWithConfig(`closeMode: '${closingOption}'`, config);
+    config += formatConfigAttributeWithConfig(`bubbleState: '${bubbleState}'`, config);
+    config += formatConfigAttributeWithConfig(`disableMobile: '${disableMobile}'`, config);
 
     return `w[n].config = {${config}
         };`;
@@ -109,6 +130,11 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       ...(backgroundColor && {backgroundColor}),
       ...(bubbleIconUrl && {bubbleIcon: bubbleIconUrl}),
       ...(sendMessageIconUrl && {sendMessageIcon: sendMessageIconUrl}),
+      ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
+      ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
+      ...(closingOption && {closeMode: closingOption}),
+      ...(bubbleState && {bubbleState: bubbleState}),
+      ...(disableMobile && {disableMobile: disableMobile}),
     },
   };
 
@@ -145,70 +171,6 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         <Button onClick={copyToClipboard}>Copy code</Button>
       </div>
       <div className={styles.customiseContainer}>
-        <Input
-          type="text"
-          name="textHeader"
-          value={headerText}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setHeaderText(e.target.value);
-          }}
-          label="Header Text"
-          placeholder="(optionally) add a text"
-          height={32}
-          fontClass="font-base"
-          maxLength={30}
-        />
-        <Input
-          type="text"
-          name="subtitle"
-          value={subtitleText}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setSubtitleText(e.target.value);
-          }}
-          label="Subtitle Text"
-          placeholder="(optionally) add a text"
-          height={32}
-          fontClass="font-base"
-          maxLength={50}
-        />
-        <Input
-          type="text"
-          name="startNewConversationText"
-          value={startNewConversationText}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setStartNewConversationText(e.target.value);
-          }}
-          label="Start new Conversation Text"
-          placeholder="(optionally) add a text"
-          height={32}
-          fontClass="font-base"
-        />
-        <Input
-          type="url"
-          name="bubbleIconUrl"
-          value={bubbleIconUrl}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setBubbleIconUrl(e.target.value);
-          }}
-          label="Chat Plugin Icon URL"
-          placeholder="(optionally) add an image url"
-          height={32}
-          fontClass="font-base"
-          showErrors={false}
-        />
-        <Input
-          type="text"
-          name="sendMessageIconUrl"
-          value={sendMessageIconUrl}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setSendMessageIconUrl(e.target.value);
-          }}
-          label="Input Icon URL"
-          placeholder="(optionally) add an image url"
-          height={32}
-          fontClass="font-base"
-          showErrors={false}
-        />
         <p>Header Text Color</p>
         <div className={styles.colorPicker}>
           {showHeaderTextColorPicker && (
@@ -400,9 +362,167 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             fontClass="font-base"
           />
         </div>
+        <div className={styles.extraOptions}>
+          <Dropdown
+            text={`Closing Options: ${closingOption}`}
+            variant="normal"
+            options={[CloseOption.basic, CloseOption.medium, CloseOption.full]}
+            onClick={(option: CloseOption) => {
+              setClosingOption(option);
+            }}
+          />
+        </div>
+        <div className={styles.extraOptions}>
+          <Dropdown
+            text={`Bubble State Options: ${bubbleState}`}
+            variant="normal"
+            options={[BubbleState.expanded, BubbleState.minimized]}
+            onClick={(option: BubbleState) => {
+              setBubbleState(option);
+            }}
+          />
+        </div>
+        <div className={styles.extraOptions}>
+          <Toggle
+            value={disableMobile}
+            text="Disabled for Mobile"
+            updateValue={(value: boolean) => {
+              setDisableMobile(value);
+            }}
+          />
+        </div>
       </div>
-      <div className={styles.pluginWrapper}>
-        <AiryChatPlugin config={demoConfig} />
+      <div className={styles.customiseContainer}>
+        <Input
+          type="text"
+          name="textHeader"
+          value={headerText}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setHeaderText(e.target.value);
+          }}
+          label="Header Text"
+          placeholder="(optionally) add a text"
+          height={32}
+          fontClass="font-base"
+          maxLength={30}
+        />
+        <Input
+          type="text"
+          name="subtitle"
+          value={subtitleText}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setSubtitleText(e.target.value);
+          }}
+          label="Subtitle Text"
+          placeholder="(optionally) add a text"
+          height={32}
+          fontClass="font-base"
+          maxLength={50}
+        />
+        <Input
+          type="text"
+          name="startNewConversationText"
+          value={startNewConversationText}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setStartNewConversationText(e.target.value);
+          }}
+          label="Start new Conversation Text"
+          placeholder="(optionally) add a text"
+          height={32}
+          fontClass="font-base"
+        />
+        <Input
+          type="url"
+          name="bubbleIconUrl"
+          value={bubbleIconUrl}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setBubbleIconUrl(e.target.value);
+          }}
+          label="Chat Plugin Icon URL"
+          placeholder="(optionally) add an image url"
+          height={32}
+          fontClass="font-base"
+          showErrors={false}
+        />
+        <Input
+          type="text"
+          name="sendMessageIconUrl"
+          value={sendMessageIconUrl}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setSendMessageIconUrl(e.target.value);
+          }}
+          label="Input Icon URL"
+          placeholder="(optionally) add an image url"
+          height={32}
+          fontClass="font-base"
+          showErrors={false}
+        />
+        <Input
+          type="numeric"
+          name="height"
+          value={height}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            if (e.target.value === '') {
+              setHeight('0');
+            } else {
+              setHeight(e.target.value);
+            }
+          }}
+          onKeyDown={e => {
+            e.preventDefault();
+            let intHeight = parseInt(height);
+            if (e.key === 'ArrowUp') {
+              intHeight += 1;
+              setHeight(intHeight.toString());
+            } else if (e.key === 'ArrowDown') {
+              intHeight -= 1;
+              setHeight(intHeight.toString());
+            }
+          }}
+          label="Height (min 200px)"
+          placeholder="(optionally) add custom height"
+          height={32}
+          fontClass="font-base"
+          showErrors={false}
+        />
+        <Input
+          type="numeric"
+          name="width"
+          value={width}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            if (e.target.value === '') {
+              setWidth('0');
+            } else {
+              setWidth(e.target.value);
+            }
+          }}
+          onKeyDown={e => {
+            e.preventDefault();
+            let intWidth = parseInt(width);
+            if (e.key === 'ArrowUp') {
+              intWidth += 1;
+              setWidth(intWidth.toString());
+            } else if (e.key === 'ArrowDown') {
+              intWidth -= 1;
+              setWidth(intWidth.toString());
+            }
+          }}
+          label="Width (min 200px)"
+          placeholder="(optionally) add custom width"
+          height={32}
+          fontClass="font-base"
+          showErrors={false}
+        />
+      </div>
+      <div
+        className={styles.pluginWrapper}
+        style={{
+          ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
+          ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
+        }}>
+        <div className={styles.pluginContainer}>
+          <AiryChatPlugin config={demoConfig} />
+        </div>
       </div>
     </>
   );

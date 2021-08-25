@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -17,8 +18,16 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 public class TagEvent extends Event implements Serializable {
     private TagPayload payload;
+    private Long timestamp;
 
     public static TagEvent fromTag(Tag tag) {
-        return builder().payload(TagPayload.fromTag(tag)).build();
+        return builder()
+                .timestamp(Instant.now().toEpochMilli()) // TODO record channel update date
+                .payload(TagPayload.fromTag(tag)).build();
+    }
+
+    @Override
+    public EventType getTypeId() {
+        return EventType.TAG_UPDATED;
     }
 }

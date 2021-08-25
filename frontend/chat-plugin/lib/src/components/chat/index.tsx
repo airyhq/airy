@@ -50,6 +50,14 @@ const Chat = ({config, ...props}: Props) => {
 
   const chatHiddenInitialState = (): boolean => {
     if (config.showMode === true) return false;
+    if (config.bubbleState) {
+      if (config.bubbleState === 'expanded') {
+        return false;
+      }
+      if (config.bubbleState === 'minimized') {
+        return true;
+      }
+    }
     if (getResumeTokenFromStorage(props.channelId)) return true;
     return false;
   };
@@ -154,6 +162,7 @@ const Chat = ({config, ...props}: Props) => {
     setNewConversation(false);
     resetStorage(props.channelId);
     closeModalOnClick();
+    ctrl.toggleHideChat();
   };
 
   const reAuthenticate = () => {
@@ -207,7 +216,7 @@ const Chat = ({config, ...props}: Props) => {
   };
 
   return (
-    <div className={style.main}>
+    <div className={`${config.disableMobile === true ? style.mainFlex : style.main}`}>
       {!isChatHidden && (
         <div
           className={`${style.wrapper} ${styleFor(animation)}`}
@@ -233,7 +242,7 @@ const Chat = ({config, ...props}: Props) => {
                                 lastInGroup={lastInGroup}>
                                 <SourceMessage
                                   contentType="message"
-                                  content={message}
+                                  message={message}
                                   source="chatplugin"
                                   invertSides={true}
                                   commandCallback={commandCallback}

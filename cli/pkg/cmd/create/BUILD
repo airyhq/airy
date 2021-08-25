@@ -5,7 +5,6 @@ go_library(
     name = "create",
     srcs = [
         "create.go",
-        "helm.go",
     ],
     importpath = "cli/pkg/cmd/create",
     visibility = ["//visibility:public"],
@@ -15,6 +14,7 @@ go_library(
     deps = [
         "//cli/pkg/cmd/config",
         "//cli/pkg/console",
+        "//cli/pkg/helm",
         "//cli/pkg/kube",
         "//cli/pkg/providers",
         "//cli/pkg/workspace",

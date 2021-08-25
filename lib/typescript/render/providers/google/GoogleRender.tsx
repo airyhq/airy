@@ -2,7 +2,6 @@ import React from 'react';
 
 import {RenderPropsUnion} from '../../props';
 import {ContentUnion} from './googleModel';
-import {Message} from 'model';
 
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
@@ -12,7 +11,7 @@ import {RichCardCarousel} from './components/RichCardCarousel';
 import {RequestedLiveAgent} from './components/RequestedLiveAgent';
 
 export const GoogleRender = (props: RenderPropsUnion) => {
-  const message: Message = props.content;
+  const message = props.message;
   const content = message.fromContact ? googleInbound(message) : googleOutbound(message);
   return render(content, props);
 };
@@ -20,7 +19,7 @@ export const GoogleRender = (props: RenderPropsUnion) => {
 function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return <Text fromContact={props.content.fromContact || false} text={content.text} />;
+      return <Text fromContact={props.message.fromContact || false} text={content.text} />;
 
     case 'requestedLiveAgent':
       return <RequestedLiveAgent />;
@@ -31,7 +30,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'suggestions':
       return (
         <Suggestions
-          fromContact={props.content.fromContact || false}
+          fromContact={props.message.fromContact || false}
           text={content.text}
           image={content.image}
           fallback={content.fallback}
@@ -54,7 +53,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
   }
 }
 
-function googleInbound(message: Message): ContentUnion {
+function googleInbound(message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
   if (messageJson.richCard?.standaloneCard) {
@@ -135,7 +134,7 @@ function googleInbound(message: Message): ContentUnion {
   };
 }
 
-function googleOutbound(message: Message): ContentUnion {
+function googleOutbound(message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
   const maxNumberOfSuggestions = 13;
 

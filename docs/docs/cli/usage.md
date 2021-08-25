@@ -140,6 +140,36 @@ airy ui [flags]
 
 ***
 
+## Upgrade
+
+Upgrades an instance of Airy Core
+
+#### Synopsis
+
+Upgrades an existing Airy Core instance, read from a workspace directory (default .)
+
+```
+airy upgrade [flags]
+```
+
+#### Options
+
+```
+      --approve          Upgrade automatically without asking for an approval (optional).
+  -h, --help             help for upgrade
+      --version string   Specify a version to upgrade to (optional).
+```
+
+#### Options inherited from parent commands
+
+```
+      --apihost string     Airy Core HTTP API endpoint
+      --workspace string   workspace directory of an Airy core instance (default is the cwd)
+```
+
+
+***
+
 ## Version
 
 Prints version information

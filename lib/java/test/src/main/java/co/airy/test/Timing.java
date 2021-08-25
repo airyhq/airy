@@ -5,14 +5,14 @@ import org.slf4j.Logger;
 
 public class Timing {
     private static final Logger log = AiryLoggerFactory.getLogger(Timing.class);
-    private static final long MAX_WAIT_MS = 30_000;
+    private static final int DEFAULT_MAX_WAIT_MS = 30_000;
 
     public static void retryOnException(RunnableTest runnableTest, String failureMessage) throws InterruptedException {
-        retryOnExceptionWithTimeout(runnableTest, failureMessage);
+        retryOnException(runnableTest, failureMessage, DEFAULT_MAX_WAIT_MS);
     }
 
-    private static void retryOnExceptionWithTimeout(RunnableTest runnableTest, String failureMessage) throws InterruptedException {
-        long expectedEnd = System.currentTimeMillis() + MAX_WAIT_MS;
+    public static void retryOnException(RunnableTest runnableTest, String failureMessage, int maxWaitMs) throws InterruptedException {
+        long expectedEnd = System.currentTimeMillis() + maxWaitMs;
 
         while (true) {
             try {
@@ -28,4 +28,5 @@ public class Timing {
             Thread.sleep(100);
         }
     }
+
 }

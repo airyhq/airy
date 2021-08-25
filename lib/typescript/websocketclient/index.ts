@@ -37,26 +37,24 @@ export class WebSocketClient {
     this.stompWrapper.initConnection();
   }
 
-  destroyConnection = () => {
-    this.stompWrapper.destroyConnection();
-  };
+  destroyConnection = () => this.stompWrapper.destroyConnection();
 
   onEvent = (body: string) => {
     const json = JSON.parse(body) as EventPayload;
     switch (json.type) {
-      case 'channel':
+      case 'channel.updated':
         this.callbackMap.onChannel?.(camelcaseKeys(json.payload, {deep: true, stopPaths: ['metadata.user_data']}));
         break;
-      case 'message':
+      case 'message.created':
         this.callbackMap.onMessage?.(json.payload.conversation_id, json.payload.channel_id, {
           ...camelcaseKeys(json.payload.message, {deep: true, stopPaths: ['content']}),
           sentAt: new Date(json.payload.message.sent_at),
         });
         break;
-      case 'metadata':
+      case 'metadata.updated':
         this.callbackMap.onMetadata?.(json.payload);
         break;
-      case 'tag':
+      case 'tag.updated':
         this.callbackMap.onTag?.(json.payload);
         break;
       default:
@@ -64,7 +62,5 @@ export class WebSocketClient {
     }
   };
 
-  onError = () => {
-    this.callbackMap.onError && this.callbackMap.onError();
-  };
+  onError = () => this.callbackMap.onError && this.callbackMap.onError();
 }

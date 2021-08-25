@@ -1,5 +1,4 @@
 import React from 'react';
-import {Message} from 'model';
 import {RenderPropsUnion} from '../../props';
 import {Text} from '../../components/Text';
 import {Image} from '../../components/Image';
@@ -19,7 +18,7 @@ import {MediaTemplate} from './components/MediaTemplate';
 import {FallbackAttachment} from './components/FallbackAttachment';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
-  const message: Message = props.content;
+  const message = props.message;
   const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };
@@ -27,60 +26,36 @@ export const FacebookRender = (props: RenderPropsUnion) => {
 function render(content: ContentUnion, props: RenderPropsUnion) {
   switch (content.type) {
     case 'text':
-      return <Text fromContact={props.content.fromContact || false} text={content.text} />;
+      return <Text fromContact={props.message.fromContact || false} text={content.text} />;
 
     case 'fallback':
-      return (
-        <>
-          <FallbackAttachment fromContact={props.content.fromContact || false} content={content} />
-        </>
-      );
+      return <FallbackAttachment fromContact={props.message.fromContact || false} content={content} />;
 
     case 'postback':
-      return <Text fromContact={props.content.fromContact || false} text={content.title ?? content.payload} />;
+      return <Text fromContact={props.message.fromContact || false} text={content.title ?? content.payload} />;
 
     case 'image':
-      return (
-        <>
-          <Image imageUrl={content.imageUrl} />
-        </>
-      );
+      return <Image imageUrl={content.imageUrl} />;
 
     case 'images':
-      return (
-        <>
-          <Image images={content.images} />
-        </>
-      );
+      return <Image images={content.images} />;
 
     case 'video':
-      return (
-        <>
-          <Video videoUrl={content.videoUrl} />
-        </>
-      );
+      return <Video videoUrl={content.videoUrl} />;
 
     case 'buttonTemplate':
       return <ButtonTemplate template={content} />;
 
     case 'genericTemplate':
-      return (
-        <>
-          <GenericTemplate template={content} />
-        </>
-      );
+      return <GenericTemplate template={content} />;
 
     case 'mediaTemplate':
-      return (
-        <>
-          <MediaTemplate template={content} />
-        </>
-      );
+      return <MediaTemplate template={content} />;
 
     case 'quickReplies':
       return (
         <QuickReplies
-          fromContact={props.content.fromContact || false}
+          fromContact={props.message.fromContact || false}
           text={content.text}
           attachment={content.attachment}
           quickReplies={content.quickReplies}
@@ -148,7 +123,7 @@ const parseAttachment = (
   };
 };
 
-function facebookInbound(message: Message): ContentUnion {
+function facebookInbound(message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
   if (messageJson.attachment?.type === 'fallback' || messageJson.attachments?.[0].type === 'fallback') {
@@ -192,7 +167,7 @@ function facebookInbound(message: Message): ContentUnion {
   };
 }
 
-function facebookOutbound(message: Message): ContentUnion {
+function facebookOutbound(message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
   if (messageJson.quick_replies) {

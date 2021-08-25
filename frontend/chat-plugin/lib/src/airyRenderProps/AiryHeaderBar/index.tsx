@@ -33,6 +33,48 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
     }),
   };
 
+  const ClosingOptionMedium = () => {
+    return (
+      <div className={style.buttonMenu}>
+        <button
+          className={style.closeButton}
+          onClick={props.toggleHideChat}
+          title="End chat"
+          data-cy={cyChatPluginHeaderBarCloseButton}>
+          <CloseButton />
+        </button>
+      </div>
+    );
+  };
+
+  const ClosingOptionFull = () => {
+    return (
+      <div className={style.buttonMenu}>
+        <button className={style.minimizeButton} onClick={props.toggleHideChat} title="Minimize chat">
+          <MinimizeButton />
+        </button>
+        <button
+          className={style.closeButton}
+          onClick={showModalOnClick}
+          title="End chat"
+          data-cy={cyChatPluginHeaderBarCloseButton}>
+          <CloseButton />
+        </button>
+      </div>
+    );
+  };
+
+  const ClosingOption = () => {
+    if (config.closeMode) {
+      if (config.closeMode === 'basic') {
+        return <div />;
+      } else if (config.closeMode === 'medium') {
+        return <ClosingOptionMedium />;
+      }
+    }
+    return <ClosingOptionFull />;
+  };
+
   return (
     <div className={style.header}>
       <div className={style.headerInfo}>
@@ -43,20 +85,7 @@ const AiryHeaderBar = (props: AiryHeaderBarProps) => {
           {config.subtitleText || (config.showMode === true && 'Customer Subtitle')}
         </p>
       </div>
-
-      <div className={style.buttonMenu}>
-        <button className={style.minimizeButton} onClick={props.toggleHideChat} title="Minimize chat">
-          <MinimizeButton />
-        </button>
-
-        <button
-          className={style.closeButton}
-          onClick={showModalOnClick}
-          title="End chat"
-          data-cy={cyChatPluginHeaderBarCloseButton}>
-          <CloseButton />
-        </button>
-      </div>
+      <ClosingOption />
     </div>
   );
 };

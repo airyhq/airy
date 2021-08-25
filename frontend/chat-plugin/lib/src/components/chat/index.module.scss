@@ -9,6 +9,16 @@
   justify-content: flex-end;
 }
 
+.mainFlex {
+  @extend .main;
+  @media only screen and (max-device-width: 640px) {
+    display: none;
+  }
+  @media only screen and (max-device-height: 840px) {
+    display: none;
+  }
+}
+
 @keyframes chatAnimationOpen {
   0% {
     opacity: 0;

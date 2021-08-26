@@ -28,24 +28,24 @@ public class WebTestHelper {
     }
 
     public ResultActions post(String url, String body) throws Exception {
-        return this.mvc.perform(MockMvcRequestBuilders.post(url)
-                .header(CONTENT_TYPE, APPLICATION_JSON.toString())
+        return mvc.perform(MockMvcRequestBuilders.post(url)
+                .headers(buildHeaders())
                 .content(body));
     }
 
     public ResultActions post(String url) throws Exception {
-        return this.mvc.perform(MockMvcRequestBuilders.post(url));
+        return mvc.perform(MockMvcRequestBuilders.post(url));
     }
 
     public ResultActions get(String url) throws Exception {
-        return this.mvc.perform(MockMvcRequestBuilders.get(url));
+        return mvc.perform(MockMvcRequestBuilders.get(url));
     }
 
     private HttpHeaders buildHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add(CONTENT_TYPE, APPLICATION_JSON.toString());
-        if (this.systemToken != null) {
-            headers.setBearerAuth(this.systemToken);
+        if (systemToken != null) {
+            headers.setBearerAuth(systemToken);
         }
         return headers;
     }

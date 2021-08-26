@@ -3,50 +3,31 @@ package co.airy.spring.auth;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.spring.auth.oidc.ConfigProvider;
 import co.airy.spring.auth.oidc.EmailFilter;
-import co.airy.spring.auth.oidc.UserService;
 import co.airy.spring.auth.session.AuthCookie;
 import co.airy.spring.auth.session.CookieSecurityContextRepository;
-import co.airy.spring.auth.session.Jwt;
 import co.airy.spring.auth.token.AuthenticationFilter;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
-import org.springframework.security.web.authentication.DelegatingAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Configuration
 @EnableWebSecurity
@@ -94,7 +75,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
             if (systemToken != null) {
                 log.info("System token auth enabled");
-                http.addFilterBefore(new AuthenticationFilter(systemToken), AnonymousAuthenticationFilter.class);
+                http.addFilterBefore(new AuthenticationFilter(systemToken, new Jwt(jwtSecret)), AnonymousAuthenticationFilter.class);
             }
 
             if (configProvider.isPresent()) {

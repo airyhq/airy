@@ -1,17 +1,14 @@
-package co.airy.core.chat_plugin;
+package co.airy.core.sources.api;
 
-import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.ChannelConnectionState;
-import co.airy.core.chat_plugin.payload.MessageUpsertPayload;
 import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
+import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
+import co.airy.kafka.schema.application.ApplicationCommunicationSources;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
+import co.airy.spring.test.WebTestHelper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,67 +16,50 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.simp.stomp.StompHeaders;
-import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.socket.WebSocketHttpHeaders;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.lang.reflect.Type;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-
-import static co.airy.core.chat_plugin.WebSocketController.QUEUE_MESSAGE;
 import static co.airy.test.Timing.retryOnException;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
+@SpringBootTest(properties = {
+        "systemToken=user-generated-api-token",
+        "jwtSecret=long-randomly-generated-secret-used-as-jwt-secret-key",
+}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = AirySpringBootApplication.class)
 @TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-public class ChatControllerTest {
+public class CreateSourceTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
+
+    @Autowired
+    private WebTestHelper webTestHelper;
 
     @Autowired
     private MockMvc mvc;
 
     private static KafkaTestHelper kafkaTestHelper;
     private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-
-    private static final Channel channel = Channel.newBuilder()
-            .setConnectionState(ChannelConnectionState.CONNECTED)
-            .setId(UUID.randomUUID().toString())
-            .setSource("chatplugin")
-            .setSourceChannelId("some custom identifier")
-            .build();
+    private static final ApplicationCommunicationSources applicationCommunicationSources = new ApplicationCommunicationSources();
+    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
 
     @BeforeAll
     static void beforeAll() throws Exception {
         kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationChannels
+                applicationCommunicationChannels, applicationCommunicationSources, applicationCommunicationMetadata
         );
         kafkaTestHelper.beforeAll();
     }
@@ -91,11 +71,35 @@ public class ChatControllerTest {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        retryOnException(() -> mvc.perform(get("/actuator/health")).andExpect(status().isOk()), "Application is not healthy");
+        webTestHelper.waitUntilHealthy();
     }
 
     @Test
     void canCreateSourceAndChannel() throws Exception {
-        // TODO
+        final String sourceId = "my-source";
+        String payload = "{\"source_id\":\"" + sourceId + "\"}";
+
+        final String response = webTestHelper.post("/sources.create", payload)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.source_id", is(not(nullValue()))))
+                .andExpect(jsonPath("$.token", is(not(nullValue()))))
+                .andReturn().getResponse().getContentAsString();
+
+        final JsonNode node = new ObjectMapper().readTree(response);
+        final String token = node.get("token").textValue();
+
+        final String channelPayload = "{\"name\":\"source channel\",\"source_channel_id\":\"my-source-channel-1\"}";
+
+        mvc.perform(MockMvcRequestBuilders.post("/sources.createChannel")
+                .header(CONTENT_TYPE, APPLICATION_JSON.toString())
+                .content(channelPayload))
+                .andExpect(status().isForbidden());
+
+        retryOnException(() -> mvc.perform(MockMvcRequestBuilders.post("/sources.createChannel")
+                .header(CONTENT_TYPE, APPLICATION_JSON.toString())
+                .header(AUTHORIZATION, token)
+                .content(channelPayload))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.source", equalTo(sourceId))), "Channel was not created");
     }
 }

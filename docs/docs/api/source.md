@@ -29,9 +29,9 @@ that is not yet officially supported. This is a typical usage pattern:
 
 Take for instance the Facebook Messenger source. You should map these fields like so:
 
-- `source_message_id` → the `mid` sent in every [webhook message event](https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages/). If your messaging source does not provide message ids, you either create them yourself or using something like the hash of the message content and the timestamp as a proxy.
+- `source_message_id` → the `mid` sent in every [webhook message event](https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages/). If your messaging source does not provide message ids, you can either create them yourself or use something like the hash of the message content and the timestamp as a proxy.
 
-- `source_channel_id` → For Messenger this is the Facebook page id. If your source only supports one channel per account, you can also use a constant value for this field. Before
+- `source_channel_id` → For Messenger this is the Facebook page id. If your source only supports one channel per account, you can also use a constant value for this field.
 
 - `source_conversation_id` → Contacts for each Facebook page in Messenger are identified by a [Page-scoped ID](https://developers.facebook.com/docs/messenger-platform/identity/user-profile). Since in Messenger page conversations cannot have multiple participants, this uniquely identifies a conversation.
 

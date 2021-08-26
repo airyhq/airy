@@ -36,7 +36,6 @@ import java.util.concurrent.ExecutionException;
 
 import static co.airy.model.metadata.MetadataRepository.getId;
 import static co.airy.model.metadata.MetadataRepository.getSubject;
-import static co.airy.model.metadata.MetadataRepository.isChannelMetadata;
 
 @Component
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
@@ -65,9 +64,8 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public void onApplicationEvent(ApplicationStartedEvent event) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // metadata table keyed by channel id
+        // metadata table keyed by subject id
         final KTable<String, MetadataMap> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
-                .filter((metadataId, metadata) -> isChannelMetadata(metadata))
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor);
 

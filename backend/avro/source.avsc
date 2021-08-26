@@ -1,0 +1,28 @@
+{
+  "namespace": "co.airy.avro.communication",
+  "name": "Source",
+  "type": "record",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "token",
+      "type": "string"
+    },
+    {
+      "name": "actionEndpoint",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "createdAt",
+      "type": "long",
+      "logicalType": "timestamp-millis"
+    }
+  ]
+}

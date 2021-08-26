@@ -3,23 +3,23 @@ package co.airy.spring.auth.token;
 import lombok.Data;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class TokenAuth implements Authentication {
-    private String token;
-    private String principal;
+    private final TokenProfile profile;
     private boolean isAuthenticated = false;
 
-    public TokenAuth(String token) {
-        this.principal = String.format("system-token-%s", token.substring(0, Math.min(token.length(), 4)));
+    public TokenAuth(TokenProfile profile) {
+        this.profile = profile;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return profile.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override
@@ -33,6 +33,11 @@ public class TokenAuth implements Authentication {
     }
 
     @Override
+    public TokenProfile getPrincipal() {
+        return profile;
+    }
+
+    @Override
     public boolean isAuthenticated() {
         return this.isAuthenticated;
     }
@@ -42,9 +47,8 @@ public class TokenAuth implements Authentication {
         this.isAuthenticated = true;
     }
 
-
     @Override
     public String getName() {
-        return principal;
+        return profile.getName();
     }
 }

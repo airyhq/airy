@@ -5,12 +5,17 @@ load("//tools/build:container_release.bzl", "container_release")
 
 app_deps = [
     "//backend:base_app",
-    "//:jwt",
+    "//backend/avro:source",
     "//backend/model/channel",
     "//backend/model/message",
+    "//backend/model/metadata",
     "//lib/java/uuid",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
+    "//lib/java/spring/web:spring-web",
+    "//lib/java/spring/auth:spring-auth",
+    "//lib/java/kafka/schema:application-communication-sources",
+    "//:springboot_actuator",
     "@maven//:javax_xml_bind_jaxb_api",
 ]
 
@@ -30,6 +35,7 @@ springboot(
             ":app",
             "//backend:base_test",
             "//lib/java/kafka/test:kafka-test",
+            "//lib/java/spring/test:spring-test",
         ] + app_deps,
     )
     for file in glob(["src/test/java/**/*Test.java"])

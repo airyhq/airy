@@ -93,8 +93,8 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.viber.disconnect")
-    ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
-        final String channelId = requestPayload.getChannelId().toString();
+    ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload payload) {
+        final String channelId = payload.getChannelId().toString();
         final Channel channel = stores.getChannelsStore().get(channelId);
 
         if (channel == null) {

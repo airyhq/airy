@@ -45,9 +45,9 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.facebook.explore")
-    ResponseEntity<?> explore(@RequestBody @Valid ExploreRequestPayload requestPayload) {
+    ResponseEntity<?> explore(@RequestBody @Valid ExploreRequestPayload payload) {
         try {
-            final List<PageWithConnectInfo> pagesInfo = api.getPagesInfo(requestPayload.getAuthToken());
+            final List<PageWithConnectInfo> pagesInfo = api.getPagesInfo(payload.getAuthToken());
 
             final KeyValueIterator<String, Channel> iterator = stores.getChannelsStore().all();
 
@@ -80,9 +80,9 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.facebook.connect")
-    ResponseEntity<?> connectFacebook(@RequestBody @Valid ConnectPageRequestPayload requestPayload) {
-        final String token = requestPayload.getPageToken();
-        final String pageId = requestPayload.getPageId();
+    ResponseEntity<?> connectFacebook(@RequestBody @Valid ConnectPageRequestPayload payload) {
+        final String token = payload.getPageToken();
+        final String pageId = payload.getPageId();
 
         final String channelId = UUIDv5.fromNamespaceAndName("facebook", pageId).toString();
 
@@ -103,8 +103,8 @@ public class ChannelsController {
                                     .build()
                     )
                     .metadataMap(MetadataMap.from(List.of(
-                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(requestPayload.getName()).orElse(fbPageWithConnectInfo.getNameWithLocationDescriptor())),
-                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, Optional.ofNullable(requestPayload.getImageUrl()).orElse(fbPageWithConnectInfo.getPicture().getData().getUrl()))
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(fbPageWithConnectInfo.getNameWithLocationDescriptor())),
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, Optional.ofNullable(payload.getImageUrl()).orElse(fbPageWithConnectInfo.getPicture().getData().getUrl()))
                     ))).build();
 
             stores.storeChannelContainer(container);
@@ -118,10 +118,10 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.instagram.connect")
-    ResponseEntity<?> connectInstagram(@RequestBody @Valid ConnectInstagramRequestPayload requestPayload) {
-        final String token = requestPayload.getPageToken();
-        final String pageId = requestPayload.getPageId();
-        final String accountId = requestPayload.getAccountId();
+    ResponseEntity<?> connectInstagram(@RequestBody @Valid ConnectInstagramRequestPayload payload) {
+        final String token = payload.getPageToken();
+        final String pageId = payload.getPageId();
+        final String accountId = payload.getAccountId();
 
         final String channelId = UUIDv5.fromNamespaceAndName("instagram", accountId).toString();
 
@@ -132,10 +132,10 @@ public class ChannelsController {
             api.connectPageToApp(fbPageWithConnectInfo.getAccessToken());
 
             final MetadataMap metadataMap = MetadataMap.from(List.of(
-                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(requestPayload.getName()).orElse(String.format("%s Instagram account", fbPageWithConnectInfo.getNameWithLocationDescriptor())))
+                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(String.format("%s Instagram account", fbPageWithConnectInfo.getNameWithLocationDescriptor())))
             ));
 
-            Optional.ofNullable(requestPayload.getImageUrl())
+            Optional.ofNullable(payload.getImageUrl())
                     .ifPresent((imageUrl) -> {
                         final Metadata metadata = newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, imageUrl);
                         metadataMap.put(metadata.getKey(), metadata);
@@ -164,8 +164,8 @@ public class ChannelsController {
     }
 
     @PostMapping(path = {"/channels.facebook.disconnect", "/channels.instagram.disconnect"})
-    ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
-        final String channelId = requestPayload.getChannelId().toString();
+    ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload payload) {
+        final String channelId = payload.getChannelId().toString();
 
         final Channel channel = stores.getChannelsStore().get(channelId);
 

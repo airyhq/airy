@@ -8,11 +8,11 @@ import java.io.Serializable;
 import java.util.Collection;
 
 @NoArgsConstructor
-public class AiryAuth implements Authentication, Serializable {
+public class UserAuth implements Authentication, Serializable {
     private UserProfile userProfile;
     private boolean isAuthenticated = true;
 
-    public AiryAuth(UserProfile userProfile) {
+    public UserAuth(UserProfile userProfile) {
         this.userProfile = userProfile;
     }
 

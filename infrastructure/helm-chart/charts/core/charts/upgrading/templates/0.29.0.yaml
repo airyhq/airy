@@ -13,7 +13,7 @@ metadata:
 data:
   check-existing-wehook.sh: |
     #!/bin/sh
-    system_token=${SYSTEM_TOKEN}
+    system_token=${systemToken}
     curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${system_token}" api-admin/webhooks.info -w "\n%{http_code}\n" > /tmp/response.txt
     cat /tmp/response.txt
     status_code=$(cat /tmp/response.txt | tail -n 1)
@@ -37,7 +37,7 @@ data:
 
   subscribe-wehoook.sh: |
     #!/bin/sh
-    system_token=${SYSTEM_TOKEN}
+    system_token=${systemToken}
     webhookUsed=$(kubectl get configmap upgrade-{{ .Values.global.kubernetes.appImageTag }} -o jsonpath='{.data.webhookUsed}')
     echo "Webhook used: ${webhookUsed}"
     if [ "${webhookUsed}" = "true" ]; then

@@ -209,8 +209,8 @@ Update the existing ingress resources with the new hostname (for this you will a
 
 ```sh
 kubectl get ingress airy-core -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl apply -f -
-kubectl get ingress airy-core-ui -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl -f -
-kubectl get ingress airy-core-redirect -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl -f -
+kubectl get ingress airy-core-ui -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl apply -f -
+kubectl get ingress airy-core-redirect -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl apply -f -
 ```
 
 #### Setup your DNS

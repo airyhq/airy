@@ -28,11 +28,11 @@ Version: 0.29.0, GitCommit: b47d7e46c884a45c4c2169f626ebd0ff9ff6ee8e
 
 The upgrade of your Airy Core cluster will lead to downtime. Usually it takes seconds, but in case there is a migration or a reset of some of the streaming apps, this process might take longer, depending on the amount of data you have.
 
-For more information about specific upgrades, or if you have any questions, please join the [Airy Developers Community on Slack](https://airy-developers.slack.com/).
+Before you proceed, refer to the Release documentation for any upgrade notes or steps.
 
 :::
 
-Use the `airy upgrade` command to perform the upgrade of your Airy Core instance. Run `airy upgrade` to return information about your current Airy Core version and the latest version available. You will be prompted to proceed with the upgrade (omit this prompt by using the `--approve` flag).
+The upgrade process will not delete any of the persistent data that is kept inside the Kafka cluster. Use the `airy upgrade` command to perform the upgrade of your Airy Core instance. Run `airy upgrade` to return information about your current Airy Core version and the latest version available. You will be prompted to proceed with the upgrade (omit this prompt by using the `--approve` flag).
 
 ```sh
 $ airy upgrade
@@ -72,6 +72,7 @@ The upgrade will create few additional resources (Kubernetes jobs and configMaps
 To cleanup those resources, run:
 
 ```sh
+kubectl delete pods -l job-name=helm-runner
 kubectl delete configmap -l core.airy.co/upgrade="true"
 kubectl delete job -l core.airy.co/upgrade="true"
 kubectl delete job -l core.airy.co/upgrade="post-upgrade"
@@ -79,7 +80,13 @@ kubectl delete job -l core.airy.co/upgrade="post-upgrade"
 
 ## Rollback
 
-The upgrade process will not delete any of the persistent data that is kept inside the Kafka cluster. In case the upgrade fails, you can rollback to your previous Airy Core version. Clean-up the upgrade resources as instructed in the previous section and run:
+In case the upgrade fails, first you can inspect the reason for the failure by running this command:
+
+```
+kubectl logs -l job-name=helm-runner
+```
+
+After that, you can rollback to your previous Airy Core version. Clean-up the upgrade resources as instructed in the previous section and run:
 
 ```sh
 helm rollback airy

@@ -1,14 +1,11 @@
 package co.airy.core.sources.api;
 
-import co.airy.kafka.schema.application.ApplicationCommunicationChannels;
-import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
-import co.airy.kafka.schema.application.ApplicationCommunicationSources;
+import co.airy.core.sources.api.util.TestSource;
+import co.airy.core.sources.api.util.Topics;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,9 +22,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static co.airy.test.Timing.retryOnException;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -41,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-public class CreateSourceTest {
+public class ChannelsControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
@@ -51,16 +45,14 @@ public class CreateSourceTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private TestSource testSource;
+
     private static KafkaTestHelper kafkaTestHelper;
-    private static final ApplicationCommunicationChannels applicationCommunicationChannels = new ApplicationCommunicationChannels();
-    private static final ApplicationCommunicationSources applicationCommunicationSources = new ApplicationCommunicationSources();
-    private static final ApplicationCommunicationMetadata applicationCommunicationMetadata = new ApplicationCommunicationMetadata();
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource,
-                applicationCommunicationChannels, applicationCommunicationSources, applicationCommunicationMetadata
-        );
+        kafkaTestHelper = new KafkaTestHelper(sharedKafkaTestResource, Topics.getTopics());
         kafkaTestHelper.beforeAll();
     }
 
@@ -77,25 +69,16 @@ public class CreateSourceTest {
     @Test
     void canCreateSourceAndChannel() throws Exception {
         final String sourceId = "my-source";
-        String payload = "{\"source_id\":\"" + sourceId + "\"}";
-
-        final String response = webTestHelper.post("/sources.create", payload)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.source_id", is(not(nullValue()))))
-                .andExpect(jsonPath("$.token", is(not(nullValue()))))
-                .andReturn().getResponse().getContentAsString();
-
-        final JsonNode node = new ObjectMapper().readTree(response);
-        final String token = node.get("token").textValue();
+        final String token = testSource.createSourceAndGetToken(sourceId);
 
         final String channelPayload = "{\"name\":\"source channel\",\"source_channel_id\":\"my-source-channel-1\"}";
 
-        mvc.perform(MockMvcRequestBuilders.post("/sources.createChannel")
+        mvc.perform(MockMvcRequestBuilders.post("/sources.channels.create")
                 .header(CONTENT_TYPE, APPLICATION_JSON.toString())
                 .content(channelPayload))
                 .andExpect(status().isForbidden());
 
-        retryOnException(() -> mvc.perform(MockMvcRequestBuilders.post("/sources.createChannel")
+        retryOnException(() -> mvc.perform(MockMvcRequestBuilders.post("/sources.channels.create")
                 .header(CONTENT_TYPE, APPLICATION_JSON.toString())
                 .header(AUTHORIZATION, token)
                 .content(channelPayload))

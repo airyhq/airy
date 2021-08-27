@@ -31,16 +31,21 @@ public class SourcesController {
         final Source source = Source.newBuilder()
                 .setId(payload.getSourceId())
                 .setCreatedAt(Instant.now().toEpochMilli())
-                .setActionEndpoint(payload.getActionEndpoint())
                 .setToken(token)
+                .setName(payload.getName())
+                .setImageUrl(payload.getImageUrl())
+                .setActionEndpoint(payload.getActionEndpoint())
                 .build();
 
         try {
             stores.storeSource(source);
             return ResponseEntity.ok(CreateSourceResponsePayload.builder()
                     .sourceId(source.getId())
+                    .token(source.getToken())
                     .actionEndpoint(source.getActionEndpoint())
-                    .token(source.getToken()).build()
+                    .name(source.getName())
+                    .imageUrl(source.getImageUrl())
+                    .build()
             );
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RequestErrorResponsePayload(e.getMessage()));

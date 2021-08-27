@@ -12,6 +12,22 @@
       "type": "string"
     },
     {
+      "name": "name",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "imageUrl",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
       "name": "actionEndpoint",
       "type": [
         "null",

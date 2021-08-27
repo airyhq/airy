@@ -7,6 +7,8 @@ import lombok.Data;
 @Builder
 public class CreateSourceResponsePayload {
     private String sourceId;
-    private String actionEndpoint;
     private String token;
+    private String actionEndpoint;
+    private String name;
+    private String imageUrl;
 }

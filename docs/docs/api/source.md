@@ -29,6 +29,8 @@ that is not yet officially supported. This is a typical usage pattern:
 
 Take for instance the Facebook Messenger source. You should map these fields like so:
 
+- `source_id` → This is the identifier that will be written to all your messaging data (i.e. the `source` field on every [message](docs/api/endpoints/messages.md#list)) and should thus not be changed later unless you want to partition your data.
+
 - `source_message_id` → the `mid` sent in every [webhook message event](https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages/). If your messaging source does not provide message ids, you can either create them yourself or use something like the hash of the message content and the timestamp as a proxy.
 
 - `source_channel_id` → For Messenger this is the Facebook page id. If your source only supports one channel per account, you can also use a constant value for this field.
@@ -40,7 +42,7 @@ Take for instance the Facebook Messenger source. You should map these fields lik
 `POST /sources.create`
 
 To ensure that apps using the source API can write their data in isolation of each other, every app receives a
-JWT which encodes the source id. This JWT has to be set on the Authorization header of each request to authenticate
+JWT which encodes the source id. This JWT has to be set on the `Authorization` header of each request to authenticate
 the source and write the correct identifier to the messaging data.
 
 **Sample request**
@@ -48,26 +50,32 @@ the source and write the correct identifier to the messaging data.
 ```json5
 {
   "source_id": "my-crm-connector",
-  "action_endpoint": "http://my-app.com/action" // Optional
+  "action_endpoint": "http://my-app.com/action", // Optional
+  "name": "Human readable name for this source", // Optional
+  "image_url": "http://example.org/sourcIcon.jpg" // Optional
 }
 ```
 
 - `source_id` An unique identifier of your source that will be stored alongside all messaging data.
 - `action_endpoint` (optional) If your source app should handle events such as outbound messages, you need to specify the [action http endpoint](#action-endpoint) here.
+- `name` (optional) Human readable name for this source.
+- `image_url` (optional) Icon presenting this source for display.
 
 **Sample response**
 
 ```json5
 {
   "source_id": "my-crm-connector",
+  "token": "<jwt token>",
   "action_endpoint": "http://my-app.com/action", // Optional
-  "token": "<jwt token>"
+  "name": "Human readable name for this source", // Optional
+  "image_url": "http://example.org/sourcIcon.jpg" // Optional
 }
 ```
 
 ## Create a channel
 
-`POST /sources.createChannel`
+`POST /sources.channels.create`
 
 **Sample request**
 
@@ -79,7 +87,7 @@ the source and write the correct identifier to the messaging data.
 }
 ```
 
-- `source_channel_id` source identifier of the channel. Messages sent to [`/sources.ingest`](#ingest-messaging-data) must have a connected channel.
+- `source_channel_id` source identifier of the channel. Messages sent to [`/sources.webhook`](#messaging-data-webhook) must have a connected channel.
 
 **Sample response**
 
@@ -96,9 +104,9 @@ the source and write the correct identifier to the messaging data.
 }
 ```
 
-## Ingest messaging data
+## Messaging data webhook
 
-`POST /sources.ingest`
+`POST /sources.webhook`
 
 Before starting to ingest messages you have to create a channel. On the other hand you can always ingest metadata.
 
@@ -111,6 +119,7 @@ Before starting to ingest messages you have to create a channel. On the other ha
       "source_message_id": "source message identifier",
       "source_conversation_id": "source conversation identifier",
       "source_channel_id": "source channel identifier",
+      "source_sender_id": "Unique identifier of the sender of the message",
       "content": {"text": "Hello world"}, // Source specific content node (can be a plain string)
       "from_contact": true,
       "sent_at_millis": 1603661094560, // Unix timestamp of event

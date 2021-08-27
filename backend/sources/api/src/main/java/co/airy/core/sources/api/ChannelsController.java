@@ -34,8 +34,8 @@ public class ChannelsController {
         this.sourceToken = sourceToken;
     }
 
-    @PostMapping("/sources.createChannel")
-    ResponseEntity<?> createSourceChannel(@RequestBody @Valid CreateChannelRequestPayload payload, Authentication authentication) {
+    @PostMapping("/sources.channels.create")
+    ResponseEntity<?> createChannel(@RequestBody @Valid CreateChannelRequestPayload payload, Authentication authentication) {
         final Source source = sourceToken.getSource(authentication);
         final String sourceChannelId = payload.getSourceChannelId();
         final String channelId = UUIDv5.fromNamespaceAndName(source.getId(), sourceChannelId).toString();

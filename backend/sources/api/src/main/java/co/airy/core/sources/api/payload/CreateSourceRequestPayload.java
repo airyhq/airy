@@ -12,5 +12,7 @@ import javax.validation.constraints.NotNull;
 public class CreateSourceRequestPayload {
     @NotNull
     private String sourceId;
+    private String name;
+    private String imageUrl;
     private String actionEndpoint;
 }

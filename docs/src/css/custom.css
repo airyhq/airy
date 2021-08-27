@@ -169,3 +169,13 @@ html[data-theme='dark'] .DocSearch {
 .markdown > table td {
   min-width: 160px;
 }
+
+/* Fix alert danger color */
+.alert--danger a,
+.alert--danger {
+  color: #000;
+}
+
+.alert--danger svg {
+  fill: #000;
+}

@@ -19,9 +19,12 @@ permission to the Airy organization to function correctly
 
 Once a release day comes, we execute the following steps:
 
-- We clean up the draft release
+- We clean up the draft release. If the upgrade to the new version requires manual steps, we detail them.
 - We run `./scripts/release.sh start x.y.z`
-- We test the release using `airy create --provider=minikube`. Note that:
+- We wait for the release candidate CLI to be pushed and then download it by running:
+  - `wget https://airy-core-binaries.s3.amazonaws.com/$VERSION-rc/darwin/amd64/airy`
+  - `chmod +x airy`
+- We test the release using `./airy create --provider=minikube`. Note that:
   - Any additional hot-fix is committed directly to the release branch
   - You must wait for all the images to be pushed via CI
 - Once we're satisfied with the release, we publish the release:

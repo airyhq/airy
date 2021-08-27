@@ -49,11 +49,11 @@ func upgrade(cmd *cobra.Command, args []string) {
 	if version == "" {
 		version = Version
 	}
-	clusterAiryConf, err := kube.GetDeployedAiryYaml(namespace, clientset)
+	clusterAiryCore, err := kube.GetCmData("core-config", namespace, clientset)
 	if err != nil {
 		console.Exit("Unable to retrieve existing version of Airy Core: ", err.Error())
 	}
-	oldVersion := clusterAiryConf.Kubernetes.AppImageTag
+	oldVersion := clusterAiryCore["APP_IMAGE_TAG"]
 
 	fmt.Println("CLI version: ", Version)
 	fmt.Println("Current Airy Core version: ", oldVersion)
@@ -77,19 +77,6 @@ func upgrade(cmd *cobra.Command, args []string) {
 
 	fmt.Println("Applying config from the configuration file.")
 	config.ApplyConfig(workspacePath)
-
-	fmt.Println(("Writing the new version into the configuration file."))
-	if writeVersionErr := dir.UpdateAiryYaml(func(conf workspace.AiryConf) workspace.AiryConf {
-		conf.Kubernetes.AppImageTag = version
-		return conf
-	}); writeVersionErr != nil {
-		console.Exit("Writing the version into config file failed with err: ", writeVersionErr)
-	}
-
-	fmt.Println("Copying the configuration file in the Airy Core K8s cluster.")
-	if cmErr := helm.UpsertAiryConfigMap(); cmErr != nil {
-		console.Exit("Unable to copy config file into Airy Core.")
-	}
 
 	fmt.Println("✅ Airy Core upgraded")
 	fmt.Println()

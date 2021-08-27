@@ -1,0 +1,6 @@
+api:
+  admin:
+    component: api-admin
+    image: api/admin
+    mandatory: true
+    enabled: true

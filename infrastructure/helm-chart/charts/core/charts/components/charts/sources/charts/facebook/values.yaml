@@ -1,4 +1,0 @@
-component: sources-facebook
-mandatory: false
-imageConnector: sources/facebook-connector
-imageEventsRouter: sources/facebook-events-router

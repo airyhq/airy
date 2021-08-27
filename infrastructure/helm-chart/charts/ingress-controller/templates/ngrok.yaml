@@ -1,0 +1,91 @@
+{{ if .Values.ngrokEnabled }}
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: 'airy-core-ngrok'
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: '*.tunnel.airy.co'
+      http:
+        paths:
+          - path: /facebook
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-facebook-connector
+                port:
+                  number: 80
+          - path: /google
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-google-connector
+                port:
+                  number: 80
+          - path: /twilio
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-twilio-connector
+                port:
+                  number: 80
+          - path: /viber
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-viber-connector
+                port:
+                  number: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngrok-proxy
+  labels:
+    app: ngrok-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngrok-proxy
+  template:
+    metadata:
+      labels:
+        app: ngrok-proxy
+    spec:
+      containers:
+        - name: ngrok
+          command:
+            - /bin/bash
+            - -c
+            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="${CORE_ID}" ingress-nginx-controller.kube-system:80
+          image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
+          env:
+            - name: CORE_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: core-config
+                  key: CORE_ID
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 50m
+              memory: 64Mi
+          volumeMounts:
+            - mountPath: /etc/ngrok
+              name: ngrok-client-config
+      volumes:
+        - name: ngrok-client-config
+          configMap:
+            name: ngrok-client-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ngrok-client-config
+data:
+  config.yml: |
+    server_addr: proxy.tunnel.airy.co:4443
+    trust_host_root_certs: true
+{{ end }}

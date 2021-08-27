@@ -11,6 +11,7 @@ go_library(
         "//cli/pkg/kube",
         "//cli/pkg/workspace",
         "@com_github_spf13_cobra//:cobra",
+        "@com_github_spf13_viper//:viper",
         "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
     ],
 )

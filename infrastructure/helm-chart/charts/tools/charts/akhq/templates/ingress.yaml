@@ -3,7 +3,6 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: airy-core-tools
-  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     core.airy.co/managed: "true"
 spec:

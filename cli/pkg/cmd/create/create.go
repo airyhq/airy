@@ -107,21 +107,30 @@ func create(cmd *cobra.Command, args []string) {
 		console.Exit("installing Helm charts failed with err: ", err)
 	}
 
-	if err = provider.PostInstallation(providerConfig, dir); err != nil {
+	if err = provider.PostInstallation(providerConfig, namespace, dir); err != nil {
 		console.Exit("failed to run post installation hook: ", err)
 	}
 
 	fmt.Println("🎉 Your Airy Core is ready")
 
-	hosts, err := kube.GetHosts(clientset, namespace)
+	coreConfig, err := kube.GetCmData("core-config", namespace, clientset)
 	if err != nil {
 		console.Exit("failed to get hosts from installation")
 	}
 
 	fmt.Println("\t 👩‍🍳 Available hosts:")
-	for hostName, host := range hosts {
-		fmt.Printf("\t\t %s:\t %s", explainHost(hostName), host)
-		fmt.Println()
+	for hostName, host := range coreConfig {
+		switch hostName {
+		case "HOST":
+			fmt.Printf("\t\t %s:\t %s", "Host", host)
+			fmt.Println()
+		case "API_HOST":
+			fmt.Printf("\t\t %s:\t %s", "API host", host)
+			fmt.Println()
+		case "NGROK":
+			fmt.Printf("\t\t %s:\t %s", "NGROK host", host)
+			fmt.Println()
+		}
 	}
 
 	fmt.Println()
@@ -137,18 +146,7 @@ func create(cmd *cobra.Command, args []string) {
 
 	airyAnalytics.Track(analytics.Track{
 		AnonymousId: "AiryUser",
-		Event: "installation_succesful"})
+		Event:       "installation_succesful"})
 	fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
 	fmt.Println()
-}
-
-func explainHost(hostName string) string {
-	switch hostName {
-	case "HOST":
-		return "api"
-	case "NGROK":
-		return "ngrok"
-	}
-
-	return hostName
 }

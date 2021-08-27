@@ -25,19 +25,7 @@ is enough not to provide any Facebook specific configuration.
 Now let's have a look at the different sections so you can make the changes you
 are looking for.
 
-### Kubernetes
-
-- `appImageTag` the image tag of the container images for the **Airy Components**
-
-  If you want to launch an older version refer to our
-  [Releases](https://github.com/airyhq/airy/releases) for the correct version
-  number, or if you are feeling adventurous, try the [development version](https://github.com/airyhq/airy/blob/develop/VERSION) at your own risk.
-
-- `containerRegistry` the URL of the container registry
-
-- `namespace` the Kubernetes namespace that the **Airy Core** will use
-
-### Prerequisites
+### Config
 
 These settings are used to connect the **Airy Components** to your Kafka
 cluster and Redis.
@@ -45,7 +33,8 @@ cluster and Redis.
 - `kafka`
 
   - `brokers` comma separated list of the broker endpoints
-  - `schema-registry` url to the Schema Registry
+  - `zookeepers` comma separated list of the zookeeper endpoints
+  - `schemaRegistryUrl` url to the Schema Registry
   - `commitInterval` the [Kafka Commit Interval](https://kafka.apache.org/documentation/#consumerconfigs_auto.commit.interval.ms) if you are using the included Helm chart
 
 ### Ingress
@@ -110,10 +99,9 @@ monitor or debug the **Airy Core**.
 For example, if you want to enable Facebook and Google sources, as well as the webhook integration, and the AKHQ tool, your `airy.yaml` file should look like this:
 
 ```yaml
-kubernetes:
-  containerRegistry: ghcr.io/airyhq
-  namespace: default
-  ngrokEnabled: false
+ingress-controller:
+  ngrokEnabled: true
+  https: false
 security:
   allowedOrigins: "*"
   systemToken: "my-token-for-the-api"

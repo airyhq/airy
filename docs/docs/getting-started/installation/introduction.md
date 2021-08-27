@@ -9,6 +9,7 @@ import ButtonBox from "@site/src/components/ButtonBox";
 import AwsSVG from "@site/static/icons/aws.svg";
 import Minikube from "@site/static/icons/minikube.svg";
 import RocketSVG from "@site/static/icons/rocket.svg";
+import HelmSVG from "@site/static/icons/helm.svg";
 
 <TLDR>
 
@@ -30,6 +31,16 @@ iconInvertible={true}
 title='CLI'
 description='Install the Airy Core CLI application'
 link='/cli/introduction'
+/>
+</ButtonBoxList>
+
+<ButtonBoxList>
+<ButtonBox
+icon={<HelmSVG />}
+iconInvertible={true}
+title='Helm'
+description='Deploy Airy Core with Helm, on an existing Kubernetes cluster'
+link='/getting-started/installation/helm'
 />
 </ButtonBoxList>
 

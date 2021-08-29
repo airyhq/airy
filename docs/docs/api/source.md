@@ -29,7 +29,7 @@ that is not yet officially supported. This is a typical usage pattern:
 
 Take for instance the Facebook Messenger source. You should map these fields like so:
 
-- `source_id` → This is the identifier that will be written to all your messaging data (i.e. the `source` field on every [message](docs/api/endpoints/messages.md#list)) and should thus not be changed later unless you want to partition your data.
+- `source_id` → This is the identifier that will be written to all your messaging data (i.e. the `source` field on every [message](api/endpoints/messages.md#list)) and should thus not be changed later unless you want to partition your data.
 
 - `source_message_id` → the `mid` sent in every [webhook message event](https://developers.facebook.com/docs/messenger-platform/reference/webhook-events/messages/). If your messaging source does not provide message ids, you can either create them yourself or use something like the hash of the message content and the timestamp as a proxy.
 

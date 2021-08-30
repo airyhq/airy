@@ -123,11 +123,6 @@ Before starting to ingest messages you have to create a channel. On the other ha
       "content": {"text": "Hello world"}, // Source specific content node (can be a plain string)
       "from_contact": true,
       "sent_at_millis": 1603661094560, // Unix timestamp of event
-      "metadata": {
-        "reaction": {
-          "emoji": "❤️"
-        }
-      }
     }
   ],
   "metadata": [

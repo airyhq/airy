@@ -1,11 +1,14 @@
 package co.airy.core.sources.api;
 
+import co.airy.avro.communication.Message;
+import co.airy.avro.communication.Metadata;
 import co.airy.core.sources.api.util.TestSource;
 import co.airy.core.sources.api.util.Topics;
 import co.airy.kafka.test.KafkaTestHelper;
 import co.airy.kafka.test.junit.SharedKafkaTestResource;
 import co.airy.spring.core.AirySpringBootApplication;
 import co.airy.spring.test.WebTestHelper;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,13 +22,18 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.StreamUtils;
 
-import static co.airy.test.Timing.retryOnException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+import static co.airy.model.metadata.MetadataRepository.getSubject;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(properties = {
@@ -35,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(value = "classpath:test.properties")
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-public class ChannelsControllerTest {
+public class WebhookControllerTest {
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
 
@@ -67,22 +75,39 @@ public class ChannelsControllerTest {
     }
 
     @Test
-    void canCreateChannel() throws Exception {
+    void canIngestData() throws Exception {
         final String sourceId = "my-source";
         final String token = testSource.createSourceAndGetToken(sourceId);
 
-        final String channelPayload = "{\"name\":\"source channel\",\"source_channel_id\":\"my-source-channel-1\"}";
-
-        mvc.perform(MockMvcRequestBuilders.post("/sources.channels.create")
-                .header(CONTENT_TYPE, APPLICATION_JSON.toString())
-                .content(channelPayload))
-                .andExpect(status().isForbidden());
-
-        retryOnException(() -> mvc.perform(MockMvcRequestBuilders.post("/sources.channels.create")
+        // Only accepts conversation and message metadata
+        final String invalidMetadata = "{\"metadata\":[{\"namespace\":\"channel\",\"source_id\":\"source-id\",\"metadata\":{}}]}";
+        mvc.perform(MockMvcRequestBuilders.post("/sources.webhook")
                 .header(CONTENT_TYPE, APPLICATION_JSON.toString())
                 .header(AUTHORIZATION, token)
-                .content(channelPayload))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.source", equalTo(sourceId))), "Channel was not created");
+                .content(invalidMetadata))
+                .andExpect(status().isBadRequest());
+
+        final String webhookPayload = StreamUtils.copyToString(getClass().getClassLoader().getResourceAsStream("webhook.json"), StandardCharsets.UTF_8);
+        mvc.perform(MockMvcRequestBuilders.post("/sources.webhook")
+                .header(CONTENT_TYPE, APPLICATION_JSON.toString())
+                .header(AUTHORIZATION, token)
+                .content(webhookPayload))
+                .andExpect(status().isOk());
+
+        final List<ConsumerRecord<String, Message>> messageRecords = kafkaTestHelper.consumeRecords(1, Topics.applicationCommunicationMessages.name());
+        assertThat(messageRecords, hasSize(1));
+        final Message message = messageRecords.get(0).value();
+        assertThat(message.getSource(), equalTo(sourceId));
+        final String messageId = message.getId();
+        final String conversationId = message.getConversationId();
+
+        final List<ConsumerRecord<String, Metadata>> metadataRecords = kafkaTestHelper.consumeRecords(2, Topics.applicationCommunicationMetadata.name());
+        assertThat(metadataRecords, hasSize(2));
+
+        final ConsumerRecord<String, Metadata> conversationMetadata = metadataRecords.stream().filter((metadata) -> getSubject(metadata.value()).getNamespace().equals("conversation")).findFirst().get();
+        assertThat(getSubject(conversationMetadata.value()).getIdentifier(), equalTo(conversationId));
+
+        final ConsumerRecord<String, Metadata> messageMetadata = metadataRecords.stream().filter((metadata) -> getSubject(metadata.value()).getNamespace().equals("message")).findFirst().get();
+        assertThat(getSubject(messageMetadata.value()).getIdentifier(), equalTo(messageId));
     }
 }

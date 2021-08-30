@@ -32,14 +32,11 @@ public class WebhookRequestPayload {
         private boolean fromContact;
         @NotNull
         private long sentAtMillis;
-        @NotNull
-        private JsonNode metadata;
     }
 
     @Data
     public static class MetadataPayload {
         @NotNull
-        // TODO validate
         private String namespace;
         @NotNull
         private String sourceId;

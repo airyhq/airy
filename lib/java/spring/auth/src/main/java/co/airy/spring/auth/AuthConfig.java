@@ -66,19 +66,19 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        if (systemToken != null || configProvider.isPresent()) {
+        if (hasTokenAuth() || hasOidcAuth()) {
             http.authorizeRequests(authorize -> authorize
                     .antMatchers("/actuator/**", "/login/**", "/logout/**", "/oauth/**").permitAll()
                     .antMatchers(ignoreAuthPatterns).permitAll()
                     .anyRequest().authenticated()
             );
 
-            if (systemToken != null) {
+            if (hasTokenAuth()) {
                 log.info("System token auth enabled");
                 http.addFilterBefore(new AuthenticationFilter(systemToken, new Jwt(jwtSecret)), AnonymousAuthenticationFilter.class);
             }
 
-            if (configProvider.isPresent()) {
+            if (hasOidcAuth()) {
                 final String registrationId = configProvider.getRegistration().getRegistrationId();
                 log.info("Oidc auth enabled with provider: {}", registrationId);
 
@@ -101,6 +101,14 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                         .addFilterAfter(new EmailFilter(configProvider), OAuth2LoginAuthenticationFilter.class);
             }
         }
+    }
+
+    private boolean hasTokenAuth() {
+        return systemToken != null || jwtSecret != null;
+    }
+
+    private boolean hasOidcAuth() {
+        return configProvider.isPresent();
     }
 
     @Bean

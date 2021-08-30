@@ -38,6 +38,17 @@ public class SourceToken {
         }
     }
 
+    public void rejectSourceAuth(Authentication authentication) throws ResponseStatusException {
+        if (!(authentication instanceof TokenAuth)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        Map<String, String> tokenData = ((TokenAuth) authentication).getProfile().getData();
+        if (tokenData.containsKey(sourceKey)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, identityError);
+        }
+    }
+
     public Source getSource(Authentication authentication) throws ResponseStatusException {
         final String sourceId = getSourceId(authentication);
         final Source source = stores.getSource(sourceId);

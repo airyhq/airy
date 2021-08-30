@@ -73,6 +73,65 @@ the source and write the correct identifier to the messaging data.
 }
 ```
 
+## List sources
+
+`POST /sources.list`
+
+**Sample response**
+
+```json5
+{
+  "data": [
+    {
+      "source_id": "my-crm-connector",
+      "action_endpoint": "http://my-app.com/action", // Optional
+      "name": "Human readable name for this source", // Optional
+      "image_url": "http://example.org/sourcIcon.jpg" // Optional
+    }
+  ]
+}
+```
+
+## Delete a source
+
+`POST /sources.delete`
+
+Responds with `202 (Accepted)`.
+
+**Sample request**
+
+```json5
+{
+  "source_id": "my-crm-connector"
+}
+```
+
+## Update a source
+
+`POST /sources.update`
+
+**Sample request**
+
+```json5
+{
+  "source_id": "my-crm-connector",
+  "action_endpoint": "http://my-app.com/action", // Optional
+  "name": "Human readable name for this source", // Optional
+  "image_url": "http://example.org/sourcIcon.jpg" // Optional
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "source_id": "my-crm-connector",
+  "action_endpoint": "http://my-app.com/action", // Optional
+  "name": "Human readable name for this source", // Optional
+  "image_url": "http://example.org/sourcIcon.jpg" // Optional
+}
+```
+
 ## Create a channel
 
 `POST /sources.channels.create`
@@ -122,7 +181,7 @@ Before starting to ingest messages you have to create a channel. On the other ha
       "source_sender_id": "Unique identifier of the sender of the message",
       "content": {"text": "Hello world"}, // Source specific content node (can be a plain string)
       "from_contact": true,
-      "sent_at_millis": 1603661094560, // Unix timestamp of event
+      "sent_at_millis": 1603661094560 // Unix timestamp of event
     }
   ],
   "metadata": [

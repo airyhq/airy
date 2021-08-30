@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateSourceResponsePayload {
+public class SourceResponsePayload {
     private String sourceId;
     private String token;
     private String actionEndpoint;

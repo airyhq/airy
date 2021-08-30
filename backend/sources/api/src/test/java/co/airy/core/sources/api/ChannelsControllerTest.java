@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -48,6 +49,9 @@ public class ChannelsControllerTest {
     @Autowired
     private TestSource testSource;
 
+    @Value("${systemToken}")
+    private String systemToken;
+
     private static KafkaTestHelper kafkaTestHelper;
 
     @BeforeAll
@@ -75,6 +79,13 @@ public class ChannelsControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.post("/sources.channels.create")
                 .header(CONTENT_TYPE, APPLICATION_JSON.toString())
+                .content(channelPayload))
+                .andExpect(status().isForbidden());
+
+        // Cannot use system token
+        mvc.perform(MockMvcRequestBuilders.post("/sources.channels.create")
+                .header(CONTENT_TYPE, APPLICATION_JSON.toString())
+                .header(AUTHORIZATION, systemToken)
                 .content(channelPayload))
                 .andExpect(status().isForbidden());
 

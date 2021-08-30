@@ -22,6 +22,8 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static co.airy.model.metadata.MetadataRepository.getId;
@@ -58,6 +60,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationSources, source.getId(), source)).get();
     }
 
+    public void deleteSource(String sourceId) throws ExecutionException, InterruptedException {
+        producer.send(new ProducerRecord<>(applicationCommunicationSources, sourceId, null)).get();
+    }
+
     public void storeChannelContainer(ChannelContainer container) throws ExecutionException, InterruptedException {
         storeChannel(container.getChannel());
         storeMetadataMap(container.getMetadataMap());
@@ -84,6 +90,13 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public Source getSource(String id) {
         final ReadOnlyKeyValueStore<String, Source> store = getSourcesStore();
         return store.get(id);
+    }
+
+    public List<Source> getAllSources() {
+        final ReadOnlyKeyValueStore<String, Source> store = getSourcesStore();
+        final ArrayList<Source> sources = new ArrayList<>();
+        store.all().forEachRemaining((record) -> sources.add(record.value));
+        return sources;
     }
 
     @Override

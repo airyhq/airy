@@ -1,0 +1,3 @@
+component: integration-source-api
+mandatory: false
+image: sources/api

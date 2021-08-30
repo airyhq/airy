@@ -1193,10 +1193,10 @@
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
 
-"@stomp/stompjs@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@stomp/stompjs/-/stompjs-6.1.0.tgz#b77ca240775a7a34289b2c09618e256be761d142"
-  integrity sha512-Bt+whL0V51rSKP35OkgM1yeVu/usunpz5l1VYuoWw8mGsDMNd3W3FpWa4/4eis6QfXO3uteNGfyE21XWn0pGAQ==
+"@stomp/stompjs@^6.1.1":
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/@stomp/stompjs/-/stompjs-6.1.1.tgz#acfb07f0a4928a4bcdb3b525c2c07d1624ec1dde"
+  integrity sha512-MHSfchoe9NC93i7hyvmz4zsKux786aOWzWxg8guULIFx+yoB0hO9JcpOL2677oRPDP1Hdrscxsg2lg8tjkd3SA==
 
 "@svgr/babel-plugin-add-jsx-attribute@^5.4.0":
   version "5.4.0"

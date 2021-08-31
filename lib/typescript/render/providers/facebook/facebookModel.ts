@@ -148,6 +148,12 @@ export interface Fallback extends Content {
   url: string;
 }
 
+export interface StoryMentionContent extends Content {
+  type: 'story_mention';
+  url: string;
+  sentAt: Date;
+}
+
 // Add a new facebook content model here:
 export type ContentUnion =
   | TextContent
@@ -159,6 +165,7 @@ export type ContentUnion =
   | GenericTemplate
   | QuickRepliesContent
   | MediaTemplate
+  | StoryMentionContent 
   | Fallback;
 
 export type AttachmentUnion =
@@ -168,4 +175,5 @@ export type AttachmentUnion =
   | ButtonTemplate
   | GenericTemplate
   | MediaTemplate
+  | StoryMentionContent 
   | Fallback;

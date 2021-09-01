@@ -1,16 +1,12 @@
 import React from 'react';
 import styles from './index.module.scss';
 import {ReactComponent as LinkIcon} from 'assets/images/icons/external-link.svg';
+import {timeElapsedInHours} from 'dates';
 
 type StoryMentionProps = {
   url: string;
   sentAt: Date;
   fromContact: boolean;
-};
-
-const timeElapsedInHours = (sentAt: Date) => {
-  const millisecondsDiff = new Date().getTime() - new Date(sentAt).getTime();
-  return (millisecondsDiff / (1000 * 60 * 60)) % 24;
 };
 
 export const StoryMention = ({url, sentAt, fromContact}: StoryMentionProps) => {

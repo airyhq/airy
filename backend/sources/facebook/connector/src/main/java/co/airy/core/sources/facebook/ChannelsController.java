@@ -88,9 +88,9 @@ public class ChannelsController {
 
         try {
             final String longLivingUserToken = api.exchangeToLongLivingUserAccessToken(token);
-            final PageWithConnectInfo fbPageWithConnectInfo = api.getPageForUser(pageId, longLivingUserToken);
+            final PageWithConnectInfo pageWithConnectInfo = api.getPageForUser(pageId, longLivingUserToken);
 
-            api.connectPageToApp(fbPageWithConnectInfo.getAccessToken());
+            api.connectPageToApp(pageWithConnectInfo.getAccessToken());
 
             final ChannelContainer container = ChannelContainer.builder()
                     .channel(
@@ -103,8 +103,8 @@ public class ChannelsController {
                                     .build()
                     )
                     .metadataMap(MetadataMap.from(List.of(
-                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(fbPageWithConnectInfo.getNameWithLocationDescriptor())),
-                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, Optional.ofNullable(payload.getImageUrl()).orElse(fbPageWithConnectInfo.getPicture().getData().getUrl()))
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(pageWithConnectInfo.getNameWithLocationDescriptor())),
+                            newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, Optional.ofNullable(payload.getImageUrl()).orElse(pageWithConnectInfo.getPicture().getData().getUrl()))
                     ))).build();
 
             stores.storeChannelContainer(container);
@@ -127,12 +127,12 @@ public class ChannelsController {
 
         try {
             final String longLivingUserToken = api.exchangeToLongLivingUserAccessToken(token);
-            final PageWithConnectInfo fbPageWithConnectInfo = api.getPageForUser(pageId, longLivingUserToken);
+            final PageWithConnectInfo pageWithConnectInfo = api.getPageForUser(pageId, longLivingUserToken);
 
-            api.connectPageToApp(fbPageWithConnectInfo.getAccessToken());
+            api.connectPageToApp(pageWithConnectInfo.getAccessToken());
 
             final MetadataMap metadataMap = MetadataMap.from(List.of(
-                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(String.format("%s Instagram account", fbPageWithConnectInfo.getNameWithLocationDescriptor())))
+                    newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, Optional.ofNullable(payload.getName()).orElse(String.format("%s Instagram account", pageWithConnectInfo.getNameWithLocationDescriptor())))
             ));
 
             Optional.ofNullable(payload.getImageUrl())

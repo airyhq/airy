@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.net.URL;
 
 @Data
 @NoArgsConstructor
@@ -14,5 +15,5 @@ public class CreateSourceRequestPayload {
     private String sourceId;
     private String name;
     private String imageUrl;
-    private String actionEndpoint;
+    private URL actionEndpoint;
 }

@@ -45,6 +45,7 @@ public class MetadataKeys {
 
     public static class MessageKeys {
         public static final String SUGGESTIONS = "suggestions";
+        public static final String ERROR = "error";
 
         public static class Source {
             public static final String ID = "source.id";

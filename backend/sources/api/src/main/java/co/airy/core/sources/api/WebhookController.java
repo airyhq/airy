@@ -62,7 +62,7 @@ public class WebhookController {
 
             final Message message = Message.newBuilder()
                     .setSource(sourceId)
-                    .setSentAt(messagePayload.getSentAtMillis())
+                    .setSentAt(messagePayload.getSentAt())
                     .setSenderId(messagePayload.getSourceSenderId())
                     .setIsFromContact(messagePayload.isFromContact())
                     .setId(messageId)

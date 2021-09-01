@@ -181,7 +181,7 @@ Before starting to ingest messages you have to create a channel. On the other ha
       "source_sender_id": "Unique identifier of the sender of the message",
       "content": {"text": "Hello world"}, // Source specific content node (can be a plain string)
       "from_contact": true,
-      "sent_at_millis": 1603661094560 // Unix timestamp of event
+      "sent_at": 1603661094560 // Unix timestamp of event or ISO8601 date string
     }
   ],
   "metadata": [
@@ -208,7 +208,7 @@ Each request includes an `X-Airy-Content-Signature` header that should be used t
 isSignatureValid = hmac_sha256(key = source_token, message = request.body).to_lower_case() == request.headers['X-Airy-Content-Signature']
 ```
 
-<!-- TODO add more code examples -->
+<!-- TODO add more signature validation code examples -->
 
 [Our Java implementation](https://github.com/airyhq/airy/blob/develop/lib/java/crypto/src/main/java/co/airy/crypto/Signature.java#L21)
 
@@ -222,18 +222,28 @@ When Airy users call the [`/messages.send`](api/endpoints/messages.md#send) endp
   "payload": {
     "message": {
       "id": "uuid", // Airy message id
+      "source_recipient_id": "source recipient identifier", // Depending on the source this can be the same as the source conversation id
       "content": {"text": "Hello world"},
-      "sent_at_millis": 1603661094560 // Unix timestamp of event
+      "sent_at": "1603661094560" // Unix timestamp of event
     },
     "conversation": {
+      // Optional
       "id": "uuid", // Airy conversation id
+      "channel_id": "uuid", // Airy channel id
       "source_conversation_id": "source conversation identifier",
-      "source_channel_id": "source channel identifier",
-      "metadata": {}
+      "created_at": "2021-08-31T09:27:46.528Z" //
     }
   }
 }
 ```
+
+The conversation object is absent if there is no existing conversation. If your source does not support sending messages to new conversations, you should respond with a failure message.
+
+:::warning
+
+It's possible for users to send messages to your source before it was connected and before this API was installed in the cluster. In that case messages with older `send_at` timestamps can be sent. It is up to your source to decide when a message is too old to send and return an error.
+
+:::
 
 **Success response payload**
 

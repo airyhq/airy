@@ -34,7 +34,11 @@ public class WebTestHelper {
     }
 
     public ResultActions post(String url) throws Exception {
-        return mvc.perform(MockMvcRequestBuilders.post(url));
+        HttpHeaders headers = new HttpHeaders();
+        if (systemToken != null) {
+            headers.setBearerAuth(systemToken);
+        }
+        return mvc.perform(MockMvcRequestBuilders.post(url).headers(headers));
     }
 
     public ResultActions get(String url) throws Exception {

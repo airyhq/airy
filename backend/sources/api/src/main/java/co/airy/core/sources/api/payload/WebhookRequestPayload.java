@@ -7,6 +7,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+import static co.airy.date.format.DateFormat.instantFromIso;
+
 @Data
 public class WebhookRequestPayload {
     @Valid
@@ -31,7 +33,17 @@ public class WebhookRequestPayload {
         @NotNull
         private boolean fromContact;
         @NotNull
-        private long sentAtMillis;
+        private JsonNode sentAt;
+
+        public long getSentAt() {
+            if (sentAt.isNumber()) {
+                return sentAt.longValue();
+            }
+            if (sentAt.isTextual()) {
+                return instantFromIso(sentAt.textValue()).toEpochMilli();
+            }
+            throw new IllegalArgumentException("sentAt must be either a UNIX timestamp or an ISO8601 string.");
+        }
     }
 
     @Data

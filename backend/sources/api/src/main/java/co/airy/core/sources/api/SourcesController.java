@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.net.URL;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,7 +46,7 @@ public class SourcesController {
                 .setToken(token)
                 .setName(payload.getName())
                 .setImageUrl(payload.getImageUrl())
-                .setActionEndpoint(payload.getActionEndpoint())
+                .setActionEndpoint(Optional.ofNullable(payload.getActionEndpoint()).map(URL::toString).orElse(null))
                 .build();
 
         try {
@@ -71,7 +73,7 @@ public class SourcesController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        source.setActionEndpoint(payload.getActionEndpoint());
+        source.setActionEndpoint(payload.getActionEndpoint().toString());
         source.setImageUrl(payload.getImageUrl());
         source.setName(payload.getName());
 

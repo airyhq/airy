@@ -25,12 +25,19 @@
   color: white;
 }
 
-.storyResponse {
-  color: var(--color-text-gray);
+.container {
+  margin-top: 10px;
 }
 
-.container {
+.storyReply {
+  display: flex;
+  align-items: center;
   @include font-s;
+}
+
+.storyResponse,
+.expiredStory {
+  color: var(--color-text-gray);
 }
 
 .storyLink {
@@ -40,18 +47,19 @@
   display: inline-block;
 }
 
-.activeStory,
-.activeStory:link,
-.activeStory:hover,
-.activeStory:visited,
-.activeStory:active {
-  font-weight: bold;
-  text-decoration: underline;
-  color: var(--color-text-contrast);
-  display: flex;
+.icon {
+  margin-right: 2px;
+  margin-left: 2px;
 }
 
-.storyReply {
-  display: flex;
-  align-items: center;
+.activeStory {
+  &:link,
+  &:hover,
+  &:visited,
+  &:active {
+    font-weight: bold;
+    text-decoration: underline;
+    color: var(--color-text-contrast);
+    display: flex;
+  }
 }

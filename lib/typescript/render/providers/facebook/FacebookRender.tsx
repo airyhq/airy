@@ -19,32 +19,8 @@ import {FallbackAttachment} from './components/FallbackAttachment';
 import {StoryMention} from './components/InstagramStoryMention';
 import {StoryReplies} from './components/InstagramStoryReplies';
 
-const igMessage = {
-  content: {
-    message: {
-      text: 'i am an instagram reply text',
-      reply_to: {
-        story: {
-          url: 'https://google.com',
-          id: 'story_id',
-        },
-      },
-    },
-    recipient: {id: '17841448205401885'},
-    sender: {id: '4092288850878426'},
-    timestamp: 1630414631857,
-  },
-  deliveryState: 'delivered',
-  fromContact: true,
-  id: 'a3def2a1-6ff2-55b0-a77d-44a91788f785',
-  metadata: {},
-  sentAt: Date.now(),
-  source: 'instagram',
-};
-
 export const FacebookRender = (props: RenderPropsUnion) => {
-  const message = igMessage;
-  //console.log('props.message', props.message)
+  const message = props.message;
   const content = message.fromContact ? facebookInbound(message) : facebookOutbound(message);
   return render(content, props);
 };

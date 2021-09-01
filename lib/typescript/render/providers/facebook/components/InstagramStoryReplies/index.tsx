@@ -15,16 +15,16 @@ export const StoryReplies = ({url, text, sentAt, fromContact}: InstagramRepliesP
   return (
     <div className={styles.container}>
       <div className={styles.storyReply}>
-        <span className={styles.storyResponse}>In response to a </span>
+        <span className={styles.storyResponse}>In response to a&nbsp;</span>
         {timeElapsedInHours(sentAt) <= 24 ? (
           <div className={styles.storyLink}>
             <a className={styles.activeStory} href={url} target="_blank" rel="noopener noreferrer">
-              <PlayCircleIcon style={{marginRight: '2px', marginLeft: '4px'}} />
-              story{' '}
+              <PlayCircleIcon className={styles.icon} />
+              story
             </a>
           </div>
         ) : (
-          <span className={styles.expiredStory}> story</span>
+          <span className={styles.expiredStory}> story (expired)</span>
         )}
       </div>
       <Linkify

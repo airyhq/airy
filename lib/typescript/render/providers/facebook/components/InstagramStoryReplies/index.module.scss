@@ -1,0 +1,57 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.textMessage {
+  display: inline-block;
+  overflow-wrap: break-word;
+  max-width: 500px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  font-family: 'Lato', sans-serif;
+}
+
+.contactContent {
+  @extend .textMessage;
+  background: var(--color-background-blue);
+  color: var(--color-text-contrast);
+}
+
+.memberContent {
+  @extend .textMessage;
+  background: var(--color-airy-blue);
+  color: white;
+}
+
+.storyResponse {
+  color: var(--color-text-gray);
+}
+
+.container {
+  @include font-s;
+}
+
+.storyLink {
+  display: 'flex';
+  align-items: center;
+  justify-content: center;
+  display: inline-block;
+}
+
+.activeStory,
+.activeStory:link,
+.activeStory:hover,
+.activeStory:visited,
+.activeStory:active {
+  font-weight: bold;
+  text-decoration: underline;
+  color: var(--color-text-contrast);
+  display: flex;
+}
+
+.storyReply {
+  display: flex;
+  align-items: center;
+}

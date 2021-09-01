@@ -1,5 +1,4 @@
 import React from 'react';
-import {Text} from '../../../../components/Text';
 import styles from './index.module.scss';
 import {ReactComponent as LinkIcon} from 'assets/images/icons/external-link.svg';
 

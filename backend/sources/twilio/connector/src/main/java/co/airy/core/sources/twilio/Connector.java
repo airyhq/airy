@@ -7,8 +7,6 @@ import co.airy.core.sources.twilio.services.Api;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twilio.exception.ApiException;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;

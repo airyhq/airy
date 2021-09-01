@@ -30,7 +30,6 @@ import java.net.URI;
 import java.security.InvalidKeyException;
 import java.time.Instant;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static co.airy.crypto.Signature.CONTENT_SIGNATURE_HEADER;
 import static co.airy.crypto.Signature.getSignature;
@@ -119,7 +118,7 @@ public class SendMessageTest {
                     assertThat(mockRequest.getHeaders().get(CONTENT_SIGNATURE_HEADER).get(0), equalTo(expectedSignature));
                 })
                 .andRespond(withSuccess());
-        
+
         kafkaTestHelper.produceRecord(new ProducerRecord<>(Topics.applicationCommunicationMessages.name(), messageId,
                 Message.newBuilder()
                         .setId(messageId)

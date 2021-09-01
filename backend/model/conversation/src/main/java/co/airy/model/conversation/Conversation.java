@@ -18,8 +18,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.toList;
 import static co.airy.text.format.TextFormat.capitalize;
+import static java.util.stream.Collectors.toList;
 
 @Data
 @Builder(toBuilder = true)

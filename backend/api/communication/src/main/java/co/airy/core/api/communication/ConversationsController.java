@@ -2,7 +2,6 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
-import co.airy.model.conversation.Conversation;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.core.api.communication.lucene.AiryAnalyzer;
 import co.airy.core.api.communication.lucene.ExtendedQueryParser;
@@ -15,6 +14,7 @@ import co.airy.core.api.communication.payload.ConversationSetStateRequestPayload
 import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.ConversationUpdateContactRequestPayload;
 import co.airy.core.api.communication.payload.PaginationData;
+import co.airy.model.conversation.Conversation;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.Subject;
 import co.airy.model.metadata.dto.MetadataMap;

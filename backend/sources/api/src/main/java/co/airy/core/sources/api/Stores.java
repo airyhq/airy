@@ -157,6 +157,13 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return streams.acquireLocalStore(channelsStore);
     }
 
+    public List<Channel> getAllChannels() {
+        final ReadOnlyKeyValueStore<String, Channel> store = getChannelsStore();
+        final ArrayList<Channel> channels = new ArrayList<>();
+        store.all().forEachRemaining((record) -> channels.add(record.value));
+        return channels;
+    }
+
     private ReadOnlyKeyValueStore<String, Source> getSourcesStore() {
         return streams.acquireLocalStore(sourcesStore);
     }

@@ -127,6 +127,8 @@ components:
   integration:
     webhook:
       name: webhook
+    source-api:
+      enabled: true
 ```
 
 ## Applying the configuration

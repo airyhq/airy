@@ -7,7 +7,7 @@
       "source_sender_id": "source-sender-id",
       "content": "Hello world",
       "from_contact": true,
-      "sent_at_millis": 1603661094560
+      "sent_at": 1603661094560
     }
   ],
   "metadata": [

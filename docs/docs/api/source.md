@@ -1,6 +1,6 @@
 ---
 title: Source API
-sidebar_label: Source API
+sidebar_label: Source
 ---
 
 import TLDR from "@site/src/components/TLDR";
@@ -13,7 +13,7 @@ With the Source HTTP API you can build your own Airy messaging source in no time
 
 :::note
 
-This feature is disabled by default. For details on how to enable it, refer to our [Configuration Section](getting-started/installation/configuration.md#components).
+This feature is disabled by default. To enable it you need to provide values for the `security.jwtSecret`, `security.systemToken` and `integration.source-api.enabled` fields in your [airy.yaml config](getting-started/installation/configuration.md).
 
 :::
 
@@ -37,7 +37,11 @@ Take for instance the Facebook Messenger source. You should map these fields lik
 
 - `source_conversation_id` → Contacts for each Facebook page in Messenger are identified by a [Page-scoped ID](https://developers.facebook.com/docs/messenger-platform/identity/user-profile). Since in Messenger page conversations cannot have multiple participants, this uniquely identifies a conversation.
 
-## Create a source
+## Managing sources
+
+Using your user [authentication](getting-started/installation/security.md) you [create](#create-a-source), [read](#list-sources), [update](#update-a-source), and [delete](#delete-a-source) sources.
+
+### Create a source
 
 `POST /sources.create`
 
@@ -73,7 +77,7 @@ the source and write the correct identifier to the messaging data.
 }
 ```
 
-## List sources
+### List sources
 
 `POST /sources.list`
 
@@ -92,7 +96,7 @@ the source and write the correct identifier to the messaging data.
 }
 ```
 
-## Delete a source
+### Delete a source
 
 `POST /sources.delete`
 
@@ -106,7 +110,7 @@ Responds with `202 (Accepted)`.
 }
 ```
 
-## Update a source
+### Update a source
 
 `POST /sources.update`
 
@@ -132,7 +136,13 @@ Responds with `202 (Accepted)`.
 }
 ```
 
-## Create a channel
+## Manage source channels
+
+Using the token obtained during [creation](#create-a-source) a source can manage its own channels using the following endpoints.
+
+### Create a channel
+
+Creates a channel for the authenticated source.
 
 `POST /sources.channels.create`
 
@@ -163,11 +173,36 @@ Responds with `202 (Accepted)`.
 }
 ```
 
-## Messaging data webhook
+### List channels
+
+List all channels of the authenticated source.
+
+`POST /sources.channels.list`
+
+**Sample response**
+
+```json5
+{
+  data: [
+    {
+      "id": "1f679227-76c2-4302-bb12-703b2adb0f66", // Airy channel id
+      "source_id": "my-source",
+      "source_channel_id": "Source identifier of the channel in use",
+      "metadata": {
+        "name": "My source channel",
+        "image_url": "https://example.com/custom-image.jpg" // optional
+      },
+      "connected": true
+    }
+  ]
+}
+```
+
+## Inbound Webhook
+
+You can use this endpoint to ingest messages and metadata into Airy.
 
 `POST /sources.webhook`
-
-Before starting to ingest messages you have to create a channel. On the other hand you can always ingest metadata.
 
 **Sample request**
 

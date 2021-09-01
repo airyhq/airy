@@ -14,23 +14,21 @@
 }
 
 .activeStory {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
-.activeStoryLink:link, 
-.activeStoryLink:hover, 
+.activeStoryLink:link,
+.activeStoryLink:hover,
 .activeStoryLink:visited,
 .activeStoryLink:active {
-    color: var(--color-text-contrast);
-    text-transform:underline;
-    
+  color: var(--color-text-contrast);
+  font-style: italic;
 }
 
 .expiredStory {
-    font-style: italic;
-    }
-
+  font-style: italic;
+}
 
 .contactContent {
   @extend .textMessage;

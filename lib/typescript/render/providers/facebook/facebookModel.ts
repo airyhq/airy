@@ -165,7 +165,7 @@ export type ContentUnion =
   | GenericTemplate
   | QuickRepliesContent
   | MediaTemplate
-  | StoryMentionContent 
+  | StoryMentionContent
   | Fallback;
 
 export type AttachmentUnion =
@@ -175,5 +175,5 @@ export type AttachmentUnion =
   | ButtonTemplate
   | GenericTemplate
   | MediaTemplate
-  | StoryMentionContent 
+  | StoryMentionContent
   | Fallback;

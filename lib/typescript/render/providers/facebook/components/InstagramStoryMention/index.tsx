@@ -11,8 +11,7 @@ type StoryMentionProps = {
 
 const timeElapsedInHours = (sentAt: Date) => {
   const millisecondsDiff = new Date().getTime() - new Date(sentAt).getTime();
-  return 24.01
-  //return (millisecondsDiff / (1000 * 60 * 60)) % 24;
+  return (millisecondsDiff / (1000 * 60 * 60)) % 24;
 };
 
 export const StoryMention = ({url, sentAt, fromContact}: StoryMentionProps) => {

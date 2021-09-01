@@ -21,7 +21,7 @@
     "react-autosize-textarea": "^7.1.0",
     "react-color": "^2.19.3",
     "react-dom": "16.14.0",
-    "react-markdown": "^7.0.0",
+    "react-markdown": "^7.0.1",
     "react-modal": "^3.14.3",
     "react-redux": "7.2.4",
     "react-router-dom": "5.2.1",

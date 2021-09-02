@@ -65,14 +65,16 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        builder.table(new ApplicationCommunicationChannels().name(), Materialized.as(channelsStore));
-        final KTable<String, Source> sourceTable = builder.table(new ApplicationCommunicationSources().name(), Materialized.as(sourcesStore));
-        final KTable<String, Source> actionSources = sourceTable.filter((sourceId, source) -> source.getActionEndpoint() != null);
-
         // Metadata table keyed by subject identifier id
         final KTable<String, MetadataMap> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor, Materialized.as(metadataStore));
+
+        builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
+                .leftJoin(metadataTable, ChannelContainer::new, Materialized.as(channelsStore));
+
+        final KTable<String, Source> sourceTable = builder.table(new ApplicationCommunicationSources().name(), Materialized.as(sourcesStore));
+        final KTable<String, Source> actionSources = sourceTable.filter((sourceId, source) -> source.getActionEndpoint() != null);
 
 
         final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
@@ -106,7 +108,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                         });
 
 
-
         // Actions:
         // Send messages
         messageStream.filter((messageId, message) -> message != null && message.getDeliveryState().equals(DeliveryState.PENDING))
@@ -124,7 +125,6 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
                     throw new IllegalStateException("Unknown type for record " + record);
                 });
-
 
 
         streams.start(builder.build(), appId);
@@ -153,13 +153,18 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         producer.send(new ProducerRecord<>(applicationCommunicationChannels, channel.getId(), channel)).get();
     }
 
-    private ReadOnlyKeyValueStore<String, Channel> getChannelsStore() {
+    private ReadOnlyKeyValueStore<String, ChannelContainer> getChannelsStore() {
         return streams.acquireLocalStore(channelsStore);
     }
 
-    public List<Channel> getAllChannels() {
-        final ReadOnlyKeyValueStore<String, Channel> store = getChannelsStore();
-        final ArrayList<Channel> channels = new ArrayList<>();
+    public ChannelContainer getChannel(String id) {
+        final ReadOnlyKeyValueStore<String, ChannelContainer> store = getChannelsStore();
+        return store.get(id);
+    }
+
+    public List<ChannelContainer> getAllChannels() {
+        final ReadOnlyKeyValueStore<String, ChannelContainer> store = getChannelsStore();
+        final ArrayList<ChannelContainer> channels = new ArrayList<>();
         store.all().forEachRemaining((record) -> channels.add(record.value));
         return channels;
     }

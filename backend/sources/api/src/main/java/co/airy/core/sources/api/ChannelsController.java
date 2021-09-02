@@ -4,8 +4,11 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.Source;
+import co.airy.core.sources.api.payload.ChannelsResponsePayload;
 import co.airy.core.sources.api.payload.CreateChannelRequestPayload;
+import co.airy.core.sources.api.payload.DisconnectChannelRequestPayload;
 import co.airy.core.sources.api.services.SourceToken;
+import co.airy.model.channel.ChannelPayload;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
@@ -20,9 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
 import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
+import static java.util.stream.Collectors.toList;
 
 @RestController
 public class ChannelsController {
@@ -63,5 +68,43 @@ public class ChannelsController {
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(fromChannelContainer(container));
+    }
+
+    @PostMapping("/sources.channels.list")
+    ResponseEntity<?> listChannels(Authentication authentication) {
+        final Source source = sourceToken.getSource(authentication);
+        final List<ChannelContainer> channels = stores.getAllChannels().stream()
+                .filter((container -> source.getId().equals(container.getChannel().getSource()))).collect(Collectors.toList());
+        return ResponseEntity.ok(new ChannelsResponsePayload(channels.stream()
+                .map(ChannelPayload::fromChannelContainer)
+                .collect(toList())));
+    }
+
+    @PostMapping("/sources.channels.disconnect")
+    ResponseEntity<?> disconnectChannel(@RequestBody @Valid DisconnectChannelRequestPayload payload, Authentication authentication) {
+        final Source source = sourceToken.getSource(authentication);
+        final ChannelContainer container = stores.getChannel(payload.getChannelId().toString());
+        if (container == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if (!container.getChannel().getSource().equals(source.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        final Channel channel = container.getChannel();
+        if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
+            return ResponseEntity.noContent().build();
+        }
+
+        channel.setConnectionState(ChannelConnectionState.DISCONNECTED);
+        channel.setToken(null);
+
+        try {
+            stores.storeChannel(channel);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
+
+        return ResponseEntity.noContent().build();
     }
 }

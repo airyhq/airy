@@ -198,6 +198,22 @@ List all channels of the authenticated source.
 }
 ```
 
+### Disconnect a channel
+
+Returns a `403` if the source does not have access to the given `channel_id`
+
+`POST /sources.channels.disconnect`
+
+**Sample request**
+
+```json5
+{
+  "channel_id": "a688d36c-a85e-44af-bc02-4248c2c97622"
+}
+```
+
+**Empty response (204)**
+
 ## Inbound Webhook
 
 You can use this endpoint to ingest messages and metadata into Airy.

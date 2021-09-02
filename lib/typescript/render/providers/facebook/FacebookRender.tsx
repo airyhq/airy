@@ -17,6 +17,7 @@ import {GenericTemplate} from './components/GenericTemplate';
 import {MediaTemplate} from './components/MediaTemplate';
 import {FallbackAttachment} from './components/FallbackAttachment';
 import {StoryMention} from './components/InstagramStoryMention';
+import {StoryReplies} from './components/InstagramStoryReplies';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -63,9 +64,20 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
         />
       );
 
+    //Instagram-specific
     case 'story_mention':
       return (
         <StoryMention url={content.url} sentAt={content.sentAt} fromContact={props.message.fromContact || false} />
+      );
+
+    case 'story_replies':
+      return (
+        <StoryReplies
+          url={content.url}
+          text={content.text}
+          sentAt={content.sentAt}
+          fromContact={props.message.fromContact || false}
+        />
       );
 
     default:
@@ -156,6 +168,15 @@ function facebookInbound(message): ContentUnion {
     };
   }
 
+  if (messageJson.reply_to) {
+    return {
+      type: 'story_replies',
+      text: messageJson.text,
+      url: messageJson.reply_to?.story?.url,
+      sentAt: message.sentAt,
+    };
+  }
+
   if (messageJson.attachment || messageJson.attachments) {
     return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
@@ -201,6 +222,15 @@ function facebookOutbound(message): ContentUnion {
       type: 'quickReplies',
       text: messageJson.text,
       quickReplies: messageJson.quick_replies,
+    };
+  }
+
+  if (messageJson.reply_to) {
+    return {
+      type: 'story_replies',
+      text: messageJson.text,
+      url: messageJson.reply_to?.story?.url,
+      sentAt: message.sentAt,
     };
   }
 

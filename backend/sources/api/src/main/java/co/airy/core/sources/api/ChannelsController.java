@@ -11,6 +11,7 @@ import co.airy.core.sources.api.services.SourceToken;
 import co.airy.model.channel.ChannelPayload;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.MetadataKeys;
+import co.airy.model.metadata.Subject;
 import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.uuid.UUIDv5;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static co.airy.model.channel.ChannelPayload.fromChannelContainer;
+import static co.airy.model.metadata.MetadataObjectMapper.getMetadataFromJson;
 import static co.airy.model.metadata.MetadataRepository.newChannelMetadata;
 import static java.util.stream.Collectors.toList;
 
@@ -40,15 +42,18 @@ public class ChannelsController {
     }
 
     @PostMapping("/sources.channels.create")
-    ResponseEntity<?> createChannel(@RequestBody @Valid CreateChannelRequestPayload payload, Authentication authentication) {
+    ResponseEntity<?> createChannel(@RequestBody @Valid CreateChannelRequestPayload payload, Authentication authentication) throws Exception {
         final Source source = sourceToken.getSource(authentication);
         final String sourceChannelId = payload.getSourceChannelId();
         final String channelId = UUIDv5.fromNamespaceAndName(source.getId(), sourceChannelId).toString();
 
         List<Metadata> metadataList = new ArrayList<>();
         metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, payload.getName()));
-        if (payload.getImageUrl() != null) {
-            metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, payload.getImageUrl()));
+
+        if (payload.getMetadata() != null) {
+            final Subject subject = new Subject("channel", channelId);
+            final List<Metadata> fromJson = getMetadataFromJson(subject, payload.getMetadata());
+            metadataList.addAll(fromJson);
         }
 
         final ChannelContainer container = ChannelContainer.builder()
@@ -74,7 +79,9 @@ public class ChannelsController {
     ResponseEntity<?> listChannels(Authentication authentication) {
         final Source source = sourceToken.getSource(authentication);
         final List<ChannelContainer> channels = stores.getAllChannels().stream()
-                .filter((container -> source.getId().equals(container.getChannel().getSource()))).collect(Collectors.toList());
+                .filter((container -> source.getId().equals(container.getChannel().getSource())
+                        && container.getChannel().getConnectionState().equals(ChannelConnectionState.CONNECTED)))
+                .collect(Collectors.toList());
         return ResponseEntity.ok(new ChannelsResponsePayload(channels.stream()
                 .map(ChannelPayload::fromChannelContainer)
                 .collect(toList())));

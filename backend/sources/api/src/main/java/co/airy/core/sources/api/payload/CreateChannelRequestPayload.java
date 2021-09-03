@@ -1,5 +1,6 @@
 package co.airy.core.sources.api.payload;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,5 @@ public class CreateChannelRequestPayload {
     private String name;
     @NotNull
     private String sourceChannelId;
-    private String imageUrl;
+    private JsonNode metadata;
 }

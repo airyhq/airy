@@ -75,7 +75,8 @@ public class ChannelsControllerTest {
         final String sourceId = "my-source";
         final String token = testSource.createSourceAndGetToken(sourceId);
 
-        final String channelPayload = "{\"name\":\"source channel\",\"source_channel_id\":\"my-source-channel-1\"}";
+        final String channelPayload = "{\"name\":\"source channel\",\"source_channel_id\":\"my-source-channel-1\"," +
+                "\"metadata\":{\"my_key\":\"my value\"}}";
 
         mvc.perform(MockMvcRequestBuilders.post("/sources.channels.create")
                 .header(CONTENT_TYPE, APPLICATION_JSON.toString())
@@ -94,6 +95,8 @@ public class ChannelsControllerTest {
                 .header(AUTHORIZATION, token)
                 .content(channelPayload))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.metadata.name", equalTo("source channel")))
+                .andExpect(jsonPath("$.metadata.my_key", equalTo("my value")))
                 .andExpect(jsonPath("$.source", equalTo(sourceId))), "Channel was not created");
     }
 }

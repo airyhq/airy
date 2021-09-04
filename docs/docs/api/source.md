@@ -160,7 +160,7 @@ Creates a channel for the authenticated source.
 ```
 
 - `source_channel_id` source identifier of the channel. Messages sent to [`/sources.webhook`](#messaging-data-webhook) must have a connected channel.
-- `token` (optional) You can include a token and other keys in the metadata to make it easier to build stateless source apps. 
+- `token` (optional) You can include a token and other keys in the metadata to make it easier to build stateless source apps.
 
 **Sample response**
 
@@ -172,7 +172,7 @@ Creates a channel for the authenticated source.
   "metadata": {
     "name": "My source channel",
     "image_url": "https://example.com/custom-image.jpg",
-    "token": "authentication string to use in your source app"  // optional
+    "token": "authentication string to use in your source app" // optional
   },
   "connected": true
 }

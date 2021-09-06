@@ -221,7 +221,7 @@ Returns a `403` if the source does not have access to the given `channel_id`
 
 ## Inbound Webhook
 
-You can use this endpoint to ingest messages and metadata into Airy.
+You can use this endpoint to ingest (inbound) messages and metadata into Airy. Not to be confused with the [(outbound) Webhook API](api/webhook.md).
 
 `POST /sources.webhook`
 
@@ -286,8 +286,9 @@ When Airy users call the [`/messages.send`](api/endpoints/messages.md#send) endp
       // Optional
       "id": "uuid", // Airy conversation id
       "channel_id": "uuid", // Airy channel id
+      "source_channel_id": "source channel identifier",
       "source_conversation_id": "source conversation identifier",
-      "created_at": "2021-08-31T09:27:46.528Z" //
+      "created_at": "2021-08-31T09:27:46.528Z"
     }
   }
 }

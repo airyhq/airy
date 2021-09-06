@@ -1,5 +1,6 @@
 package co.airy.core.sources.api.actions.payload;
 
+import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.core.sources.api.actions.dto.SendMessage;
 import co.airy.model.conversation.Conversation;
@@ -41,6 +42,7 @@ public class SendMessageRequestPayload extends ActionPayload {
     public static class ConversationPayload {
         private String id;
         private String channelId;
+        private String sourceChannelId;
         private String sourceConversationId;
         private String createdAt;
 
@@ -49,6 +51,7 @@ public class SendMessageRequestPayload extends ActionPayload {
                     .id(conversation.getId())
                     .channelId(conversation.getChannelId())
                     .sourceConversationId(conversation.getSourceConversationId())
+                    .sourceChannelId(Optional.of(conversation.getChannel()).map(Channel::getSourceChannelId).orElse(null))
                     .createdAt(isoFromMillis(conversation.getCreatedAt()))
                     .build();
         }

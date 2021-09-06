@@ -70,14 +70,15 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                 .groupBy((metadataId, metadata) -> KeyValue.pair(getSubject(metadata).getIdentifier(), metadata))
                 .aggregate(MetadataMap::new, MetadataMap::adder, MetadataMap::subtractor, Materialized.as(metadataStore));
 
-        builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
+        final KTable<String, ChannelContainer> channelTable = builder.<String, Channel>table(new ApplicationCommunicationChannels().name())
                 .leftJoin(metadataTable, ChannelContainer::new, Materialized.as(channelsStore));
 
         final KTable<String, Source> sourceTable = builder.table(new ApplicationCommunicationSources().name(), Materialized.as(sourcesStore));
         final KTable<String, Source> actionSources = sourceTable.filter((sourceId, source) -> source.getActionEndpoint() != null);
 
 
-        final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
+        final KStream<String, Message> messageStream = builder.<String, Message>stream(new ApplicationCommunicationMessages().name())
+                .selectKey((messageId, message) -> message.getConversationId());
 
         // Conversation table
         final KTable<String, Conversation> conversationTable = messageStream.toTable()
@@ -105,12 +106,16 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
                             // If the deleted message was the last message we have no way of replacing it
                             // so we have no choice but to keep it
                             return aggregate;
-                        });
+                        })
+                .join(channelTable, Conversation::getChannelId,
+                        (conversation, channelContainer) -> conversation.toBuilder()
+                                .channelContainer(channelContainer).build());
+
 
 
         // Actions:
         // Send messages
-        messageStream.filter((messageId, message) -> message != null && message.getDeliveryState().equals(DeliveryState.PENDING))
+        messageStream.filter((conversationId, message) -> message != null && message.getDeliveryState().equals(DeliveryState.PENDING))
                 .leftJoin(conversationTable, (message, conversation) -> SendMessage.builder().message(message).conversation(conversation).build())
                 .selectKey((messageId, message) -> message.getMessage().getSource())
                 .join(actionSources, (sendMessage, source) -> sendMessage.toBuilder().source(source).build())

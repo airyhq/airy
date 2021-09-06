@@ -1,5 +1,5 @@
-@import 'assets/scss/fonts.scss';
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
 
 .textMessage {
   display: inline-block;
@@ -8,9 +8,9 @@
   word-break: break-word;
   white-space: pre-wrap;
   padding: 10px;
-  margin-top: 5px;
   border-radius: 8px;
   font-family: 'Lato', sans-serif;
+  position: relative;
 }
 
 .contactContent {
@@ -25,41 +25,23 @@
   color: white;
 }
 
+.messageLink {
+  text-decoration: underline;
+  font-weight: normal;
+}
+
 .container {
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
-.storyReply {
+.unknownSourceHeader {
   display: flex;
   align-items: center;
-  @include font-s;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.7rem;
+  line-height: 1rem;
 }
 
-.storyResponse,
-.expiredStory {
+.unknownSource {
   color: var(--color-text-gray);
-}
-
-.storyLink {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  display: inline-block;
-}
-
-.icon {
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-.activeStory {
-  &:link,
-  &:hover,
-  &:visited,
-  &:active {
-    font-weight: bold;
-    text-decoration: underline;
-    color: var(--color-text-contrast);
-    display: flex;
-  }
 }

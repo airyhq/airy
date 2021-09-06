@@ -139,9 +139,10 @@ const MessageInput = (props: Props) => {
   }, [selectedTemplate]);
 
   const sendMessage = () => {
-    if (!channelConnected) {
+    if ((!selectedTemplate && !selectedSuggestedReply && !input) || !channelConnected) {
       return;
     }
+
     setSelectedSuggestedReply(null);
     setSelectedTemplate(null);
     sendMessages(

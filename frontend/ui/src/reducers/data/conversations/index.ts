@@ -114,9 +114,7 @@ function setLoadingOfConversation(items: ConversationMap, conversationId: string
   return items;
 }
 
-const lastMessageOf = (messages: Message[]): Message => {
-  return sortBy(messages, message => message.sentAt).pop();
-};
+const lastMessageOf = (messages: Message[]): Message => sortBy(messages, message => message.sentAt).pop();
 
 const updateContact = (state: AllConversationsState, conversationId: string, displayName: string) => {
   const conversation: Conversation = state.items[conversationId];
@@ -165,27 +163,29 @@ const removeTagFromConversation = (state: AllConversationsState, conversationId:
 
 const mergeMessages = (state: AllConversationsState, conversationId: string, messages: Message[]) => {
   const conversation: Conversation = state.items[conversationId];
-
-  if (conversation) {
-    return {
-      ...state,
-      items: {
-        ...state.items,
-        [conversation.id]: {
-          ...conversation,
-          lastMessage: lastMessageOf(messages.concat([conversation.lastMessage])),
-        },
-      },
-    };
+  if (!conversation) {
+    return state;
   }
-  return state;
+  return {
+    ...state,
+    items: {
+      ...state.items,
+      [conversation.id]: {
+        ...conversation,
+        lastMessage: lastMessageOf(messages.concat([conversation.lastMessage])),
+      },
+    },
+  };
 };
+
+const getNewestConversation = (conversations: Conversation[]): Conversation =>
+  sortBy(conversations, conversation => conversation.createdAt).pop();
 
 function allReducer(
   state: AllConversationsState = initialState,
   action: Action | MessageAction
 ): AllConversationsState {
-  let updatedConversationCount = state.paginationData.total;
+  let conversationCount = state.paginationData.total;
 
   switch (action.type) {
     case getType(actions.setStateConversationAction):
@@ -224,9 +224,17 @@ function allReducer(
     case getType(actions.updateContactAction): {
       return updateContact(state, action.payload.conversationId, action.payload.displayName);
     }
+
     case getType(actions.mergeConversationsAction):
+      /* eslint-disable no-case-declarations */
+      const newestConversation = getNewestConversation(Object.values(state.items));
+      const isNewConversation = ({createdAt}: Conversation) =>
+        !newestConversation || new Date(createdAt).getTime() > new Date(newestConversation.createdAt).getTime();
+
       action.payload.conversations.forEach(conversation => {
-        if (!state.items[conversation.id]) updatedConversationCount++;
+        if (isNewConversation(conversation)) {
+          conversationCount++;
+        }
       });
 
       if (action.payload.paginationData) {
@@ -236,24 +244,23 @@ function allReducer(
           paginationData: {
             ...state.paginationData,
             ...action.payload.paginationData,
-            ...(state.paginationData.total < updatedConversationCount &&
-              action.payload.paginationData.total < updatedConversationCount && {total: updatedConversationCount}),
-            loading: false,
-            loaded: true,
-          },
-        };
-      } else {
-        return {
-          ...state,
-          items: mergeConversations(state.items, action.payload.conversations as MergedConversation[]),
-          paginationData: {
-            ...state.paginationData,
-            ...(state.paginationData.total < updatedConversationCount && {total: updatedConversationCount}),
+            ...(state.paginationData.total < conversationCount &&
+              action.payload.paginationData.total < conversationCount && {total: conversationCount}),
             loading: false,
             loaded: true,
           },
         };
       }
+      return {
+        ...state,
+        items: mergeConversations(state.items, action.payload.conversations as MergedConversation[]),
+        paginationData: {
+          ...state.paginationData,
+          ...(state.paginationData.total < conversationCount && {total: conversationCount}),
+          loading: false,
+          loaded: true,
+        },
+      };
 
     case getType(actions.loadingConversationsAction):
       return {

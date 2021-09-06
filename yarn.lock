@@ -1179,10 +1179,10 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@bazel/typescript@^3.6.0":
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-3.6.0.tgz#4dda2e39505cde4a190f51118fbb82ea0e80fde6"
-  integrity sha512-cO58iHmSxM4mRHJLLbb3FfoJJxv0pMiVGFLORoiUy/EhLtyYGZ1e7ntf4GxEovwK/E4h/awjSUlQkzPThcukTg==
+"@bazel/typescript@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-4.0.0.tgz#71a6f0f5e340c6b8516b21fbc0f0853e74055d0c"
+  integrity sha512-+Le9q+5IR9gEnSH8sXyxDB5dD6NJx2kbm6AL+cijYVat2MczpGV4sI1mu0mdLzYsEX5Tjt5iHkaNb7sFESjnYA==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"

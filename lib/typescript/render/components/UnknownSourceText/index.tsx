@@ -5,13 +5,14 @@ import styles from './index.module.scss';
 type TextRenderProps = {
   text: string;
   fromContact?: boolean;
+  sourceName: string;
 };
 
-export const UnknownSourceText = ({text, fromContact}: TextRenderProps) => {
+export const UnknownSourceText = ({text, fromContact, sourceName}: TextRenderProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.unknownSourceHeader}>
-        <span className={styles.unknownSource}>Unknown Source</span>
+        <span className={styles.unknownSource}>{sourceName ?? 'Unknown'} Source</span>
       </div>
       <Linkify
         tagName="div"

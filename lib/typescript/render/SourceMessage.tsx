@@ -30,7 +30,13 @@ export class SourceMessage extends React.Component<RenderPropsUnion, SourceMessa
       message = JSON.stringify(this.props.message.content, null, 2);
     }
 
-    return <UnknownSourceText fromContact={this.props.message.fromContact || false} text={message} />;
+    return (
+      <UnknownSourceText
+        fromContact={this.props.message.fromContact || false}
+        text={message}
+        sourceName={this.props.source}
+      />
+    );
   }
 
   errorFallback() {

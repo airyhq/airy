@@ -3,10 +3,7 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 0.29.0
-
-[[#2282](https://github.com/airyhq/airy/issues/2282)] Hotfix for webhook registration failing despite all services healthy [[#2283](https://github.com/airyhq/airy/pull/2283)]
-## 
+## 0.30.0
 
 #### Changes
 
@@ -52,9 +49,62 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.28.2/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.28.2/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.28.2/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.29.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.29.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.29.0/windows/amd64/airy.exe)
+
+## 0.30.0
+
+#### Changes
+
+#### 🚀 Features
+
+- [[#2274](https://github.com/airyhq/airy/issues/2274)] Introduce the source API [[#2327](https://github.com/airyhq/airy/pull/2327)]
+- [[#2328](https://github.com/airyhq/airy/issues/2328)] Display any source in the inbox [[#2368](https://github.com/airyhq/airy/pull/2368)]
+- [[#2227](https://github.com/airyhq/airy/issues/2227)] Instagram source show story reply in inbox UI [[#2367](https://github.com/airyhq/airy/pull/2367)]
+- [[#2229](https://github.com/airyhq/airy/issues/2229)] Instagram source render story mention in inbox UI [[#2363](https://github.com/airyhq/airy/pull/2363)]
+
+#### 🐛 Bug Fixes
+
+- [[#2370](https://github.com/airyhq/airy/issues/2370)] Fix inbox counter bug when paginating [[#2371](https://github.com/airyhq/airy/pull/2371)]
+- [[#2337](https://github.com/airyhq/airy/issues/2337)] Fix webhook publisher crash for deleted messages [[#2340](https://github.com/airyhq/airy/pull/2340)]
+- [[#2275](https://github.com/airyhq/airy/issues/2275)] Fixing typos in webhook docs [[#2338](https://github.com/airyhq/airy/pull/2338)]
+
+#### 📚 Documentation
+
+- [[#2243](https://github.com/airyhq/airy/issues/2243)] Improve upgrade docs [[#2339](https://github.com/airyhq/airy/pull/2339)]
+- [[#2335](https://github.com/airyhq/airy/issues/2335)] Update release process docs [[#2336](https://github.com/airyhq/airy/pull/2336)]
+
+#### 🧰 Maintenance
+
+- Bump sass from 1.38.2 to 1.39.0 [[#2377](https://github.com/airyhq/airy/pull/2377)]
+- Bump react-router-dom from 5.2.1 to 5.3.0 [[#2373](https://github.com/airyhq/airy/pull/2373)]
+- Bump core-js from 3.16.4 to 3.17.2 [[#2375](https://github.com/airyhq/airy/pull/2375)]
+- Bump @babel/preset-env from 7.15.0 to 7.15.4 [[#2372](https://github.com/airyhq/airy/pull/2372)]
+- Bump immer from 9.0.3 to 9.0.6 [[#2369](https://github.com/airyhq/airy/pull/2369)]
+- Bump terser-webpack-plugin from 5.1.4 to 5.2.0 [[#2364](https://github.com/airyhq/airy/pull/2364)]
+- Bump @typescript-eslint/eslint-plugin from 4.29.2 to 4.30.0 [[#2356](https://github.com/airyhq/airy/pull/2356)]
+- Bump react-markdown from 7.0.0 to 7.0.1 [[#2365](https://github.com/airyhq/airy/pull/2365)]
+- Bump @typescript-eslint/parser from 4.29.3 to 4.30.0 [[#2361](https://github.com/airyhq/airy/pull/2361)]
+- Bump @types/node from 16.7.1 to 16.7.10 [[#2362](https://github.com/airyhq/airy/pull/2362)]
+- Bump tar from 6.1.4 to 6.1.11 in /docs [[#2359](https://github.com/airyhq/airy/pull/2359)]
+- Bump @types/react-window-infinite-loader from 1.0.4 to 1.0.5 [[#2348](https://github.com/airyhq/airy/pull/2348)]
+- Bump core-js from 3.16.2 to 3.16.4 [[#2357](https://github.com/airyhq/airy/pull/2357)]
+- Bump @typescript-eslint/parser from 4.29.2 to 4.29.3 [[#2350](https://github.com/airyhq/airy/pull/2350)]
+- Bump eslint-plugin-react from 7.24.0 to 7.25.1 [[#2343](https://github.com/airyhq/airy/pull/2343)]
+- Bump cypress from 8.3.0 to 8.3.1 [[#2344](https://github.com/airyhq/airy/pull/2344)]
+- Bump @stomp/stompjs from 6.1.0 to 6.1.1 [[#2347](https://github.com/airyhq/airy/pull/2347)]
+- Bump react-router-dom from 5.2.0 to 5.2.1 [[#2346](https://github.com/airyhq/airy/pull/2346)]
+- Bump sass from 1.38.0 to 1.38.2 [[#2342](https://github.com/airyhq/airy/pull/2342)]
+- Bump @typescript-eslint/eslint-plugin from 4.29.1 to 4.29.2 [[#2296](https://github.com/airyhq/airy/pull/2296)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.30.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.30.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.30.0/windows/amd64/airy.exe)
 
 ## 0.28.0
 

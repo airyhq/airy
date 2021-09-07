@@ -5,58 +5,6 @@ sidebar_label: 📝 Changelog
 
 ## 0.30.0
 
-#### Changes
-
-- [[#2304](https://github.com/airyhq/airy/issues/2304)] Fixed broken link from Messages Send Section to Sources. [[#2307](https://github.com/airyhq/airy/pull/2307)]
-- [[#2308](https://github.com/airyhq/airy/issues/2308)] Chatplugin Customize Section Not Working [[#2309](https://github.com/airyhq/airy/pull/2309)]
-
-#### 🚀 Features
-
-- [[#2275](https://github.com/airyhq/airy/issues/2275)] Upgrade api-communication [[#2331](https://github.com/airyhq/airy/pull/2331)]
-- [[#2286](https://github.com/airyhq/airy/issues/2286)] Core upgrade scripts for 0.29.0 [[#2322](https://github.com/airyhq/airy/pull/2322)]
-- [[#2324](https://github.com/airyhq/airy/issues/2324)] Added more configs to the ui [[#2326](https://github.com/airyhq/airy/pull/2326)]
-- [[#2275](https://github.com/airyhq/airy/issues/2275)] Allow for multiple webhooks and event filtering [[#2286](https://github.com/airyhq/airy/pull/2286)]
-- [[#2243](https://github.com/airyhq/airy/issues/2243)] Introduce airy upgrade [[#2292](https://github.com/airyhq/airy/pull/2292)]
-- [[#2314](https://github.com/airyhq/airy/issues/2314)] fix docs + fix responsiveness of chatplugin [[#2315](https://github.com/airyhq/airy/pull/2315)]
-- [[#2279](https://github.com/airyhq/airy/issues/2279)] [[#2280](https://github.com/airyhq/airy/issues/2280)] More configs for chatplugin + docs [[#2301](https://github.com/airyhq/airy/pull/2301)]
-
-#### 🐛 Bug Fixes
-
-- [[#2282](https://github.com/airyhq/airy/issues/2282)] Hotfix for webhook registration health check [[#2284](https://github.com/airyhq/airy/pull/2284)]
-
-#### 🧰 Maintenance
-
-- Bump react-markdown from 6.0.3 to 7.0.0 [[#2317](https://github.com/airyhq/airy/pull/2317)]
-- Bump @types/react from 17.0.18 to 17.0.19 [[#2320](https://github.com/airyhq/airy/pull/2320)]
-- Bump webpack from 5.50.0 to 5.51.1 [[#2316](https://github.com/airyhq/airy/pull/2316)]
-- Bump @types/node from 16.6.1 to 16.7.1 [[#2318](https://github.com/airyhq/airy/pull/2318)]
-- Bump cypress from 8.1.0 to 8.3.0 [[#2311](https://github.com/airyhq/airy/pull/2311)]
-- Bump core-js from 3.16.1 to 3.16.2 [[#2312](https://github.com/airyhq/airy/pull/2312)]
-- Bump @types/react from 17.0.17 to 17.0.18 [[#2313](https://github.com/airyhq/airy/pull/2313)]
-- Bump react-markdown from 6.0.3 to 7.0.0 [[#2297](https://github.com/airyhq/airy/pull/2297)]
-- Bump @babel/core from 7.14.8 to 7.15.0 [[#2303](https://github.com/airyhq/airy/pull/2303)]
-- Bump sass from 1.37.5 to 1.38.0 [[#2306](https://github.com/airyhq/airy/pull/2306)]
-- Bump webpack from 5.49.0 to 5.50.0 [[#2302](https://github.com/airyhq/airy/pull/2302)]
-- Bump @typescript-eslint/parser from 4.29.1 to 4.29.2 [[#2295](https://github.com/airyhq/airy/pull/2295)]
-- Bump core-js from 3.16.0 to 3.16.1 [[#2298](https://github.com/airyhq/airy/pull/2298)]
-- Bump @types/node from 16.4.13 to 16.6.1 [[#2287](https://github.com/airyhq/airy/pull/2287)]
-- Bump @babel/preset-typescript from 7.14.5 to 7.15.0 [[#2288](https://github.com/airyhq/airy/pull/2288)]
-- Bump webpack-cli from 4.7.2 to 4.8.0 [[#2290](https://github.com/airyhq/airy/pull/2290)]
-- Bump @typescript-eslint/parser from 4.29.0 to 4.29.1 [[#2291](https://github.com/airyhq/airy/pull/2291)]
-- Bump url-parse from 1.5.1 to 1.5.3 [[#2268](https://github.com/airyhq/airy/pull/2268)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.29.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.29.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.29.0/windows/amd64/airy.exe)
-
-## 0.30.0
-
-#### Changes
-
 #### 🚀 Features
 
 - [[#2274](https://github.com/airyhq/airy/issues/2274)] Introduce the source API [[#2327](https://github.com/airyhq/airy/pull/2327)]
@@ -105,6 +53,55 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.30.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.30.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.30.0/windows/amd64/airy.exe)
+
+
+## 0.29.0
+
+#### 🚀 Features
+
+- [[#2275](https://github.com/airyhq/airy/issues/2275)] Upgrade api-communication [[#2331](https://github.com/airyhq/airy/pull/2331)]
+- [[#2286](https://github.com/airyhq/airy/issues/2286)] Core upgrade scripts for 0.29.0 [[#2322](https://github.com/airyhq/airy/pull/2322)]
+- [[#2324](https://github.com/airyhq/airy/issues/2324)] Added more configs to the ui [[#2326](https://github.com/airyhq/airy/pull/2326)]
+- [[#2275](https://github.com/airyhq/airy/issues/2275)] Allow for multiple webhooks and event filtering [[#2286](https://github.com/airyhq/airy/pull/2286)]
+- [[#2243](https://github.com/airyhq/airy/issues/2243)] Introduce airy upgrade [[#2292](https://github.com/airyhq/airy/pull/2292)]
+- [[#2314](https://github.com/airyhq/airy/issues/2314)] fix docs + fix responsiveness of chatplugin [[#2315](https://github.com/airyhq/airy/pull/2315)]
+- [[#2279](https://github.com/airyhq/airy/issues/2279)] [[#2280](https://github.com/airyhq/airy/issues/2280)] More configs for chatplugin + docs [[#2301](https://github.com/airyhq/airy/pull/2301)]
+
+#### 🐛 Bug Fixes
+
+- [[#2282](https://github.com/airyhq/airy/issues/2282)] Hotfix for webhook registration health check [[#2284](https://github.com/airyhq/airy/pull/2284)]
+- [[#2304](https://github.com/airyhq/airy/issues/2304)] Fixed broken link from Messages Send Section to Sources. [[#2307](https://github.com/airyhq/airy/pull/2307)]
+- [[#2308](https://github.com/airyhq/airy/issues/2308)] Chatplugin Customize Section Not Working [[#2309](https://github.com/airyhq/airy/pull/2309)]
+
+#### 🧰 Maintenance
+
+- Bump react-markdown from 6.0.3 to 7.0.0 [[#2317](https://github.com/airyhq/airy/pull/2317)]
+- Bump @types/react from 17.0.18 to 17.0.19 [[#2320](https://github.com/airyhq/airy/pull/2320)]
+- Bump webpack from 5.50.0 to 5.51.1 [[#2316](https://github.com/airyhq/airy/pull/2316)]
+- Bump @types/node from 16.6.1 to 16.7.1 [[#2318](https://github.com/airyhq/airy/pull/2318)]
+- Bump cypress from 8.1.0 to 8.3.0 [[#2311](https://github.com/airyhq/airy/pull/2311)]
+- Bump core-js from 3.16.1 to 3.16.2 [[#2312](https://github.com/airyhq/airy/pull/2312)]
+- Bump @types/react from 17.0.17 to 17.0.18 [[#2313](https://github.com/airyhq/airy/pull/2313)]
+- Bump react-markdown from 6.0.3 to 7.0.0 [[#2297](https://github.com/airyhq/airy/pull/2297)]
+- Bump @babel/core from 7.14.8 to 7.15.0 [[#2303](https://github.com/airyhq/airy/pull/2303)]
+- Bump sass from 1.37.5 to 1.38.0 [[#2306](https://github.com/airyhq/airy/pull/2306)]
+- Bump webpack from 5.49.0 to 5.50.0 [[#2302](https://github.com/airyhq/airy/pull/2302)]
+- Bump @typescript-eslint/parser from 4.29.1 to 4.29.2 [[#2295](https://github.com/airyhq/airy/pull/2295)]
+- Bump core-js from 3.16.0 to 3.16.1 [[#2298](https://github.com/airyhq/airy/pull/2298)]
+- Bump @types/node from 16.4.13 to 16.6.1 [[#2287](https://github.com/airyhq/airy/pull/2287)]
+- Bump @babel/preset-typescript from 7.14.5 to 7.15.0 [[#2288](https://github.com/airyhq/airy/pull/2288)]
+- Bump webpack-cli from 4.7.2 to 4.8.0 [[#2290](https://github.com/airyhq/airy/pull/2290)]
+- Bump @typescript-eslint/parser from 4.29.0 to 4.29.1 [[#2291](https://github.com/airyhq/airy/pull/2291)]
+- Bump url-parse from 1.5.1 to 1.5.3 [[#2268](https://github.com/airyhq/airy/pull/2268)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.29.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.29.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.29.0/windows/amd64/airy.exe)
+
 
 ## 0.28.0
 

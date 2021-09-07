@@ -20,6 +20,7 @@ import {
   SetStateConversationRequestPayload,
   UpdateContactRequestPayload,
   ConnectChannelInstagramRequestPayload,
+  UploadFileRequestPayload,
 } from './src/payload';
 import {
   listChannelsDef,
@@ -48,6 +49,7 @@ import {
   metadataUpsertDef,
   setStateConversationDef,
   updateContactDef,
+  uploadFileDef,
 } from './src/endpoints';
 
 function isString(object: any) {
@@ -81,12 +83,23 @@ export class HttpClient {
       'X-Requested-With': 'XMLHttpRequest',
     };
 
+    const fileheaders = {
+      Accept: 'multipart/form-data',
+      'X-Requested-With': 'XMLHttpRequest',
+    };
+
     if (!(body instanceof FormData)) {
       if (!isString(body)) {
         body = JSON.stringify(body);
       }
       headers['Content-Type'] = 'application/json';
     }
+
+    // else {
+    //   fileheaders['multipart/form-data']
+    // }
+
+    console.log('headers', headers);
 
     const response: Response = await fetch(`${this.apiUrl}/${url}`, {
       method: 'POST',
@@ -95,6 +108,8 @@ export class HttpClient {
       credentials: 'include',
       body: body as BodyInit,
     });
+
+    console.log('response', response);
 
     return this.parseBody(response);
   }
@@ -201,6 +216,8 @@ export class HttpClient {
   public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
 
   public updateContact = this.getRequest<UpdateContactRequestPayload>(updateContactDef);
+
+  public uploadFile = this.getRequest<any>(uploadFileDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

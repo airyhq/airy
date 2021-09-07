@@ -2,9 +2,9 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Picker} from 'emoji-mart';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
-
+import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
+import {uploadFile} from '../../../actions/files';
 import 'emoji-mart/css/emoji-mart.css';
-
 import TemplateSelector from '../TemplateSelector';
 import styles from './InputOptions.module.scss';
 
@@ -62,6 +62,23 @@ export const InputOptions = ({source, inputDisabled, input, setInput, selectTemp
     toggleEmojiDrawer();
   };
 
+  const selectFile = (event: any) => {
+    const file = event.target.files[0];
+    // console.log('file', file)
+    // const formData = new FormData();
+
+    var formData = new FormData();
+    formData.append('file', file);
+
+    fetch('http://airy.core/media.uploadFile', {
+      method: 'POST',
+      body: JSON.stringify(formData),
+    })
+      .then(response => response.json())
+      .catch(error => console.error('Error:', error))
+      .then(response => console.log('Success:', JSON.stringify(response)));
+  };
+
   return (
     <div className={styles.container}>
       {isShowingTemplateModal && (
@@ -96,6 +113,16 @@ export const InputOptions = ({source, inputDisabled, input, setInput, selectTemp
         <div className={styles.templateActionContainer}>
           <TemplateAlt aria-hidden className={styles.templateAltIcon} />
         </div>
+      </button>
+
+      <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>
+        <div className={styles.actionToolTip}>File</div>
+
+        <label htmlFor="file">
+          <Paperclip aria-hidden />
+        </label>
+
+        <input type="file" name="file" onChange={selectFile} className={styles.fileInput} />
       </button>
     </div>
   );

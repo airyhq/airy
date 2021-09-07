@@ -138,27 +138,29 @@ const MessageInput = (props: Props) => {
     }
   }, [selectedTemplate]);
 
-  const sendMessage = () => {
-    if ((!selectedTemplate && !selectedSuggestedReply && !input) || !channelConnected) {
-      return;
-    }
+  const canSendMessage = () => {
+    return !((!selectedTemplate && !selectedSuggestedReply && !input) || !channelConnected);
+  };
 
-    setSelectedSuggestedReply(null);
-    setSelectedTemplate(null);
-    sendMessages(
-      selectedTemplate || selectedSuggestedReply
-        ? {
-            conversationId: conversation.id,
-            message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
-          }
-        : {
-            conversationId: conversation.id,
-            message: outboundMapper.getTextPayload(input),
-          }
-    ).then(() => {
-      setInput('');
-      removeTemplateFromInput();
-    });
+  const sendMessage = () => {
+    if (canSendMessage()) {
+      setSelectedSuggestedReply(null);
+      setSelectedTemplate(null);
+      sendMessages(
+        selectedTemplate || selectedSuggestedReply
+          ? {
+              conversationId: conversation.id,
+              message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+            }
+          : {
+              conversationId: conversation.id,
+              message: outboundMapper.getTextPayload(input),
+            }
+      ).then(() => {
+        setInput('');
+        removeTemplateFromInput();
+      });
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -351,7 +353,7 @@ const MessageInput = (props: Props) => {
               styles.sendButtonActive
             }`}
             onClick={sendMessage}
-            disabled={input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply && !channelConnected}
+            disabled={input.trim().length == 0 && !canSendMessage()}
             data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <Paperplane />

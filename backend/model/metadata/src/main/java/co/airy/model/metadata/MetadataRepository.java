@@ -7,6 +7,10 @@ import java.time.Instant;
 import java.util.UUID;
 
 public class MetadataRepository {
+    public interface MetadataConstructor {
+        Metadata apply(String id, String key, String value);
+    }
+
     public static Metadata newConversationMetadata(String conversationId, String key, String value) {
         return Metadata.newBuilder()
                 .setSubject(new Subject("conversation", conversationId).toString())
@@ -48,7 +52,7 @@ public class MetadataRepository {
 
     public static Metadata newConversationTag(String conversationId, String tagId) {
         return Metadata.newBuilder()
-                .setSubject(new Subject("conversation",conversationId).toString())
+                .setSubject(new Subject("conversation", conversationId).toString())
                 .setKey(String.format("%s.%s", MetadataKeys.ConversationKeys.TAGS, tagId))
                 .setValue("")
                 .setTimestamp(Instant.now().toEpochMilli())
@@ -73,6 +77,7 @@ public class MetadataRepository {
     public static UUID getId(Metadata metadata) {
         return UUIDv5.fromNamespaceAndName(metadata.getSubject(), metadata.getKey());
     }
+
     public static UUID getId(Subject subject, String key) {
         return UUIDv5.fromNamespaceAndName(subject.toString(), key);
     }

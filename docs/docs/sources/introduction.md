@@ -27,7 +27,7 @@ Business Messages, Twilio.WhatsApp or Twilio.SMS.
 
 You can connect sources through API requests or using our [Channels UI](/ui/channels). Our Sources guides cover both options, step-by-step.
 
-It's important to understand the difference between a [source](/getting-started/glossary/#source) and a [channel](/getting-started/glossary/#channel). A [channel](/getting-started/glossary/#channel) represents a connection between a [source](/getting-started/glossary/#source) and your Airy Core instance: multiple [channels](/getting-started/glossary/#channel) can thus use the same [source](/getting-started/glossary/#source) for different [conversations](/getting-started/glossary/#conversation).
+It's important to understand the difference between a [source](/getting-started/glossary/#source) and a [channel](/getting-started/glossary/#channel). A channel represents a connection between a source and your Airy Core instance: multiple channels can thus use the same source for different [conversations](/getting-started/glossary/#conversation).
 
 Connecting a [channel](/getting-started/glossary/#channel) allows the possibility of starting a [conversation](/getting-started/glossary/#conversation) between a [source](/getting-started/glossary/#source) and your Airy Core instance. Once a [channel](/getting-started/glossary/#channel) has been connected, your Airy Core instance will start ingesting [messages](/getting-started/glossary/#message) and create new [conversations](/getting-started/glossary/#conversation) accordingly.
 

@@ -1,14 +1,13 @@
-package co.airy.core.webhook.consumer;
-
-import org.springframework.stereotype.Service;
+package co.airy.crypto;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-@Service
 public class Signature {
+
+    public static final String CONTENT_SIGNATURE_HEADER = "X-Airy-Content-Signature";
 
     /**
      * Computes a signature of the content send to user webhooks so that they can verify its integrity and authenticity.
@@ -18,7 +17,7 @@ public class Signature {
      * @return hmac (sha256) of the content given the key in lowercase hex representation
      * @throws InvalidKeyException Malformed user secret key
      */
-    public String getSignature(String key, String content) throws InvalidKeyException {
+    public static String getSignature(String key, String content) throws InvalidKeyException {
         Mac mac;
         try {
             mac = Mac.getInstance("HmacSHA256");
@@ -30,6 +29,7 @@ public class Signature {
         byte[] hmac = mac.doFinal(content.getBytes());
         StringBuilder builder = new StringBuilder();
         for (byte b : hmac) {
+            // TODO This is slow compared to the DataTypeConverter implementation
             builder.append(String.format("%02X", b).toLowerCase());
         }
         return builder.toString();

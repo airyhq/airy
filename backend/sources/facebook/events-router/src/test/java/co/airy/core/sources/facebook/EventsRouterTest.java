@@ -39,7 +39,6 @@ import java.util.concurrent.TimeUnit;
 import static co.airy.test.Timing.retryOnException;
 import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -177,7 +176,7 @@ class EventsRouterTest {
         List<Metadata> metadataList = kafkaTestHelper.consumeValues(2, applicationCommunicationMetadata.name());
         assertThat(metadataList, hasSize(2));
         assertTrue(metadataList.stream().anyMatch((metadata ->
-                metadata.getKey().equals(MetadataKeys.ConversationKeys.Reaction.EMOJI) &&
+                metadata.getKey().equals(MetadataKeys.MessageKeys.Reaction.EMOJI) &&
                         metadata.getValue().equals("❤️")
         )));
     }

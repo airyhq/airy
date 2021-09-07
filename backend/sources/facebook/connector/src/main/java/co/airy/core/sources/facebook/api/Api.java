@@ -8,16 +8,11 @@ import co.airy.core.sources.facebook.api.model.Participants;
 import co.airy.core.sources.facebook.api.model.SendMessagePayload;
 import co.airy.core.sources.facebook.api.model.SendMessageResponse;
 import co.airy.core.sources.facebook.api.model.UserProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationListener;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -46,7 +41,6 @@ import java.util.Optional;
 public class Api implements ApplicationListener<ApplicationReadyEvent> {
     private final RestTemplateBuilder restTemplateBuilder;
     private final ObjectMapper objectMapper;
-
     private RestTemplate restTemplate;
 
     private static final String subscribedFields = "messages,messaging_postbacks,messaging_optins,message_deliveries,message_reads,messaging_payments,messaging_pre_checkouts,messaging_checkout_updates,messaging_account_linking,messaging_referrals,message_echoes,messaging_game_plays,standby,messaging_handovers,messaging_policy_enforcement,message_reactions,inbox_labels,message_reactions";
@@ -73,8 +67,8 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
     }
 
     public SendMessageResponse sendMessage(final String pageToken, SendMessagePayload sendMessagePayload) {
-        String fbReqUrl = String.format(requestTemplate, pageToken);
-        final ResponseEntity<SendMessageResponse> responseEntity = restTemplate.postForEntity(fbReqUrl, new HttpEntity<>(sendMessagePayload, httpHeaders), SendMessageResponse.class);
+        String reqUrl = String.format(requestTemplate, pageToken);
+        final ResponseEntity<SendMessageResponse> responseEntity = restTemplate.postForEntity(reqUrl, new HttpEntity<>(sendMessagePayload, httpHeaders), SendMessageResponse.class);
         return responseEntity.getBody();
     }
 
@@ -84,13 +78,13 @@ public class Api implements ApplicationListener<ApplicationReadyEvent> {
         boolean hasMorePages = true;
         List<PageWithConnectInfo> pageList = new ArrayList<>();
         while (hasMorePages) {
-            Pages fbPages = apiResponse(pagesUrl, HttpMethod.GET, Pages.class);
-            if (fbPages.getPaging() != null && fbPages.getPaging().getNext() != null) {
-                pagesUrl = URLDecoder.decode(fbPages.getPaging().getNext(), StandardCharsets.UTF_8);
+            Pages pages = apiResponse(pagesUrl, HttpMethod.GET, Pages.class);
+            if (pages.getPaging() != null && pages.getPaging().getNext() != null) {
+                pagesUrl = URLDecoder.decode(pages.getPaging().getNext(), StandardCharsets.UTF_8);
             } else {
                 hasMorePages = false;
             }
-            pageList.addAll(fbPages.getData());
+            pageList.addAll(pages.getData());
         }
         return pageList;
     }

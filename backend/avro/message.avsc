@@ -39,6 +39,14 @@
       "type": "string"
     },
     {
+      "name": "sourceRecipientId",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
       "name": "conversationId",
       "type": "string"
     },

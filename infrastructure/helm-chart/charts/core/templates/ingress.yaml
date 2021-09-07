@@ -16,6 +16,13 @@ spec:
                 name: api-websocket
                 port:
                   number: 80
+          - path: /sources
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-api
+                port:
+                  number: 80
           - path: /conversations
             pathType: Prefix
             backend:

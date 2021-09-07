@@ -1,11 +1,16 @@
-package co.airy.spring.auth.session;
+package co.airy.spring.auth;
 
+import co.airy.spring.auth.session.UserAuth;
+import co.airy.spring.auth.session.UserProfile;
+import co.airy.spring.auth.token.TokenAuth;
+import co.airy.spring.auth.token.TokenProfile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.Authentication;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -27,7 +32,7 @@ public class Jwt {
         this.objectMapper = new ObjectMapper();
     }
 
-    public String getAuthToken(AiryAuth auth) throws JsonProcessingException {
+    public String getAuthToken(UserAuth auth) throws JsonProcessingException {
         Date now = Date.from(Instant.now());
 
         Map<String, Object> claims = new HashMap<>();
@@ -46,11 +51,32 @@ public class Jwt {
         return builder.compact();
     }
 
-    public AiryAuth loadFromToken(final String authHeader) throws Exception {
+    public String getAuthToken(TokenAuth auth, Duration expiry) throws JsonProcessingException {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(PRINCIPAL_CLAIM, objectMapper.writeValueAsString(auth.getPrincipal()));
+
+        JwtBuilder builder = Jwts.builder()
+                .setId(UUID.randomUUID().toString())
+                .setSubject(auth.getPrincipal().getName())
+                .setIssuedAt(Date.from(Instant.now()))
+                .addClaims(claims)
+                .signWith(signingKey, SignatureAlgorithm.HS256);
+
+        if (expiry != null) {
+            Date exp = Date.from(Instant.now().plus(expiry));
+            builder.setExpiration(exp);
+        }
+        return builder.compact();
+    }
+
+    public Authentication loadFromToken(final String authHeader) throws Exception {
         Claims claims = extractClaims(authHeader);
         final String principalClaim = (String) claims.get(PRINCIPAL_CLAIM);
-        final UserProfile profile = objectMapper.readValue(principalClaim, UserProfile.class);
-        return new AiryAuth(profile);
+        try {
+            return new UserAuth(objectMapper.readValue(principalClaim, UserProfile.class));
+        } catch (Exception e) {
+            return new TokenAuth(objectMapper.readValue(principalClaim, TokenProfile.class));
+        }
     }
 
 

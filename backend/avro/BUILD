@@ -27,6 +27,10 @@ avro_java_library(
 )
 
 avro_java_library(
+    name = "source",
+)
+
+avro_java_library(
     name = "tag-avro",
     srcs = ["tag.avsc"],
 )

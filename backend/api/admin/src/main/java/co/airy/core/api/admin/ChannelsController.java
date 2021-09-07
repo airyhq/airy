@@ -8,7 +8,6 @@ import co.airy.model.channel.ChannelPayload;
 import co.airy.model.channel.dto.ChannelContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.dto.MetadataMap;
-import co.airy.uuid.UUIDv5;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,9 +36,9 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.list")
-    ResponseEntity<ChannelsResponsePayload> listChannels(@RequestBody(required = false) @Valid ListChannelRequestPayload requestPayload) {
+    ResponseEntity<ChannelsResponsePayload> listChannels(@RequestBody(required = false) @Valid ListChannelRequestPayload payload) {
         final List<ChannelContainer> channels = stores.getChannels();
-        final String sourceToFilter = Optional.ofNullable(requestPayload).map(ListChannelRequestPayload::getSource).orElse(null);
+        final String sourceToFilter = Optional.ofNullable(payload).map(ListChannelRequestPayload::getSource).orElse(null);
         return ResponseEntity.ok(new ChannelsResponsePayload(channels.stream()
                 .filter((container) -> sourceToFilter == null || sourceToFilter.equals(container.getChannel().getSource()))
                 .map(ChannelPayload::fromChannelContainer)
@@ -47,8 +46,8 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.info")
-    ResponseEntity<?> getChannel(@RequestBody @Valid GetChannelRequestPayload requestPayload) {
-        final ChannelContainer container = stores.getChannel(requestPayload.getChannelId().toString());
+    ResponseEntity<?> getChannel(@RequestBody @Valid GetChannelRequestPayload payload) {
+        final ChannelContainer container = stores.getChannel(payload.getChannelId().toString());
         if (container == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -57,19 +56,19 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.update")
-    ResponseEntity<?> updateChannel(@RequestBody @Valid UpdateChannelRequestPayload requestPayload) {
-        final String channelId = requestPayload.getChannelId().toString();
+    ResponseEntity<?> updateChannel(@RequestBody @Valid UpdateChannelRequestPayload payload) {
+        final String channelId = payload.getChannelId().toString();
         final ChannelContainer container = stores.getChannel(channelId);
         if (container == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         final MetadataMap metadataMap = container.getMetadataMap();
-        if (requestPayload.getName() != null) {
-            metadataMap.put(MetadataKeys.ChannelKeys.NAME, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, requestPayload.getName()));
+        if (payload.getName() != null) {
+            metadataMap.put(MetadataKeys.ChannelKeys.NAME, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, payload.getName()));
         }
-        if (requestPayload.getImageUrl() != null) {
-            metadataMap.put(MetadataKeys.ChannelKeys.IMAGE_URL, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, requestPayload.getImageUrl()));
+        if (payload.getImageUrl() != null) {
+            metadataMap.put(MetadataKeys.ChannelKeys.IMAGE_URL, newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, payload.getImageUrl()));
         }
 
         try {
@@ -82,17 +81,17 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.chatplugin.connect")
-    ResponseEntity<?> connect(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        final String sourceChannelId = requestPayload.getName();
+    ResponseEntity<?> connect(@RequestBody @Valid ConnectChannelRequestPayload payload) {
+        final String sourceChannelId = payload.getName();
         final String sourceIdentifier = "chatplugin";
 
         final String channelId = UUID.randomUUID().toString();
 
         List<Metadata> metadataList = new ArrayList<>();
-        metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, requestPayload.getName()));
+        metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, payload.getName()));
 
-        if (requestPayload.getImageUrl() != null) {
-            metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, requestPayload.getImageUrl()));
+        if (payload.getImageUrl() != null) {
+            metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, payload.getImageUrl()));
         }
 
         final ChannelContainer container = ChannelContainer.builder()
@@ -116,8 +115,8 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.chatplugin.disconnect")
-    ResponseEntity<?> disconnect(@RequestBody @Valid ChannelDisconnectRequestPayload requestPayload) {
-        final String channelId = requestPayload.getChannelId().toString();
+    ResponseEntity<?> disconnect(@RequestBody @Valid ChannelDisconnectRequestPayload payload) {
+        final String channelId = payload.getChannelId().toString();
 
         final ChannelContainer container = stores.getConnectedChannelsStore().get(channelId);
 

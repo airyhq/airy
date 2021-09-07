@@ -21,11 +21,6 @@ public class MetadataKeys {
             public static final String FETCH_STATE = "contact.fetch_state";
         }
 
-        public static class Reaction {
-            public static final String EMOJI = "reaction.emoji";
-            public static final String SENT_AT = "reaction.sent_at";
-        }
-
         public enum ContactFetchState {
             ok("ok"),
             failed("failed");
@@ -50,10 +45,16 @@ public class MetadataKeys {
 
     public static class MessageKeys {
         public static final String SUGGESTIONS = "suggestions";
+        public static final String ERROR = "error";
 
         public static class Source {
             public static final String ID = "source.id";
             public static final String DELIVERY_STATE = "source.delivery_state";
+        }
+
+        public static class Reaction {
+            public static final String EMOJI = "reaction.emoji";
+            public static final String SENT_AT = "reaction.sent_at";
         }
     }
 }

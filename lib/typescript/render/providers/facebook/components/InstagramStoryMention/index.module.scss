@@ -1,0 +1,43 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.textMessage {
+  display: inline-block;
+  overflow-wrap: break-word;
+  max-width: 500px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  font-family: 'Lato', sans-serif;
+}
+
+.activeStory {
+  display: flex;
+  align-items: center;
+}
+
+.activeStoryLink:link,
+.activeStoryLink:hover,
+.activeStoryLink:visited,
+.activeStoryLink:active {
+  color: var(--color-text-contrast);
+  font-style: italic;
+}
+
+.expiredStory {
+  font-style: italic;
+}
+
+.contactContent {
+  @extend .textMessage;
+  background: var(--color-background-blue);
+  color: var(--color-text-contrast);
+}
+
+.memberContent {
+  @extend .textMessage;
+  background: var(--color-airy-blue);
+  color: white;
+}

@@ -62,7 +62,7 @@ class WebSocket {
     this.client.onConnect = this.onConnect;
     this.client.onWebSocketClose = this.onWebSocketClose;
 
-    this.client.onStompError = function (frame: IFrame) {
+    this.client.onStompError = (frame: IFrame) => {
       console.error('Broker reported error: ' + frame.headers['message']);
       console.error('Additional details: ' + frame.body);
       authenticate(this.channelId);

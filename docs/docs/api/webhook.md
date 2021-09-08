@@ -154,7 +154,7 @@ request with one the following payloads:
 
 ```json5
 {
-  "type": "message:created",
+  "type": "message.created",
   "payload": {
     "conversation_id": "{UUID}",
     "channel_id": "{UUID}",
@@ -176,7 +176,7 @@ Sent whenever a message is updated (e.g. delivery state) or its [metadata](conce
 
 ```json5
 {
-  "type": "message:created",
+  "type": "message.updated",
   "payload": {
     "conversation_id": "{UUID}",
     "channel_id": "{UUID}",
@@ -204,7 +204,7 @@ Sent whenever a message is updated (e.g. delivery state) or its [metadata](conce
 
 ```json5
 {
-  "type": "conversation:updated",
+  "type": "conversation.updated",
   "payload": {
     "id": "2e1da639-7152-4595-b43e-2117a55ac260",
     "created_at": "2020-10-25T21:24:54.560Z", // ISO 8601 date string

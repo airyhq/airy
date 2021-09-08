@@ -70,7 +70,7 @@ Includes the full and current state of a metadata object given a namespace-ident
 }
 ```
 
-### Channel
+### `channel.updated`
 
 ```json5
 {
@@ -85,7 +85,7 @@ Includes the full and current state of a metadata object given a namespace-ident
 }
 ```
 
-### Tag
+### `tag.updated`
 
 ```json5
 {

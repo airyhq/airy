@@ -31,7 +31,7 @@ are looking for.
 
   If you want to launch an older version refer to our
   [Releases](https://github.com/airyhq/airy/releases) for the correct version
-  number, or if you are feeling adventurous, try `develop` at your own risk.
+  number, or if you are feeling adventurous, try the [development version](https://github.com/airyhq/airy/blob/develop/VERSION) at your own risk.
 
 - `containerRegistry` the URL of the container registry
 
@@ -75,10 +75,12 @@ cluster and Redis.
     - `webhookSecret` set this to a webhook secret of your choice (optional)
   - `google`
     - `saFile` copy here the content of your Google service account key file (one line json string)
-    - `partnerKey` set this to your Google parttner key
+    - `partnerKey` set this to your Google partner key
   - `twilio`
     - `authToken` set this to your Twilio authentication token
     - `accountSid` set this to your Twilio account SID
+  - `viber`
+    - `authToken` set this to your Viber authentication token
 
   The **Airy Controller** only starts configured sources. To keep system load to
   a minimum, only add the sources you are using.
@@ -104,7 +106,7 @@ monitor or debug the **Airy Core**.
 
 ### Example airy.yaml file
 
-For example, if you want to enable Facebook, Google and Twilio sources, as well as the webhook integration and the AKHQ tool, your `airy.yaml` file should look like this:
+For example, if you want to enable Facebook and Google sources, as well as the webhook integration, and the AKHQ tool, your `airy.yaml` file should look like this:
 
 ```yaml
 kubernetes:
@@ -127,6 +129,8 @@ components:
   integration:
     webhook:
       name: webhook
+    source-api:
+      enabled: true
 ```
 
 ## Applying the configuration

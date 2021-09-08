@@ -1,5 +1,6 @@
 package co.airy.spring.auth.test_app;
 
+import co.airy.spring.auth.token.TokenProfile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +14,9 @@ public class Controller {
 
     @PostMapping("/principal.get")
     ResponseEntity<?> echoPrincipal(Authentication authentication) {
-        final String userId = (String) authentication.getPrincipal();
-        return ResponseEntity.ok(new PrincipalDetails(userId));
+        TokenProfile profile = (TokenProfile) authentication.getPrincipal();
+        return ResponseEntity.ok(new PrincipalDetails(profile.getName()));
     }
-
 
     @PostMapping("/data.get")
     ResponseEntity<?> getData() {

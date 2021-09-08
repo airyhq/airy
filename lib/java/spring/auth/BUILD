@@ -32,7 +32,7 @@ custom_java_library(
 custom_java_library(
     name = "test-app",
     srcs = glob(["src/test/java/co/airy/spring/auth/test_app/*.java"]),
-    deps = lib_deps,
+    deps = [":spring-auth"] + lib_deps,
 )
 
 [

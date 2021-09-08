@@ -1,7 +1,5 @@
 package co.airy.core.sources.twilio;
 
-import co.airy.avro.communication.Channel;
-import co.airy.avro.communication.ChannelConnectionState;
 import co.airy.avro.communication.DeliveryState;
 import co.airy.avro.communication.Message;
 import co.airy.core.sources.twilio.services.Api;
@@ -37,7 +35,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static co.airy.test.Timing.retryOnException;
-import static org.apache.kafka.streams.KafkaStreams.State.RUNNING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

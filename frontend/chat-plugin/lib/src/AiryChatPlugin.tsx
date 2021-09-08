@@ -8,6 +8,9 @@ type AiryChatPluginProps = {
   className?: string;
 };
 
+const defaultWidth = 380;
+const defaultHeight = 700;
+
 export const AiryChatPlugin = (props: AiryChatPluginProps) => {
   const {config, className} = props;
 
@@ -21,24 +24,10 @@ export const AiryChatPlugin = (props: AiryChatPluginProps) => {
 
   window.addEventListener('resize', handleResize);
 
-  const widgetHeight = (): number => {
-    if (config.config?.height) {
-      return config.config.height > windowHeight ? windowHeight : config.config.height;
-    }
-    return 700 > windowHeight ? windowHeight : 700;
-  };
-
-  const widgetWidth = (): number => {
-    if (config.config?.width) {
-      return config.config.width > windowWidth ? windowWidth : config.config.width;
-    }
-    return 380 > windowWidth ? windowWidth : 380;
-  };
-
   const customStyle = {
     background: 'transparent',
-    height: widgetHeight(),
-    width: widgetWidth(),
+    width: Math.min(config.config?.width ?? defaultWidth, windowWidth),
+    height: Math.min(config.config?.height ?? defaultHeight, windowHeight),
     ...(config.config?.primaryColor && {
       '--color-airy-blue': config.config?.primaryColor,
     }),

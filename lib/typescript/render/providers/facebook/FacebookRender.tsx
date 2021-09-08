@@ -16,6 +16,8 @@ import {ButtonTemplate} from './components/ButtonTemplate';
 import {GenericTemplate} from './components/GenericTemplate';
 import {MediaTemplate} from './components/MediaTemplate';
 import {FallbackAttachment} from './components/FallbackAttachment';
+import {StoryMention} from './components/InstagramStoryMention';
+import {StoryReplies} from './components/InstagramStoryReplies';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -59,6 +61,22 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
           text={content.text}
           attachment={content.attachment}
           quickReplies={content.quickReplies}
+        />
+      );
+
+    //Instagram-specific
+    case 'story_mention':
+      return (
+        <StoryMention url={content.url} sentAt={content.sentAt} fromContact={props.message.fromContact || false} />
+      );
+
+    case 'story_replies':
+      return (
+        <StoryReplies
+          url={content.url}
+          text={content.text}
+          sentAt={content.sentAt}
+          fromContact={props.message.fromContact || false}
         />
       );
 
@@ -142,6 +160,23 @@ function facebookInbound(message): ContentUnion {
     };
   }
 
+  if (messageJson.attachments?.[0].type === 'story_mention') {
+    return {
+      type: 'story_mention',
+      url: messageJson.attachment?.payload?.url || messageJson.attachments[0]?.payload?.url || null,
+      sentAt: message.sentAt,
+    };
+  }
+
+  if (messageJson.reply_to) {
+    return {
+      type: 'story_replies',
+      text: messageJson.text,
+      url: messageJson.reply_to?.story?.url,
+      sentAt: message.sentAt,
+    };
+  }
+
   if (messageJson.attachment || messageJson.attachments) {
     return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
@@ -187,6 +222,23 @@ function facebookOutbound(message): ContentUnion {
       type: 'quickReplies',
       text: messageJson.text,
       quickReplies: messageJson.quick_replies,
+    };
+  }
+
+  if (messageJson.reply_to) {
+    return {
+      type: 'story_replies',
+      text: messageJson.text,
+      url: messageJson.reply_to?.story?.url,
+      sentAt: message.sentAt,
+    };
+  }
+
+  if (messageJson.attachments?.[0].type === 'story_mention') {
+    return {
+      type: 'story_mention',
+      url: messageJson.attachment.url || messageJson.attachments[0].url,
+      sentAt: messageJson.sentAt,
     };
   }
 

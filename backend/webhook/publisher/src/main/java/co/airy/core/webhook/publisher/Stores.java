@@ -10,7 +10,6 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMessages;
 import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationWebhooks;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
-import co.airy.log.AiryLoggerFactory;
 import co.airy.model.conversation.Conversation;
 import co.airy.model.event.payload.ChannelUpdated;
 import co.airy.model.event.payload.ConversationUpdated;
@@ -22,13 +21,10 @@ import co.airy.model.metadata.dto.MetadataMap;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.Topology;
-import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -83,7 +79,11 @@ public class Stores implements ApplicationListener<ApplicationStartedEvent>, Dis
 
         // message.updated
         messageTable.toStream()
-                .foreach((messageId, messageContainer) -> onRecord(MessageUpdated.fromMessageContainer(messageContainer)));
+                .foreach((messageId, messageContainer) -> {
+                    if (messageContainer != null) {
+                        onRecord(MessageUpdated.fromMessageContainer(messageContainer));
+                    }
+                });
 
         // conversation.updated
         messageTable.groupBy((messageId, messageContainer) -> KeyValue.pair(messageContainer.getMessage().getConversationId(), messageContainer))

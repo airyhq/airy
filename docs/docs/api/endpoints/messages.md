@@ -36,7 +36,7 @@ are sorted from oldest to latest.
       // delivery state of message, one of PENDING, FAILED, DELIVERED
       "from_contact": true,
       "sent_at": "{string}",
-      //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+      // ISO 8601 date string
       "source": "{String}",
       // one of the possible sources
       "metadata": {

@@ -2,6 +2,7 @@ package co.airy.core.webhook.consumer;
 
 import co.airy.avro.communication.Webhook;
 import co.airy.core.webhook.WebhookEvent;
+import co.airy.crypto.Signature;
 import co.airy.log.AiryLoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 
 import static co.airy.core.webhook.WebhookEvent.shouldSendFor;
+import static co.airy.crypto.Signature.getSignature;
 
 @Component
 public class Sender {
@@ -24,15 +26,11 @@ public class Sender {
     private final RestTemplate restTemplate;
     private final Stores stores;
     private final ObjectMapper objectMapper;
-    private final Signature signature;
 
-    public static final String CONTENT_SIGNATURE_HEADER = "X-Airy-Content-Signature";
-
-    public Sender(RestTemplate restTemplate, Stores stores, ObjectMapper objectMapper, Signature signature) {
+    public Sender(RestTemplate restTemplate, Stores stores, ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;
         this.stores = stores;
         this.objectMapper = objectMapper;
-        this.signature = signature;
     }
 
     public void sendRecord(WebhookEvent event) {
@@ -47,8 +45,8 @@ public class Sender {
         try {
             final String content = objectMapper.writeValueAsString(event.getPayload());
             if (webhook.getSignKey() != null) {
-                final String contentSignature = this.signature.getSignature(webhook.getSignKey(), content);
-                headers.set(CONTENT_SIGNATURE_HEADER, contentSignature);
+                final String contentSignature = getSignature(webhook.getSignKey(), content);
+                headers.set(Signature.CONTENT_SIGNATURE_HEADER, contentSignature);
             }
 
             final HttpEntity<String> entity = new HttpEntity<>(content, headers);

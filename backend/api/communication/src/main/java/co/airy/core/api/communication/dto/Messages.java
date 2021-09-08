@@ -3,12 +3,7 @@ package co.airy.core.api.communication.dto;
 import co.airy.model.message.dto.MessageContainer;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.util.Comparator;
-import java.util.TreeSet;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
-
-import static java.util.Comparator.comparing;
 
 public class Messages extends ConcurrentSkipListSet<MessageContainer> {
     @JsonCreator

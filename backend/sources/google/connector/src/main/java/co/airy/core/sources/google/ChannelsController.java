@@ -36,18 +36,18 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.google.connect")
-    ResponseEntity<?> connect(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        final String gbmId = requestPayload.getGbmId();
+    ResponseEntity<?> connect(@RequestBody @Valid ConnectChannelRequestPayload payload) {
+        final String gbmId = payload.getGbmId();
         final String sourceIdentifier = "google";
 
         final String channelId = UUIDv5.fromNamespaceAndName(sourceIdentifier, gbmId).toString();
 
         try {
             List<Metadata> metadataList = new ArrayList<>();
-            metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, requestPayload.getName()));
+            metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.NAME, payload.getName()));
 
-            if (requestPayload.getImageUrl() != null) {
-                metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, requestPayload.getImageUrl()));
+            if (payload.getImageUrl() != null) {
+                metadataList.add(newChannelMetadata(channelId, MetadataKeys.ChannelKeys.IMAGE_URL, payload.getImageUrl()));
             }
 
             final ChannelContainer container = ChannelContainer.builder()
@@ -70,8 +70,8 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.google.disconnect")
-    ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
-        final String channelId = requestPayload.getChannelId().toString();
+    ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload payload) {
+        final String channelId = payload.getChannelId().toString();
 
         final Channel channel = stores.getChannelsStore().get(channelId);
 

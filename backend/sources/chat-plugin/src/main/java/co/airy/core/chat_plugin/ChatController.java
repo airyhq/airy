@@ -48,9 +48,9 @@ public class ChatController {
     }
 
     @PostMapping("/chatplugin.authenticate")
-    ResponseEntity<?> authenticateVisitor(@RequestBody @Valid AuthenticationRequestPayload requestPayload) {
-        final UUID channelId = requestPayload.getChannelId();
-        final String resumeToken = requestPayload.getResumeToken();
+    ResponseEntity<?> authenticateVisitor(@RequestBody @Valid AuthenticationRequestPayload payload) {
+        final UUID channelId = payload.getChannelId();
+        final String resumeToken = payload.getResumeToken();
 
         Principal principal;
         List<Message> messages = List.of();
@@ -86,27 +86,27 @@ public class ChatController {
 
     @PostMapping("/chatplugin.resumeToken")
     ResponseEntity<ResumeTokenResponsePayload> getResumeToken(
-            @Valid @RequestBody(required = false) ResumeTokenRequestPayload requestPayload,
+            @Valid @RequestBody(required = false) ResumeTokenRequestPayload payload,
             @RequestHeader(value = "Authorization") String authHeader) {
-        final Principal principal = getUserOrSystemPrincipal(requestPayload, authHeader);
+        final Principal principal = getUserOrSystemPrincipal(payload, authHeader);
         final String resumeToken = jwt.getResumeToken(principal.getConversationId(), principal.getChannelId());
         return ResponseEntity.ok(new ResumeTokenResponsePayload(resumeToken));
     }
 
-    private Principal getUserOrSystemPrincipal(ResumeTokenRequestPayload requestPayload, String authHeader) {
+    private Principal getUserOrSystemPrincipal(ResumeTokenRequestPayload payload, String authHeader) {
         final String requestToken = getAuthToken(authHeader);
         if (apiToken != null && apiToken.equals(requestToken)) {
-            if (requestPayload == null) {
+            if (payload == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }
-            return new Principal(requestPayload.getChannelId(), requestPayload.getConversationId());
+            return new Principal(payload.getChannelId(), payload.getConversationId());
         }
 
         return jwt.authenticate(requestToken);
     }
 
     @PostMapping("/chatplugin.send")
-    ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload requestPayload, Authentication authentication) {
+    ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload, Authentication authentication) {
         final Principal principal = (Principal) authentication.getPrincipal();
         final String channelId = principal.getChannelId();
         final Channel channel = stores.getChannel(channelId);
@@ -119,7 +119,7 @@ public class ChatController {
             final Message message = Message.newBuilder()
                     .setId(UUID.randomUUID().toString())
                     .setChannelId(channel.getId())
-                    .setContent(objectMapper.writeValueAsString(requestPayload.getMessage()))
+                    .setContent(objectMapper.writeValueAsString(payload.getMessage()))
                     .setConversationId(principal.getName())
                     .setHeaders(Map.of())
                     .setDeliveryState(DeliveryState.DELIVERED)

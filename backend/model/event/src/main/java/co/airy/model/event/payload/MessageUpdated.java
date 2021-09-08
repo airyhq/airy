@@ -1,6 +1,5 @@
 package co.airy.model.event.payload;
 
-import co.airy.avro.communication.Message;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
 import lombok.AllArgsConstructor;

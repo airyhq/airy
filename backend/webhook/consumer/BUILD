@@ -11,6 +11,7 @@ app_deps = [
     "//backend:webhook",
     "//lib/java/uuid",
     "//lib/java/date",
+    "//lib/java/crypto",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/spring/web:spring-web",

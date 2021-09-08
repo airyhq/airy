@@ -75,16 +75,16 @@ Each Render Prop accepts a set of parameters that allows you to customize the in
 
 **Example of how to use Render Props with the Airy Chat Plugin library:**
 
-```json5
+```jsx
 const airyChatPlugin = new AiryChatPlugin({
-    organization_id: "YOUR_ORG_ID",
-    app_id: "YOUR_APP_ID",
-    app_secret: "YOUR_APP_SECRET",
-    headerBarProp: ({orgImage, toggleHideChat}) =>
-        <div className="customHeaderStyle" onClick={toggleHideChat}>
-            <h1 className="customHeaderTitle">Title</h1>
-            <img src={orgImage} alt="orgImg" />
-        </div>
-    }
-);
+  organization_id: "YOUR_ORG_ID",
+  app_id: "YOUR_APP_ID",
+  app_secret: "YOUR_APP_SECRET",
+  headerBarProp: ({orgImage, toggleHideChat}) => (
+    <div className="customHeaderStyle" onClick={toggleHideChat}>
+      <h1 className="customHeaderTitle">Title</h1>
+      <img src={orgImage} alt="orgImg" />
+    </div>
+  )
+});
 ```

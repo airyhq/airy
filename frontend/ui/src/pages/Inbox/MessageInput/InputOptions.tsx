@@ -8,6 +8,11 @@ import 'emoji-mart/css/emoji-mart.css';
 import TemplateSelector from '../TemplateSelector';
 import styles from './InputOptions.module.scss';
 
+const mapStateToProps = (state: StateModel) => ({
+  channels: Object.values(allChannelsConnected(state)),
+  config: state.data.config,
+});
+
 export const InputOptions = ({source, inputDisabled, input, setInput, selectTemplate, focus: focusInput}) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
@@ -75,7 +80,7 @@ export const InputOptions = ({source, inputDisabled, input, setInput, selectTemp
       body: JSON.stringify(formData),
     })
       .then(response => response.json())
-      .catch(error => console.error('Error:', error))
+      .catch(error => console.error('Error: media upload', error))
       .then(response => console.log('Success:', JSON.stringify(response)));
   };
 
@@ -121,8 +126,10 @@ export const InputOptions = ({source, inputDisabled, input, setInput, selectTemp
         <label htmlFor="file">
           <Paperclip aria-hidden />
         </label>
+     
 
-        <input type="file" name="file" onChange={selectFile} className={styles.fileInput} />
+        <input type="file" id="file" name="file" onChange={selectFile} className={styles.fileInput} />
+        
       </button>
     </div>
   );

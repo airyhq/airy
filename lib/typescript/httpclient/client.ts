@@ -95,11 +95,9 @@ export class HttpClient {
       headers['Content-Type'] = 'application/json';
     }
 
-    // else {
+        // else {
     //   fileheaders['multipart/form-data']
     // }
-
-    console.log('headers', headers);
 
     const response: Response = await fetch(`${this.apiUrl}/${url}`, {
       method: 'POST',
@@ -109,7 +107,6 @@ export class HttpClient {
       body: body as BodyInit,
     });
 
-    console.log('response', response);
 
     return this.parseBody(response);
   }

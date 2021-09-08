@@ -104,7 +104,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     }
 
     private boolean hasTokenAuth() {
-        return systemToken != null || jwtSecret != null;
+        return systemToken != null && jwtSecret != null;
     }
 
     private boolean hasOidcAuth() {

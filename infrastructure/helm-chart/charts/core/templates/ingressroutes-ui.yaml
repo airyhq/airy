@@ -1,0 +1,67 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  creationTimestamp: null
+  name: airy-core-ui
+spec:
+  entryPoints: []
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/ui`)
+    middlewares:
+    - name: airy-core-ui
+    priority: 0
+    services:
+    - kind: Service
+      name: "frontend-ui"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/chatplugin/ui`)
+    middlewares:
+    - name: airy-core-chatplugin-ui
+    priority: 0
+    services:
+    - kind: Service
+      name: "frontend-chat-plugin"
+      port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  creationTimestamp: null
+  name: airy-core-chatplugin-ui
+spec:
+  stripPrefix:
+    prefixes:
+    - /chatplugin/ui
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  creationTimestamp: null
+  name: airy-core-ui
+spec:
+  stripPrefix:
+    prefixes:
+    - /ui
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  creationTimestamp: null
+  name: airy-core-redirect
+spec:
+  entryPoints: []
+  routes:
+  - kind: Rule
+    match: Path(`/`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "frontend-ui"
+      port: 80

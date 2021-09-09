@@ -1,0 +1,224 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  creationTimestamp: null
+  name: airy-core
+spec:
+  entryPoints: []
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/ws.communication`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-websocket"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/conversations`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-communication"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/messages`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-communication"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/metadata.upsert`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-communication"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/media.uploadFile`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "media-resolver"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/login`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/logout`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/oauth`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/client.config`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/users.getProfile`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/channels.list`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/channels.info`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/channels.update`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/channels.chatplugin`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/webhooks`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/tags`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/templates`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "api-admin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/channels.facebook`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "sources-facebook-connector"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/channels.instagram`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "sources-facebook-connector"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/channels.viber`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "sources-viber-connector"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/channels.google`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "sources-google-connector"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/channels.twilio`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "sources-twilio-connector"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/facebook`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "sources-facebook-connector"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/google`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "sources-google-connector"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/twilio`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "sources-twilio-connector"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/ws.chatplugin`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "sources-chatplugin"
+      port: 80
+  - kind: Rule
+    match: PathPrefix(`/chatplugin`)
+    middlewares: []
+    priority: 0
+    services:
+    - kind: Service
+      name: "sources-chatplugin"
+      port: 80

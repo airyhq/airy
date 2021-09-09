@@ -25,7 +25,7 @@ spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
       containers:
-        - image: traefik:v1.7
+        - image: traefik:v2.5.2
           name: traefik-ingress-lb
           imagePullPolicy: Always
           volumeMounts:
@@ -41,10 +41,15 @@ spec:
             - containerPort: 8080
               name: admin
           args:
-            - --api
-            - --kubernetes
-            - --logLevel=INFO
-            - --configfile=/config/traefik.toml
+            - --api.insecure
+            - --accesslog
+            - --entrypoints.web.Address=:80
+            - --entrypoints.websecure.Address=:443
+            - --providers.kubernetesCRD
+            - --certificatesresolvers.myresolver.acme.tlschallenge
+            - --certificatesresolvers.myresolver.acme.email="{{ .Values.global.ingress.letsencryptEmail }}"
+            - --certificatesresolvers.myresolver.acme.storage=acme.json
+            - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
       volumes:
         - name: config
           configMap:

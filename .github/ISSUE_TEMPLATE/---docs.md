@@ -1,5 +1,5 @@
 ---
-name: "\U0001F4DA Bug report"
+name: "\U0001F4DA Doc change"
 about: Request a doc change in Airy.
 title: ""
 labels: docs

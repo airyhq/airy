@@ -144,7 +144,7 @@ const SourcesInfo: SourceInfo[] = [
 const MainPage = (props: MainPageProps & RouteComponentProps) => {
   const {channels, config} = props;
 
-  console.log('config', config)
+  console.log('config', config);
   const [displayDialogFromSource, setDisplayDialogFromSource] = useState('');
 
   const OpenRequirementsDialog = ({source}: {source: string}): JSX.Element => {

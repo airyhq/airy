@@ -289,6 +289,8 @@ const MessageInput = (props: Props) => {
                   setInput={setInput}
                   selectTemplate={selectTemplate}
                   focus={focusInput}
+                  sendMessages={sendMessages}
+                  conversationId={conversation.id}
                 />
               </>
             )}

@@ -3,20 +3,44 @@ import {Picker} from 'emoji-mart';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
-import {uploadFile} from '../../../actions/files';
+import {uploadFile} from '../../../actions/attachments';
+import {SourceMessage, getOutboundMapper} from 'render';
+import {sendMessages} from '../../../actions/messages';
 import 'emoji-mart/css/emoji-mart.css';
 import TemplateSelector from '../TemplateSelector';
 import styles from './InputOptions.module.scss';
+import {connect, ConnectedProps} from 'react-redux';
+import {getAttachmentType} from '../../../services/attachments';
+console.log('sendMessages', sendMessages);
 
-const mapStateToProps = (state: StateModel) => ({
-  channels: Object.values(allChannelsConnected(state)),
-  config: state.data.config,
-});
+const mapDispatchToProps = {sendMessages};
 
-export const InputOptions = ({source, inputDisabled, input, setInput, selectTemplate, focus: focusInput}) => {
+const connector = connect(null, mapDispatchToProps);
+
+type Props = {
+  source: any;
+  conversationId: any;
+  inputDisabled: any;
+  input: any;
+  setInput: any;
+  selectTemplate: any;
+} & ConnectedProps<typeof connector>;
+
+export const InputOptions = ({
+  source,
+  inputDisabled,
+  input,
+  setInput,
+  selectTemplate,
+  focus: focusInput,
+  sendMessages,
+  conversationId,
+}) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+
+  const outboundMapper = getOutboundMapper(source);
 
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal) {
@@ -70,18 +94,30 @@ export const InputOptions = ({source, inputDisabled, input, setInput, selectTemp
   const selectFile = (event: any) => {
     const file = event.target.files[0];
     // console.log('file', file)
-    // const formData = new FormData();
-
-    var formData = new FormData();
+    const formData = new FormData();
     formData.append('file', file);
 
-    fetch('http://airy.core/media.uploadFile', {
-      method: 'POST',
-      body: JSON.stringify(formData),
-    })
-      .then(response => response.json())
-      .catch(error => console.error('Error: media upload', error))
-      .then(response => console.log('Success:', JSON.stringify(response)));
+    uploadFile(formData)
+      .then(response => {
+        //refactor this in the outbound mapper
+        const attachmentType = getAttachmentType(response.mediaUrl);
+        return sendMessages({
+          conversationId: conversationId,
+          message: {
+            attachment: {
+              type: attachmentType,
+              payload: {
+                is_reusable: true,
+                url: response.mediaUrl,
+              },
+            },
+          },
+        });
+      })
+      .catch(error => {
+        //trigger error: Cannot upload file
+        console.log('error', error);
+      });
   };
 
   return (
@@ -126,10 +162,8 @@ export const InputOptions = ({source, inputDisabled, input, setInput, selectTemp
         <label htmlFor="file">
           <Paperclip aria-hidden />
         </label>
-     
 
         <input type="file" id="file" name="file" onChange={selectFile} className={styles.fileInput} />
-        
       </button>
     </div>
   );

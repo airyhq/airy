@@ -95,7 +95,7 @@ export class HttpClient {
       headers['Content-Type'] = 'application/json';
     }
 
-        // else {
+    // else {
     //   fileheaders['multipart/form-data']
     // }
 
@@ -106,7 +106,6 @@ export class HttpClient {
       credentials: 'include',
       body: body as BodyInit,
     });
-
 
     return this.parseBody(response);
   }

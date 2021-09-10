@@ -75,7 +75,7 @@ public enum CommonProviders {
 
     };
 
-    public static final String DEFAULT_REDIRECT_URL = "{baseUrl}/{action}/oauth2/code/{registrationId}";
+    public static final String DEFAULT_REDIRECT_URL = "https://{baseHost}/{action}/oauth2/code/{registrationId}";
 
     protected final ClientRegistration.Builder getBuilder(String registrationId, ClientAuthenticationMethod method,
                                                           String redirectUri) {

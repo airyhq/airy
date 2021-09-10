@@ -20,7 +20,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: sources-api
+                name: source-api
                 port:
                   number: 80
           - path: /conversations

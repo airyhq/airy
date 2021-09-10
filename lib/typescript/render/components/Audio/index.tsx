@@ -11,14 +11,16 @@ type AudioRenderProps = {
 
 export const Audio = ({audioUrl}: AudioRenderProps) => {
   const player = useRef(null);
-  const [duration, setDuration] = useState<number>(0);
+  const [duration, setDuration] = useState<number | string>('');
+
+  console.log(duration);
 
   useEffect(() => {
     player.current?.load();
 
     setTimeout(() => {
       const totalTime = Number((player.current?.duration / 100).toFixed(2));
-      if (typeof totalTime === 'number') {
+      if (typeof totalTime === 'number' && !isNaN(totalTime)) {
         setDuration(Number(totalTime));
       }
     }, 200);
@@ -57,7 +59,7 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
             <DownloadIcon />
           </a>
         </div>
-        {duration && !isNaN(duration) && <span>{duration}</span>}
+        {duration && duration !== 0 && <span>{duration}</span>}
       </div>
     </div>
   );

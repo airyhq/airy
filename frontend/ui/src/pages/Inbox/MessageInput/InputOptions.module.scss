@@ -108,6 +108,14 @@
   }
 }
 
+.filesLabel {
+  cursor: pointer;
+}
+
 .fileInput {
   display: none;
+}
+
+.paperclipIcon {
+  transform: scale(1.5);
 }

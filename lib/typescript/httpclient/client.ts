@@ -83,21 +83,12 @@ export class HttpClient {
       'X-Requested-With': 'XMLHttpRequest',
     };
 
-    const fileheaders = {
-      Accept: 'multipart/form-data',
-      'X-Requested-With': 'XMLHttpRequest',
-    };
-
     if (!(body instanceof FormData)) {
       if (!isString(body)) {
         body = JSON.stringify(body);
       }
       headers['Content-Type'] = 'application/json';
     }
-
-    // else {
-    //   fileheaders['multipart/form-data']
-    // }
 
     const response: Response = await fetch(`${this.apiUrl}/${url}`, {
       method: 'POST',
@@ -213,7 +204,7 @@ export class HttpClient {
 
   public updateContact = this.getRequest<UpdateContactRequestPayload>(updateContactDef);
 
-  public uploadFile = this.getRequest<any>(uploadFileDef);
+  public uploadFile = this.getRequest<UploadFileRequestPayload>(uploadFileDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

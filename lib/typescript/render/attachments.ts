@@ -1,7 +1,7 @@
-const imageExtensions = ['jpeg', 'jpg', 'gif', 'png', 'ico', 'psd', 'svg', 'tiff', 'tif'];
+const imageExtensions = ['jpeg', 'jpg', 'gif', 'png', 'tiff', 'tif'];
 const videoExtensions = ['mp4', '3gp', 'ogg'];
 const audioExtensions = ['mp3', 'ogg', 'wav'];
-const fileExtensions = ['pdf', 'cvc', 'doc', 'docx', 'rtf', 'tex', 'wpd'];
+const fileExtensions = ['pdf', 'cvc', 'doc', 'docx', 'rtf', 'tex', 'wpd', 'psd', 'svg', 'ico'];
 
 export const getAttachmentType = (url: string) => {
   const urlArr = url.split('.');
@@ -25,9 +25,11 @@ export const getAttachmentType = (url: string) => {
 };
 
 export const getFileName = (fileUrl: string) => {
-  console.log('fileUrl', fileUrl);
   const fileUrlArr = fileUrl.split('/');
-  const fileName = fileUrlArr[fileUrlArr.length - 1];
 
-  return fileName;
+  console.log('fileUrlArr', fileUrlArr);
+
+  //return fileUrlArr[fileUrlArr.length - 1];
+
+  return fileUrlArr[fileUrlArr.length - 1].split('?')[0];
 };

@@ -11,10 +11,15 @@ import styles from './InputOptions.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import {connect, ConnectedProps} from 'react-redux';
 import {Template} from 'model';
+import {StateModel} from '../../../reducers/index';
 
 const mapDispatchToProps = {sendMessages};
 
-const connector = connect(null, mapDispatchToProps);
+const mapStateToProps = (state: StateModel) => ({
+  config: state.data.config,
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = {
   source: string;
   inputDisabled: boolean;
@@ -26,12 +31,12 @@ type Props = {
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
+  const {source, inputDisabled, input, setInput, selectTemplate, focusInput, sendMessages, conversationId, config} =
+    props;
+
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
-
-  const {source, inputDisabled, input, setInput, selectTemplate, focusInput, sendMessages, conversationId} = props;
-
   const outboundMapper = getOutboundMapper(source);
 
   const toggleEmojiDrawer = () => {
@@ -83,22 +88,17 @@ export const InputOptions = (props: Props) => {
     toggleEmojiDrawer();
   };
 
-  const selectFile = (event: any) => {
+  const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0];
     const formData = new FormData();
     formData.append('file', file);
 
-    uploadFile(formData)
-      .then((response): any => {
-        return sendMessages({
-          conversationId: conversationId,
-          message: outboundMapper.getAttachmentPayload(response.mediaUrl),
-        });
-      })
-      .catch(error => {
-        //trigger error: Cannot upload file
-        console.log('error', error);
+    uploadFile({file: formData}).then(response => {
+      return sendMessages({
+        conversationId: conversationId,
+        message: outboundMapper.getAttachmentPayload(response.mediaUrl),
       });
+    });
   };
 
   return (
@@ -137,15 +137,17 @@ export const InputOptions = (props: Props) => {
         </div>
       </button>
 
-      <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>
-        <div className={styles.actionToolTip}>File</div>
+      {config?.components['media-resolver'].enabled && (
+        <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>
+          <div className={styles.actionToolTip}>Files</div>
 
-        <label htmlFor="file">
-          <Paperclip aria-hidden />
-        </label>
+          <label htmlFor="file" className={styles.filesLabel}>
+            <Paperclip aria-hidden className={styles.paperclipIcon} />
+          </label>
 
-        <input type="file" id="file" name="file" onChange={selectFile} className={styles.fileInput} />
-      </button>
+          <input type="file" id="file" name="file" onChange={selectFile} className={styles.fileInput} />
+        </button>
+      )}
     </div>
   );
 };

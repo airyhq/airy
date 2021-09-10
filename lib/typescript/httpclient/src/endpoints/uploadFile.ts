@@ -1,7 +1,10 @@
 import {mapMessage} from 'model';
+import {UploadFileRequestPayload} from '../payload';
 
 export const uploadFileDef = {
   endpoint: 'media.uploadFile',
-  mapRequest: file => file,
+  mapRequest: (uploadFileRequest: UploadFileRequestPayload) => {
+    return uploadFileRequest.file;
+  },
   mapResponse: mapMessage,
 };

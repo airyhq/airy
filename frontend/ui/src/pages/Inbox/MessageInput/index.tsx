@@ -29,6 +29,7 @@ const mapDispatchToProps = {sendMessages};
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
   conversation: getConversation(state, ownProps),
   messages: getCurrentMessages(state, ownProps),
+  config: state.data.config,
   listTemplates,
 });
 
@@ -53,6 +54,8 @@ const contentResizedHeight = 200;
 
 const MessageInput = (props: Props) => {
   const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies, sendMessages} = props;
+
+  console.log('CONGIG', props.config);
 
   const outboundMapper = getOutboundMapper(source);
   const channelConnected = conversation.channel.connected;
@@ -291,6 +294,7 @@ const MessageInput = (props: Props) => {
                   focusInput={focusInput}
                   sendMessages={sendMessages}
                   conversationId={conversation.id}
+                  config={props.config}
                 />
               </>
             )}

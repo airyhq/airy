@@ -1,0 +1,601 @@
+
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20210910.163217.9432.0.001.json",
+    "dumpEventTime": "2021-09-10T16:32:17Z",
+    "dumpEventTimeStamp": "1631284337191",
+    "processId": 9432,
+    "cwd": "/Users/audreykadjar/airy",
+    "commandLine": [
+      "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node",
+      "--preserve-symlinks",
+      "--require",
+      "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/build_bazel_rules_nodejs/internal/node/node_patches.js",
+      "--require",
+      "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/build_bazel_rules_nodejs/third_party/github.com/source-map-support/register.js",
+      "--require=/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/com_github_airyhq_bazel_tools/util/chdir.js",
+      "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/bazel-out/darwin-fastbuild/bin/frontend/ui/bundle_server.sh.runfiles/airy_core/external/com_github_airyhq_bazel_tools/web/runWebpackDevServer.js",
+      "--entry=frontend/ui/src/index",
+      "--config=/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/com_github_airyhq_bazel_tools/web/webpack.dev.config.js",
+      "--tsconfig=/Users/audreykadjar/airy/bazel.tsconfig.json",
+      "--outputDict={\"publicPath\":\"/ui\"}",
+      "--aliases={}",
+      "--index=/Users/audreykadjar/airy/frontend/ui/development.html",
+      "--defines={\"process.env.API_HOST\":\"'http://airy.core'\"}"
+    ],
+    "nodejsVersion": "v12.13.0",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "darwin",
+    "componentVersions": {
+      "node": "12.13.0",
+      "v8": "7.7.299.13-node.12",
+      "uv": "1.32.0",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.39.2",
+      "napi": "5",
+      "llhttp": "1.1.4",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1d",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019a",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "lts": "Erbium",
+      "headersUrl": "https://nodejs.org/download/release/v12.13.0/node-v12.13.0-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.13.0/node-v12.13.0.tar.gz"
+    },
+    "osName": "Darwin",
+    "osRelease": "19.6.0",
+    "osVersion": "Darwin Kernel Version 19.6.0: Mon Aug 31 22:12:52 PDT 2020; root:xnu-6153.141.2~1/RELEASE_X86_64",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 4845110,
+        "nice": 0,
+        "sys": 7952240,
+        "idle": 19013190,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 714620,
+        "nice": 0,
+        "sys": 1197110,
+        "idle": 29898330,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 4627960,
+        "nice": 0,
+        "sys": 7175960,
+        "idle": 20006140,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 644690,
+        "nice": 0,
+        "sys": 942470,
+        "idle": 30222890,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 4417970,
+        "nice": 0,
+        "sys": 6556670,
+        "idle": 20835410,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 628710,
+        "nice": 0,
+        "sys": 841840,
+        "idle": 30339510,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 4024820,
+        "nice": 0,
+        "sys": 5438150,
+        "idle": 22347080,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz",
+        "speed": 2400,
+        "user": 629480,
+        "nice": 0,
+        "sys": 794730,
+        "idle": 30385840,
+        "irq": 0
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "lo0",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::1",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 1
+      },
+      {
+        "name": "en5",
+        "internal": false,
+        "mac": "ac:de:48:00:11:22",
+        "address": "fe80::aede:48ff:fe00:1122",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 4
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "3c:22:fb:0d:8d:69",
+        "address": "fe80::104a:559f:e812:b5e2",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 6
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "3c:22:fb:0d:8d:69",
+        "address": "192.168.1.120",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "3c:22:fb:0d:8d:69",
+        "address": "2a01:c22:a98f:e400:53:f69d:587a:16c3",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "en0",
+        "internal": false,
+        "mac": "3c:22:fb:0d:8d:69",
+        "address": "2a01:c22:a98f:e400:d9a8:e58:8759:f8c0",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "awdl0",
+        "internal": false,
+        "mac": "3e:cc:30:33:62:05",
+        "address": "fe80::3ccc:30ff:fe33:6205",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 8
+      },
+      {
+        "name": "llw0",
+        "internal": false,
+        "mac": "3e:cc:30:33:62:05",
+        "address": "fe80::3ccc:30ff:fe33:6205",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 9
+      },
+      {
+        "name": "utun0",
+        "internal": false,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::ae:7160:92ea:a30c",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 15
+      },
+      {
+        "name": "utun1",
+        "internal": false,
+        "mac": "00:00:00:00:00:00",
+        "address": "fe80::5e68:bc61:e1d5:ddcb",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 16
+      },
+      {
+        "name": "vboxnet1",
+        "internal": false,
+        "mac": "0a:00:27:00:00:01",
+        "address": "192.168.99.1",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      }
+    ],
+    "host": "Audreys-MBP"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x000000010014da5c",
+      "symbol": "report::TriggerNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, v8::Local<v8::String>) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x000000010007e8a3",
+      "symbol": "node::OnFatalError(char const*, char const*) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x0000000100176267",
+      "symbol": "v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, bool) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x0000000100176203",
+      "symbol": "v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x00000001002fa2b5",
+      "symbol": "v8::internal::Heap::FatalProcessOutOfMemory(char const*) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x00000001002fb984",
+      "symbol": "v8::internal::Heap::RecomputeLimits(v8::internal::GarbageCollector) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x00000001002f8857",
+      "symbol": "v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::GCCallbackFlags) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x00000001002f683d",
+      "symbol": "v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x0000000100301f54",
+      "symbol": "v8::internal::Heap::AllocateRawWithLightRetry(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x0000000100301fcf",
+      "symbol": "v8::internal::Heap::AllocateRawWithRetryOrFail(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x00000001002cebc7",
+      "symbol": "v8::internal::Factory::NewFillerObject(int, bool, v8::internal::AllocationType) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x00000001005f7725",
+      "symbol": "v8::internal::Runtime_AllocateInYoungGeneration(int, unsigned long*, v8::internal::Isolate*) [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    },
+    {
+      "pc": "0x000000010092fbd9",
+      "symbol": "Builtins_CEntry_Return1_DontSaveFPRegs_ArgvOnStack_NoBuiltinExit [/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node]"
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 2170613760,
+    "totalCommittedMemory": 2167980888,
+    "usedMemory": 2099938648,
+    "availableMemory": 60870784,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 32568,
+        "capacity": 261872,
+        "used": 32296,
+        "available": 229576
+      },
+      "new_space": {
+        "memorySize": 33554432,
+        "committedMemory": 31458168,
+        "capacity": 16759808,
+        "used": 851944,
+        "available": 15907864
+      },
+      "old_space": {
+        "memorySize": 1876013056,
+        "committedMemory": 1875909320,
+        "capacity": 1843006928,
+        "used": 1842234928,
+        "available": 772000
+      },
+      "code_space": {
+        "memorySize": 5144576,
+        "committedMemory": 4942176,
+        "capacity": 4384832,
+        "used": 4384832,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 6819840,
+        "committedMemory": 6818944,
+        "capacity": 5145120,
+        "used": 5145120,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 248197120,
+        "committedMemory": 248197120,
+        "capacity": 246738872,
+        "used": 246738872,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 622592,
+        "committedMemory": 622592,
+        "capacity": 550656,
+        "used": 550656,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 16759808,
+        "used": 0,
+        "available": 16759808
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 528.474,
+    "kernelCpuSeconds": 97.5063,
+    "cpuConsumptionPercent": 15.2939,
+    "maxRss": 2919344635904,
+    "pageFaults": {
+      "IORequired": 12,
+      "IONotRequired": 9904237
+    },
+    "fsActivity": {
+      "reads": 0,
+      "writes": 0
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "RUNFILES": "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/bazel-out/darwin-fastbuild/bin/frontend/ui/bundle_server.sh.runfiles",
+    "BAZEL_PATCH_ROOTS": "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core,/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/node_modules,/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/bazel-out/darwin-fastbuild/bin/frontend/ui/bundle_server.sh.runfiles,/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/bazel-out/darwin-fastbuild/bin/frontend/ui/bundle_server.sh.runfiles/airy_core/node_modules,/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/external/npm/node_modules,/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/bazel-out/darwin-fastbuild/bin/frontend/ui/bundle_server.sh.runfiles/npm/node_modules,/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/bazel-out/darwin-fastbuild/bin/frontend/ui/bundle_server.sh.runfiles/airy_core/external/npm/node_modules",
+    "TERM_PROGRAM": "Apple_Terminal",
+    "BAZEL_TARGET": "//frontend/ui:bundle_server",
+    "RUNFILES_MANIFEST_FILE": "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/bazel-out/darwin-fastbuild/bin/frontend/ui/bundle_server.sh.runfiles_manifest",
+    "TERM": "xterm-256color",
+    "SHELL": "/bin/zsh",
+    "_RLOCATION_ISABS_PATTERN": "^/.*",
+    "TMPDIR": "/var/folders/z1/9_dfck5j4719ptf_nw4m9p4r0000gn/T/",
+    "TERM_PROGRAM_VERSION": "433",
+    "BAZELISK_SKIP_WRAPPER": "true",
+    "TERM_SESSION_ID": "CC5DBBA1-2F84-4107-9138-CF2BDCC720B9",
+    "ZSH": "/Users/audreykadjar/.oh-my-zsh",
+    "NODE_REPOSITORY_ARGS": "--preserve-symlinks",
+    "USER": "audreykadjar",
+    "SSH_AUTH_SOCK": "/private/tmp/com.apple.launchd.WIKSTHgO4W/Listeners",
+    "__CF_USER_TEXT_ENCODING": "0x1F5:0x0:0x2",
+    "PAGER": "less",
+    "LSCOLORS": "Gxfxcxdxbxegedabagacad",
+    "PATH": "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/build_bazel_rules_nodejs/internal/node/_node_bin:/Users/audreykadjar/Library/Caches/bazelisk/downloads/bazelbuild/bazel-4.0.0-darwin-x86_64/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin",
+    "LaunchInstanceID": "B3337503-505B-49EC-A706-8E59B1B1F164",
+    "BAZEL_NODE_RUNFILES_HELPER": "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/build_bazel_rules_nodejs/internal/runfiles/runfile_helper_main.js",
+    "PWD": "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/bazel-out/darwin-fastbuild/bin/frontend/ui/bundle_server.sh.runfiles/airy_core",
+    "BAZEL_NODE_PATCH_REQUIRE": "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/bazel-out/darwin-fastbuild/bin/frontend/ui/bundle_server_require_patch.js",
+    "XPC_FLAGS": "0x0",
+    "XPC_SERVICE_NAME": "0",
+    "HOME": "/Users/audreykadjar",
+    "SHLVL": "4",
+    "BAZEL_WORKSPACE": "airy_core",
+    "BUILD_WORKING_DIRECTORY": "/Users/audreykadjar/airy",
+    "LESS": "-R",
+    "LOGNAME": "audreykadjar",
+    "LC_CTYPE": "UTF-8",
+    "BUILD_WORKSPACE_DIRECTORY": "/Users/audreykadjar/airy",
+    "BAZEL_NODE_MODULES_ROOTS": ":npm",
+    "SECURITYSESSIONID": "186a6",
+    "BASH_FUNC_rlocation%%": "() {  if [[ \"${RUNFILES_LIB_DEBUG:-}\" == 1 ]]; then\n echo \"INFO[runfiles.bash]: rlocation($1): start\" 1>&2;\n fi;\n if [[ \"$1\" =~ $_RLOCATION_ISABS_PATTERN ]]; then\n if [[ \"${RUNFILES_LIB_DEBUG:-}\" == 1 ]]; then\n echo \"INFO[runfiles.bash]: rlocation($1): absolute path, return\" 1>&2;\n fi;\n echo \"$1\";\n else\n if [[ \"$1\" == */.. || \"$1\" == */./* || \"$1\" == \"*/.\" || \"$1\" == *//* ]]; then\n echo \"ERROR[runfiles.bash]: rlocation($1): path is not normalized\" 1>&2;\n return 1;\n else\n if [[ \"$1\" == \\\\* ]]; then\n echo \"ERROR[runfiles.bash]: rlocation($1): absolute path without\" \"drive name\" 1>&2;\n return 1;\n else\n readonly from_rootpath=$(normpath ${BAZEL_WORKSPACE:-/dev/null}/$1);\n if [[ -e \"${RUNFILES_DIR:-/dev/null}/$1\" ]]; then\n if [[ \"${RUNFILES_LIB_DEBUG:-}\" == 1 ]]; then\n echo \"INFO[runfiles.bash]: rlocation($1): found under RUNFILES_DIR ($RUNFILES_DIR), return\" 1>&2;\n fi;\n echo \"${RUNFILES_DIR}/$1\";\n else\n if [[ -e \"${RUNFILES_DIR:-/dev/null}/${from_rootpath}\" ]]; then\n if [[ \"${RUNFILES_LIB_DEBUG:-}\" == 1 ]]; then\n echo \"INFO[runfiles.bash]: rlocation($1): found under RUNFILES_DIR/BAZEL_WORKSPACE ($RUNFILES_DIR/$BAZEL_WORKSPACE), return\" 1>&2;\n fi;\n echo \"${RUNFILES_DIR}/${from_rootpath}\";\n else\n if [[ -f \"${RUNFILES_MANIFEST_FILE:-/dev/null}\" ]]; then\n if [[ \"${RUNFILES_LIB_DEBUG:-}\" == 1 ]]; then\n echo \"INFO[runfiles.bash]: rlocation($1): looking in RUNFILES_MANIFEST_FILE ($RUNFILES_MANIFEST_FILE)\" 1>&2;\n fi;\n local result=$(grep -m1 \"^$1 \" \"${RUNFILES_MANIFEST_FILE}\" | cut -d ' ' -f 2-);\n if [[ -z \"${result}\" ]]; then\n result=$(grep -m1 \"^${from_rootpath} \" \"${RUNFILES_MANIFEST_FILE}\" | cut -d ' ' -f 2-);\n fi;\n if [[ -e \"${result:-/dev/null}\" ]]; then\n if [[ \"${RUNFILES_LIB_DEBUG:-}\" == 1 ]]; then\n echo \"INFO[runfiles.bash]: rlocation($1): found in manifest as ($result)\" 1>&2;\n fi;\n echo \"$result\";\n else\n if [[ \"${RUNFILES_LIB_DEBUG:-}\" == 1 ]]; then\n echo \"INFO[runfiles.bash]: rlocation($1): not found in manifest\" 1>&2;\n fi;\n echo \"\";\n fi;\n else\n echo \"ERROR[runfiles.bash]: cannot look up runfile \\\"$1\\\" \" \"(RUNFILES_DIR=\\\"${RUNFILES_DIR:-}\\\",\" \"RUNFILES_MANIFEST_FILE=\\\"${RUNFILES_MANIFEST_FILE:-}\\\")\" 1>&2;\n return 1;\n fi;\n fi;\n fi;\n fi;\n fi;\n fi\n}",
+    "BASH_FUNC_runfiles_export_envvars%%": "() {  if [[ ! -f \"${RUNFILES_MANIFEST_FILE:-/dev/null}\" && ! -d \"${RUNFILES_DIR:-/dev/null}\" ]]; then\n return 1;\n fi;\n if [[ ! -f \"${RUNFILES_MANIFEST_FILE:-/dev/null}\" ]]; then\n if [[ -f \"$RUNFILES_DIR/MANIFEST\" ]]; then\n export RUNFILES_MANIFEST_FILE=\"$RUNFILES_DIR/MANIFEST\";\n else\n if [[ -f \"${RUNFILES_DIR}_manifest\" ]]; then\n export RUNFILES_MANIFEST_FILE=\"${RUNFILES_DIR}_manifest\";\n else\n export RUNFILES_MANIFEST_FILE=;\n fi;\n fi;\n else\n if [[ ! -d \"${RUNFILES_DIR:-/dev/null}\" ]]; then\n if [[ \"$RUNFILES_MANIFEST_FILE\" == */MANIFEST && -d \"${RUNFILES_MANIFEST_FILE%/MANIFEST}\" ]]; then\n export RUNFILES_DIR=\"${RUNFILES_MANIFEST_FILE%/MANIFEST}\";\n export JAVA_RUNFILES=\"$RUNFILES_DIR\";\n else\n if [[ \"$RUNFILES_MANIFEST_FILE\" == *_manifest && -d \"${RUNFILES_MANIFEST_FILE%_manifest}\" ]]; then\n export RUNFILES_DIR=\"${RUNFILES_MANIFEST_FILE%_manifest}\";\n export JAVA_RUNFILES=\"$RUNFILES_DIR\";\n else\n export RUNFILES_DIR=;\n fi;\n fi;\n fi;\n fi\n}",
+    "_": "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node",
+    "WEBPACK_DEV_SERVER": "true"
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": 0,
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 24576,
+      "hard": "unlimited"
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": 67104768
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": 2784,
+      "hard": 2784
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/external/nodejs_darwin_amd64/bin/nodejs/bin/node",
+    "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+    "/usr/lib/libSystem.B.dylib",
+    "/usr/lib/libc++.1.dylib",
+    "/usr/lib/libobjc.A.dylib",
+    "/usr/lib/libfakelink.dylib",
+    "/usr/lib/libDiagnosticMessagesClient.dylib",
+    "/usr/lib/libicucore.A.dylib",
+    "/usr/lib/libz.1.dylib",
+    "/usr/lib/libc++abi.dylib",
+    "/usr/lib/system/libcache.dylib",
+    "/usr/lib/system/libcommonCrypto.dylib",
+    "/usr/lib/system/libcompiler_rt.dylib",
+    "/usr/lib/system/libcopyfile.dylib",
+    "/usr/lib/system/libcorecrypto.dylib",
+    "/usr/lib/system/libdispatch.dylib",
+    "/usr/lib/system/libdyld.dylib",
+    "/usr/lib/system/libkeymgr.dylib",
+    "/usr/lib/system/liblaunch.dylib",
+    "/usr/lib/system/libmacho.dylib",
+    "/usr/lib/system/libquarantine.dylib",
+    "/usr/lib/system/libremovefile.dylib",
+    "/usr/lib/system/libsystem_asl.dylib",
+    "/usr/lib/system/libsystem_blocks.dylib",
+    "/usr/lib/system/libsystem_c.dylib",
+    "/usr/lib/system/libsystem_configuration.dylib",
+    "/usr/lib/system/libsystem_coreservices.dylib",
+    "/usr/lib/system/libsystem_darwin.dylib",
+    "/usr/lib/system/libsystem_dnssd.dylib",
+    "/usr/lib/system/libsystem_featureflags.dylib",
+    "/usr/lib/system/libsystem_info.dylib",
+    "/usr/lib/system/libsystem_m.dylib",
+    "/usr/lib/system/libsystem_malloc.dylib",
+    "/usr/lib/system/libsystem_networkextension.dylib",
+    "/usr/lib/system/libsystem_notify.dylib",
+    "/usr/lib/system/libsystem_sandbox.dylib",
+    "/usr/lib/system/libsystem_secinit.dylib",
+    "/usr/lib/system/libsystem_kernel.dylib",
+    "/usr/lib/system/libsystem_platform.dylib",
+    "/usr/lib/system/libsystem_pthread.dylib",
+    "/usr/lib/system/libsystem_symptoms.dylib",
+    "/usr/lib/system/libsystem_trace.dylib",
+    "/usr/lib/system/libunwind.dylib",
+    "/usr/lib/system/libxpc.dylib",
+    "/private/var/tmp/_bazel_audreykadjar/581a1d2d053cf391868ef8904ea46761/execroot/airy_core/node_modules/fsevents/build/Release/fse.node",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+    "/System/Library/Frameworks/CFNetwork.framework/Versions/A/CFNetwork",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/FSEvents",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/CarbonCore",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Metadata",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/OSServices.framework/Versions/A/OSServices",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SearchKit.framework/Versions/A/SearchKit",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/AE.framework/Versions/A/AE",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/LaunchServices",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/DictionaryServices.framework/Versions/A/DictionaryServices",
+    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/SharedFileList.framework/Versions/A/SharedFileList",
+    "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+    "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+    "/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
+    "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+    "/usr/lib/libsqlite3.dylib",
+    "/usr/lib/libxml2.2.dylib",
+    "/usr/lib/libnetwork.dylib",
+    "/usr/lib/libapple_nghttp2.dylib",
+    "/usr/lib/libauto.dylib",
+    "/usr/lib/libcompression.dylib",
+    "/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration",
+    "/usr/lib/libarchive.2.dylib",
+    "/usr/lib/liblangid.dylib",
+    "/usr/lib/libCRFSuite.dylib",
+    "/usr/lib/liblzma.5.dylib",
+    "/usr/lib/libenergytrace.dylib",
+    "/usr/lib/libbsm.0.dylib",
+    "/usr/lib/system/libkxld.dylib",
+    "/System/Library/PrivateFrameworks/AppleFSCompression.framework/Versions/A/AppleFSCompression",
+    "/usr/lib/libcoretls.dylib",
+    "/usr/lib/libcoretls_cfhelpers.dylib",
+    "/usr/lib/libpam.2.dylib",
+    "/usr/lib/libxar.1.dylib",
+    "/usr/lib/libbz2.1.0.dylib",
+    "/usr/lib/libiconv.2.dylib",
+    "/usr/lib/libcharset.1.dylib",
+    "/usr/lib/libpcap.A.dylib",
+    "/System/Library/Frameworks/NetFS.framework/Versions/A/NetFS",
+    "/System/Library/PrivateFrameworks/NetAuth.framework/Versions/A/NetAuth",
+    "/System/Library/PrivateFrameworks/login.framework/Versions/A/Frameworks/loginsupport.framework/Versions/A/loginsupport",
+    "/System/Library/PrivateFrameworks/TCC.framework/Versions/A/TCC",
+    "/System/Library/PrivateFrameworks/CoreNLP.framework/Versions/A/CoreNLP",
+    "/System/Library/PrivateFrameworks/MetadataUtilities.framework/Versions/A/MetadataUtilities",
+    "/usr/lib/libmecabra.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate",
+    "/usr/lib/libmecab.dylib",
+    "/usr/lib/libgermantok.dylib",
+    "/usr/lib/libThaiTokenizer.dylib",
+    "/usr/lib/libChineseTokenizer.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vImage.framework/Versions/A/vImage",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/vecLib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvMisc.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libvDSP.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLAPACK.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLinearAlgebra.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libSparseBLAS.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libQuadrature.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBNNS.dylib",
+    "/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libSparse.dylib",
+    "/System/Library/PrivateFrameworks/LanguageModeling.framework/Versions/A/LanguageModeling",
+    "/System/Library/PrivateFrameworks/CoreEmoji.framework/Versions/A/CoreEmoji",
+    "/System/Library/PrivateFrameworks/LinguisticData.framework/Versions/A/LinguisticData",
+    "/System/Library/PrivateFrameworks/Lexicon.framework/Versions/A/Lexicon",
+    "/usr/lib/libcmph.dylib",
+    "/System/Library/Frameworks/OpenDirectory.framework/Versions/A/Frameworks/CFOpenDirectory.framework/Versions/A/CFOpenDirectory",
+    "/System/Library/Frameworks/OpenDirectory.framework/Versions/A/OpenDirectory",
+    "/System/Library/PrivateFrameworks/APFS.framework/Versions/A/APFS",
+    "/System/Library/Frameworks/SecurityFoundation.framework/Versions/A/SecurityFoundation",
+    "/usr/lib/libutil.dylib",
+    "/System/Library/PrivateFrameworks/CoreServicesStore.framework/Versions/A/CoreServicesStore",
+    "/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
+    "/System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Versions/A/BackgroundTaskManagement",
+    "/usr/lib/libxslt.1.dylib",
+    "/Users/audreykadjar/airy/node_modules/chokidar/node_modules/fsevents/fsevents.node"
+  ]
+}

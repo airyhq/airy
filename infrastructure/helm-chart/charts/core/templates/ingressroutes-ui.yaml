@@ -9,7 +9,7 @@ spec:
   entryPoints: []
   routes:
   - kind: Rule
-    match: PathPrefix(`/ui`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/ui`)
     middlewares:
     - name: airy-core-ui
     priority: 0
@@ -18,7 +18,7 @@ spec:
       name: "frontend-ui"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/chatplugin/ui`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/chatplugin/ui`)
     middlewares:
     - name: airy-core-chatplugin-ui
     priority: 0
@@ -26,6 +26,8 @@ spec:
     - kind: Service
       name: "frontend-chat-plugin"
       port: 80
+  tls:
+    certResolver: myresolver
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
@@ -58,10 +60,12 @@ spec:
   entryPoints: []
   routes:
   - kind: Rule
-    match: Path(`/`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && Path(`/`)
     middlewares: []
     priority: 0
     services:
     - kind: Service
       name: "frontend-ui"
       port: 80
+  tls:
+    certResolver: myresolver

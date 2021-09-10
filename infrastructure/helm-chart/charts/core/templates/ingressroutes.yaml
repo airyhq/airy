@@ -7,7 +7,7 @@ spec:
   entryPoints: []
   routes:
   - kind: Rule
-    match: PathPrefix(`/ws.communication`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/ws.communication`)
     middlewares: []
     priority: 0
     services:
@@ -15,7 +15,7 @@ spec:
       name: "api-websocket"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/conversations`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/conversations`)
     middlewares: []
     priority: 0
     services:
@@ -23,7 +23,7 @@ spec:
       name: "api-communication"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/messages`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/messages`)
     middlewares: []
     priority: 0
     services:
@@ -31,7 +31,7 @@ spec:
       name: "api-communication"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/metadata.upsert`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/metadata.upsert`)
     middlewares: []
     priority: 0
     services:
@@ -39,7 +39,7 @@ spec:
       name: "api-communication"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/media.uploadFile`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/media.uploadFile`)
     middlewares: []
     priority: 0
     services:
@@ -47,7 +47,7 @@ spec:
       name: "media-resolver"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/login`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/login`)
     middlewares: []
     priority: 0
     services:
@@ -55,7 +55,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/logout`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/logout`)
     middlewares: []
     priority: 0
     services:
@@ -63,7 +63,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/oauth`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/oauth`)
     middlewares: []
     priority: 0
     services:
@@ -71,7 +71,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/client.config`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/client.config`)
     middlewares: []
     priority: 0
     services:
@@ -79,7 +79,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/users.getProfile`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/users.getProfile`)
     middlewares: []
     priority: 0
     services:
@@ -87,7 +87,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/channels.list`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/channels.list`)
     middlewares: []
     priority: 0
     services:
@@ -95,7 +95,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/channels.info`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/channels.info`)
     middlewares: []
     priority: 0
     services:
@@ -103,7 +103,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/channels.update`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/channels.update`)
     middlewares: []
     priority: 0
     services:
@@ -111,7 +111,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/channels.chatplugin`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/channels.chatplugin`)
     middlewares: []
     priority: 0
     services:
@@ -119,7 +119,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/webhooks`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/webhooks`)
     middlewares: []
     priority: 0
     services:
@@ -127,7 +127,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/tags`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/tags`)
     middlewares: []
     priority: 0
     services:
@@ -135,7 +135,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/templates`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/templates`)
     middlewares: []
     priority: 0
     services:
@@ -143,7 +143,7 @@ spec:
       name: "api-admin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/channels.facebook`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/channels.facebook`)
     middlewares: []
     priority: 0
     services:
@@ -151,7 +151,7 @@ spec:
       name: "sources-facebook-connector"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/channels.instagram`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/channels.instagram`)
     middlewares: []
     priority: 0
     services:
@@ -159,7 +159,7 @@ spec:
       name: "sources-facebook-connector"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/channels.viber`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/channels.viber`)
     middlewares: []
     priority: 0
     services:
@@ -167,7 +167,7 @@ spec:
       name: "sources-viber-connector"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/channels.google`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/channels.google`)
     middlewares: []
     priority: 0
     services:
@@ -175,7 +175,7 @@ spec:
       name: "sources-google-connector"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/channels.twilio`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/channels.twilio`)
     middlewares: []
     priority: 0
     services:
@@ -183,7 +183,7 @@ spec:
       name: "sources-twilio-connector"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/facebook`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/facebook`)
     middlewares: []
     priority: 0
     services:
@@ -191,7 +191,7 @@ spec:
       name: "sources-facebook-connector"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/google`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/google`)
     middlewares: []
     priority: 0
     services:
@@ -199,7 +199,7 @@ spec:
       name: "sources-google-connector"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/twilio`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/twilio`)
     middlewares: []
     priority: 0
     services:
@@ -207,7 +207,7 @@ spec:
       name: "sources-twilio-connector"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/ws.chatplugin`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/ws.chatplugin`)
     middlewares: []
     priority: 0
     services:
@@ -215,10 +215,12 @@ spec:
       name: "sources-chatplugin"
       port: 80
   - kind: Rule
-    match: PathPrefix(`/chatplugin`)
+    match: Host(`{{ .Values.global.kubernetes.host }}`) && PathPrefix(`/chatplugin`)
     middlewares: []
     priority: 0
     services:
     - kind: Service
       name: "sources-chatplugin"
       port: 80
+  tls:
+    certResolver: myresolver

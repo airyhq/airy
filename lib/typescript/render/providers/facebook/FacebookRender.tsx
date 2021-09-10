@@ -1,8 +1,6 @@
 import React from 'react';
 import {RenderPropsUnion} from '../../props';
-import {Text} from '../../components/Text';
-import {Image} from '../../components/Image';
-import {Video} from '../../components/Video';
+import {Text, Image, Video, Audio, File} from '../../components';
 import {QuickReplies} from './components/QuickReplies';
 import {
   AttachmentUnion,
@@ -44,6 +42,12 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
     case 'video':
       return <Video videoUrl={content.videoUrl} />;
+
+    case 'audio':
+      return <Audio audioUrl={content.audioUrl} />;
+
+    case 'file':
+      return <File fileUrl={content.fileUrl} />;
 
     case 'buttonTemplate':
       return <ButtonTemplate template={content} />;
@@ -92,6 +96,20 @@ const parseAttachment = (
     return {
       type: 'image',
       imageUrl: attachment.payload.url,
+    };
+  }
+
+  if (attachment.type === 'audio') {
+    return {
+      type: 'audio',
+      audioUrl: attachment.payload.url,
+    };
+  }
+
+  if (attachment.type === 'file') {
+    return {
+      type: 'file',
+      fileUrl: attachment.payload.url,
     };
   }
 

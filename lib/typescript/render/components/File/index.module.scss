@@ -1,0 +1,24 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.container {
+  background-color: var(--color-light-gray);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.container a,
+.container a:link,
+.container a:hover,
+.container a:visited {
+  @include font-s;
+  text-decoration: none;
+  color: var(--color-text-contrast);
+}
+
+.container svg {
+  margin-right: 4px;
+}

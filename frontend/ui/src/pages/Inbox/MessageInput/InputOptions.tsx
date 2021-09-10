@@ -4,41 +4,33 @@ import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
 import {uploadFile} from '../../../actions/attachments';
-import {SourceMessage, getOutboundMapper} from 'render';
-import {sendMessages} from '../../../actions/messages';
+import {getOutboundMapper} from 'render';
 import 'emoji-mart/css/emoji-mart.css';
 import TemplateSelector from '../TemplateSelector';
 import styles from './InputOptions.module.scss';
+import {sendMessages} from '../../../actions/messages';
 import {connect, ConnectedProps} from 'react-redux';
-import {getAttachmentType} from '../../../services/attachments';
-console.log('sendMessages', sendMessages);
+import {Template} from 'model';
 
 const mapDispatchToProps = {sendMessages};
 
 const connector = connect(null, mapDispatchToProps);
-
 type Props = {
-  source: any;
-  conversationId: any;
-  inputDisabled: any;
-  input: any;
-  setInput: any;
-  selectTemplate: any;
+  source: string;
+  inputDisabled: boolean;
+  input: string;
+  setInput: (input: string) => void;
+  selectTemplate: (template: Template) => void;
+  focusInput: () => void;
+  conversationId: string;
 } & ConnectedProps<typeof connector>;
 
-export const InputOptions = ({
-  source,
-  inputDisabled,
-  input,
-  setInput,
-  selectTemplate,
-  focus: focusInput,
-  sendMessages,
-  conversationId,
-}) => {
+export const InputOptions = (props: Props) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+
+  const {source, inputDisabled, input, setInput, selectTemplate, focusInput, sendMessages, conversationId} = props;
 
   const outboundMapper = getOutboundMapper(source);
 
@@ -93,25 +85,14 @@ export const InputOptions = ({
 
   const selectFile = (event: any) => {
     const file = event.target.files[0];
-    // console.log('file', file)
     const formData = new FormData();
     formData.append('file', file);
 
     uploadFile(formData)
-      .then(response => {
-        //refactor this in the outbound mapper
-        const attachmentType = getAttachmentType(response.mediaUrl);
+      .then((response): any => {
         return sendMessages({
           conversationId: conversationId,
-          message: {
-            attachment: {
-              type: attachmentType,
-              payload: {
-                is_reusable: true,
-                url: response.mediaUrl,
-              },
-            },
-          },
+          message: outboundMapper.getAttachmentPayload(response.mediaUrl),
         });
       })
       .catch(error => {

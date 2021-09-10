@@ -1,0 +1,50 @@
+@import 'assets/scss/colors.scss';
+
+.wrapper {
+  text-align: center;
+  margin: 0 auto;
+  padding: 0px;
+  max-width: 300px;
+  width: 300px;
+  padding: 10px;
+}
+
+.player {
+  background-color: var(--color-light-gray);
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 12px;
+}
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+}
+input[type='image'] {
+  float: left;
+  height: 20px;
+  margin-left: 2px;
+  margin-right: 5px;
+  margin-top: 2px;
+}
+#vol_img {
+  margin-left: 150px;
+  width: 20px;
+}
+
+.wrapper a,
+.wrapper a:hover,
+.wrapper a:link,
+.wrapper a:visited,
+.wrapper a:active {
+  color: var(--color-text-contrast);
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}

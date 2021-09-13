@@ -1,27 +1,23 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Picker} from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
 import {getOutboundMapper} from 'render';
 import {FacebookMapper} from 'render/outbound/facebook';
-import 'emoji-mart/css/emoji-mart.css';
 import TemplateSelector from '../TemplateSelector';
-import styles from './InputOptions.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import {connect, ConnectedProps} from 'react-redux';
 import {Template, Source} from 'model';
-import {StateModel} from '../../../reducers/index';
 import {HttpClientInstance} from '../../../InitializeAiryApi';
 import {ErrorPopUp} from 'components';
+import styles from './InputOptions.module.scss';
 
 const mapDispatchToProps = {sendMessages};
 
-const mapStateToProps = (state: StateModel) => ({
-  config: state.data.config,
-});
+const connector = connect(null, mapDispatchToProps);
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = {
   source: Source;
   inputDisabled: boolean;
@@ -30,17 +26,35 @@ type Props = {
   selectTemplate: (template: Template) => void;
   focusInput: () => void;
   conversationId: string;
+  mediaComponentConfig: {
+    enabled: boolean;
+    healthy: boolean;
+  };
+  uploadFile: any;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
-  const {source, inputDisabled, input, setInput, selectTemplate, focusInput, sendMessages, conversationId, config} =
-    props;
+  const {
+    source,
+    inputDisabled,
+    input,
+    setInput,
+    selectTemplate,
+    focusInput,
+    conversationId,
+    uploadFile,
+    mediaComponentConfig,
+  } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
   const [maxFileSizeErrorPopUp, setMaxFileSizeErrorPopUp] = useState(false);
   const outboundMapper = getOutboundMapper('facebook') as FacebookMapper;
+
+  useEffect(() => {
+    console.log('maxFileSizeErrorPopUp', maxFileSizeErrorPopUp);
+  }, [maxFileSizeErrorPopUp]);
 
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal) {
@@ -91,28 +105,8 @@ export const InputOptions = (props: Props) => {
     toggleEmojiDrawer();
   };
 
-  const uploadAndSendFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files[0];
-
-    const sizeInBytes = event.target.files[0].size;
-    const sizeInMB = sizeInBytes / Math.pow(1024, 2);
-
-    console.log('sizeInMB', sizeInMB);
-
-    if (sizeInMB >= 25) {
-      setMaxFileSizeErrorPopUp(true);
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    HttpClientInstance.uploadFile({file: formData}).then((response: any) => {
-      return sendMessages({
-        conversationId: conversationId,
-        message: outboundMapper.getAttachmentPayload(response.mediaUrl),
-      });
-    });
+  const closeErrorPopUp = () => {
+    setMaxFileSizeErrorPopUp(false);
   };
 
   return (
@@ -152,15 +146,15 @@ export const InputOptions = (props: Props) => {
       </button>
 
       {maxFileSizeErrorPopUp && (
-        <div style={{zIndex: 2}}>
+        <div className={styles.fileSizeErrorPopUp}>
           <ErrorPopUp
-            message="Failed to upload the file. The maximum file size allowed is 25MB"
-            closeHandler={() => setMaxFileSizeErrorPopUp(false)}
+            message="Failed to upload the file. The maximum file size allowed is 25MB."
+            closeHandler={closeErrorPopUp}
           />
         </div>
       )}
 
-      {config?.components['media-resolver'].enabled && (
+      {mediaComponentConfig.enabled && (
         <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>
           <div className={styles.actionToolTip}>Files</div>
 
@@ -168,7 +162,7 @@ export const InputOptions = (props: Props) => {
             <Paperclip aria-hidden className={styles.paperclipIcon} />
           </label>
 
-          <input type="file" id="file" name="file" onChange={uploadAndSendFile} className={styles.fileInput} />
+          <input type="file" id="file" name="file" onChange={uploadFile} className={styles.fileInput} />
         </button>
       )}
     </div>

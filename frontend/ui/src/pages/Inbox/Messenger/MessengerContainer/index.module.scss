@@ -1,3 +1,6 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
 .wrapper {
   display: flex;
   flex: 1;
@@ -45,4 +48,28 @@
   height: auto;
   flex-direction: column;
   overflow: hidden;
+}
+
+.dragContainer {
+  display: none;
+}
+
+.dragOverlay {
+  z-index: 10;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-template-highlight);
+  opacity: 0.9;
+}
+
+h1 {
+  @include font-m;
 }

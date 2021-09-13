@@ -33,6 +33,7 @@ const MessengerContainer = ({
   match,
 }: MessengerContainerProps) => {
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
+  const [fileDragged, setFileDragged] = useState(false);
 
   useEffect(() => {
     if (!currentConversation && match.params.conversationId) {
@@ -44,9 +45,45 @@ const MessengerContainer = ({
     showSuggestedReplies(null);
   };
 
+  const dragOver = (e: any) => {
+    e.preventDefault();
+
+    //setFileDragged(true)
+
+    console.log('drag over');
+  };
+
+  const dragEnter = (e: any) => {
+    e.preventDefault();
+
+    setFileDragged(true);
+  };
+
+  const dragLeave = (e: any) => {
+    e.preventDefault();
+
+    //setFileDragged(false)
+  };
+
+  const fileDrop = (e: any) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+
+    setFileDragged(false);
+  };
+
   return (
     <>
-      <div className={styles.wrapper}>
+      <div
+        className={styles.wrapper}
+        onDragOver={dragOver}
+        onDragEnter={dragEnter}
+        onDragLeave={dragLeave}
+        onDrop={fileDrop}>
+        <div className={fileDragged ? styles.dragOverlay : styles.dragContainer}>
+          {' '}
+          <h1>Drop Files Here</h1>
+        </div>
         {!conversations ? (
           <div className={styles.emptyState}>
             <h1>Your conversations will appear here as soon as a contact messages you.</h1>

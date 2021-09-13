@@ -221,7 +221,7 @@ function facebookInbound(message): ContentUnion {
 }
 
 function facebookOutbound(message): ContentUnion {
-  const messageJson = message.content.message ?? message.content;
+  const messageJson = message?.content?.message || message?.content || message;
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {

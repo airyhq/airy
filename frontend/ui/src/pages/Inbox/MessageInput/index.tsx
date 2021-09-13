@@ -23,6 +23,8 @@ import SuggestedReplySelector from '../SuggestedReplySelector';
 import {InputOptions} from './InputOptions';
 
 import styles from './index.module.scss';
+import {HttpClientInstance} from '../../../InitializeAiryApi';
+import {FacebookMapper} from 'render/outbound/facebook';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -56,6 +58,7 @@ const MessageInput = (props: Props) => {
   const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies, sendMessages} = props;
 
   const outboundMapper = getOutboundMapper(source);
+  const fileOutboundMapper = getOutboundMapper('facebook') as FacebookMapper;
   const channelConnected = conversation.channel.connected;
 
   const [input, setInput] = useState('');
@@ -63,13 +66,20 @@ const MessageInput = (props: Props) => {
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
   const [closeIconWidth, setCloseIconWidth] = useState('');
   const [closeIconHeight, setCloseIconHeight] = useState('');
+  const [selectedFile, setSelectedFile] = useState<any>(true);
+  const [maxFileSizeErrorPopUp, setMaxFileSizeErrorPopUp] = useState(false);
+  const [mediaUrl, setMediaUrl] = useState(
+    'https://airy-media-test.s3.amazonaws.com/test-media/4bd099f9-0c3b-5233-81c4-ef32f78b062d.png'
+  );
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
   const templateSelectorDiv = useRef<HTMLDivElement>(null);
   const selectedSuggestedReplyDiv = useRef<HTMLDivElement>(null);
+  const fileSelectorDiv = useRef<HTMLDivElement>(null);
   const removeTemplateButton = useRef(null);
   const removeSuggestedRepliesButton = useRef(null);
+  const removeFileButton = useRef(null);
 
   const focusInput = () => textAreaRef?.current?.focus();
 
@@ -139,17 +149,41 @@ const MessageInput = (props: Props) => {
     }
   }, [selectedTemplate]);
 
+  const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files[0];
+    const fileSizeInMB = file.size / Math.pow(1024, 2);
+
+    if (fileSizeInMB >= 25) {
+      setMaxFileSizeErrorPopUp(true);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    HttpClientInstance.uploadFile({file: formData}).then((response: any) => {
+      setMediaUrl(response.mediaUrl);
+      setSelectedFile(true);
+    });
+  };
+
   const sendMessage = () => {
     if (!channelConnected) {
       return;
     }
     setSelectedSuggestedReply(null);
     setSelectedTemplate(null);
+
     sendMessages(
       selectedTemplate || selectedSuggestedReply
         ? {
             conversationId: conversation.id,
             message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+          }
+        : selectedFile && mediaUrl
+        ? {
+            conversationId: conversation.id,
+            message: fileOutboundMapper.getAttachmentPayload(mediaUrl),
           }
         : {
             conversationId: conversation.id,
@@ -240,6 +274,12 @@ const MessageInput = (props: Props) => {
     setCloseIconHeight('');
   };
 
+  const removeFileFromInput = () => {
+    setSelectedFile(null);
+    setCloseIconWidth('');
+    setCloseIconHeight('');
+  };
+
   return (
     <div className={styles.container}>
       {getLastMessageWithSuggestedReplies() && (
@@ -292,7 +332,8 @@ const MessageInput = (props: Props) => {
                   focusInput={focusInput}
                   sendMessages={sendMessages}
                   conversationId={conversation.id}
-                  config={props.config}
+                  mediaComponentConfig={props.config.components['media-resolver']}
+                  uploadFile={uploadFile}
                 />
               </>
             )}
@@ -332,6 +373,26 @@ const MessageInput = (props: Props) => {
                     message={selectedTemplate.message}
                     source={selectedTemplate.source}
                     contentType="template"
+                  />
+                </div>
+              </>
+            )}
+
+            {selectedFile && (
+              <>
+                <div className={styles.fileSelector} ref={fileSelectorDiv}>
+                  <button className={styles.removeButton} onClick={removeFileFromInput} ref={removeFileButton}>
+                    <Close
+                      style={{
+                        width: closeIconWidth ?? '',
+                        height: closeIconHeight ?? '',
+                      }}
+                    />
+                  </button>
+                  <SourceMessage
+                    message={fileOutboundMapper.getAttachmentPayload(mediaUrl)}
+                    source={'facebook'}
+                    contentType="message"
                   />
                 </div>
               </>

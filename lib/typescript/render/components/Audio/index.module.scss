@@ -1,21 +1,18 @@
 @import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
 
 .wrapper {
+  width: 250px;
   text-align: center;
-  margin: 0 auto;
-  padding: 0px;
-  max-width: 300px;
-  width: 300px;
-  padding: 10px;
 }
 
 .player {
   background-color: var(--color-light-gray);
-
   display: flex;
   justify-content: space-around;
   align-items: center;
   border-radius: 12px;
+  padding: 4px 0;
 }
 
 .buttonsContainer {
@@ -47,4 +44,8 @@ button {
   cursor: pointer;
   background-color: transparent;
   border: none;
+}
+
+.audioTime {
+  @include font-s;
 }

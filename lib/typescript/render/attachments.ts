@@ -1,5 +1,5 @@
 const imageExtensions = ['jpeg', 'jpg', 'gif', 'png', 'tiff', 'tif'];
-const videoExtensions = ['mp4', 'mov'];
+const videoExtensions = ['mp4', 'mov', 'wmv'];
 const audioExtensions = ['mp3', 'ogg', 'wav'];
 const fileExtensions = ['pdf', 'cvc', 'doc', 'docx', 'rtf', 'tex', 'wpd', 'psd', 'svg', 'ico'];
 

@@ -5,6 +5,7 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
 import {uploadFile} from '../../../actions/attachments';
 import {getOutboundMapper} from 'render';
+import {FacebookMapper} from 'render/outbound/facebook';
 import 'emoji-mart/css/emoji-mart.css';
 import TemplateSelector from '../TemplateSelector';
 import styles from './InputOptions.module.scss';
@@ -37,7 +38,7 @@ export const InputOptions = (props: Props) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
-  const outboundMapper = getOutboundMapper(source);
+  const outboundMapper = getOutboundMapper('facebook') as FacebookMapper;
 
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal) {

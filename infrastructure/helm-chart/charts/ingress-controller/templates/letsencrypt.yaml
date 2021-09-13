@@ -1,0 +1,116 @@
+{{ if .Values.global.ingress }}
+{{ if .Values.global.ingress.https }}
+{{ if .Values.global.ingress.letsencryptEmail }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: install-letsencrypt
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "11"
+    "helm.sh/hook-delete-policy": "hook-succeeded"
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      containers:
+      - name: install-letsencrypt
+        image: bitnami/kubectl
+        command: ["kubectl"]
+        args:
+        - "apply"
+        - "-f"
+        - "https://github.com/jetstack/cert-manager/releases/download/v1.5.3/cert-manager.yaml"
+      serviceAccountName: {{ .Values.serviceAccount }}
+      restartPolicy: Never
+  backoffLimit: 3
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+ name: letsencrypt
+ namespace: cert-manager
+ annotations:
+    "helm.sh/hook": "post-upgrade"
+    "helm.sh/hook-weight": "12"
+spec:
+ acme:
+   server: https://acme-v02.api.letsencrypt.org/directory
+   email: {{ .Values.global.ingress.letsencryptEmail }}
+   privateKeySecretRef:
+     name: letsencrypt
+   solvers:
+   - http01:
+       ingress:
+         class: nginx
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: update-ingress-annotations
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "13"
+    "helm.sh/hook-delete-policy": "hook-succeeded"
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      containers:
+      - name: annotate-ingress
+        image: "bitnami/kubectl"
+        command: ['/bin/sh', '/opt/provisioning/update-ingress-annotation.sh']
+        env:
+        - name: ISSUER
+          value: letsencrypt
+        volumeMounts:
+        - name: ingress-scripts
+          mountPath: /opt/provisioning
+      serviceAccountName: {{ .Values.serviceAccount }}
+      volumes:
+        - name: ingress-scripts
+          configMap:
+            name: ingress-scripts
+      restartPolicy: Never
+  backoffLimit: 3
+---
+{{ if .Values.global.ingress.host }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: update-ingress-tls
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "13"
+    "helm.sh/hook-delete-policy": "hook-succeeded"
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      containers:
+      - name: annotate-ingress
+        image: "bitnami/kubectl"
+        command: ['/bin/sh', '/opt/provisioning/update-ingress-tls.sh']
+        env:
+        - name: HOST
+          value: {{ .Values.global.ingress.host }}
+        volumeMounts:
+        - name: ingress-scripts
+          mountPath: /opt/provisioning
+      serviceAccountName: {{ .Values.serviceAccount }}
+      volumes:
+        - name: ingress-scripts
+          configMap:
+            name: ingress-scripts
+      restartPolicy: Never
+  backoffLimit: 3
+{{ end }}
+{{ end }}
+{{ end }}
+{{ end }}

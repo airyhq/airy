@@ -13,6 +13,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {Template, Source} from 'model';
 import {StateModel} from '../../../reducers/index';
 import {HttpClientInstance} from '../../../InitializeAiryApi';
+import {ErrorPopUp} from 'components';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -38,6 +39,7 @@ export const InputOptions = (props: Props) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+  const [maxFileSizeErrorPopUp, setMaxFileSizeErrorPopUp] = useState(false);
   const outboundMapper = getOutboundMapper('facebook') as FacebookMapper;
 
   const toggleEmojiDrawer = () => {
@@ -91,6 +93,17 @@ export const InputOptions = (props: Props) => {
 
   const uploadAndSendFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0];
+
+    const sizeInBytes = event.target.files[0].size;
+    const sizeInMB = sizeInBytes / Math.pow(1024, 2);
+
+    console.log('sizeInMB', sizeInMB);
+
+    if (sizeInMB >= 25) {
+      setMaxFileSizeErrorPopUp(true);
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', file);
 
@@ -137,6 +150,15 @@ export const InputOptions = (props: Props) => {
           <TemplateAlt aria-hidden className={styles.templateAltIcon} />
         </div>
       </button>
+
+      {maxFileSizeErrorPopUp && (
+        <div style={{zIndex: 2}}>
+          <ErrorPopUp
+            message="Failed to upload the file. The maximum file size allowed is 25MB"
+            closeHandler={() => setMaxFileSizeErrorPopUp(false)}
+          />
+        </div>
+      )}
 
       {config?.components['media-resolver'].enabled && (
         <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>

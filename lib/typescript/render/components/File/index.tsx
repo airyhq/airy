@@ -13,7 +13,7 @@ export const File = ({fileUrl}: FileRenderProps) => {
   return (
     <div className={styles.container}>
       <FileDownloadIcon />
-      <a href={fileUrl} download={fileUrl}>
+      <a href={fileUrl} download={fileUrl} target="_blank" rel="noopener noreferrer">
         {fileName}
       </a>
     </div>

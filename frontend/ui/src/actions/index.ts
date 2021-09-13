@@ -5,4 +5,3 @@ export * from './conversationsFilter';
 export * from './settings';
 export * from './tags';
 export * from './templates';
-export * from './attachments';

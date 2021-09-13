@@ -33,7 +33,6 @@ export const Audio = ({audioUrl}: AudioRenderProps) => {
 
   const resetIconAndTime = () => {
     setAudioPlaying(false);
-
     displayTotalTime();
   };
 

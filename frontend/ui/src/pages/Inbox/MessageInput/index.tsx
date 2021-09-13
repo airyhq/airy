@@ -55,8 +55,6 @@ const contentResizedHeight = 200;
 const MessageInput = (props: Props) => {
   const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies, sendMessages} = props;
 
-  console.log('CONGIG', props.config);
-
   const outboundMapper = getOutboundMapper(source);
   const channelConnected = conversation.channel.connected;
 

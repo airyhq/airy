@@ -3,7 +3,6 @@ import {Picker} from 'emoji-mart';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
-import {uploadFile} from '../../../actions/attachments';
 import {getOutboundMapper} from 'render';
 import {FacebookMapper} from 'render/outbound/facebook';
 import 'emoji-mart/css/emoji-mart.css';
@@ -11,8 +10,9 @@ import TemplateSelector from '../TemplateSelector';
 import styles from './InputOptions.module.scss';
 import {sendMessages} from '../../../actions/messages';
 import {connect, ConnectedProps} from 'react-redux';
-import {Template} from 'model';
+import {Template, Source} from 'model';
 import {StateModel} from '../../../reducers/index';
+import {HttpClientInstance} from '../../../InitializeAiryApi';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -22,7 +22,7 @@ const mapStateToProps = (state: StateModel) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = {
-  source: string;
+  source: Source;
   inputDisabled: boolean;
   input: string;
   setInput: (input: string) => void;
@@ -89,12 +89,12 @@ export const InputOptions = (props: Props) => {
     toggleEmojiDrawer();
   };
 
-  const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadAndSendFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0];
     const formData = new FormData();
     formData.append('file', file);
 
-    uploadFile({file: formData}).then(response => {
+    HttpClientInstance.uploadFile({file: formData}).then((response: any) => {
       return sendMessages({
         conversationId: conversationId,
         message: outboundMapper.getAttachmentPayload(response.mediaUrl),
@@ -146,7 +146,7 @@ export const InputOptions = (props: Props) => {
             <Paperclip aria-hidden className={styles.paperclipIcon} />
           </label>
 
-          <input type="file" id="file" name="file" onChange={selectFile} className={styles.fileInput} />
+          <input type="file" id="file" name="file" onChange={uploadAndSendFile} className={styles.fileInput} />
         </button>
       )}
     </div>

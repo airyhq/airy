@@ -44,12 +44,12 @@ type Props = {
   draggedAndDroppedFile: File;
 } & ConnectedProps<typeof connector>;
 
-export interface SelectedTemplate {
+interface SelectedTemplate {
   message: Template;
   source: Source;
 }
 
-export interface SelectedSuggestedReply {
+interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
 

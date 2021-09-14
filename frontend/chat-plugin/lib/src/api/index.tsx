@@ -67,6 +67,7 @@ export const authenticate = async (channelId: string, resumeToken?: string) =>
       return response.json();
     })
     .catch(error => {
+      // Get a fresh conversation in case the resume token expired
       if (resumeToken) {
         resetStorage(channelId);
         return authenticate(channelId);

@@ -149,6 +149,10 @@ const MessageInput = (props: Props) => {
     return selectedTemplate || selectedSuggestedReply || selectedFileUrl;
   };
 
+  const canSendMessage = () => {
+    return !((!selectedTemplate && !selectedSuggestedReply && !input) || !channelConnected);
+  };
+
   const sendMessage = () => {
     if (canSendMessage()) {
       setSelectedSuggestedReply(null);

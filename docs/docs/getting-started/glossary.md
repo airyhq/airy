@@ -81,17 +81,17 @@ Indicates whether the message was sent by a contact or not.
   One of:
 
   - `pending` message to be sent out
-  - `delivered` message has been sent to source
+  - `delivered` message has been sent to source or has arrived at Airy
   - `failed` message sending has terminally failed
 
 - `sentAt` timestamp
 
-- `updatedAt` timestamp null for messages that are inserted first time
+- `updatedAt` timestamp `null` for messages that are inserted first time
 
 ### Headers
 
-Header data contains information that is important for downstream processing. It
-also includes the message preview and tags that are useful for use cases like routing and automations.
+Header data contains information that is important for downstream processing and therefore cannot be separated from the message (as opposed to metadat).
+It also includes the message preview and tags that are useful for use cases like routing and automations.
 
 ## Metadata
 

@@ -2,7 +2,6 @@ package co.airy.core.api.communication;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
-import co.airy.model.conversation.Conversation;
 import co.airy.core.api.communication.dto.LuceneQueryResult;
 import co.airy.core.api.communication.lucene.AiryAnalyzer;
 import co.airy.core.api.communication.lucene.ExtendedQueryParser;
@@ -15,6 +14,7 @@ import co.airy.core.api.communication.payload.ConversationSetStateRequestPayload
 import co.airy.core.api.communication.payload.ConversationTagRequestPayload;
 import co.airy.core.api.communication.payload.ConversationUpdateContactRequestPayload;
 import co.airy.core.api.communication.payload.PaginationData;
+import co.airy.model.conversation.Conversation;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.Subject;
 import co.airy.model.metadata.dto.MetadataMap;
@@ -119,9 +119,9 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.info")
-    ResponseEntity<?> conversationInfo(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
+    ResponseEntity<?> conversationInfo(@RequestBody @Valid ConversationByIdRequestPayload payload) {
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
-        final Conversation conversation = store.get(requestPayload.getConversationId().toString());
+        final Conversation conversation = store.get(payload.getConversationId().toString());
 
         if (conversation == null) {
             return ResponseEntity.notFound().build();
@@ -145,9 +145,9 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.markRead")
-    ResponseEntity<?> conversationMarkRead(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
+    ResponseEntity<?> conversationMarkRead(@RequestBody @Valid ConversationByIdRequestPayload payload) {
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
-        final String conversationId = requestPayload.getConversationId().toString();
+        final String conversationId = payload.getConversationId().toString();
         final Conversation conversation = store.get(conversationId);
 
         if (conversation == null) {
@@ -169,9 +169,9 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.tag")
-    ResponseEntity<?> conversationTag(@RequestBody @Valid ConversationTagRequestPayload requestPayload) {
-        final String conversationId = requestPayload.getConversationId().toString();
-        final String tagId = requestPayload.getTagId().toString();
+    ResponseEntity<?> conversationTag(@RequestBody @Valid ConversationTagRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final String tagId = payload.getTagId().toString();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final Conversation conversation = store.get(conversationId);
 
@@ -191,9 +191,9 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.untag")
-    ResponseEntity<?> conversationUntag(@RequestBody @Valid ConversationTagRequestPayload requestPayload) {
-        final String conversationId = requestPayload.getConversationId().toString();
-        final String tagId = requestPayload.getTagId().toString();
+    ResponseEntity<?> conversationUntag(@RequestBody @Valid ConversationTagRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final String tagId = payload.getTagId().toString();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final Conversation conversation = store.get(conversationId);
 
@@ -213,9 +213,9 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.setState")
-    ResponseEntity<?> conversationSetState(@RequestBody @Valid ConversationSetStateRequestPayload requestPayload) {
-        final String conversationId = requestPayload.getConversationId().toString();
-        final String state = requestPayload.getState();
+    ResponseEntity<?> conversationSetState(@RequestBody @Valid ConversationSetStateRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final String state = payload.getState();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final Conversation conversation = store.get(conversationId);
 
@@ -235,8 +235,8 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.removeState")
-    ResponseEntity<?> conversationRemoveState(@RequestBody @Valid ConversationByIdRequestPayload requestPayload) {
-        final String conversationId = requestPayload.getConversationId().toString();
+    ResponseEntity<?> conversationRemoveState(@RequestBody @Valid ConversationByIdRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final Conversation conversation = store.get(conversationId);
 
@@ -255,9 +255,9 @@ public class ConversationsController {
     }
 
     @PostMapping("/conversations.updateContact")
-    ResponseEntity<?> conversationUpdateContact(@RequestBody @Valid ConversationUpdateContactRequestPayload requestPayload) {
-        final String conversationId = requestPayload.getConversationId().toString();
-        final String displayName = requestPayload.getDisplayName();
+    ResponseEntity<?> conversationUpdateContact(@RequestBody @Valid ConversationUpdateContactRequestPayload payload) {
+        final String conversationId = payload.getConversationId().toString();
+        final String displayName = payload.getDisplayName();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final Conversation conversation = store.get(conversationId);
 

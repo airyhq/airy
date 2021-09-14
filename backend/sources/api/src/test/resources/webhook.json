@@ -1,0 +1,33 @@
+{
+  "messages": [
+    {
+      "source_message_id": "source-message-id",
+      "source_conversation_id": "source-conversation-id",
+      "source_channel_id": "source-channel-id",
+      "source_sender_id": "source-sender-id",
+      "content": "Hello world",
+      "from_contact": true,
+      "sent_at": 1603661094560
+    }
+  ],
+  "metadata": [
+    {
+      "namespace": "conversation",
+      "source_id": "source-conversation-id",
+      "metadata": {
+        "contact": {
+          "display_name": "Margaret Hamilton"
+        }
+      }
+    },
+    {
+      "namespace": "message",
+      "source_id": "source-message-id",
+      "metadata": {
+        "reaction": {
+          "emoji": "❤️"
+        }
+      }
+    }
+  ]
+}

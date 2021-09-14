@@ -1,0 +1,47 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.textMessage {
+  display: inline-block;
+  overflow-wrap: break-word;
+  max-width: 500px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: 'Lato', sans-serif;
+  position: relative;
+}
+
+.contactContent {
+  @extend .textMessage;
+  background: var(--color-background-blue);
+  color: var(--color-text-contrast);
+}
+
+.memberContent {
+  @extend .textMessage;
+  background: var(--color-airy-blue);
+  color: white;
+}
+
+.messageLink {
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+.container {
+  margin-top: 5px;
+}
+
+.unknownSourceHeader {
+  display: flex;
+  align-items: center;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.7rem;
+  line-height: 1rem;
+}
+
+.unknownSource {
+  color: var(--color-text-gray);
+}

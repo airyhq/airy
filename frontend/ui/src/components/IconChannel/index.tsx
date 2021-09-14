@@ -14,6 +14,7 @@ import {ReactComponent as WhatsappAvatar} from 'assets/images/icons/whatsapp_ava
 import {ReactComponent as AiryAvatar} from 'assets/images/icons/airy_avatar.svg';
 import {ReactComponent as AiryIcon} from 'assets/images/icons/airy-icon.svg';
 import {ReactComponent as ViberIcon} from 'assets/images/icons/viber.svg';
+import {ReactComponent as BubbleIcon} from 'assets/images/icons/bubble.svg';
 
 import styles from './index.module.scss';
 
@@ -71,6 +72,11 @@ const SOURCE_INFO = {
     icon: () => <ViberIcon />,
     avatar: () => <ViberIcon />,
   },
+  unknown: {
+    text: 'Unknown Source',
+    icon: () => <BubbleIcon />,
+    avatar: () => <BubbleIcon />,
+  },
 };
 
 const IconChannel: React.FC<IconChannelProps> = ({
@@ -84,7 +90,7 @@ const IconChannel: React.FC<IconChannelProps> = ({
     channel = PlaceholderChannelData;
   }
 
-  const channelInfo = SOURCE_INFO[channel.source];
+  const channelInfo = SOURCE_INFO[channel.source] || SOURCE_INFO['unknown'];
   const fbFallback = SOURCE_INFO['facebook'];
   const isFromTwilioSource = channel.source === 'twilio.sms' || channel.source === 'twilio.whatsapp';
 

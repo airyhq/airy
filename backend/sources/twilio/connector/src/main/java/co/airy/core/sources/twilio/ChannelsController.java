@@ -35,22 +35,22 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.twilio.sms.connect")
-    ResponseEntity<?> connectSms(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        final String channelId = UUIDv5.fromNamespaceAndName("twilio.sms", requestPayload.getPhoneNumber()).toString();
+    ResponseEntity<?> connectSms(@RequestBody @Valid ConnectChannelRequestPayload payload) {
+        final String channelId = UUIDv5.fromNamespaceAndName("twilio.sms", payload.getPhoneNumber()).toString();
 
         final Channel channel = Channel.newBuilder()
                 .setId(channelId)
                 .setConnectionState(ChannelConnectionState.CONNECTED)
                 .setSource("twilio.sms")
-                .setSourceChannelId(requestPayload.getPhoneNumber())
+                .setSourceChannelId(payload.getPhoneNumber())
                 .build();
 
-        return connectChannel(channel, requestPayload.getName(), requestPayload.getImageUrl());
+        return connectChannel(channel, payload.getName(), payload.getImageUrl());
     }
 
     @PostMapping("/channels.twilio.whatsapp.connect")
-    ResponseEntity<?> connectWhatsapp(@RequestBody @Valid ConnectChannelRequestPayload requestPayload) {
-        final String phoneNumber = "whatsapp:" + requestPayload.getPhoneNumber();
+    ResponseEntity<?> connectWhatsapp(@RequestBody @Valid ConnectChannelRequestPayload payload) {
+        final String phoneNumber = "whatsapp:" + payload.getPhoneNumber();
         final String channelId = UUIDv5.fromNamespaceAndName("twilio.whatsapp", phoneNumber).toString();
 
         final Channel channel = Channel.newBuilder()
@@ -60,7 +60,7 @@ public class ChannelsController {
                 .setSourceChannelId(phoneNumber)
                 .build();
 
-        return connectChannel(channel, requestPayload.getName(), requestPayload.getImageUrl());
+        return connectChannel(channel, payload.getName(), payload.getImageUrl());
     }
 
     private ResponseEntity<?> connectChannel(Channel channel, String name, String imageUrl) {
@@ -84,17 +84,17 @@ public class ChannelsController {
     }
 
     @PostMapping("/channels.twilio.sms.disconnect")
-    ResponseEntity<?> disconnectSms(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
-        return disconnect(requestPayload);
+    ResponseEntity<?> disconnectSms(@RequestBody @Valid DisconnectChannelRequestPayload payload) {
+        return disconnect(payload);
     }
 
     @PostMapping("/channels.twilio.whatsapp.disconnect")
-    ResponseEntity<?> disconnectWhatsapp(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
-        return disconnect(requestPayload);
+    ResponseEntity<?> disconnectWhatsapp(@RequestBody @Valid DisconnectChannelRequestPayload payload) {
+        return disconnect(payload);
     }
 
-    private ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload requestPayload) {
-        final String channelId = requestPayload.getChannelId().toString();
+    private ResponseEntity<?> disconnect(@RequestBody @Valid DisconnectChannelRequestPayload payload) {
+        final String channelId = payload.getChannelId().toString();
 
         final Channel channel = stores.getChannelsStore().get(channelId);
 

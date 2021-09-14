@@ -1,6 +1,7 @@
 package co.airy.spring.auth.session;
 
 import co.airy.log.AiryLoggerFactory;
+import co.airy.spring.auth.Jwt;
 import co.airy.spring.auth.PrincipalAccess;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
@@ -62,7 +63,7 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
         return getStoredAuth(request).isPresent();
     }
 
-    private Optional<AiryAuth> getStoredAuth(HttpServletRequest request) {
+    private Optional<Authentication> getStoredAuth(HttpServletRequest request) {
         return getCookie(request)
                 .map((authCookie) -> {
                     try {
@@ -105,9 +106,9 @@ public class CookieSecurityContextRepository implements SecurityContextRepositor
                 try {
                     // Exchange the oauth2 session for an Airy JWT cookie session
                     final UserProfile profile = principalAccess.getUserProfile(authentication);
-                    final AiryAuth airyAuth = new AiryAuth(profile);
+                    final UserAuth userAuth = new UserAuth(profile);
 
-                    AuthCookie cookie = new AuthCookie(jwt.getAuthToken(airyAuth));
+                    AuthCookie cookie = new AuthCookie(jwt.getAuthToken(userAuth));
                     cookie.setSecure(request.isSecure());
                     response.addCookie(cookie);
                 } catch (JsonProcessingException e) {

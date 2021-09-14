@@ -2,7 +2,7 @@ package co.airy.model.metadata.dto;
 
 import co.airy.avro.communication.Metadata;
 import co.airy.log.AiryLoggerFactory;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.slf4j.Logger;
@@ -33,6 +33,7 @@ public class MetadataMap extends HashMap<String, Metadata> implements Serializab
         return aggregate;
     }
 
+    @JsonProperty
     public long getUpdatedAt() {
         return Optional.ofNullable(updatedAt)
                 // Backwards compatible for maps that have not recorded this value yet

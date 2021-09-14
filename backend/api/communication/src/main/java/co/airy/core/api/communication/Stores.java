@@ -4,7 +4,6 @@ import co.airy.avro.communication.Channel;
 import co.airy.avro.communication.Message;
 import co.airy.avro.communication.Metadata;
 import co.airy.avro.communication.ReadReceipt;
-import co.airy.model.conversation.Conversation;
 import co.airy.core.api.communication.dto.CountAction;
 import co.airy.core.api.communication.dto.Messages;
 import co.airy.core.api.communication.dto.UnreadCountState;
@@ -18,6 +17,7 @@ import co.airy.kafka.schema.application.ApplicationCommunicationMetadata;
 import co.airy.kafka.schema.application.ApplicationCommunicationReadReceipts;
 import co.airy.kafka.streams.KafkaStreamsWrapper;
 import co.airy.model.channel.dto.ChannelContainer;
+import co.airy.model.conversation.Conversation;
 import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.model.metadata.Subject;
@@ -39,7 +39,6 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +57,6 @@ import static co.airy.model.metadata.MetadataRepository.newConversationMetadata;
 import static java.util.stream.Collectors.toCollection;
 
 @Component
-@RestController
 public class Stores implements HealthIndicator, ApplicationListener<ApplicationStartedEvent>, DisposableBean {
     private static final String appId = "api.CommunicationStores";
 

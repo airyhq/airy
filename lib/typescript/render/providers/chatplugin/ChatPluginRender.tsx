@@ -13,6 +13,7 @@ export const ChatPluginRender = (props: RenderPropsUnion) => {
 };
 
 function render(content: ContentUnion, props: RenderPropsUnion) {
+  console.log('chatplugin content', content);
   const defaultProps = {
     fromContact: props.message.fromContact || false,
     commandCallback: 'commandCallback' in props ? props.commandCallback : null,

@@ -4,13 +4,10 @@ import 'emoji-mart/css/emoji-mart.css';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
-import {getOutboundMapper} from 'render';
-import {FacebookMapper} from 'render/outbound/facebook';
 import TemplateSelector from '../TemplateSelector';
 import {sendMessages} from '../../../actions/messages';
 import {connect, ConnectedProps} from 'react-redux';
 import {Template, Source} from 'model';
-import {HttpClientInstance} from '../../../InitializeAiryApi';
 import {ErrorPopUp} from 'components';
 import styles from './InputOptions.module.scss';
 
@@ -25,12 +22,13 @@ type Props = {
   setInput: (input: string) => void;
   selectTemplate: (template: Template) => void;
   focusInput: () => void;
-  conversationId: string;
   mediaComponentConfig: {
     enabled: boolean;
     healthy: boolean;
   };
-  uploadFile: any;
+  selectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  closeFileErrorPopUp: () => void;
+  maxFileSizeErrorPopUp: boolean;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -41,20 +39,17 @@ export const InputOptions = (props: Props) => {
     setInput,
     selectTemplate,
     focusInput,
-    conversationId,
-    uploadFile,
+    selectFile,
     mediaComponentConfig,
+    closeFileErrorPopUp,
+    maxFileSizeErrorPopUp,
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
-  const [maxFileSizeErrorPopUp, setMaxFileSizeErrorPopUp] = useState(false);
-  const outboundMapper = getOutboundMapper('facebook') as FacebookMapper;
 
-  useEffect(() => {
-    console.log('maxFileSizeErrorPopUp', maxFileSizeErrorPopUp);
-  }, [maxFileSizeErrorPopUp]);
+  //inputOptions is the child of Input
 
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal) {
@@ -105,10 +100,6 @@ export const InputOptions = (props: Props) => {
     toggleEmojiDrawer();
   };
 
-  const closeErrorPopUp = () => {
-    setMaxFileSizeErrorPopUp(false);
-  };
-
   return (
     <div className={styles.container}>
       {isShowingTemplateModal && (
@@ -149,7 +140,7 @@ export const InputOptions = (props: Props) => {
         <div className={styles.fileSizeErrorPopUp}>
           <ErrorPopUp
             message="Failed to upload the file. The maximum file size allowed is 25MB."
-            closeHandler={closeErrorPopUp}
+            closeHandler={closeFileErrorPopUp}
           />
         </div>
       )}
@@ -162,7 +153,7 @@ export const InputOptions = (props: Props) => {
             <Paperclip aria-hidden className={styles.paperclipIcon} />
           </label>
 
-          <input type="file" id="file" name="file" onChange={uploadFile} className={styles.fileInput} />
+          <input type="file" id="file" name="file" onChange={selectFile} className={styles.fileInput} />
         </button>
       )}
     </div>

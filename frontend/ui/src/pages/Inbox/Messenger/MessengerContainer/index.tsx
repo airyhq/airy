@@ -33,7 +33,8 @@ const MessengerContainer = ({
   match,
 }: MessengerContainerProps) => {
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
-  const [fileDragged, setFileDragged] = useState(false);
+  const [isFileDragged, setIsFileDragged] = useState(false);
+  const [dragAndDroppedFile, setDragAndDroppedFile] = useState<any>(null);
 
   useEffect(() => {
     if (!currentConversation && match.params.conversationId) {
@@ -47,41 +48,26 @@ const MessengerContainer = ({
 
   const dragOver = (e: any) => {
     e.preventDefault();
-
-    //setFileDragged(true)
-
-    console.log('drag over');
   };
 
   const dragEnter = (e: any) => {
     e.preventDefault();
-
-    setFileDragged(true);
-  };
-
-  const dragLeave = (e: any) => {
-    e.preventDefault();
-
-    //setFileDragged(false)
+    setIsFileDragged(true);
   };
 
   const fileDrop = (e: any) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
 
-    setFileDragged(false);
+    setDragAndDroppedFile(file);
+
+    setIsFileDragged(false);
   };
 
   return (
     <>
-      <div
-        className={styles.wrapper}
-        onDragOver={dragOver}
-        onDragEnter={dragEnter}
-        onDragLeave={dragLeave}
-        onDrop={fileDrop}>
-        <div className={fileDragged ? styles.dragOverlay : styles.dragContainer}>
-          {' '}
+      <div className={styles.wrapper} onDragOver={dragOver} onDragEnter={dragEnter} onDrop={fileDrop}>
+        <div className={isFileDragged ? styles.dragOverlay : styles.dragContainer}>
           <h1>Drop Files Here</h1>
         </div>
         {!conversations ? (
@@ -101,6 +87,7 @@ const MessengerContainer = ({
                   showSuggestedReplies={showSuggestedReplies}
                   hideSuggestedReplies={hideSuggestedReplies}
                   source={currentConversation.channel.source as Source}
+                  dragAndDroppedFile={dragAndDroppedFile}
                 />
               </>
             )}

@@ -4,12 +4,11 @@ import {sendMessages} from '../../../actions/messages';
 import {withRouter} from 'react-router-dom';
 import {Button} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
-import {SourceMessage, getOutboundMapper} from 'render';
+import {getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
-import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
 
 import {ConversationRouteProps} from '../index';
@@ -25,6 +24,7 @@ import {InputOptions} from './InputOptions';
 import styles from './index.module.scss';
 import {HttpClientInstance} from '../../../InitializeAiryApi';
 import {FacebookMapper} from 'render/outbound/facebook';
+import {InputSelector} from './InputSelector';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -41,21 +41,32 @@ type Props = {
   suggestions: Suggestions;
   showSuggestedReplies: (suggestions: Suggestions) => void;
   hideSuggestedReplies: () => void;
+  dragAndDroppedFile: any;
 } & ConnectedProps<typeof connector>;
 
-interface SelectedTemplate {
+export interface SelectedTemplate {
+  messageType: 'template';
   message: Template;
   source: Source;
 }
 
-interface SelectedSuggestedReply {
+export interface SelectedSuggestedReply {
+  messageType: 'suggestedReplies';
   message: SuggestedReply;
 }
 
-const contentResizedHeight = 200;
-
 const MessageInput = (props: Props) => {
-  const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies, sendMessages} = props;
+  const {
+    source,
+    conversation,
+    suggestions,
+    showSuggestedReplies,
+    hideSuggestedReplies,
+    sendMessages,
+    dragAndDroppedFile,
+  } = props;
+
+  const contentResizedHeight = 200;
 
   const outboundMapper = getOutboundMapper(source);
   const fileOutboundMapper = getOutboundMapper('facebook') as FacebookMapper;
@@ -64,93 +75,45 @@ const MessageInput = (props: Props) => {
   const [input, setInput] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
-  const [closeIconWidth, setCloseIconWidth] = useState('');
-  const [closeIconHeight, setCloseIconHeight] = useState('');
-  const [selectedFile, setSelectedFile] = useState<any>(true);
   const [maxFileSizeErrorPopUp, setMaxFileSizeErrorPopUp] = useState(false);
-  const [mediaUrl, setMediaUrl] = useState(
-    'https://airy-media-test.s3.amazonaws.com/test-media/4bd099f9-0c3b-5233-81c4-ef32f78b062d.png'
-  );
+  const [mediaUrl, setMediaUrl] = useState('');
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
-  const templateSelectorDiv = useRef<HTMLDivElement>(null);
-  const selectedSuggestedReplyDiv = useRef<HTMLDivElement>(null);
-  const fileSelectorDiv = useRef<HTMLDivElement>(null);
-  const removeTemplateButton = useRef(null);
-  const removeSuggestedRepliesButton = useRef(null);
-  const removeFileButton = useRef(null);
 
   const focusInput = () => textAreaRef?.current?.focus();
 
   useEffect(() => {
+    if (dragAndDroppedFile) {
+      uploadFile(dragAndDroppedFile);
+    }
+  }, [dragAndDroppedFile]);
+
+  useEffect(() => {
     setInput('');
-    removeTemplateFromInput();
+    removeElementFromInput();
     focusInput();
   }, [conversation.id]);
 
   useEffect(() => {
-    textAreaRef.current.style.height = 'inherit';
-    textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, contentResizedHeight)}px`;
+    if (textAreaRef && textAreaRef.current) {
+      textAreaRef.current.style.height = 'inherit';
+      textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, contentResizedHeight)}px`;
+    }
   }, [input]);
 
   useEffect(() => {
-    if (!conversation.channel.connected) {
-      setInput('');
-      textAreaRef.current.style.cursor = 'not-allowed';
-    } else {
-      textAreaRef.current.style.cursor = 'auto';
+    if (textAreaRef && textAreaRef.current) {
+      if (!conversation.channel.connected) {
+        setInput('');
+        textAreaRef.current.style.cursor = 'not-allowed';
+      } else {
+        textAreaRef.current.style.cursor = 'auto';
+      }
     }
   }, [channelConnected]);
 
-  useEffect(() => {
-    if (selectedSuggestedReply && selectedSuggestedReplyDiv?.current?.offsetHeight > contentResizedHeight) {
-      const contentSelectorDivHeight = selectedSuggestedReplyDiv.current.offsetHeight;
-      const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
-
-      if (scaleRatio <= 0.7) {
-        const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
-        const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
-
-        setCloseIconHeight(iconSize);
-        setCloseIconWidth(iconSize);
-
-        if (removeSuggestedRepliesButton && removeSuggestedRepliesButton.current) {
-          removeSuggestedRepliesButton.current.style.width = buttonSize;
-          removeSuggestedRepliesButton.current.style.height = buttonSize;
-        }
-      }
-
-      selectedSuggestedReplyDiv.current.style.transform = `scale(${scaleRatio})`;
-      selectedSuggestedReplyDiv.current.style.transformOrigin = 'left';
-    }
-  }, [selectedSuggestedReply]);
-
-  useEffect(() => {
-    if (selectedTemplate && templateSelectorDiv?.current?.offsetHeight > contentResizedHeight) {
-      const contentSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
-      const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
-
-      if (scaleRatio <= 0.7) {
-        const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
-        const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
-
-        setCloseIconHeight(iconSize);
-        setCloseIconWidth(iconSize);
-
-        if (removeTemplateButton && removeTemplateButton.current) {
-          removeTemplateButton.current.style.width = buttonSize;
-          removeTemplateButton.current.style.height = buttonSize;
-        }
-      }
-
-      templateSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
-      templateSelectorDiv.current.style.transformOrigin = 'left';
-    }
-  }, [selectedTemplate]);
-
-  const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files[0];
+  const uploadFile = (file: any) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
 
     if (fileSizeInMB >= 25) {
@@ -158,41 +121,61 @@ const MessageInput = (props: Props) => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', file);
+    setMediaUrl('https://airy-media-test.s3.amazonaws.com/test-media/dcd9a978-2ebb-5a44-ae63-c0215f118d13.rtf');
 
-    HttpClientInstance.uploadFile({file: formData}).then((response: any) => {
-      setMediaUrl(response.mediaUrl);
-      setSelectedFile(true);
-    });
+    //image: https://airy-media-test.s3.amazonaws.com/test-media/1fd60daa-3cb8-5c22-b86d-6f33b588d78a.jpeg
+    //video: https://airy-media-test.s3.amazonaws.com/test-media/438ad3bf-24fe-5937-885f-fa101ed06cdb.mp4
+    //audio: https://airy-media-test.s3.amazonaws.com/test-media/ed60ea33-0f41-5546-bb6f-d4e4256de87c.mp3
+    //file: https://airy-media-test.s3.amazonaws.com/test-media/dcd9a978-2ebb-5a44-ae63-c0215f118d13.rtf
+
+    // const formData = new FormData();
+    // formData.append('file', file);
+
+    // console.log('formData - uploadFile', formData)
+
+    // return HttpClientInstance.uploadFile({file: formData}).then((response: any) => {
+    // setMediaUrl(response.mediaUrl);
+    // });
+  };
+
+  const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files[0];
+
+    return uploadFile(file);
+  };
+
+  const canSendMessage = () => {
+    return !(
+      (!selectedTemplate && !selectedSuggestedReply && !input && !mediaUrl && !dragAndDroppedFile) ||
+      !channelConnected
+    );
   };
 
   const sendMessage = () => {
-    if (!channelConnected) {
-      return;
-    }
-    setSelectedSuggestedReply(null);
-    setSelectedTemplate(null);
+    if (canSendMessage()) {
+      setSelectedSuggestedReply(null);
+      setSelectedTemplate(null);
 
-    sendMessages(
-      selectedTemplate || selectedSuggestedReply
-        ? {
-            conversationId: conversation.id,
-            message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
-          }
-        : selectedFile && mediaUrl
-        ? {
-            conversationId: conversation.id,
-            message: fileOutboundMapper.getAttachmentPayload(mediaUrl),
-          }
-        : {
-            conversationId: conversation.id,
-            message: outboundMapper.getTextPayload(input),
-          }
-    ).then(() => {
-      setInput('');
-      removeTemplateFromInput();
-    });
+      sendMessages(
+        selectedTemplate || selectedSuggestedReply
+          ? {
+              conversationId: conversation.id,
+              message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+            }
+          : mediaUrl
+          ? {
+              conversationId: conversation.id,
+              message: fileOutboundMapper.getAttachmentPayload(mediaUrl),
+            }
+          : {
+              conversationId: conversation.id,
+              message: outboundMapper.getTextPayload(input),
+            }
+      ).then(() => {
+        setInput('');
+        removeElementFromInput();
+      });
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -231,6 +214,8 @@ const MessageInput = (props: Props) => {
   const selectTemplate = (template: Template) => {
     const jsonTemplate = template.content.message;
 
+    console.log('selectTemplate', template);
+
     if (selectedTemplate) setSelectedTemplate(null);
 
     if (input) setInput('');
@@ -240,8 +225,10 @@ const MessageInput = (props: Props) => {
     if (isTextMessage(template)) {
       setInput(jsonTemplate.text);
     } else {
-      setSelectedTemplate({message: template, source: template.source});
+      setSelectedTemplate({messageType: 'template', message: template, source: template.source});
     }
+
+    console.log('selectedTEmplate', selectedTemplate);
 
     sendButtonRef.current.focus();
   };
@@ -257,27 +244,27 @@ const MessageInput = (props: Props) => {
     if (isTextMessage(reply)) {
       setInput(reply.content.text);
     } else {
-      setSelectedSuggestedReply({message: reply});
+      setSelectedSuggestedReply({messageType: 'suggestedReplies', message: reply});
     }
     sendButtonRef.current.focus();
   };
 
-  const removeTemplateFromInput = () => {
-    setSelectedTemplate(null);
-    setCloseIconWidth('');
-    setCloseIconHeight('');
+  const removeElementFromInput = () => {
+    if (selectedTemplate) {
+      setSelectedTemplate(null);
+    }
+
+    if (selectedSuggestedReply) {
+      setSelectedSuggestedReply(null);
+    }
+
+    if (mediaUrl) {
+      setMediaUrl(null);
+    }
   };
 
-  const removeSelectedSuggestedReply = () => {
-    setSelectedSuggestedReply(null);
-    setCloseIconWidth('');
-    setCloseIconHeight('');
-  };
-
-  const removeFileFromInput = () => {
-    setSelectedFile(null);
-    setCloseIconWidth('');
-    setCloseIconHeight('');
+  const closeFileErrorPopUp = () => {
+    setMaxFileSizeErrorPopUp(false);
   };
 
   return (
@@ -308,7 +295,7 @@ const MessageInput = (props: Props) => {
       <form className={styles.inputForm}>
         <div className={styles.messageWrap}>
           <div className={styles.inputWrap}>
-            {!selectedTemplate && !selectedSuggestedReply && (
+            {!selectedTemplate && !selectedSuggestedReply && !mediaUrl && (
               <>
                 <textarea
                   className={styles.messageTextArea}
@@ -331,70 +318,27 @@ const MessageInput = (props: Props) => {
                   selectTemplate={selectTemplate}
                   focusInput={focusInput}
                   sendMessages={sendMessages}
-                  conversationId={conversation.id}
                   mediaComponentConfig={props.config.components['media-resolver']}
-                  uploadFile={uploadFile}
+                  selectFile={selectFile}
+                  maxFileSizeErrorPopUp={maxFileSizeErrorPopUp}
+                  closeFileErrorPopUp={closeFileErrorPopUp}
                 />
               </>
             )}
-            {selectedSuggestedReply && (
-              <div className={styles.suggestionRepliesSelector} ref={selectedSuggestedReplyDiv}>
-                <button
-                  className={styles.removeButton}
-                  onClick={removeSelectedSuggestedReply}
-                  ref={removeSuggestedRepliesButton}>
-                  <Close
-                    style={{
-                      width: closeIconWidth ?? '',
-                      height: closeIconHeight ?? '',
-                    }}
-                  />
-                </button>
-                <SourceMessage
-                  message={selectedSuggestedReply.message}
+
+            {(selectedSuggestedReply || selectedTemplate || mediaUrl) && (
+              <>
+                <InputSelector
+                  message={
+                    selectedTemplate?.message ??
+                    selectedSuggestedReply?.message ??
+                    fileOutboundMapper.getAttachmentPayload(mediaUrl)
+                  }
                   source={source}
-                  contentType="suggestedReplies"
+                  messageType={selectedTemplate?.messageType ?? selectedSuggestedReply?.messageType ?? 'message'}
+                  removeElementFromInput={removeElementFromInput}
+                  contentResizedHeight={contentResizedHeight}
                 />
-              </div>
-            )}
-
-            {selectedTemplate && (
-              <>
-                <div className={styles.templateSelector} ref={templateSelectorDiv}>
-                  <button className={styles.removeButton} onClick={removeTemplateFromInput} ref={removeTemplateButton}>
-                    <Close
-                      style={{
-                        width: closeIconWidth ?? '',
-                        height: closeIconHeight ?? '',
-                      }}
-                    />
-                  </button>
-                  <SourceMessage
-                    message={selectedTemplate.message}
-                    source={selectedTemplate.source}
-                    contentType="template"
-                  />
-                </div>
-              </>
-            )}
-
-            {selectedFile && (
-              <>
-                <div className={styles.fileSelector} ref={fileSelectorDiv}>
-                  <button className={styles.removeButton} onClick={removeFileFromInput} ref={removeFileButton}>
-                    <Close
-                      style={{
-                        width: closeIconWidth ?? '',
-                        height: closeIconHeight ?? '',
-                      }}
-                    />
-                  </button>
-                  <SourceMessage
-                    message={fileOutboundMapper.getAttachmentPayload(mediaUrl)}
-                    source={'facebook'}
-                    contentType="message"
-                  />
-                </div>
               </>
             )}
           </div>
@@ -410,12 +354,10 @@ const MessageInput = (props: Props) => {
             type="button"
             ref={sendButtonRef}
             className={`${styles.sendButton} ${
-              (input.trim().length != 0 || selectedTemplate || selectedSuggestedReply) &&
-              channelConnected &&
-              styles.sendButtonActive
+              (input.trim().length != 0 || canSendMessage()) && styles.sendButtonActive
             }`}
             onClick={sendMessage}
-            disabled={input.trim().length == 0 && !selectedTemplate && !selectedSuggestedReply && !channelConnected}
+            disabled={input.trim().length == 0 && !canSendMessage()}
             data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <Paperplane />

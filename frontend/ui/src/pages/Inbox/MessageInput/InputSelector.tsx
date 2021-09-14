@@ -26,8 +26,6 @@ export const InputSelector = (props: InputSelectorProps) => {
       const contentSelectorDivHeight = fileSelectorDiv.current.offsetHeight;
       const scaleRatio = Number(Math.min(contentResizedHeight / contentSelectorDivHeight).toFixed(2));
 
-      console.log('scaleRatio', scaleRatio);
-
       if (scaleRatio <= 0.7) {
         const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
         const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
@@ -43,24 +41,20 @@ export const InputSelector = (props: InputSelectorProps) => {
 
       fileSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
       fileSelectorDiv.current.style.transformOrigin = 'left';
-      console.log('closeIconWidth - first', closeIconWidth);
-      console.log('closeIconHeight - first', closeIconHeight);
     }
   }, []);
 
   return (
-    <>
-      <div className={styles.container} ref={fileSelectorDiv}>
-        <button className={styles.removeButton} onClick={removeElementFromInput} ref={removeSelectedButton}>
-          <Close
-            style={{
-              width: closeIconWidth ?? '',
-              height: closeIconHeight ?? '',
-            }}
-          />
-        </button>
-        <SourceMessage message={message} source={source} contentType={messageType} />
-      </div>
-    </>
+    <div className={styles.container} ref={fileSelectorDiv}>
+      <button className={styles.removeButton} onClick={removeElementFromInput} ref={removeSelectedButton}>
+        <Close
+          style={{
+            width: closeIconWidth ?? '',
+            height: closeIconHeight ?? '',
+          }}
+        />
+      </button>
+      <SourceMessage message={message} source={source} contentType={messageType} />
+    </div>
   );
 };

@@ -49,8 +49,6 @@ export const InputOptions = (props: Props) => {
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
 
-  //inputOptions is the child of Input
-
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal) {
       setIsShowingTemplateModal(false);

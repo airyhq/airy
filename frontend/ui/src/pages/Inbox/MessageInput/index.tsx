@@ -41,17 +41,15 @@ type Props = {
   suggestions: Suggestions;
   showSuggestedReplies: (suggestions: Suggestions) => void;
   hideSuggestedReplies: () => void;
-  dragAndDroppedFile: any;
+  draggedAndDroppedFile: File;
 } & ConnectedProps<typeof connector>;
 
 export interface SelectedTemplate {
-  messageType: 'template';
   message: Template;
   source: Source;
 }
 
 export interface SelectedSuggestedReply {
-  messageType: 'suggestedReplies';
   message: SuggestedReply;
 }
 
@@ -63,7 +61,7 @@ const MessageInput = (props: Props) => {
     showSuggestedReplies,
     hideSuggestedReplies,
     sendMessages,
-    dragAndDroppedFile,
+    draggedAndDroppedFile,
   } = props;
 
   const contentResizedHeight = 200;
@@ -75,8 +73,8 @@ const MessageInput = (props: Props) => {
   const [input, setInput] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
+  const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [maxFileSizeErrorPopUp, setMaxFileSizeErrorPopUp] = useState(false);
-  const [mediaUrl, setMediaUrl] = useState('');
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
@@ -84,10 +82,10 @@ const MessageInput = (props: Props) => {
   const focusInput = () => textAreaRef?.current?.focus();
 
   useEffect(() => {
-    if (dragAndDroppedFile) {
-      uploadFile(dragAndDroppedFile);
+    if (draggedAndDroppedFile) {
+      uploadFile(draggedAndDroppedFile);
     }
-  }, [dragAndDroppedFile]);
+  }, [draggedAndDroppedFile]);
 
   useEffect(() => {
     setInput('');
@@ -113,7 +111,7 @@ const MessageInput = (props: Props) => {
     }
   }, [channelConnected]);
 
-  const uploadFile = (file: any) => {
+  const uploadFile = (file: File) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
 
     if (fileSizeInMB >= 25) {
@@ -121,24 +119,20 @@ const MessageInput = (props: Props) => {
       return;
     }
 
-    setMediaUrl('https://airy-media-test.s3.amazonaws.com/test-media/dcd9a978-2ebb-5a44-ae63-c0215f118d13.rtf');
+    const formData = new FormData();
+    formData.append('file', file);
 
-    //image: https://airy-media-test.s3.amazonaws.com/test-media/1fd60daa-3cb8-5c22-b86d-6f33b588d78a.jpeg
-    //video: https://airy-media-test.s3.amazonaws.com/test-media/438ad3bf-24fe-5937-885f-fa101ed06cdb.mp4
-    //audio: https://airy-media-test.s3.amazonaws.com/test-media/ed60ea33-0f41-5546-bb6f-d4e4256de87c.mp3
-    //file: https://airy-media-test.s3.amazonaws.com/test-media/dcd9a978-2ebb-5a44-ae63-c0215f118d13.rtf
-
-    // const formData = new FormData();
-    // formData.append('file', file);
-
-    // console.log('formData - uploadFile', formData)
-
-    // return HttpClientInstance.uploadFile({file: formData}).then((response: any) => {
-    // setMediaUrl(response.mediaUrl);
-    // });
+    return HttpClientInstance.uploadFile({file: formData}).then((response: any) => {
+      setSelectedFileUrl(response.mediaUrl);
+    });
   };
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (selectedSuggestedReply) setSelectedSuggestedReply(null);
+    if (input) setInput('');
+    if (selectedTemplate) setSelectedTemplate(null);
+    if (selectedFileUrl) setSelectedFileUrl(null);
+
     const file = event.target.files[0];
 
     return uploadFile(file);
@@ -146,9 +140,13 @@ const MessageInput = (props: Props) => {
 
   const canSendMessage = () => {
     return !(
-      (!selectedTemplate && !selectedSuggestedReply && !input && !mediaUrl && !dragAndDroppedFile) ||
+      (!selectedTemplate && !selectedSuggestedReply && !input && !selectedFileUrl && !draggedAndDroppedFile) ||
       !channelConnected
     );
+  };
+
+  const isElementSelected = () => {
+    return selectedTemplate || selectedSuggestedReply || selectedFileUrl;
   };
 
   const sendMessage = () => {
@@ -162,10 +160,10 @@ const MessageInput = (props: Props) => {
               conversationId: conversation.id,
               message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
             }
-          : mediaUrl
+          : selectedFileUrl
           ? {
               conversationId: conversation.id,
-              message: fileOutboundMapper.getAttachmentPayload(mediaUrl),
+              message: fileOutboundMapper.getAttachmentPayload(selectedFileUrl),
             }
           : {
               conversationId: conversation.id,
@@ -214,21 +212,19 @@ const MessageInput = (props: Props) => {
   const selectTemplate = (template: Template) => {
     const jsonTemplate = template.content.message;
 
-    console.log('selectTemplate', template);
-
     if (selectedTemplate) setSelectedTemplate(null);
 
     if (input) setInput('');
 
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
 
+    if (selectedFileUrl) setSelectedFileUrl(null);
+
     if (isTextMessage(template)) {
       setInput(jsonTemplate.text);
     } else {
-      setSelectedTemplate({messageType: 'template', message: template, source: template.source});
+      setSelectedTemplate({message: template, source: template.source});
     }
-
-    console.log('selectedTEmplate', selectedTemplate);
 
     sendButtonRef.current.focus();
   };
@@ -240,11 +236,13 @@ const MessageInput = (props: Props) => {
 
     if (selectedTemplate) setSelectedTemplate(null);
 
+    if (selectedFileUrl) setSelectedFileUrl(null);
+
     hideSuggestedReplies();
     if (isTextMessage(reply)) {
       setInput(reply.content.text);
     } else {
-      setSelectedSuggestedReply({messageType: 'suggestedReplies', message: reply});
+      setSelectedSuggestedReply({message: reply});
     }
     sendButtonRef.current.focus();
   };
@@ -258,8 +256,8 @@ const MessageInput = (props: Props) => {
       setSelectedSuggestedReply(null);
     }
 
-    if (mediaUrl) {
-      setMediaUrl(null);
+    if (selectedFileUrl) {
+      setSelectedFileUrl(null);
     }
   };
 
@@ -295,7 +293,7 @@ const MessageInput = (props: Props) => {
       <form className={styles.inputForm}>
         <div className={styles.messageWrap}>
           <div className={styles.inputWrap}>
-            {!selectedTemplate && !selectedSuggestedReply && !mediaUrl && (
+            {!isElementSelected() && (
               <>
                 <textarea
                   className={styles.messageTextArea}
@@ -326,16 +324,16 @@ const MessageInput = (props: Props) => {
               </>
             )}
 
-            {(selectedSuggestedReply || selectedTemplate || mediaUrl) && (
+            {isElementSelected() && (
               <>
                 <InputSelector
                   message={
                     selectedTemplate?.message ??
                     selectedSuggestedReply?.message ??
-                    fileOutboundMapper.getAttachmentPayload(mediaUrl)
+                    fileOutboundMapper.getAttachmentPayload(selectedFileUrl)
                   }
                   source={source}
-                  messageType={selectedTemplate?.messageType ?? selectedSuggestedReply?.messageType ?? 'message'}
+                  messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}
                   removeElementFromInput={removeElementFromInput}
                   contentResizedHeight={contentResizedHeight}
                 />

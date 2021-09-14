@@ -2,13 +2,13 @@
 @import 'assets/scss/fonts.scss';
 
 .container {
-  background-color: var(--color-light-gray);
-  border-radius: 12px;
-  padding: 10px;
-  text-align: center;
+  max-width: 300px;
   display: flex;
   align-items: center;
-  max-width: 300px;
+  padding: 10px;
+  background-color: var(--color-light-gray);
+  border-radius: 12px;
+  text-align: center;
 }
 
 .container a,

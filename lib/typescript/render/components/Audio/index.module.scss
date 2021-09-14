@@ -19,28 +19,17 @@
   display: flex;
   align-items: center;
 }
-input[type='image'] {
-  float: left;
-  height: 20px;
-  margin-left: 2px;
-  margin-right: 5px;
-  margin-top: 2px;
-}
-#vol_img {
-  margin-left: 150px;
-  width: 20px;
-}
 
-.wrapper a,
-.wrapper a:hover,
-.wrapper a:link,
-.wrapper a:visited,
-.wrapper a:active {
+.buttonsContainer a,
+.buttonsContainer a:hover,
+.buttonsContainer a:link,
+.buttonsContainer a:visited,
+.buttonsContainer a:active {
   color: var(--color-text-contrast);
   text-decoration: none;
 }
 
-button {
+.buttonsContainer button {
   cursor: pointer;
   background-color: transparent;
   border: none;

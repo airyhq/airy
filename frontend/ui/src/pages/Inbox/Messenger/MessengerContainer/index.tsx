@@ -16,6 +16,7 @@ import {getConversationInfo} from '../../../../actions';
 const mapStateToProps = (state: StateModel, ownProps) => ({
   conversations: allConversations(state),
   currentConversation: getConversation(state, ownProps),
+  config: state.data.config,
 });
 
 const mapDispatchToProps = {
@@ -31,15 +32,22 @@ const MessengerContainer = ({
   currentConversation,
   getConversationInfo,
   match,
+  config,
 }: MessengerContainerProps) => {
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
   const [isFileDragged, setIsFileDragged] = useState(false);
   const [draggedAndDroppedFile, setDraggedAndDroppedFile] = useState<File | null>(null);
 
+  const source = currentConversation?.channel?.source;
+  const disableDragAndDrop = !config?.components['media-resolver']?.enabled || source !== ('facebook' || 'instagram');
+
   useEffect(() => {
     if (!currentConversation && match.params.conversationId) {
       getConversationInfo(match.params.conversationId);
     }
+
+    setIsFileDragged(false);
+    setDraggedAndDroppedFile(null);
   }, [currentConversation, match.params.conversationId]);
 
   const hideSuggestedReplies = () => {
@@ -47,15 +55,22 @@ const MessengerContainer = ({
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    if (disableDragAndDrop) return;
+
     event.preventDefault();
+    setIsFileDragged(true);
   };
 
   const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+    if (disableDragAndDrop) return;
+
     event.preventDefault();
     setIsFileDragged(true);
   };
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    if (disableDragAndDrop) return;
+
     event.preventDefault();
     const file = event.dataTransfer.files[0];
 
@@ -63,12 +78,27 @@ const MessengerContainer = ({
     setIsFileDragged(false);
   };
 
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    if (disableDragAndDrop) return;
+
+    event.preventDefault();
+    setIsFileDragged(false);
+  };
+
   return (
     <>
-      <div className={styles.wrapper} onDragOver={handleDragOver} onDragEnter={handleDragEnter} onDrop={handleFileDrop}>
-        <div className={`${styles.dragContainer} ${isFileDragged ? styles.dragOverlay : styles.noDraggedFile}`}>
-          <h1>Drop Files Here</h1>
-        </div>
+      <div
+        className={styles.wrapper}
+        onDragOver={handleDragOver}
+        onDragEnter={handleDragEnter}
+        onDrop={handleFileDrop}
+        onDragLeave={handleDragLeave}>
+        {config?.components['media-resolver']?.enabled && source === ('facebook' || 'instagram') && (
+          <div className={`${styles.dragContainer} ${isFileDragged ? styles.dragOverlay : styles.noDraggedFile}`}>
+            <h1>Drop Files Here</h1>
+          </div>
+        )}
+
         {!conversations ? (
           <div className={styles.emptyState}>
             <h1>Your conversations will appear here as soon as a contact messages you.</h1>

@@ -2,11 +2,11 @@ import React, {useRef, useEffect, useState} from 'react';
 import styles from './InputSelector.module.scss';
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import {SourceMessage} from 'render';
-import {Source} from 'model';
+import {Source, Message} from 'model';
 
 type InputSelectorProps = {
   messageType: 'template' | 'suggestedReplies' | 'message';
-  message: any;
+  message: Message;
   source: Source;
   contentResizedHeight: number;
   removeElementFromInput: () => void;
@@ -21,12 +21,12 @@ export const InputSelector = (props: InputSelectorProps) => {
   const fileSelectorDiv = useRef<HTMLDivElement>(null);
   const removeFileButton = useRef(null);
 
-  useEffect(() => {
+  const scaleInputSelector = () => {
     if (fileSelectorDiv?.current?.offsetHeight > contentResizedHeight) {
       const contentSelectorDivHeight = fileSelectorDiv.current.offsetHeight;
       const scaleRatio = Number(Math.min(contentResizedHeight / contentSelectorDivHeight).toFixed(2));
 
-      if (scaleRatio <= 0.7) {
+      if (scaleRatio <= 0.9) {
         const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
         const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
 
@@ -41,6 +41,16 @@ export const InputSelector = (props: InputSelectorProps) => {
 
       fileSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
       fileSelectorDiv.current.style.transformOrigin = 'left';
+    }
+  };
+
+  useEffect(() => {
+    if (fileSelectorDiv?.current?.offsetHeight <= 10) {
+      setTimeout(() => {
+        scaleInputSelector();
+      }, 100);
+    } else {
+      scaleInputSelector();
     }
   }, []);
 

@@ -143,7 +143,7 @@ export const InputOptions = (props: Props) => {
         </div>
       )}
 
-      {mediaComponentConfig.enabled && (
+      {mediaComponentConfig.enabled && source === ('facebook' || 'instagram') && (
         <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>
           <div className={styles.actionToolTip}>Files</div>
 

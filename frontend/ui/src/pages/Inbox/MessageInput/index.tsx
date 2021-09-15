@@ -42,6 +42,7 @@ type Props = {
   showSuggestedReplies: (suggestions: Suggestions) => void;
   hideSuggestedReplies: () => void;
   draggedAndDroppedFile: File;
+  setDraggedAndDroppedFile: React.Dispatch<React.SetStateAction<File | null>>;
 } & ConnectedProps<typeof connector>;
 
 interface SelectedTemplate {
@@ -62,6 +63,7 @@ const MessageInput = (props: Props) => {
     hideSuggestedReplies,
     sendMessages,
     draggedAndDroppedFile,
+    setDraggedAndDroppedFile,
   } = props;
 
   const contentResizedHeight = 200;
@@ -147,10 +149,6 @@ const MessageInput = (props: Props) => {
 
   const isElementSelected = () => {
     return selectedTemplate || selectedSuggestedReply || selectedFileUrl;
-  };
-
-  const canSendMessage = () => {
-    return !((!selectedTemplate && !selectedSuggestedReply && !input) || !channelConnected);
   };
 
   const sendMessage = () => {
@@ -262,6 +260,10 @@ const MessageInput = (props: Props) => {
 
     if (selectedFileUrl) {
       setSelectedFileUrl(null);
+    }
+
+    if (setDraggedAndDroppedFile) {
+      setDraggedAndDroppedFile(null);
     }
   };
 

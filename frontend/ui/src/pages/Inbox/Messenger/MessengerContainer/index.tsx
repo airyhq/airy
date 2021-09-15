@@ -87,6 +87,7 @@ const MessengerContainer = ({
                   hideSuggestedReplies={hideSuggestedReplies}
                   source={currentConversation.channel.source as Source}
                   draggedAndDroppedFile={draggedAndDroppedFile}
+                  setDraggedAndDroppedFile={setDraggedAndDroppedFile}
                 />
               </>
             )}

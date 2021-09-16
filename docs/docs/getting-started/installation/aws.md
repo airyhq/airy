@@ -260,7 +260,7 @@ airy create --provider aws
 ```
 
 :::note
-In case you have created your Airy Core instance without Let's Encrypt and want to add it later, modify your `airy.yaml` file accordingly and continue with the process from the next section. 
+In case you have created your Airy Core instance without Let's Encrypt and want to add it later, modify your `airy.yaml` file accordingly and continue with the process from the next section.
 :::
 
 #### Setup your DNS

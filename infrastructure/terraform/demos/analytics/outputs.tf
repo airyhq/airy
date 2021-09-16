@@ -1,4 +1,4 @@
-/* output "minikube_dns" {
+output "minikube_dns" {
   description = "DNS hostname of the Minikube"
   value       = module.minikube.dns
 }
@@ -16,4 +16,4 @@ output "copy_config_dns" {
 output "copy_config_ip" {
   description = "Command for copying the kubeconfig for connecting using IP address"
   value       = "To copy the kubectl config file using IP address, run: 'scp ${module.minikube.ssh_user}@${module.minikube.public_ip}:${module.minikube.kubeconfig_ip} .kubeconfig'"
-} */
+}

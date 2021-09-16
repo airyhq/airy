@@ -141,10 +141,7 @@ const MessageInput = (props: Props) => {
   };
 
   const canSendMessage = () => {
-    return !(
-      (!selectedTemplate && !selectedSuggestedReply && !input && !selectedFileUrl && !draggedAndDroppedFile) ||
-      !channelConnected
-    );
+    return !((!selectedTemplate && !selectedSuggestedReply && !input && !selectedFileUrl) || !channelConnected);
   };
 
   const isElementSelected = () => {

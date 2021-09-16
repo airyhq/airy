@@ -45,13 +45,7 @@ export const InputSelector = (props: InputSelectorProps) => {
   };
 
   useEffect(() => {
-    if (fileSelectorDiv?.current?.offsetHeight <= 10) {
-      setTimeout(() => {
-        scaleInputSelector();
-      }, 100);
-    } else {
-      scaleInputSelector();
-    }
+    scaleInputSelector();
   }, []);
 
   return (

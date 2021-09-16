@@ -37,9 +37,30 @@ const MessengerContainer = ({
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
   const [isFileDragged, setIsFileDragged] = useState(false);
   const [draggedAndDroppedFile, setDraggedAndDroppedFile] = useState<File | null>(null);
+  let dragCounter = 0;
 
   const source = currentConversation?.channel?.source;
   const disableDragAndDrop = !config?.components['media-resolver']?.enabled || source !== ('facebook' || 'instagram');
+
+  useEffect(() => {
+    window.addEventListener(
+      'dragover',
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+      },
+      false
+    );
+
+    window.addEventListener(
+      'drop',
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+      },
+      false
+    );
+  }, [isFileDragged]);
 
   useEffect(() => {
     if (!currentConversation && match.params.conversationId) {
@@ -55,44 +76,55 @@ const MessengerContainer = ({
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    if (disableDragAndDrop) return;
-
     event.preventDefault();
-    setIsFileDragged(true);
+    event.stopPropagation();
+
+    if (disableDragAndDrop) return;
   };
 
   const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
     if (disableDragAndDrop) return;
 
-    event.preventDefault();
+    dragCounter++;
+
     setIsFileDragged(true);
   };
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    if (disableDragAndDrop) return;
-
     event.preventDefault();
-    const file = event.dataTransfer.files[0];
+    event.stopPropagation();
 
+    if (disableDragAndDrop) return;
+    dragCounter++;
+    const file = event.dataTransfer.files[0];
     setDraggedAndDroppedFile(file);
     setIsFileDragged(false);
   };
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-    if (disableDragAndDrop) return;
-
     event.preventDefault();
-    setIsFileDragged(false);
+    event.stopPropagation();
+
+    if (disableDragAndDrop) return;
+    dragCounter--;
+    if (dragCounter === 0) {
+      setIsFileDragged(false);
+    }
   };
 
   return (
     <>
       <div
         className={styles.wrapper}
-        onDragOver={handleDragOver}
-        onDragEnter={handleDragEnter}
-        onDrop={handleFileDrop}
-        onDragLeave={handleDragLeave}>
+        onDragEnter={e => handleDragEnter(e)}
+        onDragOver={e => handleDragOver(e)}
+        onDrop={e => handleFileDrop(e)}
+        onDragLeave={e => handleDragLeave(e)}
+        onMouseOut={() => setIsFileDragged(false)}
+        onMouseLeave={() => setIsFileDragged(false)}>
         {config?.components['media-resolver']?.enabled && source === ('facebook' || 'instagram') && (
           <div className={`${styles.dragContainer} ${isFileDragged ? styles.dragOverlay : styles.noDraggedFile}`}>
             <h1>Drop Files Here</h1>

@@ -21,6 +21,20 @@ of the [Chat Plugin](sources/chatplugin/overview.md).
 Having that in mind, these are the docker containers – or the `Airy Components` –
 which run as part of Airy Core:
 
+## Sensitive data
+
+### Application data
+
+All the application data is stored in the `Kafka` cluster and the topics which are created for the components. As the Kafka cluster is backed up by persistent EBS storage, the data is stored on the PersistentVolumes defined in the Kubernetes cluster. At the moment, the data in the Kafka topics is not encrypted.
+
+### Configuration data
+
+All the credentials, keys and secrets which the user can overwrite can be configured in the `airy.yaml` file. When running `airy create` or `airy config apply` these values are mapped into the following ConfigMaps inside the kafka cluster:
+
+- `security` ConfigMap - holding the necessary security parameters.
+- `{component-type}-{component}` ConfigMap - holding the configuration for individual sources and components
+- `airy-config-map` ConfigMap - storing a copy of the `airy.yaml` config file, inside the Kubernetes cluster.
+
 ## Sources
 
 - sources-`SOURCE_NAME`-webhook - Ingest events from the `SOURCE_NAME` source

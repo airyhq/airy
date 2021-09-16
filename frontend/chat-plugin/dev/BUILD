@@ -23,7 +23,7 @@ web_app(
     index = ":development.html",
     module_deps = ["//frontend/chat-plugin/lib:chat-plugin"] + module_deps,
     output = {
-        "publicPath": "/chatplugin/ui",
+        "publicPath": "/chatplugin/ui/",
     },
 )
 

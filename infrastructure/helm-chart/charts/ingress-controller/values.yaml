@@ -3,3 +3,7 @@ global:
     https: false
     loadbalancerAnnotations: {}
     letsencryptEmail:
+    loadBalancer: true
+    host:
+namespace: kube-system
+serviceAccount: helm-account

@@ -5,10 +5,10 @@ type KubernetesConf struct {
 	ContainerRegistry string `yaml:"containerRegistry"`
 	Namespace         string `yaml:"namespace"`
 	NgrokEnabled      bool   `yaml:"ngrokEnabled"`
-	Host              string `yaml:"host"`
 }
 
 type IngressConf struct {
+	Host                    string            `yaml:"host,omitempty"`
 	Https                   bool              `yaml:"https,omitempty"`
 	LetsencryptEmail        string            `yaml:"letsencryptEmail,omitempty"`
 	LoadbalancerAnnotations map[string]string `yaml:"loadbalancerAnnotations,omitempty"`

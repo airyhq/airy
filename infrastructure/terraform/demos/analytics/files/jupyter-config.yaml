@@ -1,0 +1,14 @@
+singleuser:
+  image:
+    name: ghcr.io/airyhq/tools/jupyter-demo
+    tag: latest
+  lifecycleHooks:
+    postStart:
+      exec:
+        command:
+          - "sh"
+          - "-c"
+          - >
+            cp -r /tmp/fake_data.ipynb /home/jovyan;
+            cp -r /tmp/create_df_from_parquet.ipynb /home/jovyan;
+            cp -r /tmp/data.json /home/jovyan

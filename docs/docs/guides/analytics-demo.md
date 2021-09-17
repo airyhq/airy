@@ -141,19 +141,19 @@ Open the `create_df_from_parquet.ipynb` and run the entire notebook. You now
 have a `df` object containing all the messages in the Airy
 `application_communication_messages` format.
 
-<img alt="fake_data_df"
-src={useBaseUrl('img/guides/analytics-demo/fake_data_df.png')} />
+<img alt="demo_data_df"
+src={useBaseUrl('img/guides/analytics-demo/demo_data_df.png')} />
 
-### Loading the demo data into your platform
+### Loading the demo data
 
-Open the `fake_data.ipynb` notebook and make sure the `system_token` and `host`
+Open the `demo_data.ipynb` notebook and make sure the `system_token` and `host`
 are the same values you put into your `airy.yaml`.
 
 When running the notebook you should start getting data flowing in
 about movie preference conversations.
 
-<img alt="fake_data_inbox"
-src={useBaseUrl('img/guides/analytics-demo/fake_data_inbox.png')} />
+<img alt="demo_data_inbox"
+src={useBaseUrl('img/guides/analytics-demo/demo_data_inbox.png')} />
 
 ## Cleanup
 

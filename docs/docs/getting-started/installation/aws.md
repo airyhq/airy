@@ -53,13 +53,31 @@ Default region name [None]: us-west-2
 Default output format [None]: json
 ```
 
-Apart from an EKS cluster, `airy create` will take care of all the necessary AWS
-resources, such as:
+## Services used
 
-- VPC resources (VPC, subnets, route tables, public gateways)
-- IAM roles and policy attachments
-- EKS cluster and EKS node groups
-- EC2 instances, as part of the created node group
+Apart from an EKS cluster, `airy create` will create of all the necessary AWS
+resources for Airy Core to run:
+
+|                        Service & pricing                        | Resources created by default                                                                        | Description                                                                                                                            | Overwrite [^1] |
+| :-------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------- | :------------: |
+|         [**VPC**](https://aws.amazon.com/vpc/pricing/)          | 1 VPC, 2 subnets with allowed Public IPs, 1 additional route table, 1 Internet gateway, DNS enabled | VPC which will contain all the created compute and network resources                                                                   |      Yes       |
+|                          **IAM** [^2]                           | 1 IAM role with attached policies [^3]                                                              | IAM role used for managing the EKS cluster and the node groups                                                                         |       No       |
+|    [**EKS**](https://calculator.aws/#/createCalculator/EKS)     | 1 EKS cluster                                                                                       | Kubernetes cluster to store all the Airy Core resources                                                                                |       No       |
+|    [**EC2**](https://calculator.aws/#/createCalculator/EC2)     | 2 EC2 instances, 4 EBS Volumes (10GB gp2 each)                                                      | The instances are a part of the `Node group` attached to the EKS cluster. The default instance type is: `c5.xlarge`, os type: `Linux`. |      Yes       |
+|     [**S3**](https://calculator.aws/#/createCalculator/S3)      | /                                                                                                   | Optional for the "Media resolver" component. Should be created independently. [^4]                                                     |      Yes       |
+| [**ELB**](https://aws.amazon.com/elasticloadbalancing/pricing/) | 1 Elastic Load Balancer                                                                             | Network Load Balancer created by the ingress controller Kubernetes service                                                             |       No       |
+
+[^1]: Options which can be overwritten with flags to the `airy create` command.
+[^2]: IAM roles are free of charge.
+[^3]: Attached policies: "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy", "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy", "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly", "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy".
+[^4]: The s3 bucket will should have PublicRead privileges. For writing to the S3 bucket, AWS credentials must be [configured](/getting-started/installation/configuration.md#components) in the `airy.yaml` file.
+
+Airy Core doesn't require extensive resources to run. However, you should consider the `AWS Service Limits` or `AWS Service Quotas` when deploying on AWS. If some of the resources cannot be created due to existing quotas in your AWS account, refer to the [following dashboard](https://eu-central-1.console.aws.amazon.com/servicequotas/home/) to modify them.
+
+Refer to the following links for more information on AWS Service Limits:
+
+- [AWS Service Quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html)
+- [AWS Well-Architected Framework Concepts](https://wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.service-limits.en.html)
 
 ## Create a cluster
 

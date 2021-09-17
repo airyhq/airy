@@ -1,7 +1,28 @@
-const imageExtensions = ['jpeg', 'jpg', 'gif', 'png', 'tiff', 'tif'];
-const videoExtensions = ['mp4', 'mov', 'wmv'];
-const audioExtensions = ['mp3', 'ogg', 'wav'];
-const fileExtensions = ['pdf', 'cvc', 'doc', 'docx', 'rtf', 'tex', 'wpd', 'psd', 'svg', 'ico'];
+export const imageExtensions = ['jpeg', 'jpg', 'gif', 'png', 'tiff', 'tif'];
+export const videoExtensions = ['mp4', 'mov', 'wmv'];
+export const audioExtensions = ['mp3', 'ogg', 'wav'];
+export const fileExtensions = [
+  'pdf',
+  'cvc',
+  'doc',
+  'docx',
+  'rtf',
+  'tex',
+  'wpd',
+  'psd',
+  'svg',
+  'ico',
+  'json',
+  'md',
+  'mdx',
+  'tsx',
+  'jsx',
+  'js',
+  'ts',
+  'css',
+  'scss',
+  'html',
+];
 
 export const getAttachmentType = (url: string) => {
   const urlArr = url.split('.');

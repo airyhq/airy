@@ -8,12 +8,14 @@
 }
 
 .player {
-  background-color: var(--color-light-gray);
   display: flex;
   justify-content: space-around;
   align-items: center;
   border-radius: 12px;
-  padding: 4px 16px;
+  padding: 4px 24px;
+  background-color: var(--color-background-blue);
+  border: 1px solid var(--color-light-gray);
+  box-shadow: 0 1px 2px var(--color-light-gray);
 }
 
 .buttonsContainer {

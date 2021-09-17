@@ -12,7 +12,7 @@
   transition-timing-function: ease-in-out;
 }
 
-.errorContainer {
+.errorWrapper {
   display: flex;
   align-items: center;
   width: fit-content;
@@ -24,7 +24,6 @@
     fill: var(--color-error-border);
     height: 24px;
     width: 24px;
-    margin: 0 0 -4px 0;
   }
   button {
     margin: -1px 0 0 0;
@@ -39,8 +38,17 @@
     }
   }
   p {
-    margin: 0 8px 0 8px;
+    max-width: 90%;
+    line-height: 1.5;
+    padding: 0 6px;
+    @include font-s;
   }
+}
+
+.errorContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes pop {

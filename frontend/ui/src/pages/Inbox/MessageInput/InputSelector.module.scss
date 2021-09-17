@@ -10,13 +10,13 @@
 .removeButton {
   position: absolute;
   right: 5px;
-  top: 6px;
-  padding: 4px 6px;
+  top: 7px;
+  padding: 8px;
   margin: 0;
   line-height: 0;
   border-radius: 50%;
-  border: 1px solid var(--color-template-highlight);
-  background-color: var(--color-dark-elements-gray);
+  border: 1px solid var(--color-light-gray);
+  background-color: var(--color-template-highlight);
   cursor: pointer;
   outline: none;
   z-index: 1;

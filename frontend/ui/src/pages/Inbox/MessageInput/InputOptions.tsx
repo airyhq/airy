@@ -28,7 +28,7 @@ type Props = {
   };
   selectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
   closeFileErrorPopUp: () => void;
-  maxFileSizeErrorPopUp: boolean;
+  fileUploadErrorPopUp: string;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -42,7 +42,7 @@ export const InputOptions = (props: Props) => {
     selectFile,
     mediaComponentConfig,
     closeFileErrorPopUp,
-    maxFileSizeErrorPopUp,
+    fileUploadErrorPopUp,
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -100,6 +100,12 @@ export const InputOptions = (props: Props) => {
 
   return (
     <div className={styles.container}>
+      {fileUploadErrorPopUp && (
+        <div className={styles.fileSizeErrorPopUp}>
+          <ErrorPopUp message={fileUploadErrorPopUp} closeHandler={closeFileErrorPopUp} />
+        </div>
+      )}
+
       {isShowingTemplateModal && (
         <TemplateSelector
           onClose={toggleTemplateModal}
@@ -134,16 +140,7 @@ export const InputOptions = (props: Props) => {
         </div>
       </button>
 
-      {maxFileSizeErrorPopUp && (
-        <div className={styles.fileSizeErrorPopUp}>
-          <ErrorPopUp
-            message="Failed to upload the file. The maximum file size allowed is 25MB."
-            closeHandler={closeFileErrorPopUp}
-          />
-        </div>
-      )}
-
-      {mediaComponentConfig.enabled && source === ('facebook' || 'instagram') && (
+      {mediaComponentConfig?.enabled && source === ('facebook' || 'instagram') && (
         <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>
           <div className={styles.actionToolTip}>Files</div>
 

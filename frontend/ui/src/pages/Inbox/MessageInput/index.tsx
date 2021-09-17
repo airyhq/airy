@@ -24,6 +24,7 @@ import {InputOptions} from './InputOptions';
 import styles from './index.module.scss';
 import {HttpClientInstance} from '../../../InitializeAiryApi';
 import {FacebookMapper} from 'render/outbound/facebook';
+import {getAttachmentType, imageExtensions, fileExtensions, videoExtensions, audioExtensions} from 'render/attachments';
 import {InputSelector} from './InputSelector';
 
 const mapDispatchToProps = {sendMessages};
@@ -76,7 +77,7 @@ const MessageInput = (props: Props) => {
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
-  const [maxFileSizeErrorPopUp, setMaxFileSizeErrorPopUp] = useState(false);
+  const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
@@ -117,16 +118,28 @@ const MessageInput = (props: Props) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
 
     if (fileSizeInMB >= 25) {
-      setMaxFileSizeErrorPopUp(true);
+      setFileUploadErrorPopUp('Failed to upload the file. The maximum file size allowed is 25MB.');
+      return;
+    }
+
+    if (!getAttachmentType(file.name)) {
+      const message = `This file type is not supported. Supported files: ${audioExtensions.join(
+        ' , '
+      )} ${imageExtensions.join(' , ')} ${videoExtensions.join(' , ')} ${fileExtensions.join(' , ')}`;
+      setFileUploadErrorPopUp(message);
       return;
     }
 
     const formData = new FormData();
     formData.append('file', file);
 
-    return HttpClientInstance.uploadFile({file: formData}).then((response: any) => {
-      setSelectedFileUrl(response.mediaUrl);
-    });
+    return HttpClientInstance.uploadFile({file: formData})
+      .then((response: any) => {
+        setSelectedFileUrl(response.mediaUrl);
+      })
+      .catch(() => {
+        setFileUploadErrorPopUp('Failed to upload the file. Please try again later.');
+      });
   };
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -265,7 +278,7 @@ const MessageInput = (props: Props) => {
   };
 
   const closeFileErrorPopUp = () => {
-    setMaxFileSizeErrorPopUp(false);
+    setFileUploadErrorPopUp('');
   };
 
   return (
@@ -321,7 +334,7 @@ const MessageInput = (props: Props) => {
                   sendMessages={sendMessages}
                   mediaComponentConfig={props.config.components['media-resolver']}
                   selectFile={selectFile}
-                  maxFileSizeErrorPopUp={maxFileSizeErrorPopUp}
+                  fileUploadErrorPopUp={fileUploadErrorPopUp}
                   closeFileErrorPopUp={closeFileErrorPopUp}
                 />
               </>

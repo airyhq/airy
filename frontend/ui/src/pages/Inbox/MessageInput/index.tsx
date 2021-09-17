@@ -332,7 +332,6 @@ const MessageInput = (props: Props) => {
                   selectTemplate={selectTemplate}
                   focusInput={focusInput}
                   sendMessages={sendMessages}
-                  mediaComponentConfig={props.config.components['media-resolver']}
                   selectFile={selectFile}
                   fileUploadErrorPopUp={fileUploadErrorPopUp}
                   closeFileErrorPopUp={closeFileErrorPopUp}

@@ -22,10 +22,6 @@ type Props = {
   setInput: (input: string) => void;
   selectTemplate: (template: Template) => void;
   focusInput: () => void;
-  mediaComponentConfig: {
-    enabled: boolean;
-    healthy: boolean;
-  };
   selectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
   closeFileErrorPopUp: () => void;
   fileUploadErrorPopUp: string;
@@ -40,7 +36,6 @@ export const InputOptions = (props: Props) => {
     selectTemplate,
     focusInput,
     selectFile,
-    mediaComponentConfig,
     closeFileErrorPopUp,
     fileUploadErrorPopUp,
   } = props;
@@ -48,6 +43,7 @@ export const InputOptions = (props: Props) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+  const [attachmentDisabled] = useState(false);
 
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal) {
@@ -140,7 +136,7 @@ export const InputOptions = (props: Props) => {
         </div>
       </button>
 
-      {mediaComponentConfig?.enabled && source === ('facebook' || 'instagram') && (
+      {attachmentDisabled && (
         <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>
           <div className={styles.actionToolTip}>Files</div>
 

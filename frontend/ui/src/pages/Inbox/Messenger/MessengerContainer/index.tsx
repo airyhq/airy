@@ -39,7 +39,6 @@ const MessengerContainer = ({
   const [attachmentDisabled] = useState(false);
 
   let dragCounter = 0;
-  s;
 
   useEffect(() => {
     window.addEventListener(

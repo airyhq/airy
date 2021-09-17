@@ -32,10 +32,6 @@ variable "tags" {
   default = {}
 }
 
-variable "core_version" {
-  default = "0.31.0"
-}
-
 variable "host" {
   default = "analytics-demo"
 }

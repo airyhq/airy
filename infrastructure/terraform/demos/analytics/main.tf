@@ -56,7 +56,7 @@ resource "null_resource" "k8s_configuration" {
     hosted_zone  = var.hosted_zone
   }
   provisioner "local-exec" {
-    command = "sleep 60 && scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  centos@${self.triggers.host}.${var.hosted_zone}:/home/centos/kubeconfig ${var.kubeconfig_file}"
+    command = "sleep 240 && scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  centos@${self.triggers.host}.${var.hosted_zone}:/home/centos/kubeconfig ${var.kubeconfig_file}"
   }
   depends_on = [
     module.minikube,
@@ -75,7 +75,7 @@ data "template_file" "values_yaml" {
 
 resource "helm_release" "airy_core" {
   name  = "airy-release"
-  chart = "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${var.core_version}.tgz"
+  chart = "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${replace(file("${path.module}/../../../../VERSION"), "\n", "")}.tgz"
 
   timeout = "600"
   values = [
@@ -98,4 +98,8 @@ resource "helm_release" "jupyterhub" {
   chart = "https://jupyterhub.github.io/helm-chart/jupyterhub-1.1.3.tgz"
 
   values = [ file("${path.module}/files/jupyter-config.yaml") ]
+
+  depends_on = [
+    null_resource.k8s_configuration
+  ]
 }

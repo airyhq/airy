@@ -19,7 +19,7 @@ conversational analytics.
 ## Demo Dashboard
 
 The following
-[Metabase Demo Dashboard](https://dashboard.airy.co/dashboard/14?date_range=2021-08-24~2021-08-24)
+[Metabase Demo Dashboard](https://dashboard.airy.co/auth/login/password?redirect=dashboard/14?date_range=2021-08-24~2021-08-24)
 shows you some basic KPIs you can get from the data that the Airy Platform
 stores for you of your conversational traffic.
 
@@ -35,6 +35,7 @@ vcGNvboSnhE5Vb
 - [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli) v1.0.0+
 - [Airy CLI](https://airy.co/docs/core/cli/introduction) v0.31.0+
 - AWS IAM Role with permissions to create a VPC and an EC2 instance
+- [SSH key](https://www.ssh.com/academy/ssh/keygen) in `~/.ssh/id_rsa.pub`
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/) (optional)
 
 ## Setup
@@ -45,10 +46,12 @@ deployment.
 
 ### Customize your infrastructure
 
-First, clone the Airy repository and go to the directory of the analytics demo.
+First, clone the Airy repository, switch to the main branch and go to the
+directory of the analytics demo.
 
 ```
 git clone https://github.com/airyhq/airy.git
+git checkout main
 cd infrastructure/terraform/demos/analytics
 ```
 

@@ -5,6 +5,7 @@ metadata:
   name: 'airy-core-ngrok'
   namespace: {{ .Values.global.kubernetes.namespace }}
 spec:
+  ingressClassName: nginx
   rules:
     - host: '*.tunnel.airy.co'
       http:

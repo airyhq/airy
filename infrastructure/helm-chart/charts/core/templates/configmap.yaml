@@ -4,15 +4,8 @@ metadata:
   name: hostnames
   namespace: {{ .Values.global.kubernetes.namespace }}
 data:
-  {{ if .Values.global.ingress }}
-   {{ if .Values.global.ingress.https }}
-  HOST: https://{{ .Values.global.kubernetes.host }}
-   {{ else }}
-  HOST: http://{{ .Values.global.kubernetes.host }}
-   {{ end }}
-  {{ else }}
-  HOST: http://{{ .Values.global.kubernetes.host }}
-  {{ end }}
+  HOST: {{ .Values.defaultApiHost }}
+
 ---
 apiVersion: v1
 kind: ConfigMap

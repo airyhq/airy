@@ -7,6 +7,7 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//cli/pkg/kube",
+        "//infrastructure/lib/go/k8s/util",
         "@io_k8s_api//batch/v1:go_default_library",
         "@io_k8s_api//core/v1:go_default_library",
         "@io_k8s_api//rbac/v1:go_default_library",

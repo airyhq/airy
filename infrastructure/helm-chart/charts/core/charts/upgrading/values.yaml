@@ -1,2 +1,3 @@
 kafkaImage: ghcr.io/airyhq/infrastructure/kafka
 kafkaImageTag: 2.7.0
+serviceAccount: helm-account

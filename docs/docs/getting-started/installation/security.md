@@ -91,4 +91,4 @@ The redirect Uri to configure with your provider will always be of the form `{ai
 
 By default the deployed ingress resources don't have HTTPS enabled, so this needs to be configured depending on the provider where you are running `Airy Core`.
 
-We advise you to refer to the documentation of your cloud provider on how to enable HTTPS on the LoadBalancer which routes to the Traefik ingress controller.
+We advise you to refer to the documentation of your cloud provider on how to enable HTTPS on the LoadBalancer which routes to the installed ingress controller.

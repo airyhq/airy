@@ -102,6 +102,16 @@ spec:
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: integration-connect
+                  key: s3Key
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: integration-connect
+                  key: s3Secret
           envFrom:
           - configMapRef:
               name: integration-connect

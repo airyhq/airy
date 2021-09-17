@@ -1,0 +1,3 @@
+apihost: http://analytics-demo.airy.co:30000
+contextname: admin@kubernetes
+kubeconfig: /Users/pascal/airy/infrastructure/terraform/demos/analytics/workspace/.kubeconfig

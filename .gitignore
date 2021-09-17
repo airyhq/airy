@@ -19,6 +19,18 @@ node_modules/
 yarn-error.log
 package-lock.json
 
+# Terraform
+.terraform
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfstate.*.backup
+.terraform.tfstate.lock.info
+.terraform.lock.hcl
+
+# Kubernetes
+.kubeconfig
+
 # Misc
 .DS_Store
 

@@ -9,6 +9,15 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   use-forwarded-headers: "true"
+{{ if .Values.global.ingress }}
+{{ if eq .Values.global.ingress.httpsTermination "LoadBalancer" }}
+  http-snippet: |
+    server{
+      listen 2443;
+      return 308 https://$host$request_uri;
+    }
+{{ end }}
+{{ end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -96,16 +105,25 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+            - name: webhook
+              containerPort: 8443
+              protocol: TCP
             {{ if .Values.global.ingress }}
             {{ if .Values.global.ingress.https }}
+            {{ if eq .Values.global.ingress.httpsTermination "LoadBalancer" }}
+            - name: https
+              containerPort: 80
+              protocol: TCP
+            - name: tohttps
+              containerPort: 2443
+              protocol: TCP
+            {{ else }}
             - name: https
               containerPort: 443
               protocol: TCP
             {{ end }}
             {{ end }}
-            - name: webhook
-              containerPort: 8443
-              protocol: TCP
+            {{ end }}
           volumeMounts:
             - name: webhook-cert
               mountPath: /usr/local/certificates/

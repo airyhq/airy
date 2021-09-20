@@ -1,0 +1,37 @@
+@import 'assets/scss/colors.scss';
+
+.container {
+  max-width: 550px;
+  position: relative;
+  margin: 0px 5px 0px 5px;
+  padding-bottom: 5px;
+}
+
+.removeButton {
+  position: absolute;
+  right: 5px;
+  top: 7px;
+  padding: 8px;
+  margin: 0;
+  line-height: 0;
+  border-radius: 50%;
+  border: 1px solid var(--color-light-gray);
+  background-color: var(--color-template-highlight);
+  cursor: pointer;
+  outline: none;
+  z-index: 1;
+
+  svg {
+    height: 10px;
+    width: 10px;
+  }
+}
+
+.removeButton:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}

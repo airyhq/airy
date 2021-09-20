@@ -16,6 +16,7 @@ import {getConversationInfo} from '../../../../actions';
 const mapStateToProps = (state: StateModel, ownProps) => ({
   conversations: allConversations(state),
   currentConversation: getConversation(state, ownProps),
+  config: state.data.config,
 });
 
 const mapDispatchToProps = {
@@ -33,20 +34,101 @@ const MessengerContainer = ({
   match,
 }: MessengerContainerProps) => {
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
+  const [isFileDragged, setIsFileDragged] = useState(false);
+  const [draggedAndDroppedFile, setDraggedAndDroppedFile] = useState<File | null>(null);
+  const [attachmentDisabled] = useState(false);
+
+  let dragCounter = 0;
+
+  useEffect(() => {
+    window.addEventListener(
+      'dragover',
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+      },
+      false
+    );
+
+    window.addEventListener(
+      'drop',
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+      },
+      false
+    );
+  }, [isFileDragged]);
 
   useEffect(() => {
     if (!currentConversation && match.params.conversationId) {
       getConversationInfo(match.params.conversationId);
     }
+
+    setIsFileDragged(false);
+    setDraggedAndDroppedFile(null);
   }, [currentConversation, match.params.conversationId]);
 
   const hideSuggestedReplies = () => {
     showSuggestedReplies(null);
   };
 
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!attachmentDisabled) return;
+  };
+
+  const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!attachmentDisabled) return;
+
+    dragCounter++;
+
+    setIsFileDragged(true);
+  };
+
+  const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!attachmentDisabled) return;
+    dragCounter++;
+    const file = event.dataTransfer.files[0];
+    setDraggedAndDroppedFile(file);
+    setIsFileDragged(false);
+  };
+
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!attachmentDisabled) return;
+    dragCounter--;
+    if (dragCounter === 0) {
+      setIsFileDragged(false);
+    }
+  };
+
   return (
     <>
-      <div className={styles.wrapper}>
+      <div
+        className={styles.wrapper}
+        onDragEnter={e => handleDragEnter(e)}
+        onDragOver={e => handleDragOver(e)}
+        onDrop={e => handleFileDrop(e)}
+        onDragLeave={e => handleDragLeave(e)}
+        onMouseOut={() => setIsFileDragged(false)}
+        onMouseLeave={() => setIsFileDragged(false)}>
+        {attachmentDisabled && (
+          <div className={`${styles.dragContainer} ${isFileDragged ? styles.dragOverlay : styles.noDraggedFile}`}>
+            <h1>Drop Files Here</h1>
+          </div>
+        )}
+
         {!conversations ? (
           <div className={styles.emptyState}>
             <h1>Your conversations will appear here as soon as a contact messages you.</h1>
@@ -64,6 +146,8 @@ const MessengerContainer = ({
                   showSuggestedReplies={showSuggestedReplies}
                   hideSuggestedReplies={hideSuggestedReplies}
                   source={currentConversation.channel.source as Source}
+                  draggedAndDroppedFile={draggedAndDroppedFile}
+                  setDraggedAndDroppedFile={setDraggedAndDroppedFile}
                 />
               </>
             )}

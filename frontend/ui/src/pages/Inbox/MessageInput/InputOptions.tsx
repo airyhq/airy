@@ -1,17 +1,49 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Picker} from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.svg';
-
-import 'emoji-mart/css/emoji-mart.css';
-
+import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
 import TemplateSelector from '../TemplateSelector';
+import {sendMessages} from '../../../actions/messages';
+import {connect, ConnectedProps} from 'react-redux';
+import {Template, Source} from 'model';
+import {ErrorPopUp} from 'components';
 import styles from './InputOptions.module.scss';
 
-export const InputOptions = ({source, inputDisabled, input, setInput, selectTemplate, focus: focusInput}) => {
+const mapDispatchToProps = {sendMessages};
+
+const connector = connect(null, mapDispatchToProps);
+
+type Props = {
+  source: Source;
+  inputDisabled: boolean;
+  input: string;
+  setInput: (input: string) => void;
+  selectTemplate: (template: Template) => void;
+  focusInput: () => void;
+  selectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  closeFileErrorPopUp: () => void;
+  fileUploadErrorPopUp: string;
+} & ConnectedProps<typeof connector>;
+
+export const InputOptions = (props: Props) => {
+  const {
+    source,
+    inputDisabled,
+    input,
+    setInput,
+    selectTemplate,
+    focusInput,
+    selectFile,
+    closeFileErrorPopUp,
+    fileUploadErrorPopUp,
+  } = props;
+
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+  const [attachmentDisabled] = useState(false);
 
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal) {
@@ -64,6 +96,12 @@ export const InputOptions = ({source, inputDisabled, input, setInput, selectTemp
 
   return (
     <div className={styles.container}>
+      {fileUploadErrorPopUp && (
+        <div className={styles.fileSizeErrorPopUp}>
+          <ErrorPopUp message={fileUploadErrorPopUp} closeHandler={closeFileErrorPopUp} />
+        </div>
+      )}
+
       {isShowingTemplateModal && (
         <TemplateSelector
           onClose={toggleTemplateModal}
@@ -97,6 +135,18 @@ export const InputOptions = ({source, inputDisabled, input, setInput, selectTemp
           <TemplateAlt aria-hidden className={styles.templateAltIcon} />
         </div>
       </button>
+
+      {attachmentDisabled && (
+        <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>
+          <div className={styles.actionToolTip}>Files</div>
+
+          <label htmlFor="file" className={styles.filesLabel}>
+            <Paperclip aria-hidden className={styles.paperclipIcon} />
+          </label>
+
+          <input type="file" id="file" name="file" onChange={selectFile} className={styles.fileInput} />
+        </button>
+      )}
     </div>
   );
 };

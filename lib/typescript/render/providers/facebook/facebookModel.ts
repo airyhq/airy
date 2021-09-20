@@ -105,6 +105,16 @@ export interface ImageContent extends Content {
   imageUrl: string;
 }
 
+export interface AudioContent extends Content {
+  type: 'audio';
+  audioUrl: string;
+}
+
+export interface FileContent extends Content {
+  type: 'file';
+  fileUrl: string;
+}
+
 export interface ImagesContent extends Content {
   type: 'images';
   images: ImageContent[];
@@ -165,8 +175,10 @@ export type ContentUnion =
   | TextContent
   | PostbackButton
   | ImageContent
+  | AudioContent
   | ImagesContent
   | VideoContent
+  | FileContent
   | ButtonTemplate
   | GenericTemplate
   | QuickRepliesContent
@@ -179,6 +191,8 @@ export type AttachmentUnion =
   | TextContent
   | ImageContent
   | VideoContent
+  | FileContent
+  | AudioContent
   | ButtonTemplate
   | GenericTemplate
   | MediaTemplate

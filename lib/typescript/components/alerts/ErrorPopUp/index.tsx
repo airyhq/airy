@@ -9,12 +9,14 @@ export const ErrorPopUp = (props: errorPopUpProps) => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.errorContainer}>
-        <WarningIcon />
-        <p>{message}</p>
-        <button onClick={() => closeHandler()}>
-          <CloseIcon />
-        </button>
+      <div className={styles.errorWrapper}>
+        <div className={styles.errorContainer}>
+          <WarningIcon />
+          <p>{message}</p>
+          <button onClick={() => closeHandler()}>
+            <CloseIcon />
+          </button>
+        </div>
       </div>
     </div>
   );

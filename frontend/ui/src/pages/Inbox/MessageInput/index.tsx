@@ -4,12 +4,11 @@ import {sendMessages} from '../../../actions/messages';
 import {withRouter} from 'react-router-dom';
 import {Button} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
-import {SourceMessage, getOutboundMapper} from 'render';
+import {getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
 
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
-import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import {ReactComponent as ChevronDownIcon} from 'assets/images/icons/chevron-down.svg';
 
 import {ConversationRouteProps} from '../index';
@@ -23,12 +22,17 @@ import SuggestedReplySelector from '../SuggestedReplySelector';
 import {InputOptions} from './InputOptions';
 
 import styles from './index.module.scss';
+import {HttpClientInstance} from '../../../InitializeAiryApi';
+import {FacebookMapper} from 'render/outbound/facebook';
+import {getAttachmentType, imageExtensions, fileExtensions, videoExtensions, audioExtensions} from 'render/attachments';
+import {InputSelector} from './InputSelector';
 
 const mapDispatchToProps = {sendMessages};
 
 const mapStateToProps = (state: StateModel, ownProps: ConversationRouteProps) => ({
   conversation: getConversation(state, ownProps),
   messages: getCurrentMessages(state, ownProps),
+  config: state.data.config,
   listTemplates,
 });
 
@@ -38,6 +42,8 @@ type Props = {
   suggestions: Suggestions;
   showSuggestedReplies: (suggestions: Suggestions) => void;
   hideSuggestedReplies: () => void;
+  draggedAndDroppedFile: File;
+  setDraggedAndDroppedFile: React.Dispatch<React.SetStateAction<File | null>>;
 } & ConnectedProps<typeof connector>;
 
 interface SelectedTemplate {
@@ -49,108 +55,127 @@ interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
 
-const contentResizedHeight = 200;
-
 const MessageInput = (props: Props) => {
-  const {source, conversation, suggestions, showSuggestedReplies, hideSuggestedReplies, sendMessages} = props;
+  const {
+    source,
+    conversation,
+    suggestions,
+    showSuggestedReplies,
+    hideSuggestedReplies,
+    sendMessages,
+    draggedAndDroppedFile,
+    setDraggedAndDroppedFile,
+  } = props;
+
+  const contentResizedHeight = 200;
 
   const outboundMapper = getOutboundMapper(source);
+  const fileOutboundMapper = getOutboundMapper('facebook') as FacebookMapper;
   const channelConnected = conversation.channel.connected;
 
   const [input, setInput] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
-  const [closeIconWidth, setCloseIconWidth] = useState('');
-  const [closeIconHeight, setCloseIconHeight] = useState('');
+  const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+  const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
-  const templateSelectorDiv = useRef<HTMLDivElement>(null);
-  const selectedSuggestedReplyDiv = useRef<HTMLDivElement>(null);
-  const removeTemplateButton = useRef(null);
-  const removeSuggestedRepliesButton = useRef(null);
 
   const focusInput = () => textAreaRef?.current?.focus();
 
   useEffect(() => {
+    if (draggedAndDroppedFile) {
+      uploadFile(draggedAndDroppedFile);
+    }
+  }, [draggedAndDroppedFile]);
+
+  useEffect(() => {
     setInput('');
-    removeTemplateFromInput();
+    removeElementFromInput();
     focusInput();
   }, [conversation.id]);
 
   useEffect(() => {
-    textAreaRef.current.style.height = 'inherit';
-    textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, contentResizedHeight)}px`;
+    if (textAreaRef && textAreaRef.current) {
+      textAreaRef.current.style.height = 'inherit';
+      textAreaRef.current.style.height = `${Math.min(textAreaRef.current.scrollHeight, contentResizedHeight)}px`;
+    }
   }, [input]);
 
   useEffect(() => {
-    if (!conversation.channel.connected) {
-      setInput('');
-      textAreaRef.current.style.cursor = 'not-allowed';
-    } else {
-      textAreaRef.current.style.cursor = 'auto';
+    if (textAreaRef && textAreaRef.current) {
+      if (!conversation.channel.connected) {
+        setInput('');
+        textAreaRef.current.style.cursor = 'not-allowed';
+      } else {
+        textAreaRef.current.style.cursor = 'auto';
+      }
     }
   }, [channelConnected]);
 
-  useEffect(() => {
-    if (selectedSuggestedReply && selectedSuggestedReplyDiv?.current?.offsetHeight > contentResizedHeight) {
-      const contentSelectorDivHeight = selectedSuggestedReplyDiv.current.offsetHeight;
-      const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
+  const uploadFile = (file: File) => {
+    const fileSizeInMB = file.size / Math.pow(1024, 2);
 
-      if (scaleRatio <= 0.7) {
-        const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
-        const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
-
-        setCloseIconHeight(iconSize);
-        setCloseIconWidth(iconSize);
-
-        if (removeSuggestedRepliesButton && removeSuggestedRepliesButton.current) {
-          removeSuggestedRepliesButton.current.style.width = buttonSize;
-          removeSuggestedRepliesButton.current.style.height = buttonSize;
-        }
-      }
-
-      selectedSuggestedReplyDiv.current.style.transform = `scale(${scaleRatio})`;
-      selectedSuggestedReplyDiv.current.style.transformOrigin = 'left';
+    if (fileSizeInMB >= 25) {
+      setFileUploadErrorPopUp('Failed to upload the file. The maximum file size allowed is 25MB.');
+      return;
     }
-  }, [selectedSuggestedReply]);
 
-  useEffect(() => {
-    if (selectedTemplate && templateSelectorDiv?.current?.offsetHeight > contentResizedHeight) {
-      const contentSelectorDivHeight = templateSelectorDiv.current.offsetHeight;
-      const scaleRatio = Math.min(contentResizedHeight / contentSelectorDivHeight);
-
-      if (scaleRatio <= 0.7) {
-        const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
-        const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
-
-        setCloseIconHeight(iconSize);
-        setCloseIconWidth(iconSize);
-
-        if (removeTemplateButton && removeTemplateButton.current) {
-          removeTemplateButton.current.style.width = buttonSize;
-          removeTemplateButton.current.style.height = buttonSize;
-        }
-      }
-
-      templateSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
-      templateSelectorDiv.current.style.transformOrigin = 'left';
+    if (!getAttachmentType(file.name)) {
+      const message = `This file type is not supported. Supported files: ${audioExtensions.join(
+        ' , '
+      )} ${imageExtensions.join(' , ')} ${videoExtensions.join(' , ')} ${fileExtensions.join(' , ')}`;
+      setFileUploadErrorPopUp(message);
+      return;
     }
-  }, [selectedTemplate]);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return HttpClientInstance.uploadFile({file: formData})
+      .then((response: any) => {
+        setSelectedFileUrl(response.mediaUrl);
+      })
+      .catch(() => {
+        setFileUploadErrorPopUp('Failed to upload the file. Please try again later.');
+      });
+  };
+
+  const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (selectedSuggestedReply) setSelectedSuggestedReply(null);
+    if (input) setInput('');
+    if (selectedTemplate) setSelectedTemplate(null);
+    if (selectedFileUrl) setSelectedFileUrl(null);
+
+    const file = event.target.files[0];
+
+    return uploadFile(file);
+  };
 
   const canSendMessage = () => {
-    return !((!selectedTemplate && !selectedSuggestedReply && !input) || !channelConnected);
+    return !((!selectedTemplate && !selectedSuggestedReply && !input && !selectedFileUrl) || !channelConnected);
+  };
+
+  const isElementSelected = () => {
+    return selectedTemplate || selectedSuggestedReply || selectedFileUrl;
   };
 
   const sendMessage = () => {
     if (canSendMessage()) {
       setSelectedSuggestedReply(null);
       setSelectedTemplate(null);
+
       sendMessages(
         selectedTemplate || selectedSuggestedReply
           ? {
               conversationId: conversation.id,
               message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
+            }
+          : selectedFileUrl
+          ? {
+              conversationId: conversation.id,
+              message: fileOutboundMapper.getAttachmentPayload(selectedFileUrl),
             }
           : {
               conversationId: conversation.id,
@@ -158,7 +183,7 @@ const MessageInput = (props: Props) => {
             }
       ).then(() => {
         setInput('');
-        removeTemplateFromInput();
+        removeElementFromInput();
       });
     }
   };
@@ -205,6 +230,8 @@ const MessageInput = (props: Props) => {
 
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
 
+    if (selectedFileUrl) setSelectedFileUrl(null);
+
     if (isTextMessage(template)) {
       setInput(jsonTemplate.text);
     } else {
@@ -221,6 +248,8 @@ const MessageInput = (props: Props) => {
 
     if (selectedTemplate) setSelectedTemplate(null);
 
+    if (selectedFileUrl) setSelectedFileUrl(null);
+
     hideSuggestedReplies();
     if (isTextMessage(reply)) {
       setInput(reply.content.text);
@@ -230,16 +259,26 @@ const MessageInput = (props: Props) => {
     sendButtonRef.current.focus();
   };
 
-  const removeTemplateFromInput = () => {
-    setSelectedTemplate(null);
-    setCloseIconWidth('');
-    setCloseIconHeight('');
+  const removeElementFromInput = () => {
+    if (selectedTemplate) {
+      setSelectedTemplate(null);
+    }
+
+    if (selectedSuggestedReply) {
+      setSelectedSuggestedReply(null);
+    }
+
+    if (selectedFileUrl) {
+      setSelectedFileUrl(null);
+    }
+
+    if (setDraggedAndDroppedFile) {
+      setDraggedAndDroppedFile(null);
+    }
   };
 
-  const removeSelectedSuggestedReply = () => {
-    setSelectedSuggestedReply(null);
-    setCloseIconWidth('');
-    setCloseIconHeight('');
+  const closeFileErrorPopUp = () => {
+    setFileUploadErrorPopUp('');
   };
 
   return (
@@ -270,7 +309,7 @@ const MessageInput = (props: Props) => {
       <form className={styles.inputForm}>
         <div className={styles.messageWrap}>
           <div className={styles.inputWrap}>
-            {!selectedTemplate && !selectedSuggestedReply && (
+            {!isElementSelected() && (
               <>
                 <textarea
                   className={styles.messageTextArea}
@@ -291,48 +330,28 @@ const MessageInput = (props: Props) => {
                   input={input}
                   setInput={setInput}
                   selectTemplate={selectTemplate}
-                  focus={focusInput}
+                  focusInput={focusInput}
+                  sendMessages={sendMessages}
+                  selectFile={selectFile}
+                  fileUploadErrorPopUp={fileUploadErrorPopUp}
+                  closeFileErrorPopUp={closeFileErrorPopUp}
                 />
               </>
             )}
-            {selectedSuggestedReply && (
-              <div className={styles.suggestionRepliesSelector} ref={selectedSuggestedReplyDiv}>
-                <button
-                  className={styles.removeButton}
-                  onClick={removeSelectedSuggestedReply}
-                  ref={removeSuggestedRepliesButton}>
-                  <Close
-                    style={{
-                      width: closeIconWidth ?? '',
-                      height: closeIconHeight ?? '',
-                    }}
-                  />
-                </button>
-                <SourceMessage
-                  message={selectedSuggestedReply.message}
-                  source={source}
-                  contentType="suggestedReplies"
-                />
-              </div>
-            )}
 
-            {selectedTemplate && (
+            {isElementSelected() && (
               <>
-                <div className={styles.templateSelector} ref={templateSelectorDiv}>
-                  <button className={styles.removeButton} onClick={removeTemplateFromInput} ref={removeTemplateButton}>
-                    <Close
-                      style={{
-                        width: closeIconWidth ?? '',
-                        height: closeIconHeight ?? '',
-                      }}
-                    />
-                  </button>
-                  <SourceMessage
-                    message={selectedTemplate.message}
-                    source={selectedTemplate.source}
-                    contentType="template"
-                  />
-                </div>
+                <InputSelector
+                  message={
+                    selectedTemplate?.message ??
+                    selectedSuggestedReply?.message ??
+                    fileOutboundMapper.getAttachmentPayload(selectedFileUrl)
+                  }
+                  source={source}
+                  messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}
+                  removeElementFromInput={removeElementFromInput}
+                  contentResizedHeight={contentResizedHeight}
+                />
               </>
             )}
           </div>
@@ -348,9 +367,7 @@ const MessageInput = (props: Props) => {
             type="button"
             ref={sendButtonRef}
             className={`${styles.sendButton} ${
-              (input.trim().length != 0 || selectedTemplate || selectedSuggestedReply) &&
-              channelConnected &&
-              styles.sendButtonActive
+              (input.trim().length != 0 || canSendMessage()) && styles.sendButtonActive
             }`}
             onClick={sendMessage}
             disabled={input.trim().length == 0 && !canSendMessage()}

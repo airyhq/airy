@@ -13,23 +13,6 @@
   @include font-base;
 }
 
-.activeStory {
-  display: flex;
-  align-items: center;
-}
-
-.activeStoryLink:link,
-.activeStoryLink:hover,
-.activeStoryLink:visited,
-.activeStoryLink:active {
-  color: var(--color-text-contrast);
-  font-style: italic;
-}
-
-.expiredStory {
-  font-style: italic;
-}
-
 .contactContent {
   @extend .textMessage;
   background: var(--color-background-blue);
@@ -40,4 +23,26 @@
   @extend .textMessage;
   background: var(--color-airy-blue);
   color: white;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.container svg {
+  width: 15px;
+  height: auto;
+  margin-left: 4px;
+  path {
+    fill: var(--color-text-contrast);
+  }
+}
+
+.shareLink:link,
+.shareLink:hover,
+.shareLink:visited,
+.shareLink:active {
+  color: var(--color-text-contrast);
+  font-style: italic;
 }

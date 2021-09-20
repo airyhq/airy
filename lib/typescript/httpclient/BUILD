@@ -16,6 +16,7 @@ ts_web_library(
     deps = module_deps + [
         "@npm//@types/node",
         "@npm//camelcase-keys",
+        "@npm//node-fetch",
     ],
 )
 
@@ -26,6 +27,7 @@ web_library(
     externals = {
         "@types/node": "@types/node",
         "camelcase-keys": "camelcase-keys",
+        "node-fetch": "node-fetch",
     },
     module_deps = module_deps,
     output = {

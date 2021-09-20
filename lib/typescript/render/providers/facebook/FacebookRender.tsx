@@ -16,6 +16,7 @@ import {MediaTemplate} from './components/MediaTemplate';
 import {FallbackAttachment} from './components/FallbackAttachment';
 import {StoryMention} from './components/InstagramStoryMention';
 import {StoryReplies} from './components/InstagramStoryReplies';
+import {Share} from './components/InstagramShare';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -84,6 +85,9 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
         />
       );
 
+    case 'share':
+      return <Share url={content.url} fromContact={props.message.fromContact || false} />;
+
     default:
       return null;
   }
@@ -142,6 +146,13 @@ const parseAttachment = (
     return {
       type: 'video',
       videoUrl: attachment.payload.url,
+    };
+  }
+
+  if (attachment.type === 'share') {
+    return {
+      type: 'share',
+      url: attachment.payload.url,
     };
   }
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ReactComponent as RightArrowIcon} from 'assets/images/icons/rightArrow.svg';
 import styles from './index.module.scss';
 

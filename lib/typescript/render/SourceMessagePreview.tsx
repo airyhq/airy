@@ -2,6 +2,8 @@ import React from 'react';
 import {ReactComponent as AttachmentTemplate} from 'assets/images/icons/attachmentTemplate.svg';
 import {ReactComponent as AttachmentImage} from 'assets/images/icons/attachmentImage.svg';
 import {ReactComponent as AttachmentVideo} from 'assets/images/icons/attachmentVideo.svg';
+import {ReactComponent as AttachmentAudio} from 'assets/images/icons/file-audio.svg';
+import {ReactComponent as AttachmentFile} from 'assets/images/icons/file-download.svg';
 import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
 import {Conversation, Message} from 'model';
 interface SourceMessagePreviewProps {
@@ -73,16 +75,33 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
         isImageFromGoogleSource(lastMessageContent.message?.text)
       ) {
         return <AttachmentImage />;
-      } else if (lastMessageContent.message?.attachments?.[0].type === 'video') {
+      }
+
+      if (lastMessageContent.message?.attachments?.[0].type === 'video') {
         return <AttachmentVideo style={{height: '24px', width: '24px', margin: '0px'}} />;
-      } else if (lastMessageContent.suggestionResponse) {
+      }
+
+      if (lastMessageContent.message?.attachments?.[0].type === 'audio') {
+        return <AttachmentAudio style={{height: '24px', width: '24px', margin: '0px'}} />;
+      }
+
+      if (lastMessageContent.message?.attachments?.[0].type === 'file') {
+        return <AttachmentFile style={{height: '24px', width: '24px', margin: '0px'}} />;
+      }
+
+      if (lastMessageContent.suggestionResponse) {
         return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
-      } else if (lastMessageContent.image) {
+      }
+
+      if (lastMessageContent.image) {
         return <AttachmentImage />;
-      } else if (lastMessageContent.richCard) {
+      }
+
+      if (lastMessageContent.richCard) {
         return <RichCardIcon style={{height: '24px', width: '24px', margin: '0px'}} />;
       }
     }
+
     return <AttachmentTemplate />;
   };
 

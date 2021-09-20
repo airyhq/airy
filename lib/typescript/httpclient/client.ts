@@ -51,6 +51,7 @@ import {
   updateContactDef,
   uploadFileDef,
 } from './src/endpoints';
+import fetch from 'node-fetch';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;

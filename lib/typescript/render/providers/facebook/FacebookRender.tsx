@@ -166,7 +166,7 @@ const parseAttachment = (
 
   return {
     type: 'text',
-    text: 'Unknown message type',
+    text: 'Unsupported message type',
   };
 };
 
@@ -227,7 +227,7 @@ function facebookInbound(message): ContentUnion {
 
   return {
     type: 'text',
-    text: 'Unkown message type',
+    text: 'Unsupported message type',
   };
 }
 
@@ -299,6 +299,6 @@ function facebookOutbound(message): ContentUnion {
 
   return {
     type: 'text',
-    text: 'Unknown message type',
+    text: 'Unsupported message type',
   };
 }

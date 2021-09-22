@@ -142,7 +142,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
           data-cy={dataCyTextareaId}
         />
         <div className={style.buttonContainer}>
-          <InputOptions />
+          {!(config.hideEmojis === true) && <InputOptions />}
           <button className={style.sendButton} type="submit" data-cy={dataCyButtonId}>
             {config?.sendMessageIcon ? <img src={config.sendMessageIcon} alt={'send message'} /> : <Paperplane />}
           </button>

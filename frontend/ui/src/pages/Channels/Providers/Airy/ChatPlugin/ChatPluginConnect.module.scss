@@ -10,7 +10,8 @@
   width: 100%;
   padding: 32px;
   margin: 88px 1.5em 0 16px;
-  min-height: calc(100vh - 170px);
+  height: calc(100vh - 88px);
+  overflow-y: scroll;
 }
 
 .headline {

@@ -254,7 +254,7 @@ const Chat = ({config, ...props}: Props) => {
                   );
                 })}
               </div>
-              {!(config.hideInputBar === true) && <InputBarProp render={inputBar} />}
+              <InputBarProp render={inputBar} />
               {connectionState === ConnectionState.Disconnected && (
                 <div className={style.modalOverlay}>Reconnecting...</div>
               )}

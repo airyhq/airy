@@ -19,14 +19,14 @@ provider "helm" {
 module "vpc" {
   source = "scholzj/vpc/aws"
 
-  aws_region      = "${var.aws_region}"
-  aws_zones       = "${var.aws_zones}"
-  vpc_name        = "${var.vpc_name}"
-  vpc_cidr        = "${var.vpc_cidr}"
-  private_subnets = "${var.private_subnets}"
+  aws_region      = var.aws_region
+  aws_zones       = var.aws_zones
+  vpc_name        = var.vpc_name
+  vpc_cidr        = var.vpc_cidr
+  private_subnets = var.private_subnets
 
   ## Tags
-  tags = "${var.tags}"
+  tags = var.tags
 }
 
 module "minikube" {
@@ -34,7 +34,7 @@ module "minikube" {
   version = "1.14.1"
 
   aws_subnet_id     = module.vpc.subnet_ids[0]
-  aws_instance_type = "m4.large"
+  aws_instance_type = "m4.xlarge"
   cluster_name      = var.host
   hosted_zone       = var.hosted_zone
   tags = {
@@ -52,8 +52,8 @@ module "minikube" {
 
 resource "null_resource" "k8s_configuration" {
   triggers = {
-    host         = var.host
-    hosted_zone  = var.hosted_zone
+    host        = var.host
+    hosted_zone = var.hosted_zone
   }
   provisioner "local-exec" {
     command = "sleep 240 && scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  centos@${self.triggers.host}.${var.hosted_zone}:/home/centos/kubeconfig ${var.kubeconfig_file}"
@@ -68,8 +68,9 @@ data "template_file" "values_yaml" {
   template = file("${path.module}/files/values.yaml")
 
   vars = {
-    host = var.host
-    hosted_zone = var.hosted_zone
+    host          = var.host
+    hosted_zone   = var.hosted_zone
+    app_image_tag = replace(file("${path.module}/../../../../VERSION"), "\n", "")
   }
 }
 
@@ -94,10 +95,10 @@ resource "helm_release" "airy_core" {
 }
 
 resource "helm_release" "jupyterhub" {
-  name = "jupyterhub"
+  name  = "jupyterhub"
   chart = "https://jupyterhub.github.io/helm-chart/jupyterhub-1.1.3.tgz"
 
-  values = [ file("${path.module}/files/jupyter-config.yaml") ]
+  values = [file("${path.module}/files/jupyter-config.yaml")]
 
   depends_on = [
     null_resource.k8s_configuration

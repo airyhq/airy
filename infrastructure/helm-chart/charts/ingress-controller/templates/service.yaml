@@ -59,7 +59,7 @@ spec:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/component: controller
 ---
-{{ if .Values.global.kubernetes.ngrokEnabled }}
+{{ if or ( .Values.global.kubernetes.ngrokEnabled ) ( .Values.global.ingress.nodePort ) }}
 kind: Service
 apiVersion: v1
 metadata:
@@ -70,7 +70,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      nodePort: 80
+      nodePort: {{ default 80 .Values.global.ingress.nodePort }}
       targetPort: 80
       name: web
   selector:

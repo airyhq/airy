@@ -6,4 +6,4 @@ global:
     loadBalancer: true
     host:
 namespace: kube-system
-serviceAccount: helm-account
+serviceAccount: airy-admin

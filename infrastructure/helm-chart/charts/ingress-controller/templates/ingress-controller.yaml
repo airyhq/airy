@@ -8,6 +8,7 @@ metadata:
   name: ingress-nginx-controller
   namespace: {{ .Values.namespace }}
 data:
+  use-forwarded-headers: "true"
 ---
 apiVersion: apps/v1
 kind: Deployment

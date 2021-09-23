@@ -4,10 +4,11 @@ apiVersion: networking.k8s.io/v1
 metadata:
   name: 'airy-core'
   namespace: {{ .Values.global.kubernetes.namespace }}
+  labels:
+    core.airy.co/managed: "true"
 spec:
   rules:
-    - host: {{ .Values.global.kubernetes.host }}
-      http:
+    - http:
         paths:
           - path: /ws.communication
             pathType: Prefix
@@ -20,7 +21,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: sources-api
+                name: source-api
                 port:
                   number: 80
           - path: /conversations
@@ -205,3 +206,4 @@ spec:
                 name: sources-chatplugin
                 port:
                   number: 80
+  ingressClassName: nginx

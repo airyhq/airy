@@ -130,7 +130,7 @@ function googleInbound(message): ContentUnion {
 
   return {
     type: 'text',
-    text: 'Unkown message type',
+    text: 'Unsupported message type',
   };
 }
 
@@ -216,6 +216,6 @@ function googleOutbound(message): ContentUnion {
 
   return {
     type: 'text',
-    text: 'Unknown message type',
+    text: 'Unsupported message type',
   };
 }

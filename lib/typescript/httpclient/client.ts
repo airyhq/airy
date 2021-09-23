@@ -20,6 +20,7 @@ import {
   SetStateConversationRequestPayload,
   UpdateContactRequestPayload,
   ConnectChannelInstagramRequestPayload,
+  UploadFileRequestPayload,
 } from './src/payload';
 import {
   listChannelsDef,
@@ -48,7 +49,9 @@ import {
   metadataUpsertDef,
   setStateConversationDef,
   updateContactDef,
+  uploadFileDef,
 } from './src/endpoints';
+import fetch from 'node-fetch';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
@@ -201,6 +204,8 @@ export class HttpClient {
   public setStateConversation = this.getRequest<SetStateConversationRequestPayload>(setStateConversationDef);
 
   public updateContact = this.getRequest<UpdateContactRequestPayload>(updateContactDef);
+
+  public uploadFile = this.getRequest<UploadFileRequestPayload>(uploadFileDef);
 
   private getRequest<K, V = void>({endpoint, mapRequest, mapResponse}: EndpointDefinition<K, V>): ApiRequest<K, V> {
     return async (requestPayload: K) => {

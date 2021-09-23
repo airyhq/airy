@@ -4,7 +4,7 @@ export interface Attachment {
   url?: string | null;
 }
 export interface SimpleAttachment {
-  type: 'image' | 'video' | 'audio' | 'file' | 'fallback';
+  type: 'image' | 'video' | 'audio' | 'file' | 'share' | 'fallback';
   title?: string;
   url?: string;
   payload?: {title?: string; url?: string} | null;
@@ -105,6 +105,16 @@ export interface ImageContent extends Content {
   imageUrl: string;
 }
 
+export interface AudioContent extends Content {
+  type: 'audio';
+  audioUrl: string;
+}
+
+export interface FileContent extends Content {
+  type: 'file';
+  fileUrl: string;
+}
+
 export interface ImagesContent extends Content {
   type: 'images';
   images: ImageContent[];
@@ -148,6 +158,7 @@ export interface Fallback extends Content {
   url: string;
 }
 
+//Instagram-specific
 export interface StoryMentionContent extends Content {
   type: 'story_mention';
   url: string;
@@ -160,27 +171,38 @@ export interface StoryRepliesContent extends Content {
   sentAt: Date;
 }
 
+export interface ShareContent extends Content {
+  type: 'share';
+  url: string;
+}
+
 // Add a new facebook content model here:
 export type ContentUnion =
   | TextContent
   | PostbackButton
   | ImageContent
+  | AudioContent
   | ImagesContent
   | VideoContent
+  | FileContent
   | ButtonTemplate
   | GenericTemplate
   | QuickRepliesContent
   | MediaTemplate
   | StoryMentionContent
   | StoryRepliesContent
+  | ShareContent
   | Fallback;
 
 export type AttachmentUnion =
   | TextContent
   | ImageContent
   | VideoContent
+  | FileContent
+  | AudioContent
   | ButtonTemplate
   | GenericTemplate
   | MediaTemplate
   | StoryMentionContent
+  | ShareContent
   | Fallback;

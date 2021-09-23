@@ -45,36 +45,6 @@ data:
       curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${system_token}" -d "${request}" api-admin/webhooks.subscribe
     fi
 ---
-# Cleanup old jobs
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: {{ .Values.global.kubernetes.appImageTag }}-cleanup-upgrade
-  namespace: {{ .Values.global.kubernetes.namespace }}
-  annotations:
-    "helm.sh/hook": "pre-upgrade"
-    "helm.sh/hook-weight": "0"
-  labels:
-    core.airy.co/upgrade: "true"
-spec:
-  ttlSecondsAfterFinished: 120
-  template:
-    spec:
-      containers:
-      - name: reset-app
-        image: "bitnami/kubectl"
-        command: ['/bin/sh', '/opt/provisioning/upgrade-cleanup.sh']
-        volumeMounts:
-        - name: upgrading-scripts
-          mountPath: /opt/provisioning
-      serviceAccountName: airy-upgrade
-      volumes:
-        - name: upgrading-scripts
-          configMap:
-            name: upgrading-scripts
-      restartPolicy: Never
-  backoffLimit: 3
----
 # Migrate api-communication
 apiVersion: batch/v1
 kind: Job
@@ -131,7 +101,7 @@ spec:
         volumeMounts:
         - name: upgrading-scripts
           mountPath: /opt/provisioning
-      serviceAccountName: airy-upgrade
+      serviceAccountName: {{ .Values.serviceAccount }}
       volumes:
         - name: upgrading-scripts
           configMap:
@@ -262,7 +232,7 @@ spec:
         volumeMounts:
         - name: upgrading-scripts
           mountPath: /opt/provisioning
-      serviceAccountName: airy-upgrade
+      serviceAccountName: {{ .Values.serviceAccount }}
       volumes:
         - name: provisioning-scripts
           configMap:
@@ -322,7 +292,7 @@ spec:
         volumeMounts:
         - name: upgrade
           mountPath: /opt/provisioning
-      serviceAccountName: airy-upgrade
+      serviceAccountName: {{ .Values.serviceAccount }}
       volumes:
         - name: provisioning-scripts
           configMap:

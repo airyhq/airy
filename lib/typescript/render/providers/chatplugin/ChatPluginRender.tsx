@@ -131,7 +131,7 @@ function mapContent(message): ContentUnion {
 
   return {
     type: 'text',
-    text: 'Unknown message type',
+    text: 'Unsupported message type',
   };
 }
 
@@ -152,7 +152,7 @@ const parseAttachment = (attachment: SimpleAttachment): AttachmentUnion => {
 
   return {
     type: 'text',
-    text: 'Unknown message type',
+    text: 'Unsupported message type',
   };
 };
 

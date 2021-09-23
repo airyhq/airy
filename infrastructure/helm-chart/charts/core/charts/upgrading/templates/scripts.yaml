@@ -67,4 +67,5 @@ data:
     kubectl delete configmap -l core.airy.co/upgrade="true"
     kubectl delete job -l core.airy.co/upgrade="true"
     kubectl delete job -l core.airy.co/upgrade="post-upgrade"
+    kubectl delete job -l core.airy.co/managed="true"
     kubectl delete job -l job-name

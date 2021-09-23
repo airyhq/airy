@@ -31,10 +31,12 @@ export const Video = ({videoUrl}: VideoRenderProps) => {
         {isVideoFailed ? (
           <div>Loading of video failed</div>
         ) : (
-          <video className={styles.video} controls preload="metadata" onError={loadingFailed}>
-            <source src={videoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <a href={videoUrl} target="_blank" rel="noopener noreferrer">
+            <video className={styles.video} controls preload="metadata" onError={loadingFailed}>
+              <source src={videoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </a>
         )}
       </div>
     </div>

@@ -1,26 +1,11 @@
 {{ if .Values.global.kubernetes.ngrokEnabled }}
-kind: Service
-apiVersion: v1
-metadata:
-  name: traefik-node-port
-  namespace: kube-system
-spec:
-  selector:
-    k8s-app: traefik-ingress-lb
-  ports:
-    - protocol: TCP
-      port: 80
-      nodePort: 80
-      targetPort: 80
-      name: web
-  type: NodePort
----
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: 'airy-core-ngrok'
   namespace: {{ .Values.global.kubernetes.namespace }}
 spec:
+  ingressClassName: nginx
   rules:
     - host: '*.tunnel.airy.co'
       http:
@@ -76,7 +61,7 @@ spec:
           command:
             - /bin/bash
             - -c
-            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="${CORE_ID}" traefik.kube-system:80
+            - /usr/local/bin/ngrok -config=/etc/ngrok/config.yml -log=stdout -subdomain="${CORE_ID}" ingress-nginx-controller.kube-system:80
           image: ghcr.io/airyhq/infrastructure/ngrok-client:latest
           env:
             - name: CORE_ID

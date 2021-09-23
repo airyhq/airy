@@ -1,8 +1,6 @@
 import React from 'react';
 import {RenderPropsUnion} from '../../props';
-import {Text} from '../../components/Text';
-import {Image} from '../../components/Image';
-import {Video} from '../../components/Video';
+import {Text, Image, Video, Audio, File} from '../../components';
 import {QuickReplies} from './components/QuickReplies';
 import {
   AttachmentUnion,
@@ -18,6 +16,7 @@ import {MediaTemplate} from './components/MediaTemplate';
 import {FallbackAttachment} from './components/FallbackAttachment';
 import {StoryMention} from './components/InstagramStoryMention';
 import {StoryReplies} from './components/InstagramStoryReplies';
+import {Share} from './components/InstagramShare';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -44,6 +43,12 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
     case 'video':
       return <Video videoUrl={content.videoUrl} />;
+
+    case 'audio':
+      return <Audio audioUrl={content.audioUrl} />;
+
+    case 'file':
+      return <File fileUrl={content.fileUrl} />;
 
     case 'buttonTemplate':
       return <ButtonTemplate template={content} />;
@@ -80,6 +85,9 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
         />
       );
 
+    case 'share':
+      return <Share url={content.url} fromContact={props.message.fromContact || false} />;
+
     default:
       return null;
   }
@@ -92,6 +100,20 @@ const parseAttachment = (
     return {
       type: 'image',
       imageUrl: attachment.payload.url,
+    };
+  }
+
+  if (attachment.type === 'audio') {
+    return {
+      type: 'audio',
+      audioUrl: attachment.payload.url,
+    };
+  }
+
+  if (attachment.type === 'file') {
+    return {
+      type: 'file',
+      fileUrl: attachment.payload.url,
     };
   }
 
@@ -127,6 +149,13 @@ const parseAttachment = (
     };
   }
 
+  if (attachment.type === 'share') {
+    return {
+      type: 'share',
+      url: attachment.payload.url,
+    };
+  }
+
   if (attachment.type === 'fallback') {
     return {
       type: 'fallback',
@@ -137,7 +166,7 @@ const parseAttachment = (
 
   return {
     type: 'text',
-    text: 'Unknown message type',
+    text: 'Unsupported message type',
   };
 };
 
@@ -198,12 +227,12 @@ function facebookInbound(message): ContentUnion {
 
   return {
     type: 'text',
-    text: 'Unkown message type',
+    text: 'Unsupported message type',
   };
 }
 
 function facebookOutbound(message): ContentUnion {
-  const messageJson = message.content.message ?? message.content;
+  const messageJson = message?.content?.message || message?.content || message;
 
   if (messageJson.quick_replies) {
     if (messageJson.quick_replies.length > 13) {
@@ -270,6 +299,6 @@ function facebookOutbound(message): ContentUnion {
 
   return {
     type: 'text',
-    text: 'Unknown message type',
+    text: 'Unsupported message type',
   };
 }

@@ -3,10 +3,10 @@ kubernetes:
   containerRegistry: ghcr.io/airyhq
   namespace: {{ .Namespace }}
   ngrokEnabled: {{ default false .NgrokEnabled }}
+ingress:
 {{- if .Host }}
   host: {{ default "airy.core" .Host }}
 {{- end }}
-ingress:
   https: {{ default false .Https}}
   letsencryptEmail: {{ .LetsencryptEmail}}
   {{- if .LoadbalancerAnnotations }}

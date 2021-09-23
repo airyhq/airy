@@ -1,0 +1,48 @@
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/colors.scss';
+
+.textMessage {
+  display: inline-block;
+  overflow-wrap: break-word;
+  max-width: 500px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  @include font-base;
+}
+
+.contactContent {
+  @extend .textMessage;
+  background: var(--color-background-blue);
+  color: var(--color-text-contrast);
+}
+
+.memberContent {
+  @extend .textMessage;
+  background: var(--color-airy-blue);
+  color: white;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.container svg {
+  width: 15px;
+  height: auto;
+  margin-left: 4px;
+  path {
+    fill: var(--color-text-contrast);
+  }
+}
+
+.shareLink:link,
+.shareLink:hover,
+.shareLink:visited,
+.shareLink:active {
+  color: var(--color-text-contrast);
+  font-style: italic;
+}

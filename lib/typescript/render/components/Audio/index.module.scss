@@ -1,0 +1,43 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.wrapper {
+  width: 250px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.player {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 12px;
+  padding: 4px 24px;
+  background-color: var(--color-background-blue);
+  border: 1px solid var(--color-light-gray);
+  box-shadow: 0 1px 2px var(--color-light-gray);
+}
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+}
+
+.buttonsContainer a,
+.buttonsContainer a:hover,
+.buttonsContainer a:link,
+.buttonsContainer a:visited,
+.buttonsContainer a:active {
+  color: var(--color-text-contrast);
+  text-decoration: none;
+}
+
+.buttonsContainer button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+.audioTime {
+  @include font-s;
+}

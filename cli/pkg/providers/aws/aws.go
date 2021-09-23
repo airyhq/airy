@@ -50,43 +50,6 @@ func (p *provider) GetOverrides() tmpl.Variables {
 }
 
 func (p *provider) PostInstallation(providerConfig map[string]string, dir workspace.ConfigDir) error {
-	if providerConfig["hostUpdate"] != "false" {
-		conf, err := dir.LoadAiryYaml()
-		if err != nil {
-			return err
-		}
-
-		clientset, err := p.context.GetClientSet()
-		if err != nil {
-			return err
-		}
-
-		ingressService, err := clientset.CoreV1().Services("kube-system").Get(context.TODO(), "traefik", metav1.GetOptions{})
-		if err != nil {
-			return err
-		}
-
-		loadBalancerUrl := ingressService.Status.LoadBalancer.Ingress[0].Hostname
-
-		if err = p.updateIngress("airy-core", loadBalancerUrl, conf.Kubernetes.Namespace); err != nil {
-			return err
-		}
-		if err = p.updateIngress("airy-core-ui", loadBalancerUrl, conf.Kubernetes.Namespace); err != nil {
-			return err
-		}
-		if err = p.updateIngress("airy-core-redirect", loadBalancerUrl, conf.Kubernetes.Namespace); err != nil {
-			return err
-		}
-
-		if err = p.updateHostsConfigMap(loadBalancerUrl, conf.Kubernetes.Namespace); err != nil {
-			return err
-		}
-
-		return dir.UpdateAiryYaml(func(conf workspace.AiryConf) workspace.AiryConf {
-			conf.Kubernetes.Host = loadBalancerUrl
-			return conf
-		})
-	}
 	return nil
 }
 

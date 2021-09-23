@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"strings"
 
+	"github.com/airyhq/airy/infrastructure/lib/go/k8s/util"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -152,6 +153,7 @@ func (h *Helm) runHelm(args []string) error {
 					ServiceAccountName: serviceAccountName,
 				},
 			},
+			BackoffLimit: util.Int32Ptr(0),
 		},
 	}
 

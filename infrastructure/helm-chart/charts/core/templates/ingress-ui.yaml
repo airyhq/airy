@@ -4,27 +4,28 @@ metadata:
   name: 'airy-core-ui'
   namespace: {{ .Values.global.kubernetes.namespace }}
   annotations:
-    kubernetes.io/ingress.class: "traefik"
-    traefik.frontend.rule.type: PathPrefixStrip
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  labels:
+    core.airy.co/managed: "true"
 spec:
   rules:
-    - host: {{ .Values.global.kubernetes.host }}
-      http:
+    - http:
         paths:
-          - path: /ui
+          - path: /ui(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: frontend-ui
                 port:
                   number: 80
-          - path: /chatplugin/ui
+          - path: /chatplugin/ui(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: frontend-chat-plugin
                 port:
                   number: 80
+  ingressClassName: nginx
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
@@ -32,16 +33,18 @@ metadata:
   name: 'airy-core-redirect'
   namespace: {{ .Values.global.kubernetes.namespace }}
   annotations:
-    kubernetes.io/ingress.class: "traefik"
+    nginx.ingress.kubernetes.io/permanent-redirect: /ui
+  labels:
+    core.airy.co/managed: "true"
 spec:
   rules:
-    - host: {{ .Values.global.kubernetes.host }}
-      http:
+    - http:
         paths:
-          - path: /
-            pathType: Exact
+          - path: /$
+            pathType: Prefix
             backend:
               service:
                 name: frontend-ui
                 port:
                   number: 80
+  ingressClassName: nginx

@@ -53,13 +53,31 @@ Default region name [None]: us-west-2
 Default output format [None]: json
 ```
 
-Apart from an EKS cluster, `airy create` will take care of all the necessary AWS
-resources, such as:
+## Services used
 
-- VPC resources (VPC, subnets, route tables, public gateways)
-- IAM roles and policy attachments
-- EKS cluster and EKS node groups
-- EC2 instances, as part of the created node group
+Apart from an EKS cluster, `airy create` will create of all the necessary AWS
+resources for Airy Core to run:
+
+|                        Service & pricing                        | Resources created by default                                                                        | Description                                                                                                                            | Overwrite [^1] |
+| :-------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------- | :------------: |
+|         [**VPC**](https://aws.amazon.com/vpc/pricing/)          | 1 VPC, 2 subnets with allowed Public IPs, 1 additional route table, 1 Internet gateway, DNS enabled | VPC which will contain all the created compute and network resources                                                                   |      Yes       |
+|                          **IAM** [^2]                           | 1 IAM role with attached policies [^3]                                                              | IAM role used for managing the EKS cluster and the node groups                                                                         |       No       |
+|    [**EKS**](https://calculator.aws/#/createCalculator/EKS)     | 1 EKS cluster                                                                                       | Kubernetes cluster to store all the Airy Core resources                                                                                |       No       |
+|    [**EC2**](https://calculator.aws/#/createCalculator/EC2)     | 2 EC2 instances, 4 EBS Volumes (10GB gp2 each)                                                      | The instances are a part of the `Node group` attached to the EKS cluster. The default instance type is: `c5.xlarge`, os type: `Linux`. |      Yes       |
+|     [**S3**](https://calculator.aws/#/createCalculator/S3)      | /                                                                                                   | Optional for the "Media resolver" component. Should be created independently. [^4]                                                     |      Yes       |
+| [**ELB**](https://aws.amazon.com/elasticloadbalancing/pricing/) | 1 Elastic Load Balancer                                                                             | Network Load Balancer created by the ingress controller Kubernetes service                                                             |       No       |
+
+[^1]: Options which can be overwritten with flags to the `airy create` command.
+[^2]: IAM roles are free of charge.
+[^3]: Attached policies: "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy", "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy", "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly", "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy".
+[^4]: The s3 bucket will should have PublicRead privileges. For writing to the S3 bucket, AWS credentials must be [configured](/getting-started/installation/configuration.md#components) in the `airy.yaml` file.
+
+Airy Core doesn't require extensive resources to run. However, you should consider the `AWS Service Limits` or `AWS Service Quotas` when deploying on AWS. If some of the resources cannot be created due to existing quotas in your AWS account, refer to the [following dashboard](https://eu-central-1.console.aws.amazon.com/servicequotas/home/) to modify them.
+
+Refer to the following links for more information on AWS Service Limits:
+
+- [AWS Service Quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html)
+- [AWS Well-Architected Framework Concepts](https://wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.service-limits.en.html)
 
 ## Create a cluster
 
@@ -195,8 +213,8 @@ export HOSTNAME="public-FQDN"
 Modify the existing ingress service to reconfigure the AWS LoadBalancer:
 
 ```sh
-kubectl -n kube-system annotate service traefik "service.beta.kubernetes.io/aws-load-balancer-ssl-ports=443" "service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ARN}"
-kubectl -n kube-system patch service traefik --patch '{"spec": { "ports": [ { "name": "https", "port": 443, "protocol": "TCP", "targetPort": 80 } ] } }'
+kubectl -n kube-system annotate service ingress-nginx-controller "service.beta.kubernetes.io/aws-load-balancer-ssl-ports=443" "service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ARN}"
+kubectl -n kube-system patch service ingress-nginx-controller --patch '{"spec": { "ports": [ { "name": "https", "port": 443, "protocol": "TCP", "targetPort": 80 } ] } }'
 ```
 
 Update the `hostnames` configMap with the new https endpoint:
@@ -218,7 +236,7 @@ kubectl get ingress airy-core-redirect -o json | jq "(.spec.rules[0].host=\"${HO
 You should create a CNAME DNS record for the specified public FQDN to point to the hostname of the LoadBalancer, created by AWS for the ingress service:
 
 ```sh
-kubectl get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
+kubectl get --namespace kube-system service ingress-nginx-controller --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
 ```
 
 #### Print HTTPS endpoint
@@ -231,7 +249,7 @@ airy api endpoint
 
 ### HTTPS using Let's Encrypt
 
-You can customize your installation of `Airy Core` to install a custom Traefik ingress controller which has an enabled `Let's Encrypt` capability. The ingress controller will register and renew the certificates for you automatically.
+You can customize your installation of `Airy Core` to install an ingress controller which has an enabled `Let's Encrypt` capability. The ingress controller will register and renew the certificates for you automatically.
 
 #### Customize your Airy Core installation
 
@@ -244,47 +262,40 @@ airy create --provider aws --init-only
 Then edit your `airy.yaml` file and add the following configuration
 
 ```sh
-kubernetes:
-  host: myairy.myhostname.com
 ingress:
+  host: myairy.myhostname.com
   https: true
   letsencryptEmail: "mymail@myhostname.com"
 
 ```
 
-The `kubernets.host` value should be set to your desired hostname. Configure the e-mail address you want to use for your Let's Encrypt registration under `ingress.letsencryptEmail`.
+The `ingress.host` value should be set to your desired hostname. Configure the e-mail address you want to use for your Let's Encrypt registration under `ingress.letsencryptEmail`.
 
 After setting these parameters, create your `Airy Core` instance with the following option:
 
 ```sh
-airy create --provider aws --provider-config hostUpdate=false
+airy create --provider aws
 ```
 
 :::note
-In case you have created your Airy Core instance without Let's Encrypt and want to add it later, you must use the `airy upgrade` command.
-
-Even if you don't upgrade to a new version, just modify your `airy.yaml` file as explained in this section and run
-
-`airy upgrade`
-
-After the upgrade is done, continue with setting up your DNS and starting the ingress controller.
+In case you have created your Airy Core instance without Let's Encrypt and want to add it later, modify your `airy.yaml` file accordingly and continue with the process from the next section.
 :::
 
 #### Setup your DNS
 
-You should create a CNAME DNS record for the hostname that you set under `kubernetes.host` in the previous step to point to the hostname of the LoadBalancer, created by AWS for the ingress service:
+You should create a CNAME DNS record for the hostname that you set under `ingress.host` in the previous step to point to the hostname of the LoadBalancer, created by AWS for the ingress service:
 
 ```sh
 export KUBECONFIG="PATH/TO/DIR/kube.conf"
-kubectl get --namespace kube-system service traefik --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
+kubectl get --namespace kube-system service ingress-nginx-controller --output jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}'
 ```
 
-#### Start the ingress controller
+#### Run airy upgrade
 
-If the ingress controller is started before the DNS record is added, the Let's Encrypt servers will block and throttle the registration attempts. That is why we recommend starting the ingress controller after the DNS record is added.
+If the ingress controller is started before the DNS record is added, the initial Let's Encrypt requests will fail and then all the following registration attempts will be blocked and throttled. That is why the generation of the Let's Encrypt certificates is disabled by default. In order to complete the setup, you must run the upgrade command.
 
 ```sh
-kubectl -n kube-system scale statefulset -l k8s-app=traefik-ingress-lb --replicas=1
+airy upgrade
 ```
 
 After this, your `Airy Core` will be reachable under HTTPS and on your desired hostname (for example https://myairy.myhostname.com).

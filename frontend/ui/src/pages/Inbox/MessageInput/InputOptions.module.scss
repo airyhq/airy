@@ -107,3 +107,19 @@
     margin-top: 5px;
   }
 }
+
+.filesLabel {
+  cursor: pointer;
+}
+
+.fileInput {
+  display: none;
+}
+
+.paperclipIcon {
+  transform: scale(1.5);
+}
+
+.fileSizeErrorPopUp {
+  z-index: 2;
+}

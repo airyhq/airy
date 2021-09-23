@@ -1,6 +1,6 @@
 global:
   kubernetes:
-    appImageTag: 0.30.0
+    appImageTag: ${app_image_tag}
     containerRegistry: ghcr.io/airyhq
     namespace: default
     ngrokEnabled: false

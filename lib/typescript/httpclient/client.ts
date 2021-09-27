@@ -71,11 +71,13 @@ export class HttpClient {
   public readonly apiUrl?: string;
   public readonly loginUrl?: string;
   private readonly unauthorizedErrorCallback?: (body: any, loginUrl: string) => void;
+  private readonly mapOptions: (options: any) => any;
 
-  constructor(apiUrl: string, unauthorizedErrorCallback?: (body: any, loginUrl: string) => void) {
+  constructor(apiUrl: string, unauthorizedErrorCallback?: (body: any, loginUrl: string) => void, mapOptions?: (options: any) => any) {
     this.apiUrl = apiUrl;
     this.loginUrl = `${apiUrl}/login`;
     this.unauthorizedErrorCallback = unauthorizedErrorCallback;
+    this.mapOptions = mapOptions || ((opts) => opts);
   }
 
   private async doFetchFromBackend(url: string, body?: any): Promise<any> {
@@ -91,14 +93,15 @@ export class HttpClient {
       headers['Content-Type'] = 'application/json';
     }
 
-    const response: Response = await fetch(`${this.apiUrl}/${url}`, {
+    const opts = this.mapOptions({
       method: 'POST',
       headers: headers,
       mode: 'cors',
       credentials: 'include',
       body: body as BodyInit,
-    });
+    })
 
+    const response: Response = await fetch(`${this.apiUrl}/${url}`, opts);
     return this.parseBody(response);
   }
 

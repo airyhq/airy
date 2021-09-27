@@ -20,4 +20,4 @@ if [[ $1 == "create" && $2 == "--provider=minikube" ]]; then
 minikube delete -p airy-core
 fi
 
-$AIRY_BIN "$@"
+$AIRY_BIN "$@" --disable-tracking

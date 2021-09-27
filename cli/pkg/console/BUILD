@@ -5,7 +5,11 @@ go_library(
     srcs = [
         "failure.go",
         "output.go",
+        "segment.go",
     ],
     importpath = "cli/pkg/console",
     visibility = ["//visibility:public"],
+    deps = [
+        "@in_gopkg_segmentio_analytics_go_v3//:analytics-go_v3",
+    ],
 )

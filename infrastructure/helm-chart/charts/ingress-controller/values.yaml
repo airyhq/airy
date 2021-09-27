@@ -1,9 +1,10 @@
 global:
   ingress:
+    host: ""
     https: false
+    httpsTermination: ""
+    httpsCertificate: ""
     loadbalancerAnnotations: {}
     letsencryptEmail:
-    loadBalancer: true
-    host:
 namespace: kube-system
 serviceAccount: airy-admin

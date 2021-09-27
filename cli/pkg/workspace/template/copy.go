@@ -18,6 +18,8 @@ type Variables struct {
 	LoadbalancerAnnotations map[string]string
 	Https                   bool
 	LetsencryptEmail        string
+	HttpsTermination        string
+	HttpsCertificate        string
 }
 
 //go:embed src

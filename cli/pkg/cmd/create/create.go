@@ -60,8 +60,8 @@ func create(cmd *cobra.Command, args []string) {
 	airyAnalytics := console.NewAiryAnalytics(disableTracking)
 	airyAnalytics.Track(analytics.Track{
 		AnonymousId: "AiryUser",
-		Event:  "installation_started",
-	  })
+		Event:       "installation_started",
+	})
 	provider := providers.MustGet(providers.ProviderName(providerName), w, airyAnalytics)
 	overrides := provider.GetOverrides()
 	overrides.Version = version
@@ -136,10 +136,8 @@ func create(cmd *cobra.Command, args []string) {
 	}
 
 	airyAnalytics.Track(analytics.Track{
-		Event:  "installation_succesful",
-		Properties: analytics.NewProperties().
-		  Set("plan", "Enterprise"),
-	  })
+		AnonymousId: "AiryUser",
+		Event: "installation_succesful"})
 	fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
 	fmt.Println()
 }

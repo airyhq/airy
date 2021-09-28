@@ -3,12 +3,36 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.31.1
+
+#### 🚀 Features
+
+- [[#2432](https://github.com/airyhq/airy/issues/2432)] Added more options to the UI [[#2433](https://github.com/airyhq/airy/pull/2433)]
+- [[#2393](https://github.com/airyhq/airy/issues/2393)] Add more chatplugin options  [[#2431](https://github.com/airyhq/airy/pull/2431)]
+
+#### 🐛 Bug Fixes
+
+- [[#2390](https://github.com/airyhq/airy/issues/2390)] Fix duplicate ingress port definition [[#2446](https://github.com/airyhq/airy/pull/2446)]
+- [[#2390](https://github.com/airyhq/airy/issues/2390)] Fix serviceAccount for helm [[#2442](https://github.com/airyhq/airy/pull/2442)]
+
+#### 🧰 Enhancements
+
+- [[#2390](https://github.com/airyhq/airy/issues/2390)] HTTPS termination at LB level [[#2427](https://github.com/airyhq/airy/pull/2427)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.31.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.31.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.31.1/windows/amd64/airy.exe)
+
 ## 0.31.0
 
 #### 🚀 Features
 
 - [[#628](https://github.com/airyhq/airy/issues/628)] Make library compatible with node.js [[#2426](https://github.com/airyhq/airy/pull/2426)]
-- [[#2405](https://github.com/airyhq/airy/issues/2405)] Icons for Rendering/Sending File Attachments [[#2420](https://github.com/airyhq/airy/pull/2420)]
+- [[#2405](https://github.com/airyhq/airy/issues/2405)] Icons for Rendering/Sending File Attachments [[#2420](https://github.com/airyhq/airy/pull/2420)]
 - [[#2406](https://github.com/airyhq/airy/issues/2406)] Instagram Source: Render Messages with Media & Share in Inbox UI [[#2419](https://github.com/airyhq/airy/pull/2419)]
 - [[#2109](https://github.com/airyhq/airy/issues/2109)] Render send file attachments via facebook messenger [[#2404](https://github.com/airyhq/airy/pull/2404)]
 - [[#2257](https://github.com/airyhq/airy/issues/2257)] Add analytics demo [[#2325](https://github.com/airyhq/airy/pull/2325)]
@@ -1241,26 +1265,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.9.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.9.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.9.0/windows/amd64/airy.exe)
-
-## 0.8.1
-
-#### Changes
-
-#### 🚀 Features
-
-- [[#861](https://github.com/airyhq/airy/issues/861)] Render quick replies from facebook [[#942](https://github.com/airyhq/airy/pull/942)]
-- [[#910](https://github.com/airyhq/airy/issues/910)] Add message metadata API documentation [[#937](https://github.com/airyhq/airy/pull/937)]
-- [[#918](https://github.com/airyhq/airy/issues/918)] New Airy websocket using Airy events [[#928](https://github.com/airyhq/airy/pull/928)]
-- [[#875](https://github.com/airyhq/airy/issues/875)] Improve Box component [[#924](https://github.com/airyhq/airy/pull/924)]
-- [[#910](https://github.com/airyhq/airy/issues/910)] Add message metadata API [[#933](https://github.com/airyhq/airy/pull/933)]
-- [[#856](https://github.com/airyhq/airy/issues/856)] Render Generic Template from Facebook [[#930](https://github.com/airyhq/airy/pull/930)]
-- [[#855](https://github.com/airyhq/airy/issues/855)] Render Button Template from Facebook [[#921](https://github.com/airyhq/airy/pull/921)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.8.1/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.8.1/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.8.1/windows/amd64/airy.exe)
 

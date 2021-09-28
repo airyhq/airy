@@ -200,35 +200,22 @@ If you don't have your own HTTPS certificate you can request one from AWS ACM.
 
 :::
 
-#### Configure the ingress service
+#### Upgrade your Airy Core instance
 
-Locate and set your KUBECONFIG file and set the other environment variables:
+Edit your `airy.yaml` file and add the following configuration:
 
-```sh
-export KUBECONFIG="PATH/TO/DIR/kube.conf"
-export ARN="Your-unique-ACM-ARN"
-export HOSTNAME="public-FQDN"
+```
+ingress:
+  host: "The-fqdn-used-in-your-certificate"
+  https: true
+  httpsTermination: "LoadBalancer"
+  httpsCertificate: "Your-unique-ACM-ARN"
 ```
 
-Modify the existing ingress service to reconfigure the AWS LoadBalancer:
+Upgrade your Airy Core instance
 
 ```sh
-kubectl -n kube-system annotate service ingress-nginx-controller "service.beta.kubernetes.io/aws-load-balancer-ssl-ports=443" "service.beta.kubernetes.io/aws-load-balancer-ssl-cert=${ARN}"
-kubectl -n kube-system patch service ingress-nginx-controller --patch '{"spec": { "ports": [ { "name": "https", "port": 443, "protocol": "TCP", "targetPort": 80 } ] } }'
-```
-
-Update the `hostnames` configMap with the new https endpoint:
-
-```sh
-kubectl patch configmap hostnames --patch "{\"data\": { \"HOST\": \"https://${HOSTNAME}\"} }"
-```
-
-Update the existing ingress resources with the new hostname (for this you will additionally require the [jq](https://stedolan.github.io/jq/download/) utility):
-
-```sh
-kubectl get ingress airy-core -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl apply -f -
-kubectl get ingress airy-core-ui -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl apply -f -
-kubectl get ingress airy-core-redirect -o json | jq "(.spec.rules[0].host=\"${HOSTNAME}\")" | kubectl apply -f -
+airy upgrade
 ```
 
 #### Setup your DNS

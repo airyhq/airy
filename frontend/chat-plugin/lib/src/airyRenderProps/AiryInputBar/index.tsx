@@ -130,24 +130,26 @@ const AiryInputBar = (props: AiryInputBarProps) => {
 
   return (
     <>
-      <form className={style.inputBar} onSubmit={onSubmit}>
-        <textarea
-          ref={textInputRef}
-          className={style.textArea}
-          placeholder={'Start typing...'}
-          autoFocus={isMobileDevice ? false : !config.showMode}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          value={props.messageString}
-          data-cy={dataCyTextareaId}
-        />
-        <div className={style.buttonContainer}>
-          <InputOptions />
-          <button className={style.sendButton} type="submit" data-cy={dataCyButtonId}>
-            {config?.sendMessageIcon ? <img src={config.sendMessageIcon} alt={'send message'} /> : <Paperplane />}
-          </button>
-        </div>
-      </form>
+      {!(config.hideInputBar === true) && (
+        <form className={style.inputBar} onSubmit={onSubmit}>
+          <textarea
+            ref={textInputRef}
+            className={style.textArea}
+            placeholder={'Start typing...'}
+            autoFocus={isMobileDevice ? false : !config.showMode}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            value={props.messageString}
+            data-cy={dataCyTextareaId}
+          />
+          <div className={style.buttonContainer}>
+            {!(config.hideEmojis === true) && <InputOptions />}
+            <button className={style.sendButton} type="submit" data-cy={dataCyButtonId}>
+              {config?.sendMessageIcon ? <img src={config.sendMessageIcon} alt={'send message'} /> : <Paperplane />}
+            </button>
+          </div>
+        </form>
+      )}
       <div className={style.poweredByContainer}>
         <a
           href="https://airy.co/?utm_source=airy&utm_medium=chat&utm_campaign=chat-plugin-demo"

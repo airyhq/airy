@@ -39,6 +39,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   const [height, setHeight] = useState('700');
   const [width, setWidth] = useState('350');
   const [disableMobile, setDisableMobile] = useState(false);
+  const [hideInputBar, setHideInputBar] = useState(false);
+  const [hideEmojis, setHideEmojis] = useState(false);
   const [closingOption, setClosingOption] = useState<CloseOption>(CloseOption.full);
   const [bubbleState, setBubbleState] = useState<BubbleState>(BubbleState.expanded);
 
@@ -110,6 +112,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     config += formatConfigAttributeWithConfig(`closeMode: '${closingOption}'`, config);
     config += formatConfigAttributeWithConfig(`bubbleState: '${bubbleState}'`, config);
     config += formatConfigAttributeWithConfig(`disableMobile: '${disableMobile}'`, config);
+    config += formatConfigAttributeWithConfig(`hideInputBar: '${hideInputBar}'`, config);
+    config += formatConfigAttributeWithConfig(`hideEmojis: '${hideEmojis}'`, config);
 
     return `w[n].config = {${config}
         };`;
@@ -135,6 +139,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
       ...(closingOption && {closeMode: closingOption}),
       ...(bubbleState && {bubbleState: bubbleState}),
       ...(disableMobile && {disableMobile: disableMobile}),
+      ...(hideInputBar && {hideInputBar: hideInputBar}),
+      ...(hideEmojis && {hideEmojis: hideEmojis}),
     },
   };
 
@@ -388,6 +394,24 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             text="Disabled for Mobile"
             updateValue={(value: boolean) => {
               setDisableMobile(value);
+            }}
+          />
+        </div>
+        <div className={styles.extraOptions}>
+          <Toggle
+            value={hideInputBar}
+            text="Hide Input Bar"
+            updateValue={(value: boolean) => {
+              setHideInputBar(value);
+            }}
+          />
+        </div>
+        <div className={styles.extraOptions}>
+          <Toggle
+            value={hideEmojis}
+            text="Disable Emojis"
+            updateValue={(value: boolean) => {
+              setHideEmojis(value);
             }}
           />
         </div>

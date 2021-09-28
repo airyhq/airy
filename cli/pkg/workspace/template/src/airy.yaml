@@ -4,11 +4,19 @@ kubernetes:
   namespace: {{ .Namespace }}
   ngrokEnabled: {{ default false .NgrokEnabled }}
 ingress:
-{{- if .Host }}
+  {{- if .Host }}
   host: {{ default "airy.core" .Host }}
-{{- end }}
+  {{- end }}
   https: {{ default false .Https}}
+  {{- if .LetsencryptEmail }}
   letsencryptEmail: {{ .LetsencryptEmail}}
+  {{- end }}
+  {{- if .HttpsTermination }}
+  httpsTermination: {{ .HttpsTermination}}
+  {{- end }}
+  {{- if .HttpsCertificate }}
+  httpsCertificate: {{ .HttpsCertificate}}
+  {{- end }}
   {{- if .LoadbalancerAnnotations }}
   loadbalancerAnnotations:
   {{- range $k, $v := .LoadbalancerAnnotations }}

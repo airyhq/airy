@@ -22,6 +22,8 @@ export type Config = {
   disableMobile?: boolean;
   bubbleState?: 'expanded' | 'minimized';
   closeMode?: 'basic' | 'medium' | 'full';
+  hideInputBar?: boolean;
+  hideEmojis?: boolean;
 };
 
 export type AuthConfiguration = {

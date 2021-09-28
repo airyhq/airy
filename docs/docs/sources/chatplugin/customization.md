@@ -50,6 +50,8 @@ If you are happy with your customization, copy it and add this code inside the t
 | sendMessageIcon          | URL                       | Set your icon as `sendButton` and replace the default paperplane                                                                            |
 | startNewConversationText | string                    | Set the Start new Conversation text button of your Airy Chat Plugin                                                                         |
 | disableMobile            | boolean                   | Disable the entire Airy Chat Plugin for mobile devices                                                                                      |
+| hideInputBar             | boolean                   | Disables the input bar of the Airy Chat Plugin                                                                                              |
+| hideEmojis               | boolean                   | Disables the emojis in the input bar of the Airy Chat Plugin                                                                                |
 | bubbleState              | 'expanded', 'minimized'   | Set the behaviour of the chatplugin to be always expanded or always minimized                                                               |
 | closeMode                | 'basic', 'medium', 'full' | Choose one of the different option to close the chatplugin and start a new conversation                                                     |
 

@@ -111,9 +111,6 @@ spec:
             {{ if .Values.global.ingress }}
             {{ if .Values.global.ingress.https }}
             {{ if eq .Values.global.ingress.httpsTermination "LoadBalancer" }}
-            - name: http
-              containerPort: 80
-              protocol: TCP
             - name: tohttps
               containerPort: 2443
               protocol: TCP

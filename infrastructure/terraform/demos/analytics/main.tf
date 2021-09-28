@@ -56,7 +56,7 @@ resource "null_resource" "k8s_configuration" {
     hosted_zone = var.hosted_zone
   }
   provisioner "local-exec" {
-    command = "sleep 240 && scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  centos@${self.triggers.host}.${var.hosted_zone}:/home/centos/kubeconfig ${var.kubeconfig_file}"
+    command = "sleep 300 && scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  centos@${self.triggers.host}.${var.hosted_zone}:/home/centos/kubeconfig ${var.kubeconfig_file}"
   }
   depends_on = [
     module.minikube,

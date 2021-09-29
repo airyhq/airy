@@ -73,7 +73,7 @@ public class MessageMapper {
         } else if (appId != null && !appId.equals(this.facebookAppId)) {
             // Third party app
             senderId = appId;
-        } else if (appId == null && !"instagram".equals(channel.getSource())) {
+        } else if (appId == null) {
             // Sent by Facebook moderator via Facebook inbox
             senderId = getSourceConversationId(rootNode);
         } else {

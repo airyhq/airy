@@ -40,7 +40,7 @@ func init() {
 	CreateCmd.Flags().StringVar(&namespace, "namespace", "default", "(optional) Kubernetes namespace that Airy should be installed to.")
 	CreateCmd.Flags().BoolVar(&initOnly, "init-only", false, "Only create the airy workspace directory and exit.")
 	CreateCmd.Flags().BoolVar(&noApply, "no-apply", false, "Don't apply any component configuration found in an existing airy.yaml file after creation.")
-	CreateCmd.Flags().BoolVar(&disableTracking, "disable-tracking", false, "Disables sending events to Segment.")
+	CreateCmd.Flags().BoolVar(&disableTracking, "disable-tracking", false, "Disables sending anonymous events to Segment.")
 	CreateCmd.MarkFlagRequired("provider")
 }
 

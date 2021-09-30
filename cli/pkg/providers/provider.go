@@ -1,6 +1,7 @@
 package providers
 
 import (
+	"cli/pkg/console"
 	"cli/pkg/kube"
 	"cli/pkg/providers/aws"
 	"cli/pkg/providers/minikube"
@@ -23,13 +24,13 @@ type Provider interface {
 	PostInstallation(providerConfig map[string]string, dir workspace.ConfigDir) error
 }
 
-func MustGet(providerName ProviderName, w io.Writer) Provider {
+func MustGet(providerName ProviderName, w io.Writer, analytics *console.AiryAnalytics) Provider {
 	if providerName == Minikube {
-		return minikube.New(w)
+		return minikube.New(w, analytics)
 	}
 
 	if providerName == Aws {
-		return aws.New(w)
+		return aws.New(w, analytics)
 	}
 
 	panic(fmt.Sprintf("unknown provider \"%v\"", providerName))

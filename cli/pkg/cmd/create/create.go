@@ -9,20 +9,23 @@ import (
 	"cli/pkg/workspace"
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/TwinProduction/go-color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"gopkg.in/segmentio/analytics-go.v3"
 )
 
 var (
-	providerName   string
-	providerConfig map[string]string
-	namespace      string
-	version        string
-	initOnly       bool
-	noApply        bool
-	CreateCmd      = &cobra.Command{
+	providerName    string
+	providerConfig  map[string]string
+	namespace       string
+	version         string
+	initOnly        bool
+	noApply         bool
+	disableTracking bool
+	CreateCmd       = &cobra.Command{
 		Use:   "create [workspace directory]",
 		Short: "Creates an instance of Airy Core",
 		Long:  `Creates a workspace directory (default .) with default configuration and starts an Airy Core instance using the given provider`,
@@ -37,6 +40,7 @@ func init() {
 	CreateCmd.Flags().StringVar(&namespace, "namespace", "default", "(optional) Kubernetes namespace that Airy should be installed to.")
 	CreateCmd.Flags().BoolVar(&initOnly, "init-only", false, "Only create the airy workspace directory and exit.")
 	CreateCmd.Flags().BoolVar(&noApply, "no-apply", false, "Don't apply any component configuration found in an existing airy.yaml file after creation.")
+	CreateCmd.Flags().BoolVar(&disableTracking, "disable-tracking", false, "Disables sending anonymous events to Segment.")
 	CreateCmd.MarkFlagRequired("provider")
 }
 
@@ -49,7 +53,16 @@ func create(cmd *cobra.Command, args []string) {
 	w := console.GetMiddleware(func(input string) string {
 		return color.Colorize(color.Cyan, "#\t"+input)
 	})
-	provider := providers.MustGet(providers.ProviderName(providerName), w)
+
+	var rtm runtime.MemStats
+	runtime.ReadMemStats(&rtm)
+
+	airyAnalytics := console.NewAiryAnalytics(disableTracking)
+	airyAnalytics.Track(analytics.Track{
+		AnonymousId: "AiryUser",
+		Event:       "installation_started",
+	})
+	provider := providers.MustGet(providers.ProviderName(providerName), w, airyAnalytics)
 	overrides := provider.GetOverrides()
 	overrides.Version = version
 	overrides.Namespace = namespace
@@ -58,7 +71,7 @@ func create(cmd *cobra.Command, args []string) {
 		console.Exit("could not initialize Airy workspace directory", err)
 	}
 	fmt.Println("📁 Initialized Airy workspace directory at", dir.GetPath("."))
-	if initOnly == true {
+	if initOnly {
 		os.Exit(0)
 	}
 
@@ -117,11 +130,14 @@ func create(cmd *cobra.Command, args []string) {
 	viper.Set("namespace", namespace)
 	viper.WriteConfig()
 
-	if noApply != true {
+	if !noApply {
 		fmt.Println("⚙️  Applying config from airy.yaml")
 		config.ApplyConfig(workspacePath)
 	}
 
+	airyAnalytics.Track(analytics.Track{
+		AnonymousId: "AiryUser",
+		Event: "installation_succesful"})
 	fmt.Printf("📚 For more information about the %s provider visit https://airy.co/docs/core/getting-started/installation/%s", providerName, providerName)
 	fmt.Println()
 }

@@ -12,6 +12,7 @@ app_deps = [
     "//backend/model/metadata",
     "//lib/java/log",
     "//lib/java/uuid",
+    "//lib/java/tracking",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/kafka/schema:source-viber-events",

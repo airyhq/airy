@@ -12,6 +12,7 @@ app_deps = [
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",
     "//lib/java/uuid",
+    "//lib/java/tracking",
     "//lib/java/kafka/schema:source-google-events",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/auth:spring-auth",

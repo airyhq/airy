@@ -52,6 +52,8 @@ import {
   uploadFileDef,
 } from './src/endpoints';
 import fetch from 'node-fetch';
+import regeneratorRuntime from 'regenerator-runtime';
+import 'core-js';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;

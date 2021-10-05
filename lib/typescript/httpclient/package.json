@@ -17,6 +17,8 @@
   "dependencies": {
     "@types/node": "^14.14.37",
     "camelcase-keys": "^6.2.2",
-    "node-fetch": "^2.0.0"
+    "node-fetch": "^2.0.0", 
+    "regenerator-runtime": "^0.13.9",
+    "core-js": "3.18.1"
   }
 }

@@ -52,7 +52,7 @@ import {
   uploadFileDef,
 } from './src/endpoints';
 import fetch from 'node-fetch';
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import regeneratorRuntime from 'regenerator-runtime';
 import 'core-js';
 

@@ -3,6 +3,34 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.32.0
+
+#### Changes
+
+#### 🚀 Features
+
+- [[#2443](https://github.com/airyhq/airy/issues/2443)] Allow for compatability with mobile login flows [[#2444](https://github.com/airyhq/airy/pull/2444)]
+- [[#2423](https://github.com/airyhq/airy/issues/2423)] track core installation [[#2430](https://github.com/airyhq/airy/pull/2430)]
+
+#### 🐛 Bug Fixes
+
+- [[#2390](https://github.com/airyhq/airy/issues/2390)] Remove unnecessary annotations [[#2452](https://github.com/airyhq/airy/pull/2452)]
+- [[#2434](https://github.com/airyhq/airy/issues/2434)] Fix instagram echo ingestion [[#2451](https://github.com/airyhq/airy/pull/2451)]
+
+#### 🧰 Maintenance
+
+- Bump webpack from 5.51.1 to 5.54.0 [[#2440](https://github.com/airyhq/airy/pull/2440)]
+- Bump core-js from 3.17.2 to 3.18.1 [[#2438](https://github.com/airyhq/airy/pull/2438)]
+- Bump @typescript-eslint/parser from 4.31.0 to 4.31.2 [[#2439](https://github.com/airyhq/airy/pull/2439)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.31.2/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.31.2/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.31.2/windows/amd64/airy.exe)
+
 ## 0.31.1
 
 #### 🚀 Features
@@ -1219,50 +1247,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.10.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.10.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.10.0/windows/amd64/airy.exe)
-
-## 0.9.0
-
-#### 🚀 Features
-
-- [[#807](https://github.com/airyhq/airy/issues/807)] Introduction to UI docs [[#973](https://github.com/airyhq/airy/pull/973)]
-- [[#849](https://github.com/airyhq/airy/issues/849)] Introduce dynamic page titles [[#990](https://github.com/airyhq/airy/pull/990)]
-- [[#882](https://github.com/airyhq/airy/issues/882)] New /metadata.upsert API endpoint [[#955](https://github.com/airyhq/airy/pull/955)]
-- [[#909](https://github.com/airyhq/airy/issues/909)] Add metadata to conversations API [[#941](https://github.com/airyhq/airy/pull/941)]
-- [[#859](https://github.com/airyhq/airy/issues/859)] Add google rich card carousel to render library [[#976](https://github.com/airyhq/airy/pull/976)]
-- [[#806](https://github.com/airyhq/airy/issues/806)] Add minimum height and width to UI [[#980](https://github.com/airyhq/airy/pull/980)]
-- [[#671](https://github.com/airyhq/airy/issues/671)] Allow any message to be sent to the chat plugin [[#961](https://github.com/airyhq/airy/pull/961)]
-- [[#950](https://github.com/airyhq/airy/issues/950)] Add update homebrew formula step to release process [[#959](https://github.com/airyhq/airy/pull/959)]
-- [[#309](https://github.com/airyhq/airy/issues/309)] Homebrew cli tap [[#943](https://github.com/airyhq/airy/pull/943)]
-- [[#949](https://github.com/airyhq/airy/issues/949)] Improve UI of chatplugin [[#953](https://github.com/airyhq/airy/pull/953)]
-- [[#860](https://github.com/airyhq/airy/issues/860)] Render Generic Template Carousel from… [[#951](https://github.com/airyhq/airy/pull/951)]
-- [[#675](https://github.com/airyhq/airy/issues/675)] Add Templates Endpoints documentation [[#872](https://github.com/airyhq/airy/pull/872)]
-- [[#675](https://github.com/airyhq/airy/issues/675)] Add Templates Endpoints [[#948](https://github.com/airyhq/airy/pull/948)]
-- [[#671](https://github.com/airyhq/airy/issues/671)] Render Rich Card (Google Style) on Live… [[#962](https://github.com/airyhq/airy/pull/962)]
-
-#### 🐛 Bug Fixes
-
-- [[#992](https://github.com/airyhq/airy/issues/992)] Start frontend components in start.sh [[#993](https://github.com/airyhq/airy/pull/993)]
-- [[#960](https://github.com/airyhq/airy/issues/960)] Scope svg styles so that we don't break the sidebar [[#984](https://github.com/airyhq/airy/pull/984)]
-- Fix missing annotation in google webhook [[#964](https://github.com/airyhq/airy/pull/964)]
-- [[#956](https://github.com/airyhq/airy/issues/956)] Fix side problem in chatplugin source [[#958](https://github.com/airyhq/airy/pull/958)]
-- [[#914](https://github.com/airyhq/airy/issues/914)] Add ingress and docs for AKHQ [[#940](https://github.com/airyhq/airy/pull/940)]
-- [[#733](https://github.com/airyhq/airy/issues/733)] Hotfix/733 path for docs [[#982](https://github.com/airyhq/airy/pull/982)]
-
-#### 📚 Documentation
-
-- [[#867](https://github.com/airyhq/airy/issues/867)] Put cobra cmd docs in one file [[#971](https://github.com/airyhq/airy/pull/971)]
-- [[#938](https://github.com/airyhq/airy/issues/938)] Buttons, buttons everywhere [[#963](https://github.com/airyhq/airy/pull/963)]
-
-#### 🧰 Maintenance
-
-- [[#733](https://github.com/airyhq/airy/issues/733)] Fix Netlify docs previews [[#991](https://github.com/airyhq/airy/pull/991)]
-- [[#975](https://github.com/airyhq/airy/issues/975)] Rename Airy Core Platform [[#985](https://github.com/airyhq/airy/pull/985)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.9.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.9.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.9.0/windows/amd64/airy.exe)
 

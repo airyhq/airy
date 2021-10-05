@@ -12,8 +12,6 @@ type IngressConf struct {
 	Https                   bool              `yaml:"https,omitempty"`
 	LetsencryptEmail        string            `yaml:"letsencryptEmail,omitempty"`
 	LoadbalancerAnnotations map[string]string `yaml:"loadbalancerAnnotations,omitempty"`
-	HttpsTermination        string            `yaml:"httpsTermination,omitempty"`
-	HttpsCertificate        string            `yaml:"httpsCertificate,omitempty"`
 }
 
 type SecurityConf struct {

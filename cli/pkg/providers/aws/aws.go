@@ -14,6 +14,7 @@ import (
 	"text/template"
 	"time"
 
+	"gopkg.in/segmentio/analytics-go.v3"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/TwinProduction/go-color"
@@ -35,11 +36,13 @@ type provider struct {
 	ec2Client *ec2.Client
 	iamClient *iam.Client
 	eksClient *eks.Client
+	analytics console.AiryAnalytics
 }
 
-func New(w io.Writer) *provider {
+func New(w io.Writer, analytics *console.AiryAnalytics) *provider {
 	return &provider{
-		w: w,
+		w:         w,
+		analytics: *analytics,
 	}
 }
 
@@ -66,6 +69,11 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 	}
 
 	id := RandString(8)
+	p.analytics.Track(analytics.Identify{
+		UserId: id,
+		Traits: analytics.NewTraits().
+			Set("provider", "AWS"),
+	})
 	name := "Airy-" + id
 	fmt.Fprintf(p.w, "Creating Airy Core instance with id: %s. This might take a while.\n", name)
 	p.iamClient = iam.NewFromConfig(cfg)

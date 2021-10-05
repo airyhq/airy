@@ -1079,6 +1079,12 @@ def go_repositories():
         sum = "h1:nn5Wsu0esKSJiIVhscUtVbo7ada43DJhG55ua/hjS5I=",
         version = "v0.0.0-20170313163322-e2103e2c3529",
     )
+    go_repository(
+        name = "com_github_segmentio_backo_go",
+        importpath = "github.com/segmentio/backo-go",
+        sum = "h1:ZuhckGJ10ulaKkdvJtiAqsLTiPrLaXSdnVgXJKJkTxE=",
+        version = "v0.0.0-20200129164019-23eae7c10bd3",
+    )
 
     go_repository(
         name = "com_github_shurcool_sanitized_anchor_name",
@@ -1218,6 +1224,12 @@ def go_repositories():
         sum = "h1:ESFSdwYZvkeru3RtdrYueztKhOBCSAAzS4Gf+k0tEow=",
         version = "v0.0.3-0.20170626215501-b2862e3d0a77",
     )
+    go_repository(
+        name = "com_github_xtgo_uuid",
+        importpath = "github.com/xtgo/uuid",
+        sum = "h1:3lbZUMbMiGUW/LMkfsEABsc5zNT9+b1CvsJx47JzJ8g=",
+        version = "v0.0.0-20140804021211-a0b114877d4c",
+    )
 
     go_repository(
         name = "com_google_cloud_go",
@@ -1309,6 +1321,12 @@ def go_repositories():
         importpath = "gopkg.in/resty.v1",
         sum = "h1:CuXP0Pjfw9rOuY6EP+UvtNvt5DSqHpIxILZKT/quCZI=",
         version = "v1.12.0",
+    )
+    go_repository(
+        name = "in_gopkg_segmentio_analytics_go_v3",
+        importpath = "gopkg.in/segmentio/analytics-go.v3",
+        sum = "h1:UzxH1uaGZRpMKDhJyBz0pexz6yUoBU3x8bJsRk/HV6U=",
+        version = "v3.1.0",
     )
 
     go_repository(

@@ -21,6 +21,7 @@ go_library(
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",
         "@com_github_twinproduction_go_color//:go-color",
+        "@in_gopkg_segmentio_analytics_go_v3//:analytics-go_v3",
         "@io_k8s_api//batch/v1:go_default_library",
         "@io_k8s_api//core/v1:go_default_library",
         "@io_k8s_api//rbac/v1:go_default_library",

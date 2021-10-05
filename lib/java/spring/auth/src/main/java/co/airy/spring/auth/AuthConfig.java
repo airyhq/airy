@@ -43,12 +43,14 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     private final String jwtSecret;
     private final ConfigProvider configProvider;
     private final String logoutSuccessUrl;
+    private final String loginSuccessUrl;
 
     public AuthConfig(@Value("${systemToken:#{null}}") String systemToken,
                       @Value("${jwtSecret:#{null}}") String jwtSecret,
                       List<IgnoreAuthPattern> ignorePatternBeans,
                       ConfigProvider configProvider,
-                      @Value("${oidc.logoutSuccessUrl:/ui/}") String logoutSuccessUrl
+                      @Value("${oidc.logoutSuccessUrl:/ui/}") String logoutSuccessUrl,
+                      @Value("${oidc.loginSuccessUrl:/ui/}") String loginSuccessUrl
     ) {
         this.systemToken = systemToken;
         this.jwtSecret = jwtSecret;
@@ -57,6 +59,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .toArray(String[]::new);
         this.configProvider = configProvider;
         this.logoutSuccessUrl = logoutSuccessUrl;
+        this.loginSuccessUrl = loginSuccessUrl;
     }
 
     @Override
@@ -97,7 +100,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                         .oauth2Login(oauth2 -> oauth2
                                 // Replace the default login page with co.airy.spring.auth.oidc.LoginRedirect
                                 .loginPage("/login")
-                                .defaultSuccessUrl("/ui/"))
+                                .defaultSuccessUrl(this.loginSuccessUrl))
                         .addFilterAfter(new EmailFilter(configProvider), OAuth2LoginAuthenticationFilter.class);
             }
         }

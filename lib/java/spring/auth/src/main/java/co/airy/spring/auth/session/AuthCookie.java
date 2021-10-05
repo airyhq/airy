@@ -9,6 +9,5 @@ public class AuthCookie extends Cookie {
     public AuthCookie(String value) {
         super(NAME, value);
         this.setPath(PATH);
-        this.setHttpOnly(true);
     }
 }

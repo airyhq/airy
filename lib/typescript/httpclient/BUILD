@@ -18,7 +18,6 @@ ts_web_library(
         "@npm//camelcase-keys",
         "@npm//node-fetch",
         "@npm//regenerator-runtime",
-        "@npm//core-js",
     ],
 )
 
@@ -31,7 +30,6 @@ web_library(
         "camelcase-keys": "camelcase-keys",
         "node-fetch": "node-fetch",
         "regenerator-runtime": "regenerator-runtime",
-        "core-js": "core-js",
     },
     module_deps = module_deps,
     output = {

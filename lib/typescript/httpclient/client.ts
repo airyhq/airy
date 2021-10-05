@@ -54,7 +54,6 @@ import {
 import fetch from 'node-fetch';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import regeneratorRuntime from 'regenerator-runtime';
-import 'core-js';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;

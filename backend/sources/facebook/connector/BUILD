@@ -11,6 +11,7 @@ app_deps = [
     "//backend/model/metadata",
     "//lib/java/uuid",
     "//lib/java/log",
+    "//lib/java/tracking",
     "//lib/java/spring/web:spring-web",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/kafka/core:spring-kafka-core",

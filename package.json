@@ -15,7 +15,7 @@
     "core-js": "3.18.1",
     "emoji-mart": "3.0.1",
     "i18next": "^21.2.0",
-    "linkifyjs": "^2.1.9",
+    "linkifyjs": "^3.0.1",
     "lodash-es": "^4.17.21",
     "node-fetch": "^2.0.0",
     "preact": "^10.5.14",

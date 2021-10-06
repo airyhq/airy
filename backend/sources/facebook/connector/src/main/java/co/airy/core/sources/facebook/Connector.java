@@ -168,9 +168,9 @@ public class Connector {
     }
 
     @Bean
-    private RouteTracking routeTracking(@Value("${CORE_ID}") String coreId) {
+    private RouteTracking routeTracking() {
         Pattern urlPattern = Pattern.compile(".*facebook\\.connect$");
         HashMap<String, String> properties = new HashMap<>(Map.of("channel", "facebook"));
-        return new RouteTracking(coreId, urlPattern, "channel_connected", properties);
+        return new RouteTracking(urlPattern, "channel_connected", properties);
     }
 }

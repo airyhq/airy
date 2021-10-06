@@ -11,7 +11,6 @@ import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.tracking.RouteTracking;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -148,10 +147,10 @@ public class ChannelsController {
     }
 
     @Bean
-    private RouteTracking routeTracking(@Value("${CORE_ID}") String coreId) {
+    private RouteTracking routeTracking() {
         Pattern urlPattern = Pattern.compile(".*chatplugin\\.connect$");
         HashMap<String, String> properties = new HashMap<>(Map.of("channel", "chatplugin"));
-        return new RouteTracking(coreId, urlPattern, "channel_connected", properties);
+        return new RouteTracking(urlPattern, "channel_connected", properties);
     }
 }
 

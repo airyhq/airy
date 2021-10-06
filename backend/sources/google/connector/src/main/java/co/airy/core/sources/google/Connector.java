@@ -11,8 +11,6 @@ import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
 import co.airy.tracking.RouteTracking;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -77,9 +75,9 @@ public class Connector {
     }
 
     @Bean
-    private RouteTracking routeTracking(@Value("${CORE_ID}") String coreId) {
+    private RouteTracking routeTracking() {
         Pattern urlPattern = Pattern.compile(".*google\\.connect$");
         HashMap<String, String> properties = new HashMap<>(Map.of("channel", "google"));
-        return new RouteTracking(coreId, urlPattern, "channel_connected", properties);
+        return new RouteTracking(urlPattern, "channel_connected", properties);
     }
 }

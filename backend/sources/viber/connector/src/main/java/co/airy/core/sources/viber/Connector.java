@@ -15,7 +15,6 @@ import com.viber.bot.api.ViberBot;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -82,9 +81,9 @@ public class Connector {
     }
 
     @Bean
-    private RouteTracking routeTracking(@Value("${CORE_ID}") String coreId) {
+    private RouteTracking routeTracking() {
         Pattern urlPattern = Pattern.compile(".*viber\\.connect$");
         HashMap<String, String> properties = new HashMap<>(Map.of("channel", "viber"));
-        return new RouteTracking(coreId, urlPattern, "channel_connected", properties);
+        return new RouteTracking(urlPattern, "channel_connected", properties);
     }
 }

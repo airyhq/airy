@@ -1,6 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 import {IMessage} from '@stomp/stompjs';
+import {useTranslation} from 'react-i18next';
 
 import {DeliveryState, Message} from 'model';
 
@@ -43,6 +44,7 @@ type Props = AiryChatPluginConfiguration;
 
 const Chat = ({config, ...props}: Props) => {
   config = config || {};
+  const {t} = useTranslation();
 
   if (config.welcomeMessage) {
     defaultWelcomeMessage.content = config.welcomeMessage;
@@ -265,14 +267,14 @@ const Chat = ({config, ...props}: Props) => {
                     <div className={style.buttonWrapper}>
                       <button className={style.cancelButton} onClick={closeModalOnClick}>
                         {' '}
-                        Cancel
+                        {t('cancel')}
                       </button>
                       <button
                         className={style.endChatButton}
                         onClick={cancelChatSession}
                         data-cy={cyChatPluginEndChatModalButton}>
                         {' '}
-                        End Chat
+                        {t('endChat')}
                       </button>
                     </div>
                   </div>

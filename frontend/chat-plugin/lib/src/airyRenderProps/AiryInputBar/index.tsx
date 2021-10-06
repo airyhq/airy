@@ -1,9 +1,10 @@
 import React, {ChangeEvent, FormEvent, KeyboardEvent, createRef, useEffect, useState, useRef} from 'react';
-import {ReactComponent as AiryIcon} from 'assets/images/icons/airy-icon.svg';
-import style from './index.module.scss';
 import {cyInputbarTextarea, cyInputbarButton} from 'chat-plugin-handles';
 import {EmojiPickerWrapper} from '../../components/emojiPicker/EmojiPickerWrapper';
 import {Config} from '../../config';
+import {useTranslation} from 'react-i18next';
+import {ReactComponent as AiryIcon} from 'assets/images/icons/airy-icon.svg';
+import style from './index.module.scss';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
 
@@ -17,6 +18,8 @@ type AiryInputBarProps = {
 
 const AiryInputBar = (props: AiryInputBarProps) => {
   const {config} = props;
+
+  const {t} = useTranslation();
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const emojiDiv = useRef(null);
 
@@ -135,7 +138,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
           <textarea
             ref={textInputRef}
             className={style.textArea}
-            placeholder={'Start typing...'}
+            placeholder={t('sendMessageInputPlaceholder')}
             autoFocus={isMobileDevice ? false : !config.showMode}
             onChange={handleChange}
             onKeyDown={handleKeyDown}

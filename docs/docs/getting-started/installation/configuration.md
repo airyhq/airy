@@ -102,6 +102,8 @@ monitor or debug the **Airy Core**.
 
 - `akhq` Kafka GUI for Apache Kafka (For more information visit [akhq.io](https://akhq.io/))
   - `enabled` set to either `true` to start AKHQ or `false` (default) to disable it
+- `segment` Tracking tool that tracks anonymous usage of the platform
+  - `enabled` set to `false` if you want to disable tracking
 
 ### Example airy.yaml file
 

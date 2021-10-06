@@ -11,6 +11,7 @@ app_deps = [
     "//backend/model/metadata",
     "//lib/java/log",
     "//lib/java/uuid",
+    "//lib/java/tracking",
     "@maven//:com_twilio_sdk_twilio",
     "//lib/java/spring/kafka/core:spring-kafka-core",
     "//lib/java/spring/kafka/streams:spring-kafka-streams",

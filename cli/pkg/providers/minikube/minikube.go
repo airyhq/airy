@@ -1,6 +1,7 @@
 package minikube
 
 import (
+	"cli/pkg/console"
 	"cli/pkg/kube"
 	"cli/pkg/workspace"
 	"cli/pkg/workspace/template"
@@ -9,8 +10,10 @@ import (
 	"io"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 
+	"gopkg.in/segmentio/analytics-go.v3"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/util/homedir"
 )
@@ -22,13 +25,15 @@ const (
 )
 
 type provider struct {
-	context kube.KubeCtx
-	w       io.Writer
+	context   kube.KubeCtx
+	w         io.Writer
+	analytics console.AiryAnalytics
 }
 
-func New(w io.Writer) *provider {
+func New(w io.Writer, analytics *console.AiryAnalytics) *provider {
 	return &provider{
-		w: w,
+		w:         w,
+		analytics: *analytics,
 	}
 }
 
@@ -43,6 +48,7 @@ func (p *provider) Provision(providerConfig map[string]string, dir workspace.Con
 	if err := checkInstallation(); err != nil {
 		return kube.KubeCtx{}, err
 	}
+
 
 	if err := p.startCluster(); err != nil {
 		return kube.KubeCtx{}, err
@@ -121,6 +127,15 @@ func (p *provider) PostInstallation(providerConfig map[string]string, dir worksp
 	if err != nil {
 		return err
 	}
+
+	p.analytics.Track(analytics.Identify{
+		UserId: coreId,
+		Traits: analytics.NewTraits().
+			Set("provider", "minikube").
+			Set("numCpu", runtime.NumCPU()),
+	},
+	)
+
 	ngrokEndpoint := fmt.Sprintf("https://%s.tunnel.airy.co", strings.Trim(coreId, "'"))
 
 	configMap.Data["NGROK"] = ngrokEndpoint

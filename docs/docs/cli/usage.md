@@ -74,6 +74,7 @@ airy create [workspace directory] [flags]
 #### Options
 
 ```
+      --disable-tracking                 Disables sending anonymous events to Segment.
   -h, --help                             help for create
       --init-only                        Only create the airy workspace directory and exit.
       --namespace string                 (optional) Kubernetes namespace that Airy should be installed to. (default "default")

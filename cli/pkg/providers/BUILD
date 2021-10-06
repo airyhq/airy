@@ -6,6 +6,7 @@ go_library(
     importpath = "cli/pkg/providers",
     visibility = ["//visibility:public"],
     deps = [
+        "//cli/pkg/console",
         "//cli/pkg/kube",
         "//cli/pkg/providers/aws",
         "//cli/pkg/providers/minikube",

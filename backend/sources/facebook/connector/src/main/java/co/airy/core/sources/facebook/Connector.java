@@ -15,9 +15,12 @@ import co.airy.log.AiryLoggerFactory;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
+import co.airy.tracking.RouteTracking;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +28,11 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
 import static co.airy.model.metadata.MetadataKeys.ConversationKeys;
@@ -161,5 +166,13 @@ public class Connector {
     @Bean
     public RequestLoggingIgnorePatterns requestLoggingIgnorePatterns() {
         return new RequestLoggingIgnorePatterns(List.of("/facebook"));
+    }
+
+    @Bean
+    @ConditionalOnProperty("segment.analytics.enabled")
+    private RouteTracking routeTracking(@Value("${CORE_ID}") String coreId) {
+        Pattern urlPattern = Pattern.compile(".*facebook\\.connect$");
+        HashMap<String, String> properties = new HashMap<>(Map.of("channel", "facebook"));
+        return new RouteTracking(coreId, urlPattern, "channel_connected", properties);
     }
 }

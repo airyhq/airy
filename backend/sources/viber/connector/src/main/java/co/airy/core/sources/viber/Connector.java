@@ -16,7 +16,6 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -81,8 +80,8 @@ public class Connector {
     public RequestLoggingIgnorePatterns requestLoggingIgnorePatterns() {
         return new RequestLoggingIgnorePatterns(List.of("/viber"));
     }
+
     @Bean
-    @ConditionalOnProperty("segment.analytics.enabled")
     private RouteTracking routeTracking(@Value("${CORE_ID}") String coreId) {
         Pattern urlPattern = Pattern.compile(".*viber\\.connect$");
         HashMap<String, String> properties = new HashMap<>(Map.of("channel", "viber"));

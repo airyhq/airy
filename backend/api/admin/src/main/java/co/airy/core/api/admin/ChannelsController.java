@@ -12,7 +12,6 @@ import co.airy.tracking.RouteTracking;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -149,7 +148,6 @@ public class ChannelsController {
     }
 
     @Bean
-    @ConditionalOnProperty("segment.analytics.enabled")
     private RouteTracking routeTracking(@Value("${CORE_ID}") String coreId) {
         Pattern urlPattern = Pattern.compile(".*chatplugin\\.connect$");
         HashMap<String, String> properties = new HashMap<>(Map.of("channel", "chatplugin"));

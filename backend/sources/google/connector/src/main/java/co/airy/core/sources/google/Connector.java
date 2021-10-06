@@ -77,7 +77,6 @@ public class Connector {
     }
 
     @Bean
-    @ConditionalOnProperty("segment.analytics.enabled")
     private RouteTracking routeTracking(@Value("${CORE_ID}") String coreId) {
         Pattern urlPattern = Pattern.compile(".*google\\.connect$");
         HashMap<String, String> properties = new HashMap<>(Map.of("channel", "google"));

@@ -7,4 +7,5 @@ data:
   APP_IMAGE_TAG: {{ .Values.global.kubernetes.appImageTag }}
   CORE_ID: {{ randAlphaNum 10 | lower }}
   CHATPLUGIN_JWT_SECRET: {{ randAlphaNum 128 | quote }}
-  SEGMENT_ANALYTICS_ENABLED: {{ .Values.global.tools.segment.enabled | default "true" }}
+  {{- $segment := .Values.global.tools.segment | default dict -}}
+  SEGMENT_ANALYTICS_ENABLED: {{ $segment.enabled | default "true" }}

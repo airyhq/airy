@@ -20,15 +20,14 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -169,10 +168,9 @@ public class Connector {
     }
 
     @Bean
-    @ConditionalOnProperty("segment.analytics.enabled")
-    private RouteTracking routeTracking(@Value("${CORE_ID}") String coreId) {
+    private RouteTracking routeTracking() {
         Pattern urlPattern = Pattern.compile(".*facebook\\.connect$");
         HashMap<String, String> properties = new HashMap<>(Map.of("channel", "facebook"));
-        return new RouteTracking(coreId, urlPattern, "channel_connected", properties);
+        return new RouteTracking(urlPattern, "channel_connected", properties);
     }
 }

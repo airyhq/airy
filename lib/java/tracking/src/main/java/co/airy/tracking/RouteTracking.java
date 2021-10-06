@@ -1,12 +1,10 @@
 package co.airy.tracking;
 
-import com.segment.analytics.messages.MessageBuilder;
 import com.segment.analytics.messages.TrackMessage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -14,16 +12,15 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class RouteTracking {
     private Pattern urlPattern;
-    private MessageBuilder trackMessage;
-    private Map<String,String> properties;
+    private String eventName;
+    private Map<String, String> properties;
 
-    public RouteTracking(String userId, Pattern urlPattern, String eventName, Map<String,String> properties) {
-            this.urlPattern = urlPattern;
-            this.properties = properties;
-            this.trackMessage = TrackMessage.builder(eventName).userId(userId).properties(properties);
+    public TrackMessage.Builder getTrackMessage() {
+        return getTrackMessage(new HashMap<>());
     }
 
-    void addProperty(String key, String value) {
-        this.getProperties().put(key, value);
+    public TrackMessage.Builder getTrackMessage(Map<String, String> additionalProperties) {
+        additionalProperties.putAll(properties);
+        return TrackMessage.builder(eventName).properties(properties);
     }
 }

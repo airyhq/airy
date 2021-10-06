@@ -19,7 +19,6 @@ const apiHost: string = window.airy ? window.airy.host : process.env.API_HOST;
 
 const renderMethod = async () => {
   const AiryChatPlugin = (await import('chat-plugin')).AiryChatPlugin;
-  console.log(window.navigator.language);
   render(
     <AiryChatPlugin
       config={{

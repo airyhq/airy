@@ -20,10 +20,10 @@ const resources = {
   },
   fr: {
     translation: {
-      sendMessageInputPlaceholder: 'Start typing...',
-      cancel: 'Cancel',
-      endChat: 'End Chat',
-      conversationEnded: 'Your conversation has ended.',
+      sendMessageInputPlaceholder: 'Engagez une conversation...',
+      cancel: 'Annuler',
+      endChat: 'Terminer la conversation',
+      conversationEnded: 'Cette conversation est terminée.',
     },
   },
   es: {

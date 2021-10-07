@@ -1,5 +1,5 @@
 import React from 'react';
-import Linkify from 'linkifyjs/react';
+import Linkify from 'linkify-react';
 import styles from './index.module.scss';
 
 type TextRenderProps = {

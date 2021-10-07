@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,14 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 
 @RestController
-public class MediaController {
+public class MediaController implements HealthIndicator {
     private static final Logger log = AiryLoggerFactory.getLogger(MediaController.class);
     private final MediaUpload mediaUpload;
 
     public MediaController(MediaUpload mediaUpload) {
         this.mediaUpload = mediaUpload;
     }
-
 
     @PostMapping(value = "/media.uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> mediaUpload(@RequestParam("file") MultipartFile multipartFile) {
@@ -48,6 +49,11 @@ public class MediaController {
             log.error("Media upload failed:", e);
             return ResponseEntity.badRequest().body(new RequestErrorResponsePayload(String.format("Media Upload failed with error: %s", e.getMessage())));
         }
+    }
+
+    @Override
+    public Health health() {
+        return Health.up().build();
     }
 }
 

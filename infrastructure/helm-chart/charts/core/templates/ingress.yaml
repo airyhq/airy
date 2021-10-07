@@ -1,4 +1,3 @@
-
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
@@ -6,6 +5,10 @@ metadata:
   namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     core.airy.co/managed: "true"
+  annotations:
+    # Keep in sync with the backend/media application properties
+    nginx.ingress.kubernetes.io/proxy-body-size: "512m"
+    nginx.org/client-max-body-size: "512m"
 spec:
   rules:
     - http:

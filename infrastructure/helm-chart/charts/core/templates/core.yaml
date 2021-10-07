@@ -9,4 +9,4 @@ data:
   CHATPLUGIN_JWT_SECRET: {{ randAlphaNum 128 | quote }}
   {{- $tools := .Values.global.tools | default dict }}
   {{- $segment := $tools.segment | default dict }}
-  SEGMENT_ANALYTICS_ENABLED: {{ $segment.enabled | default "true" }}
+  SEGMENT_ANALYTICS_ENABLED: {{ $segment.enabled | default "true" | quote }}

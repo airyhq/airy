@@ -10,6 +10,7 @@ app_deps = [
     "//lib/java/uuid",
     "//lib/java/url",
     "//lib/java/spring/web:spring-web",
+    "//:springboot_actuator",
     "@maven//:org_springframework_retry_spring_retry",
     "@maven//:org_aspectj_aspectjweaver",
     "@maven//:com_amazonaws_aws_java_sdk_core",

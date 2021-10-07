@@ -14,6 +14,7 @@ npm_deps = [
     "@npm//@types/react",
     "@npm//@types/react-dom",
     "@npm//linkifyjs",
+    "@npm//linkify-react",
     "@npm//react",
     "@npm//react-dom",
     "@npm//camelcase-keys",

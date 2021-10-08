@@ -1,13 +1,6 @@
-global:
-  kubernetes:
-    appImageTag: ${app_image_tag}
-    containerRegistry: ghcr.io/airyhq
-    namespace: default
-    ngrokEnabled: false
-    host: ${host}.${hosted_zone}
-  ingress-controller:
-    nodePort: 30000
-  security:
-    allowedOrigins: "*"
-    systemToken: "NgbjxdHuJSS3Qnv5"
-    jwtSecret: "tLkdLS8e27T7cUR8eJqChDTPaNhuA2NZ"
+ingress-controller:
+  nodePort: 30000
+  host: ${host}.${hosted_zone}
+security:
+  allowedOrigins: "*"
+  systemToken: "NgbjxdHuJSS3Qnv5"

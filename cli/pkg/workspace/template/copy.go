@@ -12,6 +12,7 @@ import (
 
 type Variables struct {
 	NgrokEnabled            bool
+	TrackingDisabled        bool
 	Version                 string
 	Namespace               string
 	Host                    string

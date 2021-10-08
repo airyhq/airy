@@ -1,9 +1,10 @@
-import React, {createRef, useState} from 'react';
+import React, {createRef} from 'react';
 import {Button, Dropdown, Input, ListenOutsideClick, Toggle} from 'components';
 import styles from './CustomiseSection.module.scss';
 import {SketchPicker} from 'react-color';
 import {AiryChatPlugin, AiryChatPluginConfiguration} from 'chat-plugin';
 import {env} from '../../../../../../env';
+import {getUseLocalState} from '../../../../../../services/hooks/localState';
 
 enum CloseOption {
   basic = 'basic',
@@ -15,34 +16,39 @@ enum BubbleState {
   minimized = 'minimized',
   expanded = 'expanded',
 }
+
 interface CustomiseSectionProps {
   channelId: string;
   host: string;
 }
 
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
-  const [headerText, setHeaderText] = useState('');
-  const [subtitleText, setSubtitleText] = useState('');
-  const [startNewConversationText, setStartNewConversationText] = useState('');
-  const [bubbleIconUrl, setBubbleIconUrl] = useState('');
-  const [sendMessageIconUrl, setSendMessageIconUrl] = useState('');
-  const [headerTextColor, setHeaderTextColor] = useState('');
-  const [subtitleTextColor, setSubtitleTextColor] = useState('');
-  const [showHeaderTextColorPicker, setShowHeaderTextColorPicker] = useState(false);
-  const [showSubtitleTextColorPicker, setShowSubtitleTextColorPicker] = useState(false);
-  const [primaryColor, setPrimaryColor] = useState('');
-  const [showPrimaryColorPicker, setShowPrimaryColorPicker] = useState(false);
-  const [accentColor, setAccentColor] = useState('');
-  const [showAccentColorPicker, setShowAccentColorPicker] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState('');
-  const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useState(false);
-  const [height, setHeight] = useState('700');
-  const [width, setWidth] = useState('350');
-  const [disableMobile, setDisableMobile] = useState(false);
-  const [hideInputBar, setHideInputBar] = useState(false);
-  const [hideEmojis, setHideEmojis] = useState(false);
-  const [closingOption, setClosingOption] = useState<CloseOption>(CloseOption.full);
-  const [bubbleState, setBubbleState] = useState<BubbleState>(BubbleState.expanded);
+  let useLocalState = getUseLocalState(channelId);
+  const [headerText, setHeaderText] = useLocalState('headerText', '');
+  const [subtitleText, setSubtitleText] = useLocalState('subTitleText', '');
+  const [startNewConversationText, setStartNewConversationText] = useLocalState('startNewConversationText', '');
+  const [bubbleIconUrl, setBubbleIconUrl] = useLocalState('bubbleIconUrl', '');
+  const [sendMessageIconUrl, setSendMessageIconUrl] = useLocalState('sendMessageIconUrl', '');
+  const [headerTextColor, setHeaderTextColor] = useLocalState('headerTextColor', '');
+  const [subtitleTextColor, setSubtitleTextColor] = useLocalState('subtitleTextColor', '');
+  const [showHeaderTextColorPicker, setShowHeaderTextColorPicker] = useLocalState('showHeaderTextColorPicker', false);
+  const [showSubtitleTextColorPicker, setShowSubtitleTextColorPicker] = useLocalState(
+    'showSubtitleTextColorPicker',
+    false
+  );
+  const [primaryColor, setPrimaryColor] = useLocalState('primaryColor', '');
+  const [showPrimaryColorPicker, setShowPrimaryColorPicker] = useLocalState('showPrimaryColorPicker', false);
+  const [accentColor, setAccentColor] = useLocalState('accentColor', '');
+  const [showAccentColorPicker, setShowAccentColorPicker] = useLocalState('showAccentColorPicker', false);
+  const [backgroundColor, setBackgroundColor] = useLocalState('backgroundColor', '');
+  const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useLocalState('showBackgroundColorPicker', false);
+  const [height, setHeight] = useLocalState('height', '700');
+  const [width, setWidth] = useLocalState('width', '350');
+  const [disableMobile, setDisableMobile] = useLocalState('disableMobile', false);
+  const [hideInputBar, setHideInputBar] = useLocalState('hideInputBar', false);
+  const [hideEmojis, setHideEmojis] = useLocalState('hideEmojis', false);
+  const [closingOption, setClosingOption] = useLocalState<CloseOption>('closingOption', CloseOption.full);
+  const [bubbleState, setBubbleState] = useLocalState<BubbleState>('bubbleState', BubbleState.expanded);
 
   const codeAreaRef = createRef<HTMLTextAreaElement>();
 
@@ -66,7 +72,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     setShowBackgroundColorPicker(!showBackgroundColorPicker);
   };
 
-  const formatConfigAttributeWithConfig = (attribute: string, config: string): string => {
+  const formatConfigAttribute = (attribute: string, config: string): string => {
     if (config === '') {
       return '\n           ' + attribute;
     }
@@ -75,28 +81,24 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
 
   const getTemplateConfig = () => {
     let config = '';
-    if (headerText !== '') config += formatConfigAttributeWithConfig(`headerText: '${headerText}'`, config);
-    if (subtitleText !== '') config += formatConfigAttributeWithConfig(`subtitleText: '${subtitleText}'`, config);
+    if (headerText !== '') config += formatConfigAttribute(`headerText: '${headerText}'`, config);
+    if (subtitleText !== '') config += formatConfigAttribute(`subtitleText: '${subtitleText}'`, config);
     if (startNewConversationText !== '')
-      config += formatConfigAttributeWithConfig(`startNewConversationText: '${startNewConversationText}'`, config);
-    if (bubbleIconUrl !== '') config += formatConfigAttributeWithConfig(`bubbleIcon: '${bubbleIconUrl}'`, config);
-    if (sendMessageIconUrl !== '')
-      config += formatConfigAttributeWithConfig(`sendMessageIcon: '${sendMessageIconUrl}'`, config);
-    if (headerTextColor !== '')
-      config += formatConfigAttributeWithConfig(`headerTextColor: '${headerTextColor}'`, config);
-    if (subtitleTextColor !== '')
-      config += formatConfigAttributeWithConfig(`subtitleTextColor: '${subtitleTextColor}'`, config);
-    if (primaryColor !== '') config += formatConfigAttributeWithConfig(`primaryColor: '${primaryColor}'`, config);
-    if (accentColor !== '') config += formatConfigAttributeWithConfig(`accentColor: '${accentColor}'`, config);
-    if (backgroundColor !== '')
-      config += formatConfigAttributeWithConfig(`backgroundColor: '${backgroundColor}'`, config);
-    if (height !== '') config += formatConfigAttributeWithConfig(`height: '${height}'`, config);
-    if (width !== '') config += formatConfigAttributeWithConfig(`width: '${width}'`, config);
-    config += formatConfigAttributeWithConfig(`closeMode: '${closingOption}'`, config);
-    config += formatConfigAttributeWithConfig(`bubbleState: '${bubbleState}'`, config);
-    config += formatConfigAttributeWithConfig(`disableMobile: '${disableMobile}'`, config);
-    config += formatConfigAttributeWithConfig(`hideInputBar: '${hideInputBar}'`, config);
-    config += formatConfigAttributeWithConfig(`hideEmojis: '${hideEmojis}'`, config);
+      config += formatConfigAttribute(`startNewConversationText: '${startNewConversationText}'`, config);
+    if (bubbleIconUrl !== '') config += formatConfigAttribute(`bubbleIcon: '${bubbleIconUrl}'`, config);
+    if (sendMessageIconUrl !== '') config += formatConfigAttribute(`sendMessageIcon: '${sendMessageIconUrl}'`, config);
+    if (headerTextColor !== '') config += formatConfigAttribute(`headerTextColor: '${headerTextColor}'`, config);
+    if (subtitleTextColor !== '') config += formatConfigAttribute(`subtitleTextColor: '${subtitleTextColor}'`, config);
+    if (primaryColor !== '') config += formatConfigAttribute(`primaryColor: '${primaryColor}'`, config);
+    if (accentColor !== '') config += formatConfigAttribute(`accentColor: '${accentColor}'`, config);
+    if (backgroundColor !== '') config += formatConfigAttribute(`backgroundColor: '${backgroundColor}'`, config);
+    if (height !== '') config += formatConfigAttribute(`height: '${height}'`, config);
+    if (width !== '') config += formatConfigAttribute(`width: '${width}'`, config);
+    config += formatConfigAttribute(`closeMode: '${closingOption}'`, config);
+    config += formatConfigAttribute(`bubbleState: '${bubbleState}'`, config);
+    config += formatConfigAttribute(`disableMobile: '${disableMobile}'`, config);
+    config += formatConfigAttribute(`hideInputBar: '${hideInputBar}'`, config);
+    config += formatConfigAttribute(`hideEmojis: '${hideEmojis}'`, config);
 
     return `w[n].config = {${config}
         };`;
@@ -374,28 +376,14 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           <Toggle
             value={disableMobile}
             text="Disabled for Mobile"
-            updateValue={(value: boolean) => {
-              setDisableMobile(value);
-            }}
+            updateValue={(value: boolean) => setDisableMobile(value)}
           />
         </div>
         <div className={styles.extraOptions}>
-          <Toggle
-            value={hideInputBar}
-            text="Hide Input Bar"
-            updateValue={(value: boolean) => {
-              setHideInputBar(value);
-            }}
-          />
+          <Toggle value={hideInputBar} text="Hide Input Bar" updateValue={(value: boolean) => setHideInputBar(value)} />
         </div>
         <div className={styles.extraOptions}>
-          <Toggle
-            value={hideEmojis}
-            text="Disable Emojis"
-            updateValue={(value: boolean) => {
-              setHideEmojis(value);
-            }}
-          />
+          <Toggle value={hideEmojis} text="Disable Emojis" updateValue={(value: boolean) => setHideEmojis(value)} />
         </div>
       </div>
       <div className={styles.customiseContainer}>
@@ -403,9 +391,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           type="text"
           name="textHeader"
           value={headerText}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setHeaderText(e.target.value);
-          }}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setHeaderText(e.target.value)}
           label="Header Text"
           placeholder="(optionally) add a text"
           height={32}
@@ -416,9 +402,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           type="text"
           name="subtitle"
           value={subtitleText}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setSubtitleText(e.target.value);
-          }}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSubtitleText(e.target.value)}
           label="Subtitle Text"
           placeholder="(optionally) add a text"
           height={32}
@@ -429,9 +413,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           type="text"
           name="startNewConversationText"
           value={startNewConversationText}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setStartNewConversationText(e.target.value);
-          }}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartNewConversationText(e.target.value)}
           label="Start new Conversation Text"
           placeholder="(optionally) add a text"
           height={32}
@@ -441,9 +423,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           type="url"
           name="bubbleIconUrl"
           value={bubbleIconUrl}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setBubbleIconUrl(e.target.value);
-          }}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBubbleIconUrl(e.target.value)}
           label="Chat Plugin Icon URL"
           placeholder="(optionally) add an image url"
           height={32}
@@ -454,9 +434,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           type="text"
           name="sendMessageIconUrl"
           value={sendMessageIconUrl}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setSendMessageIconUrl(e.target.value);
-          }}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSendMessageIconUrl(e.target.value)}
           label="Input Icon URL"
           placeholder="(optionally) add an image url"
           height={32}
@@ -475,14 +453,15 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             }
           }}
           onKeyDown={e => {
-            e.preventDefault();
             let intHeight = parseInt(height);
             if (e.key === 'ArrowUp') {
               intHeight += 1;
               setHeight(intHeight.toString());
+              e.preventDefault();
             } else if (e.key === 'ArrowDown') {
               intHeight -= 1;
               setHeight(intHeight.toString());
+              e.preventDefault();
             }
           }}
           label="Height (min 200px)"
@@ -503,14 +482,15 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
             }
           }}
           onKeyDown={e => {
-            e.preventDefault();
             let intWidth = parseInt(width);
             if (e.key === 'ArrowUp') {
               intWidth += 1;
               setWidth(intWidth.toString());
+              e.preventDefault();
             } else if (e.key === 'ArrowDown') {
               intWidth -= 1;
               setWidth(intWidth.toString());
+              e.preventDefault();
             }
           }}
           label="Width (min 200px)"

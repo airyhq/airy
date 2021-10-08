@@ -39,8 +39,7 @@ public class WebhookEvent {
 
     @JsonIgnore
     public boolean hasMessage() {
-        // since suggestion responses and live agent requests can be rendered, we consider them messages
-        return this.message != null || this.suggestionResponse != null || getLiveAgentRequest().isPresent();
+        return this.message != null || this.surveyResponse != null || this.suggestionResponse != null || getLiveAgentRequest().isPresent();
     }
 
     @JsonIgnore

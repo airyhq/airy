@@ -133,7 +133,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
   };
 
   const getCode = () =>
-      `<script>
+    `<script>
         (function(w, d, s, n) {
           w[n] = w[n] || {};
           w[n].channelId = '${channelId}';

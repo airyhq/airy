@@ -132,21 +132,20 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     document.execCommand('copy');
   };
 
-  const generateCode = () => {
-    return `<script>
-      (function(w, d, s, n) {
-        w[n] = w[n] || {};
-        w[n].channelId = '${channelId}';
-        w[n].host = '${host}';
-        ${getTemplateConfig()}
-        var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s);
-        j.async = true;
-        j.src = w[n].host + '/chatplugin/ui/s.js';
-        f.parentNode.insertBefore(j, f);
-      })(window, document, 'script', 'airy');
-    </script>`;
-  };
+  const getCode = () =>
+    `<script>
+        (function(w, d, s, n) {
+          w[n] = w[n] || {};
+          w[n].channelId = '${channelId}';
+          w[n].host = '${host}';
+          ${getTemplateConfig()}
+          var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s);
+          j.async = true;
+          j.src = w[n].host + '/chatplugin/ui/s.js';
+          f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'airy');
+      </script>`;
 
   return (
     <>
@@ -155,7 +154,7 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
           Add this code inside the tag <code>&lt;head&gt;</code>:
         </div>
         <div>
-          <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={generateCode()} />
+          <textarea readOnly className={styles.codeArea} ref={codeAreaRef} value={getCode()} />
         </div>
         <Button onClick={copyToClipboard}>Copy code</Button>
       </div>

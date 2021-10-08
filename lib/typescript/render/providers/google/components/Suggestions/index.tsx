@@ -53,7 +53,7 @@ export const Suggestions = ({text, fallback, image, suggestions, fromContact}: S
                   href={
                     elem.action.openUrlAction && elem.action.openUrlAction.url
                       ? elem.action.openUrlAction.url
-                      : `tel: ${elem.action.dialAction && elem.action.dialAction.phoneNumber}`
+                      : `tel: ${elem.action.dialAction?.phoneNumber}`
                   }
                   target="_blank"
                   rel="noopener noreferrer">

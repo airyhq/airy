@@ -17,3 +17,8 @@ ingress-controller:
     {{ $k }}: {{ $v }}
   {{- end }}
   {{- end }}
+{{- if .TrackingDisabled }}
+tools:
+  segment:
+    enabled: false  
+{{- end }}

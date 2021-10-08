@@ -7,7 +7,6 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: {{ template "kafka.prometheus.name" . }}
-  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: {{ template "kafka.prometheus.name" . }}
     chart: {{ template "kafka.chart" . }}

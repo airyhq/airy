@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"gopkg.in/segmentio/analytics-go.v3"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/TwinProduction/go-color"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -52,7 +51,7 @@ func (p *provider) GetOverrides() tmpl.Variables {
 	}
 }
 
-func (p *provider) PostInstallation(providerConfig map[string]string, dir workspace.ConfigDir) error {
+func (p *provider) PostInstallation(providerConfig map[string]string, namespace string, dir workspace.ConfigDir) error {
 	return nil
 }
 
@@ -467,40 +466,6 @@ func (p *provider) createKubeConfigFile(dir workspace.ConfigDir, kubeConfig Kube
 		return "", err
 	}
 	return path, tmpl.Execute(kubeConfigFile, kubeConfig)
-}
-
-func (p *provider) updateIngress(ingressName string, loadBalancerUrl string, namespace string) error {
-	clientset, err := p.context.GetClientSet()
-	if err != nil {
-		return err
-	}
-
-	ingress, err := clientset.ExtensionsV1beta1().Ingresses(namespace).Get(context.TODO(), ingressName, metav1.GetOptions{})
-	if err != nil {
-		return err
-	}
-
-	ingress.Spec.Rules[0].Host = loadBalancerUrl
-	ingress, err = clientset.ExtensionsV1beta1().Ingresses(namespace).Update(context.TODO(), ingress, metav1.UpdateOptions{})
-	return err
-}
-
-func (p *provider) updateHostsConfigMap(loadBalancerUrl string, namespace string) error {
-	clientset, err := p.context.GetClientSet()
-	if err != nil {
-		return err
-	}
-
-	configMaps := clientset.CoreV1().ConfigMaps(namespace)
-	configMap, err := configMaps.Get(context.TODO(), "hostnames", metav1.GetOptions{})
-	if err != nil {
-		return err
-	}
-
-	configMap.Data["HOST"] = "http://" + loadBalancerUrl
-	_, err = configMaps.Update(context.TODO(), configMap, metav1.UpdateOptions{})
-
-	return err
 }
 
 func (p *provider) attachPolicies(roleName *string) error {

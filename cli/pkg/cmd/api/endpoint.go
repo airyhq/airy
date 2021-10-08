@@ -24,11 +24,11 @@ func endpoint(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	hosts, err := kube.GetHosts(set, viper.GetString("namespace"))
+	coreConfig, err := kube.GetCmData("core-config", viper.GetString("namespace"), set)
 	if err != nil {
 		fmt.Println("could not find an installation of Airy Core. Get started here https://airy.co/docs/core/getting-started/installation/introduction")
 		os.Exit(1)
 	}
 
-	fmt.Println(hosts["HOST"])
+	fmt.Println(coreConfig["API_HOST"])
 }

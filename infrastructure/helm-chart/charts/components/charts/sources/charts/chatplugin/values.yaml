@@ -1,0 +1,7 @@
+component: sources-chat-plugin
+mandatory: false
+enabled: true
+backend:
+  image: sources/chat-plugin
+frontend:
+  image: frontend/chat-plugin

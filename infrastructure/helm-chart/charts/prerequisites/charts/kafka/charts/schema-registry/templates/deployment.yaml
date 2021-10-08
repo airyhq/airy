@@ -6,7 +6,6 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: schema-registry
-  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: schema-registry
     release: {{ .Release.Name }}
@@ -45,15 +44,9 @@ spec:
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
         env:
         - name: KAFKA_BROKERS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_BROKERS
+          value: {{ .Values.kafka.bootstrapServers }}
         - name: REPLICAS
-          valueFrom:
-            configMapKeyRef:
-              name: kafka-config
-              key: KAFKA_MINIMUM_REPLICAS
+          value: {{ .Values.kafka.minBrokers | quote }}
         volumeMounts:
         - name: kafka-helper-scripts
           mountPath: /opt/provisioning

@@ -1,10 +1,8 @@
 {{ $protocol := "http"}}
-{{ if .Values.global.ingress }}
-  {{ if .Values.global.ingress.https }}
+  {{ if .Values.https }}
     {{ $protocol = "https" }}
   {{ end }}
-{{ end }}
-{{ if .Values.global.ingress.host }}
+{{ if .Values.host }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -25,7 +23,7 @@ spec:
         command: ['/bin/sh', '/opt/provisioning/update-ingress-host.sh']
         env:
         - name: HOST
-          value: {{ .Values.global.ingress.host }}
+          value: {{ .Values.host }}
         volumeMounts:
         - name: ingress-scripts
           mountPath: /opt/provisioning
@@ -57,7 +55,7 @@ spec:
         command: ['/bin/sh', '/opt/provisioning/update-configmap-host.sh']
         env:
         - name: HOST
-          value: {{ .Values.global.ingress.host }}
+          value: {{ .Values.host }}
         - name: PROTOCOL
           value: {{ $protocol }}
         volumeMounts:

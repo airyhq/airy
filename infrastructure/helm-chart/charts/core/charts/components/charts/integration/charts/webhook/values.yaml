@@ -1,5 +1,0 @@
-component: integration-webhook
-mandatory: false
-enabled: false
-imageConsumer: webhook/consumer
-imagePublisher: webhook/publisher

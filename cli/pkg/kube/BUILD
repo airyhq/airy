@@ -5,7 +5,6 @@ go_library(
     srcs = [
         "configmaps.go",
         "context.go",
-        "hosts.go",
     ],
     importpath = "cli/pkg/kube",
     visibility = ["//visibility:public"],

@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -30,7 +31,7 @@ func applyConfig(cmd *cobra.Command, args []string) {
 
 func ApplyConfig(workspacePath string) {
 	dir := workspace.Init(workspacePath)
-
+	namespace := viper.GetString("namespace")
 	conf, err := dir.LoadAiryYaml()
 	if err != nil {
 		console.Exit("error parsing configuration file: ", err)
@@ -43,7 +44,7 @@ func ApplyConfig(workspacePath string) {
 
 	secData := getSecurityData(conf.Security)
 	if len(secData) != 0 {
-		applyErr := kube.ApplyConfigMap("security", conf.Kubernetes.Namespace, secData, map[string]string{}, clientset)
+		applyErr := kube.ApplyConfigMap("security", namespace, secData, map[string]string{}, clientset)
 		if applyErr != nil {
 			// TODO should we error here?
 			fmt.Printf("unable to apply configuration for \"security\"\n Error:\n %v\n", applyErr)
@@ -59,7 +60,7 @@ func ApplyConfig(workspacePath string) {
 			labels := map[string]string{
 				"core.airy.co/component": configmapName,
 			}
-			applyErr := kube.ApplyConfigMap(configmapName, conf.Kubernetes.Namespace, componentValues, labels, clientset)
+			applyErr := kube.ApplyConfigMap(configmapName, namespace, componentValues, labels, clientset)
 			configuredComponents[configmapName] = true
 			if applyErr != nil {
 				fmt.Printf("unable to apply configuration for component: \"%s-%s\"\n Error:\n %v\n", componentType, componentName, applyErr)
@@ -69,10 +70,10 @@ func ApplyConfig(workspacePath string) {
 		}
 	}
 
-	configmapList, _ := clientset.CoreV1().ConfigMaps(conf.Kubernetes.Namespace).List(context.TODO(), v1.ListOptions{LabelSelector: "core.airy.co/component"})
+	configmapList, _ := clientset.CoreV1().ConfigMaps(namespace).List(context.TODO(), v1.ListOptions{LabelSelector: "core.airy.co/component"})
 	for _, configmap := range configmapList.Items {
 		if !configuredComponents[configmap.ObjectMeta.Name] {
-			deleteErr := kube.DeleteConfigMap(configmap.ObjectMeta.Name, conf.Kubernetes.Namespace, clientset)
+			deleteErr := kube.DeleteConfigMap(configmap.ObjectMeta.Name, namespace, clientset)
 			if deleteErr != nil {
 				fmt.Printf("unable to remove configuration for component %s.\n", configmap.ObjectMeta.Name)
 			} else {
@@ -81,7 +82,6 @@ func ApplyConfig(workspacePath string) {
 		}
 	}
 }
-
 
 func getSecurityData(s workspace.SecurityConf) map[string]string {
 	m := make(map[string]string, len(s.Oidc))
@@ -98,7 +98,7 @@ func getSecurityData(s workspace.SecurityConf) map[string]string {
 
 	for key, value := range s.Oidc {
 		if value != "" {
-			m["oidc." + key] = value
+			m["oidc."+key] = value
 		}
 	}
 

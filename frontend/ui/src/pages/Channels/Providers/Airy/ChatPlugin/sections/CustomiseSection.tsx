@@ -23,7 +23,7 @@ interface CustomiseSectionProps {
 }
 
 export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
-  let useLocalState = getUseLocalState(channelId);
+  const useLocalState = getUseLocalState(channelId);
   const [headerText, setHeaderText] = useLocalState('headerText', '');
   const [subtitleText, setSubtitleText] = useLocalState('subTitleText', '');
   const [startNewConversationText, setStartNewConversationText] = useLocalState('startNewConversationText', '');

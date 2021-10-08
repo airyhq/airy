@@ -139,7 +139,7 @@ Find users whose name ends with "Lovelace":
 
 #### Mark conversation as read
 
-`POST /conversations.markRead`
+`POST /conversations.mark-read`
 
 Resets the unread count of a conversation.
 
@@ -188,7 +188,7 @@ tag](/api/endpoints/tags.md#create). Returns status code `200` if successful.
 
 ## Set the state of a conversation
 
-`POST /conversations.setState`
+`POST /conversations.set-state`
 
 **Sample request**
 
@@ -205,7 +205,7 @@ Supported states of a conversation are `OPEN` and `CLOSED`.
 
 ## Remove the state of a conversation
 
-`POST /conversations.removeState`
+`POST /conversations.remove-state`
 
 **Sample request**
 
@@ -219,7 +219,7 @@ Supported states of a conversation are `OPEN` and `CLOSED`.
 
 ## Update contact information
 
-`POST /conversations.updateContact`
+`POST /conversations.update-contact`
 
 **Sample request**
 

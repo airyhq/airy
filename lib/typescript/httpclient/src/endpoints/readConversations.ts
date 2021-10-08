@@ -1,4 +1,4 @@
 export const readConversationsDef = {
-  endpoint: 'conversations.markRead',
+  endpoint: 'conversations.mark-read',
   mapRequest: conversationId => ({conversation_id: conversationId}),
 };

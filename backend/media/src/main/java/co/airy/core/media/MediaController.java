@@ -29,7 +29,7 @@ public class MediaController implements HealthIndicator {
         this.mediaUpload = mediaUpload;
     }
 
-    @PostMapping(value = "/media.uploadFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = {"/media.upload", "media.uploadFile"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> mediaUpload(@RequestParam("file") MultipartFile multipartFile) {
         final String originalFileName = multipartFile.getOriginalFilename();
 

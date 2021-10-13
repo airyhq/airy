@@ -101,7 +101,7 @@ class UnreadCountTest {
                         .andExpect(jsonPath("$.metadata.unread_count", equalTo(unreadMessages))),
                 "Conversation not showing unread count");
 
-        webTestHelper.post("/conversations.markRead", payload).andExpect(status().isNoContent());
+        webTestHelper.post("/conversations.mark-read", payload).andExpect(status().isNoContent());
 
         retryOnException(
                 () -> webTestHelper.post("/conversations.info", payload)

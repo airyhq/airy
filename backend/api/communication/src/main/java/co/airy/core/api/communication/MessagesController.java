@@ -72,7 +72,7 @@ public class MessagesController {
                 .build();
     }
 
-    @PostMapping("/messages.suggestReplies")
+    @PostMapping({"/messages.suggestReplies", "/messages.suggest-replies"})
     ResponseEntity<?> messageSuggestReplies(@RequestBody @Valid MessageSuggestRepliesRequestPayload payload) {
         final String messageId = payload.getMessageId().toString();
         final MessageContainer container = stores.getMessageContainer(messageId);

@@ -3,7 +3,7 @@ import {UploadFileRequestPayload} from '../payload';
 const camelcaseKeys = require('camelcase-keys');
 
 export const uploadFileDef = {
-  endpoint: 'media.uploadFile',
+  endpoint: 'media.upload',
   mapRequest: (uploadFileRequest: UploadFileRequestPayload) => {
     return uploadFileRequest.file;
   },

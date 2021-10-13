@@ -144,7 +144,7 @@ public class ConversationsController {
         return conversations;
     }
 
-    @PostMapping("/conversations.markRead")
+    @PostMapping({"/conversations.markRead", "/conversations.mark-read"})
     ResponseEntity<?> conversationMarkRead(@RequestBody @Valid ConversationByIdRequestPayload payload) {
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
         final String conversationId = payload.getConversationId().toString();
@@ -212,7 +212,7 @@ public class ConversationsController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/conversations.setState")
+    @PostMapping({"/conversations.setState", "/conversations.set-state"})
     ResponseEntity<?> conversationSetState(@RequestBody @Valid ConversationSetStateRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();
         final String state = payload.getState();
@@ -234,7 +234,7 @@ public class ConversationsController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/conversations.removeState")
+    @PostMapping({"/conversations.removeState", "/conversations.remove-state"})
     ResponseEntity<?> conversationRemoveState(@RequestBody @Valid ConversationByIdRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();
         final ReadOnlyKeyValueStore<String, Conversation> store = stores.getConversationsStore();
@@ -254,7 +254,7 @@ public class ConversationsController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/conversations.updateContact")
+    @PostMapping({"/conversations.updateContact", "/conversations.update-contact"})
     ResponseEntity<?> conversationUpdateContact(@RequestBody @Valid ConversationUpdateContactRequestPayload payload) {
         final String conversationId = payload.getConversationId().toString();
         final String displayName = payload.getDisplayName();

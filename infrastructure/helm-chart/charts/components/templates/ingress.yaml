@@ -47,7 +47,7 @@ spec:
                 name: api-communication
                 port:
                   number: 80
-          - path: /media.uploadFile
+          - path: /media
             pathType: Prefix
             backend:
               service:

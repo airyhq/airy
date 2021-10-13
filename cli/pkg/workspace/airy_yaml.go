@@ -1,9 +1,11 @@
 package workspace
 
 type IngressConf struct {
+	Host                    string            `yaml:"host,omitempty"`
 	NgrokEnabled            bool              `yaml:"ngrokEnabled"`
 	Https                   bool              `yaml:"https,omitempty"`
-	Host                    string            `yaml:"host,omitempty"`
+	HttpsTermination        string            `yaml:"httpsTermination,omitempty"`
+	HttpsCertificate        string            `yaml:"httpsCertificate,omitempty"`
 	LetsencryptEmail        string            `yaml:"letsencryptEmail,omitempty"`
 	LoadbalancerAnnotations map[string]string `yaml:"loadbalancerAnnotations,omitempty"`
 }

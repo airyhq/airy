@@ -54,10 +54,7 @@
 
 .chevron {
   width: 16px;
-  margin-left: 16px;
-  margin-top: 6px;
-  margin-right: 8px;
-  margin-bottom: 4px;
+  margin: 6px 8px 4px 16px;
   fill: var(--color-text-gray);
   -webkit-transition: 0.2s ease-in-out;
   -moz-transition: 0.2s ease-in-out;
@@ -67,6 +64,10 @@
 
 .chevronRotated {
   transform: rotate(180deg);
+}
+
+.dropDownWrapper {
+  position: relative;
 }
 
 .dropDown {

@@ -72,36 +72,28 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
     setShowBackgroundColorPicker(!showBackgroundColorPicker);
   };
 
-  const formatConfigAttribute = (attribute: string, config: string): string => {
-    if (config === '') {
-      return '\n           ' + attribute;
-    }
-    return ',\n           ' + attribute;
-  };
-
   const getTemplateConfig = () => {
-    let config = '';
-    if (headerText !== '') config += formatConfigAttribute(`headerText: '${headerText}'`, config);
-    if (subtitleText !== '') config += formatConfigAttribute(`subtitleText: '${subtitleText}'`, config);
-    if (startNewConversationText !== '')
-      config += formatConfigAttribute(`startNewConversationText: '${startNewConversationText}'`, config);
-    if (bubbleIconUrl !== '') config += formatConfigAttribute(`bubbleIcon: '${bubbleIconUrl}'`, config);
-    if (sendMessageIconUrl !== '') config += formatConfigAttribute(`sendMessageIcon: '${sendMessageIconUrl}'`, config);
-    if (headerTextColor !== '') config += formatConfigAttribute(`headerTextColor: '${headerTextColor}'`, config);
-    if (subtitleTextColor !== '') config += formatConfigAttribute(`subtitleTextColor: '${subtitleTextColor}'`, config);
-    if (primaryColor !== '') config += formatConfigAttribute(`primaryColor: '${primaryColor}'`, config);
-    if (accentColor !== '') config += formatConfigAttribute(`accentColor: '${accentColor}'`, config);
-    if (backgroundColor !== '') config += formatConfigAttribute(`backgroundColor: '${backgroundColor}'`, config);
-    if (height !== '') config += formatConfigAttribute(`height: '${height}'`, config);
-    if (width !== '') config += formatConfigAttribute(`width: '${width}'`, config);
-    config += formatConfigAttribute(`closeMode: '${closingOption}'`, config);
-    config += formatConfigAttribute(`bubbleState: '${bubbleState}'`, config);
-    config += formatConfigAttribute(`disableMobile: '${disableMobile}'`, config);
-    config += formatConfigAttribute(`hideInputBar: '${hideInputBar}'`, config);
-    config += formatConfigAttribute(`hideEmojis: '${hideEmojis}'`, config);
+    const config = [
+      headerText && `headerText: '${headerText}'`,
+      subtitleText && `subtitleText: '${subtitleText}'`,
+      startNewConversationText && `startNewConversationText: '${startNewConversationText}'`,
+      bubbleIconUrl && `bubbleIcon: '${bubbleIconUrl}'`,
+      sendMessageIconUrl && `sendMessageIcon: '${sendMessageIconUrl}'`,
+      headerTextColor && `headerTextColor: '${headerTextColor}'`,
+      subtitleTextColor && `subtitleTextColor: '${subtitleTextColor}'`,
+      primaryColor && `primaryColor: '${primaryColor}'`,
+      accentColor && `accentColor: '${accentColor}'`,
+      backgroundColor && `backgroundColor: '${backgroundColor}'`,
+      height && `height: '${height}'`,
+      width && `width: '${width}'`,
+      `closeMode: '${closingOption}'`,
+      `bubbleState: '${bubbleState}'`,
+      `disableMobile: '${disableMobile}'`,
+      `hideInputBar: '${hideInputBar}'`,
+      `hideEmojis: '${hideEmojis}'`,
+    ];
 
-    return `w[n].config = {${config}
-        };`;
+    return `w[n].config = {${'\n           '}${config.filter(it => it !== '').join(',\n           ')}\n        };`;
   };
 
   const demoConfig: AiryChatPluginConfiguration = {

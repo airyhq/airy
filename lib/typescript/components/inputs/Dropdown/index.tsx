@@ -67,13 +67,16 @@ export const Dropdown = ({text, options, variant, onClick}) => {
         <div>{text}</div>
         <ChevronDown className={`${styles.chevron} ${dropdownVisible ? styles.chevronRotated : ''}`} />
       </button>
+
       {dropdownVisible && (
-        <div className={styles.dropDown}>
-          {options.map(option => (
-            <button type="button" key={option} className={styles.item} onClick={() => itemSelected(option)}>
-              {option}
-            </button>
-          ))}
+        <div className={styles.dropDownWrapper}>
+          <div className={styles.dropDown}>
+            {options.map(option => (
+              <button type="button" key={option} className={styles.item} onClick={() => itemSelected(option)}>
+                {option}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

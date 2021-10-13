@@ -1,0 +1,211 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: 'airy-core'
+  labels:
+    core.airy.co/managed: "true"
+  annotations:
+    # Keep in sync with the backend/media application properties
+    nginx.ingress.kubernetes.io/proxy-body-size: "512m"
+    nginx.org/client-max-body-size: "512m"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /ws.communication
+            pathType: Prefix
+            backend:
+              service:
+                name: api-websocket
+                port:
+                  number: 80
+          - path: /sources
+            pathType: Prefix
+            backend:
+              service:
+                name: source-api
+                port:
+                  number: 80
+          - path: /conversations
+            pathType: Prefix
+            backend:
+              service:
+                name: api-communication
+                port:
+                  number: 80
+          - path: /messages
+            pathType: Prefix
+            backend:
+              service:
+                name: api-communication
+                port:
+                  number: 80
+          - path: /metadata.upsert
+            pathType: Prefix
+            backend:
+              service:
+                name: api-communication
+                port:
+                  number: 80
+          - path: /media
+            pathType: Prefix
+            backend:
+              service:
+                name: media-resolver
+                port:
+                  number: 80
+          - path: /login
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /logout
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /oauth
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /client.config
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /users.getProfile
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /channels.list
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /channels.info
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /channels.update
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /channels.chatplugin
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /webhooks
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /tags
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /templates
+            pathType: Prefix
+            backend:
+              service:
+                name: api-admin
+                port:
+                  number: 80
+          - path: /channels.facebook
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-facebook-connector
+                port:
+                  number: 80
+          - path: /channels.instagram
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-facebook-connector
+                port:
+                  number: 80
+          - path: /channels.viber
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-viber-connector
+                port:
+                  number: 80
+          - path: /channels.google
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-google-connector
+                port:
+                  number: 80
+          - path: /channels.twilio
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-twilio-connector
+                port:
+                  number: 80
+          - path: /facebook
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-facebook-connector
+                port:
+                  number: 80
+          - path: /google
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-google-connector
+                port:
+                  number: 80
+          - path: /twilio
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-twilio-connector
+                port:
+                  number: 80
+          - path: /ws.chatplugin
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-chatplugin
+                port:
+                  number: 80
+          - path: /chatplugin
+            pathType: Prefix
+            backend:
+              service:
+                name: sources-chatplugin
+                port:
+                  number: 80
+  ingressClassName: nginx

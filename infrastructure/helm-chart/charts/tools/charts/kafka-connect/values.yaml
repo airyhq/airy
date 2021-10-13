@@ -1,3 +1,4 @@
+enabled: true
 connect:
   enabled: false
 podAnnotations: {}

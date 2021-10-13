@@ -1,11 +1,9 @@
 package helm
 
 import (
-	"bufio"
 	"context"
 	"fmt"
 	"io/ioutil"
-	"strings"
 
 	"github.com/airyhq/airy/infrastructure/lib/go/k8s/util"
 	batchv1 "k8s.io/api/batch/v1"
@@ -82,26 +80,15 @@ func (h *Helm) InstallCharts() error {
 	chartURL := "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-" + h.version + ".tgz"
 	return h.runHelm(append([]string{"install",
 		"--values", "/apps/config/airy-config-map.yaml",
+		"--namespace", h.namespace,
 		"--timeout", "10m0s",
 		"airy", chartURL}))
 }
 
 func (h *Helm) UpgradeCharts() error {
 	chartURL := "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-" + h.version + ".tgz"
-	overrideVersion := "global.kubernetes.appImageTag=" + h.version
 	return h.runHelm(append([]string{"upgrade",
 		"--values", "/apps/config/airy-config-map.yaml",
-		"--set", overrideVersion,
-		"--timeout", "10m0s",
-		"airy", chartURL}))
-}
-
-func (h *Helm) RollBackUpgrade(version string) error {
-	chartURL := "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-" + version + ".tgz"
-	overrideVersion := "global.kubernetes.appImageTag=" + version
-	return h.runHelm(append([]string{"upgrade",
-		"--values", "/apps/config/airy-config-map.yaml",
-		"--set", overrideVersion,
 		"--timeout", "10m0s",
 		"airy", chartURL}))
 }
@@ -199,7 +186,7 @@ func (h *Helm) UpsertAiryConfigMap() error {
 	}
 
 	cmData := map[string]string{
-		"airy-config-map.yaml": airyYamlToHelmValues(string(file)),
+		"airy-config-map.yaml": string(file),
 	}
 
 	if cm.GetName() != "" {
@@ -217,18 +204,6 @@ func (h *Helm) UpsertAiryConfigMap() error {
 			Data: cmData,
 		}, v1.CreateOptions{})
 	return err
-}
-
-// Transform Airy yaml to make it usable as values
-// by moving all data to a "global:" root node
-func airyYamlToHelmValues(content string) string {
-	scanner := bufio.NewScanner(strings.NewReader(content))
-	var builder strings.Builder
-	builder.WriteString("global:\n")
-	for scanner.Scan() {
-		builder.WriteString("  " + scanner.Text() + "\n")
-	}
-	return builder.String()
 }
 
 func (h *Helm) cleanupJob() error {

@@ -6,7 +6,6 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: {{ template "cp-zookeeper.fullname" . }}
-  namespace: {{ .Values.global.kubernetes.namespace }}
   labels:
     app: {{ template "cp-zookeeper.name" . }}
     chart: {{ template "cp-zookeeper.chart" . }}

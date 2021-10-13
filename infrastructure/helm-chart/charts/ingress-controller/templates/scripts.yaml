@@ -28,7 +28,7 @@ data:
     #!/bin/sh
     host=${HOST:-airy.core}
     protocol=${PROTOCOL:-http}
-    kubectl patch configmap hostnames -p "{\"data\":{\"HOST\":\"${protocol}://${host}\"}}" --type merge
+    kubectl patch configmap core-config -p "{\"data\":{\"API_HOST\":\"${protocol}://${host}\"}}" --type merge
   wait-for-loadbalancer.sh: |
     #!/bin/sh
     delay=${DELAY:-10}
@@ -48,4 +48,4 @@ data:
     #!/bin/sh
     protocol=${PROTOCOL:-http}
     host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-    kubectl patch configmap hostnames -p "{\"data\":{\"HOST\":\"${protocol}://${host}\"}}" --type merge
+    kubectl patch configmap core-config -p "{\"data\":{\"API_HOST\":\"${protocol}://${host}\"}}" --type merge

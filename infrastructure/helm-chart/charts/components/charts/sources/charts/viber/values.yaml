@@ -1,0 +1,7 @@
+component: sources-viber
+mandatory: false
+enabled: true
+connector:
+  image: sources/viber-connector
+eventsRouter:
+  image: sources/viber-events-router

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: security
+data:
+  {{- if .Values.security.systemToken }}
+  systemToken: {{ .Values.security.systemToken | quote }}
+  {{- end }}
+  jwtSecret: {{ default (randAlphaNum 128) .Values.security.jwtSecret | quote }}
+  allowedOrigins: {{ .Values.security.allowedOrigins | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: core-config
+data:
+  APP_IMAGE_TAG: {{ default .Chart.Version .Values.global.appImageTag }}
+  CORE_ID: {{ randAlphaNum 10 | lower }}
+  CHATPLUGIN_JWT_SECRET: {{ randAlphaNum 128 | quote }}
+  API_HOST: {{ .Values.apiHost }}
+  SEGMENT_ANALYTICS_ENABLED: {{ .Values.tools.segment.enabled | quote }}

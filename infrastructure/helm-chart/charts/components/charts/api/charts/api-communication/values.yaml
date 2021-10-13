@@ -1,0 +1,7 @@
+component: api-communication
+mandatory: false
+enabled: true
+communication:
+  image: api/communication
+websocket:
+  image: api/websocket

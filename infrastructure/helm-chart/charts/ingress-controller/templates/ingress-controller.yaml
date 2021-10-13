@@ -9,14 +9,12 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   use-forwarded-headers: "true"
-{{ if .Values.global.ingress }}
-{{ if eq .Values.global.ingress.httpsTermination "LoadBalancer" }}
+{{ if eq .Values.httpsTermination "LoadBalancer" }}
   http-snippet: |
     server{
       listen 2443;
       return 308 https://$host$request_uri;
     }
-{{ end }}
 {{ end }}
 ---
 apiVersion: apps/v1
@@ -108,9 +106,8 @@ spec:
             - name: webhook
               containerPort: 8443
               protocol: TCP
-            {{ if .Values.global.ingress }}
-            {{ if .Values.global.ingress.https }}
-            {{ if eq .Values.global.ingress.httpsTermination "LoadBalancer" }}
+            {{ if .Values.https }}
+            {{ if eq .Values.httpsTermination "LoadBalancer" }}
             - name: tohttps
               containerPort: 2443
               protocol: TCP
@@ -118,7 +115,6 @@ spec:
             - name: https
               containerPort: 443
               protocol: TCP
-            {{ end }}
             {{ end }}
             {{ end }}
           volumeMounts:

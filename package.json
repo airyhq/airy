@@ -20,7 +20,7 @@
     "form-data": "^4.0.0",
     "lodash-es": "^4.17.21",
     "node-fetch": "^2.0.0",
-    "preact": "^10.5.14",
+    "preact": "^10.5.15",
     "react": "17.0.2",
     "react-autosize-textarea": "^7.1.0",
     "react-color": "^2.19.3",

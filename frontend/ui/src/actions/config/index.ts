@@ -2,7 +2,7 @@ import {Config} from 'model';
 import _, {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
 
-import {HttpClientInstance} from '../../InitializeAiryApi';
+import {HttpClientInstance} from '../../httpClient';
 
 const ADD_SETTINGS_TO_STORE = 'ADD_CONFIG_TO_STORE';
 

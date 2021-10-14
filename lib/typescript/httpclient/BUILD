@@ -17,24 +17,38 @@ ts_web_library(
         "@npm//@types/node",
         "@npm//camelcase-keys",
         "@npm//node-fetch",
+        "@npm//form-data",
     ],
 )
 
 web_library(
-    name = "dist",
+    name = "dist_browser",
     app_lib = ":httpclient",
-    entry = "lib/typescript/httpclient/index.js",
+    entry = "lib/typescript/httpclient/src/index.js",
+    module_deps = module_deps,
+    output = {
+        "library": "@airyhq/http-client",
+        "globalObject": "this",
+        "libraryTarget": "umd",
+        "filename": "browser.js",
+    },
+)
+
+web_library(
+    name = "dist_node",
+    app_lib = ":httpclient",
+    entry = "lib/typescript/httpclient/src/index.js",
     externals = {
-        "@types/node": "@types/node",
         "camelcase-keys": "camelcase-keys",
         "node-fetch": "node-fetch",
+        "form-data": "form-data",
     },
     module_deps = module_deps,
     output = {
         "library": "@airyhq/http-client",
         "globalObject": "this",
         "libraryTarget": "umd",
-        "filename": "index.js",
+        "filename": "node.js",
     },
 )
 
@@ -43,12 +57,14 @@ genrule(
     srcs = [
         "package.json",
         "README.md",
-        ":dist",
+        ":dist_browser",
+        ":dist_node",
         ":httpclient",
     ],
     outs = ["httpclient_lib"],
     cmd = """
-    mkdir -p $(OUTS)/{dist} && cp -R $(location :dist) $(OUTS) \
+    mkdir -p $(OUTS)/dist && cp $(location :dist_browser)/browser.js $(OUTS)/dist \
+    && cp $(location :dist_node)/node.js $(OUTS)/dist \
     && cp $(location :package.json) $(location :README.md) $(OUTS) \
     && mv $(RULEDIR)/src $(OUTS)
 """,

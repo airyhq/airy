@@ -6,7 +6,7 @@ import {connectFacebookChannel} from '../../../../../actions/channel';
 import {StateModel} from '../../../../../reducers';
 
 import {Button, Input, LinkButton, InfoButton} from 'components';
-import {ConnectChannelFacebookRequestPayload} from 'httpclient';
+import {ConnectChannelFacebookRequestPayload} from 'httpclient/src';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
 
 import styles from './FacebookConnect.module.scss';

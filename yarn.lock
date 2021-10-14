@@ -959,15 +959,23 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@bazel/typescript@^3.6.0":
-  version "3.7.0"
-  resolved "https://registry.npmjs.org/@bazel/typescript/-/typescript-3.7.0.tgz"
-  integrity sha512-bkNHZaCWg4Jk+10wzhFDhB+RRZkfob/yydC4qRzUVxCDLPFICYgC0PWeLhf/ixEhVeHtS0Cmv74M+QziqKSdbw==
+"@bazel/typescript@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-4.3.0.tgz#c4131ba7980f8e72885f5ec19c265ad9431e1a71"
+  integrity sha512-ddPw0Xetl+a5UeZVHzpWsyMrUcAyhpGXknmfymx8vrWL+Y3yyquC7ZcYoYbkoCwIMBz7xhadm8NKIUYCrsEgaA==
   dependencies:
+    "@bazel/worker" "4.3.0"
     protobufjs "6.8.8"
     semver "5.6.0"
     source-map-support "0.5.9"
-    tsutils "2.27.2"
+    tsutils "3.21.0"
+
+"@bazel/worker@4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@bazel/worker/-/worker-4.3.0.tgz#5ba7da1efa772f5dade5dfd4b662dcaa60ed7c1c"
+  integrity sha512-K34/g/4aUAX8TOQ1MgBaZ+YeZkiIlwETwA50gheCAsasz0SWjvgcpIbwNkaL9fmXOVhDj2o55J20khsl5ItBIw==
+  dependencies:
+    google-protobuf "^3.6.1"
 
 "@crello/react-lottie@^0.0.11":
   version "0.0.11"
@@ -2456,7 +2464,7 @@ colors@^1.1.2:
   resolved "https://registry.npmjs.org/colors/-/colors-1.4.0.tgz"
   integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==
 
-combined-stream@^1.0.6, combined-stream@~1.0.6:
+combined-stream@^1.0.6, combined-stream@^1.0.8, combined-stream@~1.0.6:
   version "1.0.8"
   resolved "https://registry.npmjs.org/combined-stream/-/combined-stream-1.0.8.tgz"
   integrity sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
@@ -3653,6 +3661,15 @@ forever-agent@~0.6.1:
   resolved "https://registry.npmjs.org/forever-agent/-/forever-agent-0.6.1.tgz"
   integrity sha1-+8cfDEGt6zf5bFd60e1C2P2sypE=
 
+form-data@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
+  integrity sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.8"
+    mime-types "^2.1.12"
+
 form-data@~2.3.2:
   version "2.3.3"
   resolved "https://registry.npmjs.org/form-data/-/form-data-2.3.3.tgz"
@@ -3862,6 +3879,11 @@ globby@^6.1.0:
     object-assign "^4.0.1"
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
+
+google-protobuf@^3.6.1:
+  version "3.18.1"
+  resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.18.1.tgz#31de10b65e833aa5bbd44680e8a748fa54c920f6"
+  integrity sha512-cDqSamZ8rGs+pOzhIsBte7wpezUKg/sggeptDWN5odhnRY/eDLa5VWLeNeQvcfiqjS3yUwgM+6OePCJMB7aWZA==
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.4:
   version "4.2.6"
@@ -6888,15 +6910,7 @@ source-map-support@0.5.9:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
 
-source-map-support@~0.5.12:
-  version "0.5.19"
-  resolved "https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.19.tgz"
-  integrity sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==
-  dependencies:
-    buffer-from "^1.0.0"
-    source-map "^0.6.0"
-
-source-map-support@~0.5.20:
+source-map-support@~0.5.12, source-map-support@~0.5.20:
   version "0.5.20"
   resolved "https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.20.tgz"
   integrity sha512-n1lZZ8Ve4ksRqizaBQgxXDgKwttHDhyfQjA6YZZn8+AroHbsIz+JjwxQDxbp+7y5OYCI8t1Yk7etjD9CRd2hIw==
@@ -7318,14 +7332,7 @@ tslib@^2.0.3:
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.0.tgz"
   integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
 
-tsutils@2.27.2:
-  version "2.27.2"
-  resolved "https://registry.npmjs.org/tsutils/-/tsutils-2.27.2.tgz"
-  integrity sha512-qf6rmT84TFMuxAKez2pIfR8UCai49iQsfB7YWVjV1bKpy/d0PWT5rEOSM6La9PiHZ0k1RRZQiwVdVJfQ3BPHgg==
-  dependencies:
-    tslib "^1.8.1"
-
-tsutils@^3.21.0:
+tsutils@3.21.0, tsutils@^3.21.0:
   version "3.21.0"
   resolved "https://registry.npmjs.org/tsutils/-/tsutils-3.21.0.tgz"
   integrity sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==

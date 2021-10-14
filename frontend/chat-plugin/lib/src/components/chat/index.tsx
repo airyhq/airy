@@ -52,16 +52,13 @@ const Chat = ({config, ...props}: Props) => {
 
   const chatHiddenInitialState = (): boolean => {
     if (config.showMode === true) return false;
-    if (config.bubbleState) {
-      if (config.bubbleState === 'expanded') {
-        return false;
-      }
-      if (config.bubbleState === 'minimized') {
-        return true;
-      }
+    if (config.bubbleState === 'expanded') {
+      return false;
     }
-    if (getResumeTokenFromStorage(props.channelId)) return true;
-    return false;
+    if (config.bubbleState === 'minimized') {
+      return true;
+    }
+    return !!getResumeTokenFromStorage(props.channelId);
   };
 
   const [installError, setInstallError] = useState('');
@@ -210,7 +207,11 @@ const Chat = ({config, ...props}: Props) => {
 
   const commandCallback = (command: CommandUnion) => {
     if (command.type === 'suggestedReply') {
-      ws.onSend({type: 'suggestionResponse', text: command.payload.text, postbackData: command.payload.postbackData});
+      ws.onSend({
+        type: 'suggestionResponse',
+        text: command.payload.text,
+        postbackData: command.payload.postbackData,
+      });
     }
     if (command.type === 'quickReplies') {
       ws.onSend({type: 'quickReplies', text: command.payload.text, postbackData: command.payload.postbackData});

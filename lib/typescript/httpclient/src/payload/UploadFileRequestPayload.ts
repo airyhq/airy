@@ -1,3 +1,5 @@
+import NodeFormData from 'form-data';
+
 export interface UploadFileRequestPayload {
-  file: FormData;
+  file: NodeFormData | FormData;
 }

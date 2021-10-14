@@ -1,6 +1,7 @@
 {
   "name": "@airyhq/http-client",
-  "description": "Airy http client library",
+  "description": "An http library for the Airy messaging platform compatible with both Browser and Nodejs environments.",
+  "keywords": ["airy", "http", "client", "browser", "nodejs", "typescript"],
   "main": "dist/node.js",
   "browser": "dist/browser.js",
   "typings": "src/index.d.ts",
@@ -20,6 +21,6 @@
     "form-data": "^4.0.0"
   },
   "devDependencies": {
-    "@types/node": "16.9.4"
+    "@types/node": "16.10.3"
   }
 }

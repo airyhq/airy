@@ -1,4 +1,4 @@
-import {HttpClient} from 'httpclient';
+import {HttpClient} from 'httpclient/src';
 import {env} from './env';
 
 export const HttpClientInstance = new HttpClient(env.API_HOST, (error, loginUrl) => {

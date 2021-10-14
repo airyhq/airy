@@ -22,7 +22,7 @@ import SuggestedReplySelector from '../SuggestedReplySelector';
 import {InputOptions} from './InputOptions';
 
 import styles from './index.module.scss';
-import {HttpClientInstance} from '../../../InitializeAiryApi';
+import {HttpClientInstance} from '../../../httpClient';
 import {FacebookMapper} from 'render/outbound/facebook';
 import {getAttachmentType, imageExtensions, fileExtensions, videoExtensions, audioExtensions} from 'render/attachments';
 import {InputSelector} from './InputSelector';

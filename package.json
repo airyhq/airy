@@ -45,7 +45,7 @@
     "@babel/preset-typescript": "^7.15.0",
     "@bazel/typescript": "^4.3.0",
     "@svgr/webpack": "^5.5.0",
-    "@types/lodash-es": "^4.17.4",
+    "@types/lodash-es": "^4.17.5",
     "@types/react-window-infinite-loader": "^1.0.5",
     "@types/resize-observer-browser": "^0.1.6",
     "@typescript-eslint/eslint-plugin": "^4.33.0",

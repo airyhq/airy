@@ -1,3 +1,4 @@
+import _ from 'form-data';
 import {UploadFileRequestPayload} from '../payload';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');

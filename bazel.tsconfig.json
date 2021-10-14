@@ -36,10 +36,10 @@
         "./lib/typescript/model/*"
       ],
       "httpclient": [
-        "./lib/typescript/httpclient"
+        "./lib/typescript/httpclient/src"
       ],
       "httpclient/*": [
-        "./lib/typescript/httpclient/*"
+        "./lib/typescript/httpclient/src/*"
       ],
       "types": [
         "./lib/typescript/types"

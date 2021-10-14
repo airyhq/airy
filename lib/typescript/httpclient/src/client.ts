@@ -21,7 +21,7 @@ import {
   UpdateContactRequestPayload,
   ConnectChannelInstagramRequestPayload,
   UploadFileRequestPayload,
-} from './src/payload';
+} from './payload';
 import {
   listChannelsDef,
   listConversationsDef,
@@ -50,8 +50,9 @@ import {
   setStateConversationDef,
   updateContactDef,
   uploadFileDef,
-} from './src/endpoints';
+} from './endpoints';
 import fetch from 'node-fetch';
+import FormData from 'form-data';
 
 function isString(object: any) {
   return typeof object === 'string' || object instanceof String;
@@ -121,7 +122,11 @@ export class HttpClient {
     let errorResult: any;
 
     if (body.length > 0) {
-      errorResult = JSON.parse(body) as any;
+      try {
+        errorResult = JSON.parse(body) as any;
+      } catch (e) {
+        errorResult = body;
+      }
     }
 
     if (response.status === 403) {

@@ -17,6 +17,7 @@
     "i18next": "^21.3.0",
     "linkify-react": "^3.0.1",
     "linkifyjs": "^3.0.1",
+    "form-data": "^4.0.0",
     "lodash-es": "^4.17.21",
     "node-fetch": "^2.0.0",
     "preact": "^10.5.14",

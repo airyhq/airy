@@ -1,9 +1,9 @@
 {
   "name": "@airyhq/http-client",
-  "version": "0.1.0",
   "description": "Airy http client library",
-  "main": "dist/index.js",
-  "typings": "index.d.ts",
+  "main": "dist/node.js",
+  "browser": "dist/browser.js",
+  "typings": "src/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/airyhq/airy.git"
@@ -15,7 +15,11 @@
   },
   "homepage": "https://github.com/airyhq/airy#readme",
   "dependencies": {
-    "@types/node": "^14.14.37",
-    "camelcase-keys": "^6.2.2"
+    "node-fetch": "^2.0.0",
+    "camelcase-keys": "^7.0.0",
+    "form-data": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "16.9.4"
   }
 }

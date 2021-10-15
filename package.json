@@ -14,7 +14,7 @@
     "camelcase-keys": "^7.0.0",
     "core-js": "3.18.3",
     "emoji-mart": "3.0.1",
-    "i18next": "^21.3.0",
+    "i18next": "^21.3.1",
     "linkify-react": "^3.0.1",
     "linkifyjs": "^3.0.1",
     "form-data": "^4.0.0",

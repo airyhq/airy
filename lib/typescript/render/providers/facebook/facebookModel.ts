@@ -4,7 +4,7 @@ export interface Attachment {
   url?: string | null;
 }
 export interface SimpleAttachment {
-  type: 'image' | 'video' | 'audio' | 'file' | 'share' | 'fallback';
+  type: 'image' | 'video' | 'audio' | 'file' | 'fallback' | 'share' | 'story_mention';
   title?: string;
   url?: string;
   payload?: {title?: string; url?: string} | null;
@@ -176,6 +176,10 @@ export interface ShareContent extends Content {
   url: string;
 }
 
+export interface DeletedMessageContent extends Content {
+  type: 'deletedMessage';
+}
+
 // Add a new facebook content model here:
 export type ContentUnion =
   | TextContent
@@ -192,7 +196,8 @@ export type ContentUnion =
   | StoryMentionContent
   | StoryRepliesContent
   | ShareContent
-  | Fallback;
+  | Fallback
+  | DeletedMessageContent;
 
 export type AttachmentUnion =
   | TextContent
@@ -203,6 +208,6 @@ export type AttachmentUnion =
   | ButtonTemplate
   | GenericTemplate
   | MediaTemplate
+  | Fallback
   | StoryMentionContent
-  | ShareContent
-  | Fallback;
+  | ShareContent;

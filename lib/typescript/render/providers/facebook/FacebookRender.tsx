@@ -17,6 +17,7 @@ import {FallbackAttachment} from './components/FallbackAttachment';
 import {StoryMention} from './components/InstagramStoryMention';
 import {StoryReplies} from './components/InstagramStoryReplies';
 import {Share} from './components/InstagramShare';
+import {DeletedMessage} from './components/DeletedMessage';
 
 export const FacebookRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -88,6 +89,9 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'share':
       return <Share url={content.url} fromContact={props.message.fromContact || false} />;
 
+    case 'deletedMessage':
+      return <DeletedMessage fromContact={props.message.fromContact || false} />;
+
     default:
       return null;
   }
@@ -149,18 +153,18 @@ const parseAttachment = (
     };
   }
 
-  if (attachment.type === 'share') {
-    return {
-      type: 'share',
-      url: attachment.payload.url,
-    };
-  }
-
   if (attachment.type === 'fallback') {
     return {
       type: 'fallback',
       title: attachment.payload?.title ?? attachment.title,
       url: attachment.payload?.url ?? attachment.url,
+    };
+  }
+
+  if (attachment.type === 'share') {
+    return {
+      type: 'share',
+      url: attachment.payload.url,
     };
   }
 
@@ -189,23 +193,6 @@ function facebookInbound(message): ContentUnion {
     };
   }
 
-  if (messageJson.attachments?.[0].type === 'story_mention') {
-    return {
-      type: 'story_mention',
-      url: messageJson.attachment?.payload?.url || messageJson.attachments[0]?.payload?.url || null,
-      sentAt: message.sentAt,
-    };
-  }
-
-  if (messageJson.reply_to) {
-    return {
-      type: 'story_replies',
-      text: messageJson.text,
-      url: messageJson.reply_to?.story?.url,
-      sentAt: message.sentAt,
-    };
-  }
-
   if (messageJson.attachment || messageJson.attachments) {
     return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
@@ -222,6 +209,30 @@ function facebookInbound(message): ContentUnion {
     return {
       type: 'text',
       text: messageJson.text,
+    };
+  }
+
+  //Instagram-specific
+  if (messageJson.attachments?.[0].type === 'story_mention' || messageJson.attachment?.type === 'story_mention') {
+    return {
+      type: 'story_mention',
+      url: messageJson.attachment?.payload.url ?? messageJson.attachments?.[0].payload.url,
+      sentAt: message.sentAt,
+    };
+  }
+
+  if (messageJson.reply_to) {
+    return {
+      type: 'story_replies',
+      text: messageJson.text,
+      url: messageJson.reply_to?.story?.url,
+      sentAt: message.sentAt,
+    };
+  }
+
+  if (messageJson.is_deleted) {
+    return {
+      type: 'deletedMessage',
     };
   }
 
@@ -254,23 +265,6 @@ function facebookOutbound(message): ContentUnion {
     };
   }
 
-  if (messageJson.reply_to) {
-    return {
-      type: 'story_replies',
-      text: messageJson.text,
-      url: messageJson.reply_to?.story?.url,
-      sentAt: message.sentAt,
-    };
-  }
-
-  if (messageJson.attachments?.[0].type === 'story_mention') {
-    return {
-      type: 'story_mention',
-      url: messageJson.attachment.url || messageJson.attachments[0].url,
-      sentAt: messageJson.sentAt,
-    };
-  }
-
   if (messageJson.attachment?.type === 'fallback' || messageJson.attachments?.[0].type === 'fallback') {
     return {
       text: messageJson.text ?? null,
@@ -294,6 +288,24 @@ function facebookOutbound(message): ContentUnion {
     return {
       type: 'text',
       text: messageJson.text,
+    };
+  }
+
+  //Instagram-specific
+  if (messageJson.attachments?.[0].type === 'story_mention' || messageJson.attachment?.type === 'story_mention') {
+    return {
+      type: 'story_mention',
+      url: messageJson.attachment?.payload.url ?? messageJson.attachments?.[0].payload.url,
+      sentAt: message.sentAt,
+    };
+  }
+
+  if (messageJson.reply_to) {
+    return {
+      type: 'story_replies',
+      text: messageJson.text,
+      url: messageJson.reply_to?.story?.url,
+      sentAt: message.sentAt,
     };
   }
 

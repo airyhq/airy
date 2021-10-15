@@ -18,14 +18,6 @@
   align-items: center;
 }
 
-.activeStoryLink:link,
-.activeStoryLink:hover,
-.activeStoryLink:visited,
-.activeStoryLink:active {
-  color: var(--color-text-contrast);
-  font-style: italic;
-}
-
 .expiredStory {
   font-style: italic;
 }
@@ -36,8 +28,32 @@
   color: var(--color-text-contrast);
 }
 
+.linkContactContent:link,
+.linkContactContent:hover,
+.linkContactContent:visited,
+.linkContactContent:active {
+  color: var(--color-text-contrast);
+  font-style: italic;
+}
+
+.iconContactContent {
+  fill: var(--color-text-contrast);
+}
+
 .memberContent {
   @extend .textMessage;
   background: var(--color-airy-blue);
   color: white;
+}
+
+.linkMemberContent:link,
+.linkMemberContent:hover,
+.linkMemberContent:visited,
+.linkMemberContent:active {
+  color: white;
+  font-style: italic;
+}
+
+.iconMemberContent {
+  fill: white;
 }

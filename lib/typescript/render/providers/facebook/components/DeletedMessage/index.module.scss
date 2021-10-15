@@ -1,0 +1,30 @@
+@import 'assets/scss/colors.scss';
+@import 'assets/scss/fonts.scss';
+
+.textMessage {
+  display: inline-block;
+  overflow-wrap: break-word;
+  max-width: 500px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  @include font-base;
+}
+
+.contactContent {
+  @extend .textMessage;
+  background: var(--color-background-blue);
+  color: var(--color-text-contrast);
+}
+
+.memberContent {
+  @extend .textMessage;
+  background: var(--color-airy-blue);
+  color: white;
+}
+
+.deletedMessageText {
+  font-style: italic;
+}

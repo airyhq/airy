@@ -61,7 +61,7 @@
     "minimist": "^1.2.5",
     "prettier": "^2.3.2",
     "react-hot-loader": "^4.13.0",
-    "sass": "^1.39.0",
+    "sass": "^1.43.2",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.3.0",
     "terser-webpack-plugin": "^5.2.4",

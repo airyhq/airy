@@ -60,6 +60,7 @@ const MessageInput = (props: Props) => {
     source,
     conversation,
     suggestions,
+    config,
     showSuggestedReplies,
     hideSuggestedReplies,
     sendMessages,
@@ -335,6 +336,7 @@ const MessageInput = (props: Props) => {
                   selectFile={selectFile}
                   fileUploadErrorPopUp={fileUploadErrorPopUp}
                   closeFileErrorPopUp={closeFileErrorPopUp}
+                  mediaComponentConfig={config.components['media-resolver']}
                 />
               </>
             )}

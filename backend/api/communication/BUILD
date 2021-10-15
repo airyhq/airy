@@ -14,6 +14,7 @@ app_deps = [
     "//backend/model/conversation",
     "//backend:read-receipt",
     "//lib/java/date",
+    "//lib/java/uuid",
     "//lib/java/pagination",
     "//lib/java/spring/auth:spring-auth",
     "//lib/java/spring/web:spring-web",

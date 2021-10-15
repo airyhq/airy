@@ -68,6 +68,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     private final String messagesByIdStore = "messages-by-id-store";
     private final String metadataStore = "metadata-store";
     private final String conversationsStore = "conversations-store";
+    private final String channelsStore = "channels-store";
     private final String conversationsLuceneStore = "conversations-lucene-store";
     private final String applicationCommunicationMetadata = new ApplicationCommunicationMetadata().name();
     private final String applicationCommunicationReadReceipts = new ApplicationCommunicationReadReceipts().name();
@@ -88,7 +89,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
 
         final KStream<String, Message> messageStream = builder.stream(new ApplicationCommunicationMessages().name());
 
-        final KTable<String, Channel> channelTable = builder.table(new ApplicationCommunicationChannels().name());
+        final KTable<String, Channel> channelTable = builder.table(new ApplicationCommunicationChannels().name(), Materialized.as(channelsStore));
 
         // conversation/message/channel metadata keyed by conversation/message/channel id
         final KTable<String, MetadataMap> metadataTable = builder.<String, Metadata>table(applicationCommunicationMetadata)
@@ -191,6 +192,10 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
         return streams.acquireLocalStore(conversationsStore);
     }
 
+    public ReadOnlyKeyValueStore<String, Channel> getChannelsStore() {
+        return streams.acquireLocalStore(channelsStore);
+    }
+
     public ReadOnlyKeyValueStore<String, Messages> getMessagesStore() {
         return streams.acquireLocalStore(messagesStore);
     }
@@ -273,6 +278,7 @@ public class Stores implements HealthIndicator, ApplicationListener<ApplicationS
     @Override
     public Health health() {
         getConversationsStore();
+        getChannelsStore();
         getMessagesStore();
         getMessagesByIdStore();
         getMetadataStore();

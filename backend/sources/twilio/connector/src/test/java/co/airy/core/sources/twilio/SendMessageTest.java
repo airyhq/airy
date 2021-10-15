@@ -145,4 +145,47 @@ class SendMessageTest {
             assertEquals(sourceChannelId, fromCaptor.getValue());
         }, "Twilio API was not called");
     }
+
+    @Test
+    void canCreateConversation() throws Exception {
+        final String conversationId = UUID.randomUUID().toString();
+        final String messageId = UUID.randomUUID().toString();
+        final String sourceRecipientId = "+491234567";
+        final String sourceChannelId = "+497654321";
+        final String payload = "{\"Body\":\"Hello World\"}";
+
+        ArgumentCaptor<String> payloadCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> fromCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> toCaptor = ArgumentCaptor.forClass(String.class);
+
+        doNothing().when(api).sendMessage(fromCaptor.capture(), toCaptor.capture(), payloadCaptor.capture());
+
+        // Test that phone number input gets cleaned up
+        final String channelPayload = "{\"phone_number\":\"+49 765 4321 \",\"name\":\"Blips and Chitz\"}";
+        final String response = webTestHelper.post("/channels.twilio.sms.connect", channelPayload)
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        final JsonNode jsonNode = new ObjectMapper().readTree(response);
+        final String channelId = jsonNode.get("id").textValue();
+
+        kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
+                Message.newBuilder()
+                        .setId(messageId)
+                        .setSentAt(Instant.now().toEpochMilli())
+                        .setSourceRecipientId(sourceRecipientId)
+                        .setIsFromContact(false)
+                        .setDeliveryState(DeliveryState.PENDING)
+                        .setConversationId(conversationId)
+                        .setChannelId(channelId)
+                        .setSource("twilio.sms")
+                        .setContent(payload)
+                        .build())
+        );
+
+        retryOnException(() -> {
+            assertEquals(payload, payloadCaptor.getValue());
+            assertEquals(sourceRecipientId, toCaptor.getValue());
+            assertEquals(sourceChannelId, fromCaptor.getValue());
+        }, "Twilio API was not called");
+    }
 }

@@ -50,7 +50,7 @@ export const getAttachmentType = (url: string) => {
 export const isSupportedByInstagramMessenger = (url: string) => {
   const urlArr = url.split('.');
   const extension = urlArr[urlArr.length - 1];
-  
+
   return instagramImageExtensions.includes(extension) ? true : false;
 };
 

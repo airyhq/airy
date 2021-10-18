@@ -1,4 +1,5 @@
 export const imageExtensions = ['jpeg', 'jpg', 'gif', 'png', 'tiff', 'tif'];
+export const instagramImageExtensions = ['jpeg', 'jpg', 'png', 'ico', 'bmp', 'gif'];
 export const videoExtensions = ['mp4', 'mov', 'wmv'];
 export const audioExtensions = ['mp3', 'ogg', 'wav'];
 export const fileExtensions = [
@@ -22,6 +23,7 @@ export const fileExtensions = [
   'css',
   'scss',
   'html',
+  'bmp',
 ];
 
 export const getAttachmentType = (url: string) => {
@@ -43,6 +45,13 @@ export const getAttachmentType = (url: string) => {
   if (fileExtensions.includes(extension)) {
     return 'file';
   }
+};
+
+export const isSupportedByInstagramMessenger = (url: string) => {
+  const urlArr = url.split('.');
+  const extension = urlArr[urlArr.length - 1];
+  
+  return instagramImageExtensions.includes(extension) ? true : false;
 };
 
 export const getFileName = (fileUrl: string) => {

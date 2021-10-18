@@ -24,7 +24,15 @@ import {InputOptions} from './InputOptions';
 import styles from './index.module.scss';
 import {HttpClientInstance} from '../../../httpClient';
 import {FacebookMapper} from 'render/outbound/facebook';
-import {getAttachmentType, imageExtensions, fileExtensions, videoExtensions, audioExtensions} from 'render/attachments';
+import {
+  getAttachmentType,
+  isSupportedByInstagramMessenger,
+  imageExtensions,
+  fileExtensions,
+  videoExtensions,
+  audioExtensions,
+  instagramImageExtensions,
+} from 'render/attachments';
 import {InputSelector} from './InputSelector';
 
 const mapDispatchToProps = {sendMessages};
@@ -117,6 +125,35 @@ const MessageInput = (props: Props) => {
   }, [channelConnected]);
 
   const uploadFile = (file: File) => {
+    const fileSizeInMB = file.size / Math.pow(1024, 2);
+
+    //instagram upload errors
+    if (source === 'instagram') {
+      if (fileSizeInMB >= 8) {
+        return setFileUploadErrorPopUp(
+          'Failed to upload the file. Instagram Direct Messenger only supports files that are less than 8 MB.'
+        );
+      }
+
+      if (!isSupportedByInstagramMessenger(file.name)) {
+        return setFileUploadErrorPopUp(`This file type is not supported by Instagram Direct Messenger. Supported files: 
+         ${instagramImageExtensions.join(', ')}`);
+      }
+    }
+
+    //facebook upload errors
+    if (fileSizeInMB >= 25) {
+      return setFileUploadErrorPopUp('Failed to upload the file. The maximum file size allowed is 25MB.');
+    }
+
+    if (!getAttachmentType(file.name)) {
+      const message = `This file type is not supported. Supported files: 
+      ${audioExtensions.join(', ')}, ${imageExtensions.join(', ')}, ${videoExtensions.join(
+        ', '
+      )}, ${fileExtensions.join(', ')}`;
+      return setFileUploadErrorPopUp(message);
+    }
+
     setLoadingSelector(true);
 
     const formData = new FormData();
@@ -139,21 +176,6 @@ const MessageInput = (props: Props) => {
     if (selectedFileUrl) setSelectedFileUrl(null);
 
     const file = event.target.files[0];
-
-    const fileSizeInMB = file.size / Math.pow(1024, 2);
-
-    if (fileSizeInMB >= 25) {
-      return setFileUploadErrorPopUp('Failed to upload the file. The maximum file size allowed is 25MB.');
-    }
-
-    if (!getAttachmentType(file.name)) {
-      const message = `This file type is not supported. Supported files: 
-      ${audioExtensions.join(' , ')}, ${imageExtensions.join(' , ')}, ${videoExtensions.join(
-        ' , '
-      )}, ${fileExtensions.join(' , ')}`;
-      return setFileUploadErrorPopUp(message);
-    }
-
     return uploadFile(file);
   };
 

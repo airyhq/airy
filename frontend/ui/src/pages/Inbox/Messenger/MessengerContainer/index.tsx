@@ -32,13 +32,23 @@ const MessengerContainer = ({
   currentConversation,
   getConversationInfo,
   match,
+  config,
 }: MessengerContainerProps) => {
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
   const [isFileDragged, setIsFileDragged] = useState(false);
   const [draggedAndDroppedFile, setDraggedAndDroppedFile] = useState<File | null>(null);
-  const [attachmentDisabled] = useState(false);
+  const source = currentConversation?.channel?.source;
+  const [attachmentDisabled, setAttachmentDisabled] = useState(true);
 
   let dragCounter = 0;
+
+  useEffect(() => {
+    if (source && config) {
+      if (config?.components['media-resolver']?.enabled && (source === 'instagram' || source === 'facebook')) {
+        setAttachmentDisabled(false);
+      }
+    }
+  }, [source, config, currentConversation]);
 
   useEffect(() => {
     window.addEventListener(
@@ -77,14 +87,14 @@ const MessengerContainer = ({
     event.preventDefault();
     event.stopPropagation();
 
-    if (!attachmentDisabled) return;
+    if (attachmentDisabled) return;
   };
 
   const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!attachmentDisabled) return;
+    if (attachmentDisabled) return;
 
     dragCounter++;
 
@@ -95,7 +105,7 @@ const MessengerContainer = ({
     event.preventDefault();
     event.stopPropagation();
 
-    if (!attachmentDisabled) return;
+    if (attachmentDisabled) return;
     dragCounter++;
     const file = event.dataTransfer.files[0];
     setDraggedAndDroppedFile(file);
@@ -106,7 +116,7 @@ const MessengerContainer = ({
     event.preventDefault();
     event.stopPropagation();
 
-    if (!attachmentDisabled) return;
+    if (attachmentDisabled) return;
     dragCounter--;
     if (dragCounter === 0) {
       setIsFileDragged(false);
@@ -123,7 +133,7 @@ const MessengerContainer = ({
         onDragLeave={e => handleDragLeave(e)}
         onMouseOut={() => setIsFileDragged(false)}
         onMouseLeave={() => setIsFileDragged(false)}>
-        {attachmentDisabled && (
+        {!attachmentDisabled && (
           <div className={`${styles.dragContainer} ${isFileDragged ? styles.dragOverlay : styles.noDraggedFile}`}>
             <h1>Drop Files Here</h1>
           </div>

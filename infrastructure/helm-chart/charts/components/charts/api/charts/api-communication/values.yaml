@@ -3,5 +3,19 @@ mandatory: false
 enabled: true
 communication:
   image: api/communication
+  resources:
+    requests:
+      cpu: "100m"  
+      memory: "128Mi"
+    limits:
+      cpu: "2000m"
+      memory: "2048Mi"
 websocket:
   image: api/websocket
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1024Mi"

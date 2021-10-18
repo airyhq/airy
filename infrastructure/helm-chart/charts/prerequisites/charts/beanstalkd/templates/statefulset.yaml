@@ -23,8 +23,11 @@ spec:
         image: "{{ .Values.prometheusExporterImage }}:{{ .Values.prometheusExporterImageTag }}"
         resources:
           requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
             cpu: 100m
-            memory: 100Mi
+            memory: 256Mi
         ports:
         - containerPort: {{ .Values.prometheusExporterPort }}
           name: exporter

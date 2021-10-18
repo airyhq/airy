@@ -66,6 +66,8 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 3
+        resources:
+{{ toYaml .Values.backend.resources | indent 10 }}
       initContainers:
       - name: wait
         image: busybox

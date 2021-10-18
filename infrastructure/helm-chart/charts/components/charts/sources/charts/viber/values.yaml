@@ -3,5 +3,19 @@ mandatory: false
 enabled: true
 connector:
   image: sources/viber-connector
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1024Mi"
 eventsRouter:
   image: sources/viber-events-router
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1024Mi"

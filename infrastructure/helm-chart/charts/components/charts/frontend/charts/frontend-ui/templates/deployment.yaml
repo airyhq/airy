@@ -45,6 +45,8 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
           failureThreshold: 3
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
       volumes:
         - name: provisioning-scripts
           configMap:

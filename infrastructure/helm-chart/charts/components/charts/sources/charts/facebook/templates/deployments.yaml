@@ -71,6 +71,8 @@ spec:
               - name: Health-Check
                 value: health-check
             initialDelaySeconds: 60
+          resources:
+{{ toYaml .Values.connector.resources | indent 12 }}
       initContainers:
       - name: wait
         image: busybox
@@ -153,6 +155,8 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 3
+        resources:
+{{ toYaml .Values.eventsRouter.resources | indent 10 }}
       initContainers:
       - name: wait
         image: busybox

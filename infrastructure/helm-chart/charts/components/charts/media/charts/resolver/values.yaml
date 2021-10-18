@@ -2,3 +2,10 @@ component: media-resolver
 mandatory: false
 enabled: true
 image: media/resolver
+resources:
+  requests:
+    cpu: "50m"
+    memory: "128Mi"
+  limits:
+    cpu: "1000m"
+    memory: "1024Mi"

@@ -7,3 +7,10 @@ servicePort: 8081
 kafka:
   bootstrapServers: kafka-headless:9092
   minBrokers: 1
+resources:
+  requests:
+    cpu: "50m"  
+    memory: "64Mi"
+  limits:
+    cpu: "1000m"
+    memory: "1024Mi"

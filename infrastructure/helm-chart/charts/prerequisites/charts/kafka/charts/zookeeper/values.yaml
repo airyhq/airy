@@ -19,7 +19,13 @@ persistence:
   enabled: true
   dataDirSize: 5Gi
   dataLogDirSize: 5Gi
-resources: {}  
+resources:
+  requests:
+    cpu: "100m"  
+    memory: "128Mi"
+  limits:
+    cpu: "1000m"
+    memory: "2048Mi"
 podAnnotations: {}
 nodeSelector: {}
 tolerations: []

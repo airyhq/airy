@@ -2,3 +2,10 @@ component: frontend-ui
 mandatory: false
 enabled: true
 image: frontend/ui
+resources:
+  requests:
+    cpu: "50m"  
+    memory: "64Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"

@@ -161,6 +161,7 @@ const parseAttachment = (
     };
   }
 
+  //Instagram-specific
   if (attachment.type === 'share') {
     return {
       type: 'share',
@@ -193,30 +194,11 @@ function facebookInbound(message): ContentUnion {
     };
   }
 
-  if (messageJson.attachment || messageJson.attachments) {
-    return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
-  }
-
-  if (messageJson.postback) {
-    return {
-      type: 'postback',
-      title: messageJson.postback.title == false ? null : messageJson.postback.title,
-      payload: messageJson.postback.payload,
-    };
-  }
-
-  if (messageJson.text) {
-    return {
-      type: 'text',
-      text: messageJson.text,
-    };
-  }
-
   //Instagram-specific
   if (messageJson.attachments?.[0].type === 'story_mention' || messageJson.attachment?.type === 'story_mention') {
     return {
       type: 'story_mention',
-      url: messageJson.attachment?.payload.url ?? messageJson.attachments?.[0].payload.url,
+      url: messageJson.attachments?.[0].payload.url ?? messageJson.attachment?.payload.url,
       sentAt: message.sentAt,
     };
   }
@@ -233,6 +215,25 @@ function facebookInbound(message): ContentUnion {
   if (messageJson.is_deleted) {
     return {
       type: 'deletedMessage',
+    };
+  }
+
+  if (messageJson.attachment || messageJson.attachments) {
+    return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
+  }
+
+  if (messageJson.postback) {
+    return {
+      type: 'postback',
+      title: messageJson.postback.title == false ? null : messageJson.postback.title,
+      payload: messageJson.postback.payload,
+    };
+  }
+
+  if (messageJson.text) {
+    return {
+      type: 'text',
+      text: messageJson.text,
     };
   }
 
@@ -272,6 +273,30 @@ function facebookOutbound(message): ContentUnion {
     };
   }
 
+  //Instagram-specific
+  if (messageJson.attachments?.[0].type === 'story_mention' || messageJson.attachment?.type === 'story_mention') {
+    return {
+      type: 'story_mention',
+      url: messageJson.attachment?.payload.url ?? messageJson.attachments?.[0].payload.url,
+      sentAt: message.sentAt,
+    };
+  }
+
+  if (messageJson.reply_to) {
+    return {
+      type: 'story_replies',
+      text: messageJson.text,
+      url: messageJson.reply_to?.story?.url,
+      sentAt: message.sentAt,
+    };
+  }
+
+  if (messageJson.is_deleted) {
+    return {
+      type: 'deletedMessage',
+    };
+  }
+
   if (messageJson.attachment || messageJson.attachments) {
     return parseAttachment(messageJson.attachment || messageJson.attachments[0]);
   }
@@ -288,24 +313,6 @@ function facebookOutbound(message): ContentUnion {
     return {
       type: 'text',
       text: messageJson.text,
-    };
-  }
-
-  //Instagram-specific
-  if (messageJson.attachments?.[0].type === 'story_mention' || messageJson.attachment?.type === 'story_mention') {
-    return {
-      type: 'story_mention',
-      url: messageJson.attachment?.payload.url ?? messageJson.attachments?.[0].payload.url,
-      sentAt: message.sentAt,
-    };
-  }
-
-  if (messageJson.reply_to) {
-    return {
-      type: 'story_replies',
-      text: messageJson.text,
-      url: messageJson.reply_to?.story?.url,
-      sentAt: message.sentAt,
     };
   }
 

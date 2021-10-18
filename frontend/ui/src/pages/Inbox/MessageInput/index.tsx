@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 're
 import {connect, ConnectedProps} from 'react-redux';
 import {sendMessages} from '../../../actions/messages';
 import {withRouter} from 'react-router-dom';
-import {Button} from 'components';
+import {Button, SimpleLoader} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
 import {getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
@@ -65,6 +65,7 @@ const MessageInput = (props: Props) => {
     sendMessages,
     draggedAndDroppedFile,
     setDraggedAndDroppedFile,
+    config,
   } = props;
 
   const contentResizedHeight = 200;
@@ -78,6 +79,7 @@ const MessageInput = (props: Props) => {
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
+  const [loadingSelector, setLoadingSelector] = useState(false);
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
@@ -115,26 +117,14 @@ const MessageInput = (props: Props) => {
   }, [channelConnected]);
 
   const uploadFile = (file: File) => {
-    const fileSizeInMB = file.size / Math.pow(1024, 2);
-
-    if (fileSizeInMB >= 25) {
-      setFileUploadErrorPopUp('Failed to upload the file. The maximum file size allowed is 25MB.');
-      return;
-    }
-
-    if (!getAttachmentType(file.name)) {
-      const message = `This file type is not supported. Supported files: ${audioExtensions.join(
-        ' , '
-      )} ${imageExtensions.join(' , ')} ${videoExtensions.join(' , ')} ${fileExtensions.join(' , ')}`;
-      setFileUploadErrorPopUp(message);
-      return;
-    }
+    setLoadingSelector(true);
 
     const formData = new FormData();
     formData.append('file', file);
 
     return HttpClientInstance.uploadFile({file: formData})
       .then((response: any) => {
+        setLoadingSelector(false);
         setSelectedFileUrl(response.mediaUrl);
       })
       .catch(() => {
@@ -149,6 +139,20 @@ const MessageInput = (props: Props) => {
     if (selectedFileUrl) setSelectedFileUrl(null);
 
     const file = event.target.files[0];
+
+    const fileSizeInMB = file.size / Math.pow(1024, 2);
+
+    if (fileSizeInMB >= 25) {
+      return setFileUploadErrorPopUp('Failed to upload the file. The maximum file size allowed is 25MB.');
+    }
+
+    if (!getAttachmentType(file.name)) {
+      const message = `This file type is not supported. Supported files: 
+      ${audioExtensions.join(' , ')}, ${imageExtensions.join(' , ')}, ${videoExtensions.join(
+        ' , '
+      )}, ${fileExtensions.join(' , ')}`;
+      return setFileUploadErrorPopUp(message);
+    }
 
     return uploadFile(file);
   };
@@ -316,14 +320,21 @@ const MessageInput = (props: Props) => {
                   ref={textAreaRef}
                   rows={1}
                   name="inputBar"
-                  placeholder={channelConnected ? 'Enter a message...' : ''}
+                  placeholder={channelConnected && !loadingSelector ? 'Enter a message...' : ''}
                   autoFocus={channelConnected}
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   data-cy={cyMessageTextArea}
-                  disabled={!channelConnected}
+                  disabled={!channelConnected || loadingSelector}
                 />
+                {loadingSelector && (
+                  <div className={styles.selectorLoader}>
+                    <SimpleLoader />
+                    <span>loading file... </span>
+                  </div>
+                )}
+
                 <InputOptions
                   source={source}
                   inputDisabled={!channelConnected}
@@ -334,6 +345,7 @@ const MessageInput = (props: Props) => {
                   sendMessages={sendMessages}
                   selectFile={selectFile}
                   fileUploadErrorPopUp={fileUploadErrorPopUp}
+                  mediaResolverComponentsConfig={config.components['media-resolver']}
                   closeFileErrorPopUp={closeFileErrorPopUp}
                 />
               </>

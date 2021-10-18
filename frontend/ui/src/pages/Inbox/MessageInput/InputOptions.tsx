@@ -15,6 +15,11 @@ const mapDispatchToProps = {sendMessages};
 
 const connector = connect(null, mapDispatchToProps);
 
+interface MediaResolverComponentConfig {
+  enabled: boolean;
+  healthy: boolean;
+}
+
 type Props = {
   source: Source;
   inputDisabled: boolean;
@@ -25,6 +30,7 @@ type Props = {
   selectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
   closeFileErrorPopUp: () => void;
   fileUploadErrorPopUp: string;
+  mediaResolverComponentsConfig: MediaResolverComponentConfig;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -36,14 +42,14 @@ export const InputOptions = (props: Props) => {
     selectTemplate,
     focusInput,
     selectFile,
-    closeFileErrorPopUp,
     fileUploadErrorPopUp,
+    mediaResolverComponentsConfig,
+    closeFileErrorPopUp,
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
-  const [attachmentDisabled] = useState(false);
 
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal) {
@@ -117,6 +123,7 @@ export const InputOptions = (props: Props) => {
           <Picker showPreview={false} onSelect={addEmoji} title="Emoji" />
         </div>
       )}
+
       <button
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
         type="button"
@@ -136,7 +143,7 @@ export const InputOptions = (props: Props) => {
         </div>
       </button>
 
-      {attachmentDisabled && (
+      {mediaResolverComponentsConfig.enabled && (source === 'facebook' || 'instagram') && (
         <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>
           <div className={styles.actionToolTip}>Files</div>
 

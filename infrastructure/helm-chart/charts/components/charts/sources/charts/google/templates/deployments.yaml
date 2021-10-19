@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: '{{ .Values.global.containerRegistry}}/{{ .Values.imageConnector }}:{{ default .Chart.Version .Values.global.appImageTag }}'
+          image: '{{ .Values.global.containerRegistry}}/{{ .Values.connector.image }}:{{ default .Chart.Version .Values.global.appImageTag }}'
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -69,6 +69,7 @@ spec:
       initContainers:
       - name: wait
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
         env:
         - name: KAFKA_BROKERS
@@ -153,6 +154,7 @@ spec:
       initContainers:
       - name: wait
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
         env:
         - name: KAFKA_BROKERS

@@ -69,6 +69,7 @@ spec:
       initContainers:
       - name: wait
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service.sh"]
         env:
         - name: SERVICE_NAME
@@ -162,6 +163,7 @@ spec:
       initContainers:
       - name: wait
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
         env:
         - name: KAFKA_BROKERS

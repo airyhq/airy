@@ -22,7 +22,7 @@ spec:
             configMapKeyRef:
               name: kafka-config
               key: KAFKA_MINIMUM_REPLICAS
-       {{ if ne .Release.Namespace "default" }}
+       {{ if .Values.provisioning.kafka.namespaceTopics }}
         - name: AIRY_CORE_NAMESPACE
           value: {{ .Release.Namespace }}
        {{ end }}  
@@ -32,6 +32,7 @@ spec:
       initContainers:
       - name: wait
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-minimum-kafkas.sh"]
         env:
         - name: KAFKA_BROKERS

@@ -3,14 +3,16 @@ package endpoints
 import (
 	"context"
 	"encoding/json"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
 	"log"
 	"net/http"
+
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
 )
 
 type Server struct {
 	clientSet *kubernetes.Clientset
+	namespace string
 }
 
 type ServicesResponse struct {
@@ -24,7 +26,7 @@ type Service struct {
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Only return apps that are part of a component
-	deployments, _ := s.clientSet.AppsV1().Deployments("default").List(context.TODO(), v1.ListOptions{
+	deployments, _ := s.clientSet.AppsV1().Deployments(s.namespace).List(context.TODO(), v1.ListOptions{
 		LabelSelector: "core.airy.co/component",
 	})
 
@@ -43,8 +45,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
-func Serve(clientSet *kubernetes.Clientset) {
-	s := &Server{clientSet: clientSet}
+func Serve(clientSet *kubernetes.Clientset, namespace string) {
+	s := &Server{clientSet: clientSet, namespace: namespace}
 	http.Handle("/services", s)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

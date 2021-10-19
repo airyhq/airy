@@ -31,6 +31,7 @@ type Props = {
   closeFileErrorPopUp: () => void;
   fileUploadErrorPopUp: string;
   mediaResolverComponentsConfig: MediaResolverComponentConfig;
+  loadingSelector: boolean;
 } & ConnectedProps<typeof connector>;
 
 export const InputOptions = (props: Props) => {
@@ -45,6 +46,7 @@ export const InputOptions = (props: Props) => {
     fileUploadErrorPopUp,
     mediaResolverComponentsConfig,
     closeFileErrorPopUp,
+    loadingSelector,
   } = props;
 
   const emojiDiv = useRef<HTMLDivElement>(null);
@@ -127,7 +129,7 @@ export const InputOptions = (props: Props) => {
       <button
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
         type="button"
-        disabled={inputDisabled}
+        disabled={inputDisabled || loadingSelector}
         onClick={toggleEmojiDrawer}>
         <div className={styles.actionToolTip}>Emojis</div>
         <Smiley aria-hidden className={styles.smileyIcon} />
@@ -135,7 +137,7 @@ export const InputOptions = (props: Props) => {
       <button
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
         type="button"
-        disabled={inputDisabled}
+        disabled={inputDisabled || loadingSelector}
         onClick={toggleTemplateModal}>
         <div className={styles.actionToolTip}>Templates</div>
         <div className={styles.templateActionContainer}>
@@ -144,14 +146,21 @@ export const InputOptions = (props: Props) => {
       </button>
 
       {mediaResolverComponentsConfig.enabled && (source === 'facebook' || source === 'instagram') && (
-        <button className={`${styles.iconButton}`} type="button" disabled={inputDisabled}>
+        <button className={styles.iconButton} type="button" disabled={inputDisabled || loadingSelector}>
           <div className={styles.actionToolTip}>Files</div>
 
           <label htmlFor="file" className={styles.filesLabel}>
             <Paperclip aria-hidden className={styles.paperclipIcon} />
           </label>
 
-          <input type="file" id="file" name="file" onChange={selectFile} className={styles.fileInput} />
+          <input
+            type="file"
+            id="file"
+            name="file"
+            onChange={selectFile}
+            className={styles.fileInput}
+            disabled={inputDisabled || loadingSelector}
+          />
         </button>
       )}
     </div>

@@ -34,6 +34,7 @@ import {
   instagramImageExtensions,
 } from 'render/attachments';
 import {InputSelector} from './InputSelector';
+import {usePrevious} from '../../../services/hooks/usePrevious';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -85,9 +86,11 @@ const MessageInput = (props: Props) => {
   const [input, setInput] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
+  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
+  const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
@@ -101,10 +104,50 @@ const MessageInput = (props: Props) => {
   }, [draggedAndDroppedFile]);
 
   useEffect(() => {
-    setInput('');
-    removeElementFromInput();
-    focusInput();
+    if (prevConversationId !== conversation.id) {
+      setInput('');
+      removeElementFromInput();
+      focusInput();
+      setLoadingSelector(false);
+      setFileToUpload(null);
+      setSelectedFileUrl(null);
+    }
   }, [conversation.id]);
+
+  useEffect(() => {
+    if (loadingSelector && fileToUpload) {
+      let isRequestAborted = false;
+
+      const fetchMediaUrl = async () => {
+        const formData = new FormData();
+        formData.append('file', fileToUpload);
+
+        try {
+          const uploadFileResponse: any = await HttpClientInstance.uploadFile({file: formData});
+
+          if (!isRequestAborted) {
+            setSelectedFileUrl(uploadFileResponse.mediaUrl);
+            setLoadingSelector(false);
+          }
+        } catch {
+          setLoadingSelector(false);
+          setFileUploadErrorPopUp('Failed to upload the file. Please try again later.');
+        }
+      };
+
+      fetchMediaUrl();
+
+      return () => {
+        isRequestAborted = true;
+      };
+    }
+  }, [loadingSelector, fileToUpload]);
+
+  useEffect(() => {
+    if (fileToUpload) {
+      setLoadingSelector(true);
+    }
+  }, [fileToUpload]);
 
   useEffect(() => {
     if (textAreaRef && textAreaRef.current) {
@@ -154,19 +197,7 @@ const MessageInput = (props: Props) => {
       return setFileUploadErrorPopUp(message);
     }
 
-    setLoadingSelector(true);
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    return HttpClientInstance.uploadFile({file: formData})
-      .then((response: any) => {
-        setLoadingSelector(false);
-        setSelectedFileUrl(response.mediaUrl);
-      })
-      .catch(() => {
-        setFileUploadErrorPopUp('Failed to upload the file. Please try again later.');
-      });
+    setFileToUpload(file);
   };
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -369,6 +400,7 @@ const MessageInput = (props: Props) => {
                   fileUploadErrorPopUp={fileUploadErrorPopUp}
                   mediaResolverComponentsConfig={config.components['media-resolver']}
                   closeFileErrorPopUp={closeFileErrorPopUp}
+                  loadingSelector={loadingSelector}
                 />
               </>
             )}

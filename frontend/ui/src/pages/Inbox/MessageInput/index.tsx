@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 're
 import {connect, ConnectedProps} from 'react-redux';
 import {sendMessages} from '../../../actions/messages';
 import {withRouter} from 'react-router-dom';
-import {Button} from 'components';
+import {Button, SimpleLoader} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
 import {getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
@@ -24,7 +24,15 @@ import {InputOptions} from './InputOptions';
 import styles from './index.module.scss';
 import {HttpClientInstance} from '../../../httpClient';
 import {FacebookMapper} from 'render/outbound/facebook';
-import {getAttachmentType, imageExtensions, fileExtensions, videoExtensions, audioExtensions} from 'render/attachments';
+import {
+  getAttachmentType,
+  isSupportedByInstagramMessenger,
+  imageExtensions,
+  fileExtensions,
+  videoExtensions,
+  audioExtensions,
+  instagramImageExtensions,
+} from 'render/attachments';
 import {InputSelector} from './InputSelector';
 
 const mapDispatchToProps = {sendMessages};
@@ -65,6 +73,7 @@ const MessageInput = (props: Props) => {
     sendMessages,
     draggedAndDroppedFile,
     setDraggedAndDroppedFile,
+    config,
   } = props;
 
   const contentResizedHeight = 200;
@@ -78,6 +87,7 @@ const MessageInput = (props: Props) => {
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
+  const [loadingSelector, setLoadingSelector] = useState(false);
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
@@ -117,24 +127,41 @@ const MessageInput = (props: Props) => {
   const uploadFile = (file: File) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
 
+    //instagram upload errors
+    if (source === 'instagram') {
+      if (fileSizeInMB >= 8) {
+        return setFileUploadErrorPopUp(
+          'Failed to upload the file. Instagram Direct Messenger only supports files that are less than 8 MB.'
+        );
+      }
+
+      if (!isSupportedByInstagramMessenger(file.name)) {
+        return setFileUploadErrorPopUp(`This file type is not supported by Instagram Direct Messenger. Supported files: 
+         ${instagramImageExtensions.join(', ')}`);
+      }
+    }
+
+    //facebook upload errors
     if (fileSizeInMB >= 25) {
-      setFileUploadErrorPopUp('Failed to upload the file. The maximum file size allowed is 25MB.');
-      return;
+      return setFileUploadErrorPopUp('Failed to upload the file. The maximum file size allowed is 25MB.');
     }
 
     if (!getAttachmentType(file.name)) {
-      const message = `This file type is not supported. Supported files: ${audioExtensions.join(
-        ' , '
-      )} ${imageExtensions.join(' , ')} ${videoExtensions.join(' , ')} ${fileExtensions.join(' , ')}`;
-      setFileUploadErrorPopUp(message);
-      return;
+      const message = `This file type is not supported. Supported files: 
+      ${audioExtensions.join(', ')}, ${imageExtensions.join(', ')}, ${videoExtensions.join(
+        ', '
+      )}, ${fileExtensions.join(', ')}`;
+      return setFileUploadErrorPopUp(message);
     }
+
+    setLoadingSelector(true);
 
     const formData = new FormData();
     formData.append('file', file);
 
     return HttpClientInstance.uploadFile({file: formData})
       .then((response: any) => {
+        setLoadingSelector(false);
         setSelectedFileUrl(response.mediaUrl);
       })
       .catch(() => {
@@ -149,7 +176,6 @@ const MessageInput = (props: Props) => {
     if (selectedFileUrl) setSelectedFileUrl(null);
 
     const file = event.target.files[0];
-
     return uploadFile(file);
   };
 
@@ -316,14 +342,21 @@ const MessageInput = (props: Props) => {
                   ref={textAreaRef}
                   rows={1}
                   name="inputBar"
-                  placeholder={channelConnected ? 'Enter a message...' : ''}
+                  placeholder={channelConnected && !loadingSelector ? 'Enter a message...' : ''}
                   autoFocus={channelConnected}
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   data-cy={cyMessageTextArea}
-                  disabled={!channelConnected}
+                  disabled={!channelConnected || loadingSelector}
                 />
+                {loadingSelector && (
+                  <div className={styles.selectorLoader}>
+                    <SimpleLoader />
+                    <span>loading file... </span>
+                  </div>
+                )}
+
                 <InputOptions
                   source={source}
                   inputDisabled={!channelConnected}
@@ -334,6 +367,7 @@ const MessageInput = (props: Props) => {
                   sendMessages={sendMessages}
                   selectFile={selectFile}
                   fileUploadErrorPopUp={fileUploadErrorPopUp}
+                  mediaResolverComponentsConfig={config.components['media-resolver']}
                   closeFileErrorPopUp={closeFileErrorPopUp}
                 />
               </>

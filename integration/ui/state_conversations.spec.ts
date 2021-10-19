@@ -1,11 +1,4 @@
-import {
-  cyOpenStateButton,
-  cyClosedStateButton,
-  cyConversationListItemInfo,
-  cyConversationStatus,
-  cyClickableListItem,
-} from 'handles';
-import {first} from 'lodash-es';
+import {cyOpenStateButton, cyClosedStateButton, cyConversationListItemInfo, cyConversationStatus} from 'handles';
 
 function closeConversation() {
   cy.get(`[data-cy=${cyOpenStateButton}]`).first().click();

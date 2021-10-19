@@ -13,6 +13,7 @@ provisioning:
   kafka:
     image: ghcr.io/airyhq/infrastructure/kafka
     imageTag: 2.7.0
+    namespaceTopics: false
 tools:
   segment:
     enabled: true

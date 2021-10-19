@@ -109,6 +109,7 @@ spec:
       initContainers:
       - name: wait
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
         env:
         - name: SERVICE_URL
@@ -118,6 +119,7 @@ spec:
           mountPath: /opt/provisioning
       - name: fix-permissions
         image: busybox
+        imagePullPolicy: IfNotPresent
         command:
           - sh
           - -c

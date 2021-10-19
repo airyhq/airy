@@ -48,6 +48,7 @@ spec:
       initContainers:
       - name: fix-permissions
         image: busybox
+        imagePullPolicy: IfNotPresent
         command:
           - sh
           - -c

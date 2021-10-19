@@ -28,3 +28,5 @@ spec:
         env:
         - name: LABEL_SELECTOR
           value: "core.airy.co/managed=true"
+        - name: NAMESPACE
+          value: {{ .Release.Namespace }}

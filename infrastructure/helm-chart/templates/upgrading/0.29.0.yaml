@@ -127,6 +127,7 @@ spec:
       initContainers:
       - name: wait-api-admin
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service.sh"]
         env:
         - name: SERVICE_NAME
@@ -269,6 +270,7 @@ spec:
       initContainers:
       - name: wait-api-admin
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service.sh"]
         env:
         - name: SERVICE_NAME

@@ -14,6 +14,7 @@ spec:
       containers:
       - name: wait
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
         env:
         - name: SERVICE_URL
@@ -44,6 +45,7 @@ spec:
       containers:
       - name: wait
         image: busybox
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
         env:
         - name: SERVICE_URL

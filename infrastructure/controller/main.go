@@ -10,10 +10,11 @@ package main
 
 import (
 	"flag"
+	"os"
+
 	cm "github.com/airyhq/airy/infrastructure/controller/pkg/configmap-controller"
 	endpoints "github.com/airyhq/airy/infrastructure/controller/pkg/endpoints"
 	v1 "k8s.io/api/core/v1"
-	"os"
 
 	"k8s.io/klog"
 
@@ -59,7 +60,7 @@ func main() {
 	defer close(stop)
 	go configMapController.Run(1, stop)
 
-	go endpoints.Serve(clientSet)
+	go endpoints.Serve(clientSet, namespace)
 
 	// Wait forever
 	select {}

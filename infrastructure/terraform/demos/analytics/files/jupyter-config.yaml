@@ -10,5 +10,4 @@ singleuser:
           - "-c"
           - >
             cp -r /tmp/demo_data.ipynb /home/jovyan;
-            cp -r /tmp/create_df_from_parquet.ipynb /home/jovyan;
-            cp -r /tmp/data.json /home/jovyan
+            cp -r /tmp/create_df_from_parquet.ipynb /home/jovyan

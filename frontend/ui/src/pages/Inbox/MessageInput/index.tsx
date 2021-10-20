@@ -34,6 +34,7 @@ import {
   instagramImageExtensions,
 } from 'render/attachments';
 import {InputSelector} from './InputSelector';
+import {usePrevious} from '../../../services/hooks/usePrevious';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -85,9 +86,11 @@ const MessageInput = (props: Props) => {
   const [input, setInput] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
-  const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
+  const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
@@ -95,16 +98,57 @@ const MessageInput = (props: Props) => {
   const focusInput = () => textAreaRef?.current?.focus();
 
   useEffect(() => {
-    if (draggedAndDroppedFile) {
+    if (draggedAndDroppedFile && !loadingSelector) {
       uploadFile(draggedAndDroppedFile);
     }
   }, [draggedAndDroppedFile]);
 
   useEffect(() => {
-    setInput('');
-    removeElementFromInput();
-    focusInput();
+    if (prevConversationId !== conversation.id) {
+      setInput('');
+      removeElementFromInput();
+      focusInput();
+      setFileToUpload(null);
+      setUploadedFileUrl(null);
+      setFileUploadErrorPopUp('');
+      setLoadingSelector(false);
+    }
   }, [conversation.id]);
+
+  useEffect(() => {
+    if (loadingSelector && fileToUpload) {
+      let isRequestAborted = false;
+
+      const fetchMediaUrl = async () => {
+        const formData = new FormData();
+        formData.append('file', fileToUpload);
+
+        try {
+          const uploadFileResponse: any = await HttpClientInstance.uploadFile({file: formData});
+
+          if (!isRequestAborted) {
+            setUploadedFileUrl(uploadFileResponse.mediaUrl);
+            setLoadingSelector(false);
+          }
+        } catch {
+          setLoadingSelector(false);
+          setFileUploadErrorPopUp('Failed to upload the file. Please try again later.');
+        }
+      };
+
+      fetchMediaUrl();
+
+      return () => {
+        isRequestAborted = true;
+      };
+    }
+  }, [loadingSelector, fileToUpload]);
+
+  useEffect(() => {
+    if (fileToUpload) {
+      setLoadingSelector(true);
+    }
+  }, [fileToUpload]);
 
   useEffect(() => {
     if (textAreaRef && textAreaRef.current) {
@@ -154,37 +198,25 @@ const MessageInput = (props: Props) => {
       return setFileUploadErrorPopUp(message);
     }
 
-    setLoadingSelector(true);
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    return HttpClientInstance.uploadFile({file: formData})
-      .then((response: any) => {
-        setLoadingSelector(false);
-        setSelectedFileUrl(response.mediaUrl);
-      })
-      .catch(() => {
-        setFileUploadErrorPopUp('Failed to upload the file. Please try again later.');
-      });
+    setFileToUpload(file);
   };
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
     if (input) setInput('');
     if (selectedTemplate) setSelectedTemplate(null);
-    if (selectedFileUrl) setSelectedFileUrl(null);
+    if (uploadedFileUrl) setUploadedFileUrl(null);
 
     const file = event.target.files[0];
     return uploadFile(file);
   };
 
   const canSendMessage = () => {
-    return !((!selectedTemplate && !selectedSuggestedReply && !input && !selectedFileUrl) || !channelConnected);
+    return !((!selectedTemplate && !selectedSuggestedReply && !input && !uploadedFileUrl) || !channelConnected);
   };
 
   const isElementSelected = () => {
-    return selectedTemplate || selectedSuggestedReply || selectedFileUrl;
+    return selectedTemplate || selectedSuggestedReply || uploadedFileUrl;
   };
 
   const sendMessage = () => {
@@ -198,10 +230,10 @@ const MessageInput = (props: Props) => {
               conversationId: conversation.id,
               message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
             }
-          : selectedFileUrl
+          : uploadedFileUrl
           ? {
               conversationId: conversation.id,
-              message: fileOutboundMapper.getAttachmentPayload(selectedFileUrl),
+              message: fileOutboundMapper.getAttachmentPayload(uploadedFileUrl),
             }
           : {
               conversationId: conversation.id,
@@ -256,7 +288,7 @@ const MessageInput = (props: Props) => {
 
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
 
-    if (selectedFileUrl) setSelectedFileUrl(null);
+    if (uploadedFileUrl) setUploadedFileUrl(null);
 
     if (isTextMessage(template)) {
       setInput(jsonTemplate.text);
@@ -274,7 +306,7 @@ const MessageInput = (props: Props) => {
 
     if (selectedTemplate) setSelectedTemplate(null);
 
-    if (selectedFileUrl) setSelectedFileUrl(null);
+    if (uploadedFileUrl) setUploadedFileUrl(null);
 
     hideSuggestedReplies();
     if (isTextMessage(reply)) {
@@ -294,8 +326,8 @@ const MessageInput = (props: Props) => {
       setSelectedSuggestedReply(null);
     }
 
-    if (selectedFileUrl) {
-      setSelectedFileUrl(null);
+    if (uploadedFileUrl) {
+      setUploadedFileUrl(null);
     }
 
     if (setDraggedAndDroppedFile) {
@@ -305,6 +337,7 @@ const MessageInput = (props: Props) => {
 
   const closeFileErrorPopUp = () => {
     setFileUploadErrorPopUp('');
+    setDraggedAndDroppedFile(null);
   };
 
   return (
@@ -348,7 +381,7 @@ const MessageInput = (props: Props) => {
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   data-cy={cyMessageTextArea}
-                  disabled={!channelConnected || loadingSelector}
+                  disabled={!channelConnected || loadingSelector || fileUploadErrorPopUp ? true : false}
                 />
                 {loadingSelector && (
                   <div className={styles.selectorLoader}>
@@ -369,6 +402,7 @@ const MessageInput = (props: Props) => {
                   fileUploadErrorPopUp={fileUploadErrorPopUp}
                   mediaResolverComponentsConfig={config.components['media-resolver']}
                   closeFileErrorPopUp={closeFileErrorPopUp}
+                  loadingSelector={loadingSelector}
                 />
               </>
             )}
@@ -379,7 +413,7 @@ const MessageInput = (props: Props) => {
                   message={
                     selectedTemplate?.message ??
                     selectedSuggestedReply?.message ??
-                    fileOutboundMapper.getAttachmentPayload(selectedFileUrl)
+                    fileOutboundMapper.getAttachmentPayload(uploadedFileUrl)
                   }
                   source={source}
                   messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}

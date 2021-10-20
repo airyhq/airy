@@ -1,4 +1,4 @@
-import React, {useEffect, createRef, useRef} from 'react';
+import React, {useEffect, createRef} from 'react';
 import _, {connect, ConnectedProps} from 'react-redux';
 import {isEqual} from 'lodash-es';
 import _redux from 'redux';
@@ -20,6 +20,7 @@ import {getConversation, getCurrentMessages} from '../../../../selectors/convers
 import {ConversationRouteProps} from '../../index';
 import {MessageInfoWrapper, Reaction} from 'components';
 import {formatTime, isSameDay} from 'dates';
+import {usePrevious} from '../../../../services/hooks/usePrevious';
 
 type MessageListProps = ConnectedProps<typeof connector> & {
   showSuggestedReplies: (suggestions: Suggestions) => void;
@@ -36,14 +37,6 @@ const mapDispatchToProps = {
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-
-function usePrevious(value: Message[] | string) {
-  const ref = useRef(null);
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
 
 const MessageList = (props: MessageListProps) => {
   const {listMessages, listPreviousMessages, showSuggestedReplies, messages, conversation} = props;

@@ -44,13 +44,17 @@ const MessengerContainer = ({
 
   useEffect(() => {
     if (source && config) {
-      if (config?.components['media-resolver']?.enabled && (source === 'instagram' || source === 'facebook')) {
+      if (
+        config?.components['media-resolver']?.enabled &&
+        (source === 'instagram' || source === 'facebook') &&
+        !draggedAndDroppedFile
+      ) {
         setDragAndDropDisabled(false);
       } else {
         setDragAndDropDisabled(true);
       }
     }
-  }, [source, config, currentConversation?.id]);
+  }, [source, config, currentConversation?.id, draggedAndDroppedFile]);
 
   useEffect(() => {
     window.addEventListener(

@@ -98,7 +98,7 @@ const MessageInput = (props: Props) => {
   const focusInput = () => textAreaRef?.current?.focus();
 
   useEffect(() => {
-    if (draggedAndDroppedFile) {
+    if (draggedAndDroppedFile && !loadingSelector) {
       uploadFile(draggedAndDroppedFile);
     }
   }, [draggedAndDroppedFile]);
@@ -337,6 +337,7 @@ const MessageInput = (props: Props) => {
 
   const closeFileErrorPopUp = () => {
     setFileUploadErrorPopUp('');
+    setDraggedAndDroppedFile(null);
   };
 
   return (
@@ -380,7 +381,7 @@ const MessageInput = (props: Props) => {
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   data-cy={cyMessageTextArea}
-                  disabled={!channelConnected || loadingSelector}
+                  disabled={!channelConnected || loadingSelector || fileUploadErrorPopUp ? true : false}
                 />
                 {loadingSelector && (
                   <div className={styles.selectorLoader}>

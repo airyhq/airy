@@ -87,7 +87,7 @@ const MessageInput = (props: Props) => {
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
   const [fileToUpload, setFileToUpload] = useState<File | null>(null);
-  const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
   const prevConversationId = usePrevious(conversation.id);
@@ -108,9 +108,10 @@ const MessageInput = (props: Props) => {
       setInput('');
       removeElementFromInput();
       focusInput();
-      setLoadingSelector(false);
       setFileToUpload(null);
-      setSelectedFileUrl(null);
+      setUploadedFileUrl(null);
+      setFileUploadErrorPopUp('');
+      setLoadingSelector(false);
     }
   }, [conversation.id]);
 
@@ -126,7 +127,7 @@ const MessageInput = (props: Props) => {
           const uploadFileResponse: any = await HttpClientInstance.uploadFile({file: formData});
 
           if (!isRequestAborted) {
-            setSelectedFileUrl(uploadFileResponse.mediaUrl);
+            setUploadedFileUrl(uploadFileResponse.mediaUrl);
             setLoadingSelector(false);
           }
         } catch {
@@ -204,18 +205,18 @@ const MessageInput = (props: Props) => {
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
     if (input) setInput('');
     if (selectedTemplate) setSelectedTemplate(null);
-    if (selectedFileUrl) setSelectedFileUrl(null);
+    if (uploadedFileUrl) setUploadedFileUrl(null);
 
     const file = event.target.files[0];
     return uploadFile(file);
   };
 
   const canSendMessage = () => {
-    return !((!selectedTemplate && !selectedSuggestedReply && !input && !selectedFileUrl) || !channelConnected);
+    return !((!selectedTemplate && !selectedSuggestedReply && !input && !uploadedFileUrl) || !channelConnected);
   };
 
   const isElementSelected = () => {
-    return selectedTemplate || selectedSuggestedReply || selectedFileUrl;
+    return selectedTemplate || selectedSuggestedReply || uploadedFileUrl;
   };
 
   const sendMessage = () => {
@@ -229,10 +230,10 @@ const MessageInput = (props: Props) => {
               conversationId: conversation.id,
               message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
             }
-          : selectedFileUrl
+          : uploadedFileUrl
           ? {
               conversationId: conversation.id,
-              message: fileOutboundMapper.getAttachmentPayload(selectedFileUrl),
+              message: fileOutboundMapper.getAttachmentPayload(uploadedFileUrl),
             }
           : {
               conversationId: conversation.id,
@@ -287,7 +288,7 @@ const MessageInput = (props: Props) => {
 
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
 
-    if (selectedFileUrl) setSelectedFileUrl(null);
+    if (uploadedFileUrl) setUploadedFileUrl(null);
 
     if (isTextMessage(template)) {
       setInput(jsonTemplate.text);
@@ -305,7 +306,7 @@ const MessageInput = (props: Props) => {
 
     if (selectedTemplate) setSelectedTemplate(null);
 
-    if (selectedFileUrl) setSelectedFileUrl(null);
+    if (uploadedFileUrl) setUploadedFileUrl(null);
 
     hideSuggestedReplies();
     if (isTextMessage(reply)) {
@@ -325,8 +326,8 @@ const MessageInput = (props: Props) => {
       setSelectedSuggestedReply(null);
     }
 
-    if (selectedFileUrl) {
-      setSelectedFileUrl(null);
+    if (uploadedFileUrl) {
+      setUploadedFileUrl(null);
     }
 
     if (setDraggedAndDroppedFile) {
@@ -411,7 +412,7 @@ const MessageInput = (props: Props) => {
                   message={
                     selectedTemplate?.message ??
                     selectedSuggestedReply?.message ??
-                    fileOutboundMapper.getAttachmentPayload(selectedFileUrl)
+                    fileOutboundMapper.getAttachmentPayload(uploadedFileUrl)
                   }
                   source={source}
                   messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}

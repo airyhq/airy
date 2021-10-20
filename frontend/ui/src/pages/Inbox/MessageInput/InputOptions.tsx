@@ -146,10 +146,13 @@ export const InputOptions = (props: Props) => {
       </button>
 
       {mediaResolverComponentsConfig.enabled && (source === 'facebook' || source === 'instagram') && (
-        <button className={styles.iconButton} type="button" disabled={inputDisabled || loadingSelector}>
+        <button
+          className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
+          type="button"
+          disabled={inputDisabled || loadingSelector}>
           <div className={styles.actionToolTip}>Files</div>
 
-          <label htmlFor="file" className={styles.filesLabel}>
+          <label htmlFor="file" style={{cursor: inputDisabled || loadingSelector ? 'not-allowed' : 'pointer'}}>
             <Paperclip aria-hidden className={styles.paperclipIcon} />
           </label>
 

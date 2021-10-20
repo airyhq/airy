@@ -1,7 +1,7 @@
 @import 'assets/scss/colors.scss';
 @import 'assets/scss/fonts.scss';
 
-.container {
+.wrapper {
   max-width: 300px;
   display: flex;
   align-items: center;
@@ -14,15 +14,21 @@
   text-align: center;
 }
 
-.container a,
-.container a:link,
-.container a:hover,
-.container a:visited {
+.wrapper a,
+.wrapper a:link,
+.wrapper a:hover,
+.wrapper a:visited {
   @include font-s;
   text-decoration: none;
   color: var(--color-text-contrast);
 }
 
-.container svg {
+.wrapper svg {
   margin-right: 4px;
+}
+
+.container {
+  max-width: 300px;
+  display: flex;
+  align-items: center;
 }

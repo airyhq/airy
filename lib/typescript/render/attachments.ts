@@ -9,6 +9,7 @@ export const fileExtensions = [
   'docx',
   'rtf',
   'tex',
+  'txt',
   'wpd',
   'psd',
   'svg',

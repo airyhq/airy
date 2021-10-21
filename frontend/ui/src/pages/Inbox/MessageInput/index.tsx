@@ -4,7 +4,16 @@ import {sendMessages} from '../../../actions/messages';
 import {withRouter} from 'react-router-dom';
 import {Button, SimpleLoader} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
-import {getOutboundMapper} from 'render';
+import {
+  getOutboundMapper,
+  getAttachmentType,
+  isSupportedByInstagramMessenger,
+  imageExtensions,
+  fileExtensions,
+  videoExtensions,
+  audioExtensions,
+  instagramImageExtensions,
+} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
 
@@ -24,15 +33,6 @@ import {InputOptions} from './InputOptions';
 import styles from './index.module.scss';
 import {HttpClientInstance} from '../../../httpClient';
 import {FacebookMapper} from 'render/outbound/facebook';
-import {
-  getAttachmentType,
-  isSupportedByInstagramMessenger,
-  imageExtensions,
-  fileExtensions,
-  videoExtensions,
-  audioExtensions,
-  instagramImageExtensions,
-} from 'render/attachments';
 import {InputSelector} from './InputSelector';
 import {usePrevious} from '../../../services/hooks/usePrevious';
 
@@ -53,6 +53,7 @@ type Props = {
   hideSuggestedReplies: () => void;
   draggedAndDroppedFile: File;
   setDraggedAndDroppedFile: React.Dispatch<React.SetStateAction<File | null>>;
+  setDragAndDropDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 } & ConnectedProps<typeof connector>;
 
 interface SelectedTemplate {
@@ -60,7 +61,12 @@ interface SelectedTemplate {
   source: Source;
 }
 
-interface SelectedSuggestedReply {
+export interface FileInfo {
+  size: number;
+  type: string;
+}
+
+export interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
 
@@ -74,6 +80,7 @@ const MessageInput = (props: Props) => {
     sendMessages,
     draggedAndDroppedFile,
     setDraggedAndDroppedFile,
+    setDragAndDropDisabled,
     config,
   } = props;
 
@@ -90,6 +97,7 @@ const MessageInput = (props: Props) => {
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
+  const [fileInfo, setFileInfo] = useState<null | {size: number; type: string}>(null);
   const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
@@ -147,8 +155,17 @@ const MessageInput = (props: Props) => {
   useEffect(() => {
     if (fileToUpload) {
       setLoadingSelector(true);
+      setDragAndDropDisabled(true);
     }
   }, [fileToUpload]);
+
+  useEffect(() => {
+    if (isElementSelected()) {
+      setDragAndDropDisabled(true);
+    } else if (config.components['media-resolver'].enabled && (source === 'facebook' || source === 'instagram')) {
+      setDragAndDropDisabled(false);
+    }
+  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl]);
 
   useEffect(() => {
     if (textAreaRef && textAreaRef.current) {
@@ -170,6 +187,7 @@ const MessageInput = (props: Props) => {
 
   const uploadFile = (file: File) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
+    const maxFileSizeAllowed = 15;
 
     //instagram upload errors
     if (source === 'instagram') {
@@ -186,8 +204,10 @@ const MessageInput = (props: Props) => {
     }
 
     //facebook upload errors
-    if (fileSizeInMB >= 25) {
-      return setFileUploadErrorPopUp('Failed to upload the file. The maximum file size allowed is 25MB.');
+    if (fileSizeInMB >= maxFileSizeAllowed) {
+      return setFileUploadErrorPopUp(
+        `Failed to upload the file. The maximum file size allowed is ${maxFileSizeAllowed}MB.`
+      );
     }
 
     if (!getAttachmentType(file.name)) {
@@ -198,6 +218,7 @@ const MessageInput = (props: Props) => {
       return setFileUploadErrorPopUp(message);
     }
 
+    setFileInfo({size: fileSizeInMB, type: getAttachmentType(file.name)});
     setFileToUpload(file);
   };
 
@@ -419,6 +440,7 @@ const MessageInput = (props: Props) => {
                   messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}
                   removeElementFromInput={removeElementFromInput}
                   contentResizedHeight={contentResizedHeight}
+                  fileInfo={fileInfo}
                 />
               </>
             )}

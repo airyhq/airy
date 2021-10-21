@@ -16,7 +16,9 @@ export const GenericTemplate = ({template}: GenericTemplateRendererProps) => {
     <Carousel>
       {template.elements.map((element, idx) => (
         <div key={`template-${idx}`} className={styles.template}>
-          {element.image_url?.length && <ImageWithFallback className={styles.templateImage} src={element.image_url} />}
+          {element.image_url?.length && (
+            <ImageWithFallback className={styles.templateImage} src={element.image_url} isTemplate />
+          )}
           <div className={styles.innerTemplate}>
             <div className={styles.templateTitle}>{element.title}</div>
             <div className={styles.templateSubtitle}>{element.subtitle}</div>

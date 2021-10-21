@@ -62,7 +62,6 @@ Sends a message to a conversation and returns a payload. Whatever is put on the
 the payload will look differently for each source. Refer to each [source's documentation](/sources/introduction)
 to see learn how to send text, media, and many more message types.
 
-
 **Sample request**
 
 ```json5
@@ -73,7 +72,6 @@ to see learn how to send text, media, and many more message types.
   }
 }
 ```
-
 
 **Sample response**
 
@@ -94,7 +92,6 @@ to see learn how to send text, media, and many more message types.
   // metadata object of the message
 }
 ```
-
 
 **Starting a conversation**
 
@@ -126,7 +123,6 @@ allow you to send messages to contacts that did not previously message you first
   "metadata": {}
 }
 ```
-
 
 ## Send from Google's Business Messages source
 

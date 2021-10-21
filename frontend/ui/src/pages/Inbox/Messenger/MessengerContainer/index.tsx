@@ -97,10 +97,10 @@ const MessengerContainer = ({
   };
 
   const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+    if (dragAndDropDisabled) return;
+
     event.preventDefault();
     event.stopPropagation();
-
-    if (dragAndDropDisabled) return;
 
     dragCounter++;
 
@@ -108,10 +108,11 @@ const MessengerContainer = ({
   };
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    if (dragAndDropDisabled) return;
+
     event.preventDefault();
     event.stopPropagation();
 
-    if (dragAndDropDisabled) return;
     dragCounter++;
     const file = event.dataTransfer.files[0];
     setDraggedAndDroppedFile(file);
@@ -119,10 +120,10 @@ const MessengerContainer = ({
   };
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    if (dragAndDropDisabled) return;
     event.preventDefault();
     event.stopPropagation();
 
-    if (dragAndDropDisabled) return;
     dragCounter--;
     if (dragCounter === 0) {
       setIsFileDragged(false);
@@ -164,6 +165,7 @@ const MessengerContainer = ({
                   source={currentConversation.channel.source as Source}
                   draggedAndDroppedFile={draggedAndDroppedFile}
                   setDraggedAndDroppedFile={setDraggedAndDroppedFile}
+                  setDragAndDropDisabled={setDragAndDropDisabled}
                 />
               </>
             )}

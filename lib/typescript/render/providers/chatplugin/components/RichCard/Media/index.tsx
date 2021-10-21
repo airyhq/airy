@@ -28,5 +28,5 @@ const getHeight = (height: MediaHeight): string => {
 };
 
 export const Media = ({height, contentInfo: {altText, fileUrl}}: MediaRenderProps) => (
-  <ImageWithFallback src={fileUrl} alt={altText} className={`${styles.mediaImage} ${getHeight(height)}`} />
+  <ImageWithFallback src={fileUrl} alt={altText} className={`${styles.mediaImage} ${getHeight(height)}`} isTemplate />
 );

@@ -3,22 +3,24 @@ import styles from './InputSelector.module.scss';
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import {SourceMessage} from 'render';
 import {Source, Message} from 'model';
+import {FileInfo} from './index';
 
 type InputSelectorProps = {
   messageType: 'template' | 'suggestedReplies' | 'message';
   message: Message;
   source: Source;
   contentResizedHeight: number;
+  fileInfo: FileInfo | null;
   removeElementFromInput: () => void;
 };
 
 export const InputSelector = (props: InputSelectorProps) => {
-  const {source, message, messageType, removeElementFromInput, contentResizedHeight} = props;
+  const {source, message, messageType, removeElementFromInput, contentResizedHeight, fileInfo} = props;
   const [closeIconWidth, setCloseIconWidth] = useState('');
   const [closeIconHeight, setCloseIconHeight] = useState('');
+  const [closeButtonSelector, setCloseButtonSelector] = useState(false);
 
-  const removeSelectedButton = useRef(null);
-  const fileSelectorDiv = useRef<HTMLDivElement>(null);
+  const fileSelectorDiv = useRef(null);
   const removeFileButton = useRef(null);
 
   const scaleInputSelector = () => {
@@ -32,15 +34,30 @@ export const InputSelector = (props: InputSelectorProps) => {
 
         setCloseIconHeight(iconSize);
         setCloseIconWidth(iconSize);
+        setCloseButtonSelector(true);
 
         if (removeFileButton && removeFileButton.current) {
           removeFileButton.current.style.width = buttonSize;
           removeFileButton.current.style.height = buttonSize;
         }
+      } else {
+        setCloseButtonSelector(true);
       }
 
       fileSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
       fileSelectorDiv.current.style.transformOrigin = 'left';
+    } else {
+      if (fileInfo && fileInfo?.size >= 1 && fileInfo?.type !== 'audio' && fileInfo?.type !== 'file') {
+        setTimeout(() => {
+          setCloseButtonSelector(true);
+        }, 1000);
+      } else if (fileInfo && fileInfo?.size < 1 && fileInfo?.type !== 'audio' && fileInfo?.type !== 'file') {
+        setTimeout(() => {
+          setCloseButtonSelector(true);
+        }, 500);
+      } else {
+        setCloseButtonSelector(true);
+      }
     }
   };
 
@@ -50,14 +67,16 @@ export const InputSelector = (props: InputSelectorProps) => {
 
   return (
     <div className={styles.container} ref={fileSelectorDiv}>
-      <button className={styles.removeButton} onClick={removeElementFromInput} ref={removeSelectedButton}>
-        <Close
-          style={{
-            width: closeIconWidth ?? '',
-            height: closeIconHeight ?? '',
-          }}
-        />
-      </button>
+      {closeButtonSelector && (
+        <button className={styles.removeButton} onClick={removeElementFromInput} ref={removeFileButton}>
+          <Close
+            style={{
+              width: closeIconWidth ?? '',
+              height: closeIconHeight ?? '',
+            }}
+          />
+        </button>
+      )}
       <SourceMessage message={message} source={source} contentType={messageType} />
     </div>
   );

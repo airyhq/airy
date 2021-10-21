@@ -44,9 +44,14 @@ export const QuickReplies = ({
 
       <div className={styles.container}>
         {quickReplies.map((reply: QuickReply) => (
-          <button key={reply.title} className={styles.replyButton} onClick={() => clickPostback(reply)}>
+          <button type="button" key={reply.title} className={styles.replyButton} onClick={() => clickPostback(reply)}>
             {reply.image_url && (
-              <ImageWithFallback className={styles.quickReplyImage} alt={reply.title} src={reply.image_url} />
+              <ImageWithFallback
+                className={styles.quickReplyImage}
+                alt={reply.title}
+                src={reply.image_url}
+                isTemplate
+              />
             )}
             <h1 key={reply.title} className={styles.title}>
               {reply.title}

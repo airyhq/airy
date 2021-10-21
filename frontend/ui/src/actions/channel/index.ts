@@ -13,9 +13,9 @@ import {
   UpdateChannelRequestPayload,
   ConnectChannelGoogleRequestPayload,
   ConnectChannelInstagramRequestPayload,
-} from 'httpclient';
+} from 'httpclient/src';
 
-import {HttpClientInstance} from '../../InitializeAiryApi';
+import {HttpClientInstance} from '../../httpClient';
 
 const SET_CURRENT_CHANNELS = '@@channel/SET_CHANNELS';
 const ADD_CHANNELS = '@@channel/ADD_CHANNELS';

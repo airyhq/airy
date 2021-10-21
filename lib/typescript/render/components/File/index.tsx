@@ -11,10 +11,12 @@ export const File = ({fileUrl}: FileRenderProps) => {
   const fileName = getFileName(fileUrl);
 
   return (
-    <div className={styles.container}>
-      <FileDownloadIcon />
+    <div className={styles.wrapper}>
       <a href={fileUrl} download={fileUrl} target="_blank" rel="noopener noreferrer">
-        {fileName}
+        <div className={styles.container}>
+          <FileDownloadIcon />
+          {fileName}
+        </div>
       </a>
     </div>
   );

@@ -59,7 +59,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 }
 
 function mapContent(message): ContentUnion {
-  const messageContent = message.content.message ?? message.content;
+  const messageContent = message.content?.message ?? message.content ?? message;
 
   if (messageContent.quick_replies) {
     if (messageContent.quick_replies.length > 13) {

@@ -8,6 +8,7 @@ import co.airy.core.sources.google.services.Mapper;
 import co.airy.log.AiryLoggerFactory;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
+import co.airy.tracking.RouteTracking;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
 
@@ -36,6 +40,12 @@ public class Connector {
         final Message message = sendMessageRequest.getMessage();
 
         if (isMessageStale(message)) {
+            updateDeliveryState(message, DeliveryState.FAILED);
+            return message;
+        }
+
+        if (sendMessageRequest.getSourceConversationId() == null) {
+            // Cannot start conversation for Google
             updateDeliveryState(message, DeliveryState.FAILED);
             return message;
         }
@@ -68,5 +78,12 @@ public class Connector {
     @Bean
     public RequestLoggingIgnorePatterns requestLoggingIgnorePatterns() {
         return new RequestLoggingIgnorePatterns(List.of("/google"));
+    }
+
+    @Bean
+    private RouteTracking routeTracking() {
+        Pattern urlPattern = Pattern.compile(".*google\\.connect$");
+        HashMap<String, String> properties = new HashMap<>(Map.of("channel", "google"));
+        return new RouteTracking(urlPattern, "channel_connected", properties);
     }
 }

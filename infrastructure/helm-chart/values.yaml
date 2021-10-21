@@ -1,1 +1,21 @@
-
+global:
+  containerRegistry: ghcr.io/airyhq
+security:
+  systemToken: ""
+  allowedOrigins: "*"
+config:
+  kafka:
+    brokers: "kafka-headless:9092"
+    zookeepers: "zookeeper:2181"
+    schemaRegistryUrl: "http://schema-registry:8081"
+    commitInterval: 1000
+provisioning:
+  kafka:
+    image: ghcr.io/airyhq/infrastructure/kafka
+    imageTag: 2.7.0
+    namespaceTopics: false
+tools:
+  segment:
+    enabled: true
+serviceAccount: airy-admin
+apiHost: http://airy.core

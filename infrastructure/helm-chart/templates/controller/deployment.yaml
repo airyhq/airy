@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airy-controller
+  labels:
+    app: airy-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airy-controller
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: airy-controller
+    spec:
+      serviceAccountName: airy-controller
+      automountServiceAccountToken: true
+      containers:
+      - name: app
+        image: "{{ .Values.global.containerRegistry}}/infrastructure/controller:{{ default .Chart.Version .Values.global.appImageTag }}"
+        imagePullPolicy: Always
+        env:
+        - name: LABEL_SELECTOR
+          value: "core.airy.co/managed=true"
+        - name: NAMESPACE
+          value: {{ .Release.Namespace }}

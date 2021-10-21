@@ -1,0 +1,20 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: 'airy-core-chat-plugin'
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /chatplugin/ui(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-chat-plugin
+                port:
+                  number: 80
+  ingressClassName: nginx

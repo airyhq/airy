@@ -6,7 +6,7 @@ import {connectGoogleChannel} from '../../../../actions/channel';
 import {StateModel} from '../../../../reducers';
 
 import {Button, Input, LinkButton, InfoButton} from 'components';
-import {ConnectChannelGoogleRequestPayload} from 'httpclient';
+import {ConnectChannelGoogleRequestPayload} from 'httpclient/src';
 import {ReactComponent as ArrowLeftIcon} from 'assets/images/icons/arrow-left-2.svg';
 
 import styles from './GoogleConnect.module.scss';

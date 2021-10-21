@@ -30,7 +30,7 @@ export const Suggestions = ({text, fallback, image, suggestions, fromContact}: S
       {(suggestions as SuggestionsUnion[]).map(elem => {
         if ('reply' in elem) {
           return (
-            <button key={elem.reply.text} className={styles.replyButton}>
+            <button type="button" key={elem.reply.text} className={styles.replyButton}>
               <h1 key={elem.reply.text} className={styles.title}>
                 {elem.reply.text}
               </h1>
@@ -40,7 +40,7 @@ export const Suggestions = ({text, fallback, image, suggestions, fromContact}: S
 
         if ('action' in elem) {
           return (
-            <button key={elem.action.text} className={styles.replyButton}>
+            <button type="button" key={elem.action.text} className={styles.replyButton}>
               <img
                 className={styles.actionImage}
                 alt={elem.action.openUrlAction ? 'link icon' : 'phone icon'}
@@ -53,7 +53,7 @@ export const Suggestions = ({text, fallback, image, suggestions, fromContact}: S
                   href={
                     elem.action.openUrlAction && elem.action.openUrlAction.url
                       ? elem.action.openUrlAction.url
-                      : `tel: ${elem.action.dialAction && elem.action.dialAction.phoneNumber}`
+                      : `tel: ${elem.action.dialAction?.phoneNumber}`
                   }
                   target="_blank"
                   rel="noopener noreferrer">
@@ -66,7 +66,7 @@ export const Suggestions = ({text, fallback, image, suggestions, fromContact}: S
 
         if ('authenticationRequest' in elem) {
           return (
-            <button key={elem.authenticationRequest.oauth.clientId} className={styles.replyButton}>
+            <button type="button" key={elem.authenticationRequest.oauth.clientId} className={styles.replyButton}>
               <h1 key={elem.authenticationRequest.oauth.clientId} className={styles.title}>
                 Authenticate with Google
               </h1>
@@ -76,7 +76,7 @@ export const Suggestions = ({text, fallback, image, suggestions, fromContact}: S
 
         if ('liveAgentRequest' in elem) {
           return (
-            <button key={Math.floor(Math.random() * 50)} className={styles.replyButton}>
+            <button type="button" key={Math.floor(Math.random() * 50)} className={styles.replyButton}>
               <h1 key={Math.floor(Math.random() * 50)} className={styles.title}>
                 Message a live agent on Google&apos;s Business Messages
               </h1>

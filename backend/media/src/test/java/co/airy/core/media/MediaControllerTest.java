@@ -82,7 +82,7 @@ public class MediaControllerTest {
                 MediaType.MULTIPART_FORM_DATA_VALUE, is);
 
         MockMultipartHttpServletRequestBuilder builder =
-                (MockMultipartHttpServletRequestBuilder) MockMvcRequestBuilders.multipart("/media.uploadFile")
+                (MockMultipartHttpServletRequestBuilder) MockMvcRequestBuilders.multipart("/media.upload")
                         .file(mockMultipartFile)
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE);
 

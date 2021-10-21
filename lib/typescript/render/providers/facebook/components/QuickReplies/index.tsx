@@ -27,8 +27,8 @@ export const QuickReplies = ({quickReplies, fromContact, text, attachment}: Quic
 
     <div className={styles.container}>
       {quickReplies.map(({title, image_url: imageUrl}) => (
-        <button key={title} className={styles.replyButton}>
-          {imageUrl && <ImageWithFallback className={styles.quickReplyImage} alt={title} src={imageUrl} />}
+        <button type="button" key={title} className={styles.replyButton}>
+          {imageUrl && <ImageWithFallback className={styles.quickReplyImage} alt={title} src={imageUrl} isTemplate />}
           <h1 key={title} className={styles.title}>
             {title}
           </h1>

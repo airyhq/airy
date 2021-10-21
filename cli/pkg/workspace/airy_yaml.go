@@ -1,15 +1,11 @@
 package workspace
 
-type KubernetesConf struct {
-	AppImageTag       string `yaml:"appImageTag"`
-	ContainerRegistry string `yaml:"containerRegistry"`
-	Namespace         string `yaml:"namespace"`
-	NgrokEnabled      bool   `yaml:"ngrokEnabled"`
-}
-
 type IngressConf struct {
 	Host                    string            `yaml:"host,omitempty"`
+	NgrokEnabled            bool              `yaml:"ngrokEnabled"`
 	Https                   bool              `yaml:"https,omitempty"`
+	HttpsTermination        string            `yaml:"httpsTermination,omitempty"`
+	HttpsCertificate        string            `yaml:"httpsCertificate,omitempty"`
 	LetsencryptEmail        string            `yaml:"letsencryptEmail,omitempty"`
 	LoadbalancerAnnotations map[string]string `yaml:"loadbalancerAnnotations,omitempty"`
 }
@@ -23,12 +19,7 @@ type SecurityConf struct {
 type ComponentsConf map[string]map[string]string
 
 type AiryConf struct {
-	Kubernetes KubernetesConf            `yaml:"kubernetes"`
 	Ingress    IngressConf               `yaml:"ingress"`
 	Security   SecurityConf              `yaml:"security"`
 	Components map[string]ComponentsConf `yaml:"components,omitempty"`
-}
-
-type HelmAiryConf struct {
-	Global AiryConf `yaml:"global"`
 }

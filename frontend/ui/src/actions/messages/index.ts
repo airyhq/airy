@@ -1,8 +1,8 @@
 import {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
 import {Message} from 'model';
-import {PaginatedResponse, SendMessagesRequestPayload} from 'httpclient';
-import {HttpClientInstance} from '../../InitializeAiryApi';
+import {PaginatedResponse, SendMessagesRequestPayload} from 'httpclient/src';
+import {HttpClientInstance} from '../../httpClient';
 import {StateModel} from '../../reducers';
 import {updateMessagesPaginationDataAction, loadingConversationAction} from '../conversations';
 

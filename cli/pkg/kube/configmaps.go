@@ -1,10 +1,8 @@
 package kube
 
 import (
-	"cli/pkg/workspace"
 	"context"
 
-	"gopkg.in/yaml.v2"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -49,17 +47,4 @@ func GetCmData(configmapName string, namespace string, clientset *kubernetes.Cli
 	}
 
 	return configMap.Data, nil
-}
-
-func GetDeployedAiryYaml(namespace string, clientset *kubernetes.Clientset) (workspace.AiryConf, error) {
-	airyYaml, err := GetCmData("airy-config-map", namespace, clientset)
-	if err != nil {
-		return workspace.AiryConf{}, err
-	}
-	deployedAiryYaml := workspace.HelmAiryConf{}
-	err = yaml.Unmarshal([]byte(airyYaml["airy-config-map.yaml"]), &deployedAiryYaml)
-	if err != nil {
-		return workspace.AiryConf{}, err
-	}
-	return deployedAiryYaml.Global, nil
 }

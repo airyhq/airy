@@ -2,9 +2,18 @@ import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 're
 import {connect, ConnectedProps} from 'react-redux';
 import {sendMessages} from '../../../actions/messages';
 import {withRouter} from 'react-router-dom';
-import {Button} from 'components';
+import {Button, SimpleLoader} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
-import {getOutboundMapper} from 'render';
+import {
+  getOutboundMapper,
+  getAttachmentType,
+  isSupportedByInstagramMessenger,
+  imageExtensions,
+  fileExtensions,
+  videoExtensions,
+  audioExtensions,
+  instagramImageExtensions,
+} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
 
@@ -22,10 +31,10 @@ import SuggestedReplySelector from '../SuggestedReplySelector';
 import {InputOptions} from './InputOptions';
 
 import styles from './index.module.scss';
-import {HttpClientInstance} from '../../../InitializeAiryApi';
+import {HttpClientInstance} from '../../../httpClient';
 import {FacebookMapper} from 'render/outbound/facebook';
-import {getAttachmentType, imageExtensions, fileExtensions, videoExtensions, audioExtensions} from 'render/attachments';
 import {InputSelector} from './InputSelector';
+import {usePrevious} from '../../../services/hooks/usePrevious';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -44,6 +53,7 @@ type Props = {
   hideSuggestedReplies: () => void;
   draggedAndDroppedFile: File;
   setDraggedAndDroppedFile: React.Dispatch<React.SetStateAction<File | null>>;
+  setDragAndDropDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 } & ConnectedProps<typeof connector>;
 
 interface SelectedTemplate {
@@ -51,7 +61,12 @@ interface SelectedTemplate {
   source: Source;
 }
 
-interface SelectedSuggestedReply {
+export interface FileInfo {
+  size: number;
+  type: string;
+}
+
+export interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
 
@@ -65,6 +80,8 @@ const MessageInput = (props: Props) => {
     sendMessages,
     draggedAndDroppedFile,
     setDraggedAndDroppedFile,
+    setDragAndDropDisabled,
+    config,
   } = props;
 
   const contentResizedHeight = 200;
@@ -76,8 +93,12 @@ const MessageInput = (props: Props) => {
   const [input, setInput] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<SelectedTemplate | null>(null);
   const [selectedSuggestedReply, setSelectedSuggestedReply] = useState<SelectedSuggestedReply | null>(null);
-  const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
+  const [loadingSelector, setLoadingSelector] = useState(false);
+  const [fileInfo, setFileInfo] = useState<null | {size: number; type: string}>(null);
+  const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
   const sendButtonRef = useRef(null);
@@ -85,16 +106,66 @@ const MessageInput = (props: Props) => {
   const focusInput = () => textAreaRef?.current?.focus();
 
   useEffect(() => {
-    if (draggedAndDroppedFile) {
+    if (draggedAndDroppedFile && !loadingSelector) {
       uploadFile(draggedAndDroppedFile);
     }
   }, [draggedAndDroppedFile]);
 
   useEffect(() => {
-    setInput('');
-    removeElementFromInput();
-    focusInput();
+    if (prevConversationId !== conversation.id) {
+      setInput('');
+      removeElementFromInput();
+      focusInput();
+      setFileToUpload(null);
+      setUploadedFileUrl(null);
+      setFileUploadErrorPopUp('');
+      setLoadingSelector(false);
+    }
   }, [conversation.id]);
+
+  useEffect(() => {
+    if (loadingSelector && fileToUpload) {
+      let isRequestAborted = false;
+
+      const fetchMediaUrl = async () => {
+        const formData = new FormData();
+        formData.append('file', fileToUpload);
+
+        try {
+          const uploadFileResponse: any = await HttpClientInstance.uploadFile({file: formData});
+
+          if (!isRequestAborted) {
+            setUploadedFileUrl(uploadFileResponse.mediaUrl);
+            setLoadingSelector(false);
+          }
+        } catch {
+          setLoadingSelector(false);
+          setFileUploadErrorPopUp('Failed to upload the file. Please try again later.');
+        }
+      };
+
+      fetchMediaUrl();
+
+      return () => {
+        isRequestAborted = true;
+      };
+    }
+  }, [loadingSelector, fileToUpload]);
+
+  useEffect(() => {
+    if (fileToUpload) {
+      setLoadingSelector(true);
+      setDragAndDropDisabled(true);
+    }
+  }, [fileToUpload]);
+
+  useEffect(() => {
+    if (isElementSelected()) {
+      setDragAndDropDisabled(true);
+    } else if (config.components['media-resolver'].enabled && (source === 'facebook' || source === 'instagram')) {
+      setDragAndDropDisabled(false);
+    }
+  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl]);
 
   useEffect(() => {
     if (textAreaRef && textAreaRef.current) {
@@ -116,49 +187,57 @@ const MessageInput = (props: Props) => {
 
   const uploadFile = (file: File) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
+    const maxFileSizeAllowed = 15;
 
-    if (fileSizeInMB >= 25) {
-      setFileUploadErrorPopUp('Failed to upload the file. The maximum file size allowed is 25MB.');
-      return;
+    //instagram upload errors
+    if (source === 'instagram') {
+      if (fileSizeInMB >= 8) {
+        return setFileUploadErrorPopUp(
+          'Failed to upload the file. Instagram Direct Messenger only supports files that are less than 8 MB.'
+        );
+      }
+
+      if (!isSupportedByInstagramMessenger(file.name)) {
+        return setFileUploadErrorPopUp(`This file type is not supported by Instagram Direct Messenger. Supported files: 
+         ${instagramImageExtensions.join(', ')}`);
+      }
+    }
+
+    //facebook upload errors
+    if (fileSizeInMB >= maxFileSizeAllowed) {
+      return setFileUploadErrorPopUp(
+        `Failed to upload the file. The maximum file size allowed is ${maxFileSizeAllowed}MB.`
+      );
     }
 
     if (!getAttachmentType(file.name)) {
-      const message = `This file type is not supported. Supported files: ${audioExtensions.join(
-        ' , '
-      )} ${imageExtensions.join(' , ')} ${videoExtensions.join(' , ')} ${fileExtensions.join(' , ')}`;
-      setFileUploadErrorPopUp(message);
-      return;
+      const message = `This file type is not supported. Supported files: 
+      ${audioExtensions.join(', ')}, ${imageExtensions.join(', ')}, ${videoExtensions.join(
+        ', '
+      )}, ${fileExtensions.join(', ')}`;
+      return setFileUploadErrorPopUp(message);
     }
 
-    const formData = new FormData();
-    formData.append('file', file);
-
-    return HttpClientInstance.uploadFile({file: formData})
-      .then((response: any) => {
-        setSelectedFileUrl(response.mediaUrl);
-      })
-      .catch(() => {
-        setFileUploadErrorPopUp('Failed to upload the file. Please try again later.');
-      });
+    setFileInfo({size: fileSizeInMB, type: getAttachmentType(file.name)});
+    setFileToUpload(file);
   };
 
   const selectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
     if (input) setInput('');
     if (selectedTemplate) setSelectedTemplate(null);
-    if (selectedFileUrl) setSelectedFileUrl(null);
+    if (uploadedFileUrl) setUploadedFileUrl(null);
 
     const file = event.target.files[0];
-
     return uploadFile(file);
   };
 
   const canSendMessage = () => {
-    return !((!selectedTemplate && !selectedSuggestedReply && !input && !selectedFileUrl) || !channelConnected);
+    return !((!selectedTemplate && !selectedSuggestedReply && !input && !uploadedFileUrl) || !channelConnected);
   };
 
   const isElementSelected = () => {
-    return selectedTemplate || selectedSuggestedReply || selectedFileUrl;
+    return selectedTemplate || selectedSuggestedReply || uploadedFileUrl;
   };
 
   const sendMessage = () => {
@@ -172,10 +251,10 @@ const MessageInput = (props: Props) => {
               conversationId: conversation.id,
               message: selectedTemplate?.message.content || selectedSuggestedReply?.message.content,
             }
-          : selectedFileUrl
+          : uploadedFileUrl
           ? {
               conversationId: conversation.id,
-              message: fileOutboundMapper.getAttachmentPayload(selectedFileUrl),
+              message: fileOutboundMapper.getAttachmentPayload(uploadedFileUrl),
             }
           : {
               conversationId: conversation.id,
@@ -230,7 +309,7 @@ const MessageInput = (props: Props) => {
 
     if (selectedSuggestedReply) setSelectedSuggestedReply(null);
 
-    if (selectedFileUrl) setSelectedFileUrl(null);
+    if (uploadedFileUrl) setUploadedFileUrl(null);
 
     if (isTextMessage(template)) {
       setInput(jsonTemplate.text);
@@ -248,7 +327,7 @@ const MessageInput = (props: Props) => {
 
     if (selectedTemplate) setSelectedTemplate(null);
 
-    if (selectedFileUrl) setSelectedFileUrl(null);
+    if (uploadedFileUrl) setUploadedFileUrl(null);
 
     hideSuggestedReplies();
     if (isTextMessage(reply)) {
@@ -268,8 +347,8 @@ const MessageInput = (props: Props) => {
       setSelectedSuggestedReply(null);
     }
 
-    if (selectedFileUrl) {
-      setSelectedFileUrl(null);
+    if (uploadedFileUrl) {
+      setUploadedFileUrl(null);
     }
 
     if (setDraggedAndDroppedFile) {
@@ -279,6 +358,7 @@ const MessageInput = (props: Props) => {
 
   const closeFileErrorPopUp = () => {
     setFileUploadErrorPopUp('');
+    setDraggedAndDroppedFile(null);
   };
 
   return (
@@ -316,14 +396,21 @@ const MessageInput = (props: Props) => {
                   ref={textAreaRef}
                   rows={1}
                   name="inputBar"
-                  placeholder={channelConnected ? 'Enter a message...' : ''}
+                  placeholder={channelConnected && !loadingSelector ? 'Enter a message...' : ''}
                   autoFocus={channelConnected}
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   data-cy={cyMessageTextArea}
-                  disabled={!channelConnected}
+                  disabled={!channelConnected || loadingSelector || fileUploadErrorPopUp ? true : false}
                 />
+                {loadingSelector && (
+                  <div className={styles.selectorLoader}>
+                    <SimpleLoader />
+                    <span>loading file... </span>
+                  </div>
+                )}
+
                 <InputOptions
                   source={source}
                   inputDisabled={!channelConnected}
@@ -334,7 +421,9 @@ const MessageInput = (props: Props) => {
                   sendMessages={sendMessages}
                   selectFile={selectFile}
                   fileUploadErrorPopUp={fileUploadErrorPopUp}
+                  mediaResolverComponentsConfig={config.components['media-resolver']}
                   closeFileErrorPopUp={closeFileErrorPopUp}
+                  loadingSelector={loadingSelector}
                 />
               </>
             )}
@@ -345,12 +434,13 @@ const MessageInput = (props: Props) => {
                   message={
                     selectedTemplate?.message ??
                     selectedSuggestedReply?.message ??
-                    fileOutboundMapper.getAttachmentPayload(selectedFileUrl)
+                    fileOutboundMapper.getAttachmentPayload(uploadedFileUrl)
                   }
                   source={source}
                   messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}
                   removeElementFromInput={removeElementFromInput}
                   contentResizedHeight={contentResizedHeight}
+                  fileInfo={fileInfo}
                 />
               </>
             )}

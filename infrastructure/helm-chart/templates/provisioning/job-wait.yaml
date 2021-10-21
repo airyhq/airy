@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-api-communication
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  template:
+    spec:
+      containers:
+      - name: wait
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
+        env:
+        - name: SERVICE_URL
+          value: api-communication:80
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+      restartPolicy: Never
+  backoffLimit: 3
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-frontend-ui
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+  labels:
+    core.airy.co/managed: "true"
+spec:
+  template:
+    spec:
+      containers:
+      - name: wait
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "/opt/provisioning/wait-for-service-url.sh"]
+        env:
+        - name: SERVICE_URL
+          value: frontend-ui:80
+        volumeMounts:
+        - name: provisioning-scripts
+          mountPath: /opt/provisioning
+      volumes:
+        - name: provisioning-scripts
+          configMap:
+            name: provisioning-scripts
+      restartPolicy: Never
+  backoffLimit: 3

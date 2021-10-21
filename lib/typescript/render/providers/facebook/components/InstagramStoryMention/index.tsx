@@ -16,8 +16,13 @@ export const StoryMention = ({url, sentAt, fromContact}: StoryMentionProps) => {
         {timeElapsedInHours(sentAt) <= 24 ? (
           <>
             <div className={styles.activeStory}>
-              <a className={styles.activeStoryLink} href={url} target="_blank" rel="noopener noreferrer">
-                mentioned in an active Instagram story <LinkIcon />
+              <a
+                className={`${fromContact ? styles.linkContactContent : styles.linkMemberContent}`}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer">
+                mentioned in an active Instagram story{' '}
+                <LinkIcon className={`${fromContact ? styles.iconContactContent : styles.iconMemberContent}`} />
               </a>
             </div>
           </>

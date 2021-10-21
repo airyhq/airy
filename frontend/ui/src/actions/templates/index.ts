@@ -2,8 +2,8 @@ import _, {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
 
 import {Template} from 'model';
-import {ListTemplatesRequestPayload} from 'httpclient';
-import {HttpClientInstance} from '../../InitializeAiryApi';
+import {ListTemplatesRequestPayload} from 'httpclient/src';
+import {HttpClientInstance} from '../../httpClient';
 
 const LIST_TEMPLATES = 'LIST_TEMPLATES';
 

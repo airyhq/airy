@@ -2,16 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-  {{ if .Values.global.ingress }}
-  {{ if eq .Values.global.ingress.httpsTermination "LoadBalancer" }}
-  {{ if .Values.global.ingress.httpsCertificate }}
+  {{ if eq .Values.httpsTermination "LoadBalancer" }}
+  {{ if .Values.httpsCertificate }}
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{ .Values.global.ingress.httpsCertificate }}
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{ .Values.httpsCertificate }}
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: https
   {{ end }}
   {{ end }}
-  {{ end }}
-  {{- range $k, $v := .Values.global.ingress.loadbalancerAnnotations }}
+  {{- range $k, $v := .Values.loadbalancerAnnotations }}
     {{ $k }}: {{ $v }}
   {{- end }}
   labels:
@@ -24,9 +22,8 @@ spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
   ports:
-  {{ if .Values.global.ingress }}
-  {{ if .Values.global.ingress.https }}
-  {{ if eq .Values.global.ingress.httpsTermination "LoadBalancer" }}
+  {{ if .Values.https }}
+  {{ if eq .Values.httpsTermination "LoadBalancer" }}
     - name: http
       port: 80
       protocol: TCP
@@ -48,13 +45,6 @@ spec:
       protocol: TCP
       targetPort: https
       appProtocol: https
-  {{ end }}
-  {{ else }}
-    - name: http
-      port: 80
-      protocol: TCP
-      targetPort: http
-      appProtocol: http
   {{ end }}
   {{ else }}
     - name: http
@@ -93,7 +83,7 @@ spec:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/component: controller
 ---
-{{ if or ( .Values.global.kubernetes.ngrokEnabled ) ( .Values.global.ingress.nodePort ) }}
+{{ if or ( .Values.ngrokEnabled ) ( .Values.nodePort ) }}
 kind: Service
 apiVersion: v1
 metadata:
@@ -104,7 +94,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      nodePort: {{ default 80 .Values.global.ingress.nodePort }}
+      nodePort: {{ default 80 .Values.nodePort }}
       targetPort: 80
       name: web
   selector:

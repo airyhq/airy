@@ -69,37 +69,44 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
   const lastMessageIsIcon = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
 
-    if (!lastMessageContent.attachment) {
-      if (
-        lastMessageContent.message?.attachments?.[0].type === 'image' ||
-        isImageFromGoogleSource(lastMessageContent.message?.text)
-      ) {
-        return <AttachmentImage />;
-      }
+    if (
+      lastMessageContent.message?.attachments?.[0].type === 'image' ||
+      isImageFromGoogleSource(lastMessageContent.message?.text)
+    ) {
+      return <AttachmentImage />;
+    }
 
-      if (lastMessageContent.message?.attachments?.[0].type === 'video') {
-        return <AttachmentVideo style={{height: '24px', width: '24px', margin: '0px'}} />;
-      }
+    if (
+      lastMessageContent.message?.attachments?.[0].type === 'video' ||
+      lastMessageContent.attachment?.type === 'video'
+    ) {
+      return <AttachmentVideo style={{height: '24px', width: '24px', margin: '0px'}} />;
+    }
 
-      if (lastMessageContent.message?.attachments?.[0].type === 'audio') {
-        return <AttachmentAudio style={{height: '24px', width: '24px', margin: '0px'}} />;
-      }
+    if (
+      lastMessageContent.message?.attachments?.[0].type === 'audio' ||
+      lastMessageContent.attachment?.type === 'audio'
+    ) {
+      return <AttachmentAudio style={{height: '24px', width: '24px', margin: '0px'}} />;
+    }
 
-      if (lastMessageContent.message?.attachments?.[0].type === 'file') {
-        return <AttachmentFile style={{height: '24px', width: '24px', margin: '0px'}} />;
-      }
+    if (
+      lastMessageContent.message?.attachments?.[0].type === 'file' ||
+      lastMessageContent.attachment?.type === 'file'
+    ) {
+      return <AttachmentFile style={{height: '24px', width: '24px', margin: '0px'}} />;
+    }
 
-      if (lastMessageContent.suggestionResponse) {
-        return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
-      }
+    if (lastMessageContent.suggestionResponse) {
+      return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
+    }
 
-      if (lastMessageContent.image) {
-        return <AttachmentImage />;
-      }
+    if (lastMessageContent.image) {
+      return <AttachmentImage />;
+    }
 
-      if (lastMessageContent.richCard) {
-        return <RichCardIcon style={{height: '24px', width: '24px', margin: '0px'}} />;
-      }
+    if (lastMessageContent.richCard) {
+      return <RichCardIcon style={{height: '24px', width: '24px', margin: '0px'}} />;
     }
 
     return <AttachmentTemplate />;

@@ -1,31 +1,24 @@
-kubernetes:
-  appImageTag: {{ .Version }}
-  containerRegistry: ghcr.io/airyhq
-  namespace: {{ .Namespace }}
-  ngrokEnabled: {{ default false .NgrokEnabled }}
-ingress:
-  {{- if .Host }}
-  host: {{ default "airy.core" .Host }}
-  {{- end }}
-  https: {{ default false .Https}}
-  {{- if .LetsencryptEmail }}
-  letsencryptEmail: {{ .LetsencryptEmail}}
-  {{- end }}
-  {{- if .HttpsTermination }}
-  httpsTermination: {{ .HttpsTermination}}
-  {{- end }}
-  {{- if .HttpsCertificate }}
-  httpsCertificate: {{ .HttpsCertificate}}
-  {{- end }}
+security:
+  allowedOrigins: '*'
+  jwtSecret: {{ randAlphaNum 128 }}
+ingress-controller:
+{{- if .NgrokEnabled }}
+  ngrokEnabled: {{ .NgrokEnabled }}
+{{- end }}
+{{- if .Host }}
+  host: {{ .Host }}
+{{- end }}
+{{- if .Https }}
+  https: {{ .Https}}
+{{- end }}
   {{- if .LoadbalancerAnnotations }}
   loadbalancerAnnotations:
   {{- range $k, $v := .LoadbalancerAnnotations }}
     {{ $k }}: {{ $v }}
   {{- end }}
   {{- end }}
-security:
-  allowedOrigins: '*'
-  jwtSecret: {{ randAlphaNum 128 }}
-components:
-  sources:
-  integration:
+{{- if .TrackingDisabled }}
+tools:
+  segment:
+    enabled: false  
+{{- end }}

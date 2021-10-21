@@ -8,14 +8,14 @@ to persist media you need to enable the media service by providing a storage opt
 
 ## Upload a file
 
-`POST /media.uploadFile`
+`POST /media.upload`
 
 Expects a multi-part form upload including the original filename
 
 **Sample curl**
 
 ```shell script
-curl http://airy.core/media.uploadFile \
+curl http://airy.core/media.upload \
 -X POST \
 -H "Content-Type: multipart/form-data" \
 --form file=@test_image.jpg

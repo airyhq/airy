@@ -4,6 +4,7 @@ type ImageRenderProps = {
   src: string;
   alt?: string;
   className?: string;
+  isTemplate?: boolean;
 };
 
 /**
@@ -14,7 +15,7 @@ type ImageRenderProps = {
  */
 const failedUrls = [];
 
-export const ImageWithFallback = ({src, alt, className}: ImageRenderProps) => {
+export const ImageWithFallback = ({src, alt, className, isTemplate}: ImageRenderProps) => {
   const [imageFailed, setImageFailed] = useState(failedUrls.includes(src));
 
   useEffect(() => {
@@ -27,13 +28,24 @@ export const ImageWithFallback = ({src, alt, className}: ImageRenderProps) => {
   };
 
   return (
-    <a href={src} target="_blank" rel="noopener noreferrer">
-      <img
-        className={className}
-        src={imageFailed ? 'https://s3.amazonaws.com/assets.airy.co/fallbackMediaImage.svg' : src}
-        alt={imageFailed ? 'The image failed to load' : alt}
-        onError={() => loadingFailed()}
-      />
-    </a>
+    <>
+      {isTemplate ? (
+        <img
+          className={className}
+          src={imageFailed ? 'https://s3.amazonaws.com/assets.airy.co/fallbackMediaImage.svg' : src}
+          alt={imageFailed ? 'The image failed to load' : alt}
+          onError={() => loadingFailed()}
+        />
+      ) : (
+        <a href={src} target="_blank" rel="noopener noreferrer">
+          <img
+            className={className}
+            src={imageFailed ? 'https://s3.amazonaws.com/assets.airy.co/fallbackMediaImage.svg' : src}
+            alt={imageFailed ? 'The image failed to load' : alt}
+            onError={() => loadingFailed()}
+          />
+        </a>
+      )}
+    </>
   );
 };

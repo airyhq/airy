@@ -205,7 +205,7 @@ If you don't have your own HTTPS certificate you can request one from AWS ACM.
 Edit your `airy.yaml` file and add the following configuration:
 
 ```
-ingress:
+ingress-controller:
   host: "The-fqdn-used-in-your-certificate"
   https: true
   httpsTermination: "LoadBalancer"
@@ -249,7 +249,7 @@ airy create --provider aws --init-only
 Then edit your `airy.yaml` file and add the following configuration
 
 ```sh
-ingress:
+ingress-controller:
   host: myairy.myhostname.com
   https: true
   letsencryptEmail: "mymail@myhostname.com"

@@ -10,6 +10,7 @@ import co.airy.log.AiryLoggerFactory;
 import co.airy.model.metadata.MetadataKeys;
 import co.airy.spring.auth.IgnoreAuthPattern;
 import co.airy.spring.web.filters.RequestLoggingIgnorePatterns;
+import co.airy.tracking.RouteTracking;
 import com.viber.bot.api.ViberBot;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KeyValue;
@@ -19,7 +20,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import static co.airy.model.message.MessageRepository.updateDeliveryState;
 import static co.airy.model.metadata.MetadataRepository.getId;
@@ -74,5 +78,12 @@ public class Connector {
     @Bean
     public RequestLoggingIgnorePatterns requestLoggingIgnorePatterns() {
         return new RequestLoggingIgnorePatterns(List.of("/viber"));
+    }
+
+    @Bean
+    private RouteTracking routeTracking() {
+        Pattern urlPattern = Pattern.compile(".*viber\\.connect$");
+        HashMap<String, String> properties = new HashMap<>(Map.of("channel", "viber"));
+        return new RouteTracking(urlPattern, "channel_connected", properties);
     }
 }

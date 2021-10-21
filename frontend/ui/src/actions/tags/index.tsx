@@ -2,8 +2,8 @@ import _, {Dispatch} from 'redux';
 import _typesafe, {createAction} from 'typesafe-actions';
 
 import {Tag} from 'model';
-import {CreateTagRequestPayload} from 'httpclient';
-import {HttpClientInstance} from '../../InitializeAiryApi';
+import {CreateTagRequestPayload} from 'httpclient/src';
+import {HttpClientInstance} from '../../httpClient';
 
 const UPSERT_TAG = 'UPSERT_TAG';
 const DELETE_TAG = 'DELETE_TAG';

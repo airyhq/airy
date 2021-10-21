@@ -32,13 +32,29 @@ const MessengerContainer = ({
   currentConversation,
   getConversationInfo,
   match,
+  config,
 }: MessengerContainerProps) => {
   const [suggestions, showSuggestedReplies] = useState<Suggestions>(null);
   const [isFileDragged, setIsFileDragged] = useState(false);
   const [draggedAndDroppedFile, setDraggedAndDroppedFile] = useState<File | null>(null);
-  const [attachmentDisabled] = useState(false);
+  const source = currentConversation?.channel?.source;
+  const [dragAndDropDisabled, setDragAndDropDisabled] = useState(true);
 
   let dragCounter = 0;
+
+  useEffect(() => {
+    if (source && config) {
+      if (
+        config?.components['media-resolver']?.enabled &&
+        (source === 'instagram' || source === 'facebook') &&
+        !draggedAndDroppedFile
+      ) {
+        setDragAndDropDisabled(false);
+      } else {
+        setDragAndDropDisabled(true);
+      }
+    }
+  }, [source, config, currentConversation?.id, draggedAndDroppedFile]);
 
   useEffect(() => {
     window.addEventListener(
@@ -77,14 +93,14 @@ const MessengerContainer = ({
     event.preventDefault();
     event.stopPropagation();
 
-    if (!attachmentDisabled) return;
+    if (dragAndDropDisabled) return;
   };
 
   const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+    if (dragAndDropDisabled) return;
+
     event.preventDefault();
     event.stopPropagation();
-
-    if (!attachmentDisabled) return;
 
     dragCounter++;
 
@@ -92,10 +108,11 @@ const MessengerContainer = ({
   };
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    if (dragAndDropDisabled) return;
+
     event.preventDefault();
     event.stopPropagation();
 
-    if (!attachmentDisabled) return;
     dragCounter++;
     const file = event.dataTransfer.files[0];
     setDraggedAndDroppedFile(file);
@@ -103,10 +120,10 @@ const MessengerContainer = ({
   };
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    if (dragAndDropDisabled) return;
     event.preventDefault();
     event.stopPropagation();
 
-    if (!attachmentDisabled) return;
     dragCounter--;
     if (dragCounter === 0) {
       setIsFileDragged(false);
@@ -123,7 +140,7 @@ const MessengerContainer = ({
         onDragLeave={e => handleDragLeave(e)}
         onMouseOut={() => setIsFileDragged(false)}
         onMouseLeave={() => setIsFileDragged(false)}>
-        {attachmentDisabled && (
+        {!dragAndDropDisabled && (
           <div className={`${styles.dragContainer} ${isFileDragged ? styles.dragOverlay : styles.noDraggedFile}`}>
             <h1>Drop Files Here</h1>
           </div>
@@ -148,6 +165,7 @@ const MessengerContainer = ({
                   source={currentConversation.channel.source as Source}
                   draggedAndDroppedFile={draggedAndDroppedFile}
                   setDraggedAndDroppedFile={setDraggedAndDroppedFile}
+                  setDragAndDropDisabled={setDragAndDropDisabled}
                 />
               </>
             )}

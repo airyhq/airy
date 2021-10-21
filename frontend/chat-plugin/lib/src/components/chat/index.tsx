@@ -1,6 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 import {IMessage} from '@stomp/stompjs';
+import {useTranslation} from 'react-i18next';
 
 import {DeliveryState, Message} from 'model';
 
@@ -43,6 +44,7 @@ type Props = AiryChatPluginConfiguration;
 
 const Chat = ({config, ...props}: Props) => {
   config = config || {};
+  const {t} = useTranslation();
 
   if (config.welcomeMessage) {
     defaultWelcomeMessage.content = config.welcomeMessage;
@@ -50,16 +52,13 @@ const Chat = ({config, ...props}: Props) => {
 
   const chatHiddenInitialState = (): boolean => {
     if (config.showMode === true) return false;
-    if (config.bubbleState) {
-      if (config.bubbleState === 'expanded') {
-        return false;
-      }
-      if (config.bubbleState === 'minimized') {
-        return true;
-      }
+    if (config.bubbleState === 'expanded') {
+      return false;
     }
-    if (getResumeTokenFromStorage(props.channelId)) return true;
-    return false;
+    if (config.bubbleState === 'minimized') {
+      return true;
+    }
+    return !!getResumeTokenFromStorage(props.channelId);
   };
 
   const [installError, setInstallError] = useState('');
@@ -208,7 +207,11 @@ const Chat = ({config, ...props}: Props) => {
 
   const commandCallback = (command: CommandUnion) => {
     if (command.type === 'suggestedReply') {
-      ws.onSend({type: 'suggestionResponse', text: command.payload.text, postbackData: command.payload.postbackData});
+      ws.onSend({
+        type: 'suggestionResponse',
+        text: command.payload.text,
+        postbackData: command.payload.postbackData,
+      });
     }
     if (command.type === 'quickReplies') {
       ws.onSend({type: 'quickReplies', text: command.payload.text, postbackData: command.payload.postbackData});
@@ -265,14 +268,14 @@ const Chat = ({config, ...props}: Props) => {
                     <div className={style.buttonWrapper}>
                       <button className={style.cancelButton} onClick={closeModalOnClick}>
                         {' '}
-                        Cancel
+                        {t('cancel')}
                       </button>
                       <button
                         className={style.endChatButton}
                         onClick={cancelChatSession}
                         data-cy={cyChatPluginEndChatModalButton}>
                         {' '}
-                        End Chat
+                        {t('endChat')}
                       </button>
                     </div>
                   </div>

@@ -53,7 +53,7 @@ class SendMessageTest {
     private static final Topic applicationCommunicationMessages = new ApplicationCommunicationMessages();
 
     @MockBean
-    private Api api;
+    Api api;
 
     @Autowired
     @InjectMocks

@@ -78,7 +78,7 @@ class ConversationsUpdateTest {
 
         final String state = "open";
 
-        webTestHelper.post("/conversations.setState",
+        webTestHelper.post("/conversations.set-state",
                 "{\"conversation_id\":\"" + conversationId + "\",\"state\":\"" + state + "\"}")
                 .andExpect(status().isNoContent());
 
@@ -91,7 +91,7 @@ class ConversationsUpdateTest {
                         .andExpect(jsonPath("$.metadata.state", is(state))),
                 "conversation state was not set");
 
-        webTestHelper.post("/conversations.removeState",
+        webTestHelper.post("/conversations.remove-state",
                 "{\"conversation_id\":\"" + conversationId + "\"}")
                 .andExpect(status().isNoContent());
 
@@ -114,7 +114,7 @@ class ConversationsUpdateTest {
                         .andExpect(jsonPath("$.metadata.contact.display_name", is(not(desiredDisplayName)))),
                 "conversation was not created");
 
-        webTestHelper.post("/conversations.updateContact",
+        webTestHelper.post("/conversations.update-contact",
                 "{\"conversation_id\":\"" + conversationId + "\",\"display_name\":\"" + desiredDisplayName + "\"}")
                 .andExpect(status().isNoContent());
 

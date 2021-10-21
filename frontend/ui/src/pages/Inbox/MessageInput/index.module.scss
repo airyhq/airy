@@ -151,3 +151,16 @@
   margin-top: 4px;
   margin-right: 66px;
 }
+
+.selectorLoader {
+  position: absolute;
+  left: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectorLoader span {
+  @include font-base;
+  color: var(--color-text-gray);
+}

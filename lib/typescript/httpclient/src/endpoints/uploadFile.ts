@@ -1,9 +1,10 @@
+import _ from 'form-data';
 import {UploadFileRequestPayload} from '../payload';
 /* eslint-disable @typescript-eslint/no-var-requires */
 const camelcaseKeys = require('camelcase-keys');
 
 export const uploadFileDef = {
-  endpoint: 'media.uploadFile',
+  endpoint: 'media.upload',
   mapRequest: (uploadFileRequest: UploadFileRequestPayload) => {
     return uploadFileRequest.file;
   },

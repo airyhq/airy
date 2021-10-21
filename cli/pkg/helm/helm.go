@@ -1,8 +1,10 @@
 package helm
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"io/ioutil"
 
 	"github.com/airyhq/airy/infrastructure/lib/go/k8s/util"
@@ -100,6 +102,7 @@ func (h *Helm) runHelm(args []string) error {
 
 	h.cleanupJob()
 	jobsClient := h.clientset.BatchV1().Jobs(h.namespace)
+	podsClient := h.clientset.CoreV1().Pods(h.namespace)
 
 	job := &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
@@ -115,7 +118,7 @@ func (h *Helm) runHelm(args []string) error {
 							Name:            "helm-runner",
 							Image:           "alpine/helm:3.6.3",
 							Args:            args,
-							ImagePullPolicy: corev1.PullAlways,
+							ImagePullPolicy: corev1.PullIfNotPresent,
 							VolumeMounts: []corev1.VolumeMount{
 								{
 									Name:      "core-config",
@@ -162,14 +165,29 @@ func (h *Helm) runHelm(args []string) error {
 		switch event.Type {
 		case watch.Error:
 			return fmt.Errorf("helm run failed with error %v", event.Object)
-		case watch.Added:
 		case watch.Modified:
 			job, _ := event.Object.(*batchv1.Job)
 			if job.Status.Succeeded == 1 {
 				return nil
 			} else if job.Status.Failed == 1 {
+				opts := v1.ListOptions{
+					LabelSelector: "job-name=helm-runner",
+				}
+				pods, err := podsClient.List(context.TODO(), opts)
+				if err != nil {
+					fmt.Println(err)
+				}
+
+				for _, pod := range pods.Items {
+					fmt.Println(getPodLogs(pod, h.clientset))
+				}
+
+				for _, c := range job.Status.Conditions {
+					return fmt.Errorf("job failed: %s", c.Reason)
+				}
 				return fmt.Errorf("helm run failed with error %v", event.Object)
 			}
+		default:
 		}
 	}
 
@@ -213,4 +231,21 @@ func (h *Helm) cleanupJob() error {
 	return jobsClient.Delete(context.TODO(), h.name, v1.DeleteOptions{
 		PropagationPolicy: &deletionPolicy,
 	})
+}
+
+func getPodLogs(pod corev1.Pod, clientset *kubernetes.Clientset) string {
+	podLogOpts := corev1.PodLogOptions{}
+	req := clientset.CoreV1().Pods(pod.Namespace).GetLogs(pod.Name, &podLogOpts)
+	podLogs, err := req.Stream(context.TODO())
+	if err != nil {
+		return "error in opening stream"
+	}
+	defer podLogs.Close()
+
+	buf := new(bytes.Buffer)
+	_, err = io.Copy(buf, podLogs)
+	if err != nil {
+		return "error in copy information from podLogs to buf"
+	}
+	return buf.String()
 }

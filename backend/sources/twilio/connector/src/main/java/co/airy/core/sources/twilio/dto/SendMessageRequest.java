@@ -16,7 +16,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class SendMessageRequest implements Serializable {
     private String sourceConversationId;
-    private String channelId;
     private Message message;
     private Channel channel;
 
@@ -27,5 +26,10 @@ public class SendMessageRequest implements Serializable {
         }
 
         return message.getSourceRecipientId();
+    }
+
+    @JsonIgnore
+    public String getChannelId() {
+        return message.getChannelId();
     }
 }

@@ -55,9 +55,74 @@ are sorted from oldest to latest.
 
 ## Send
 
-import MessagesSend from './messages-send.mdx'
+`POST /messages.send`
 
-<MessagesSend />
+Sends a message to a conversation and returns a payload. Whatever is put on the
+`message` field will be forwarded "as-is" to the source's message endpoint. Therefore,
+the payload will look differently for each source. Refer to each [source's documentation](/sources/introduction)
+to see learn how to send text, media, and many more message types.
+
+**Sample request**
+
+```json5
+{
+  "conversation_id": "a688d36c-a85e-44af-bc02-4248c2c97622",
+  "message": {
+    // Source specific body
+  }
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "id": "{UUID}",
+  "content": "{\"text\":\"Hello\"}",
+  "state": "pending|failed|delivered",
+  "from_contact": true,
+  // See glossary
+  "sent_at": "{string}",
+  //'yyyy-MM-dd'T'HH:mm:ss.SSSZ' date in UTC form, to be localized by clients
+  "source": "{String}",
+  // one of the possible sources
+  "metadata": {
+    "sentFrom": "iPhone"
+  }
+  // metadata object of the message
+}
+```
+
+**Starting a conversation**
+
+The previous flow covers the use cases of most messaging sources. However, some sources such as SMS or Whatsapp also
+allow you to send messages to contacts that did not previously message you first. This means that you can create new conversations with them if you know their `source recipient id`.
+
+**Sample request**
+
+```json5
+{
+  "source_recipient_id": "+491234567",
+  "channel_id": "<airy uuid>",
+  "message": {
+    // Source specific body
+  }
+}
+```
+
+**Sample response**
+
+```json5
+{
+  "id": "{UUID}",
+  "content": "{\"text\":\"Hello world\"}", // Source specific body
+  "state": "pending|failed|delivered",
+  "from_contact": true,
+  "sent_at": "{string}",
+  "source": "{String}",
+  "metadata": {}
+}
+```
 
 ## Send from Google's Business Messages source
 

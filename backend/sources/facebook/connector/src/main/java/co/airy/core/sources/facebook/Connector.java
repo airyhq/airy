@@ -19,7 +19,6 @@ import co.airy.tracking.RouteTracking;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -59,6 +58,12 @@ public class Connector {
         final Conversation conversation = sendMessageRequest.getConversation();
 
         if (isMessageStale(message)) {
+            updateDeliveryState(message, DeliveryState.FAILED);
+            return List.of(KeyValue.pair(message.getId(), message));
+        }
+
+        if (sendMessageRequest.getConversation().getSourceConversationId() == null) {
+            // Cannot start conversation for Facebook
             updateDeliveryState(message, DeliveryState.FAILED);
             return List.of(KeyValue.pair(message.getId(), message));
         }

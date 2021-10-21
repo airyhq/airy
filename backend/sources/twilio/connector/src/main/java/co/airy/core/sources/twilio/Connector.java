@@ -36,9 +36,15 @@ public class Connector {
     public Message sendMessage(SendMessageRequest sendMessageRequest) {
         final Message message = sendMessageRequest.getMessage();
         final String from = sendMessageRequest.getChannel().getSourceChannelId();
-        final String to = sendMessageRequest.getSourceConversationId();
+        final String to = sendMessageRequest.getSourceRecipientId();
 
         if (isMessageStale(message)) {
+            updateDeliveryState(message, DeliveryState.FAILED);
+            return message;
+        }
+
+        if (to == null) {
+            // Tried to create a new conversation without providing source recipient id
             updateDeliveryState(message, DeliveryState.FAILED);
             return message;
         }

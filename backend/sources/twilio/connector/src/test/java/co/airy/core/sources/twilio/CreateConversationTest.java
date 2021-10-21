@@ -30,7 +30,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(value = "classpath:test.properties")
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-class SendMessageTest {
+class CreateConversationTest {
 
     @RegisterExtension
     public static final SharedKafkaTestResource sharedKafkaTestResource = new SharedKafkaTestResource();
@@ -87,11 +86,11 @@ class SendMessageTest {
     }
 
     @Test
-    void canSendMessages() throws Exception {
+    void canCreateConversation() throws Exception {
         final String conversationId = UUID.randomUUID().toString();
         final String messageId = UUID.randomUUID().toString();
-        final String sourceConversationId = "+491234567";
-        final String sourceChannelId = "+497654321";
+        final String sourceRecipientId = "+4912345678";
+        final String sourceChannelId = "+4987654321";
         final String payload = "{\"Body\":\"Hello World\"}";
 
         ArgumentCaptor<String> payloadCaptor = ArgumentCaptor.forClass(String.class);
@@ -101,35 +100,21 @@ class SendMessageTest {
         doNothing().when(api).sendMessage(fromCaptor.capture(), toCaptor.capture(), payloadCaptor.capture());
 
         // Test that phone number input gets cleaned up
-        final String channelPayload = "{\"phone_number\":\"+49 765 4321 \",\"name\":\"Blips and Chitz\"}";
+        final String channelPayload = "{\"phone_number\":\"+49 8765 4321 \",\"name\":\"my channel\"}";
         final String response = webTestHelper.post("/channels.twilio.sms.connect", channelPayload)
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
         final JsonNode jsonNode = new ObjectMapper().readTree(response);
         final String channelId = jsonNode.get("id").textValue();
 
-        kafkaTestHelper.produceRecords(List.of(
-                new ProducerRecord<>(applicationCommunicationMessages.name(), "other-message-id",
-                        Message.newBuilder()
-                                .setId("other-message-id")
-                                .setSource("twilio.sms")
-                                .setSentAt(Instant.now().toEpochMilli())
-                                .setSenderId(sourceConversationId)
-                                .setIsFromContact(true)
-                                .setDeliveryState(DeliveryState.DELIVERED)
-                                .setConversationId(conversationId)
-                                .setChannelId(channelId)
-                                .setContent(payload)
-                                .build())
-        ));
-
         TimeUnit.SECONDS.sleep(5);
 
         kafkaTestHelper.produceRecord(new ProducerRecord<>(applicationCommunicationMessages.name(), messageId,
                 Message.newBuilder()
                         .setId(messageId)
+                        .setSenderId("sender-id")
                         .setSentAt(Instant.now().toEpochMilli())
-                        .setSenderId("user-id")
+                        .setSourceRecipientId(sourceRecipientId)
                         .setIsFromContact(false)
                         .setDeliveryState(DeliveryState.PENDING)
                         .setConversationId(conversationId)
@@ -141,7 +126,7 @@ class SendMessageTest {
 
         retryOnException(() -> {
             assertEquals(payload, payloadCaptor.getValue());
-            assertEquals(sourceConversationId, toCaptor.getValue());
+            assertEquals(sourceRecipientId, toCaptor.getValue());
             assertEquals(sourceChannelId, fromCaptor.getValue());
         }, "Twilio API was not called");
     }

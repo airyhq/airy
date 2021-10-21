@@ -67,7 +67,8 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                 .filter((messageId, message) -> message != null && message.getSource().startsWith("twilio"))
                 .selectKey((messageId, message) -> message.getConversationId());
 
-        final KTable<String, SendMessageRequest> contextTable = messageStream
+
+        final KTable<String, SendMessageRequest> conversationTable = messageStream
                 .groupByKey()
                 .aggregate(SendMessageRequest::new,
                         (conversationId, message, aggregate) -> {
@@ -76,16 +77,19 @@ public class Stores implements ApplicationListener<ApplicationReadyEvent>, Dispo
                                 sendMessageRequestBuilder.sourceConversationId(message.getSenderId());
                             }
 
-                            sendMessageRequestBuilder.channelId(message.getChannelId());
-
                             return sendMessageRequestBuilder.build();
-                        })
-                .join(channelsTable, SendMessageRequest::getChannelId,
-                        (aggregate, channel) -> aggregate.toBuilder().channel(channel).build());
+                        });
 
         messageStream.filter((conversationId, message) -> DeliveryState.PENDING.equals(message.getDeliveryState()))
-                .join(contextTable, (message, sendMessageRequest) -> sendMessageRequest.toBuilder().message(message).build())
-                .map((conversationId, sendMessageRequest) -> {
+                .leftJoin(conversationTable, (message, sendMessageRequest) -> {
+                    if (sendMessageRequest == null) {
+                        return SendMessageRequest.builder().message(message).build();
+                    }
+                    return sendMessageRequest.toBuilder().message(message).build();
+                })
+                .selectKey((conversationId, sendMessageRequest) -> sendMessageRequest.getChannelId())
+                .join(channelsTable, (sendMessageRequest, channel) -> sendMessageRequest.toBuilder().channel(channel).build())
+                .map((channelId, sendMessageRequest) -> {
                     final Message message = connector.sendMessage(sendMessageRequest);
                     return KeyValue.pair(message.getId(), message);
                 })

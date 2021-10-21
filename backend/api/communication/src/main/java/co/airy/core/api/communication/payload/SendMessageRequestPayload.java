@@ -13,8 +13,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SendMessageRequestPayload {
-    @NotNull
     private UUID conversationId;
+    private String sourceRecipientId;
+    private UUID channelId;
     @Valid
     @NotNull
     private JsonNode message;

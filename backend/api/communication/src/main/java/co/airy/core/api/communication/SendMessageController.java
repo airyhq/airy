@@ -11,6 +11,7 @@ import co.airy.model.message.dto.MessageContainer;
 import co.airy.model.message.dto.MessageResponsePayload;
 import co.airy.model.metadata.dto.MetadataMap;
 import co.airy.spring.auth.PrincipalAccess;
+import co.airy.uuid.UUIDv5;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -47,16 +48,33 @@ public class SendMessageController {
 
     @PostMapping("/messages.send")
     public ResponseEntity<?> sendMessage(@RequestBody @Valid SendMessageRequestPayload payload, Authentication auth) throws ExecutionException, InterruptedException, JsonProcessingException {
-        final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
-        final Conversation conversation = conversationsStore.get(payload.getConversationId().toString());
+        Channel channel;
+        String conversationId;
 
-        if (conversation == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        if (payload.getConversationId() != null) {
+            // Append message to existing conversation
+            final ReadOnlyKeyValueStore<String, Conversation> conversationsStore = stores.getConversationsStore();
+            final Conversation conversation = conversationsStore.get(payload.getConversationId().toString());
+            if (conversation == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
 
-        final Channel channel = conversation.getChannel();
-        if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            conversationId = conversation.getId();
+            channel = conversation.getChannel();
+            if (channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } else if (payload.getSourceRecipientId() != null && payload.getChannelId() != null) {
+            // Create new conversation
+            final ReadOnlyKeyValueStore<String, Channel> channelsStore = stores.getChannelsStore();
+            channel = channelsStore.get(payload.getChannelId().toString());
+            if (channel == null || channel.getConnectionState().equals(ChannelConnectionState.DISCONNECTED)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+
+            conversationId = UUIDv5.fromNamespaceAndName(channel.getSource(), payload.getSourceRecipientId()).toString();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         final String userId = principalAccess.getUserId(auth);
@@ -64,8 +82,9 @@ public class SendMessageController {
         final Message message = Message.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setChannelId(channel.getId())
+                .setSourceRecipientId(payload.getSourceRecipientId())
                 .setContent(objectMapper.writeValueAsString(payload.getMessage()))
-                .setConversationId(payload.getConversationId().toString())
+                .setConversationId(conversationId)
                 .setHeaders(Map.of())
                 .setDeliveryState(DeliveryState.PENDING)
                 .setSource(channel.getSource())

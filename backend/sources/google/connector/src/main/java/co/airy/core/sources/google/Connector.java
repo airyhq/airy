@@ -44,6 +44,12 @@ public class Connector {
             return message;
         }
 
+        if (sendMessageRequest.getSourceConversationId() == null) {
+            // Cannot start conversation for Google
+            updateDeliveryState(message, DeliveryState.FAILED);
+            return message;
+        }
+
         try {
             final JsonNode sendMessagePayload = mapper.fromSendMessageRequest(sendMessageRequest);
             api.sendMessage(sendMessageRequest.getSourceConversationId(), sendMessagePayload);

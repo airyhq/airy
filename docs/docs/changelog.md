@@ -3,22 +3,6 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 
-
-#### Changes
-
-#### 🐛 Bug Fixes
-
-- [[#2473](https://github.com/airyhq/airy/issues/2473)] fix failing cypress test [[#2507](https://github.com/airyhq/airy/pull/2507)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.33.1/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.33.1/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.33.1/windows/amd64/airy.exe)
-
 ## 0.33.0
 
 #### 🚀 Features

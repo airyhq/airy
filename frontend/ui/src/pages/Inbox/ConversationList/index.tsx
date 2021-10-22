@@ -16,6 +16,7 @@ import {StateModel} from '../../../reducers';
 
 import styles from './index.module.scss';
 import {ConversationRouteProps} from '../index';
+import {cyConversationList} from 'handles';
 
 type ConversationListProps = ConnectedProps<typeof connector>;
 
@@ -85,7 +86,7 @@ const ConversationList = (props: ConversationListProps) => {
 
   return (
     <section className={styles.conversationListContainerContacts}>
-      <div className={styles.conversationListContainer}>
+      <div className={styles.conversationListContainer} data-cy={cyConversationList}>
         <section className={styles.conversationListContainerFilterBox}>
           <ConversationListHeader />
           <QuickFilter />

@@ -179,11 +179,12 @@ func (h *Helm) runHelm(args []string) error {
 				}
 
 				for _, pod := range pods.Items {
+					fmt.Println("Logs of helm-runner pod:")
 					fmt.Println(getPodLogs(pod, h.clientset))
 				}
 
 				for _, c := range job.Status.Conditions {
-					return fmt.Errorf("job failed: %s", c.Reason)
+					return fmt.Errorf("Helm job failed: %s", c.Reason)
 				}
 				return fmt.Errorf("helm run failed with error %v", event.Object)
 			}

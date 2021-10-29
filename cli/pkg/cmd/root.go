@@ -7,6 +7,7 @@ import (
 	"cli/pkg/cmd/status"
 	"cli/pkg/cmd/ui"
 	"cli/pkg/cmd/upgrade"
+	"cli/pkg/kube"
 	"cli/pkg/workspace"
 	"fmt"
 	"os"
@@ -29,7 +30,7 @@ var RootCmd = &cobra.Command{
 	TraverseChildren: true,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		if cmd.Name() != "create" && cmd.Name() != "version" {
-			workspace.Init(cliConfigDir)
+			workspace.Init(cliConfigDir, true)
 		}
 	},
 }
@@ -39,7 +40,23 @@ var versionCmd = &cobra.Command{
 	Short: "Prints version information",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Version: %s, GitCommit: %s\n", Version, CommitSHA1)
+		fmt.Printf("CLI version: %s, GitCommit: %s\n", Version, CommitSHA1)
+
+		wsPath, _ := cmd.Flags().GetString("workspace")
+		dir := workspace.Init(wsPath, false) // Will exit if command is invoked outside of a workspace
+		dir.LoadAiryYaml()
+		kubeCtx := kube.Load()
+		set, err := kubeCtx.GetClientSet()
+		if err != nil {
+			return
+		}
+
+		coreConfig, err := kube.GetCmData("core-config", viper.GetString("namespace"), set)
+		if err != nil {
+			fmt.Println("Warning: Unable to retrieve the version of the Airy Core instance.")
+		} else {
+			fmt.Println("Airy instance version: ", coreConfig["APP_IMAGE_TAG"])
+		}
 	},
 }
 

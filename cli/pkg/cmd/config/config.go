@@ -30,7 +30,7 @@ func applyConfig(cmd *cobra.Command, args []string) {
 }
 
 func ApplyConfig(workspacePath string) {
-	dir := workspace.Init(workspacePath)
+	dir := workspace.Init(workspacePath, true)
 	namespace := viper.GetString("namespace")
 	conf, err := dir.LoadAiryYaml()
 	if err != nil {

@@ -38,7 +38,7 @@ func upgrade(cmd *cobra.Command, args []string) {
 	if err != nil {
 		console.Exit("Unable to find suitable workspace :", err)
 	}
-	dir := workspace.Init(workspacePath)
+	dir := workspace.Init(workspacePath, true)
 	kubeCtx := kube.Load()
 	clientset, err := kubeCtx.GetClientSet()
 	namespace := viper.GetString("namespace")

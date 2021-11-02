@@ -39,7 +39,8 @@ const ButtonBox = ({
     <Link
       to={useBaseUrl(link)}
       className={isDarkTheme ? styles.containerDark : styles.containerLight}
-      style={{backgroundColor: customizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${customizedHoverColor}`}}>
+      style={{backgroundColor: customizedBackgroundColor, boxShadow: `0px 0px 0px 4px ${customizedHoverColor}`}}
+    >
       <span className={isDarkTheme && iconInvertible ? styles.invertedIcon : ''}>{icon}</span>
       <div>
         <h4 className={isDarkTheme ? styles.containerDarkTitle : styles.containerLightTitle}>{title}</h4>

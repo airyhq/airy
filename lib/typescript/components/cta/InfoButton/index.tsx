@@ -17,7 +17,8 @@ export const InfoButton = ({text, link, color, dataCy}: Props) => (
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${styles.link} ${color === 'blue' ? styles.blueLink : styles.greyLink}`}>
+      className={`${styles.link} ${color === 'blue' ? styles.blueLink : styles.greyLink}`}
+    >
       {text}
     </a>
   </button>

@@ -139,7 +139,8 @@ const MessengerContainer = ({
         onDrop={e => handleFileDrop(e)}
         onDragLeave={e => handleDragLeave(e)}
         onMouseOut={() => setIsFileDragged(false)}
-        onMouseLeave={() => setIsFileDragged(false)}>
+        onMouseLeave={() => setIsFileDragged(false)}
+      >
         {!dragAndDropDisabled && (
           <div className={`${styles.dragContainer} ${isFileDragged ? styles.dragOverlay : styles.noDraggedFile}`}>
             <h1>Drop Files Here</h1>

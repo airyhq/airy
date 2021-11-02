@@ -107,7 +107,8 @@ const ConversationListHeader = (props: ConversationListHeaderProps) => {
           title="Filter"
           id="filterButton"
           className={`${isFilterActive() ? styles.activeFilters : styles.filterButton}`}
-          onClick={toggleFilter}>
+          onClick={toggleFilter}
+        >
           <FilterIcon />
         </button>
         {isFilterOpen && (

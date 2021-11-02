@@ -95,7 +95,8 @@ const ChatPluginConnect = (props: ChatPluginProps) => {
                 type="button"
                 onClick={() => {
                   disconnectChannel(channel);
-                }}>
+                }}
+              >
                 Delete
               </LinkButton>
             </div>

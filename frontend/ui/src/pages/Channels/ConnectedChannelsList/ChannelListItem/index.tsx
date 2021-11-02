@@ -67,7 +67,8 @@ const ChannelListItem = (props: ChannelListItemProps) => {
                   pathname: `/channels/${channel.source}/${channel.id}`,
                   state: {channel: channel},
                 })
-              }>
+              }
+            >
               Edit
             </Button>
             <Button styleVariant="link" type="button" onClick={togglePopupVisibility}>

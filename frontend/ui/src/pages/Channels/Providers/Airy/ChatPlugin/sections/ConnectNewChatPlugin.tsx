@@ -59,7 +59,8 @@ export const ConnectNewChatPlugin = ({createNewConnection}: ConnectNewChatPlugin
               onClick={(event: React.FormEvent<HTMLFormElement>) => {
                 event.preventDefault();
                 createNewConnection(displayName, imageUrl);
-              }}>
+              }}
+            >
               Save
             </Button>
           </form>

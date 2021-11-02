@@ -20,7 +20,8 @@ export const StoryMention = ({url, sentAt, fromContact}: StoryMentionProps) => {
                 className={`${fromContact ? styles.linkContactContent : styles.linkMemberContent}`}
                 href={url}
                 target="_blank"
-                rel="noopener noreferrer">
+                rel="noopener noreferrer"
+              >
                 mentioned in an active Instagram story{' '}
                 <LinkIcon className={`${fromContact ? styles.iconContactContent : styles.iconMemberContent}`} />
               </a>

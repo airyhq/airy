@@ -30,7 +30,11 @@ var RootCmd = &cobra.Command{
 	TraverseChildren: true,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		if cmd.Name() != "create" && cmd.Name() != "version" {
-			workspace.Init(cliConfigDir, true)
+			_, err := workspace.Init(cliConfigDir)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
 		}
 	},
 }
@@ -43,19 +47,26 @@ var versionCmd = &cobra.Command{
 		fmt.Printf("CLI version: %s, GitCommit: %s\n", Version, CommitSHA1)
 
 		wsPath, _ := cmd.Flags().GetString("workspace")
-		dir := workspace.Init(wsPath, false) // Will exit if command is invoked outside of a workspace
-		dir.LoadAiryYaml()
-		kubeCtx := kube.Load()
-		set, err := kubeCtx.GetClientSet()
+		dir, err := workspace.Init(wsPath)
 		if err != nil {
 			return
-		}
-
-		coreConfig, err := kube.GetCmData("core-config", viper.GetString("namespace"), set)
-		if err != nil {
-			fmt.Println("Warning: Unable to retrieve the version of the Airy Core instance.")
 		} else {
-			fmt.Println("Airy instance version: ", coreConfig["APP_IMAGE_TAG"])
+			dir.LoadAiryYaml()
+			kubeCtx := kube.Load()
+			set, err := kubeCtx.GetClientSet()
+			if err != nil {
+				fmt.Println("Unable to retrieve the client set:", err.Error())
+				return
+			}
+
+			coreConfig, err := kube.GetCmData("core-config", viper.GetString("namespace"), set)
+			if err != nil {
+				fmt.Println("Unable to retrieve the kubernetes config map:", err.Error())
+			} else if airyVersion, ok := coreConfig["APP_IMAGE_TAG"]; ok {
+				fmt.Println("Airy instance version: ", airyVersion)
+			} else {
+				fmt.Println("Warning: Unable to retrieve the version of the Airy Core instance from the config map.")
+			}
 		}
 	},
 }

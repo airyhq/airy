@@ -6,6 +6,7 @@ import (
 	"cli/pkg/workspace"
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -30,7 +31,11 @@ func applyConfig(cmd *cobra.Command, args []string) {
 }
 
 func ApplyConfig(workspacePath string) {
-	dir := workspace.Init(workspacePath, true)
+	dir, err := workspace.Init(workspacePath)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
 	namespace := viper.GetString("namespace")
 	conf, err := dir.LoadAiryYaml()
 	if err != nil {

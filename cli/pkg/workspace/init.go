@@ -9,33 +9,27 @@ import (
 	"github.com/spf13/viper"
 )
 
-func Init(path string, log bool) ConfigDir {
+func Init(path string) (ConfigDir, error) {
 	viper.AddConfigPath(getConfigPath(path))
 	viper.SetConfigType("yaml")
 	viper.SetConfigName(cliConfigFileName)
 
 	if err := viper.ReadInConfig(); err != nil {
-		if log {
-			if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-				fmt.Println(err)
-				fmt.Println("the current directory is not an airy workspace directory")
-			} else {
-				fmt.Println("invalid configuration: ", err)
-			}
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			err = fmt.Errorf("%w\nthe current directory is not an airy workspace directory", err)
+		} else {
+			err = fmt.Errorf("invalid configuration: %w", err)
 		}
 
-		os.Exit(1)
+		return ConfigDir{}, err
 	}
 
 	dir := ConfigDir{Path: path}
 
 	if _, err := os.Stat(dir.GetAiryYaml()); os.IsNotExist(err) {
-		if log {
-			fmt.Println("the current directory is not an airy workspace directory")
-		}
-		os.Exit(1)
+		return dir, fmt.Errorf("the current directory is not an airy workspace directory")
 	}
-	return dir
+	return dir, nil
 }
 
 func getConfigPath(path string) string {

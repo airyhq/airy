@@ -18,6 +18,8 @@ spec:
     metadata:
       labels:
         app: airy-controller
+      annotations:
+        releaseTime: {{ (now) | toString | trunc 28 | quote }}
     spec:
       serviceAccountName: airy-controller
       automountServiceAccountToken: true

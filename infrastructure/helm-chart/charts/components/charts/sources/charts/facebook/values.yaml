@@ -3,19 +3,7 @@ mandatory: false
 enabled: true
 connector:
   image: sources/facebook-connector
-  resources:
-    requests:
-      cpu: "100m"
-      memory: "128Mi"
-    limits:
-      cpu: "1000m"
-      memory: "1024Mi"
+  resources: {}
 eventsRouter:
   image: sources/facebook-events-router
-  resources:
-    requests:
-      cpu: "50m"
-      memory: "128Mi"
-    limits:
-      cpu: "1000m"
-      memory: "1024Mi"
+  resources: {}

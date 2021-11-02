@@ -3,19 +3,7 @@ mandatory: false
 enabled: true
 consumer:
   image: webhook/consumer
-  resources:
-    requests:
-      cpu: "50m"
-      memory: "128Mi"
-    limits:
-      cpu: "1000m"
-      memory: "1024Mi"
+  resources: {}
 publisher:
   image: webhook/publisher
-  resources:
-    requests:
-      cpu: "50m"
-      memory: "128Mi"
-    limits:
-      cpu: "1000m"
-      memory: "2048Mi"
+  resources: {}

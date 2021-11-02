@@ -17,13 +17,7 @@ persistence:
   size: 10Gi
   disksPerBroker: 1
 heapOptions: "-Xms512M -Xmx512M"
-resources:
-  requests:
-    cpu: "300m"  
-    memory: "512Mi"
-  limits:
-    cpu: "2000m"
-    memory: "4096Mi"
+resources: {}
 podAnnotations: {}
 nodeSelector: {}
 tolerations: []

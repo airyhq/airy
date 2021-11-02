@@ -1,10 +1,4 @@
 component: integration-source-api
 mandatory: false
 image: sources/api
-resources:
-  requests:
-    cpu: "50m"
-    memory: "128Mi"
-  limits:
-    cpu: "1000m"
-    memory: "1024Mi"
+resources: {}

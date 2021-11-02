@@ -53,6 +53,7 @@ spec:
     metadata:
       labels:
         app: ngrok-proxy
+        WorkerType: fargate
     spec:
       containers:
         - name: ngrok

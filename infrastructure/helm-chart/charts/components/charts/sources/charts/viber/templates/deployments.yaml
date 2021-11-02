@@ -22,6 +22,7 @@ spec:
     metadata:
       labels:
         app: sources-viber-connector
+        WorkerType: fargate
     spec:
       containers:
         - name: app
@@ -111,6 +112,7 @@ spec:
     metadata:
       labels:
         app: sources-viber-events-router
+        WorkerType: fargate
     spec:
       containers:
         - name: app

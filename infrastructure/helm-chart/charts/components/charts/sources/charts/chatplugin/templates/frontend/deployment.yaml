@@ -22,6 +22,7 @@ spec:
     metadata:
       labels:
         app: frontend-chat-plugin
+        WorkerType: fargate
     spec:
       containers:
       - name: app

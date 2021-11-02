@@ -22,6 +22,7 @@ spec:
     metadata:
       labels:
         app: api-websocket
+        WorkerType: fargate
     spec:
       containers:
       - name: app

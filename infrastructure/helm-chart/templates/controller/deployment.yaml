@@ -18,6 +18,7 @@ spec:
     metadata:
       labels:
         app: airy-controller
+        WorkerType: fargate
     spec:
       serviceAccountName: airy-controller
       automountServiceAccountToken: true

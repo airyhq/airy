@@ -22,6 +22,7 @@ spec:
     metadata:
       labels:
         app: webhook-consumer
+        WorkerType: fargate
     spec:
       containers:
       - name: app
@@ -114,6 +115,7 @@ spec:
     metadata:
       labels:
         app: webhook-publisher
+        WorkerType: fargate
     spec:
       containers:
       - name: app

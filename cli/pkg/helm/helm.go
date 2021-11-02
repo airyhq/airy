@@ -89,6 +89,7 @@ func (h *Helm) UpgradeCharts() error {
 	chartURL := "https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-" + h.version + ".tgz"
 	return h.runHelm(append([]string{"upgrade",
 		"--values", "/apps/config/airy-config-map.yaml",
+		"--namespace", h.namespace,
 		"--timeout", "10m0s",
 		"airy", chartURL}))
 }

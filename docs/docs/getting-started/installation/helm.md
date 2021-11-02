@@ -17,9 +17,10 @@ an already existing Kubernetes cluster [Helm](https://helm.sh/).
 ## Prerequisites
 
 You would need an existing Kubernetes cluster and administrative access to it. For the purpose of this guide, we will use a Google (GKE) Kubernetes cluster.
+The cluster that we will create will have two nodes with 2cpu and 16GB RAM each.
 
 ```sh
-gcloud container clusters create awesomechat --num-nodes=2
+gcloud container clusters create awesomechat --num-nodes=2 --machine-type=e2-standard-4
 ```
 
 You will also need the [Helm](https://helm.sh/docs/intro/quickstart/) and [Kubectl](https://kubernetes.io/docs/tasks/tools/) binaries, locally on your machine.
@@ -39,7 +40,7 @@ Deploy Airy Core with the latest version. You can also configure a specific vers
 
 ```sh
 VERSION=$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)
-helm install airy https://airy-core-helm-charts.s3.amazonaws.com/stable/${VERSION}.tgz --timeout 10m
+helm install airy https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${VERSION}.tgz --timeout 10m
 ```
 
 By default `Airy Core` creates only a HTTP listener and when running in cloud environment it is recommended to setup an encrypted connection.
@@ -59,8 +60,6 @@ ingress-controller:
   host: awesomechat.airy.co
   https: true
   letsencryptEmail: "sre@airy.co"
-  loadbalancerAnnotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: nlb
 ```
 
 Run the following command to upgrade your Airy Core installation and setup Let's Encrypt:

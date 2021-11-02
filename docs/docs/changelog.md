@@ -3,11 +3,42 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
-## 0.33.0
+## 0.34.0
 
 #### Changes
 
-- Revert "[[#2434](https://github.com/airyhq/airy/issues/2434)] Fix instagram echo ingestion" [[#2512](https://github.com/airyhq/airy/pull/2512)]
+#### 🚀 Features
+
+- [[#2518](https://github.com/airyhq/airy/issues/2518)] Add fargate annotation [[#2540](https://github.com/airyhq/airy/pull/2540)]
+- Add CLI outdated version warning [[#2529](https://github.com/airyhq/airy/pull/2529)]
+
+#### 🐛 Bug Fixes
+
+- [[#2434](https://github.com/airyhq/airy/issues/2434)] Fix broken instagram Facebook inbox ingestion [[#2535](https://github.com/airyhq/airy/pull/2535)]
+- [2457] Fix upgrade to same version [[#2538](https://github.com/airyhq/airy/pull/2538)]
+- [[#2510](https://github.com/airyhq/airy/issues/2510)] Improve error logging for helm install [[#2522](https://github.com/airyhq/airy/pull/2522)]
+- [[#2255](https://github.com/airyhq/airy/issues/2255)] Fix helm chart url [[#2525](https://github.com/airyhq/airy/pull/2525)]
+- [[#2523](https://github.com/airyhq/airy/issues/2523)] Fix VERSION and add changelog [[#2524](https://github.com/airyhq/airy/pull/2524)]
+- [[#2473](https://github.com/airyhq/airy/issues/2473)] fix failing cypress test [[#2507](https://github.com/airyhq/airy/pull/2507)]
+
+#### 🧰 Maintenance
+
+- Bump react-redux from 7.2.5 to 7.2.6 [[#2539](https://github.com/airyhq/airy/pull/2539)]
+- Bump reselect from 4.0.0 to 4.1.1 [[#2533](https://github.com/airyhq/airy/pull/2533)]
+- Bump sass-loader from 12.1.0 to 12.3.0 [[#2534](https://github.com/airyhq/airy/pull/2534)]
+- Bump @types/react-dom from 17.0.9 to 17.0.10 [[#2526](https://github.com/airyhq/airy/pull/2526)]
+- Bump react-markdown from 7.0.1 to 7.1.0 [[#2527](https://github.com/airyhq/airy/pull/2527)]
+- Bump webpack from 5.54.0 to 5.59.1 [[#2517](https://github.com/airyhq/airy/pull/2517)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.33.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.33.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.33.1/windows/amd64/airy.exe)
+
+## 0.33.0
 
 #### 🚀 Features
 
@@ -16,13 +47,14 @@ sidebar_label: 📝 Changelog
 - [[#2453](https://github.com/airyhq/airy/issues/2453)] Store chatplugin customization state in the browser [[#2475](https://github.com/airyhq/airy/pull/2475)]
 - [[#2323](https://github.com/airyhq/airy/issues/2323)] Pass Google survey response as message [[#2471](https://github.com/airyhq/airy/pull/2471)]
 - [[#2255](https://github.com/airyhq/airy/issues/2255)] Modular deployment of Airy with helm [[#2341](https://github.com/airyhq/airy/pull/2341)]
-- [#2437 ] Add translations to chatplugin [[#2465](https://github.com/airyhq/airy/pull/2465)]
+- [[#2437](https://github.com/airyhq/airy/issues/2437)] Add translations to chatplugin [[#2465](https://github.com/airyhq/airy/pull/2465)]
 - [[#2424](https://github.com/airyhq/airy/issues/2424)] track channel connected [[#2447](https://github.com/airyhq/airy/pull/2447)]
 
 #### 🐛 Bug Fixes
 
+- [[#2514](https://github.com/airyhq/airy/issues/2514)] fixed ui bugs [[#2520](https://github.com/airyhq/airy/pull/2520)]
 - [[#2509](https://github.com/airyhq/airy/issues/2509)] attachments facebook and instagram improvement [[#2513](https://github.com/airyhq/airy/pull/2513)]
-- Fix analytics demo apply failure [[#2489](https://github.com/airyhq/airy/pull/2489)]
+- [[#2488](https://github.com/airyhq/airy/issues/2488)] Fix analytics demo apply failure [[#2489](https://github.com/airyhq/airy/pull/2489)]
 - [[#2255](https://github.com/airyhq/airy/issues/2255)] Fix namespace for controller [[#2508](https://github.com/airyhq/airy/pull/2508)]
 - [[#2481](https://github.com/airyhq/airy/issues/2481)] enable send attachments for facebook source [[#2502](https://github.com/airyhq/airy/pull/2502)]
 - [[#2504](https://github.com/airyhq/airy/issues/2504)] fix emoji reaction styling [[#2506](https://github.com/airyhq/airy/pull/2506)]
@@ -66,9 +98,16 @@ sidebar_label: 📝 Changelog
 
 You can download the Airy CLI for your operating system from the following links:
 
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.32.1/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.32.1/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.32.1/windows/amd64/airy.exe)
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.33.0/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.33.0/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.33.0/windows/amd64/airy.exe)
+
+#### Upgrade notes:
+This release has breaking changes in the structure of the airy.yaml file. When upgrading from an older version, do the following:
+- Remove the `kubernetes:` section, as it is no longer needed. The version is used
+  from the version of the CLI and the - namespace is used from the workspace
+  file cli.yaml
+- Rename the `ingress:` section to `ingress-controller:`
 
 ## 0.32.0
 
@@ -1220,46 +1259,4 @@ You can download the Airy CLI for your operating system from the following links
 [MacOS](https://airy-core-binaries.s3.amazonaws.com/0.12.0/darwin/amd64/airy)
 [Linux](https://airy-core-binaries.s3.amazonaws.com/0.12.0/linux/amd64/airy)
 [Windows](https://airy-core-binaries.s3.amazonaws.com/0.12.0/windows/amd64/airy.exe)
-
-## 0.11.0
-
-#### 🚀 Features
-
-- Custom welcome message in Chat Plugin [[#1103](https://github.com/airyhq/airy/pull/1103)]
-- [[#1015](https://github.com/airyhq/airy/issues/1015)] Refactor the scheduling of the components [[#1091](https://github.com/airyhq/airy/pull/1091)]
-- [[#1016](https://github.com/airyhq/airy/issues/1016)] Create topics with k8s job [[#1074](https://github.com/airyhq/airy/pull/1074)]
-- [[#1044](https://github.com/airyhq/airy/issues/1044)] Add cypress rule [[#1077](https://github.com/airyhq/airy/pull/1077)]
-- [[#1080](https://github.com/airyhq/airy/issues/1080)] Change style of ChatPlugin + fix carousel [[#1082](https://github.com/airyhq/airy/pull/1082)]
-- [[#1014](https://github.com/airyhq/airy/issues/1014)] Add helm image containing the charts [[#1079](https://github.com/airyhq/airy/pull/1079)]
-- [[#814](https://github.com/airyhq/airy/issues/814)] Add cmd+enter and better disabled state to… [[#1076](https://github.com/airyhq/airy/pull/1076)]
-
-
-#### 🐛 Bug Fixes
-
-- Fix/1104 split endpoints in http library in multiple files [[#1114](https://github.com/airyhq/airy/pull/1114)]
-- [[#1099](https://github.com/airyhq/airy/issues/1099)] Add missing allowed origin env [[#1100](https://github.com/airyhq/airy/pull/1100)]
-- [[#1093](https://github.com/airyhq/airy/issues/1093)] Fix image url for Facebook channel connection [[#1095](https://github.com/airyhq/airy/pull/1095)]
-- [[#1088](https://github.com/airyhq/airy/issues/1088)] Fix missing Facebook channel disconnect [[#1089](https://github.com/airyhq/airy/pull/1089)]
-- [[#1068](https://github.com/airyhq/airy/issues/1068)] improve channels UI [[#1071](https://github.com/airyhq/airy/pull/1071)]
-- fix size chatplugin in example.html [[#1070](https://github.com/airyhq/airy/pull/1070)]
-- [[#1028](https://github.com/airyhq/airy/issues/1028)] replaced manual mapping with npm lib [[#1098](https://github.com/airyhq/airy/pull/1098)]
-- [[#1072](https://github.com/airyhq/airy/issues/1072)] fixed text message and fallback in google suggestions [[#1073](https://github.com/airyhq/airy/pull/1073)]
-
-#### 📚 Documentation
-
-- [1092] Merge deployment and installation sections [[#1096](https://github.com/airyhq/airy/pull/1096)]
-- Readme Revamp [[#1059](https://github.com/airyhq/airy/pull/1059)]
-
-#### 🧰 Maintenance
-
-- Use Bazel eslint test rule [[#1086](https://github.com/airyhq/airy/pull/1086)]
-- Upgrade bazel tools and use buildifier tests [[#1081](https://github.com/airyhq/airy/pull/1081)]
-
-#### Airy CLI
-
-You can download the Airy CLI for your operating system from the following links:
-
-[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.11.0/darwin/amd64/airy)
-[Linux](https://airy-core-binaries.s3.amazonaws.com/0.11.0/linux/amd64/airy)
-[Windows](https://airy-core-binaries.s3.amazonaws.com/0.11.0/windows/amd64/airy.exe)
 

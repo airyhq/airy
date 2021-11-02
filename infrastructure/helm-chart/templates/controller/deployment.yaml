@@ -19,6 +19,8 @@ spec:
       labels:
         app: airy-controller
         WorkerType: fargate
+      annotations:
+        releaseTime: {{ (now) | toString | trunc 28 | quote }}
     spec:
       serviceAccountName: airy-controller
       automountServiceAccountToken: true

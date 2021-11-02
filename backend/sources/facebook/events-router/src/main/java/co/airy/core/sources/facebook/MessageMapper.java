@@ -73,7 +73,7 @@ public class MessageMapper {
         } else if (appId != null && !appId.equals(this.facebookAppId)) {
             // Third party app
             senderId = appId;
-        } else if (appId == null && !"instagram".equals(channel.getSource())) {
+        } else if (appId == null) {
             // Sent by Facebook moderator via Facebook inbox
             senderId = getSourceConversationId(rootNode);
         } else {
@@ -107,14 +107,14 @@ public class MessageMapper {
                 .ifPresent(referralNode -> headers.put("postback.referral", referralNode.toString()));
 
         // As a content hash use the Facebook message id if present and the whole content body if not
-        final String contentId = Stream.of(message, postbackNode)
+        final Optional<String> facebookMessageId = Stream.of(message, postbackNode)
                 .filter(Objects::nonNull)
                 .findFirst()
                 .map((node) -> node.get("mid"))
-                .map(JsonNode::textValue)
-                .orElse(payload);
+                .map(JsonNode::textValue);
 
-        final String messageId = UUIDv5.fromNamespaceAndName(channel.getId(), contentId).toString();
+        final String messageId = facebookMessageId.flatMap(getMessageId)
+                .orElseGet(() -> UUIDv5.fromNamespaceAndName(channel.getId(), payload).toString());
 
         return List.of(new ProducerRecord<>(applicationCommunicationMessages, messageId, Message.newBuilder()
                 .setSource(channel.getSource())

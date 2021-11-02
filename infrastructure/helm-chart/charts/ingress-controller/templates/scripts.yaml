@@ -32,20 +32,22 @@ data:
   wait-for-loadbalancer.sh: |
     #!/bin/sh
     delay=${DELAY:-10}
-    host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].*}')
     while test -z "${host}"; do
       echo "Waiting for loadbalancer to be created..."
       sleep ${delay}
-      host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+      host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].*}')
     done
   update-ingress-lb.sh: |
     #!/bin/sh
     host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-    for ingress in $(kubectl get ingress -l core.airy.co/managed=true -o jsonpath='{.items[*].metadata.name}'); do
-      kubectl get ingress ${ingress} -o json | jq "(.spec.rules[0].host=\"${host}\")" | kubectl apply -f -
-    done
+    if test "${host}"; then
+      for ingress in $(kubectl get ingress -l core.airy.co/managed=true -o jsonpath='{.items[*].metadata.name}'); do
+        kubectl get ingress ${ingress} -o json | jq "(.spec.rules[0].host=\"${host}\")" | kubectl apply -f -
+      done
+    fi
   update-configmap-lb.sh: |
     #!/bin/sh
     protocol=${PROTOCOL:-http}
-    host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    host=$(kubectl -n kube-system get service  ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].*}')
     kubectl patch configmap core-config -p "{\"data\":{\"API_HOST\":\"${protocol}://${host}\"}}" --type merge

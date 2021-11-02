@@ -11,3 +11,6 @@ singleuser:
           - >
             cp -r /tmp/demo_data.ipynb /home/jovyan;
             cp -r /tmp/create_df_from_parquet.ipynb /home/jovyan
+            cp -r /tmp/movie_data_demo.ipynb /home/jovyan
+            cp -r /tmp/models.py /home/jovyan
+            cp -r /tmp/utils.py /home/jovyan

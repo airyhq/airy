@@ -24,6 +24,7 @@ spec:
     metadata:
       labels:
         app: frontend-ui
+        WorkerType: fargate
     spec:
       containers:
       - name: app

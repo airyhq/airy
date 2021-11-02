@@ -22,6 +22,7 @@ spec:
     metadata:
       labels:
         app: sources-facebook-connector
+        WorkerType: fargate
     spec:
       containers:
         - name: app
@@ -119,6 +120,7 @@ spec:
     metadata:
       labels:
         app: sources-facebook-events-router
+        WorkerType: fargate
     spec:
       containers:
       - name: app

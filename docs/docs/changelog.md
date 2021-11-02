@@ -3,6 +3,41 @@ title: Changelog
 sidebar_label: 📝 Changelog
 ---
 
+## 0.34.0
+
+#### Changes
+
+#### 🚀 Features
+
+- [[#2518](https://github.com/airyhq/airy/issues/2518)] Add fargate annotation [[#2540](https://github.com/airyhq/airy/pull/2540)]
+- Add CLI outdated version warning [[#2529](https://github.com/airyhq/airy/pull/2529)]
+
+#### 🐛 Bug Fixes
+
+- [[#2434](https://github.com/airyhq/airy/issues/2434)] Fix broken instagram Facebook inbox ingestion [[#2535](https://github.com/airyhq/airy/pull/2535)]
+- [2457] Fix upgrade to same version [[#2538](https://github.com/airyhq/airy/pull/2538)]
+- [[#2510](https://github.com/airyhq/airy/issues/2510)] Improve error logging for helm install [[#2522](https://github.com/airyhq/airy/pull/2522)]
+- [[#2255](https://github.com/airyhq/airy/issues/2255)] Fix helm chart url [[#2525](https://github.com/airyhq/airy/pull/2525)]
+- [[#2523](https://github.com/airyhq/airy/issues/2523)] Fix VERSION and add changelog [[#2524](https://github.com/airyhq/airy/pull/2524)]
+- [[#2473](https://github.com/airyhq/airy/issues/2473)] fix failing cypress test [[#2507](https://github.com/airyhq/airy/pull/2507)]
+
+#### 🧰 Maintenance
+
+- Bump react-redux from 7.2.5 to 7.2.6 [[#2539](https://github.com/airyhq/airy/pull/2539)]
+- Bump reselect from 4.0.0 to 4.1.1 [[#2533](https://github.com/airyhq/airy/pull/2533)]
+- Bump sass-loader from 12.1.0 to 12.3.0 [[#2534](https://github.com/airyhq/airy/pull/2534)]
+- Bump @types/react-dom from 17.0.9 to 17.0.10 [[#2526](https://github.com/airyhq/airy/pull/2526)]
+- Bump react-markdown from 7.0.1 to 7.1.0 [[#2527](https://github.com/airyhq/airy/pull/2527)]
+- Bump webpack from 5.54.0 to 5.59.1 [[#2517](https://github.com/airyhq/airy/pull/2517)]
+
+#### Airy CLI
+
+You can download the Airy CLI for your operating system from the following links:
+
+[MacOS](https://airy-core-binaries.s3.amazonaws.com/0.33.1/darwin/amd64/airy)
+[Linux](https://airy-core-binaries.s3.amazonaws.com/0.33.1/linux/amd64/airy)
+[Windows](https://airy-core-binaries.s3.amazonaws.com/0.33.1/windows/amd64/airy.exe)
+
 ## 0.33.0
 
 #### 🚀 Features

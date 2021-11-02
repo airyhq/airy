@@ -10,7 +10,12 @@ import (
 	"cli/pkg/kube"
 	"cli/pkg/workspace"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
+	"regexp"
+	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -18,6 +23,7 @@ import (
 
 const cliConfigFileName = "cli.yaml"
 const cliConfigDirName = ".airy"
+const cliVersionAPI = "https://airy-core-binaries.s3.amazonaws.com/stable.txt"
 
 var cliConfigDir string
 var Version string
@@ -36,7 +42,35 @@ var RootCmd = &cobra.Command{
 				os.Exit(1)
 			}
 		}
+		if !strings.Contains(Version, "alpha") {
+			cliVersion()
+		}
 	},
+}
+
+func cliVersion() {
+	latest_stable := Version
+	client := http.Client{
+		Timeout: time.Second,
+	}
+
+	resp, err := client.Get(cliVersionAPI)
+	if err != nil {
+		return
+	} else {
+		body, _ := ioutil.ReadAll(resp.Body)
+		defer resp.Body.Close()
+		temp := strings.TrimSuffix(string(body), "\n")
+		match, _ := regexp.MatchString("^[0-9]+\\.[0-9]+\\.[0-9]+$", temp)
+		if match {
+			latest_stable = temp
+		} else {
+			return
+		}
+	}
+	if Version != latest_stable {
+		fmt.Printf("Warning: Your CLI version is out of date. Please upgrade to the latest stable version: %s. \n\n", latest_stable)
+	}
 }
 
 var versionCmd = &cobra.Command{

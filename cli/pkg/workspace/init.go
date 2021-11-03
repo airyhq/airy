@@ -3,34 +3,33 @@ package workspace
 import (
 	"cli/pkg/workspace/template"
 	"fmt"
-	"github.com/spf13/viper"
 	"os"
 	"path/filepath"
+
+	"github.com/spf13/viper"
 )
 
-func Init(path string) ConfigDir {
+func Init(path string) (ConfigDir, error) {
 	viper.AddConfigPath(getConfigPath(path))
 	viper.SetConfigType("yaml")
 	viper.SetConfigName(cliConfigFileName)
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			fmt.Println(err)
-			fmt.Println("the current directory is not an airy workspace directory")
+			err = fmt.Errorf("%w\nthe current directory is not an airy workspace directory", err)
 		} else {
-			fmt.Println("invalid configuration: ", err)
+			err = fmt.Errorf("invalid configuration: %w", err)
 		}
 
-		os.Exit(1)
+		return ConfigDir{}, err
 	}
 
 	dir := ConfigDir{Path: path}
 
 	if _, err := os.Stat(dir.GetAiryYaml()); os.IsNotExist(err) {
-		fmt.Println("the current directory is not an airy workspace directory")
-		os.Exit(1)
+		return dir, fmt.Errorf("the current directory is not an airy workspace directory")
 	}
-	return dir
+	return dir, nil
 }
 
 func getConfigPath(path string) string {
@@ -56,7 +55,6 @@ func Create(path string, data template.Variables) (ConfigDir, error) {
 			return ConfigDir{}, err
 		}
 	}
-
 
 	if err := template.CopyToDir(path, data); err != nil {
 		return ConfigDir{}, err

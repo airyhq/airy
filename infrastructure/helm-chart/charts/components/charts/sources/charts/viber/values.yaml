@@ -3,5 +3,7 @@ mandatory: false
 enabled: true
 connector:
   image: sources/viber-connector
+  resources: {}
 eventsRouter:
   image: sources/viber-events-router
+  resources: {}

@@ -4,3 +4,4 @@ api:
     image: api/admin
     mandatory: true
     enabled: true
+    resources: {}

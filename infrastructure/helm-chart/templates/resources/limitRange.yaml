@@ -1,0 +1,15 @@
+{{ if .Values.limitRange }}
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: {{ .Release.Namespace }}
+spec:
+  limits:
+  - default:
+      cpu: "50m"
+      memory: "128Mi"
+    defaultRequest:
+      cpu: "20m"
+      memory: "32Mi"
+    type: Container
+{{ end }}

@@ -32,8 +32,8 @@ spec:
           - "--kafka.server={{ template "kafka.name" . }}:{{  .Values.port }}"
           resources:
             requests:
-              cpu: 100m
-              memory: 100Mi
+              cpu: 50m
+              memory: 64Mi
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
             - containerPort: {{ .Values.prometheus.exporterPort }}

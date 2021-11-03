@@ -2,3 +2,4 @@ component: frontend-ui
 mandatory: false
 enabled: true
 image: frontend/ui
+resources: {}

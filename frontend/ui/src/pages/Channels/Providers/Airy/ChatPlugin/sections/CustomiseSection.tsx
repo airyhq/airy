@@ -497,7 +497,8 @@ export const CustomiseSection = ({channelId, host}: CustomiseSectionProps) => {
         style={{
           ...(width && {width: parseInt(width) < 200 ? 350 : parseInt(width)}),
           ...(height && {height: parseInt(height) < 200 ? 700 : parseInt(height)}),
-        }}>
+        }}
+      >
         <div className={styles.pluginContainer}>
           <AiryChatPlugin config={demoConfig} />
         </div>

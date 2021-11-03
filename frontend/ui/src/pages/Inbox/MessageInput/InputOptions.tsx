@@ -130,7 +130,8 @@ export const InputOptions = (props: Props) => {
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
         type="button"
         disabled={inputDisabled || loadingSelector}
-        onClick={toggleEmojiDrawer}>
+        onClick={toggleEmojiDrawer}
+      >
         <div className={styles.actionToolTip}>Emojis</div>
         <Smiley aria-hidden className={styles.smileyIcon} />
       </button>
@@ -138,7 +139,8 @@ export const InputOptions = (props: Props) => {
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
         type="button"
         disabled={inputDisabled || loadingSelector}
-        onClick={toggleTemplateModal}>
+        onClick={toggleTemplateModal}
+      >
         <div className={styles.actionToolTip}>Templates</div>
         <div className={styles.templateActionContainer}>
           <TemplateAlt aria-hidden className={styles.templateAltIcon} />
@@ -149,7 +151,8 @@ export const InputOptions = (props: Props) => {
         <button
           className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
           type="button"
-          disabled={inputDisabled || loadingSelector}>
+          disabled={inputDisabled || loadingSelector}
+        >
           <div className={styles.actionToolTip}>Files</div>
 
           <label htmlFor="file" style={{cursor: inputDisabled || loadingSelector ? 'not-allowed' : 'pointer'}}>

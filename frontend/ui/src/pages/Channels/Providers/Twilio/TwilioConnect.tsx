@@ -118,7 +118,8 @@ const TwilioConnect = (props: TwilioConnectProps) => {
             type="submit"
             styleVariant="normal"
             disabled={numberInput.trim().length === 0}
-            onClick={(e: React.ChangeEvent<HTMLFormElement>) => connectTwilioChannel(e)}>
+            onClick={(e: React.ChangeEvent<HTMLFormElement>) => connectTwilioChannel(e)}
+          >
             {buttonText}
           </Button>
         </div>

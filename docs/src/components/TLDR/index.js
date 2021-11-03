@@ -12,7 +12,8 @@ const TLDR = ({children}) => {
       style={{
         backgroundColor: color,
         borderLeft: `6px solid ${leftBarColor}`,
-      }}>
+      }}
+    >
       {children}
     </blockquote>
   );

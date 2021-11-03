@@ -33,7 +33,8 @@ export const StoryReplies = ({url, text, sentAt, fromContact}: InstagramRepliesP
         options={{
           defaultProtocol: 'https',
           className: `${styles.messageLink} ${fromContact ? styles.contactContent : styles.memberContent}`,
-        }}>
+        }}
+      >
         {text}
       </Linkify>
     </div>

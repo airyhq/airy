@@ -14,7 +14,8 @@ export const Text = ({text, fromContact}: TextRenderProps) => (
     options={{
       defaultProtocol: 'https',
       className: `${styles.messageLink} ${fromContact ? styles.contactContent : styles.memberContent}`,
-    }}>
+    }}
+  >
     {text}
   </Linkify>
 );

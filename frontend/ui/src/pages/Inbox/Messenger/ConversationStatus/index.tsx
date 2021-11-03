@@ -39,7 +39,8 @@ function ConversationStatus(props: Props) {
   return (
     <div
       className={`${styles.conversationStatus} ${currentConversationState === 'CLOSED' ? styles.closed : styles.open}`}
-      data-cy={cyConversationStatus}>
+      data-cy={cyConversationStatus}
+    >
       <div className={styles.closedButtonWrapper}>
         <div className={styles.closedButton} onClick={() => toggleState(props.match.params.conversationId, 'CLOSED')}>
           Closed

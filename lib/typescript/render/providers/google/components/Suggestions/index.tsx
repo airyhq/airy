@@ -56,7 +56,8 @@ export const Suggestions = ({text, fallback, image, suggestions, fromContact}: S
                       : `tel: ${elem.action.dialAction?.phoneNumber}`
                   }
                   target="_blank"
-                  rel="noopener noreferrer">
+                  rel="noopener noreferrer"
+                >
                   {elem.action.text}
                 </a>
               </h1>

@@ -28,13 +28,14 @@ You will also need the [Helm](https://helm.sh/docs/intro/quickstart/) and [Kubec
 Make sure that you can access the cluster running:
 
 ```sh
-$ kubectl get pods
+kubectl get pods
 No resources found in default namespace.
-$ helm list
+
+helm list
 NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION
 ```
 
-## Deploy Airy Core
+## Install
 
 Deploy Airy Core with the latest version. You can also configure a specific version
 
@@ -65,12 +66,12 @@ ingress-controller:
 Run the following command to upgrade your Airy Core installation and setup Let's Encrypt:
 
 ```sh
-$ helm upgrade airy https://airy-core-helm-charts.s3.amazonaws.com/testing/airy-${VERSION}.tgz --values ./airy.yaml
+helm upgrade airy https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${VERSION}.tgz --values ./airy.yaml
 ```
 
 After that you should be able to access your `Airy Core` instance through HTTPS, in this example on https://awesomechat.airy.co.
 
-## Customization
+## Customize
 
 Deploying `Airy Core` with Helm gives flexibility to customize your installation.
 
@@ -153,6 +154,10 @@ If you wish to build the docker images yourself and store them in your own `Cont
 VERSION=$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)
 helm install airy https://airy-core-helm-charts.s3.amazonaws.com/stable/${VERSION}.tgz --timeout 10m --set global.containerRegistry=my-docker-registry
 ```
+
+## Upgrade
+
+For upgrading your `Airy Core` instance using helm, refer to our [upgrade document](/getting-started/upgrade#upgrade-using-helm).
 
 ## Troubleshooting
 

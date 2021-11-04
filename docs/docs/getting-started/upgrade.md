@@ -63,7 +63,16 @@ applied configuration for "security"
 Writing the new version into the configuration file.
 Copying the configuration file in the Airy Core K8s cluster.
 
-✅ Aity Core upgraded
+✅ Airy Core upgraded
+```
+
+## Upgrade using Helm
+
+If you used Helm to deploy `Airy Core`, you can upgrade with the `helm upgrade` command:
+
+```sh
+VERSION=$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)
+helm upgrade airy https://airy-core-helm-charts.s3.amazonaws.com/stable/airy-${VERSION}.tgz --values ./airy.yaml
 ```
 
 ## Cleanup the upgrade

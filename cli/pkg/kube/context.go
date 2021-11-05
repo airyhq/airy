@@ -2,8 +2,10 @@ package kube
 
 import (
 	"errors"
+
 	"github.com/spf13/viper"
 	"k8s.io/client-go/kubernetes"
+	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/tools/clientcmd"
 )
 

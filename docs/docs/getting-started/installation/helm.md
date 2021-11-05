@@ -155,6 +155,30 @@ VERSION=$(curl -L -s https://airy-core-binaries.s3.amazonaws.com/stable.txt)
 helm install airy https://airy-core-helm-charts.s3.amazonaws.com/stable/${VERSION}.tgz --timeout 10m --set global.containerRegistry=my-docker-registry
 ```
 
+## Workspace setup
+
+When installing with Helm, a workspace directory is not created and therefore you cannot use the `Airy CLI` with your `Airy Core` installation, without setting up your workspace directory first. The `Airy CLI` is needed to apply configuration, to get the status of the components and to interact with the API.
+
+In order for the CLI to recognize a workspace directory, you need to have two files there:
+
+- `cli.yaml` - Configuration on how the CLI can access the cluster.
+
+  - `apihost` - The loadBalancer or the hostname on which the API can be reached.
+  - `kubeconfig` - The path to the Kubernetes config file.
+  - `contextname` - The context for the cluster, inside the kubeconfig file.
+  - `namespace` - The namespace where `Airy Core` is installed.
+
+- `airy.yaml` - Values you used for deploying the Helm chart. The file can also be empty, but it needs to exist.
+
+Example of the `cli.yaml` file.
+
+```
+apihost: https://my-airy-core-fqdn
+contextname: gke_us-central1-c_awesomechat
+kubeconfig: /home/user/.kube/config
+namespace: default
+```
+
 ## Upgrade
 
 For upgrading your `Airy Core` instance using helm, refer to our [upgrade document](/getting-started/upgrade#upgrade-using-helm).

@@ -14,18 +14,10 @@ go_library(
         "//cli/pkg/console",
         "//cli/pkg/helm",
         "//cli/pkg/kube",
-        "//cli/pkg/providers",
         "//cli/pkg/workspace",
         "//infrastructure/lib/go/k8s/util",
         "@com_github_spf13_cobra//:cobra",
         "@com_github_spf13_viper//:viper",
-        "@com_github_twinproduction_go_color//:go-color",
-        "@io_k8s_api//batch/v1:go_default_library",
-        "@io_k8s_api//core/v1:go_default_library",
-        "@io_k8s_api//rbac/v1:go_default_library",
-        "@io_k8s_apimachinery//pkg/apis/meta/v1:go_default_library",
-        "@io_k8s_apimachinery//pkg/watch:go_default_library",
-        "@io_k8s_client_go//kubernetes:go_default_library",
     ],
 )
 

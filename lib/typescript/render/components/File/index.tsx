@@ -1,14 +1,16 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {getFileName} from '../../attachments';
+import {getFileName} from '../../../../../frontend/ui/src/services/types/attachmentsTypes';
 import {ReactComponent as FileDownloadIcon} from 'assets/images/icons/file-download.svg';
 
 type FileRenderProps = {
   fileUrl: string;
+  fileName?:string;
 };
 
-export const File = ({fileUrl}: FileRenderProps) => {
-  const fileName = getFileName(fileUrl);
+export const File = ({fileUrl, fileName}: FileRenderProps) => {
+  
+  fileName = fileName ?? getFileName(fileUrl)
 
   return (
     <div className={styles.wrapper}>

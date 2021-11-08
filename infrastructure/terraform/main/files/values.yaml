@@ -1,0 +1,5 @@
+ingress-controller:
+  host: ${host}.${hosted_zone}
+security:
+  allowedOrigins: "*"
+apiHost: https://${host}.${hosted_zone}

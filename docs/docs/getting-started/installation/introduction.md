@@ -7,6 +7,7 @@ import TLDR from "@site/src/components/TLDR";
 import ButtonBoxList from "@site/src/components/ButtonBoxList";
 import ButtonBox from "@site/src/components/ButtonBox";
 import AwsSVG from "@site/static/icons/aws.svg";
+import TerraformSVG from "@site/static/icons/terraform.svg";
 import Minikube from "@site/static/icons/minikube.svg";
 import RocketSVG from "@site/static/icons/rocket.svg";
 import HelmSVG from "@site/static/icons/helm.svg";
@@ -60,5 +61,11 @@ icon={<AwsSVG />}
 title='Production ready environment with AWS'
 description='Step by step guide to run Airy Core on AWS'
 link='getting-started/installation/aws'
+/>
+<ButtonBox
+icon={<TerraformSVG />}
+title='Cloud deployment with Terraform'
+description='Step by step guide to run Airy Core in the cloud managed by Terraform'
+link='getting-started/installation/terraform'
 />
 </ButtonBoxList>

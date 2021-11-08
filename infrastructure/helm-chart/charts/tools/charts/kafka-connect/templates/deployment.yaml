@@ -22,7 +22,7 @@ spec:
       labels:
         app: {{ template "kafka-connect.name" . }}
         release: {{ .Release.Name }}
-        WorkerType: fargate
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}

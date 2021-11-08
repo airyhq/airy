@@ -69,3 +69,7 @@ variable "fargate_namespaces" {
   type = list(string)
   default = [ "default" ]
 }
+
+variable "fargate_profiles" {
+  
+}

@@ -16,7 +16,7 @@ your local machine using [minikube](https://minikube.sigs.k8s.io/).
 
 ## Create a minikube cluster
 
-First install minikube using [their documentation](https://kubernetes.io/de/docs/tasks/tools/install-minikube/). Currently supported versions are: v1.19.0, v1.20.0, v1.21.0 and v1.22.0. If you already have it installed make sure that your version is in line with the supported versions.
+First install minikube using [their documentation](https://kubernetes.io/de/docs/tasks/tools/install-minikube/). Minikube version v1.19.0 or higher is required.
 
 Next you also need to install the [Airy CLI](cli/introduction.md). Now you can run this command, which will create a new
 minikube cluster on your system and install Airy core on it:

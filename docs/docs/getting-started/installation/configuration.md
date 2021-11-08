@@ -22,6 +22,10 @@ Your Airy Core instance will start and stop components according to your
 configuration. For example, if you do not wish to start Facebook components, it
 is enough not to provide any Facebook specific configuration.
 
+:::note
+If you installed Airy with Helm, then you need to [setup your workspace directory](/getting-started/installation/helm#workspace-setup), before you can use the CLI.
+:::
+
 Now let's have a look at the different sections so you can make the changes you
 are looking for.
 

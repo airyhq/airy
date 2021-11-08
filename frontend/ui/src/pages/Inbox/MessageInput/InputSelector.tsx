@@ -20,10 +20,18 @@ export const InputSelector = (props: InputSelectorProps) => {
   const [closeIconHeight, setCloseIconHeight] = useState('');
   const [closeButtonSelector, setCloseButtonSelector] = useState(false);
 
+  console.log('fileInfo', fileInfo);
+
   const fileSelectorDiv = useRef(null);
   const removeFileButton = useRef(null);
 
+  useEffect(() => {
+    scaleInputSelector();
+  }, []);
+
   const scaleInputSelector = () => {
+    console.log('fileSelectorDiv?.current?.offsetHeight', fileSelectorDiv?.current?.offsetHeight);
+
     if (fileSelectorDiv?.current?.offsetHeight > contentResizedHeight) {
       const contentSelectorDivHeight = fileSelectorDiv.current.offsetHeight;
       const scaleRatio = Number(Math.min(contentResizedHeight / contentSelectorDivHeight).toFixed(2));
@@ -46,24 +54,16 @@ export const InputSelector = (props: InputSelectorProps) => {
 
       fileSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
       fileSelectorDiv.current.style.transformOrigin = 'left';
-    } else {
-      if (fileInfo && fileInfo?.size >= 1 && fileInfo?.type !== 'audio' && fileInfo?.type !== 'file') {
-        setTimeout(() => {
-          setCloseButtonSelector(true);
-        }, 1000);
-      } else if (fileInfo && fileInfo?.size < 1 && fileInfo?.type !== 'audio' && fileInfo?.type !== 'file') {
-        setTimeout(() => {
-          setCloseButtonSelector(true);
-        }, 500);
-      } else {
+    } else if (fileInfo?.type === 'image' || fileInfo?.type === 'video') {
+      console.log('setTimeout');
+      setTimeout(() => {
         setCloseButtonSelector(true);
-      }
+      }, 1000);
+    } else {
+      console.log(' no setTimeout');
+      setCloseButtonSelector(true);
     }
   };
-
-  useEffect(() => {
-    scaleInputSelector();
-  }, []);
 
   return (
     <div className={styles.container} ref={fileSelectorDiv}>

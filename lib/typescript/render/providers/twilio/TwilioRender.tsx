@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Image, File} from '../../components';
+import {Text, Image, File, Video, Audio} from '../../components';
 import {RenderPropsUnion} from '../../props';
 import {ContentUnion} from './twilioModel';
 
@@ -17,6 +17,12 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
     case 'image':
       return <Image imageUrl={content.imageUrl} altText="an image sent via a Twilio source" />;
 
+    case 'video':
+      return <Video videoUrl={content.videoUrl} />;
+
+    case 'audio':
+      return <Audio audioUrl={content.audioUrl} />;
+
     case 'file':
       return <File fileUrl={content.fileUrl} fileName="PDF file" />;
   }
@@ -30,13 +36,9 @@ const inboundContent = (message): ContentUnion => {
   //image
   if (messageContent.includes('MediaContentType0=image')) {
     const imageUrlStart = messageContent.search('MediaUrl0=');
-    console.log('imageUrlStart', imageUrlStart);
     const imageUrlEnd = messageContent.search('&ApiVersion=');
-    console.log('imageUrlEnd', imageUrlEnd);
-    const imageUrlLength = imageUrlEnd - imageUrlStart;
     const enCodedText = messageContent.substring(imageUrlStart + 10, imageUrlEnd);
     const replaced = enCodedText.split('+').join(' ');
-    console.log('replaced', replaced);
     const imageUrl = decodeURIComponent(replaced);
 
     return {
@@ -45,19 +47,42 @@ const inboundContent = (message): ContentUnion => {
     };
   }
 
+  //video
+  if (messageContent.includes('MediaContentType0=video')) {
+    const videoUrlStart = messageContent.search('MediaUrl0=');
+    const videoUrlEnd = messageContent.search('&ApiVersion=');
+    const enCodedText = messageContent.substring(videoUrlStart + 10, videoUrlEnd);
+    const replaced = enCodedText.split('+').join(' ');
+    console.log('replaced', replaced);
+    const videoUrl = decodeURIComponent(replaced);
+
+    return {
+      type: 'video',
+      videoUrl: videoUrl,
+    };
+  }
+
+  //audio
+  if (messageContent.includes('MediaContentType0=audio')) {
+    const audioUrlStart = messageContent.search('MediaUrl0=');
+    const audioUrlEnd = messageContent.search('&ApiVersion=');
+    const enCodedText = messageContent.substring(audioUrlStart + 10, audioUrlEnd);
+    const replaced = enCodedText.split('+').join(' ');
+    const audioUrl = decodeURIComponent(replaced);
+
+    return {
+      type: 'audio',
+      audioUrl: audioUrl,
+    };
+  }
+
   //file: pdf
   if (messageContent.includes('MediaContentType0=application%2Fpdf')) {
     const imageUrlStart = messageContent.search('MediaUrl0=');
-    console.log('imageUrlStart', imageUrlStart);
     const imageUrlEnd = messageContent.search('&ApiVersion=');
-    console.log('imageUrlEnd', imageUrlEnd);
-    const imageUrlLength = imageUrlEnd - imageUrlStart;
     const enCodedText = messageContent.substring(imageUrlStart + 10, imageUrlEnd);
     const replaced = enCodedText.split('+').join(' ');
-    console.log('replaced', replaced);
     const fileUrl = decodeURIComponent(replaced) + '.pdf';
-
-    console.log('fileUrl', fileUrl);
 
     return {
       type: 'file',

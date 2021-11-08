@@ -9,6 +9,7 @@ import {sendMessages} from '../../../actions/messages';
 import {connect, ConnectedProps} from 'react-redux';
 import {Template, Source} from 'model';
 import {ErrorPopUp} from 'components';
+import {mediaAttachmentsExtensions} from 'render';
 import styles from './InputOptions.module.scss';
 
 const mapDispatchToProps = {sendMessages};
@@ -52,6 +53,23 @@ export const InputOptions = (props: Props) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
+  const [supportedFiles, setSupportedFiles] = useState('');
+
+  useEffect(() => {
+    const imageFiles = mediaAttachmentsExtensions[source + 'ImageExtensions'];
+    const videoFiles = mediaAttachmentsExtensions[source + 'VideoExtensions'];
+    const audioFiles = mediaAttachmentsExtensions[source + 'AudioExtensions'];
+    const docsFiles = mediaAttachmentsExtensions[source + 'FileExtensions'];
+
+    const supportedDocsFiles = docsFiles ? ',' + docsFiles.join(',.') : '';
+    const supportedAudioFiles = audioFiles ? ',' + audioFiles.join(',.') : '';
+    const supportedVideoFiles = videoFiles ? ',' + videoFiles.join(',.') : '';
+    const supportedImageFiles = imageFiles ? imageFiles.join(',.') : '';
+
+    const supportedFilesForSource = `.${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
+
+    setSupportedFiles(supportedFilesForSource);
+  }, [source]);
 
   const toggleEmojiDrawer = () => {
     if (isShowingTemplateModal) {
@@ -166,6 +184,7 @@ export const InputOptions = (props: Props) => {
             onChange={selectFile}
             className={styles.fileInput}
             disabled={inputDisabled || loadingSelector}
+            accept={supportedFiles}
           />
         </button>
       )}

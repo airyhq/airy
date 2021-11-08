@@ -1,5 +1,5 @@
 export interface Content {
-  type: 'text' | 'image' | 'file';
+  type: 'text' | 'image' | 'video' | 'audio' | 'file';
 }
 
 export interface TextContent extends Content {
@@ -12,9 +12,19 @@ export interface ImageContent extends Content {
   imageUrl: string;
 }
 
+export interface VideoContent extends Content {
+  type: 'video';
+  videoUrl: string;
+}
+
 export interface FileContent extends Content {
   type: 'file';
   fileUrl: string;
 }
 
-export type ContentUnion = TextContent | ImageContent | FileContent;
+export interface AudioContent extends Content {
+  type: 'audio';
+  audioUrl: string;
+}
+
+export type ContentUnion = TextContent | ImageContent | FileContent | VideoContent | AudioContent;

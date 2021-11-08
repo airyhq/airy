@@ -1,6 +1,6 @@
 export const mediaAttachmentsExtensions = {
   //facebook
-  facebookImageExtensions: ['jpeg', 'jpg', 'gif', 'png', 'tiff', 'tif'],
+  facebookImageExtensions: ['jpeg', 'jpg', 'gif', 'png', 'tiff', 'tif', 'webp'],
   facebookVideoExtensions: ['mp4', 'mov', 'wmv'],
   facebookAudioExtensions: ['mp3', 'ogg', 'wav'],
   facebookFileExtensions: [

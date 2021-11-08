@@ -189,21 +189,20 @@ const MessageInput = (props: Props) => {
     //size limit error
     if (fileSizeInMB >= maxFileSizeAllowed) {
       return setFileUploadErrorPopUp(
-        `Failed to upload the file. The maximum file size allowed is ${maxFileSizeAllowed}MB.`
+        `Failed to upload the file.
+        The maximum file size allowed for this source is ${maxFileSizeAllowed}MB.`
       );
     }
 
     //unsupported file error
     if (!getAttachmentType(file.name, source)) {
-      const capitalizedSourceName = source.charAt(0).toUpperCase() + source.slice(1);
-
       const supportedDocsFiles = docsFiles ? ',' + docsFiles.join(', ') : '';
       const supportedAudioFiles = audioFiles ? ',' + audioFiles.join(', ') : '';
       const supportedVideoFiles = videoFiles ? ',' + videoFiles.join(', ') : '';
       const supportedImageFiles = imageFiles ? imageFiles.join(', ') : '';
 
-      const errorMessage = `This file type is not supported as a sending attachment by ${capitalizedSourceName} Messenger. Supported files: 
-      ${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
+      const errorMessage = `This file type is not supported by this source. 
+      Supported files: ${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
 
       return setFileUploadErrorPopUp(errorMessage);
     }

@@ -15,7 +15,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <Text fromContact={props.message.fromContact || false} text={content.text} />;
 
     case 'image':
-      return <Image imageUrl={content.imageUrl} altText='an image sent via a Twilio source' />;
+      return <Image imageUrl={content.imageUrl} altText="an image sent via a Twilio source" />;
 
     case 'file':
       return <File fileUrl={content.fileUrl} fileName="PDF file" />;
@@ -24,48 +24,47 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
 const inboundContent = (message): ContentUnion => {
   const messageContent = message.content;
-  console.log('messageContent - inbound', messageContent)
+  console.log('messageContent - inbound', messageContent);
   let text = 'Unsupported message type';
 
   //image
-  if(messageContent.includes('MediaContentType0=image')){
+  if (messageContent.includes('MediaContentType0=image')) {
     const imageUrlStart = messageContent.search('MediaUrl0=');
-    console.log('imageUrlStart', imageUrlStart)
+    console.log('imageUrlStart', imageUrlStart);
     const imageUrlEnd = messageContent.search('&ApiVersion=');
-    console.log('imageUrlEnd', imageUrlEnd)
-    const imageUrlLength = imageUrlEnd - imageUrlStart
+    console.log('imageUrlEnd', imageUrlEnd);
+    const imageUrlLength = imageUrlEnd - imageUrlStart;
     const enCodedText = messageContent.substring(imageUrlStart + 10, imageUrlEnd);
     const replaced = enCodedText.split('+').join(' ');
-    console.log('replaced', replaced)
+    console.log('replaced', replaced);
     const imageUrl = decodeURIComponent(replaced);
 
     return {
       type: 'image',
       imageUrl: imageUrl,
     };
-  } 
+  }
 
-  //file pdf
-  if(messageContent.includes('MediaContentType0=application%2Fpdf')){
+  //file: pdf
+  if (messageContent.includes('MediaContentType0=application%2Fpdf')) {
     const imageUrlStart = messageContent.search('MediaUrl0=');
-    console.log('imageUrlStart', imageUrlStart)
+    console.log('imageUrlStart', imageUrlStart);
     const imageUrlEnd = messageContent.search('&ApiVersion=');
-    console.log('imageUrlEnd', imageUrlEnd)
-    const imageUrlLength = imageUrlEnd - imageUrlStart
+    console.log('imageUrlEnd', imageUrlEnd);
+    const imageUrlLength = imageUrlEnd - imageUrlStart;
     const enCodedText = messageContent.substring(imageUrlStart + 10, imageUrlEnd);
     const replaced = enCodedText.split('+').join(' ');
-    console.log('replaced', replaced)
-    const fileUrl = decodeURIComponent(replaced) + '.pdf'
+    console.log('replaced', replaced);
+    const fileUrl = decodeURIComponent(replaced) + '.pdf';
 
-    console.log('fileUrl', fileUrl)
+    console.log('fileUrl', fileUrl);
 
     return {
       type: 'file',
       fileUrl: fileUrl,
     };
-  } 
+  }
 
-  
   //text
   if (messageContent.includes('&Body=' && '&FromCountry=')) {
     const startText = messageContent.search('&Body=');
@@ -89,20 +88,17 @@ const inboundContent = (message): ContentUnion => {
   };
 };
 
-
 //test sending with outbound
-//add right extensions in services 
+//add right extensions in services
 const outboundContent = (message): ContentUnion => {
   const messageContent = message.content.message ?? message.content;
-  console.log('messageContent - outbound', messageContent)
+  console.log('messageContent - outbound', messageContent);
 
   return {
     type: 'text',
     text: messageContent.Body,
   };
 };
-
-
 
 // 'MediaContentType0=image%2Fjpeg&SmsMessageSid=MMdb939435611dc755f5c831cae70b75fc&NumMedia=
 // 1&ProfileName=Audrey&SmsSid=MMdb939435611dc755f5c831cae70b75fc&WaId=4915217532498&SmsStatus=

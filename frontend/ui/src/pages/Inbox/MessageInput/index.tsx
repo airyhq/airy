@@ -1,19 +1,10 @@
 import React, {useState, useEffect, useRef, KeyboardEvent, useCallback} from 'react';
+import {withRouter} from 'react-router-dom';
 import {connect, ConnectedProps} from 'react-redux';
 import {sendMessages} from '../../../actions/messages';
-import {withRouter} from 'react-router-dom';
 import {Button, SimpleLoader} from 'components';
 import {cyMessageSendButton, cyMessageTextArea, cySuggestionsButton} from 'handles';
-import {
-  getOutboundMapper,
-  getAttachmentType,
-  isSupportedByInstagramMessenger,
-  imageExtensions,
-  fileExtensions,
-  videoExtensions,
-  audioExtensions,
-  instagramImageExtensions,
-} from 'render';
+import {getOutboundMapper} from 'render';
 import {Message, SuggestedReply, Suggestions, Template, Source} from 'model';
 import {isEmpty} from 'lodash-es';
 
@@ -35,6 +26,7 @@ import {HttpClientInstance} from '../../../httpClient';
 import {FacebookMapper} from 'render/outbound/facebook';
 import {InputSelector} from './InputSelector';
 import {usePrevious} from '../../../services/hooks/usePrevious';
+import {getAttachmentType, mediaAttachmentsExtensions} from 'render';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -187,38 +179,36 @@ const MessageInput = (props: Props) => {
 
   const uploadFile = (file: File) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
-    const maxFileSizeAllowed = 15;
+    const maxFileSizeAllowed = source === 'instagram' ? 8 : 15;
 
-    //instagram upload errors
-    if (source === 'instagram') {
-      if (fileSizeInMB >= 8) {
-        return setFileUploadErrorPopUp(
-          'Failed to upload the file. Instagram Direct Messenger only supports files that are less than 8 MB.'
-        );
-      }
+    const imageFiles = mediaAttachmentsExtensions[source + 'ImageExtensions'];
+    const videoFiles = mediaAttachmentsExtensions[source + 'VideoExtensions'];
+    const audioFiles = mediaAttachmentsExtensions[source + 'AudioExtensions'];
+    const docsFiles = mediaAttachmentsExtensions[source + 'FileExtensions'];
 
-      if (!isSupportedByInstagramMessenger(file.name)) {
-        return setFileUploadErrorPopUp(`This file type is not supported by Instagram Direct Messenger. Supported files: 
-         ${instagramImageExtensions.join(', ')}`);
-      }
-    }
-
-    //facebook upload errors
+    //size limit error
     if (fileSizeInMB >= maxFileSizeAllowed) {
       return setFileUploadErrorPopUp(
         `Failed to upload the file. The maximum file size allowed is ${maxFileSizeAllowed}MB.`
       );
     }
 
-    if (!getAttachmentType(file.name)) {
-      const message = `This file type is not supported. Supported files: 
-      ${audioExtensions.join(', ')}, ${imageExtensions.join(', ')}, ${videoExtensions.join(
-        ', '
-      )}, ${fileExtensions.join(', ')}`;
-      return setFileUploadErrorPopUp(message);
+    //unsupported file error
+    if (!getAttachmentType(file.name, source)) {
+      const capitalizedSourceName = source.charAt(0).toUpperCase() + source.slice(1);
+
+      const supportedDocsFiles = docsFiles ? ',' + docsFiles.join(', ') : '';
+      const supportedAudioFiles = audioFiles ? ',' + audioFiles.join(', ') : '';
+      const supportedVideoFiles = videoFiles ? ',' + videoFiles.join(', ') : '';
+      const supportedImageFiles = imageFiles ? imageFiles.join(', ') : '';
+
+      const errorMessage = `This file type is not supported as a sending attachment by ${capitalizedSourceName} Messenger. Supported files: 
+      ${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
+
+      return setFileUploadErrorPopUp(errorMessage);
     }
 
-    setFileInfo({size: fileSizeInMB, type: getAttachmentType(file.name)});
+    setFileInfo({size: fileSizeInMB, type: getAttachmentType(file.name, source)});
     setFileToUpload(file);
   };
 

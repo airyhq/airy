@@ -45,6 +45,10 @@ variable "instance_type" {
   default = "t3.large"
 }
 
+variable "node_group_size" {
+  default = 1
+}
+
 variable "cluster_version" {
   default = "1.21"
 }

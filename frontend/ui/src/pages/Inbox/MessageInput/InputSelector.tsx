@@ -3,24 +3,20 @@ import styles from './InputSelector.module.scss';
 import {ReactComponent as Close} from 'assets/images/icons/close.svg';
 import {SourceMessage} from 'render';
 import {Source, Message} from 'model';
-import {FileInfo} from './index';
 
 type InputSelectorProps = {
   messageType: 'template' | 'suggestedReplies' | 'message';
   message: Message;
   source: Source;
   contentResizedHeight: number;
-  fileInfo: FileInfo | null;
   removeElementFromInput: () => void;
 };
 
 export const InputSelector = (props: InputSelectorProps) => {
-  const {source, message, messageType, removeElementFromInput, contentResizedHeight, fileInfo} = props;
+  const {source, message, messageType, removeElementFromInput, contentResizedHeight} = props;
   const [closeIconWidth, setCloseIconWidth] = useState('');
   const [closeIconHeight, setCloseIconHeight] = useState('');
-  const [closeButtonSelector, setCloseButtonSelector] = useState(false);
-
-  console.log('fileInfo', fileInfo);
+  const [selectorPreview, setSelectorPreview] = useState(false);
 
   const fileSelectorDiv = useRef(null);
   const removeFileButton = useRef(null);
@@ -30,8 +26,6 @@ export const InputSelector = (props: InputSelectorProps) => {
   }, []);
 
   const scaleInputSelector = () => {
-    console.log('fileSelectorDiv?.current?.offsetHeight', fileSelectorDiv?.current?.offsetHeight);
-
     if (fileSelectorDiv?.current?.offsetHeight > contentResizedHeight) {
       const contentSelectorDivHeight = fileSelectorDiv.current.offsetHeight;
       const scaleRatio = Number(Math.min(contentResizedHeight / contentSelectorDivHeight).toFixed(2));
@@ -42,42 +36,39 @@ export const InputSelector = (props: InputSelectorProps) => {
 
         setCloseIconHeight(iconSize);
         setCloseIconWidth(iconSize);
-        setCloseButtonSelector(true);
 
         if (removeFileButton && removeFileButton.current) {
           removeFileButton.current.style.width = buttonSize;
           removeFileButton.current.style.height = buttonSize;
         }
-      } else {
-        setCloseButtonSelector(true);
       }
 
       fileSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
       fileSelectorDiv.current.style.transformOrigin = 'left';
-    } else if (fileInfo?.type === 'image' || fileInfo?.type === 'video') {
-      console.log('setTimeout');
-      setTimeout(() => {
-        setCloseButtonSelector(true);
-      }, 1000);
+
+      setSelectorPreview(true);
     } else {
-      console.log(' no setTimeout');
-      setCloseButtonSelector(true);
+      setTimeout(() => {
+        setSelectorPreview(true);
+      }, 1000);
     }
   };
 
   return (
     <div className={styles.container} ref={fileSelectorDiv}>
-      {closeButtonSelector && (
-        <button className={styles.removeButton} onClick={removeElementFromInput} ref={removeFileButton}>
-          <Close
-            style={{
-              width: closeIconWidth ?? '',
-              height: closeIconHeight ?? '',
-            }}
-          />
-        </button>
+      {selectorPreview && (
+        <>
+          <button className={styles.removeButton} onClick={removeElementFromInput} ref={removeFileButton}>
+            <Close
+              style={{
+                width: closeIconWidth ?? '',
+                height: closeIconHeight ?? '',
+              }}
+            />
+          </button>
+          <SourceMessage message={message} source={source} contentType={messageType} />
+        </>
       )}
-      <SourceMessage message={message} source={source} contentType={messageType} />
     </div>
   );
 };

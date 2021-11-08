@@ -53,11 +53,6 @@ interface SelectedTemplate {
   source: Source;
 }
 
-export interface FileInfo {
-  size: number;
-  type: string;
-}
-
 export interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
@@ -89,7 +84,6 @@ const MessageInput = (props: Props) => {
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [fileUploadErrorPopUp, setFileUploadErrorPopUp] = useState<string>('');
   const [loadingSelector, setLoadingSelector] = useState(false);
-  const [fileInfo, setFileInfo] = useState<null | {size: number; type: string}>(null);
   const prevConversationId = usePrevious(conversation.id);
 
   const textAreaRef = useRef(null);
@@ -181,6 +175,8 @@ const MessageInput = (props: Props) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
     const maxFileSizeAllowed = source === 'instagram' ? 8 : 15;
 
+    console.log('file', file);
+
     const imageFiles = mediaAttachmentsExtensions[source + 'ImageExtensions'];
     const videoFiles = mediaAttachmentsExtensions[source + 'VideoExtensions'];
     const audioFiles = mediaAttachmentsExtensions[source + 'AudioExtensions'];
@@ -207,7 +203,6 @@ const MessageInput = (props: Props) => {
       return setFileUploadErrorPopUp(errorMessage);
     }
 
-    setFileInfo({size: fileSizeInMB, type: getAttachmentType(file.name, source)});
     setFileToUpload(file);
   };
 
@@ -430,7 +425,6 @@ const MessageInput = (props: Props) => {
                   messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}
                   removeElementFromInput={removeElementFromInput}
                   contentResizedHeight={contentResizedHeight}
-                  fileInfo={fileInfo}
                 />
               </>
             )}

@@ -51,7 +51,7 @@ import {
   updateContactDef,
   uploadFileDef,
 } from './endpoints';
-import fetch from 'node-fetch';
+import 'isomorphic-fetch';
 import FormData from 'form-data';
 
 function isString(object: any) {
@@ -92,12 +92,12 @@ export class HttpClient {
       headers['Content-Type'] = 'application/json';
     }
 
-    const response: Response = await fetch(`${this.apiUrl}/${url}`, {
+    const response = await fetch(`${this.apiUrl}/${url}`, {
       method: 'POST',
       headers: headers,
       mode: 'cors',
       credentials: 'include',
-      body: body as BodyInit,
+      body: body,
     });
 
     return this.parseBody(response);

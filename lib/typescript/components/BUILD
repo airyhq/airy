@@ -9,11 +9,8 @@ ts_web_library(
     deps = [
         "//lib/typescript/model",
         "//lib/typescript/types",
-        "@npm//@crello/react-lottie",
         "@npm//@types/node",
         "@npm//@types/react",
-        "@npm//@types/resize-observer-browser",
-        "@npm//emoji-mart",
         "@npm//react",
         "@npm//react-autosize-textarea",
         "@npm//react-modal",

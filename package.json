@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@crello/react-lottie": "^0.0.11",
     "@reduxjs/toolkit": "^1.6.2",
     "@stomp/stompjs": "^6.1.2",
     "@types/node": "16.10.3",
@@ -14,6 +13,7 @@
     "camelcase-keys": "^7.0.0",
     "core-js": "3.18.3",
     "emoji-mart": "3.0.1",
+    "form-data": "^4.0.0",
     "i18next": "^21.3.1",
     "form-data": "^4.0.0",
     "isomorphic-fetch": "^3.0.0",

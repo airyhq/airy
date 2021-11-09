@@ -162,7 +162,10 @@ const MessageInput = (props: Props) => {
   useEffect(() => {
     if (isElementSelected()) {
       setDragAndDropDisabled(true);
-    } else if (config.components['media-resolver'].enabled && (source === 'facebook' || source === 'instagram')) {
+    } else if (
+      config.components['media-resolver'].enabled &&
+      (source === 'facebook' || source === 'instagram' || source === 'chatplugin')
+    ) {
       setDragAndDropDisabled(false);
     }
   }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl]);

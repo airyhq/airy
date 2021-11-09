@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, Image, File, Video, Audio} from '../../components';
 import {RenderPropsUnion} from '../../props';
 import {ContentUnion} from './twilioModel';
-import {decodeTwilioSourceMessage} from '../../services';
+import {decodeURIComponentMessage} from '../../services';
 
 export const TwilioRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -31,14 +31,13 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
 const inboundContent = (message): ContentUnion => {
   const messageContent = message.content;
-  console.log('messageContent - inbound', messageContent);
   let text = 'Unsupported message type';
 
   //image
   if (messageContent.includes('MediaContentType0=image')) {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
-    const imageUrl = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd);
+    const imageUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
 
     return {
       type: 'image',
@@ -50,7 +49,7 @@ const inboundContent = (message): ContentUnion => {
   if (messageContent.includes('MediaContentType0=video')) {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
-    const videoUrl = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd);
+    const videoUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
 
     return {
       type: 'video',
@@ -62,7 +61,7 @@ const inboundContent = (message): ContentUnion => {
   if (messageContent.includes('MediaContentType0=audio')) {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
-    const audioUrl = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd);
+    const audioUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
 
     return {
       type: 'audio',
@@ -74,7 +73,7 @@ const inboundContent = (message): ContentUnion => {
   if (messageContent.includes('MediaContentType0=application%2Fpdf')) {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
-    const fileUrl = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd) + '.pdf';
+    const fileUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd) + '.pdf';
 
     return {
       type: 'file',
@@ -86,11 +85,11 @@ const inboundContent = (message): ContentUnion => {
   if (messageContent.includes('&Body=' && '&FromCountry=')) {
     const contentStart = '&Body=';
     const contentEnd = '&FromCountry=';
-    text = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd);
+    text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
   } else if (messageContent.includes('&Body=' && '&To=whatsapp')) {
     const contentStart = '&Body=';
     const contentEnd = '&To=whatsapp';
-    text = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd);
+    text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
   }
 
   return {
@@ -101,7 +100,6 @@ const inboundContent = (message): ContentUnion => {
 
 const outboundContent = (message): ContentUnion => {
   const messageContent = message.content.message ?? message.content;
-  console.log('messageContent - outbound', messageContent);
 
   return {
     type: 'text',

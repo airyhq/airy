@@ -13,12 +13,13 @@ type InputSelectorProps = {
 };
 
 const textareaHeight = 40;
+const minImageHeight = 50;
 
 export const InputSelector = (props: InputSelectorProps) => {
   const {source, message, messageType, removeElementFromInput, contentResizedHeight} = props;
   const [closeIconWidth, setCloseIconWidth] = useState('');
   const [closeIconHeight, setCloseIconHeight] = useState('');
-  const [selectorPreview, setSelectorPreview] = useState(false);
+  const [selectorPreviewCloseButton, setSelectorPreviewCloseButton] = useState(false);
 
   const fileSelectorDiv = useRef(null);
   const removeFileButton = useRef(null);
@@ -26,11 +27,12 @@ export const InputSelector = (props: InputSelectorProps) => {
   const resizeObserver = new ResizeObserver(entries => {
     for (const entry of entries) {
       const fileSelectorHeight = entry.contentRect.height;
+      const fileSelectorWidth = entry.contentRect.width;
 
       if (fileSelectorHeight > contentResizedHeight) {
-        scaleInputSelector(fileSelectorHeight);
-      } else if (fileSelectorHeight > textareaHeight) {
-        setSelectorPreview(true);
+        scaleDownInputSelector(fileSelectorHeight);
+      } else if (fileSelectorHeight >= textareaHeight && fileSelectorWidth > minImageHeight) {
+        setSelectorPreviewCloseButton(true);
       }
     }
   });
@@ -39,7 +41,7 @@ export const InputSelector = (props: InputSelectorProps) => {
     resizeObserver.observe(fileSelectorDiv?.current);
   }, [fileSelectorDiv?.current]);
 
-  const scaleInputSelector = (fileSelectorHeight: number) => {
+  const scaleDownInputSelector = (fileSelectorHeight: number) => {
     const scaleRatio = Number(Math.min(contentResizedHeight / fileSelectorHeight).toFixed(2));
 
     if (scaleRatio <= 0.9) {
@@ -57,22 +59,20 @@ export const InputSelector = (props: InputSelectorProps) => {
 
     fileSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
     fileSelectorDiv.current.style.transformOrigin = 'left';
-    setSelectorPreview(true);
+    setSelectorPreviewCloseButton(true);
   };
 
   return (
     <div className={styles.container} ref={fileSelectorDiv}>
-      {selectorPreview && (
-        <>
-          <button className={styles.removeButton} onClick={removeElementFromInput} ref={removeFileButton}>
-            <Close
-              style={{
-                width: closeIconWidth ?? '',
-                height: closeIconHeight ?? '',
-              }}
-            />
-          </button>
-        </>
+      {selectorPreviewCloseButton && (
+        <button className={styles.removeButton} onClick={removeElementFromInput} ref={removeFileButton}>
+          <Close
+            style={{
+              width: closeIconWidth ?? '',
+              height: closeIconHeight ?? '',
+            }}
+          />
+        </button>
       )}
       <SourceMessage message={message} source={source} contentType={messageType} />
     </div>

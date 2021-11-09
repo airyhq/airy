@@ -1,6 +1,6 @@
-export const decodeTwilioSourceMessage = (messageContent: string, contentStart: string, contentEnd: string) => {
+export const decodeURIComponentMessage = (messageContent: string, contentStart: string, contentEnd: string) => {
   const enCodedMessageStartIndex = messageContent.search(contentStart);
-  const enCodedMessageStartLength = contentStart.length - 1;
+  const enCodedMessageStartLength = contentStart.length;
 
   const enCodedMessageEndIndex = messageContent.search(contentEnd);
 

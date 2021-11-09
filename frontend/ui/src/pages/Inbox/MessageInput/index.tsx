@@ -177,7 +177,7 @@ const MessageInput = (props: Props) => {
 
   const uploadFile = (file: File) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
-    const maxFileSizeAllowed = source === 'instagram' ? 8 : 15;
+    const maxFileSizeAllowed = source === 'instagram' ? 8 : source === 'twilio.whatsapp' ? 5 : 15;
 
     const supportedImageExtensions = mediaAttachmentsExtensions[source + 'ImageExtensions'];
     const supportedVideoExtension = mediaAttachmentsExtensions[source + 'VideoExtensions'];

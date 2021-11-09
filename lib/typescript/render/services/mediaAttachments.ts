@@ -32,17 +32,17 @@ export const mediaAttachmentsExtensions = {
   instagramImageExtensions: ['jpeg', 'jpg', 'png', 'ico', 'bmp', 'gif'],
 
   //twilio.whatsapp
-  whatsAppImageExtensions: ['jpeg', 'jpg', 'png'],
-  whatsAppVideoExtensions: ['mp4'],
-  whatsAppAudioExtensions: ['mp3', 'ogg', 'amr'],
-  whatsAppFileExtensions: ['pdf'],
+  twilioWhatsappImageExtensions: ['jpeg', 'jpg', 'png'],
+  twilioWhatsappVideoExtensions: ['mp4'],
+  twilioWhatsappAudioExtensions: ['mp3', 'ogg', 'amr'],
+  twilioWhatsappFileExtensions: ['pdf'],
 };
 
 export const getAttachmentType = (fileName: string, source: string) => {
   const fileNameArr = fileName.split('.');
   const fileNameExtension = fileNameArr[fileNameArr.length - 1];
 
-  if (source === 'twilio.whatsapp') source = 'whatsApp';
+  if (source === 'twilio.whatsapp') source = 'twilioWhatsapp';
 
   const imageFiles = mediaAttachmentsExtensions[source + 'ImageExtensions'];
   const videoFiles = mediaAttachmentsExtensions[source + 'VideoExtensions'];

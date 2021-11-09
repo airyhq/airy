@@ -6,7 +6,7 @@ import {ReactComponent as AttachmentAudio} from 'assets/images/icons/file-audio.
 import {ReactComponent as AttachmentFile} from 'assets/images/icons/file-download.svg';
 import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
 import {Conversation, Message} from 'model';
-import {decodeTwilioSourceMessage} from './services';
+import {decodeURIComponentMessage} from './services';
 
 interface SourceMessagePreviewProps {
   conversation: Conversation;
@@ -40,12 +40,12 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
 
     if (typeof lastMessageContent === 'string') {
       if (lastMessageContent.includes('&Body=' && '&FromCountry=')) {
-        const text = decodeTwilioSourceMessage(lastMessageContent, '&Body=', '&FromCountry=');
+        const text = decodeURIComponentMessage(lastMessageContent, '&Body=', '&FromCountry=');
         return text;
       }
 
       if (lastMessageContent.includes('&Body=' && '&To=whatsapp')) {
-        const text = decodeTwilioSourceMessage(lastMessageContent, '&Body=', '&To=whatsapp');
+        const text = decodeURIComponentMessage(lastMessageContent, '&Body=', '&To=whatsapp');
         return text;
       }
     }

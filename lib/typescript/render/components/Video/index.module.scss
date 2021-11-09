@@ -7,6 +7,10 @@
   margin-top: 5px;
 }
 
+.wrapper a {
+  display: flex;
+}
+
 .item {
   display: flex;
   align-self: flex-end;
@@ -49,7 +53,8 @@
 }
 
 .video {
-  width: 'auto';
+  width: auto;
   max-width: 300px;
   max-height: 200px;
+  margin-bottom: 0;
 }

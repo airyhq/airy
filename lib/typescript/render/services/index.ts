@@ -1,2 +1,2 @@
 export * from './mediaAttachments';
-export * from './decodeTwilioSourceMessage';
+export * from './decodeURIComponentMessage';

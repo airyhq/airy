@@ -243,7 +243,8 @@ class InputComponent extends Component<InputProps, IState> {
         ref={node => {
           this.node = node;
         }}
-        className={styles.emojiDrawer}>
+        className={styles.emojiDrawer}
+      >
         <Picker />
       </div>
     );
@@ -357,14 +358,15 @@ class InputComponent extends Component<InputProps, IState> {
               inputMode={inputmode}
               data-cy={dataCy}
             />
-            {!!this.props.renderEmojiPicker ? (
+            {this.props.renderEmojiPicker ? (
               <div className={styles.emojiWrapper}>
                 {this.state.isShowingEmojiDrawer && this.emojiDrawer()}
                 <button
                   type="button"
                   onClick={this.handleEmojiDrawer}
                   disabled={this.props.maxLength - value.length <= 0}
-                  className={`${styles.emojiIcon} ${this.state.isShowingEmojiDrawer && styles.emojiIconActive}`}>
+                  className={`${styles.emojiIcon} ${this.state.isShowingEmojiDrawer && styles.emojiIconActive}`}
+                >
                   <SmileyIcon title="Emoji" className={styles.smileyIcon} />
                 </button>
               </div>

@@ -8,9 +8,11 @@ type InputSelectorProps = {
   messageType: 'template' | 'suggestedReplies' | 'message';
   message: Message;
   source: Source;
-  contentResizedHeight: number;
   removeElementFromInput: () => void;
+  contentResizedHeight: number;
 };
+
+const textareaHeight = 40;
 
 export const InputSelector = (props: InputSelectorProps) => {
   const {source, message, messageType, removeElementFromInput, contentResizedHeight} = props;
@@ -21,35 +23,41 @@ export const InputSelector = (props: InputSelectorProps) => {
   const fileSelectorDiv = useRef(null);
   const removeFileButton = useRef(null);
 
-  useEffect(() => {
-    scaleInputSelector();
-  }, []);
+  const resizeObserver = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const fileSelectorHeight = entry.contentRect.height;
 
-  const scaleInputSelector = () => {
-    if (fileSelectorDiv?.current?.offsetHeight > contentResizedHeight) {
-      const contentSelectorDivHeight = fileSelectorDiv.current.offsetHeight;
-      const scaleRatio = Number(Math.min(contentResizedHeight / contentSelectorDivHeight).toFixed(2));
-
-      if (scaleRatio <= 0.9) {
-        const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
-        const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
-
-        setCloseIconHeight(iconSize);
-        setCloseIconWidth(iconSize);
-
-        if (removeFileButton && removeFileButton.current) {
-          removeFileButton.current.style.width = buttonSize;
-          removeFileButton.current.style.height = buttonSize;
-        }
+      if (fileSelectorHeight > contentResizedHeight) {
+        scaleInputSelector(fileSelectorHeight);
+      } else if (fileSelectorHeight > textareaHeight) {
+        setSelectorPreview(true);
       }
-
-      fileSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
-      fileSelectorDiv.current.style.transformOrigin = 'left';
-
-      setSelectorPreview(true);
-    } else {
-      setSelectorPreview(true);
     }
+  });
+
+  useEffect(() => {
+    resizeObserver.observe(fileSelectorDiv?.current);
+  }, [fileSelectorDiv?.current]);
+
+  const scaleInputSelector = (fileSelectorHeight: number) => {
+    const scaleRatio = Number(Math.min(contentResizedHeight / fileSelectorHeight).toFixed(2));
+
+    if (scaleRatio <= 0.9) {
+      const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
+      const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
+
+      setCloseIconHeight(iconSize);
+      setCloseIconWidth(iconSize);
+
+      if (removeFileButton && removeFileButton.current) {
+        removeFileButton.current.style.width = buttonSize;
+        removeFileButton.current.style.height = buttonSize;
+      }
+    }
+
+    fileSelectorDiv.current.style.transform = `scale(${scaleRatio})`;
+    fileSelectorDiv.current.style.transformOrigin = 'left';
+    setSelectorPreview(true);
   };
 
   return (
@@ -64,9 +72,9 @@ export const InputSelector = (props: InputSelectorProps) => {
               }}
             />
           </button>
-          <SourceMessage message={message} source={source} contentType={messageType} />
         </>
       )}
+      <SourceMessage message={message} source={source} contentType={messageType} />
     </div>
   );
 };

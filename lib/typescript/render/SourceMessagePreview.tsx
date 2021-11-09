@@ -6,6 +6,8 @@ import {ReactComponent as AttachmentAudio} from 'assets/images/icons/file-audio.
 import {ReactComponent as AttachmentFile} from 'assets/images/icons/file-download.svg';
 import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
 import {Conversation, Message} from 'model';
+import {decodeTwilioSourceMessage} from './services';
+
 interface SourceMessagePreviewProps {
   conversation: Conversation;
 }
@@ -38,20 +40,12 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
 
     if (typeof lastMessageContent === 'string') {
       if (lastMessageContent.includes('&Body=' && '&FromCountry=')) {
-        const startText = lastMessageContent.search('&Body=');
-        const endText = lastMessageContent.search('&FromCountry=');
-        const textLength = endText - startText;
-        const enCodedText = lastMessageContent.substring(startText + 6, startText + textLength);
-        const replaced = enCodedText.split('+').join(' ');
-        const text = decodeURIComponent(replaced);
+        const text = decodeTwilioSourceMessage(lastMessageContent, '&Body=', '&FromCountry=');
         return text;
-      } else if (lastMessageContent.includes('&Body=' && '&To=whatsapp')) {
-        const startText = lastMessageContent.search('&Body=');
-        const endText = lastMessageContent.search('&To=whatsapp');
-        const textLength = endText - startText;
-        const enCodedText = lastMessageContent.substring(startText + 6, startText + textLength);
-        const replaced = enCodedText.split('+').join(' ');
-        const text = decodeURIComponent(replaced);
+      }
+
+      if (lastMessageContent.includes('&Body=' && '&To=whatsapp')) {
+        const text = decodeTwilioSourceMessage(lastMessageContent, '&Body=', '&To=whatsapp');
         return text;
       }
     }
@@ -61,7 +55,9 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
       !isImageFromGoogleSource(lastMessageContent.message?.text)
     ) {
       return <FormattedMessage message={conversation.lastMessage} />;
-    } else if (lastMessageContent.suggestionResponse) {
+    }
+
+    if (lastMessageContent.suggestionResponse) {
       return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
     }
   };

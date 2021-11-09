@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, Image, File, Video, Audio} from '../../components';
 import {RenderPropsUnion} from '../../props';
 import {ContentUnion} from './twilioModel';
+import {decodeTwilioSourceMessage} from '../../services';
 
 export const TwilioRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -35,11 +36,9 @@ const inboundContent = (message): ContentUnion => {
 
   //image
   if (messageContent.includes('MediaContentType0=image')) {
-    const imageUrlStart = messageContent.search('MediaUrl0=');
-    const imageUrlEnd = messageContent.search('&ApiVersion=');
-    const enCodedText = messageContent.substring(imageUrlStart + 10, imageUrlEnd);
-    const replaced = enCodedText.split('+').join(' ');
-    const imageUrl = decodeURIComponent(replaced);
+    const contentStart = 'MediaUrl0=';
+    const contentEnd = '&ApiVersion=';
+    const imageUrl = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd);
 
     return {
       type: 'image',
@@ -49,12 +48,9 @@ const inboundContent = (message): ContentUnion => {
 
   //video
   if (messageContent.includes('MediaContentType0=video')) {
-    const videoUrlStart = messageContent.search('MediaUrl0=');
-    const videoUrlEnd = messageContent.search('&ApiVersion=');
-    const enCodedText = messageContent.substring(videoUrlStart + 10, videoUrlEnd);
-    const replaced = enCodedText.split('+').join(' ');
-    console.log('replaced', replaced);
-    const videoUrl = decodeURIComponent(replaced);
+    const contentStart = 'MediaUrl0=';
+    const contentEnd = '&ApiVersion=';
+    const videoUrl = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd);
 
     return {
       type: 'video',
@@ -64,11 +60,9 @@ const inboundContent = (message): ContentUnion => {
 
   //audio
   if (messageContent.includes('MediaContentType0=audio')) {
-    const audioUrlStart = messageContent.search('MediaUrl0=');
-    const audioUrlEnd = messageContent.search('&ApiVersion=');
-    const enCodedText = messageContent.substring(audioUrlStart + 10, audioUrlEnd);
-    const replaced = enCodedText.split('+').join(' ');
-    const audioUrl = decodeURIComponent(replaced);
+    const contentStart = 'MediaUrl0=';
+    const contentEnd = '&ApiVersion=';
+    const audioUrl = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd);
 
     return {
       type: 'audio',
@@ -78,11 +72,9 @@ const inboundContent = (message): ContentUnion => {
 
   //file: pdf
   if (messageContent.includes('MediaContentType0=application%2Fpdf')) {
-    const imageUrlStart = messageContent.search('MediaUrl0=');
-    const imageUrlEnd = messageContent.search('&ApiVersion=');
-    const enCodedText = messageContent.substring(imageUrlStart + 10, imageUrlEnd);
-    const replaced = enCodedText.split('+').join(' ');
-    const fileUrl = decodeURIComponent(replaced) + '.pdf';
+    const contentStart = 'MediaUrl0=';
+    const contentEnd = '&ApiVersion=';
+    const fileUrl = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd) + '.pdf';
 
     return {
       type: 'file',
@@ -92,19 +84,13 @@ const inboundContent = (message): ContentUnion => {
 
   //text
   if (messageContent.includes('&Body=' && '&FromCountry=')) {
-    const startText = messageContent.search('&Body=');
-    const endText = messageContent.search('&FromCountry=');
-    const textLength = endText - startText;
-    const enCodedText = messageContent.substring(startText + 6, startText + textLength);
-    const replaced = enCodedText.split('+').join(' ');
-    text = decodeURIComponent(replaced);
+    const contentStart = '&Body=';
+    const contentEnd = '&FromCountry=';
+    text = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd);
   } else if (messageContent.includes('&Body=' && '&To=whatsapp')) {
-    const startText = messageContent.search('&Body=');
-    const endText = messageContent.search('&To=whatsapp');
-    const textLength = endText - startText;
-    const enCodedText = messageContent.substring(startText + 6, startText + textLength);
-    const replaced = enCodedText.split('+').join(' ');
-    text = decodeURIComponent(replaced);
+    const contentStart = '&Body=';
+    const contentEnd = '&To=whatsapp';
+    text = decodeTwilioSourceMessage(messageContent, contentStart, contentEnd);
   }
 
   return {
@@ -113,8 +99,6 @@ const inboundContent = (message): ContentUnion => {
   };
 };
 
-//test sending with outbound
-//add right extensions in services
 const outboundContent = (message): ContentUnion => {
   const messageContent = message.content.message ?? message.content;
   console.log('messageContent - outbound', messageContent);
@@ -124,9 +108,3 @@ const outboundContent = (message): ContentUnion => {
     text: messageContent.Body,
   };
 };
-
-// 'MediaContentType0=image%2Fjpeg&SmsMessageSid=MMdb939435611dc755f5c831cae70b75fc&NumMedia=
-// 1&ProfileName=Audrey&SmsSid=MMdb939435611dc755f5c831cae70b75fc&WaId=4915217532498&SmsStatus=
-// received&Body=&To=whatsapp%3A%2B14155238886&NumSegments=1&MessageSid=MMdb939435611dc755f5c83
-// 1cae70b75fc&AccountSid=AC64c9ab479b849275b7b50bd19540c602&From=whatsapp%3A%2B4915217532498
-// &MediaUrl0=https%3A%2F%2Fapi.twilio.com%2F2010-04-01%2FAccounts%2FAC64c9ab479b849275b7b50bd19540c602%2FMessages%2FMMdb939435611dc755f5c831cae70b75fc%2FMedia%2FME4300daed58bd89c592bd9e1cda7d2619&ApiVersion=2010-04-01'

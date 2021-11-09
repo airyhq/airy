@@ -57,6 +57,8 @@ export interface SelectedSuggestedReply {
   message: SuggestedReply;
 }
 
+const contentResizedHeight = 140;
+
 const MessageInput = (props: Props) => {
   const {
     source,
@@ -70,8 +72,6 @@ const MessageInput = (props: Props) => {
     setDragAndDropDisabled,
     config,
   } = props;
-
-  const contentResizedHeight = 200;
 
   const outboundMapper = getOutboundMapper(source);
   const fileOutboundMapper = getOutboundMapper('facebook') as FacebookMapper;
@@ -90,24 +90,6 @@ const MessageInput = (props: Props) => {
   const sendButtonRef = useRef(null);
 
   const focusInput = () => textAreaRef?.current?.focus();
-
-  useEffect(() => {
-    if (draggedAndDroppedFile && !loadingSelector) {
-      uploadFile(draggedAndDroppedFile);
-    }
-  }, [draggedAndDroppedFile]);
-
-  useEffect(() => {
-    if (prevConversationId !== conversation.id) {
-      setInput('');
-      removeElementFromInput();
-      focusInput();
-      setFileToUpload(null);
-      setUploadedFileUrl(null);
-      setFileUploadErrorPopUp('');
-      setLoadingSelector(false);
-    }
-  }, [conversation.id]);
 
   useEffect(() => {
     if (loadingSelector && fileToUpload) {
@@ -139,19 +121,41 @@ const MessageInput = (props: Props) => {
   }, [loadingSelector, fileToUpload]);
 
   useEffect(() => {
+    if (draggedAndDroppedFile && !loadingSelector) {
+      uploadFile(draggedAndDroppedFile);
+    }
+  }, [draggedAndDroppedFile]);
+
+  useEffect(() => {
     if (fileToUpload) {
       setLoadingSelector(true);
       setDragAndDropDisabled(true);
+      setInput('');
     }
   }, [fileToUpload]);
 
   useEffect(() => {
+    if (prevConversationId !== conversation.id) {
+      setInput('');
+      removeElementFromInput();
+      focusInput();
+      setFileToUpload(null);
+      setUploadedFileUrl(null);
+      setDraggedAndDroppedFile(null);
+      setFileUploadErrorPopUp('');
+      setLoadingSelector(false);
+    }
+  }, [conversation.id]);
+
+  useEffect(() => {
+    const sendingAttachmentEnabled =
+      config.components['media-resolver'].enabled && (source === 'facebook' || source === 'instagram');
     if (isElementSelected()) {
       setDragAndDropDisabled(true);
-    } else if (config.components['media-resolver'].enabled && (source === 'facebook' || source === 'instagram')) {
+    } else if (sendingAttachmentEnabled) {
       setDragAndDropDisabled(false);
     }
-  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl]);
+  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl, config]);
 
   useEffect(() => {
     if (textAreaRef && textAreaRef.current) {
@@ -175,12 +179,10 @@ const MessageInput = (props: Props) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
     const maxFileSizeAllowed = source === 'instagram' ? 8 : 15;
 
-    console.log('file', file);
-
-    const imageFiles = mediaAttachmentsExtensions[source + 'ImageExtensions'];
-    const videoFiles = mediaAttachmentsExtensions[source + 'VideoExtensions'];
-    const audioFiles = mediaAttachmentsExtensions[source + 'AudioExtensions'];
-    const docsFiles = mediaAttachmentsExtensions[source + 'FileExtensions'];
+    const supportedImageExtensions = mediaAttachmentsExtensions[source + 'ImageExtensions'];
+    const supportedVideoExtension = mediaAttachmentsExtensions[source + 'VideoExtensions'];
+    const supportedAudioExtension = mediaAttachmentsExtensions[source + 'AudioExtensions'];
+    const supportedFilesExtension = mediaAttachmentsExtensions[source + 'FileExtensions'];
 
     //size limit error
     if (fileSizeInMB >= maxFileSizeAllowed) {
@@ -192,13 +194,13 @@ const MessageInput = (props: Props) => {
 
     //unsupported file error
     if (!getAttachmentType(file.name, source)) {
-      const supportedDocsFiles = docsFiles ? ',' + docsFiles.join(', ') : '';
-      const supportedAudioFiles = audioFiles ? ',' + audioFiles.join(', ') : '';
-      const supportedVideoFiles = videoFiles ? ',' + videoFiles.join(', ') : '';
-      const supportedImageFiles = imageFiles ? imageFiles.join(', ') : '';
+      const supportedDocs = supportedFilesExtension ? ',' + supportedFilesExtension.join(', ') : '';
+      const supportedAudios = supportedAudioExtension ? ',' + supportedAudioExtension.join(', ') : '';
+      const supportedVideos = supportedVideoExtension ? ',' + supportedVideoExtension.join(', ') : '';
+      const supportedImages = supportedImageExtensions ? supportedImageExtensions.join(', ') : '';
 
       const errorMessage = `This file type is not supported by this source. 
-      Supported files: ${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
+      Supported files: ${supportedImages} ${supportedVideos} ${supportedAudios} ${supportedDocs}`;
 
       return setFileUploadErrorPopUp(errorMessage);
     }

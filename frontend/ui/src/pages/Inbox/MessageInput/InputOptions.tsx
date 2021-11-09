@@ -53,7 +53,7 @@ export const InputOptions = (props: Props) => {
   const emojiDiv = useRef<HTMLDivElement>(null);
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
   const [isShowingTemplateModal, setIsShowingTemplateModal] = useState(false);
-  const [supportedFiles, setSupportedFiles] = useState('');
+  const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
 
   useEffect(() => {
     const imageFiles = mediaAttachmentsExtensions[source + 'ImageExtensions'];
@@ -66,9 +66,12 @@ export const InputOptions = (props: Props) => {
     const supportedVideoFiles = videoFiles ? ',' + videoFiles.join(',.') : '';
     const supportedImageFiles = imageFiles ? imageFiles.join(',.') : '';
 
-    const supportedFilesForSource = `.${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
-
-    setSupportedFiles(supportedFilesForSource);
+    if (!supportedDocsFiles && !supportedAudioFiles && !supportedVideoFiles && !supportedImageFiles) {
+      setInputAcceptedFiles(null);
+    } else {
+      const supportedFilesForSource = `.${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
+      setInputAcceptedFiles(supportedFilesForSource);
+    }
   }, [source]);
 
   const toggleEmojiDrawer = () => {
@@ -184,7 +187,7 @@ export const InputOptions = (props: Props) => {
             onChange={selectFile}
             className={styles.fileInput}
             disabled={inputDisabled || loadingSelector}
-            accept={supportedFiles}
+            accept={inputAcceptedFiles}
           />
         </button>
       )}

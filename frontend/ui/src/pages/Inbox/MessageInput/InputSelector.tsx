@@ -48,9 +48,7 @@ export const InputSelector = (props: InputSelectorProps) => {
 
       setSelectorPreview(true);
     } else {
-      setTimeout(() => {
-        setSelectorPreview(true);
-      }, 1000);
+      setSelectorPreview(true);
     }
   };
 

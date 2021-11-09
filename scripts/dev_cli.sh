@@ -16,8 +16,11 @@ if [[ "$OLD_SHA" != "$NEW_SHA" ]]; then
   chmod +x $AIRY_BIN
 fi
 
-if [[ $1 == "create" && $2 == "--provider=minikube" ]]; then
-minikube delete -p airy-core
+if [[ $1 == "create" ]]; then
+  if [[ $2 == "--provider=minikube" ]]; then
+    minikube delete -p airy-core
+  fi
+  $AIRY_BIN "$@" --disable-tracking
+else 
+  $AIRY_BIN "$@"
 fi
-
-$AIRY_BIN "$@" --disable-tracking

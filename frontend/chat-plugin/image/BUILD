@@ -30,9 +30,7 @@ web_library(
         # https://webpack.js.org/guides/public-path/#automatic-publicpath
         "publicPath": "auto",
         "filename": "s.js",
-        "uniqueName": "airy-chat-plugin",
     },
-    show_bundle_report = True,
 )
 
 pkg_tar(

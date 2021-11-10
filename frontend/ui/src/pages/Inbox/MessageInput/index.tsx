@@ -17,18 +17,14 @@ import {listTemplates} from '../../../actions/templates';
 import {getConversation} from '../../../selectors/conversations';
 import {getCurrentMessages} from '../../../selectors/conversations';
 import {isTextMessage} from '../../../services/types/messageTypes';
-
 import SuggestedReplySelector from '../SuggestedReplySelector';
 import {InputOptions} from './InputOptions';
-
-import styles from './index.module.scss';
 import {HttpClientInstance} from '../../../httpClient';
-// import {FacebookMapper} from 'render/outbound/facebook';
-// import {GoogleMapper} from 'render/outbound/google';
 import {InputSelector} from './InputSelector';
-import {usePrevious} from '../../../services/hooks/usePrevious';
 import {getAttachmentType} from 'render';
+import {usePrevious} from '../../../services/hooks/usePrevious';
 import {getAllSupportedAttachmentsForSource} from '../../../services/types/attachmentsTypes';
+import styles from './index.module.scss';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -75,9 +71,8 @@ const MessageInput = (props: Props) => {
     config,
   } = props;
 
+  //change type here once all sources have been added
   const outboundMapper: any = getOutboundMapper(source);
-  // const fbOutboundMapper = getOutboundMapper('facebook') as FacebookMapper;
-  // const googleOutboundMapper = getOutboundMapper('facebook') as GoogleMapper;
   const channelConnected = conversation.channel.connected;
 
   const [input, setInput] = useState('');
@@ -181,7 +176,8 @@ const MessageInput = (props: Props) => {
 
   const uploadFile = (file: File) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
-    const maxFileSizeAllowed = source === 'instagram' ? 8 : source === 'twilio.whatsapp' ? 5 : 15;
+    const maxFileSizeAllowed =
+      source === 'instagram' ? 8 : source === 'twilio.whatsapp' || source === 'google' ? 5 : 15;
 
     //size limit error
     if (fileSizeInMB >= maxFileSizeAllowed) {

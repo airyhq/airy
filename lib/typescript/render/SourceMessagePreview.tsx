@@ -17,7 +17,7 @@ interface FormattedMessageProps {
 
 const FormattedMessage = ({message}: FormattedMessageProps) => {
   if (message?.content) {
-    return <>{message.content.message?.text || message.content.text}</>;
+    return <>{message.content.message?.text || message.content.text || message?.content?.Body}</>;
   }
   return <div />;
 };
@@ -39,19 +39,25 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
     const lastMessageContent = conversation.lastMessage.content;
 
     if (typeof lastMessageContent === 'string') {
+      let text;
+
       if (lastMessageContent.includes('&Body=' && '&FromCountry=')) {
-        const text = decodeURIComponentMessage(lastMessageContent, '&Body=', '&FromCountry=');
-        return text;
+        const contentStart = '&Body=';
+        const contentEnd = '&FromCountry=';
+        text = decodeURIComponentMessage(lastMessageContent, contentStart, contentEnd);
+      } else if (lastMessageContent.includes('&Body=' && '&To=whatsapp')) {
+        const contentStart = '&Body=';
+        const contentEnd = '&To=whatsapp';
+        text = decodeURIComponentMessage(lastMessageContent, contentStart, contentEnd);
       }
 
-      if (lastMessageContent.includes('&Body=' && '&To=whatsapp')) {
-        const text = decodeURIComponentMessage(lastMessageContent, '&Body=', '&To=whatsapp');
-        return text;
-      }
+      return text;
     }
 
     if (
-      (lastMessageContent.text || lastMessageContent.message?.text) &&
+      (lastMessageContent.text ||
+        lastMessageContent.message?.text ||
+        (lastMessageContent?.Body && typeof lastMessageContent?.Body === 'string')) &&
       !isImageFromGoogleSource(lastMessageContent.message?.text)
     ) {
       return <FormattedMessage message={conversation.lastMessage} />;

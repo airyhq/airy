@@ -56,10 +56,6 @@ export const InputOptions = (props: Props) => {
   const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
 
   useEffect(() => {
-    console.log('inputAcceptedFiles', inputAcceptedFiles);
-  }, [inputAcceptedFiles]);
-
-  useEffect(() => {
     const inputAcceptValue = getInputAcceptedFilesForSource(source);
     setInputAcceptedFiles(inputAcceptValue);
   }, [source]);

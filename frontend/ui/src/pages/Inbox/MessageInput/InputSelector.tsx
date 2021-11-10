@@ -43,10 +43,17 @@ export const InputSelector = (props: InputSelectorProps) => {
 
   const scaleDownInputSelector = (fileSelectorHeight: number) => {
     const scaleRatio = Number(Math.min(contentResizedHeight / fileSelectorHeight).toFixed(2));
+    let iconSize;
+    let buttonSize;
 
     if (scaleRatio <= 0.9) {
-      const iconSize = scaleRatio > 0.3 ? '18px' : '30px';
-      const buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
+      if (scaleRatio < 0.5) {
+        iconSize = scaleRatio > 0.3 ? '36px' : '60px';
+        buttonSize = scaleRatio > 0.3 ? '72px' : '120px';
+      } else {
+        iconSize = scaleRatio > 0.3 ? '18px' : '30px';
+        buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
+      }
 
       setCloseIconHeight(iconSize);
       setCloseIconWidth(iconSize);

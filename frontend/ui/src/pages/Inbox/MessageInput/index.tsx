@@ -136,10 +136,7 @@ const MessageInput = (props: Props) => {
   }, [fileToUpload]);
 
   useEffect(() => {
-    console.log('conversation.id', conversation.id);
-    console.log('prevConversationId', prevConversationId);
     if (prevConversationId !== conversation.id) {
-      console.log('effect conv id');
       setInput('');
       removeElementFromInput();
       focusInput();

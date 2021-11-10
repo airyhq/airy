@@ -10,4 +10,11 @@ export class TwilioMapper extends OutboundMapper {
   isTextSupported(): boolean {
     return true;
   }
+
+  getAttachmentPayload(mediaUrl: string): any {
+    return {
+      MediaUrl: mediaUrl
+    };
+  }
+
 }

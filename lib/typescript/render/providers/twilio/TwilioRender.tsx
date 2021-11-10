@@ -99,7 +99,7 @@ const inboundContent = (message): ContentUnion => {
 };
 
 const outboundContent = (message): ContentUnion => {
-  const messageContent = message?.content?.message ?? message?.content;
+  const messageContent = message?.content?.message ?? message?.content ?? message;
 
   return {
     type: 'text',

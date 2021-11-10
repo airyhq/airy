@@ -1,6 +1,6 @@
 export const attachmentsExtensions = {
   //facebook
-  facebookImageExtensions: ['jpeg', 'jpg', 'gif', 'png', 'tiff', 'tif', 'webp'],
+  facebookImageExtensions: ['jpeg', 'jpg', 'gif', 'png', 'webp', 'heic'],
   facebookVideoExtensions: ['mp4', 'mov', 'wmv'],
   facebookAudioExtensions: ['mp3', 'ogg', 'wav'],
   facebookFileExtensions: [
@@ -26,6 +26,8 @@ export const attachmentsExtensions = {
     'scss',
     'html',
     'bmp',
+    'tiff',
+    'tif',
   ],
 
   //instagram
@@ -36,6 +38,9 @@ export const attachmentsExtensions = {
   twilioWhatsappVideoExtensions: ['mp4'],
   twilioWhatsappAudioExtensions: ['mp3', 'ogg', 'amr'],
   twilioWhatsappFileExtensions: ['pdf'],
+
+  //google
+  googleImageExtensions: ['jpeg', 'jpg', 'png'],
 };
 
 export const getAttachmentType = (fileName: string, source: string) => {

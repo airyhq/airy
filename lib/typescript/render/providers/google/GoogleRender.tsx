@@ -56,6 +56,8 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 function googleInbound(message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
+  console.log('messageJson', messageJson);
+
   if (messageJson.richCard?.standaloneCard) {
     const {
       richCard: {
@@ -122,7 +124,7 @@ function googleInbound(message): ContentUnion {
     };
   }
 
-  if (messageJson?.userStatus?.requestedLiveAgent === undefined) {
+  if (messageJson?.userStatus?.requestedLiveAgent) {
     return {
       type: 'requestedLiveAgent',
     };
@@ -135,10 +137,11 @@ function googleInbound(message): ContentUnion {
 }
 
 function googleOutbound(message): ContentUnion {
-  const messageJson = message?.content?.message ?? message?.content;
+  const messageJson = message?.content?.message ?? message?.content ?? message;
+  console.log('OUTBOUND message', message);
   const maxNumberOfSuggestions = 13;
 
-  if (messageJson.richCard?.standaloneCard) {
+  if (messageJson?.richCard?.standaloneCard) {
     const {
       richCard: {
         standaloneCard: {cardContent},
@@ -206,6 +209,8 @@ function googleOutbound(message): ContentUnion {
       text: messageJson.text,
     };
   }
+
+  //add richText
 
   if (messageJson.fallback) {
     return {

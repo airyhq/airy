@@ -154,29 +154,30 @@ export const InputOptions = (props: Props) => {
         </div>
       </button>
 
-      {mediaResolverComponentsConfig.enabled && (source === 'facebook' || source === 'instagram') && (
-        <button
-          className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
-          type="button"
-          disabled={inputDisabled || loadingSelector}
-        >
-          <div className={styles.actionToolTip}>Files</div>
-
-          <label htmlFor="file" style={{cursor: inputDisabled || loadingSelector ? 'not-allowed' : 'pointer'}}>
-            <Paperclip aria-hidden className={styles.paperclipIcon} />
-          </label>
-
-          <input
-            type="file"
-            id="file"
-            name="file"
-            onChange={selectFile}
-            className={styles.fileInput}
+      {mediaResolverComponentsConfig.enabled &&
+        (source === 'facebook' || source === 'instagram' || source === 'google' || source === 'twilio.whatsapp') && (
+          <button
+            className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
+            type="button"
             disabled={inputDisabled || loadingSelector}
-            accept={inputAcceptedFiles}
-          />
-        </button>
-      )}
+          >
+            <div className={styles.actionToolTip}>Files</div>
+
+            <label htmlFor="file" style={{cursor: inputDisabled || loadingSelector ? 'not-allowed' : 'pointer'}}>
+              <Paperclip aria-hidden className={styles.paperclipIcon} />
+            </label>
+
+            <input
+              type="file"
+              id="file"
+              name="file"
+              onChange={selectFile}
+              className={styles.fileInput}
+              disabled={inputDisabled || loadingSelector}
+              accept={inputAcceptedFiles}
+            />
+          </button>
+        )}
     </div>
   );
 };

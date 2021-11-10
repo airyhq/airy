@@ -23,7 +23,8 @@ import {InputOptions} from './InputOptions';
 
 import styles from './index.module.scss';
 import {HttpClientInstance} from '../../../httpClient';
-import {FacebookMapper} from 'render/outbound/facebook';
+// import {FacebookMapper} from 'render/outbound/facebook';
+// import {GoogleMapper} from 'render/outbound/google';
 import {InputSelector} from './InputSelector';
 import {usePrevious} from '../../../services/hooks/usePrevious';
 import {getAttachmentType} from 'render';
@@ -74,8 +75,9 @@ const MessageInput = (props: Props) => {
     config,
   } = props;
 
-  const outboundMapper = getOutboundMapper(source);
-  const fileOutboundMapper = getOutboundMapper('facebook') as FacebookMapper;
+  const outboundMapper: any = getOutboundMapper(source);
+  // const fbOutboundMapper = getOutboundMapper('facebook') as FacebookMapper;
+  // const googleOutboundMapper = getOutboundMapper('facebook') as GoogleMapper;
   const channelConnected = conversation.channel.connected;
 
   const [input, setInput] = useState('');
@@ -150,7 +152,8 @@ const MessageInput = (props: Props) => {
 
   useEffect(() => {
     const sendingAttachmentEnabled =
-      config.components['media-resolver'].enabled && (source === 'facebook' || source === 'instagram');
+      config.components['media-resolver'].enabled &&
+      (source === 'facebook' || source === 'instagram' || source === 'google' || source === 'twilio.whatsapp');
     if (isElementSelected()) {
       setDragAndDropDisabled(true);
     } else if (sendingAttachmentEnabled) {
@@ -233,7 +236,7 @@ const MessageInput = (props: Props) => {
           : uploadedFileUrl
           ? {
               conversationId: conversation.id,
-              message: fileOutboundMapper.getAttachmentPayload(uploadedFileUrl),
+              message: outboundMapper.getAttachmentPayload(uploadedFileUrl),
             }
           : {
               conversationId: conversation.id,
@@ -414,7 +417,7 @@ const MessageInput = (props: Props) => {
                   message={
                     selectedTemplate?.message ??
                     selectedSuggestedReply?.message ??
-                    fileOutboundMapper.getAttachmentPayload(uploadedFileUrl)
+                    outboundMapper.getAttachmentPayload(uploadedFileUrl)
                   }
                   source={source}
                   messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}

@@ -5,11 +5,10 @@ import {ReactComponent as FileDownloadIcon} from 'assets/images/icons/file-downl
 
 type FileRenderProps = {
   fileUrl: string;
-  fileName?: string;
 };
 
-export const File = ({fileUrl, fileName}: FileRenderProps) => {
-  fileName = fileName ?? getFileName(fileUrl);
+export const File = ({fileUrl}: FileRenderProps) => {
+  const fileName = getFileName(fileUrl);
 
   return (
     <div className={styles.wrapper}>

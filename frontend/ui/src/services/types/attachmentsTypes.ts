@@ -1,6 +1,8 @@
 import {attachmentsExtensions} from 'render';
 
 export const getAllSupportedAttachmentsForSource = (source: string) => {
+  if (source === 'twilio.whatsapp') source = 'twilioWhatsapp';
+
   const imageFiles = attachmentsExtensions[source + 'ImageExtensions'];
   const videoFiles = attachmentsExtensions[source + 'VideoExtensions'];
   const audioFiles = attachmentsExtensions[source + 'AudioExtensions'];
@@ -18,6 +20,8 @@ export const getAllSupportedAttachmentsForSource = (source: string) => {
 };
 
 export const getInputAcceptedFilesForSource = (source: string) => {
+  if (source === 'twilio.whatsapp') source = 'twilioWhatsapp';
+
   const imageFiles = attachmentsExtensions[source + 'ImageExtensions'];
   const videoFiles = attachmentsExtensions[source + 'VideoExtensions'];
   const audioFiles = attachmentsExtensions[source + 'AudioExtensions'];

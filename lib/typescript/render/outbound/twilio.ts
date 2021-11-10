@@ -13,8 +13,7 @@ export class TwilioMapper extends OutboundMapper {
 
   getAttachmentPayload(mediaUrl: string): any {
     return {
-      MediaUrl: mediaUrl
+      MediaUrl: mediaUrl,
     };
   }
-
 }

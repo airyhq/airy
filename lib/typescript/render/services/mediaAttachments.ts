@@ -37,7 +37,7 @@ export const attachmentsExtensions = {
   twilioWhatsappImageExtensions: ['jpeg', 'jpg', 'png'],
   twilioWhatsappVideoExtensions: ['mp4'],
   twilioWhatsappAudioExtensions: ['mp3', 'ogg', 'amr'],
-  twilioWhatsappFileExtensions: ['pdf'],
+  twilioWhatsappFileExtensions: ['pdf', 'vcf'],
 
   //google
   googleImageExtensions: ['jpeg', 'jpg', 'png'],

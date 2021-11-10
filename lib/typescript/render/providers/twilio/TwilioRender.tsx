@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, Image, File, Video, Audio} from '../../components';
 import {RenderPropsUnion} from '../../props';
 import {ContentUnion} from './twilioModel';
-import {decodeURIComponentMessage} from '../../services';
+import {decodeURIComponentMessage, getAttachmentType} from '../../services';
 
 export const TwilioRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -25,7 +25,7 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <Audio audioUrl={content.audioUrl} />;
 
     case 'file':
-      return <File fileUrl={content.fileUrl} fileName="PDF file" />;
+      return <File fileUrl={content.fileUrl} />;
   }
 }
 
@@ -69,7 +69,7 @@ const inboundContent = (message): ContentUnion => {
     };
   }
 
-  //file: pdf
+  //file
   if (messageContent.includes('MediaContentType0=application%2Fpdf')) {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
@@ -101,6 +101,41 @@ const inboundContent = (message): ContentUnion => {
 const outboundContent = (message): ContentUnion => {
   const messageContent = message?.content?.message ?? message?.content ?? message;
 
+  //media
+  if (messageContent?.MediaUrl) {
+    const mediaUrl = messageContent.MediaUrl;
+    const mediaAttachmenttype = getAttachmentType(mediaUrl, 'twilio.whatsapp');
+
+    if (mediaAttachmenttype === 'image') {
+      return {
+        type: 'image',
+        imageUrl: mediaUrl,
+      };
+    }
+
+    if (mediaAttachmenttype === 'video') {
+      return {
+        type: 'video',
+        videoUrl: mediaUrl,
+      };
+    }
+
+    if (mediaAttachmenttype === 'file') {
+      return {
+        type: 'file',
+        fileUrl: mediaUrl,
+      };
+    }
+
+    if (mediaAttachmenttype === 'audio') {
+      return {
+        type: 'audio',
+        audioUrl: mediaUrl,
+      };
+    }
+  }
+
+  //text
   return {
     type: 'text',
     text: messageContent?.Body,

@@ -20,7 +20,7 @@ spec:
       labels:
         app: schema-registry
         release: {{ .Release.Name }}
-        WorkerType: fargate
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
         - name: schema-registry-server

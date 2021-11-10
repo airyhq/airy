@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: wait-for-api-communication
+  namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "5"
@@ -33,6 +34,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: wait-for-frontend-ui
+  namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "5"

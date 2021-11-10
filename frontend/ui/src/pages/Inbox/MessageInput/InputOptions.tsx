@@ -9,7 +9,7 @@ import {sendMessages} from '../../../actions/messages';
 import {connect, ConnectedProps} from 'react-redux';
 import {Template, Source} from 'model';
 import {ErrorPopUp} from 'components';
-import {mediaAttachmentsExtensions} from 'render';
+import {getInputAcceptedFilesForSource} from '../../../services/types/attachmentsTypes';
 import styles from './InputOptions.module.scss';
 
 const mapDispatchToProps = {sendMessages};
@@ -56,22 +56,12 @@ export const InputOptions = (props: Props) => {
   const [inputAcceptedFiles, setInputAcceptedFiles] = useState<null | string>('');
 
   useEffect(() => {
-    const imageFiles = mediaAttachmentsExtensions[source + 'ImageExtensions'];
-    const videoFiles = mediaAttachmentsExtensions[source + 'VideoExtensions'];
-    const audioFiles = mediaAttachmentsExtensions[source + 'AudioExtensions'];
-    const docsFiles = mediaAttachmentsExtensions[source + 'FileExtensions'];
+    console.log('inputAcceptedFiles', inputAcceptedFiles);
+  }, [inputAcceptedFiles]);
 
-    const supportedDocsFiles = docsFiles ? ',' + docsFiles.join(',.') : '';
-    const supportedAudioFiles = audioFiles ? ',' + audioFiles.join(',.') : '';
-    const supportedVideoFiles = videoFiles ? ',' + videoFiles.join(',.') : '';
-    const supportedImageFiles = imageFiles ? imageFiles.join(',.') : '';
-
-    if (!supportedDocsFiles && !supportedAudioFiles && !supportedVideoFiles && !supportedImageFiles) {
-      setInputAcceptedFiles(null);
-    } else {
-      const supportedFilesForSource = `.${supportedImageFiles} ${supportedVideoFiles} ${supportedAudioFiles} ${supportedDocsFiles}`;
-      setInputAcceptedFiles(supportedFilesForSource);
-    }
+  useEffect(() => {
+    const inputAcceptValue = getInputAcceptedFilesForSource(source);
+    setInputAcceptedFiles(inputAcceptValue);
   }, [source]);
 
   const toggleEmojiDrawer = () => {

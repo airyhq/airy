@@ -33,11 +33,15 @@ const inboundContent = (message): ContentUnion => {
   const messageContent = message.content;
   let text = 'Unsupported message type';
 
+  console.log('INBOUND - messageContent', messageContent);
+
   //image
   if (messageContent.includes('MediaContentType0=image')) {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
     const imageUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+
+    console.log('imageUrl', imageUrl);
 
     return {
       type: 'image',
@@ -51,6 +55,8 @@ const inboundContent = (message): ContentUnion => {
     const contentEnd = '&ApiVersion=';
     const videoUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
 
+    console.log('videoUrl', videoUrl);
+
     return {
       type: 'video',
       videoUrl: videoUrl,
@@ -63,6 +69,8 @@ const inboundContent = (message): ContentUnion => {
     const contentEnd = '&ApiVersion=';
     const audioUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
 
+    console.log('audio', audioUrl);
+
     return {
       type: 'audio',
       audioUrl: audioUrl,
@@ -74,6 +82,8 @@ const inboundContent = (message): ContentUnion => {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
     const fileUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd) + '.pdf';
+
+    console.log('file', fileUrl);
 
     return {
       type: 'file',
@@ -91,6 +101,8 @@ const inboundContent = (message): ContentUnion => {
     const contentEnd = '&To=whatsapp';
     text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
   }
+
+  console.log('text', text);
 
   return {
     type: 'text',

@@ -1,4 +1,4 @@
-export const mediaAttachmentsExtensions = {
+export const attachmentsExtensions = {
   //facebook
   facebookImageExtensions: ['jpeg', 'jpg', 'gif', 'png', 'tiff', 'tif', 'webp'],
   facebookVideoExtensions: ['mp4', 'mov', 'wmv'],
@@ -44,10 +44,10 @@ export const getAttachmentType = (fileName: string, source: string) => {
 
   if (source === 'twilio.whatsapp') source = 'twilioWhatsapp';
 
-  const imageFiles = mediaAttachmentsExtensions[source + 'ImageExtensions'];
-  const videoFiles = mediaAttachmentsExtensions[source + 'VideoExtensions'];
-  const audioFiles = mediaAttachmentsExtensions[source + 'AudioExtensions'];
-  const docsFiles = mediaAttachmentsExtensions[source + 'FileExtensions'];
+  const imageFiles = attachmentsExtensions[source + 'ImageExtensions'];
+  const videoFiles = attachmentsExtensions[source + 'VideoExtensions'];
+  const audioFiles = attachmentsExtensions[source + 'AudioExtensions'];
+  const docsFiles = attachmentsExtensions[source + 'FileExtensions'];
 
   if (imageFiles && imageFiles.includes(fileNameExtension)) {
     return 'image';

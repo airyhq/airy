@@ -26,7 +26,8 @@ import {HttpClientInstance} from '../../../httpClient';
 import {FacebookMapper} from 'render/outbound/facebook';
 import {InputSelector} from './InputSelector';
 import {usePrevious} from '../../../services/hooks/usePrevious';
-import {getAttachmentType, mediaAttachmentsExtensions} from 'render';
+import {getAttachmentType} from 'render';
+import {getAllSupportedAttachmentsForSource} from '../../../services/types/attachmentsTypes';
 
 const mapDispatchToProps = {sendMessages};
 
@@ -179,11 +180,6 @@ const MessageInput = (props: Props) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
     const maxFileSizeAllowed = source === 'instagram' ? 8 : source === 'twilio.whatsapp' ? 5 : 15;
 
-    const supportedImageExtensions = mediaAttachmentsExtensions[source + 'ImageExtensions'];
-    const supportedVideoExtension = mediaAttachmentsExtensions[source + 'VideoExtensions'];
-    const supportedAudioExtension = mediaAttachmentsExtensions[source + 'AudioExtensions'];
-    const supportedFilesExtension = mediaAttachmentsExtensions[source + 'FileExtensions'];
-
     //size limit error
     if (fileSizeInMB >= maxFileSizeAllowed) {
       return setFileUploadErrorPopUp(
@@ -194,13 +190,10 @@ const MessageInput = (props: Props) => {
 
     //unsupported file error
     if (!getAttachmentType(file.name, source)) {
-      const supportedDocs = supportedFilesExtension ? ',' + supportedFilesExtension.join(', ') : '';
-      const supportedAudios = supportedAudioExtension ? ',' + supportedAudioExtension.join(', ') : '';
-      const supportedVideos = supportedVideoExtension ? ',' + supportedVideoExtension.join(', ') : '';
-      const supportedImages = supportedImageExtensions ? supportedImageExtensions.join(', ') : '';
+      const supportedFilesForSource = getAllSupportedAttachmentsForSource(source);
 
       const errorMessage = `This file type is not supported by this source. 
-      Supported files: ${supportedImages} ${supportedVideos} ${supportedAudios} ${supportedDocs}`;
+      Supported files: ${supportedFilesForSource}`;
 
       return setFileUploadErrorPopUp(errorMessage);
     }

@@ -56,8 +56,6 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 function googleInbound(message): ContentUnion {
   const messageJson = message.content.message ?? message.content;
 
-  console.log('messageJson', messageJson);
-
   if (messageJson.richCard?.standaloneCard) {
     const {
       richCard: {

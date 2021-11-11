@@ -133,6 +133,12 @@ const MessageInput = (props: Props) => {
   }, [fileToUpload]);
 
   useEffect(() => {
+    if (isElementSelected()) {
+      setInput('');
+    }
+  }, [selectedTemplate, selectedSuggestedReply, uploadedFileUrl]);
+
+  useEffect(() => {
     if (prevConversationId !== conversation.id) {
       setInput('');
       removeElementFromInput();

@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import {connect, ConnectedProps} from 'react-redux';
 import {Picker} from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
@@ -6,7 +7,6 @@ import {ReactComponent as TemplateAlt} from 'assets/images/icons/template-alt.sv
 import {ReactComponent as Paperclip} from 'assets/images/icons/paperclip.svg';
 import TemplateSelector from '../TemplateSelector';
 import {sendMessages} from '../../../actions/messages';
-import {connect, ConnectedProps} from 'react-redux';
 import {Template, Source} from 'model';
 import {ErrorPopUp} from 'components';
 import {getInputAcceptedFilesForSource} from '../../../services/types/attachmentsTypes';

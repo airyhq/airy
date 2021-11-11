@@ -2,22 +2,26 @@ import React from 'react';
 import styles from './index.module.scss';
 import {getFileName} from '../../services';
 import {ReactComponent as FileDownloadIcon} from 'assets/images/icons/file-download.svg';
+import {Text} from '../../components/Text';
 
 type FileRenderProps = {
   fileUrl: string;
 };
 
 export const File = ({fileUrl}: FileRenderProps) => {
-  const fileName = getFileName(fileUrl);
+  const maxFileNameLength = 36;
+  const fileName = getFileName(fileUrl).slice(-maxFileNameLength);
 
   return (
-    <div className={styles.wrapper}>
-      <a href={fileUrl} download={fileUrl} target="_blank" rel="noopener noreferrer">
-        <div className={styles.container}>
-          <FileDownloadIcon />
-          {fileName}
-        </div>
-      </a>
-    </div>
+    <>
+      <div className={styles.wrapper}>
+        <a href={fileUrl} download={fileUrl} target="_blank" rel="noopener noreferrer">
+          <div className={styles.container}>
+            <FileDownloadIcon />
+            {fileName}
+          </div>
+        </a>
+      </div>
+    </>
   );
 };

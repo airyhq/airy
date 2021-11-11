@@ -16,10 +16,19 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <Text fromContact={props.message.fromContact || false} text={content.text} />;
 
     case 'image':
-      return <Image imageUrl={content.imageUrl} altText="an image sent via a Twilio source" />;
+      return (
+        <Image
+          imageUrl={content.imageUrl}
+          altText="an image sent via a Twilio source"
+          text={content?.text}
+          fromContact={props.message.fromContact || false}
+        />
+      );
 
     case 'video':
-      return <Video videoUrl={content.videoUrl} />;
+      return (
+        <Video videoUrl={content.videoUrl} text={content?.text} fromContact={props.message.fromContact || false} />
+      );
 
     case 'audio':
       return <Audio audioUrl={content.audioUrl} />;
@@ -31,29 +40,45 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
 const inboundContent = (message): ContentUnion => {
   const messageContent = message.content;
-  let text = 'Unsupported message type';
+  let text;
 
-  //image
+  console.log('inbound', messageContent);
+
+  //image (with optional text caption)
   if (messageContent.includes('MediaContentType0=image')) {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
     const imageUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
 
+    if (messageContent.includes('&Body=' && '&To=whatsapp')) {
+      const contentStart = '&Body=';
+      const contentEnd = '&To=whatsapp';
+      text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+    }
+
     return {
       type: 'image',
       imageUrl: imageUrl,
+      text: text ?? null,
     };
   }
 
-  //video
+  //video (with optional text caption)
   if (messageContent.includes('MediaContentType0=video')) {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
     const videoUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
 
+    if (messageContent.includes('&Body=' && '&To=whatsapp')) {
+      const contentStart = '&Body=';
+      const contentEnd = '&To=whatsapp';
+      text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+    }
+
     return {
       type: 'video',
       videoUrl: videoUrl,
+      text: text ?? null,
     };
   }
 
@@ -75,13 +100,15 @@ const inboundContent = (message): ContentUnion => {
     const contentEnd = '&ApiVersion=';
     const fileUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd) + '.pdf';
 
+    //console.log('fileUrl', fileUrl);
+
     return {
       type: 'file',
       fileUrl: fileUrl,
     };
   }
 
-  //text
+  //text (nb: files that are not supported are sent as a text with the filename)
   if (messageContent.includes('&Body=' && '&FromCountry=')) {
     const contentStart = '&Body=';
     const contentEnd = '&FromCountry=';
@@ -94,7 +121,7 @@ const inboundContent = (message): ContentUnion => {
 
   return {
     type: 'text',
-    text: text,
+    text: text ?? 'Unsupported message type',
   };
 };
 
@@ -133,6 +160,11 @@ const outboundContent = (message): ContentUnion => {
         audioUrl: mediaUrl,
       };
     }
+
+    return {
+      type: 'text',
+      text: 'Unsupported message type',
+    };
   }
 
   //text

@@ -9,11 +9,13 @@ export interface TextContent extends Content {
 
 export interface ImageContent extends Content {
   type: 'image';
+  text?: string;
   imageUrl: string;
 }
 
 export interface VideoContent extends Content {
   type: 'video';
+  text?: string;
   videoUrl: string;
 }
 

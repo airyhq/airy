@@ -22,6 +22,7 @@ import {InputOptions} from './InputOptions';
 import {HttpClientInstance} from '../../../httpClient';
 import {InputSelector} from './InputSelector';
 import {getAttachmentType} from 'render';
+import {OutboundMapper} from 'render/outbound/mapper';
 import {usePrevious} from '../../../services/hooks/usePrevious';
 import {getAllSupportedAttachmentsForSource} from '../../../services/types/attachmentsTypes';
 import styles from './index.module.scss';
@@ -71,8 +72,7 @@ const MessageInput = (props: Props) => {
     config,
   } = props;
 
-  //change type here once all sources have been added
-  const outboundMapper: any = getOutboundMapper(source);
+  const outboundMapper: OutboundMapper = getOutboundMapper(source);
   const channelConnected = conversation.channel.connected;
 
   const [input, setInput] = useState('');
@@ -144,6 +144,8 @@ const MessageInput = (props: Props) => {
       removeElementFromInput();
       focusInput();
       setFileToUpload(null);
+      setSelectedTemplate(null);
+      setSelectedSuggestedReply(null);
       setUploadedFileUrl(null);
       setDraggedAndDroppedFile(null);
       setFileUploadErrorPopUp('');
@@ -419,7 +421,7 @@ const MessageInput = (props: Props) => {
                   message={
                     selectedTemplate?.message ??
                     selectedSuggestedReply?.message ??
-                    outboundMapper.getAttachmentPayload(uploadedFileUrl)
+                    outboundMapper?.getAttachmentPayload(uploadedFileUrl)
                   }
                   source={source}
                   messageType={selectedTemplate ? 'template' : selectedSuggestedReply ? 'suggestedReplies' : 'message'}

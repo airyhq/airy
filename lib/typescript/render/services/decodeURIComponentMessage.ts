@@ -10,7 +10,6 @@ export const decodeURIComponentMessage = (messageContent: string, contentStart: 
   );
   const formattedEnCodedMessage = enCodedMessage.split('+').join(' ');
   const decodedMessage = decodeURIComponent(formattedEnCodedMessage);
-  const errorMessage = 'Unsupported message type';
 
-  return decodedMessage !== '' ? decodedMessage : errorMessage;
+  return decodedMessage;
 };

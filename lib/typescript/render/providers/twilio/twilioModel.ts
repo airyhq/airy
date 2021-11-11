@@ -1,5 +1,5 @@
 export interface Content {
-  type: 'text' | 'image' | 'video' | 'audio' | 'file';
+  type: 'text' | 'image' | 'video' | 'audio' | 'file' | 'currentLocation';
 }
 
 export interface TextContent extends Content {
@@ -21,6 +21,7 @@ export interface VideoContent extends Content {
 
 export interface FileContent extends Content {
   type: 'file';
+  fileType?: string;
   fileUrl: string;
 }
 
@@ -29,4 +30,10 @@ export interface AudioContent extends Content {
   audioUrl: string;
 }
 
-export type ContentUnion = TextContent | ImageContent | FileContent | VideoContent | AudioContent;
+export interface CurrentLocation extends Content {
+  type: 'currentLocation';
+  latitude: string;
+  longitude: string;
+}
+
+export type ContentUnion = TextContent | ImageContent | FileContent | VideoContent | AudioContent | CurrentLocation;

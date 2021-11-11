@@ -10,4 +10,10 @@ export class ChatpluginMapper extends OutboundMapper {
   isTextSupported(): boolean {
     return true;
   }
+
+  getAttachmentPayload(mediaUrl: string): any {
+    return {
+      attachment: mediaUrl,
+    };
+  }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, Image, File, Video, Audio} from '../../components';
+import {CurrentLocation} from './components/CurrentLocation';
 import {RenderPropsUnion} from '../../props';
 import {ContentUnion} from './twilioModel';
 import {decodeURIComponentMessage, getAttachmentType} from '../../services';
@@ -34,14 +35,21 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
       return <Audio audioUrl={content.audioUrl} />;
 
     case 'file':
-      return <File fileUrl={content.fileUrl} />;
+      return <File fileUrl={content.fileUrl} fileType={content.fileType} />;
+
+    case 'currentLocation':
+      return (
+        <CurrentLocation
+          latitude={content.latitude}
+          longitude={content.longitude}
+          fromContact={props.message.fromContact || false}
+        />
+      );
   }
 }
 
 const inboundContent = (message): ContentUnion => {
   const messageContent = message.content;
-  let text;
-
   console.log('inbound', messageContent);
 
   //image (with optional text caption)
@@ -49,12 +57,15 @@ const inboundContent = (message): ContentUnion => {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
     const imageUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+    let text;
 
     if (messageContent.includes('&Body=' && '&To=whatsapp')) {
       const contentStart = '&Body=';
       const contentEnd = '&To=whatsapp';
       text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
     }
+
+    console.log('imageUrl', imageUrl);
 
     return {
       type: 'image',
@@ -68,12 +79,15 @@ const inboundContent = (message): ContentUnion => {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
     const videoUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+    let text;
 
     if (messageContent.includes('&Body=' && '&To=whatsapp')) {
       const contentStart = '&Body=';
       const contentEnd = '&To=whatsapp';
       text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
     }
+
+    console.log('videoUrl', videoUrl);
 
     return {
       type: 'video',
@@ -88,45 +102,88 @@ const inboundContent = (message): ContentUnion => {
     const contentEnd = '&ApiVersion=';
     const audioUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
 
+    console.log('audioUrl', audioUrl);
+
     return {
       type: 'audio',
       audioUrl: audioUrl,
     };
   }
 
-  //file
-  if (messageContent.includes('MediaContentType0=application%2Fpdf')) {
+  //file: pdf or vcf
+  if (
+    messageContent.includes('MediaContentType0=application%2Fpdf') ||
+    messageContent.includes('MediaContentType0=text%2Fvcard')
+  ) {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
-    const fileUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd) + '.pdf';
+    const fileUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+    let type;
 
-    //console.log('fileUrl', fileUrl);
+    if (messageContent.includes('MediaContentType0=application%2Fpdf')) {
+      type = 'pdf';
+    }
+
+    if (messageContent.includes('MediaContentType0=text%2Fvcard')) {
+      type = 'vcf';
+    }
 
     return {
       type: 'file',
+      fileType: type,
       fileUrl: fileUrl,
     };
   }
 
-  //text (nb: files that are not supported are sent as a text with the filename)
-  if (messageContent.includes('&Body=' && '&FromCountry=')) {
-    const contentStart = '&Body=';
-    const contentEnd = '&FromCountry=';
-    text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
-  } else if (messageContent.includes('&Body=' && '&To=whatsapp')) {
-    const contentStart = '&Body=';
-    const contentEnd = '&To=whatsapp';
-    text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+  //currentLocation (Live Location is not currently supported by Twilio)
+  if (messageContent.includes('Latitude') && messageContent.includes('Longitude')) {
+    const latitudeStartIndex = messageContent.search('Latitude=');
+    const latitudeStartLength = 'Latitude='.length;
+    const latitudeEndIndex = messageContent.search('&Longitude=');
+    const latitude = messageContent.substring(latitudeStartIndex + latitudeStartLength, latitudeEndIndex);
+
+    const longitudeStartIndex = messageContent.search('&Longitude=');
+    const longitudeStartLength = '&Longitude='.length;
+    const longitudeEndIndex = messageContent.search('&SmsMessageSid=');
+    const longitude = messageContent.substring(longitudeStartIndex + longitudeStartLength, longitudeEndIndex);
+
+    const latitudeNum = parseFloat(latitude).toFixed(6);
+    const longitudeNum = parseFloat(longitude).toFixed(6);
+
+    return {
+      type: 'currentLocation',
+      latitude: latitudeNum,
+      longitude: longitudeNum,
+    };
   }
 
-  return {
-    type: 'text',
-    text: text ?? 'Unsupported message type',
-  };
+  //text
+  if (messageContent.includes('&Body=' && '&FromCountry=') || messageContent.includes('&Body=' && '&To=whatsapp')) {
+    let text;
+
+    if (messageContent.includes('&Body=' && '&FromCountry=')) {
+      const contentStart = '&Body=';
+      const contentEnd = '&FromCountry=';
+      text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+    } else if (messageContent.includes('&Body=' && '&To=whatsapp')) {
+      const contentStart = '&Body=';
+      const contentEnd = '&To=whatsapp';
+      text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+    }
+
+    if (!text || text === '') text = 'Unsupported message type';
+
+    return {
+      type: 'text',
+      text: text,
+    };
+  }
 };
 
 const outboundContent = (message): ContentUnion => {
   const messageContent = message?.content?.message ?? message?.content ?? message;
+
+  console.log('outbound', messageContent);
 
   //media
   if (messageContent?.MediaUrl) {
@@ -160,16 +217,11 @@ const outboundContent = (message): ContentUnion => {
         audioUrl: mediaUrl,
       };
     }
-
-    return {
-      type: 'text',
-      text: 'Unsupported message type',
-    };
   }
 
   //text
   return {
     type: 'text',
-    text: messageContent?.Body,
+    text: messageContent?.Body ?? 'Unsupported message type',
   };
 };

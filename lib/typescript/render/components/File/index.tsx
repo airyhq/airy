@@ -2,15 +2,19 @@ import React from 'react';
 import styles from './index.module.scss';
 import {getFileName} from '../../services';
 import {ReactComponent as FileDownloadIcon} from 'assets/images/icons/file-download.svg';
-import {Text} from '../../components/Text';
 
 type FileRenderProps = {
   fileUrl: string;
+  fileType?: string;
 };
 
-export const File = ({fileUrl}: FileRenderProps) => {
-  const maxFileNameLength = 36;
-  const fileName = getFileName(fileUrl).slice(-maxFileNameLength);
+export const File = ({fileUrl, fileType}: FileRenderProps) => {
+  const maxFileNameLength = 30;
+  let fileName = getFileName(fileUrl);
+
+  if (fileName.length >= maxFileNameLength) fileName = fileName.slice(-maxFileNameLength);
+
+  if (fileType) fileName = `${fileName}.${fileType}`;
 
   return (
     <>

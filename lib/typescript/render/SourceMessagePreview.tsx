@@ -6,6 +6,8 @@ import {ReactComponent as AttachmentAudio} from 'assets/images/icons/file-audio.
 import {ReactComponent as AttachmentFile} from 'assets/images/icons/file-download.svg';
 import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
 import {Conversation, Message} from 'model';
+import {Emoji} from 'components';
+
 interface SourceMessagePreviewProps {
   conversation: Conversation;
 }
@@ -35,6 +37,24 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
 
   const lastMessageIsText = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
+    const googleLiveAgentRequest = lastMessageContent?.userStatus?.requestedLiveAgent;
+    const googleSurveyResponse = lastMessageContent?.surveyResponse;
+
+    if (googleLiveAgentRequest) {
+      return (
+        <>
+          <Emoji symbol={'👋'} /> Live Agent request
+        </>
+      );
+    }
+
+    if (googleSurveyResponse) {
+      return (
+        <>
+          <Emoji symbol={'📝'} /> Survey response
+        </>
+      );
+    }
 
     if (typeof lastMessageContent === 'string') {
       if (lastMessageContent.includes('&Body=' && '&FromCountry=')) {

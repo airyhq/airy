@@ -19,8 +19,6 @@ const failedUrls = [];
 export const Video = ({videoUrl, text, fromContact}: VideoRenderProps) => {
   const [isVideoFailed, setVideoFailed] = useState(failedUrls.includes(videoUrl));
 
-  console.log('video', text);
-
   useEffect(() => {
     setVideoFailed(failedUrls.includes(videoUrl));
   }, [videoUrl]);
@@ -46,6 +44,7 @@ export const Video = ({videoUrl, text, fromContact}: VideoRenderProps) => {
           )}
         </div>
       </div>
+
       {text && <Text text={text} fromContact={fromContact} />}
     </>
   );

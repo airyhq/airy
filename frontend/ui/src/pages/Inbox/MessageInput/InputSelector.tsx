@@ -51,8 +51,8 @@ export const InputSelector = (props: InputSelectorProps) => {
         iconSize = scaleRatio > 0.3 ? '36px' : '60px';
         buttonSize = scaleRatio > 0.3 ? '72px' : '120px';
       } else {
-        iconSize = scaleRatio > 0.3 ? '18px' : '30px';
-        buttonSize = scaleRatio > 0.3 ? '36px' : '60px';
+        iconSize = '18px';
+        buttonSize = '36px';
       }
 
       setCloseIconHeight(iconSize);

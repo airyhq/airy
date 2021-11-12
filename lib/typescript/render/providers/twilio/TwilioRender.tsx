@@ -50,27 +50,23 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
 const inboundContent = (message): ContentUnion => {
   const messageContent = message.content;
-  console.log('inbound', messageContent);
 
-  //image (with optional text caption)
   if (messageContent.includes('MediaContentType0=image')) {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
     const imageUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
-    let text;
+    let textCaption;
 
     if (messageContent.includes('&Body=' && '&To=whatsapp')) {
       const contentStart = '&Body=';
       const contentEnd = '&To=whatsapp';
-      text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+      textCaption = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
     }
-
-    console.log('imageUrl', imageUrl);
 
     return {
       type: 'image',
       imageUrl: imageUrl,
-      text: text ?? null,
+      text: textCaption ?? null,
     };
   }
 
@@ -79,20 +75,18 @@ const inboundContent = (message): ContentUnion => {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
     const videoUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
-    let text;
+    let textCaption;
 
     if (messageContent.includes('&Body=' && '&To=whatsapp')) {
       const contentStart = '&Body=';
       const contentEnd = '&To=whatsapp';
-      text = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
+      textCaption = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
     }
-
-    console.log('videoUrl', videoUrl);
 
     return {
       type: 'video',
       videoUrl: videoUrl,
-      text: text ?? null,
+      text: textCaption ?? null,
     };
   }
 
@@ -101,8 +95,6 @@ const inboundContent = (message): ContentUnion => {
     const contentStart = 'MediaUrl0=';
     const contentEnd = '&ApiVersion=';
     const audioUrl = decodeURIComponentMessage(messageContent, contentStart, contentEnd);
-
-    console.log('audioUrl', audioUrl);
 
     return {
       type: 'audio',
@@ -130,7 +122,7 @@ const inboundContent = (message): ContentUnion => {
 
     return {
       type: 'file',
-      fileType: type,
+      fileType: type ?? null,
       fileUrl: fileUrl,
     };
   }
@@ -147,13 +139,13 @@ const inboundContent = (message): ContentUnion => {
     const longitudeEndIndex = messageContent.search('&SmsMessageSid=');
     const longitude = messageContent.substring(longitudeStartIndex + longitudeStartLength, longitudeEndIndex);
 
-    const latitudeNum = parseFloat(latitude).toFixed(6);
-    const longitudeNum = parseFloat(longitude).toFixed(6);
+    const formattedLatitude = parseFloat(latitude).toFixed(6);
+    const formattedLongitude = parseFloat(longitude).toFixed(6);
 
     return {
       type: 'currentLocation',
-      latitude: latitudeNum,
-      longitude: longitudeNum,
+      latitude: formattedLatitude,
+      longitude: formattedLongitude,
     };
   }
 
@@ -182,8 +174,6 @@ const inboundContent = (message): ContentUnion => {
 
 const outboundContent = (message): ContentUnion => {
   const messageContent = message?.content?.message ?? message?.content ?? message;
-
-  console.log('outbound', messageContent);
 
   //media
   if (messageContent?.MediaUrl) {
@@ -217,6 +207,11 @@ const outboundContent = (message): ContentUnion => {
         audioUrl: mediaUrl,
       };
     }
+
+    return {
+      type: 'file',
+      fileUrl: mediaUrl,
+    };
   }
 
   //text

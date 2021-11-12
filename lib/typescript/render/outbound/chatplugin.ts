@@ -1,4 +1,5 @@
 import {OutboundMapper} from './mapper';
+import {getAttachmentType} from '../services';
 
 export class ChatpluginMapper extends OutboundMapper {
   getTextPayload(text: string): any {
@@ -12,8 +13,15 @@ export class ChatpluginMapper extends OutboundMapper {
   }
 
   getAttachmentPayload(mediaUrl: string): any {
+    const mediaType = getAttachmentType(mediaUrl, 'chatplugin');
+
     return {
-      attachment: mediaUrl,
+      attachment: {
+        type: mediaType,
+        payload: {
+          url: mediaUrl,
+        },
+      },
     };
   }
 }

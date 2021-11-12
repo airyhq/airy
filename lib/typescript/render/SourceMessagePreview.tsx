@@ -5,8 +5,8 @@ import {ReactComponent as AttachmentVideo} from 'assets/images/icons/attachmentV
 import {ReactComponent as AttachmentAudio} from 'assets/images/icons/file-audio.svg';
 import {ReactComponent as AttachmentFile} from 'assets/images/icons/file-download.svg';
 import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
-import {Conversation, Message} from 'model';
 import {decodeURIComponentMessage, getAttachmentType} from './services';
+import {Conversation, Message} from 'model';
 
 interface SourceMessagePreviewProps {
   conversation: Conversation;
@@ -37,8 +37,6 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
 
   const lastMessageIsText = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
-
-    console.log('lastMessageContent', lastMessageContent);
 
     if (typeof lastMessageContent === 'string') {
       let text;
@@ -73,10 +71,22 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
   const lastMessageIsIcon = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
     const source = conversation.channel.source;
-    const twilioMediaUrl = lastMessageContent?.mediaUrl || lastMessageContent?.MediaUrl;
 
-    if (twilioMediaUrl) {
-      const attachmentType = getAttachmentType(twilioMediaUrl, source);
+    const twilioWhatsAppOutboundMediaUrl = lastMessageContent?.MediaUrl;
+
+    const twilioWhatsAppInboundImage =
+      typeof lastMessageContent === 'string' && lastMessageContent.includes('MediaContentType0=image');
+    const twilioWhatsAppInboundFile =
+      typeof lastMessageContent === 'string' &&
+      (lastMessageContent.includes('MediaContentType0=application%2Fpdf') ||
+        lastMessageContent.includes('MediaContentType0=text%2Fvcard'));
+    const twilioWhatsAppInboundAudio =
+      typeof lastMessageContent === 'string' && lastMessageContent.includes('MediaContentType0=audio');
+    const twilioWhatsAppInboundVideo =
+      typeof lastMessageContent === 'string' && lastMessageContent.includes('MediaContentType0=video');
+
+    if (twilioWhatsAppOutboundMediaUrl) {
+      const attachmentType = getAttachmentType(twilioWhatsAppOutboundMediaUrl, source);
 
       if (attachmentType === 'image') {
         return <AttachmentImage />;
@@ -98,41 +108,45 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
     if (
       lastMessageContent.message?.attachments?.[0].type === 'image' ||
       lastMessageContent?.attachment?.type === 'image' ||
-      isImageFromGoogleSource(lastMessageContent.message?.text)
+      isImageFromGoogleSource(lastMessageContent.message?.text) ||
+      twilioWhatsAppInboundImage
     ) {
       return <AttachmentImage />;
     }
 
     if (
       lastMessageContent.message?.attachments?.[0].type === 'video' ||
-      lastMessageContent?.attachment?.type === 'video'
+      lastMessageContent?.attachment?.type === 'video' ||
+      twilioWhatsAppInboundVideo
     ) {
       return <AttachmentVideo style={{height: '24px', width: '24px', margin: '0px'}} />;
     }
 
     if (
       lastMessageContent.message?.attachments?.[0].type === 'audio' ||
-      lastMessageContent.attachment?.type === 'audio'
+      lastMessageContent?.attachment?.type === 'audio' ||
+      twilioWhatsAppInboundAudio
     ) {
       return <AttachmentAudio style={{height: '24px', width: '24px', margin: '0px'}} />;
     }
 
     if (
       lastMessageContent.message?.attachments?.[0].type === 'file' ||
-      lastMessageContent.attachment?.type === 'file'
+      lastMessageContent?.attachment?.type === 'file' ||
+      twilioWhatsAppInboundFile
     ) {
       return <AttachmentFile style={{height: '24px', width: '24px', margin: '0px'}} />;
     }
 
-    if (lastMessageContent.suggestionResponse) {
+    if (lastMessageContent?.suggestionResponse) {
       return <>{conversation.lastMessage.content.suggestionResponse.text}</>;
     }
 
-    if (lastMessageContent.image) {
+    if (lastMessageContent?.image) {
       return <AttachmentImage />;
     }
 
-    if (lastMessageContent.richCard) {
+    if (lastMessageContent?.richCard) {
       return <RichCardIcon style={{height: '24px', width: '24px', margin: '0px'}} />;
     }
 

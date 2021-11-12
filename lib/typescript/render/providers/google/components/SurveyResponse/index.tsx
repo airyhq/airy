@@ -5,6 +5,7 @@ import {Emoji} from 'components';
 
 export const SurveyResponse = ({rating}) => (
   <span className={styles.text}>
-    <Emoji symbol={'📝'} /> This user has responded &#39;{rating}&#39; to a survey.
+    <Emoji symbol={'📝'} /> This user {rating === 'NO' ? 'negatively' : rating === 'YES' ? 'positively' : ''} rated the
+    experience with the response &#39;{rating}&#39;.
   </span>
 );

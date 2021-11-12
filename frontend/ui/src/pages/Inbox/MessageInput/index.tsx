@@ -22,7 +22,6 @@ import {InputOptions} from './InputOptions';
 import {HttpClientInstance} from '../../../httpClient';
 import {InputSelector} from './InputSelector';
 import {getAttachmentType} from 'render';
-import {OutboundMapper} from 'render/outbound/mapper';
 import {usePrevious} from '../../../services/hooks/usePrevious';
 import {getAllSupportedAttachmentsForSource} from '../../../services/types/attachmentsTypes';
 import styles from './index.module.scss';
@@ -72,7 +71,7 @@ const MessageInput = (props: Props) => {
     config,
   } = props;
 
-  const outboundMapper: OutboundMapper = getOutboundMapper(source);
+  const outboundMapper: any = getOutboundMapper(source);
   const channelConnected = conversation.channel.connected;
 
   const [input, setInput] = useState('');

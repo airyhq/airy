@@ -207,11 +207,6 @@ const outboundContent = (message): ContentUnion => {
         audioUrl: mediaUrl,
       };
     }
-
-    return {
-      type: 'file',
-      fileUrl: mediaUrl,
-    };
   }
 
   //text

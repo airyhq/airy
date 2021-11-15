@@ -31,7 +31,7 @@ export const attachmentsExtensions = {
   ],
 
   //instagram
-  instagramImageExtensions: ['jpeg', 'jpg', 'png', 'ico', 'bmp', 'gif'],
+  instagramImageExtensions: ['jpeg', 'jpg', 'png', 'ico', 'bmp'],
 
   //twilio.whatsapp
   twilioWhatsappImageExtensions: ['jpeg', 'jpg', 'png'],

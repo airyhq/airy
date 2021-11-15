@@ -178,7 +178,7 @@ export const InputOptions = (props: Props) => {
               onChange={selectFile}
               className={styles.fileInput}
               disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
-              // accept={inputAcceptedFiles}
+              accept={inputAcceptedFiles}
             />
           </button>
         )}

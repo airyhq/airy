@@ -123,9 +123,9 @@ const Chat = ({config, ...props}: Props) => {
     },
   };
 
-  const sendMessage = (text: string) => {
+  const sendMessage = (input: any) => {
     if (config.showMode) return;
-    ctrl.sendMessage(text);
+    ctrl.sendMessage(input);
   };
 
   const onReceive = (data: IMessage) => {
@@ -223,8 +223,7 @@ const Chat = ({config, ...props}: Props) => {
       {!isChatHidden && (
         <div
           className={`${style.wrapper} ${styleFor(animation)}`}
-          style={config.backgroundColor && {backgroundColor: config.backgroundColor}}
-        >
+          style={config.backgroundColor && {backgroundColor: config.backgroundColor}}>
           <HeaderBarProp render={headerBar} />
           <div className={style.connectedContainer}>
             <div className={style.chat}>
@@ -243,8 +242,7 @@ const Chat = ({config, ...props}: Props) => {
                               <MessageInfoWrapper
                                 fromContact={message.fromContact}
                                 isChatPlugin={true}
-                                lastInGroup={lastInGroup}
-                              >
+                                lastInGroup={lastInGroup}>
                                 <SourceMessage
                                   contentType="message"
                                   message={message}
@@ -275,8 +273,7 @@ const Chat = ({config, ...props}: Props) => {
                       <button
                         className={style.endChatButton}
                         onClick={cancelChatSession}
-                        data-cy={cyChatPluginEndChatModalButton}
-                      >
+                        data-cy={cyChatPluginEndChatModalButton}>
                         {' '}
                         {t('endChat')}
                       </button>

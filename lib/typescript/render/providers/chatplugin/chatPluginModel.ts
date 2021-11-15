@@ -1,5 +1,5 @@
 export interface Content {
-  type: 'text' | 'image' | 'video' | 'richText' | 'richCard' | 'richCardCarousel' | 'quickReplies';
+  type: 'text' | 'image' | 'images' | 'video' | 'file' | 'richText' | 'richCard' | 'richCardCarousel' | 'quickReplies';
 }
 
 export interface Command {
@@ -14,9 +14,19 @@ export interface ImageContent extends Content {
   imageUrl: string;
 }
 
+export interface ImagesContent extends Content {
+  type: 'images';
+  images: ImageContent[];
+}
+
 export interface VideoContent extends Content {
   type: 'video';
   videoUrl: string;
+}
+
+export interface FileContent extends Content {
+  type: 'file';
+  fileUrl: string;
 }
 
 export interface RichTextContent extends Content {
@@ -105,10 +115,14 @@ export interface SimpleAttachment {
 
 export type ContentUnion =
   | TextContent
+  | ImageContent
+  | ImagesContent
+  | VideoContent
+  | FileContent
   | RichTextContent
   | RichCardContent
   | RichCardCarouselContent
   | SuggestionResponse
   | QuickRepliesContent;
 
-export type AttachmentUnion = TextContent | ImageContent | VideoContent;
+export type AttachmentUnion = TextContent | ImageContent | ImagesContent | VideoContent | FileContent;

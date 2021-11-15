@@ -41,6 +41,11 @@ export const attachmentsExtensions = {
 
   //google
   googleImageExtensions: ['jpeg', 'jpg', 'png'],
+
+  //chatplugin
+  chatpluginImageExtensions: ['jpeg', 'jpg', 'png'],
+  chatpluginVideoExtensions: ['mp4'],
+  chatpluginFileExtensions: ['pdf', 'vcf'],
 };
 
 export const getAttachmentType = (fileName: string, source: string) => {

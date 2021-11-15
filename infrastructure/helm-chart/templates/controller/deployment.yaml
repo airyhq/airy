@@ -18,7 +18,7 @@ spec:
     metadata:
       labels:
         app: airy-controller
-        WorkerType: fargate
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
       annotations:
         releaseTime: {{ (now) | toString | trunc 28 | quote }}
     spec:

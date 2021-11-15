@@ -36,6 +36,7 @@ web_library(
         "library": "@airyhq/chat-plugin",
         "libraryTarget": "umd",
         "filename": "index.js",
+        "uniqueName": "airy-chat-plugin",
     },
 )
 

@@ -9,6 +9,7 @@ import {Suggestions} from './components/Suggestions';
 import {RichCard} from './components/RichCard';
 import {RichCardCarousel} from './components/RichCardCarousel';
 import {RequestedLiveAgent} from './components/RequestedLiveAgent';
+import {SurveyResponse} from './components/SurveyResponse';
 
 export const GoogleRender = (props: RenderPropsUnion) => {
   const message = props.message;
@@ -23,6 +24,9 @@ function render(content: ContentUnion, props: RenderPropsUnion) {
 
     case 'requestedLiveAgent':
       return <RequestedLiveAgent />;
+
+    case 'surveyResponse':
+      return <SurveyResponse rating={content.rating} />;
 
     case 'image':
       return <Image imageUrl={content.imageUrl} altText="image sent via GBM" />;
@@ -125,6 +129,15 @@ function googleInbound(message): ContentUnion {
   if (messageJson?.userStatus?.requestedLiveAgent) {
     return {
       type: 'requestedLiveAgent',
+    };
+  }
+
+  if (messageJson?.surveyResponse) {
+    const userResponse =
+      messageJson?.surveyResponse?.questionResponsePostbackData ?? messageJson?.surveyResponse?.questionResponseText;
+    return {
+      type: 'surveyResponse',
+      rating: userResponse,
     };
   }
 

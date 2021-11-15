@@ -7,6 +7,7 @@ import {ReactComponent as AttachmentFile} from 'assets/images/icons/file-downloa
 import {ReactComponent as RichCardIcon} from 'assets/images/icons/richCardIcon.svg';
 import {decodeURIComponentMessage, getAttachmentType} from './services';
 import {Conversation, Message} from 'model';
+import {Emoji} from 'components';
 
 interface SourceMessagePreviewProps {
   conversation: Conversation;
@@ -37,6 +38,24 @@ export const SourceMessagePreview = (props: SourceMessagePreviewProps) => {
 
   const lastMessageIsText = (conversation: Conversation) => {
     const lastMessageContent = conversation.lastMessage.content;
+    const googleLiveAgentRequest = lastMessageContent?.userStatus?.requestedLiveAgent;
+    const googleSurveyResponse = lastMessageContent?.surveyResponse;
+
+    if (googleLiveAgentRequest) {
+      return (
+        <>
+          <Emoji symbol={'👋'} /> Live Agent request
+        </>
+      );
+    }
+
+    if (googleSurveyResponse) {
+      return (
+        <>
+          <Emoji symbol={'📝'} /> Survey response
+        </>
+      );
+    }
 
     if (typeof lastMessageContent === 'string') {
       let text;

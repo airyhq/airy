@@ -56,7 +56,11 @@ const ConversationList = (props: ConversationListProps) => {
   const isLoadingConversation = paginationData.loading;
 
   const hasPreviousMessages = () => {
-    return !!(conversationsPaginationData && conversationsPaginationData && conversationsPaginationData.nextCursor);
+    if (filteredPaginationData.previousCursor && filteredPaginationData.nextCursor === null) {
+      return false;
+    } else {
+      return !!(conversationsPaginationData && conversationsPaginationData && conversationsPaginationData.nextCursor);
+    }
   };
 
   const debouncedListPreviousConversations = debounce(() => {

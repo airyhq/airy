@@ -22,7 +22,7 @@ spec:
     metadata:
       labels:
         app: frontend-chat-plugin
-        WorkerType: fargate
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
       - name: app

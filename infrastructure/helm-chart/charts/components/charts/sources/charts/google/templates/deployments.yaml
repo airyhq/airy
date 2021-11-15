@@ -22,7 +22,7 @@ spec:
     metadata:
       labels:
         app: sources-google-connector
-        WorkerType: fargate
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
         - name: app
@@ -66,7 +66,7 @@ spec:
               httpHeaders:
               - name: Health-Check
                 value: health-check
-            initialDelaySeconds: 60
+            initialDelaySeconds: 120
           resources:
 {{ toYaml .Values.connector.resources | indent 12 }}
       initContainers:
@@ -117,7 +117,7 @@ spec:
     metadata:
       labels:
         app: sources-google-events-router
-        WorkerType: fargate
+        WorkerType: "{{ default "NodeGroup" .Values.global.workerType }}"
     spec:
       containers:
       - name: app
@@ -152,7 +152,7 @@ spec:
         livenessProbe:
           tcpSocket:
             port: 6000
-          initialDelaySeconds: 60
+          initialDelaySeconds: 120
           periodSeconds: 10
           failureThreshold: 3
         resources:

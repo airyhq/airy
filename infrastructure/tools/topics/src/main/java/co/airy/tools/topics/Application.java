@@ -27,6 +27,8 @@ public class Application {
                 "\n" +
                 "    \"helm.sh/hook-weight\": \"2\"" +
                 "\n" +
+                "  namespace: {{ .Release.Namespace }}" +
+                "\n" +
                 "data:" +
                 "\n" +
                 "  create-topics.sh: |" +

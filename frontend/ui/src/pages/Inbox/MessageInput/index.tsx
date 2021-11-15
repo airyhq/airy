@@ -155,7 +155,11 @@ const MessageInput = (props: Props) => {
   useEffect(() => {
     const sendingAttachmentEnabled =
       config.components['media-resolver'].enabled &&
-      (source === 'facebook' || source === 'instagram' || source === 'google' || source === 'twilio.whatsapp');
+      (source === 'facebook' ||
+        source === 'instagram' ||
+        source === 'google' ||
+        source === 'twilio.whatsapp' ||
+        source === 'chatplugin');
     if (isElementSelected()) {
       setDragAndDropDisabled(true);
     } else if (sendingAttachmentEnabled) {
@@ -184,7 +188,11 @@ const MessageInput = (props: Props) => {
   const uploadFile = (file: File) => {
     const fileSizeInMB = file.size / Math.pow(1024, 2);
     const maxFileSizeAllowed =
-      source === 'instagram' ? 8 : source === 'twilio.whatsapp' || source === 'google' ? 5 : 15;
+      source === 'instagram'
+        ? 8
+        : source === 'twilio.whatsapp' || source === 'google'
+        ? 5
+        : 15 || (source === 'chatplugin' ? 5 : 15);
 
     //size limit error
     if (fileSizeInMB >= maxFileSizeAllowed) {
@@ -363,8 +371,7 @@ const MessageInput = (props: Props) => {
             type="button"
             styleVariant="outline-big"
             onClick={toggleSuggestedReplies}
-            dataCy={cySuggestionsButton}
-          >
+            dataCy={cySuggestionsButton}>
             <div className={styles.suggestionButton}>
               Suggestions
               <ChevronDownIcon className={hasSuggestions() ? styles.chevronUp : styles.chevronDown} />
@@ -446,8 +453,7 @@ const MessageInput = (props: Props) => {
             }`}
             onClick={sendMessage}
             disabled={input.trim().length == 0 && !canSendMessage()}
-            data-cy={cyMessageSendButton}
-          >
+            data-cy={cyMessageSendButton}>
             <div className={styles.sendButtonText}>
               <Paperplane />
             </div>
@@ -456,8 +462,7 @@ const MessageInput = (props: Props) => {
       </form>
       <div
         className={styles.linebreakHint}
-        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}
-      >
+        style={textAreaRef?.current?.value?.length > 0 ? {visibility: 'visible'} : {visibility: 'hidden'}}>
         {'Shift + Enter to add line'}
       </div>
     </div>

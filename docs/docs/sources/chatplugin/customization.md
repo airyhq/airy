@@ -44,6 +44,10 @@ If you are happy with your customization, copy it and add this code inside the t
 | primaryColor             | string                    | Set your primary color as the topbar, border of `textArea`, Start new Conversation button text and border color, or text color of `buttons` |
 | accentColor              | string                    | Set your accent color as the `sendButton`                                                                                                   |
 | backgroundColor          | string                    | Set the background color of the entire Airy Chat Plugin                                                                                     |
+| outboundMessageColor     | string                    | Set the background color of the outbound messages in the Airy Chat Plugin                                                                   |
+| inboundMessageColor      | string                    | Set the background color of the inbound messages in the Airy Chat Plugin                                                                    |
+| outboundMessageTextColor | string                    | Set the text color of the outbound messages in the Airy Chat Plugin                                                                         |
+| inboundMessageTextColor  | string                    | Set the text color of the inbound messages in the Airy Chat Plugin                                                                          |
 | height                   | number                    | Set the height of the entire Airy Chat Plugin                                                                                               |
 | width                    | number                    | Set the width of the entire Airy Chat Plugin                                                                                                |
 | bubbleIcon               | URL                       | Set your company icon which appears on the button that opens and closes the Airy Chat Plugin                                                |

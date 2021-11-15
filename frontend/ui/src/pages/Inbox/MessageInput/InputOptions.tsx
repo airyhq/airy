@@ -136,7 +136,7 @@ export const InputOptions = (props: Props) => {
       <button
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingEmojiDrawer ? styles.active : ''}`}
         type="button"
-        disabled={inputDisabled || loadingSelector}
+        disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
         onClick={toggleEmojiDrawer}
       >
         <div className={styles.actionToolTip}>Emojis</div>
@@ -145,7 +145,7 @@ export const InputOptions = (props: Props) => {
       <button
         className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
         type="button"
-        disabled={inputDisabled || loadingSelector}
+        disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
         onClick={toggleTemplateModal}
       >
         <div className={styles.actionToolTip}>Templates</div>
@@ -159,7 +159,7 @@ export const InputOptions = (props: Props) => {
           <button
             className={`${styles.iconButton} ${styles.templateButton} ${isShowingTemplateModal ? styles.active : ''}`}
             type="button"
-            disabled={inputDisabled || loadingSelector}
+            disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
           >
             <div className={styles.actionToolTip}>Files</div>
 
@@ -173,7 +173,7 @@ export const InputOptions = (props: Props) => {
               name="file"
               onChange={selectFile}
               className={styles.fileInput}
-              disabled={inputDisabled || loadingSelector}
+              disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
               accept={inputAcceptedFiles}
             />
           </button>

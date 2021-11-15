@@ -175,6 +175,8 @@ const inboundContent = (message): ContentUnion => {
 const outboundContent = (message): ContentUnion => {
   const messageContent = message?.content?.message ?? message?.content ?? message;
 
+  console.log('OUTBOUND', messageContent);
+
   //media
   if (messageContent?.MediaUrl) {
     const mediaUrl = messageContent.MediaUrl;
@@ -212,6 +214,6 @@ const outboundContent = (message): ContentUnion => {
   //text
   return {
     type: 'text',
-    text: messageContent?.Body ?? 'Unsupported message type',
+    text: messageContent?.Body ?? messageContent?.text ?? 'Unsupported message type',
   };
 };

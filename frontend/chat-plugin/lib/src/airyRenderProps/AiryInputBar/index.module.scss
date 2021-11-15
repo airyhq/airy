@@ -175,9 +175,19 @@
   }
 }
 
+.iconContainer {
+  display: flex;
+  flex-direction: row;
+}
+
 .smileyIcon {
   height: 20px;
   width: 20px;
+}
+
+.paperclipIcon {
+  height: 24px;
+  width: 24px;
 }
 
 .iconButton:hover {

@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {ReactComponent as AiryIcon} from 'assets/images/icons/airy-icon.svg';
 import style from './index.module.scss';
 import {ReactComponent as Smiley} from 'assets/images/icons/smiley.svg';
+import {ReactComponent as PaperClip} from 'assets/images/icons/paperclip.svg';
 import {ReactComponent as Paperplane} from 'assets/images/icons/paperplane.svg';
 
 type AiryInputBarProps = {
@@ -21,6 +22,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
 
   const {t} = useTranslation();
   const [isShowingEmojiDrawer, setIsShowingEmojiDrawer] = useState(false);
+  const [isSelectingFiles, setIsSelectingFiles] = useState(false);
   const emojiDiv = useRef(null);
 
   const textInputRef = createRef<HTMLTextAreaElement>();
@@ -114,19 +116,42 @@ const AiryInputBar = (props: AiryInputBarProps) => {
       handleEmojiDrawer();
     };
 
+    const handleFileUpload = () => {
+      setIsSelectingFiles(!isSelectingFiles);
+    };
+
+    const selectFile = () => {
+      
+    }
+
     return (
-      <div className={style.messageActionsContainer}>
-        <>
-          {isShowingEmojiDrawer && (
-            <div ref={emojiDiv} className={style.emojiDrawer}>
-              <EmojiPickerWrapper addEmoji={addEmoji} />
-            </div>
-          )}
-          <button className={style.iconButton} type="button" onClick={() => handleEmojiDrawer()}>
+      <div>
+        {isShowingEmojiDrawer && (
+          <div ref={emojiDiv} className={style.emojiDrawer}>
+            <EmojiPickerWrapper addEmoji={addEmoji} />
+          </div>
+        )}
+        {isSelectingFiles && (
+          <input
+            type="file"
+            id="file"
+            name="file"
+            onChange={selectFile}
+            // className={styles.fileInput}
+            // disabled={inputDisabled || !!fileUploadErrorPopUp || loadingSelector}
+            // accept={inputAcceptedFiles}
+          />
+        )}
+        <div className={style.iconContainer}>
+          <button className={style.iconButton} type="button" onClick={handleEmojiDrawer}>
             <div className={style.actionToolTip}>Emojis</div>
             <Smiley aria-hidden className={style.smileyIcon} />
           </button>
-        </>
+          <button className={style.iconButton} type="button" onClick={handleFileUpload}>
+            <div className={style.actionToolTip}>Files</div>
+            <PaperClip aria-hidden className={style.paperclipIcon} />
+          </button>
+        </div>
       </div>
     );
   };
@@ -157,8 +182,7 @@ const AiryInputBar = (props: AiryInputBarProps) => {
         <a
           href="https://airy.co/?utm_source=airy&utm_medium=chat&utm_campaign=chat-plugin-demo"
           target="_blank"
-          rel="noreferrer"
-        >
+          rel="noreferrer">
           Powered by Airy <AiryIcon />
         </a>
       </div>

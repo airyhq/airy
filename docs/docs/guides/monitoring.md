@@ -40,13 +40,19 @@ helm install prometheus prometheus-community/kube-prometheus-stack
 
 ### Customizing Prometheus
 
+In this section you can customize the Prometheus chart by changing the defaults
+in `infrastructure/tools/prometheus/values.yaml` to ones that suite your
+requirements.
+
 To access Prometheus, Grafana and Alertmanager from outside the cluster you have
-to put your hostname in the respective `hosts: []` variables in
-`infrastructure/tools/prometheus/values.yaml` and then update the Kubernetes ingress with:
+to put your hostname in the respective `hosts: []` variable.
+
+In the case that you make Grafana publicly accessible you should also set the
+`adminPassword` to something secure.
+
+You can apply those changes by running:
 
 `helm upgrade prometheus --values infrastructure/tools/prometheus/values.yaml`
-
-Now you can access Prometheus under `/prometheus`.
 
 ### Grafana Dashboards
 
@@ -64,8 +70,8 @@ For Grafana there is one more step to do before you can access it.
     serve_from_sub_path = true
 ```
 
-Now you can go to `<your-domain>/grafana` and login with the `adminPassword` you
-set in the `values.yaml`.
+Access Grafana under `/grafana` and login with the `adminPassword` you set in
+the `values.yaml`.
 
 #### Access Predefined Dashboards
 

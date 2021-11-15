@@ -163,7 +163,10 @@ export const InputOptions = (props: Props) => {
           >
             <div className={styles.actionToolTip}>Files</div>
 
-            <label htmlFor="file" style={{cursor: inputDisabled || loadingSelector ? 'not-allowed' : 'pointer'}}>
+            <label
+              htmlFor="file"
+              style={{cursor: inputDisabled || !!fileUploadErrorPopUp || loadingSelector ? 'not-allowed' : 'pointer'}}
+            >
               <Paperclip aria-hidden className={styles.paperclipIcon} />
             </label>
 
